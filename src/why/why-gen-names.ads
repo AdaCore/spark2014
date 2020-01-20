@@ -382,6 +382,7 @@ package Why.Gen.Names is
       --  Names related to the pointer type
       WNE_Null_Pointer,           --  "__null_pointer"
       WNE_Is_Null_Pointer,        --  "__is_null_pointer"
+      WNE_Is_Moved_Pointer,       --  "__is_moved_pointer"
       WNE_Pointer_Address,        --  "__pointer_address"
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Init_Allocator,         --  "__new_initialized_allocator"
@@ -390,6 +391,9 @@ package Why.Gen.Names is
       WNE_Pointer_Value_Abstr,    --  "__pointer_value_abstr"
       WNE_Pointer_Open,           --  "__open"
       WNE_Pointer_Close,          --  "__close"
+      WNE_Is_Moved,               --  __is_moved
+      WNE_Move,                   --  __move
+      WNE_Moved_Relation,         --  __moved_relation
 
       --  Names related to initialization checks
       WNE_Init_Value,             --  "rec__value"
@@ -432,6 +436,9 @@ package Why.Gen.Names is
 
    function Is_Null_Append (Base : W_Identifier_Id;
                             Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Is_Moved_Append (Base : W_Identifier_Id;
+                             Typ  : W_Type_Id) return W_Identifier_Id;
 
    function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id;
 

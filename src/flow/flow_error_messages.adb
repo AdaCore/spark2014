@@ -657,12 +657,24 @@ package body Flow_Error_Messages is
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc);
+
       One_Liner : constant String :=
         (if Pretty_Cntexmp.Is_Empty then ""
+
+         --  Do not include a one-liner in the message for memory leak checks,
+         --  as the exact values of variables seldom plays a role in that case.
+         --  Keep the counterexample though as the path is relevant.
+
+         elsif Tag in VC_Memory_Leak
+                    | VC_Memory_Leak_At_End_Of_Scope
+         then ""
+
          else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
+
       Msg3     : constant String :=
         (if One_Liner = "" then Msg2
          else (Msg2 & " (e.g. when " & One_Liner & ")"));
+
       Severity : constant Msg_Severity := Get_Severity (N, Is_Proved, Tag);
       Suppr    : String_Id := No_String;
       Msg_Id   : Message_Id := No_Message_Id;

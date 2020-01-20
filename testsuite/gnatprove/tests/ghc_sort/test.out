@@ -203,6 +203,7 @@ ghc_sort.adb:141:25: warning: "L" is not modified, could be of access constant t
 ghc_sort.adb:149:14: info: postcondition proved (Z3: 2 VC)
 ghc_sort.adb:154:28: info: pointer dereference check proved (Z3: 1 VC)
 ghc_sort.adb:157:12: info: discriminant check proved (Trivial: 1 VC)
+ghc_sort.adb:157:12: medium: memory leak might occur
 ghc_sort.adb:158:14: info: pointer dereference check proved (Z3: 1 VC)
 ghc_sort.adb:158:17: info: overflow check proved (Z3: 1 VC)
 ghc_sort.adb:158:20: info: pointer dereference check proved (Z3: 1 VC)
@@ -219,6 +220,7 @@ ghc_sort.adb:159:10: info: precondition proved (Z3: 2 VC)
 ghc_sort.adb:159:25: info: pointer dereference check proved (Z3: 1 VC)
 ghc_sort.adb:167:28: info: precondition proved (Z3: 1 VC)
 ghc_sort.adb:168:07: info: initialization of "L" proved
+ghc_sort.adb:168:07: medium: memory leak might occur at end of scope
 ghc_sort.adb:174:31: info: overflow check proved (Z3: 1 VC)
 ghc_sort.adb:175:33: info: loop invariant initialization proved (Z3: 1 VC)
 ghc_sort.adb:175:33: info: loop invariant preservation proved (Z3: 1 VC)
@@ -234,6 +236,7 @@ ghc_sort.adb:180:53: info: index check proved (Z3: 2 VC)
 ghc_sort.adb:181:19: info: length check proved (Trivial: 1 VC; Z3: 3 VC)
 ghc_sort.adb:181:22: info: precondition proved (Z3: 1 VC)
 ghc_sort.adb:183:15: info: discriminant check proved (Trivial: 1 VC)
+ghc_sort.adb:183:15: medium: memory leak might occur
 ghc_sort.adb:183:46: info: range check proved (Z3: 1 VC)
 ghc_sort.adb:183:55: info: length check proved (Trivial: 1 VC; Z3: 3 VC)
 ghc_sort.adb:183:55: info: predicate check proved (Z3: 1 VC)

@@ -701,6 +701,16 @@ package body SPARK_Definition is
       -- Local subprograms --
       -----------------------
 
+      procedure Check_Exit_Return_Goto_Placement (N : Node_Id)
+        with Pre => Nkind (N) in N_Exit_Statement
+                               | N_Extended_Return_Statement
+                               | N_Goto_Statement
+                               | N_Simple_Return_Statement;
+      --  Issue an error if an exit, return or goto statement is located inside
+      --  a block statement declaring an object of owning type. This ensures
+      --  that there is no need for special detection of memory leaks on exit
+      --  and return for these variables or constants.
+
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
          Goto_Labels : in out Node_Sets.Set;
@@ -747,6 +757,143 @@ package body SPARK_Definition is
       --  case here.
       --  Why aren't these kind of nodes Indexed_Components instead?
 
+      --------------------------------------
+      -- Check_Exit_Return_Goto_Placement --
+      --------------------------------------
+
+      procedure Check_Exit_Return_Goto_Placement (N : Node_Id) is
+
+         function Check_No_Owning_Decl (Decls : List_Id) return Node_Id;
+         --  Return the first owning declaration in Decls, taking into account
+         --  local packages if any. This function follows the same traversal
+         --  structure as GNAT2Why.Expr.Check_No_Memory_Leaks
+
+         --------------------------
+         -- Check_No_Owning_Decl --
+         --------------------------
+
+         function Check_No_Owning_Decl (Decls : List_Id) return Node_Id is
+            Cur_Decl : Node_Id := First (Decls);
+            Typ      : Entity_Id;
+            Result   : Node_Id;
+
+         begin
+            while Present (Cur_Decl) loop
+               case Nkind (Cur_Decl) is
+
+                  --  Only consider objects in SPARK, so that parts of packages
+                  --  marked SPARK_Mode Off are ignored.
+
+                  when N_Object_Declaration =>
+                     if Entity_In_SPARK (Defining_Identifier (Cur_Decl)) then
+                        Typ := Retysp (Etype (Defining_Identifier (Cur_Decl)));
+
+                        --  Nothing to check on borrow/observe of anonymous
+                        --  access type.
+
+                        if Is_Deep (Typ)
+                          and then not Is_Anonymous_Access_Type (Typ)
+                        then
+                           return Cur_Decl;
+                        end if;
+                     end if;
+
+                     --  Objects in local packages should be deallocated before
+                     --  returning from the enclosing subprogram.
+
+                  when N_Package_Declaration =>
+                     Result :=
+                       Check_No_Owning_Decl (Visible_Declarations (Cur_Decl));
+                     if Present (Result) then
+                        return Result;
+                     end if;
+
+                     Result :=
+                       Check_No_Owning_Decl (Private_Declarations (Cur_Decl));
+                     if Present (Result) then
+                        return Result;
+                     end if;
+
+                  when N_Package_Body =>
+                     Result := Check_No_Owning_Decl (Declarations (Cur_Decl));
+                     if Present (Result) then
+                        return Result;
+                     end if;
+
+                  when others =>
+                     null;
+               end case;
+
+               Next (Cur_Decl);
+            end loop;
+
+            return Empty;
+         end Check_No_Owning_Decl;
+
+         --  Local variables
+
+         P : Node_Id := Parent (N);
+
+      --  Start of processing for Check_Exit_Return_Goto_Placement
+
+      begin
+         loop
+            case Nkind (P) is
+               when N_Block_Statement =>
+                  declare
+                     Decl : constant Node_Id :=
+                       Check_No_Owning_Decl (Declarations (P));
+                  begin
+                     if Present (Decl) then
+                        Error_Msg_Sloc := Sloc (Decl);
+                        Mark_Unsupported
+                          ((case Nkind (N) is
+                              when N_Exit_Statement => "exit",
+                              when N_Goto_Statement => "goto",
+                              when others           => "return")
+                           & " statement in the scope of local owning"
+                           & " declaration #",
+                           N);
+                        return;
+                     end if;
+                  end;
+
+               --  Stop the search when reaching the entry or subprogram body
+
+               when N_Entry_Body
+                  | N_Subprogram_Body
+               =>
+                  return;
+
+               --  Contrary to a return or exit, a goto can be used in a
+               --  a task body or package body. Stop the search when reaching
+               --  that point.
+
+               when N_Package_Body
+                  | N_Task_Body
+               =>
+                  return;
+
+               --  If we reach the loop which is exited, we can stop the search
+               --  here. Declarations in outter scopes won't be affected.
+
+               when N_Loop_Statement =>
+                  if Nkind (N) = N_Exit_Statement
+                    and then
+                      Loop_Entity_Of_Exit_Statement (N)
+                      = Entity (Identifier (P))
+                  then
+                     return;
+                  end if;
+
+               when others =>
+                  null;
+            end case;
+
+            P := Parent (P);
+         end loop;
+      end Check_Exit_Return_Goto_Placement;
+
       ------------------------------------
       -- Check_Loop_Invariant_Placement --
       ------------------------------------
@@ -760,8 +907,8 @@ package body SPARK_Definition is
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
          Goto_Labels : in out Node_Sets.Set;
-         Nested      : Boolean) is
-
+         Nested      : Boolean)
+      is
          use Node_Lists;
 
          Loop_Stmts : constant Node_Lists.List :=
@@ -1253,6 +1400,7 @@ package body SPARK_Definition is
             if Present (Condition (N)) then
                Mark (Condition (N));
             end if;
+            Check_Exit_Return_Goto_Placement (N);
 
          when N_Expanded_Name
             | N_Identifier
@@ -1269,6 +1417,7 @@ package body SPARK_Definition is
 
          when N_Extended_Return_Statement =>
             Mark_Extended_Return_Statement (N);
+            Check_Exit_Return_Goto_Placement (N);
 
          when N_Extension_Aggregate =>
             if not Most_Underlying_Type_In_SPARK (Etype (N)) then
@@ -1604,6 +1753,7 @@ package body SPARK_Definition is
 
          when N_Simple_Return_Statement =>
             Mark_Simple_Return_Statement (N);
+            Check_Exit_Return_Goto_Placement (N);
 
          when N_Selected_Component =>
 

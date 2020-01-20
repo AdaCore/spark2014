@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Common_Containers;      use Common_Containers;
 with Gnat2Why.Util;          use Gnat2Why.Util;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
@@ -63,6 +64,11 @@ package Gnat2Why.Subprograms is
    --  in this package.
 
    Current_Subp : Entity_Id := Empty;
+
+   function Compute_Deep_Outputs (E : Entity_Id) return Entity_Sets.Set
+     with Pre => Ekind (E) in E_Entry | E_Procedure;
+   --  Compute the set of deep outputs for a procedure or entry E, which
+   --  consist in output parameters and globals of mode Output.
 
    procedure Generate_VCs_For_Subprogram
      (File : W_Section_Id;

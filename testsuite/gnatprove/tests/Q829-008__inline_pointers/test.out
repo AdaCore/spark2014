@@ -1,10 +1,15 @@
 update_lists.adb:4:22: warning: unused initial value of "Target"
+update_lists.adb:6:14: medium: memory leak might occur [possible explanation: subprogram at line 4 should mention Target in a precondition]
+update_lists.adb:12:14: info: absence of memory leak proved (CVC4: 1 VC)
+update_lists.adb:15:04: medium: memory leak might occur at end of scope
+update_lists.adb:16:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 update_lists.adb:16:04: info: initialization of "Rover" proved
 update_lists.adb:20:15: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists.adb:24:34: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists.adb:27:25: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists.adb:27:37: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists.adb:31:13: info: initialization of "Next_Rover" proved
+update_lists.adb:31:13: medium: memory leak might occur at end of scope
 update_lists.adb:33:38: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists.adb:36:26: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists.adb:40:28: warning: unused assignment to "Next_Rover"

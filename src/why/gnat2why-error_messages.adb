@@ -258,6 +258,8 @@ package body Gnat2Why.Error_Messages is
                | VC_Initialization_Check
                | VC_UC_No_Holes
                | VC_UC_Same_Size
+               | VC_Memory_Leak
+               | VC_Memory_Leak_At_End_Of_Scope
             =>
                return (OK => False);
          end case;
@@ -645,6 +647,10 @@ package body Gnat2Why.Error_Messages is
             return "pointer dereference check might fail";
          when VC_Null_Exclusion =>
             return "null exclusion check might fail";
+         when VC_Memory_Leak =>
+            return "memory leak might occur";
+         when VC_Memory_Leak_At_End_Of_Scope =>
+            return "memory leak might occur at end of scope";
          when VC_Invariant_Check           =>
             return "invariant check might fail";
          when VC_Invariant_Check_On_Default_Value =>
@@ -985,6 +991,10 @@ package body Gnat2Why.Error_Messages is
             return "pointer dereference check proved";
          when VC_Null_Exclusion =>
             return "null exclusion check proved";
+         when VC_Memory_Leak =>
+            return "absence of memory leak proved";
+         when VC_Memory_Leak_At_End_Of_Scope =>
+            return "absence of memory leak at end of scope proved";
          when VC_Invariant_Check           => return "invariant check proved";
          when VC_Invariant_Check_On_Default_Value =>
             return "invariant check proved on default value";

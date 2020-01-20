@@ -1,4 +1,9 @@
+test.adb:5:09: info: absence of memory leak proved (CVC4: 1 VC)
+test.adb:6:13: info: absence of memory leak proved (CVC4: 1 VC)
+test.adb:10:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+test.adb:11:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test.adb:11:07: info: initialization of "C" proved
+test.adb:13:13: info: absence of memory leak proved (CVC4: 1 VC)
 test.ads:7:20: info: initialization of "C" proved
 test.ads:7:75: info: flow dependencies proved
 test.ads:7:123: info: postcondition proved (CVC4: 1 VC)

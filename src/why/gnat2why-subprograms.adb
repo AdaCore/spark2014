@@ -25,7 +25,6 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Atree;
-with Common_Containers;              use Common_Containers;
 with Debug;
 with Errout;                         use Errout;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
@@ -80,6 +79,38 @@ package body Gnat2Why.Subprograms is
    -- Local Subprograms --
    -----------------------
 
+   function Add_Logic_Binders (E           : Entity_Id;
+                               Raw_Binders : Item_Array) return Item_Array;
+   --  Return Why binders for the parameters and read effects of function E.
+   --  The array is a singleton of unit type if E has no parameters and no
+   --  effects.
+
+   function Assume_Initial_Condition_Of_Withed_Units
+     (Main   : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   with Pre => Ekind (Main) in Subprogram_Kind | E_Package | E_Package_Body
+     and then Is_Compilation_Unit (Main);
+   --  Assume the Initial_Condition of every unit withed by a compilation unit.
+   --  @param Main entity for a compilation unit
+   --  @param Params the transformation parameters
+   --  @result a sequence of assumptions, one for each withed unit which has an
+   --          Initial_Condition.
+
+   function Check_Ceiling_Protocol
+     (Params : Transformation_Params;
+      E      : Entity_Id) return W_Prog_Id
+     with Pre => Ekind (E) in E_Task_Type | E_Entry | E_Function | E_Procedure;
+   --  @param Params the transformation params
+   --  @param E a task type, entry, main-like or protected subprogram entity
+   --  @return an assertion or sequence of assertion that expresses that the
+   --    ceiling protocol is respected in the call graph starting from this
+   --    entity, i.e. that external calls to protected operations are made with
+   --    a priority lower or equal to the priority of the object in question.
+
+   procedure Clear_Exceptions;
+   --  Initialization procedure to call before start of subprogram/package
+   --  handling.
+
    function Compute_Args
      (E       : Entity_Id;
       Binders : Binder_Array) return W_Expr_Array;
@@ -89,18 +120,37 @@ package body Gnat2Why.Subprograms is
    --  Ada entity, because of effects. Note that these effect variables are not
    --  bound here, they refer to the global variables
 
-   procedure Compute_Contract_Cases_Guard_Map
-     (E                  : Entity_Id;
-      Guard_Map          : out Ada_To_Why_Ident.Map;
-      Others_Guard_Ident : out W_Identifier_Id;
-      Others_Guard_Expr  : out W_Expr_Id);
-   --  Returns the map from contracts cases nodes attached to subprogram E,
-   --  if any, to Why identifiers for the value of these guards in the Why3
-   --  program. If the contract cases contain an "others" case, return in
-   --  Others_Guard_Ident an identifier for a Boolean value set to true when
-   --  this case is enabled, and in Others_Guard_Expr the Why3 expression
-   --  to define this identifier. If there is no "others" case, return with
-   --  Others_Guard_Ident set to Why_Empty.
+   function Compute_Attach_Handler_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+     with Pre => Is_Protected_Type (Ty);
+   --  @param Ty a protected type
+   --  @return an assertion (if necessary) that checks if any of the
+   --    Attach_Handler pragmas of the procedures of the type is reserved
+   --    see also Ada RM C.3.1(10/3)
+
+   function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
+                             return Item_Array;
+   --  Return Why binders for the parameters of subprogram E.
+   --  If Domain is EW_Term also generates binders for E's read effects.
+   --  The array is a singleton of unit type if the array is empty.
+
+   function Compute_Binders_For_Effects
+     (E       : Entity_Id;
+      Compute : Boolean) return Item_Array
+   with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
+   --  @param E an enity for a subprogram
+   --  @param Compute True if binders should be created when not in the
+   --    symbol table.
+   --  @result an array containing an Item per global variable read / written
+   --          by E.
+
+   function Compute_Call_Effects
+     (Params : Transformation_Params;
+      E      : Entity_Id)
+      return W_Prog_Id;
+   --  Generate a Why3 program simulating the effects of a call of the
+   --  subprogram.
 
    function Compute_Contract_Cases_Entry_Checks
      (E         : Entity_Id;
@@ -126,12 +176,31 @@ package body Gnat2Why.Subprograms is
    --  the caller can compute the Why expression for these in the pre-state,
    --  and bind them appropriately.
 
+   procedure Compute_Contract_Cases_Guard_Map
+     (E                  : Entity_Id;
+      Guard_Map          : out Ada_To_Why_Ident.Map;
+      Others_Guard_Ident : out W_Identifier_Id;
+      Others_Guard_Expr  : out W_Expr_Id);
+   --  Returns the map from contracts cases nodes attached to subprogram E,
+   --  if any, to Why identifiers for the value of these guards in the Why3
+   --  program. If the contract cases contain an "others" case, return in
+   --  Others_Guard_Ident an identifier for a Boolean value set to true when
+   --  this case is enabled, and in Others_Guard_Expr the Why3 expression
+   --  to define this identifier. If there is no "others" case, return with
+   --  Others_Guard_Ident set to Why_Empty.
+
    function Compute_Contract_Cases_Postcondition
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Pred_Id;
    --  Returns the postcondition corresponding to the Contract_Cases pragma for
    --  subprogram E (if any), to be used in the postcondition of the program
    --  function.
+
+   function Compute_Dynamic_Property_For_Effects
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Pred_Id;
+   --  Returns an assumption including the dynamic property of every object
+   --  modified by a subprogram.
 
    function Compute_Dynamic_Property_For_Inputs
      (E              : Entity_Id;
@@ -152,11 +221,54 @@ package body Gnat2Why.Subprograms is
    --  @result an assumption including the dynamic property of every external
    --     dynamic objects that are referenced in E.
 
-   function Compute_Dynamic_Property_For_Effects
+   function Compute_Effects
+     (E             : Entity_Id;
+      Global_Params : Boolean := False) return W_Effects_Id;
+   --  Compute the effects of the generated Why function. If Global_Params is
+   --  True, then the global version of the parameters is used.
+
+   function Compute_Guard_Formula
+     (Binders : Item_Array;
+      Params  : Transformation_Params) return W_Pred_Id;
+   --  For every object in the binder array, build a predicate for the dynamic
+   --  invariant of the object and join everything together with a conjunction.
+
+   function Compute_Inlined_Expr
+     (Function_Entity    : Entity_Id;
+      Logic_Func_Binders : Item_Array;
+      W_Return_Type      : W_Type_Id;
+      Params             : Transformation_Params) return W_Expr_Id;
+   --  @param Function_Entity entity of a function
+   --  @param Logic_Func_Binders binders for Function_Entity's declaration if
+   --     local names should be used for these binders
+   --  @param W_Return_Type Why3 type for Function_Entity's return type
+   --  @param Params parameters for the translation
+   --  @return if Function_Entity is non recursive and has a pragma Annotate
+   --          (GNATprove, Inline_For_Proof), return the Why3 expression for
+   --          its value. Otherwise return Why_Empty.
+
+   function Compute_Moved_Property_For_Deep_Outputs
      (E      : Entity_Id;
-      Params : Transformation_Params) return W_Pred_Id;
-   --  Returns an assumption including the dynamic property of every object
-   --  modified by a subprogram.
+      Params : Transformation_Params) return W_Prog_Id
+   with
+     Pre => Ekind (E) in
+       E_Procedure | E_Function | E_Package | E_Task_Type | E_Entry;
+   --  Compute the program assuming that deep outputs of E have all pointers
+   --  moved at subprogram entry.
+
+   function Compute_Raw_Binders (E : Entity_Id) return Item_Array;
+   --  Return Why binders for the parameters of subprogram E. The array is
+   --  empty if E has no parameters.
+
+   function Compute_Type_Invariants_For_Package
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Pred_Id
+   with
+     Pre => Ekind (E) = E_Package;
+   --  @param E Entity of a package.
+   --  @param Params the transformation parameters
+   --  @result a predicate including the type invariants that should be checked
+   --          after E's elaboration.
 
    function Compute_Type_Invariants_For_Subprogram
      (E         : Entity_Id;
@@ -175,80 +287,34 @@ package body Gnat2Why.Subprograms is
    --  @result a predicate including the type invariants that should be checked
    --          on entry/exit of E.
 
-   function Compute_Type_Invariants_For_Package
-     (E      : Entity_Id;
-      Params : Transformation_Params) return W_Pred_Id
-   with
-     Pre => Ekind (E) = E_Package;
-   --  @param E Entity of a package.
-   --  @param Params the transformation parameters
-   --  @result a predicate including the type invariants that should be checked
-   --          after E's elaboration.
-
-   function Compute_Effects
-     (E             : Entity_Id;
-      Global_Params : Boolean := False) return W_Effects_Id;
-   --  Compute the effects of the generated Why function. If Global_Params is
-   --  True, then the global version of the parameters is used.
-
-   function Compute_Call_Effects
-     (Params : Transformation_Params;
-      E      : Entity_Id)
-      return W_Prog_Id;
-   --  Generate a Why3 program simulating the effects of a call of the
-   --  subprogram.
-
-   function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
-                             return Item_Array;
-   --  Return Why binders for the parameters of subprogram E.
-   --  If Domain is EW_Term also generates binders for E's read effects.
-   --  The array is a singleton of unit type if the array is empty.
-
-   function Compute_Binders_For_Effects
-     (E       : Entity_Id;
-      Compute : Boolean) return Item_Array
-   with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
-   --  @param E an enity for a subprogram
-   --  @param Compute True if binders should be created when not in the
-   --    symbol table.
-   --  @result an array containing an Item per global variable read / written
-   --          by E.
-
-   function Add_Logic_Binders (E           : Entity_Id;
-                               Raw_Binders : Item_Array) return Item_Array;
-   --  Return Why binders for the parameters and read effects of function E.
-   --  The array is a singleton of unit type if E has no parameters and no
-   --  effects.
-
-   function Assume_Initial_Condition_Of_Withed_Units
-     (Main   : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id
-   with Pre => Ekind (Main) in Subprogram_Kind | E_Package | E_Package_Body
-     and then Is_Compilation_Unit (Main);
-   --  Assume the Initial_Condition of every unit withed by a compilation unit.
-   --  @param Main entity for a compilation unit
-   --  @param Params the transformation parameters
-   --  @result a sequence of assumptions, one for each withed unit which has an
-   --          Initial_Condition.
-
-   function Compute_Raw_Binders (E : Entity_Id) return Item_Array;
-   --  Return Why binders for the parameters of subprogram E. The array is
-   --  empty if E has no parameters.
-
-   function Compute_Guard_Formula
-     (Binders : Item_Array;
-      Params  : Transformation_Params) return W_Pred_Id;
-   --  For every object in the binder array, build a predicate for the dynamic
-   --  invariant of the object and join everything together with a conjunction.
-
-   procedure Clear_Exceptions;
-   --  Initialization procedure to call before start of subprogram/package
-   --  handling.
-
    procedure Declare_Exceptions (File : W_Section_Id);
    --  Declare exceptions needed for translation of the current unit. Those
    --  are introduced when translating loop exit statements and goto
    --  statements.
+
+   procedure Generate_Axiom_For_Post
+     (File : W_Section_Id;
+      E    : Entity_Id);
+   --  @param File section in which the expression should be translated
+   --  @param E entry or subprogram entity
+   --  Generate an axiom stating the postcondition of a subprogram E
+
+   procedure Generate_Dispatch_Compatibility_Axioms
+     (File : W_Section_Id;
+      E    : Entity_Id)
+   with Pre => Is_Visible_Dispatching_Operation (E);
+   --  @param E a dispatching subprogram
+   --  Emit compatibility axioms between the dispatching version of E and each
+   --  visible overriding / inherited versions of E.
+
+   procedure Generate_Subprogram_Program_Fun
+     (File : W_Section_Id;
+      E    : Entity_Id);
+   --  @param File section in which the expression should be translated
+   --  @param E entry or subprogram entity
+   --  Generate a why program function for E. Also generate a program function
+   --  that performs invariant checks for global / parameters of E. It should
+   --  be called before calling E's program function.
 
    function Get_Location_For_Aspect
      (E         : Entity_Id;
@@ -260,62 +326,6 @@ package body Gnat2Why.Subprograms is
                      | Pragma_Contract_Cases;
    --  Return a node with a proper location for the pre- or postcondition of E,
    --  if any.
-
-   procedure Generate_Subprogram_Program_Fun
-     (File : W_Section_Id;
-      E    : Entity_Id);
-   --  @param File section in which the expression should be translated
-   --  @param E entry or subprogram entity
-   --  Generate a why program function for E. Also generate a program function
-   --  that performs invariant checks for global / parameters of E. It should
-   --  be called before calling E's program function.
-
-   procedure Generate_Axiom_For_Post
-     (File : W_Section_Id;
-      E    : Entity_Id);
-   --  @param File section in which the expression should be translated
-   --  @param E entry or subprogram entity
-   --  Generate an axiom stating the postcondition of a subprogram E
-
-   function Check_Ceiling_Protocol
-     (Params : Transformation_Params;
-      E      : Entity_Id) return W_Prog_Id
-     with Pre => Ekind (E) in E_Task_Type | E_Entry | E_Function | E_Procedure;
-   --  @param Params the transformation params
-   --  @param E a task type, entry, main-like or protected subprogram entity
-   --  @return an assertion or sequence of assertion that expresses that the
-   --    ceiling protocol is respected in the call graph starting from this
-   --    entity, i.e. that external calls to protected operations are made with
-   --    a priority lower or equal to the priority of the object in question.
-
-   function Compute_Attach_Handler_Check
-     (Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id
-     with Pre => Is_Protected_Type (Ty);
-   --  @param Ty a protected type
-   --  @return an assertion (if necessary) that checks if any of the
-   --    Attach_Handler pragmas of the procedures of the type is reserved
-   --    see also Ada RM C.3.1(10/3)
-
-   function Compute_Inlined_Expr
-     (Function_Entity    : Entity_Id;
-      Logic_Func_Binders : Item_Array;
-      W_Return_Type      : W_Type_Id;
-      Params             : Transformation_Params) return W_Expr_Id;
-   --  @param Function_Entity entity of a function
-   --  @param Logic_Func_Binders binders for Function_Entity's declaration if
-   --     local names should be used for these binders
-   --  @param W_Return_Type Why3 type for Function_Entity's return type
-   --  @param Params parameters for the translation
-   --  @return if Function_Entity is non recursive and has a pragma Annotate
-   --          (GNATprove, Inline_For_Proof), return the Why3 expression for
-   --          its value. Otherwise return Why_Empty.
-
-   function Number_Of_Func_Args (E : Entity_Id) return Natural is
-     (Natural
-        (List_Length
-              (Parameter_Specifications (Subprogram_Specification (E))))
-       + (if Within_Protected_Type (E) then 1 else 0));
 
    function Include_Non_Local_Type_Inv_For_Subp
      (E : Entity_Id) return W_Term_Id
@@ -330,6 +340,15 @@ package body Gnat2Why.Subprograms is
    --  in the current unit, it is OK, as local subprograms are already not part
    --  of the dynamic invariant).
 
+   function Number_Of_Func_Args (E : Entity_Id) return Natural is
+     (Natural
+        (List_Length
+              (Parameter_Specifications (Subprogram_Specification (E))))
+       + (if Within_Protected_Type (E) then 1 else 0));
+
+   function Procedure_Logic_Binders (E : Entity_Id) return Binder_Array;
+   --  Return binders that should be used for specific_post of a procedure E
+
    function Tag_Binder return Binder_Type is
       (Binder_Type'(Ada_Node => Empty,
                     B_Name   =>
@@ -340,17 +359,6 @@ package body Gnat2Why.Subprograms is
                     Mutable  => False,
                     Labels   => <>));
    --  Binder to be used as additional tag argument for dispatching functions
-
-   function Procedure_Logic_Binders (E : Entity_Id) return Binder_Array;
-   --  Return binders that should be used for specific_post of a procedure E
-
-   procedure Generate_Dispatch_Compatibility_Axioms
-     (File : W_Section_Id;
-      E    : Entity_Id)
-   with Pre => Is_Visible_Dispatching_Operation (E);
-   --  @param E a dispatching subprogram
-   --  Emit compatibility axioms between the dispatching version of E and each
-   --  visible overriding / inherited versions of E.
 
    ----------------------------------------------
    -- Assume_Initial_Condition_Of_Withed_Units --
@@ -802,6 +810,106 @@ package body Gnat2Why.Subprograms is
       return Call_Effects;
    end Compute_Call_Effects;
 
+   --------------------------
+   -- Compute_Deep_Outputs --
+   --------------------------
+
+   function Compute_Deep_Outputs (E : Entity_Id) return Entity_Sets.Set is
+      Outputs : Entity_Sets.Set;
+   begin
+      declare
+         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+      begin
+         Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                         Reads           => Read_Ids,
+                                         Writes          => Write_Ids,
+                                         Erase_Constants => True);
+
+         for Write_Id of Write_Ids loop
+            case Write_Id.Kind is
+               when Direct_Mapping =>
+                  declare
+                     Entity : constant Entity_Id :=
+                       Get_Direct_Mapping_Id (Write_Id);
+                     Typ    : constant Entity_Id := Retysp (Etype (Entity));
+
+                  begin
+                     if not Is_Concurrent_Type (Entity)
+                       and then not Read_Ids.Contains (Write_Id)
+                       and then Is_Deep (Typ)
+                       and then not Is_Anonymous_Access_Type (Typ)
+                     then
+                        Outputs.Insert (Entity);
+                     end if;
+                  end;
+
+               when Magic_String =>
+                  null;
+
+               when others =>
+                  raise Program_Error;
+            end case;
+         end loop;
+      end;
+
+      declare
+         Formal : Entity_Id := First_Formal (E);
+      begin
+         while Present (Formal) loop
+            declare
+               Typ : constant Entity_Id := Retysp (Etype (Formal));
+            begin
+               if Is_Deep (Typ)
+                 and then not Is_Anonymous_Access_Type (Typ)
+                 and then Ekind (Formal) = E_Out_Parameter
+               then
+                  Outputs.Insert (Formal);
+               end if;
+
+               Next_Formal (Formal);
+            end;
+         end loop;
+      end;
+
+      return Outputs;
+   end Compute_Deep_Outputs;
+
+   ---------------------------------------------
+   -- Compute_Moved_Property_For_Deep_Outputs --
+   ---------------------------------------------
+
+   function Compute_Moved_Property_For_Deep_Outputs
+     (E      : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      Assume : W_Prog_Id := +Void;
+   begin
+      if Ekind (E) in E_Function | E_Package | E_Task_Type then
+         return +Void;
+      end if;
+
+      declare
+         Outputs : constant Entity_Sets.Set := Compute_Deep_Outputs (E);
+      begin
+         for Obj of Outputs loop
+            declare
+               Typ : constant Entity_Id := Retysp (Etype (Obj));
+            begin
+               Assume := Sequence (Assume,
+                 New_Assume_Statement (Pred =>
+                   Compute_Is_Moved_Property
+                     (+Transform_Identifier (Params => Params,
+                                             Expr   => Obj,
+                                             Ent    => Obj,
+                                             Domain => EW_Term), Typ)));
+            end;
+         end loop;
+      end;
+
+      return Assume;
+   end Compute_Moved_Property_For_Deep_Outputs;
+
    -----------------------------------------
    -- Compute_Dynamic_Property_For_Inputs --
    -----------------------------------------
@@ -1015,53 +1123,6 @@ package body Gnat2Why.Subprograms is
       Write_Ids : Flow_Types.Flow_Id_Sets.Set;
       Eff       : constant W_Effects_Id := New_Effects;
 
-      generic
-         with procedure Effects_Append
-           (Id : W_Effects_Id; New_Item : W_Identifier_Id);
-      procedure Effects_Append_Binder (Binder : Item_Type);
-      --  Append to effects Eff the variable associated with an item
-      --  @param Binder variable to add to Eff
-
-      ---------------------------
-      -- Effects_Append_Binder --
-      ---------------------------
-
-      procedure Effects_Append_Binder (Binder : Item_Type)  is
-      begin
-         case Binder.Kind is
-            when Regular
-               | Concurrent_Self
-            =>
-               if Binder.Main.Mutable then
-                  Effects_Append (Eff, Binder.Main.B_Name);
-               end if;
-
-            when UCArray =>
-               Effects_Append (Eff, Binder.Content.B_Name);
-
-            when Pointer =>
-               if Binder.Mutable then
-                  Effects_Append (Eff, Binder.Value.B_Name);
-                  Effects_Append (Eff, Binder.Is_Null);
-                  Effects_Append (Eff, Binder.Address);
-               elsif Binder.Value.Mutable then
-                  Effects_Append (Eff, Binder.Value.B_Name);
-               end if;
-
-            when DRecord =>
-               if Binder.Fields.Present then
-                  Effects_Append (Eff, Binder.Fields.Binder.B_Name);
-               end if;
-               if Binder.Discrs.Present
-                 and then Binder.Discrs.Binder.Mutable
-               then
-                  Effects_Append (Eff, Binder.Discrs.Binder.B_Name);
-               end if;
-
-            when Func => raise Program_Error;
-         end case;
-      end Effects_Append_Binder;
-
       procedure Effects_Append_Binder_To_Reads is
          new Effects_Append_Binder (Effects_Append_To_Reads);
 
@@ -1090,7 +1151,7 @@ package body Gnat2Why.Subprograms is
 
                   if not Is_Concurrent_Type (Entity) then
                      Effects_Append_Binder_To_Writes
-                       (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
+                       (Eff, Ada_Ent_To_Why.Element (Symbol_Table, Entity));
 
                      if Is_Local_Borrower (Entity) then
                         Effects_Append_To_Writes (Eff, Get_Pledge_Id (Entity));
@@ -1123,7 +1184,7 @@ package body Gnat2Why.Subprograms is
                     Ada_Ent_To_Why.Element
                       (Symbol_Table, Formal);
                begin
-                  Effects_Append_Binder_To_Writes (B);
+                  Effects_Append_Binder_To_Writes (Eff, B);
                end;
                Next_Formal (Formal);
             end loop;
@@ -1133,7 +1194,7 @@ package body Gnat2Why.Subprograms is
             Binders : constant Item_Array := Compute_Raw_Binders (E);
          begin
             for B of Binders loop
-               Effects_Append_Binder_To_Writes (B);
+               Effects_Append_Binder_To_Writes (Eff, B);
             end loop;
          end;
       end if;
@@ -1157,7 +1218,7 @@ package body Gnat2Why.Subprograms is
 
                   if not Is_Concurrent_Type (Entity) then
                      Effects_Append_Binder_To_Reads
-                       (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
+                       (Eff, Ada_Ent_To_Why.Element (Symbol_Table, Entity));
                   end if;
                end;
 
@@ -3033,6 +3094,10 @@ package body Gnat2Why.Subprograms is
       --  Also assume the type invariants of global inputs of E and of global
       --  parameters if E is a boundary subprogram.
 
+      function Assume_For_Output return W_Prog_Id;
+      --  Generate assumptions for deep outputs, that all pointers are moved at
+      --  subprogram entry.
+
       function Comp_Decl_At_Subp_Start return W_Prog_Id;
       --  The body of the subprogram may contain declarations that are in fact
       --  essential to prove absence of RTE in the pre, e.g. compiler-generated
@@ -3146,6 +3211,31 @@ package body Gnat2Why.Subprograms is
                      For_Input => True,
                      Params    => Params))));
       end Assume_For_Input;
+
+      -----------------------
+      -- Assume_For_Output --
+      -----------------------
+
+      function Assume_For_Output return W_Prog_Id is
+         Params : constant Transformation_Params :=
+           (File        => File,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => GM_None,
+            Ref_Allowed => True,
+            Old_Policy  => Use_Map);
+      begin
+         if Ekind (E) = E_Procedure and then Null_Present (E) then
+            return +Void;
+         end if;
+         return
+           Sequence
+             ((1 => New_Comment
+               (Comment => NID ("Assume moved pointers in outputs of the"
+                & " subprogram"
+                & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                   else ""))),
+               2 => Compute_Moved_Property_For_Deep_Outputs (E, Params)));
+      end Assume_For_Output;
 
       -----------------------------
       -- Assume_Or_Assert_Of_Pre --
@@ -3911,7 +4001,9 @@ package body Gnat2Why.Subprograms is
                     (Pre_Prags, "checking of pragma precondition"),
              2 => Why_Body,
              3 => Havoc_Borrowed_Expressions (Borrowers),
-             4 => Transform_All_Pragmas
+             4 => Check_No_Memory_Leaks_At_End_Of_Scope
+                    (Declarations (Body_N)),
+             5 => Transform_All_Pragmas
                     (Post_Prags, "checking of pragma postcondition")));
 
          Why_Body := Checking_Of_Refined_Post (Why_Body);
@@ -4007,6 +4099,7 @@ package body Gnat2Why.Subprograms is
 
          Prog := Sequence
            ((Assume_For_Input,
+             Assume_For_Output,
              Comp_Decl_At_Subp_Start,
              RTE_Of_Pre,
              Warn_Pre,

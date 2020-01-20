@@ -726,8 +726,13 @@ package SPARK_Util is
    --  Return whether Choices is a singleton choice
 
    function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean;
-   --  @param N any node
-   --  @return True iff N is a call to a traversal function
+   --  @param Expr any node
+   --  @return True iff Expr is a call to a traversal function
+
+   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id
+     with Pre => Nkind (N) = N_Exit_Statement;
+   --  Return the Defining_Identifier of the loop that belongs to an exit
+   --  statement.
 
    function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
    --  @param N any node
@@ -770,6 +775,9 @@ package SPARK_Util is
    --  Given a list of statements and declarations Stmts, returns the flattened
    --  list that includes these statements and declarations, and recursively
    --  all inner declarations and statements that appear in block statements.
+   --  Block statements are kept to mark the end of the corresponding scope,
+   --  in order to apply some treatments at the end of local scopes, like
+   --  checking the absence of memory leaks at the end of scope.
 
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element

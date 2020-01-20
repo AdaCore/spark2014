@@ -91,6 +91,8 @@ package Why.Gen.Binders is
       end case;
    end record;
 
+   --  An item is like a generalized binder. It is used to represent the
+   --  mapping (Ada object -> Why variables) which is not always 1 to 1.
    type Item_Type (Kind : Item_Enum := Regular) is record
       Local : Boolean;
       --  True if the names of constant parts of the binder are local objects
@@ -100,44 +102,57 @@ package Why.Gen.Binders is
       --  Optional init flag for types which have Init_By_Proof
 
       case Kind is
-         when Regular | Concurrent_Self =>
+         --  Common case where mapping from Ada object to Why object is 1 to 1
+
+         when Regular
+
+         --  Case corresponding to the "self" object used in task types,
+         --  protected subprograms and entries, which can be seen as "0 to 1"
+         --  mapping. See also the general description of protected types in
+         --  gnat2why.
+
+            | Concurrent_Self
+         =>
             Main      : Binder_Type;
+
+         --  Case of unconstrained arrays, where extra objects are created to
+         --  represent the bounds.
+
          when UCArray =>
             Content   : Binder_Type;
             Dim       : Positive;
             Bounds    : Array_Bounds;
+
+         --  Case of pointers, with disjoint parts for their value, address,
+         --  is_null and is_moved components, as well as a Mutable boolean
+         --  registering whether the pointer itself is mutable.
+
          when Pointer =>
             Value     : Binder_Type;
             Address   : W_Identifier_Id;
             Is_Null   : W_Identifier_Id;
+            Is_Moved  : W_Identifier_Id;
             Mutable   : Boolean;
+
+         --  Case of records where we can have up to four objects, a set of
+         --  fields, a set of discriminants, a 'Constrained attribute, and a
+         --  'Tag attribute.
+
          when DRecord =>
             Typ       : Entity_Id;
             Fields    : Opt_Binder;
             Discrs    : Opt_Binder;
             Constr    : Opt_Id;
             Tag       : Opt_Id;
+
+         --  Case of functions where we need different translations when used
+         --  in programs or in assertions.
+
          when Func    =>
             For_Logic : Binder_Type;
             For_Prog  : Binder_Type;
       end case;
    end record;
-   --  An item is like a generalized binder. It is used to represent the
-   --  mapping
-   --    Ada object  -> Why variables
-   --  which is not always 1 to 1. In the common case where it is 1 to 1, the
-   --  Kind "Regular" is used. We have four other cases for now: unconstrained
-   --  arrays, where extra objects are created to represent the bounds,
-   --  functions where we need different translations when used in programs or
-   --  in assertions, pointers, with disjoint parts for their value, address,
-   --  and is_null components, as well as a Mutable boolean registering whether
-   --  the pointer itself is mutable, and records where we can have up to four
-   --  objects, a set of fields, a set of discriminants, a 'Constrained
-   --  attribute, and a 'Tag attribute.
-   --  The 'Concurrent_Self' case corresponds to the "self" object used in
-   --  task types, protected subprograms and entries, and can be seen as "0
-   --  to 1" mapping. See also the general description of protected types in
-   --  gnat2why.
 
    type Item_Array is array (Positive range <>) of Item_Type;
 
@@ -402,5 +417,12 @@ package Why.Gen.Binders is
    --  @param Ref_Allowed whether variables should be dereferenced
    --  @result An array of W_Expr_Ids used to represent the variable parts
    --  of these variables in Why.
+
+   generic
+      with procedure Effects_Append
+        (Id : W_Effects_Id; New_Item : W_Identifier_Id);
+   procedure Effects_Append_Binder (Eff : W_Effects_Id; Binder : Item_Type);
+   --  Append to effects Eff the variable associated with an item
+   --  @param Binder variable to add to Eff
 
 end Why.Gen.Binders;

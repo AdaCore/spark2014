@@ -491,6 +491,14 @@ package body Gnat2Why.Decls is
                      Return_Type => Get_Typ (Var.Is_Null)));
             end if;
 
+            Emit
+              (File,
+               New_Global_Ref_Declaration
+                 (Name     => To_Local (Var.Is_Moved),
+                  Location => Safe_First_Sloc (E),
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Ref_Type => Get_Typ (Var.Is_Moved)));
+
          when Regular =>
             begin
                --  Currently only generate values for scalar variables in

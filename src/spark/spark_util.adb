@@ -1340,6 +1340,14 @@ package body SPARK_Util is
                        Get_Flat_Statement_And_Declaration_List
                          (Statements (Handled_Statement_Sequence (Cur_Stmt))));
 
+               --  Append the block statement itself as a marker for the end
+               --  of the corresponding scope. These statements should be
+               --  handled specially by every caller of this function, as they
+               --  duplicate the flattened statements. In the simplest case
+               --  they should just be ignored.
+
+               Flat_Stmts.Append (Cur_Stmt);
+
             when others =>
                Flat_Stmts.Append (Cur_Stmt);
          end case;
@@ -2535,6 +2543,32 @@ package body SPARK_Util is
         and then Present (Get_Called_Entity (Expr))
         and then Is_Traversal_Function (Get_Called_Entity (Expr));
    end Is_Traversal_Function_Call;
+
+   -----------------------------------
+   -- Loop_Entity_Of_Exit_Statement --
+   -----------------------------------
+
+   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id is
+      function Is_Loop_Statement (N : Node_Id) return Boolean is
+        (Nkind (N) = N_Loop_Statement);
+      --  Returns True if N is a loop statement
+
+      function Innermost_Loop_Stmt is new
+        First_Parent_With_Property (Is_Loop_Statement);
+   begin
+      --  If the name is directly in the given node, return that name
+
+      if Present (Name (N)) then
+         return Entity (Name (N));
+
+      --  Otherwise the exit statement belongs to the innermost loop, so
+      --  simply go upwards (follow parent nodes) until we encounter the
+      --  loop.
+
+      else
+         return Entity (Identifier (Innermost_Loop_Stmt (N)));
+      end if;
+   end Loop_Entity_Of_Exit_Statement;
 
    -------------------------------
    -- May_Issue_Warning_On_Node --
