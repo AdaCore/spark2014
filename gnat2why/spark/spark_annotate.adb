@@ -126,13 +126,6 @@ package body SPARK_Annotate is
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
-      List            : List_Id);
-   --  Same as above, but compute the node range from a list of nodes
-
-   procedure Insert_Annotate_Range
-     (Prgma           : Node_Id;
-      Kind            : Annotate_Kind;
-      Pattern, Reason : String_Id;
       First, Last     : Source_Ptr);
    --  Same as above, but take the node range in argument
 
@@ -737,22 +730,17 @@ package body SPARK_Annotate is
          return;
       end if;
 
-      --  The following if-block achieves two things:
-      --  - it avoids a call to Sloc_Range with a N_Subprogram_Body node, which
-      --    doesn't work;
-      --  - includes the spec node in the range to be considered for subprogram
-      --    bodies.
+      --  In the case of a pragma on the body, we also need to include the spec
+      --  node.
 
       if Nkind (Range_Node) = N_Subprogram_Body
         and then Present (Corresponding_Spec (Range_Node))
       then
          Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
                                 Specification (Range_Node), Whole => True);
-         Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
-                                Handled_Statement_Sequence (Range_Node),
-                                Whole => True);
-         Insert_Annotate_Range (Prgma, Kind, Pattern, Reason,
-                                Declarations (Range_Node));
+         Sloc_Range (Range_Node, Left_Sloc, Right_Sloc);
+         Insert_Annotate_Range
+           (Prgma, Kind, Pattern, Reason, Left_Sloc, Right_Sloc);
          declare
             Spec_Node : constant Node_Id :=
               Parent (Parent (Corresponding_Spec (Range_Node)));
@@ -801,23 +789,6 @@ package body SPARK_Annotate is
                       Prgma   => Prgma));
 
       pragma Assert (Annot_Range_Sorting.Is_Sorted (Annotations));
-   end Insert_Annotate_Range;
-
-   procedure Insert_Annotate_Range
-     (Prgma           : Node_Id;
-      Kind            : Annotate_Kind;
-      Pattern, Reason : String_Id;
-      List            : List_Id)
-   is
-      First_Sloc, Last_Sloc, Tmp : Source_Ptr;
-   begin
-      if No (List) then
-         return;
-      end if;
-      Sloc_Range (First (List), First_Sloc, Tmp);
-      Sloc_Range (Last (List), Tmp, Last_Sloc);
-      Insert_Annotate_Range
-        (Prgma, Kind, Pattern, Reason, First_Sloc, Last_Sloc);
    end Insert_Annotate_Range;
 
    ----------------------
