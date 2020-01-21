@@ -395,7 +395,8 @@ project (such as unit names and subprogram names). By default, these
 directories are stored in the ``gnatprove`` subdirectory of the object
 directory of the project. If the ``Proof_Dir`` attribute is set in the
 :ref:`Project Attributes`, the session directories will be stored in a
-``sessions`` subdirectory of this directory.
+``sessions`` subdirectory of this directory. To generate session files,
+|GNATprove| should be run without the ``--replay`` option.
 
 To share the session files, we recommend adding the ``why3session.xml`` files
 to version control. Note that the session directories may contain other files
