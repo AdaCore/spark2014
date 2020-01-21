@@ -1,0 +1,34 @@
+=========== prove file =============
+pack-p.adb:7:19: info: precondition proved (Trivial: 1 VC)
+pack-p.adb:9:19: info: assertion proved (CVC4: 1 VC)
+pack-p.adb:10:11: info: overflow check proved (CVC4: 1 VC)
+pack-p.adb:11:19: info: assertion proved (CVC4: 1 VC)
+pack-p.adb:12:11: info: overflow check proved (CVC4: 1 VC)
+pack-p.adb:13:19: info: assertion proved (CVC4: 1 VC)
+pack.adb:3:04: warning: analyzing unreferenced procedure "Q"
+pack.adb:3:14: warning: subprogram "Q" has no effect
+pack.adb:8:22: info: precondition proved (Trivial: 1 VC)
+pack.adb:10:22: info: assertion proved (CVC4: 1 VC)
+pack.adb:11:14: info: overflow check proved (CVC4: 1 VC)
+pack.adb:12:22: info: assertion proved (CVC4: 1 VC)
+pack.adb:13:14: info: overflow check proved (CVC4: 1 VC)
+pack.adb:14:22: info: assertion proved (CVC4: 1 VC)
+pack.ads:3:14: warning: subprogram "P" has no effect
+=========== prove subprogram =============
+pack-p.adb:7:19: info: precondition proved (Trivial: 1 VC)
+pack-p.adb:9:19: info: assertion proved (CVC4: 1 VC)
+pack-p.adb:10:11: info: overflow check proved (CVC4: 1 VC)
+pack-p.adb:11:19: info: assertion proved (CVC4: 1 VC)
+pack-p.adb:12:11: info: overflow check proved (CVC4: 1 VC)
+pack-p.adb:13:19: info: assertion proved (CVC4: 1 VC)
+pack.ads:3:14: warning: subprogram "P" has no effect
+=========== prove line =============
+pack-p.adb:13:19: info: assertion proved (CVC4: 1 VC)
+pack.adb:3:04: warning: analyzing unreferenced procedure "Q"
+=========== prove check =============
+pack-p.adb:13:19: info: assertion proved (CVC4: 1 VC)
+pack.adb:3:04: warning: analyzing unreferenced procedure "Q"
+=========== prove region =============
+pack-p.adb:12:11: info: overflow check proved (CVC4: 1 VC)
+pack-p.adb:13:19: info: assertion proved (CVC4: 1 VC)
+pack.adb:3:04: warning: analyzing unreferenced procedure "Q"
