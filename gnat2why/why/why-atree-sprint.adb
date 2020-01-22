@@ -26,11 +26,9 @@
 with Ada.Containers;        use Ada.Containers;
 with Ada.Direct_IO;
 with Ada.Directories;
-with Ada.Strings.Unbounded;
 with Errout;                use Errout;
 with Eval_Fat;
 with Common_Containers;     use Common_Containers;
-with GNAT.Regpat;
 with GNAT.OS_Lib;           use GNAT.OS_Lib;
 with Gnat2Why_Args;
 with Namet;                 use Namet;
@@ -600,24 +598,9 @@ package body Why.Atree.Sprint is
    ------------------------------
 
    procedure Print_Custom_Declaration (Node : W_Custom_Declaration_Id) is
-      use GNAT.Regpat;
 
       function Get_Whole_File return String;
       --  Return whole contents of file associated with Node
-
-      function Get_Regexp return String;
-      --  Return the regexp that should be used to match the content of the
-      --  file associated with Node. If the substitution associated with Node
-      --  is : ((From => F1, To => T1), ..., (From => Fn, To => Tn)),
-      --  return F1 & '|' & ... & '|' & Fn.
-
-      procedure Apply_Subst (Text : String; Matches : Match_Array);
-      --  Output the correct replacement for the match Matches in Text. If the
-      --  substitution associated with Node is : ((From => F1, To => T1), ...,
-      --  (From => Fn, To => Tn)), then try to match the substring of Text
-      --  corresponding to Matches with F1, ... and then Fn. If a match is
-      --  found with Fi then output Ti.
-      --  Should be called on the result of a match with Get_Regexp.
 
       function Locate_File return String;
       --  Return name of file associated with Node
@@ -724,96 +707,9 @@ package body Why.Atree.Sprint is
          end;
       end Get_Whole_File;
 
-      ----------------
-      -- Get_Regexp --
-      ----------------
-
-      function Get_Regexp return String is
-         use Ada.Strings.Unbounded;
-         use Why_Node_Lists;
-
-         Nodes    : constant List := Get_List (+Get_Subst (Node));
-         Position : Cursor := First (Nodes);
-         Result   : Unbounded_String := Null_Unbounded_String;
-
-      begin
-         while Position /= No_Element loop
-            declare
-               Node : constant W_Custom_Substitution_Id :=
-                 W_Custom_Substitution_Id (Element (Position));
-            begin
-               Append (Result, Img (Get_From (Node)));
-            end;
-
-            Position := Next (Position);
-
-            if Position /= No_Element then
-               Append (Result, "|");
-            end if;
-         end loop;
-
-         return To_String (Result);
-      end Get_Regexp;
-
-      -----------------
-      -- Apply_Subst --
-      -----------------
-
-      procedure Apply_Subst (Text : String; Matches : Match_Array) is
-         use Why_Node_Lists;
-
-         Nodes    : constant List := Get_List (+Get_Subst (Node));
-         Position : Cursor := First (Nodes);
-         Interm_Matches : Match_Array (0 .. 0);
-
-      begin
-         while Position /= No_Element loop
-            declare
-               Node : constant W_Custom_Substitution_Id :=
-                 W_Custom_Substitution_Id (Element (Position));
-            begin
-               Match (Compile (Img (Get_From (Node))), Text,
-                      Interm_Matches, Matches (0).First);
-
-               if Interm_Matches (0) /= No_Match
-                 and then Interm_Matches (0).Last = Matches (0).Last
-               then
-                  Print_Node (+Get_To (Node));
-                  return;
-               end if;
-            end;
-
-            Next (Position);
-         end loop;
-
-         raise Program_Error;
-      end Apply_Subst;
-
-      Text : constant String := Get_Whole_File;
-
    begin
       NL (O);
-
-      if Why_Node_Lists.Is_Empty (Get_List (+Get_Subst (Node))) then
-         P (O, Text);
-      else
-         declare
-            Regexp  : constant Pattern_Matcher := Compile (Get_Regexp);
-            Matches : Match_Array (0 .. 0);
-            Current : Natural := Text'First;
-         begin
-            loop
-               Match (Regexp, Text, Matches, Current);
-               exit when Matches (0) = No_Match;
-               P (O, Text (Current .. Matches (0).First - 1));
-               Apply_Subst (Text, Matches);
-               Current := Matches (0).Last + 1;
-            end loop;
-
-            P (O, Text (Current .. Text'Last));
-         end;
-      end if;
-
+      P (O, Get_Whole_File);
       NL (O);
    end Print_Custom_Declaration;
 

@@ -736,9 +736,6 @@ package body Xtree_Sinfo is
       New_Field (W_Custom_Declaration,
                  "File_Name", "Symbol");
 
-      New_Field (W_Custom_Declaration,
-                 "Subst", "W_Custom_Substitution", Id_Set);
-
    end Build_AST;
 
 end Xtree_Sinfo;
