@@ -3,30 +3,19 @@
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{multirow}
 \usepackage{listings}
-\newcommand{\CodeSymbol}[1]{\textcolor{Bittersweet}{#1}}
+\newcommand{\CodeSymbol}[1]{#1}
+\renewcommand{\ttdefault}{pcr}
 \lstset{
    language=Ada,
-   keywordstyle=\color{RedViolet}\textbf,
    showspaces=false,
    basicstyle={\ttfamily\scriptsize},
-   commentstyle=\color{red}\textit,
-   stringstyle=\color{MidnightBlue},
+   commentstyle=\textit,
+   keywordstyle=\textbf,
    string=[b]",  % remove ' from string delimiter as it interfers with attributes
    showtabs=false,
    keepspaces=true,
    showstringspaces=false,
-   morekeywords=[1]Pre,
-   morekeywords=[1]Post,
-   morekeywords=[1]Test\_Case,
-   morekeywords=[1]Contract\_Cases,
    morekeywords=[1]some,
-   morekeywords=[1]Old,
-   morekeywords=[1]Global,
-   morekeywords=[1]Depends,
-   morekeywords=[1]Loop\_Invariant,
-   morekeywords=[1]Loop\_Variant,
-   morekeywords=[1]Loop\_Entry,
-   morekeywords=[1]Increases,
    literate={(}{{\CodeSymbol{(}}}1
             {)}{{\CodeSymbol{)}}}1
             {>}{{\CodeSymbol{$>$}}}1
@@ -73,10 +62,10 @@ SPARK is both a deductive verification tool for the Ada language and the subset 
 %
 %
 \section{Introduction}
-The programming language SPARK has been designed to be amenable to formal verification, and one of the most impactful design choices was the exclusion of aliasing. While this choice vastly simplified the tool design and improved the expected proof performance, it also meant that pointers, as a major source of aliasing, were excluded from the language. While SPARK over the years had seen the addition of many language features, adding pointers just seemed impossible without violating the non-aliasing property. % The workaround was to replace pointers by indices into arrays - we developed some non-trivial examples using this approach, including an implementation of red-black trees~\cite{dross2017auto}.
+The programming language SPARK~\cite{spark} has been designed to be amenable to formal verification, and one of the most impactful design choices was the exclusion of aliasing. While this choice vastly simplified the tool design and improved the expected proof performance, it also meant that pointers, as a major source of aliasing, were excluded from the language. While SPARK over the years had seen the addition of many language features, adding pointers just seemed impossible without violating the non-aliasing property. % The workaround was to replace pointers by indices into arrays - we developed some non-trivial examples using this approach, including an implementation of red-black trees~\cite{dross2017auto}.
 Then came Rust~\cite{rust} democratizing a type system based on ownership~\cite{clarke1998ownership}. %Finally there seemed to be a way to add pointers to the language in a way that would still exclude aliasing. Simplifying and adapting the rules to fit to SPARK were hard work, but in the end it worked out.
 Taking inspiration from it, it was possible to add pointers to the language in a way that still excludes aliasing.
-We will give an overview over the rules in this paper.
+We will give an overview of the rules in this paper.
 
 However, it was unclear if programs traversing recursive data structures such as lists and trees %, which are after all one of the main use cases for pointers,
 could be supported in this setting. In particular, iteration using a loop requires an alias between the traversed structure and the iterator.
@@ -84,8 +73,8 @@ could be supported in this setting. In particular, iteration using a loop requir
 In this paper, we detail an approach, inspired by recent work by Astrauskas et al.~\cite{astrauskas2019leveraging}, that enables proofs about recursive pointer-based data structures in SPARK. We have implemented this approach in the industrial formal verification tool SPARK, and, using this tool, developed a number of examples. Some important restrictions remain - we will also discuss them in this paper.
 
 %\subsection{Ada and SPARK}
-Ada is a general-purpose procedural programming language. %, which has been developed in the 70ies for the US Department of Defence, and was standardised first in 1983. Since then, the language has continued to evolve via the major revisions Ada 95, 2005 and 2012, and a new standard is expected in the next few years.
-The design of the Ada language puts great emphasis on the safety and correctness of the program. This objective is realized by using a readable (if verbose) syntax that uses keywords instead of symbols where reasonable. The type system %, while not as expressive as more modern type systems such as Haskell,
+Ada~\cite{ada} is a general-purpose procedural programming language. %, which has been developed in the 70ies for the US Department of Defence, and was standardised first in 1983. Since then, the language has continued to evolve via the major revisions Ada 95, 2005 and 2012, and a new standard is expected in the next few years.
+The design of the Ada language puts great emphasis on the safety and correctness of the program. This objective is realized by using a readable syntax that uses keywords instead of symbols where reasonable. The type system %, while not as expressive as more modern type systems such as Haskell,
 is strong and strict % It is also quite rich, in particular allowing the definition of user-defined numerical ranges, array sizes and so on.
 and many potential violations of type constraints can be detected statically by the compiler. If not, a run-time check is inserted into the program, to guarantee the detection of incorrect situations. %If a performance impact is feared, the runtime checks can also be disabled.
 \begin{lstlisting}
@@ -165,7 +154,7 @@ The basis of the ownership policy of SPARK is the move semantics of assignments.
 %\begin{lstlisting}
 %Y : Int_Acc := X; -- Y is an alias of X, modifying Y.all also impacts X.all
 %\end{lstlisting}
-To alleviate this problem, when an object containing a pointer is assigned, the memory region designated by the pointer is said to be \emph{moved}. The source of the assignment loses the ownership of the designated data while the target of the assignment gains it. The tool makes sure that the designated data is not accessed again through the source of the assignment.
+To alleviate this problem, when an object containing a pointer is assigned, the memory region designated by the pointer is said to be \emph{moved}. The source of the assignment loses the ownership of the designated data while the target of the assignment gains it. The ownership system makes sure that the designated data is not accessed again through the source of the assignment.
 \begin{lstlisting}
 Y : Int_Acc := X;   -- Ownership of the data designated by X is moved to Y
 Y.all := Y.all + 1; -- The data can be read and modified through Y
@@ -180,7 +169,7 @@ Z := X.all;         -- Illegal: Reading or modifying X.all is not allowed
 %\subsection{Proof Support}
 As the ownership policy ensures that no aliasing can occur between access objects, it is possible to reason about the program almost as if the pointer was replaced by the data it points to. When an object containing a pointer is assigned to another variable, it is safe to consider that the designated data is copied by the assignment. Indeed, any effects that could occur because variables are sharing a substructure cannot be observed because of the ownership rules.
 
-Pointers are handled in SPARK as \emph{maybe}, or \emph{option} types: access objects are either null, or they contain a value. In addition, access objects also contain an address, which can be used to handle comparison (two pointers may not be equal even if the values they designate are equal). When a pointer is dereferenced, a verification condition is generated to make sure that the pointer is not null, so that its value can be accessed.
+Pointers are handled in the verification model of the SPARK proof tool as \emph{maybe}, or \emph{option} types: access objects are either null, or they contain a value. In addition, access objects also contain an address, which can be used to handle comparison (two pointers may not be equal even if the values they designate are equal). When a pointer is dereferenced, a verification condition is generated to make sure that the pointer is not null, so that its value can be accessed.
 \begin{lstlisting}
 X : Int_Acc;          --  X is null
 X := new Integer'(3); --  X has a value which is 3
@@ -196,7 +185,7 @@ Note that the ownership policy is key for this translation to be correct, as it 
 % \end{lstlisting}
 \section{Recursive Data Structures}
 %\subsection{Recursive Data Structures in Ada}
-In Ada, it is not possible to declare a recursive data structure directly. Recursivity can only be introduced through pointers. The idea is to first declare a type, but without giving its definition. This declaration, called an \emph{incomplete declaration}, introduces a place-holder for the type, which can only be used in restricted circumstances. In particular, this place-holder can be used to declare an access type designating pointers to values of this type. %To allocate such an object, we will need to wait until after the incomplete declaration is completed by a type definition.
+In Ada, recursivity can only be introduced through pointers. The idea is to first declare a type, but without giving its definition. This declaration, called an \emph{incomplete declaration}, introduces a place-holder for the type, which can only be used in restricted circumstances. In particular, this place-holder can be used to declare an access type designating pointers to values of this type. %To allocate such an object, we will need to wait until after the incomplete declaration is completed by a type definition.
 Using this mechanism, it is possible to declare a recursive data structure, since the access type can be used in the type definition as it comes afterward.
 \begin{lstlisting}
 type List_Cell;
@@ -255,7 +244,7 @@ To traverse recursive data structures, a move is not what we want. Here we need 
 \section{Borrowing Ownership}
 %\subsection{Local Borrowers}
 
-As Ada is an imperative language, losing the possibility to traverse a linked data structure using a loop was deemed too restrictive. To alleviate this problem, a notion of ownership borrowing was introduced in SPARK. It allows the users to declare a variable, called a borrower, which is initialized with a reference to a part of an existing data structure. To state that this initialization should not be considered a move, an \emph{anonymous access type} is used for the borrower. During the scope of the borrower, the borrowed part of the underlying structure is frozen, meaning that it is illegal to both read and modify it. %, like if it was moved, but also that we cannot make it designate something else.
+As Ada is an imperative language, losing the possibility to traverse a linked data structure using a loop was deemed too restrictive. To alleviate this problem, a notion of ownership borrowing was introduced in SPARK. It allows the users to declare a variable, called a borrower, which is initialized with a reference to a part of an existing data structure. To state that this initialization should not be considered a move, an \emph{anonymous access type} is used for the borrower\footnote{A type is said to be anonymous if it does not have a previous declaration. Here \texttt{access List\_Cell} is anonymous while \texttt{List} is named.}. During the scope of the borrower, the borrowed part of the underlying structure is frozen, meaning that it is illegal to both read and modify it. %, like if it was moved, but also that we cannot make it designate something else.
 Once the borrower has gone out of scope, the ownership automatically returns to the borrowed object, so that it is again fully accessible.
 \begin{lstlisting}
 X := ...;                      --  X is initialized to the list {1,2,3,4}
@@ -366,8 +355,8 @@ SPARK performs deductive verification, which relies on user-specified invariants
 %\subsection{Introduction to Pledges}
 As part of their work on the Prusti proof tool for Rust, Astrauskas et al. found the need for a similar annotation that they call \emph{pledges}~\cite{astrauskas2019leveraging}. In Rust, a pledge is an assertion associated with a borrower which is guaranteed to hold at the time when the borrow expires, no matter what may happen in between. In SPARK, a property guaranteed to hold at the end of the borrow must be a consequence of the borrow relation, since the borrow relation is the most precise relation which does not depend on the actual value of the borrower. Therefore, the user-visible notion of a pledge is suitable to approximate the internally computed borrow relation. Similar to user-provided postconditions, which must be implied by the strongest postcondition computed by a verifying tool, the user-provided pledge should follow from the borrow relation.
 
-Since the Ada language has no support for pledges, we have resorted in SPARK to introducing special functions (dedicated to each access type) called pledge functions, which mark expressions which should be considered as pledge expressions by the tool. A pledge function is a ghost function (meaning that it is not allowed to have any effect on the output of the program) which has two parameters. The first one is used to identify the borrower on which the pledge should apply, while the second holds the assertion.
-Note that a call to a pledge function isn't really a call for the SPARK analyzer. It is simply a marker that the expression in argument is a pledge. As assertions in SPARK are executable, we need to give an implementation to the pledge function: the function simply returns its second parameter.
+Since the Ada syntax has no support for pledges, we have resorted in SPARK to introducing special functions (dedicated to each access type) called pledge functions, which mark expressions which should be considered as pledge expressions by the tool. A pledge function is a \emph{ghost} function (meaning that it is not allowed to have any effect on the output of the program) which has two parameters. The first one is used to identify the borrower on which the pledge should apply, while the second holds the assertion.
+Note that a call to a pledge function isn't really a call for the SPARK analyzer. It is simply a marker that the expression in argument is a pledge. %As assertions in SPARK are executable, we need to give an implementation to the pledge function: the function simply returns its second parameter.
 \begin{lstlisting}
 function Pledge
   (L : access constant Cell; --  The borrower to which the pledge applies
@@ -443,7 +432,7 @@ We could not try the tool on any pre-existing benchmark since SPARK codebases do
 The public testsuite of SPARK contains more than 150 tests mentioning access types, be they supported cases or not.
 
 %\subsection{Description of the Examples}
-To assess expressivity and provability on programs dealing with recursive data structures, we have written 6 examples, none of them very big, but ranging over various levels of complexity.
+To assess expressivity and provability on programs dealing with recursive data structures, we have written 6 examples, none of them very big, but ranging over various levels of complexity\footnote{https://github.com/AdaCore/spark2014/tree/master/papers/Pledge2020/examples}.
 %
 % In addition to the running example \emph{set all to zero}, we have a second program, \emph{linear search}, featuring linked lists of integers. Another two work on linked lists. \emph{Pointer based maps} defines a map as a list of pairs of a key and an element. \emph{Route shift} is the translation of the running example used by Astrauskas et all in their article~\cite{astrauskas2019leveraging}. It represents a route as a list of points with two coordinates. The last two examples feature binary trees, search trees for \emph{binary search}, and self balancing search trees for \emph{red black trees}.
 %
@@ -548,7 +537,7 @@ In particular, it uses the standard SPARK expressions, with no mentions of memor
 % As far as provability is concerned, we found that the underlying complexity of the recursive data structures was relatively well handled by the provers. The recursive definitions of specification functions were sometimes causing loss in efficiency due to unnecessary unfolding, especially when complex proofs where required, like in \emph{red black trees}. To alleviate this problem, we resorted to isolating the proofs of complex properties inside lemmas so that the definition of recursive predicates would not be pulled. On average, we found that the tool needed little additional user guidance even on rather complex properties, like on binary search, where only two additional assertions are required to prove \texttt{Insert}. The amount of user annotations necessary to prove \emph{red black trees} may look frightening, but it needs to be balanced with the inherent complexity of the algorithm. As a comparison, the proof of the pointer free version attempted previously in SPARK was 2115 lines of code with 22\% of contracts and 64\% of ghost code.
 
 \section{Related Work}
-Because in mainstream languages like C or Java the concept of pointer or reference is more central, other program verification tools generally support aliasing. They deal with it by modeling the heap. The WP plugin of Frama-C uses by default a \emph{typed memory model} where different arrays are used for the basic types of C~\cite{kirchner2015frama}. The VerCors~\cite{blom2017vercors} toolset handles high-level programming languages, such as Java, by extending the annotation language with separation logic with permission~\cite{reynolds2002separation}. In SPARK we have chosen a different approach, as we avoid modeling the heap completely by using ownership rules to enforce non-aliasing.
+Program verification tools for mainstream languages such as C or Java generally support aliasing, because the concept of pointer or reference is more central. They deal with it by modeling the heap. The WP plugin of Frama-C uses by default a \emph{typed memory model} where different arrays are used for the basic types of C~\cite{kirchner2015frama}. The VerCors~\cite{blom2017vercors} toolset handles high-level programming languages, such as Java, by extending the annotation language with separation logic with permission~\cite{reynolds2002separation}. In SPARK we have chosen a different approach, as we avoid modeling the heap completely by using ownership rules to enforce non-aliasing.
 
 The ownership rules introduced in SPARK are largely inspired by the Rust language~\cite{rust}. The differences are mostly motivated by the need to comply with the preexisting Ada semantics of pointers. In addition, SPARK was aiming at coming up with a subset as easy to verify as possible. The resulting model is simpler, in particular, it does not make lifetime of borrowers explicit, and aliases created through borrows are always statically known. %Just like the ownership checking of Rust can be by-passed by using unsafe features of the language, it is possible to use full Ada to work-around SPARK restrictions. It has been done for example in containers libraries.
 
@@ -557,7 +546,7 @@ So even if the input Rust program does not contain annotations related to the me
 
 %Rust paper: https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/311092/paper.pdf?sequence=21&isAllowed=y
 \section{Conclusion}
-We have presented a recent extension of the SPARK language and toolset to support pointers. It is based on an ownership policy enforcing non-aliasing. To support pointer based recursive data structures, a restricted form of aliasing is introduced in SPARK through local borrowers, which can be used to iterate through a linked data structure in an imperative way. We have described how local borrowers can be supported by the verification tool without introducing a memory model by using a mutable predicate, named the borrow relation. This borrow relation can be described when necessary using special annotations named pledges, which solely consist of SPARK standard expressions, and do not expose the underlying verification technique. Our work is available in the 20.1 release of SPARK Pro and will be part of the next community release.
+We have presented a recent extension of the SPARK language and toolset to support pointers. It is based on an ownership policy enforcing non-aliasing. To support pointer-based recursive data structures, a restricted form of aliasing is introduced in SPARK through local borrowers, which can be used to iterate through a linked data structure in an imperative way. We have described how local borrowers can be supported by the verification tool, without introducing a memory model, by using a mutable predicate named the borrow relation. This borrow relation can be described when necessary using special annotations named pledges, which solely consist of SPARK standard expressions, and do not expose the underlying verification technique. Our work is available in the 20.1 release of SPARK Pro and will be part of the next community release.
 
 As for future work, we would like to extend the subset of Ada pointers supported in SPARK. In particular, we would like to introduce function pointers to model callbacks, pointers to constants with a more permissive ownership policy, and local borrowing of objects allocated on the stack.
 
@@ -571,6 +560,10 @@ As for future work, we would like to extend the subset of Ada pointers supported
 % \bibliography{mybibliography}
 %
 \begin{thebibliography}{8}
+\bibitem{spark}
+McCormick, J. W., Chapin, P. C.: Building high integrity applications with SPARK. Cambridge University Press (2015)
+\bibitem{ada}
+Barnes, J.: Programming in Ada 2012. Cambridge University Press (2014)
 \bibitem{clarke1998ownership}
 Clarke, D.G., Potter, J.M., Noble, J.: Ownership types for flexible alias protection. In: ACM SIGPLAN Notices Vol. 33, No. 10, pp. 48-64 (1998)
 \bibitem{rust}
@@ -583,13 +576,13 @@ rust-lang.org/1.8.0/book/references-and-borrowing.html (2019)
 \bibitem{blom2017vercors}
 Blom, S., Darabi, S., Huisman, M., Oortwijn., W.: The VerCors Tool Set: Verification of Parallel and Concurrent Software. In:  International Conference on Integrated Formal Methods, Vol. 10510. Springer, 102 - 110 (2017)
 \bibitem{astrauskas2019leveraging}
-  Astrauskas, V., M\"uller, P., Poli, F., Summers, A. J.: Leveraging rust types for modular specification and verification.
+  Astrauskas, V., M{\"u}ller, P., Poli, F., Summers, A. J.: Leveraging rust types for modular specification and verification.
   In: Proceedings of the ACM on Programming Languages 3 (OOPSLA):147:1-147:30 (2019)
 \bibitem{dross2017auto}
   Dross, C. Moy, Y.: Auto-active proof of red-black trees in SPARK.
   In: NASA Formal Methods Symposium: 68--83 (2017)
 \bibitem{muller2016viper}
-Müller, P., Schwerhoff, M., Summers, A. J.: Viper: A verification infrastructure for permission-based reasoning. In: International Conference on Verification, Model Checking, and Abstract Interpretation, 41-62, Springer (2016)
+M{\"u}ller, P., Schwerhoff, M., Summers, A. J.: Viper: A verification infrastructure for permission-based reasoning. In: International Conference on Verification, Model Checking, and Abstract Interpretation, 41-62, Springer (2016)
 % \bibitem{smans2009implicit}
 % Smans, J., Jacobs, B., Piessens, F.: Implicit dynamic frames: Combining dynamic frames and separation logic. In: European Conference on Object-Oriented Programming, 148-172, Springer (2009)
 \bibitem{reynolds2002separation}
