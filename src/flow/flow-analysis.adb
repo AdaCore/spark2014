@@ -4964,40 +4964,92 @@ package body Flow.Analysis is
       Volatile_Effect_Found    : Boolean := False;
       Volatile_Effect_Expected : Boolean;
 
-      procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set);
-      --  Emits a high check for every volatile variable found in FS.
-      --  @param FS is the Flow_Ids set that will be checked for volatiles
+      procedure Report_Erroneous_Volatility;
+      --  Emits a high check for every volatile variable found in a
+      --  nonvolatile function.
 
-      -----------------------------
-      -- Check_Set_For_Volatiles --
-      -----------------------------
+      ---------------------------------
+      -- Report_Erroneous_Volatility --
+      ---------------------------------
 
-      procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set) is
+      procedure Report_Erroneous_Volatility is
+         Unused_Projected, Abstract_States : Flow_Id_Sets.Set;
       begin
-         for F of FS loop
-            if Is_Volatile (F) then
+         --  Issue error if dealing with nonvolatile function; SPARK RM
+         --  7.1.3(8).
+         --  There are two cases to consider:
+         --  1) the function uses volatile variables, and
+         --  2) the function accesses state which may be externally modified.
 
-               --  We just found a volatile effect
+         for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            --  Note that it is not useful to emit errors for the the 'Final
+            --  globals associated with the function specification.
+            if FA.CFG.Get_Key (V).Variant /= Final_Value then
+               declare
+                  Atr : V_Attributes renames FA.Atr (V);
+               begin
+                  for Var of To_Entire_Variables (Atr.Variables_Used) loop
 
-               Volatile_Effect_Found := True;
+                     --  Any Synthetic_Null_Export global is treated as
+                     --  volatile; having one generated against the function
+                     --  is not in and of itself cause for a flow error
+                     if Synthetic (Var) then
+                        null;
 
-               --  Issue error if dealing with nonvolatile function; SPARK RM
-               --  7.1.3(8).
+                     --  Case 1: Volatile variables
+                     elsif Is_Volatile (Var) then
+                        pragma Assert (Present (Atr.Error_Location));
+                        Error_Msg_Flow
+                           (FA       => FA,
+                            Msg      =>
+                               "volatile variable & cannot act as global " &
+                               "item of nonvolatile function &",
+                            N        => Atr.Error_Location,
+                            F1       => Var,
+                            F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                            Severity => Error_Kind,
+                            Tag      =>
+                               Non_Volatile_Function_With_Volatile_Effects,
+                            Vertex   => V);
 
-               if not Volatile_Effect_Expected then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "& cannot act as global item of " &
-                                 "nonvolatile function &",
-                     Severity => Error_Kind,
-                     N        => FA.Spec_Entity,
-                     F1       => F,
-                     F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                     Tag      => Non_Volatile_Function_With_Volatile_Effects);
-               end if;
+                     --  Case 2: We up-project the variable to determine if
+                     --  it is a constituent of abstract state; such state
+                     --  is provided by the output Partial of procedure
+                     --  Up_Project.
+                     else
+                        Up_Project (Vars      => Flow_Id_Sets.To_Set (Var),
+                                    Scope     => FA.S_Scope,
+                                    Projected => Unused_Projected,
+                                    Partial   => Abstract_States);
+
+                        if not Abstract_States.Is_Empty
+                           and then Is_Volatile (Abstract_States
+                                                 (Abstract_States.First))
+                        then
+                           Error_Msg_Flow
+                              (FA       => FA,
+                               Msg      =>
+                                  "external state abstraction & " &
+                                  "of variable & cannot act as global item " &
+                                  "of nonvolatile function & ",
+                               N        => Atr.Error_Location,
+                               F1       =>
+                                  Abstract_States (Abstract_States.First),
+                               F2       => Var,
+                               F3       => Direct_Mapping_Id
+                                  (FA.Spec_Entity),
+                               Severity => Error_Kind,
+                               Tag      =>
+                                  Non_Volatile_Function_With_Volatile_Effects,
+                               Vertex   => V);
+                        end if;
+                     end if;
+                  end loop;
+               end;
             end if;
          end loop;
-      end Check_Set_For_Volatiles;
+
+      end Report_Erroneous_Volatility;
 
    --  Start of processing for Check_Function_For_Volatile_Effects
 
@@ -5027,35 +5079,41 @@ package body Flow.Analysis is
                       Classwide  => False,
                       Globals    => Globals);
 
-         --  Check globals for volatiles and emit messages if needed. Sets
-         --  Proof_Ins and Reads are disjoint, so it is more efficient to
-         --  process them separately instead of computing union; Writes of a
+         --  Check globals for volatiles. Sets Proof_Ins and Inputs are
+         --  disjoint, so it is more efficient to process them separately
+         --  instead of computing their union. The global Outputs of a
          --  function, after sanity checks, are known to be empty.
 
-         Check_Set_For_Volatiles (Globals.Proof_Ins);
-         Check_Set_For_Volatiles (Globals.Inputs);
+         --  The function is volatile if its parameters are of a volatile type
+
+         Volatile_Effect_Found :=
+            (for some F of Globals.Proof_Ins => Is_Volatile (F))
+            or else (for some F of Globals.Inputs => Is_Volatile (F))
+            or else (for some F of Get_Explicit_Formals (FA.Spec_Entity)
+                       => Is_Effectively_Volatile (Etype (F)));
+
          pragma Assert (Globals.Outputs.Is_Empty);
       end;
 
-      --  The function is volatile if its parameters are of a volatile type
+      --  Emit messages about nonvolatile functions with volatile effects
+      if not Volatile_Effect_Expected
+         and then Volatile_Effect_Found
+      then
+         Report_Erroneous_Volatility;
+      end if;
 
-      Volatile_Effect_Found :=
-        Volatile_Effect_Found
-        or else (for some F of Get_Explicit_Formals (FA.Spec_Entity)
-                 => Is_Effectively_Volatile (Etype (F)));
-
-      --  Warn about volatile function without volatile effects
+      --  Emit messages about volatile function without volatile effects
 
       if Volatile_Effect_Expected
-        and then not Volatile_Effect_Found
+         and then not Volatile_Effect_Found
       then
          Error_Msg_Flow
-           (FA       => FA,
-            Msg      => "volatile function & has no volatile effects",
-            Severity => Warning_Kind,
-            N        => FA.Spec_Entity,
-            F1       => Direct_Mapping_Id (FA.Spec_Entity),
-            Tag      => Volatile_Function_Without_Volatile_Effects);
+            (FA       => FA,
+             Msg      => "volatile function & has no volatile effects",
+             Severity => Warning_Kind,
+             N        => FA.Spec_Entity,
+             F1       => Direct_Mapping_Id (FA.Spec_Entity),
+             Tag      => Volatile_Function_Without_Volatile_Effects);
       end if;
    end Check_Function_For_Volatile_Effects;
 

@@ -1,6 +1,6 @@
 other.ads:2:24: info: initialization of "X" proved
 p.adb:6:07: info: initialization of "Tmp" proved
+p.adb:8:12: volatile variable "other.hidden" cannot act as global item of nonvolatile function "Fun"
 p.adb:13:07: info: initialization of "Tmp" proved
-p.ads:2:13: "other.hidden" cannot act as global item of nonvolatile function "Fun"
-p.ads:4:13: "Other2.State" cannot act as global item of nonvolatile function "Fun2"
+p.adb:15:13: volatile variable "Other2.State" cannot act as global item of nonvolatile function "Fun2"
 gnatprove: error during flow analysis and proof
