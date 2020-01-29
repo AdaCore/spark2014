@@ -76,7 +76,8 @@ package body SPARK_Rewrite is
    with Pre => Nkind (N) in N_Subprogram_Instantiation;
    --  Replace names in instances of generic subprograms with names of
    --  the original subprograms; we prefer the original names when outputting
-   --  error messages and generating Why code.
+   --  error messages and generating Why code. Also, decorate instances of
+   --  Ada.Unchecked_Deallocation.
 
    procedure Rewrite_Wrapper_Package (N : Node_Id)
    with Pre => Nkind (N) = N_Package_Declaration;
@@ -272,25 +273,20 @@ package body SPARK_Rewrite is
 
    procedure Rewrite_Subprogram_Instantiation (N : Node_Id) is
 
-      Orig_Name_Id : constant Name_Id := Chars (Defining_Unit_Name (N));
-      --  ??? how about homonyms?
-
-      Wrapper_Package : constant Entity_Id :=
-        Defining_Entity (Instance_Spec (N));
-
-      pragma Assert (Is_Wrapper_Package (Wrapper_Package));
-
-      function Wrapped_Instance return Entity_Id
-      with Post => Ekind (Wrapped_Instance'Result) in E_Function | E_Procedure;
+      function Wrapped_Instance (Wrapper_Package : Entity_Id) return Entity_Id
+      with Pre  => Is_Wrapper_Package (Wrapper_Package),
+           Post => Ekind (Wrapped_Instance'Result) in E_Function | E_Procedure;
       --  Returns entity of the wrapped instance
 
       ----------------------
       -- Wrapped_Instance --
       ----------------------
 
-      function Wrapped_Instance return Entity_Id is
+      function Wrapped_Instance
+        (Wrapper_Package : Entity_Id)
+         return Entity_Id
+      is
          E : Entity_Id;
-
       begin
          --  The first/next entity chain of a generic subprogram instance
          --  contains all generic formal parameters, followed by the
@@ -304,9 +300,6 @@ package body SPARK_Rewrite is
             if Ekind (E) in E_Function | E_Procedure
               and then not Is_Generic_Actual_Subprogram (E)
             then
-               if Is_Unchecked_Deallocation_Instance (E) then
-                  Decorate_Unchecked_Deallocation (E);
-               end if;
                return E;
             end if;
 
@@ -314,10 +307,25 @@ package body SPARK_Rewrite is
          end loop;
       end Wrapped_Instance;
 
+      --  Local variables
+
+      Wrapper_Package : constant Entity_Id :=
+        Defining_Entity (Instance_Spec (N));
+
+      Subprogram_Instance : constant Entity_Id :=
+        Wrapped_Instance (Wrapper_Package);
+
+      Orig_Name_Id : constant Name_Id := Chars (Defining_Unit_Name (N));
+      --  ??? how about homonyms?
+
    --  Start of processing for Rewrite_Subprogram_Instantiation
 
    begin
-      Set_Chars (Wrapped_Instance, Orig_Name_Id);
+      Set_Chars (Subprogram_Instance, Orig_Name_Id);
+
+      if Is_Unchecked_Deallocation_Instance (Subprogram_Instance) then
+         Decorate_Unchecked_Deallocation (Subprogram_Instance);
+      end if;
    end Rewrite_Subprogram_Instantiation;
 
    -----------------------------
