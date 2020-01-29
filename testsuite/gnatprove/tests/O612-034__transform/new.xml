@@ -4,7 +4,7 @@
 <why3session shape_version="4">
 <prover id="0" name="CVC4_CE" version="1.5" timelimit="1" memlimit="0"/>
 <prover id="1" name="CVC4" version="1.5" timelimit="1" memlimit="0"/>
-<file name="../test.mlw" expanded="true">
+<file name="../test.gnat-json" expanded="true">
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Standard__short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">

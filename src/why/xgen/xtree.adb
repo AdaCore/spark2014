@@ -35,6 +35,7 @@ with Xtree_Mutators;        use Xtree_Mutators;
 with Xtree_Traversal;       use Xtree_Traversal;
 with Xtree_Checks;          use Xtree_Checks;
 with Xtree_Children_Checks; use Xtree_Children_Checks;
+with Xtree_Why_AST;         use Xtree_Why_AST;
 with Templates;             use Templates;
 
 procedure Xtree is
@@ -116,4 +117,20 @@ begin
 
    Process ("why-kind_validity.ads");
    Process ("why-atree-validity.ads");
+
+   Add ("Declare_OCaml_Why_Sinfo_Types", Print_OCaml_Why_Sinfo_Types'Access);
+   Add ("Declare_OCaml_Why_Node_Type",  Print_OCaml_Why_Node_Type'Access);
+   Add ("Declare_OCaml_Opaque_Ids", Print_OCaml_Opaque_Ids'Access);
+   Add ("Declare_OCaml_Tags", Print_OCaml_Tags'Access);
+   Add ("Declare_OCaml_Coercions", Print_OCaml_Coercions'Access);
+   Add ("Declare_OCaml_Why_Node_From_Json",
+        Print_OCaml_Why_Node_From_Json'Access);
+   Add ("Declare_OCaml_Why_Sinfo_Types_From_Json",
+        Print_OCaml_Why_Sinfo_Types_From_Json'Access);
+   Add ("Declare_OCaml_Opaque_Ids_From_Json",
+        Print_OCaml_Opaque_Ids_From_Json'Access);
+   Process ("gnat_ast.ml");
+
+   Add ("Declare_Ada_To_Json", Print_Ada_To_Json'Access);
+   Process ("why-atree-to_json.adb");
 end Xtree;

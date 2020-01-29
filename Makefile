@@ -131,6 +131,7 @@ gnat2why:
 	# (gnat2why-nightly)
 	python scripts/why3keywords.py why3/src/parser/lexer.mll src/why/why-keywords.adb
 	$(MAKE) -C gnat2why
+	$(CP) ./src/why/xgen/gnat_ast.ml why3/src/gnat/
 
 coverage:
 	$(MAKE) -C gnat2why AUTOMATED=1 coverage

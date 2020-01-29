@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                     W H Y - A T R E E - S P R I N T                      --
+--                        X T R E E _ W H Y _ A S T                         --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,30 +23,52 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Outputs;          use Outputs;
-with Why.Atree.Tables; use Why.Atree.Tables;
-with Gnat2Why.Util;    use Gnat2Why.Util;
+--  This package provides procedures that generate the following code to
+--  interface Gnat with Why3:
+--
+--    1. Ada functions to convert the Xtree Gnat AST to a Json value
+--       (procedures Print_Ada_To_Json)
+--
+--    2. OCaml type definition corresponding to the Xtree Gnat AST as a
+--       algebraic datatype
+--       (procedures Print_OCaml_*_Type(s))
+--
+--    3. OCaml functions to convert a Json value to an OCaml Gnat AST
+--       (procedures Print_OCaml_*_From_Json)
+--
+--   The code always deals separately with the enumeration Why_Node, the
+--   opaque identifiers, and the enumerations from Why.Sinfo.
+--
+--   A module in gnatwhy3 converts the AST to the original Why3 AST from
+--   Ptree.
+--
+--      Ada Gnat AST ->(1.) Json ->(3.) OCaml Gnat AST(2.) -> Why3 Ast
+--      ^^^^^^ gnat2why ^^^^^ | ^^^^^^^^^^^^^^ gnat2why ^^^^^^^^^^^^^^
+--
+--  This approach assures that changes in either the Gnat AST or the Why3 Ast
 
-package Why.Atree.Sprint is
+with Outputs;      use Outputs;
+with Xkind_Tables; use Xkind_Tables;
+with Why.Sinfo;    use Why.Sinfo;
 
-   --  This package provides ways to print source code from the abstract
-   --  syntax tree.
+package Xtree_Why_AST is
 
-   procedure Sprint_Why_Node
-     (Node : Why_Node_Id; To : Output_Id := Stdout) with
-     Pre => (Get_Kind (Node) /= W_Unused_At_Start);
-   --  Generate why code for Node and send it to Output_Id.
+   procedure Print_Ada_To_Json (O : in out Output_Record);
 
-   procedure Print_Section
-     (WF : Why_Section; To : Output_Id := Stdout);
+   procedure Print_OCaml_Why_Sinfo_Types (O : in out Output_Record);
 
-   procedure Print_Modules_List
-     (L : Why_Node_Lists.List; To : Output_Id);
-   --  Print a list of modules
+   procedure Print_OCaml_Why_Node_Type (O : in out Output_Record);
 
-   procedure wpg (Node : Why_Node_Id);
-   pragma Export (Ada, wpg);
-   --  Print generated source for argument Node. Intended only for use
-   --  from gdb for debugging purposes.
+   procedure Print_OCaml_Opaque_Ids (O : in out Output_Record);
 
-end Why.Atree.Sprint;
+   procedure Print_OCaml_Tags (O : in out Output_Record);
+
+   procedure Print_OCaml_Why_Node_From_Json (O : in out Output_Record);
+
+   procedure Print_OCaml_Why_Sinfo_Types_From_Json (O : in out Output_Record);
+
+   procedure Print_OCaml_Opaque_Ids_From_Json (O : in out Output_Record);
+
+   procedure Print_OCaml_Coercions (O : in out Output_Record);
+
+end Xtree_Why_AST;
