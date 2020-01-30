@@ -1,2 +1,3 @@
 32bits DEAD too slow on 32bits machines
 inverse-prover DEAD duplicate messages (see P720-001)
+!large SKIP part of large testsuite
