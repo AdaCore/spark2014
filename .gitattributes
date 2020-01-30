@@ -13,13 +13,6 @@ docs/case_study/*/*/*/* no-precommit-check
 docs/case_study/*/*/*/*/* no-precommit-check
 docs/flow/*/* no-precommit-check
 docs/flow/*/*/* no-precommit-check
-papers/proof_and_test/Code/* no-precommit-check
-papers/proof_and_test/Code/*/* no-precommit-check
-papers/proof_and_test/Code/*/*/* no-precommit-check
-papers/*/* no-precommit-check
-papers/*/*/* no-precommit-check
-papers/*/*/*/* no-precommit-check
-papers/*/*/*/*/* no-precommit-check
 libs/containers/ada/*/*/* no-precommit-check
 libs/containers/ada/*/* no-precommit-check
 libs/containers/ada/* no-precommit-check
@@ -42,8 +35,6 @@ docs/ug/* no-precommit-check
 docs/guidance/* no-precommit-check
 docs/booklet/* no-precommit-check
 trace_units_script/* no-precommit-check
-slides/*/* no-precommit-check
-slides/*/*/* no-precommit-check
 include/*.adb no-precommit-check
 
 *.ads diff=ada

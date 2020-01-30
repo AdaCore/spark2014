@@ -1,4 +1,0 @@
-void TB_Set_Off_Button_SC (
-   const bool                            Button_Enabled,
-   const HMI_Types__Background_Colour_T  Background_Colour,
-         HMI_Types__Status_T*            Error);

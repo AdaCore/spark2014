@@ -1,2 +1,0 @@
-   pragma Assume (Cnt < Integer'Last, "system is rebooted every day");
-   Cnt := Cnt + 1;

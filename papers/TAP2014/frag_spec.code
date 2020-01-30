@@ -1,5 +1,0 @@
-procedure Set_Off_Button
-   (Button_Enabled    : Boolean;
-    Background_Colour : Background_Colour_T);
---# global in out Shutdown.Error_Flag;
---#        in out Shutdown.Do_Shutdown_SO;
