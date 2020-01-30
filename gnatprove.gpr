@@ -4,7 +4,7 @@ with "gpr";
 project GNATprove is
 
    for Object_Dir use "obj";
-   for Exec_Dir use "../install/bin";
+   for Exec_Dir use "install/bin";
 
    for Languages use ("Ada", "C");
 
@@ -13,9 +13,9 @@ project GNATprove is
    Build : Build_Type := External ("Build", "Debug");
 
    Target := project'Target;
-   Sources := (".", "..", "../common");
+   Sources := (".", "gnatprove", "src/common");
 
-   Sources := Sources & ("../common/" & Target);
+   Sources := Sources & ("src/common/" & Target);
 
    for Source_Dirs use Sources;
 

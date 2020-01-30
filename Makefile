@@ -157,14 +157,14 @@ coverage-report:
 
 codepeer-run:
 	$(MAKE) --no-print-directory -C gnat2why codepeer-run
-	$(MAKE) --no-print-directory -C gnatprove codepeer-run
+	$(MAKE) --no-print-directory -f Makefile.gnatprove codepeer-run
 
 codepeer: codepeer-run
 	mkdir -p out
 	codepeer --version | tee out/version.out
 	@echo "version:XFAIL:always fails" > out/results
 	@$(MAKE) --no-print-directory -C gnat2why codepeer 2>&1 | tee out/codepeer.out
-	@$(MAKE) --no-print-directory -C gnatprove codepeer 2>&1 | tee --append out/codepeer.out
+	@$(MAKE) --no-print-directory -f Makefile.gnatprove codepeer 2>&1 | tee --append out/codepeer.out
 	@if [ -s out/codepeer.out ]; then \
 	  echo "codepeer:FAILED:unexpected messages" >> out/results; \
 	else \
@@ -172,10 +172,10 @@ codepeer: codepeer-run
 	fi
 
 gnatprove:
-	$(MAKE) -C gnatprove build
+	$(MAKE) -f Makefile.gnatprove build
 
 gnatprove-nightly:
-	$(MAKE) -C gnatprove build PROD=$(PROD)
+	$(MAKE) -f Makefile.gnatprove build PROD=$(PROD)
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
@@ -193,7 +193,7 @@ install-examples:
 
 clean:
 	$(MAKE) -C gnat2why clean
-	$(MAKE) -C gnatprove clean
+	$(MAKE) -f Makefile.gnatprove clean
 	$(MAKE) -C docs/ug clean
 	$(MAKE) -C docs/lrm clean
 	$(MAKE) -C why3 clean
