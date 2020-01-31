@@ -46,7 +46,7 @@ setup_precheck:
 	fi
 
 setup: setup_precheck
-	$(MAKE) -C why/xgen
+	$(MAKE) -C ../src/why/xgen
 	mkdir -p obj obj-tools ../install/bin
 	sed -e "s^@ADAINCLUDE@^$(adainclude)^" \
 	    -e "s^@ADALIB@^$(adalib)^" \
@@ -92,5 +92,5 @@ codepeer:
 force:
 
 clean:
-	$(MAKE) -C why/xgen clean
+	$(MAKE) -C ../src/why/xgen clean
 	-$(RM) obj obj-tools
