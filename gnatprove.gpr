@@ -13,7 +13,7 @@ project GNATprove is
    Build : Build_Type := External ("Build", "Debug");
 
    Target := project'Target;
-   Sources := (".", "gnatprove", "src/common");
+   Sources := (".", "src/gnatprove", "src/common");
 
    Sources := Sources & ("src/common/" & Target);
 
