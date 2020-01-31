@@ -4125,13 +4125,13 @@ package body Gnat2Why.Expr is
                   Expr   => +F_Expr,
                   To     => Type_Of_Node (F_Ty)),
                Right  => New_Tag_Update
-                 (Domain    => EW_Term,
-                  Name      => Transform_Expr
+                 (Domain => EW_Term,
+                  Name   => Transform_Expr
                     (Expr          => Expression (Enclosing_Declaration (E)),
                      Expected_Type => Type_Of_Node (F_Ty),
                      Domain        => EW_Term,
                      Params        => Params),
-                  Ty        => F_Ty),
+                  Ty     => F_Ty),
                Domain => EW_Pred);
 
             --  otherwise, use its Field's Etype default value.
@@ -13657,7 +13657,7 @@ package body Gnat2Why.Expr is
 
                      if Ekind (Ent) in E_Record_Type | E_Record_Subtype then
                         declare
-                           Typ  : Node_Id;
+                           Typ : Node_Id;
                         begin
                            for Comp of Get_Component_Set (Ent) loop
                               if Ekind (Comp) = E_Component
