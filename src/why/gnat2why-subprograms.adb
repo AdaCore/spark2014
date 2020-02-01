@@ -2952,7 +2952,7 @@ package body Gnat2Why.Subprograms is
          --  values.
 
          declare
-            Checks  : W_Prog_Id := +Void;
+            Checks  : W_Statement_Sequence_Id := Void_Sequence;
             F_Check : W_Prog_Id;
          begin
             for Field of Get_Component_Set (E) loop
@@ -2978,15 +2978,15 @@ package body Gnat2Why.Subprograms is
                   end if;
 
                   if F_Check /= +Void then
-                     Checks := Sequence
-                       (Left  => Checks,
-                        Right => New_Ignore
+                     Sequence_Append
+                       (Checks,
+                        New_Ignore
                           (Ada_Node => Etype (Field),
                            Prog     => F_Check));
                   end if;
                end if;
             end loop;
-            Why_Body := Sequence (Why_Body, Checks);
+            Why_Body := Sequence (Why_Body, +Checks);
          end;
 
          Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);

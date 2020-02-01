@@ -1,1 +1,1 @@
-ALL XFAIL stack overflow on too many protected components (T203-002)
+!large SKIP part of large testsuite
