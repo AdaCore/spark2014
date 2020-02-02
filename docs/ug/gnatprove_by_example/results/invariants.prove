@@ -15,7 +15,7 @@ invariants.adb:43:07: info: precondition proved
 invariants.adb:51:07: info: invariant check proved
 invariants.adb:51:07: info: precondition proved
 invariants.ads:1:09: info: invariant check proved
-invariants.ads:13:14: medium: invariant check might fail
+invariants.ads:13:14: info: invariant check proved
 invariants.ads:14:13: info: invariant check proved
 invariants.ads:16:14: info: invariant check proved
 invariants.ads:17:13: info: invariant check proved
