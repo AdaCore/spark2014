@@ -144,16 +144,16 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.35" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="193"/></proof>
+  <proof prover="0"><result status="valid" steps="415"/></proof>
   </goal>
   <goal name="def&#39;vc.36" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="46"/></proof>
+  <proof prover="0"><result status="valid" steps="128"/></proof>
   </goal>
   <goal name="def&#39;vc.37" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="201"/></proof>
+  <proof prover="0"><result status="valid" steps="409"/></proof>
   </goal>
   <goal name="def&#39;vc.38" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="86"/></proof>
+  <proof prover="0"><result status="valid" steps="151"/></proof>
   </goal>
   <goal name="def&#39;vc.39" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="13"/></proof>

@@ -10,7 +10,7 @@
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="29"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="386"/></proof>
   </goal>
   <goal name="def&#39;vc.1" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -21,7 +21,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.3" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="82"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="351"/></proof>
   </goal>
   <goal name="def&#39;vc.4" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -32,7 +32,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.6" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="93"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="368"/></proof>
   </goal>
   <goal name="def&#39;vc.7" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -42,7 +42,7 @@
   <proof prover="0"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="def&#39;vc.9" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="96"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="375"/></proof>
   </goal>
   <goal name="def&#39;vc.10" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -53,7 +53,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.12" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="102"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="369"/></proof>
   </goal>
   <goal name="def&#39;vc.13" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -72,7 +72,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.17" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="241"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="1246"/></proof>
   </goal>
   <goal name="def&#39;vc.18" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -83,7 +83,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.20" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="241"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="1246"/></proof>
   </goal>
   <goal name="def&#39;vc.21" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -104,7 +104,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.26" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="242"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="1247"/></proof>
   </goal>
   <goal name="def&#39;vc.27" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -115,7 +115,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.29" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="154"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="623"/></proof>
   </goal>
   <goal name="def&#39;vc.30" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -130,7 +130,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.33" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="154"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="623"/></proof>
   </goal>
   <goal name="def&#39;vc.34" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -144,7 +144,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.37" expl="assertion">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="226"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="2960"/></proof>
   </goal>
   <goal name="def&#39;vc.38" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -155,7 +155,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.40" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="181"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="2764"/></proof>
   </goal>
   <goal name="def&#39;vc.41" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -165,7 +165,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.43" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="191"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="2806"/></proof>
   </goal>
   <goal name="def&#39;vc.44" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -209,7 +209,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.55" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="293"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="2820"/></proof>
   </goal>
   <goal name="def&#39;vc.56" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -253,7 +253,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.67" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="281"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="3010"/></proof>
   </goal>
   <goal name="def&#39;vc.68" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -264,7 +264,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.70" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="281"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="1356"/></proof>
   </goal>
   <goal name="def&#39;vc.71" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

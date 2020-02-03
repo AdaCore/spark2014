@@ -29,7 +29,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.5" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="132"/></proof>
+  <proof prover="0"><result status="valid" steps="133"/></proof>
   </goal>
  </transf>
  </goal>

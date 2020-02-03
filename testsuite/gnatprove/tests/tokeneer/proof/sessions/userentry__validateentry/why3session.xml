@@ -18,7 +18,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.2" expl="check">
-  <proof prover="0"><result status="unknown" steps="23"/></proof>
+  <proof prover="0"><result status="unknown" steps="37"/></proof>
   </goal>
   <goal name="def&#39;vc.3" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -29,7 +29,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.5" expl="check">
-  <proof prover="0"><result status="unknown" steps="23"/></proof>
+  <proof prover="0"><result status="unknown" steps="37"/></proof>
   </goal>
   <goal name="def&#39;vc.6" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -48,7 +48,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.10" expl="check">
-  <proof prover="0"><result status="unknown" steps="42"/></proof>
+  <proof prover="0"><result status="unknown" steps="93"/></proof>
   </goal>
   <goal name="def&#39;vc.11" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -59,7 +59,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.13" expl="precondition" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="36"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="51"/></proof>
   </goal>
   <goal name="def&#39;vc.14" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -78,7 +78,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.18" expl="check">
-  <proof prover="0"><result status="unknown" steps="42"/></proof>
+  <proof prover="0"><result status="unknown" steps="93"/></proof>
   </goal>
   <goal name="def&#39;vc.19" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -89,7 +89,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.21" expl="precondition" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="36"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="51"/></proof>
   </goal>
   <goal name="def&#39;vc.22" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >

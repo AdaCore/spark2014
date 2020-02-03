@@ -7,7 +7,7 @@ camera_motion.adb:22:07: info: initialization of "s_new" proved, in call inlined
 camera_motion.adb:22:07: info: initialization of "s_new" proved, in call inlined at camera_motion.adb:151, in call inlined at camera_motion.adb:240
 camera_motion.adb:22:07: info: initialization of "s_new" proved, in call inlined at camera_motion.adb:287
 camera_motion.adb:22:07: info: initialization of "s_new" proved, in call inlined at camera_motion.adb:288
-camera_motion.adb:25:26: medium: overflow check might fail, in call inlined at camera_motion.adb:151, in call inlined at camera_motion.adb:240
+camera_motion.adb:25:26: info: overflow check proved (CVC4: 20 VC), in call inlined at camera_motion.adb:151, in call inlined at camera_motion.adb:240
 camera_motion.adb:25:26: medium: overflow check might fail, in call inlined at camera_motion.adb:287
 camera_motion.adb:25:26: medium: overflow check might fail, in call inlined at camera_motion.adb:288
 camera_motion.adb:25:31: info: division check proved (CVC4: 20 VC), in call inlined at camera_motion.adb:151, in call inlined at camera_motion.adb:240
