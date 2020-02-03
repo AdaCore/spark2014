@@ -171,7 +171,7 @@ package body Flow.Analysis.Antialiasing is
    --------------
 
    function Aliasing (A,        B        : Node_Id;
-                      Formal_A, Formal_B : Node_Id)
+                      Formal_A, Formal_B : Entity_Id)
                       return Computed_Aliasing_Result
    is
       --  Expressions are not interesting. Names are, but only some:
