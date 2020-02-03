@@ -494,42 +494,6 @@ package body Flow_Visibility is
       Template        : Entity_Id;
       Container       : Flow_Scope;
 
-      function Is_Text_IO_Special_Package (E : Entity_Id) return Boolean;
-      --  Return True iff E is one of the special generic Text_IO packages,
-      --  which Ada RM defines to be nested in Ada.Text_IO, but GNAT defines
-      --  as its private children.
-
-      --------------------------------
-      -- Is_Text_IO_Special_Package --
-      --------------------------------
-
-      function Is_Text_IO_Special_Package (E : Entity_Id) return Boolean is
-      begin
-         --  ??? detection with a scope climbing might be more efficient
-
-         for U in Ada_Text_IO_Child loop
-            if Is_RTU (E, U) then
-               return True;
-            end if;
-         end loop;
-
-         for U in Ada_Wide_Text_IO_Child loop
-            if Is_RTU (E, U) then
-               return True;
-            end if;
-         end loop;
-
-         for U in Ada_Wide_Wide_Text_IO_Child loop
-            if Is_RTU (E, U) then
-               return True;
-            end if;
-         end loop;
-
-         return False;
-      end Is_Text_IO_Special_Package;
-
-   --  Start of processing for Make_Info
-
    begin
       --  Special Text_IO packages behave as nested within the Ada.Text_IO
       --  (that is what Ada RM A.10.1 mandates), but in GNAT they are defined
