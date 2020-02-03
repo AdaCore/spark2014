@@ -246,19 +246,13 @@ package body Flow.Analysis.Antialiasing is
       --  Up_Ignoring_Conversions (which is the opposite of this routine) for
       --  why this parameter is needed.
 
-      function Get_Root_Entity (N : Node_Id) return Entity_Id
+      function Get_Root_Entity (N : Node_Or_Entity_Id) return Entity_Id
       is (case Nkind (N) is
              when N_Defining_Identifier => N,
              when others => Entity (N))
       with Pre => Is_Root (Nkind (N));
-      --  Returns the entity attached to the identifier N. Deals with
-      --  the case where we have an N_Defining_Identifier (which is
-      --  its own entity).
-
-      function Same_Entity (A, B : Node_Id) return Boolean
-        is (Get_Root_Entity (A) = Get_Root_Entity (B))
-      with Pre => Is_Root (Nkind (A)) and Is_Root (Nkind (B));
-      --  Checks if A and B refer to the same entity.
+      --  Returns the entity attached to N, which is either an identifier of an
+      --  actual or a defining entity of a global.
 
       procedure Up_Ignoring_Conversions
         (N     : in out Node_Id;
@@ -409,7 +403,7 @@ package body Flow.Analysis.Antialiasing is
       --  A quick sanity check. If the root nodes refer to different entities
       --  then we cannot have aliasing.
 
-      if not Same_Entity (Ptr_A, Ptr_B) then
+      if Entity (Ptr_A) /= Get_Root_Entity (Ptr_B) then
          if Trace_Antialiasing then
             Write_Line ("   -> different root entities");
          end if;
@@ -489,8 +483,8 @@ package body Flow.Analysis.Antialiasing is
 
             case Nkind (Ptr_A) is
                when N_Selected_Component =>
-                  if not Same_Entity (Selector_Name (Ptr_A),
-                                      Selector_Name (Ptr_B))
+                  if Entity (Selector_Name (Ptr_A)) /=
+                     Entity (Selector_Name (Ptr_B))
                   then
                      if Trace_Antialiasing then
                         Write_Line ("   -> selectors differ");
