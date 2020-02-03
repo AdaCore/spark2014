@@ -14,7 +14,6 @@ Generic Instantiation
 
 .. centered:: **Legality Rules**
 
-.. _tu-generic_instantiation-01:
 
 1. An instantiation of a generic is or is not in |SPARK| depending on
    whether the instance declaration and the instance body (described
@@ -26,7 +25,6 @@ Generic Instantiation
    object having mode **in** shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
-.. _etu-generic_instantiation:
 
 [For example, a generic which takes a formal limited private type
 would be in |SPARK|. An instantiation which passes in a general access type

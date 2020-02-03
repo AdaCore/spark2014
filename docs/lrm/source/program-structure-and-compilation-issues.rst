@@ -23,11 +23,9 @@ Separate Compilation
 
 .. centered:: **Legality Rules**
 
-.. _tu-separate_compilation-01:
 
 1. A program unit cannot be a task unit, a protected unit or a protected entry.
 
-.. _etu-separate_compilation:
 
 Compilation Units - Library Units
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,12 +37,10 @@ Context Clauses - With Clauses
 
 .. centered:: **Legality Rules**
 
-.. _tu-context_clauses_with_clauses-01:
 
 1. With clauses are always in |SPARK|, even if the unit mentioned is
    not completely in |SPARK|.
 
-.. _etu-context_clauses_with_clauses-lr:
 
 Abstract Views
 ^^^^^^^^^^^^^^
@@ -58,7 +54,6 @@ allowed (for example, in a Global ``aspect_specification``).
 
 .. centered:: **Legality Rules**
 
-.. _tu-context_clauses_with_clauses-02:
 
 2. A name denoting the abstract view of an object shall occur only:
 
@@ -70,11 +65,9 @@ allowed (for example, in a Global ``aspect_specification``).
 
    c. in an ``input_list`` of an Initializes aspect.
 
-.. _etu-context_clauses_with_clauses_abstract_view-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-context_clauses_with_clauses-03:
 
 3. Any state abstractions declared within a given package are present in
    the limited view of the package.
@@ -82,13 +75,11 @@ allowed (for example, in a Global ``aspect_specification``).
    subprogram declared in a library unit package *P1* could refer to a state
    abstraction declared in a package *P2* if *P1* has a limited with of *P2*.]
 
-.. _tu-context_clauses_with_clauses-04:
 
 4. For every object declared by an ``object_declaration`` occurring
    immediately within the visible part of a given package, the limited
    view of the package contains an *abstract view* of the object.
 
-.. _tu-context_clauses_with_clauses_abstract_view-ss:
 
 
 Subunits of Compilation Units

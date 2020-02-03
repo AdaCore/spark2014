@@ -6,7 +6,6 @@ Language-Defined Pragmas (Annex L)
 Ada Language-Defined Pragmas
 ----------------------------
 
-.. _tu-fe-language_defined_pragmas-01:
 
 The following Ada language-defined pragmas are supported as follows:
 
@@ -72,7 +71,6 @@ Volatile_Components 	      Yes
 |SPARK| Language-Defined Pragmas
 --------------------------------
 
-.. _tu-fe-language_defined_pragmas-02:
 
 The following |SPARK| language-defined pragmas are defined:
 
@@ -111,7 +109,6 @@ Volatile_Function             Yes
 GNAT Implementation-Defined Pragmas
 -----------------------------------
 
-.. _tu-fe-language_defined_pragmas-03:
 
 The following GNAT implementation-defined pragmas are permitted in |SPARK|:
 
