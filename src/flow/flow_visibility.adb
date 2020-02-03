@@ -612,6 +612,7 @@ package body Flow_Visibility is
       end if;
 
       if Is_Child_Unit (E)
+        and then Is_Package_Or_Generic_Package (E)
         and then Is_Text_IO_Special_Package (E)
       then
          Container := (Ent => Scope (E), Part => Visible_Part);
