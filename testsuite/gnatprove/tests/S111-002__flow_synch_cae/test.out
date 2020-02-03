@@ -1,2 +1,3 @@
+p.adb:10:10: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
 p.ads:1:16: info: flow dependencies proved
 p.ads:10:17: info: postcondition proved (CVC4: 2 VC)

@@ -317,13 +317,6 @@ package body Flow.Analysis.Antialiasing is
          end loop;
       end Find_Root;
 
-      --------------------------
-      -- Is_Root_Synchronized --
-      --------------------------
-
-      function Is_Root_Synchronized (N : Node_Id) return Boolean is
-        (Is_Synchronized (Get_Root_Entity (N)));
-
       -----------------------------
       -- Up_Ignoring_Conversions --
       -----------------------------
@@ -413,10 +406,6 @@ package body Flow.Analysis.Antialiasing is
          return Impossible;
       end if;
 
-      if Is_Root_Synchronized (Ptr_A) or else Is_Root_Synchronized (Ptr_B) then
-         return Impossible;
-      end if;
-
       --  A quick sanity check. If the root nodes refer to different entities
       --  then we cannot have aliasing.
 
@@ -427,9 +416,16 @@ package body Flow.Analysis.Antialiasing is
          return Impossible;
       end if;
 
-      --  Ok, we now know that the root nodes refer to the same entity, we now
-      --  need to walk up the tree and see if we differ somehow. For example,
-      --  right now we might have:
+      --  We now know that the root nodes refer to the same entity
+
+      if Is_Synchronized (Entity (Ptr_A))
+        and then not Is_Constant_After_Elaboration (Entity (Ptr_A))
+      then
+         return Impossible;
+      end if;
+
+      --  We now need to walk up the tree and see if we differ somehow.
+      --  For example, right now we might have:
       --     * A,              A           --  illegal
       --     * A.X.Y (1 .. J), A.X         --  illegal
       --     * A.X,            A.Y         --  OK
