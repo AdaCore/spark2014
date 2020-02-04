@@ -1,0 +1,1 @@
+ALL XFAIL crash on volatile type in proof (T204-032)
