@@ -2554,14 +2554,12 @@ package body Why.Gen.Records is
       Ty           : Entity_Id)
       return W_Expr_Id
    is
-      Discr_Expr : W_Expr_Id := Why_Empty;
-      Num_Discr  : constant Natural := Count_Discriminants (Ty);
+      Discr_Expr : constant W_Expr_Id :=
+        (if Count_Discriminants (Ty) > 0
+         then New_Record_Aggregate (Associations => Discr_Assocs)
+         else Why_Empty);
 
    begin
-      if Num_Discr > 0 then
-         Discr_Expr := New_Record_Aggregate (Associations => Discr_Assocs);
-      end if;
-
       return New_Ada_Record_Aggregate
         (Ada_Node, Domain, Discr_Expr, Field_Assocs, Ty);
    end New_Ada_Record_Aggregate;
