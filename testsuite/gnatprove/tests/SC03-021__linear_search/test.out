@@ -1,9 +1,9 @@
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at linear_search.adb:61
 linear_search.adb:12:12: info: implicit function contract might not be available on recursive calls
 linear_search.adb:12:12: medium: subprogram "Length" might not terminate, terminating annotation could be incorrect
 linear_search.adb:14:50: info: pointer dereference check proved (CVC4: 1 VC)

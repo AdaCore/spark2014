@@ -14,12 +14,12 @@ a-cfdlli.ads:1415:14: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1421:23: info: precondition proved (CVC4: 1 VC), in instantiation at linked_list.ads:6
 a-cfdlli.ads:1470:14: info: precondition proved (CVC4: 1 VC), in instantiation at linked_list.ads:6
 a-cfdlli.ads:1477:23: info: precondition proved (CVC4: 1 VC), in instantiation at linked_list.ads:6
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at linked_list.ads:6
 linked_list.adb:8:13: info: loop invariant initialization proved (CVC4: 2 VC)
 linked_list.adb:8:13: info: loop invariant preservation proved (CVC4: 2 VC)
 linked_list.adb:9:37: info: precondition proved (CVC4: 2 VC)

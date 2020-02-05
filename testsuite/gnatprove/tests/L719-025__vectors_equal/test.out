@@ -3,12 +3,12 @@ a-cofove.ads:709:23: info: precondition proved (CVC4: 1 VC), in instantiation at
 a-cofove.ads:712:38: info: range check proved (CVC4: 1 VC), in instantiation at p.ads:9
 a-cofove.ads:745:14: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:9
 a-cofove.ads:749:35: info: range check proved (CVC4: 1 VC), in instantiation at p.ads:9
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:9
 p.adb:5:07: info: precondition proved (CVC4: 1 VC)
 p.adb:6:07: info: precondition proved (CVC4: 1 VC)
 p.adb:10:27: info: precondition proved (CVC4: 2 VC)

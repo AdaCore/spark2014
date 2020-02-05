@@ -2,12 +2,12 @@ a-cfhama.ads:680:39: info: precondition proved (CVC4: 1 VC), in instantiation at
 a-cfhama.ads:689:17: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:19
 a-cfhama.ads:719:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:19
 a-cfhama.ads:734:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:19
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at p.ads:19
 go.adb:7:04: info: initialization of "M" proved
 p.adb:6:22: medium: private part of "Map.X" is not set
 p.ads:31:19: info: range check proved (CVC4: 1 VC)

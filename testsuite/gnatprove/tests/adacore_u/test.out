@@ -189,12 +189,12 @@ use_stack.adb:10:09: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: assertion proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:32: info: precondition proved (CVC4: 1 VC)
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
 p_max_array.adb:4:07: info: initialization of "R" proved
 p_max_array.adb:4:07: info: range check proved (CVC4: 2 VC)
 p_max_array.adb:8:33: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -429,12 +429,12 @@ use_file_system.adb:11:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:12:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:14:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:15:05: medium: precondition might fail
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
 fixed_mem.adb:6:04: warning: variable "Data" is never read and never assigned
 fixed_mem.adb:9:55: medium: range check might fail (e.g. when Free = 1002) [possible explanation: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved

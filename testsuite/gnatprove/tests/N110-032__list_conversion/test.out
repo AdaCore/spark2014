@@ -14,12 +14,12 @@ a-cfdlli.ads:1415:14: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1421:23: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
 a-cfdlli.ads:1470:14: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
 a-cfdlli.ads:1477:23: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:11
 my_lists.adb:5:07: info: initialization of "L1" proved
 my_lists.adb:5:18: info: range check proved (CVC4: 1 VC)
 my_lists.adb:6:23: info: discriminant check proved (CVC4: 1 VC)

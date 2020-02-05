@@ -14,12 +14,12 @@ a-cfdlli.ads:1415:14: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1421:23: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
 a-cfdlli.ads:1470:14: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
 a-cfdlli.ads:1477:23: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at algorithm.ads:40
 algorithm.adb:84:07: info: cannot unroll loop (too many loop iterations)
 algorithm.adb:87:44: info: function contract not available for proof ("alDiff" might not return)
 algorithm.adb:92:65: info: division check proved (CVC4: 1 VC)

@@ -3,12 +3,12 @@ a-cfinve.ads:730:23: info: precondition proved (CVC4: 1 VC), in instantiation at
 a-cfinve.ads:733:38: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
 a-cfinve.ads:766:14: info: precondition proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
 a-cfinve.ads:770:35: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
 objt_types_jauge.ads:20:04: info: function contract not available for proof ("<" might not return)
 objt_types_jauge.ads:20:04: info: function contract not available for proof ("<" might not return)
 objt_types_jauge.ads:20:04: info: function contract not available for proof ("<=" might not return)
@@ -547,44 +547,44 @@ objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:806
 objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:808
 objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:818
 objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:96
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:108
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:109
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:119
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:110
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:120
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:130
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:121
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:131
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:144
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:160
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:174
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:177
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:132
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:145
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:161
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:175
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:178
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:191
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:194
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:179
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:192
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:195
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:210
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:228
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:237
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:268
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:271
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:280
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:196
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:211
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:229
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:238
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:269
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:272
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:281
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:283
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:282
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:284
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:285
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:297
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:286
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:298
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:299
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:301
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:303
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:308
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:312
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:323
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:325
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:300
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:302
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:304
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:309
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:313
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:324
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:326
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:331
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:335
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:352
-objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:360
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:327
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:332
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:336
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:353
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:361
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:52
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:83
 objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:92

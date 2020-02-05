@@ -3,12 +3,12 @@ a-cfhama.ads:689:17: info: precondition proved (CVC4: 1 VC), in instantiation at
 a-cfhama.ads:719:20: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:10
 a-cfhama.ads:734:20: info: precondition proved (CVC4: 1 VC), in instantiation at test.ads:10
 a-cfhama.ads:749:42: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.ads:10
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at test.ads:10
 test.ads:10:03: info: function contract not available for proof ("<=" might not return)
 test.ads:10:03: info: function contract not available for proof ("<=" might not return)
 test.ads:10:03: info: function contract not available for proof ("<=" might not return)
@@ -875,59 +875,59 @@ test.ads:10:03: info: in instantiation at a-cofuma.ads:95
 test.ads:10:03: info: in instantiation at a-cofuma.ads:95
 test.ads:10:03: info: in instantiation at a-cofuma.ads:98
 test.ads:10:03: info: in instantiation at a-cofuma.ads:98
-test.ads:10:03: info: in instantiation at a-cofuve.ads:108
 test.ads:10:03: info: in instantiation at a-cofuve.ads:109
 test.ads:10:03: info: in instantiation at a-cofuve.ads:110
-test.ads:10:03: info: in instantiation at a-cofuve.ads:119
+test.ads:10:03: info: in instantiation at a-cofuve.ads:111
 test.ads:10:03: info: in instantiation at a-cofuve.ads:120
 test.ads:10:03: info: in instantiation at a-cofuve.ads:121
-test.ads:10:03: info: in instantiation at a-cofuve.ads:130
+test.ads:10:03: info: in instantiation at a-cofuve.ads:122
 test.ads:10:03: info: in instantiation at a-cofuve.ads:131
 test.ads:10:03: info: in instantiation at a-cofuve.ads:132
-test.ads:10:03: info: in instantiation at a-cofuve.ads:144
-test.ads:10:03: info: in instantiation at a-cofuve.ads:147
-test.ads:10:03: info: in instantiation at a-cofuve.ads:160
-test.ads:10:03: info: in instantiation at a-cofuve.ads:163
-test.ads:10:03: info: in instantiation at a-cofuve.ads:174
-test.ads:10:03: info: in instantiation at a-cofuve.ads:177
+test.ads:10:03: info: in instantiation at a-cofuve.ads:133
+test.ads:10:03: info: in instantiation at a-cofuve.ads:145
+test.ads:10:03: info: in instantiation at a-cofuve.ads:148
+test.ads:10:03: info: in instantiation at a-cofuve.ads:161
+test.ads:10:03: info: in instantiation at a-cofuve.ads:164
+test.ads:10:03: info: in instantiation at a-cofuve.ads:175
 test.ads:10:03: info: in instantiation at a-cofuve.ads:178
 test.ads:10:03: info: in instantiation at a-cofuve.ads:179
-test.ads:10:03: info: in instantiation at a-cofuve.ads:191
-test.ads:10:03: info: in instantiation at a-cofuve.ads:194
+test.ads:10:03: info: in instantiation at a-cofuve.ads:180
+test.ads:10:03: info: in instantiation at a-cofuve.ads:192
 test.ads:10:03: info: in instantiation at a-cofuve.ads:195
-test.ads:10:03: info: in instantiation at a-cofuve.ads:197
-test.ads:10:03: info: in instantiation at a-cofuve.ads:210
-test.ads:10:03: info: in instantiation at a-cofuve.ads:213
-test.ads:10:03: info: in instantiation at a-cofuve.ads:228
-test.ads:10:03: info: in instantiation at a-cofuve.ads:237
-test.ads:10:03: info: in instantiation at a-cofuve.ads:242
+test.ads:10:03: info: in instantiation at a-cofuve.ads:196
+test.ads:10:03: info: in instantiation at a-cofuve.ads:198
+test.ads:10:03: info: in instantiation at a-cofuve.ads:211
+test.ads:10:03: info: in instantiation at a-cofuve.ads:214
+test.ads:10:03: info: in instantiation at a-cofuve.ads:229
+test.ads:10:03: info: in instantiation at a-cofuve.ads:238
 test.ads:10:03: info: in instantiation at a-cofuve.ads:243
-test.ads:10:03: info: in instantiation at a-cofuve.ads:248
+test.ads:10:03: info: in instantiation at a-cofuve.ads:244
 test.ads:10:03: info: in instantiation at a-cofuve.ads:249
-test.ads:10:03: info: in instantiation at a-cofuve.ads:268
-test.ads:10:03: info: in instantiation at a-cofuve.ads:270
+test.ads:10:03: info: in instantiation at a-cofuve.ads:250
+test.ads:10:03: info: in instantiation at a-cofuve.ads:269
 test.ads:10:03: info: in instantiation at a-cofuve.ads:271
-test.ads:10:03: info: in instantiation at a-cofuve.ads:280
+test.ads:10:03: info: in instantiation at a-cofuve.ads:272
 test.ads:10:03: info: in instantiation at a-cofuve.ads:281
-test.ads:10:03: info: in instantiation at a-cofuve.ads:283
-test.ads:10:03: info: in instantiation at a-cofuve.ads:284
+test.ads:10:03: info: in instantiation at a-cofuve.ads:282
 test.ads:10:03: info: in instantiation at a-cofuve.ads:284
 test.ads:10:03: info: in instantiation at a-cofuve.ads:285
-test.ads:10:03: info: in instantiation at a-cofuve.ads:297
+test.ads:10:03: info: in instantiation at a-cofuve.ads:285
+test.ads:10:03: info: in instantiation at a-cofuve.ads:286
 test.ads:10:03: info: in instantiation at a-cofuve.ads:298
 test.ads:10:03: info: in instantiation at a-cofuve.ads:299
-test.ads:10:03: info: in instantiation at a-cofuve.ads:301
+test.ads:10:03: info: in instantiation at a-cofuve.ads:300
 test.ads:10:03: info: in instantiation at a-cofuve.ads:302
 test.ads:10:03: info: in instantiation at a-cofuve.ads:303
-test.ads:10:03: info: in instantiation at a-cofuve.ads:308
-test.ads:10:03: info: in instantiation at a-cofuve.ads:312
-test.ads:10:03: info: in instantiation at a-cofuve.ads:323
-test.ads:10:03: info: in instantiation at a-cofuve.ads:325
+test.ads:10:03: info: in instantiation at a-cofuve.ads:304
+test.ads:10:03: info: in instantiation at a-cofuve.ads:309
+test.ads:10:03: info: in instantiation at a-cofuve.ads:313
+test.ads:10:03: info: in instantiation at a-cofuve.ads:324
 test.ads:10:03: info: in instantiation at a-cofuve.ads:326
-test.ads:10:03: info: in instantiation at a-cofuve.ads:331
-test.ads:10:03: info: in instantiation at a-cofuve.ads:335
-test.ads:10:03: info: in instantiation at a-cofuve.ads:352
-test.ads:10:03: info: in instantiation at a-cofuve.ads:360
+test.ads:10:03: info: in instantiation at a-cofuve.ads:327
+test.ads:10:03: info: in instantiation at a-cofuve.ads:332
+test.ads:10:03: info: in instantiation at a-cofuve.ads:336
+test.ads:10:03: info: in instantiation at a-cofuve.ads:353
+test.ads:10:03: info: in instantiation at a-cofuve.ads:361
 test.ads:10:03: info: in instantiation at a-cofuve.ads:52
 test.ads:10:03: info: in instantiation at a-cofuve.ads:83
 test.ads:10:03: info: in instantiation at a-cofuve.ads:92
