@@ -1,2 +1,8 @@
-tokens_2.ads:15:09: type aspect on type derived from a private type is not yet supported
-gnatprove: error during flow analysis and proof
+tokens_2.ads:2:03: info: initial condition proved (CVC4: 1 VC)
+tokens_2.ads:15:09: medium: default initial condition might fail
+tokens_2.ads:16:35: info: implicit function contract not available for proof ("T_Length" might not return)
+tokens_2.ads:16:56: medium: overflow check might fail (e.g. when C = -2147483649)
+tokens_2.ads:24:57: info: implicit function contract not available for proof ("Length" might not return)
+tokens_2.ads:26:04: info: initialization of "X" proved
+tokens_2.ads:29:07: info: implicit function contract not available for proof ("Length" might not return)
+tokens_2.ads:29:18: medium: overflow check might fail (e.g. when C = -1) [possible explanation: subprogram at line 19 should mention C and X in a precondition]

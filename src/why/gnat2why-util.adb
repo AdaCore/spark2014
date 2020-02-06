@@ -1076,7 +1076,20 @@ package body Gnat2Why.Util is
       E : constant Entity_Id := Retysp (Ty);
    begin
       return May_Need_DIC_Checking (E)
-        and then not Is_Private_Type (E)
+
+        --  We do not want to emit DIC checks for types whose full view is not
+        --  in SPARK. If the Restysp is not a private type, then the full view
+        --  is necessarily in SPARK.
+        --  Otherwise, look at the Retysp and see if it is associated to a
+        --  private declaration. In that case, the completion must not be in
+        --  SPARK.
+
+        and then
+          (not Is_Private_Type (E)
+           or else
+           Nkind (Enclosing_Declaration (E)) not in
+             N_Private_Type_Declaration | N_Private_Extension_Declaration)
+
         and then Present (Get_Initial_DIC_Procedure (E))
         and then Check_DIC_At_Declaration (E);
    end Needs_DIC_Check_At_Decl;
