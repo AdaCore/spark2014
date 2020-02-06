@@ -1,3 +1,8 @@
-id.adb:1:10: medium: function "Id" does not return on some paths
 id.adb:2:12: info: postcondition proved (CVC4: 2 VC)
-id.adb:2:22: medium: function "Id" does not return on some paths
+nest_return.adb:13:07: info: initialization of "Temp" proved
+nest_return.adb:37:19: info: initialization of "Temp" proved
+nest_return.adb:38:55: info: initialization of "B" proved
+nest_return.ads:4:43: info: initialization of "Y" proved
+nest_return.ads:5:15: info: postcondition proved (CVC4: 2 VC)
+nest_return.ads:10:15: info: postcondition proved (CVC4: 2 VC)
+nest_return.ads:15:15: info: postcondition proved (CVC4: 2 VC)

@@ -61,10 +61,8 @@ binary_search.adb:122:26: info: overflow check proved (CVC4: 1 VC)
 binary_search.adb:122:35: info: pointer dereference check proved (CVC4: 1 VC)
 binary_search.adb:122:43: info: overflow check proved (CVC4: 1 VC)
 binary_search.adb:127:13: info: function contract might not be available on recursive calls
-binary_search.adb:127:13: low: function "All_V" does not return on some paths
 binary_search.adb:127:13: medium: subprogram "All_V" might not terminate, terminating annotation could be incorrect
 binary_search.adb:131:14: info: postcondition proved (CVC4: 3 VC)
-binary_search.adb:131:14: low: function "All_V" does not return on some paths
 binary_search.adb:135:14: info: initialization of "S" proved
 binary_search.adb:140:15: info: precondition proved (CVC4: 1 VC)
 binary_search.adb:140:22: info: precondition proved (CVC4: 1 VC)
