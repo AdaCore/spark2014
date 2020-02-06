@@ -584,7 +584,10 @@ package SPARK_Atree.Entities is
 
    function Has_Pragma_Volatile_Function (Subp : Entity_Id) return Boolean with
      Pre => Ekind (Subp) = E_Function;
-   --  Return True if Subp has a pragma Volatile_Function
+   --  Return True if Subp has a pragma Volatile_Function or if it is an
+   --  unchecked conversion with a volatile profile.
+   --  This is different from Sem_Util.Is_Volatile_Function as it does not
+   --  return True of protected functions.
 
    function Is_Predicate_Function (Subp : Entity_Id) return Boolean with
      Pre => Einfo.Is_Subprogram (Subp);

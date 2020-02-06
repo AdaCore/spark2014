@@ -406,7 +406,9 @@ package body SPARK_Atree.Entities is
    ----------------------------------
 
    function Has_Pragma_Volatile_Function (Subp : Entity_Id) return Boolean is
-     (Sem_Prag.Is_Enabled_Pragma
+     ((Sem_Util.Is_Unchecked_Conversion_Instance (Subp)
+       and then Sem_Util.Has_Effectively_Volatile_Profile (Subp))
+      or else Sem_Prag.Is_Enabled_Pragma
         (Get_Pragma (Subp, Pragma_Volatile_Function)));
 
    --------------------
