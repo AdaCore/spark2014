@@ -156,14 +156,15 @@ package Flow_Refinement is
    --  lost visibility we file their encapsulating state in Partial; otherwise
    --  the variable is put into Projected as is.
 
-   procedure Up_Project (Vars      :     Flow_Id_Sets.Set;
-                         Scope     :     Flow_Scope;
-                         Projected : out Flow_Id_Sets.Set;
-                         Partial   : out Flow_Id_Sets.Set)
-   with Post => (for all E of Partial => Is_Abstract_State (E));
-   --  For each variable in Vars it computes the closest encapsulating state
-   --  which is visible from Scope if the variable is not visible. It returns
-   --  the set of the up-projected variables in Vars.
+   function Up_Project
+     (Var   : Flow_Id;
+      Scope : Flow_Scope)
+      return Flow_Id
+   with Post => Up_Project'Result = Var
+                  or else
+                Is_Abstract_State (Up_Project'Result);
+   --  Returns the closest encapsulating state which is visible from Scope if
+   --  the variable is not visible.
 
    procedure Up_Project (Vars           :     Global_Nodes;
                          Projected_Vars : out Global_Nodes;

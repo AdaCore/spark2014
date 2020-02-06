@@ -21,7 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Flow_Error_Messages;    use Flow_Error_Messages;
@@ -123,28 +122,12 @@ package body Flow_Sanity is
             --  Proof view encodes entities not-in-SPARK and abstract states
             --  as Magic_String; convert them to flow view.
 
-            Partial, Projected : Flow_Id_Sets.Set;
-
-            use type Ada.Containers.Count_Type;
-
          begin
             --  Convert from fully-expanded proof view to an object that is
             --  actually visible at the spec, e.g. from constituent to an
             --  abstract state.
 
-            Up_Project (Flow_Id_Sets.To_Set (F),
-                        Get_Flow_Scope (E),
-                        Projected, Partial);
-
-            --  The object has been either kept as it is (landing in Projected)
-            --  or was a constituent that become an abstract state (landing in
-            --  Partial).
-
-            pragma Assert (Projected.Length + Partial.Length = 1);
-
-            return (if Projected.Is_Empty
-                    then Partial (Partial.First)
-                    else Projected (Projected.First));
+            return Up_Project (F, Get_Flow_Scope (E));
          end To_Global;
 
          --  Local constants:

@@ -386,14 +386,16 @@ package body Flow_Generated_Globals.Phase_2 is
    --  ??? When down-projecting a partially visible proof_in abstract state
    --  we might get overlapping with its input/output constituents; fixit.
 
-   procedure Up_Project (Vars      :     Name_Sets.Set;
-                         Scope     :     Name_Scope;
-                         Projected : out Name_Sets.Set;
-                         Partial   : out Name_Sets.Set);
-   --  Opposite of Down_Project: constituents from Vars that are no longer
-   --  visible at Scope are converted to their encapsulating abstract states
-   --  and returned in the Partial parameter; objects that remain visible are
-   --  returned in Projected.
+   function Up_Project
+     (Var   : Entity_Name;
+      Scope : Name_Scope)
+      return Entity_Name
+   with Post => Up_Project'Result = Var
+                  or else
+                GG_Is_Abstract_State (Up_Project'Result);
+   --  Opposite of Down_Project: constituent Var that is no longer visible at
+   --  Scope is converted to its encapsulating abstract state; object that
+   --  remain visible is returned unchanged.
 
    --  ??? This routine historically belongs to Flow_Refinement, but we can't
    --  have it there and keep name visibility a private child of Phase_2.
@@ -3589,41 +3591,36 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Up_Project --
    ----------------
 
-   procedure Up_Project (Vars       :     Name_Sets.Set;
-                         Scope      :     Name_Scope;
-                         Projected  : out Name_Sets.Set;
-                         Partial    : out Name_Sets.Set)
+   function Up_Project
+     (Var   : Entity_Name;
+      Scope : Name_Scope)
+      return Entity_Name
    is
    begin
-      Projected.Clear;
-      Partial.Clear;
+      if GG_Is_Constituent (Var) then
 
-      for Var of Vars loop
-         if GG_Is_Constituent (Var) then
+         --  We project depending on whether the constituent is visible (and
+         --  not its enclosing state refinement), because when projecting
+         --  to a private part of a package spec where that constituent
+         --  is declared (as a Part_Of an abstract state) we want the
+         --  constituent, which is the most precise result we can get.
 
-            --  We project depending on whether the constituent is visible (and
-            --  not its enclosing state refinement), because when projecting
-            --  to a private part of a package spec where that constituent
-            --  is declared (as a Part_Of an abstract state) we want the
-            --  constituent, which is the most precise result we can get.
+         declare
+            State : constant Entity_Name := GG_Encapsulating_State (Var);
 
-            declare
-               State : constant Entity_Name := GG_Encapsulating_State (Var);
-
-            begin
-               if State_Refinement_Is_Visible (State, Scope)
-                 or else (GG_Is_Part_Of_Constituent (Var)
-                          and then Part_Of_Is_Visible (State, Scope))
-               then
-                  Projected.Include (Var);
-               else
-                  Partial.Include (State);
-               end if;
-            end;
-         else
-            Projected.Include (Var);
-         end if;
-      end loop;
+         begin
+            if State_Refinement_Is_Visible (State, Scope)
+              or else (GG_Is_Part_Of_Constituent (Var)
+                       and then Part_Of_Is_Visible (State, Scope))
+            then
+               return Var;
+            else
+               return State;
+            end if;
+         end;
+      else
+         return Var;
+      end if;
    end Up_Project;
 
    procedure Up_Project (Vars           :     Global_Names;
@@ -3662,21 +3659,8 @@ package body Flow_Generated_Globals.Phase_2 is
       ------------------
 
       function Visible_View (E : Entity_Name) return Entity_Name is
-         Projected, Partial : Name_Sets.Set;
-
-         use type Ada.Containers.Count_Type;
-
       begin
-         if GG_Is_Constituent (E) then
-            Up_Project (Name_Sets.To_Set (E), Scope, Projected, Partial);
-            pragma Assert (Partial.Length + Projected.Length = 1);
-
-            return (if Projected.Is_Empty
-                    then Partial (Partial.First)
-                    else Projected (Projected.First));
-         else
-            return E;
-         end if;
+         return Up_Project (E, Scope);
       end Visible_View;
 
    --  Start of processing of Up_Project

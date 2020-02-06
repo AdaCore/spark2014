@@ -467,51 +467,45 @@ package body Flow_Refinement is
       end loop;
    end Up_Project;
 
-   procedure Up_Project (Vars      :     Flow_Id_Sets.Set;
-                         Scope     :     Flow_Scope;
-                         Projected : out Flow_Id_Sets.Set;
-                         Partial   : out Flow_Id_Sets.Set)
+   function Up_Project
+     (Var   : Flow_Id;
+      Scope : Flow_Scope)
+      return Flow_Id
    is
    begin
-      Projected.Clear;
-      Partial.Clear;
+      if Var.Kind = Direct_Mapping
+        and then Is_Constituent (Get_Direct_Mapping_Id (Var))
+      then
+         declare
+            Projected_Entity, Partial_Entity : Node_Sets.Set;
 
-      for Var of Vars loop
-         if Var.Kind = Direct_Mapping
-           and then Is_Constituent (Get_Direct_Mapping_Id (Var))
-         then
-            declare
-               Projected_Entity, Partial_Entity : Node_Sets.Set;
+         begin
+            --  Since we only up-project Flow_Ids with constituents that are
+            --  internally represented by Entity_Id, we can reuse the existing
+            --  logic for up-projecting those. For this we call the variant for
+            --  Node_Sets with singleton set; this gives a singleton set result
+            --  (with either a projected or unmodified constituent).
+            --
+            --  ??? repetition of code for Entity_Id/Entity_Name/Flow_Id and
+            --  their sets and maps deserves a non-trivial rewrite.
 
-            begin
-               --  Since we only up-project Flow_Ids with constituents that are
-               --  internally represented by Entity_Id, we can reuse the
-               --  existing logic for up-projecting those. For this we call the
-               --  variant for Node_Sets with singleton set; this gives a
-               --  singleton set a result (with either a projected or
-               --  unmodified constituent).
-               --
-               --  ??? repetition of code for Entity_Id/Entity_Name/Flow_Id and
-               --  their sets and maps deserves a non-trivial rewrite.
+            Up_Project (Node_Sets.To_Set (Get_Direct_Mapping_Id (Var)),
+                        Scope, Projected_Entity, Partial_Entity);
 
-               Up_Project (Node_Sets.To_Set (Get_Direct_Mapping_Id (Var)),
-                           Scope, Projected_Entity, Partial_Entity);
+            --  Either Projected_Entity is empty and Partial_Entity is a
+            --  singleton set, or the other way round.
+            pragma Assert
+              (Projected_Entity.Length + Partial_Entity.Length = 1);
 
-               --  Either Projected_Entity is empty and Partial_Entity is a
-               --  singleton set, or the other way round.
-               pragma Assert
-                 (Projected_Entity.Length + Partial_Entity.Length = 1);
-
-               if Partial_Entity.Is_Empty then
-                  Projected.Include (Var);
-               else
-                  Partial.Include (Encapsulating_State (Var));
-               end if;
-            end;
-         else
-            Projected.Include (Var);
-         end if;
-      end loop;
+            if Partial_Entity.Is_Empty then
+               return Var;
+            else
+               return Encapsulating_State (Var);
+            end if;
+         end;
+      else
+         return Var;
+      end if;
    end Up_Project;
 
    procedure Up_Project (Vars           :     Global_Nodes;
@@ -555,16 +549,12 @@ package body Flow_Refinement is
          Projected, Partial : Node_Sets.Set;
 
       begin
-         if Is_Constituent (E) then
-            Up_Project (Node_Sets.To_Set (E), Scope, Projected, Partial);
-            pragma Assert (Partial.Length + Projected.Length = 1);
+         Up_Project (Node_Sets.To_Set (E), Scope, Projected, Partial);
+         pragma Assert (Partial.Length + Projected.Length = 1);
 
-            return (if Projected.Is_Empty
-                    then Partial (Partial.First)
-                    else Projected (Projected.First));
-         else
-            return E;
-         end if;
+         return (if Projected.Is_Empty
+                 then Partial (Partial.First)
+                 else Projected (Projected.First));
       end Visible_View;
 
    --  Start of processing of Up_Project
@@ -700,19 +690,8 @@ package body Flow_Refinement is
       ------------------
 
       function Visible_View (F : Flow_Id) return Flow_Id is
-         Projected, Partial : Flow_Id_Sets.Set;
-
       begin
-         if Is_Constituent (F) then
-            Up_Project (Flow_Id_Sets.To_Set (F), Scope, Projected, Partial);
-            pragma Assert (Partial.Length + Projected.Length = 1);
-
-            return (if Projected.Is_Empty
-                    then Partial (Partial.First)
-                    else Projected (Projected.First));
-         else
-            return F;
-         end if;
+         return Up_Project (F, Scope);
       end Visible_View;
 
    --  Start of processing of Up_Project
@@ -834,19 +813,8 @@ package body Flow_Refinement is
       ------------------
 
       function Visible_View (F : Flow_Id) return Flow_Id is
-         Projected, Partial : Flow_Id_Sets.Set;
-
       begin
-         if Is_Constituent (F) then
-            Up_Project (Flow_Id_Sets.To_Set (F), Scope, Projected, Partial);
-            pragma Assert (Partial.Length + Projected.Length = 1);
-
-            return (if Projected.Is_Empty
-                    then Partial (Partial.First)
-                    else Projected (Projected.First));
-         else
-            return F;
-         end if;
+         return Up_Project (F, Scope);
       end Visible_View;
 
    --  Start of processing for Up_Project
