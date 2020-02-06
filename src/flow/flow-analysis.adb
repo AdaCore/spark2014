@@ -1711,14 +1711,6 @@ package body Flow.Analysis is
       --  that has been introduced by a record split and some of the fields
       --  is effective.
 
-      function Skip_Any_Conversions (N : Node_Id) return Node_Id
-      with Pre  => Nkind (N) in N_Subexpr,
-           Post => Nkind (Skip_Any_Conversions'Result) in N_Subexpr;
-      --  Skips any conversions (unchecked or otherwise) and jumps to the
-      --  actual object.
-      --  ??? this routine actually skips only checked conversion; to have what
-      --  this comment says we can reuse Sem_Util.Unqual_Conv.
-
       --------------------
       -- Flag_Reachable --
       --------------------
@@ -1886,24 +1878,6 @@ package body Flow.Analysis is
                      (Atr.Call_Vertex)));
       end Null_Dependency_Assignment;
 
-      --------------------------
-      -- Skip_Any_Conversions --
-      --------------------------
-
-      function Skip_Any_Conversions (N : Node_Id) return Node_Id is
-         P : Node_Id := N;
-      begin
-         loop
-            case Nkind (P) is
-               when N_Type_Conversion =>
-                  P := Expression (P);
-
-               when others =>
-                  return P;
-            end case;
-         end loop;
-      end Skip_Any_Conversions;
-
       ------------------------------
       -- Other_Field_Is_Effective --
       ------------------------------
@@ -2021,26 +1995,24 @@ package body Flow.Analysis is
                            declare
                               Target : constant Flow_Id :=
                                 (if Atr.Is_Parameter
-                                 then Direct_Mapping_Id
-                                   (Skip_Any_Conversions
-                                        (Get_Direct_Mapping_Id
-                                             (Atr.Parameter_Actual)))
+                                 then
+                                    Path_To_Flow_Id
+                                      (Get_Direct_Mapping_Id
+                                        (Atr.Parameter_Actual))
                                  else Atr.Parameter_Formal);
+                              --  ??? Path_To_Flow_Id was meant to be used
+                              --  in a borrow checker, but it also works for
+                              --  converting an assignable actual parameter.
 
-                              Printable_Target : constant Boolean :=
-                                Is_Easily_Printable (Target);
+                              pragma Assert (Is_Easily_Printable (Target));
 
                            begin
                               Error_Msg_Flow
                                 (FA       => FA,
                                  Path     => Mask,
-                                 Msg      => (if Printable_Target
-                                              then "unused assignment to &"
-                                              else "unused assignment"),
+                                 Msg      => "unused assignment to &",
                                  N        => N,
-                                 F1       => (if Printable_Target
-                                              then Target
-                                              else Null_Flow_Id),
+                                 F1       => Target,
                                  Tag      => Ineffective,
                                  Severity => Warning_Kind,
                                  Vertex   => V);

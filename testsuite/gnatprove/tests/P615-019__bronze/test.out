@@ -41,6 +41,6 @@ my_package.adb:207:23: warning: unused assignment to "Z"
 my_package.adb:210:21: high: formal parameter "Y" and global "XX" are aliased (SPARK RM 6.4.2)
 my_package.adb:211:21: high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
 my_package.adb:228:07: warning: statement has no effect
-my_package.adb:228:13: warning: unused assignment
-my_package.adb:228:20: warning: unused assignment
+my_package.adb:228:13: warning: unused assignment to "A"
+my_package.adb:228:20: warning: unused assignment to "A"
 my_package.ads:8:22: info: initialization of "Found" proved
