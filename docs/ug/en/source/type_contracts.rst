@@ -568,3 +568,42 @@ This is different from an argument of ``False`` which can be used to indicate
 that variables of that type should always be explicitly initialized (otherwise
 |GNATprove| will not be able to prove the condition ``False`` on the default
 initialization and will issue a message during proof).
+
+In general, GNATprove generates checks for the default value of a type when a
+variable of this type is default initialized. This is not the case for private
+types, as the default value of a private type declared in a library unit is
+really the responsibility of the implementer of the library, not the user.
+If the private type has a known discriminant
+part, then default checks are done for any values of the discriminants.
+
+If a private type has a ``Default_Initial_Condition``, then this
+condition can act either as a precondition or as a postcondition of the default
+value computation. If the ``Default_Initial_Condition`` does not refer to the
+current type instance, or if it only refers to its discriminants, then it is
+considered to be a precondition: it is the user of the private type who is
+responsible for ensuring its validity. As such, the condition is assumed when
+checking the default value of the private type, and it is checked each time a
+variable of the type is default initialized. For example, in the following
+example, we must have ``First < Last`` to be allowed to safely default
+initialize our stack type:
+
+.. code-block:: ada
+
+   type Stack (First, Last : Positive) is private with
+     Default_Initial_Condition => First < Last;
+
+|GNATprove| will take advantage of this information when checking the default
+value of ``Stack`` for run-time exceptions. For example, it will be able to
+ensure that the predicate will hold if ``Stack`` is defined as follows:
+
+.. code-block:: ada
+
+      type Stack (First, Last : Positive) is record
+         Content : Nat_Arr (First .. Last) := 0;
+         Top     : Positive := First;
+      end record with
+        Predicate => Top in Content'Range;
+
+Otherwise, the ``Default_Initial_Condition`` is handled as a postcondition of
+the default value computation. It is checked once and for all when the
+definition of the type is analyzed.
