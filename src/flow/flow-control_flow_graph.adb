@@ -4715,8 +4715,7 @@ package body Flow.Control_Flow_Graph is
    is
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
-      --  Sanity check: the called subprogram is located in its own scope
-      --  and the caller can see it.
+      --  Sanity check: the called subprogram is located in its own scope.
 
       Called_Loc  : constant Flow_Scope := Get_Flow_Scope (Called_Thing)
         with Ghost;
@@ -4728,7 +4727,13 @@ package body Flow.Control_Flow_Graph is
       Called_Scop : constant Flow_Scope :=
         (Called_Loc.Ent, Visible_Part) with Ghost;
 
-      pragma Assert (Is_Visible (Called_Scop, FA.B_Scope));
+      --  Sanity check: the caller can see the called subprogram, or, the
+      --  called subprogram is a dispatching operation declared in a private
+      --  part (SPARK RM 3.9.2 (20.1/3)).
+
+      pragma Assert ((Is_Dispatching_Operation (Called_Thing)
+                     and then Is_Hidden (Called_Thing))
+                     or else Is_Visible (Called_Scop, FA.B_Scope));
 
       Ins  : Vertex_Lists.List;
       Outs : Vertex_Lists.List;
