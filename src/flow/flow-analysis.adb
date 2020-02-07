@@ -524,7 +524,7 @@ package body Flow.Analysis is
             if Present (FA.CFG.Get_Key (V)) then
                First_Use := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
             else
-               First_Use := FA.Atr (V).Error_Location;
+               First_Use := Atr.Error_Location;
             end if;
          elsif Atr.Is_Parameter then
             First_Use := Get_Direct_Mapping_Id (Atr.Parameter_Actual);
