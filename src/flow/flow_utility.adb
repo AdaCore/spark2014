@@ -1840,9 +1840,6 @@ package body Flow_Utility is
          elsif Nkind (N) in N_Has_Etype then
             --  If Etype is Present then use that
             Etype (N)
-         elsif Present (Defining_Identifier (N)) then
-            --  N can be some kind of type declaration
-            Defining_Identifier (N)
          else
             --  We don't expect to get any other kind of node
             raise Program_Error);

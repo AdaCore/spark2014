@@ -526,12 +526,12 @@ package Flow_Utility is
      (N     : Node_Id;
       Scope : Flow_Scope)
       return Entity_Id
-   with Pre  => Present (N),
+   with Pre  => Nkind (N) in N_Entity | N_Subexpr,
         Post => (if Nkind (N) = N_Defining_Identifier and then
                     Ekind (N) = E_Abstract_State
                  then Get_Type'Result = Standard_Void_Type
                  else Is_Type (Get_Type'Result));
-   --  @param N is the node who's type we need to retrieve
+   --  @param N either an entity or a subexpression
    --  @param Scope is the scope relative to which we retrieve the type
    --  @return the entity corresponding to the type of N. If the full view
    --    of the type is not visible from Scope, then we return the non-full
