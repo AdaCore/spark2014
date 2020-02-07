@@ -2,7 +2,7 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="8">
-<prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="10" steplimit="610000" memlimit="1000"/>
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <file format="whyml" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="use_ordered_maps__my_contains.mlw"/>
@@ -30,10 +30,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.5" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="40428"/></proof>
+  <proof prover="0"><result status="valid" steps="105"/></proof>
   </goal>
   <goal name="def&#39;vc.6" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="42824"/></proof>
+  <proof prover="0"><result status="valid" steps="1374"/></proof>
   </goal>
  </transf>
  </goal>
