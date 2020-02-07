@@ -4,4 +4,3 @@ NT SKIP platform differences
 assertions SKIP platform differences
 community SKIP requires lemmas
 ALL RLIMIT 1500
-ALL SKIP waiting for SC09-016

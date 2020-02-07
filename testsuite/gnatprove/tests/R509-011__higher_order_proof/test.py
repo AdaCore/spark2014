@@ -12,8 +12,7 @@ contains_manual_proof = False
 
 
 def replay():
-    prove_all(procs=16, steps=0, vc_timeout=20,
-              prover=["cvc4","z3","altergo"],
+    prove_all(procs=16, level=3,
               opt=["-u", "test_higher_order.ads",
                    "-u", "test_higher_order1.ads",
                    "-u", "test_higher_order2.ads",

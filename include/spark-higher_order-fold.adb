@@ -125,45 +125,68 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
           Off
 #end if;
       is
+
+         function Count_Length (I : Index_1; J : Index_2) return Boolean is
+         --  Count_Length up to the position I, J
+
+         ((Fold_Count.Acc.Fold (A, 0) (I, J) =
+                Natural (I - A'First (1)) * A'Length (2)
+              + Natural (J - A'First (2)) + 1)
+             =
+               ((if I > A'First (1) then
+                   (for all K in A'First (1) .. I - 1 =>
+                        (for all L in A'Range (2) =>
+                                Choose (A (K, L)))))
+                and (for all L in A'First (2) .. J =>
+                        Choose (A (I, L)))))
+         with Pre => I in A'Range (1) and then J in A'Range (2),
+           Post => (if J = A'Last (2) then
+                        Count_Length'Result = Count_Length (I));
+
+         function Count_Length (I : Index_1) return Boolean is
+         --  Count_Length up to the position I, A'Last (2)
+
+         ((Fold_Count.Acc.Fold (A, 0) (I, A'Last (2)) =
+                           Natural (I - A'First (1) + 1) * A'Length (2))
+                       =
+                         (for all K in A'First (1) .. I =>
+                              (for all L in A'Range (2) =>
+                                     Choose (A (K, L)))))
+         with Pre => I in A'Range (1) and then A'Length (2) > 0,
+           Post =>
+             (if I = A'Last (1) then
+                    Count_Length'Result =
+                ((Count (A) = A'Length (1) * A'Length (2)) =
+                 (for all I in A'Range (1) =>
+                      (for all J in A'Range (2) => Choose (A (I, J))))));
+
+         procedure Prove_Next (I : Index_1; J : Index_2) with
+         --  Prove Count_Length in the next iteration
+
+           Pre => I in A'Range (1) and then J in A'Range (2)
+           and then
+             (if J > A'First (2) then
+                Count_Length (I, J - 1)
+             elsif I > A'First (1) then
+                Count_Length (I - 1)),
+           Post => Count_Length (I, J);
+
+         ----------------
+         -- Prove_Next --
+         ----------------
+
+         procedure Prove_Next (I : Index_1; J : Index_2) is null;
+
       begin
          if A'Length (2) > 0 then
             for I in A'Range (1) loop
                pragma Loop_Invariant
                  (if I > A'First (1)
-                  then (Fold_Count.Acc.Fold (A, 0) (I - 1, A'Last (2)) =
-                         Natural (I - A'First (1)) * A'Length (2)) =
-                       (for all K in A'First (1) .. I - 1 =>
-                         (for all L in A'Range (2) => Choose (A (K, L)))));
+                  then Count_Length (I - 1));
                for J in A'Range (2) loop
-                  pragma Assert
-                    (if Fold_Count.Acc.Fold (A, 0) (I, J) =
-                         Natural (I - A'First (1)) * A'Length (2)
-                           + Natural (J - A'First (2)) + 1
-                        and J > A'First (2)
-                     then Fold_Count.Acc.Fold (A, 0) (I, J - 1) =
-                         Natural (I - A'First (1)) * A'Length (2)
-                           + Natural (J - A'First (2)));
+                  Prove_Next (I, J);
                   pragma Loop_Invariant
-                    (if Fold_Count.Acc.Fold (A, 0) (I, J) =
-                         Natural (I - A'First (1)) * A'Length (2)
-                          + Natural (J - A'First (2)) + 1
-                     then
-                       (if I > A'First (1) then
-                            (for all K in A'First (1) .. I - 1 =>
-                               (for all L in A'Range (2) =>
-                                    Choose (A (K, L)))))
-                        and (for all L in A'First (2) .. J =>
-                                Choose (A (I, L))));
-                  pragma Loop_Invariant
-                    (if (if I > A'First (1) then
-                            (for all K in A'First (1) .. I - 1 =>
-                               (for all L in A'Range (2) =>
-                                    Choose (A (K, L)))))
-                        and (for all L in A'First (2) .. J =>
-                                Choose (A (I, L)))
-                     then Fold_Count.Acc.Fold (A, 0) (I, J) =
-                         Natural (I - A'First (1)) * A'Length (2)
-                          + Natural (J - A'First (2)) + 1);
+                    (Count_Length (I, J));
                end loop;
             end loop;
          end if;
@@ -215,40 +238,61 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
 #end if;
       is
          C : constant Integer :=
-           (if (Choose (A1 (I, J)) and Choose (A2 (I, J)))
-            or (not Choose (A1 (I, J)) and not Choose (A2 (I, J))) then 0
+           (if Choose (A1 (I, J)) = Choose (A2 (I, J)) then 0
             elsif  Choose (A1 (I, J)) then 1
             else -1);
+
+         function Update_Count (K : Index_1; L : Index_2) return Boolean is
+         --  Update_Count up to the position I, J
+
+           (if K < I or else (K = I and then L < J) then
+                 Fold_Count.Acc.Fold (A1, 0) (K, L) =
+                Fold_Count.Acc.Fold (A2, 0) (K, L)
+            else
+               Fold_Count.Acc.Fold (A1, 0) (K, L) =
+                Fold_Count.Acc.Fold (A2, 0) (K, L) + C)
+         with Pre => I in A1'Range (1) and then J in A1'Range (2)
+           and then K in A1'Range (1) and then L in A1'Range (2)
+           and then A1'First (1) = A2'First (1)
+           and then A1'Last (1) = A2'Last (1)
+           and then A1'First (2) = A2'First (2)
+           and then A1'Last (2) = A2'Last (2);
+
+         procedure Prove_Next (K : Index_1; L : Index_2) with
+         --  Prove Update_Count in the next iteration
+
+           Pre => I in A1'Range (1) and then J in A1'Range (2)
+           and then K in A1'Range (1) and then L in A1'Range (2)
+           and then A1'First (1) = A2'First (1)
+           and then A1'Last (1) = A2'Last (1)
+           and then A1'First (2) = A2'First (2)
+           and then A1'Last (2) = A2'Last (2)
+           and then
+           (for all K in A1'Range (1) =>
+                (for all L in A2'Range (2) =>
+                   (if K /= I or else L /= J then A1 (K, L) = A2 (K, L))))
+           and then
+             (if L > A1'First (2) then
+                Update_Count (K, L - 1)
+             elsif K > A1'First (1) then
+                Update_Count (K - 1, A1'Last (2))),
+           Post => Update_Count (K, L);
+
+         ----------------
+         -- Prove_Next --
+         ----------------
+
+         procedure Prove_Next (K : Index_1; L : Index_2) is null;
+
       begin
          for K in A1'Range (1) loop
             pragma Loop_Invariant
-              (if K < I  or else (K = I and then A1'First (2) < J) then
-                    Fold_Count.Acc.Fold (A1, 0) (K, A1'First (2)) =
-                    Fold_Count.Acc.Fold (A2, 0) (K, A1'First (2))
-               else
-                    Fold_Count.Acc.Fold (A1, 0) (K, A1'First (2)) =
-                   Fold_Count.Acc.Fold (A2, 0) (K, A1'First (2)) + C);
-            pragma Assert
-              (if K > A1'First (1) then
-                    In_Range (A2, (Fold_Count.Acc.Fold (A2, 0)
-                 (K - 1, A1'Last (2))), K, A1'First (2)));
+              (if K > A1'First (1) then Update_Count (K - 1, A1'Last (2)));
             for L in A1'Range (2) loop
-               pragma Loop_Invariant
-                 (if L > A1'First (2) then
-                       In_Range (A2, (Fold_Count.Acc.Fold (A2, 0)
-                    (K, L - 1)), K, L));
-               pragma Loop_Invariant
-                 (if K < I or else (K = I and then L < J) then
-                       Fold_Count.Acc.Fold (A1, 0) (K, L) =
-                       Fold_Count.Acc.Fold (A2, 0) (K, L)
-                  else
-                       Fold_Count.Acc.Fold (A1, 0) (K, L) =
-                       Fold_Count.Acc.Fold (A2, 0) (K, L) + C);
+               Prove_Next (K, L);
+               pragma Loop_Invariant (Update_Count (K, L));
             end loop;
          end loop;
-         pragma Assert
-           (Fold_Count.Acc.Fold (A1, 0) (A1'Last (1), A1'Last (2)) =
-            Fold_Count.Acc.Fold (A2, 0) (A1'Last (1), A1'Last (2)) + C);
       end Update_Count;
    end Count_2;
 
