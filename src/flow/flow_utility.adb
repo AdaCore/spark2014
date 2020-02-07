@@ -251,7 +251,7 @@ package body Flow_Utility is
                   end if;
                end;
 
-            when N_In | N_Not_In =>
+            when N_Membership_Test =>
                if Present (Right_Opnd (N)) then
                   --  x in t
                   P := Right_Opnd (N);
@@ -3494,7 +3494,7 @@ package body Flow_Utility is
                Variables.Union (Do_Attribute_Reference (N));
                return Skip;
 
-            when N_In | N_Not_In =>
+            when N_Membership_Test =>
                --  Membership tests involving type with predicates have the
                --  predicate flow into the variable set returned.
 
