@@ -18,8 +18,3 @@
 	url = ../z3.git
 	ignore = dirty
         branch = master
-[submodule "gnat"]
-	path = gnat
-	url = ../gnat.git
-	ignore = dirty
-        branch = master
