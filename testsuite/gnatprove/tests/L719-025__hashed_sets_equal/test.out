@@ -1,15 +1,15 @@
 a-cfhase.ads:497:18: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:812:39: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:821:17: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:842:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:843:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:891:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:1068:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:1069:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:1069:44: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:1109:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:1201:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
-a-cfhase.ads:1222:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:813:39: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:822:17: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:843:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:844:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:892:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1069:24: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1070:26: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1070:44: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1110:49: info: overflow check proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1202:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
+a-cfhase.ads:1223:20: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:12
 a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at p.ads:12
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at p.ads:12
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
@@ -23,11 +23,9 @@ p.adb:5:07: info: initialization of "I" proved
 p.adb:7:07: info: precondition proved (CVC4: 1 VC)
 p.adb:8:22: info: assertion proved (CVC4: 1 VC)
 p.adb:9:07: info: precondition proved (CVC4: 1 VC)
-p.adb:9:18: warning: unused assignment to "Cu"
 p.adb:13:27: info: precondition proved (CVC4: 1 VC)
 p.adb:14:07: info: initialization of "I" proved
 p.adb:16:07: info: precondition proved (CVC4: 1 VC)
-p.adb:16:18: warning: unused assignment to "Cu"
 p.adb:17:07: info: precondition proved (CVC4: 1 VC)
 p.adb:18:22: info: assertion proved (CVC4: 1 VC)
 p.adb:24:10: info: precondition proved (CVC4: 1 VC)

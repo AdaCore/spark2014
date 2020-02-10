@@ -2,124 +2,124 @@ a-cfdlli.ads:469:49: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cfdlli.ads:610:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:700:57: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:766:57: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:852:28: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:852:39: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1028:43: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1209:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1348:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1363:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1378:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1393:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1415:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1421:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1470:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1477:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1576:54: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:6
-a-cfhama.ads:680:39: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
-a-cfhama.ads:680:39: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
-a-cfhama.ads:689:17: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
-a-cfhama.ads:689:17: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
-a-cfhama.ads:719:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
-a-cfhama.ads:719:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
-a-cfhama.ads:734:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
-a-cfhama.ads:734:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
+a-cfdlli.ads:853:28: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:853:39: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1029:43: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1210:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1349:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1364:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1379:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1394:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1416:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1422:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1471:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1478:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1577:54: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:6
+a-cfhama.ads:681:39: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
+a-cfhama.ads:681:39: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
+a-cfhama.ads:690:17: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
+a-cfhama.ads:690:17: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
+a-cfhama.ads:720:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
+a-cfhama.ads:720:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
+a-cfhama.ads:735:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
+a-cfhama.ads:735:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
 a-cfhase.ads:497:18: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
 a-cfhase.ads:497:18: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:812:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:812:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:821:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:821:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:842:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:842:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:843:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:843:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:891:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:891:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1068:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1068:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1069:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1069:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1069:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1069:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1109:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1109:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1201:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1201:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1222:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1222:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1429:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_sets.ads:33
+a-cfhase.ads:813:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:813:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:822:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:822:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:843:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:843:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:844:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:844:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:892:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:892:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1069:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1069:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1070:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1070:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1070:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1070:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1110:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1110:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1202:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1202:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1223:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1223:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1430:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_sets.ads:33
 a-cfinve.ads:602:57: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
 a-cfinve.ads:730:23: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
 a-cfinve.ads:733:38: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
 a-cfinve.ads:766:14: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
 a-cfinve.ads:770:35: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cforma.ads:744:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:744:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:753:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:753:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:788:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:788:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:796:21: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:796:21: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:823:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:823:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:831:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:831:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:901:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:901:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:916:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:916:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:931:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:931:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:946:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:946:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:986:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:986:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:1001:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:1001:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:745:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:745:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:754:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:754:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:789:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:789:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:797:21: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:797:21: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:824:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:824:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:832:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:832:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:902:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:902:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:917:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:917:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:932:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:932:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:947:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:947:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:987:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:987:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:1002:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:1002:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
 a-cforse.ads:511:18: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
 a-cforse.ads:511:18: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:869:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:869:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:878:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:878:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:913:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:913:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:921:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:921:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:948:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:948:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:956:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:956:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:973:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:973:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:974:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:974:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1022:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1022:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1192:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1192:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1193:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1193:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1193:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1193:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1232:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1232:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1336:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1336:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1351:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1351:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1366:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1366:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1381:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1381:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1415:47: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1415:47: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1430:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1430:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1697:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_ordered_sets.ads:26
-a-cforse.ads:1718:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
-a-cforse.ads:1736:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cforse.ads:870:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:870:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:879:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:879:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:914:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:914:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:922:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:922:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:949:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:949:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:957:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:957:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:974:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:974:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:975:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:975:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1023:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1023:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1193:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1193:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1194:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1194:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1194:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1194:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1233:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1233:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1337:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1337:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1352:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1352:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1367:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1367:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1382:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1382:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1416:47: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1416:47: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1431:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1431:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1698:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cforse.ads:1719:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cforse.ads:1737:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
 a-cofove.ads:295:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
 a-cofove.ads:337:73: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
 a-cofove.ads:370:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
