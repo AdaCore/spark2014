@@ -64,7 +64,9 @@ the complete list).
   additionally are not copied back when passed by copy, thus introducing a
   dependency on the parameter mode chosen by the compiler.
 
-* The use of access types and allocators is not permitted. Pointers can
+* The use of access types and allocators is restricted to pool specific
+  access types and subjected to an ownership policy ensuring that a mutable
+  memory cell has a single owner. In general, pointers can
   introduce aliasing, that is, they can allow the same object to be visible
   through different names at the same program point. This makes it difficult to
   reason about a program as modifying the object under one of the names will
@@ -884,9 +886,7 @@ the size of standard integer types.
 
 |GNATprove|'s analysis does not detect possible run-time errors corresponding
 to raising exception ``Storage_Error`` at run time, which should be
-independently assessed. Because access types and dynamic allocation are
-forbidden in |SPARK|, the only possible cause for raising exception
-``Storage_Error`` in a |SPARK| program is overflowing the stack.
+independently assessed.
 
 .. _Portability of Fixed-Point and Floating-Point Computations:
 
@@ -992,9 +992,9 @@ Rewriting the Code in |SPARK|
 Depending on the violation, it may be more or less easy to rewrite the code in
 |SPARK|:
 
-* Access types should in general be rewritten as private types of a package
-  whose public part is marked ``SPARK_Mode => On`` and whose private part is
-  marked ``SPARK_Mode => Off``. Thus, the body of that package cannot be
+* General access types should in general be rewritten as private types of a
+  package whose public part is marked ``SPARK_Mode => On`` and whose private
+  part is marked ``SPARK_Mode => Off``. Thus, the body of that package cannot be
   analyzed by |GNATprove|, but clients of the package can be analyzed.
 
 * Functions with side-effects should be rewritten as procedures, by adding an
@@ -1037,7 +1037,7 @@ can be used in different ways:
 * Even when most of the code is in |SPARK|, it may be more cost effective to
   apply ``SPARK_Mode => On`` selectively rather than by default. This is the
   case in particular when some units have non-|SPARK| declarations in the
-  public part of their package spec (for example access type
+  public part of their package spec (for example general access type
   definitions). Rewriting the code of these units to isolate the non-|SPARK|
   declarations in a part that can be marked ``SPARK_Mode => Off`` may be more
   costly than specifying no ``SPARK_Mode`` for these units, which allows
@@ -1220,6 +1220,6 @@ and instead that part of the code should be marked ``SPARK_Mode => Off``. To
 minimize the parts of the code that need to be marked ``SPARK_Mode => Off``, it
 is in general preferable to apply ``SPARK_Mode => On`` selectively rather than
 by default, so that units that have non-|SPARK| declarations in the public part
-of their package spec (for example access type definitions) need not be marked
-``SPARK_Mode => Off``. See :ref:`Using SPARK_Mode to Select or Exclude Code`
-for details.
+of their package spec (for example general access type definitions) need not be
+marked ``SPARK_Mode => Off``. See
+:ref:`Using SPARK_Mode to Select or Exclude Code` for details.

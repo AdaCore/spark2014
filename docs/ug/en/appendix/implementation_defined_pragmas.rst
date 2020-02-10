@@ -222,7 +222,7 @@ A protected unit declaration such as
    is
       procedure Op1 (X : in out Integer);
       procedure Op2;
-      procedure Non_SPARK_Profile (Ptr : access Integer)
+      function Non_SPARK_Profile (X : in out Integer) return Boolean
         with SPARK_Mode => Off;
    private
       Aaa, Bbb : Integer := 0;
@@ -239,7 +239,7 @@ a lot like
       type Prot is limited private;
       procedure Op1 (Obj : in out Prot; X : in out Integer);
       procedure Op2 (Obj : in out Prot);
-      procedure Non_SPARK_Profile (Obj : in out Prot; Ptr : access Integer)
+      function Non_SPARK_Profile (Obj : Prot; Ptr : in out Integer) return Boolean
         with SPARK_Mode => Off;
    private
       type Prot is
