@@ -84,7 +84,7 @@ class Altergo(Prover):
 
     def command(self, timeout):
         result = [self.executable_name, "-max-split", "5",
-                  "-use-fpa", "-prelude", "fpa-theory-2019-10-08-19h00.why"]
+                  "-use-fpa", "-disable-weaks", "-prelude", "fpa-theory-2019-10-08-19h00.why"]
         if timeout:
             result.append("-timelimit")
             result.append(str(timeout))
