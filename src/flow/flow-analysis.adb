@@ -1295,7 +1295,8 @@ package body Flow.Analysis is
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            F1       => F,
                            Tag      => VC_Kinds.Unused,
-                           Severity => Warning_Kind);
+                           Severity => Warning_Kind,
+                           Vertex   => V);
                      end if;
                   end;
                end if;
