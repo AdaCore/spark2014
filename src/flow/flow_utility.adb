@@ -3447,6 +3447,11 @@ package body Flow_Utility is
             when N_Selected_Component =>
                if Is_Subprogram_Or_Entry (Entity (Selector_Name (N))) then
 
+                  --  ??? We are only getting here in the dubious mode that
+                  --  originates from First_Variable_Use.
+
+                  pragma Assert (not Ctx.Assume_In_Expression);
+
                   --  Here we are dealing with a call of a protected
                   --  entry/function. This appears on the tree as a selected
                   --  component of the protected object.
