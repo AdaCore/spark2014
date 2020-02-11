@@ -1545,9 +1545,23 @@ package body SPARK_Definition is
          if Etype (N) = Universal_Real
            and then not Inside_Named_Number_Declaration (N)
          then
-            Mark_Violation
-              ("expression of type root_real", N,
-               Cont_Msg => "value is dependent on the compiler and target");
+            --  Specialize the error message for fixed-point multiplication or
+            --  division with one argument of type Universal_Real, and suggest
+            --  to fix by qualifying the literal value.
+
+            if Nkind (Parent (N)) in N_Op_Multiply | N_Op_Divide
+              and then Has_Fixed_Point_Type (Etype (Parent (N)))
+            then
+               Mark_Violation
+                 ("real literal argument to fixed-point "
+                  & "multiplication or division", N,
+                  Cont_Msg => "use qualification to give a fixed-point type "
+                  & "to the real literal");
+            else
+               Mark_Violation
+                 ("expression of type root_real", N,
+                  Cont_Msg => "value is dependent on the compiler and target");
+            end if;
 
             --  Return immediately to avoid issuing the same message on all
             --  sub-expressions of this expression.
