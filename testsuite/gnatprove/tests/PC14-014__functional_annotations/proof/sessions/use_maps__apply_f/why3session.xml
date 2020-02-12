@@ -2,10 +2,9 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="8">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="200" memlimit="1000"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <file format="whyml">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="use_maps__apply_f.mlw"/>
@@ -398,14 +397,12 @@
   <proof prover="2"><result status="valid" steps="10824"/></proof>
   </goal>
   <goal name="def&#39;vc.108" expl="loop invariant preservation" proved="true">
-  <proof prover="0" obsolete="true"><result status="failure"/></proof>
   <proof prover="1"><result status="valid" steps="141057"/></proof>
-  <proof prover="2" timelimit="120" steplimit="22000" obsolete="true"><result status="unknown" steps="22012"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.109" expl="loop invariant preservation" proved="true">
-  <proof prover="0" obsolete="true"><result status="failure"/></proof>
   <proof prover="1"><result status="valid" steps="132920"/></proof>
-  <proof prover="2" timelimit="120" steplimit="22000" obsolete="true"><result status="unknown" steps="22023"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.110" expl="loop invariant preservation" proved="true">
   <proof prover="2"><result status="valid" steps="4342"/></proof>
@@ -518,15 +515,13 @@
   <proof prover="2"><result status="valid" steps="2581"/></proof>
   </goal>
   <goal name="def&#39;vc.141" expl="postcondition" proved="true">
-  <proof prover="0" obsolete="true"><result status="failure"/></proof>
   <proof prover="1"><result status="valid" steps="114344"/></proof>
-  <proof prover="2" timelimit="120" steplimit="22000" obsolete="true"><result status="unknown" steps="22022"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.142" expl="postcondition">
-  <proof prover="0" timelimit="5" steplimit="0"><result status="timeout"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="timeout" steps="125763"/></proof>
   </goal>
  </transf>
  </goal>

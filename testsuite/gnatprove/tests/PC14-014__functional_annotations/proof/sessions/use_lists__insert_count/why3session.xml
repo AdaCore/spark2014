@@ -5,7 +5,6 @@
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <file format="whyml">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="use_lists__insert_count.mlw"/>
@@ -120,24 +119,18 @@
   <proof prover="2"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="def&#39;vc.29" expl="precondition" proved="true">
-  <proof prover="0" timelimit="120" steplimit="200" obsolete="true"><result status="failure"/></proof>
-  <proof prover="1" timelimit="120" steplimit="610000" obsolete="true"><result status="unknown" steps="612920"/></proof>
   <proof prover="2"><result status="valid" steps="24235"/></proof>
   </goal>
   <goal name="def&#39;vc.30" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="def&#39;vc.31" expl="precondition" proved="true">
-  <proof prover="0" timelimit="120" steplimit="200" obsolete="true"><result status="failure"/></proof>
-  <proof prover="1" timelimit="120" steplimit="610000" obsolete="true"><result status="unknown" steps="613272"/></proof>
   <proof prover="2"><result status="valid" steps="40081"/></proof>
   </goal>
   <goal name="def&#39;vc.32" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="def&#39;vc.33" expl="precondition" proved="true">
-  <proof prover="0" timelimit="120" steplimit="200" obsolete="true"><result status="failure"/></proof>
-  <proof prover="1" timelimit="120" steplimit="610000" obsolete="true"><result status="unknown" steps="613624"/></proof>
   <proof prover="2"><result status="valid" steps="64590"/></proof>
   </goal>
   <goal name="def&#39;vc.34" expl="precondition" proved="true">
@@ -151,7 +144,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.37" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5855"/></proof>
+  <proof prover="0"><result status="valid" steps="6252"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
@@ -266,7 +259,7 @@
   <proof prover="2"><result status="valid" steps="62"/></proof>
   </goal>
   <goal name="def&#39;vc.71" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="11739"/></proof>
+  <proof prover="0"><result status="valid" steps="11788"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
@@ -279,15 +272,14 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="timeout" steps="74535"/></proof>
   </goal>
   <goal name="def&#39;vc.74" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="6527"/></proof>
+  <proof prover="0"><result status="valid" steps="6020"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.75" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5262"/></proof>
+  <proof prover="0"><result status="valid" steps="5374"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
