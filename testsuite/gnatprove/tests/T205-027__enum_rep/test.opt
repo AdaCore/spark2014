@@ -1,0 +1,1 @@
+ALL XFAIL crash in proof on Enum_Rep attribute (T205-027)
