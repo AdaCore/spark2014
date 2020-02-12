@@ -4974,7 +4974,6 @@ package body Flow.Analysis is
       ---------------------------------
 
       procedure Report_Erroneous_Volatility is
-         Unused_Projected, Abstract_States : Flow_Id_Sets.Set;
       begin
          --  Issue error if dealing with nonvolatile function; SPARK RM
          --  7.1.3(8).
@@ -4983,21 +4982,32 @@ package body Flow.Analysis is
          --  2) the function accesses state which may be externally modified.
 
          for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+
             --  Note that it is not useful to emit errors for the the 'Final
             --  globals associated with the function specification.
+
             if FA.CFG.Get_Key (V).Variant /= Final_Value then
                declare
                   Atr : V_Attributes renames FA.Atr (V);
+
+                  Repr : Flow_Id;
+                  --  For constituents that are visible in the body but must be
+                  --  represented by their encapsulating abstract state in the
+                  --  spec, this will be the abstract state that represents
+                  --  them.
+
                begin
                   for Var of To_Entire_Variables (Atr.Variables_Used) loop
 
                      --  Any Synthetic_Null_Export global is treated as
                      --  volatile; having one generated against the function
                      --  is not in and of itself cause for a flow error
+
                      if Synthetic (Var) then
                         null;
 
                      --  Case 1: Volatile variables
+
                      elsif Is_Volatile (Var) then
                         pragma Assert (Present (Atr.Error_Location));
                         Error_Msg_Flow
@@ -5014,18 +5024,13 @@ package body Flow.Analysis is
                             Vertex   => V);
 
                      --  Case 2: We up-project the variable to determine if
-                     --  it is a constituent of abstract state; such state
-                     --  is provided by the output Partial of procedure
-                     --  Up_Project.
-                     else
-                        Up_Project (Vars      => Flow_Id_Sets.To_Set (Var),
-                                    Scope     => FA.S_Scope,
-                                    Projected => Unused_Projected,
-                                    Partial   => Abstract_States);
+                     --  it is a constituent of an abstract state.
 
-                        if not Abstract_States.Is_Empty
-                           and then Is_Volatile (Abstract_States
-                                                 (Abstract_States.First))
+                     else
+                        Repr := Up_Project (Var, FA.S_Scope);
+
+                        if Repr /= Var
+                           and then Is_Volatile (Repr)
                         then
                            Error_Msg_Flow
                               (FA       => FA,
@@ -5034,8 +5039,7 @@ package body Flow.Analysis is
                                   "of variable & cannot act as global item " &
                                   "of nonvolatile function & ",
                                N        => Atr.Error_Location,
-                               F1       =>
-                                  Abstract_States (Abstract_States.First),
+                               F1       => Repr,
                                F2       => Var,
                                F3       => Direct_Mapping_Id
                                   (FA.Spec_Entity),
