@@ -3574,6 +3574,10 @@ package body Flow_Utility is
                   end if;
                end;
 
+            when N_Qualified_Expression =>
+               Variables.Union (Recurse (Expression (N)));
+               return Skip;
+
             when N_Quantified_Expression =>
                declare
                   pragma Assert
