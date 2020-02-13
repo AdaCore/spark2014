@@ -3488,12 +3488,11 @@ package body Flow_Utility is
                         Variables.Union (FS);
                      end loop;
                   end;
-
-                  return Skip;
-
                else
-                  return OK;
+                  Variables.Union (Recurse (Expression (N)));
                end if;
+
+               return Skip;
 
             when N_Attribute_Reference =>
                Variables.Union (Do_Attribute_Reference (N));
