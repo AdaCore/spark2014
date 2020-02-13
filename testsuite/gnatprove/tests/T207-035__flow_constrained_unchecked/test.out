@@ -1,9 +1,6 @@
 INLINING ENABLED:
 r.adb:1:53: info: initialization of "Result" proved
-r.adb:2:16: medium: missing dependency "Result => First"
-r.adb:2:16: medium: missing dependency "Result => Last"
-r.adb:2:41: medium: incorrect dependency "null => First"
-r.adb:2:48: medium: incorrect dependency "null => Last"
+r.adb:2:04: info: flow dependencies proved
 
 INLINING DISABLED:
 r.adb:1:53: info: initialization of "Result" proved

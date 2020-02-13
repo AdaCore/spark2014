@@ -3573,7 +3573,9 @@ package body Flow_Utility is
                   end if;
                end;
 
-            when N_Qualified_Expression =>
+            when N_Qualified_Expression
+               | N_Unchecked_Type_Conversion
+            =>
                Variables.Union (Recurse (Expression (N)));
                return Skip;
 
