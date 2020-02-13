@@ -56,7 +56,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.13" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="935"/></proof>
+  <proof prover="0"><result status="valid" steps="956"/></proof>
   </goal>
   <goal name="def&#39;vc.14" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -117,7 +117,7 @@
   <proof prover="0"><result status="valid" steps="972"/></proof>
   </goal>
   <goal name="def&#39;vc.32" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1000"/></proof>
+  <proof prover="0"><result status="valid" steps="1007"/></proof>
   </goal>
   <goal name="def&#39;vc.33" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -128,7 +128,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.35" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="997"/></proof>
+  <proof prover="0"><result status="valid" steps="1018"/></proof>
   </goal>
   <goal name="def&#39;vc.36" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -143,7 +143,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.40" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1048"/></proof>
+  <proof prover="0"><result status="valid" steps="1072"/></proof>
   </goal>
   <goal name="def&#39;vc.41" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -165,7 +165,7 @@
   <proof prover="0"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="def&#39;vc.46" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="2288"/></proof>
+  <proof prover="0"><result status="valid" steps="2333"/></proof>
   </goal>
   <goal name="def&#39;vc.47" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >

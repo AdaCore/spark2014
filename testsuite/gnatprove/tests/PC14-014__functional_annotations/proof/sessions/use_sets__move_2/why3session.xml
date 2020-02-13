@@ -242,14 +242,15 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.63" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="99581"/></proof>
+  <proof prover="0"><result status="valid" steps="5344"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.64" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="109694"/></proof>
+  <proof prover="0"><result status="valid" steps="4709"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.65" expl="loop invariant preservation" proved="true">
+  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="7151899"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>

@@ -18,39 +18,39 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="452"/></proof>
+  <proof prover="0"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="def&#39;vc.3" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.4" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="471"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.5" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.6" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="466"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.7" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.8" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="496"/></proof>
+  <proof prover="0"><result status="valid" steps="58"/></proof>
   </goal>
   <goal name="def&#39;vc.9" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="445"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.10" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.11" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="472"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.12" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="462"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.13" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="13"/></proof>
