@@ -1,0 +1,22 @@
+rflx-generic_types.adb:10:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:274, in instantiation at rflx-tlv-message.ads:5
+rflx-generic_types.adb:10:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:275, in instantiation at rflx-tlv-message.ads:5
+rflx-generic_types.adb:11:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:274, in instantiation at rflx-tlv-message.ads:5
+rflx-generic_types.adb:11:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:275, in instantiation at rflx-tlv-message.ads:5
+rflx-generic_types.adb:58:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:274, in instantiation at rflx-tlv-message.ads:5
+rflx-generic_types.adb:58:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:275, in instantiation at rflx-tlv-message.ads:5
+rflx-generic_types.adb:90:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:422, in instantiation at rflx-tlv-message.ads:5
+rflx-generic_types.adb:90:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:423, in instantiation at rflx-tlv-message.ads:5
+rflx-generic_types.adb:91:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:422, in instantiation at rflx-tlv-message.ads:5
+rflx-generic_types.adb:91:22: info: assertion proved, in instantiation at rflx-tlv-generic_message.adb:423, in instantiation at rflx-tlv-message.ads:5
+rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
+rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
+rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
+rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:196
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:196
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:62
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:62
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:274
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:275
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:422
+rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:423
