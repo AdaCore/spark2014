@@ -939,7 +939,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.280" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="606"/></proof>
+  <proof prover="0"><result status="valid" steps="448"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.281" expl="loop invariant init" proved="true">
@@ -1424,7 +1424,7 @@
   <proof prover="1"><result status="valid" steps="2461"/></proof>
   </goal>
   <goal name="def&#39;vc.429" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="4078"/></proof>
+  <proof prover="0"><result status="valid" steps="4423"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.430" expl="loop invariant preservation" proved="true">
@@ -1432,11 +1432,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.431" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="8717"/></proof>
+  <proof prover="0"><result status="valid" steps="7190"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.432" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="13398"/></proof>
+  <proof prover="0"><result status="valid" steps="11287"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.433" expl="loop invariant preservation" proved="true">
@@ -1839,11 +1839,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.555" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="7303"/></proof>
+  <proof prover="0"><result status="valid" steps="6857"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.556" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="8261"/></proof>
+  <proof prover="0"><result status="valid" steps="7882"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.557" expl="loop invariant preservation" proved="true">
@@ -1851,11 +1851,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.558" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="19201"/></proof>
+  <proof prover="0"><result status="valid" steps="10747"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.559" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="15848"/></proof>
+  <proof prover="0"><result status="valid" steps="17039"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.560" expl="loop invariant preservation" proved="true">
@@ -1981,11 +1981,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.597" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="9058"/></proof>
+  <proof prover="0"><result status="valid" steps="8275"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.598" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="11446"/></proof>
+  <proof prover="0"><result status="valid" steps="9254"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.599" expl="assertion" proved="true">
@@ -2377,11 +2377,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.716" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="6338"/></proof>
+  <proof prover="0"><result status="valid" steps="10843"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.717" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="15032"/></proof>
+  <proof prover="0"><result status="valid" steps="13732"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.718" expl="postcondition" proved="true">
