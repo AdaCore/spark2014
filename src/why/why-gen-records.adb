@@ -23,33 +23,35 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;   use Common_Containers;
-with Elists;              use Elists;
+with Common_Containers;    use Common_Containers;
+with Elists;               use Elists;
 with GNAT.Source_Info;
-with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
-with Gnat2Why.Expr;       use Gnat2Why.Expr;
-with Gnat2Why.Tables;     use Gnat2Why.Tables;
-with Namet;               use Namet;
-with Nlists;              use Nlists;
-with Sinput;              use Sinput;
-with Snames;              use Snames;
-with SPARK_Util;          use SPARK_Util;
-with SPARK_Util.Types;    use SPARK_Util.Types;
-with Uintp;               use Uintp;
-with VC_Kinds;            use VC_Kinds;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Gen.Init;        use Why.Gen.Init;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Preds;       use Why.Gen.Preds;
-with Why.Gen.Progs;       use Why.Gen.Progs;
-with Why.Gen.Terms;       use Why.Gen.Terms;
-with Why.Images;          use Why.Images;
-with Why.Inter;           use Why.Inter;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
+with Gnat2Why.Expr;        use Gnat2Why.Expr;
+with Gnat2Why.Tables;      use Gnat2Why.Tables;
+with Namet;                use Namet;
+with Nlists;               use Nlists;
+with Sinput;               use Sinput;
+with Snames;               use Snames;
+with SPARK_Util;           use SPARK_Util;
+with SPARK_Util.Hardcoded; use SPARK_Util.Hardcoded;
+with SPARK_Util.Types;     use SPARK_Util.Types;
+with Uintp;                use Uintp;
+with VC_Kinds;             use VC_Kinds;
+with Why.Atree.Accessors;  use Why.Atree.Accessors;
+with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Atree.Modules;    use Why.Atree.Modules;
+with Why.Conversions;      use Why.Conversions;
+with Why.Gen.Decl;         use Why.Gen.Decl;
+with Why.Gen.Expr;         use Why.Gen.Expr;
+with Why.Gen.Hardcoded;    use Why.Gen.Hardcoded;
+with Why.Gen.Init;         use Why.Gen.Init;
+with Why.Gen.Names;        use Why.Gen.Names;
+with Why.Gen.Preds;        use Why.Gen.Preds;
+with Why.Gen.Progs;        use Why.Gen.Progs;
+with Why.Gen.Terms;        use Why.Gen.Terms;
+with Why.Images;           use Why.Images;
+with Why.Inter;            use Why.Inter;
 
 package body Why.Gen.Records is
 
@@ -1867,9 +1869,19 @@ package body Why.Gen.Records is
          Index_All  : Positive := 1;
 
       begin
+
+         --  Hardcoded types are translated separately
+
+         if Is_Hardcoded_Entity (E) then
+
+            --  Hardcoded types are necessarily simple private types
+
+            pragma Assert (Is_Simple_Private_Type (E));
+            Emit_Hardcoded_Type_Declaration (P, E);
+
          --  Simple private types are translated directly as EW_Private_Type
 
-         if Is_Simple_Private_Type (E) then
+         elsif Is_Simple_Private_Type (E) then
             Emit (P,
                   New_Type_Decl
                     (Name => To_String (WNE_Rec_Rep)));

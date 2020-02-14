@@ -58,6 +58,7 @@ with Snames;                         use Snames;
 with SPARK_Annotate;                 use SPARK_Annotate;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Util.External_Axioms;     use SPARK_Util.External_Axioms;
+with SPARK_Util.Hardcoded;           use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Stand;                          use Stand;
 with Stringt;                        use Stringt;
@@ -76,6 +77,7 @@ with Why.Gen.Arrays;                 use Why.Gen.Arrays;
 with Why.Gen.Binders;                use Why.Gen.Binders;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
 with Why.Gen.Expr;                   use Why.Gen.Expr;
+with Why.Gen.Hardcoded;              use Why.Gen.Hardcoded;
 with Why.Gen.Init;                   use Why.Gen.Init;
 with Why.Gen.Names;                  use Why.Gen.Names;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
@@ -15805,7 +15807,19 @@ package body Gnat2Why.Expr is
         Tag_Arg &
         Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
 
-      Why_Name   : constant W_Identifier_Id :=
+      Why_Name   : W_Identifier_Id;
+
+   begin
+
+      --  Hardcoded function calls are transformed in a specific function
+
+      if Is_Hardcoded_Entity (Subp) then
+         T := Transform_Hardcoded_Function_Call
+           (Subp, Args, Domain, Expr);
+         return T;
+      end if;
+
+      Why_Name :=
         W_Identifier_Id
           (Transform_Identifier (Params   => Params,
                                  Expr     => Expr,
@@ -15813,7 +15827,6 @@ package body Gnat2Why.Expr is
                                  Domain   => Domain,
                                  Selector => Selector));
 
-   begin
       if Domain in EW_Term | EW_Pred then
          T := New_Function_Call
            (Ada_Node => Expr,

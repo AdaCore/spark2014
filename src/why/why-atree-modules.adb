@@ -59,6 +59,7 @@ package body Why.Atree.Modules is
    procedure Init_Int_Div_Module;
    procedure Init_Int_Minmax_Module;
    procedure Init_Int_Power_Module;
+   procedure Init_Int_Gcd_Module;
    procedure Init_Labels;
    procedure Init_Main_Module;
 
@@ -346,6 +347,7 @@ package body Why.Atree.Modules is
       Init_Int_Div_Module;
       Init_Int_Abs_Module;
       Init_Int_Minmax_Module;
+      Init_Int_Gcd_Module;
       Init_BV_Modules;
       Init_BV_Conv_Modules;
       Init_Floating_Module;
@@ -1746,6 +1748,23 @@ package body Why.Atree.Modules is
                         Symb   => NID ("math_mod"),
                         Typ    => EW_Int_Type);
    end Init_Int_Div_Module;
+
+   ---------------------------
+   -- Init_Int_Gcd_Module --
+   ---------------------------
+
+   procedure Init_Int_Gcd_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Int_Gcd");
+   begin
+      M_Int_Gcd.Module := M;
+      M_Int_Gcd.Gcd :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("gcd"),
+                        Typ    => EW_Int_Type);
+   end Init_Int_Gcd_Module;
 
    ----------------------------
    -- Init_Int_Minmax_Module --

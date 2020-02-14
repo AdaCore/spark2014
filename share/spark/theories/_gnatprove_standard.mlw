@@ -109,6 +109,20 @@ module Integer
   ensures { result = length x y }
 end
 
+module Int_Gcd
+  use number.Gcd as Gcd
+  use int.Int
+
+  function gcd int int : int
+
+  axiom gcd_pos :
+    forall x, y : int. x > 0 /\ y > 0 -> gcd x y = Gcd.gcd x y
+
+  val gcd_ (x:int) (y:int) : int
+     requires { x <> 0 /\ y <> 0 }
+     ensures { result = gcd x y }
+end
+
 module Int_Power
   use export int.Power
 end

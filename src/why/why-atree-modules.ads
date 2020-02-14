@@ -176,6 +176,11 @@ package Why.Atree.Modules is
       Max    : W_Identifier_Id;
    end record;
 
+   type M_Int_Gcd_Type is record
+      Module : W_Module_Id;
+      Gcd    : W_Identifier_Id;
+   end record;
+
    type M_Floating_Type is record
       Module                : W_Module_Id;
       Power_Module          : W_Module_Id;
@@ -385,6 +390,7 @@ package Why.Atree.Modules is
    M_Int_Div       : M_Int_Div_Type;
    M_Int_Abs       : M_Int_Abs_Type;
    M_Int_Minmax    : M_Int_Minmax_Type;
+   M_Int_Gcd       : M_Int_Gcd_Type;
    M_Boolean       : M_Boolean_Type;
    M_Floating_Conv : M_Floating_Conv_Type;
 

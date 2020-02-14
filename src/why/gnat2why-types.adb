@@ -37,6 +37,7 @@ with Sinput;                  use Sinput;
 with SPARK_Atree;             use SPARK_Atree;
 with SPARK_Definition;        use SPARK_Definition;
 with SPARK_Util;              use SPARK_Util;
+with SPARK_Util.Hardcoded;    use SPARK_Util.Hardcoded;
 with SPARK_Util.Types;        use SPARK_Util.Types;
 with Stand;                   use Stand;
 with Why;                     use Why;
@@ -48,6 +49,7 @@ with Why.Gen.Arrays;          use Why.Gen.Arrays;
 with Why.Gen.Binders;         use Why.Gen.Binders;
 with Why.Gen.Decl;            use Why.Gen.Decl;
 with Why.Gen.Expr;            use Why.Gen.Expr;
+with Why.Gen.Hardcoded;       use Why.Gen.Hardcoded;
 with Why.Gen.Init;            use Why.Gen.Init;
 with Why.Gen.Names;           use Why.Gen.Names;
 with Why.Gen.Pointers;        use Why.Gen.Pointers;
@@ -593,15 +595,27 @@ package body Gnat2Why.Types is
                     To     => Type_Of_Node
                       (Etype (Next_Formal (First_Formal (Eq)))));
                Def   : constant W_Expr_Id :=
-                 New_Function_Call
-                   (Ada_Node => Eq,
-                    Domain   => EW_Pred,
-                    Name     => To_Why_Id (E => Eq,
-                                           Domain => EW_Pred,
-                                           Typ => EW_Bool_Type),
-                    Subp     => Eq,
-                    Args     => (1 => Arg_A, 2 => Arg_B),
-                    Typ      => EW_Bool_Type);
+                 (if Is_Hardcoded_Entity (Eq)
+
+                  --  If the equality is hardcoded, we define user_eq as its
+                  --  hardcoded definition.
+
+                  then
+                     Transform_Hardcoded_Function_Call
+                    (Subp     => Eq,
+                     Args     => (Arg_A, Arg_B),
+                     Domain   => EW_Pred,
+                     Ada_Node => Eq)
+                  else
+                     New_Function_Call
+                    (Ada_Node => Eq,
+                     Domain   => EW_Pred,
+                     Name     => To_Why_Id (E => Eq,
+                                            Domain => EW_Pred,
+                                            Typ => EW_Bool_Type),
+                     Subp     => Eq,
+                     Args     => (1 => Arg_A, 2 => Arg_B),
+                     Typ      => EW_Bool_Type));
             begin
                Emit
                  (File,

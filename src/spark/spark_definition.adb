@@ -54,6 +54,7 @@ with Sem_Util;                        use Sem_Util;
 with Snames;                          use Snames;
 with SPARK_Annotate;                  use SPARK_Annotate;
 with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
+with SPARK_Util.Hardcoded;            use SPARK_Util.Hardcoded;
 with SPARK_Util.Types;                use SPARK_Util.Types;
 with Stand;                           use Stand;
 with String_Utils;                    use String_Utils;
@@ -4211,6 +4212,9 @@ package body SPARK_Definition is
          procedure Mark_Function_Specification (N : Node_Id);
          --  Mark violations related to impure functions
 
+         procedure Mark_Subprogram_Contracts;
+         --  Mark pre-post contracts
+
          procedure Mark_Subprogram_Specification (N : Node_Id);
          --  Mark violations related to parameters, result and contract
 
@@ -4302,6 +4306,70 @@ package body SPARK_Definition is
                Mark_Violation (Id, From => Etype (Id));
             end if;
          end Mark_Function_Specification;
+
+         -------------------------------
+         -- Mark_Subprogram_Contracts --
+         -------------------------------
+
+         procedure Mark_Subprogram_Contracts is
+            Prag : Node_Id := (if Present (Contract (E))
+                               then Pre_Post_Conditions (Contract (E))
+                               else Empty);
+            Expr : Node_Id;
+         begin
+
+            while Present (Prag) loop
+               Expr :=
+                 Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
+
+               Mark (Expr);
+
+               --  For a class-wide condition, a corresponding expression must
+               --  be created in which a reference to a controlling formal
+               --  is interpreted as having the class-wide type. This is used
+               --  to create a suitable pre- or postcondition expression for
+               --  analyzing dispatching calls. This is done here so that the
+               --  newly created expression can be marked, including its
+               --  possible newly created itypes.
+
+               if Class_Present (Prag) then
+                  declare
+                     New_Expr : constant Node_Id :=
+                       New_Copy_Tree (Source => Expr);
+                  begin
+                     Process_Class_Wide_Condition (New_Expr, E);
+                     Mark (New_Expr);
+                     Set_Dispatching_Contract (Expr, New_Expr);
+                     Set_Parent (New_Expr, Prag);
+                  end;
+               end if;
+
+               Prag := Next_Pragma (Prag);
+            end loop;
+
+            Prag := Get_Pragma (E, Pragma_Contract_Cases);
+            if Present (Prag) then
+               declare
+                  Aggr          : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (Prag)));
+                  Case_Guard    : Node_Id;
+                  Conseq        : Node_Id;
+                  Contract_Case : Node_Id :=
+                    First (Component_Associations (Aggr));
+               begin
+                  while Present (Contract_Case) loop
+                     Case_Guard := First (Choices (Contract_Case));
+                     Conseq     := Expression (Contract_Case);
+
+                     Mark (Case_Guard);
+
+                     Mark (Conseq);
+
+                     Next (Contract_Case);
+                  end loop;
+               end;
+            end if;
+         end Mark_Subprogram_Contracts;
 
          -----------------------------------
          -- Mark_Subprogram_Specification --
@@ -4468,9 +4536,6 @@ package body SPARK_Definition is
             Replace_Types (Expr);
          end Process_Class_Wide_Condition;
 
-         Prag : Node_Id;
-         Expr : Node_Id;
-
       --  Start of processing for Mark_Subprogram_Entity
 
       begin
@@ -4520,60 +4585,11 @@ package body SPARK_Definition is
             end;
          end if;
 
-         Prag := (if Present (Contract (E))
-                  then Pre_Post_Conditions (Contract (E))
-                  else Empty);
+         --  ??? Preconditions in Big_Integers library contain raise
+         --  expressions, which are not supported in SPARK.
 
-         while Present (Prag) loop
-            Expr :=
-              Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
-
-            Mark (Expr);
-
-            --  For a class-wide condition, a corresponding expression must
-            --  be created in which a reference to a controlling formal
-            --  is interpreted as having the class-wide type. This is used
-            --  to create a suitable pre- or postcondition expression for
-            --  analyzing dispatching calls. This is done here so that the
-            --  newly created expression can be marked, including its possible
-            --  newly created itypes.
-
-            if Class_Present (Prag) then
-               declare
-                  New_Expr : constant Node_Id :=
-                    New_Copy_Tree (Source => Expr);
-               begin
-                  Process_Class_Wide_Condition (New_Expr, E);
-                  Mark (New_Expr);
-                  Set_Dispatching_Contract (Expr, New_Expr);
-                  Set_Parent (New_Expr, Prag);
-               end;
-            end if;
-
-            Prag := Next_Pragma (Prag);
-         end loop;
-
-         Prag := Get_Pragma (E, Pragma_Contract_Cases);
-         if Present (Prag) then
-            declare
-               Aggr          : constant Node_Id :=
-                 Expression (First (Pragma_Argument_Associations (Prag)));
-               Case_Guard    : Node_Id;
-               Conseq        : Node_Id;
-               Contract_Case : Node_Id :=
-                 First (Component_Associations (Aggr));
-            begin
-               while Present (Contract_Case) loop
-                  Case_Guard := First (Choices (Contract_Case));
-                  Conseq     := Expression (Contract_Case);
-
-                  Mark (Case_Guard);
-
-                  Mark (Conseq);
-
-                  Next (Contract_Case);
-               end loop;
-            end;
+         if not Is_Hardcoded_Entity (E) then
+            Mark_Subprogram_Contracts;
          end if;
 
          --  Plain preconditions cannot be used in SPARK on dispatching

@@ -79,6 +79,7 @@ with SPARK_Register;                  use SPARK_Register;
 with SPARK_Rewrite;                   use SPARK_Rewrite;
 with SPARK_Util;                      use SPARK_Util;
 with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
+with SPARK_Util.Hardcoded;            use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
 with SPARK_Xrefs;
@@ -400,6 +401,9 @@ package body Gnat2Why.Driver is
             | E_Procedure
          =>
             if Entity_Spec_In_SPARK (E)
+
+              -- Ignore hardcoded subprograms
+              and then not Is_Hardcoded_Entity (E)
 
               --  Ignore invariant procedures and default initial conditions
               and then not Subprogram_Is_Ignored_For_Proof (E)
@@ -874,7 +878,11 @@ package body Gnat2Why.Driver is
 
        --  Ignore simple shifts and rotates
 
-       and then not Is_Simple_Shift_Or_Rotate (E));
+       and then not Is_Simple_Shift_Or_Rotate (E)
+
+       --  Ignore hardcoded subprograms
+
+       and then not Is_Hardcoded_Entity (E));
 
    --------------------
    -- Print_Why_File --
