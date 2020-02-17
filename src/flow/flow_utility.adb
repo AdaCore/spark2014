@@ -3566,15 +3566,27 @@ package body Flow_Utility is
                     (Present (Iterator_Specification (N)) xor
                        Present (Loop_Parameter_Specification (N)));
 
-                  It : constant Node_Id :=
-                    (if Present (Iterator_Specification (N))
-                     then Iterator_Specification (N)
-                     else Loop_Parameter_Specification (N));
-
-                  E : constant Entity_Id := Defining_Identifier (It);
+                  E : constant Entity_Id :=
+                    Defining_Identifier
+                      (if Present (Iterator_Specification (N))
+                       then Iterator_Specification (N)
+                       else Loop_Parameter_Specification (N));
 
                begin
-                  Variables.Union (Recurse (It));
+                  if Present (Iterator_Specification (N)) then
+                     Variables.Union (Recurse (Iterator_Specification (N)));
+                  else
+                     declare
+                        R : constant Node_Id :=
+                          Get_Range
+                            (Discrete_Subtype_Definition
+                               (Loop_Parameter_Specification (N)));
+
+                     begin
+                        Variables.Union (Recurse (Low_Bound (R)));
+                        Variables.Union (Recurse (High_Bound (R)));
+                     end;
+                  end if;
 
                   --  Filter the quantified expression parameter from variables
                   --  referenced in the predicate, because the parameter is
