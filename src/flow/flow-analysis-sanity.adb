@@ -788,6 +788,12 @@ package body Flow.Analysis.Sanity is
                      Traverse_Discriminants (N);
 
                      case Nkind (Typ_Def) is
+                        when N_Access_To_Object_Definition =>
+                           Check_Subtype_Indication
+                             (Subtype_Indication (Typ_Def));
+
+                           Optional_Component_List := Empty;
+
                         when N_Record_Definition =>
                            Optional_Component_List :=
                              Component_List (Typ_Def);
@@ -825,8 +831,7 @@ package body Flow.Analysis.Sanity is
                         --  The following are either enumeration literals or
                         --  static expressions.
 
-                        when N_Access_To_Object_Definition
-                           | N_Decimal_Fixed_Point_Definition
+                        when N_Decimal_Fixed_Point_Definition
                            | N_Enumeration_Type_Definition
                            | N_Floating_Point_Definition
                            | N_Modular_Type_Definition
