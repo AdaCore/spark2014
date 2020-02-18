@@ -270,17 +270,6 @@ package Flow_Utility is
    --       the variables referenced in their initialization expression;
    --       similar for variables that come from inlining-for-proof.
 
-   function Get_Variables
-     (L                       : List_Id;
-      Scope                   : Flow_Scope;
-      Fold_Functions          : Reference_Kind;
-      Use_Computed_Globals    : Boolean;
-      Assume_In_Expression    : Boolean := True;
-      Expand_Internal_Objects : Boolean := False)
-      return Flow_Id_Sets.Set;
-   --  As above, but operating on a list. Note we don't have the
-   --  Consider_Extensions parameter here as its implicitly false.
-
    function Get_Variables_For_Proof (Expr_N  : Node_Id;
                                      Scope_N : Node_Id)
                                      return Flow_Id_Sets.Set

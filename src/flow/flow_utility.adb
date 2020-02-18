@@ -1997,12 +1997,6 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set;
    --  Internal version with a context that we'll use to recurse
 
-   function Get_Variables_Internal
-     (L   : List_Id;
-      Ctx : Get_Variables_Context)
-      return Flow_Id_Sets.Set;
-   --  Internal version with a context that we'll use to recurse
-
    -------------------
    -- Get_Variables --
    -------------------
@@ -2027,27 +2021,6 @@ package body Flow_Utility is
 
    begin
       return Get_Variables_Internal (N, Ctx);
-   end Get_Variables;
-
-   function Get_Variables
-     (L                       : List_Id;
-      Scope                   : Flow_Scope;
-      Fold_Functions          : Reference_Kind;
-      Use_Computed_Globals    : Boolean;
-      Assume_In_Expression    : Boolean := True;
-      Expand_Internal_Objects : Boolean := False)
-      return Flow_Id_Sets.Set
-   is
-      Ctx : constant Get_Variables_Context :=
-        (Scope                   => Scope,
-         Fold_Functions          => Fold_Functions,
-         Use_Computed_Globals    => Use_Computed_Globals,
-         Assume_In_Expression    => Assume_In_Expression,
-         Expand_Internal_Objects => Expand_Internal_Objects,
-         Consider_Extensions     => False);
-
-   begin
-      return Get_Variables_Internal (L, Ctx);
    end Get_Variables;
 
    ----------------------------
@@ -3633,23 +3606,6 @@ package body Flow_Utility is
       Map_Generic_In_Formals (Ctx.Scope, Variables, Entire => False);
 
       return Variables;
-   end Get_Variables_Internal;
-
-   function Get_Variables_Internal (L   : List_Id;
-                                    Ctx : Get_Variables_Context)
-                                    return Flow_Id_Sets.Set
-   is
-      P : Node_Id;
-   begin
-      return Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set do
-         P := First (L);
-         while Present (P) loop
-            Variables.Union (Get_Variables_Internal
-                               (P,
-                                Ctx'Update (Consider_Extensions => False)));
-            Next (P);
-         end loop;
-      end return;
    end Get_Variables_Internal;
 
    -----------------------------

@@ -1,4 +1,4 @@
 c37102b.adb:6:16: info: data dependencies proved
-c37102b.adb:18:18: subtype constraint cannot depend on variable input "G" (SPARK RM 4.4(2))
-c37102b.adb:21:25: subtype constraint cannot depend on variable input "G" (SPARK RM 4.4(2))
+c37102b.adb:18:21: subtype constraint cannot depend on variable input "G" (SPARK RM 4.4(2))
+c37102b.adb:21:28: subtype constraint cannot depend on variable input "G" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof
