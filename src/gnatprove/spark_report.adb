@@ -933,8 +933,8 @@ procedure SPARK_Report is
 
       procedure Print_Switch_Entry (Name : UTF8_String; Value : JSON_Value) is
       begin
-         Put_Line ("   " & Name & ": " &
-                     Build_Switches_String (Get (Value)));
+         Put_Line (Handle,
+                   "   " & Name & ": " & Build_Switches_String (Get (Value)));
       end Print_Switch_Entry;
 
       ---------------
