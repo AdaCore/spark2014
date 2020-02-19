@@ -5187,9 +5187,7 @@ package body Flow.Control_Flow_Graph is
       Typ : constant Entity_Id := Defining_Identifier (N);
       V   : Flow_Graphs.Vertex_Id;
    begin
-      if Is_Scalar_Type (Typ)
-        and then Is_Constrained (Typ)
-      then
+      if Is_Scalar_Type (Typ) then
          declare
             R : constant Node_Id := Scalar_Range (Typ);
 

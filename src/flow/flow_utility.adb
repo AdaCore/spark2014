@@ -2561,9 +2561,7 @@ package body Flow_Utility is
                pragma Assert (Ekind (E) not in E_Exception_Type
                                              | E_Subprogram_Type);
 
-               if Is_Scalar_Type (E)
-                 and then Is_Constrained (E)
-               then
+               if Is_Scalar_Type (E) then
                   declare
                      SR : constant Node_Id := Scalar_Range (E);
                      LB : constant Node_Id := Low_Bound (SR);
