@@ -2097,9 +2097,12 @@ package body Flow_Utility is
             Scope                   => Ctx.Scope,
             Fold_Functions          => Ctx.Fold_Functions,
             Use_Computed_Globals    => Ctx.Use_Computed_Globals,
-            Expand_Internal_Objects => Ctx.Expand_Internal_Objects));
+            Expand_Internal_Objects => Ctx.Expand_Internal_Objects))
+      with Pre => Ekind (Unchecked_Full_Type (Etype (Prefix (N))))
+                    in Record_Kind | Concurrent_Kind;
       --  Helper function to call Untangle_Record_Fields with the appropriate
-      --  context.
+      --  context. It can be called on types that have either components or
+      --  discriminants.
 
       -------------
       -- Recurse --
@@ -2675,14 +2678,21 @@ package body Flow_Utility is
                  Flatten_Variable (Entity (Prefix (N)), Ctx.Scope);
 
             when Attribute_Update =>
-               if Is_Tagged_Type (Get_Type (N, Ctx.Scope)) then
-                  --  ??? Precise analysis is disabled for tagged types, so we
-                  --      just do the usual instead.
-                  null;
-
-               else
-                  return Untangle_With_Context (N);
-               end if;
+               declare
+                  T : constant Entity_Id := Get_Type (N, Ctx.Scope);
+               begin
+                  if Is_Record_Type (T) then
+                     if Is_Tagged_Type (T) then
+                        --  ??? Precise analysis is disabled for tagged types,
+                        --      so we just do the usual instead.
+                        null;
+                     else
+                        return Untangle_With_Context (N);
+                     end if;
+                  else
+                     pragma Assert (Is_Array_Type (T));
+                  end if;
+               end;
 
             when Attribute_Constrained =>
                for F of Recurse (Prefix (N)) loop
