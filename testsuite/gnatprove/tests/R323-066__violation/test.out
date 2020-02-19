@@ -1,15 +1,33 @@
 known_satellites.adb:10:04: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
 known_satellites.adb:10:04: violation of aspect SPARK_Mode at line 5
+known_satellites.adb:23:07: "Satellite" is not allowed in SPARK
 known_satellites.adb:23:07: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
 known_satellites.adb:23:07: violation of aspect SPARK_Mode at line 5
+known_satellites.adb:23:07: violation of aspect SPARK_Mode at line 5
+known_satellites.adb:23:45: "Satellite" is not allowed in SPARK
+known_satellites.adb:23:45: violation of aspect SPARK_Mode at line 5
+known_satellites.adb:35:07: "Satellite" is not allowed in SPARK
 known_satellites.adb:35:07: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
 known_satellites.adb:35:07: violation of aspect SPARK_Mode at line 5
+known_satellites.adb:35:07: violation of aspect SPARK_Mode at line 5
+known_satellites.adb:35:53: "Satellite" is not allowed in SPARK
+known_satellites.adb:35:53: violation of aspect SPARK_Mode at line 5
+known_satellites.adb:46:07: "Satellite" is not allowed in SPARK
+known_satellites.adb:46:07: violation of aspect SPARK_Mode at line 5
+known_satellites.adb:46:16: "Satellite" is not allowed in SPARK
 known_satellites.adb:46:16: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
+known_satellites.adb:46:16: violation of aspect SPARK_Mode at line 5
 known_satellites.adb:46:16: violation of aspect SPARK_Mode at line 5
 known_satellites.adb:53:08: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
 known_satellites.adb:53:08: violation of aspect SPARK_Mode at line 5
 spacecraft-ctors.adb:19:06: "Satellite" is not allowed in SPARK
 spacecraft-ctors.adb:19:06: violation of aspect SPARK_Mode at line 3
+spacecraft.adb:11:34: "Satellite" is not allowed in SPARK
+spacecraft.adb:11:34: violation of aspect SPARK_Mode at line 4
+spacecraft.adb:11:72: "Satellite" is not allowed in SPARK
+spacecraft.adb:11:72: violation of aspect SPARK_Mode at line 4
+spacecraft.adb:12:35: "Satellite" is not allowed in SPARK
+spacecraft.adb:12:35: violation of aspect SPARK_Mode at line 4
 spacecraft.ads:6:04: extended precision floating point type is not yet supported
 spacecraft.ads:6:04: extended precision floating point type is not yet supported
 spacecraft.ads:6:04: extended precision floating point type is not yet supported

@@ -5383,7 +5383,10 @@ package body SPARK_Definition is
             --  and this function merges all the predicates applying to the
             --  type so that we cannot tell the difference.
 
-            if Present (Full_View (E)) and then Has_Predicates (E) then
+            if Is_Base_Type (E)
+              and then Present (Full_View (E))
+              and then Has_Predicates (E)
+            then
                declare
                   Scop : constant Entity_Id := Scope (E);
                   pragma Assert (Ekind (Scop) = E_Package);
