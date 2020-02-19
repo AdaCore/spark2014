@@ -11,7 +11,7 @@
 # 2. Start the bisect for e.g. the 20 last commits:
 #    $ git bisect start HEAD HEAD~20
 # 3. Run automatic bisect via git
-#    $ git bisect run scripts/bisect_single_test.sh <testname>
+#    $ git bisect run scripts/bisect.sh <testname>
 # 4. clean up afterwards
 #    $ git bisect reset
 
