@@ -1994,7 +1994,8 @@ package body Flow_Utility is
    function Get_Variables_Internal
      (N   : Node_Id;
       Ctx : Get_Variables_Context)
-      return Flow_Id_Sets.Set;
+      return Flow_Id_Sets.Set
+   with Pre => (if Ctx.Assume_In_Expression then Nkind (N) in N_Subexpr);
    --  Internal version with a context that we'll use to recurse
 
    -------------------
