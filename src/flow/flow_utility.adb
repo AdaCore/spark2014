@@ -2062,7 +2062,8 @@ package body Flow_Utility is
 
       function Recurse (N                   : Node_Id;
                         Consider_Extensions : Boolean := False)
-                        return Flow_Id_Sets.Set;
+                        return Flow_Id_Sets.Set
+      with Pre => Present (N);
       --  Helper function to recurse on N
 
       function Untangle_Record_Fields
@@ -3406,7 +3407,14 @@ package body Flow_Utility is
                end if;
 
             when N_Aggregate =>
-               Variables.Union (Recurse (Aggregate_Bounds (N)));
+               declare
+                  Array_Bounds : constant Node_Id := Aggregate_Bounds (N);
+               begin
+                  if Present (Array_Bounds) then
+                     Variables.Union (Recurse (Low_Bound (Array_Bounds)));
+                     Variables.Union (Recurse (High_Bound (Array_Bounds)));
+                  end if;
+               end;
 
             when N_Selected_Component =>
                if Is_Subprogram_Or_Entry (Entity (Selector_Name (N))) then
