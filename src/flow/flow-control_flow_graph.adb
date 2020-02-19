@@ -5183,9 +5183,16 @@ package body Flow.Control_Flow_Graph is
         and then Is_Constrained (Typ)
       then
          declare
+            R : constant Node_Id := Scalar_Range (Typ);
+
             Vars_Read : constant Flow_Id_Sets.Set :=
               Get_All_Variables
-                (N                    => Typ,
+                (N                    => Low_Bound (R),
+                 Scope                => FA.B_Scope,
+                 Use_Computed_Globals => not FA.Generating_Globals)
+                or
+              Get_All_Variables
+                (N                    => High_Bound (R),
                  Scope                => FA.B_Scope,
                  Use_Computed_Globals => not FA.Generating_Globals);
 

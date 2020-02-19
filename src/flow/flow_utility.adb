@@ -2977,7 +2977,8 @@ package body Flow_Utility is
                      begin
                         loop
                            Vars.Union
-                             (Get_Vars_Wrapper (Component_Association));
+                             (Get_Vars_Wrapper
+                                (Expression (Component_Association)));
                            Next (Component_Association);
                            exit when No (Component_Association);
                         end loop;
@@ -3565,7 +3566,8 @@ package body Flow_Utility is
 
                begin
                   if Present (Iterator_Specification (N)) then
-                     Variables.Union (Recurse (Iterator_Specification (N)));
+                     Variables.Union
+                       (Recurse (Name (Iterator_Specification (N))));
                   else
                      declare
                         R : constant Node_Id :=
