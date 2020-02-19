@@ -158,8 +158,7 @@ package body Flow.Analysis.Sanity is
 
       procedure Detect_Variable_Inputs
         (N        : Node_Id;
-         Err_Desc : String;
-         Err_Node : Node_Id)
+         Err_Desc : String)
       with Pre => Nkind (N) in N_Subexpr;
       --  Emit error for any object referenced within N which does NOT denote
       --  a constant, a bound or a discriminant (of an enclosing concurrent
@@ -210,8 +209,7 @@ package body Flow.Analysis.Sanity is
                then
                   Detect_Variable_Inputs
                     (N        => Expression (Decl),
-                     Err_Desc => "actual for formal object with mode in",
-                     Err_Node => Decl);
+                     Err_Desc => "actual for formal object with mode in");
                end if;
             end;
 
@@ -245,8 +243,7 @@ package body Flow.Analysis.Sanity is
          if Present (Default_Expression) then
             Detect_Variable_Inputs
               (N        => Default_Expression,
-               Err_Desc => "default initialization",
-               Err_Node => Default_Expression);
+               Err_Desc => "default initialization");
          end if;
       end Check_Default_Expression;
 
@@ -266,8 +263,7 @@ package body Flow.Analysis.Sanity is
                   loop
                      Detect_Variable_Inputs
                        (N        => Expr,
-                        Err_Desc => "renamed index",
-                        Err_Node => Expr);
+                        Err_Desc => "renamed index");
                      Next (Expr);
                      exit when No (Expr);
                   end loop;
@@ -276,8 +272,7 @@ package body Flow.Analysis.Sanity is
             when N_Slice =>
                Detect_Variable_Inputs
                  (N        => Discrete_Range (N),
-                  Err_Desc => "renamed slice",
-                  Err_Node => Discrete_Range (N));
+                  Err_Desc => "renamed slice");
 
             when others =>
                null;
@@ -301,13 +296,11 @@ package body Flow.Analysis.Sanity is
                begin
                   Detect_Variable_Inputs
                     (N        => Lo,
-                     Err_Desc => "subtype constraint",
-                     Err_Node => Lo);
+                     Err_Desc => "subtype constraint");
 
                   Detect_Variable_Inputs
                     (N        => Hi,
-                     Err_Desc => "subtype constraint",
-                     Err_Node => Hi);
+                     Err_Desc => "subtype constraint");
                end;
 
             when N_Range_Constraint =>
@@ -320,13 +313,11 @@ package body Flow.Analysis.Sanity is
                begin
                   Detect_Variable_Inputs
                     (N        => Lo,
-                     Err_Desc => "subtype constraint",
-                     Err_Node => Lo);
+                     Err_Desc => "subtype constraint");
 
                   Detect_Variable_Inputs
                     (N        => Hi,
-                     Err_Desc => "subtype constraint",
-                     Err_Node => Hi);
+                     Err_Desc => "subtype constraint");
                end;
 
             when N_Index_Or_Discriminant_Constraint =>
@@ -345,8 +336,7 @@ package body Flow.Analysis.Sanity is
                         when N_Discriminant_Association =>
                            Detect_Variable_Inputs
                              (N        => Expression (Constr),
-                              Err_Desc => "subtype constraint",
-                              Err_Node => Constr);
+                              Err_Desc => "subtype constraint");
 
                         when others =>
                            if Is_Entity_Name (Constr)
@@ -357,10 +347,8 @@ package body Flow.Analysis.Sanity is
                            else
                               Detect_Variable_Inputs
                                 (N        => Constr,
-                                 Err_Desc => "subtype constraint",
-                                 Err_Node => Constr);
+                                 Err_Desc => "subtype constraint");
                            end if;
-
                      end case;
 
                      Next (Constr);
@@ -457,8 +445,7 @@ package body Flow.Analysis.Sanity is
             Detect_Variable_Inputs
               (N        => Get_Expr_From_Return_Only_Func
                              (Predicate_Function (Typ)),
-               Err_Desc => "predicate",
-               Err_Node => Typ);
+               Err_Desc => "predicate");
          end if;
 
          --  Check that the type invariant expression, if present, does not
@@ -482,8 +469,7 @@ package body Flow.Analysis.Sanity is
 
                Detect_Variable_Inputs
                  (N        => Expr,
-                  Err_Desc => "invariant",
-                  Err_Node => Full_View (Typ));
+                  Err_Desc => "invariant");
 
                --  Check 7.3.2(5) (no calls to boundary subprograms)
 
@@ -512,8 +498,7 @@ package body Flow.Analysis.Sanity is
 
       procedure Detect_Variable_Inputs
         (N        : Node_Id;
-         Err_Desc : String;
-         Err_Node : Node_Id)
+         Err_Desc : String)
       is
          function Is_Within_Protected_Function return Boolean;
          --  Returns True if we are inside a protected function, False if
@@ -553,7 +538,7 @@ package body Flow.Analysis.Sanity is
               (FA       => FA,
                Msg      => Err_Desc & " cannot depend on variable input &",
                SRM_Ref  => "4.4(2)",
-               N        => Err_Node,
+               N        => N,
                Severity => Error_Kind,
                F1       => Entire_Variable (F));
             Sane := False;
@@ -1009,8 +994,7 @@ package body Flow.Analysis.Sanity is
                         for Ind_Expr of Indexes loop
                            Detect_Variable_Inputs
                              (N        => Ind_Expr,
-                              Err_Desc => "borrowed expression",
-                              Err_Node => Ind_Expr);
+                              Err_Desc => "borrowed expression");
                         end loop;
                      end if;
                   end;
