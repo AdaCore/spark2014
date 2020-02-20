@@ -656,12 +656,12 @@ Flow analysis of a non-proven subprogram
 
 If a subprogram is in |SPARK| but is too complex or difficult to prove
 formally then it still may be flow analyzed which is a fast and
-efficient process.  Flow analysis in the absence proof of has a number
+efficient process.  Flow analysis in the absence of proof has a number
 of significant benefits as the subprogram implementation is
 
 - checked that it is in |SPARK|;
 
-- checked that there are no uses of initialized variables;
+- checked that there are no uses of uninitialized variables;
 
 - checked that there are no ineffective statements; and
 
