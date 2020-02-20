@@ -7503,8 +7503,6 @@ package body SPARK_Definition is
                --  Mark entry barrier
 
                if Nkind (E) = N_Entry_Body then
-                  --  Entry barriers in Ravenscar are always of N_Identifier
-                  --  kind.
                   Mark (Condition (Entry_Body_Formal_Part (N)));
                end if;
 
