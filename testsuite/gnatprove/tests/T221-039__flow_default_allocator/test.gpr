@@ -1,0 +1,5 @@
+with "spark_heap.gpr";
+
+project Test is
+   for Main use ("m.adb");
+end Test;
