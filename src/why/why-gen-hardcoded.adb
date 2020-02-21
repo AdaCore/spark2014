@@ -37,6 +37,7 @@ with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
 with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Inter;          use Why.Inter;
+with Why.Types;          use Why.Types;
 
 package body Why.Gen.Hardcoded is
    package BIN renames Big_Integers_Names; use BIN;
@@ -78,7 +79,7 @@ package body Why.Gen.Hardcoded is
       Ada_Node : Node_Id)
       return     W_Expr_Id
    is
-      T           : W_Expr_Id;
+      T           : W_Expr_Id := Why_Empty;
       Name_String : constant String :=
         Get_Name_String (Chars (Subp));
    begin

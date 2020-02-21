@@ -16,7 +16,7 @@ is
    type Big_Ints is array (Index_Type) of Big_Integer;
 
    function Two_Power (Expon : Natural) return Big_Integer is
-      (+(2) ** Expon);
+      ((+2) ** Expon);
    Conversion_Array : constant Big_Ints := (Two_Power (0),   Two_Power (26),
                                             Two_Power (51),  Two_Power (77),
                                             Two_Power (102), Two_Power (128),
