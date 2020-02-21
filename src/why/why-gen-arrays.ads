@@ -352,7 +352,7 @@ package Why.Gen.Arrays is
    --  the last argument filled in by this procedure.
 
    function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
-     with Pre => Get_Type_Kind (Get_Type (E)) in EW_Split | EW_Wrapper;
+     with Pre => Get_Type_Kind (Get_Type (E)) in EW_Split;
    --  Return the Ada entity associated to an array expression in split form.
    --  There is always one or we cannot reach to the object's bounds.
    --  @param E Why expression for which we want an ada entity.

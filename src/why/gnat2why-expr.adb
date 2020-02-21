@@ -4605,8 +4605,7 @@ package body Gnat2Why.Expr is
 
       if Type_Is_Modeled_As_Base (Ty_Ext)
         or else (Use_Split_Form_For_Type (Ty_Ext)
-                 and then Get_Type_Kind (Get_Type (+Expr))
-                   not in EW_Abstract | EW_Wrapper)
+                 and then Get_Type_Kind (Get_Type (+Expr)) /= EW_Abstract)
       then
          T := +New_Dynamic_Property (Domain => EW_Pred,
                                      Ty     => Ty_Ext,

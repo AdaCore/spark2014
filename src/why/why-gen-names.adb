@@ -186,10 +186,8 @@ package body Why.Gen.Names is
       To_Kind   : constant EW_Type := Get_Type_Kind (To);
    begin
       case From_Kind is
-         when EW_Wrapper => raise Program_Error;
          when EW_Builtin =>
             case To_Kind is
-               when EW_Wrapper => raise Program_Error;
                when EW_Builtin =>
 
                   --  Only certain conversions are OK
@@ -291,7 +289,6 @@ package body Why.Gen.Names is
             | EW_Split
          =>
             case To_Kind is
-               when EW_Wrapper => raise Program_Error;
                when EW_Builtin =>
                   declare
                      A : constant Node_Id := Get_Ada_Node (+From);

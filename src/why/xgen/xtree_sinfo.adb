@@ -97,6 +97,8 @@ package body Xtree_Sinfo is
                  "Name", "W_Name", Id_One);
       New_Field (W_Type,
                  "Is_Mutable", "Boolean", "False");
+      New_Field (W_Type,
+                 "Relaxed_Init", "Boolean", "False");
       Set_Domain (W_Type, EW_Term);
 
       ---------------
