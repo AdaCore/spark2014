@@ -3601,6 +3601,28 @@ package body Flow_Utility is
                Variables.Include
                  (Direct_Mapping_Id (Flow.Dynamic_Memory.Heap_State));
 
+               declare
+                  Expr : constant Node_Id := Expression (N);
+               begin
+                  --  If the allocated expression is just a type name, then
+                  --  ignore it.
+                  --  ??? We shall pull dependencies coming from default
+                  --  expressions of the allocated record components.
+
+                  if Is_Entity_Name (Expr)
+                    and then Is_Type (Entity (Expr))
+                  then
+                     --  Subpools are not currently allowed in SPARK, but make
+                     --  sure that we don't forget to traverse them if they
+                     --  become allowed.
+
+                     pragma Assert (No (Subpool_Handle_Name (N)));
+                     return Skip;
+                  else
+                     return OK;
+                  end if;
+               end;
+
             when others =>
                null;
          end case;
