@@ -17,9 +17,7 @@ test_dic.adb:47:04: info: initialization of "X5" proved
 test_dic.adb:47:13: info: range check proved (CVC4: 1 VC)
 use_test.adb:3:04: info: default initial condition proved (CVC4: 1 VC)
 use_test.adb:3:04: info: initialization of "X" proved
-use_test.adb:3:04: info: predicate check proved on default value (CVC4: 1 VC)
 use_test.adb:4:04: info: initialization of "Y" proved
-use_test.adb:4:04: info: predicate check proved on default value (Trivial: 1 VC)
 use_test.adb:4:04: medium: default initial condition might fail (e.g. when Y = (First => 1, Last => 1, Index => ?) and Y'Constrained = False)
 use_test.adb:4:22: info: range check proved (CVC4: 1 VC)
 use_test.adb:4:25: info: range check proved (CVC4: 1 VC)

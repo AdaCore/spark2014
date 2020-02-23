@@ -7,7 +7,6 @@ dic_and_predicate_checks.ads:28:07: medium: type "T" is not fully initialized
 dic_and_predicate_checks.ads:33:12: medium: default initial condition might fail
 dic_and_predicate_checks.ads:37:07: medium: type "P" is not fully initialized
 dic_and_predicate_checks.ads:53:04: info: initialization of "X1" proved
-dic_and_predicate_checks.ads:53:04: medium: predicate check might fail on default value
 dic_and_predicate_checks.ads:54:04: info: initialization of "X2" proved
 dic_and_predicate_checks.ads:54:04: medium: predicate check might fail on default value
 dic_and_predicate_checks.ads:55:04: info: initialization of "X3" proved
