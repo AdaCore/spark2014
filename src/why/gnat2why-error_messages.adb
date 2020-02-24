@@ -423,6 +423,30 @@ package body Gnat2Why.Error_Messages is
       end;
    end Emit_Proof_Result;
 
+   ------------------------------
+   -- Emit_Static_Proof_Result --
+   ------------------------------
+
+   procedure Emit_Static_Proof_Result
+     (Node       : Node_Id;
+      Kind       : VC_Kind;
+      Proved     : Boolean;
+      E          : Entity_Id;
+      How_Proved : Prover_Category)
+   is
+      Id : constant VC_Id :=
+        Register_VC (Node, Kind, E, Present_In_Why3 => False);
+   begin
+      Emit_Proof_Result
+        (Node,
+         Id,
+         Kind,
+         Proved,
+         E,
+         No_Session_Dir,
+         How_Proved);
+   end Emit_Static_Proof_Result;
+
    ------------------------
    -- Num_Registered_VCs --
    ------------------------

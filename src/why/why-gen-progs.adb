@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;       use Common_Containers;
-with Flow_Error_Messages;     use Flow_Error_Messages;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Util;           use Gnat2Why.Util;
@@ -42,18 +41,9 @@ package body Why.Gen.Progs is
      (Ada_Node   : Node_Id;
       Check_Kind : Scalar_Check_Kind)
    is
-      Reason : constant VC_Kind := To_VC_Kind (Check_Kind);
-      Id     : constant VC_Id :=
-        Register_VC (Ada_Node, Reason, Current_Subp, Present_In_Why3 => False);
    begin
-      Emit_Proof_Result
-        (Ada_Node,
-         Id,
-         Reason,
-         True,
-         Current_Subp,
-         No_Session_Dir,
-         How_Proved => PC_Interval);
+      Emit_Static_Proof_Result (Ada_Node, To_VC_Kind (Check_Kind), True,
+                                Current_Subp, PC_Interval);
    end Emit_Always_True_Range_Check;
 
    -----------------------
