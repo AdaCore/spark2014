@@ -99,7 +99,7 @@ package Flow.Analysis is
 
    procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs);
    --  This procedure looks for hidden state variables and missing Part_Of
-   --  indicators. Also detects hideen state that has a Part_Of indicator but
+   --  indicators. Also detects hidden state that has a Part_Of indicator but
    --  is not mentioned in any refinement.
    --
    --  In particular:
@@ -112,7 +112,7 @@ package Flow.Analysis is
    --
    --  3. It emits an error if there is any missing Part_Of indicator for
    --     constants with variable input (SPARK RM 7.2.6(2-3)) that are:
-   --     * declared immidiately within the private part of a given package;
+   --     * declared immediately within the private part of a given package;
    --     * part of the visible state of a package that is declared immediately
    --       within the private part of a given package;
    --     * part of the visible state of a private child.
@@ -155,8 +155,8 @@ package Flow.Analysis is
    --
    --  The current implementation emits a message for each statement that
    --  involves a potentially blocking operation. This is enough to easily
-   --  identify delay statements and entry call statements this is enough
-   --  (but frontend flags them with a warning anyway).
+   --  identify delay statements and entry call statements (but frontend flags
+   --  them with a warning anyway).
    --
    --  For a call on a subprogram whose body contains a potentially blocking
    --  operation the idea is that once AI12-0064, i.e. the Nonblocking aspect,
