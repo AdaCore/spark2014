@@ -1,4 +1,4 @@
-pragma Profile (GNAT_Extended_Ravenscar);
+pragma Profile (Jorvik);
 pragma Partition_Elaboration_Policy (Sequential);
 package P is
    protected type PT is
