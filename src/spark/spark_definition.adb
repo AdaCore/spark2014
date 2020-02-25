@@ -498,7 +498,7 @@ package body SPARK_Definition is
          Prefix_Node     : Node_Id;
          Node            : Node_Id;
 
-         Profile : Profile_Data renames Profile_Info (GNAT_Extended_Ravenscar);
+         Profile : Profile_Data renames Profile_Info (Jorvik);
          --  A minimal settings required for tasking constructs to be allowed
          --  in SPARK.
 
@@ -600,13 +600,13 @@ package body SPARK_Definition is
                                   (J in All_Parameter_Restrictions
                                      and then Restrictions.Value (J) > V (J)))
                   then
-                     if (J in No_Implicit_Task_Allocations |
-                              No_Implicit_Protected_Object_Allocations
-                         and then
-                           Restrictions.Set (No_Implicit_Heap_Allocations))
-                       or else
-                        (J = Pure_Barriers
-                         and then Restrictions.Set (Simple_Barriers))
+                     --  Any code that complies with the Simple_Barriers
+                     --  restriction (which is required by the Ravenscar
+                     --  profile) also complies with Pure_Barriers (which is
+                     --  its relaxed variant required by the Jorvik profile).
+
+                     if J = Pure_Barriers
+                       and then Restrictions.Set (Simple_Barriers)
                      then
                         null;
                      else
