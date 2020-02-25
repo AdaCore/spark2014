@@ -4688,12 +4688,6 @@ package body SPARK_Definition is
          function Is_Controlled (E : Entity_Id) return Boolean;
          --  Return True if E is in Ada.Finalization
 
-         function Is_Synchronous_Barrier (E : Entity_Id) return Boolean;
-         --  Return True if E is Ada.Synchronous_Barriers.Synchronous_Barrier
-         --
-         --  Synchronous barriers are allowed by the Ravenscar profile, but we
-         --  do not want them in SPARK.
-
          procedure Mark_Default_Expression (C : Entity_Id)
          with Pre => Ekind (C) in E_Component | E_Discriminant;
          --  Mark default expression of component or discriminant and check it
@@ -4827,46 +4821,9 @@ package body SPARK_Definition is
                 (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))) = Off;
          end Is_Private_Entity_Mode_Off;
 
-         ----------------------------
-         -- Is_Synchronous_Barrier --
-         ----------------------------
-
-         function Is_Synchronous_Barrier (E : Entity_Id) return Boolean is
-            S_Ptr : Entity_Id := E;
-            --  Scope pointer
-
-            Name_Synchronous_Barrier : constant Name_Id :=
-              Name_Find ("synchronous_barrier");
-            --  ??? this should be moved to snames.ads-tmpl
-         begin
-            if Chars (S_Ptr) /= Name_Synchronous_Barrier then
-               return False;
-            end if;
-
-            S_Ptr := Scope (S_Ptr);
-
-            if Chars (S_Ptr) /= Name_Synchronous_Barriers then
-               return False;
-            end if;
-
-            S_Ptr := Scope (S_Ptr);
-
-            if Chars (S_Ptr) /= Name_Ada then
-               return False;
-            end if;
-
-            return Scope (S_Ptr) = Standard_Standard;
-         end Is_Synchronous_Barrier;
-
       --  Start of processing for Mark_Type_Entity
 
       begin
-         --  Synchronous barriers are allowed by the Ravenscar profile, but
-         --  we do not want them in SPARK.
-         if Is_Synchronous_Barrier (E) then
-            Mark_Violation ("synchronous barriers", E);
-         end if;
-
          --  Controlled types are not allowed in SPARK
 
          if Is_Controlled (E) then
