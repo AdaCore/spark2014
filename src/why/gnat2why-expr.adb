@@ -16383,11 +16383,11 @@ package body Gnat2Why.Expr is
                      --  If Ty is constrained, we need to check its
                      --  discriminant.
                      --  It is also the case if Ty's specific type is
-                     --  constrained, see RM 3.9 (14)
+                     --  constrained, see RM 3.9 (14).
 
-                     if Root_Retysp (Spec_Ty) /= Spec_Ty and then
-                       Count_Discriminants (Spec_Ty) > 0 and then
-                       Is_Constrained (Spec_Ty)
+                     if Root_Retysp (Spec_Ty) /= Spec_Ty
+                       and then Count_Discriminants (Spec_Ty) > 0
+                       and then Is_Constrained (Spec_Ty)
                      then
                         Discr_Cond := New_Call
                           (Domain => Domain,
