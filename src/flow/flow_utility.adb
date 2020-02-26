@@ -2551,9 +2551,10 @@ package body Flow_Utility is
                   return Vars;
                end;
 
-           --  Types mostly get dealt with by membership tests here, but
-           --  sometimes they just appear (for example in a for loop over
-           --  a type).
+           --  Types sometimes just appear, e.g. in statements like a FOR loop
+           --  over a type (??? those are acceptable as long as assertion that
+           --  "not Ctx.Assume_In_Expression" holds) or in expressions like
+           --  Type'Pos attribute (??? those should be rather special-cased).
 
             when Type_Kind =>
 
@@ -3476,18 +3477,64 @@ package body Flow_Utility is
 
                declare
                   procedure Process_Type (E : Entity_Id);
-                  --  Merge variables used in predicate functions for the given
-                  --  type.
+                  --  Handle what Ada RM 4.5.2 describes as "membership_choice
+                  --  is a subtype_mark" and what GNAT implements in routine
+                  --  Exp_Ch4.Expand_N_In.
 
                   ------------------
                   -- Process_Type --
                   ------------------
 
                   procedure Process_Type (E : Entity_Id) is
-                     P : constant Entity_Id := Predicate_Function (E);
+                     Pred : constant Entity_Id := Predicate_Function (E);
+
+                     Typ : constant Entity_Id :=
+                       (if Is_Access_Type (E)
+                        then Designated_Type (E)
+                        else E);
 
                   begin
-                     if Present (P) then
+                     --  For scalar types recurse on their bounds
+
+                     if Is_Scalar_Type (E) then
+                        declare
+                           Rng : constant Node_Id := Scalar_Range (E);
+                        begin
+                           Variables.Union (Recurse (Low_Bound (Rng)));
+                           Variables.Union (Recurse (High_Bound (Rng)));
+                        end;
+
+                     --  For constrained composite types (and for access to
+                     --  such types) recurse on their constraints, because the
+                     --  membership test checks the equality of array bounds
+                     --  (for arrays) and of discriminants (for other composite
+                     --  types).
+
+                     elsif Is_Constrained (Typ) then
+                        if Is_Array_Type (Typ) then
+                           declare
+                              Index : Node_Id := First_Index (Typ);
+                           begin
+                              loop
+                                 Variables.Union
+                                   (Recurse (Type_Low_Bound (Etype (Index))));
+                                 Variables.Union
+                                   (Recurse (Type_High_Bound (Etype (Index))));
+
+                                 Next_Index (Index);
+                                 exit when No (Index);
+                              end loop;
+                           end;
+                        elsif Has_Discriminants (Typ) then
+                           for C of Iter (Discriminant_Constraint (Typ)) loop
+                              Variables.Union (Recurse (C));
+                           end loop;
+                        end if;
+                     end if;
+
+                     --  Recurse on the predicate expression, if any
+
+                     if Present (Pred) then
 
                         --  Filter the predicate function parameter from
                         --  variables referenced in the predicate, because the
@@ -3495,11 +3542,11 @@ package body Flow_Utility is
                         --  (similar to what we do for quantified expression).
 
                         declare
-                           Param : constant Entity_Id := First_Formal (P);
+                           Param : constant Entity_Id := First_Formal (Pred);
 
                         begin
                            for V of Recurse
-                             (Get_Expr_From_Return_Only_Func (P))
+                             (Get_Expr_From_Return_Only_Func (Pred))
                            loop
                               if V.Kind in Direct_Mapping | Record_Field
                                 and then V.Node = Param
@@ -3516,15 +3563,19 @@ package body Flow_Utility is
                   P : Node_Id;
 
                begin
+                  Variables.Union (Recurse (Left_Opnd (N)));
+
                   if Present (Right_Opnd (N)) then
 
                      --  x in t
 
                      P := Right_Opnd (N);
-                     if Nkind (P) in N_Identifier | N_Expanded_Name
+                     if Is_Entity_Name (P)
                         and then Is_Type (Entity (P))
                      then
                         Process_Type (Get_Type (P, Ctx.Scope));
+                     else
+                        Variables.Union (Recurse (P));
                      end if;
 
                   else
@@ -3533,10 +3584,12 @@ package body Flow_Utility is
 
                      P := First (Alternatives (N));
                      loop
-                        if Nkind (P) in N_Identifier | N_Expanded_Name
+                        if Is_Entity_Name (P)
                           and then Is_Type (Entity (P))
                         then
                            Process_Type (Get_Type (P, Ctx.Scope));
+                        else
+                           Variables.Union (Recurse (P));
                         end if;
                         Next (P);
 
@@ -3544,6 +3597,7 @@ package body Flow_Utility is
                      end loop;
                   end if;
                end;
+               return Skip;
 
             when N_Qualified_Expression
                | N_Unchecked_Type_Conversion

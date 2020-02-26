@@ -1,12 +1,8 @@
 main.adb:7:19: info: assertion proved (CVC4: 1 VC)
 main.adb:8:19: info: assertion proved (CVC4: 1 VC)
-r.adb:2:08: medium: missing dependency "null => Y"
-r.adb:2:36: medium: incorrect dependency "R'Result => Y"
+r.adb:2:08: info: flow dependencies proved
 r.adb:3:19: info: postcondition proved (CVC4: 2 VC)
 r.adb:6:20: info: range check proved (CVC4: 1 VC)
-s.adb:2:08: medium: missing dependency "null => High"
-s.adb:2:08: medium: missing dependency "null => Low"
-s.adb:2:33: medium: incorrect dependency "S'Result => Low"
-s.adb:2:38: medium: incorrect dependency "S'Result => High"
+s.adb:2:08: info: flow dependencies proved
 s.adb:3:19: info: postcondition proved (CVC4: 3 VC)
 s.adb:5:04: info: range check proved (CVC4: 2 VC)
