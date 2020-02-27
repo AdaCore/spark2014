@@ -895,7 +895,6 @@ package body Why.Gen.Names is
          when WNE_Attr_Init          => "__attr__init",
          when WNE_Rec_Split_Discrs   => "__split_discrs",
          when WNE_Rec_Split_Fields   => "__split_fields",
-         when WNE_Null_Exclusion_Val => "__null_exclusion_val",
          when WNE_Null_Pointer       => "__null_pointer",
          when WNE_Is_Null_Pointer    => "__is_null_pointer",
          when WNE_Pointer_Address    => "__pointer_address",
