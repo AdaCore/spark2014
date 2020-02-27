@@ -3651,6 +3651,16 @@ package body Flow_Utility is
                end;
                return Skip;
 
+            when N_Slice =>
+               declare
+                  R : constant Node_Id := Get_Range (Discrete_Range (N));
+               begin
+                  Variables.Union (Recurse (Low_Bound (R)));
+                  Variables.Union (Recurse (High_Bound (R)));
+               end;
+               Variables.Union (Recurse (Prefix (N)));
+               return Skip;
+
             when N_Allocator =>
                Variables.Include
                  (Direct_Mapping_Id (Flow.Dynamic_Memory.Heap_State));
@@ -5298,15 +5308,21 @@ package body Flow_Utility is
                Process_Type_Conversions := False;
 
             when N_Slice =>
-               Vars_Used.Union
-                 (Get_Vars_Wrapper (Discrete_Range (N), Fold => Inputs));
-               Vars_Proof.Union
-                 (Get_Vars_Wrapper (Discrete_Range (N), Fold => Proof_Ins));
+               declare
+                  R  : constant Node_Id := Get_Range (Discrete_Range (N));
+                  LB : constant Node_Id := Low_Bound (R);
+                  HB : constant Node_Id := High_Bound (R);
+               begin
+                  Vars_Used.Union (Get_Vars_Wrapper (LB, Fold => Inputs));
+                  Vars_Used.Union (Get_Vars_Wrapper (HB, Fold => Inputs));
+
+                  Vars_Proof.Union (Get_Vars_Wrapper (LB, Fold => Proof_Ins));
+                  Vars_Proof.Union (Get_Vars_Wrapper (HB, Fold => Proof_Ins));
+               end;
 
                Process_Type_Conversions := False;
 
-            when N_Selected_Component
-            =>
+            when N_Selected_Component =>
                Idx := Idx + 1;
 
             when N_Unchecked_Type_Conversion
