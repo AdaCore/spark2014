@@ -1,0 +1,5 @@
+s.adb:3:14: info: initialization of "Result" proved
+s.adb:4:20: medium: missing dependency "Result => First"
+s.adb:4:20: medium: missing dependency "Result => Last"
+s.adb:4:45: medium: incorrect dependency "null => First"
+s.adb:4:52: medium: incorrect dependency "null => Last"
