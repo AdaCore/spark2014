@@ -782,13 +782,12 @@ package body Gnat2Why.Error_Messages is
            (if Extra_Text /= "" then ", cannot prove " & Extra_Text else "");
          Node   : constant Node_Id :=
            (if Present (Rec.Extra_Info)
-            and then not
-              (Rec.Kind in VC_Precondition
-                         | VC_LSP_Kind
-                         | VC_Predicate_Check
-                         | VC_Predicate_Check_On_Default_Value)
+            and then Rec.Kind not in VC_Precondition
+                                   | VC_LSP_Kind
+                                   | VC_Predicate_Check
+                                   | VC_Predicate_Check_On_Default_Value
             then Rec.Extra_Info else VC.Node);
-         --  Extra_info contains the locations of the first failing part of the
+         --  Extra_Info contains the locations of the first failing part of the
          --  VC (which is required in messages). VC_Sloc contains the location
          --  of the check (required in messages for manual provers).
          --  We do not use this node if the node may switch the context, this
