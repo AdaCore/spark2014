@@ -3,5 +3,5 @@ procedure P is
    subtype S is not null T;  --  a null-excluding subtype
    Y : T := null;            --  a null value
 begin
-   pragma Assert (Y in S);   --  is null within a null-excluding subtype?
+   pragma Assert (Y in S);   --  @ASSERT:FAIL
 end P;

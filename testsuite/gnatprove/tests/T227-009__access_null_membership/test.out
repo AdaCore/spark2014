@@ -1,1 +1,1 @@
-p.adb:6:19: info: assertion proved (Trivial: 1 VC)
+p.adb:6:19: medium: assertion might fail, cannot prove Y in S (e.g. when Y = null)

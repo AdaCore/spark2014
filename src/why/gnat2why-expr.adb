@@ -16554,6 +16554,18 @@ package body Gnat2Why.Expr is
                      Result := True_Expr;
                   end if;
 
+                  --  For non null access types, check null exclusion
+
+                  if Can_Never_Be_Null (Ty) then
+                     Result := New_And_Then_Expr
+                       (Left   => Result,
+                        Right  => New_Not
+                          (Right  => New_Pointer_Is_Null_Access (E    => Ty,
+                                                                 Name => Var),
+                           Domain => Domain),
+                        Domain => Domain);
+                  end if;
+
                else
                   pragma Assert (Is_Scalar_Type (Ty));
                   if Type_Is_Modeled_As_Base (Ty) then
