@@ -3471,6 +3471,76 @@ package body Flow_Utility is
                Variables.Union (Do_Attribute_Reference (N));
                return Skip;
 
+            when N_Component_Association =>
+               declare
+                  Choice : Node_Id := First (Choices (N));
+               begin
+                  loop
+                     --  Record component choice; it always appears as a name
+                     --  of a component or of a discriminant, "(C => ...)".
+
+                     if Nkind (Choice) in N_Identifier | N_Expanded_Name
+                       and then Ekind (Entity (Choice)) in E_Component
+                                                         | E_Discriminant
+                     then
+                        null;
+
+                     --  Array component choice; it appears in various forms
+
+                     --  "(Low .. High => ...)"
+
+                     elsif Nkind (Choice) = N_Range then
+                        Variables.Union (Recurse (Low_Bound (Choice)));
+                        Variables.Union (Recurse (High_Bound (Choice)));
+
+                     --  "(A_Subtype range Low .. High => ...)"
+
+                     elsif Nkind (Choice) = N_Subtype_Indication then
+                        declare
+                           R : constant Node_Id :=
+                             Range_Expression (Constraint (Choice));
+                        begin
+                           Variables.Union (Recurse (Low_Bound (R)));
+                           Variables.Union (Recurse (High_Bound (R)));
+                        end;
+
+                     --  "(A_Subtype => ...)"
+
+                     elsif Is_Entity_Name (Choice)
+                       and then Is_Type (Entity (Choice))
+                     then
+                        Variables.Union
+                          (Recurse (Type_Low_Bound (Entity (Choice))));
+                        Variables.Union
+                          (Recurse (Type_High_Bound (Entity (Choice))));
+
+                     --  "(others => ...)"
+
+                     elsif Nkind (Choice) = N_Others_Choice then
+                        null;
+
+                     --  "(1 => ...)" or "(X + Y => ...)", etc.
+
+                     elsif Nkind (Choice) in N_Subexpr then
+                        Variables.Union (Recurse (Choice));
+
+                     else
+                        raise Program_Error;
+                     end if;
+
+                     Next (Choice);
+                     exit when No (Choice);
+                  end loop;
+               end;
+
+               if Box_Present (N) then
+                  null;  -- ??? use default component expression
+               else
+                  Variables.Union (Recurse (Expression (N)));
+               end if;
+
+               return Skip;
+
             when N_Membership_Test =>
                --  Membership tests involving type with predicates have the
                --  predicate flow into the variable set returned.
@@ -4797,7 +4867,7 @@ package body Flow_Utility is
                Component_Association := First (Component_Associations (N));
                while Present (Component_Association) loop
                   if Box_Present (Component_Association) then
-                     Input := Empty;
+                     Input := Empty;  -- ??? use default component expression
                   else
                      Input := Expression (Component_Association);
                   end if;
