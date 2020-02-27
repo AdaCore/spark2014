@@ -80,7 +80,7 @@ behaves just like a compiler (e.g. ``gcc``), so we only need to tell
 gprbuild to call ``gnat2why`` instead of ``gcc``. This is done using
 the ``--db`` switch. A directory is passed to ``gprbuild`` which
 contains an .xml file that specifies a number of attributes. At the
-minimum the ``Driver`` attribute must be set to ``gnatw2hy``.
+minimum the ``Driver`` attribute must be set to ``gnat2why``.
 
 ``gnatwhy`` produces compiler-like output. But note that gprbuild
 holds back the output of ``gnat2why`` until the tool has finished
