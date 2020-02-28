@@ -2445,20 +2445,25 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
-               Insert_Symbol
-                 (E, WNE_Range_Check_Fun,
-                  New_Identifier
-                    (Symb   => NID ("range_check_"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Root_Ty));
-               Insert_Symbol
-                 (E, WNE_Range_Pred,
-                  New_Identifier
-                    (Module => M,
-                     Domain => EW_Term,
-                     Symb   => NID ("in_range"),
-                     Typ    => EW_Bool_Type));
+               if Root = E
+                 and then Has_Discriminants (E)
+                 and then not Is_Constrained (E)
+               then
+                  Insert_Symbol
+                    (E, WNE_Range_Check_Fun,
+                     New_Identifier
+                       (Symb   => NID ("range_check_"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => Root_Ty));
+                  Insert_Symbol
+                    (E, WNE_Range_Pred,
+                     New_Identifier
+                       (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("in_range"),
+                        Typ    => EW_Bool_Type));
+               end if;
                Insert_Symbol
                  (E, WNE_To_Base,
                   New_Identifier

@@ -16434,7 +16434,8 @@ package body Gnat2Why.Expr is
                      then
                         Discr_Cond := New_Call
                           (Domain => Domain,
-                           Name => E_Symb (Spec_Ty, WNE_Range_Pred),
+                           Name => E_Symb
+                             (Root_Retysp (Spec_Ty), WNE_Range_Pred),
                            Args =>
                              Prepare_Args_For_Subtype_Check (Spec_Ty, Var),
                            Typ  => EW_Bool_Type);

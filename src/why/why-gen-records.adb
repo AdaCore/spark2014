@@ -116,7 +116,6 @@ package body Why.Gen.Records is
 
    procedure Declare_Conversion_Check_Function
      (Section : W_Section_Id;
-      E       : Entity_Id;
       Root    : Entity_Id);
    --  generate the program function which is used to insert subtype
    --  discriminant checks
@@ -496,11 +495,11 @@ package body Why.Gen.Records is
                   Return_Type => EW_Int_Type));
       end if;
 
-      if Root /= E
+      if Root = E
         and then Has_Discriminants (E)
-        and then Is_Constrained (E)
+        and then not Is_Constrained (E)
       then
-         Declare_Conversion_Check_Function (P, E, Root);
+         Declare_Conversion_Check_Function (P, Root);
       end if;
 
       Declare_Attributes (P, E);
@@ -754,24 +753,16 @@ package body Why.Gen.Records is
 
    procedure Declare_Conversion_Check_Function
      (Section : W_Section_Id;
-      E       : Entity_Id;
       Root    : Entity_Id)
    is
-      Root_Name  : constant W_Name_Id := To_Why_Type (Root);
-      Root_Abstr : constant W_Type_Id :=
-        +New_Named_Type (Name => Root_Name);
+      Fields_Name : constant W_Name_Id := To_Local
+        (Get_Name (E_Symb (Root, WNE_Rec_Split_Discrs)));
+      Root_Fields : constant W_Type_Id :=
+        +New_Named_Type (Name => Fields_Name);
       A_Ident    : constant W_Identifier_Id :=
-        New_Identifier (Name => "a", Typ => Root_Abstr);
-      Num_Discr  : constant Natural := Count_Discriminants (E);
-      R_Access   : constant W_Expr_Id :=
-        New_Record_Access (Name  => +A_Ident,
-                           Field => E_Symb (Root, WNE_Rec_Split_Discrs));
-      Discr      : Node_Id := First_Discriminant (E);
-      Post       : constant W_Pred_Id :=
-        New_Call
-          (Name => Why_Eq,
-           Typ  => EW_Bool_Type,
-           Args => (+New_Result_Ident (Why_Empty), +A_Ident));
+        New_Identifier (Name => "a", Typ => Root_Fields);
+      Num_Discr  : constant Natural := Count_Discriminants (Root);
+      Discr      : Node_Id;
       R_Binder   : Binder_Array (1 .. Num_Discr + 1);
       Args       : W_Expr_Array (1 .. Num_Discr + 1);
       Check_Pred : W_Pred_Id := True_Pred;
@@ -784,7 +775,7 @@ package body Why.Gen.Records is
                      others => <>);
       Args (Num_Discr + 1) := +A_Ident;
       Count := 1;
-      Discr := First_Discriminant (E);
+      Discr := First_Discriminant (Root);
 
       loop
          Args (Count) := +To_Why_Id
@@ -808,11 +799,11 @@ package body Why.Gen.Records is
                     2 =>
                       Insert_Simple_Conversion
                         (Domain   => EW_Term,
-                         Expr     => New_Call
+                         Expr     => New_Record_Access
                            (Ada_Node => Root,
-                            Name     => To_Why_Id (Discr, Rec => Root),
-                            Args     => (1 => R_Access),
-                            Domain   => EW_Term,
+                            Name     => +A_Ident,
+                            Field    => To_Why_Id
+                              (Discr, Local => True, Rec => Root),
                             Typ      => EW_Abstract (Etype (Discr))),
                          To       =>
                            Base_Why_Type (Etype (Discr))))));
@@ -824,24 +815,23 @@ package body Why.Gen.Records is
       Emit (Section,
             New_Function_Decl
               (Domain   => EW_Pred,
-               Name     => To_Local (E_Symb (E, WNE_Range_Pred)),
+               Name     => To_Local (E_Symb (Root, WNE_Range_Pred)),
                Location => No_Location,
                Labels   => Symbol_Sets.Empty_Set,
                Binders  => R_Binder,
                Def      => +Check_Pred));
       Pre_Cond :=
-        New_Call (Name => To_Local (E_Symb (E, WNE_Range_Pred)),
+        New_Call (Name => To_Local (E_Symb (Root, WNE_Range_Pred)),
                   Args => Args);
       Emit (Section,
             New_Function_Decl
               (Domain      => EW_Prog,
-               Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),
+               Name        => To_Local (E_Symb (Root, WNE_Range_Check_Fun)),
                Binders     => R_Binder,
                Location    => No_Location,
                Labels      => Symbol_Sets.Empty_Set,
-               Return_Type => Root_Abstr,
-               Pre         => Pre_Cond,
-               Post        => Post));
+               Return_Type => EW_Unit_Type,
+               Pre         => Pre_Cond));
    end Declare_Conversion_Check_Function;
 
    -----------------------------
@@ -2349,14 +2339,26 @@ package body Why.Gen.Records is
          return Expr;
       end if;
 
-      return
-        +New_VC_Call
-        (Ada_Node => Ada_Node,
-         Name     => Range_Check_Name (Check_Ty, RCK_Range),
-         Progs    => Prepare_Args_For_Subtype_Check (Check_Ty, +Expr),
-         Domain   => EW_Prog,
-         Reason   => VC_Discriminant_Check,
-         Typ      => Get_Type (+Expr));
+      declare
+         Tmp_Expr : constant W_Expr_Id := New_Temp_For_Expr (+Expr);
+      begin
+         return
+           +Binding_For_Temp
+             (Ada_Node => Ada_Node,
+              Domain   => EW_Prog,
+              Tmp      => Tmp_Expr,
+              Context  => +Sequence
+                (Ada_Node => Ada_Node,
+                 Left     => +New_VC_Call
+                   (Ada_Node => Ada_Node,
+                    Name     => Range_Check_Name (Root, RCK_Range),
+                    Progs    => Prepare_Args_For_Subtype_Check
+                      (Check_Ty, Tmp_Expr),
+                    Domain   => EW_Prog,
+                    Reason   => VC_Discriminant_Check,
+                    Typ      => Get_Type (+Expr)),
+                 Right    => +Tmp_Expr));
+      end;
    end Insert_Subtype_Discriminant_Check;
 
    ----------------------
@@ -2937,7 +2939,11 @@ package body Why.Gen.Records is
       Elmt      : Elmt_Id := First_Elmt (Discriminant_Constraint (Check_Ty));
 
    begin
-      Args (Num_Discr + 1) := +Expr;
+      Args (Num_Discr + 1) := New_Discriminants_Access
+        (Domain => EW_Term,
+         Name   => Expr,
+         Ty     => Get_Ada_Node (+Get_Type (Expr)));
+
       while Present (Discr) loop
          Args (Count) :=
            Transform_Expr

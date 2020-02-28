@@ -112,7 +112,7 @@ do_checks.adb:396:29: warning: "X" is not modified, could be IN
 do_checks.adb:396:44: info: initialization of "Y" proved
 do_checks.adb:401:26: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:403:16: info: precondition proved (Trivial: 1 VC)
-do_checks.adb:403:22: medium: discriminant check might fail (e.g. when X = (J => ?, Arr => (others => False)) and X.Arr'First = 10 and X.Arr'Last = 10)
+do_checks.adb:403:22: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => ?))
 do_checks.adb:407:29: warning: "X" is not modified, could be IN
 do_checks.adb:407:44: info: initialization of "Y" proved
 do_checks.adb:411:23: info: range check proved (CVC4: 1 VC)
