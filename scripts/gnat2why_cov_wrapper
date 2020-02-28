@@ -10,7 +10,7 @@
 # <adb/abs file on which gnat2why is run> + <phase number> + .trace
 #
 # The phase number is "1" or "2". It is determined by looking at the
-# "gnat2why_args" file passed to gnatw2hy using "-gnates=", which contains the
+# "gnat2why_args" file passed to gnat2why using "-gnates=", which contains the
 # phase information in the "global_gen_mode" variable.
 
 from gnatpython import fileutils
@@ -39,6 +39,7 @@ def find_source_file():
         if arg.startswith("/"):
             return arg
     exit_with_msg("no source file found on commandline")
+
 
 fn = find_extra_args_file()
 with open(fn) as f:
