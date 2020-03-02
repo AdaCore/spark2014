@@ -15375,8 +15375,9 @@ package body Gnat2Why.Expr is
                        Get_Typ (Func_New_Uninitialized_Name);
                      Constr_Ty : constant Entity_Id := Entity (New_Expr);
                      pragma Assert
-                       (Default_Initialization (Constr_Ty) =
-                          Full_Default_Initialization);
+                       (Default_Initialization (Constr_Ty) in
+                          Full_Default_Initialization |
+                          No_Possible_Initialization);
 
                      Value_Id   : constant W_Identifier_Id :=
                        New_Temp_Identifier

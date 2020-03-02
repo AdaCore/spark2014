@@ -1,11 +1,4 @@
-alloc.adb:23:14: uninitialized allocator without default initialization is not allowed in SPARK
-alloc.adb:23:14: violation of pragma SPARK_Mode at test.adc:1
-alloc.adb:24:14: uninitialized allocator without default initialization is not allowed in SPARK
-alloc.adb:24:14: violation of pragma SPARK_Mode at test.adc:1
-alloc.adb:25:14: uninitialized allocator without default initialization is not allowed in SPARK
-alloc.adb:25:14: violation of pragma SPARK_Mode at test.adc:1
-alloc.adb:26:14: uninitialized allocator without default initialization is not allowed in SPARK
-alloc.adb:26:14: violation of pragma SPARK_Mode at test.adc:1
-alloc.adb:27:14: uninitialized allocator without default initialization is not allowed in SPARK
-alloc.adb:27:14: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
+alloc.adb:4:25: info: range check proved (CVC4: 1 VC)
+alloc.adb:13:25: info: range check proved (CVC4: 1 VC)
+alloc.adb:24:26: info: range check proved (CVC4: 1 VC)
+alloc.adb:26:26: info: range check proved (CVC4: 1 VC)

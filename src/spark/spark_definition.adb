@@ -1670,8 +1670,9 @@ package body SPARK_Definition is
 
                         pragma Assert (Is_Entity_Name (Expression (N)));
 
-                        if Default_Initialization (Entity (Expression (N))) /=
-                            Full_Default_Initialization
+                        if Default_Initialization (Entity (Expression (N)))
+                          not in Full_Default_Initialization
+                               | No_Possible_Initialization
                         then
                            Mark_Violation ("uninitialized allocator without"
                                            & " default initialization", N);
