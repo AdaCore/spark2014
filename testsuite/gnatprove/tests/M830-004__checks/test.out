@@ -24,15 +24,19 @@ do_checks.adb:103:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:109:16: info: range check proved (CVC4: 2 VC)
 do_checks.adb:109:65: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:118:30: medium: range check might fail (e.g. when B'First = 0 and B'Last = 0 and Zero = 0) [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:118:52: medium: range check might fail (e.g. when B'First = 0 and B'Last = 0 and Zero = 0) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:125:30: info: range check proved (CVC4: 4 VC)
+do_checks.adb:125:52: info: range check proved (CVC4: 2 VC)
 do_checks.adb:125:60: medium: overflow check might fail (e.g. when B'First = 0 and B'Last = 0 and Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:136:25: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:149:25: info: range check proved (CVC4: 2 VC)
 do_checks.adb:149:57: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:161:39: medium: length check might fail (e.g. when Zero = 0) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:161:40: medium: range check might fail (e.g. when Zero = 0)
+do_checks.adb:161:60: medium: range check might fail (e.g. when Zero = 0) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:167:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 do_checks.adb:167:39: info: range check proved (CVC4: 2 VC)
+do_checks.adb:167:59: info: range check proved (CVC4: 2 VC)
 do_checks.adb:167:67: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:210:32: warning: "Y" is not modified, could be IN
 do_checks.adb:212:21: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

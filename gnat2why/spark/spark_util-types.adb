@@ -757,8 +757,8 @@ package body SPARK_Util.Types is
    function Is_Null_Range (T : Entity_Id) return Boolean is
      (Is_Discrete_Type (T)
       and then Has_Static_Scalar_Subtype (T)
-      and then Expr_Value (Low_Bound (Scalar_Range (T))) >
-          Expr_Value (High_Bound (Scalar_Range (T))));
+      and then Expr_Value (Type_Low_Bound (T)) >
+          Expr_Value (Type_High_Bound (T)));
 
    ----------------------
    -- Is_Standard_Type --
