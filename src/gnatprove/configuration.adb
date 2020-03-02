@@ -826,6 +826,15 @@ package body Configuration is
                  Callback    => Callback,
                  Parser      => Parser,
                  Concatenate => False);
+
+      exception
+         when Invalid_Switch =>
+            GNAT.OS_Lib.OS_Exit (1);
+         when Exit_From_Command_Line =>
+            GNAT.OS_Lib.OS_Exit (0);
+         when Invalid_Parameter =>
+            Abort_Msg ("No parameter given to switch -" & Full_Switch (Parser),
+                       With_Help => False);
       end;
 
       Free (Config);
@@ -2051,15 +2060,6 @@ package body Configuration is
       end;
 
       Sanitize_File_List (Tree);
-
-   exception
-      when Invalid_Switch =>
-         GNAT.OS_Lib.OS_Exit (1);
-      when Exit_From_Command_Line =>
-         GNAT.OS_Lib.OS_Exit (0);
-      when Invalid_Parameter =>
-         Abort_Msg ("No parameter given to switch -" & Full_Switch,
-                    With_Help => False);
    end Read_Command_Line;
 
    ------------------------
