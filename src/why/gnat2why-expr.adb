@@ -9078,6 +9078,10 @@ package body Gnat2Why.Expr is
       --  generate the actual call to Func by translating arguments Values
       --  of type Types in the context given by Params.
 
+      procedure Insert_Check_For_Ranges (T : in out W_Expr_Id)
+      with Pre => Domain = EW_Prog;
+      --  Insert checks for range constraints
+
       --------------------------
       -- Complete_Translation --
       --------------------------
@@ -9253,6 +9257,12 @@ package body Gnat2Why.Expr is
             R := +Insert_Predicate_Check (Ada_Node => Expr,
                                           Check_Ty => Retysp (Etype (Expr)),
                                           W_Expr   => +R);
+         end if;
+
+         --  Insert checks for subtype indications in ranges in the aggregate
+
+         if Domain = EW_Prog then
+            Insert_Check_For_Ranges (R);
          end if;
 
          return R;
@@ -9852,6 +9862,40 @@ package body Gnat2Why.Expr is
                                  Index => First_Index (Typ),
                                  Expr  => Expr);
       end Get_Aggregate_Elements;
+
+      -----------------------------
+      -- Insert_Check_For_Ranges --
+      -----------------------------
+
+      procedure Insert_Check_For_Ranges (T : in out W_Expr_Id) is
+         Assocs      : constant List_Id := Component_Associations (Expr);
+         Association : Node_Id := Nlists.First (Assocs);
+      begin
+         while Present (Association) loop
+            if not Is_Others_Choice (Choices (Association)) then
+               declare
+                  Choice : Node_Id := First (Choices (Association));
+               begin
+                  while Present (Choice) loop
+                     case Nkind (Choice) is
+                        when N_Subtype_Indication =>
+                           T := +Sequence
+                             (Ada_Node => Choice,
+                              Left     => +Check_Scalar_Range
+                                (Params => Params,
+                                 N      => Get_Range (Choice),
+                                 Base   => Entity (Subtype_Mark (Choice))),
+                              Right    => +T);
+                        when others =>
+                           null;
+                     end case;
+                     Next (Choice);
+                  end loop;
+               end;
+            end if;
+            Next (Association);
+         end loop;
+      end Insert_Check_For_Ranges;
 
       --------------------------------------------
       -- Transform_Array_Component_Associations --
@@ -18991,6 +19035,18 @@ package body Gnat2Why.Expr is
           (Domain  => Domain,
            Tmp     => High_Expr,
            Context => T);
+
+      if Domain = EW_Prog
+        and then Nkind (Discrete_Range (Expr)) = N_Subtype_Indication
+      then
+         T := +Sequence
+           (Ada_Node => Expr,
+            Left     => +Check_Scalar_Range
+              (Params => Params,
+               N      => Get_Range (Discrete_Range (Expr)),
+               Base   => Entity (Subtype_Mark (Discrete_Range (Expr)))),
+            Right    => +T);
+      end if;
 
       return T;
    end Transform_Slice;
