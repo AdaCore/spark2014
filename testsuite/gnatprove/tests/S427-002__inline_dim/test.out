@@ -13,8 +13,10 @@ challenges.adb:6:13: info: local subprogram "Get_Distance" only analyzed in the 
 challenges.adb:8:37: info: precondition proved (CVC4: 1 VC), in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:37: medium: range check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:54: medium: float overflow check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
+challenges.adb:8:54: medium: range check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:59: info: float overflow check proved (Interval), in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:71: medium: float overflow check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
+challenges.adb:8:71: medium: range check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:11:13: info: add a contract to analyze it separately from calling contexts
 challenges.adb:11:13: info: local subprogram "Get_Distance" only analyzed in the context of calls
 challenges.adb:12:48: info: float overflow check proved (Interval), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
