@@ -1646,32 +1646,41 @@ package body SPARK_Definition is
          when N_Allocator =>
             --  Disallow allocators in the revert mode -gnatdF
             if not Debug_Flag_FF then
-               Mark (Expression (N));
-
-               --  Check that the type of the allocator is visibly an access
-               --  type.
-
-               if not Retysp_In_SPARK (Etype (N))
-                 or else not Is_Access_Type (Retysp (Etype (N)))
+               if Is_OK_Volatile_Context (Context => Parent (N), Obj_Ref => N)
                then
-                  Mark_Violation (N, Etype (N));
-               end if;
+                  --  Check that the type of the allocator is visibly an access
+                  --  type.
 
-               --  Uninitialized allocators are only allowed on types defining
-               --  full default initialization.
+                  if Retysp_In_SPARK (Etype (N))
+                    and then Is_Access_Type (Retysp (Etype (N)))
+                  then
+                     --  If the expression is a qualified expression, then we
+                     --  have an initialized allocator.
 
-               if Nkind (Expression (N)) in N_Expanded_Name | N_Identifier
-                 and then In_SPARK (Entity (Expression (N)))
-                 and then Default_Initialization
-                   (Entity (Expression (N))) /= Full_Default_Initialization
-               then
-                  Mark_Violation ("uninitialized allocator without"
-                                  & " default initialization", N);
-               end if;
+                     if Nkind (Expression (N)) = N_Qualified_Expression then
+                        Mark (Expression (N));
 
-               if not Is_OK_Volatile_Context (Context => Parent (N),
-                                              Obj_Ref => N)
-               then
+                     --  Otherwise the expression is a subtype indicator and we
+                     --  have an uninitialized allocator.
+
+                     else
+                        --  In non-interfering contexts the subtype indicator
+                        --  is always a subtype name, because frontend creates
+                        --  an itype for each constrained subtype indicator.
+
+                        pragma Assert (Is_Entity_Name (Expression (N)));
+
+                        if Default_Initialization (Entity (Expression (N))) /=
+                            Full_Default_Initialization
+                        then
+                           Mark_Violation ("uninitialized allocator without"
+                                           & " default initialization", N);
+                        end if;
+                     end if;
+                  else
+                     Mark_Violation (N, Etype (N));
+                  end if;
+               else
                   Mark_Violation ("allocators in interfering context", N);
                end if;
             else
