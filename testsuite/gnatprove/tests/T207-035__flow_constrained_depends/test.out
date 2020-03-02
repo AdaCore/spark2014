@@ -5,6 +5,7 @@ a.adb:4:45: medium: incorrect dependency "null => First"
 a.adb:4:52: medium: incorrect dependency "null => Last"
 a.adb:5:19: info: postcondition proved (CVC4: 1 VC)
 a.adb:7:12: info: range check proved (CVC4: 2 VC)
+a.adb:10:27: medium: range check might fail
 f.adb:3:14: info: initialization of "Result" proved
 f.adb:4:08: info: flow dependencies proved
 f.adb:6:12: info: range check proved (CVC4: 2 VC)
@@ -19,6 +20,7 @@ main.adb:7:19: info: assertion proved (CVC4: 1 VC)
 p.adb:3:14: info: initialization of "Result" proved
 p.adb:4:08: info: flow dependencies proved
 p.adb:6:12: info: range check proved (CVC4: 2 VC)
+p.adb:8:17: medium: range check might fail [possible explanation: subprogram at line 1 should mention Data in a precondition]
 q.adb:3:14: info: initialization of "Result" proved
 q.adb:4:08: info: flow dependencies proved
 q.adb:6:12: info: range check proved (CVC4: 2 VC)
