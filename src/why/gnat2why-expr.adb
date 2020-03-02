@@ -15343,8 +15343,12 @@ package body Gnat2Why.Expr is
                --  Uninitialized allocator
                --  Subtype indication are rewritten by the frontend into the
                --  corresponding Itype, so we only expect subtype names here.
+               --  Attribute references like Type'Base are also rewritten, but
+               --  it feels safer to not rely on this rewriting.
 
-               if Nkind (New_Expr) in N_Identifier then
+               if Is_Entity_Name (New_Expr)
+                 and then Is_Type (Entity (New_Expr))
+               then
                   Func_New_Uninitialized_Name :=
                     E_Symb (Etype (Expr), WNE_Uninit_Allocator);
 
@@ -15452,7 +15456,7 @@ package body Gnat2Why.Expr is
                --  ??? 6/3 If the designated type of the type of the allocator
 
                else
-                  pragma Assert (Nkind (New_Expr) in N_Qualified_Expression);
+                  pragma Assert (Nkind (New_Expr) = N_Qualified_Expression);
 
                   Func_New_Initialized_Name :=
                     E_Symb (Etype (Expr), WNE_Init_Allocator);
