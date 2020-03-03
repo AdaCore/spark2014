@@ -16395,6 +16395,7 @@ package body Gnat2Why.Expr is
          True_Expr : constant W_Expr_Id :=
            (if Domain = EW_Pred then +True_Pred else +True_Term);
          Result    : W_Expr_Id;
+         Var_Tmp   : constant W_Expr_Id := New_Temp_For_Expr (Var);
 
       begin
          --  First handle the simpler case of s subtype mark Classwide types
@@ -16441,7 +16442,7 @@ package body Gnat2Why.Expr is
                            Name => E_Symb
                              (Root_Retysp (Spec_Ty), WNE_Range_Pred),
                            Args =>
-                             Prepare_Args_For_Subtype_Check (Spec_Ty, Var),
+                             Prepare_Args_For_Subtype_Check (Spec_Ty, Var_Tmp),
                            Typ  => EW_Bool_Type);
                      end if;
 
@@ -16456,7 +16457,7 @@ package body Gnat2Why.Expr is
 
                         declare
                            Var_Type : constant Entity_Id :=
-                             Get_Ada_Node (+Get_Type (Var));
+                             Get_Ada_Node (+Get_Type (Var_Tmp));
                         begin
                            pragma Assert (Present (Var_Type));
 
@@ -16467,7 +16468,7 @@ package body Gnat2Why.Expr is
                                  Name => M_Compat_Tags.Compat_Tags_Id,
                                  Args => (1 => New_Tag_Access
                                           (Domain   => EW_Term,
-                                           Name     => Var,
+                                           Name     => Var_Tmp,
                                            Ty       => Var_Type),
                                           2 => +E_Symb (E => Ty,
                                                         S => WNE_Tag)),
@@ -16484,9 +16485,9 @@ package body Gnat2Why.Expr is
                            Name => Why_Eq,
                            Args => (1 => New_Tag_Access
                                     (Domain   => EW_Term,
-                                     Name     => Var,
+                                     Name     => Var_Tmp,
                                      Ty       =>
-                                       Get_Ada_Node (+Get_Type (Var))),
+                                       Get_Ada_Node (+Get_Type (Var_Tmp))),
                                     2 => +E_Symb (E => Ty,
                                                   S => WNE_Tag)),
                            Typ  => EW_Bool_Type);
@@ -16522,7 +16523,7 @@ package body Gnat2Why.Expr is
                   if Is_Constrained (Ty) then
                      declare
                         Var_Type   : constant Entity_Id :=
-                          Get_Ada_Node (+Get_Type (Var));
+                          Get_Ada_Node (+Get_Type (Var_Tmp));
                         False_Expr : constant W_Expr_Id :=
                           (if Domain = EW_Pred then +False_Pred
                            else +False_Term);
@@ -16578,7 +16579,8 @@ package body Gnat2Why.Expr is
                         --  bounds.
 
                         else
-                           Result := +New_Bounds_Equality (Var, Ty, Domain);
+                           Result := +New_Bounds_Equality
+                             (Var_Tmp, Ty, Domain);
                         end if;
                      end;
                   else
@@ -16596,7 +16598,7 @@ package body Gnat2Why.Expr is
                        (Domain => Domain,
                         Name   => E_Symb (Ty, WNE_Range_Pred),
                         Args   =>
-                          Prepare_Args_For_Access_Subtype_Check (Ty, Var),
+                          Prepare_Args_For_Access_Subtype_Check (Ty, Var_Tmp),
                         Typ    => EW_Bool_Type);
                   else
                      Result := True_Expr;
@@ -16608,8 +16610,9 @@ package body Gnat2Why.Expr is
                      Result := New_And_Then_Expr
                        (Left   => Result,
                         Right  => New_Not
-                          (Right  => New_Pointer_Is_Null_Access (E    => Ty,
-                                                                 Name => Var),
+                          (Right  => New_Pointer_Is_Null_Access
+                               (E    => Ty,
+                                Name => Var_Tmp),
                            Domain => Domain),
                         Domain => Domain);
                   end if;
@@ -16619,7 +16622,7 @@ package body Gnat2Why.Expr is
                   if Type_Is_Modeled_As_Base (Ty) then
                      Result := New_Dynamic_Property (Domain => Domain,
                                                      Ty     => Ty,
-                                                     Expr   => Var);
+                                                     Expr   => Var_Tmp);
                   else
                      declare
                         Name : constant W_Identifier_Id :=
@@ -16630,40 +16633,30 @@ package body Gnat2Why.Expr is
                         Result :=
                           New_Call (Domain => Domain,
                                     Name => Name,
-                                    Args => (1 => Var),
+                                    Args => (1 => Var_Tmp),
                                     Typ  => EW_Bool_Type);
                      end;
                   end if;
                end if;
 
                --  Possibly include a predicate in the type membership
-               --  test. A temporary needs to be introduced if Var is not
-               --  a simple variable, so that we can always pass a term to
-               --  Compute_Dynamic_Predicate, even when Domain = EW_Prog.
-               --  This is needed because the pred expression returned by
-               --  Compute_Dynamic_Predicate may then be converted back to a
-               --  Why3 prog expression by Boolean_Expr_Of_Pred, which requires
-               --  its argument to be a pred expression.
+               --  test.
 
                if Has_Predicates (Ty) then
-                  declare
-                     Tmp : constant W_Expr_Id := New_Temp_For_Expr (Var);
-                  begin
-                     Result := New_And_Expr
-                       (Result,
-                        Boolean_Expr_Of_Pred
-                          (Compute_Dynamic_Predicate (+Tmp, Ty, Params),
-                           Domain),
-                        Domain);
-                     Result := Binding_For_Temp (Domain  => Domain,
-                                                 Tmp     => Tmp,
-                                                 Context => Result);
-                  end;
+                  Result := New_And_Expr
+                    (Result,
+                     Boolean_Expr_Of_Pred
+                       (Compute_Dynamic_Predicate (+Var_Tmp, Ty, Params),
+                        Domain),
+                     Domain);
                end if;
             end;
          else
-            Result := Range_Expr (In_Expr, Var, Domain, Params);
+            Result := Range_Expr (In_Expr, Var_Tmp, Domain, Params);
          end if;
+         Result := Binding_For_Temp (Domain  => Domain,
+                                     Tmp     => Var_Tmp,
+                                     Context => Result);
 
          return Result;
       end Transform_Simple_Membership_Expression;

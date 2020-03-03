@@ -3109,9 +3109,14 @@ package body Why.Gen.Expr is
       --  necessary. We do not anymore as we could not know how many times
       --  New_Temp_For_Expr had been called for Expr and so how long we should
       --  keep Expr => Empty in the table.
+      --
+      --  We always generate a temp for an expression which itself is a
+      --  temporary. Otherwise we would be missing the reference the second
+      --  time we call Binding_For_Temp.
 
-      if Need_Temp
-        and then Get_Kind (+E) not in W_Identifier | W_Deref
+      if (Need_Temp
+          and then Get_Kind (+E) not in W_Identifier | W_Deref)
+        or else Temp_Names_Map.Contains (+E)
       then
          declare
             Tmp : constant W_Expr_Id :=

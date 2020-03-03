@@ -1,41 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="6">
+<why3session shape_version="8">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
-<file>
-<path name=".."/>
-<path name=".."/>
-<path name=".."/>
-<path name="gnatprove"/>
+<file format="whyml">
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="bar__double_tests__test_03.mlw"/>
 <theory name="Bar__double_tests__test_03__subprogram_def">
- <goal name="VC def" expl="VC for def">
+ <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="precondition">
+  <goal name="def&#39;vc.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="3268040"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450100"/></proof>
   <proof prover="2"><result status="unknown" steps="4768"/></proof>
   </goal>
-  <goal name="VC def.1" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="VC def.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.1" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.3" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.4" expl="postcondition">
+  <goal name="def&#39;vc.3" expl="postcondition">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="333651"/></proof>
+  <proof prover="1"><result status="unknown" steps="249270"/></proof>
   <proof prover="2"><result status="unknown" steps="4700"/></proof>
   </goal>
-  <goal name="VC def.5" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.4" expl="postcondition" proved="true">
   <proof prover="2"><result status="valid" steps="11535"/></proof>
   </goal>
  </transf>
