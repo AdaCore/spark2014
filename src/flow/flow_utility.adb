@@ -3715,7 +3715,7 @@ package body Flow_Utility is
 
    begin
       --  Ignore references to array bounds of objects (because they are never
-      --  mutable) but keep references to array bounds of components (becayse
+      --  mutable) but keep references to array bounds of components (because
       --  they might be mutable).
 
       for V of Get_All_Variables

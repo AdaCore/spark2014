@@ -273,7 +273,7 @@ package Flow_Utility is
    function Get_Variables_For_Proof (Expr_N  : Node_Id;
                                      Scope_N : Node_Id)
                                      return Flow_Id_Sets.Set
-   with Pre  => Present (Expr_N) and then
+   with Pre  => Nkind (Expr_N) in N_Subexpr and then
                 Present (Scope_N),
         Post => (for all F of Get_Variables_For_Proof'Result =>
                    Is_Entire_Variable (F) and then F.Variant = Normal_Use);
