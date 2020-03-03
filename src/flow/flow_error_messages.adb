@@ -1191,7 +1191,27 @@ package body Flow_Error_Messages is
             pragma Assert (Nkind (N) in N_Subexpr
                            and then Nkind (N) /= N_Procedure_Call_Statement);
 
-            Vars := Get_Variables_For_Proof (N, N);
+            --  If the expression is an identifier of a non-object, then it
+            --  is identifier of a type within an uninitialized allocator.
+            --  Flow would crash if we ask for variables referenced in such
+            --  an ill-formed expression, so instead we ask for variables
+            --  referenced the allocator itself.
+            --
+            --  ??? Arguably, it is be problematic for proof to attach check to
+            --  the allocator itself.
+
+            if Is_Entity_Name (N)
+              and then Ekind (Entity (N)) not in Object_Kind
+                                               | E_Enumeration_Literal
+            then
+               pragma Assert
+                 (Is_Type (Entity (N))
+                  and then Nkind (Parent (N)) = N_Allocator);
+
+               Vars := Get_Variables_For_Proof (Parent (N), N);
+            else
+               Vars := Get_Variables_For_Proof (N, N);
+            end if;
          end if;
 
          return Vars;

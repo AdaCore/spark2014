@@ -1,7 +1,7 @@
 subtype_check.adb:10:04: info: range check proved (CVC4: 2 VC)
 subtype_check.adb:20:14: warning: subprogram "Wrong" has no effect
 subtype_check.adb:21:07: info: range check proved (CVC4: 2 VC)
-subtype_check.adb:22:41: medium: length check might fail (e.g. when Zero = 1)
+subtype_check.adb:22:41: medium: length check might fail (e.g. when Zero = 1) [possible explanation: precondition of subprogram at line 20 should mention Spark.Heap.Dynamic_Memory]
 subtype_check.adb:27:14: warning: subprogram "Wrong_2" has no effect
 subtype_check.adb:29:44: info: division check proved (CVC4: 1 VC)
 subtype_check.adb:31:40: info: range check proved (CVC4: 1 VC)
