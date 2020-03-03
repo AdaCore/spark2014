@@ -128,6 +128,9 @@ package SPARK_Atree.Entities is
    function Is_Compilation_Unit (E : Entity_Id) return Boolean renames
      Einfo.Is_Compilation_Unit;
 
+   function Is_Composite_Type (E : Entity_Id) return Boolean renames
+     Einfo.Is_Composite_Type;
+
    function Is_Concurrent_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Concurrent_Type;
 

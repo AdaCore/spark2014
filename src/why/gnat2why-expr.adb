@@ -15411,7 +15411,8 @@ package body Gnat2Why.Expr is
                           Return_Type => Get_Typ (Res_Id));
                   begin
                      pragma Assert
-                       (Is_Constrained (Constr_Ty)
+                       (if Is_Composite_Type (Constr_Ty)
+                        then Is_Constrained (Constr_Ty)
                         or else Has_Defaulted_Discriminants (Constr_Ty));
 
                      Call := New_Binding
