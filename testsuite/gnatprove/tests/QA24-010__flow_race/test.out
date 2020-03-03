@@ -8,20 +8,20 @@ Summary of SPARK analysis
 =========================
 
 -
-SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
+SPARK Analysis results Total Flow CodePeer Provers Justified Unproved
 -
-Data Dependencies . . . . . . .
-Flow Dependencies . . . . . . .
-Initialization 1 . . . . . 1
-Non-Aliasing . . . . . . .
-Run-time Checks 2 . . . 2 . .
-Assertions . . . . . . .
-Functional Contracts . . . . . . .
-LSP Verification . . . . . . .
-Termination . . . . . . .
-Concurrency 3 . . . . . 3
+Data Dependencies . . . . . .
+Flow Dependencies . . . . . .
+Initialization 1 . . . . 1
+Non-Aliasing . . . . . .
+Run-time Checks 2 . . 2 . .
+Assertions . . . . . .
+Functional Contracts . . . . . .
+LSP Verification . . . . . .
+Termination . . . . . .
+Concurrency 3 . . . . 3
 -
-Total 6 . . . 2 (33%) . 4 (67%)
+Total 6 . . 2 (33%) . 4 (67%)
 
 
 max steps used for successful proof: 1

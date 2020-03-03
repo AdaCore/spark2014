@@ -5,21 +5,21 @@ p.adb:37:14: warning: subprogram "P4" has no effect
 Summary of SPARK analysis
 =========================
 
-----------------------------------------------------------------------------------------------------
-SPARK Analysis results        Total      Flow   Interval   CodePeer   Provers   Justified   Unproved
-----------------------------------------------------------------------------------------------------
-Data Dependencies                 .         .          .          .         .           .          .
-Flow Dependencies                 .         .          .          .         .           .          .
-Initialization                    .         .          .          .         .           .          .
-Non-Aliasing                      .         .          .          .         .           .          .
-Run-time Checks                   .         .          .          .         .           .          .
-Assertions                        .         .          .          .         .           .          .
-Functional Contracts              .         .          .          .         .           .          .
-LSP Verification                  .         .          .          .         .           .          .
-Termination                       .         .          .          .         .           .          .
-Concurrency                       .         .          .          .         .           .          .
-----------------------------------------------------------------------------------------------------
-Total                             .         .          .          .         .           .          .
+-----------------------------------------------------------------------------------------
+SPARK Analysis results        Total      Flow   CodePeer   Provers   Justified   Unproved
+-----------------------------------------------------------------------------------------
+Data Dependencies                 .         .          .         .           .          .
+Flow Dependencies                 .         .          .         .           .          .
+Initialization                    .         .          .         .           .          .
+Non-Aliasing                      .         .          .         .           .          .
+Run-time Checks                   .         .          .         .           .          .
+Assertions                        .         .          .         .           .          .
+Functional Contracts              .         .          .         .           .          .
+LSP Verification                  .         .          .         .           .          .
+Termination                       .         .          .         .           .          .
+Concurrency                       .         .          .         .           .          .
+-----------------------------------------------------------------------------------------
+Total                             .         .          .         .           .          .
 
 
 max steps used for successful proof: 0

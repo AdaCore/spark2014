@@ -9,7 +9,7 @@ main.adb:15:23: info: range check proved (CVC4: 1 VC)
 main.adb:16:23: info: range check proved (CVC4: 1 VC)
 main.adb:17:23: info: range check proved (CVC4: 1 VC)
 numerics-algo.adb:13:16: info: precondition proved (Trivial: 1 VC)
-numerics-algo.adb:15:13: info: range check proved (Interval)
+numerics-algo.adb:15:13: info: range check proved (Trivial)
 numerics-algo.adb:15:17: info: precondition proved (Trivial: 1 VC)
 numerics-algo.adb:17:16: info: precondition proved (Trivial: 1 VC)
 numerics-algo.adb:19:17: info: precondition proved (CVC4: 1 VC)
@@ -20,8 +20,8 @@ numerics-algo.ads:7:20: info: initialization of "X2" proved
 numerics-algo.ads:8:20: info: initialization of "X3" proved
 numerics-algo.ads:9:20: info: initialization of "X4" proved
 numerics-algo.ads:10:20: info: initialization of "X5" proved
-numerics.ads:20:99: info: range check proved (Interval)
-numerics.ads:23:99: info: range check proved (Interval)
-numerics.ads:26:99: info: range check proved (Interval)
+numerics.ads:20:99: info: range check proved (Trivial)
+numerics.ads:23:99: info: range check proved (Trivial)
+numerics.ads:26:99: info: range check proved (Trivial)
 numerics.ads:29:99: info: division check proved (CVC4: 1 VC)
-numerics.ads:29:99: info: range check proved (Interval)
+numerics.ads:29:99: info: range check proved (Trivial)

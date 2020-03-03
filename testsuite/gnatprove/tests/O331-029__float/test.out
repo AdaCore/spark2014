@@ -68,36 +68,36 @@ sensfusion6_pack.adb:75:07: info: initialization of "Az_Tmp" proved
 sensfusion6_pack.adb:75:07: info: initialization of "Az_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:76:07: info: initialization of "Square_Sum" proved
 sensfusion6_pack.adb:76:07: info: initialization of "Square_Sum" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:21: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:28: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:33: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:38: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:43: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:48: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:21: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:27: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:32: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:37: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:42: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:47: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:21: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:27: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:32: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:37: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:42: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:47: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:21: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:27: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:32: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:37: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:42: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:47: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:49: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:58: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:28: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:33: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:38: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:43: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:48: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:27: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:32: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:37: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:42: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:47: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:27: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:32: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:37: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:42: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:47: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:27: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:32: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:37: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:42: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:47: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:31: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:40: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:49: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:58: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:58: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:67: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:67: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:92:24: info: precondition proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:93:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:93:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
@@ -105,19 +105,19 @@ sensfusion6_pack.adb:94:21: info: range check proved (Z3: 1 VC), in call inlined
 sensfusion6_pack.adb:94:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:95:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:95:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:98:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:99:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:100:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:101:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:102:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:103:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:104:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:105:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:106:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:107:22: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:108:22: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:109:22: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:110:22: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:98:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:99:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:100:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:101:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:102:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:103:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:104:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:105:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:106:23: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:107:22: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:108:22: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:109:22: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:110:22: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:22: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:30: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:38: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
@@ -216,25 +216,25 @@ sensfusion6_pack.adb:163:07: info: initialization of "Norm_Ay" proved
 sensfusion6_pack.adb:163:07: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:164:07: info: initialization of "Norm_Az" proved
 sensfusion6_pack.adb:164:07: info: initialization of "Norm_Az" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:166:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:166:35: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:166:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:166:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:167:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:166:40: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:167:35: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:167:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:167:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:168:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:167:40: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:168:35: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:168:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:168:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:171:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:171:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:171:45: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:172:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:172:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:172:45: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:173:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:173:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:173:46: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:173:51: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:168:40: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:171:35: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:171:40: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:171:45: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:172:35: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:172:40: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:172:45: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:173:35: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:173:40: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:173:46: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:173:51: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:174:07: info: initialization of "Half_Ex" proved
 sensfusion6_pack.adb:174:07: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:175:07: info: initialization of "Half_Ey" proved
@@ -250,11 +250,11 @@ sensfusion6_pack.adb:179:07: info: initialization of "Q2_Tmp" proved, in call in
 sensfusion6_pack.adb:180:07: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:180:07: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:189:24: medium: precondition might fail, cannot prove X >= Float'succ, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:16: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:21: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:26: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:36: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:16: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:21: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:26: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:31: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:36: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
@@ -288,12 +288,12 @@ sensfusion6_pack.adb:217:27: medium: float overflow check might fail, in call in
 sensfusion6_pack.adb:217:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
 sensfusion6_pack.adb:218:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
 sensfusion6_pack.adb:218:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
-sensfusion6_pack.adb:222:24: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:222:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:223:24: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:223:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:224:24: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:224:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:222:24: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:222:31: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:223:24: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:223:31: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:224:24: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:224:31: info: float overflow check proved (Trivial), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q0 and Q3 in a precondition]
 sensfusion6_pack.adb:226:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
@@ -338,73 +338,73 @@ sensfusion6_pack.adb:258:25: info: analyzing call to "Mahony_Update_Q" in contex
 sensfusion6_pack.adb:279:07: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:280:07: info: initialization of "Grav_Y" proved
 sensfusion6_pack.adb:281:07: info: initialization of "Grav_Z" proved
-sensfusion6_pack.adb:284:21: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:284:27: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:284:32: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:284:37: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:285:21: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:285:27: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:285:32: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:285:37: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:286:20: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:286:25: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:286:30: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:286:35: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:286:40: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:286:45: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:286:50: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:291:21: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:291:27: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:291:32: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:291:37: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:20: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:25: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:30: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:35: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:40: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:45: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:50: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:56: info: float overflow check proved (Interval)
+sensfusion6_pack.adb:284:21: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:284:27: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:284:32: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:284:37: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:285:21: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:285:27: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:285:32: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:285:37: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:286:20: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:286:25: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:286:30: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:286:35: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:286:40: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:286:45: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:286:50: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:291:21: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:291:27: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:291:32: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:291:37: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:292:20: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:292:25: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:292:30: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:292:35: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:292:40: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:292:45: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:292:50: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:292:56: info: float overflow check proved (Trivial)
 sensfusion6_pack.adb:292:64: info: division check proved (Z3: 1 VC)
-sensfusion6_pack.adb:292:64: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:292:64: info: range check proved (Interval)
-sensfusion6_pack.adb:294:43: info: float overflow check proved (Interval)
+sensfusion6_pack.adb:292:64: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:292:64: info: range check proved (Trivial)
+sensfusion6_pack.adb:294:43: info: float overflow check proved (Trivial)
 sensfusion6_pack.adb:294:51: info: division check proved (Z3: 1 VC)
-sensfusion6_pack.adb:294:51: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:294:51: info: range check proved (Interval)
-sensfusion6_pack.adb:295:52: info: float overflow check proved (Interval)
+sensfusion6_pack.adb:294:51: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:294:51: info: range check proved (Trivial)
+sensfusion6_pack.adb:295:52: info: float overflow check proved (Trivial)
 sensfusion6_pack.adb:295:60: info: division check proved (Z3: 1 VC)
-sensfusion6_pack.adb:295:60: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:295:60: info: range check proved (Interval)
+sensfusion6_pack.adb:295:60: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:295:60: info: range check proved (Trivial)
 sensfusion6_pack.adb:302:07: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:303:07: info: initialization of "Grav_Y" proved
 sensfusion6_pack.adb:304:07: info: initialization of "Grav_Z" proved
-sensfusion6_pack.adb:308:21: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:308:21: info: range check proved (Interval)
-sensfusion6_pack.adb:308:27: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:308:32: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:308:37: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:310:21: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:310:21: info: range check proved (Interval)
-sensfusion6_pack.adb:310:27: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:310:32: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:310:37: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:312:20: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:312:25: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:312:30: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:312:35: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:312:40: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:312:45: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:312:45: info: range check proved (Interval)
-sensfusion6_pack.adb:312:50: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:316:18: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:316:27: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:316:32: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:316:41: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:316:46: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:316:56: info: float overflow check proved (Interval)
+sensfusion6_pack.adb:308:21: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:308:21: info: range check proved (Trivial)
+sensfusion6_pack.adb:308:27: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:308:32: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:308:37: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:310:21: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:310:21: info: range check proved (Trivial)
+sensfusion6_pack.adb:310:27: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:310:32: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:310:37: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:312:20: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:312:25: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:312:30: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:312:35: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:312:40: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:312:45: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:312:45: info: range check proved (Trivial)
+sensfusion6_pack.adb:312:50: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:316:18: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:316:27: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:316:32: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:316:41: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:316:46: info: float overflow check proved (Trivial)
+sensfusion6_pack.adb:316:56: info: float overflow check proved (Trivial)
 sensfusion6_pack.ads:8:03: info: flow dependencies proved
 sensfusion6_pack.ads:27:07: info: initialization of "Euler_Roll_Actual" proved
 sensfusion6_pack.ads:28:07: info: initialization of "Euler_Pitch_Actual" proved
 sensfusion6_pack.ads:29:07: info: initialization of "Euler_Yaw_Actual" proved
-sensfusion6_pack.ads:86:30: info: range check proved (Interval)
+sensfusion6_pack.ads:86:30: info: range check proved (Trivial)

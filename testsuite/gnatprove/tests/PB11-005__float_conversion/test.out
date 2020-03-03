@@ -1,4 +1,4 @@
-foo.adb:12:26: info: range check proved (Interval)
-foo.adb:12:29: info: float overflow check proved (Interval)
-foo.adb:12:46: info: float overflow check proved (Interval)
-foo.adb:12:46: info: range check proved (Interval)
+foo.adb:12:26: info: range check proved (Trivial)
+foo.adb:12:29: info: float overflow check proved (Trivial)
+foo.adb:12:46: info: float overflow check proved (Trivial)
+foo.adb:12:46: info: range check proved (Trivial)

@@ -671,7 +671,7 @@ package body Flow_Error_Messages is
       --  limit-line option, but Interval and CodePeer messages will be
       --  issued for all lines. So we add this extra filter here.
 
-      if How_Proved in PC_Interval | PC_Codepeer
+      if How_Proved in PC_Trivial | PC_Codepeer
         and then not Is_Specified_Line (Slc)
       then
          return;

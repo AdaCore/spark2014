@@ -1,4 +1,4 @@
-example.adb:9:20: info: float overflow check proved (Interval)
-example.adb:9:20: info: range check proved (Interval)
+example.adb:9:20: info: float overflow check proved (Trivial)
+example.adb:9:20: info: range check proved (Trivial)
 example.adb:9:30: info: division check proved (CVC4: 1 VC)
-example.adb:9:30: info: float overflow check proved (Interval)
+example.adb:9:30: info: float overflow check proved (Trivial)

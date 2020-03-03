@@ -465,8 +465,8 @@ package body VC_Kinds is
    begin
       if S = "codepeer" then
          return PC_Codepeer;
-      elsif S = "interval" then
-         return PC_Interval;
+      elsif S = "trivial" then
+         return PC_Trivial;
       elsif S = "prover" then
          return PC_Prover;
       elsif S = "flow" then
@@ -989,7 +989,7 @@ package body VC_Kinds is
       S : constant String :=
         (case P is
             when PC_Prover   => "prover",
-            when PC_Interval => "interval",
+            when PC_Trivial  => "trivial",
             when PC_Codepeer => "codepeer",
             when PC_Flow     => "flow");
    begin
@@ -1079,7 +1079,7 @@ package body VC_Kinds is
    begin
       return (case P is
                  when PC_Prover   => "Automatic provers",
-                 when PC_Interval => "Interval",
+                 when PC_Trivial  => "Trivial",
                  when PC_Codepeer => "CodePeer",
                  when PC_Flow     => "Flow analysis");
    end To_String;

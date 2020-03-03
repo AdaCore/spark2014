@@ -1,14 +1,14 @@
-run.adb:8:15: info: float overflow check proved (Interval)
-run.adb:14:15: info: float overflow check proved (Interval)
-run.adb:20:15: info: float overflow check proved (Interval)
-run.adb:26:15: info: float overflow check proved (Interval)
+run.adb:8:15: info: float overflow check proved (Trivial)
+run.adb:14:15: info: float overflow check proved (Trivial)
+run.adb:20:15: info: float overflow check proved (Trivial)
+run.adb:26:15: info: float overflow check proved (Trivial)
 run.ads:12:34: info: initialization of "Y" proved
 run.ads:14:19: info: postcondition proved (CVC4: 1 VC)
 run.ads:17:34: info: initialization of "Y" proved
-run.ads:18:21: info: float overflow check proved (Interval)
+run.ads:18:21: info: float overflow check proved (Trivial)
 run.ads:19:19: info: postcondition proved (CVC4: 1 VC)
 run.ads:22:36: info: initialization of "Y" proved
 run.ads:24:19: info: postcondition proved (CVC4: 1 VC)
 run.ads:27:37: info: initialization of "Y" proved
-run.ads:28:21: info: float overflow check proved (Interval)
+run.ads:28:21: info: float overflow check proved (Trivial)
 run.ads:29:19: info: postcondition proved (CVC4: 1 VC)

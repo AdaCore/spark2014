@@ -1,11 +1,11 @@
-math.adb:10:41: info: float overflow check proved (Interval)
-math.adb:11:40: info: float overflow check proved (Interval)
-math.adb:12:40: info: float overflow check proved (Interval)
+math.adb:10:41: info: float overflow check proved (Trivial)
+math.adb:11:40: info: float overflow check proved (Trivial)
+math.adb:12:40: info: float overflow check proved (Trivial)
 math.adb:14:22: info: assertion proved (CVC4: 1 VC)
 math.adb:15:22: info: assertion proved (CVC4: 1 VC)
 math.adb:16:22: info: assertion proved (CVC4: 1 VC)
-math.adb:18:58: info: float overflow check proved (Interval)
-math.adb:19:58: info: float overflow check proved (Interval)
+math.adb:18:58: info: float overflow check proved (Trivial)
+math.adb:19:58: info: float overflow check proved (Trivial)
 math.adb:21:22: medium: assertion might fail, cannot prove abs B1 <= 8.2 * One_Div_By_Square_Root_Of_3
 math.adb:22:22: info: assertion proved (CVC4: 1 VC)
 math.adb:25:26: medium: float overflow check might fail

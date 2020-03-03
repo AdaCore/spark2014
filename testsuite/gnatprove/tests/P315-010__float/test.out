@@ -10,32 +10,32 @@ call_sample2.adb:23:07: info: precondition proved (CVC4: 4 VC), in call inlined 
 original_sample.adb:9:07: info: initialization of "D" proved
 original_sample.adb:10:07: info: initialization of "T_Fp" proved
 original_sample.adb:11:07: info: initialization of "T_Pp" proved
-original_sample.adb:14:30: info: range check proved (Interval)
-original_sample.adb:14:42: info: float overflow check proved (Interval)
-original_sample.adb:14:42: info: range check proved (Interval)
+original_sample.adb:14:30: info: range check proved (Trivial)
+original_sample.adb:14:42: info: float overflow check proved (Trivial)
+original_sample.adb:14:42: info: range check proved (Trivial)
 original_sample.adb:15:19: info: float overflow check proved (CodePeer)
 original_sample.adb:15:24: info: division check proved (CodePeer)
-original_sample.adb:15:24: info: float overflow check proved (Interval)
+original_sample.adb:15:24: info: float overflow check proved (Trivial)
 original_sample.adb:16:19: info: float overflow check proved (CodePeer)
-original_sample.adb:16:28: info: range check proved (Interval)
-original_sample.adb:16:38: info: float overflow check proved (Interval)
+original_sample.adb:16:28: info: range check proved (Trivial)
+original_sample.adb:16:38: info: float overflow check proved (Trivial)
 original_sample.adb:17:19: info: float overflow check proved (CodePeer)
-original_sample.adb:17:25: info: float overflow check proved (Interval)
-original_sample.adb:17:34: info: range check proved (Interval)
-original_sample.adb:17:44: info: float overflow check proved (Interval)
+original_sample.adb:17:25: info: float overflow check proved (Trivial)
+original_sample.adb:17:34: info: range check proved (Trivial)
+original_sample.adb:17:44: info: float overflow check proved (Trivial)
 original_sample.adb:27:19: info: float overflow check proved (CodePeer)
-original_sample.adb:27:25: info: float overflow check proved (Interval)
+original_sample.adb:27:25: info: float overflow check proved (Trivial)
 original_sample.ads:15:128: medium: float overflow check might fail [possible explanation: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
 original_sample.ads:15:140: info: division check proved (CVC4: 1 VC)
 original_sample.ads:15:140: medium: float overflow check might fail [possible explanation: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
 original_sample.ads:34:06: info: data dependencies proved
 original_sample.ads:35:06: info: flow dependencies proved
-original_sample.ads:37:29: info: float overflow check proved (Interval)
-original_sample.ads:37:47: info: range check proved (Interval)
-original_sample.ads:37:59: info: float overflow check proved (Interval)
+original_sample.ads:37:29: info: float overflow check proved (Trivial)
+original_sample.ads:37:47: info: range check proved (Trivial)
+original_sample.ads:37:59: info: float overflow check proved (Trivial)
 original_sample.ads:38:35: info: float overflow check proved (CVC4: 1 VC)
-original_sample.ads:38:53: info: range check proved (Interval)
-original_sample.ads:38:65: info: float overflow check proved (Interval)
+original_sample.ads:38:53: info: range check proved (Trivial)
+original_sample.ads:38:65: info: float overflow check proved (Trivial)
 original_sample.ads:39:39: medium: postcondition might fail, cannot prove Time >= Time'old
 original_sample.ads:57:06: info: data dependencies proved
 original_sample.ads:59:17: info: postcondition proved (CVC4: 1 VC)
@@ -44,33 +44,33 @@ sample.adb:10:07: info: initialization of "T_Fp" proved
 sample.adb:11:07: info: initialization of "T_Pp" proved
 sample.adb:12:07: info: initialization of "Tmp1" proved
 sample.adb:13:07: info: initialization of "Tmp2" proved
-sample.adb:16:30: info: range check proved (Interval)
-sample.adb:16:42: info: float overflow check proved (Interval)
-sample.adb:16:42: info: range check proved (Interval)
+sample.adb:16:30: info: range check proved (Trivial)
+sample.adb:16:42: info: float overflow check proved (Trivial)
+sample.adb:16:42: info: range check proved (Trivial)
 sample.adb:17:19: info: float overflow check proved (CodePeer)
 sample.adb:17:19: info: range check proved (CodePeer)
 sample.adb:17:24: info: division check proved (CodePeer)
-sample.adb:17:24: info: float overflow check proved (Interval)
-sample.adb:18:21: info: range check proved (Interval)
-sample.adb:18:31: info: float overflow check proved (Interval)
-sample.adb:18:31: info: range check proved (Interval)
+sample.adb:17:24: info: float overflow check proved (Trivial)
+sample.adb:18:21: info: range check proved (Trivial)
+sample.adb:18:31: info: float overflow check proved (Trivial)
+sample.adb:18:31: info: range check proved (Trivial)
 sample.adb:19:19: info: float overflow check proved (CodePeer)
-sample.adb:20:18: info: float overflow check proved (Interval)
-sample.adb:20:27: info: range check proved (Interval)
-sample.adb:20:37: info: float overflow check proved (Interval)
-sample.adb:20:37: info: range check proved (Interval)
+sample.adb:20:18: info: float overflow check proved (Trivial)
+sample.adb:20:27: info: range check proved (Trivial)
+sample.adb:20:37: info: float overflow check proved (Trivial)
+sample.adb:20:37: info: range check proved (Trivial)
 sample.adb:21:19: info: float overflow check proved (CodePeer)
-sample.adb:29:43: info: float overflow check proved (Interval)
-sample.adb:29:43: info: range check proved (Interval)
+sample.adb:29:43: info: float overflow check proved (Trivial)
+sample.adb:29:43: info: range check proved (Trivial)
 sample.adb:32:19: info: float overflow check proved (CodePeer)
 sample.ads:13:128: medium: float overflow check might fail [possible explanation: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
 sample.ads:13:140: info: division check proved (CVC4: 1 VC)
 sample.ads:13:140: medium: float overflow check might fail [possible explanation: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
 sample.ads:32:06: info: data dependencies proved
 sample.ads:33:06: info: flow dependencies proved
-sample.ads:35:29: info: float overflow check proved (Interval)
-sample.ads:35:47: info: range check proved (Interval)
-sample.ads:35:59: info: float overflow check proved (Interval)
+sample.ads:35:29: info: float overflow check proved (Trivial)
+sample.ads:35:47: info: range check proved (Trivial)
+sample.ads:35:59: info: float overflow check proved (Trivial)
 sample.ads:37:39: medium: postcondition might fail, cannot prove Time >= Time'old
 sample.ads:55:06: info: data dependencies proved
 sample.ads:57:17: info: postcondition proved (CVC4: 1 VC)

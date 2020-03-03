@@ -41,7 +41,7 @@ errorexample.adb:23:07: info: initialization of "Abs_out1" proved
 errorexample.adb:28:22: info: assertion proved (CVC4: 1 VC)
 errorexample.adb:38:65: info: division check proved (CodePeer)
 errorexample.adb:47:22: medium: assertion might fail, cannot prove (Long_Float (Abs_out1)) <= (0.01)
-errorexample.adb:47:35: info: range check proved (Interval)
+errorexample.adb:47:35: info: range check proved (Trivial)
 errorexample.ads:22:08: info: initialization of "Relative_Error" proved
 errorexample.ads:26:14: info: postcondition proved (CVC4: 1 VC)
 errorexample.ads:26:77: info: division check proved (CVC4: 1 VC)
@@ -108,34 +108,34 @@ simulink_functions.adb:349:47: medium: float overflow check might fail [possible
 simulink_functions.adb:349:56: medium: float overflow check might fail [possible explanation: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
 simulink_functions.adb:362:22: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
 simulink_functions.adb:363:29: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
-simulink_functions.adb:363:44: info: range check proved (Interval)
+simulink_functions.adb:363:44: info: range check proved (Trivial)
 simulink_functions.adb:363:50: info: division check proved (CodePeer)
 simulink_functions.adb:363:50: info: float overflow check proved (CodePeer)
-simulink_functions.adb:363:59: info: range check proved (Interval)
+simulink_functions.adb:363:59: info: range check proved (Trivial)
 simulink_functions.adb:363:68: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
 simulink_functions.adb:376:22: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
 simulink_functions.adb:377:30: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
-simulink_functions.adb:377:45: info: range check proved (Interval)
+simulink_functions.adb:377:45: info: range check proved (Trivial)
 simulink_functions.adb:377:51: info: division check proved (CodePeer)
 simulink_functions.adb:377:51: info: float overflow check proved (CodePeer)
-simulink_functions.adb:377:60: info: range check proved (Interval)
+simulink_functions.adb:377:60: info: range check proved (Trivial)
 simulink_functions.adb:377:69: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
 simulink_functions.adb:390:22: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
 simulink_functions.adb:391:30: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
-simulink_functions.adb:391:45: info: range check proved (Interval)
+simulink_functions.adb:391:45: info: range check proved (Trivial)
 simulink_functions.adb:391:51: info: division check proved (CodePeer)
 simulink_functions.adb:391:51: info: float overflow check proved (CodePeer)
-simulink_functions.adb:391:60: info: range check proved (Interval)
+simulink_functions.adb:391:60: info: range check proved (Trivial)
 simulink_functions.adb:391:69: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
 simulink_functions.adb:404:30: info: division check proved (CodePeer)
 simulink_functions.adb:417:30: info: division check proved (CodePeer)
 simulink_functions.adb:430:30: info: division check proved (CodePeer)
 simulink_functions.adb:443:22: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
 simulink_functions.adb:444:27: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
-simulink_functions.adb:444:42: info: range check proved (Interval)
+simulink_functions.adb:444:42: info: range check proved (Trivial)
 simulink_functions.adb:444:48: info: division check proved (CodePeer)
 simulink_functions.adb:444:48: info: float overflow check proved (CodePeer)
-simulink_functions.adb:444:57: info: range check proved (Interval)
+simulink_functions.adb:444:57: info: range check proved (Trivial)
 simulink_functions.adb:444:66: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
 simulink_functions.adb:457:22: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:457:42: info: division check proved (CodePeer)
@@ -170,22 +170,22 @@ simulink_functions.adb:567:49: medium: float overflow check might fail [possible
 simulink_functions.adb:567:58: medium: float overflow check might fail [possible explanation: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
 simulink_functions.adb:577:26: info: precondition proved (CVC4: 1 VC)
 simulink_functions.adb:577:26: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:98 should mention I in a precondition]
-simulink_functions.adb:577:39: info: range check proved (Interval)
+simulink_functions.adb:577:39: info: range check proved (Trivial)
 simulink_functions.adb:587:27: info: precondition proved (CVC4: 1 VC)
 simulink_functions.adb:587:27: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:99 should mention I in a precondition]
-simulink_functions.adb:587:40: info: range check proved (Interval)
+simulink_functions.adb:587:40: info: range check proved (Trivial)
 simulink_functions.adb:597:27: info: precondition proved (CVC4: 1 VC)
 simulink_functions.adb:597:27: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:100 should mention I in a precondition]
-simulink_functions.adb:597:40: info: range check proved (Interval)
+simulink_functions.adb:597:40: info: range check proved (Trivial)
 simulink_functions.adb:607:25: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:102 should mention I in a precondition]
 simulink_functions.adb:607:25: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:102 should mention I in a precondition]
-simulink_functions.adb:607:38: info: range check proved (Interval)
+simulink_functions.adb:607:38: info: range check proved (Trivial)
 simulink_functions.adb:617:26: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:103 should mention I in a precondition]
 simulink_functions.adb:617:26: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:103 should mention I in a precondition]
-simulink_functions.adb:617:39: info: range check proved (Interval)
+simulink_functions.adb:617:39: info: range check proved (Trivial)
 simulink_functions.adb:627:26: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:104 should mention I in a precondition]
 simulink_functions.adb:627:26: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:104 should mention I in a precondition]
-simulink_functions.adb:627:39: info: range check proved (Interval)
+simulink_functions.adb:627:39: info: range check proved (Trivial)
 simulink_functions.adb:637:21: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:106 should mention F in a precondition]
 simulink_functions.adb:637:21: medium: range check might fail [possible explanation: subprogram at simulink_functions.ads:106 should mention F in a precondition]
 simulink_functions.adb:647:14: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:107 should mention F in a precondition]

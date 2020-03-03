@@ -4,21 +4,21 @@ pkg2.ads:5:04: info: flow dependencies proved
 Summary of SPARK analysis
 =========================
 
------------------------------------------------------------------------------------------------------
-SPARK Analysis results        Total       Flow   Interval   CodePeer   Provers   Justified   Unproved
------------------------------------------------------------------------------------------------------
-Data Dependencies                 .          .          .          .         .           .          .
-Flow Dependencies                 2          2          .          .         .           .          .
-Initialization                    4          .          .          .         .           3          1
-Non-Aliasing                      .          .          .          .         .           .          .
-Run-time Checks                   .          .          .          .         .           .          .
-Assertions                        .          .          .          .         .           .          .
-Functional Contracts              .          .          .          .         .           .          .
-LSP Verification                  .          .          .          .         .           .          .
-Termination                       .          .          .          .         .           .          .
-Concurrency                       .          .          .          .         .           .          .
------------------------------------------------------------------------------------------------------
-Total                             6    2 (33%)          .          .         .     3 (50%)    1 (17%)
+------------------------------------------------------------------------------------------
+SPARK Analysis results        Total       Flow   CodePeer   Provers   Justified   Unproved
+------------------------------------------------------------------------------------------
+Data Dependencies                 .          .          .         .           .          .
+Flow Dependencies                 2          2          .         .           .          .
+Initialization                    4          .          .         .           3          1
+Non-Aliasing                      .          .          .         .           .          .
+Run-time Checks                   .          .          .         .           .          .
+Assertions                        .          .          .         .           .          .
+Functional Contracts              .          .          .         .           .          .
+LSP Verification                  .          .          .         .           .          .
+Termination                       .          .          .         .           .          .
+Concurrency                       .          .          .         .           .          .
+------------------------------------------------------------------------------------------
+Total                             6    2 (33%)          .         .     3 (50%)    1 (17%)
 
 
 max steps used for successful proof: 0

@@ -1,31 +1,31 @@
 a-ngelfu.ads:117:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
 a-ngelfu.ads:117:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
-a-ngelfu.ads:117:66: info: float overflow check proved (Interval), in instantiation at dimensions.ads:379
-a-ngelfu.ads:117:66: info: float overflow check proved (Interval), in instantiation at dimensions.ads:380
+a-ngelfu.ads:117:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:379
+a-ngelfu.ads:117:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:380
 a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
 a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
 a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
 a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
-a-ngelfu.ads:127:64: info: float overflow check proved (Interval), in instantiation at dimensions.ads:379
-a-ngelfu.ads:127:64: info: float overflow check proved (Interval), in instantiation at dimensions.ads:380
+a-ngelfu.ads:127:64: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:379
+a-ngelfu.ads:127:64: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:380
 challenges.adb:6:13: info: add a contract to analyze it separately from calling contexts
 challenges.adb:6:13: info: local subprogram "Get_Distance" only analyzed in the context of calls
 challenges.adb:8:37: info: precondition proved (CVC4: 1 VC), in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:37: medium: range check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:54: medium: float overflow check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:54: medium: range check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
-challenges.adb:8:59: info: float overflow check proved (Interval), in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
+challenges.adb:8:59: info: float overflow check proved (Trivial), in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:71: medium: float overflow check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:71: medium: range check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:11:13: info: add a contract to analyze it separately from calling contexts
 challenges.adb:11:13: info: local subprogram "Get_Distance" only analyzed in the context of calls
-challenges.adb:12:48: info: float overflow check proved (Interval), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
+challenges.adb:12:48: info: float overflow check proved (Trivial), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:12:48: info: range check proved (CVC4: 1 VC), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
-challenges.adb:13:48: info: float overflow check proved (Interval), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
+challenges.adb:13:48: info: float overflow check proved (Trivial), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:13:48: info: range check proved (Z3: 1 VC), in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:20:13: info: add a contract to analyze it separately from calling contexts
 challenges.adb:20:13: info: local subprogram "Get_Remaining_Distance" only analyzed in the context of calls
-challenges.adb:24:61: info: float overflow check proved (Interval), in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
+challenges.adb:24:61: info: float overflow check proved (Trivial), in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:24:61: medium: range check might fail, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:27:14: info: add a contract to analyze it separately from calling contexts
 challenges.adb:27:14: info: local subprogram "Go_To_Position_Distance" only analyzed in the context of calls

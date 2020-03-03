@@ -35,6 +35,6 @@ tasks.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
 tasks.ads:9:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
 test.adb:6:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
-test.adb:8:33: info: range check proved (Interval)
+test.adb:8:33: info: range check proved (Trivial)
 test.adb:8:36: info: division check proved (CVC4: 1 VC)
-test.adb:8:36: info: float overflow check proved (Interval)
+test.adb:8:36: info: float overflow check proved (Trivial)

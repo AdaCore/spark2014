@@ -4,10 +4,10 @@ pi_euler.adb:4:08: info: initialization of "Erreur" proved
 pi_euler.adb:11:33: info: loop invariant initialization proved (CVC4: 1 VC)
 pi_euler.adb:11:33: info: loop invariant preservation proved (CVC4: 1 VC)
 pi_euler.adb:12:25: info: assertion proved (CVC4: 1 VC)
-pi_euler.adb:12:36: info: range check proved (Interval)
+pi_euler.adb:12:36: info: range check proved (Trivial)
 pi_euler.adb:13:23: info: division check proved (CVC4: 1 VC)
-pi_euler.adb:13:23: info: float overflow check proved (Interval)
-pi_euler.adb:13:35: info: range check proved (Interval)
+pi_euler.adb:13:23: info: float overflow check proved (Trivial)
+pi_euler.adb:13:35: info: range check proved (Trivial)
 pi_euler.adb:14:18: medium: float overflow check might fail [possible explanation: loop invariant at line 11 should mention Pi]
 pi_euler.adb:15:24: medium: overflow check might fail
 pi_euler_2.adb:3:04: info: initialization of "Index" proved
@@ -19,11 +19,11 @@ pi_euler_2.adb:15:33: info: loop invariant initialization proved (CVC4: 1 VC)
 pi_euler_2.adb:15:33: medium: loop invariant might fail after first iteration, cannot prove Index_Float >= 1.0
 pi_euler_2.adb:16:25: info: assertion proved (CVC4: 1 VC)
 pi_euler_2.adb:17:23: info: division check proved (CVC4: 1 VC)
-pi_euler_2.adb:17:23: info: float overflow check proved (Interval)
+pi_euler_2.adb:17:23: info: float overflow check proved (Trivial)
 pi_euler_2.adb:17:35: info: division check proved (CVC4: 1 VC)
-pi_euler_2.adb:17:35: info: float overflow check proved (Interval)
+pi_euler_2.adb:17:35: info: float overflow check proved (Trivial)
 pi_euler_2.adb:18:18: medium: float overflow check might fail [possible explanation: loop invariant at line 15 should mention Pi]
 pi_euler_2.adb:19:16: warning: unused assignment
 pi_euler_2.adb:19:24: medium: overflow check might fail [possible explanation: loop invariant at line 15 should mention Index]
-pi_euler_2.adb:20:37: info: range check proved (Interval)
+pi_euler_2.adb:20:37: info: range check proved (Trivial)
 pi_euler_2.adb:20:37: medium: float overflow check might fail

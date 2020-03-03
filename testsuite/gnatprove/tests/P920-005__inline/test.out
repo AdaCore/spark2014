@@ -1,8 +1,8 @@
 access_inline.adb:13:14: info: add a contract to analyze it separately from calling contexts
 access_inline.adb:13:14: info: local subprogram "S_COMPUTE" only analyzed in the context of calls
 access_inline.adb:18:07: info: range check proved (CVC4: 1 VC), in call inlined at access_inline.adb:22
-access_inline.adb:18:16: info: range check proved (Interval), in call inlined at access_inline.adb:22
+access_inline.adb:18:16: info: range check proved (Trivial), in call inlined at access_inline.adb:22
 access_inline.adb:18:22: info: float overflow check proved (CVC4: 1 VC), in call inlined at access_inline.adb:22
 access_inline.adb:18:22: info: range check proved (CVC4: 1 VC), in call inlined at access_inline.adb:22
-access_inline.adb:18:24: info: range check proved (Interval), in call inlined at access_inline.adb:22
-access_inline.adb:22:15: info: range check proved (Interval)
+access_inline.adb:18:24: info: range check proved (Trivial), in call inlined at access_inline.adb:22
+access_inline.adb:22:15: info: range check proved (Trivial)
