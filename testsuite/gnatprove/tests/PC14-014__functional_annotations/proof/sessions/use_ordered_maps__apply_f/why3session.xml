@@ -5,12 +5,12 @@
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<file format="whyml">
+<file format="whyml" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="use_ordered_maps__apply_f.mlw"/>
-<theory name="Use_ordered_maps__apply_f__subprogram_def">
- <goal name="def&#39;vc" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Use_ordered_maps__apply_f__subprogram_def" proved="true">
+ <goal name="def&#39;vc" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -398,12 +398,12 @@
   </goal>
   <goal name="def&#39;vc.108" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="128115"/></proof>
+  <proof prover="1"><result status="valid" steps="128117"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.109" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="137615"/></proof>
+  <proof prover="1"><result status="valid" steps="137673"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.110" expl="loop invariant preservation" proved="true">
@@ -518,12 +518,12 @@
   </goal>
   <goal name="def&#39;vc.141" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="116977"/></proof>
+  <proof prover="1"><result status="valid" steps="113114"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
-  <goal name="def&#39;vc.142" expl="postcondition">
+  <goal name="def&#39;vc.142" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="256411"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>

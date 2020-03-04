@@ -314,15 +314,15 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.85" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="4537"/></proof>
+  <proof prover="0"><result status="valid" steps="8379"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.86" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="4184"/></proof>
+  <proof prover="0"><result status="valid" steps="7314"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.87" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="3926"/></proof>
+  <proof prover="0"><result status="valid" steps="7246"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.88" expl="loop invariant preservation">
@@ -405,21 +405,21 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.109" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="7682"/></proof>
+  <proof prover="0"><result status="valid" steps="12481"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.110" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="320523"/></proof>
+  <proof prover="1"><result status="valid" steps="320525"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.111" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3929"/></proof>
+  <proof prover="0"><result status="valid" steps="7828"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.112" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="109768"/></proof>
+  <proof prover="1"><result status="valid" steps="109770"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>

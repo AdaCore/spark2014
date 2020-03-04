@@ -263,12 +263,12 @@
   <proof prover="2"><result status="valid" steps="9770"/></proof>
   </goal>
   <goal name="def&#39;vc.69" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="3044"/></proof>
+  <proof prover="0"><result status="valid" steps="6516"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.70" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="335454"/></proof>
+  <proof prover="1"><result status="valid" steps="335456"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.71" expl="precondition" proved="true">
@@ -342,7 +342,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.90" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2208"/></proof>
+  <proof prover="0"><result status="valid" steps="5746"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.91" expl="postcondition">

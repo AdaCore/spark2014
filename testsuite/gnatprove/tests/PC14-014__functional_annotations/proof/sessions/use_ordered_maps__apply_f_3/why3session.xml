@@ -452,7 +452,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.124" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1943"/></proof>
+  <proof prover="0"><result status="valid" steps="1944"/></proof>
   </goal>
   <goal name="def&#39;vc.125" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >

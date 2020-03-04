@@ -394,7 +394,7 @@
   <proof prover="0"><result status="valid" steps="8872"/></proof>
   </goal>
   <goal name="def&#39;vc.107" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="6952"/></proof>
+  <proof prover="0"><result status="valid" steps="6937"/></proof>
   </goal>
   <goal name="def&#39;vc.108" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="7722"/></proof>
@@ -414,7 +414,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.113" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="11142"/></proof>
+  <proof prover="0"><result status="valid" steps="11577"/></proof>
   </goal>
   <goal name="def&#39;vc.114" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
