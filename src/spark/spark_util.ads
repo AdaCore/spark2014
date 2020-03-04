@@ -733,6 +733,15 @@ package SPARK_Util is
    --  @param N any node
    --  @return the number of N_Component_Association nodes in N.
 
+   function Expr_Has_Relaxed_Init
+     (Expr    : Node_Id;
+      No_Eval : Boolean := True) return Boolean;
+   --  Return True if Expr is an expression with relaxed initialization. If
+   --  No_Eval is True, then we don't consider the expression to be evaluated.
+
+   function Obj_Has_Relaxed_Init (Obj : Entity_Id) return Boolean;
+   --  Return True if Obj is an object with relaxed initialization.
+
    ---------------------------------
    -- Misc operations and queries --
    ---------------------------------

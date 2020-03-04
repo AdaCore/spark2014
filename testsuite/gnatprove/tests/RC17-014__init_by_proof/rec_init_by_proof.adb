@@ -3,13 +3,13 @@ procedure Rec_Init_By_Proof with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
    subtype My_Nat is Integer range 10 .. 150;
-   pragma Annotate (GNATprove, Init_By_Proof, My_Nat);
 
    type Three_Fields is record
       F1 : My_Nat;
       F2 : My_Nat;
       F3 : My_Nat := 12;
    end record;
+   pragma Annotate (GNATprove, Init_By_Proof, Three_Fields);
 
    procedure Init_F1 (X : in out Three_Fields) with
      Post => X.F1'Valid_Scalars

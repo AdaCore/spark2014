@@ -1,10 +1,5 @@
 procedure Nested_Init_By_Proof with SPARK_Mode is
-   subtype My_Nat is Natural;
-   pragma Annotate (GNATprove, Init_By_Proof, My_Nat);
-
-   function My_Eq (X, Y : My_Nat) return Boolean is
-     (X'Valid_Scalars = X'Valid_Scalars and then
-        (if X'Valid_Scalars then X = Y));
+   type My_Nat is new Natural;
 
    type Rec (D : Boolean := False) is record
       F2 : My_Nat;
@@ -15,6 +10,7 @@ procedure Nested_Init_By_Proof with SPARK_Mode is
       F3 : My_Nat;
       end case;
    end record;
+   pragma Annotate (GNATprove, Init_By_Proof, Rec);
 
    function My_Eq (X, Y : Rec) return Boolean is
      (X.D = Y.D
@@ -57,7 +53,7 @@ procedure Nested_Init_By_Proof with SPARK_Mode is
    end Init_F3;
 
    X : Holder (15);
-   C : Integer;
+   C : My_Nat;
    B : Boolean;
    R : Rec (True);
 begin
@@ -71,5 +67,5 @@ begin
    Init_F3 (X.Content (6));
    pragma Assert (X.Content(6)'Valid_Scalars);
    C := X.Content (10).F1;
-   C := X.Content (12).F3;
+   C := X.Content (12).F3; -- @INIT_BY_PROOF:FAIL
 end Nested_Init_By_Proof;

@@ -263,7 +263,9 @@ package SPARK_Util.Types is
    with Pre => Is_Type (E);
    --  @param E type
    --  @return True if we can determine that E is Standard_Boolean or a subtype
-   --    of Standard_Boolean which also ranges over False .. True
+   --    of Standard_Boolean which also ranges over False .. True.
+   --    Always return False if the type might be contained in a type with
+   --    relaxed initialization.
 
    function Is_Standard_Type (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);
@@ -274,12 +276,6 @@ package SPARK_Util.Types is
    --  @param E type
    --  @return True if E needs a specific module to check its default
    --     expression at declaration.
-
-   function Has_Init_By_Proof (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
-   --  @param E type
-   --  @return True if initialization of objects of type E should be checked by
-   --     proof.
 
    function Is_Deep (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
@@ -299,6 +295,32 @@ package SPARK_Util.Types is
    function Types_Have_Same_Known_Esize (A, B : Entity_Id) return Boolean
      with Pre => Is_Type (A) and then Is_Type (B);
    --  Returns True if the two types in argument have the same Esize
+
+   function Contains_Relaxed_Init_Parts
+     (Typ        : Entity_Id;
+      Ignore_Top : Boolean := False) return Boolean
+   with
+     Pre  => Is_Type (Typ),
+     Post => (if Contains_Relaxed_Init_Parts'Result
+              then Might_Contain_Relaxed_Init (Typ));
+   --  Returns True if Typ has subcomponents whose type is annotated with
+   --  relaxed initialization.
+   --  If Ignore_Top is True, ignore a potential Relaxed_Initialization
+   --  aspect on the type itself.
+
+   function Contains_Only_Relaxed_Init (Typ : Entity_Id) return Boolean with
+     Pre  => Is_Type (Typ),
+     Post => (if Contains_Only_Relaxed_Init'Result
+              then Contains_Relaxed_Init_Parts (Typ));
+   --  Returns True if Typ has at least a subcomponent whose type is annotated
+   --  with relaxed initialization, all its scalar subcomponents have this
+   --  annotation and it contains no predicates.
+   --  ??? To keep flow analysis working, should be removed afterward.
+
+   function Might_Contain_Relaxed_Init (Typ : Entity_Id) return Boolean with
+     Pre => Is_Type (Typ);
+   --  Returns True if Typ has subcomponents whose type may be used for
+   --  expressions with relaxed initialization.
 
    --------------------------------
    -- Queries related to records --

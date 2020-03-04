@@ -36,6 +36,7 @@ with Why.Conversions;     use Why.Conversions;
 with Why.Images;          use Why.Images;
 with Why.Inter;           use Why.Inter;
 with Why.Gen.Arrays;      use Why.Gen.Arrays;
+with Why.Gen.Init;        use Why.Gen.Init;
 with Why.Gen.Scalars;     use Why.Gen.Scalars;
 
 package body Why.Gen.Names is
@@ -334,13 +335,19 @@ package body Why.Gen.Names is
                      if Is_Record_Type_In_Why (From_Node) then
                         pragma Assert (Is_Record_Type_In_Why (To_Node));
                         declare
-                           From_Base : constant Node_Id :=
+                           From_Base    : constant Node_Id :=
                              Root_Retysp (From_Node);
+                           Init_Wrapper : constant Boolean :=
+                             Is_Init_Wrapper_Type (From);
+                           pragma Assert
+                             (Init_Wrapper = Is_Init_Wrapper_Type (To));
                         begin
                            if From_Base = From_Node then
-                              return E_Symb (To_Node, WNE_Of_Base);
+                              return E_Symb
+                                (To_Node, WNE_Of_Base, Init_Wrapper);
                            else
-                              return E_Symb (From_Node, WNE_To_Base);
+                              return E_Symb
+                                (From_Node, WNE_To_Base, Init_Wrapper);
                            end if;
                         end;
 
@@ -883,6 +890,7 @@ package body Why.Gen.Names is
          when WNE_Fixed_Point_Mult_Div_Prefix => "Fixed_Point_Mult_Div",
          when WNE_Havoc                      => "__havoc",
          when WNE_Hide_Extension             => "hide_ext__",
+         when WNE_Init_Wrapper_Suffix        => "__init_wrapper",
          when WNE_No_Return_Module           => "No_Return",
          when WNE_Rec_Rep                    => "__rep",
          when WNE_Rec_Comp_Prefix            => "rec__",
@@ -963,6 +971,7 @@ package body Why.Gen.Names is
             | WNE_Of_Int
             | WNE_Of_Real
             | WNE_Of_Rep
+            | WNE_Of_Wrapper
             | WNE_Private_Eq
             | WNE_Private_Type
             | WNE_Pointer_Close
@@ -990,6 +999,7 @@ package body Why.Gen.Names is
             | WNE_To_Int_3
             | WNE_To_Int_4
             | WNE_To_Rep
+            | WNE_To_Wrapper
             | WNE_Type_Invariant
             | WNE_Empty
          =>

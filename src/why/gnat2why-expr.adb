@@ -137,39 +137,6 @@ package body Gnat2Why.Expr is
    --  Optimization: if E is a modular type, and Op is a division, do not add
    --  the modulus operation.
 
-   function Boolean_Prog_Of_Pred (W : W_Pred_Id) return W_Prog_Id is
-     (New_Any_Expr (Post        =>
-                      New_Connection
-                        (Left  =>
-                           New_Call (Domain => EW_Pred,
-                                     Name   => Why_Eq,
-                                     Typ    => EW_Bool_Type,
-                                     Args   =>
-                                       (+New_Result_Ident (EW_Bool_Type),
-                                        +True_Term)),
-                         Op    => EW_Equivalent,
-                         Right => +W),
-                    Labels      => Symbol_Sets.Empty_Set,
-                    Return_Type => EW_Bool_Type));
-
-   --  @param W a Why3 pred expression
-   --  @return the equivalent Why3 prog expression
-
-   function Boolean_Term_Of_Pred (W : W_Pred_Id) return W_Term_Id is
-     (New_Conditional (Condition => +W,
-                       Then_Part => +True_Term,
-                       Else_Part => +False_Term,
-                       Typ       => EW_Bool_Type));
-   --  @param W a Why3 pred expression
-   --  @return the equivalent Why3 term expression
-
-   function Boolean_Expr_Of_Pred
-     (W      : W_Pred_Id;
-      Domain : EW_Domain) return W_Expr_Id;
-   --  @param W a Why3 pred expression
-   --  @param Domain translation domain
-   --  @return the equivalent Why3 expression, depending on the [Domain]
-
    function Case_Expr_Of_Ada_Node
      (N             : Node_Id;
       Expected_Type : W_Type_OId := Why_Empty;
@@ -628,7 +595,8 @@ package body Gnat2Why.Expr is
       Typ                 : Entity_Id;
       Assocs              : List_Id;
       Params              : Transformation_Params;
-      In_Attribute_Update : Boolean := False) return W_Field_Association_Array;
+      In_Attribute_Update : Boolean := False;
+      Init_Wrapper        : Boolean) return W_Field_Association_Array;
    --  Returns a list of updates to be applied to a record value, to
    --  translate either an aggregate or a reference to attribute Update.
    --  In_Attribute_Update is True when translating a reference to attribute
@@ -863,12 +831,12 @@ package body Gnat2Why.Expr is
          declare
             Binder   : constant Item_Type :=
               Ada_Ent_To_Why.Element (Symbol_Table, Lvalue);
-            Why_Ty   : constant W_Type_Id := Type_Of_Node (Etype (Lvalue));
+            Why_Ty   : constant W_Type_Id := Type_Of_Node (Lvalue);
             Why_Expr : constant W_Prog_Id :=
-                         +Transform_Expr (Rexpr,
-                                          Why_Ty,
-                                          EW_Prog,
-                                          Params => Body_Params);
+              +Transform_Expr (Rexpr,
+                               Why_Ty,
+                               EW_Prog,
+                               Params => Body_Params);
             L_Name   : constant String := Full_Name (Lvalue);
             Res      : W_Prog_Id := +Void;
 
@@ -1240,6 +1208,8 @@ package body Gnat2Why.Expr is
             Constrained_Ty  : constant Entity_Id := Etype (Lvalue);
             --  Type of the fullview
 
+            W_Ty            : constant W_Type_Id := Type_Of_Node (Lvalue);
+
             Default_Checks  : W_Prog_Id :=
               Compute_Default_Check (N, Constrained_Ty, Body_Params);
               --  Checks for runtime errors in default values
@@ -1250,7 +1220,7 @@ package body Gnat2Why.Expr is
                    (Ada_Node => Lvalue,
                     Domain   => EW_Pred,
                     Expr     => L_Deref,
-                    To       => Type_Of_Node (Constrained_Ty)),
+                    To       => W_Ty),
                  Ty     => Constrained_Ty);
             --  Assume initial value of L
 
@@ -1284,18 +1254,17 @@ package body Gnat2Why.Expr is
             --  L has its top-level initialization flag True iff its type
             --  has some initialized component.
 
-            if Binder.Init.Present then
+            if Binder.Init.Present
+              and then Default_Initialization
+                (Constrained_Ty) /= No_Default_Initialization
+            then
                Default_Checks := Sequence
                    (Left  => Default_Checks,
                     Right => New_Assignment
                       (Ada_Node => N,
                        Name     => Binder.Init.Id,
                        Labels   => Symbol_Sets.Empty_Set,
-                       Value    =>
-                         (if Default_Initialization
-                            (Constrained_Ty) /= No_Default_Initialization
-                          then True_Prog
-                          else False_Prog),
+                       Value    => True_Prog,
                        Typ      => EW_Bool_Type));
             end if;
 
@@ -1786,22 +1755,6 @@ package body Gnat2Why.Expr is
 
       return Result;
    end Bind_From_Mapping_In_Expr;
-
-   --------------------------
-   -- Boolean_Expr_Of_Pred --
-   --------------------------
-
-   function Boolean_Expr_Of_Pred
-     (W      : W_Pred_Id;
-      Domain : EW_Domain) return W_Expr_Id
-   is
-   begin
-      case Domain is
-         when EW_Prog | EW_Pterm => return +Boolean_Prog_Of_Pred (W);
-         when EW_Term            => return +Boolean_Term_Of_Pred (W);
-         when EW_Pred            => return +W;
-      end case;
-   end Boolean_Expr_Of_Pred;
 
    ---------------------------
    -- Case_Expr_Of_Ada_Node --
@@ -2628,12 +2581,17 @@ package body Gnat2Why.Expr is
             Needs_Havoc   : constant Boolean :=
               Present (Formal)
               and then Ekind (Formal) = E_Out_Parameter
-              and then Has_Init_By_Proof (Etype (Formal));
+              and then
+                (Obj_Has_Relaxed_Init (Formal)
+                 or else Contains_Relaxed_Init_Parts (Etype (Formal)));
             --  In the case of out parameters that are initialized by proof,
             --  the memory used by the callee may not be initialized at
             --  subprogram start, even if the actual was initialized at
             --  subprogram call. We need to havoc out parameters before the
             --  call to simulate the absence of initial value.
+            --  NB. This is because flow analysis does not check that we are
+            --  not reading the parts with relaxed init of an out parameter in
+            --  the precondition.
 
          begin
             if Binders (Bind_Cnt).Init.Present then
@@ -2821,6 +2779,9 @@ package body Gnat2Why.Expr is
                            Actual_Binder : constant Item_Type :=
                              Ada_Ent_To_Why.Element
                                (Symbol_Table, Entity (Actual));
+                           Same_Type     : constant Boolean := Eq_Base
+                             (Get_Why_Type_From_Item (Binders (Bind_Cnt)),
+                              Get_Why_Type_From_Item (Actual_Binder));
                         begin
                            pragma Assert (Actual_Binder.Kind = DRecord);
 
@@ -2828,18 +2789,13 @@ package body Gnat2Why.Expr is
                            --  the same type, we need a temporary variable to
                            --  hold the result of the conversion.
 
-                           if not Eq_Base
-                             (EW_Abstract (Binders (Bind_Cnt).Typ),
-                              EW_Abstract (Actual_Binder.Typ))
-                           then
+                           if not Same_Type then
                               Nb_Of_Lets := Nb_Of_Lets + 1;
                            end if;
 
                            if Formal_Binder.Fields.Present
                              and then Actual_Binder.Fields.Present
-                             and then
-                               Eq_Base (EW_Abstract (Binders (Bind_Cnt).Typ),
-                                        EW_Abstract (Actual_Binder.Typ))
+                             and then Same_Type
                            then
 
                               --  If the actual is in split form and as the
@@ -2945,7 +2901,10 @@ package body Gnat2Why.Expr is
                              +New_Identifier
                              (Name   => Full_Name (Formal) & "__compl",
                               Domain => EW_Term,
-                              Typ    => EW_Abstract (Formal_Binder.Typ));
+                              Typ    => EW_Abstract
+                                (Formal_Binder.Typ,
+                                 Relaxed_Init =>
+                                   Obj_Has_Relaxed_Init (Formal)));
                         begin
 
                            if Formal_Binder.Fields.Present then
@@ -3057,8 +3016,10 @@ package body Gnat2Why.Expr is
                      --  Return True if a check may be required
 
                      Actual_Type : constant W_Type_Id :=
-                       (if Aliasing then
-                           EW_Abstract (Get_Ada_Node (+Type_Of_Node (Actual)))
+                       (if Aliasing
+                        then EW_Abstract
+                          (Get_Ada_Node (+Type_Of_Node (Actual)),
+                           Relaxed_Init => Expr_Has_Relaxed_Init (Actual))
                         else Type_Of_Node (Actual));
                      Array_Expr  : constant W_Expr_Id :=
                        (if Aliasing
@@ -3193,7 +3154,9 @@ package body Gnat2Why.Expr is
                      Formal_Typ    : constant Entity_Id :=
                        Etype (Binders (Bind_Cnt).Value.Ada_Node);
                      W_Formal_Typ  : constant W_Type_Id :=
-                       EW_Abstract (Formal_Typ);
+                       EW_Abstract
+                         (Formal_Typ, Relaxed_Init =>
+                            Obj_Has_Relaxed_Init (Formal));
                   begin
 
                      --  The actual is in split form iff it is an identifier.
@@ -3211,8 +3174,12 @@ package body Gnat2Why.Expr is
                         begin
                            pragma Assert (Actual_Binder.Kind = Pointer);
 
-                           if Eq_Base (W_Formal_Typ,
-                                       EW_Abstract (Actual_Typ))
+                           if Eq_Base
+                             (W_Formal_Typ,
+                              EW_Abstract
+                                (Actual_Typ,
+                                 Relaxed_Init =>
+                                   Expr_Has_Relaxed_Init (Actual)))
                            then
 
                               --  If the actual is in split form and has the
@@ -3497,8 +3464,16 @@ package body Gnat2Why.Expr is
         and then Default_Initialization (Ty) /= No_Default_Initialization
       then
          declare
+            W_Typ   : constant W_Type_Id := EW_Abstract
+              (Ty_Ext, Relaxed_Init => Has_Relaxed_Init (Ty_Ext));
+            --  Even if we are checking the default initialization of an object
+            --  with relaxed initialization, we only assume for checking the
+            --  predicate that the value may have relaxed initialization if
+            --  the type itself is marked with relaxed init. Indeed, otherwise,
+            --  the predicate assumes complete initialization.
+
             Tmp_Exp : constant W_Identifier_Id :=
-              New_Temp_Identifier (Ty_Ext, EW_Abstract (Ty_Ext));
+              New_Temp_Identifier (Ty_Ext, W_Typ);
             --  Temporary variable for tmp_exp
 
             --  Create a value of type Ty_Ext that respects the default
@@ -3508,7 +3483,7 @@ package body Gnat2Why.Expr is
 
             Default_Init_Pred : constant W_Pred_Id :=
               Compute_Default_Init
-                (Expr             => +New_Result_Ident (EW_Abstract (Ty_Ext)),
+                (Expr             => +New_Result_Ident (W_Typ),
                  Ty               => Ty_Ext,
                  Params           => Params,
                  Include_Subtypes => Include_Subtypes,
@@ -3524,7 +3499,7 @@ package body Gnat2Why.Expr is
               New_Any_Expr (Ada_Node    => Ty_Ext,
                             Labels      => Symbol_Sets.Empty_Set,
                             Post        => Default_Init_Pred,
-                            Return_Type => EW_Abstract (Ty_Ext));
+                            Return_Type => W_Typ);
 
             --  Generate the predicate check, specifying that it applies to the
             --  default value of a type, so that a special VC kind is used for
@@ -4021,20 +3996,13 @@ package body Gnat2Why.Expr is
 
          --  If C_Ty has a wrapper for initialization, set the init flag
 
-         if Needs_Init_Wrapper_Type (C_Ty) then
+         if Is_Init_Wrapper_Type (Get_Type (+C_Expr))
+           and then Has_Default_Aspect (Ty_Ext)
+         then
             P := +New_And_Expr
               (Left   => +P,
-               Right  => New_Comparison
-                 (Symbol => Why_Eq,
-                  Left   => New_Init_Attribute_Access
-                    (C_Ty, +C_Expr, Params.Ref_Allowed),
-                  Right  =>
-                    (if Has_Default_Aspect (Ty_Ext)
-                     or else Default_Initialization
-                       (C_Ty) /= No_Default_Initialization
-                     then +True_Term
-                     else +False_Term),
-                  Domain => EW_Pred),
+               Right  => +Compute_Is_Initialized
+                 (C_Ty, +C_Expr, Params.Ref_Allowed, Domain => EW_Pred),
                Domain => EW_Pred);
          end if;
 
@@ -4149,20 +4117,13 @@ package body Gnat2Why.Expr is
 
          --  If F_Ty has a wrapper for initialization, set the init flag
 
-         if Needs_Init_Wrapper_Type (F_Ty) then
+         if Is_Init_Wrapper_Type (Get_Type (+F_Expr))
+           and then Present (Expression (Enclosing_Declaration (E)))
+         then
             P := +New_And_Expr
               (Left   => +P,
-               Right  => New_Comparison
-                 (Symbol => Why_Eq,
-                  Left   => New_Init_Attribute_Access
-                    (F_Ty, +F_Expr, Params.Ref_Allowed),
-                  Right  =>
-                    (if Present (Expression (Enclosing_Declaration (E)))
-                       or else Default_Initialization (F_Ty) /=
-                               No_Default_Initialization
-                     then +True_Term
-                     else +False_Term),
-                  Domain => EW_Pred),
+               Right  => +Compute_Is_Initialized
+                    (F_Ty, +F_Expr, Params.Ref_Allowed, Domain => EW_Pred),
                Domain => EW_Pred);
          end if;
 
@@ -4190,6 +4151,7 @@ package body Gnat2Why.Expr is
         and then not Include_Subtypes
         and then not Is_Itype (Ty_Ext)
         and then not Is_Standard_Boolean_Type (Ty_Ext)
+        and then not Is_Init_Wrapper_Type (Get_Type (Expr))
       then
          Variables_In_Default_Init (Ty_Ext, Variables);
 
@@ -4548,18 +4510,6 @@ package body Gnat2Why.Expr is
         (if Is_Class_Wide_Type (Ty) then Get_Specific_Type_From_Classwide (Ty)
          else Ty);
       Ty_Ext    : constant Entity_Id := Retysp (Ty_Spec);
-      Init_Expr : constant W_Term_Id :=
-        (if Is_Init_Wrapper_Type (Get_Type (+Expr)) then
-           +New_Init_Wrapper_Value_Access
-           (Empty, Ty_Ext, +Expr, EW_Term, Params.Ref_Allowed)
-         else Expr);
-      --  Expression for the first parameter of the predicate call
-      Init_Flag : constant W_Term_Id :=
-        (if Is_Init_Wrapper_Type (Get_Type (+Expr)) then
-           +New_Init_Attribute_Access (Ty_Ext, +Expr, Params.Ref_Allowed)
-         else Initialized);
-      --  If initialization is handled by proof, use the initialization flag to
-      --  decide whether a component is initialized.
 
       Variables : Flow_Id_Sets.Set;
 
@@ -4575,7 +4525,7 @@ package body Gnat2Why.Expr is
       if Use_Pred
         and then not Is_Itype (Ty_Ext)
         and then not Is_Standard_Boolean_Type (Ty_Ext)
-        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Init_Expr))
+        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
       then
          Variables_In_Dynamic_Invariant (Ty_Ext, Variables);
 
@@ -4586,8 +4536,8 @@ package body Gnat2Why.Expr is
             Args  : W_Expr_Array (1 .. Num_B);
 
          begin
-            Args (1) := +Init_Expr;
-            Args (2) := +Init_Flag;
+            Args (1) := +Expr;
+            Args (2) := +Initialized;
             Args (3) := +Only_Var;
             Args (4) := +Top_Predicate;
             Args (5) := +Include_Type_Inv;
@@ -4607,10 +4557,11 @@ package body Gnat2Why.Expr is
         or else (Use_Split_Form_For_Type (Ty_Ext)
                  and then Get_Type_Kind (Get_Type (+Expr)) /= EW_Abstract)
       then
-         T := +New_Dynamic_Property (Domain => EW_Pred,
-                                     Ty     => Ty_Ext,
-                                     Expr   => +Expr,
-                                     Params => Params);
+         T := +New_Dynamic_Property
+           (Domain => EW_Pred,
+            Ty     => Ty_Ext,
+            Expr   => +Expr,
+            Params => Params);
 
          --  If a scalar variable is not initialized, then its dynamic property
          --  may be false. As initialization is checked separately by flow
@@ -4644,16 +4595,26 @@ package body Gnat2Why.Expr is
                        Attr   => Attribute_Last,
                        Params => Params),
                     To       => Why_Rep_Type);
-               Fst_Le_Last : constant W_Pred_Id :=
+               Fst_Le_Last  : constant W_Pred_Id :=
                  New_Call (Name     => Le_Op,
-                           Typ     => EW_Bool_Type,
-                           Args    => (First, Last));
+                           Typ      => EW_Bool_Type,
+                           Args     => (First, Last));
+               Init_Flag    : constant W_Pred_Id :=
+                 (if Is_Init_Wrapper_Type (Get_Type (+Expr))
+                  then +Compute_Is_Initialized
+                    (E                       => Ty_Ext,
+                     Name                    => +Expr,
+                     Ref_Allowed             => Params.Ref_Allowed,
+                     Domain                  => EW_Pred,
+                     Exclude_Always_Relaxed  => True)
+                  else Pred_Of_Boolean_Term (W => Initialized));
             begin
                T := +W_Expr_Id'
                  (New_Conditional
                     (Domain      => EW_Pred,
                      Condition   =>
-                       New_Or_Else_Expr (+Init_Flag, +Fst_Le_Last, EW_Pred),
+                       New_Or_Else_Expr
+                         (+Init_Flag, +Fst_Le_Last, EW_Pred),
                      Then_Part   => +T,
                      Typ         => EW_Bool_Type));
             end;
@@ -4778,6 +4739,15 @@ package body Gnat2Why.Expr is
               (Expr, Anc_Ty, Params, Use_Pred => False));
          Pred_Check_At_Default : constant Boolean :=
            Default_Initialization (Ty_Ext) /= No_Default_Initialization;
+         Init_Flag             : constant W_Pred_Id :=
+           (if Is_Init_Wrapper_Type (Get_Type (+Expr))
+            then +Compute_Is_Initialized
+              (E                       => Ty_Ext,
+               Name                    => +Expr,
+               Ref_Allowed             => Params.Ref_Allowed,
+               Domain                  => EW_Pred,
+               Exclude_Always_Relaxed  => True)
+            else Pred_Of_Boolean_Term (Initialized));
          Check_Pred            : constant W_Pred_Id :=
            New_Conditional
              (Condition => +Top_Predicate,
@@ -4944,8 +4914,8 @@ package body Gnat2Why.Expr is
                      Args  : W_Expr_Array (1 .. Num_B);
 
                   begin
-                     Args (1) := +Init_Expr;
-                     Args (2) := +Init_Flag;
+                     Args (1) := +Expr;
+                     Args (2) := +Initialized;
                      Args (3) := +Only_Var;
                      Args (4) := +Top_Predicate;
                      Args (5) := +Include_Type_Inv;
@@ -5485,6 +5455,7 @@ package body Gnat2Why.Expr is
    end Expected_Type_Of_Prefix;
 
    function Expected_Type_Of_Prefix (N : Node_Id) return W_Type_Id is
+      Init_Wrapper : constant Boolean := Expr_Has_Relaxed_Init (N);
    begin
       case Nkind (N) is
          --  The frontend may introduce an unchecked type conversion on the
@@ -5512,10 +5483,13 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Slice | N_Indexed_Component | N_Selected_Component =>
-            return EW_Abstract (Expected_Type_Of_Prefix (N));
+            return
+              EW_Abstract
+                (Expected_Type_Of_Prefix (N), Relaxed_Init => Init_Wrapper);
 
          when N_Explicit_Dereference | N_Function_Call =>
-            return EW_Abstract (Etype (N));
+            return
+              EW_Abstract (Etype (N), Relaxed_Init => Init_Wrapper);
 
          when others =>
             Ada.Text_IO.Put_Line ("[Expected_Type] kind ="
@@ -5879,7 +5853,7 @@ package body Gnat2Why.Expr is
 
          elsif Present (Formal)
            and then Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
-           and then Needs_Init_Wrapper_Type (Etype (Actual))
+           and then Might_Contain_Relaxed_Init (Etype (Actual))
          then
 
             --  Only perform checks on simple actual. If the actual is not in
@@ -6004,8 +5978,16 @@ package body Gnat2Why.Expr is
                                        Name     => Full_Name (Formal),
                                        Typ      => Formal_T);
                      Tmp_Var_Deref       : constant W_Prog_Id :=
-                       New_Deref (Right => Tmp_Var,
-                                  Typ   => Formal_T);
+                       (if Binders (Bind_Cnt).Init.Present
+                        then New_Label
+                          (Labels => Symbol_Sets.Empty_Set,
+                           Def    => New_Deref (Right => Tmp_Var,
+                                                Typ   => Formal_T),
+                           Typ    => EW_Split (Get_Ada_Node (+Formal_T)))
+                        else New_Deref (Right => Tmp_Var,
+                                        Typ   => Formal_T));
+                     --  The init flag is always true after the call. Go to the
+                     --  concrete type to avoid an unnecessary check.
 
                      --  1/ Before the call (saving into a temporary variable):
                      ----------------------------------------------------------
@@ -6029,11 +6011,7 @@ package body Gnat2Why.Expr is
                      Prefetch_Actual     : constant W_Prog_Id :=
                        +Transform_Expr (Actual,
                                         EW_Prog,
-                                        Params,
-                                        No_Init =>
-                                          Ekind (Formal) = E_Out_Parameter);
-                     --  We should not introduce initialization checks for out
-                     --  parameters.
+                                        Params);
 
                      Fetch_Actual         : constant W_Prog_Id :=
                        (if Need_Check_On_Fetch then
@@ -6118,18 +6096,13 @@ package body Gnat2Why.Expr is
                      Formal_T : constant W_Type_Id :=
                        Get_Typ (Binders (Bind_Cnt).Content.B_Name);
                      Actual_T : constant W_Type_Id :=
-                       (if Aliasing then
-                           EW_Abstract (Get_Ada_Node (+Type_Of_Node (Actual)))
+                       (if Aliasing
+                        then EW_Abstract
+                          (Get_Ada_Node (+Type_Of_Node (Actual)),
+                           Relaxed_Init => Expr_Has_Relaxed_Init (Actual))
                         else Type_Of_Node (Actual));
                      --  If aliasing can occur, we also need a temporary for
                      --  the actual.
-
-                     Act_T_Fetch : constant W_Type_Id :=
-                       (if Ekind (Formal) = E_Out_Parameter
-                        then EW_Init_Wrapper (Actual_T)
-                        else Actual_T);
-                     --  Type for fetching the actual. Use a wrapper type if no
-                     --  initialization checks are required.
 
                      --  Variables:
 
@@ -6167,15 +6140,11 @@ package body Gnat2Why.Expr is
                      --  ... with the appropriate checks if needed.
 
                      Prefetch_Actual : constant W_Prog_Id :=
-                       +Insert_Simple_Conversion
-                       (Ada_Node => Actual,
-                        Domain   => EW_Pterm,
-                        Expr     => Transform_Expr
+                       +Transform_Expr
                           (Actual,
-                           Act_T_Fetch,
+                           Actual_T,
                            EW_Prog,
-                           Params),
-                        To       => Actual_T);
+                           Params);
 
                      Prefetch_Actual_Tmp : constant W_Identifier_Id :=
                        New_Identifier (Name => Full_Name (Formal) & "__compl",
@@ -6189,8 +6158,7 @@ package body Gnat2Why.Expr is
                        +Insert_Checked_Conversion
                        (Ada_Node => Actual,
                         Domain   => EW_Prog,
-                        Expr     =>
-                          +Prefetch_Actual_Rec,
+                        Expr     => +Prefetch_Actual_Rec,
                         To       => Formal_T,
                         No_Init  => Ekind (Formal) = E_Out_Parameter);
 
@@ -6250,12 +6218,13 @@ package body Gnat2Why.Expr is
 
                if Aliasing
                  or else not Simple_Actual
-                 or else not Eq_Base (EW_Abstract (Binders (Bind_Cnt).Typ),
-                                      Type_Of_Node (Actual))
+                 or else not Eq_Base
+                   (Get_Why_Type_From_Item (Binders (Bind_Cnt)),
+                    Type_Of_Node (Actual))
                then
                   declare
                      Formal_T : constant W_Type_Id :=
-                       EW_Abstract (Binders (Bind_Cnt).Typ);
+                       Get_Why_Type_From_Item (Binders (Bind_Cnt));
                      Actual_T : constant W_Type_Id :=
                        Type_Of_Node (Actual);
 
@@ -6280,9 +6249,9 @@ package body Gnat2Why.Expr is
                            Domain   => EW_Prog,
                            Expr     => Transform_Expr
                              (Actual,
+                              Actual_T,
                               EW_Prog,
-                              Params,
-                              No_Init => True),
+                              Params),
                            To       => Formal_T,
                            No_Init  => True)
                         --  Do the conversion explicitly to avoid predicate and
@@ -6488,8 +6457,9 @@ package body Gnat2Why.Expr is
 
                         Reconstructed_Arg :=
                           +Record_From_Split_Form
-                            (A  => Arg_Array (1 .. Index - 1),
-                             Ty => Binders (Bind_Cnt).Typ);
+                          (A            => Arg_Array (1 .. Index - 1),
+                           Ty           => Binders (Bind_Cnt).Typ,
+                           Init_Wrapper => Obj_Has_Relaxed_Init (Formal));
 
                         Reconstructed_Arg :=
                           +Insert_Simple_Conversion
@@ -6542,12 +6512,13 @@ package body Gnat2Why.Expr is
 
                   if Aliasing
                     or else not Simple_Actual
-                    or else not Eq_Base (EW_Abstract (Formal_Typ),
-                                         Type_Of_Node (Actual))
+                    or else not Eq_Base
+                      (Get_Why_Type_From_Item (Binders (Bind_Cnt)),
+                       Type_Of_Node (Actual))
                   then
                      declare
                         Formal_T                : constant W_Type_Id :=
-                          EW_Abstract (Formal_Typ);
+                          Get_Why_Type_From_Item (Binders (Bind_Cnt));
                         Actual_T                : constant W_Type_Id :=
                           Type_Of_Node (Actual);
 
@@ -6956,7 +6927,7 @@ package body Gnat2Why.Expr is
                Typ := Why_Type_Of_Entity (Entity (Expr));
                Nd  := Entity (Expr);
             else
-               Typ := Type_Of_Node (Etype (Expr));
+               Typ := Type_Of_Node (Expr);
                Nd  := Empty;
             end if;
 
@@ -8388,10 +8359,13 @@ package body Gnat2Why.Expr is
                --  ancestor only
 
                R_Expr : constant W_Expr_Id :=
-                 Insert_Simple_Conversion (Ada_Node => N,
-                                           Domain   => EW_Term,
-                                           Expr     => Expr,
-                                           To       => Type_Of_Node (Ty));
+                 Insert_Simple_Conversion
+                   (Ada_Node => N,
+                    Domain   => EW_Term,
+                    Expr     => Expr,
+                    To       => (if Is_Init_Wrapper_Type (Get_Type (Expr))
+                                 then EW_Init_Wrapper (Type_Of_Node (Ty))
+                                 else Type_Of_Node (Ty)));
             begin
                return
                  New_Ada_Record_Access
@@ -8517,7 +8491,11 @@ package body Gnat2Why.Expr is
                   else Search_Component_In_Type
                     (Pref_Ty, Entity (Selector_Name (N))));
 
-               To_Type : constant W_Type_Id := EW_Abstract (Etype (Selector));
+               To_Type : constant W_Type_Id :=
+                 EW_Abstract
+                   (Etype (Selector),
+                    Relaxed_Init => Is_Init_Wrapper_Type (Get_Type (Pref))
+                    or else Has_Relaxed_Init (Etype (Selector)));
 
                New_Value : constant W_Expr_Id := Insert_Simple_Conversion
                       (Ada_Node => N,
@@ -8541,7 +8519,10 @@ package body Gnat2Why.Expr is
          when N_Explicit_Dereference =>
 
             declare
-               To_Type   : constant W_Type_Id := EW_Abstract (Etype (N));
+               To_Type   : constant W_Type_Id := EW_Abstract
+                 (Etype (N),
+                  Relaxed_Init => Is_Init_Wrapper_Type (Get_Type (Pref))
+                  or else Has_Relaxed_Init (Etype (N)));
                New_Value : constant W_Expr_Id := Insert_Simple_Conversion
                  (Ada_Node => N,
                   Domain   => Domain,
@@ -8599,7 +8580,12 @@ package body Gnat2Why.Expr is
                           Domain   => Domain,
                           Expr     => Value,
                           To       =>
-                            EW_Abstract (Component_Type (Pref_Ty))),
+                            EW_Abstract
+                              (Component_Type (Pref_Ty),
+                               Relaxed_Init =>
+                                 Is_Init_Wrapper_Type (Get_Type (Pref))
+                                 or else Has_Relaxed_Init
+                                   (Component_Type (Pref_Ty)))),
                      Domain    => Domain));
             end;
 
@@ -8817,14 +8803,14 @@ package body Gnat2Why.Expr is
                  (Ada_Node => N,
                   Domain   => EW_Prog,
                   Expr     => Expr,
-                  To       => EW_Abstract (Typ),
+                  To       => EW_Abstract (Typ, Expr_Has_Relaxed_Init (N)),
                   Lvalue   => True);
             else
                Expr :=
                  +Insert_Simple_Conversion
                  (Domain => Domain,
                   Expr   => Expr,
-                  To     => EW_Abstract (Typ));
+                  To     => EW_Abstract (Typ, Expr_Has_Relaxed_Init (N)));
 
                if Domain = EW_Prog and then Has_Predicates (Typ) then
                   Expr := +Insert_Predicate_Check
@@ -9023,6 +9009,7 @@ package body Gnat2Why.Expr is
       --  the aggregate function if it is a 'Update (we will use the bounds of
       --  the updated object) or if the type is static (the bounds are declared
       --  in the type).
+      Init_Wrapper        : constant Boolean := Expr_Has_Relaxed_Init (Expr);
 
       -----------------------
       -- Local subprograms --
@@ -9116,7 +9103,13 @@ package body Gnat2Why.Expr is
             Args (Cnt) :=
               Transform_Expr
                 (Element (Value),
-                 Type_Of_Node (Element (Typ)),
+                 (if Expr_Has_Relaxed_Init (Element (Value), No_Eval => False)
+                  then EW_Abstract (Element (Typ), Relaxed_Init => True)
+                  else Type_Of_Node (Element (Typ))),
+                 --  If a value which is not a scalar type has relaxed
+                 --  initialization, so will the aggregate. Go to the wrapper
+                 --  type to avoid spurious initialization checks.
+
                  Domain,
                  Params);
 
@@ -9153,7 +9146,7 @@ package body Gnat2Why.Expr is
                         Domain   => Domain,
                         Name     => Func,
                         Args     => Args & Bnd_Args,
-                        Typ      => Type_Of_Node (Etype (Expr)));
+                        Typ      => Type_Of_Node (Expr));
 
          --  Special case for choices of normal aggregate:
          --  In programs, we generate a check that all the choices are
@@ -9335,11 +9328,7 @@ package body Gnat2Why.Expr is
 
          --  Values used in calls to the aggregate function
 
-         Ret_Type      : constant W_Type_Id :=
-           EW_Abstract
-             (if In_Attribute_Update then
-                 Etype (Update_Prefix)
-              else Expr_Typ);
+         Ret_Type      : constant W_Type_Id := Type_Of_Node (Expr);
 
          --  Arrays of binders and arguments, and mapping of nodes to names
 
@@ -9405,7 +9394,12 @@ package body Gnat2Why.Expr is
          while Value /= No_Element loop
             declare
                Ident    : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => Type_Of_Node (Element (Typ)));
+                 New_Temp_Identifier
+                   (Typ =>
+                      (if Expr_Has_Relaxed_Init
+                         (Element (Value), No_Eval => False)
+                       then EW_Abstract (Element (Typ), Relaxed_Init => True)
+                       else Type_Of_Node (Element (Typ))));
                B        : constant Binder_Type :=
                  (Ada_Node => Empty,
                   B_Name   => Ident,
@@ -10023,9 +10017,18 @@ package body Gnat2Why.Expr is
                            Domain   => EW_Term,
                            Ar       => Arr,
                            Index    => Indexes),
-                        Right  => Reconstruct_Init_Wrapper
-                          (Ty    => C_Typ,
-                           Value => New_Range_Constant
+                        Right  =>
+                          (if Has_Relaxed_Init (C_Typ) or else Init_Wrapper
+                           then Insert_Simple_Conversion
+                             (Ada_Node       => Empty,
+                              Domain         => EW_Term,
+                              Expr           => New_Range_Constant
+                                (Value => Expr_Value (Expr),
+                                 Typ   => EW_Abstract (C_Typ)),
+                              To             =>
+                                EW_Abstract (C_Typ, Relaxed_Init => True),
+                              Force_No_Slide => True)
+                           else New_Range_Constant
                              (Value => Expr_Value (Expr),
                               Typ   => EW_Abstract (C_Typ))),
                         Domain => EW_Pred);
@@ -10074,16 +10077,23 @@ package body Gnat2Why.Expr is
                      else
                         Value := Arg_Val;
 
-                        if Needs_Init_Wrapper_Type (C_Typ) then
-                           Is_Init := Pred_Of_Boolean_Term
-                             (+New_Init_Attribute_Access
-                                (C_Typ, +Read, Params.Ref_Allowed));
+                        --  If the value has a type which does not have
+                        --  relaxed initialization, it must be initialized.
+
+                        if (Has_Relaxed_Init (C_Typ) or else Init_Wrapper)
+                          and then
+                            (Has_Scalar_Type (C_Typ)
+                             or else
+                               not Is_Init_Wrapper_Type (Get_Type (Value)))
+                        then
+                           Is_Init := +Compute_Is_Initialized
+                             (C_Typ, +Read, Params.Ref_Allowed, EW_Pred);
                         end if;
 
                         Read := Insert_Simple_Conversion
                           (Domain => EW_Term,
                            Expr   => Read,
-                           To     => Type_Of_Node (C_Typ));
+                           To     => Get_Type (Value));
                      end if;
 
                      return New_And_Expr
@@ -10679,18 +10689,46 @@ package body Gnat2Why.Expr is
         (if Domain = EW_Pred then EW_Term else Domain);
       Args      : W_Expr_Array (1 .. 6);
       T         : W_Expr_Id;
-      Left_Expr : constant W_Expr_Id := New_Temp_For_Expr (Left);
-      Right_Expr : constant W_Expr_Id := New_Temp_For_Expr (Right);
+
+      --  Check that operands are initialized
+
+      Left_Type  : constant Entity_Id := Etype (Left_Opnd (Ada_Node));
+      Left_Expr  : constant W_Expr_Id := New_Temp_For_Expr
+        (Insert_Initialization_Check
+           (Left_Opnd (Ada_Node), Left_Type, Left, Domain));
+      Right_Expr : constant W_Expr_Id := New_Temp_For_Expr
+        (Insert_Initialization_Check
+           (Right_Opnd (Ada_Node), Left_Type, Right, Domain));
       Arg_Ind    : Positive := 1;
    begin
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
       Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
+
+      --  Add conversions from wrapper types if needed. Initialization checks
+      --  are inserted earlier.
+
+      if Is_Init_Wrapper_Type (Get_Type (Left_Expr)) then
+         Args (1) := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Subdomain,
+            Name     => Get_Array_Of_Wrapper_Name (Left_Type),
+            Args     => (1 => Args (1)),
+            Typ      => EW_Split (Left_Type));
+      end if;
+      if Is_Init_Wrapper_Type (Get_Type (Right_Expr)) then
+         Args (4) := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Subdomain,
+            Name     => Get_Array_Of_Wrapper_Name (Left_Type),
+            Args     => (1 => Args (4)),
+            Typ      => EW_Split (Left_Type));
+      end if;
+
       T :=
         New_Call
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
-           Name     => Get_Array_Theory_1_Comp
-             (Get_Ada_Node (+Get_Type (Left))).Compare,
+           Name     => Get_Array_Theory_1_Comp (Left_Type).Compare,
            Args     => Args,
            Typ      => EW_Int_Type);
       T := Binding_For_Temp (Domain  => Domain,
@@ -10726,12 +10764,40 @@ package body Gnat2Why.Expr is
         (if Domain = EW_Pred then EW_Term else Domain);
       Args      : W_Expr_Array (1 .. 4 * Dim + 2);
       T         : W_Expr_Id;
-      Left_Expr : constant W_Expr_Id := New_Temp_For_Expr (Left);
-      Right_Expr : constant W_Expr_Id := New_Temp_For_Expr (Right);
+
+      --  Check that operands are initialized
+
+      Left_Expr  : constant W_Expr_Id := New_Temp_For_Expr
+        (Insert_Initialization_Check
+           (Left_Opnd (Ada_Node), Left_Type, Left, Domain));
+      Right_Expr : constant W_Expr_Id := New_Temp_For_Expr
+        (Insert_Initialization_Check
+           (Right_Opnd (Ada_Node), Left_Type, Right, Domain));
       Arg_Ind    : Positive := 1;
    begin
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
       Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
+
+      --  Add conversions from wrapper types if needed. Initialization checks
+      --  are inserted earlier.
+
+      if Is_Init_Wrapper_Type (Get_Type (Left_Expr)) then
+         Args (1) := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Subdomain,
+            Name     => Get_Array_Of_Wrapper_Name (Left_Type),
+            Args     => (1 => Args (1)),
+            Typ      => EW_Split (Left_Type));
+      end if;
+      if Is_Init_Wrapper_Type (Get_Type (Right_Expr)) then
+         Args (2 + 2 * Dim) := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Subdomain,
+            Name     => Get_Array_Of_Wrapper_Name (Left_Type),
+            Args     => (1 => Args (2 + 2 * Dim)),
+            Typ      => EW_Split (Left_Type));
+      end if;
+
       T :=
         New_Call
           (Ada_Node => Ada_Node,
@@ -10785,9 +10851,11 @@ package body Gnat2Why.Expr is
       --  Insert initialization checks for operands
 
       Left_Expr : constant W_Expr_Id := New_Temp_For_Expr
-        (Insert_Initialization_Check (Ada_Node, Left_Type, Left, Domain));
+        (Insert_Initialization_Check
+           (Left_Opnd (Ada_Node), Left_Type, Left, Domain));
       Right_Expr : constant W_Expr_Id := New_Temp_For_Expr
-        (Insert_Initialization_Check (Ada_Node, Left_Type, Right, Domain));
+        (Insert_Initialization_Check
+           (Right_Opnd (Ada_Node), Left_Type, Right, Domain));
       Array_Theory : constant M_Array_1_Bool_Op_Type :=
         Get_Array_Theory_1_Bool_Op (Etype (Left_Opnd (Ada_Node)));
       W_Op      : constant W_Identifier_Id :=
@@ -10853,6 +10921,26 @@ package body Gnat2Why.Expr is
    begin
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
       Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
+
+      --  Add conversions from wrapper types if needed. Initialization checks
+      --  are inserted earlier.
+
+      if Is_Init_Wrapper_Type (Get_Type (Left_Expr)) then
+         Args (1) := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Subdomain,
+            Name     => Get_Array_Of_Wrapper_Name (Left_Type),
+            Args     => (1 => Args (1)),
+            Typ      => EW_Split (Left_Type));
+      end if;
+      if Is_Init_Wrapper_Type (Get_Type (Right_Expr)) then
+         Args (4) := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Subdomain,
+            Name     => Get_Array_Of_Wrapper_Name (Left_Type),
+            Args     => (1 => Args (4)),
+            Typ      => EW_Split (Left_Type));
+      end if;
 
       --  Call to operator
 
@@ -10940,7 +11028,8 @@ package body Gnat2Why.Expr is
       --  Insert initialization checks for operand
 
       Right_Expr : constant W_Expr_Id := New_Temp_For_Expr
-        (Insert_Initialization_Check (Ada_Node, Right_Type, Right, Domain));
+        (Insert_Initialization_Check
+           (Right_Opnd (Ada_Node), Right_Type, Right, Domain));
 
       Right_Length : constant W_Expr_Id :=
         Build_Length_Expr (Domain => EW_Term, Expr => Right_Expr, Dim => 1);
@@ -10965,6 +11054,18 @@ package body Gnat2Why.Expr is
                      +E_Symb (Component_Type (Right_Type), WNE_Attr_Last))));
    begin
       Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
+
+      --  Add conversions from wrapper types if needed. Initialization checks
+      --  are inserted earlier.
+
+      if Is_Init_Wrapper_Type (Get_Type (Right_Expr)) then
+         Args (1) := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Subdomain,
+            Name     => Get_Array_Of_Wrapper_Name (Right_Type),
+            Args     => (1 => Args (1)),
+            Typ      => EW_Split (Right_Type));
+      end if;
 
       --  Call to operator
 
@@ -11024,7 +11125,14 @@ package body Gnat2Why.Expr is
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id is
 
       Lvalue     : constant Node_Id := SPARK_Atree.Name (Stmt);
-      L_Type     : constant W_Type_Id := Type_Of_Node (Etype (Lvalue));
+      L_Type     : constant W_Type_Id :=
+        (if Expr_Has_Relaxed_Init (Lvalue)
+         and then not Is_Scalar_Type (Etype (Lvalue))
+         then EW_Init_Wrapper (Type_Of_Node (Etype (Lvalue)))
+         else Type_Of_Node (Etype (Lvalue)));
+      --  We go to the wrapper type if lvalue has relaxed initialization
+      --  except for scalar types for which a copy is a read.
+
       T          : W_Prog_Id :=
         +Transform_Expr (Expression (Stmt),
                          L_Type,
@@ -11146,12 +11254,13 @@ package body Gnat2Why.Expr is
                                     Tmp      => Lval,
                                     Context  => +T);
          end;
+      end if;
 
       --  If the right hand side is a classwide type, introduce a tag check. Do
       --  not introduce this check for calls with dispatching results as in
       --  this case the tag will depend on the context.
 
-      elsif Is_Class_Wide_Type (Etype (Lvalue)) and then
+      if Is_Class_Wide_Type (Etype (Lvalue)) and then
         not Is_Tag_Indeterminate (Expression (Stmt))
       then
          declare
@@ -11491,9 +11600,7 @@ package body Gnat2Why.Expr is
                         else
                            declare
                               Why_Expr : constant W_Expr_Id :=
-                                Transform_Expr
-                                  (Var, Domain, Params, No_Init => True);
-                              --  Var does not need to be initialized
+                                Transform_Expr (Var, Domain, Params);
                            begin
                               T := Get_Array_Attr
                                 (Domain, Why_Expr, Attr_Id, Dim, Typ => Typ);
@@ -11881,7 +11988,9 @@ package body Gnat2Why.Expr is
                              Assocs              =>
                                Component_Associations (Aggr),
                              Params              => Params,
-                             In_Attribute_Update => True));
+                             In_Attribute_Update => True,
+                             Init_Wrapper        =>
+                               Expr_Has_Relaxed_Init (Pref)));
 
                      --  If the target type has a direct or inherited
                      --  predicate, generate a corresponding check.
@@ -11902,7 +12011,7 @@ package body Gnat2Why.Expr is
                            Name    => Tmps (I),
                            Def     => Vals (I),
                            Context => T,
-                           Typ     => EW_Abstract (Pref_Typ));
+                           Typ     => Get_Type (T));
                      end loop;
                      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                   end;
@@ -12198,7 +12307,9 @@ package body Gnat2Why.Expr is
             end;
 
          --  GNATprove handles Valid_Scalars as meaning that the value has been
-         --  initialized.
+         --  initialized. To remain as close as possible to the executable
+         --  semantics of the attribute, proof does not assume that
+         --  'Valid_Scalars necessarily returns False on uninitialized data.
 
          when Attribute_Valid_Scalars =>
             declare
@@ -12206,21 +12317,10 @@ package body Gnat2Why.Expr is
                  Transform_Expr
                    (Expr    => Var,
                     Domain  => Domain,
-                    Params  => Params,
-                    No_Init => True);
-               Tmp  : constant W_Identifier_Id :=
-                 New_Temp_Identifier
-                   (Ada_Node => Get_Ada_Node (+Expr), Typ => Get_Type (Expr));
+                    Params  => Params);
             begin
-               return New_Binding
-                 (Domain   => Domain,
-                  Name     => Tmp,
-                  Def      => Expr,
-                  Context  => Boolean_Expr_Of_Pred
-                    (W      => Compute_Is_Initialized
-                         (Etype (Var), +Tmp, Params.Ref_Allowed),
-                     Domain => Domain),
-                  Typ      => EW_Bool_Type);
+               return Compute_Is_Initialized
+                 (Etype (Var), Expr, Params.Ref_Allowed, Domain);
             end;
 
          when others =>
@@ -12776,27 +12876,18 @@ package body Gnat2Why.Expr is
 
          else
             declare
-               Left_Expr  : W_Expr_Id :=
+               Left_Expr  : constant W_Expr_Id :=
                  Transform_Expr
                    (Left,
                     (if Domain = EW_Pred then EW_Term else Domain),
                     Params);
-               Right_Expr : W_Expr_Id :=
+               Right_Expr : constant W_Expr_Id :=
                  Transform_Expr
                    (Right,
                     (if Domain = EW_Pred then EW_Term else Domain),
                     Params);
 
             begin
-               --  Check that operands are initialized
-
-               Left_Expr :=
-                 Insert_Initialization_Check
-                   (Left, Left_Type, Left_Expr, Domain);
-               Right_Expr :=
-                 Insert_Initialization_Check
-                   (Right, Left_Type, Right_Expr, Domain);
-
                if Nkind (Expr) in N_Op_Eq | N_Op_Ne then
                   T := Transform_Array_Equality
                     (Op        => Nkind (Expr),
@@ -12837,7 +12928,10 @@ package body Gnat2Why.Expr is
                pragma Assert (Root_Retysp (Left_Type) =
                                 Root_Retysp (Get_Ada_Node (+BT)));
 
-               --  Check that operands are initialized
+               --  Check that operands are initialized. Even if initialization
+               --  checks are introduced for the conversion to BT, we still
+               --  need to insert these checks here to ensure initialization of
+               --  nested components with relaxed initialization if any.
 
                Left_Expr :=
                  Insert_Initialization_Check
@@ -12989,6 +13083,8 @@ package body Gnat2Why.Expr is
       Domain             : EW_Domain;
       Ada_Node           : Node_Id) return W_Expr_Id
    is
+      Init_Wrapper        : constant Boolean :=
+        Expr_Has_Relaxed_Init (Ada_Node);
       Left_Expr           : W_Expr_Id := Left;
       Right_Expr          : W_Expr_Id := Right;
       Args_Len            : constant Positive :=
@@ -13000,7 +13096,10 @@ package body Gnat2Why.Expr is
       First_Expr          : W_Expr_Id;
       Low_Type            : Entity_Id;
       Comp_Type           : constant W_Type_Id :=
-        EW_Abstract (Component_Type (Return_Type));
+        EW_Abstract
+          (Component_Type (Return_Type),
+           Relaxed_Init => Init_Wrapper
+           or else Has_Relaxed_Init (Component_Type (Return_Type)));
       Need_Reconstruction : Boolean := True;
       --  If we need to reconstruct the array after the concatenation
 
@@ -13100,12 +13199,12 @@ package body Gnat2Why.Expr is
          begin
             if Is_Component_Right then
                T := New_Singleton_Call
-                 (Return_Type,
-                  Domain,
+                 (Domain,
                   Insert_Simple_Conversion (Domain => Domain,
                                             Expr   => Right_Expr,
                                             To     => Comp_Type),
-                  Right_First);
+                  Right_First,
+                  Type_Of_Node (Ada_Node));
             else
                Need_Reconstruction := False;
                T := Right_Expr;
@@ -13129,6 +13228,18 @@ package body Gnat2Why.Expr is
             Arg_Ind := 3;
          else
             Add_Array_Arg (Domain, Args, Left_Expr, Arg_Ind);
+
+            --  If we are expecting a partially initialized type, convert Left
+
+            if Init_Wrapper and then not Is_Init_Wrapper_Type (Get_Type (Left))
+            then
+               Args (1) := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Get_Array_To_Wrapper_Name (Left_Type),
+                  Args     => (1 => Args (1)),
+                  Typ      => EW_Split (Left_Type, Relaxed_Init => True));
+            end if;
          end if;
 
          if Is_Component_Right then
@@ -13139,11 +13250,24 @@ package body Gnat2Why.Expr is
             Arg_Ind := Arg_Ind + 1;
          else
             Add_Array_Arg (Domain, Args, Right_Expr, Arg_Ind);
+
+            --  If we are expecting a partially initialized type, convert Right
+
+            if Init_Wrapper
+              and then not Is_Init_Wrapper_Type (Get_Type (Right))
+            then
+               Args (Arg_Ind - 3) := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Get_Array_To_Wrapper_Name (Right_Type),
+                  Args     => (1 => Args (Arg_Ind - 3)),
+                  Typ      => EW_Split (Left_Type, Relaxed_Init => True));
+            end if;
          end if;
 
          --  We build the call to concat
 
-         T := New_Concat_Call (Domain, Args, Type_Of_Node (Return_Type),
+         T := New_Concat_Call (Domain, Args, Type_Of_Node (Ada_Node),
                                Is_Component_Left  => Is_Component_Left,
                                Is_Component_Right => Is_Component_Right);
 
@@ -13157,13 +13281,13 @@ package body Gnat2Why.Expr is
             T :=
               New_Call
                 (Domain => Domain,
-                 Name   => Get_Array_Theory (Return_Type).Slide,
+                 Name   => Get_Array_Theory (Return_Type, Init_Wrapper).Slide,
                  Args   =>
                    (1 => T,
                     2 =>
                       Get_Array_Attr (Domain, Left_Expr, Attribute_First, 1),
                     3 => First_Expr),
-                 Typ    => Type_Of_Node (Return_Type));
+                 Typ    => Type_Of_Node (Ada_Node));
          end if;
       end if;
 
@@ -13220,14 +13344,14 @@ package body Gnat2Why.Expr is
               (if Is_Component_Right then Right_First
                else Get_Array_Attr (Domain, Right_Expr, Attribute_Last, 1));
             Right_Op    : W_Expr_Id :=
-              (if Is_Component_Right then
-                  New_Singleton_Call
-                 (Return_Type,
-                  Domain,
+              (if Is_Component_Right
+               then New_Singleton_Call
+                 (Domain,
                   Insert_Simple_Conversion (Domain => Domain,
                                             Expr   => Right_Expr,
                                             To     => Comp_Type),
-                  Right_First)
+                  Right_First,
+                  Type_Of_Node (Ada_Node))
                elsif Is_Static_Array_Type (Right_Type)
                or else (Get_Type_Kind (Get_Type (Right_Expr)) = EW_Split)
                then Right_Expr
@@ -14218,12 +14342,15 @@ package body Gnat2Why.Expr is
                        +E_Symb (Root_Retysp (Expr_Type), WNE_Dummy);
                   else
                      declare
+                        Init_Wrapper : constant Boolean :=
+                          Expr_Has_Relaxed_Init (Expr);
                         Assocs : constant W_Field_Association_Array :=
                           Transform_Record_Component_Associations
                             (Domain,
                              Expr_Type,
                              Component_Associations (Expr),
-                             Local_Params);
+                             Local_Params,
+                             Init_Wrapper => Init_Wrapper);
                         Num_Discrs : constant Natural :=
                           Count_Non_Inherited_Discriminants
                             (Component_Associations (Expr));
@@ -14235,7 +14362,8 @@ package body Gnat2Why.Expr is
                              Discr_Assocs => Assocs (1 .. Num_Discrs),
                              Field_Assocs =>
                                Assocs (Num_Discrs + 1 .. Assocs'Last),
-                             Ty           => Expr_Type);
+                             Ty           => Expr_Type,
+                             Init_Wrapper => Init_Wrapper);
                      end;
                   end if;
                else
@@ -14251,13 +14379,16 @@ package body Gnat2Why.Expr is
 
          when N_Extension_Aggregate =>
             declare
+               Init_Wrapper : constant Boolean :=
+                 Expr_Has_Relaxed_Init (Expr);
                Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
                Assocs    : constant W_Field_Association_Array :=
                  Transform_Record_Component_Associations
                    (Domain,
                     Expr_Type,
                     Component_Associations (Expr),
-                    Local_Params);
+                    Local_Params,
+                    Init_Wrapper => Init_Wrapper);
 
                --  Check that the derived type does not introduce any
                --  discriminant, which is currently not allowed in SPARK,
@@ -14315,7 +14446,8 @@ package body Gnat2Why.Expr is
                     Discr_Expr   => Anc_Discr_Expr,
                     Field_Assocs => Anc_Field_Assocs & Assocs,
                     Ty           => Expr_Type,
-                    Anc_Ty       => Anc_Ty);
+                    Anc_Ty       => Anc_Ty,
+                    Init_Wrapper => Init_Wrapper);
                T := Binding_For_Temp (Domain   => Domain,
                                       Tmp      => Tmp,
                                       Context  => T);
@@ -15386,13 +15518,17 @@ package body Gnat2Why.Expr is
                      Value_Id   : constant W_Identifier_Id :=
                        New_Temp_Identifier
                          (Base_Name => "value",
-                          Typ       => EW_Abstract (Des_Ty));
+                          Typ       => EW_Abstract
+                            (Des_Ty,
+                             Relaxed_Init => Has_Relaxed_Init (Des_Ty)));
                      Alloc_Id   : constant W_Identifier_Id :=
                        New_Temp_Identifier
                          (Base_Name => "alloc",
                           Typ       => Call_Ty);
                      Res_Id     : constant W_Identifier_Id :=
-                       +New_Result_Ident (Typ => EW_Abstract (Constr_Ty));
+                       +New_Result_Ident
+                       (Typ => EW_Abstract
+                          (Constr_Ty, Has_Relaxed_Init (Constr_Ty)));
                      Pred       : constant W_Pred_Id :=
                        +New_And_Expr
                        (Left   => +Compute_Default_Init
@@ -15705,8 +15841,7 @@ package body Gnat2Why.Expr is
    function Transform_Expr
      (Expr    : Node_Id;
       Domain  : EW_Domain;
-      Params  : Transformation_Params;
-      No_Init : Boolean := False) return W_Expr_Id
+      Params  : Transformation_Params) return W_Expr_Id
    is
       Expected_Type : W_Type_Id := Why_Empty;
 
@@ -15720,54 +15855,23 @@ package body Gnat2Why.Expr is
 
       if Nkind (Expr) = N_Selected_Component then
          declare
-            Field   : constant Entity_Id := Entity (Selector_Name (Expr));
-            Ty      : constant Entity_Id := Retysp (Etype (Prefix (Expr)));
+            Field : constant Entity_Id := Entity (Selector_Name (Expr));
+            Ty    : constant Entity_Id :=
+              Retysp (Etype (Prefix (Expr)));
          begin
             Expected_Type :=
-              (if Is_Part_Of_Protected_Object (Field) then
-                 EW_Abstract (Etype (Field))
-               else
-                 EW_Abstract (Etype (Search_Component_In_Type (Ty, Field))));
-
-            --  If No_Init is set, use the wrapper type as the expected kind if
-            --  any to avoid introducing an initialization check.
-
-            if No_Init then
-               Expected_Type := EW_Init_Wrapper (Expected_Type);
-            end if;
+              (if Is_Part_Of_Protected_Object (Field)
+               then EW_Abstract
+                 (Etype (Field),
+                  Relaxed_Init => Expr_Has_Relaxed_Init (Expr))
+               else EW_Abstract
+                 (Etype (Search_Component_In_Type (Ty, Field)),
+                  Relaxed_Init => Expr_Has_Relaxed_Init (Expr)));
+            --  If the component may have relaxed initialization, use the
+            --  associated wrapper type.
          end;
 
-      elsif No_Init then
-
-         --  Expect split form for identifiers if they have an init flag
-
-         if Nkind (Expr) in N_Identifier | N_Expanded_Name then
-            declare
-               C : constant Ada_Ent_To_Why.Cursor :=
-                 Ada_Ent_To_Why.Find (Symbol_Table, Entity (Expr));
-               B : Item_Type;
-            begin
-               if Ada_Ent_To_Why.Has_Element (C) then
-                  B := Ada_Ent_To_Why.Element (C);
-                  if B.Init.Present then
-                     Expected_Type := EW_Init_Wrapper
-                       (Get_Why_Type_From_Item (B));
-                  end if;
-               end if;
-            end;
-
-         --  And abstract form for indexed components
-
-         elsif Nkind (Expr) = N_Indexed_Component then
-            Expected_Type :=
-              EW_Init_Wrapper
-                (Component_Type (Retysp (Etype (Prefix (Expr)))), EW_Abstract);
-         end if;
-      end if;
-
-      --  Otherwise, use type of node
-
-      if No (Expected_Type) then
+      else
          Expected_Type := Type_Of_Node (Expr);
       end if;
 
@@ -16348,7 +16452,7 @@ package body Gnat2Why.Expr is
             Domain   => Domain,
             Labels   => Symbol_Sets.Empty_Set,
             Def      => T,
-            Typ      => EW_Init_Wrapper (Etype (Ent), EW_Split));
+            Typ      => EW_Split (Etype (Ent), Relaxed_Init => True));
       end if;
 
       return T;
@@ -16364,6 +16468,12 @@ package body Gnat2Why.Expr is
       Expr   : Node_Id) return W_Expr_Id
    is
 
+      function Initialization_Check_Needed return Boolean;
+      --  As the expression of the membership test is evaluated, its top
+      --  level initialization flag is always checked. If the expression
+      --  is composite, we may also need to check that components are
+      --  initialized if the tests involve an equality.
+
       function Transform_Alternative
         (Var       : W_Expr_Id;
          Alt       : Node_Id;
@@ -16376,6 +16486,30 @@ package body Gnat2Why.Expr is
       function Transform_Simple_Membership_Expression
         (Var     : W_Expr_Id;
          In_Expr : Node_Id) return W_Expr_Id;
+
+      ---------------------------------
+      -- Initialization_Check_Needed --
+      ---------------------------------
+
+      function Initialization_Check_Needed return Boolean is
+      begin
+         if Present (Alternatives (Expr)) then
+            declare
+               Alt : Node_Id := First (Alternatives (Expr));
+            begin
+               Alt := First (Alternatives (Expr));
+               while Present (Alt) loop
+                  if not (Is_Entity_Name (Alt) and then Is_Type (Entity (Alt)))
+                    and then Nkind (Alt) /= N_Range
+                  then
+                     return True;
+                  end if;
+                  Next (Alt);
+               end loop;
+            end;
+         end if;
+         return False;
+      end Initialization_Check_Needed;
 
       ---------------------------
       -- Transform_Alternative --
@@ -16390,6 +16524,8 @@ package body Gnat2Why.Expr is
          Result    : W_Expr_Id;
          Subdomain : constant EW_Domain :=
            (if Domain = EW_Pred then EW_Term else Domain);
+         --  We check equality on initialized objects
+
       begin
          if (Is_Entity_Name (Alt) and then Is_Type (Entity (Alt)))
            or else Nkind (Alt) = N_Range
@@ -16452,6 +16588,15 @@ package body Gnat2Why.Expr is
                        (if Is_Class_Wide_Type (Ty)
                         then Retysp (Get_Specific_Type_From_Classwide (Ty))
                         else Retysp (Ty));
+                     Conc_Var   : constant W_Expr_Id :=
+                       Insert_Simple_Conversion
+                         (Domain         => Domain,
+                          Expr           => Var_Tmp,
+                          To             => EW_Abstract (Ty),
+                          Force_No_Slide => True);
+                     --  If Var is partially initialized, we need to go to the
+                     --  concrete type to introduce the checks. Do not check
+                     --  for initialization here.
                   begin
 
                      --  If Ty is constrained, we need to check its
@@ -16468,7 +16613,8 @@ package body Gnat2Why.Expr is
                            Name => E_Symb
                              (Root_Retysp (Spec_Ty), WNE_Range_Pred),
                            Args =>
-                             Prepare_Args_For_Subtype_Check (Spec_Ty, Var_Tmp),
+                             Prepare_Args_For_Subtype_Check
+                               (Spec_Ty, Conc_Var),
                            Typ  => EW_Bool_Type);
                      end if;
 
@@ -16665,35 +16811,63 @@ package body Gnat2Why.Expr is
                   end if;
                end if;
 
-               --  Possibly include a predicate in the type membership
-               --  test.
+               --  Possibly include a predicate in the type membership test
 
                if Has_Predicates (Ty) then
-                  Result := New_And_Expr
-                    (Result,
-                     Boolean_Expr_Of_Pred
-                       (Compute_Dynamic_Predicate (+Var_Tmp, Ty, Params),
-                        Domain),
-                     Domain);
+                  declare
+                     Init_Var : constant W_Expr_Id := New_Temp_For_Expr
+                       (E =>
+                          (if Is_Init_Wrapper_Type (Get_Type (Var))
+                           then Insert_Checked_Conversion
+                             (Ada_Node => Left_Opnd (Expr),
+                              Domain   => Domain,
+                              Expr     => Var_Tmp,
+                              To       => EW_Abstract (Ty))
+                           else Var_Tmp));
+                  begin
+                     Result := New_And_Expr
+                       (Result,
+                        Boolean_Expr_Of_Pred
+                          (Compute_Dynamic_Predicate
+                               (+Init_Var, Ty, Params),
+                           Domain),
+                        Domain);
+                     Result := Binding_For_Temp (Domain  => Domain,
+                                                 Tmp     => Init_Var,
+                                                 Context => Result);
+                  end;
                end if;
             end;
          else
             Result := Range_Expr (In_Expr, Var_Tmp, Domain, Params);
          end if;
+
          Result := Binding_For_Temp (Domain  => Domain,
                                      Tmp     => Var_Tmp,
                                      Context => Result);
 
-         return Result;
+         return Binding_For_Temp
+           (Domain  => Domain,
+            Tmp     => Var_Tmp,
+            Context => Result);
       end Transform_Simple_Membership_Expression;
 
-      Var       : constant Node_Id := Left_Opnd (Expr);
-      Result    : W_Expr_Id;
-      Base_Type : W_Type_Id :=
-        (if Is_Record_Type_In_Why (Etype (Var)) then
-            EW_Abstract (Root_Retysp (Etype (Var)))
+      Var          : constant Node_Id := Left_Opnd (Expr);
+      Result       : W_Expr_Id;
+      Relaxed_Init : constant Boolean :=
+        not Initialization_Check_Needed
+        and then Expr_Has_Relaxed_Init (Var, No_Eval => False);
+      Base_Type    : W_Type_Id :=
+        (if Is_Record_Type_In_Why (Etype (Var))
+         then EW_Abstract
+           (Root_Retysp (Etype (Var)),
+            Relaxed_Init => Relaxed_Init)
+      --  For records, checks are done on the root type
+
+         elsif Relaxed_Init then Type_Of_Node (Var)
+      --  Do not check initialization on composite types
+
          else Base_Why_Type (Var));
-      --  For records, checks are done on the root type.
 
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
@@ -16708,6 +16882,15 @@ package body Gnat2Why.Expr is
          Base_Type := EW_Int_Type;
       end if;
       Var_Expr := Transform_Expr (Var, Base_Type, Subdomain, Params);
+
+      if Initialization_Check_Needed then
+         Var_Expr := Insert_Initialization_Check
+           (Ada_Node               => Var,
+            E                      => Etype (Var),
+            Name                   => Var_Expr,
+            Domain                 => Subdomain,
+            Exclude_Always_Relaxed => False);
+      end if;
 
       if Present (Alternatives (Expr)) then
          declare
@@ -18011,9 +18194,11 @@ package body Gnat2Why.Expr is
                              Ar       => W_Arr_Expr,
                              Index    => (1 => +W_Index_Var));
       begin
-         return Insert_Simple_Conversion (Domain => Domain,
-                                          Expr   => W_Acc_Expr,
-                                          To     => Get_Type (+W_Quant_Var));
+         return Insert_Checked_Conversion
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Expr     => W_Acc_Expr,
+            To       => Get_Type (+W_Quant_Var));
       end Make_Binding_For_Array;
 
       -------------------------------
@@ -18371,20 +18556,38 @@ package body Gnat2Why.Expr is
 
       --  Step 1: create a Why3 variable for the quantified variable
 
+      Over_Expr := Get_Expr_Quantified_Over (Expr, Over_Range);
       Quant_Var  := Get_Quantified_Variable (Expr, Over_Range);
       Quant_Type := Etype (Quant_Var);
 
       W_Quant_Type := (if Use_Split_Form_For_Type (Quant_Type)
-                       then Base_Why_Type (Quant_Type)
+                       then EW_Split (Quant_Type)
                        else Type_Of_Node (Quant_Type));
+
+      --  In case of a for of quantification, the quantified variable may be
+      --  partially initialized if it is not a scalar type and:
+      --  * the quantification is done on an array with relaxed initialization
+      --  * the quantification is done on a container and the Element function
+      --    returns a partially intialized expression.
+      --  ??? for now we only check the return type to decide if we are in the
+      --  second case.
+
+      if (Over_Array
+          and then (Expr_Has_Relaxed_Init (Over_Expr)
+                    or else Has_Relaxed_Init (Quant_Type))
+          and then not Has_Scalar_Type (Quant_Type))
+        or else (Over_Content
+                 and then Has_Relaxed_Init (Quant_Type)
+                 and then not Has_Scalar_Type (Quant_Type))
+      then
+         W_Quant_Type := EW_Init_Wrapper (W_Quant_Type);
+      end if;
 
       W_Quant_Var := New_Identifier (Name => Short_Name (Quant_Var),
                                      Typ  => W_Quant_Type);
 
       --  Step 2: translate the expression over which the quantification is
       --          applied.
-
-      Over_Expr := Get_Expr_Quantified_Over (Expr, Over_Range);
 
       if not Over_Range then
          Over_Type := Etype (Over_Expr);
@@ -18512,7 +18715,7 @@ package body Gnat2Why.Expr is
                W_Binding_Expr :=
                  Make_Binding_For_Array
                    (Expr, W_Over_Expr, W_Index_Var, W_Quant_Var,
-                    Term_Domain (Domain));
+                    Prog_Or_Term_Domain (Domain));
             else
                pragma Assert (Over_Content or Over_Cursors);
                W_Binding_Expr :=
@@ -18645,7 +18848,8 @@ package body Gnat2Why.Expr is
       Typ                 : Entity_Id;
       Assocs              : List_Id;
       Params              : Transformation_Params;
-      In_Attribute_Update : Boolean := False) return W_Field_Association_Array
+      In_Attribute_Update : Boolean := False;
+      Init_Wrapper        : Boolean) return W_Field_Association_Array
    is
       function Components_Count (Assocs : List_Id) return Natural;
       --  Returns the number of component selectors in Assocs
@@ -18725,14 +18929,26 @@ package body Gnat2Why.Expr is
 
                if not Box_Present (Association) then
                   Expr := Transform_Expr
-                            (Expr          => Expression (Association),
-                             Expected_Type => EW_Abstract (Etype (Component)),
-                             Domain        => Domain,
-                             Params        => Params);
+                    (Expr          => Expression (Association),
+                     Expected_Type =>
+                       EW_Abstract
+                         (Etype (Component),
+                          Relaxed_Init =>
+                            (Init_Wrapper
+                             or else Has_Relaxed_Init (Etype (Component)))
+                          and then Ekind (Component) = E_Component),
+                     Domain        => Domain,
+                     Params        => Params);
                else
                   pragma Assert (Domain = EW_Prog);
                   Expr := +New_Simpl_Any_Prog
-                            (T => EW_Abstract (Etype (Component)));
+                    (T =>
+                       EW_Abstract
+                         (Etype (Component),
+                          Relaxed_Init =>
+                            (Init_Wrapper
+                             or else Has_Relaxed_Init (Etype (Component)))
+                          and then Ekind (Component) = E_Component));
                end if;
 
                --  Attributes of component's type have default values of their
@@ -18757,10 +18973,9 @@ package body Gnat2Why.Expr is
                else
                   Field_Assoc (Field_Index) := New_Field_Association
                     (Domain => Domain,
-                     Field  => To_Why_Id (Component, Rec => Typ),
-                     Value  => Reconstruct_Init_Wrapper
-                       (Ty     => Retysp (Etype (Component)),
-                        Value  => Expr));
+                     Field  => To_Why_Id
+                       (Component, Rec => Typ, Relaxed_Init => Init_Wrapper),
+                     Value  => Expr);
                   Field_Index := Field_Index + 1;
                end if;
             end if;
@@ -18926,7 +19141,9 @@ package body Gnat2Why.Expr is
    is
 
       Prefx     : constant Node_Id := SPARK_Atree.Prefix (Expr);
-      Target_Ty : constant W_Type_Id := EW_Abstract (Etype (Expr));
+      Target_Ty : constant W_Type_Id :=
+        EW_Abstract
+          (Etype (Expr), Relaxed_Init => Expr_Has_Relaxed_Init (Expr));
       Rng       : constant Node_Id := Get_Range (Discrete_Range (Expr));
       Pref_Expr : W_Expr_Id;
       T         : W_Expr_Id;

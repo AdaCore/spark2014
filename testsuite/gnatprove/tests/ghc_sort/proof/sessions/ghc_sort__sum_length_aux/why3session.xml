@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="4450000" memlimit="0"/>
+<file format="gnat-json" proved="true">
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
+<path name="ghc_sort__sum_length_aux.gnat-json"/>
+<theory name="Ghc_sort__sum_length_aux__subprogram_def" proved="true">
+ <goal name="def&#39;vc" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="3285"/></proof>
+  </goal>
+  <goal name="def&#39;vc.2" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.3" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="20982"/></proof>
+  </goal>
+  <goal name="def&#39;vc.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="3825"/></proof>
+  </goal>
+  <goal name="def&#39;vc.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="3877"/></proof>
+  </goal>
+  <goal name="def&#39;vc.6" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.7" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="4142"/></proof>
+  </goal>
+  <goal name="def&#39;vc.8" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="24075"/></proof>
+  </goal>
+  <goal name="def&#39;vc.9" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

@@ -6,7 +6,7 @@ with SPARK_Mode,
 is
    function Global_A_Initalized return Boolean;
 
-   subtype My_Natural is Natural;
+   type My_Natural is new Natural;
    pragma Annotate (GNATprove, Init_By_Proof, My_Natural);
 
    procedure initGlobalsA (status : out Natural) with

@@ -38,8 +38,8 @@ with Common_Iterators;            use Common_Iterators;
 with SPARK_Annotate;              use SPARK_Annotate;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
-with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
+with SPARK_Util;                  use SPARK_Util;
 with VC_Kinds;                    use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;
@@ -2602,8 +2602,8 @@ package body Flow.Analysis is
         (F.Kind in Direct_Mapping | Record_Field
          and then Ekind (Get_Direct_Mapping_Id (F)) /= E_Abstract_State
          and then Entity_In_SPARK (Get_Direct_Mapping_Id (F))
-         and then Has_Init_By_Proof (Get_Type (Entire_Variable (F),
-                                               FA.B_Scope)));
+         and then Contains_Only_Relaxed_Init
+           (Get_Type (Entire_Variable (F), FA.B_Scope)));
 
       --------------------------
       -- Might_Be_Initialized --

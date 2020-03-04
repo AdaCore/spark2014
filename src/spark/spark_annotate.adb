@@ -102,11 +102,6 @@ package body SPARK_Annotate is
    --  Stores subprogram and package entities with a pragma Annotate
    --  (GNATprove, Terminating, E).
 
-   Init_Annotations : Common_Containers.Node_Sets.Set :=
-     Common_Containers.Node_Sets.Empty_Set;
-   --  Stores type entities with a pragma Annotate
-   --  (GNATprove, Init_By_Proof, E).
-
    Might_Not_Return_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores procedure entities with a pragma Annotate
@@ -224,25 +219,21 @@ package body SPARK_Annotate is
       E : constant Entity_Id := Entity (Arg3_Exp);
 
    begin
-      --  This entity must be a scalar type
-
-      if not Is_Scalar_Type (E) then
+      if not Is_Type (E) then
          Error_Msg_N
-           ("Entity parameter of a pragma Init_By_Proof must be a scalar "
-            & "type",
+           ("Entity parameter of a pragma Init_By_Proof must be a type",
             Arg3_Exp);
          return;
-      elsif Has_Predicates (E) then
+      elsif not Is_Base_Type (E) and then not Is_First_Subtype (E) then
          Error_Msg_N
-           ("Entity parameter of a pragma Init_By_Proof must not have type "
-            & "predicates",
+           ("Pragma Init_By_Proof cannot be applied on a subtype",
             Arg3_Exp);
          return;
       end if;
 
-      --  Go through renamings to find the appropriate entity
-
-      Init_Annotations.Include (Unique_Entity (E));
+      if SPARK_Definition.Entity_In_SPARK (E) then
+         SPARK_Definition.Mark_Type_With_Relaxed_Init (E, E, True);
+      end if;
    end Check_Init_Annotation;
 
    -----------------------------
@@ -1066,14 +1057,6 @@ package body SPARK_Annotate is
          Info := Iterable_Annotations (C);
       end if;
    end Retrieve_Iterable_Annotation;
-
-   ------------------------------
-   -- Scalar_Has_Init_By_Proof --
-   ------------------------------
-
-   function Scalar_Has_Init_By_Proof (E : Entity_Id) return Boolean is
-     (Is_Scalar_Type (E)
-      and then Init_Annotations.Contains (Unique_Entity (E)));
 
    -------------------------------------
    -- Check_Pragma_Annotate_GNATprove --

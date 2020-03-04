@@ -161,6 +161,12 @@ package Why.Gen.Arrays is
    --  E is the entity which contains the relevant type information (the
    --  underlying type).
 
+   procedure Declare_Init_Wrapper_For_Array
+     (File : W_Section_Id;
+      E    : Entity_Id) with
+     Pre => Has_Array_Type (E) and then Might_Contain_Relaxed_Init (E);
+   --  Introduce necessary declarations for the wrapper type for E
+
    procedure Declare_Additional_Symbols_For_String (Section : W_Section_Id);
    --  Declare to_string and of_string functions used for 'Image and 'Value
    --  attributes.
@@ -408,16 +414,21 @@ package Why.Gen.Arrays is
    --  Return a call to the concat function in Why array theory
 
    function New_Singleton_Call
-     (Typ    : Node_Id;
-      Domain : EW_Domain;
+     (Domain : EW_Domain;
       Elt    : W_Expr_Id;
-      Pos    : W_Expr_Id) return W_Expr_Id;
+      Pos    : W_Expr_Id;
+      Typ    : W_Type_Id) return W_Expr_Id;
    --  Return a call to the singleton function in Why array theory
 
-   function Get_Array_Theory_Name (E : Entity_Id) return Symbol with
-     Pre => Is_Type (E) and then Has_Array_Type (E);
+   function Get_Array_Theory_Name
+     (E            : Entity_Id;
+      Init_Wrapper : Boolean := False) return Symbol
+   with Pre => Is_Type (E) and then Has_Array_Type (E);
    --  @param E the entity of an array type
-   --  @return A name of the form "Array_(_(Int|BV8|BV16|BV32|BV64))*__t"
+   --  @param Init_Wrapper True for array modules for wrapper for relaxed
+   --         initialization.
+   --  @return A name of the form
+   --          "Array_(_(Int|BV8|BV16|BV32|BV64))*__t(__init_wrapper)?"
    --          of the theory associated to the array type E.
    --          The name is the key to this theory in M_Array(_1) hash maps.
 
@@ -435,7 +446,8 @@ package Why.Gen.Arrays is
    procedure Create_Array_Conversion_Theory_If_Needed
      (Current_File : W_Section_Id;
       From         : Entity_Id;
-      To           : Entity_Id);
+      To           : Entity_Id;
+      Init_Wrapper : Boolean := False);
    --  Check if the conversion theory for converting from From to To has
    --  already been created. If not create it.
    --  @param File the current file section. Conversion theories are always
@@ -443,29 +455,48 @@ package Why.Gen.Arrays is
    --     opened theory if Current_File = WF_Pure.
    --  @param From the entity of source type of the conversion
    --  @param To the entity of target type of the conversion.
+   --  @param Init_Wrapper True to convert partially initialized expressions.
 
-   function Get_Array_Theory (E : Entity_Id) return M_Array_Type;
+   function Get_Array_Theory
+     (E            : Entity_Id;
+      Init_Wrapper : Boolean := False) return M_Array_Type;
    --  Return the m_array_type containing the theory of the type of E
    --  @param E the entity of type array
+   --  @param Init_Wrapper get the theory for wrappers for initialization
 
-   function Get_Array_Theory_1 (E : Entity_Id) return M_Array_1_Type;
+   function Get_Array_Theory_1
+     (E            : Entity_Id;
+      Init_Wrapper : Boolean := False) return M_Array_1_Type;
    --  Return the m_array_1_type containing the theory of the type of E
    --  @param E the entity of type array
+   --  @param Init_Wrapper get the theory for wrappers for initialization
 
    function Get_Array_Theory_1_Comp (E : Entity_Id) return M_Array_1_Comp_Type;
    --  Return the m_array_1_comp_type containing the theory of the type of E
    --  @param E the entity of type array
 
-   function Get_Array_Theory_1_Bool_Op (E : Entity_Id)
-                                        return M_Array_1_Bool_Op_Type;
+   function Get_Array_Theory_1_Bool_Op
+     (E : Entity_Id) return M_Array_1_Bool_Op_Type;
    --  Return the m_array_1_bool_op_type containing the theory of the type of E
    --  @param E the entity of type array
 
    function Get_Array_Conversion_Name
-     (From, To : Entity_Id) return W_Identifier_Id;
+     (From, To     : Entity_Id;
+      Init_Wrapper : Boolean := False) return W_Identifier_Id;
    --  Return the name of the conversion from type From to type To.
    --  @param From the entity of source type of the conversion
    --  @param To the entity of target type of the conversion.
+   --  @param Init_Wrapper True to convert partially initialized expressions.
+
+   function Get_Array_Of_Wrapper_Name (E : Entity_Id) return W_Identifier_Id
+     with Pre => Might_Contain_Relaxed_Init (E);
+   --  @param E array type entity
+   --  @return the name of the conversion from the wrapper type for E.
+
+   function Get_Array_To_Wrapper_Name (E : Entity_Id) return W_Identifier_Id
+     with Pre => Might_Contain_Relaxed_Init (E);
+   --  @param E array type entity
+   --  @return the name of the conversion to the wrapper type for E.
 
    generic
       with function Build_Predicate_For_Comp

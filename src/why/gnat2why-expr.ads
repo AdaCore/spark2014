@@ -422,10 +422,8 @@ package Gnat2Why.Expr is
    function Transform_Expr
      (Expr    : Node_Id;
       Domain  : EW_Domain;
-      Params  : Transformation_Params;
-      No_Init : Boolean := False) return W_Expr_Id;
+      Params  : Transformation_Params) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
-   --  If No_Init is set, do not introduce a top-level initialization check
 
    function Transform_Expr_With_Actions
      (Expr          : Node_Id;

@@ -393,7 +393,10 @@ package Why.Gen.Names is
 
       --  Names related to initialization checks
       WNE_Init_Value,             --  "rec__value"
-      WNE_Attr_Init               --  "attr__init"
+      WNE_Init_Wrapper_Suffix,    --  "__init_wrapper"
+      WNE_Attr_Init,              --  "attr__init"
+      WNE_To_Wrapper,             --  "to_wrapper"
+      WNE_Of_Wrapper              --  "of_wrapper"
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;

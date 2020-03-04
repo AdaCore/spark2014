@@ -941,7 +941,10 @@ package body Gnat2Why.Types is
          end if;
       end if;
 
-      if Needs_Init_Wrapper_Type (E) then
+      --  If the type may be used for expressions with relaxed initialization,
+      --  declare a type with init flags for it.
+
+      if Might_Contain_Relaxed_Init (E) then
          Open_Theory
            (File, E_Init_Module (E),
             Comment =>
@@ -954,7 +957,7 @@ package body Gnat2Why.Types is
 
          Declare_Init_Wrapper (File, E);
 
-         Close_Theory (File, Kind => Standalone_Theory);
+         Close_Theory (File, Kind => Definition_Theory);
       end if;
 
       --  After translating the full view of an incomplete type, complete the

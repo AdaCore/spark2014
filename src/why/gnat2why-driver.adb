@@ -1099,9 +1099,11 @@ package body Gnat2Why.Driver is
                end if;
 
                if not Is_Mutable_In_Why (E) then
-                  Insert_Entity (E,
-                                 To_Why_Id (E, No_Comp => True,
-                                            Typ => Type_Of_Node (Etype (E))));
+                  Insert_Entity
+                    (E,
+                     To_Why_Id
+                       (E, No_Comp => True,
+                        Typ        => Type_Of_Node (E)));
                else
                   Insert_Item (E, Mk_Item_Of_Entity (E));
                end if;

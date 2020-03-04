@@ -41,8 +41,9 @@ with Why.Atree.Accessors;        use Why.Atree.Accessors;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Arrays;             use Why.Gen.Arrays;
-with Why.Images;                 use Why.Images;
+with Why.Gen.Init;               use Why.Gen.Init;
 with Why.Gen.Pointers;           use Why.Gen.Pointers;
+with Why.Images;                 use Why.Images;
 with Why.Inter;                  use Why.Inter;
 
 package body Why.Atree.Modules is
@@ -137,20 +138,28 @@ package body Why.Atree.Modules is
    -- E_Symb --
    ------------
 
-   function E_Symb (E : Entity_Id;
-                    S : Why_Name_Enum) return W_Identifier_Id
+   function E_Symb
+     (E            : Entity_Id;
+      S            : Why_Name_Enum;
+      Relaxed_Init : Boolean := False) return W_Identifier_Id
    is
       use Why_Symb_Maps;
       E2 : constant Entity_Id := (if Is_Type (E) then Retysp (E) else E);
       Key : constant Why_Symb := Why_Symb'(Entity => E2, Symb => S);
       C : constant Why_Symb_Maps.Cursor := Why_Symb_Map.Find (Key);
    begin
-      if Has_Element (C) then
-         return Element (C);
-      else
-         Insert_Why_Symbols (E2);
-         return Why_Symb_Map.Element (Key);
-      end if;
+      return Id : W_Identifier_Id do
+         if Has_Element (C) then
+            Id := Element (C);
+         else
+            Insert_Why_Symbols (E2);
+            Id := Why_Symb_Map.Element (Key);
+         end if;
+
+         if Relaxed_Init then
+            Id := To_Init_Module (Id);
+         end if;
+      end return;
    end E_Symb;
 
    --------------------
@@ -225,7 +234,8 @@ package body Why.Atree.Modules is
               New_Module
                 (Ada_Node => E,
                  File     => No_Symbol,
-                 Name     => Full_Name (E) & "__init");
+                 Name     =>
+                   Full_Name (E) & To_String (WNE_Init_Wrapper_Suffix));
          begin
             Init_Modules.Insert (E, Why_Node_Id (M));
             return M;
@@ -2290,26 +2300,49 @@ package body Why.Atree.Modules is
          Ty   : constant W_Type_Id   := EW_Abstract (E);
 
       begin
-         --  Insert symbols for the initialization wrapper if any
+         --  Insert symbols for the initialization wrapper if any. We need
+         --  extra fields to create the wrapper type for scalars, and
+         --  conversion functions to and from the wrapper types for scalars
+         --  and records. For array, conversion goes through the base array
+         --  type, so conversion functions are rather stored with other
+         --  array conversion theories.
 
-         if Needs_Init_Wrapper_Type (E) then
+         if Might_Contain_Relaxed_Init (E)
+           and then (Is_Scalar_Type (E) or else Is_Record_Type (E))
+         then
             declare
                WM  : constant W_Module_Id := E_Init_Module (E);
             begin
+               if Has_Scalar_Type (E) then
+                  Insert_Symbol
+                    (E, WNE_Init_Value,
+                     New_Identifier
+                       (Symb   => NID ("rec__value"),
+                        Module => WM,
+                        Domain => EW_Term,
+                        Typ    => Ty));
+                  Insert_Symbol
+                    (E, WNE_Attr_Init,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Attr_Init)),
+                        Module => WM,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+               end if;
                Insert_Symbol
-                 (E, WNE_Init_Value,
+                 (E, WNE_To_Wrapper,
                   New_Identifier
-                    (Symb   => NID ("rec__value"),
+                    (Symb   => NID ("to_wrapper"),
                      Module => WM,
                      Domain => EW_Term,
                      Typ    => Ty));
                Insert_Symbol
-                 (E, WNE_Attr_Init,
+                 (E, WNE_Of_Wrapper,
                   New_Identifier
-                    (Symb   => NID ("attr__init"),
+                    (Symb   => NID ("of_wrapper"),
                      Module => WM,
                      Domain => EW_Term,
-                     Typ    => EW_Bool_Type));
+                     Typ    => EW_Init_Wrapper (Ty)));
             end;
          end if;
 

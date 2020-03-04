@@ -1,9 +1,8 @@
 with Ada.Text_IO;
 procedure Init_By_Proof with SPARK_Mode is
-   subtype My_Int is Integer;
-   pragma Annotate (GNATprove, Init_By_Proof, My_Int);
 
-   type Int_Array is array (Positive range <>) of My_Int;
+   type Int_Array is array (Positive range <>) of Integer;
+   pragma Annotate (GNATprove, Init_By_Proof, Int_Array);
    --  array of potentially uninitialized integers
 
    type Int_Array_Init is array (Positive range <>) of Integer;
@@ -31,6 +30,8 @@ procedure Init_By_Proof with SPARK_Mode is
       if Offset /= 0 then
          Error := True;
          return;
+      else
+         Error := False;
       end if;
 
       for Loop_Var in 0 .. Nb_Chunks - 1 loop
@@ -66,10 +67,11 @@ procedure Init_By_Proof with SPARK_Mode is
       end loop;
    end Process;
 
-   Buf    : Int_Array (1 .. 150);
+   Buf   : Int_Array (1 .. 150);
    Error : Boolean;
-   X      : Integer;
+   X     : Integer;
 begin
+   pragma Assert (not Buf'Valid_Scalars); -- @ASSERT:FAIL
    Read (Buf, 100, Error);
    if not Error then
       X := Buf (10);

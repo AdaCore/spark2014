@@ -316,13 +316,20 @@ package body Why.Gen.Binders is
             return Get_Typ (B.Main.B_Name);
 
          when DRecord =>
-            return EW_Abstract (B.Typ);
+            return
+              EW_Abstract
+                (B.Typ,
+                 Relaxed_Init => Obj_Has_Relaxed_Init
+                   (Get_Ada_Node_From_Item (B)));
 
          when UCArray =>
             return Get_Typ (B.Content.B_Name);
 
          when Pointer =>
-            return EW_Abstract (Etype (B.Value.Ada_Node));
+            return
+              EW_Abstract
+                (Etype (B.Value.Ada_Node),
+                 Relaxed_Init => Obj_Has_Relaxed_Init (B.Value.Ada_Node));
 
          when Func =>
             return Get_Typ (B.For_Logic.B_Name);
@@ -579,28 +586,23 @@ package body Why.Gen.Binders is
       --  If we are not in a function declaration, we use the actual subtype
       --  for the parameter if one is provided.
 
-      Spec_Ty : constant Entity_Id :=
+      Spec_Ty         : constant Entity_Id :=
         (if Is_Type (Use_Ty) and then Is_Class_Wide_Type (Use_Ty)
          then Get_Specific_Type_From_Classwide (Use_Ty)
          else Use_Ty);
-
-      Ty : constant Entity_Id :=
+      Ty              : constant Entity_Id :=
         (if Is_Type (Spec_Ty) then Retysp (Spec_Ty) else Spec_Ty);
+      Needs_Init_Flag : constant Boolean :=
+        Is_Object (E)
+         and then Is_Mutable_In_Why (E)
+         and then Is_Scalar_Type (Ty)
+         and then Obj_Has_Relaxed_Init (E);
+      --  We only need an initialization flag for mutable scalar objects
 
       function New_Init_Id (Name : W_Identifier_Id) return Opt_Id is
-        (if Is_Mutable_In_Why (E)
-         and then Needs_Init_Wrapper_Type (Ty)
-         and then
-           (Ekind (E) = E_Out_Parameter
-            or else
-              (Ekind (E) = E_Variable
-               and then Nkind (Enclosing_Declaration (E)) =
-                 N_Object_Declaration
-               and then No (Expression (Enclosing_Declaration (E)))))
+        (if Needs_Init_Flag
          then (Present => True, Id => Init_Append (Name))
          else (Present => False));
-      --  We only need an initialization flag for out parameters and default
-      --  initialized variables.
 
    begin
       --  For procedures, use a regular binder
@@ -665,7 +667,8 @@ package body Why.Gen.Binders is
          --    val p (a : ref __split, a__first : rep, a__last : rep)
 
          declare
-            Typ    : constant W_Type_Id := EW_Split (Ty);
+            Typ    : constant W_Type_Id :=
+              EW_Split (Ty, Relaxed_Init => Obj_Has_Relaxed_Init (E));
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ, Local => Local);
             Binder : constant Binder_Type :=
@@ -729,15 +732,18 @@ package body Why.Gen.Binders is
                Result.Fields :=
                  (Present => True,
                   Binder  =>
-                    Binder_Type'(Ada_Node => E,
-                                 B_Name   =>
-                                   Field_Append
-                                     (Base => Name,
-                                      Typ  =>
-                                        Field_Type_For_Fields (Ty)),
-                                 B_Ent    => Null_Entity_Name,
-                                 Mutable  => True,
-                                 Labels   => <>));
+                    Binder_Type'
+                      (Ada_Node => E,
+                       B_Name   =>
+                         Field_Append
+                           (Base     => Name,
+                            Typ      =>
+                              Field_Type_For_Fields
+                                (Ty,
+                                 Init_Wrapper => Obj_Has_Relaxed_Init (E))),
+                       B_Ent    => Null_Entity_Name,
+                       Mutable  => True,
+                       Labels   => <>));
             end if;
 
             if Count_Discriminants (Ty) > 0 then
@@ -832,12 +838,24 @@ package body Why.Gen.Binders is
          declare
             Typ : constant W_Type_Id :=
               (if Ekind (E) = E_Loop_Parameter
-               and then Is_Standard_Boolean_Type (Ty) then
-                    EW_Int_Type
+               and then Is_Standard_Boolean_Type (Ty)
+               then EW_Int_Type
+
+               --  Use an init wrapper type for objects with relaxed init
+
+               elsif Obj_Has_Relaxed_Init (E)
+               then EW_Init_Wrapper (Type_Of_Node (Ty))
 
                --  Otherwise we use Why3 representation for the type
 
                else Type_Of_Node (Ty));
+
+            pragma Assert
+              (if Is_Scalar_Type (Ty) and then Obj_Has_Relaxed_Init (E)
+               then Needs_Init_Flag);
+            --  Scalar types are translated as split types. If they have
+            --  relaxed initialization, they should have a separate init
+            --  flag.
 
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ, Local => Local);
@@ -1374,7 +1392,7 @@ package body Why.Gen.Binders is
                Domain   => EW_Term,
                Labels   => Symbol_Sets.Empty_Set,
                Def      => T,
-               Typ      => EW_Init_Wrapper (Etype (Ent), EW_Split));
+               Typ      => EW_Split (Etype (Ent), Relaxed_Init => True));
          end;
       end if;
 

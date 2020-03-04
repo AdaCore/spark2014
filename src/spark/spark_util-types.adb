@@ -27,7 +27,6 @@ with Aspects;                    use Aspects;
 with Elists;                     use Elists;
 with Exp_Util;                   use Exp_Util;
 with Sem_Eval;                   use Sem_Eval;
-with SPARK_Annotate;             use SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
@@ -360,6 +359,110 @@ package body SPARK_Util.Types is
       end if;
    end Check_Needed_On_Conversion;
 
+   ---------------------------------
+   -- Contains_Relaxed_Init_Parts --
+   ---------------------------------
+
+   function Contains_Relaxed_Init_Parts
+     (Typ        : Entity_Id;
+      Ignore_Top : Boolean := False) return Boolean
+   is
+      Rep_Ty : constant Entity_Id := Retysp (Typ);
+   begin
+      if not Ignore_Top and then Has_Relaxed_Init (Typ) then
+         return True;
+
+      --  Concurrent or access types with relaxed init parts are not supported
+
+      elsif Ekind (Rep_Ty) in Concurrent_Kind | Access_Kind then
+         return False;
+
+      elsif Is_Array_Type (Rep_Ty) then
+         return Contains_Relaxed_Init_Parts (Component_Type (Rep_Ty));
+
+      elsif Is_Record_Type (Rep_Ty) then
+
+         --  Tagged types with relaxed init parts are not supported
+
+         if Is_Tagged_Type (Rep_Ty) then
+            return False;
+         else
+            declare
+               Comp : Node_Id := First_Component (Rep_Ty);
+            begin
+               while Present (Comp) loop
+                  if Component_Is_Visible_In_SPARK (Comp)
+                    and then Contains_Relaxed_Init_Parts (Etype (Comp))
+                  then
+                     return True;
+                  end if;
+                  Next_Component (Comp);
+               end loop;
+            end;
+         end if;
+         return False;
+      else
+         pragma Assert
+           (Is_Private_Type (Rep_Ty) or else Is_Scalar_Type (Rep_Ty));
+         return False;
+      end if;
+   end Contains_Relaxed_Init_Parts;
+
+   --------------------------------
+   -- Contains_Only_Relaxed_Init --
+   --------------------------------
+
+   function Contains_Only_Relaxed_Init (Typ : Entity_Id) return Boolean is
+      Rep_Ty : constant Entity_Id := Retysp (Typ);
+   begin
+      if Has_Relaxed_Init (Typ) then
+         return True;
+
+      --  Concurrent or access types with relaxed init parts are not supported
+
+      elsif Ekind (Rep_Ty) in Concurrent_Kind | Access_Kind then
+         return False;
+
+      elsif Is_Array_Type (Rep_Ty) then
+         return Contains_Only_Relaxed_Init (Component_Type (Rep_Ty));
+
+      elsif Is_Record_Type (Rep_Ty) then
+
+         --  Tagged types with relaxed init parts are not supported
+
+         if Is_Tagged_Type (Rep_Ty) then
+            return False;
+
+         --  Return True if Rep_Ty contains at least a subcomponent with
+         --  relaxed initialization and only such components.
+
+         else
+            declare
+               Comp : Node_Id := First_Component (Rep_Ty);
+            begin
+               if No (Comp) then
+                  return False;
+               else
+                  loop
+                     if Component_Is_Visible_In_SPARK (Comp)
+                       and then not Contains_Only_Relaxed_Init (Etype (Comp))
+                     then
+                        return False;
+                     end if;
+                     Next_Component (Comp);
+                     exit when No (Comp);
+                  end loop;
+                  return True;
+               end if;
+            end;
+         end if;
+      else
+         pragma Assert
+           (Is_Private_Type (Rep_Ty) or else Is_Scalar_Type (Rep_Ty));
+         return False;
+      end if;
+   end Contains_Only_Relaxed_Init;
+
    ---------------------------------------
    -- Count_Non_Inherited_Discriminants --
    ---------------------------------------
@@ -580,52 +683,6 @@ package body SPARK_Util.Types is
       elsif Is_Itype (E) then Predicated_Parent (E)
       else Partial_View (E));
 
-   -----------------------
-   -- Has_Init_By_Proof --
-   -----------------------
-
-   function Has_Init_By_Proof (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Retysp (E);
-   begin
-      case Type_Kind'(Ekind (Ty)) is
-         when Scalar_Kind =>
-            return Scalar_Has_Init_By_Proof (Ty);
-         when Array_Kind =>
-            return Has_Init_By_Proof (Component_Type (Ty));
-         when Record_Kind =>
-
-            --  A record type either has all its components with Init_By_Proof
-            --  or none. Only check the first component that is visible in
-            --  SPARK.
-
-            declare
-               Comp : Entity_Id :=
-                 First_Component (Root_Retysp (Ty));
-            begin
-               while Present (Comp) loop
-                  exit when Component_Is_Visible_In_SPARK (Comp);
-                  Next_Component (Comp);
-               end loop;
-
-               return Present (Comp) and then Has_Init_By_Proof (Etype (Comp));
-            end;
-         when E_Private_Type
-            | E_Private_Subtype
-            | E_Limited_Private_Type
-            | E_Limited_Private_Subtype
-            | Concurrent_Kind
-            | Access_Kind
-          =>
-            return False;
-
-         when Incomplete_Kind
-            | E_Exception_Type
-            | E_Subprogram_Type
-         =>
-            raise Program_Error;
-      end case;
-   end Has_Init_By_Proof;
-
    -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
@@ -804,13 +861,13 @@ package body SPARK_Util.Types is
    ------------------------------
 
    function Is_Standard_Boolean_Type (E : Entity_Id) return Boolean is
-     (E = Standard_Boolean
-      or else
-        (Ekind (E) = E_Enumeration_Subtype
-         and then Etype (E) = Standard_Boolean
-         and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)
-         and then not Has_Predicates (E)
-         and then not Scalar_Has_Init_By_Proof (E)));
+     ((E = Standard_Boolean
+       or else
+         (Ekind (E) = E_Enumeration_Subtype
+          and then Etype (E) = Standard_Boolean
+          and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)
+          and then not Has_Predicates (E)))
+      and then not In_Relaxed_Init (E));
 
    --------------------------
    -- Is_Static_Array_Type --
@@ -1034,6 +1091,95 @@ package body SPARK_Util.Types is
 
         and then not Has_Unknown_Discriminants (E);
    end Needs_Default_Checks_At_Decl;
+
+   --------------------------------
+   -- Might_Contain_Relaxed_Init --
+   --------------------------------
+
+   function Might_Contain_Relaxed_Init (Typ : Entity_Id) return Boolean is
+      Seen : Node_Sets.Set;
+
+      function Might_Contain_Relaxed (Typ : Entity_Id) return Boolean;
+      --  Recursive annex function using a set of seen types to avoid looping
+      --  on recursive types.
+      --  The Seen set also allows memoizing the result for component types
+      --  of tagged types which might be traversed several times.
+
+      ---------------------------
+      -- Might_Contain_Relaxed --
+      ---------------------------
+
+      function Might_Contain_Relaxed (Typ : Entity_Id) return Boolean is
+         Rep_Ty   : constant Entity_Id := Base_Retysp (Typ);
+         Inserted : Boolean;
+         Pos      : Node_Sets.Cursor;
+      begin
+         Seen.Insert (Rep_Ty, Pos, Inserted);
+
+         if not Inserted then
+            return False;
+         elsif In_Relaxed_Init (Typ) then
+            return True;
+         elsif Is_Concurrent_Type (Rep_Ty) then
+            return False;
+         elsif Is_Scalar_Type (Rep_Ty) then
+            return False;
+         end if;
+
+         --  If the type can be converted to a type which might contain
+         --  components with relaxed initialization, we need relaxed
+         --  initialization for it too.
+
+         if Base_Retysp (Etype (Rep_Ty)) /= Rep_Ty
+           and then Might_Contain_Relaxed (Etype (Rep_Ty))
+         then
+            return True;
+         elsif Is_Array_Type (Rep_Ty) then
+            return Might_Contain_Relaxed (Component_Type (Rep_Ty));
+         elsif Is_Access_Type (Rep_Ty) then
+            declare
+               Des_Ty   : constant Entity_Id :=
+                 Directly_Designated_Type (Rep_Ty);
+               F_Des_Ty : constant Entity_Id :=
+                 (if Is_Incomplete_Type (Des_Ty) then Full_View (Des_Ty)
+                  else Des_Ty);
+            begin
+
+               return Might_Contain_Relaxed (F_Des_Ty);
+            end;
+         elsif Is_Record_Type (Rep_Ty) then
+
+            --  On tagged types, some components may have been hidden by
+            --  successive derivations. Check ancestors to find them.
+
+            if Is_Tagged_Type (Rep_Ty)
+              and then Retysp (Etype (Rep_Ty)) /= Rep_Ty
+              and then Might_Contain_Relaxed (Retysp (Etype (Rep_Ty)))
+            then
+               return True;
+            else
+               declare
+                  Comp : Node_Id := First_Component (Rep_Ty);
+               begin
+                  while Present (Comp) loop
+                     if Component_Is_Visible_In_SPARK (Comp)
+                       and then Contains_Relaxed_Init_Parts (Etype (Comp))
+                     then
+                        return True;
+                     end if;
+                     Next_Component (Comp);
+                  end loop;
+               end;
+               return False;
+            end if;
+         else
+            return False;
+         end if;
+
+      end Might_Contain_Relaxed;
+   begin
+      return Might_Contain_Relaxed (Typ);
+   end Might_Contain_Relaxed_Init;
 
    --------------------
    -- Nth_Index_Type --

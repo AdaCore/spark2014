@@ -604,12 +604,17 @@ package Why.Atree.Modules is
    --  Memoization may be used. Returns Empty when it is called with a node
    --  which is not an entity, and no module is known for this entity.
 
-   function E_Symb (E : Entity_Id; S : Why_Name_Enum)
-                    return W_Identifier_Id;
+   function E_Symb
+     (E            : Entity_Id;
+      S            : Why_Name_Enum;
+      Relaxed_Init : Boolean := False) return W_Identifier_Id;
    --  Return the symbol which corresponds to [S] in the Why3 module which
    --  corresponds to E
    --  @param E the Ada type entity
    --  @param S a symbol which is allowed for that type entity
+   --  @param Relaxed_Init should be True if we should search S in the wrapper
+   --    module. This should only be used for symbols which are duplicated
+   --    between the two modules.
 
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
 

@@ -243,6 +243,11 @@ package body SPARK_Definition is
    Raise_Exprs_From_Pre : Node_Sets.Set;
    --  Store raise expressions occuring in preconditions
 
+   Relaxed_Init : Node_To_Bool_Maps.Map;
+   --  Map representative types which can be parts of objects with relaxed
+   --  initialization to a flag which is true if the type has relaxed
+   --  initialization itself.
+
    function Entity_In_SPARK (E : Entity_Id) return Boolean
      renames Entities_In_SPARK.Contains;
 
@@ -1215,6 +1220,25 @@ package body SPARK_Definition is
    begin
       return Subcomponents_With_Predicates (E);
    end Has_Deep_Subcomponents_With_Predicates;
+
+   ----------------------
+   -- Has_Relaxed_Init --
+   ----------------------
+
+   function Has_Relaxed_Init (E : Entity_Id) return Boolean is
+      use Node_To_Bool_Maps;
+      C : constant Node_To_Bool_Maps.Cursor :=
+        Relaxed_Init.Find (Base_Retysp (E));
+   begin
+      return Has_Element (C) and then Element (C);
+   end Has_Relaxed_Init;
+
+   ---------------------
+   -- In_Relaxed_Init --
+   ---------------------
+
+   function In_Relaxed_Init (E : Entity_Id) return Boolean is
+     (Relaxed_Init.Contains (Base_Retysp (E)));
 
    --------------
    -- In_SPARK --
@@ -3033,15 +3057,21 @@ package body SPARK_Definition is
                Error_Msg_F ("?attribute Valid is assumed to return True", N);
             end if;
 
-         --  Attribute Valid_Scalars is used on types with init by proof
+         --  Attribute Valid_Scalars is used on prefixes with init by proof.
+         --  Valid_Scalars does not mandate the evaluation of its prefix.
+         --  Thus it can be called on scalar "names" which are not initialized
+         --  without generating a bounded error.
 
          when Attribute_Valid_Scalars =>
+
             if not Retysp_In_SPARK (Etype (P))
-              or else not Has_Init_By_Proof (Etype (P))
+              or else not
+                Expr_Has_Relaxed_Init (P, No_Eval => True)
             then
                Mark_Violation
-                 ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
-                  & """ only allowed on types with initialization by proof",
+                 ("prefix of attribute """
+                  & Standard_Ada_Case (Get_Name_String (Aname))
+                  & """ without initialization by proof",
                   N);
             end if;
 
@@ -3846,13 +3876,6 @@ package body SPARK_Definition is
 
                      if not Retysp_In_SPARK (Des_Ty) then
                         Mark_Violation (E, From => Des_Ty);
-
-                     --  We do not support initialization by proof on access
-                     --  types yet.
-
-                     elsif Has_Init_By_Proof (Des_Ty) then
-                        Mark_Unsupported
-                          ("access to a type with initialization by proof", E);
                      else
 
                         --  Attempt to insert the view in the incomplete views
@@ -5381,16 +5404,6 @@ package body SPARK_Definition is
                     (Ultimate_Alias
                        (Get_User_Defined_Eq (Base_Type (Component_Typ))));
                end if;
-
-               --  Check use of pragma Annotate Init_By_Proof
-
-               if Has_Init_By_Proof (Component_Typ)
-                 and then Has_Predicates (E)
-               then
-                  Mark_Unsupported
-                    ("component with initialization by proof in a type with"
-                     & " predicates", E);
-               end if;
             end;
 
          --  Most discrete and floating-point types are in SPARK
@@ -5616,8 +5629,6 @@ package body SPARK_Definition is
                declare
                   Comp              : Entity_Id := First_Component (E);
                   Comp_Type         : Entity_Id;
-                  Init_By_Proof     : Entity_Id := Empty;
-                  Not_Init_By_Proof : Entity_Id := Empty;
 
                begin
                   while Present (Comp) loop
@@ -5640,6 +5651,17 @@ package body SPARK_Definition is
                            then
                               Mark_Violation
                                 ("owning component of a tagged type", Comp);
+                           end if;
+
+                           --  Tagged types with components with relaxed init
+                           --  are not supported yet.
+
+                           if Is_Tagged_Type (E)
+                             and then Contains_Relaxed_Init_Parts (Comp_Type)
+                           then
+                              Mark_Violation
+                                ("component of a tagged type with relaxed"
+                                 & " initialization", Comp);
                            end if;
 
                            --  Check that the component is not of an anonymous
@@ -5666,39 +5688,11 @@ package body SPARK_Definition is
 
                            --  Mark default value of component or discriminant
                            Mark_Default_Expression (Comp);
-
-                           if Has_Init_By_Proof (Comp_Type) then
-                              Init_By_Proof := Comp;
-                           else
-                              Not_Init_By_Proof := Comp;
-                           end if;
                         end if;
                      end if;
 
                      Next_Component (Comp);
                   end loop;
-
-                  --  Check use of pragma Annotate Init_By_Proof.
-                  --  E is considered Init_By_Proof if any of its component is
-                  --  Init_By_Proof.
-
-                  if Present (Init_By_Proof) then
-                     if Is_Tagged_Type (E) then
-                        Mark_Unsupported
-                          ("component with initialization by proof in a tagged"
-                           & " type", Init_By_Proof);
-                     elsif Has_Predicates (E) then
-                        Mark_Unsupported
-                          ("component with initialization by proof in a type"
-                           & " with predicates", Init_By_Proof);
-                     elsif Present (Not_Init_By_Proof) then
-                        Mark_Unsupported
-                          ("component without initialization by proof in a"
-                           & " record with initialization by proof",
-                           Not_Init_By_Proof);
-                     end if;
-                  end if;
-
                end;
             end if;
 
@@ -5792,12 +5786,6 @@ package body SPARK_Definition is
 
             elsif not Retysp_In_SPARK (Directly_Designated_Type (E)) then
                Mark_Violation (E, From => Directly_Designated_Type (E));
-
-            --  We do not support initialization by proof on access types yet
-
-            elsif Has_Init_By_Proof (Directly_Designated_Type (E)) then
-               Mark_Unsupported
-                 ("access to a type with initialization by proof", E);
             end if;
 
          elsif Is_Concurrent_Type (E) then
@@ -5909,7 +5897,7 @@ package body SPARK_Definition is
                            --  Initialization by proof of protected components
                            --  is not supported yet.
 
-                           if Has_Init_By_Proof (Etype (Comp)) then
+                           if Contains_Relaxed_Init_Parts (Etype (Comp)) then
                               Mark_Unsupported
                                 ("protected component with initialization by"
                                  & " proof", E);
@@ -5944,7 +5932,9 @@ package body SPARK_Definition is
 
                               if Ekind (Part) = E_Variable
                                 and then Retysp_In_SPARK (Etype (Part))
-                                and then Has_Init_By_Proof (Etype (Part))
+                                and then (Obj_Has_Relaxed_Init (Part)
+                                          or else Contains_Relaxed_Init_Parts
+                                            (Etype (Part)))
                               then
                                  Mark_Unsupported
                                    ("Part_Of variable with initialization by"
@@ -7879,6 +7869,102 @@ package body SPARK_Definition is
                                  | N_Range_Constraint
                                  | N_Index_Or_Discriminant_Constraint);
    end Mark_Subtype_Indication;
+
+   ---------------------------------
+   -- Mark_Type_With_Relaxed_Init --
+   ---------------------------------
+
+   procedure Mark_Type_With_Relaxed_Init
+     (Ada_Node : Node_Id;
+      Ty       : Entity_Id;
+      Own      : Boolean := False)
+   is
+      use Node_To_Bool_Maps;
+      Rep_Ty   : constant Entity_Id := Base_Retysp (Ty);
+      C        : Node_To_Bool_Maps.Cursor;
+      Inserted : Boolean;
+
+   begin
+      --  Store Rep_Ty in the Relaxed_Init map or update its mapping if
+      --  necessary.
+
+      Relaxed_Init.Insert (Rep_Ty, Own, C, Inserted);
+
+      if not Inserted then
+         if Own then
+            Relaxed_Init.Replace_Element (C, Own);
+         end if;
+         return;
+      end if;
+
+      --  Raise violations on currently unsupported cases
+
+      if Has_Predicates (Ty) then
+         Mark_Unsupported
+           ("predicate on a type with initialization by proof", Ada_Node);
+      elsif Has_Invariants_In_SPARK (Ty) then
+         Mark_Unsupported
+           ("invariant on a type with initialization by proof", Ada_Node);
+      elsif Is_Tagged_Type (Rep_Ty) then
+         Mark_Unsupported
+           ("tagged type with initialization by proof", Ada_Node);
+      elsif Is_Access_Type (Rep_Ty) then
+         Mark_Unsupported
+           ("access type with initialization by proof", Ada_Node);
+      elsif Is_Concurrent_Type (Rep_Ty) then
+         Mark_Unsupported
+           ("concurrent type with initialization by proof", Ada_Node);
+      end if;
+
+      --  Using conversions, expressions of any ancestor of Rep_Ty can also
+      --  be partially initialized. It is not the case for scalar types as
+      --  conversions would evaluate them.
+      --  Descendants are not added to the map. They are handled specifically
+      --  in routines deciding whether a type might be partially initialized.
+
+      if Retysp (Etype (Rep_Ty)) /= Rep_Ty
+        and then not Is_Scalar_Type (Rep_Ty)
+      then
+         Mark_Type_With_Relaxed_Init (Ada_Node, Retysp (Etype (Rep_Ty)));
+      end if;
+
+      --  Components of composite types can be partially initialized
+
+      if Is_Array_Type (Rep_Ty) then
+         Mark_Type_With_Relaxed_Init (Ada_Node, Component_Type (Rep_Ty));
+      elsif Is_Record_Type (Rep_Ty) then
+         declare
+            Comp      : Entity_Id := First_Component (Rep_Ty);
+            Comp_Type : Entity_Id;
+
+         begin
+            while Present (Comp) loop
+               pragma Assert (Ekind (Comp) = E_Component);
+
+               if not Is_Tag (Comp)
+
+                 --  Ignore components which are declared in a part with
+                 --  SPARK_Mode => Off.
+
+                 and then Component_Is_Visible_In_SPARK (Comp)
+               then
+                  Comp_Type := Etype (Comp);
+
+                  --  Protect against calling marking of relaxed init types
+                  --  on components of a non spark record, in case Rep_Ty is
+                  --  not in SPARK.
+
+                  if In_SPARK (Comp_Type) then
+                     Mark_Type_With_Relaxed_Init (Ada_Node, Comp_Type);
+                  end if;
+               end if;
+
+               Next_Component (Comp);
+            end loop;
+         end;
+      end if;
+
+   end Mark_Type_With_Relaxed_Init;
 
    -------------------
    -- Mark_Unary_Op --

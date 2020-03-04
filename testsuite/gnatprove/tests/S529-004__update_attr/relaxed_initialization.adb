@@ -1,19 +1,16 @@
 procedure Relaxed_Initialization with SPARK_Mode is
-   subtype My_Positive is Positive;
-   pragma Annotate (GNATprove, Init_By_Proof, My_Positive);
    subtype My_Float is Float range 1.0 .. Float (Integer'Last);
-   pragma Annotate (GNATprove, Init_By_Proof, My_Float);
    subtype My_Duration is Duration range 0.0 .. 60.0;
-   pragma Annotate (GNATprove, Init_By_Proof, My_Duration);
 
      type Rec (D : Boolean := False) is record
-        X : My_Positive;
-	case D is
-            when True => Y : My_Float;
-	    when False  => Z : My_Duration;
-        end case;
+        X : Positive;
+      case D is
+         when True =>   Y : My_Float;
+         when False  => Z : My_Duration;
+      end case;
      end record -- with Relaxed_Initialization
 ;
+   pragma Annotate (GNATprove, Init_By_Proof, Rec);
 
      type Vec is array (Positive range <>) of Rec;
 
@@ -28,17 +25,17 @@ procedure Relaxed_Initialization with SPARK_Mode is
      procedure Partially_Init (Obj : out Vec) is
      begin
         for Idx in Obj'Range loop
-	   if Obj (Idx).D then
-              Obj (Idx).Y := Float (Idx);
-	   else
-              Obj (Idx).Z := 0.0;
-           end if;
+         if Obj (Idx).D then
+            Obj (Idx).Y := Float (Idx);
+         else
+            Obj (Idx).Z := 0.0;
+         end if;
 
-           pragma Loop_Invariant
-             ((for all Elem of Obj (Obj'First .. Idx) =>
-                (if Elem.D
-                 then Elem.Y'Valid_Scalars
-                 else Elem.Z'Valid_Scalars and Elem.Z = 0.0)));
+         pragma Loop_Invariant
+           ((for all Elem of Obj (Obj'First .. Idx) =>
+              (if Elem.D
+               then Elem.Y'Valid_Scalars
+               else Elem.Z'Valid_Scalars and Elem.Z = 0.0)));
         end loop;
      end Partially_Init;
 
@@ -68,5 +65,5 @@ procedure Relaxed_Initialization with SPARK_Mode is
 begin
     Partially_Init (Obj);
     Init_X_Components (Obj);
-    pragma Assert (Obj'Valid_Scalars);
+    pragma Assert (for all E of Obj => E'Valid_Scalars);
 end;

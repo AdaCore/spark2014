@@ -1,11 +1,10 @@
 procedure Bool_Init_By_Proof with SPARK_Mode is
-   subtype My_Bool is Boolean;
-   pragma Annotate (GNATprove, Init_By_Proof, My_Bool);
    type Color is (Red, Blue, Yellow);
-   pragma Annotate (GNATprove, Init_By_Proof, Color);
 
-   type Bool_Array is array (Color) of My_Bool;
-   type Color_Array is array (My_Bool) of Color;
+   type Bool_Array is array (Color) of Boolean;
+   pragma Annotate (GNATprove, Init_By_Proof, Bool_Array);
+   type Color_Array is array (Boolean) of Color;
+   pragma Annotate (GNATprove, Init_By_Proof, Color_Array);
 
    procedure Init_One (X : in out Bool_Array; Y : Color)
      with Post =>

@@ -6,7 +6,7 @@ with SPARK_Mode,
 is
 
    --Global_A        : Natural ;
-   subtype My_Natural is Natural;
+   type My_Natural is new Natural;
    pragma Annotate (GNATprove, Init_By_Proof, My_Natural);
 
 

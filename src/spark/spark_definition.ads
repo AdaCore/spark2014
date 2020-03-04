@@ -167,6 +167,14 @@ package SPARK_Definition is
    --  Should be called after marking is finished. Returns the result of
    --  marking as a JSON record.
 
+   function Has_Relaxed_Init (E : Entity_Id) return Boolean with
+     Post => (if Has_Relaxed_Init'Result then In_Relaxed_Init (E));
+   --  True is E is annotated with relaxed initialization
+
+   function In_Relaxed_Init (E : Entity_Id) return Boolean;
+   --  True if E is the type of a part of a type annotated with relaxed
+   --  initialization.
+
    function Is_Actions_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff entity E is defined in actions and thus requires a
    --  special translation. See gnat2why.ads for details.
@@ -198,6 +206,13 @@ package SPARK_Definition is
    function Raise_Occurs_In_Pre (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Raise_Expression;
    --  Return True if N occurs in a precondition
+
+   procedure Mark_Type_With_Relaxed_Init
+     (Ada_Node : Node_Id;
+      Ty       : Entity_Id;
+      Own      : Boolean := False)
+   with Pre => Entity_In_SPARK (Ty);
+   --  Should be private once relaxed init is an aspect
 
    ----------------------------------------------------------------------
    --  Marked entity collections

@@ -38,6 +38,7 @@ with Opt;
 with Osint;
 with Output;
 with Pprint;                 use Pprint;
+with SPARK_Annotate;         use SPARK_Annotate;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
@@ -913,6 +914,201 @@ package body SPARK_Util is
       return Mk_Subp (Name => Full_Source_Name (E),
                       Sloc => Loc_To_Assume_Sloc (Sloc (E)));
    end Entity_To_Subp_Assumption;
+
+   ---------------------------
+   -- Expr_Has_Relaxed_Init --
+   ---------------------------
+
+   function Expr_Has_Relaxed_Init
+     (Expr    : Node_Id;
+      No_Eval : Boolean := True) return Boolean
+   is
+
+      function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean;
+      --  Check the expressions of an aggregate for relaxed initialization
+
+      ---------------------------
+      -- Aggr_Has_Relaxed_Init --
+      ---------------------------
+
+      function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean is
+         Exprs  : constant List_Id := Expressions (Aggr);
+         Assocs : constant List_Id := Component_Associations (Aggr);
+         Expr   : Node_Id :=
+           (if Present (Exprs) then Nlists.First (Exprs)
+            else Empty);
+         Assoc  : Node_Id :=
+           (if Present (Assocs) then Nlists.First (Assocs)
+            else Empty);
+      begin
+         while Present (Expr) loop
+            if Expr_Has_Relaxed_Init (Expr, No_Eval => False) then
+               return True;
+            end if;
+            Next (Expr);
+         end loop;
+
+         while Present (Assoc) loop
+            if Expr_Has_Relaxed_Init (Expression (Assoc), No_Eval => False)
+            then
+               return True;
+            end if;
+            Next (Assoc);
+         end loop;
+         return False;
+      end Aggr_Has_Relaxed_Init;
+
+   begin
+      --  Scalar expressions are necessarily initialized as evaluating an
+      --  uninitialized scalar expression is a bounded error.
+
+      if (Has_Scalar_Type (Etype (Expr)) and then not No_Eval)
+        or else not Might_Contain_Relaxed_Init (Etype (Expr))
+      then
+         return False;
+      elsif Has_Relaxed_Init (Etype (Expr)) then
+         return True;
+      end if;
+
+      case Nkind (Expr) is
+         when N_Aggregate =>
+            return Aggr_Has_Relaxed_Init (Expr);
+
+         when N_Extension_Aggregate =>
+            return Expr_Has_Relaxed_Init
+              (Ancestor_Part (Expr), No_Eval => False)
+              or else Aggr_Has_Relaxed_Init (Expr);
+
+         when N_Slice =>
+            return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False);
+
+         when N_Op_Concat =>
+            return Expr_Has_Relaxed_Init (Left_Opnd (Expr), No_Eval => False)
+              or else Expr_Has_Relaxed_Init
+                (Right_Opnd (Expr), No_Eval => False);
+
+         when N_If_Expression =>
+            declare
+               Cond        : constant Node_Id := First (Expressions (Expr));
+               Then_Part   : constant Node_Id := Next (Cond);
+               Else_Part   : constant Node_Id := Next (Then_Part);
+            begin
+               return Expr_Has_Relaxed_Init (Then_Part, No_Eval => False)
+                 or else
+                   (Present (Else_Part)
+                    and then Expr_Has_Relaxed_Init
+                      (Else_Part, No_Eval => False));
+            end;
+
+         when N_Case_Expression =>
+            declare
+               Cases   : constant List_Id := Alternatives (Expr);
+               Current : Node_Id := First (Cases);
+            begin
+               while Present (Current) loop
+                  if Expr_Has_Relaxed_Init
+                    (Expression (Current), No_Eval => False)
+                  then
+                     return True;
+                  end if;
+                  Next (Current);
+               end loop;
+               return False;
+            end;
+
+         when N_Qualified_Expression
+            | N_Unchecked_Type_Conversion
+            | N_Type_Conversion
+         =>
+            return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval);
+
+         when N_Function_Call =>
+
+            --  Shift and rotate always return initialized results
+
+            if Is_Simple_Shift_Or_Rotate (Get_Called_Entity (Expr))
+
+              --  Predicate and pledge functions return Boolean, they cannot
+              --  be partly initialized.
+
+              or else Is_Predicate_Function (Get_Called_Entity (Expr))
+              or else Has_Pledge_Annotation (Get_Called_Entity (Expr))
+            then
+               return False;
+            else
+               --  ??? Retrieve annotation on called entity
+               return Has_Relaxed_Init (Etype (Get_Called_Entity (Expr)));
+            end if;
+
+         when N_Identifier
+            | N_Expanded_Name
+         =>
+            return Obj_Has_Relaxed_Init (Entity (Expr));
+
+         when N_Indexed_Component
+            | N_Selected_Component
+            | N_Explicit_Dereference
+            =>
+            return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False);
+
+         when N_Attribute_Reference =>
+            case Get_Attribute_Id (Attribute_Name (Expr)) is
+               when Attribute_Result =>
+
+                  --  ??? Retrieve annotation on subprogram
+
+                  return Has_Relaxed_Init (Etype (Entity (Prefix (Expr))));
+
+               when Attribute_Old
+                  | Attribute_Loop_Entry
+                  =>
+                  return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval);
+
+               when Attribute_Update =>
+                  return Expr_Has_Relaxed_Init
+                    (Prefix (Expr), No_Eval => False)
+                    or else Aggr_Has_Relaxed_Init (Expr);
+
+               when others =>
+                  return False;
+            end case;
+
+         when N_Expression_With_Actions =>
+            return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval);
+
+         when N_Allocator =>
+            if Nkind (Expression (Expr)) in N_Qualified_Expression then
+               return Expr_Has_Relaxed_Init
+                 (Expression (Expr), No_Eval => False);
+            else
+               return Contains_Relaxed_Init_Parts (Entity (Expression (Expr)));
+            end if;
+
+         when N_Character_Literal
+            | N_Numeric_Or_String_Literal
+            | N_Op_Compare
+            | N_Unary_Op
+            | N_Op_Add
+            | N_Op_Subtract
+            | N_Op_Multiply
+            | N_Op_Divide
+            | N_Op_Rem
+            | N_Op_Mod
+            | N_Op_Expon
+            | N_Op_And
+            | N_Op_Or
+            | N_Op_Xor
+            | N_Short_Circuit
+            | N_Membership_Test
+            | N_Quantified_Expression
+            | N_Null
+            =>
+            return False;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Expr_Has_Relaxed_Init;
 
    ------------------------------
    -- File_Name_Without_Suffix --
@@ -2394,6 +2590,39 @@ package body SPARK_Util is
       Count_Assoc (N);
       return Count;
    end Number_Of_Assocs_In_Expression;
+
+   --------------------------
+   -- Obj_Has_Relaxed_Init --
+   --------------------------
+
+   function Obj_Has_Relaxed_Init (Obj : Entity_Id) return Boolean is
+   begin
+      --  Discriminants and loop parameters are always initialized
+
+      if Ekind (Obj) in E_Discriminant | E_Loop_Parameter then
+         return False;
+
+      --  Uninitialized scalar types cannot be copied. A scalar object can
+      --  only be uninitialized if it is either an out parameter or a
+      --  variable without an explicit initial value.
+
+      elsif (Ekind (Obj) in E_In_Parameter | E_In_Out_Parameter | E_Constant
+             or else
+               (Ekind (Obj) = E_Variable
+                and then Nkind (Enclosing_Declaration (Obj)) =
+                  N_Object_Declaration
+                and then Present (Expression (Enclosing_Declaration (Obj)))))
+        and then Has_Scalar_Type (Etype (Obj))
+      then
+         return False;
+
+      --  Otherwise, the object has relaxed initialization if its type does
+
+      else
+         --  ??? Add cases for formal and variables annotated directly
+         return Has_Relaxed_Init (Etype (Obj));
+      end if;
+   end Obj_Has_Relaxed_Init;
 
    ----------------
    -- Real_Image --

@@ -226,10 +226,6 @@ package SPARK_Annotate is
    function Has_Terminate_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Terminating applies to the subprogram E
 
-   function Scalar_Has_Init_By_Proof (E : Entity_Id) return Boolean
-   with Pre => Is_Type (E);
-   --  Return True if a pragma Init_By_Proof applies to the type E
-
    function Has_Pledge_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a pledge function
 

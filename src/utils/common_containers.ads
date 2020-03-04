@@ -90,6 +90,13 @@ package Common_Containers is
       "="             => Node_Sets."=");
    --  Maps of nodes to sets of nodes
 
+   package Node_To_Bool_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Boolean,
+      Hash            => Common_Containers.Node_Hash,
+      Equivalent_Keys => "=");
+   --  Maps of nodes to booleans
+
    type Any_Entity_Name is new Integer range 0 .. Integer'Last;
    --  Entities represented by their string names, which is the only way to
    --  represent entities coming from the bodies of other compilation units

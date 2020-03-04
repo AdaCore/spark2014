@@ -53,7 +53,7 @@ package body Gnat2Why.Decls is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      Typ : constant W_Type_Id := Type_Of_Node (Etype (E));
+      Typ : constant W_Type_Id := Type_Of_Node (E);
    begin
       --  Start with opening the theory to define, as the creation of a
       --  function for the logic term needs the current theory to insert an

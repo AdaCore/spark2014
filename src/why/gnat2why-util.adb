@@ -1103,13 +1103,6 @@ package body Gnat2Why.Util is
        and then Present (Get_Initial_DIC_Procedure (Ty))
        and then not Check_DIC_At_Declaration (Ty));
 
-   -----------------------------
-   -- Needs_Init_Wrapper_Type --
-   -----------------------------
-
-   function Needs_Init_Wrapper_Type (E : Entity_Id) return Boolean is
-     (SPARK_Annotate.Scalar_Has_Init_By_Proof (E));
-
    --------------------------------
    -- Nth_Index_Rep_Type_No_Bool --
    --------------------------------

@@ -157,13 +157,14 @@ package Why.Inter is
                   --  subprogram. It has the appropriate refined contract.
 
    function To_Why_Id
-     (E        : Entity_Id;
-      Domain   : EW_Domain := EW_Prog;
-      Local    : Boolean := False;
-      Selector : Selection_Kind := Standard;
-      No_Comp  : Boolean := False;
-      Rec      : Entity_Id := Empty;
-      Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
+     (E            : Entity_Id;
+      Domain       : EW_Domain := EW_Prog;
+      Local        : Boolean := False;
+      Selector     : Selection_Kind := Standard;
+      No_Comp      : Boolean := False;
+      Rec          : Entity_Id := Empty;
+      Typ          : W_Type_Id := Why_Empty;
+      Relaxed_Init : Boolean := False) return W_Identifier_Id
    with Pre => Ekind (E) in Subprogram_Kind
                           | Entry_Kind
                           | Named_Kind
@@ -187,6 +188,8 @@ package Why.Inter is
    --  @param Rec Record entity that is used only for record components and
    --         specifies the (sub-)type which contains the component.
    --  @param Typ Expected type of the id.
+   --  @param Relaxed_Init True if the identifier should be located in the
+   --         module for the init wrapper type.
    --  @result The Why identifier to be used for E.
 
    function To_Why_Id
@@ -196,12 +199,14 @@ package Why.Inter is
    --  This function should only be called for object references for effects
 
    function To_Why_Type
-     (E     : Entity_Id;
-      Local : Boolean := False) return W_Name_Id
+     (E            : Entity_Id;
+      Local        : Boolean := False;
+      Relaxed_Init : Boolean := False) return W_Name_Id
    with Pre => Is_Type (E);
 
-   function EW_Abstract (N : Node_Id) return W_Type_Id with
-     Pre => Is_Type (N);
+   function EW_Abstract
+     (N : Node_Id; Relaxed_Init : Boolean := False) return W_Type_Id
+   with Pre => Is_Type (N);
    --  Convert an Ada type entity into a Why type. This function respects the
    --  gnat2why encoding. For example, for N = Boolean the function returns
    --  EW_Bool_Type. For all the details, see the implementation.
@@ -212,8 +217,9 @@ package Why.Inter is
    --  types are always renamings of Main.__fixed, but they have an Ada node
    --  which may be used to retrieve the appropriate conversion functions.
 
-   function EW_Split (N : Node_Id) return W_Type_Id with
-     Pre => Is_Type (N);
+   function EW_Split
+     (N : Node_Id; Relaxed_Init : Boolean := False) return W_Type_Id
+   with Pre => Is_Type (N);
    --  This function does the exact same thing as EW_Abstract, but changes the
    --  kind of the node to EW_Split.
 

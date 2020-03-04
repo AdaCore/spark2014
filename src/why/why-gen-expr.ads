@@ -61,6 +61,21 @@ package Why.Gen.Expr is
    --  @param W a Why3 term expression
    --  @return the equivalent Why3 pred expression
 
+   function Boolean_Expr_Of_Pred
+     (W      : W_Pred_Id;
+      Domain : EW_Domain) return W_Expr_Id;
+   --  @param W a Why3 pred expression
+   --  @param Domain translation domain
+   --  @return the equivalent Why3 expression, depending on the [Domain]
+
+   function Boolean_Prog_Of_Pred (W : W_Pred_Id) return W_Prog_Id;
+   --  @param W a Why3 pred expression
+   --  @return the equivalent Why3 prog expression
+
+   function Boolean_Term_Of_Pred (W : W_Pred_Id) return W_Term_Id;
+   --  @param W a Why3 pred expression
+   --  @return the equivalent Why3 term expression
+
    function New_And_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain) return W_Expr_Id;

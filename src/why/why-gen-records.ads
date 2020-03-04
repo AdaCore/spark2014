@@ -26,6 +26,7 @@
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Ids;              use Why.Ids;
@@ -47,9 +48,17 @@ package Why.Gen.Records is
    --  @param Theory the theory in which to insert the type declaration
    --  @param E the type entity to translate
 
-   procedure Create_Rep_Record_Theory_If_Needed
+   procedure Declare_Init_Wrapper_For_Record
      (P : W_Section_Id;
       E : Entity_Id) with
+     Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
+                         Private_Kind
+     and then Might_Contain_Relaxed_Init (E);
+
+   procedure Create_Rep_Record_Theory_If_Needed
+     (P : W_Section_Id;
+      E : Entity_Id)
+   with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
                          Private_Kind  | Concurrent_Kind;
    --  Create a module for the representative type of a record if needed. It
@@ -120,7 +129,8 @@ package Why.Gen.Records is
       Domain       : EW_Domain;
       Discr_Assocs : W_Field_Association_Array;
       Field_Assocs : W_Field_Association_Array;
-      Ty           : Entity_Id)
+      Ty           : Entity_Id;
+      Init_Wrapper : Boolean := False)
       return W_Expr_Id;
    --  Generate a record aggregate of ada type Ty from the association in
    --  Discr_Assocs and Field_Assocs.
@@ -131,6 +141,7 @@ package Why.Gen.Records is
       Discr_Expr   : W_Expr_Id;
       Field_Assocs : W_Field_Association_Array;
       Ty           : Entity_Id;
+      Init_Wrapper : Boolean := False;
       Anc_Ty       : Entity_Id := Empty)
       return W_Expr_Id;
    --  @param Ada_Node    node for the aggregate if any
@@ -252,9 +263,10 @@ package Why.Gen.Records is
    --  Reconstructs a complete record from an item in split form.
 
    function Record_From_Split_Form
-     (Ada_Node : Node_Id := Empty;
-      A        : W_Expr_Array;
-      Ty       : Entity_Id)
+     (Ada_Node     : Node_Id := Empty;
+      A            : W_Expr_Array;
+      Ty           : Entity_Id;
+      Init_Wrapper : Boolean := False)
       return W_Expr_Id;
    --  Reconstructs a complete record of type Ty from an array of expressions
    --  representing a split form. A should contain first the fields, then the
@@ -264,7 +276,10 @@ package Why.Gen.Records is
      Pre => Is_Type (E) and then Has_Discriminants (E);
    --  Type of the top-level Why3 field for discriminants of E.
 
-   function Field_Type_For_Fields (E : Entity_Id) return W_Type_Id with
+   function Field_Type_For_Fields
+     (E            : Entity_Id;
+      Init_Wrapper : Boolean := False) return W_Type_Id
+   with
      Pre => Is_Type (E) and then Count_Why_Regular_Fields (E) > 0;
    --  Type of the top-level Why3 field for fields of E.
 
