@@ -11395,16 +11395,19 @@ package body Gnat2Why.Expr is
 
          when Attribute_Enum_Rep =>
             declare
-               Args : constant List_Id := Expressions (Expr);
-               Arg  : constant Node_Id :=
+               Args   : constant List_Id := Expressions (Expr);
+               Arg    : constant Node_Id :=
                  (if Is_Non_Empty_List (Args) then First (Args)
                   else Prefix (Expr));
+               Arg_Ty : constant Entity_Id := Retysp (Etype (Arg));
             begin
-               if Has_Enumeration_Rep_Clause (Etype (Arg)) then
+               if Is_Enumeration_Type (Arg_Ty)
+                 and then Has_Enumeration_Rep_Clause (Arg_Ty)
+               then
                   T := New_Call
                     (Ada_Node => Expr,
                      Domain   => Domain,
-                     Name     => E_Symb (Etype (Arg), WNE_Pos_To_Rep),
+                     Name     => E_Symb (Arg_Ty, WNE_Pos_To_Rep),
                      Args     => (1 => Transform_Expr (Arg,
                                   EW_Int_Type,
                                   Domain,
