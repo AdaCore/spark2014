@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="8">
+<why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="5000" memlimit="0"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="4450000" memlimit="0"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="190000" memlimit="0"/>
@@ -365,7 +365,7 @@
   <proof prover="2"><result status="unknown" steps="190017"/></proof>
   </goal>
   <goal name="def&#39;vc.105" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="792"/></proof>
+  <proof prover="0"><result status="valid" steps="1639"/></proof>
   <proof prover="1"><result status="unknown" steps="4452380"/></proof>
   <proof prover="2"><result status="unknown" steps="190014"/></proof>
   </goal>

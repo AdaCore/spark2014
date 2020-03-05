@@ -20,12 +20,12 @@ aggregates.adb:9:13: info: add a contract to analyze it separately from calling 
 aggregates.adb:9:13: info: local subprogram "Sqrt" only analyzed in the context of calls
 aggregates.adb:10:07: info: initialization of "Approx" proved
 aggregates.adb:10:07: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
-aggregates.adb:11:46: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
+aggregates.adb:11:46: info: float overflow check proved (Trivial), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: division check proved (CVC4: 1 VC), in call inlined at aggregates.adb:29
-aggregates.adb:13:19: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
+aggregates.adb:13:19: info: float overflow check proved (Trivial), in call inlined at aggregates.adb:29
 aggregates.adb:14:20: info: float overflow check proved (CVC4: 2 VC), in call inlined at aggregates.adb:29
 aggregates.adb:14:29: medium: float overflow check might fail, in call inlined at aggregates.adb:29
-aggregates.adb:15:24: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
+aggregates.adb:15:24: info: float overflow check proved (Trivial), in call inlined at aggregates.adb:29
 aggregates.adb:15:34: info: float overflow check proved (CVC4: 1 VC), in call inlined at aggregates.adb:29
 aggregates.adb:15:38: medium: divide by zero might fail, in call inlined at aggregates.adb:29
 aggregates.adb:15:38: medium: float overflow check might fail, in call inlined at aggregates.adb:29
@@ -34,18 +34,18 @@ aggregates.adb:29:28: info: analyzing call to "Sqrt" in context
 average.adb:6:04: info: initialization of "A" proved
 average.adb:7:04: info: initialization of "B" proved
 average.adb:8:04: info: initialization of "M" proved
-average.adb:15:18: info: range check proved (Interval)
+average.adb:15:18: info: range check proved (Trivial)
 average.adb:15:18: medium: overflow check might fail [possible explanation: postcondition of call at line 12 should mention Item (for argument B)]
 average.adb:15:23: info: division check proved (CVC4: 1 VC)
-average.adb:15:23: info: float overflow check proved (Interval)
+average.adb:15:23: info: float overflow check proved (Trivial)
 average_with_use.adb:4:11: warning: file name does not match unit name, should be "average.adb"
 average_with_use.adb:6:04: info: initialization of "A" proved
 average_with_use.adb:7:04: info: initialization of "B" proved
 average_with_use.adb:8:04: info: initialization of "M" proved
-average_with_use.adb:15:18: info: range check proved (Interval)
+average_with_use.adb:15:18: info: range check proved (Trivial)
 average_with_use.adb:15:18: medium: overflow check might fail [possible explanation: postcondition of call at line 12 should mention Item (for argument B)]
 average_with_use.adb:15:23: info: division check proved (CVC4: 1 VC)
-average_with_use.adb:15:23: info: float overflow check proved (Interval)
+average_with_use.adb:15:23: info: float overflow check proved (Trivial)
 bad_types.adb:3:04: info: initialization of "Room_Length" proved
 bad_types.adb:4:04: info: initialization of "Wall_Thickness" proved
 bad_types.adb:5:04: info: initialization of "Total" proved
@@ -333,12 +333,12 @@ control_structures.adb:154:11: warning: unused assignment
 control_structures.adb:154:18: medium: overflow check might fail [possible explanation: postcondition of call at line 152 should mention Item (for argument Value)]
 control_structures.adb:158:11: warning: unused assignment
 control_structures.adb:158:16: info: division check proved (CVC4: 1 VC)
-control_structures.adb:158:16: info: float overflow check proved (Interval)
+control_structures.adb:158:16: info: float overflow check proved (Trivial)
 control_structures.adb:159:17: info: float overflow check proved (CVC4: 2 VC)
 control_structures.adb:159:26: medium: float overflow check might fail
 control_structures.adb:159:44: warning: statement has no effect
 control_structures.adb:160:14: warning: unused assignment
-control_structures.adb:160:21: info: float overflow check proved (Interval)
+control_structures.adb:160:21: info: float overflow check proved (Trivial)
 control_structures.adb:160:31: info: float overflow check proved (CVC4: 1 VC)
 control_structures.adb:160:35: medium: divide by zero might fail
 control_structures.adb:160:35: medium: float overflow check might fail
@@ -512,7 +512,7 @@ elaboration_demo.adb:5:04: warning: initialization of "Guess" has no effect
 elaboration_demo.adb:5:26: info: float overflow check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:61: info: precondition proved (CVC4: 1 VC)
 elaboration_demo.adb:5:74: info: division check proved (CVC4: 1 VC)
-elaboration_demo.adb:5:74: info: float overflow check proved (Interval)
+elaboration_demo.adb:5:74: info: float overflow check proved (Trivial)
 enum_example.adb:13:04: info: no contextual analysis of "Next_Day" (multiple returns)
 enum_example.adb:18:32: info: range check proved (CVC4: 1 VC)
 enum_example.adb:22:04: info: initialization of "Today" proved
@@ -585,14 +585,14 @@ generic_searchers.ads:16:17: info: postcondition proved (CVC4: 2 VC), in instant
 good_types.adb:11:13: info: add a contract to analyze it separately from calling contexts
 good_types.adb:11:13: info: local subprogram "To_Feet" only analyzed in the context of calls
 good_types.adb:13:26: info: division check proved (CVC4: 1 VC), in call inlined at good_types.adb:22
-good_types.adb:13:26: info: float overflow check proved (Interval), in call inlined at good_types.adb:22
-good_types.adb:13:26: info: range check proved (Interval), in call inlined at good_types.adb:22
+good_types.adb:13:26: info: float overflow check proved (Trivial), in call inlined at good_types.adb:22
+good_types.adb:13:26: info: range check proved (Trivial), in call inlined at good_types.adb:22
 good_types.adb:16:04: info: initialization of "Room_Length" proved
 good_types.adb:17:04: info: initialization of "Wall_Thickness" proved
 good_types.adb:18:04: info: initialization of "Total" proved
-good_types.adb:22:25: info: float overflow check proved (Interval)
+good_types.adb:22:25: info: float overflow check proved (Trivial)
 good_types.adb:22:25: medium: range check might fail [possible explanation: postcondition of call at line 20 should mention Item (for argument Room_Length)]
-good_types.adb:22:31: info: float overflow check proved (Interval)
+good_types.adb:22:31: info: float overflow check proved (Trivial)
 good_types.adb:22:33: info: analyzing call to "To_Feet" in context
 hierarchical_state_demo-a_pack.adb:12:31: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo-a_pack.adb:13:19: info: overflow check proved (CVC4: 1 VC)
@@ -1007,10 +1007,10 @@ sorters.ads:19:49: info: index check proved (CVC4: 2 VC)
 sorters.ads:19:49: info: overflow check proved (CVC4: 1 VC)
 sqrt.adb:2:04: info: initialization of "Approx" proved
 sqrt.adb:4:16: info: division check proved (CVC4: 1 VC)
-sqrt.adb:4:16: info: float overflow check proved (Interval)
+sqrt.adb:4:16: info: float overflow check proved (Trivial)
 sqrt.adb:5:17: medium: float overflow check might fail [possible explanation: subprogram at line 1 should mention X in a precondition]
 sqrt.adb:5:26: medium: float overflow check might fail
-sqrt.adb:6:21: info: float overflow check proved (Interval)
+sqrt.adb:6:21: info: float overflow check proved (Trivial)
 sqrt.adb:6:31: medium: float overflow check might fail
 sqrt.adb:6:35: medium: divide by zero might fail
 sqrt.adb:6:35: medium: float overflow check might fail
@@ -1451,7 +1451,7 @@ very_longs.adb:294:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:296:39: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:297:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:298:51: info: index check proved (CVC4: 2 VC)
-very_longs.adb:299:18: info: overflow check proved (CVC4: 2 VC)
+very_longs.adb:299:18: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:300:61: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:300:65: info: index check proved (CVC4: 2 VC)
 very_longs.adb:302:37: info: overflow check proved (CVC4: 1 VC)
