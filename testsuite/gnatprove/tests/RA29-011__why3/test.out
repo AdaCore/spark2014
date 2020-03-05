@@ -5,7 +5,7 @@ enable_coq_libs: no
 enable_coq_fp_libs: yes
 enable_pvs_libs: no
 enable_isabelle_libs: no
-enable_hypothesis_selection: yes
+enable_hypothesis_selection: no
 enable_local: no
 enable_relocation: yes
 
