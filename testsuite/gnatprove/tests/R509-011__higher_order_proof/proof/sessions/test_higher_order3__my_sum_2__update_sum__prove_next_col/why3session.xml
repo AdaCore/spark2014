@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="8">
+<why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="2000"/>
 <prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="2000"/>
 <file format="whyml" proved="true">
@@ -423,7 +423,7 @@
   <proof prover="1"><result status="valid" steps="221"/></proof>
   </goal>
   <goal name="def&#39;vc.129" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="782"/></proof>
+  <proof prover="0"><result status="valid" steps="837"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.130" expl="assertion" proved="true">
@@ -448,7 +448,7 @@
   <proof prover="1"><result status="valid" steps="106"/></proof>
   </goal>
   <goal name="def&#39;vc.137" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1387"/></proof>
+  <proof prover="0"><result status="valid" steps="1431"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.138" expl="assertion" proved="true">
@@ -496,7 +496,7 @@
   <proof prover="1"><result status="valid" steps="230"/></proof>
   </goal>
   <goal name="def&#39;vc.152" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="808"/></proof>
+  <proof prover="0"><result status="valid" steps="852"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.153" expl="assertion" proved="true">
@@ -540,7 +540,7 @@
   <proof prover="1"><result status="valid" steps="115"/></proof>
   </goal>
   <goal name="def&#39;vc.166" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1460"/></proof>
+  <proof prover="0"><result status="valid" steps="1506"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.167" expl="assertion" proved="true">
