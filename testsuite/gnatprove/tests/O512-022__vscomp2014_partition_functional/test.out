@@ -49,7 +49,7 @@ a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at partition_refinement.ads:22
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at partition_refinement.ads:34
 partition_refinement.adb:14:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-partition_refinement.adb:25:17: info: precondition proved (CVC4: 2 VC)
+partition_refinement.adb:25:17: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:27:16: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:27:37: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:27:55: info: precondition proved (CVC4: 1 VC)
@@ -168,12 +168,12 @@ partition_refinement.adb:178:110: info: index check proved (CVC4: 4 VC)
 partition_refinement.adb:183:31: info: assertion proved (CVC4: 1 VC)
 partition_refinement.adb:183:39: info: range check proved (CVC4: 2 VC)
 partition_refinement.adb:183:91: info: index check proved (CVC4: 2 VC)
+partition_refinement.adb:184:31: medium: assertion might fail
 partition_refinement.adb:184:39: info: range check proved (CVC4: 2 VC)
-partition_refinement.adb:184:82: medium: assertion might fail, cannot prove F(K) in 0 .. Partition_Index'Base (Length (P)) - 1
-partition_refinement.adb:184:84: info: index check proved (CVC4: 4 VC)
+partition_refinement.adb:184:84: info: index check proved (CVC4: 2 VC)
+partition_refinement.adb:185:31: medium: assertion might fail
 partition_refinement.adb:185:39: info: range check proved (CVC4: 2 VC)
-partition_refinement.adb:185:90: medium: assertion might fail, cannot prove F(K) in 0 .. Partition_Index'Base (Length (P)) - 1
-partition_refinement.adb:185:92: info: index check proved (CVC4: 4 VC)
+partition_refinement.adb:185:92: info: index check proved (CVC4: 2 VC)
 partition_refinement.adb:188:39: info: range check proved (CVC4: 2 VC)
 partition_refinement.adb:188:87: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:188:87: medium: assertion might fail, cannot prove Element (P, F(K)) = P_Elem
@@ -229,8 +229,8 @@ partition_refinement.adb:201:156: info: range check proved (CVC4: 1 VC)
 partition_refinement.adb:201:167: medium: assertion might fail, cannot prove F(L) = K
 partition_refinement.adb:201:169: info: index check proved (CVC4: 2 VC)
 partition_refinement.adb:208:25: info: assertion proved (CVC4: 1 VC)
-partition_refinement.adb:209:25: medium: assertion might fail, cannot prove Length (P) - Length (P)'Loop_Entry in 0 .. Count_Type(J) + 1 [possible explanation: loop at line 143 should mention P in a loop invariant]
-partition_refinement.adb:211:47: medium: assertion might fail, cannot prove F(K) in 0 .. Partition_Index'Base (Length (P)) - 1 [possible explanation: loop at line 143 should mention F and P in a loop invariant]
+partition_refinement.adb:209:25: medium: assertion might fail [possible explanation: loop at line 143 should mention P in a loop invariant]
+partition_refinement.adb:211:25: medium: assertion might fail [possible explanation: loop at line 143 should mention F and P in a loop invariant]
 partition_refinement.adb:212:47: medium: assertion might fail, cannot prove K in Element (P, F(K)).First .. Element (P, F(K)).Last [possible explanation: loop at line 143 should mention F and P in a loop invariant]
 partition_refinement.adb:212:52: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:212:79: info: precondition proved (CVC4: 2 VC)
