@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="8">
+<why3session shape_version="6">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <file format="whyml" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="obj"/>
-<path name="gnatprove"/><path
-                         name="ada___spark__test_array_lemmas__test_transitive_order_float__2.mlw"/>
+<path name="gnatprove"/><path name="ada___spark__test_array_lemmas__test_transitive_order_float__2.mlw"/>
 <theory name="Ada___spark__test_array_lemmas__test_transitive_order_float__2__subprogram_def" proved="true">
  <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
