@@ -39,7 +39,7 @@ deceleration_curve.adb:89:13: medium: float overflow check might fail [possible 
 deceleration_curve.adb:89:29: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:13: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:46: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:90:46: info: float overflow check proved (Interval)
+deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
 deceleration_curve.adb:95:36: info: overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:95:36: info: range check proved (CVC4: 1 VC)
 deceleration_curve.adb:105:09: medium: precondition might fail, cannot prove d <= Braking_Curve_Maximum_End_Point [possible explanation: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
@@ -90,14 +90,14 @@ sec_3_13_6_deceleration.ads:45:23: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail [possible explanation: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:38: info: float overflow check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Interval)
+sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Trivial)
 sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [possible explanation: subprogram at line 44 should mention d and V in a precondition]
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Is_Valid_Speed(V) [possible explanation: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:52:26: info: range check proved (Interval)
+sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail, cannot prove Target.location <= Braking_Curve_Maximum_End_Point
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve" proved
 section_3_5_3.adb:41:54: info: overflow check proved (CVC4: 1 VC)
@@ -267,8 +267,8 @@ step_function_test.adb:67:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:67:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun_merge, 11) = 0.5
 units.adb:24:38: info: float overflow check proved (CVC4: 1 VC)
 units.adb:24:48: info: division check proved (CVC4: 1 VC)
-units.adb:24:48: info: float overflow check proved (Interval)
+units.adb:24:48: info: float overflow check proved (Trivial)
 units.ads:37:22: info: float overflow check proved (CVC4: 1 VC)
 units.ads:37:32: info: division check proved (CVC4: 1 VC)
-units.ads:37:32: info: float overflow check proved (Interval)
+units.ads:37:32: info: float overflow check proved (Trivial)
 units.ads:43:20: info: precondition proved (CVC4: 1 VC)

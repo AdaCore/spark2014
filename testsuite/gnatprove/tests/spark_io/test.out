@@ -845,8 +845,8 @@ use_float_io.adb:31:08: info: data dependencies proved
 use_float_io.adb:32:18: info: precondition of main program proved (CVC4: 2 VC)
 use_float_io.adb:33:18: info: implicit function contract not available for proof ("Status" might not return)
 use_float_io.adb:35:04: info: initialization of "F" proved
-use_float_io.adb:38:19: info: range check proved (Interval)
-use_float_io.adb:38:22: info: float overflow check proved (Interval)
+use_float_io.adb:38:19: info: range check proved (Trivial)
+use_float_io.adb:38:22: info: float overflow check proved (Trivial)
 use_float_io.adb:39:30: info: loop invariant initialization proved (CVC4: 2 VC)
 use_float_io.adb:39:30: info: loop invariant preservation proved (CVC4: 2 VC)
 use_float_io.adb:40:30: info: implicit function contract not available for proof ("Status" might not return)
