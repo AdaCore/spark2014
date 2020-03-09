@@ -1,8 +1,5 @@
 a.adb:3:14: info: initialization of "Result" proved
-a.adb:4:20: medium: missing dependency "Result => First"
-a.adb:4:20: medium: missing dependency "Result => Last"
-a.adb:4:45: medium: incorrect dependency "null => First"
-a.adb:4:52: medium: incorrect dependency "null => Last"
+a.adb:4:08: info: flow dependencies proved
 a.adb:5:19: info: postcondition proved (CVC4: 1 VC)
 a.adb:7:12: info: range check proved (CVC4: 2 VC)
 a.adb:10:27: medium: range check might fail
