@@ -3471,6 +3471,15 @@ package body Flow_Utility is
                Variables.Union (Do_Attribute_Reference (N));
                return Skip;
 
+            when N_Case_Expression_Alternative =>
+               --  We special case case_expression_alternative because their
+               --  discrete_choice_list may include subtype_indication, whose
+               --  processing depends on the context. Here only subtypes with
+               --  static bounds can appear and those can be safely ignored.
+
+               Variables.Union (Recurse (Expression (N)));
+               return Skip;
+
             when N_Component_Association =>
                declare
                   Choice : Node_Id := First (Choices (N));
