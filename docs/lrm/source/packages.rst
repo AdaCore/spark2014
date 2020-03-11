@@ -421,26 +421,21 @@ be *compatible with respect to volatility* with E2 if
    [full view of] the designated type of a named nonderived access type
    shall be compatible with respect to volatility with the access type.
 
-7. If an object that is not of a by-copy type is passed as a parameter in a
-   call other than a call to an instance of Unchecked_Conversion, then the
-   actual parameter shall be compatible with respect to volatility with the
-   the corresponding formal parameter.
-
-8. In a generic instantiation, the actual parameter corresponding to a
+7. In a generic instantiation, the actual parameter corresponding to a
    formal type or formal object parameter shall be compatible with
    respect to volatility with the corresponding formal parameter.
 
-9. A ``global_item`` of a nonvolatile function, or of a function which
+8. A ``global_item`` of a nonvolatile function, or of a function which
    is nonvolatile for internal calls, shall not denote either
    an effectively volatile object or an external state abstraction.
 
-10. A formal parameter (or result) of a nonvolatile function, or of a
+9. A formal parameter (or result) of a nonvolatile function, or of a
     function which is nonvolatile for internal calls, shall not be of
     an effectively volatile type. [For a protected function, this rule
     does not apply to the notional parameter denoting the current instance of
     the associated protected unit described in section :ref:`global-aspects`.]
 
-11. Contrary to the general |SPARK| rule that expression evaluation
+10. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object with
     the properties Async_Writers or Effective_Reads set to True is
     considered to have an effect when read. To reconcile this
@@ -500,11 +495,11 @@ be *compatible with respect to volatility* with E2 if
 
 .. centered:: **Dynamic Semantics**
 
-12. There are no dynamic semantics associated with these aspects.
+11. There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Verification Rules**
 
-13. An effectively volatile formal parameter of mode **out** shall not be read,
+12. An effectively volatile formal parameter of mode **out** shall not be read,
     even after it has been updated. [This is because the
     Async_Writers aspect of the parameter is True].
 
