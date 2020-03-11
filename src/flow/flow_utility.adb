@@ -2551,12 +2551,12 @@ package body Flow_Utility is
                   return Vars;
                end;
 
-           --  Types sometimes just appear, e.g. in statements like a FOR loop
-           --  over a type (??? those are acceptable as long as assertion that
-           --  "not Ctx.Assume_In_Expression" holds) or in expressions like
-           --  Type'Pos attribute (??? those should be rather special-cased).
+            --  Types can only appear when we traverse statements; when we
+            --  traverse expressions we special-case type identifiers depending
+            --  on the context.
 
             when Type_Kind =>
+               pragma Assert (not Ctx.Assume_In_Expression);
 
                --  These kinds of types are not allowed in SPARK (yet)
                pragma Assert (Ekind (E) not in E_Exception_Type
@@ -2816,7 +2816,35 @@ package body Flow_Utility is
          --  looking at the prefix (e.g. address) or do something strange (e.g.
          --  update).
 
-         Variables.Union (Recurse (Prefix (N)));
+         --  If the prefix denotes a type (which happens for quite a few
+         --  attributes), then we have either already dealt with its prefix
+         --  above (e.g. 'First) or this prefix is ignored below (e.g. 'Min).
+
+         if Is_Entity_Name (Prefix (N))
+           and then Is_Type (Entity (Prefix (N)))
+         then
+            pragma Assert (The_Attribute in Attribute_Alignment
+                                          | Attribute_Ceiling
+                                          | Attribute_Component_Size
+                                          | Attribute_Enum_Rep
+                                          | Attribute_Enum_Val
+                                          | Attribute_Floor
+                                          | Attribute_Image
+                                          | Attribute_Max
+                                          | Attribute_Min
+                                          | Attribute_Mod
+                                          | Attribute_Pos
+                                          | Attribute_Pred
+                                          | Attribute_Remainder
+                                          | Attribute_Rounding
+                                          | Attribute_Size
+                                          | Attribute_Succ
+                                          | Attribute_Truncation
+                                          | Attribute_Val
+                                          | Attribute_Value);
+         else
+            Variables.Union (Recurse (Prefix (N)));
+         end if;
 
          if Present (Expressions (N)) then
             declare
@@ -3384,6 +3412,14 @@ package body Flow_Utility is
                      Variables.Union
                        (Recurse (Expression (Parent (Entity (N)))));
                   else
+                     --  Within expressions identifiers are processed depending
+                     --  on the context. We can only traverse them when this
+                     --  routine is executed in a special mode for statements.
+
+                     pragma Assert
+                       (if Is_Type (Entity (N))
+                        then not Ctx.Assume_In_Expression);
+
                      Variables.Union (Do_Entity (Entity (N)));
                   end if;
                end if;
@@ -3772,7 +3808,13 @@ package body Flow_Utility is
          return OK;
       end Proc;
 
-      procedure Traverse is new Traverse_More_Proc (Process => Proc);
+      procedure Traverse is new Traverse_Proc (Process => Proc);
+      --  While finding objects referenced within an expression we ignore
+      --  actions (by instantiating Traverse_Proc and not Traverse_More_Proc),
+      --  because actions contain constructs that can't appear in expressions,
+      --  e.g. itype declarations. We ignore those constructs so that we can
+      --  have more assertions, e.g. about subtype names that can only appear
+      --  in specific contexts.
 
    --  Start of processing for Get_Variables_Internal
 
