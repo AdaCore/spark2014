@@ -446,11 +446,10 @@ package body SPARK_Definition is
 
       function GNATprove_Tasking_Profile return Boolean;
       --  Tests if configuration pragmas and restrictions corresponding to the
-      --  tasking profile supported by the GNATprove (which is in the middle
-      --  between the Ravenscar profile and GNAT Extended Ravenscar profile)
-      --  are currently in effect (set by pragma Profile or by an appropriate
-      --  set of individual Restrictions pragmas). Returns True only if all the
-      --  required settings are set.
+      --  tasking profile supported by the GNATprove are currently in effect
+      --  (set by pragma Profile or by an appropriate set of individual
+      --  Restrictions pragmas). Returns True only if all the required settings
+      --  are set.
 
       function Sequential_Elaboration return Boolean is
       --  Check if Partition_Elaboration_Policy is set to Sequential
@@ -619,7 +618,6 @@ package body SPARK_Definition is
 
             --  The following No_Dependence restrictions:
             --    No_Dependence => Ada.Asynchronous_Task_Control
-            --    No_Dependence => Ada.Calendar
             --    No_Dependence => Ada.Task_Attributes
             --  are already checked by the above loop.
 
@@ -679,7 +677,7 @@ package body SPARK_Definition is
 
             end if;
 
-            --  The following restriction was added to Ada 2005:
+            --  The following restriction was added to Ada 2012:
             --    No_Dependence => System.Multiprocessors.Dispatching_Domains.
 
             if Ada_Version >= Ada_2012 then
