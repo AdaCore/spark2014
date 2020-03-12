@@ -32,7 +32,7 @@ aida-containers-formal_vectors.adb:73:68: medium: precondition might fail, canno
 aida-containers-formal_vectors.adb:73:81: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:84:31: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container), in instantiation at hnco-test2.ads:8 (e.g. when Index = 1)
 aida-containers-formal_vectors.adb:84:50: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.adb:91:24: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container), in instantiation at hnco-test2.ads:8 (e.g. when Index = 1)
+aida-containers-formal_vectors.adb:91:24: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container), in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => 0, Hidden_Vector => ?) and Index = 1)
 aida-containers-formal_vectors.adb:91:51: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:99:24: medium: precondition might fail, cannot prove Length (Container) <= Capacity (Container) - Length (New_Item), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:99:42: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
@@ -42,7 +42,7 @@ aida-containers-formal_vectors.adb:106:42: info: range check proved (CVC4: 1 VC)
 aida-containers-formal_vectors.adb:112:24: medium: precondition might fail, cannot prove Length (Container) > 0, in instantiation at hnco-test2.ads:8 [possible explanation: subprogram at aida-containers-formal_vectors.ads:111 should mention Container in a precondition]
 aida-containers-formal_vectors.adb:112:47: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:117:52: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.adb:123:24: medium: precondition might fail, cannot prove I in First_Index (Container) .. Last_Index (Container), in instantiation at hnco-test2.ads:8 (e.g. when I = 1)
+aida-containers-formal_vectors.adb:123:24: medium: precondition might fail, cannot prove I in First_Index (Container) .. Last_Index (Container), in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => 0, Hidden_Vector => ?) and I = 1)
 aida-containers-formal_vectors.adb:123:40: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:129:54: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:134:31: medium: precondition might fail, cannot prove not Is_Empty (Container), in instantiation at hnco-test2.ads:8
