@@ -35,10 +35,10 @@ project GNAT2Why is
                Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa", "-gnatw.I");
          when "Coverage" =>
             for Switches ("Ada") use
-               Common_Switches & ("-O0", "-gnatw.I");
+               Common_Switches & ("-O0");
          when "Production" =>
             for Switches ("Ada") use
-               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatw.I");
+               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatwn");
       end case;
    end Compiler;
 
