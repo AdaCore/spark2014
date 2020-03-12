@@ -376,6 +376,11 @@ package SPARK_Atree.Entities is
 
    function Modular_Size (Typ : Entity_Id) return Uint with
      Pre => Is_Modular_Integer_Type (Typ);
+   --  Out of 8, 16, 32 and 64, return the smallest X such that 2 ** X is
+   --  greater or equal to the modulus of the type. This is basically used to
+   --  determine the bitvector used for proof. Note that this can be different
+   --  from the Ada RM Size of the type, which can be changed via a Size
+   --  declaration.
 
    function Modulus (Typ : Entity_Id) return Uint with
      Pre => Is_Modular_Integer_Type (Typ);
