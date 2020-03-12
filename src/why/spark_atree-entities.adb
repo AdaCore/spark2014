@@ -624,7 +624,21 @@ package body SPARK_Atree.Entities is
    -- Modular_Size --
    ------------------
 
-   function Modular_Size (Typ : Entity_Id) return Uint renames Einfo.Esize;
+   function Modular_Size (Typ : Entity_Id) return Uint is
+      M : constant Uint := Modulus (Typ);
+   begin
+      if M <= UI_Expon (Uint_2, Uint_8) then
+         return Uint_8;
+      elsif M <= UI_Expon (Uint_2, Uint_16) then
+         return Uint_16;
+      elsif M <= UI_Expon (Uint_2, Uint_32) then
+         return Uint_32;
+      elsif M <= UI_Expon (Uint_2, Uint_64) then
+         return Uint_64;
+      else
+         raise Program_Error;
+      end if;
+   end Modular_Size;
 
    -------------
    -- Modulus --

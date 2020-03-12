@@ -1,0 +1,3 @@
+test.adb:25:07: info: initialization of "Temp_Value" proved
+test.adb:28:27: info: unrolling loop
+test.ads:4:19: info: initialization of "Index" proved
