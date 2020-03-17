@@ -8,7 +8,7 @@ is
 
    procedure P3 (Par : in out Vol_Rec_T) is
    begin
-      Par.X := Par.X + 1; -- illegal RM 7.1.3(12)
+      Par.X := Par.X + 1; -- illegal RM 7.1.3(10)
    end P3;
 
    procedure P4 (X : in out Integer) is

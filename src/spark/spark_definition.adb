@@ -3183,7 +3183,7 @@ package body SPARK_Definition is
          then
             --  An effectively volatile object may act as an actual when the
             --  corresponding formal is of a non-scalar effectively volatile
-            --  type (SPARK RM 7.1.3(11)).
+            --  type (SPARK RM 7.1.3(10)).
 
             if not Is_Scalar_Type (Etype (Formal))
               and then Is_Effectively_Volatile (Etype (Formal))
@@ -3191,7 +3191,7 @@ package body SPARK_Definition is
                null;
 
             --  An effectively volatile object may act as an actual in a call
-            --  to an instance of Unchecked_Conversion. (SPARK RM 7.1.3(11)).
+            --  to an instance of Unchecked_Conversion. (SPARK RM 7.1.3(10)).
 
             elsif Is_Unchecked_Conversion_Instance (E) then
                null;
@@ -3205,7 +3205,7 @@ package body SPARK_Definition is
                    when others => "volatile object")
                   & " as actual",
                   N             => Actual,
-                  SRM_Reference => "SPARK RM 7.1.3(11)");
+                  SRM_Reference => "SPARK RM 7.1.3(10)");
             end if;
          end if;
 

@@ -6,7 +6,7 @@ is
 
    --  In particular, this test illustrates the reading and writing
    --  of volatile composite objects, which are introduced in SPARK 14.0.2+
-   --  as a result of adding the fifth bullet below to RM rule 7.1.3(12)
+   --  as a result of adding the fifth bullet below to RM rule 7.1.3(10)
 
    --  TU: 12. Contrary to the general |SPARK| rule that expression evaluation
    --  cannot have side effects, a read of an effectively volatile object with

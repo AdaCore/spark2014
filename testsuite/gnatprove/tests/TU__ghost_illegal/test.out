@@ -1,5 +1,5 @@
 ghost_illegal_2.adb:16:14: ghost entity cannot appear in this context
-ghost_illegal_2.adb:31:14: volatile object cannot appear in this context (SPARK RM 7.1.3(12))
+ghost_illegal_2.adb:31:14: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
 ghost_illegal_2.adb:50:10: ghost entity cannot appear in this context
 ghost_illegal_2.ads:14:04: ghost object "Vol_Ghost" cannot be volatile
 ghost_illegal_2.ads:31:32: ghost entity cannot appear in this context
