@@ -1,1 +1,0 @@
-ALL XFAIL crash due to an empty record aggregate (SA17-076)
