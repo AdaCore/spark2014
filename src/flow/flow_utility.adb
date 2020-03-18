@@ -2833,6 +2833,7 @@ package body Flow_Utility is
                                           | Attribute_Max
                                           | Attribute_Min
                                           | Attribute_Mod
+                                          | Attribute_Object_Size
                                           | Attribute_Pos
                                           | Attribute_Pred
                                           | Attribute_Remainder
