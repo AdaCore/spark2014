@@ -23,6 +23,8 @@ a-cfinve.ads:733:38: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cfinve.ads:766:14: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:54
 a-cfinve.ads:766:14: info: precondition proved (CVC4: 1 VC), in instantiation at names-data.ads:74
 a-cfinve.ads:770:35: info: range check proved (CVC4: 1 VC), in instantiation at names-data.ads:54
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:102, in instantiation at names-data.ads:54
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:102, in instantiation at names-data.ads:74
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at names-data.ads:54
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at names-data.ads:74
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at names-data.ads:54

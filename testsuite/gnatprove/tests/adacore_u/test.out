@@ -189,6 +189,7 @@ use_stack.adb:10:09: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: assertion proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:32: info: precondition proved (CVC4: 1 VC)
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at ring_buffer.ads:8
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
 a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
@@ -433,6 +434,7 @@ use_file_system.adb:11:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:12:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:14:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:15:05: medium: precondition might fail
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at use_vectors.ads:9
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
 a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9

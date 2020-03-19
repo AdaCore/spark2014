@@ -28,6 +28,7 @@ with Errout;             use Errout;
 with Namet;              use Namet;
 with Snames;             use Snames;
 with SPARK_Atree;        use SPARK_Atree;
+with SPARK_Util.Types;   use SPARK_Util.Types;
 with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Modules;  use Why.Atree.Modules;
@@ -41,6 +42,7 @@ with Why.Types;          use Why.Types;
 
 package body Why.Gen.Hardcoded is
    package BIN renames Big_Integers_Names; use BIN;
+   package BRN renames Big_Reals_Names;    use BRN;
 
    -------------------------------------
    -- Emit_Hardcoded_Type_Declaration --
@@ -59,6 +61,7 @@ package body Why.Gen.Hardcoded is
 
       case Get_Hardcoded_Unit (E) is
          when Big_Integers => Alias := EW_Int_Type;
+         when Big_Reals    => Alias := EW_Real_Type;
       end case;
 
       Emit (P,
@@ -166,29 +169,10 @@ package body Why.Gen.Hardcoded is
 
       elsif Is_From_Hardcoded_Unit (Subp, Big_Integers) then
 
-         if Args'Length = 3 and then Name_String = BIN.In_Range then
-
-            T := New_And_Expr
-                   (Left  => New_Call
-                              (Ada_Node => Ada_Node,
-                               Domain   => Domain,
-                               Name     => Int_Infix_Le,
-                               Args     => (1 => Args (2),
-                                            2 => Args (1)),
-                               Typ      => Type_Of_Node (Etype (Subp))),
-                    Right => New_Call
-                               (Ada_Node => Ada_Node,
-                                Domain   => Domain,
-                                Name     => Int_Infix_Le,
-                                Args     => (1 => Args (1),
-                                             2 => Args (3)),
-                                Typ      => Type_Of_Node (Etype (Subp))),
-                    Domain => Domain);
-
          --  This block transforms the comparison operators, binary operators,
          --  Min, Max and Greatest_Common_Divisor.
 
-         elsif Args'Length = 2 then
+         if Args'Length = 2 then
 
             declare
                Base      : constant W_Type_Id :=
@@ -353,6 +337,216 @@ package body Why.Gen.Hardcoded is
             raise Program_Error;
          end if;
 
+      --  Transformation of Big_Reals
+
+      elsif Is_From_Hardcoded_Unit (Subp, Big_Reals) then
+
+         --  This block transforms the comparison operators, binary operators,
+         --  Min, and Max.
+
+         if Args'Length = 2 then
+
+            declare
+               Base      : constant W_Type_Id :=
+                 Type_Of_Node (Etype (Subp));
+               Left_Rep  : W_Expr_Id := Args (1);
+               Right_Rep : W_Expr_Id := Args (2);
+               Name : W_Identifier_Id;
+            begin
+
+               --  The following block assigns a value to Name which will be
+               --  called in New_Call afterwards.
+
+               if Name_String = BRN.Min then
+                  Name := M_Real_Minmax.Min;
+
+               elsif Name_String = BIN.Max then
+                  Name := M_Real_Minmax.Max;
+
+               else
+                  case Chars (Subp) is
+                     when Name_Op_Add      =>
+                        Name := Real_Infix_Add;
+
+                     when Name_Op_Subtract =>
+                        Name := Real_Infix_Subtr;
+
+                     when Name_Op_Multiply =>
+                        Name := Real_Infix_Mult;
+
+                     when Name_Op_Divide   =>
+                        --  If the division is done on big integers, we need to
+                        --  insert a conversion to real on both operands.
+
+                        if Is_From_Hardcoded_Unit
+                          (Root_Retysp (Etype (First_Formal (Subp))),
+                           Big_Integers)
+                        then
+                           Left_Rep  := New_Call
+                             (Domain   => Domain,
+                              Ada_Node => Ada_Node,
+                              Name     => M_Real_From_Int.From_Int,
+                              Args     => (1 => Left_Rep));
+                           Right_Rep := New_Call
+                             (Domain   => Domain,
+                              Ada_Node => Ada_Node,
+                              Name     => M_Real_From_Int.From_Int,
+                              Args     => (1 => Right_Rep));
+                        end if;
+
+                        Name := Real_Infix_Div;
+
+                     when Name_Op_Expon    =>
+                        --  For exponentiation, a mathematical integer is
+                        --  expected for the second parameter.
+
+                        Right_Rep := Insert_Simple_Conversion
+                          (Ada_Node => Ada_Node,
+                           Domain   => Domain,
+                           Expr     => Right_Rep,
+                           To       => EW_Int_Type);
+                        Name := M_Real_Power.Power;
+
+                     when Name_Op_Eq       =>
+                        Name := (if Domain = EW_Term
+                                 then M_Real.Bool_Eq
+                                 elsif Domain = EW_Pred
+                                 then Why_Eq
+                                 else Real_Infix_Eq);
+
+                     when Name_Op_Lt       =>
+                        Name := (if Domain = EW_Term
+                                 then M_Real.Bool_Lt
+                                 else Real_Infix_Lt);
+
+                     when Name_Op_Le      =>
+                        Name := (if Domain = EW_Term
+                                 then M_Real.Bool_Le
+                                 else Real_Infix_Le);
+
+                     when Name_Op_Gt       =>
+                        Name := (if Domain = EW_Term
+                                 then M_Real.Bool_Gt
+                                 else Real_Infix_Gt);
+
+                     when Name_Op_Ge       =>
+                        Name := (if Domain = EW_Term
+                                 then M_Real.Bool_Ge
+                                 else Real_Infix_Ge);
+
+                     when others           =>
+                        raise Program_Error;
+                  end case;
+               end if;
+
+               --  Divide needs a division check
+
+               if Domain = EW_Prog
+                 and then Chars (Subp) = Name_Op_Divide
+               then
+                  pragma Assert (Present (Ada_Node));
+
+                  T :=
+                    New_VC_Call
+                      (Ada_Node => Ada_Node,
+                       Domain   => Domain,
+                       Name     => Name,
+                       Progs    => (1 => Left_Rep, 2 => Right_Rep),
+                       Reason   => VC_Division_Check,
+                       Typ      => Base);
+               else
+                  T := New_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => Name,
+                     Args     => (1 => Left_Rep,
+                                  2 => Right_Rep),
+                     Typ      => Base);
+               end if;
+            end;
+
+         --  This block transforms the unary operators and Is_Valid
+
+         elsif Args'Length = 1 then
+
+            --  Is_Valid is handled as the attribute 'Valid
+
+            if Name_String = BRN.Is_Valid and then Args'Length = 1 then
+               pragma Assert (Args'Length = 1);
+               Error_Msg_F ("?function Is_Valid is assumed to return True",
+                            Ada_Node);
+
+               if Domain = EW_Prog then
+                  T := +Sequence (Ada_Node => Ada_Node,
+                                  Left  => New_Ignore (Prog => +Args (1)),
+                                  Right => New_Literal (Value => EW_True));
+               else
+                  T := Why.Conversions."+"(New_Literal (Value  => EW_True,
+                                                        Domain => Domain));
+               end if;
+
+            elsif Chars (Subp) = Name_Op_Add then
+               T := Args (1);
+            else
+               declare
+                  Base     : constant W_Type_Id :=
+                    Type_Of_Node (Etype (Subp));
+                  Name : W_Identifier_Id;
+               begin
+                  case Chars (Subp) is
+                     when Name_Op_Subtract => Name := Real_Unary_Minus;
+                     when Name_Op_Abs      => Name := M_Real_Abs.Abs_Id;
+                     when others           => raise Program_Error;
+                  end case;
+
+                  T := New_Call (Domain   => Domain,
+                                 Ada_Node => Ada_Node,
+                                 Name     => Name,
+                                 Args     => (1 => Args (1)),
+                                 Typ      => Base);
+               end;
+            end if;
+
+         --  Otherwise, we are converting from a floting point or fixed
+         --  point type.
+
+         else
+            raise Program_Error;
+         end if;
+      elsif Is_From_Hardcoded_Generic_Unit (Subp, Big_Reals)
+        and then Name_String = BRN.Generic_To_Big_Real
+      then
+         pragma Assert (Args'Length = 1);
+
+         declare
+            From_Ty : constant Entity_Id :=
+              Retysp (Etype (First_Formal (Subp)));
+         begin
+            if Is_Fixed_Point_Type (From_Ty) then
+               T := New_Call
+                 (Domain   => Domain,
+                  Ada_Node => Ada_Node,
+                  Name     => Real_Infix_Mult,
+                  Args     =>
+                    (1 => New_Call
+                         (Domain   => Domain,
+                          Ada_Node => Ada_Node,
+                          Name     => M_Real_From_Int.From_Int,
+                          Args     => (1 => Args (1))),
+                     2 => New_Real_Constant
+                       (Ada_Node => Ada_Node,
+                        Value    =>  Small_Value (From_Ty))),
+                  Typ      => Type_Of_Node (Etype (Subp)));
+            else
+               pragma Assert (Is_Floating_Point_Type (From_Ty));
+               T := New_Call
+                 (Domain   => Domain,
+                  Ada_Node => Ada_Node,
+                  Name     => MF_Floats (Base_Why_Type (From_Ty)).To_Real,
+                  Args     => (1 => Args (1)),
+                  Typ      => Type_Of_Node (Etype (Subp)));
+            end if;
+         end;
       else
          raise Program_Error;
       end if;

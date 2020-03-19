@@ -74,8 +74,7 @@ package body SPARK_Util.Hardcoded is
          return False;
       end if;
 
-      --  Then, we check the name of the generic parent. The case statement
-      --  is meant to be extended in the future.
+      --  Then, we check the name of the generic parent
 
       case Unit is
          when Big_Integers =>
@@ -85,6 +84,13 @@ package body SPARK_Util.Hardcoded is
                            (Parent
                               (Scope (E))))) in "signed_conversions"
                                               | "unsigned_conversions";
+         when Big_Reals =>
+            return Get_Name_String
+                     (Chars
+                        (Generic_Parent
+                           (Parent
+                              (Scope (E))))) in "fixed_conversions"
+                                              | "float_conversions";
       end case;
    end Is_From_Hardcoded_Generic_Unit;
 
@@ -104,11 +110,23 @@ package body SPARK_Util.Hardcoded is
       --  The following case statement is meant to be extended in the future
 
       case Unit is
-         when Big_Integers =>
+         when Big_Integers | Big_Reals =>
 
-            if Get_Name_String (Chars (S_Ptr)) /= "big_integers" then
-               return False;
+            --  First check for the name of the big number unit
+
+            if Unit = Big_Integers then
+               if Get_Name_String (Chars (S_Ptr)) /= "big_integers" then
+                  return False;
+               end if;
+            else
+               pragma Assert (Unit = Big_Reals);
+               if Get_Name_String (Chars (S_Ptr)) /= "big_reals" then
+                  return False;
+               end if;
             end if;
+
+            --  Then check that we are in the Big_Numbers unit of the
+            --  standard library.
 
             S_Ptr := Scope (S_Ptr);
 
@@ -139,6 +157,7 @@ package body SPARK_Util.Hardcoded is
 
    function Is_Hardcoded_Entity (E : Entity_Id) return Boolean is
       package BIN renames Big_Integers_Names; use BIN;
+      package BRN renames Big_Reals_Names; use BRN;
    begin
 
       if Is_From_Hardcoded_Unit (E, Big_Integers) then
@@ -155,12 +174,24 @@ package body SPARK_Util.Hardcoded is
                                               | BIN.To_Big_Integer
                                               | BIN.Is_Valid
                                               | BIN.To_Integer
-                                              | BIN.In_Range
                                               | BIN.Gcd);
+      elsif Is_From_Hardcoded_Unit (E, Big_Reals) then
+         return (Chars (E) in Name_Op_Abs
+                            | Name_Op_Eq
+                            | Name_Op_Lt .. Name_Op_Subtract
+                            | Name_Op_Multiply .. Name_Op_Expon
+                   or else
+                 Get_Name_String (Chars (E)) in BRN.Big_Real
+                                              | BRN.Min
+                                              | BRN.Max
+                                              | BRN.Is_Valid);
 
       elsif Is_From_Hardcoded_Generic_Unit (E, Big_Integers) then
          return Get_Name_String (Chars (E)) in BIN.Generic_To_Big_Integer
                                              | BIN.Generic_From_Big_Integer;
+
+      elsif Is_From_Hardcoded_Generic_Unit (E, Big_Reals) then
+         return Get_Name_String (Chars (E)) in BRN.Generic_To_Big_Real;
       end if;
 
       return False;

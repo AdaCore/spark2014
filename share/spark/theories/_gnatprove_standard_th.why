@@ -56,6 +56,49 @@ theory Integer
 
 end
 
+theory Real
+  use        real.RealInfix
+  use        bool.Bool
+
+  function bool_eq real real : bool
+  function bool_ne real real : bool
+  function bool_lt real real : bool
+  function bool_le real real : bool
+  function bool_gt real real : bool
+  function bool_ge real real : bool
+
+  axiom bool_eq_axiom:
+    forall x:real.
+    forall y:real.
+      bool_eq x y = True <-> x = y
+
+  axiom bool_ne_axiom:
+    forall x:real.
+    forall y:real.
+      bool_ne x y = True <-> x <> y
+
+  axiom bool_lt_axiom:
+    forall x:real.
+    forall y:real.
+      bool_lt x y = True <-> x <. y
+
+  axiom bool_int__le_axiom:
+    forall x:real.
+    forall y:real.
+      bool_le x y = True <-> x <=. y
+
+  axiom bool_gt_axiom:
+    forall x:real.
+    forall y:real.
+        bool_gt x y = True <-> x >. y
+
+  axiom bool_ge_axiom:
+    forall x:real.
+    forall y:real.
+        bool_ge x y = True <-> x >=. y
+
+end
+
 theory Floating_Func
   use        bool.Bool
 

@@ -4838,6 +4838,17 @@ package body SPARK_Definition is
             Mark_Violation ("controlled types", E);
          end if;
 
+         --  Hardcoded entities are private types whose definition should not
+         --  be translated in SPARK. We add the entity of their full views to
+         --  the set of marked entities so that they will not be considered for
+         --  translation later.
+
+         if Is_Hardcoded_Entity (E) then
+            pragma Assert (Present (Full_View (E))
+                           and then not Entity_Marked (Full_View (E)));
+            Entity_Set.Insert (Full_View (E));
+         end if;
+
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
          --  of a full view points to the partial view. We don't issue a
@@ -7352,6 +7363,18 @@ package body SPARK_Definition is
 
       if In_Internal_Unit (N)
         and then not Is_Internal_Unit (Main_Unit)
+
+        --  We still mark expression functions declared in the specification
+        --  of internal units, so that GNATprove can use their definition.
+
+        and then not
+          (Ekind (E) = E_Function
+           and then Nkind
+             (Original_Node (Parent (Subprogram_Specification (E)))) =
+               N_Expression_Function
+           and then Ekind (Scope (E)) = E_Package
+           and then In_Visible_Declarations
+             (Parent (Subprogram_Specification (E))))
       then
          return;
 

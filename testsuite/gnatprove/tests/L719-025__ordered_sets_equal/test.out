@@ -20,6 +20,7 @@ a-cforse.ads:1416:47: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cforse.ads:1431:40: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:10
 a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at p.ads:10
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at p.ads:10
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:107, in instantiation at p.ads:10
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.ads:10
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.ads:10
 a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.ads:10

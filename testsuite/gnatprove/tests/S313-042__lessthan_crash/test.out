@@ -5,6 +5,7 @@ a-cforse.ads:1414:06: "moth.config.read_only_conf" is referenced in Post but mis
 a-cforse.ads:1414:06: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:124
 a-cforse.ads:1429:06: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
 a-cforse.ads:1429:06: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:124
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:107, in instantiation at moth.ads:124
 moth-config.ads:37:08: info: data dependencies proved
 moth-config.ads:45:07: info: data dependencies proved
 moth-mailbox.adb:192:07: info: initialization of "status" proved

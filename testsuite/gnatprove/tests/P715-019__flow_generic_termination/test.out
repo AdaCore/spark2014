@@ -5,6 +5,8 @@ a-cfhase.ads:1237:06: "S" is referenced in Post but missing from the Global, in 
 a-cofuse.ads:73:06: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
 a-cofuse.ads:120:06: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
 a-cofuse.ads:159:06: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
+a-cofuve.ads:95:13: info: subprogram "First" will terminate, in instantiation at a-cfhase.ads:102, in instantiation at term.ads:15
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:102, in instantiation at term.ads:15
 term.ads:7:13: warning: subprogram "Eq" might not terminate
 term.ads:13:13: info: subprogram "Hash" will terminate
 term.ads:13:19: warning: unused variable "X"

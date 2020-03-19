@@ -62,6 +62,11 @@ package body Why.Atree.Modules is
    procedure Init_Int_Gcd_Module;
    procedure Init_Labels;
    procedure Init_Main_Module;
+   procedure Init_Real_Module;
+   procedure Init_Real_Abs_Module;
+   procedure Init_Real_From_Int_Module;
+   procedure Init_Real_Minmax_Module;
+   procedure Init_Real_Power_Module;
 
    procedure Insert_Why_Symbols (E : Entity_Id);
    --  For the type entity E, add all the Why symbols which can be used for
@@ -353,6 +358,11 @@ package body Why.Atree.Modules is
       Init_Floating_Module;
       Init_Floating_Conv_Module;
       Init_Boolean_Module;
+      Init_Real_Module;
+      Init_Real_From_Int_Module;
+      Init_Real_Power_Module;
+      Init_Real_Abs_Module;
+      Init_Real_Minmax_Module;
       Init_Labels;
       --  modules of "ada__model" file
 
@@ -554,6 +564,10 @@ package body Why.Atree.Modules is
         New_Identifier (Domain => EW_Term,
                         Symb   => NID ("-"),
                         Typ    => M_Main.Fixed_Type);
+      Real_Unary_Minus :=
+        New_Identifier (Domain => EW_Term,
+                        Symb   => NID ("-."),
+                        Typ    => EW_Real_Type);
 
       Void := New_Identifier (Domain => EW_Term,
                               Symb   => NID ("()"),
@@ -632,6 +646,61 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symb   => NID ("*"),
                         Typ    => M_Main.Fixed_Type,
+                        Infix  => True);
+
+      Real_Infix_Add :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("+."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Subtr :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("-."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Mult :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("*."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Div :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("/."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Le :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("<=."),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Real_Infix_Lt :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("<."),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Real_Infix_Ge :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID (">=."),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Real_Infix_Gt :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID (">."),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Real_Infix_Eq :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("=."),
+                        Typ    => EW_Bool_Type,
                         Infix  => True);
 
       --  String image module
@@ -1689,6 +1758,11 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symb   => NID ("range_check_"),
                            Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).To_Real :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symb   => NID ("to_real"),
+                           Typ    => EW_Int_Type);
       end loop;
 
       EW_Float_32_Type := M_Floats (Float32).T;
@@ -1789,6 +1863,23 @@ package body Why.Atree.Modules is
                         Typ    => EW_Int_Type);
    end Init_Int_Minmax_Module;
 
+   ---------------------------
+   -- Init_Int_Power_Module --
+   ---------------------------
+
+   procedure Init_Int_Power_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Int_Power");
+   begin
+      M_Int_Power.Module := M;
+      M_Int_Power.Power :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("power"),
+                        Typ    => EW_Int_Type);
+   end Init_Int_Power_Module;
+
    -------------------------
    -- Init_Integer_Module --
    -------------------------
@@ -1834,23 +1925,6 @@ package body Why.Atree.Modules is
                         Symb   => NID ("length"),
                         Typ    => EW_Int_Type);
    end Init_Integer_Module;
-
-   ---------------------------
-   -- Init_Int_Power_Module --
-   ---------------------------
-
-   procedure Init_Int_Power_Module is
-      M : constant W_Module_Id :=
-        New_Module (File => Gnatprove_Standard_File,
-                    Name => "Int_Power");
-   begin
-      M_Int_Power.Module := M;
-      M_Int_Power.Power :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symb   => NID ("power"),
-                        Typ    => EW_Int_Type);
-   end Init_Int_Power_Module;
 
    -----------------
    -- Init_Labels --
@@ -1924,6 +1998,122 @@ package body Why.Atree.Modules is
                         Symb   => NID ("no__return"),
                         Typ    => EW_Bool_Type);
    end Init_Main_Module;
+
+   --------------------------
+   -- Init_Real_Abs_Module --
+   --------------------------
+
+   procedure Init_Real_Abs_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Real_Abs");
+   begin
+      M_Real_Abs.Module := M;
+      M_Real_Abs.Abs_Id :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("abs"),
+                        Typ    => EW_Real_Type);
+   end Init_Real_Abs_Module;
+
+   -------------------------------
+   -- Init_Real_From_Int_Module --
+   -------------------------------
+
+   procedure Init_Real_From_Int_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Real_FromInt");
+
+   begin
+      M_Real_From_Int.Module := M;
+      M_Real_From_Int.From_Int :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("from_int"),
+                        Typ    => EW_Real_Type);
+   end Init_Real_From_Int_Module;
+
+   -----------------------------
+   -- Init_Real_Minmax_Module --
+   -----------------------------
+
+   procedure Init_Real_Minmax_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Real_Minmax");
+
+   begin
+      M_Real_Minmax.Module := M;
+      M_Real_Minmax.Max :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("max"),
+                        Typ    => EW_Real_Type);
+      M_Real_Minmax.Min :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("min"),
+                        Typ    => EW_Real_Type);
+   end Init_Real_Minmax_Module;
+
+   ----------------------
+   -- Init_Real_Module --
+   ----------------------
+
+   procedure Init_Real_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File, Name => "Real");
+   begin
+      M_Real.Module := M;
+      M_Real.Bool_Eq :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_eq"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Ne :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_ne"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Le :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_le"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Lt :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_lt"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Ge :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_ge"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Gt :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_gt"),
+                        Typ    => EW_Bool_Type);
+   end Init_Real_Module;
+
+   ----------------------------
+   -- Init_Real_Power_Module --
+   ----------------------------
+
+   procedure Init_Real_Power_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Real_Power");
+   begin
+      M_Real_Power.Module := M;
+      M_Real_Power.Power :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("power"),
+                        Typ    => EW_Real_Type);
+   end Init_Real_Power_Module;
 
    -------------------------
    -- Insert_Extra_Module --
