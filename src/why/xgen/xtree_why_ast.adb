@@ -112,10 +112,13 @@ package body Xtree_Why_AST is
    -- Print Ada conversions to Json --
    -----------------------------------
 
-   procedure Print_Ada_Enum_To_Json
-     (O    : in out Output_Record;
+   generic
+      type T is (<>);
       Name : Wide_String;
-      Vars : Variants);
+   procedure Print_Ada_Enum_To_Json (O : in out Output_Record);
+   --  This procedure, when instantiated, will print to O a serialization
+   --  routine for an enumeration type T called Name. It assumes that
+   --  individual enumeration literals are of the form "EW_Literal_Name".
 
    procedure Print_Ada_Why_Sinfo_Types_To_Json (O : in out Output_Record);
 
@@ -134,11 +137,28 @@ package body Xtree_Why_AST is
    -- Print_Ada_Enum_To_Json --
    ----------------------------
 
-   procedure Print_Ada_Enum_To_Json
-     (O    : in out Output_Record;
-      Name : Wide_String;
-      Vars : Variants)
-   is
+   procedure Print_Ada_Enum_To_Json (O : in out Output_Record) is
+
+      function EW_Mixed_Image (Val : T) return Wide_String;
+      --  Given an enumeration value Val of the form "EW_Enum_Val" it returns
+      --  its wide string representation with the "EW" prefix in upper case and
+      --  the rest of the string in mixed case, so exactly as it would appear
+      --  in gnat2why code.
+
+      --------------------
+      -- EW_Mixed_Image --
+      --------------------
+
+      function EW_Mixed_Image (Val : T) return Wide_String is
+         Result : String := Val'Img;
+      begin
+         pragma Assert (Result (1 .. 3) = "EW_");
+         To_Mixed (Result (4 .. Result'Last));
+         return To_Wide_String (Result);
+      end EW_Mixed_Image;
+
+   --  Start of processing for Print_Ada_Enum_To_Json
+
    begin
       PL (O, "function " & Name & "_To_Json (Arg : " & Name & ")");
       PL (O, "   return JSON_Value;");
@@ -150,11 +170,10 @@ package body Xtree_Why_AST is
          PL (O, "is (Create (Integer (case Arg is");
          begin
             Relative_Indent (O, 3);
-            for I in Vars'Range loop
-               P (O, "when " & To_Wide_String (Vars (I)) & " =>");
-               --  P (O, """" & To_Wide_String (Vars (I)) & """");
-               P (O, To_Wide_String (Integer'Image (I)));
-               if I /= Vars'Last then
+            for E in T'Range loop
+               P (O, "when " & EW_Mixed_Image (E) & " =>");
+               P (O, Integer'Wide_Image (E'Enum_Rep));
+               if E /= T'Last then
                   PL (O, ",");
                end if;
             end loop;
@@ -171,123 +190,44 @@ package body Xtree_Why_AST is
    ---------------------------------------
 
    procedure Print_Ada_Why_Sinfo_Types_To_Json (O : in out Output_Record) is
+      procedure Print_EW_Domain is new
+        Print_Ada_Enum_To_Json (EW_Domain,      "EW_Domain");
 
-      function To_Unbounded_Mixed_Case (S : String) return Unbounded_String;
-      --  ??? what does this function do?
+      procedure Print_EW_Type is new
+        Print_Ada_Enum_To_Json (EW_Type,        "EW_Type");
 
-      -----------------------------
-      -- To_Unbounded_Mixed_Case --
-      -----------------------------
+      procedure Print_EW_Literal is new
+        Print_Ada_Enum_To_Json (EW_Literal,     "EW_Literal");
 
-      function To_Unbounded_Mixed_Case (S : String) return Unbounded_String is
-         S1 : String := S;
-      begin
-         To_Mixed (S1);
-         S1 (2) := To_Upper (S1 (2));
-         return To_Unbounded_String (S1);
-      end To_Unbounded_Mixed_Case;
+      procedure Print_EW_Theory_Type is new
+        Print_Ada_Enum_To_Json (EW_Theory_Type, "EW_Theory_Type");
 
-   --  Start of processing for Print_Ada_Why_Sinfo_Types_To_Json
+      procedure Print_EW_Clone_Type is new
+        Print_Ada_Enum_To_Json (EW_Clone_Type,  "EW_Clone_Type");
+
+      procedure Print_EW_Subst_Type is new
+        Print_Ada_Enum_To_Json (EW_Subst_Type,  "EW_Subst_Type");
+
+      procedure Print_EW_Connector is new
+        Print_Ada_Enum_To_Json (EW_Connector,   "EW_Connector");
+
+      procedure Print_EW_Assert_Kind is new
+        Print_Ada_Enum_To_Json (EW_Assert_Kind, "EW_Assert_Kind");
 
    begin
       PL (O, "--  Why.Sinfo");
 
       NL (O);
-      declare
-         EW_Domain_Variants : Variants
-           (EW_Domain'Pos (EW_Domain'First) ..
-            EW_Domain'Pos (EW_Domain'Last));
-      begin
-         for I in EW_Domain_Variants'Range loop
-            EW_Domain_Variants (I) := To_Unbounded_Mixed_Case
-              (EW_Domain'Image (EW_Domain'Val (I)));
-         end loop;
-         Print_Ada_Enum_To_Json (O, "EW_Domain", EW_Domain_Variants);
-      end;
 
-      declare
-         EW_Type_Variants : Variants
-           (EW_Type'Pos (EW_Type'First) ..
-            EW_Type'Pos (EW_Type'Last));
-      begin
-         for I in EW_Type_Variants'Range loop
-            EW_Type_Variants (I) := To_Unbounded_Mixed_Case
-              (EW_Type'Image (EW_Type'Val (I)));
-         end loop;
-         Print_Ada_Enum_To_Json (O, "EW_Type", EW_Type_Variants);
-      end;
+      Print_EW_Domain      (O);
+      Print_EW_Type        (O);
+      Print_EW_Literal     (O);
+      Print_EW_Theory_Type (O);
+      Print_EW_Clone_Type  (O);
+      Print_EW_Subst_Type  (O);
+      Print_EW_Connector   (O);
+      Print_EW_Assert_Kind (O);
 
-      declare
-         EW_Literal_Variants : Variants
-           (EW_Literal'Pos (EW_Literal'First) ..
-            EW_Literal'Pos (EW_Literal'Last));
-      begin
-         for I in EW_Literal_Variants'Range loop
-            EW_Literal_Variants (I) := To_Unbounded_Mixed_Case
-              (EW_Literal'Image (EW_Literal'Val (I)));
-         end loop;
-         Print_Ada_Enum_To_Json (O, "EW_Literal", EW_Literal_Variants);
-      end;
-
-      declare
-         EW_Theory_Type_Variants : Variants
-           (EW_Theory_Type'Pos (EW_Theory_Type'First) ..
-            EW_Theory_Type'Pos (EW_Theory_Type'Last));
-      begin
-         for I in EW_Theory_Type_Variants'Range loop
-            EW_Theory_Type_Variants (I) := To_Unbounded_Mixed_Case
-              (EW_Theory_Type'Image (EW_Theory_Type'Val (I)));
-         end loop;
-         Print_Ada_Enum_To_Json (O, "EW_Theory_Type", EW_Theory_Type_Variants);
-      end;
-
-      declare
-         EW_Clone_Type_Variants : Variants
-           (EW_Clone_Type'Pos (EW_Clone_Type'First) ..
-            EW_Clone_Type'Pos (EW_Clone_Type'Last));
-      begin
-         for I in EW_Clone_Type_Variants'Range loop
-            EW_Clone_Type_Variants (I) := To_Unbounded_Mixed_Case
-              (EW_Clone_Type'Image (EW_Clone_Type'Val (I)));
-         end loop;
-         Print_Ada_Enum_To_Json (O, "EW_Clone_Type", EW_Clone_Type_Variants);
-      end;
-
-      declare
-         EW_Subst_Type_Variants : Variants
-           (EW_Subst_Type'Pos (EW_Subst_Type'First) ..
-            EW_Subst_Type'Pos (EW_Subst_Type'Last));
-      begin
-         for I in EW_Subst_Type_Variants'Range loop
-            EW_Subst_Type_Variants (I) := To_Unbounded_Mixed_Case
-              (EW_Subst_Type'Image (EW_Subst_Type'Val (I)));
-         end loop;
-         Print_Ada_Enum_To_Json (O, "EW_Subst_Type", EW_Subst_Type_Variants);
-      end;
-
-      declare
-         EW_Connector_Variants : Variants
-           (EW_Connector'Pos (EW_Connector'First) ..
-            EW_Connector'Pos (EW_Connector'Last));
-      begin
-         for I in EW_Connector_Variants'Range loop
-            EW_Connector_Variants (I) := To_Unbounded_Mixed_Case
-              (EW_Connector'Image (EW_Connector'Val (I)));
-         end loop;
-         Print_Ada_Enum_To_Json (O, "EW_Connector", EW_Connector_Variants);
-      end;
-
-      declare
-         EW_Assert_Kind_Variants : Variants
-           (EW_Assert_Kind'Pos (EW_Assert_Kind'First) ..
-            EW_Assert_Kind'Pos (EW_Assert_Kind'Last));
-      begin
-         for I in EW_Assert_Kind_Variants'Range loop
-            EW_Assert_Kind_Variants (I) := To_Unbounded_Mixed_Case
-              (EW_Assert_Kind'Image (EW_Assert_Kind'Val (I)));
-         end loop;
-         Print_Ada_Enum_To_Json (O, "EW_Assert_Kind", EW_Assert_Kind_Variants);
-      end;
    end Print_Ada_Why_Sinfo_Types_To_Json;
 
    --------------------------------
@@ -1078,20 +1018,16 @@ package body Xtree_Why_AST is
       Classes.Iterate (Print_Kind_Class_Coercion'Access);
    end Print_OCaml_Coercions;
 
-   procedure Print_OCaml_Enum_From_Json
-     (O    : in out Output_Record;
+   generic
+      type T is (<>);
       Name : String;
-      Vars : Variants);
+   procedure Print_OCaml_Enum_From_Json (O : in out Output_Record);
 
    --------------------------------
    -- Print_OCaml_Enum_From_Json --
    --------------------------------
 
-   procedure Print_OCaml_Enum_From_Json
-     (O    : in out Output_Record;
-      Name : String;
-      Vars : Variants)
-   is
+   procedure Print_OCaml_Enum_From_Json (O : in out Output_Record) is
       Func_Name : constant Wide_String :=
         OCaml_Lower_Identifier (Strip_Prefix (Name) & "_from_json");
       Type_Name : constant Wide_String :=
@@ -1100,10 +1036,9 @@ package body Xtree_Why_AST is
       PL (O, "let " & Func_Name & " : " & Type_Name & " from_json = function");
       begin
          Relative_Indent (O, 2);
-         for I in Vars'Range loop
-            P (O, "| `Int" & To_Wide_String (Integer'Image (I)));
-            PL (O, " -> " & OCaml_Upper_Identifier
-                  (Strip_Prefix (To_String (Vars (I)))));
+         for E in T'Range loop
+            P (O, "| `Int" & Integer'Wide_Image (E'Enum_Rep));
+            PL (O, " -> " & OCaml_Upper_Identifier (Strip_Prefix (E'Img)));
          end loop;
          PL (O, "| json -> unexpected_json "
                & """" & Type_Name & """ json");
@@ -1119,109 +1054,43 @@ package body Xtree_Why_AST is
    procedure Print_OCaml_Why_Sinfo_Types_From_Json
      (O : in out Output_Record)
    is
+      procedure Print_EW_Domain is new
+        Print_OCaml_Enum_From_Json (EW_Domain,      "EW_Domain");
+
+      procedure Print_EW_Type is new
+        Print_OCaml_Enum_From_Json (EW_Type,        "EW_Type");
+
+      procedure Print_EW_Literal is new
+        Print_OCaml_Enum_From_Json (EW_Literal,     "EW_Literal");
+
+      procedure Print_EW_Theory_Type is new
+        Print_OCaml_Enum_From_Json (EW_Theory_Type, "EW_Theory_Type");
+
+      procedure Print_EW_Clone_Type is new
+        Print_OCaml_Enum_From_Json (EW_Clone_Type,  "EW_Clone_Type");
+
+      procedure Print_EW_Subst_Type is new
+        Print_OCaml_Enum_From_Json (EW_Subst_Type,  "EW_Subst_Type");
+
+      procedure Print_EW_Connector is new
+        Print_OCaml_Enum_From_Json (EW_Connector,   "EW_Connector");
+
+      procedure Print_EW_Assert_Kind is new
+        Print_OCaml_Enum_From_Json (EW_Assert_Kind, "EW_Assert_Kind");
+
    begin
       PL (O, "(* Why.Sinfo *)");
       NL (O);
-      declare
-         EW_Domain_Variants : Variants
-           (EW_Domain'Pos (EW_Domain'First) ..
-            EW_Domain'Pos (EW_Domain'Last));
-      begin
-         for I in EW_Domain_Variants'Range loop
-            EW_Domain_Variants (I) := To_Unbounded_String
-              (EW_Domain'Image (EW_Domain'Val (I)));
-         end loop;
-         Print_OCaml_Enum_From_Json (O, "EW_Domain", EW_Domain_Variants);
-      end;
 
-      declare
-         EW_Type_Variants : Variants
-           (EW_Type'Pos (EW_Type'First) ..
-            EW_Type'Pos (EW_Type'Last));
-      begin
-         for I in EW_Type_Variants'Range loop
-            EW_Type_Variants (I) := To_Unbounded_String
-              (EW_Type'Image (EW_Type'Val (I)));
-         end loop;
-         Print_OCaml_Enum_From_Json (O, "EW_Type", EW_Type_Variants);
-      end;
+      Print_EW_Domain      (O);
+      Print_EW_Type        (O);
+      Print_EW_Literal     (O);
+      Print_EW_Theory_Type (O);
+      Print_EW_Clone_Type  (O);
+      Print_EW_Subst_Type  (O);
+      Print_EW_Connector   (O);
+      Print_EW_Assert_Kind (O);
 
-      declare
-         EW_Literal_Variants : Variants
-           (EW_Literal'Pos (EW_Literal'First) ..
-            EW_Literal'Pos (EW_Literal'Last));
-      begin
-         for I in EW_Literal_Variants'Range loop
-            EW_Literal_Variants (I) := To_Unbounded_String
-              (EW_Literal'Image (EW_Literal'Val (I)));
-         end loop;
-         Print_OCaml_Enum_From_Json (O, "EW_Literal", EW_Literal_Variants);
-      end;
-
-      declare
-         EW_Theory_Type_Variants : Variants
-           (EW_Theory_Type'Pos (EW_Theory_Type'First) ..
-            EW_Theory_Type'Pos (EW_Theory_Type'Last));
-      begin
-         for I in EW_Theory_Type_Variants'Range loop
-            EW_Theory_Type_Variants (I) := To_Unbounded_String
-              (EW_Theory_Type'Image (EW_Theory_Type'Val (I)));
-         end loop;
-         Print_OCaml_Enum_From_Json
-           (O, "EW_Theory_Type", EW_Theory_Type_Variants);
-      end;
-
-      declare
-         EW_Clone_Type_Variants : Variants
-           (EW_Clone_Type'Pos (EW_Clone_Type'First) ..
-            EW_Clone_Type'Pos (EW_Clone_Type'Last));
-      begin
-         for I in EW_Clone_Type_Variants'Range loop
-            EW_Clone_Type_Variants (I) := To_Unbounded_String
-              (EW_Clone_Type'Image (EW_Clone_Type'Val (I)));
-         end loop;
-         Print_OCaml_Enum_From_Json
-           (O, "EW_Clone_Type", EW_Clone_Type_Variants);
-      end;
-
-      declare
-         EW_Subst_Type_Variants : Variants
-           (EW_Subst_Type'Pos (EW_Subst_Type'First) ..
-            EW_Subst_Type'Pos (EW_Subst_Type'Last));
-      begin
-         for I in EW_Subst_Type_Variants'Range loop
-            EW_Subst_Type_Variants (I) := To_Unbounded_String
-              (EW_Subst_Type'Image (EW_Subst_Type'Val (I)));
-         end loop;
-         Print_OCaml_Enum_From_Json
-           (O, "EW_Subst_Type", EW_Subst_Type_Variants);
-      end;
-
-      declare
-         EW_Connector_Variants : Variants
-           (EW_Connector'Pos (EW_Connector'First) ..
-            EW_Connector'Pos (EW_Connector'Last));
-      begin
-         for I in EW_Connector_Variants'Range loop
-            EW_Connector_Variants (I) := To_Unbounded_String
-              (EW_Connector'Image (EW_Connector'Val (I)));
-         end loop;
-         Print_OCaml_Enum_From_Json
-           (O, "EW_Connector", EW_Connector_Variants);
-      end;
-
-      declare
-         EW_Assert_Kind_Variants : Variants
-           (EW_Assert_Kind'Pos (EW_Assert_Kind'First) ..
-            EW_Assert_Kind'Pos (EW_Assert_Kind'Last));
-      begin
-         for I in EW_Assert_Kind_Variants'Range loop
-            EW_Assert_Kind_Variants (I) := To_Unbounded_String
-              (EW_Assert_Kind'Image (EW_Assert_Kind'Val (I)));
-         end loop;
-         Print_OCaml_Enum_From_Json
-           (O, "EW_Assert_Kind", EW_Assert_Kind_Variants);
-      end;
    end Print_OCaml_Why_Sinfo_Types_From_Json;
 
 end Xtree_Why_AST;
