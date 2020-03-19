@@ -1,9 +1,9 @@
-with GNATCOLL.Symbols; use GNATCOLL;
+with GNATCOLL.Symbols;  use GNATCOLL;
 with GNATCOLL.Utils;
 with SPARK_Util;
-with Sinput;           use Sinput;
+with Sinput;            use Sinput;
 with Common_Containers; use Common_Containers;
-with Why.Sinfo; use Why.Sinfo;
+with Why.Sinfo;         use Why.Sinfo;
 
 package body Why.Atree.To_Json is
 
@@ -16,11 +16,10 @@ package body Why.Atree.To_Json is
    function Ureal_To_Json (I : Ureal) return JSON_Value;
    function String_Sets_Set_To_Json (S : String_Sets.Set) return JSON_Value;
 
-   function Boolean_To_Json (B : Boolean) return JSON_Value is
-     (Create (B));
+   function Boolean_To_Json (B : Boolean) return JSON_Value is (Create (B));
 
-   function Uint_To_Json (I : Uint) return JSON_Value
-      is (Create (UI_Image (I, Decimal)));
+   function Uint_To_Json (I : Uint) return JSON_Value is
+     (Create (UI_Image (I, Decimal)));
 
    function Ureal_To_Json (I : Ureal) return JSON_Value is
       Res : constant JSON_Value := Create (Empty_Array);
@@ -51,13 +50,12 @@ package body Why.Atree.To_Json is
    function Symbol_Set_To_Json (S : Symbol_Set) return JSON_Value;
 
    function Node_Id_To_Json (Id : Node_Id) return JSON_Value is
-      (Create ("<Node_Id>")); --  TODO
+     (Create ("<Node_Id>")); --  TODO
 
    function Source_Ptr_To_Json (P : Source_Ptr) return JSON_Value is
-      Res : constant JSON_Value := Create (Empty_Array);
-      File : constant String := SPARK_Util.File_Name (P);
-      Line : constant Physical_Line_Number :=
-        Get_Physical_Line_Number (P);
+      Res  : constant JSON_Value           := Create (Empty_Array);
+      File : constant String               := SPARK_Util.File_Name (P);
+      Line : constant Physical_Line_Number := Get_Physical_Line_Number (P);
    begin
       if P = No_Location then
          return Create;
@@ -94,25 +92,20 @@ package body Why.Atree.To_Json is
    function Why_Node_Set_To_Json (S : Why_Node_Set) return JSON_Value;
 
    function Why_Node_Id_To_Json (Id : Why_Node_Id) return JSON_Value is
-      (Why_Node_To_Json (Get_Node (Id)));
+     (Why_Node_To_Json (Get_Node (Id)));
 
    function Why_Node_OId_To_Json (Id : Why_Node_Id) return JSON_Value is
-      (if Id = Why_Empty then
-        Create
-      else
-        Why_Node_Id_To_Json (Id));
+     (if Id = Why_Empty then Create else Why_Node_Id_To_Json (Id));
 
    function Why_Node_OList_To_Json (Id : Why_Node_List) return JSON_Value is
-      (if Is_Empty (Id) then
-        Create
-      else
-        Why_Node_List_To_Json (Id));
+     (if Is_Empty (Id) then Create else Why_Node_List_To_Json (Id));
 
    function Why_Node_List_To_Json (Id : Why_Node_List) return JSON_Value is
-      (Why_Node_Lists_List_To_Json (Get_List (Id)));
+     (Why_Node_Lists_List_To_Json (Get_List (Id)));
 
-   function Why_Node_Lists_List_To_Json (L : Why_Node_Lists.List)
-   return JSON_Value is
+   function Why_Node_Lists_List_To_Json
+     (L : Why_Node_Lists.List) return JSON_Value
+   is
       Res : constant JSON_Value := Create (Empty_Array);
    begin
       for El of L loop
@@ -122,7 +115,7 @@ package body Why.Atree.To_Json is
    end Why_Node_Lists_List_To_Json;
 
    function Why_Node_Set_To_Json (S : Why_Node_Set) return JSON_Value is
-      (Create ("<Why_Node_Set>")); --  TODO
+     (Create ("<Why_Node_Set>")); --  TODO
 
    _@Declare_Ada_To_Json@_
 end Why.Atree.To_Json;
