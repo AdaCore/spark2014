@@ -38,4 +38,4 @@ all:
 clean:
 	-rm -rf obj
 	-rm -f xtree
-	-rm -f $(GENERATED_FILES)
+	-rm -f $(GENERATED_FILES) gnat_ast.ml
