@@ -33,13 +33,10 @@ package body Why.Atree.To_Json is
    end Ureal_To_Json;
 
    function String_Sets_Set_To_Json (S : String_Sets.Set) return JSON_Value is
-      use String_Sets;
       Res : constant JSON_Value := Create (Empty_Array);
-      C : String_Sets.Cursor := First (S);
    begin
-      while Has_Element (C) loop
-         Append (Res, Create (Element (C)));
-         Next (C);
+      for El of S loop
+         Append (Res, Create (El));
       end loop;
       return Res;
    end String_Sets_Set_To_Json;
@@ -78,13 +75,10 @@ package body Why.Atree.To_Json is
    end Symbol_To_Json;
 
    function Symbol_Set_To_Json (S : Symbol_Set) return JSON_Value is
-      use Symbol_Sets;
       Res : constant JSON_Value := Create (Empty_Array);
-      C : Cursor := First (S);
    begin
-      while Has_Element (C) loop
-         Append (Res, Symbol_To_Json (Element (C)));
-         Next (C);
+      for El of S loop
+         Append (Res, Symbol_To_Json (El));
       end loop;
       return Res;
    end Symbol_Set_To_Json;
@@ -119,13 +113,10 @@ package body Why.Atree.To_Json is
 
    function Why_Node_Lists_List_To_Json (L : Why_Node_Lists.List)
    return JSON_Value is
-      use Why_Node_Lists;
       Res : constant JSON_Value := Create (Empty_Array);
-      C : Why_Node_Lists.Cursor := First (L);
    begin
-      while Has_Element (C) loop
-         Append (Res, Why_Node_Id_To_Json  (Element (C)));
-         Next (C);
+      for El of L loop
+         Append (Res, Why_Node_Id_To_Json (El));
       end loop;
       return Res;
    end Why_Node_Lists_List_To_Json;
