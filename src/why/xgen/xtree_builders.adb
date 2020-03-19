@@ -421,7 +421,6 @@ package body Xtree_Builders is
    -------------------------------------
 
    procedure Print_Class_Wide_Builder_Bodies (O : in out Output_Record) is
-      use Node_Lists;
    begin
       for Kind in Valid_Kind'Range loop
          Print_Builder_Body (O, Kind, Derived,

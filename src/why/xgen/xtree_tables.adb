@@ -191,8 +191,6 @@ package body Xtree_Tables is
    end Get_Domain;
 
    function Get_Domain (Kind : Why_Node_Kind) return Class_Info is
-      use Class_Lists;
-
       DK : constant EW_ODomain := Get_Domain (Kind);
       DN : constant Wide_String := Mixed_Case_Name (DK);
       CN : constant Wide_String :=
@@ -452,8 +450,6 @@ package body Xtree_Tables is
    ---------------------------
 
    function Max_Field_Name_Length (Kind : Why_Node_Kind) return Natural is
-      use Node_Lists;
-
       Variant_Part  : constant Why_Node_Info := Why_Tree_Info (Kind);
    begin
       return Natural'Max

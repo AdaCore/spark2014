@@ -47,9 +47,7 @@
 --
 --  This approach assures that changes in either the Gnat AST or the Why3 Ast
 
-with Outputs;      use Outputs;
-with Xkind_Tables; use Xkind_Tables;
-with Why.Sinfo;    use Why.Sinfo;
+with Outputs; use Outputs;
 
 package Xtree_Why_AST is
 

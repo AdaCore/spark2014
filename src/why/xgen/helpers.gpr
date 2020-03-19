@@ -9,8 +9,7 @@ project Helpers is
    for Exec_Dir use ".";
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnat2012", "-g", "-O0", "-gnata",
-                                        "-gnatyg");
+      for Default_Switches ("ada") use ("-g", "-O0", "-gnata", "-gnatg");
    end Compiler;
 
 end Helpers;
