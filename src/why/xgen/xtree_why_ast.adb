@@ -87,9 +87,11 @@ package body Xtree_Why_AST is
       Str1  : String := Str;
    begin
       To_Lower (Str1);
-      if Str1 = "source_ptr" or else Str1 = "symbol_set" or else
-        Str1 = "string_sets.set" or else Str1 = "node_id" or else
-        Str1 = "why_node_set"
+      if Str1 in "source_ptr"
+               | "symbol_set"
+               | "string_sets.set"
+               | "node_id"
+               | "why_node_set"
       then
          return Str;
       else
@@ -476,7 +478,7 @@ package body Xtree_Why_AST is
    --------------------
 
    function Kind_To_String (Kind : Why_Node_Kind) return String is
-      (Strip_Prefix (Why_Node_Kind'Image (Kind)));
+     (Strip_Prefix (Why_Node_Kind'Image (Kind)));
 
    -----------------------------------
    -- Print OCaml type declarations --
@@ -781,7 +783,7 @@ package body Xtree_Why_AST is
 
    function OCaml_Field_Names (Fields : Node_Lists.List) return Variants;
    function OCaml_Field_Types (Fields : Node_Lists.List; Suffix : String)
-                              return Variants;
+                               return Variants;
 
    -----------------------
    -- OCaml_Field_Names --
@@ -790,7 +792,7 @@ package body Xtree_Why_AST is
    function OCaml_Field_Names (Fields : Node_Lists.List) return Variants is
       use Node_Lists;
       Res : Variants (1 .. Integer (Length (Fields)));
-      C : Cursor := First (Fields);
+      C   : Cursor := First (Fields);
    begin
       for I in Res'Range loop
          declare
@@ -816,7 +818,7 @@ package body Xtree_Why_AST is
    is
       use Node_Lists;
       Res : Variants (1 .. Integer (Length (Fields)));
-      C : Cursor := First (Fields);
+      C   : Cursor := First (Fields);
    begin
       for I in Res'Range loop
          declare
@@ -1077,7 +1079,7 @@ package body Xtree_Why_AST is
    end Print_OCaml_Coercions;
 
    procedure Print_OCaml_Enum_From_Json
-     (O : in out Output_Record;
+     (O    : in out Output_Record;
       Name : String;
       Vars : Variants);
 
@@ -1086,7 +1088,7 @@ package body Xtree_Why_AST is
    --------------------------------
 
    procedure Print_OCaml_Enum_From_Json
-     (O : in out Output_Record;
+     (O    : in out Output_Record;
       Name : String;
       Vars : Variants)
    is
@@ -1115,7 +1117,8 @@ package body Xtree_Why_AST is
    -------------------------------------------
 
    procedure Print_OCaml_Why_Sinfo_Types_From_Json
-     (O : in out Output_Record) is
+     (O : in out Output_Record)
+   is
    begin
       PL (O, "(* Why.Sinfo *)");
       NL (O);
