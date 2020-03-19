@@ -151,11 +151,11 @@ package body Gnat2Why.Driver is
    procedure Do_Ownership_Checking;
    --  Perform SPARK access legality checking
 
-   procedure Print_Gnat_Json_File (Filename : String);
-   --  Print the Gnat AST as Json on disk
+   procedure Print_GNAT_Json_File (Filename : String);
+   --  Print the GNAT AST as Json into file
 
    procedure Create_JSON_File (Proof_Done : Boolean);
-   --  At the very end, write the analysis results to disk
+   --  At the very end, write the analysis results into file
 
    procedure Generate_Assumptions;
    --  For all calls from a SPARK subprogram to another, register assumptions
@@ -209,8 +209,11 @@ package body Gnat2Why.Driver is
    --  structure.
 
    function Compute_Why3_File_Name
-     (E : Entity_Id; Extension : String) return String with Post =>
-       Compute_Why3_File_Name'Result'Length <= Max_Why3_Filename_Length;
+     (E         : Entity_Id;
+      Extension : String)
+      return String
+   with
+     Post => Compute_Why3_File_Name'Result'Length <= Max_Why3_Filename_Length;
    --  Compute the why3 file to be used. Guarantees to be no longer than
    --  Max_Why3_Filename_Length and makes some effort to still be unique.
 
@@ -298,12 +301,14 @@ package body Gnat2Why.Driver is
    ----------------------------
 
    function Compute_Why3_File_Name
-     (E : Entity_Id; Extension : String)
-     return String is
+     (E         : Entity_Id;
+      Extension : String)
+      return String
+   is
       S : constant String := Full_Name (E);
       Digest_Length : constant := 20;
-      --  arbitrary number of digits that we take from the SHA1 digest to
-      --  achieve uniqueness
+      --  Arbitrary number of digits that we take from the SHA1 digest to
+      --  achieve uniqueness.
    begin
       if S'Length > Max_Why3_Filename_Length - Extension'Length then
          --  the slice bound is computed as follows:
@@ -472,7 +477,7 @@ package body Gnat2Why.Driver is
             File_Name : constant String :=
               Compute_Why3_File_Name (E, ".gnat-json");
          begin
-            Print_Gnat_Json_File (File_Name);
+            Print_GNAT_Json_File (File_Name);
             Run_Gnatwhy3 (File_Name);
          end;
       end if;
@@ -888,16 +893,14 @@ package body Gnat2Why.Driver is
 
        and then not Is_Hardcoded_Entity (E));
 
-   ----------------------------
-   --  Print_Gnat_Json_File  --
-   ----------------------------
+   --------------------------
+   -- Print_GNAT_Json_File --
+   --------------------------
 
-   procedure Print_Gnat_Json_File (Filename : String) is
-      use Why_Node_Lists;
-      Modules : constant Why_Node_Lists.List := Build_Printing_Plan;
-      Json_File : constant JSON_Value := Create_Object;
+   procedure Print_GNAT_Json_File (Filename : String) is
+      Modules    : constant Why_Node_Lists.List := Build_Printing_Plan;
+      Json_File  : constant JSON_Value := Create_Object;
       Json_Decls : JSON_Value;
-      C : Why_Node_Lists.Cursor;
    begin
 
       if Modules.Is_Empty then
@@ -911,10 +914,8 @@ package body Gnat2Why.Driver is
             --    Append (Json, Why_Node_Lists_List_To_Json
             --                    (Why_Sections (WF).Theories));
             --  but helas!
-            C := First (Why_Sections (WF).Theories);
-            while Has_Element (C) loop
-               Append (Json_Decls, Why_Node_To_Json (Get_Node (Element (C))));
-               Next (C);
+            for WN_Id of Why_Sections (WF).Theories loop
+               Append (Json_Decls, Why_Node_To_Json (Get_Node (WN_Id)));
             end loop;
          end loop;
       else
@@ -928,7 +929,7 @@ package body Gnat2Why.Driver is
       Open_Current_File (Filename);
       P (Current_File, Write (Json_File, Compact => False));
       Close_Current_File;
-   end Print_Gnat_Json_File;
+   end Print_GNAT_Json_File;
 
    ------------------
    -- Run_Gnatwhy3 --
