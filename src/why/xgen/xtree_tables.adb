@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;             use Ada.Containers;
 with GNAT.Case_Util;             use GNAT.Case_Util;
 with Utils;                      use Utils;
 
@@ -224,9 +223,8 @@ package body Xtree_Tables is
    ----------------------
 
    function Has_Variant_Part (Kind : Why_Node_Kind) return Boolean is
-      use Node_Lists;
    begin
-      return Why_Tree_Info (Kind).Fields.Length > 0;
+      return not Why_Tree_Info (Kind).Fields.Is_Empty;
    end Has_Variant_Part;
 
    -------------
@@ -465,15 +463,13 @@ package body Xtree_Tables is
       Common_Field_Included : Boolean := True)
      return Natural
    is
-      use Node_Lists;
-
       Variant_Part : constant Why_Node_Info := Why_Tree_Info (Kind);
       CF_Length    : constant Natural :=
                        (if Common_Field_Included then
                            Common_Fields.Max_Field_Name_Length
                        else 0);
    begin
-      if Length (Variant_Part.Fields) = 0 then
+      if Variant_Part.Fields.Is_Empty then
          return CF_Length;
       else
          declare
