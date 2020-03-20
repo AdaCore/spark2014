@@ -131,7 +131,11 @@ gnat2why:
 	# (gnat2why-nightly)
 	python scripts/why3keywords.py why3/src/parser/lexer.mll src/why/why-keywords.adb
 	$(MAKE) -C gnat2why
-	$(CP) ./src/why/xgen/gnat_ast.ml why3/src/gnat/
+	# (The timestamp of) src/why/xgen/gnat_ast.ml is updated every time `make` is called in
+	# `gnat2why`, causing a recompilation of why3 every time because Why3's makefile is
+	# based on timestamps not file content. So we check if anything changed before copying.
+	SOURCE=src/why/xgen/gnat_ast.ml; TARGET=why3/src/gnat/gnat_ast.ml; \
+	cmp "$$SOURCE" "$$TARGET" || $(CP) $$SOURCE $$TARGET
 
 coverage:
 	$(MAKE) -C gnat2why AUTOMATED=1 coverage
