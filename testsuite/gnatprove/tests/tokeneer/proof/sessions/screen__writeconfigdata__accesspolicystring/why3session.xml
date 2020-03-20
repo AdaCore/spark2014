@@ -3,9 +3,9 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
-<file format="whyml" proved="true">
+<file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
-<path name="screen__writeconfigdata__accesspolicystring.mlw"/>
+<path name="screen__writeconfigdata__accesspolicystring.gnat-json"/>
 <theory name="Screen__writeconfigdata__accesspolicystring__subprogram_def" proved="true">
  <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >

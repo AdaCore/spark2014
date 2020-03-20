@@ -6,9 +6,9 @@
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="1000"/>
-<file format="whyml">
+<file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
-<path name="doorapi__getdoorstateraw.mlw"/>
+<path name="doorapi__getdoorstateraw.gnat-json"/>
 <theory name="Doorapi__getdoorstateraw__subprogram_def">
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
