@@ -23,11 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Conversions; use Ada.Characters.Conversions;
 with GNAT.Case_Util;             use GNAT.Case_Util;
 with Utils;                      use Utils;
 with Xtree_Tables;               use Xtree_Tables;
-with Ada.Wide_Text_IO;           use Ada.Wide_Text_IO;
+with Ada.Text_IO;                use Ada.Text_IO;
 
 package body Xkind_Tables is
 
@@ -36,9 +35,9 @@ package body Xkind_Tables is
    --------------
 
    function Arr_Type
-     (Prefix : Wide_String;
+     (Prefix : String;
       Kind   : Id_Kind)
-     return Wide_String is
+     return String is
    begin
       if Kind = Derived then
          return Prefix & "_Array";
@@ -52,10 +51,10 @@ package body Xkind_Tables is
    ---------------------
 
    function Base_Id_Subtype
-     (Prefix       : Wide_String;
+     (Prefix       : String;
       Kind         : Id_Kind;
       Multiplicity : Id_Multiplicity)
-     return Wide_String
+     return String
    is
    begin
       case Kind is
@@ -79,7 +78,7 @@ package body Xkind_Tables is
    -- Cache_Check --
    -----------------
 
-   function Cache_Check (M : Id_Multiplicity) return Wide_String
+   function Cache_Check (M : Id_Multiplicity) return String
    is
    begin
       return Strip_Prefix (Multiplicity_Suffix (M)) & "_Cache_Valid";
@@ -90,9 +89,9 @@ package body Xkind_Tables is
    --------------------
 
    function Children_Check
-     (Prefix : Wide_String;
+     (Prefix : String;
       M      : Id_Multiplicity)
-     return Wide_String is
+     return String is
    begin
       return Strip_Prefix (Prefix)
         & Multiplicity_Suffix (M)
@@ -105,7 +104,7 @@ package body Xkind_Tables is
 
    function Class_First (CI : Class_Info) return Why_Node_Kind is
    begin
-      return Why_Node_Kind'Wide_Value (CI.First.all);
+      return Why_Node_Kind'Value (CI.First.all);
    end Class_First;
 
    ----------------
@@ -114,14 +113,14 @@ package body Xkind_Tables is
 
    function Class_Last (CI : Class_Info) return Why_Node_Kind is
    begin
-      return Why_Node_Kind'Wide_Value (CI.Last.all);
+      return Why_Node_Kind'Value (CI.Last.all);
    end Class_Last;
 
    ----------------
    -- Class_Name --
    ----------------
 
-   function Class_Name (CI : Class_Info) return Wide_String is
+   function Class_Name (CI : Class_Info) return String is
    begin
       return CI.Name.all;
    end Class_Name;
@@ -135,7 +134,7 @@ package body Xkind_Tables is
       return Why_Node_Kind'First;
    end Default_Kind;
 
-   function Default_Kind return Wide_String is
+   function Default_Kind return String is
    begin
       return Mixed_Case_Name (Default_Kind);
    end Default_Kind;
@@ -148,7 +147,7 @@ package body Xkind_Tables is
    begin
       for Kind in Valid_Kind'Range loop
          Put_Line (Mixed_Case_Name (Kind) & " : "
-                   & EW_ODomain'Wide_Image (Get_Domain (Kind)));
+                   & EW_ODomain'Image (Get_Domain (Kind)));
       end loop;
    end Display_Domains;
 
@@ -156,9 +155,9 @@ package body Xkind_Tables is
    -- Get_Domain --
    ----------------
 
-   function Get_Domain (Id_Type : Wide_String) return EW_ODomain is
-      Prefix : constant Wide_String := Strip_Suffix (Id_Type);
-      Kind   : constant Wide_String := Suffix (Prefix);
+   function Get_Domain (Id_Type : String) return EW_ODomain is
+      Prefix : constant String := Strip_Suffix (Id_Type);
+      Kind   : constant String := Suffix (Prefix);
       Last   : Natural := Prefix'Last;
    begin
       if Kind = "Unchecked"
@@ -171,12 +170,12 @@ package body Xkind_Tables is
       for CI of Classes loop
          if Is_Domain (CI) then
             declare
-               Prefix : constant Wide_String := Class_Name (CI) & "_";
+               Prefix : constant String := Class_Name (CI) & "_";
             begin
                if Prefix =
                  Id_Type (Id_Type'First .. Id_Type'First + Prefix'Length - 1)
                then
-                  return EW_ODomain'Wide_Value ("E" & Class_Name (CI));
+                  return EW_ODomain'Value ("E" & Class_Name (CI));
                end if;
             end;
          end if;
@@ -198,7 +197,7 @@ package body Xkind_Tables is
          if Is_Domain (CI) then
             declare
                DK : constant EW_ODomain :=
-                      EW_ODomain'Wide_Value ("E" & Class_Name (CI));
+                      EW_ODomain'Value ("E" & Class_Name (CI));
             begin
                for Kind in Class_First (CI) .. Class_Last (CI) loop
                   if Domain_Ambiguity (Kind) then
@@ -230,25 +229,25 @@ package body Xkind_Tables is
      (N_Kind       : Why_Node_Kind;
       I_Kind       : Id_Kind := Regular;
       Multiplicity : Id_Multiplicity := Id_One)
-     return Wide_String is
+     return String is
    begin
       return Id_Subtype (Mixed_Case_Name (N_Kind), I_Kind, Multiplicity);
    end Id_Subtype;
 
    function Id_Subtype
-     (Prefix       : Wide_String;
+     (Prefix       : String;
       Kind         : Id_Kind := Regular;
       Multiplicity : Id_Multiplicity := Id_One)
-     return Wide_String
+     return String
    is
-      function Kind_Suffix return Wide_String;
+      function Kind_Suffix return String;
       --  Return the kind-specific part of the suffix
 
       -----------------
       -- Kind_Suffix --
       -----------------
 
-      function Kind_Suffix return Wide_String is
+      function Kind_Suffix return String is
       begin
          case Kind is
             when Opaque =>
@@ -277,7 +276,7 @@ package body Xkind_Tables is
       return CI.Father /= null;
    end Is_Domain;
 
-   function Is_Domain (Id_Type : Wide_String) return Boolean is
+   function Is_Domain (Id_Type : String) return Boolean is
    begin
       return Get_Domain (Id_Type) /= EW_Expr;
    end Is_Domain;
@@ -287,9 +286,9 @@ package body Xkind_Tables is
    ----------------
 
    function Kind_Check
-     (Prefix : Wide_String;
+     (Prefix : String;
       M      : Id_Multiplicity)
-     return Wide_String is
+     return String is
    begin
       return Strip_Prefix (Prefix)
         & Multiplicity_Suffix (M)
@@ -300,25 +299,25 @@ package body Xkind_Tables is
    -- Mixed_Case_Name --
    ---------------------
 
-   function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String is
+   function Mixed_Case_Name (Kind : Why_Node_Kind) return String is
       Name : String := Why_Node_Kind'Image (Kind);
    begin
       To_Mixed (Name);
-      return To_Wide_String (Name);
+      return Name;
    end Mixed_Case_Name;
 
-   function Mixed_Case_Name (M : Id_Multiplicity) return Wide_String is
+   function Mixed_Case_Name (M : Id_Multiplicity) return String is
       Name : String := Id_Multiplicity'Image (M);
    begin
       To_Mixed (Name);
-      return To_Wide_String (Name);
+      return Name;
    end Mixed_Case_Name;
 
-   function Mixed_Case_Name (D : EW_ODomain) return Wide_String is
+   function Mixed_Case_Name (D : EW_ODomain) return String is
       Name : String := EW_ODomain'Image (D);
    begin
       To_Mixed (Name (2 .. Name'Last));
-      return To_Wide_String (Name);
+      return Name;
    end Mixed_Case_Name;
 
    -------------------------
@@ -327,7 +326,7 @@ package body Xkind_Tables is
 
    function Multiplicity_Suffix
      (Multiplicity : Id_Multiplicity)
-     return Wide_String is
+     return String is
    begin
       case Multiplicity is
          when Id_One =>
@@ -346,15 +345,15 @@ package body Xkind_Tables is
    ---------------
 
    procedure New_Class
-     (Name  : Wide_String;
+     (Name  : String;
       First : Why_Node_Kind;
       Last  : Why_Node_Kind)
    is
       CI : constant Class_Info :=
-             (Name   => new Wide_String'(Name),
+             (Name   => new String'(Name),
               Father => null,
-              First  => new Wide_String'(Mixed_Case_Name (First)),
-              Last   => new Wide_String'(Mixed_Case_Name (Last)));
+              First  => new String'(Mixed_Case_Name (First)),
+              Last   => new String'(Mixed_Case_Name (Last)));
    begin
       Classes.Append (CI);
    end New_Class;
@@ -364,16 +363,16 @@ package body Xkind_Tables is
    ----------------
 
    procedure New_Domain
-     (Name   : Wide_String;
-      Father : Wide_String;
+     (Name   : String;
+      Father : String;
       First  : Why_Node_Kind;
       Last   : Why_Node_Kind)
    is
       CI : constant Class_Info :=
-             (Name   => new Wide_String'(Name),
-              Father => new Wide_String'(Father),
-              First  => new Wide_String'(Mixed_Case_Name (First)),
-              Last   => new Wide_String'(Mixed_Case_Name (Last)));
+             (Name   => new String'(Name),
+              Father => new String'(Father),
+              First  => new String'(Mixed_Case_Name (First)),
+              Last   => new String'(Mixed_Case_Name (Last)));
    begin
       Classes.Append (CI);
    end New_Domain;
@@ -419,7 +418,7 @@ package body Xkind_Tables is
    procedure Register_Kinds is
    begin
       for Kind in Why_Node_Kind'Range loop
-         Kinds.Append (new Wide_String'(Mixed_Case_Name (Kind)));
+         Kinds.Append (new String'(Mixed_Case_Name (Kind)));
       end loop;
    end Register_Kinds;
 
@@ -428,9 +427,9 @@ package body Xkind_Tables is
    ----------------
 
    function Tree_Check
-     (Prefix : Wide_String;
+     (Prefix : String;
       M      : Id_Multiplicity)
-     return Wide_String is
+     return String is
    begin
       return Strip_Prefix (Prefix)
         & Multiplicity_Suffix (M)

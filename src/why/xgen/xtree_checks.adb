@@ -28,11 +28,11 @@ with Xkind_Tables; use Xkind_Tables;
 package body Xtree_Checks is
    --  This package provides routines to print tree-validity checks
 
-   Node_Id_Param : constant Wide_String := "Id";
+   Node_Id_Param : constant String := "Id";
 
    procedure Print_Tree_Checks_Specification
      (O      : in out Output_Record;
-      Prefix : Wide_String;
+      Prefix : String;
       M      : Id_Multiplicity);
    --  Print subprogram specification for the kind-validity check of
    --  a node kind.
@@ -52,18 +52,18 @@ package body Xtree_Checks is
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
       --  Same as Print_Tree_Check_Body, but only for classes
 
-      procedure Print_Tree_Check_Body (Prefix : Wide_String);
+      procedure Print_Tree_Check_Body (Prefix : String);
       --  Print the body of kind-validity checks for the given node kind
 
       ---------------------------
       -- Print_Tree_Check_Body --
       ---------------------------
 
-      procedure Print_Tree_Check_Body (Prefix : Wide_String) is
+      procedure Print_Tree_Check_Body (Prefix : String) is
       begin
          for M in Id_Multiplicity'Range loop
             declare
-               Check_One : constant Wide_String := Cache_Check (Id_One);
+               Check_One : constant String := Cache_Check (Id_One);
             begin
                Print_Tree_Checks_Specification (O, Prefix, M);
                PL (O, " is");
@@ -140,7 +140,7 @@ package body Xtree_Checks is
       ---------------------------
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
+         S : constant String_Access := String_Lists.Element (Position);
       begin
          Print_Tree_Check_Body (S.all);
 
@@ -172,7 +172,7 @@ package body Xtree_Checks is
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
       --  Same as Print_Tree_Checks_Declaration, but only for node kinds
 
-      procedure Print_Tree_Checks_Declaration (Prefix : Wide_String);
+      procedure Print_Tree_Checks_Declaration (Prefix : String);
       --  Print the declarations of kind-validity checks for the given node
       --  kind; S tells us if the Prefix designates a node kind
       --  or a node class.
@@ -181,7 +181,7 @@ package body Xtree_Checks is
       -- Print_Tree_Checks_Declaration --
       -----------------------------------
 
-      procedure Print_Tree_Checks_Declaration (Prefix : Wide_String) is
+      procedure Print_Tree_Checks_Declaration (Prefix : String) is
       begin
          for M in Id_Multiplicity'Range loop
             Print_Tree_Checks_Specification (O, Prefix, M);
@@ -212,7 +212,7 @@ package body Xtree_Checks is
       ---------------------------
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
+         S : constant String_Access := String_Lists.Element (Position);
       begin
          Print_Tree_Checks_Declaration (S.all);
 
@@ -235,10 +235,10 @@ package body Xtree_Checks is
 
    procedure Print_Tree_Checks_Specification
      (O      : in out Output_Record;
-      Prefix : Wide_String;
+      Prefix : String;
       M      : Id_Multiplicity)
    is
-      Check_Name : constant Wide_String := Tree_Check (Prefix, M);
+      Check_Name : constant String := Tree_Check (Prefix, M);
    begin
       PL (O, "function " & Check_Name);
       PL (O, "  (" & Node_Id_Param & " : "

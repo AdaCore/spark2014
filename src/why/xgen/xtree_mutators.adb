@@ -29,12 +29,12 @@ with Xkind_Tables;   use Xkind_Tables;
 
 package body Xtree_Mutators is
 
-   Node_Id_Param : constant Wide_String := "Id";
+   Node_Id_Param : constant String := "Id";
    --  Name of a formal parameter that is common to all mutators; this
    --  is the id of the node whose children are modified through the
    --  corresponding mutator.
 
-   Element_Param : constant Wide_String := "New_Item";
+   Element_Param : constant String := "New_Item";
    --  Name of a formal parameter that is common to all append/prepend
    --  routines; this is the id of the new node to append to the list.
 
@@ -76,10 +76,10 @@ package body Xtree_Mutators is
 
    procedure Print_Mutator_Specification
      (O           : in out Output_Record;
-      Name        : Wide_String;
-      Param_Type  : Wide_String;
-      Field_Param : Wide_String;
-      Field_Type  : Wide_String);
+      Name        : String;
+      Param_Type  : String;
+      Field_Param : String;
+      Field_Type  : String);
    --  Print mutator specification from its formals. the mutator
    --  may be a setter, but it may as well be an append/prepend
    --  operations (when the considered child is a node list);
@@ -231,7 +231,7 @@ package body Xtree_Mutators is
       begin
          if not Is_List (FI) then
             declare
-               MN : constant Wide_String := Mutator_Name (Kind, FI);
+               MN : constant String := Mutator_Name (Kind, FI);
             begin
                Print_Box (O, MN);
                NL (O);
@@ -245,7 +245,7 @@ package body Xtree_Mutators is
          else
             for List_Op in List_Op_Kind'Range loop
                declare
-                  LON : constant Wide_String :=
+                  LON : constant String :=
                           List_Op_Name (Kind, FI, List_Op);
                begin
                   Print_Box (O, LON);
@@ -367,10 +367,10 @@ package body Xtree_Mutators is
 
    procedure Print_Mutator_Specification
      (O           : in out Output_Record;
-      Name        : Wide_String;
-      Param_Type  : Wide_String;
-      Field_Param : Wide_String;
-      Field_Type  : Wide_String)
+      Name        : String;
+      Param_Type  : String;
+      Field_Param : String;
+      Field_Type  : String)
    is
       NIPL : constant Natural := Node_Id_Param'Length;
       FPL  : constant Natural := Field_Param'Length;

@@ -38,7 +38,7 @@ package Xtree_Tables is
    --  Types that are used to describe syntax nodes and their
    --  corresponding fields (common, special or in variant part).
 
-   type String_Access is access Wide_String;
+   type String_Access is access String;
 
    type Field_Kind_Type is
      (Field_Variant,
@@ -141,38 +141,38 @@ package Xtree_Tables is
    ----------------
 
    procedure New_Common_Field
-     (Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String := "");
+     (Field_Name : String;
+      Field_Type : String;
+      Default    : String := "");
 
    procedure New_Domain_Field
-     (Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String := "");
+     (Field_Name : String;
+      Field_Type : String;
+      Default    : String := "");
 
    procedure New_Special_Field
-     (Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String := "");
+     (Field_Name : String;
+      Field_Type : String;
+      Default    : String := "");
 
    procedure New_Field
      (Kind       : Why_Node_Kind;
-      Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String := "");
+      Field_Name : String;
+      Field_Type : String;
+      Default    : String := "");
 
    procedure New_Field
      (Kind         : Why_Node_Kind;
-      Field_Name   : Wide_String;
-      Field_Kind   : Wide_String;
+      Field_Name   : String;
+      Field_Kind   : String;
       Multiplicity : Id_Multiplicity);
 
    procedure New_Field
      (NI         : in out Why_Node_Info;
       Field_Kind : Field_Kind_Type;
-      Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String);
+      Field_Name : String;
+      Field_Type : String;
+      Default    : String);
    --  Add new field info to the node info
 
    procedure Set_Mutable (Kind : Why_Node_Kind);
@@ -193,7 +193,7 @@ package Xtree_Tables is
 
    function Param_Name
      (FI : Field_Info)
-     return Wide_String;
+     return String;
    --  Given a field info, return the name to be use for the corresponding
    --  parameter (in, say, a builder or an accessor).
 
@@ -212,20 +212,20 @@ package Xtree_Tables is
      (Kind : Why_Node_Kind;
       IK   : Id_Kind;
       FI   : Field_Info)
-     return Wide_String;
+     return String;
    --  Return the accessor name for the given field of the given node kind
 
    type List_Op_Kind is (Op_Append, Op_Prepend);
 
    function List_Op_Name
      (List_Op : List_Op_Kind)
-     return Wide_String;
+     return String;
 
    function List_Op_Name
      (Kind    : Why_Node_Kind;
       FI      : Field_Info;
       List_Op : List_Op_Kind)
-     return Wide_String;
+     return String;
    pragma Precondition (Is_List (FI));
    --  Return the name of the append/prepend routine for the given field
    --  of the given node kind
@@ -233,7 +233,7 @@ package Xtree_Tables is
    function Mutator_Name
      (Kind : Why_Node_Kind;
       FI   : Field_Info)
-     return Wide_String;
+     return String;
    --  Return the mutator name for the given field of the given node kind
 
    type Builder_Context is (In_Builder_Spec, In_Builder_Body);
@@ -245,19 +245,19 @@ package Xtree_Tables is
    function Builder_Name
      (Kind : Why_Node_Kind;
       IK   : Id_Kind := Regular)
-     return Wide_String;
+     return String;
    --  Return the builder name for the given node kind
 
    function Builder_Name
-     (Prefix : Wide_String;
+     (Prefix : String;
       IK     : Id_Kind := Regular)
-     return Wide_String;
+     return String;
 
    function Builder_Param_Type
      (FI      : Field_Info;
       IK      : Id_Kind;
       Context : Builder_Context)
-     return Wide_String;
+     return String;
 
    function Has_Default_Value
      (Kind    : Why_Node_Kind;
@@ -272,30 +272,30 @@ package Xtree_Tables is
       FI      : Field_Info;
       IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
-     return Wide_String;
+     return String;
    --  Return a default value for the given field if one exists, "" otherwise
 
-   function Traversal_Pre_Op (Kind : Why_Node_Kind) return Wide_String;
+   function Traversal_Pre_Op (Kind : Why_Node_Kind) return String;
    --  Return the name of prep op hooks for a given node kind
    --  in recursive traversals. Prep Op hooks are called before going
    --  recursively through children of a given node.
 
-   function Traversal_Post_Op (Kind : Why_Node_Kind) return Wide_String;
+   function Traversal_Post_Op (Kind : Why_Node_Kind) return String;
    --  Return the name of post op hooks for a given kind
    --  in recursive traversals. Post Op hooks are called after having
    --  gone recursively through children of a given node.
 
-   function Field_Name (FI : Field_Info) return Wide_String;
+   function Field_Name (FI : Field_Info) return String;
    --  Return the name of this field
 
-   function Node_Kind (FI : Field_Info) return Wide_String;
+   function Node_Kind (FI : Field_Info) return String;
    pragma Precondition (Is_Why_Id (FI));
    --  For a node field, return its node kind
 
    function Type_Name
      (FI   : Field_Info;
       Kind : Id_Kind)
-     return Wide_String;
+     return String;
    --  Return the kind-specific id subtype name if FI is a node;
    --  otherwise, return the type of this field (e.g. Name_Id, Uint, Ureal),
    --  ignoring Kind parameter.
@@ -303,11 +303,11 @@ package Xtree_Tables is
    function Element_Type_Name
      (FI   : Field_Info;
       Kind : Id_Kind)
-     return Wide_String;
+     return String;
    pragma Precondition (Is_List (FI));
    --  Return the id type of elements of FI, assuming that FI is a list
 
-   function List_Type_Name (Kind : Why_Node_Kind) return Wide_String;
+   function List_Type_Name (Kind : Why_Node_Kind) return String;
    --  Return the kind-specific list subtype name
 
    function Is_List (FI : Field_Info) return Boolean;

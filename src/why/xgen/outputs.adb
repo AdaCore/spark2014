@@ -23,26 +23,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Conversions; use Ada.Characters.Conversions;
-
 package body Outputs is
 
    procedure New_Line (F : File_Type);
-   procedure Put (F : File_Type; S : Wide_String);
+   procedure Put (F : File_Type; S : String);
    --  Local version of New_Line and Put ensures Unix style line endings
+
+   --------------
+   -- New_Line --
+   --------------
 
    procedure New_Line (F : File_Type) is
    begin
       Character'Write (Stream (F), ASCII.LF);
    end New_Line;
 
-   procedure Put (F : File_Type; S : Wide_String) is
+   ---------
+   -- Put --
+   ---------
+
+   procedure Put (F : File_Type; S : String) is
    begin
-      if Is_String (S) then
-         String'Write (Stream (F), To_String (S));
-      else
-         Wide_String'Write (Stream (F), S);
-      end if;
+      String'Write (Stream (F), S);
    end Put;
 
    procedure I (O : in out Output_Record);
@@ -113,7 +115,7 @@ package body Outputs is
    -- P --
    -------
 
-   procedure P (O : in out Output_Record; S : Wide_String) is
+   procedure P (O : in out Output_Record; S : String) is
    begin
       I (O);
       Put (O.File, S);
@@ -123,7 +125,7 @@ package body Outputs is
    -- PL --
    --------
 
-   procedure PL (O : in out Output_Record; S : Wide_String) is
+   procedure PL (O : in out Output_Record; S : String) is
    begin
       I (O);
       Put (O.File, S);
@@ -137,7 +139,7 @@ package body Outputs is
 
    procedure Print_Box
      (O               : in out Output_Record;
-      Subprogram_Name : Wide_String)
+      Subprogram_Name : String)
    is
       procedure Print_Line;
 

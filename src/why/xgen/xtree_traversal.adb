@@ -32,33 +32,33 @@ package body Xtree_Traversal is
    type Kind_Gen_Access is not null access
      procedure (O : in out Output_Record; Kind : Why_Node_Kind);
 
-   Node_Param  : constant Wide_String := "Node";
-   State_Param : constant Wide_String := "State";
-   Control     : constant Wide_String := State_Param & "." & "Control";
-   Depth       : constant Wide_String := State_Param & "." & "Depth";
+   Node_Param  : constant String := "Node";
+   State_Param : constant String := "State";
+   Control     : constant String := State_Param & "." & "Control";
+   Depth       : constant String := State_Param & "." & "Depth";
 
-   Node_Renaming : constant Wide_String := "This_Node";
+   Node_Renaming : constant String := "This_Node";
 
-   Terminate_Immediately : constant Wide_String := "Terminate_Immediately";
-   Abandon_Children      : constant Wide_String := "Abandon_Children";
-   Abandon_Siblings      : constant Wide_String := "Abandon_Siblings";
-   Continue              : constant Wide_String := "Continue";
+   Terminate_Immediately : constant String := "Terminate_Immediately";
+   Abandon_Children      : constant String := "Abandon_Children";
+   Abandon_Siblings      : constant String := "Abandon_Siblings";
+   Continue              : constant String := "Continue";
 
-   Base_State_Type   : constant Wide_String := "Traversal_State";
-   Stub_State_Type   : constant Wide_String := "Traversal_Stub_State";
-   Treepr_State_Type : constant Wide_String := "Tree_Printer_State";
+   Base_State_Type   : constant String := "Traversal_State";
+   Stub_State_Type   : constant String := "Traversal_Stub_State";
+   Treepr_State_Type : constant String := "Tree_Printer_State";
 
    procedure Print_Traversal_Op_Declarations
      (O          : in out Output_Record;
-      State_Type : Wide_String;
+      State_Type : String;
       Is_Null    : Boolean := False);
    --  Print the declaration of traversal operations for the given state type;
    --  if Is_Null, then this will be a null procedure declaration.
 
    procedure Print_Traversal_Op_Specification
      (O          : in out Output_Record;
-      Op_Name    : Wide_String;
-      State_Type : Wide_String;
+      Op_Name    : String;
+      State_Type : String;
       Kind       : Why_Node_Kind);
    --  Print the subprogram specification of a traversal operation for the
    --  given node kind, state type, and the name of this subprogram
@@ -92,7 +92,7 @@ package body Xtree_Traversal is
 
    procedure Print_Call_To_Traversal_Proc
      (O              : in out Output_Record;
-      Traversal_Proc : Wide_String;
+      Traversal_Proc : String;
       FI             : Field_Info;
       Commented_Out  : Boolean := False);
    --  Print a call to the traversal procedure (whose name is given in
@@ -101,7 +101,7 @@ package body Xtree_Traversal is
 
    procedure Print_Traversal_Op_Bodies
      (O          : in out Output_Record;
-      State_Type : Wide_String;
+      State_Type : String;
       Pre_Decl   : Kind_Gen_Access;
       Post_Decl  : Kind_Gen_Access;
       Pre_Impl   : Kind_Gen_Access;
@@ -116,7 +116,7 @@ package body Xtree_Traversal is
 
    procedure Start_If_Control
      (O     : in out Output_Record;
-      Value : Wide_String);
+      Value : String);
    --  Open an if statement that tests if traversal control equals Value
 
    procedure End_If (O     : in out Output_Record);
@@ -127,12 +127,12 @@ package body Xtree_Traversal is
 
    procedure Reset_If_Control
      (O     : in out Output_Record;
-      Value : Wide_String);
+      Value : String);
    --  Print an if statement that resets traversal control if it equals Value
 
    procedure Reset_Return_If_Control
      (O     : in out Output_Record;
-      Value : Wide_String);
+      Value : String);
    --  Print an if statement that:
    --  *  resets traversal control;
    --  * returns;
@@ -140,7 +140,7 @@ package body Xtree_Traversal is
 
    procedure Return_If_Control
      (O     : in out Output_Record;
-      Value : Wide_String);
+      Value : String);
    --  Print an if statement that returns if traversal control equals Value
 
    procedure Print_Traversal_Params_Unref
@@ -165,11 +165,11 @@ package body Xtree_Traversal is
 
    procedure Print_Call_To_Traversal_Proc
      (O              : in out Output_Record;
-      Traversal_Proc : Wide_String;
+      Traversal_Proc : String;
       FI             : Field_Info;
       Commented_Out  : Boolean := False)
    is
-      procedure PL_C (O : in out Output_Record; S : Wide_String);
+      procedure PL_C (O : in out Output_Record; S : String);
       --  Same as PL, but prefix the line with "--  " if Commented_Out
       --  is True.
 
@@ -177,7 +177,7 @@ package body Xtree_Traversal is
       -- PC --
       --------
 
-      procedure PL_C (O : in out Output_Record; S : Wide_String) is
+      procedure PL_C (O : in out Output_Record; S : String) is
       begin
          if Commented_Out then
             P (O, "--  ");
@@ -281,7 +281,7 @@ package body Xtree_Traversal is
 
    procedure Print_Traversal_Op_Declarations
      (O          : in out Output_Record;
-      State_Type : Wide_String;
+      State_Type : String;
       Is_Null    : Boolean := False)
    is
    begin
@@ -319,8 +319,8 @@ package body Xtree_Traversal is
 
    procedure Print_Traversal_Op_Specification
      (O          : in out Output_Record;
-      Op_Name    : Wide_String;
-      State_Type : Wide_String;
+      Op_Name    : String;
+      State_Type : String;
       Kind       : Why_Node_Kind) is
    begin
       PL (O, "procedure " & Op_Name);
@@ -359,7 +359,7 @@ package body Xtree_Traversal is
 
    procedure Print_Traversal_Op_Bodies
      (O          : in out Output_Record;
-      State_Type : Wide_String;
+      State_Type : String;
       Pre_Decl   : Kind_Gen_Access;
       Post_Decl  : Kind_Gen_Access;
       Pre_Impl   : Kind_Gen_Access;
@@ -493,7 +493,7 @@ package body Xtree_Traversal is
 
       procedure Print_Sub_Traversal (Position : Cursor) is
          FI    : constant Field_Info := Element (Position);
-         Field : constant Wide_String :=
+         Field : constant String :=
                    "Get_Node (+" & Node_Param & ")." & Field_Name (FI);
       begin
          if Is_Why_Id (FI) and then Maybe_Null (FI) then
@@ -511,7 +511,7 @@ package body Xtree_Traversal is
 
          if Is_Why_Id (FI) then
             declare
-               Traversal_Proc : constant Wide_String :=
+               Traversal_Proc : constant String :=
                                   (if Is_List (FI) then "Traverse_List"
                                    else "Traverse");
             begin
@@ -620,7 +620,7 @@ package body Xtree_Traversal is
 
    procedure Reset_If_Control
      (O     : in out Output_Record;
-      Value : Wide_String)
+      Value : String)
    is
    begin
       Start_If_Control (O, Value);
@@ -634,7 +634,7 @@ package body Xtree_Traversal is
 
    procedure Reset_Return_If_Control
      (O     : in out Output_Record;
-      Value : Wide_String)
+      Value : String)
    is
    begin
       Start_If_Control (O, Value);
@@ -649,7 +649,7 @@ package body Xtree_Traversal is
 
    procedure Return_If_Control
      (O     : in out Output_Record;
-      Value : Wide_String)
+      Value : String)
    is
    begin
       Start_If_Control (O, Value);
@@ -663,7 +663,7 @@ package body Xtree_Traversal is
 
    procedure Start_If_Control
      (O     : in out Output_Record;
-      Value : Wide_String)
+      Value : String)
    is
    begin
       PL (O, "if " & Control & " = " & Value & " then");

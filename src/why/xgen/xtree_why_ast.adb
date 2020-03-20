@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Conversions; use Ada.Characters.Conversions;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with GNAT.Case_Util;             use GNAT.Case_Util;
 with Xkind_Tables;               use Xkind_Tables;
@@ -36,18 +35,14 @@ package body Xtree_Why_AST is
    -- Common auxiliaries --
    ------------------------
 
-   function To_Wide_String (S : Unbounded_String) return Wide_String;
-   function To_Unbounded_String (S : Wide_String) return Unbounded_String;
-
-   --  Strip Gnat prefixes
    function Strip_Prefix (Str : String) return String;
-   function Strip_Prefix (Str : Wide_String) return Wide_String;
+   --  Strip Gnat prefixes
 
-   --  Replace dots by underscores
    function Clean_Identifier (Str : String) return String;
+   --  Replace dots by underscores
 
-   --  Variants of enumerate types from package Why.Sinfo
    type Variants is array (Integer range <>) of Unbounded_String;
+   --  Variants of enumerate types from package Why.Sinfo
 
    ----------------------
    -- Clean_Identifier --
@@ -63,20 +58,6 @@ package body Xtree_Why_AST is
       end loop;
       return Res;
    end Clean_Identifier;
-
-   -------------------------------------
-   -- To_Wide_String (Unbound_String) --
-   -------------------------------------
-
-   function To_Wide_String (S : Unbounded_String) return Wide_String is
-     (To_Wide_String (To_String (S)));
-
-   ---------------------------------------
-   -- To_Unbounded_String (Wide_String) --
-   ---------------------------------------
-
-   function To_Unbounded_String (S : Wide_String) return Unbounded_String is
-     (To_Unbounded_String (To_String (S)));
 
    ------------------
    -- Strip_Prefix --
@@ -105,16 +86,13 @@ package body Xtree_Why_AST is
       end if;
    end Strip_Prefix;
 
-   function Strip_Prefix (Str : Wide_String) return Wide_String is
-     (To_Wide_String (Strip_Prefix (To_String (Str))));
-
    -----------------------------------
    -- Print Ada conversions to Json --
    -----------------------------------
 
    generic
       type T is (<>);
-      Name : Wide_String;
+      Name : String;
    procedure Print_Ada_Enum_To_Json (O : in out Output_Record);
    --  This procedure, when instantiated, will print to O a serialization
    --  routine for an enumeration type T called Name. It assumes that
@@ -139,7 +117,7 @@ package body Xtree_Why_AST is
 
    procedure Print_Ada_Enum_To_Json (O : in out Output_Record) is
 
-      function EW_Mixed_Image (Val : T) return Wide_String;
+      function EW_Mixed_Image (Val : T) return String;
       --  Given an enumeration value Val of the form "EW_Enum_Val" it returns
       --  its wide string representation with the "EW" prefix in upper case and
       --  the rest of the string in mixed case, so exactly as it would appear
@@ -149,12 +127,12 @@ package body Xtree_Why_AST is
       -- EW_Mixed_Image --
       --------------------
 
-      function EW_Mixed_Image (Val : T) return Wide_String is
+      function EW_Mixed_Image (Val : T) return String is
          Result : String := Val'Img;
       begin
          pragma Assert (Result (1 .. 3) = "EW_");
          To_Mixed (Result (4 .. Result'Last));
-         return To_Wide_String (Result);
+         return Result;
       end EW_Mixed_Image;
 
    --  Start of processing for Print_Ada_Enum_To_Json
@@ -172,7 +150,7 @@ package body Xtree_Why_AST is
             Relative_Indent (O, 3);
             for E in T'Range loop
                P (O, "when " & EW_Mixed_Image (E) & " =>");
-               P (O, Integer'Wide_Image (E'Enum_Rep));
+               P (O, Integer'Image (E'Enum_Rep));
                if E /= T'Last then
                   PL (O, ",");
                end if;
@@ -249,9 +227,8 @@ package body Xtree_Why_AST is
          PL (O, "Append (Res, Create (Why_Node_Kind'Image (Node.Kind)));");
          for FI of Common_Fields.Fields loop
             declare
-               Typ_Name : constant Wide_String := To_Wide_String
-                 (Clean_Identifier
-                    (To_String (Type_Name (FI, Opaque))));
+               Typ_Name : constant String :=
+                 Clean_Identifier (Type_Name (FI, Opaque));
             begin
                PL (O, "Append (Res, " &
                      Typ_Name & "_To_Json (Node." & Field_Name (FI) &
@@ -269,9 +246,8 @@ package body Xtree_Why_AST is
                else
                   for FI of Why_Tree_Info (Kind).Fields loop
                      declare
-                        Field_Type : constant Wide_String := To_Wide_String
-                          (Clean_Identifier
-                             (To_String (Type_Name (FI, Opaque))));
+                        Field_Type : constant String :=
+                          Clean_Identifier (Type_Name (FI, Opaque));
                      begin
                         PL (O, "Append (Res, " & Field_Type & "_To_Json");
                         PL (O, "   (Node." & Field_Name (FI) & "));");
@@ -299,7 +275,7 @@ package body Xtree_Why_AST is
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor);
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
-      procedure Print_Subtypes (Prefix : Wide_String);
+      procedure Print_Subtypes (Prefix : String);
 
       ----------------------------
       -- Process_One_Class_Kind --
@@ -316,7 +292,8 @@ package body Xtree_Why_AST is
       ---------------------------
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
+         S : constant Xkind_Tables.String_Access :=
+           String_Lists.Element (Position);
       begin
          Print_Subtypes (S.all);
       end Process_One_Node_Kind;
@@ -325,13 +302,13 @@ package body Xtree_Why_AST is
       -- Print_Subtypes --
       --------------------
 
-      procedure Print_Subtypes (Prefix : Wide_String) is
+      procedure Print_Subtypes (Prefix : String) is
       begin
          for Multiplicity in Id_Multiplicity'Range loop
             declare
-               Name : constant Wide_String :=
+               Name : constant String :=
                  Id_Subtype (Prefix, Opaque, Multiplicity);
-               Why_Node_Name : constant Wide_String :=
+               Why_Node_Name : constant String :=
                  Id_Subtype ("Why_Node", Derived, Multiplicity);
             begin
                PL (O, "function " & Name & "_To_Json");
@@ -366,9 +343,9 @@ package body Xtree_Why_AST is
    -- OCaml auxiliaries --
    -----------------------
 
-   function OCaml_Lower_Identifier (Str : String) return Wide_String;
+   function OCaml_Lower_Identifier (Str : String) return String;
 
-   function OCaml_Upper_Identifier (Str : String) return Wide_String;
+   function OCaml_Upper_Identifier (Str : String) return String;
 
    function Kind_To_String (Kind : Why_Node_Kind) return String;
 
@@ -376,7 +353,7 @@ package body Xtree_Why_AST is
    -- OCaml_Lower_Identifier --
    ----------------------------
 
-   function OCaml_Lower_Identifier (Str : String) return Wide_String is
+   function OCaml_Lower_Identifier (Str : String) return String is
       Str1 : String := Clean_Identifier (Str);
    begin
       To_Lower (Str1);
@@ -395,7 +372,7 @@ package body Xtree_Why_AST is
            else
               Str1);
       begin
-         return To_Wide_String (Str2);
+         return Str2;
       end;
    end OCaml_Lower_Identifier;
 
@@ -403,14 +380,14 @@ package body Xtree_Why_AST is
    -- OCaml_Upper_Identifier --
    ----------------------------
 
-   function OCaml_Upper_Identifier (Str : String) return Wide_String is
+   function OCaml_Upper_Identifier (Str : String) return String is
       Str1 : String := Clean_Identifier (Str);
    begin
       To_Lower (Str1);
       if Str1'Length > 0 then
          Str1 (Str1'First) := To_Upper (Str1 (Str1'First));
       end if;
-      return To_Wide_String (Str1);
+      return Str1;
    end OCaml_Upper_Identifier;
 
    --------------------
@@ -527,11 +504,12 @@ package body Xtree_Why_AST is
       -------------------------
 
       procedure Print_Kind_Tag_Type (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
-         Name : constant String := To_String (Strip_Prefix (S.all));
-         Type_Tag_Name : constant Wide_String :=
+         S : constant Xkind_Tables.String_Access :=
+           String_Lists.Element (Position);
+         Name : constant String := Strip_Prefix (S.all);
+         Type_Tag_Name : constant String :=
            OCaml_Lower_Identifier (Name & "_tag");
-         Variant_Name  : constant Wide_String := OCaml_Upper_Identifier (Name);
+         Variant_Name  : constant String := OCaml_Upper_Identifier (Name);
       begin
          if S.all /= "W_Unused_At_Start" then
             PL (O, "type " & Type_Tag_Name & " = [`" & Variant_Name & "]");
@@ -544,9 +522,8 @@ package body Xtree_Why_AST is
 
       procedure Print_Class_Tag_Type (Position : Class_Lists.Cursor) is
          Class : constant Class_Info := Class_Lists.Element (Position);
-         Type_Tag_Name : constant Wide_String :=
-           OCaml_Lower_Identifier
-           (To_String (Strip_Prefix (Class.Name.all) & "_tag"));
+         Type_Tag_Name : constant String :=
+           OCaml_Lower_Identifier (Strip_Prefix (Class.Name.all) & "_tag");
       begin
          PL (O, "type " & Type_Tag_Name & " = [");
          for Kind in Class_First (Class) .. Class_Last (Class) loop
@@ -578,14 +555,15 @@ package body Xtree_Why_AST is
 
       procedure Print_Kind_Subtypes (Position : String_Lists.Cursor);
       procedure Print_Class_Subtypes (Position : Class_Lists.Cursor);
-      procedure Print_Subtypes (Prefix : Wide_String);
+      procedure Print_Subtypes (Prefix : String);
 
       -------------------------
       -- Print_Kind_Subtypes --
       -------------------------
 
       procedure Print_Kind_Subtypes (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
+         S : constant Xkind_Tables.String_Access :=
+           String_Lists.Element (Position);
       begin
          if S.all /= "W_Unused_At_Start" then
             Print_Subtypes (S.all);
@@ -612,18 +590,19 @@ package body Xtree_Why_AST is
       -- Print_Subtypes --
       --------------------
 
-      procedure Print_Subtypes (Prefix : Wide_String) is
+      procedure Print_Subtypes (Prefix : String) is
       begin
          for Multiplicity in Id_Multiplicity'Range loop
             declare
-               Name : constant Wide_String := OCaml_Lower_Identifier
-                  (To_String
-                     (Strip_Prefix
-                        (Id_Subtype (Prefix, Derived, Multiplicity))));
-               Alias : constant Wide_String := OCaml_Lower_Identifier
-                 (To_String (Id_Subtype ("why_node", Derived, Multiplicity)));
-               Type_Tag_Str : constant Wide_String := OCaml_Lower_Identifier
-                 (Strip_Prefix (To_String (Prefix)) & "_tag");
+               Name : constant String :=
+                 OCaml_Lower_Identifier
+                   (Strip_Prefix
+                      (Id_Subtype (Prefix, Derived, Multiplicity)));
+               Alias : constant String :=
+                 OCaml_Lower_Identifier
+                   (Id_Subtype ("why_node", Derived, Multiplicity));
+               Type_Tag_Str : constant String :=
+                 OCaml_Lower_Identifier (Strip_Prefix (Prefix) & "_tag");
             begin
                PL (O, "and " & Name & " = " & Type_Tag_Str & " " & Alias);
             end;
@@ -659,10 +638,11 @@ package body Xtree_Why_AST is
       begin
          for FI of Common_Fields.Fields loop
             declare
-               Field : constant Wide_String := OCaml_Lower_Identifier
-                 (To_String (Strip_Prefix (Field_Name (FI))));
-               Typ   : constant Wide_String := OCaml_Lower_Identifier
-                 (To_String (Strip_Prefix (Type_Name (FI, Opaque))));
+               Field : constant String :=
+                 OCaml_Lower_Identifier (Strip_Prefix (Field_Name (FI)));
+               Typ   : constant String :=
+                 OCaml_Lower_Identifier
+                   (Strip_Prefix (Type_Name (FI, Opaque)));
             begin
                if not First then
                   P (O, "; ");
@@ -691,10 +671,12 @@ package body Xtree_Why_AST is
                   Relative_Indent (O, 2);
                   for FI of Why_Tree_Info (Kind).Fields loop
                      declare
-                        Field : constant Wide_String := OCaml_Lower_Identifier
-                          (To_String (Strip_Prefix (Field_Name (FI))));
-                        Typ   : constant Wide_String := OCaml_Lower_Identifier
-                          (To_String (Strip_Prefix (Type_Name (FI, Derived))));
+                        Field : constant String :=
+                          OCaml_Lower_Identifier
+                            (Strip_Prefix (Field_Name (FI)));
+                        Typ   : constant String :=
+                          OCaml_Lower_Identifier
+                            (Strip_Prefix (Type_Name (FI, Derived)));
                      begin
                         if not First then
                            P (O, "; ");
@@ -736,11 +718,10 @@ package body Xtree_Why_AST is
    begin
       for I in Res'Range loop
          declare
-            Field : constant Unbounded_String := To_Unbounded_String
-              (To_String
-                 (OCaml_Lower_Identifier
-                    (To_String
-                       (Strip_Prefix (Field_Name (Element (C)))))));
+            Field : constant Unbounded_String :=
+              To_Unbounded_String
+                (OCaml_Lower_Identifier
+                   (Strip_Prefix (Field_Name (Element (C)))));
          begin
             Res (I) := Field;
             Next (C);
@@ -762,11 +743,10 @@ package body Xtree_Why_AST is
    begin
       for I in Res'Range loop
          declare
-            Typ : constant Unbounded_String := To_Unbounded_String
-              (To_String
-                 (OCaml_Lower_Identifier
-                    (To_String (Strip_Prefix (Type_Name (Element (C), Opaque)))
-                       & Suffix)));
+            Typ : constant Unbounded_String :=
+              To_Unbounded_String
+                (OCaml_Lower_Identifier
+                   (Strip_Prefix (Type_Name (Element (C), Opaque)) & Suffix));
          begin
             Res (I) := Typ;
             Next (C);
@@ -792,12 +772,9 @@ package body Xtree_Why_AST is
             declare
                Kind_Str : constant String := Why_Node_Kind'Image (Kind);
                Info     : constant Why_Node_Info := Why_Tree_Info (Kind);
-               Variant_Name : constant Wide_String :=
+               Variant_Name : constant String :=
                  OCaml_Upper_Identifier
-                 (To_String
-                    (Strip_Prefix
-                       (To_Wide_String
-                          (Why_Node_Kind'Image (Kind)))));
+                   (Strip_Prefix (Why_Node_Kind'Image (Kind)));
                Variant_Field_Names : constant Variants :=
                  OCaml_Field_Names (Info.Fields);
                Variant_Field_Converters : constant Variants :=
@@ -806,12 +783,12 @@ package body Xtree_Why_AST is
                if Kind /= W_Unused_At_Start then
                   --  Pattern matching
                   P (O, "| `List [");
-                  P (O, "`String """ & To_Wide_String (Kind_Str) & """");
+                  P (O, "`String """ & Kind_Str & """");
                   for I in Common_Field_Names'Range loop
-                     P (O, "; " & To_Wide_String ((Common_Field_Names (I))));
+                     P (O, "; " & To_String (Common_Field_Names (I)));
                   end loop;
                   for I in Variant_Field_Names'Range loop
-                     P (O, "; " & To_Wide_String (Variant_Field_Names (I)));
+                     P (O, "; " & To_String (Variant_Field_Names (I)));
                   end loop;
                   PL (O, "] ->");
                   begin
@@ -821,11 +798,11 @@ package body Xtree_Why_AST is
                      begin
                         Relative_Indent (O, 2);
                         for I in Common_Field_Names'Range loop
-                           P (O, To_Wide_String (Common_Field_Names (I)));
+                           P (O, To_String (Common_Field_Names (I)));
                            P (O, " = ");
-                           P (O, To_Wide_String (Common_Field_Converters (I)));
+                           P (O, To_String (Common_Field_Converters (I)));
                            P (O, " ");
-                           P (O, To_Wide_String (Common_Field_Names (I)));
+                           P (O, To_String (Common_Field_Names (I)));
                            PL (O, ";");
                         end loop;
                         Relative_Indent (O, -2);
@@ -837,12 +814,11 @@ package body Xtree_Why_AST is
                         begin
                            Relative_Indent (O, 2);
                            for I in Variant_Field_Names'Range loop
-                              P (O, To_Wide_String (Variant_Field_Names (I)));
+                              P (O, To_String (Variant_Field_Names (I)));
                               P (O, " = ");
-                              P (O, To_Wide_String
-                                   (Variant_Field_Converters (I)));
+                              P (O, To_String (Variant_Field_Converters (I)));
                               P (O, " ");
-                              P (O, To_Wide_String (Variant_Field_Names (I)));
+                              P (O, To_String (Variant_Field_Names (I)));
                               PL (O, ";");
                            end loop;
                            Relative_Indent (O, -2);
@@ -872,14 +848,15 @@ package body Xtree_Why_AST is
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor);
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
-      procedure Print_Subtypes (Prefix : Wide_String);
+      procedure Print_Subtypes (Prefix : String);
 
       ---------------------------
       -- Process_One_Node_Kind --
       ---------------------------
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
+         S : constant Xkind_Tables.String_Access :=
+           String_Lists.Element (Position);
       begin
          if S.all /= "W_Unused_At_Start" then
             Print_Subtypes (S.all);
@@ -906,19 +883,21 @@ package body Xtree_Why_AST is
       -- Print_Subtypes --
       --------------------
 
-      procedure Print_Subtypes (Prefix : Wide_String) is
+      procedure Print_Subtypes (Prefix : String) is
       begin
          for Multiplicity in Id_Multiplicity'Range loop
             declare
-               Prefix_Mult : constant Wide_String :=
+               Prefix_Mult : constant String :=
                  Id_Subtype (Prefix, Opaque, Multiplicity);
-               Name        : constant Wide_String := OCaml_Lower_Identifier
-                 (To_String (Strip_Prefix (Prefix_Mult) & "_from_json"));
-               Alias       : constant Wide_String := OCaml_Lower_Identifier
-                 (To_String (Id_Subtype ("why_node", Derived, Multiplicity)
-                               & "_from_json"));
-               Coercion    : constant Wide_String := OCaml_Lower_Identifier
-                 (To_String (Strip_Prefix (Prefix) & "_coercion"));
+               Name        : constant String :=
+                 OCaml_Lower_Identifier
+                   (Strip_Prefix (Prefix_Mult) & "_from_json");
+               Alias       : constant String :=
+                 OCaml_Lower_Identifier
+                   (Id_Subtype ("why_node", Derived, Multiplicity) &
+                    "_from_json");
+               Coercion    : constant String :=
+                 OCaml_Lower_Identifier (Strip_Prefix (Prefix) & "_coercion");
             begin
                PL (O, "and " & Name & " json =" & "  "
                      & Alias & " " & Coercion
@@ -955,13 +934,14 @@ package body Xtree_Why_AST is
       -----------------------------
 
       procedure Print_Kind_Tag_Coercion (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
-         Name : constant String := To_String (Strip_Prefix (S.all));
-         Coercion : constant Wide_String :=
+         S : constant Xkind_Tables.String_Access :=
+           String_Lists.Element (Position);
+         Name : constant String := Strip_Prefix (S.all);
+         Coercion : constant String :=
            OCaml_Lower_Identifier (Name & "_coercion");
-         Res_Type : constant Wide_String :=
+         Res_Type : constant String :=
            OCaml_Lower_Identifier (Name & "_tag") & " why_node";
-         Variant  : constant Wide_String :=
+         Variant  : constant String :=
            OCaml_Upper_Identifier (Name);
       begin
          if S.all /= "W_Unused_At_Start" then
@@ -985,10 +965,10 @@ package body Xtree_Why_AST is
 
       procedure Print_Kind_Class_Coercion (Position : Class_Lists.Cursor) is
          Class : constant Class_Info := Class_Lists.Element (Position);
-         Coercion : constant Wide_String := OCaml_Lower_Identifier
-           (Strip_Prefix (To_String (Class.Name.all)) & "_coercion");
-         Res_Type : constant Wide_String := OCaml_Lower_Identifier
-           (Strip_Prefix (To_String (Class.Name.all)) & "_tag")
+         Coercion : constant String := OCaml_Lower_Identifier
+           (Strip_Prefix (Class.Name.all) & "_coercion");
+         Res_Type : constant String := OCaml_Lower_Identifier
+           (Strip_Prefix (Class.Name.all) & "_tag")
            & " why_node";
       begin
          P (O, "let " & Coercion);
@@ -1028,16 +1008,16 @@ package body Xtree_Why_AST is
    --------------------------------
 
    procedure Print_OCaml_Enum_From_Json (O : in out Output_Record) is
-      Func_Name : constant Wide_String :=
+      Func_Name : constant String :=
         OCaml_Lower_Identifier (Strip_Prefix (Name) & "_from_json");
-      Type_Name : constant Wide_String :=
+      Type_Name : constant String :=
         OCaml_Lower_Identifier (Strip_Prefix (Name));
    begin
       PL (O, "let " & Func_Name & " : " & Type_Name & " from_json = function");
       begin
          Relative_Indent (O, 2);
          for E in T'Range loop
-            P (O, "| `Int" & Integer'Wide_Image (E'Enum_Rep));
+            P (O, "| `Int" & Integer'Image (E'Enum_Rep));
             PL (O, " -> " & OCaml_Upper_Identifier (Strip_Prefix (E'Img)));
          end loop;
          PL (O, "| json -> unexpected_json "

@@ -74,7 +74,7 @@ package body Xkind_Ids is
       --  Same as Print_Subtypes, but only for the class
       --  pointed by Position.
 
-      procedure Print_Subtypes (Prefix : Wide_String);
+      procedure Print_Subtypes (Prefix : String);
       --  Print subtypes for a given node kind whose prefix
       --  is passed as parameter.
 
@@ -97,7 +97,7 @@ package body Xkind_Ids is
       ---------------------------
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
+         S : constant String_Access := String_Lists.Element (Position);
       begin
          Print_Subtypes (S.all);
 
@@ -110,7 +110,7 @@ package body Xkind_Ids is
       -- Print_Subtypes --
       --------------------
 
-      procedure Print_Subtypes (Prefix : Wide_String) is
+      procedure Print_Subtypes (Prefix : String) is
       begin
          for Multiplicity in Id_Multiplicity'Range loop
             if Kind = Derived and then Multiplicity = Id_One then
