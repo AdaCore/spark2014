@@ -4,9 +4,9 @@
 <why3session shape_version="6">
 <prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
 <prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<file format="whyml" proved="true">
+<file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="obj"/>
-<path name="gnatprove"/><path name="ada___spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic.mlw"/>
+<path name="gnatprove"/><path name="ada___spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic.gnat-json"/>
 <theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" proved="true">
  <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
