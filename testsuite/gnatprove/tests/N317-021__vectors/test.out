@@ -4,10 +4,10 @@ a-cfinve.ads:316:51: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cfinve.ads:316:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
 a-cfinve.ads:316:51: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:358:73: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
+a-cfinve.ads:358:73: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:358:73: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
+a-cfinve.ads:358:73: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
 a-cfinve.ads:358:73: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cfinve.ads:358:73: medium: overflow check might fail, in instantiation at indefinite_bounded_tagged.ads:12
-a-cfinve.ads:358:73: medium: overflow check might fail, in instantiation at indefinite_unbounded_tagged.ads:14
 a-cfinve.ads:391:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:391:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:391:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
@@ -70,6 +70,12 @@ a-cofove.ads:581:57: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofove.ads:709:23: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
 a-cofove.ads:745:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
 a-cofove.ads:843:56: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.adb:8
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
@@ -326,848 +332,115 @@ indefinite_bounded.adb:111:30: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded.adb:113:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:115:07: medium: assertion might fail
 indefinite_bounded.ads:13:14: warning: subprogram "Test" has no effect
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_In_Union" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Included" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Included" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Included" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Included" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:832
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:833
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:843
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:843
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:848
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:849
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:849
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:850
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:851
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:852
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:853
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:854
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:855
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:856
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:857
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:858
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:859
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:864
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:864
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:866
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:867
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:868
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:868
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:869
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:869
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:871
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:871
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:872
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:873
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:874
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:875
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:876
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:877
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:878
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:879
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:880
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:881
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:882
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:883
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:884
-indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:885
 indefinite_bounded_tagged.adb:12:07: info: initialization of "V" proved
 indefinite_bounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:15:22: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_bounded_tagged.adb:15:22: medium: assertion might fail, cannot prove Is_Empty (V)
-indefinite_bounded_tagged.adb:16:22: medium: assertion might fail, cannot prove V = (Empty_Vector)
-indefinite_bounded_tagged.adb:16:24: info: function contract not available for proof ("=" might not return)
-indefinite_bounded_tagged.adb:16:26: info: function contract not available for proof ("Empty_Vector" might not return)
+indefinite_bounded_tagged.adb:15:22: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:16:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:17:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:17:22: info: function contract not available for proof ("Capacity" might not return)
 indefinite_bounded_tagged.adb:19:07: info: precondition proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:20:07: info: precondition proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:21:07: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:22:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_bounded_tagged.adb:22:26: info: function contract not available for proof ("Is_Empty" might not return)
+indefinite_bounded_tagged.adb:22:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:23:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:23:22: info: function contract not available for proof ("Length" might not return)
 indefinite_bounded_tagged.adb:24:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:24:22: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.adb:25:22: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:25:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:25:22: medium: assertion might fail, cannot prove Element (V, 1) = F(1)
-indefinite_bounded_tagged.adb:26:22: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:26:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:26:22: medium: assertion might fail, cannot prove Element (V, 2) = F(2)
-indefinite_bounded_tagged.adb:27:22: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:27:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:27:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:27:22: medium: assertion might fail, cannot prove Element (V, 3) = F(3)
 indefinite_bounded_tagged.adb:29:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-indefinite_bounded_tagged.adb:31:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_bounded_tagged.adb:31:26: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_bounded_tagged.adb:32:22: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.adb:32:22: medium: assertion might fail, cannot prove Length (V) = 3
+indefinite_bounded_tagged.adb:31:22: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:32:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:33:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:33:22: info: function contract not available for proof ("Capacity" might not return)
 indefinite_bounded_tagged.adb:36:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-indefinite_bounded_tagged.adb:38:25: medium: assertion might fail, cannot prove not Is_Empty (W)
-indefinite_bounded_tagged.adb:38:29: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_bounded_tagged.adb:39:25: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.adb:39:25: medium: assertion might fail, cannot prove Length (W) = 3
+indefinite_bounded_tagged.adb:38:25: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:39:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:40:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:40:25: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.adb:41:25: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:41:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:41:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
-indefinite_bounded_tagged.adb:42:25: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:42:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:42:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
-indefinite_bounded_tagged.adb:43:25: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:43:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:43:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
 indefinite_bounded_tagged.adb:45:10: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:46:25: medium: assertion might fail, cannot prove not Is_Empty (W)
-indefinite_bounded_tagged.adb:46:29: info: function contract not available for proof ("Is_Empty" might not return)
+indefinite_bounded_tagged.adb:46:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:47:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:47:25: info: function contract not available for proof ("Length" might not return)
 indefinite_bounded_tagged.adb:48:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:48:25: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.adb:49:25: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:49:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:49:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
-indefinite_bounded_tagged.adb:50:25: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:50:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:50:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
-indefinite_bounded_tagged.adb:51:25: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:51:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:51:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
-indefinite_bounded_tagged.adb:52:25: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:52:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:52:25: medium: assertion might fail, cannot prove Element (W, 4) = F(1)
-indefinite_bounded_tagged.adb:52:25: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_bounded_tagged.adb:53:25: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:53:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:53:25: medium: assertion might fail, cannot prove Element (W, 5) = F(2)
-indefinite_bounded_tagged.adb:53:25: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_bounded_tagged.adb:54:25: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:54:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:54:25: medium: assertion might fail, cannot prove Element (W, 6) = F(3)
-indefinite_bounded_tagged.adb:54:25: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
 indefinite_bounded_tagged.adb:56:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-indefinite_bounded_tagged.adb:57:25: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_bounded_tagged.adb:57:25: medium: assertion might fail, cannot prove Is_Empty (W)
-indefinite_bounded_tagged.adb:58:25: medium: assertion might fail, cannot prove W = (Empty_Vector)
-indefinite_bounded_tagged.adb:58:27: info: function contract not available for proof ("=" might not return)
-indefinite_bounded_tagged.adb:58:29: info: function contract not available for proof ("Empty_Vector" might not return)
+indefinite_bounded_tagged.adb:57:25: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:58:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:61:07: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:62:22: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:62:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:62:22: medium: assertion might fail, cannot prove Element (V, 1) = F(1)
-indefinite_bounded_tagged.adb:63:22: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:63:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:63:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:63:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_bounded_tagged.adb:64:22: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:64:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:64:22: medium: assertion might fail, cannot prove Element (V, 3) = F(3)
 indefinite_bounded_tagged.adb:66:07: info: precondition proved (CVC4: 4 VC)
-indefinite_bounded_tagged.adb:67:22: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:67:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:67:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_bounded_tagged.adb:68:22: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:68:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:68:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_bounded_tagged.adb:69:22: info: function contract not available for proof ("Element" might not return)
 indefinite_bounded_tagged.adb:69:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:69:22: medium: assertion might fail, cannot prove Element (V, 3) = F(1)
-indefinite_bounded_tagged.adb:71:07: medium: precondition might fail, cannot prove Length (Container) > 0
-indefinite_bounded_tagged.adb:72:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_bounded_tagged.adb:72:26: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_bounded_tagged.adb:73:22: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.adb:73:22: medium: assertion might fail, cannot prove Length (V) = 2
+indefinite_bounded_tagged.adb:71:07: info: precondition proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:72:22: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:73:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:74:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:74:22: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.adb:75:22: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:75:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:75:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_bounded_tagged.adb:75:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_bounded_tagged.adb:76:22: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:76:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:76:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_bounded_tagged.adb:76:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_bounded_tagged.adb:79:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_bounded_tagged.adb:79:26: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_bounded_tagged.adb:80:22: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.adb:80:22: medium: assertion might fail, cannot prove Length (V) = 2
+indefinite_bounded_tagged.adb:79:22: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:80:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:81:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:81:22: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.adb:82:22: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:82:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:82:22: medium: assertion might fail, cannot prove Element (V, 1) = F(4)
-indefinite_bounded_tagged.adb:82:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_bounded_tagged.adb:83:22: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:83:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:83:22: medium: assertion might fail, cannot prove Element (V, 2) = F(3)
-indefinite_bounded_tagged.adb:83:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
 indefinite_bounded_tagged.adb:85:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:85:22: info: function contract not available for proof ("First_Index" might not return)
-indefinite_bounded_tagged.adb:86:22: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.adb:86:22: medium: assertion might fail, cannot prove Last_Index (V) = 2
+indefinite_bounded_tagged.adb:86:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:87:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:87:22: info: function contract not available for proof ("First_Element" might not return)
 indefinite_bounded_tagged.adb:87:22: info: precondition proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:88:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:88:22: info: function contract not available for proof ("Last_Element" might not return)
 indefinite_bounded_tagged.adb:88:22: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:90:22: info: function contract not available for proof ("Find_Index" might not return)
 indefinite_bounded_tagged.adb:90:22: medium: assertion might fail, cannot prove Find_Index (V, F(0)) = No_Index
-indefinite_bounded_tagged.adb:91:22: info: function contract not available for proof ("Find_Index" might not return)
-indefinite_bounded_tagged.adb:91:22: medium: assertion might fail, cannot prove Find_Index (V, F(4)) = 1
-indefinite_bounded_tagged.adb:92:22: info: function contract not available for proof ("Find_Index" might not return)
+indefinite_bounded_tagged.adb:91:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:92:22: medium: assertion might fail, cannot prove Find_Index (V, F(4), 2) = No_Index
-indefinite_bounded_tagged.adb:94:22: info: function contract not available for proof ("Reverse_Find_Index" might not return)
-indefinite_bounded_tagged.adb:94:22: medium: assertion might fail, cannot prove Reverse_Find_Index (V, F(0)) = No_Index
-indefinite_bounded_tagged.adb:95:22: info: function contract not available for proof ("Reverse_Find_Index" might not return)
-indefinite_bounded_tagged.adb:95:22: medium: assertion might fail, cannot prove Reverse_Find_Index (V, F(4)) = 1
-indefinite_bounded_tagged.adb:96:22: info: function contract not available for proof ("Reverse_Find_Index" might not return)
-indefinite_bounded_tagged.adb:96:22: medium: assertion might fail, cannot prove Reverse_Find_Index (V, F(4), 2) = 1
-indefinite_bounded_tagged.adb:98:22: info: function contract not available for proof ("Contains" might not return)
-indefinite_bounded_tagged.adb:98:22: medium: assertion might fail, cannot prove Contains (V, F(4))
-indefinite_bounded_tagged.adb:99:22: medium: assertion might fail, cannot prove not Contains (V, F(0))
-indefinite_bounded_tagged.adb:99:26: info: function contract not available for proof ("Contains" might not return)
+indefinite_bounded_tagged.adb:94:22: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:95:22: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:96:22: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:98:22: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:99:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:100:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:100:22: info: function contract not available for proof ("Has_Element" might not return)
 indefinite_bounded_tagged.adb:101:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:101:26: info: function contract not available for proof ("Has_Element" might not return)
 indefinite_bounded_tagged.adb:102:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:102:26: info: function contract not available for proof ("Has_Element" might not return)
 indefinite_bounded_tagged.adb:104:22: medium: assertion might fail, cannot prove not Sort.Is_Sorted (V)
-indefinite_bounded_tagged.adb:104:30: info: function contract not available for proof ("Is_Sorted" might not return)
-indefinite_bounded_tagged.adb:106:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_bounded_tagged.adb:106:26: info: function contract not available for proof ("Is_Empty" might not return)
+indefinite_bounded_tagged.adb:106:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:107:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:107:22: info: function contract not available for proof ("Length" might not return)
 indefinite_bounded_tagged.adb:108:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:108:22: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.adb:109:22: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:109:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:109:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_bounded_tagged.adb:109:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_bounded_tagged.adb:110:22: info: function contract not available for proof ("Element" might not return)
+indefinite_bounded_tagged.adb:110:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:110:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_bounded_tagged.adb:110:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_bounded_tagged.adb:111:22: medium: assertion might fail, cannot prove Sort.Is_Sorted (V)
-indefinite_bounded_tagged.adb:111:26: info: function contract not available for proof ("Is_Sorted" might not return)
-indefinite_bounded_tagged.adb:113:07: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_bounded_tagged.adb:113:30: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
+indefinite_bounded_tagged.adb:111:22: info: assertion proved (CVC4: 1 VC)
+indefinite_bounded_tagged.adb:113:07: info: precondition proved (CVC4: 2 VC)
+indefinite_bounded_tagged.adb:113:30: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:115:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:115:22: info: function contract not available for proof ("Capacity" might not return)
 indefinite_bounded_tagged.adb:117:07: medium: assertion might fail
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("<" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("<" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("<=" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("<=" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("<=" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("<=" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("=" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("=" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("=" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("=" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("=" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Constant_Range" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Constant_Range" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Constant_Range" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Constant_Range" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Equal_Except" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Equal_Except" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Equal_Except" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Iter_Has_Element" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Length" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("M_Elements_Reversed" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("M_Elements_Swapped" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Model" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:127
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:128
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:130
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:145
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:161
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:162
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:164
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:165
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:167
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:178
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:181
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:184
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:194
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:207
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:211
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:211
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:219
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:220
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:221
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:223
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:242
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:242
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:246
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:250
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:257
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:258
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:258
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:265
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:267
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:267
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:269
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:276
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:276
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:277
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:277
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:277
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:284
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:284
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:285
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:294
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:294
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:296
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:300
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:304
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:305
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:306
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:316
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:316
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:317
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:319
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:321
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:325
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:326
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:327
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:333
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:334
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:335
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:336
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:338
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:343
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:344
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:345
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:347
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:348
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:357
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:357
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:358
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:360
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:364
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:365
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:366
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:372
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:376
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:377
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:378
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:380
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:391
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:391
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:392
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:394
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:396
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:400
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:401
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:402
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:409
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:410
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:417
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:418
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:419
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:421
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:426
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:426
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:428
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:432
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:433
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:434
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:436
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:440
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:441
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:442
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:444
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:445
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:449
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:449
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:451
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:455
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:459
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:460
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:461
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:463
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:472
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:472
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:474
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:478
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:479
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:486
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:487
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:488
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:490
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:496
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:496
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:498
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:502
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:502
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:506
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:507
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:508
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:509
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:511
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:514
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:518
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:518
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:520
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:524
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:524
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:529
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:529
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:537
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:537
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:539
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:543
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:543
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:548
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:549
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:550
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:552
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:557
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:557
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:559
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:563
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:564
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:565
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:571
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:572
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:573
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:575
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:585
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:585
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:587
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:588
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:592
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:593
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:594
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:602
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:603
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:606
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:610
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:611
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:612
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:614
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:619
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:621
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:625
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:626
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:627
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:629
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:638
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:641
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:645
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:646
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:647
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:649
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:654
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:656
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:660
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:660
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:668
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:671
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:675
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:675
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:679
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:679
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:688
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:688
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:689
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:689
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:691
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:691
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:700
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:702
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:707
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:707
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:712
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:715
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:715
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:729
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:730
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:731
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:733
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:741
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:745
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:749
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:750
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:766
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:767
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:769
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:770
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:780
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:784
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:788
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:789
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:792
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:795
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:805
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:806
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:808
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:818
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:83
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:96
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:109
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:110
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:120
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:121
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:131
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:132
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:145
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:161
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:175
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:178
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:179
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:192
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:195
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:196
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:211
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:229
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:238
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:269
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:272
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:281
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:282
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:284
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:285
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:286
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:298
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:299
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:300
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:302
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:304
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:309
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:313
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:324
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:326
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:327
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:332
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:336
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:353
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:361
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:52
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:83
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:92
 indefinite_bounded_tagged.ads:15:40: medium: range check might fail
 indefinite_bounded_tagged.ads:19:14: warning: subprogram "Test" has no effect
 indefinite_unbounded.adb:11:07: info: initialization of "V" proved
@@ -1271,832 +544,107 @@ indefinite_unbounded.adb:104:07: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded.adb:104:30: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded.adb:106:07: medium: assertion might fail
 indefinite_unbounded.ads:15:14: warning: subprogram "Test" has no effect
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_In_Union" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Included" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Included" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Included" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Included" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("M_Elements_Sorted" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:832
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:833
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:843
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:843
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:848
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:849
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:849
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:850
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:851
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:852
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:853
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:854
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:855
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:856
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:857
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:858
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:859
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:864
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:864
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:866
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:867
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:868
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:868
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:869
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:869
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:871
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:871
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:872
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:873
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:874
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:875
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:876
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:877
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:878
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:879
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:880
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:881
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:882
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:883
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:884
-indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:885
 indefinite_unbounded_tagged.adb:12:07: info: initialization of "V" proved
 indefinite_unbounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:15:22: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_unbounded_tagged.adb:15:22: medium: assertion might fail, cannot prove Is_Empty (V)
-indefinite_unbounded_tagged.adb:16:22: medium: assertion might fail, cannot prove V = (Empty_Vector)
-indefinite_unbounded_tagged.adb:16:24: info: function contract not available for proof ("=" might not return)
-indefinite_unbounded_tagged.adb:16:26: info: function contract not available for proof ("Empty_Vector" might not return)
+indefinite_unbounded_tagged.adb:15:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:16:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:18:07: info: precondition proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:19:07: info: precondition proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:20:07: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:21:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_unbounded_tagged.adb:21:26: info: function contract not available for proof ("Is_Empty" might not return)
+indefinite_unbounded_tagged.adb:21:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:22:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:22:22: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:23:22: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:23:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:23:22: medium: assertion might fail, cannot prove Element (V, 1) = F(1)
-indefinite_unbounded_tagged.adb:24:22: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:24:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:24:22: medium: assertion might fail, cannot prove Element (V, 2) = F(2)
-indefinite_unbounded_tagged.adb:25:22: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:25:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:25:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:25:22: medium: assertion might fail, cannot prove Element (V, 3) = F(3)
 indefinite_unbounded_tagged.adb:27:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-indefinite_unbounded_tagged.adb:29:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_unbounded_tagged.adb:29:26: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_unbounded_tagged.adb:30:22: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:30:22: medium: assertion might fail, cannot prove Length (V) = 3
+indefinite_unbounded_tagged.adb:29:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:30:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:31:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:31:22: info: function contract not available for proof ("Capacity" might not return)
 indefinite_unbounded_tagged.adb:34:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-indefinite_unbounded_tagged.adb:36:25: medium: assertion might fail, cannot prove not Is_Empty (W)
-indefinite_unbounded_tagged.adb:36:29: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_unbounded_tagged.adb:37:25: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:37:25: medium: assertion might fail, cannot prove Length (W) = 3
-indefinite_unbounded_tagged.adb:38:25: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:36:25: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:37:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:38:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:38:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
-indefinite_unbounded_tagged.adb:39:25: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:39:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:39:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
-indefinite_unbounded_tagged.adb:40:25: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:40:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:40:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
 indefinite_unbounded_tagged.adb:42:10: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:43:25: medium: assertion might fail, cannot prove not Is_Empty (W)
-indefinite_unbounded_tagged.adb:43:29: info: function contract not available for proof ("Is_Empty" might not return)
+indefinite_unbounded_tagged.adb:43:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:44:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:44:25: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:45:25: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:45:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:45:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
-indefinite_unbounded_tagged.adb:46:25: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:46:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:46:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
-indefinite_unbounded_tagged.adb:47:25: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:47:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:47:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
-indefinite_unbounded_tagged.adb:48:25: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:48:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:48:25: medium: assertion might fail, cannot prove Element (W, 4) = F(1)
-indefinite_unbounded_tagged.adb:48:25: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_unbounded_tagged.adb:49:25: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:49:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:49:25: medium: assertion might fail, cannot prove Element (W, 5) = F(2)
-indefinite_unbounded_tagged.adb:49:25: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_unbounded_tagged.adb:50:25: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:50:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:50:25: medium: assertion might fail, cannot prove Element (W, 6) = F(3)
-indefinite_unbounded_tagged.adb:50:25: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
 indefinite_unbounded_tagged.adb:52:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-indefinite_unbounded_tagged.adb:53:25: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_unbounded_tagged.adb:53:25: medium: assertion might fail, cannot prove Is_Empty (W)
-indefinite_unbounded_tagged.adb:54:25: medium: assertion might fail, cannot prove W = (Empty_Vector)
-indefinite_unbounded_tagged.adb:54:27: info: function contract not available for proof ("=" might not return)
-indefinite_unbounded_tagged.adb:54:29: info: function contract not available for proof ("Empty_Vector" might not return)
+indefinite_unbounded_tagged.adb:53:25: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:54:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:57:07: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:58:22: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:58:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:58:22: medium: assertion might fail, cannot prove Element (V, 1) = F(1)
-indefinite_unbounded_tagged.adb:59:22: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:59:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:59:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:59:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_unbounded_tagged.adb:60:22: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:60:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:60:22: medium: assertion might fail, cannot prove Element (V, 3) = F(3)
 indefinite_unbounded_tagged.adb:62:07: info: precondition proved (CVC4: 4 VC)
-indefinite_unbounded_tagged.adb:63:22: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:63:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:63:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_unbounded_tagged.adb:64:22: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:64:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:64:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_unbounded_tagged.adb:65:22: info: function contract not available for proof ("Element" might not return)
 indefinite_unbounded_tagged.adb:65:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:65:22: medium: assertion might fail, cannot prove Element (V, 3) = F(1)
-indefinite_unbounded_tagged.adb:67:07: medium: precondition might fail, cannot prove Length (Container) > 0
-indefinite_unbounded_tagged.adb:68:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_unbounded_tagged.adb:68:26: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_unbounded_tagged.adb:69:22: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:69:22: medium: assertion might fail, cannot prove Length (V) = 2
-indefinite_unbounded_tagged.adb:70:22: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:67:07: info: precondition proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:68:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:69:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:70:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:70:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_unbounded_tagged.adb:70:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_unbounded_tagged.adb:71:22: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:71:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:71:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_unbounded_tagged.adb:71:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_unbounded_tagged.adb:74:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_unbounded_tagged.adb:74:26: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_unbounded_tagged.adb:75:22: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:75:22: medium: assertion might fail, cannot prove Length (V) = 2
-indefinite_unbounded_tagged.adb:76:22: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:74:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:75:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:76:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:76:22: medium: assertion might fail, cannot prove Element (V, 1) = F(4)
-indefinite_unbounded_tagged.adb:76:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_unbounded_tagged.adb:77:22: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:77:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:77:22: medium: assertion might fail, cannot prove Element (V, 2) = F(3)
-indefinite_unbounded_tagged.adb:77:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
 indefinite_unbounded_tagged.adb:79:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:79:22: info: function contract not available for proof ("First_Index" might not return)
-indefinite_unbounded_tagged.adb:80:22: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.adb:80:22: medium: assertion might fail, cannot prove Last_Index (V) = 2
+indefinite_unbounded_tagged.adb:80:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:81:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:81:22: info: function contract not available for proof ("First_Element" might not return)
 indefinite_unbounded_tagged.adb:81:22: info: precondition proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:82:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:82:22: info: function contract not available for proof ("Last_Element" might not return)
 indefinite_unbounded_tagged.adb:82:22: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:84:22: info: function contract not available for proof ("Find_Index" might not return)
 indefinite_unbounded_tagged.adb:84:22: medium: assertion might fail, cannot prove Find_Index (V, F(0)) = No_Index
-indefinite_unbounded_tagged.adb:85:22: info: function contract not available for proof ("Find_Index" might not return)
-indefinite_unbounded_tagged.adb:85:22: medium: assertion might fail, cannot prove Find_Index (V, F(4)) = 1
-indefinite_unbounded_tagged.adb:86:22: info: function contract not available for proof ("Find_Index" might not return)
+indefinite_unbounded_tagged.adb:85:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:86:22: medium: assertion might fail, cannot prove Find_Index (V, F(4), 2) = No_Index
-indefinite_unbounded_tagged.adb:88:22: info: function contract not available for proof ("Reverse_Find_Index" might not return)
-indefinite_unbounded_tagged.adb:88:22: medium: assertion might fail, cannot prove Reverse_Find_Index (V, F(0)) = No_Index
-indefinite_unbounded_tagged.adb:89:22: info: function contract not available for proof ("Reverse_Find_Index" might not return)
-indefinite_unbounded_tagged.adb:89:22: medium: assertion might fail, cannot prove Reverse_Find_Index (V, F(4)) = 1
-indefinite_unbounded_tagged.adb:90:22: info: function contract not available for proof ("Reverse_Find_Index" might not return)
-indefinite_unbounded_tagged.adb:90:22: medium: assertion might fail, cannot prove Reverse_Find_Index (V, F(4), 2) = 1
-indefinite_unbounded_tagged.adb:92:22: info: function contract not available for proof ("Contains" might not return)
-indefinite_unbounded_tagged.adb:92:22: medium: assertion might fail, cannot prove Contains (V, F(4))
-indefinite_unbounded_tagged.adb:93:22: medium: assertion might fail, cannot prove not Contains (V, F(0))
-indefinite_unbounded_tagged.adb:93:26: info: function contract not available for proof ("Contains" might not return)
+indefinite_unbounded_tagged.adb:88:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:89:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:90:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:92:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:93:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:94:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:94:22: info: function contract not available for proof ("Has_Element" might not return)
 indefinite_unbounded_tagged.adb:95:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:95:26: info: function contract not available for proof ("Has_Element" might not return)
 indefinite_unbounded_tagged.adb:96:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:96:26: info: function contract not available for proof ("Has_Element" might not return)
 indefinite_unbounded_tagged.adb:98:22: medium: assertion might fail, cannot prove not Sort.Is_Sorted (V)
-indefinite_unbounded_tagged.adb:98:30: info: function contract not available for proof ("Is_Sorted" might not return)
-indefinite_unbounded_tagged.adb:100:22: medium: assertion might fail, cannot prove not Is_Empty (V)
-indefinite_unbounded_tagged.adb:100:26: info: function contract not available for proof ("Is_Empty" might not return)
+indefinite_unbounded_tagged.adb:100:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:101:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:101:22: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.adb:102:22: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:102:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:102:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_unbounded_tagged.adb:102:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_unbounded_tagged.adb:103:22: info: function contract not available for proof ("Element" might not return)
+indefinite_unbounded_tagged.adb:103:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:103:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_unbounded_tagged.adb:103:22: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_unbounded_tagged.adb:104:22: medium: assertion might fail, cannot prove Sort.Is_Sorted (V)
-indefinite_unbounded_tagged.adb:104:26: info: function contract not available for proof ("Is_Sorted" might not return)
-indefinite_unbounded_tagged.adb:106:07: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
-indefinite_unbounded_tagged.adb:106:30: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container)
+indefinite_unbounded_tagged.adb:104:22: info: assertion proved (CVC4: 1 VC)
+indefinite_unbounded_tagged.adb:106:07: info: precondition proved (CVC4: 2 VC)
+indefinite_unbounded_tagged.adb:106:30: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:108:07: medium: assertion might fail
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("<" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("<" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("<=" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("<=" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("<=" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("<=" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("=" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("=" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("=" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("=" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("=" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Capacity" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Constant_Range" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Constant_Range" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Constant_Range" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Constant_Range" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Contains" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Equal_Except" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Equal_Except" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Equal_Except" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("First_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Is_Empty" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Iter_Has_Element" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Last_Index" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Length" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("M_Elements_Reversed" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("M_Elements_Swapped" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Model" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Equal" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: function contract not available for proof ("Range_Shifted" might not return)
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:127
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:128
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:130
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:145
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:161
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:162
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:164
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:165
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:167
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:178
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:181
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:184
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:194
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:207
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:211
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:211
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:219
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:220
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:221
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:223
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:242
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:242
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:246
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:250
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:257
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:258
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:258
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:265
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:267
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:267
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:269
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:276
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:276
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:277
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:277
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:277
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:284
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:284
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:285
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:294
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:294
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:296
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:300
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:304
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:305
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:306
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:316
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:316
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:317
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:319
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:321
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:325
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:326
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:327
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:333
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:334
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:335
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:336
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:338
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:343
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:344
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:345
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:347
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:348
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:357
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:357
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:358
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:360
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:364
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:365
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:366
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:372
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:376
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:377
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:378
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:380
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:391
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:391
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:392
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:394
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:396
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:400
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:401
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:402
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:409
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:410
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:417
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:418
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:419
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:421
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:426
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:426
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:428
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:432
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:433
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:434
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:436
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:440
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:441
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:442
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:444
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:445
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:449
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:449
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:451
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:455
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:459
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:460
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:461
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:463
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:472
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:472
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:474
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:478
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:479
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:486
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:487
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:488
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:490
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:496
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:496
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:498
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:502
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:502
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:506
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:507
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:508
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:509
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:511
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:514
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:518
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:518
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:520
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:524
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:524
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:529
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:529
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:537
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:537
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:539
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:543
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:543
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:548
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:549
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:550
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:552
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:557
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:557
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:559
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:563
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:564
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:565
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:571
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:572
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:573
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:575
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:585
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:585
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:587
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:588
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:592
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:593
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:594
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:602
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:603
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:606
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:610
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:611
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:612
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:614
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:619
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:621
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:625
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:626
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:627
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:629
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:638
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:641
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:645
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:646
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:647
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:649
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:654
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:656
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:660
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:660
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:668
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:671
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:675
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:675
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:679
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:679
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:688
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:688
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:689
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:689
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:691
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:691
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:700
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:702
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:707
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:707
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:712
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:715
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:715
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:729
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:730
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:731
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:733
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:741
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:745
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:749
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:750
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:766
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:767
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:769
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:770
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:780
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:784
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:788
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:789
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:792
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:795
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:805
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:806
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:808
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:818
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:83
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:96
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:109
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:110
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:120
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:121
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:131
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:132
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:145
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:161
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:175
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:178
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:179
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:192
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:195
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:196
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:211
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:229
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:238
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:269
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:272
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:281
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:282
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:284
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:285
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:286
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:298
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:299
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:300
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:302
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:304
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:309
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:313
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:324
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:326
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:327
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:332
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:336
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:353
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:361
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:52
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:83
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:92
 indefinite_unbounded_tagged.ads:17:40: medium: range check might fail
 indefinite_unbounded_tagged.ads:21:14: warning: subprogram "Test" has no effect
 unbounded.adb:10:07: info: initialization of "V" proved

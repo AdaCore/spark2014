@@ -4,6 +4,8 @@ a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:43
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:32
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at simple_allocator.ads:26
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at list_allocator.ads:39
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at list_mod_allocator.ads:28
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
