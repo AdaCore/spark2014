@@ -100,6 +100,13 @@ a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at use_ordered_sets.ads:7
 a-cofuve.ads:45:12: info: range check proved (CVC4: 2 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
 a-cofuve.ads:46:33: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:95:55: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:69, in instantiation at use_lists.ads:7
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:107, in instantiation at use_maps.ads:9
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:112, in instantiation at use_ordered_maps.ads:9
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at use_lists.ads:7
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at use_maps.ads:9
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
@@ -553,7 +560,7 @@ use_maps.ads:80:11: info: precondition proved (CVC4: 2 VC)
 use_maps.ads:80:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:80:36: info: precondition proved (CVC4: 1 VC)
 use_maps.ads:81:22: info: overflow check proved (CVC4: 1 VC)
-use_maps.ads:82:14: info: postcondition proved (Z3: 1 VC)
+use_maps.ads:82:14: info: postcondition proved (altergo: 1 VC)
 use_maps.ads:82:15: info: precondition proved (CVC4: 2 VC)
 use_maps.ads:82:15: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:82:40: info: precondition proved (CVC4: 1 VC)
