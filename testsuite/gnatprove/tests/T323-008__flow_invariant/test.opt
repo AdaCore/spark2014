@@ -1,1 +1,0 @@
-ALL XFAIL crash on derived type with invariant (T323-008)

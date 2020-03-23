@@ -1112,7 +1112,8 @@ package body Flow_Visibility is
                   --  procedure; we ignore it, because this aspect is not
                   --  supported in SPARK anyway.
 
-                  if Has_Own_Invariants (T)
+                  if Comes_From_Source (N)
+                    and then Has_Own_Invariants (T)
                     and then Present (Invariant_Procedure (T))
                   then
                      Process (N);
