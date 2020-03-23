@@ -161,30 +161,30 @@ package body SPARK_Util.Hardcoded is
    begin
 
       if Is_From_Hardcoded_Unit (E, Big_Integers) then
-         return (Chars (E) in Name_Op_Abs
-                            | Name_Op_Mod
-                            | Name_Op_Rem
-                            | Name_Op_Eq
-                            | Name_Op_Lt .. Name_Op_Subtract
-                            | Name_Op_Multiply .. Name_Op_Expon
-                   or else
-                 Get_Name_String (Chars (E)) in BIN.Big_Integer
-                                              | BIN.Min
-                                              | BIN.Max
-                                              | BIN.To_Big_Integer
-                                              | BIN.Is_Valid
-                                              | BIN.To_Integer
-                                              | BIN.Gcd);
+         return Chars (E) in Name_Op_Abs
+                           | Name_Op_Mod
+                           | Name_Op_Rem
+                           | Name_Op_Eq
+                           | Name_Op_Lt .. Name_Op_Subtract
+                           | Name_Op_Multiply .. Name_Op_Expon
+                  or else
+                Get_Name_String (Chars (E)) in BIN.Big_Integer
+                                             | BIN.Min
+                                             | BIN.Max
+                                             | BIN.To_Big_Integer
+                                             | BIN.Is_Valid
+                                             | BIN.To_Integer
+                                             | BIN.Gcd;
       elsif Is_From_Hardcoded_Unit (E, Big_Reals) then
-         return (Chars (E) in Name_Op_Abs
-                            | Name_Op_Eq
-                            | Name_Op_Lt .. Name_Op_Subtract
-                            | Name_Op_Multiply .. Name_Op_Expon
-                   or else
-                 Get_Name_String (Chars (E)) in BRN.Big_Real
-                                              | BRN.Min
-                                              | BRN.Max
-                                              | BRN.Is_Valid);
+         return Chars (E) in Name_Op_Abs
+                           | Name_Op_Eq
+                           | Name_Op_Lt .. Name_Op_Subtract
+                           | Name_Op_Multiply .. Name_Op_Expon
+                  or else
+                Get_Name_String (Chars (E)) in BRN.Big_Real
+                                             | BRN.Min
+                                             | BRN.Max
+                                             | BRN.Is_Valid;
 
       elsif Is_From_Hardcoded_Generic_Unit (E, Big_Integers) then
          return Get_Name_String (Chars (E)) in BIN.Generic_To_Big_Integer

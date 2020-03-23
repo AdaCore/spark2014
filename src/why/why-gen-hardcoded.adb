@@ -351,7 +351,7 @@ package body Why.Gen.Hardcoded is
                  Type_Of_Node (Etype (Subp));
                Left_Rep  : W_Expr_Id := Args (1);
                Right_Rep : W_Expr_Id := Args (2);
-               Name : W_Identifier_Id;
+               Name      : W_Identifier_Id;
             begin
 
                --  The following block assigns a value to Name which will be
@@ -455,13 +455,14 @@ package body Why.Gen.Hardcoded is
                        Reason   => VC_Division_Check,
                        Typ      => Base);
                else
-                  T := New_Call
-                    (Ada_Node => Ada_Node,
-                     Domain   => Domain,
-                     Name     => Name,
-                     Args     => (1 => Left_Rep,
-                                  2 => Right_Rep),
-                     Typ      => Base);
+                  T :=
+                    New_Call
+                      (Ada_Node => Ada_Node,
+                       Domain   => Domain,
+                       Name     => Name,
+                       Args     => (1 => Left_Rep,
+                                    2 => Right_Rep),
+                       Typ      => Base);
                end if;
             end;
 
@@ -489,7 +490,7 @@ package body Why.Gen.Hardcoded is
                T := Args (1);
             else
                declare
-                  Base     : constant W_Type_Id :=
+                  Base : constant W_Type_Id :=
                     Type_Of_Node (Etype (Subp));
                   Name : W_Identifier_Id;
                begin
