@@ -1,0 +1,46 @@
+test_raise.adb:2:11: warning: subprogram "Test_Raise" has no effect
+test_raise.adb:7:14: warning: subprogram "OK" has no effect
+test_raise.adb:19:22: info: assertion proved (CVC4: 1 VC; Trivial: 7 VC)
+test_raise.adb:19:41: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_raise.adb:20:46: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_raise.adb:22:29: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_raise.adb:25:56: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_raise.adb:27:56: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_raise.adb:30:14: warning: subprogram "KO" has no effect
+test_raise.adb:34:22: info: assertion proved (CVC4: 1 VC; Trivial: 7 VC)
+test_raise.adb:34:41: medium: exception might be raised
+test_raise.adb:35:46: medium: exception might be raised
+test_raise.adb:37:29: medium: exception might be raised
+test_raise.adb:40:56: medium: exception might be raised
+test_raise.adb:42:56: medium: exception might be raised
+test_raise.adb:45:14: warning: subprogram "KO2" has no effect
+test_raise.adb:50:25: info: assertion proved (CVC4: 1 VC)
+test_raise.adb:50:25: medium: exception might be raised
+test_raise.adb:52:34: medium: exception might be raised
+test_raise.adb:54:25: medium: assertion might fail, cannot prove not ((X = Y) and then ...) [possible explanation: precondition of subprogram at line 45 should mention X and Y]
+test_raise.adb:54:47: medium: exception might be raised
+test_raise.adb:56:25: info: assertion proved (Trivial: 2 VC)
+test_raise.adb:56:51: medium: exception might be raised
+test_raise.adb:59:47: medium: exception might be raised
+test_raise.adb:60:30: medium: assertion might fail, cannot prove Y = Integer'(...) [possible explanation: precondition of subprogram at line 45 should mention Y]
+test_raise.adb:60:42: medium: exception might be raised
+test_raise.adb:62:25: medium: assertion might fail, cannot prove Y /= (X + Integer'(...)) [possible explanation: precondition of subprogram at line 45 should mention X and Y]
+test_raise.adb:62:43: medium: exception might be raised
+test_raise.adb:66:30: warning: assuming "To_Big_Real" has no effect on global items
+test_raise.adb:66:30: warning: no Global contract available for "To_Big_Real"
+test_raise.adb:69:07: medium: precondition might fail, cannot prove (X /= Y) or else ... (e.g. when X = -3 and Y = -3) [possible explanation: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:71:07: medium: precondition might fail (e.g. when X = 1) [possible explanation: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:73:07: medium: precondition might fail (e.g. when X = -1) [possible explanation: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:75:07: info: precondition proved (CVC4: 5 VC; Trivial: 3 VC)
+test_raise.adb:78:19: medium: assertion might fail, cannot prove Float_Conv.From_Big_Real (Z) = 0.0
+test_raise.adb:78:29: info: precondition proved (CVC4: 1 VC)
+test_raise.adb:78:29: warning: assuming "From_Big_Real" has no effect on global items
+test_raise.adb:78:29: warning: no Global contract available for "From_Big_Real"
+test_raise_bad.adb:5:15: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:6:29: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:7:37: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:8:39: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:9:41: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:10:21: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:11:28: raise expression in a complex expression in a precondition is not yet supported
+gnatprove: error during flow analysis and proof

@@ -1033,7 +1033,7 @@ package body Gnat2Why.Error_Messages is
          when VC_Loop_Variant              => return "loop variant proved";
          when VC_Assert                    => return "assertion proved";
          when VC_Raise                     =>
-            return "raise statement proved unreachable";
+            return "raise statement or expression proved unreachable";
          when VC_Inline_Check              =>
             return "Inline_For_Proof annotation proved";
          when VC_UC_No_Holes               =>

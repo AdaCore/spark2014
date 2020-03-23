@@ -1,5 +1,5 @@
 p.adb:11:10: medium: exception might be raised
 p.adb:17:10: info: overflow check proved (CVC4: 1 VC)
-p.adb:21:10: info: raise statement proved unreachable (CVC4: 1 VC)
+p.adb:21:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 p.ads:14:14: warning: subprogram "Proc1" has no effect
 p.ads:15:14: warning: subprogram "Proc2" has no effect

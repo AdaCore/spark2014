@@ -410,7 +410,7 @@ server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
 server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:115:14: info: analyzing call to "Valid_Request" in context
 server_timestamp_maker.adb:116:10: medium: exception might be raised
-server_timestamp_maker.adb:119:10: info: raise statement proved unreachable (CVC4: 1 VC)
+server_timestamp_maker.adb:119:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 server_timestamp_maker.ads:18:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally
 server_timestamp_maker.ads:21:08: info: data dependencies proved
 server_timestamp_maker.ads:22:46: warning: "Serial_Generator.State" is not modified, could be INPUT

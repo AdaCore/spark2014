@@ -705,7 +705,8 @@ package body Gnat2Why.Expr is
                     Ada_Node => Stat,
                     Expr     => +New_Identifier (Name => "absurd"),
                     Reason   => VC_Raise))
-   with Pre => Nkind (Stat) in N_Raise_xxx_Error | N_Raise_Statement;
+   with Pre => Nkind (Stat) in
+     N_Raise_xxx_Error | N_Raise_Statement | N_Raise_Expression;
 
    function Transform_Shift_Or_Rotate_Call
      (Expr   : Node_Id;
@@ -15505,6 +15506,26 @@ package body Gnat2Why.Expr is
 
                T := +Call;
             end;
+
+         when N_Raise_Expression =>
+
+            --  Using raise expressions inside preconditions to change the
+            --  reported error is a common pattern used in the standard
+            --  library. To support it, we translate raise expressions
+            --  occurring in preconditions as False.
+            --  NB. Cases where such a translation would be incorrect are
+            --  detected in marking.
+
+            if Raise_Occurs_In_Pre (Expr) then
+               T := New_Literal (Value => EW_False, Domain => Domain);
+            else
+               T := Why_Default_Value (Domain, Etype (Expr));
+               if Domain = EW_Prog then
+                  T := +Sequence
+                    (Left  => Transform_Raise (Expr),
+                     Right => +T);
+               end if;
+            end if;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="

@@ -240,6 +240,9 @@ package body SPARK_Definition is
    Goto_Labels : Node_Sets.Set;
    --  Goto labels encountered during marking
 
+   Raise_Exprs_From_Pre : Node_Sets.Set;
+   --  Store raise expressions occuring in preconditions
+
    function Entity_In_SPARK (E : Entity_Id) return Boolean
      renames Entities_In_SPARK.Contains;
 
@@ -260,6 +263,9 @@ package body SPARK_Definition is
 
    function Get_Incomplete_Access (E : Entity_Id) return Entity_Id is
      (Access_To_Incomplete_Views.Element (Retysp (E)));
+
+   function Raise_Occurs_In_Pre (N : Node_Id) return Boolean renames
+     Raise_Exprs_From_Pre.Contains;
 
    function Is_Loop_Entity (E : Entity_Id) return Boolean
      renames Loop_Entity_Set.Contains;
@@ -2007,7 +2013,129 @@ package body SPARK_Definition is
             Mark_Unsupported ("compiler-generated raise statement", N);
 
          when N_Raise_Expression =>
-            Mark_Violation ("raise expression", N);
+            declare
+               procedure Check_Raise_Context (Expr : Node_Id);
+               --  If a raise expression occurs in a precondition, it should
+               --  not be handled as a RTE, as this is a common pattern for
+               --  modifying the error raised in case of a failed precondition.
+               --  The restrictions below make sure that raise expressions
+               --  can be replaced by False, while still maintaining these
+               --  properties:
+               --  - when the original expression evaluates to True, the
+               --    modified formula evaluates to True as well;
+               --  - when the modified formula evaluates to True, the original
+               --    formula evaluates to True or raises an exception;
+               --  - when the modified formula evaluates to True, the original
+               --    formula does not raise an exception.
+
+               --  The first two properties (equivalence without taking into
+               --  account exceptions) are guaranteed by making sure that raise
+               --  expressions only appear in positive polarity. For the last
+               --  property, we introduce these additional syntactic
+               --  restrictions on precondition expressions that contain raise
+               --  expressions:
+
+               --  A and/and then B    raise expressions are allowed in A and B
+               --  A or else B         raise expressions only allowed in B
+               --  if A then B else C  raise expressions not allowed in A
+               --  case A then is ...  raise expressions not allowed in A
+
+               --  No raise expressions are allowed in other expressions.
+
+               --  We store encountered Raise_Expressions in the
+               --  Raise_Exprs_From_Pre set for later use.
+
+               -------------------------
+               -- Check_Raise_Context --
+               -------------------------
+
+               procedure Check_Raise_Context (Expr : Node_Id) is
+                  Prag : Node_Id;
+                  --  Node to store the precondition enclosing Expr if any
+
+                  N    : Node_Id := Expr;
+                  P    : Node_Id;
+               begin
+                  --  First, decide if we are in a precondition
+
+                  Prag := Parent (N);
+                  while Present (Prag) loop
+                     exit when Nkind (Prag) = N_Pragma_Argument_Association
+                       and then Get_Pragma_Id (Pragma_Name (Parent (Prag))) in
+                       Pragma_Precondition | Pragma_Pre;
+                     Prag := Parent (Prag);
+                  end loop;
+
+                  --  If we are in a precondition, check whether it is safe to
+                  --  translate raise statements as False.
+
+                  if Present (Prag) then
+                     while Parent (N) /= Prag loop
+                        P := Parent (N);
+                        case Nkind (P) is
+
+                        --  And connectors will ensure both operands hold, so
+                        --  the operands will be protected by the precondition.
+                        --  For example, (X and Y) protects:
+                        --  (X or else raise) and (Y or else raise)
+
+                        when N_Op_And | N_And_Then =>
+                           null;
+
+                        --  In or else connectors, only the right operand is
+                        --  protected as the left one can evaluate to False
+                        --  even when the disjunction holds.
+                        --  For example, (X or else Y) protects:
+                        --  X or else (Y or else raise)
+                        --  but not: (X or else raise) or else Y
+                        --  NB. In or connectors, no operands is protected.
+
+                        when N_Or_Else =>
+                           if N = Left_Opnd (P) then
+                              exit;
+                           end if;
+
+                        --  In conditional expressions, raise expressions
+                        --  should not occur in the conditions.
+
+                        when N_If_Expression =>
+                           if N = First (Expressions (P)) then
+                              exit;
+                           end if;
+                        when N_Case_Expression =>
+                           if N = Expression (P) then
+                              exit;
+                           end if;
+                        when N_Case_Expression_Alternative =>
+                           null;
+
+                        --  Other expressions are not supported
+
+                        when others =>
+                           exit;
+                        end case;
+                        N := P;
+                     end loop;
+
+                     --  If we have stopped the search before reaching Prag, we
+                     --  have found an unsupported construct, report it.
+
+                     if Parent (N) /= Prag then
+                        Mark_Unsupported
+                          (Msg => "raise expression in a complex expression in"
+                             & " a precondition",
+                           N   => Expr);
+
+                     --  Otherwise, store Expr in Raise_Exprs_From_Pre
+
+                     else
+                        Raise_Exprs_From_Pre.Insert (Expr);
+                     end if;
+                  end if;
+               end Check_Raise_Context;
+            begin
+               Check_Raise_Context (N);
+            end;
 
          when N_Range =>
             Mark (Low_Bound (N));

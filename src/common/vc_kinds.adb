@@ -321,7 +321,8 @@ package body VC_Kinds is
          when VC_Assert                           =>
             return "Check that the given assertion evaluates to True.";
          when VC_Raise                            =>
-            return "Check that the raise statement can never be reached.";
+            return "Check that the raise statement or expression can never " &
+              "be reached.";
          when VC_Inline_Check                     =>
             return "Check that an Annotate pragma with the Inline_For_Proof " &
               "identifier is correct.";

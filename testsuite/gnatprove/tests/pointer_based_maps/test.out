@@ -112,7 +112,7 @@ my_map.adb:128:14: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:129:21: info: null exclusion check proved (CVC4: 1 VC)
 my_map.adb:129:21: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:131:16: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.adb:133:07: info: raise statement proved unreachable (CVC4: 1 VC)
+my_map.adb:133:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 my_map.adb:140:33: info: loop invariant initialization proved (CVC4: 1 VC)
 my_map.adb:140:33: info: loop invariant preservation proved (CVC4: 1 VC)
 my_map.adb:141:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -127,7 +127,7 @@ my_map.adb:146:14: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:147:21: info: null exclusion check proved (CVC4: 1 VC)
 my_map.adb:147:21: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:149:16: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.adb:151:07: info: raise statement proved unreachable (CVC4: 1 VC)
+my_map.adb:151:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 my_map.ads:12:13: medium: subprogram "Model_Contains" might not terminate, terminating annotation could be incorrect
 my_map.ads:17:13: info: implicit function contract might not be available on recursive calls
 my_map.ads:17:13: medium: subprogram "Model_Value" might not terminate, terminating annotation could be incorrect

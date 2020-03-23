@@ -195,6 +195,10 @@ package SPARK_Definition is
      and then Is_Access_Type (Get_Incomplete_Access'Result);
    --  Return an access type to E
 
+   function Raise_Occurs_In_Pre (N : Node_Id) return Boolean with
+     Pre => Nkind (N) = N_Raise_Expression;
+   --  Return True if N occurs in a precondition
+
    ----------------------------------------------------------------------
    --  Marked entity collections
    ----------------------------------------------------------------------

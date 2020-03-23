@@ -68,7 +68,7 @@ VC_LOOP_INVARIANT_INIT - loop invariant in first iteration - Check that the loop
 VC_LOOP_INVARIANT_PRESERV - loop invariant after first iteration - Check that the loop invariant evaluates to True at each further iteration of the loop.
 VC_LOOP_VARIANT - loop variant - Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop.
 VC_ASSERT - assertion - Check that the given assertion evaluates to True.
-VC_RAISE - raised exception - Check that the raise statement can never be reached.
+VC_RAISE - raised exception - Check that the raise statement or expression can never be reached.
 VC_INLINE_CHECK - Inline_For_Proof annotation - Check that an Annotate pragma with the Inline_For_Proof identifier is correct.
 VC_UC_NO_HOLES - unchecked conversion check - Check that a type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object, and no invalid bitpatterns occur.
 VC_UC_SAME_SIZE - unchecked conversion size check - Check that the two types in an unchecked conversion instance are of the same size.

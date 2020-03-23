@@ -28,7 +28,7 @@ p.adb:33:24: info: cannot unroll loop (too many loop iterations)
 p.adb:54:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:54:33: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:54:65: info: index check proved (CVC4: 4 VC)
-p.adb:56:07: info: raise statement proved unreachable (CVC4: 1 VC)
+p.adb:56:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 p.adb:63:24: info: cannot unroll loop (too many loop iterations)
 p.adb:65:20: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:70:14: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
@@ -98,7 +98,7 @@ p.ads:14:41: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 p.ads:15:43: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 p.ads:16:34: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 p.ads:17:35: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
-stacks.adb:5:10: info: raise statement proved unreachable (CVC4: 1 VC)
+stacks.adb:5:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 stacks.adb:8:22: info: range check proved (CVC4: 1 VC)
 stacks.adb:9:19: info: index check proved (CVC4: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC4: 1 VC)
@@ -446,7 +446,7 @@ fixed_mem.adb:9:55: medium: range check might fail (e.g. when Free = 1002) [poss
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
 fixed_mem.adb:14:17: info: add a contract to analyze it separately from calling contexts
 fixed_mem.adb:14:17: info: local subprogram "Check" only analyzed in the context of calls
-fixed_mem.adb:17:13: info: raise statement proved unreachable (CVC4: 1 VC), in call inlined at fixed_mem.adb:25
+fixed_mem.adb:17:13: info: raise statement or expression proved unreachable (CVC4: 1 VC), in call inlined at fixed_mem.adb:25
 fixed_mem.adb:24:20: info: overflow check proved (CVC4: 1 VC)
 fixed_mem.adb:25:07: info: analyzing call to "Check" in context
 fixed_mem.ads:6:14: info: postcondition proved (CVC4: 1 VC)

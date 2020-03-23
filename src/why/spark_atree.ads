@@ -152,6 +152,8 @@ package SPARK_Atree is
    N_Quantified_Expression          : Node_Kind renames
      Sinfo.N_Quantified_Expression;
    N_Real_Literal                   : Node_Kind renames Sinfo.N_Real_Literal;
+   N_Raise_Expression               : Node_Kind renames
+     Sinfo.N_Raise_Expression;
    N_Raise_Statement                : Node_Kind renames
      Sinfo.N_Raise_Statement;
    N_Range                          : Node_Kind renames Sinfo.N_Range;

@@ -1,4 +1,4 @@
 simple_exceptions.adb:3:04: warning: analyzing unreferenced procedure "In_SPARK"
 simple_exceptions.adb:6:10: medium: exception might be raised
 simple_exceptions.adb:9:14: info: overflow check proved (CVC4: 1 VC)
-simple_exceptions.adb:21:07: info: raise statement proved unreachable (CVC4: 1 VC)
+simple_exceptions.adb:21:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)

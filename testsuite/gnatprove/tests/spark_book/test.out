@@ -1195,10 +1195,10 @@ unused_parameter.ads:5:19: info: initialization of "C" proved
 utility.adb:13:13: info: loop invariant initialization proved (CVC4: 1 VC)
 utility.adb:13:13: info: loop invariant preservation proved (CVC4: 1 VC)
 utility.adb:13:67: info: index check proved (CVC4: 4 VC)
-utility.adb:15:07: info: raise statement proved unreachable (CVC4: 1 VC)
+utility.adb:15:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 utility.ads:12:16: info: postcondition proved (CVC4: 1 VC)
 various.adb:7:27: info: unrolling loop
-various.adb:12:07: info: raise statement proved unreachable (CVC4: 1 VC)
+various.adb:12:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 various.adb:20:21: info: assertion proved (CVC4: 1 VC)
 various.adb:20:23: medium: overflow check might fail [possible explanation: subprogram at various.ads:12 should mention X and Y in a precondition]
 various.adb:20:26: info: division check proved (CVC4: 1 VC)
