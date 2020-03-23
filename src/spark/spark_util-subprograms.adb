@@ -593,8 +593,7 @@ package body SPARK_Util.Subprograms is
       --  subprogram declaration.
 
       Orig_N : constant Node_Id :=
-        (if Present (Original_Decl_N)
-           and then Original_Decl_N /= Decl_N
+        (if Is_Rewrite_Substitution (Decl_N)
          then Original_Decl_N
          else Original_Node (Subprogram_Body (E)));
 
