@@ -927,7 +927,7 @@ package body Gnat2Why.Driver is
 
       --  Output to file
       Open_Current_File (Filename);
-      P (Current_File, Write (Json_File, Compact => False));
+      P (Current_File, Write (Json_File, Compact => True));
       Close_Current_File;
    end Print_GNAT_Json_File;
 
