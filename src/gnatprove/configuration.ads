@@ -183,6 +183,7 @@ package Configuration is
    Debug          : Boolean;
    GnateT_Switch  : GNAT.Strings.String_Access;
    Mode           : GP_Mode;
+   Use_Semaphores : Boolean;
    Only_Given     : Boolean;
    Parallel       : Integer;
    Report         : Report_Mode_Type;
