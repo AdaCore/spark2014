@@ -5509,7 +5509,7 @@ package body Flow_Utility is
                   begin
                      return Is_Empty_Record_Type (Root_T)
                        and then
-                       (not Present (Ext)
+                       (No (Ext)
                           or else Null_Present (Ext)
                           or else No (Component_List (Ext)));
                   end;

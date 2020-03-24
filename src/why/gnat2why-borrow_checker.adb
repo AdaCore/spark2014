@@ -4255,7 +4255,7 @@ package body Gnat2Why.Borrow_Checker is
       --  Nothing to do if the root type is not deep, or the path is not rooted
       --  in an object.
 
-      if not Present (Root)
+      if No (Root)
         or else not Is_Object (Root)
         or else not Is_Deep (Etype (Root))
       then

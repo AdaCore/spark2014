@@ -1349,7 +1349,7 @@ package body Gnat2Why.Util is
 
         --  No axioms are generated for inlined functions
 
-        and then not Present (SPARK_Annotate.Retrieve_Inline_Annotation (E))
+        and then No (SPARK_Annotate.Retrieve_Inline_Annotation (E))
 
         --  Functions from predefined units should be safe
 
