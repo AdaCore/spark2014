@@ -15,7 +15,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1266"/></proof>
+  <proof prover="0"><result status="valid" steps="1247"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.2" expl="postcondition" proved="true">
