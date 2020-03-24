@@ -504,9 +504,9 @@ package VC_Kinds is
       VC_Line        : Cntexample_Elt_Lists.List;
       --  Counterexamples on the VC line
       Other_Lines    : Cntexample_Line_Maps.Map;
-      --  Counterexamples on all oter lines
+      --  Counterexamples on all other lines
       Previous_Lines : Previous_Line_Maps.Map;
-      --  Additional Counterexamples for the previous lines
+      --  Additional counterexamples for the previous lines
    end record;
    --  Previous lines is a feature related to loops. For Why3, intuitively, the
    --  check inside the loop assumes the loop invariant at previous iterations.

@@ -1581,15 +1581,20 @@ package body Gnat2Why.Counter_Examples is
          if not Variables.Map_Is_Empty then
             Build_Pretty_Line (Variables, Pretty_Line_Cntexmp_Arr);
 
-            --  Add the counterexample line only if there are some
-            --  pretty printed counterexample elements
+            --  Add the counterexample line only if there are some pretty
+            --  printed counterexample elements. Due to inlining, and because
+            --  only a single line number is currently used in Line, we may end
+            --  up with multiple counterexample values for the same value of
+            --  Line. In such a case, the last value encountered is kept by
+            --  using Include below.
+
             if not Pretty_Line_Cntexmp_Arr.Is_Empty then
                if Is_Previous then
-                  Pretty_File_Cntexmp.Previous_Lines.Insert
+                  Pretty_File_Cntexmp.Previous_Lines.Include
                     (Line, (Line_Cnt => Pretty_Line_Cntexmp_Arr,
                             Ada_Node => Integer (LI_Node)));
                else
-                  Pretty_File_Cntexmp.Other_Lines.Insert
+                  Pretty_File_Cntexmp.Other_Lines.Include
                     (Line, Pretty_Line_Cntexmp_Arr);
                end if;
             end if;
