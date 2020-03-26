@@ -7875,9 +7875,9 @@ package body SPARK_Definition is
    ---------------------------------
 
    procedure Mark_Type_With_Relaxed_Init
-     (Ada_Node : Node_Id;
-      Ty       : Entity_Id;
-      Own      : Boolean := False)
+     (N   : Node_Id;
+      Ty  : Entity_Id;
+      Own : Boolean := False)
    is
       use Node_To_Bool_Maps;
       Rep_Ty   : constant Entity_Id := Base_Retysp (Ty);
@@ -7901,19 +7901,19 @@ package body SPARK_Definition is
 
       if Has_Predicates (Ty) then
          Mark_Unsupported
-           ("predicate on a type with initialization by proof", Ada_Node);
+           ("predicate on a type with initialization by proof", N);
       elsif Has_Invariants_In_SPARK (Ty) then
          Mark_Unsupported
-           ("invariant on a type with initialization by proof", Ada_Node);
+           ("invariant on a type with initialization by proof", N);
       elsif Is_Tagged_Type (Rep_Ty) then
          Mark_Unsupported
-           ("tagged type with initialization by proof", Ada_Node);
+           ("tagged type with initialization by proof", N);
       elsif Is_Access_Type (Rep_Ty) then
          Mark_Unsupported
-           ("access type with initialization by proof", Ada_Node);
+           ("access type with initialization by proof", N);
       elsif Is_Concurrent_Type (Rep_Ty) then
          Mark_Unsupported
-           ("concurrent type with initialization by proof", Ada_Node);
+           ("concurrent type with initialization by proof", N);
       end if;
 
       --  Using conversions, expressions of any ancestor of Rep_Ty can also
@@ -7925,13 +7925,13 @@ package body SPARK_Definition is
       if Retysp (Etype (Rep_Ty)) /= Rep_Ty
         and then not Is_Scalar_Type (Rep_Ty)
       then
-         Mark_Type_With_Relaxed_Init (Ada_Node, Retysp (Etype (Rep_Ty)));
+         Mark_Type_With_Relaxed_Init (N, Retysp (Etype (Rep_Ty)));
       end if;
 
       --  Components of composite types can be partially initialized
 
       if Is_Array_Type (Rep_Ty) then
-         Mark_Type_With_Relaxed_Init (Ada_Node, Component_Type (Rep_Ty));
+         Mark_Type_With_Relaxed_Init (N, Component_Type (Rep_Ty));
       elsif Is_Record_Type (Rep_Ty) then
          declare
             Comp      : Entity_Id := First_Component (Rep_Ty);
@@ -7955,7 +7955,7 @@ package body SPARK_Definition is
                   --  not in SPARK.
 
                   if In_SPARK (Comp_Type) then
-                     Mark_Type_With_Relaxed_Init (Ada_Node, Comp_Type);
+                     Mark_Type_With_Relaxed_Init (N, Comp_Type);
                   end if;
                end if;
 

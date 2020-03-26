@@ -420,7 +420,7 @@ package body SPARK_Util.Types is
 
       --  Concurrent or access types with relaxed init parts are not supported
 
-      elsif Ekind (Rep_Ty) in Concurrent_Kind | Access_Kind then
+      elsif Is_Concurrent_Type (Rep_Ty) or else Is_Access_Type (Rep_Ty) then
          return False;
 
       elsif Is_Array_Type (Rep_Ty) then
@@ -438,7 +438,7 @@ package body SPARK_Util.Types is
 
          else
             declare
-               Comp : Node_Id := First_Component (Rep_Ty);
+               Comp : Entity_Id := First_Component (Rep_Ty);
             begin
                if No (Comp) then
                   return False;
@@ -1159,7 +1159,7 @@ package body SPARK_Util.Types is
                return True;
             else
                declare
-                  Comp : Node_Id := First_Component (Rep_Ty);
+                  Comp : Entity_Id := First_Component (Rep_Ty);
                begin
                   while Present (Comp) loop
                      if Component_Is_Visible_In_SPARK (Comp)
@@ -1177,6 +1177,9 @@ package body SPARK_Util.Types is
          end if;
 
       end Might_Contain_Relaxed;
+
+   --  Start of processing for Might_Contain_Relaxed_Init
+
    begin
       return Might_Contain_Relaxed (Typ);
    end Might_Contain_Relaxed_Init;

@@ -924,7 +924,8 @@ package body SPARK_Util is
       No_Eval : Boolean := True) return Boolean
    is
 
-      function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean;
+      function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean
+      with Pre => Nkind (Aggr) = N_Aggregate;
       --  Check the expressions of an aggregate for relaxed initialization
 
       ---------------------------
@@ -958,6 +959,8 @@ package body SPARK_Util is
          return False;
       end Aggr_Has_Relaxed_Init;
 
+   --  Start of processing Expr_Has_Relaxed_Init
+
    begin
       --  Scalar expressions are necessarily initialized as evaluating an
       --  uninitialized scalar expression is a bounded error.
@@ -989,9 +992,9 @@ package body SPARK_Util is
 
          when N_If_Expression =>
             declare
-               Cond        : constant Node_Id := First (Expressions (Expr));
-               Then_Part   : constant Node_Id := Next (Cond);
-               Else_Part   : constant Node_Id := Next (Then_Part);
+               Cond      : constant Node_Id := First (Expressions (Expr));
+               Then_Part : constant Node_Id := Next (Cond);
+               Else_Part : constant Node_Id := Next (Then_Part);
             begin
                return Expr_Has_Relaxed_Init (Then_Part, No_Eval => False)
                  or else
@@ -1048,7 +1051,7 @@ package body SPARK_Util is
          when N_Indexed_Component
             | N_Selected_Component
             | N_Explicit_Dereference
-            =>
+         =>
             return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False);
 
          when N_Attribute_Reference =>
@@ -1061,7 +1064,7 @@ package body SPARK_Util is
 
                when Attribute_Old
                   | Attribute_Loop_Entry
-                  =>
+               =>
                   return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval);
 
                when Attribute_Update =>
@@ -1077,7 +1080,7 @@ package body SPARK_Util is
             return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval);
 
          when N_Allocator =>
-            if Nkind (Expression (Expr)) in N_Qualified_Expression then
+            if Nkind (Expression (Expr)) = N_Qualified_Expression then
                return Expr_Has_Relaxed_Init
                  (Expression (Expr), No_Eval => False);
             else
@@ -1102,7 +1105,7 @@ package body SPARK_Util is
             | N_Membership_Test
             | N_Quantified_Expression
             | N_Null
-            =>
+         =>
             return False;
 
          when others =>
@@ -2597,9 +2600,14 @@ package body SPARK_Util is
 
    function Obj_Has_Relaxed_Init (Obj : Entity_Id) return Boolean is
    begin
-      --  Discriminants and loop parameters are always initialized
+      --  Discriminants, loop parameters and quantified expression parameters
+      --  are always initialized.
 
-      if Ekind (Obj) in E_Discriminant | E_Loop_Parameter then
+      if Ekind (Obj) in E_Discriminant | E_Loop_Parameter
+        or else
+         (Ekind (Obj) = E_Variable
+          and then Is_Quantified_Loop_Param (Obj))
+      then
          return False;
 
       --  Uninitialized scalar types cannot be copied. A scalar object can
@@ -2609,8 +2617,6 @@ package body SPARK_Util is
       elsif (Ekind (Obj) in E_In_Parameter | E_In_Out_Parameter | E_Constant
              or else
                (Ekind (Obj) = E_Variable
-                and then Nkind (Enclosing_Declaration (Obj)) =
-                  N_Object_Declaration
                 and then Present (Expression (Enclosing_Declaration (Obj)))))
         and then Has_Scalar_Type (Etype (Obj))
       then

@@ -52,9 +52,9 @@ procedure Relaxed_Initialization with SPARK_Mode is
            Obj (Idx).X := 1;
 
            pragma Loop_Invariant
-             ((for all Idx2 in Obj'First .. Idx =>
+             (for all Idx2 in Obj'First .. Idx =>
                 (Obj (Idx2)'Valid_Scalars and
-                 Obj (Idx2) = Obj'Loop_Entry (Idx2)'Update (X => 1))));
+                 Obj (Idx2) = Obj'Loop_Entry (Idx2)'Update (X => 1)));
         end loop;
      end;
 
