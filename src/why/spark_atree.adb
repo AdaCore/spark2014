@@ -1277,6 +1277,16 @@ package body SPARK_Atree is
    function Then_Statements (N : Node_Id) return List_Id renames
      Sinfo.Then_Statements;
 
+   ------------------------
+   -- Traverse_More_Proc --
+   ------------------------
+
+   procedure Traverse_More_Proc (Node : Node_Id) is
+      procedure Traverse_Proc is new Sem_Util.Traverse_More_Proc (Process);
+   begin
+      Traverse_Proc (Node);
+   end Traverse_More_Proc;
+
    ---------------------
    -- Type_Definition --
    ---------------------

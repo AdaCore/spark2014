@@ -44,7 +44,6 @@ with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Opt;                            use type Opt.Warning_Mode_Type;
 with Rtsfind;                        use Rtsfind;
-with Sem_Util;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Annotate;                 use SPARK_Annotate;
@@ -3948,7 +3947,9 @@ package body Gnat2Why.Subprograms is
             function Search_Old (N : Node_Id) return Atree.Traverse_Result is
                Dummy : W_Identifier_Id;
             begin
-               if Sem_Util.Is_Attribute_Old (N) then
+               if Nkind (N) = N_Attribute_Reference
+                 and then Attribute_Name (N) = Name_Old
+               then
                   Dummy := Name_For_Old (Prefix (N));
                end if;
 
@@ -3956,7 +3957,7 @@ package body Gnat2Why.Subprograms is
             end Search_Old;
 
             procedure Search_Olds is new
-              Sem_Util.Traverse_More_Proc (Search_Old);
+              Traverse_More_Proc (Search_Old);
 
             Prag_Post : constant Node_Id :=
               Get_Pragma (E, Pragma_Postcondition);
@@ -4051,7 +4052,7 @@ package body Gnat2Why.Subprograms is
       --  This code emits static VCs (determined by static computations inside
       --  gnat2why), so we can put this code anywhere.
 
-      if Sem_Util.Is_Unchecked_Conversion_Instance (E) then
+      if Is_Unchecked_Conversion_Instance (E) then
          declare
             Source, Target : Node_Id;
             Src_Ty, Tar_Ty : Entity_Id;

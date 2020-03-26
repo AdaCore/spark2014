@@ -684,6 +684,12 @@ package SPARK_Atree is
    function Variants (N : Node_Id) return List_Id with
      Pre => Nkind (N) = N_Variant_Part;
 
+   generic
+      with function Process (N : Node_Id) return Atree.Traverse_Result is <>;
+   procedure Traverse_More_Proc (Node : Node_Id);
+   pragma Inline (Traverse_More_Proc);
+   --  Renames Sem_Util.Traverse_More_Proc
+
    -----------------------
    -- Static Evaluation --
    -----------------------

@@ -482,6 +482,13 @@ package body SPARK_Atree.Entities is
      Einfo.Is_Tagged_Type;
 
    --------------------------------------
+   -- Is_Unchecked_Conversion_Instance --
+   --------------------------------------
+
+   function Is_Unchecked_Conversion_Instance (Subp : Entity_Id) return Boolean
+     renames Sem_Util.Is_Unchecked_Conversion_Instance;
+
+   --------------------------------------
    -- Is_Visible_Dispatching_Operation --
    --------------------------------------
 

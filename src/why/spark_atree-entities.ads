@@ -626,6 +626,10 @@ package SPARK_Atree.Entities is
    --  Same as Sem_Aux.Subprogram_Specification except that it also works on
    --  entries.
 
+   function Is_Unchecked_Conversion_Instance (Subp : Entity_Id) return Boolean
+   with Pre => Ekind (Subp) in Subprogram_Kind | E_Entry;
+   --  Same as Sem_Util.Is_Unchecked_Conversion_Instance
+
    -------------------
    --  For Packages --
    -------------------
