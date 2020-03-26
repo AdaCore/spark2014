@@ -966,6 +966,11 @@ package body Gnat2Why.Util is
       then
          return False;
 
+      --  Entities of tasks are modeled as constants
+
+      elsif Ekind (E) = E_Task_Type then
+         return False;
+
       --  A component or discriminant is not separately considered as mutable,
       --  only the enclosing object is. This ensures that components used in
       --  the named notation of aggregates are not considered as references

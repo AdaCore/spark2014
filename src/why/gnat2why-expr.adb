@@ -6784,6 +6784,71 @@ package body Gnat2Why.Expr is
       if Nkind (Ada_Call) in N_Procedure_Call_Statement
                            | N_Entry_Call_Statement
       then
+         --  We need to havoc the values of global variables of mode Output if
+         --  they have parts with relaxed initialization so that their value
+         --  before the call cannot leak into subsequently read values.
+
+         declare
+            Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+            Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+            Effects   : constant W_Effects_Id := New_Effects;
+
+         begin
+            Flow_Utility.Get_Proof_Globals (Subprogram      => Subp,
+                                            Reads           => Read_Ids,
+                                            Writes          => Write_Ids,
+                                            Erase_Constants => True);
+
+            for Write_Id of Write_Ids loop
+               if not Read_Ids.Contains (Write_Id) then
+                  case Write_Id.Kind is
+                     when Direct_Mapping =>
+                        declare
+                           Entity : constant Entity_Id :=
+                             Get_Direct_Mapping_Id (Write_Id);
+                           Binder : constant Item_Type :=
+                             Ada_Ent_To_Why.Element (Symbol_Table, Entity);
+
+                        begin
+                           if Contains_Relaxed_Init_Parts (Etype (Entity))
+                             or else Obj_Has_Relaxed_Init (Entity)
+                           then
+                              case Binder.Kind is
+                                 when DRecord =>
+                                    pragma Assert (Binder.Fields.Present);
+                                    Effects_Append_To_Writes
+                                      (Effects, Binder.Fields.Binder.B_Name);
+                                 when UCArray =>
+                                    Effects_Append_To_Writes
+                                      (Effects, Binder.Content.B_Name);
+                                 when Regular =>
+                                    Effects_Append_To_Writes
+                                      (Effects, Binder.Main.B_Name);
+                                 when others => raise Program_Error;
+                              end case;
+
+                              if Binder.Init.Present then
+                                 Effects_Append_To_Writes
+                                   (Effects, Binder.Init.Id);
+                              end if;
+                           end if;
+                        end;
+                     when Magic_String =>
+                        Effects_Append_To_Writes
+                          (Effects,
+                           To_Why_Id (Obj   => To_Name (Write_Id),
+                                      Local => False));
+                     when others =>
+                        raise Program_Error;
+                  end case;
+               end if;
+            end loop;
+            Statement_Sequence_Append_To_Statements
+              (Store, New_Havoc_Statement
+                 (Ada_Node => Ada_Call,
+                  Effects  => Effects));
+         end;
+
          Statement_Sequence_Append_To_Statements (Store, Why_Call);
       end if;
 
