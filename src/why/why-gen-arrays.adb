@@ -3100,10 +3100,12 @@ package body Why.Gen.Arrays is
       Prefix      : String;
       Declare_One : Boolean := True) return W_Clone_Substitution_Array
    is
-      WTyp   : constant W_Type_Id := Base_Why_Type_No_Bool (Base_Type (Typ));
-      One_Id : constant W_Identifier_Id :=
+      WTyp      : constant W_Type_Id :=
+        Base_Why_Type_No_Bool (Base_Type (Typ));
+      One_Id    : constant W_Identifier_Id :=
         New_Identifier (Name => "index_" & Prefix & "_one");
-
+      Prefix_Mod : constant W_Module_Id :=
+        New_Module (File => No_Symbol, Name => NID (Prefix));
    begin
       if Declare_One then
          Emit (Section,
@@ -3127,11 +3129,15 @@ package body Why.Gen.Arrays is
 
       return (1 => New_Clone_Substitution
               (Kind      => EW_Type_Subst,
-               Orig_Name => New_Name (Symb => NID (Prefix & ".t")),
+               Orig_Name =>
+                 New_Name (Module => Prefix_Mod,
+                           Symb   => NID ("t")),
                Image     => Get_Name (WTyp)),
               2 => New_Clone_Substitution
                 (Kind      => EW_Predicate,
-                 Orig_Name => New_Name (Symb => NID (Prefix & ".le")),
+                 Orig_Name =>
+                 New_Name (Module => Prefix_Mod,
+                           Symb   => NID ("le")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Ule
@@ -3139,7 +3145,9 @@ package body Why.Gen.Arrays is
                       Int_Infix_Le)),
               3 => New_Clone_Substitution
                 (Kind      => EW_Predicate,
-                 Orig_Name => New_Name (Symb => NID (Prefix & ".lt")),
+                 Orig_Name =>
+                   New_Name (Module => Prefix_Mod,
+                             Symb   => NID ("lt")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Ult
@@ -3147,7 +3155,9 @@ package body Why.Gen.Arrays is
                       Int_Infix_Lt)),
               4 => New_Clone_Substitution
                 (Kind      => EW_Predicate,
-                 Orig_Name => New_Name (Symb => NID (Prefix & ".gt")),
+                 Orig_Name =>
+                   New_Name (Module => Prefix_Mod,
+                             Symb   => NID ("gt")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Ugt
@@ -3155,7 +3165,9 @@ package body Why.Gen.Arrays is
                       Int_Infix_Gt)),
               5 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symb => NID (Prefix & ".add")),
+                 Orig_Name =>
+                   New_Name (Module => Prefix_Mod,
+                             Symb   => NID ("add")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Add
@@ -3163,7 +3175,9 @@ package body Why.Gen.Arrays is
                       Int_Infix_Add)),
               6 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symb => NID (Prefix & ".sub")),
+                 Orig_Name =>
+                   New_Name (Module => Prefix_Mod,
+                             Symb   => NID ("sub")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Sub
@@ -3171,7 +3185,9 @@ package body Why.Gen.Arrays is
                       Int_Infix_Subtr)),
               7 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symb => NID (Prefix & ".one")),
+                 Orig_Name =>
+                   New_Name (Module => Prefix_Mod,
+                             Symb   => NID ("one")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).One

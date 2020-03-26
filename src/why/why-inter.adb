@@ -171,6 +171,25 @@ package body Why.Inter is
         (State : in out Search_State;
          Node  : W_Fixed_Constant_Id);
 
+      procedure Clone_Substitution_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Clone_Substitution_Id);
+
+      -------------------------------
+      -- Clone_Substitution_Pre_Op --
+      -------------------------------
+
+      procedure Clone_Substitution_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Clone_Substitution_Id) is
+      begin
+         --  For clone substitutions, the node for the original name is
+         --  irrelevant
+
+         Traverse (State, +Get_Image (Node));
+         State.Control := Abandon_Children;
+      end Clone_Substitution_Pre_Op;
+
       ---------------------------
       -- Fixed_Constant_Pre_Op --
       ---------------------------
