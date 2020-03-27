@@ -1163,7 +1163,7 @@ package body SPARK_Util.Types is
                begin
                   while Present (Comp) loop
                      if Component_Is_Visible_In_SPARK (Comp)
-                       and then Contains_Relaxed_Init_Parts (Etype (Comp))
+                       and then Might_Contain_Relaxed (Etype (Comp))
                      then
                         return True;
                      end if;

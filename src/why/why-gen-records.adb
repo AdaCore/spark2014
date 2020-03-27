@@ -3003,11 +3003,7 @@ package body Why.Gen.Records is
          Result := +Insert_Predicate_Check
            (Ada_Node => Ada_Node,
             Check_Ty => Ty,
-            W_Expr   => +Insert_Checked_Conversion
-              (Ada_Node => Ada_Node,
-               Domain   => EW_Prog,
-               Expr     => Result,
-               To       => EW_Abstract (Ty)));
+            W_Expr   => +Result);
       end if;
 
       return Result;

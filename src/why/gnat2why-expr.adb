@@ -5722,8 +5722,21 @@ package body Gnat2Why.Expr is
       W_Expr   : W_Prog_Id;
       Var_Ent  : Entity_Id := Empty) return W_Prog_Id
    is
-      W_Tmp : constant W_Identifier_Id :=
-        New_Temp_Identifier (Typ      => Get_Type (+W_Expr),
+      Init_Expr : constant W_Expr_Id :=
+        (if Is_Init_Wrapper_Type (Get_Type (+W_Expr))
+         and then not Has_Relaxed_Init (Check_Ty)
+         then Insert_Initialization_Check
+           (Ada_Node               => Ada_Node,
+            E                      => Get_Ada_Node (+Get_Type (+W_Expr)),
+            Name                   => +W_Expr,
+            Domain                 => EW_Prog,
+            Exclude_Always_Relaxed => True)
+         else +W_Expr);
+      --  If Check_Ty does not itself have relaxed init, then its predicate
+      --  expects an initialized expression.
+
+      W_Tmp     : constant W_Identifier_Id :=
+        New_Temp_Identifier (Typ      => Get_Type (Init_Expr),
                              Ada_Node => Var_Ent);
       --  If W_Expr is an array in split form, we need to link W_Tmp to Var_Ent
       --  so that the proper bounds can be retrieved.
@@ -5734,9 +5747,9 @@ package body Gnat2Why.Expr is
       return +W_Expr_Id'(New_Binding (Ada_Node => Ada_Node,
                                       Domain   => EW_Prog,
                                       Name     => W_Tmp,
-                                      Def      => +W_Expr,
+                                      Def      => Init_Expr,
                                       Context  => +W_Seq,
-                                      Typ      => Get_Type (+W_Expr)));
+                                      Typ      => Get_Type (Init_Expr)));
    end Insert_Predicate_Check;
 
    ------------------------
