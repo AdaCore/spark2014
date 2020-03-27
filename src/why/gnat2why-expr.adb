@@ -19482,7 +19482,7 @@ package body Gnat2Why.Expr is
                      Subp        : constant Entity_Id := Return_Applies_To
                        (Return_Statement_Entity (Stmt_Or_Decl));
                      Return_Type : constant W_Type_Id :=
-                       Type_Of_Node (Etype (Subp));
+                       Type_Of_Node (Subp);
                   begin
                      Result_Stmt :=
                        New_Assignment
@@ -19565,7 +19565,7 @@ package body Gnat2Why.Expr is
                Ret_Obj    : constant Entity_Id :=
                  Get_Return_Object (Stmt_Or_Decl);
                Ret_Type   : constant W_Type_Id :=
-                 Type_Of_Node (Etype (Current_Subp));
+                 Type_Of_Node (Current_Subp);
                Obj_Deref  : constant W_Prog_Id :=
                  +Insert_Simple_Conversion
                    (Domain => EW_Prog,

@@ -1,0 +1,19 @@
+test_default.adb:11:21: medium: initialization check might fail
+test_default.adb:24:08: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC)
+test_default.adb:26:31: info: initialization check proved (CVC4: 1 VC)
+test_default.adb:27:34: info: index check proved (CVC4: 2 VC)
+test_default.adb:27:34: info: initialization check proved (CVC4: 1 VC)
+test_default.adb:36:33: info: loop invariant initialization proved (CVC4: 1 VC)
+test_default.adb:36:33: info: loop invariant preservation proved (CVC4: 1 VC)
+test_default.adb:36:65: info: index check proved (CVC4: 4 VC)
+test_default.adb:45:08: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+test_default.adb:48:21: info: index check proved (CVC4: 2 VC)
+test_default.adb:57:33: info: loop invariant initialization proved (CVC4: 1 VC)
+test_default.adb:57:33: info: loop invariant preservation proved (CVC4: 1 VC)
+test_default.adb:57:65: info: index check proved (CVC4: 4 VC)
+test_default.adb:59:14: medium: initialization check might fail [possible explanation: loop invariant at line 57 should mention R]
+test_default.adb:62:57: info: data dependencies proved
+test_default.adb:66:25: medium: assertion might fail (e.g. when A = (others => 1) and A'First = 1 and A'Last = 0)
+test_default.adb:66:26: medium: initialization check might fail
+test_default.adb:68:25: info: assertion proved (CVC4: 2 VC)
+test_default.adb:68:26: info: initialization check proved (CVC4: 1 VC)

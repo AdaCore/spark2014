@@ -160,7 +160,7 @@ package body Gnat2Why.Decls is
         and then not Contains_Allocator (Expr)
       then
          declare
-            Typ : constant W_Type_Id := Type_Of_Node (Etype (E));
+            Typ : constant W_Type_Id := Type_Of_Node (E);
             Def : W_Term_Id;
 
          begin

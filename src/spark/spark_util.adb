@@ -38,7 +38,6 @@ with Opt;
 with Osint;
 with Output;
 with Pprint;                 use Pprint;
-with SPARK_Annotate;         use SPARK_Annotate;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
@@ -1026,22 +1025,7 @@ package body SPARK_Util is
             return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval);
 
          when N_Function_Call =>
-
-            --  Shift and rotate always return initialized results
-
-            if Is_Simple_Shift_Or_Rotate (Get_Called_Entity (Expr))
-
-              --  Predicate and pledge functions return Boolean, they cannot
-              --  be partly initialized.
-
-              or else Is_Predicate_Function (Get_Called_Entity (Expr))
-              or else Has_Pledge_Annotation (Get_Called_Entity (Expr))
-            then
-               return False;
-            else
-               --  ??? Retrieve annotation on called entity
-               return Has_Relaxed_Init (Etype (Get_Called_Entity (Expr)));
-            end if;
+            return Fun_Has_Relaxed_Init (Get_Called_Entity (Expr));
 
          when N_Identifier
             | N_Expanded_Name
@@ -1057,10 +1041,7 @@ package body SPARK_Util is
          when N_Attribute_Reference =>
             case Get_Attribute_Id (Attribute_Name (Expr)) is
                when Attribute_Result =>
-
-                  --  ??? Retrieve annotation on subprogram
-
-                  return Has_Relaxed_Init (Etype (Entity (Prefix (Expr))));
+                  return Fun_Has_Relaxed_Init (Entity (Prefix (Expr)));
 
                when Attribute_Old
                   | Attribute_Loop_Entry
@@ -1257,6 +1238,24 @@ package body SPARK_Util is
          return Full_Source_Name (Scope (E)) & "." & Name;
       end if;
    end Full_Source_Name;
+
+   --------------------------
+   -- Fun_Has_Relaxed_Init --
+   --------------------------
+
+   function Fun_Has_Relaxed_Init (Subp : Entity_Id) return Boolean is
+   begin
+      --  It is illegal to return an uninitialized scalar object
+
+      if Is_Scalar_Type (Retysp (Etype (Subp))) then
+         return False;
+      else
+
+         --  ??? Add cases for function result annotated directly
+
+         return Has_Relaxed_Init (Etype (Subp));
+      end if;
+   end Fun_Has_Relaxed_Init;
 
    --------------------------------
    -- Generic_Actual_Subprograms --

@@ -194,8 +194,8 @@ package body Why.Gen.Init is
                Name         => W_Nam,
                Binders      =>
                  (1 =>
-                      (B_Name => Init_Val,
-                       others => <>),
+                    (B_Name => Init_Val,
+                     others => <>),
                   2 =>
                     (B_Name => Attr_Init,
                      others => <>)));

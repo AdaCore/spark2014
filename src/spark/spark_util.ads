@@ -740,7 +740,11 @@ package SPARK_Util is
    --  No_Eval is True, then we don't consider the expression to be evaluated.
 
    function Obj_Has_Relaxed_Init (Obj : Entity_Id) return Boolean;
-   --  Return True if Obj is an object with relaxed initialization.
+   --  Return True if Obj is an object with relaxed initialization
+
+   function Fun_Has_Relaxed_Init (Subp : Entity_Id) return Boolean with
+     Pre => Ekind (Subp) = E_Function;
+   --  Return True if the result of Subp has relaxed initialization
 
    ---------------------------------
    -- Misc operations and queries --
