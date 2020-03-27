@@ -256,10 +256,7 @@ package SPARK_Util.Subprograms is
    --     lied about contracts (as in, stated it has no outputs), then
    --     this is not a "new" failure.
 
-   function Get_Expression_Function (E : Entity_Id) return Node_Id
-   with Pre  => Is_Subprogram (E),
-        Post => Present (Get_Expression_Function'Result) =
-                Is_Expression_Function_Or_Completion (E);
+   function Get_Expression_Function (E : Entity_Id) return Node_Id;
    --  @param E subprogram
    --  @return if E is the entity for an expression function, return the
    --     corresponding N_Expression_Function original node. Otherwise,
