@@ -213,7 +213,7 @@
   </goal>
   <goal name="def&#39;vc.55" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="149824"/></proof>
+  <proof prover="1"><result status="valid" steps="149934"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.56" expl="postcondition" proved="true">

@@ -64,7 +64,7 @@
   <proof prover="0"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="def&#39;vc.15" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3809"/></proof>
+  <proof prover="0"><result status="valid" steps="3813"/></proof>
   </goal>
   <goal name="def&#39;vc.16" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="21"/></proof>
