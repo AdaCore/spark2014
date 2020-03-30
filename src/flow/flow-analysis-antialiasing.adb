@@ -135,10 +135,13 @@ package body Flow.Analysis.Antialiasing is
       function Full (A, B : Node_Id) return Boolean is
         (Compile_Time_Compare (A, B, True) in LT | LE | EQ);
 
-      AL : constant Node_Id := Low_Bound  (Range_A);
-      AH : constant Node_Id := High_Bound (Range_A);
-      BL : constant Node_Id := Low_Bound  (Range_B);
-      BH : constant Node_Id := High_Bound (Range_B);
+      Range_Expr_A : constant Node_Id := Get_Range (Range_A);
+      Range_Expr_B : constant Node_Id := Get_Range (Range_B);
+
+      AL : constant Node_Id := Low_Bound  (Range_Expr_A);
+      AH : constant Node_Id := High_Bound (Range_Expr_A);
+      BL : constant Node_Id := Low_Bound  (Range_Expr_B);
+      BH : constant Node_Id := High_Bound (Range_Expr_B);
 
    --  Start of processing for Check_Range
 
