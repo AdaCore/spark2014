@@ -1,0 +1,6 @@
+traffic_lights.adb:46:20: info: predicate check proved (CVC4: 1 VC)
+traffic_lights.ads:46:07: info: predicate check proved on default value (CVC4: 1 VC)
+traffic_lights.ads:50:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+traffic_lights.ads:50:09: info: nontermination of task proved (CVC4: 1 VC)
+traffic_lights.ads:53:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
+traffic_lights.ads:53:09: info: nontermination of task proved (CVC4: 1 VC)
