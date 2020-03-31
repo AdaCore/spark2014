@@ -3069,6 +3069,11 @@ package body SPARK_Definition is
                   N);
             end if;
 
+         --  ??? support the newly added attribute
+
+         when Attribute_Initialized =>
+            raise Program_Error;
+
          --  Attribute Address is only allowed at the top level of an Address
          --  aspect or attribute definition clause.
 
