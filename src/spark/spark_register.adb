@@ -129,7 +129,7 @@ package body SPARK_Register is
                            then
                               null;
                            elsif Ekind (E) = E_Operator then
-                              null;
+                              pragma Assert (Is_Intrinsic_Subprogram (E));
                            else
                               Register_Entity (E);
 
