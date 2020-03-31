@@ -491,14 +491,6 @@ package body SPARK_Rewrite is
             when N_Freeze_Entity =>
                return Skip;
 
-            --  Traverse procedure calls rewritten as null statements
-
-            when N_Null_Statement =>
-               if Nkind (Original_Node (N)) = N_Procedure_Call_Statement
-               then
-                  Rewrite_Nodes (Original_Node (N));
-               end if;
-
             --  Traverse expressions for DIC procedures
 
             when N_Full_Type_Declaration =>
