@@ -7596,28 +7596,21 @@ package body SPARK_Definition is
                   end case;
                end if;
 
-               --  Mark Actual_Subtypes of parameters if any
+               --  Mark Actual_Subtypes of body formal parameters, if any
 
                if Nkind (N) /= N_Task_Body then
                   declare
-                     Formals    : constant List_Id :=
-                       Parameter_Specifications
-                         (if Nkind (N) = N_Entry_Body
-                          then Entry_Body_Formal_Part (N)
-                          else Specification (N));
-                     Formal     : Entity_Id;
-                     Sub        : Entity_Id;
-                     Param_Spec : Node_Id := First (Formals);
+                     Body_Formal : Entity_Id := First_Formal (Def_E);
+                     Sub         : Entity_Id;
                   begin
-                     while Present (Param_Spec) loop
-                        Formal := Defining_Identifier (Param_Spec);
-                        Sub := Actual_Subtype (Formal);
+                     while Present (Body_Formal) loop
+                        Sub := Actual_Subtype (Body_Formal);
                         if Present (Sub)
                           and then not In_SPARK (Sub)
                         then
-                           Mark_Violation (Formal, From => Sub);
+                           Mark_Violation (Body_Formal, From => Sub);
                         end if;
-                        Next (Param_Spec);
+                        Next_Formal (Body_Formal);
                      end loop;
                   end;
                end if;
