@@ -1588,11 +1588,11 @@ package body Gnat2Why.Subprograms is
       Binder_Len    : constant Natural :=
         Ada_Param_Len + (if Within_Protected_Type (E) then 1 else 0);
       Result        : Item_Array (1 .. Binder_Len);
-      Param         : Node_Id;
+      Formal        : Entity_Id;
       Count         : Positive;
 
    begin
-      Param := First (Params);
+      Formal := First_Formal (E);
       Count := 1;
 
       if Within_Protected_Type (E) then
@@ -1607,12 +1607,12 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
-      while Present (Param) loop
+      while Present (Formal) loop
          Result (Count) := Mk_Item_Of_Entity
-           (E           => Defining_Identifier (Param),
+           (E           => Formal,
             Local       => True,
             In_Fun_Decl => True);
-         Next (Param);
+         Next_Formal (Formal);
          Count := Count + 1;
       end loop;
 
