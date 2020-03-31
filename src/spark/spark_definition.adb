@@ -3426,6 +3426,15 @@ package body SPARK_Definition is
 
       else
          E := Get_Called_Entity (N);
+
+         --  Calls to aliases, i.e. subprograms created by the frontend
+         --  that operate on derived types, are rewritten with calls to
+         --  corresponding subprograms that operate on the base types.
+
+         pragma Assert
+           (if Is_Overloadable (E)
+            then E = Ultimate_Alias (E)
+            else Ekind (E) = E_Entry_Family);
       end if;
 
       --  A possibly nonreturning procedure should only be called from

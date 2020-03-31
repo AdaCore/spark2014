@@ -263,7 +263,11 @@ package SPARK_Util.Subprograms is
    --     return Empty.
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id
-   with Pre => Is_DIC_Procedure (E) or else Is_Invariant_Procedure (E);
+   with Pre => Is_DIC_Procedure (E)
+                 or else
+               Is_Invariant_Procedure (E)
+                 or else
+               Is_Partial_Invariant_Procedure (E);
    --  @param E a Default_Initial_Condition or Type_Invariant procedure
    --  @return the expression in the first pragma Check found in the body of E,
    --     if any, or Empty otherwise
