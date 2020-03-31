@@ -122,7 +122,6 @@ test_init_by_proof_out_params.adb:146:17: high: "X.C.Z" is not initialized in "P
 test_init_by_proof_out_params.adb:147:13: high: "X.C.Y" is not initialized
 test_init_by_proof_out_params.adb:153:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:167:17: warning: "X" is not modified, could be IN
-test_init_by_proof_out_params.adb:184:22: info: initialization check proved (Trivial: 1 VC)
 test_init_by_proof_out_params.adb:187:07: medium: precondition might fail, cannot prove X.Y'Valid_Scalars (e.g. when R1 = (X => 10, Y => ?, Z => True))
 test_init_by_proof_out_params.adb:189:07: info: precondition proved (CVC4: 1 VC)
 test_init_by_proof_out_params.adb:192:07: medium: precondition might fail, cannot prove X.X'Valid_Scalars

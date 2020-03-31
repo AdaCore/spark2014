@@ -2940,7 +2940,8 @@ package body Why.Atree.Modules is
                   New_Identifier
                     (Symb   => NID ("__null_pointer"),
                      Module => M_C,
-                     Domain => EW_Term));
+                     Domain => EW_Term,
+                     Typ    => Root_Ty));
 
                Insert_Symbol
                  (E, WNE_Is_Null_Pointer,

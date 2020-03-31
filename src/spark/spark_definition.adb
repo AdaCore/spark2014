@@ -3066,7 +3066,8 @@ package body SPARK_Definition is
 
             if not Retysp_In_SPARK (Etype (P))
               or else not
-                Expr_Has_Relaxed_Init (P, No_Eval => True)
+                (Expr_Has_Relaxed_Init (P, No_Eval => True)
+                 or else Has_Relaxed_Init (Etype (P)))
             then
                Mark_Violation
                  ("prefix of attribute """
