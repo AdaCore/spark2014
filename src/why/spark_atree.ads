@@ -24,8 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Atree;
+with Einfo;
 with Exp_Util;
 with Namet;       use Namet;
+with Sem_Aux;
 with Sem_Eval;
 with Sem_Util;
 with Sinfo;       use all type Sinfo.Node_Kind;
@@ -424,10 +426,13 @@ package SPARK_Atree is
    --  the defining entity of the declaration N if any.
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id with
-     Pre => Nkind (N) in N_Function_Call
-                       | N_Procedure_Call_Statement
+     Pre  => Nkind (N) in N_Subprogram_Call
                        | N_Entry_Call_Statement
-                       | N_Op;
+                       | N_Op,
+     Post => (if Nkind (N) in N_Op
+              then Einfo.Is_Intrinsic_Subprogram (Get_Called_Entity'Result)
+              else Get_Called_Entity'Result =
+                   Sem_Aux.Ultimate_Alias (Get_Called_Entity'Result));
    --  Same as Sem_Aux.Get_Called_Entity except that, on intrinsic operators,
    --  it returns the associated function instead of the operator name.
 

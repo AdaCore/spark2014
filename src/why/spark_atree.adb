@@ -25,9 +25,7 @@
 
 with Ada.Text_IO; -- debugging purpose
 with Aspects;
-with Einfo;
 with Nlists;             use Nlists;
-with Sem_Aux;
 with Sem_Ch12;
 with Sem_Disp;
 with SPARK_Util.Types;
@@ -473,13 +471,9 @@ package body SPARK_Atree is
    -----------------------
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id is
-      E : constant Entity_Id :=
-        (if Nkind (N) in N_Op then Entity (N)
-         else Sem_Aux.Get_Called_Entity (N));
-   begin
-      return (if Einfo.Is_Intrinsic_Subprogram (E) then E
-              else Sem_Aux.Ultimate_Alias (E));
-   end Get_Called_Entity;
+     (if Nkind (N) in N_Op
+      then Entity (N)
+      else Sem_Aux.Get_Called_Entity (N));
 
    --------------------------
    -- Get_Enclosing_Object --
