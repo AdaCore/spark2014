@@ -6587,13 +6587,8 @@ package body SPARK_Definition is
         Component_Associations (Expression (Iterable_Aspect));
       Iterable_Field           : Node_Id := First (Iterable_Component_Assoc);
    begin
-
-      --  Nodes in Iterable fields are not rewritten. The ultimate alias should
-      --  be considered.
-
       while Present (Iterable_Field) loop
-         Mark_Entity (Ultimate_Alias
-                      (Entity (Expression (Iterable_Field))));
+         Mark_Entity (Entity (Expression (Iterable_Field)));
          Next (Iterable_Field);
       end loop;
    end Mark_Iterable_Aspect;
