@@ -5,18 +5,8 @@ GNATWhy3
 This section provides a quick description of GNATWhy3. GNATWhy3 is an
 executable written in OCaml as an overcoat layer for Why3 (reusing part of its
 API and most of the code). The submodule of spark2014 git repository called
-Why3 follows the changes of Why3 branch new_ide asynchronously (we usually
-merge when a useful feature is available or a soundness issue appear).
-
-??? TODO Make an index here.
-
-This part of the document is decomposed as follows:
-
-- Why3 part (organization of the files and their use),
-- GNATWhy3 part (organization of the files and their use),
-- useful debug flags ??? To be done
-- drivers and theories
-- on debugging OCaml code ??? TODO too beginnerish for this document ?
+Why3 follows the changes of Why3 branch master asynchronously (we usually
+merge when a useful feature is available or a soundness issue appears).
 
 GNATWhy3 Debug
 ==============
@@ -32,7 +22,7 @@ backtrace:
 Debugging from GNATprove
 ------------------------
 
-A way of passing debugging flag from GNATprove to gnatwhy3 was added:
+A way of passing debugging flags from GNATprove to gnatwhy3 was added:
 ``--why3-debug=my_why3_flag``
 
 The behavior is to add the debug flag inside the commandline of gnatwhy3 using
@@ -63,7 +53,8 @@ Why3 behavior
 
 Input:
 
-- Source code .mlw (or .why which are deprecated) files
+- Source code .mlw (or .why which are deprecated) files, or other entry formats
+  via the Ptree module (this is used by gnatwhy3)
 - Session file why3session.xml (Why3 usually guess where it is: inside a \
   directory with the same basename as the .mlw).
 
