@@ -4708,7 +4708,7 @@ package body SPARK_Definition is
             Mark_Violation_In_Tasking (E);
          end if;
 
-         Mark_Subprogram_Specification (if Ekind (E) in Entry_Kind
+         Mark_Subprogram_Specification (if Is_Entry (E)
                                         then Parent (E)
                                         else Subprogram_Specification (E));
 
