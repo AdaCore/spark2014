@@ -18314,8 +18314,7 @@ package body Gnat2Why.Expr is
          return W_Expr_Id
       is
          Element_E   : constant Entity_Id :=
-           SPARK_Util.Types.Get_Iterable_Type_Primitive
-             (Over_Type, Name_Element);
+           Get_Iterable_Type_Primitive (Over_Type, Name_Element);
          Cont_Type   : constant Entity_Id :=
            Etype (First_Formal (Element_E));
          Cont_Expr   : constant W_Expr_Id :=
@@ -18387,7 +18386,7 @@ package body Gnat2Why.Expr is
          --  function of the Iterable aspect.
 
          if not Use_Contains then
-            Has_Element := SPARK_Util.Types.Get_Iterable_Type_Primitive
+            Has_Element := Get_Iterable_Type_Primitive
               (Over_Type, Name_Has_Element);
 
          --  A Contains Iterable_For_Proof annotation is specified for
@@ -18558,9 +18557,9 @@ package body Gnat2Why.Expr is
             --  temporary variable.
 
             else
-               Index_Type := Etype
-                 (SPARK_Util.Types.Get_Iterable_Type_Primitive
-                    (Over_Type, Name_Element));
+               Index_Type :=
+                 Etype (Get_Iterable_Type_Primitive (Over_Type, Name_Element));
+
                Need_Tmp_Var := False;
             end if;
          end if;

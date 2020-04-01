@@ -179,16 +179,6 @@ package SPARK_Util.Types is
    --  Get the type of the given entity. This function looks through private
    --  types and should be used with extreme care.
 
-   function Get_Iterable_Type_Primitive
-     (Typ : Entity_Id;
-      Nam : Name_Id) return Entity_Id
-   with Pre => Is_Type (Typ)
-                 and then
-               Nam in Name_First | Name_Next | Name_Has_Element | Name_Element;
-   --  Retrieve one of the primitives First, Next, Has_Element, Element from
-   --  the value of the Iterable aspect of a formal type.
-   --  Return the ultimate alias.
-
    function Get_Parent_Type_If_Check_Needed (N : Node_Id) return Entity_Id
      with Pre => Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration;
    --  @param N a (sub)type declaration
