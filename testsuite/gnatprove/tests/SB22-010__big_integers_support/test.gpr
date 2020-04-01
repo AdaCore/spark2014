@@ -1,0 +1,9 @@
+project Test is
+
+   for Main use ("big_integers_test.adb");
+
+   package Compiler is
+      for Switches ("Ada") use ("-g", "-gnata", "-gnat2020");
+   end Compiler;
+
+end Test;
