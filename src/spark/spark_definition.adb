@@ -6367,31 +6367,32 @@ package body SPARK_Definition is
 
             end case;
          end if;
-      end if;
 
-      --  Mark predicate function, if any Predicate functions should be
-      --  marked after the subtype, that's why we need to do this here, after
-      --  inserting the subtype into the entity list.
+         --  Mark predicate function, if any Predicate functions should be
+         --  marked after the subtype, that's why we need to do this here,
+         --  after inserting the subtype into the entity list.
 
-      if Is_Type (E) and then Has_Predicates (E) then
-         declare
-            PF : constant Entity_Id := Predicate_Function (E);
-         begin
-            if Present (PF) then
-               Queue_For_Marking (PF);
-            end if;
-         end;
-      end if;
+         if Is_Type (E) and then Has_Predicates (E) then
+            declare
+               PF : constant Entity_Id := Predicate_Function (E);
+            begin
+               if Present (PF) then
+                  Queue_For_Marking (PF);
+               end if;
+            end;
+         end if;
 
-      --  Currently, proof looks at overriding operations for a given
-      --  subprogram operation on tagged types. To make this work, they should
-      --  be marked. Easiest is to mark all primitive operations of a tagged
-      --  type.
+         --  Currently, proof looks at overriding operations for a given
+         --  subprogram operation on tagged types. To make this work, they
+         --  should be marked. Easiest is to mark all primitive operations of
+         --  a tagged type.
 
-      if Is_Tagged_Type (E) then
-         for Prim of Iter (Direct_Primitive_Operations (E)) loop
-            Queue_For_Marking (Ultimate_Alias (Prim));
-         end loop;
+         if Is_Tagged_Type (E) then
+            for Prim of Iter (Direct_Primitive_Operations (E)) loop
+               Queue_For_Marking (Ultimate_Alias (Prim));
+            end loop;
+         end if;
+
       end if;
 
       --  Restore prestate
