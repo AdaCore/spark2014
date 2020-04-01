@@ -12404,12 +12404,12 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         --  GNATprove handles Valid_Scalars as meaning that the value has been
+         --  The Initialized attribute is used to express that a value has been
          --  initialized. To remain as close as possible to the executable
          --  semantics of the attribute, proof does not assume that
-         --  'Valid_Scalars necessarily returns False on uninitialized data.
+         --  'Initialized necessarily returns False on uninitialized data.
 
-         when Attribute_Valid_Scalars =>
+         when Attribute_Initialized =>
             declare
                Expr : constant W_Expr_Id :=
                  Transform_Expr

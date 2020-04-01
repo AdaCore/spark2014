@@ -8,11 +8,11 @@ procedure Test_Init_By_Proof_Conv with SPARK_Mode is
    end record;
 
    type Rec_2 is new Rec (True) with
-     Annotate => (GNATprove, Init_By_Proof);
+     Relaxed_Initialization;
    type Rec_3 is new Rec (True);
 
    type InRec_2 is new InRec with
-     Annotate => (GNATprove, Init_By_Proof);
+     Relaxed_Initialization;
 
    X : Rec_2;
    Y : InRec_2 := InRec_2 (Rec_3 (X).G); --@INIT_BY_PROOF:NONE

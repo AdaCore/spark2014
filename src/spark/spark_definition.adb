@@ -1012,6 +1012,17 @@ package body SPARK_Definition is
    --  Mark pragma Annotate that could appear at the beginning of a declaration
    --  list of a package.
 
+   procedure Mark_Type_With_Relaxed_Init
+     (N   : Node_Id;
+      Ty  : Entity_Id;
+      Own : Boolean := False)
+   with Pre => Is_Type (Ty) and then Entity_In_SPARK (Ty);
+   --  Checks restrictions on types marked with a Relaxed_Initialization aspect
+   --  and store them in the Relaxed_Init map for further use.
+   --  @param N node on which violations should be emitted.
+   --  @param Ty type which should be compatible with relaxed initialization.
+   --  @param Own True if Ty is itself annotated with relaxed initialization.
+
    function Emit_Warning_Info_Messages return Boolean is
      (Emit_Messages and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
    --  Emit warning/info messages only when messages should be emitted, and
@@ -3057,12 +3068,12 @@ package body SPARK_Definition is
                Error_Msg_F ("?attribute Valid is assumed to return True", N);
             end if;
 
-         --  Attribute Valid_Scalars is used on prefixes with init by proof.
-         --  Valid_Scalars does not mandate the evaluation of its prefix.
+         --  Attribute Initialized is used on prefixes with relaxed
+         --  initialization. It does not mandate the evaluation of its prefix.
          --  Thus it can be called on scalar "names" which are not initialized
          --  without generating a bounded error.
 
-         when Attribute_Valid_Scalars =>
+         when Attribute_Initialized =>
 
             if not Retysp_In_SPARK (Etype (P))
               or else not
@@ -3075,11 +3086,6 @@ package body SPARK_Definition is
                   & """ without initialization by proof",
                   N);
             end if;
-
-         --  ??? support the newly added attribute
-
-         when Attribute_Initialized =>
-            raise Program_Error;
 
          --  Attribute Address is only allowed at the top level of an Address
          --  aspect or attribute definition clause.
@@ -4085,7 +4091,8 @@ package body SPARK_Definition is
       --  E is a subprogram or a loop parameter, or a discriminant
 
       procedure Mark_Number_Entity     (E : Entity_Id);
-      procedure Mark_Object_Entity     (E : Entity_Id);
+      procedure Mark_Object_Entity     (E : Entity_Id) with
+        Pre => Ekind (E) in E_Variable | E_Constant;
       procedure Mark_Package_Entity    (E : Entity_Id) with
         Pre =>
           Entity_In_Ext_Axioms (E)
@@ -4187,7 +4194,7 @@ package body SPARK_Definition is
          --  block statement (SPARK RM 3.10(4)).
 
          if Nkind (N) = N_Object_Declaration
-           and then Is_Anonymous_Access_Type (Etype (E))
+           and then Is_Anonymous_Access_Type (T)
          then
             declare
                Scop : constant Entity_Id := Scope (E);
@@ -4222,7 +4229,7 @@ package body SPARK_Definition is
             --  the rules.
 
             if Nkind (N) = N_Object_Declaration
-              and then Is_Anonymous_Access_Type (Etype (E))
+              and then Is_Anonymous_Access_Type (T)
             then
                Check_Source_Of_Borrow_Or_Observe (Expr);
 
@@ -4242,11 +4249,24 @@ package body SPARK_Definition is
             --  If we are performing a move operation, check that we are
             --  moving a path.
 
-            elsif Is_Deep (Etype (E))
+            elsif Is_Deep (T)
               and then not Is_Path_Expression (Expr)
             then
                Mark_Violation ("expression as source of move", Expr);
             end if;
+         end if;
+
+         --  If no violations were found and the object is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         if not Violation_Detected
+           and then Ekind (E) = E_Variable
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => T,
+               Own => False);
          end if;
       end Mark_Object_Entity;
 
@@ -4379,6 +4399,18 @@ package body SPARK_Definition is
       begin
          if not Retysp_In_SPARK (T) then
             Mark_Violation (E, From => T);
+
+         --  If no violations were found and the object is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         elsif not Violation_Detected
+           and then Is_Formal (E)
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => T,
+               Own => False);
          end if;
       end Mark_Parameter_Entity;
 
@@ -4850,6 +4882,19 @@ package body SPARK_Definition is
                     ("subprogram inherited from multiple interfaces", E);
                end if;
             end;
+         end if;
+
+         --  If no violations were found and the function is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         if not Violation_Detected
+           and then Ekind (E) = E_Function
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => Etype (E),
+               Own => False);
          end if;
       end Mark_Subprogram_Entity;
 
@@ -6029,6 +6074,19 @@ package body SPARK_Definition is
 
          else
             raise Program_Error;
+         end if;
+
+         --  If no violations were found and the type is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         if not Violation_Detected
+           and then Is_First_Subtype (E)
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => E,
+               Own => True);
          end if;
       end Mark_Type_Entity;
 

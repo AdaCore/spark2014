@@ -8,9 +8,9 @@ procedure Relaxed_Initialization with SPARK_Mode is
          when True =>   Y : My_Float;
          when False  => Z : My_Duration;
       end case;
-     end record -- with Relaxed_Initialization
+     end record with Relaxed_Initialization
 ;
-   pragma Annotate (GNATprove, Init_By_Proof, Rec);
+
 
      type Vec is array (Positive range <>) of Rec;
 
@@ -19,8 +19,8 @@ procedure Relaxed_Initialization with SPARK_Mode is
      procedure Partially_Init (Obj : out Vec)
        with Post => (for all Elem of Obj =>
                       (if Elem.D
-                       then Elem.Y'Valid_Scalars
-                       else Elem.Z'Valid_Scalars and Elem.Z = 0.0));
+                       then Elem.Y'Initialized
+                       else Elem.Z'Initialized and Elem.Z = 0.0));
 
      procedure Partially_Init (Obj : out Vec) is
      begin
@@ -34,18 +34,18 @@ procedure Relaxed_Initialization with SPARK_Mode is
          pragma Loop_Invariant
            ((for all Elem of Obj (Obj'First .. Idx) =>
               (if Elem.D
-               then Elem.Y'Valid_Scalars
-               else Elem.Z'Valid_Scalars and Elem.Z = 0.0)));
+               then Elem.Y'Initialized
+               else Elem.Z'Initialized and Elem.Z = 0.0)));
         end loop;
      end Partially_Init;
 
      procedure Init_X_Components (Obj : in out Vec)
        with Post => (for all Idx in Obj'Range =>
-                       Obj (Idx)'Valid_Scalars and
+                       Obj (Idx)'Initialized and
                        Obj (Idx) = Obj'Old (Idx)'Update (X => 1)),
      Pre => (for all Idx in Obj'Range =>
-               (if Obj (Idx).D then Obj (Idx).Y'Valid_Scalars
-                else Obj (Idx).Z'Valid_Scalars))
+               (if Obj (Idx).D then Obj (Idx).Y'Initialized
+                else Obj (Idx).Z'Initialized))
      is
      begin
         for Idx in Obj'Range loop
@@ -53,7 +53,7 @@ procedure Relaxed_Initialization with SPARK_Mode is
 
            pragma Loop_Invariant
              (for all Idx2 in Obj'First .. Idx =>
-                (Obj (Idx2)'Valid_Scalars and
+                (Obj (Idx2)'Initialized and
                  Obj (Idx2) = Obj'Loop_Entry (Idx2)'Update (X => 1)));
         end loop;
      end;
@@ -65,5 +65,5 @@ procedure Relaxed_Initialization with SPARK_Mode is
 begin
     Partially_Init (Obj);
     Init_X_Components (Obj);
-    pragma Assert (for all E of Obj => E'Valid_Scalars);
+    pragma Assert (for all E of Obj => E'Initialized);
 end;

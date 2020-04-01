@@ -13,7 +13,7 @@ test_pred.adb:33:25: info: assertion proved (CVC4: 1 VC)
 test_pred.adb:33:32: info: predicate check proved (CVC4: 2 VC)
 test_pred.adb:33:32: medium: initialization check might fail
 test_pred.adb:33:51: info: initialization check proved (CVC4: 1 VC)
-test_pred.adb:49:52: info: initialization check proved (CVC4: 1 VC)
+test_pred.adb:49:50: info: initialization check proved (CVC4: 1 VC)
 test_pred.adb:53:26: info: data dependencies proved
 test_pred.adb:58:22: info: assertion proved (CVC4: 1 VC)
 test_pred.adb:58:31: info: initialization check proved (CVC4: 1 VC; Trivial: 2 VC)
@@ -28,7 +28,7 @@ test_pred.adb:74:25: info: assertion proved (CVC4: 1 VC)
 test_pred.adb:74:34: info: initialization check proved (CVC4: 1 VC; Trivial: 2 VC)
 test_pred.adb:74:34: info: predicate check proved (CVC4: 2 VC; Trivial: 1 VC)
 test_pred.adb:74:55: info: initialization check proved (CVC4: 1 VC)
-test_pred.adb:87:70: info: initialization check proved (CVC4: 1 VC)
+test_pred.adb:87:68: info: initialization check proved (CVC4: 1 VC)
 test_pred.adb:89:26: info: data dependencies proved
 test_pred.adb:94:22: info: assertion proved (CVC4: 1 VC)
 test_pred.adb:94:34: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)

@@ -208,13 +208,6 @@ package SPARK_Definition is
      Pre => Nkind (N) = N_Raise_Expression;
    --  Return True if N occurs in a precondition
 
-   procedure Mark_Type_With_Relaxed_Init
-     (N   : Node_Id;
-      Ty  : Entity_Id;
-      Own : Boolean := False)
-   with Pre => Is_Type (Ty) and then Entity_In_SPARK (Ty);
-   --  ??? Should be private once relaxed init is an aspect
-
    ----------------------------------------------------------------------
    --  Marked entity collections
    ----------------------------------------------------------------------

@@ -3,7 +3,7 @@ procedure Test_Default with SPARK_Mode is
       X, Y : Integer;
    end record;
 
-   type My_Rec_2 is new My_Rec with Annotate => (GNATprove, Init_By_Proof);
+   type My_Rec_2 is new My_Rec with Relaxed_Initialization;
 
    function C return My_Rec_2 with Import;
 
@@ -15,14 +15,14 @@ procedure Test_Default with SPARK_Mode is
 
    type Res is record
       C : Integer;
-   end record with Annotate => (GNATprove, Init_By_Proof);
+   end record with Relaxed_Initialization;
 
    type My_Arr is array (Integer range <>) of Natural;
 
    function Search (A : My_Arr; V : Natural) return Res with
      Post =>
        (if (for some E of A => E = V)
-        then Search'Result'Valid_Scalars
+        then Search'Result'Initialized
         and then Search'Result.C in A'Range
         and then A (Search'Result.C) = V)
    is
@@ -38,12 +38,12 @@ procedure Test_Default with SPARK_Mode is
       return R;
    end Search;
 
-   type My_Int is new Integer with Annotate => (GNATprove, Init_By_Proof);
+   type My_Int is new Integer with Relaxed_Initialization;
 
    function Search_Bad (A : My_Arr; V : Natural) return My_Int with
      Post =>
        (if (for some E of A => E = V)
-        then Search_Bad'Result'Valid_Scalars
+        then Search_Bad'Result'Initialized
         and then Integer (Search_Bad'Result) in A'Range
         and then A (Integer (Search_Bad'Result)) = V)
    is

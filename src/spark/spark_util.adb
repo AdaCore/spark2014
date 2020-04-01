@@ -1249,10 +1249,8 @@ package body SPARK_Util is
       if Is_Scalar_Type (Retysp (Etype (Subp))) then
          return False;
       else
-
-         --  ??? Add cases for function result annotated directly
-
-         return Has_Relaxed_Init (Etype (Subp));
+         return Has_Relaxed_Initialization (Subp)
+           or else Has_Relaxed_Init (Etype (Subp));
       end if;
    end Fun_Has_Relaxed_Init;
 
@@ -2679,10 +2677,17 @@ package body SPARK_Util is
       then
          return False;
 
+      --  Check whether the object is subjected to a Relaxed_Initialization
+      --  aspect.
+
+      elsif Ekind (Obj) in E_Variable | Formal_Kind
+        and then Has_Relaxed_Initialization (Obj)
+      then
+         return True;
+
       --  Otherwise, the object has relaxed initialization if its type does
 
       else
-         --  ??? Add cases for formal and variables annotated directly
          return Has_Relaxed_Init (Etype (Obj));
       end if;
    end Obj_Has_Relaxed_Init;

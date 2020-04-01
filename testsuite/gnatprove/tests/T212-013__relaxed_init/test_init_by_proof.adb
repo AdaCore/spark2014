@@ -1,13 +1,13 @@
 procedure Test_Init_By_Proof with SPARK_Mode is
-   type My_Int is new Integer;
-   pragma Annotate (GNATProve, Init_By_Proof, My_Int);
+   type My_Int is new Integer with
+     Relaxed_Initialization;
    type Rec is record
       X : Integer;
       Y : My_Int;
       Z : Boolean;
    end record;
-   type Rec_2 is new Rec;
-   pragma Annotate (GNATProve, Init_By_Proof, Rec_2);
+   type Rec_2 is new Rec with
+     Relaxed_Initialization;
    type Holder is record
       F : Rec;
       G : Rec_2;
@@ -19,11 +19,11 @@ procedure Test_Init_By_Proof with SPARK_Mode is
          X : Integer;
       when others => null;
       end case;
-   end record;
-   pragma Annotate (GNATProve, Init_By_Proof, Rec_3);
+   end record with
+     Relaxed_Initialization;
 
    procedure Test_Discr (X : Rec_3) with
-     Pre => X'Valid_Scalars and then X.D = 0
+     Pre => X'Initialized and then X.D = 0
    is
       Y : Integer := X.X + Integer (X.D); --@INIT_BY_PROOF:PASS
       Z : My_Int := X.Y + X.D; --@INIT_BY_PROOF:PASS
@@ -41,17 +41,17 @@ procedure Test_Init_By_Proof with SPARK_Mode is
    end Test_Discr_2;
 
    procedure Test_Init_Attr (X : Rec; Y : Rec_2) with
-     Pre => X.Y'Valid_Scalars and Y'Valid_Scalars
+     Pre => X.Y'Initialized and Y'Initialized
    is
    begin
-      pragma Assert (Holder'(X, Y)'Valid_Scalars);--@ASSERT:PASS
+      pragma Assert (Holder'(X, Y)'Initialized);--@ASSERT:PASS
    end Test_Init_Attr;
 
    procedure Test_Init_Attr_2 (X : Rec; Y : Rec_2) with
-     Pre => X.Y'Valid_Scalars or Y'Valid_Scalars
+     Pre => X.Y'Initialized or Y'Initialized
    is
    begin
-      pragma Assert (Holder'(X, Y)'Valid_Scalars);--@ASSERT:FAIL
+      pragma Assert (Holder'(X, Y)'Initialized);--@ASSERT:FAIL
    end Test_Init_Attr_2;
 
    procedure P1 is

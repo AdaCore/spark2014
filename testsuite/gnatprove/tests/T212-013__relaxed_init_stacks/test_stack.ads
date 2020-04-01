@@ -28,13 +28,13 @@ package Test_Stack with SPARK_Mode is
      and then (for all K in 1 .. Size (S) => Peek (S, K) = Peek (S'Old, K));
 private
    type Content_Arr is array (Positive range <>) of Integer with
-     Annotate => (GNATprove, Init_By_Proof);
+     Relaxed_Initialization;
    type My_Stack (Max : Natural) is record -- I think no flow errors should be reported here
       Top     : Natural := 0;
       Content : Content_Arr (1 .. Max);
    end record
      with Predicate => Top <= Max
-     and then (for all K in 1 .. Top => Content (K)'Valid_Scalars);
+     and then (for all K in 1 .. Top => Content (K)'Initialized);
 
    function Size (S : My_Stack) return Natural is (S.Top);
    function Peek (S : My_Stack; I : Positive) return Integer is

@@ -6,8 +6,8 @@ with SPARK_Mode,
 is
    function Global_A_Initalized return Boolean;
 
-   type My_Natural is new Natural;
-   pragma Annotate (GNATprove, Init_By_Proof, My_Natural);
+   type My_Natural is new Natural with
+     Relaxed_Initialization;
 
    procedure initGlobalsA (status : out Natural) with
      Post => (if status = 0 then Global_A_Initalized),
@@ -20,5 +20,5 @@ is
 private
    Global_A : My_Natural with Part_Of => Global_AS;
 
-   --function Global_A_Initalized return Boolean is (Global_A'Valid_Scalars);
+   --function Global_A_Initalized return Boolean is (Global_A'Initialized);
 end A;
