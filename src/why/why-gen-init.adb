@@ -289,7 +289,7 @@ package body Why.Gen.Init is
               and then Contains_Relaxed_Init_Parts (E, Ignore_Top => True)))
       then
          T := +Sequence
-              (Ada_Node => Ada_Node,
+              (Ada_Node => Get_Ada_Node (+Tmp),
                Left     => New_Located_Assert
                  (Ada_Node => Ada_Node,
                   Pred     => +Compute_Is_Initialized
@@ -300,7 +300,7 @@ package body Why.Gen.Init is
                   Reason   => VC_Initialization_Check,
                   Kind     => EW_Assert),
                Right    => +Tmp);
-         T := Binding_For_Temp (Ada_Node => Ada_Node,
+         T := Binding_For_Temp (Ada_Node => Get_Ada_Node (+Tmp),
                                 Domain   => Domain,
                                 Tmp      => Tmp,
                                 Context  => T);

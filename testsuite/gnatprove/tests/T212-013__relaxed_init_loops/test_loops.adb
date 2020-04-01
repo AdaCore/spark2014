@@ -52,12 +52,12 @@ procedure Test_Loops with SPARK_Mode is
       X (I).F1 := 15;
    end Init_One;
 
-   procedure Init_First (X : out A_Part_Init; I : Positive) with
-     Pre  => I in X'Range,
-     Post => X (I).F1'Initialized
+   procedure Init_First (X : out A_Part_Init; I : Positive)
    is
+      R : A_Part_Init (X'First .. X'Last);
    begin
-      Init_F1 (R_Part_Init (X (I)));
+      Init_F1 (R_Part_Init (R (I)));
+      X := R; --@INIT_BY_PROOF:FAIL
    end Init_First;
 
    procedure Init_All_Bad (X : out Two_Arrs) with
@@ -71,7 +71,7 @@ procedure Test_Loops with SPARK_Mode is
       for I in reverse 1 .. X.Max loop
          X.G1 (I).F2 := I;
       end loop;
-      Init_One (A_Part_Init (X.G1), 1); --  Flow analysis should complain that X.G1 is not initialized
+      Init_First (A_Part_Init (X.G1), 1);
       for I in 2 .. X.Max loop
          Init_One (A_Part_Init (X.G1), I);
       end loop;
