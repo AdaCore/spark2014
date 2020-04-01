@@ -4101,7 +4101,15 @@ package body SPARK_Definition is
             and then
               Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = On;
 
-      procedure Mark_Subprogram_Entity (E : Entity_Id);
+      procedure Mark_Subprogram_Entity (E : Entity_Id)
+      with Pre => (if Is_Subprogram (E)
+                   then (Ekind (E) = E_Function
+                         and then Is_Intrinsic_Subprogram (E))
+                        or else E = Ultimate_Alias (E)
+                   else Is_Entry (E));
+      --  Mark subprogram or entry. Make sure that we don't mark aliases
+      --  (except for intrinsic functions).
+
       procedure Mark_Type_Entity       (E : Entity_Id);
 
       use type Node_Lists.Cursor;
@@ -4778,13 +4786,6 @@ package body SPARK_Definition is
                  and then
                    (Was_Expression_Function (My_Body)
                     or else Is_Predicate_Function (E))
-
-                 --  Protect against marking the same body twice. This can
-                 --  happen, when the frontend creates a new entity for the
-                 --  same syntactic subprogram, e.g. for primitive operations
-                 --  of derived types.
-
-                 and then E = Ultimate_Alias (E)
 
                  --  ??? Exclude functions from external axioms, that check
                  --  could certainly be moved higher up.
