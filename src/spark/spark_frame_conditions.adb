@@ -291,21 +291,21 @@ package body SPARK_Frame_Conditions is
       Inputs  : out Node_Sets.Set;
       Outputs : out Node_Sets.Set)
    is
-      pragma Assert (if Ekind (E) = E_Entry then No (Alias (E)));
-      --  Alias is empty for entries and meaningless for entry families
-
-      E_Alias : constant Entity_Id :=
-        (if Ekind (E) in E_Function | E_Procedure
-         then Ultimate_Alias (E)
-         else E);
+      pragma Assert
+        (if Is_Subprogram (E) then
+           E = Ultimate_Alias (E)
+         elsif Ekind (E) = E_Entry then
+           No (Alias (E)));
+      --  We should only deal with ultimate subprogram aliases here; for
+      --  entries alias is always empty, while for entry families and tasks it
+      --  is meaningless.
 
    begin
       --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return empty sets.
 
-      if Is_Subprogram_Or_Entry (E)
-          and then Ekind (E) /= E_Entry_Family
-          and then Is_Abstract_Subprogram (E_Alias)
+      if Is_Subprogram (E)
+        and then Is_Abstract_Subprogram (E)
       then
          --  Initialize to empty sets and return
          Inputs  := Node_Sets.Empty_Set;
@@ -314,8 +314,8 @@ package body SPARK_Frame_Conditions is
          return;
       end if;
 
-      Inputs  := Get_Frontend_Xrefs (Reads,  E_Alias);
-      Outputs := Get_Frontend_Xrefs (Writes, E_Alias);
+      Inputs  := Get_Frontend_Xrefs (Reads,  E);
+      Outputs := Get_Frontend_Xrefs (Writes, E);
 
       --  Go through the reads and check if the entities corresponding to
       --  variables (not constants) have pragma Effective_Reads set. If so,
