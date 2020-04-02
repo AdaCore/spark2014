@@ -488,8 +488,9 @@ package SPARK_Util.Subprograms is
 
    function Corresponding_Primitive (Subp, Ty : Entity_Id) return Entity_Id
    with
-       Pre => Is_Dispatching_Operation (Subp)
-          and then Present (Find_Dispatching_Type (Subp));
+       Pre  => Is_Dispatching_Operation (Subp)
+               and then Present (Find_Dispatching_Type (Subp)),
+       Post => Is_Dispatching_Operation (Corresponding_Primitive'Result);
    --  @params Subp a dispatching operation
    --  @params Ty a descendant of the dispatching type of Subp
    --  @return the primitive of Ty that corresponds to Subp
