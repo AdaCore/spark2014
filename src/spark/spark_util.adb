@@ -2639,7 +2639,7 @@ package body SPARK_Util is
             elsif Present (I_Spec) and then Of_Present (I_Spec) then
                declare
                   Element : constant Entity_Id :=
-                    SPARK_Util.Types.Get_Iterable_Type_Primitive
+                    Get_Iterable_Type_Primitive
                       (Etype (Name (I_Spec)), Name_Element);
                begin
                   return Fun_Has_Relaxed_Init (Element);
@@ -2651,10 +2651,10 @@ package body SPARK_Util is
             elsif Present (I_Spec) then
                declare
                   First : constant Entity_Id :=
-                    SPARK_Util.Types.Get_Iterable_Type_Primitive
+                    Get_Iterable_Type_Primitive
                       (Etype (Name (I_Spec)), Name_First);
                   Next  : constant Entity_Id :=
-                    SPARK_Util.Types.Get_Iterable_Type_Primitive
+                    Get_Iterable_Type_Primitive
                       (Etype (Name (I_Spec)), Name_Next);
                begin
                   return Fun_Has_Relaxed_Init (First)
