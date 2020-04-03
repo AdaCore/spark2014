@@ -15,7 +15,16 @@
 private package HW.DbC.TRBs is
 
    TRB_Size : constant := 16;
-   type T is limited private;
+
+   type T is record
+      Parameter : Word64;
+      Status    : Word32;
+      Control   : Word32;
+   end record
+   with
+      Pack,
+      Volatile,
+      Alignment => Natural'Max (16, TRB_Size);
 
    ----------------------------------------------------------------------------
 
@@ -149,18 +158,6 @@ private package HW.DbC.TRBs is
    procedure Init_Cycle_Ring
      (Ring     :    out Transfer_Ring;
       Physical : in     Word64);
-
-private
-
-   type T is record
-      Parameter : Word64;
-      Status    : Word32;
-      Control   : Word32;
-   end record
-   with
-      Pack,
-      Volatile,
-      Alignment => Natural'Max (16, TRB_Size);
 
 end HW.DbC.TRBs;
 
