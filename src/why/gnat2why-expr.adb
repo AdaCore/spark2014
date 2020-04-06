@@ -19184,7 +19184,7 @@ package body Gnat2Why.Expr is
          --  of size smaller than 32. Indeed, in this case the amount of
          --  the shift can be greater than 2**(Size of the underlying bv),
          --  resulting in a modulo on the amount of the shift Introduced by
-         --  the convertion at the why3 level.
+         --  the conversion at the why3 level.
          if Nb_Of_Bits < 32
            and then Name /= MF_BVs (Typ).Rotate_Left
            and then Name /= MF_BVs (Typ).Rotate_Right

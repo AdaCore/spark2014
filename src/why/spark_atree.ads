@@ -330,7 +330,7 @@ package SPARK_Atree is
                        | N_Entry_Index_Specification
                        | N_Loop_Parameter_Specification;
 
-   function Do_Check_On_Scalar_Converion (N : Node_Id) return Boolean with
+   function Do_Check_On_Scalar_Conversion (N : Node_Id) return Boolean with
      Pre => Nkind (N) in Sinfo.N_Subexpr;
    --  Return True if a check is needed on an expression which requires a
    --  scalar conversion. The check may be either a range check, an index
@@ -449,7 +449,7 @@ package SPARK_Atree is
       Check_Type        : out Entity_Id;
       Check_Kind        : out SPARK_Util.Scalar_Check_Kind)
    with Pre => Nkind (N) in Sinfo.N_Subexpr
-     and then Do_Check_On_Scalar_Converion (N);
+     and then Do_Check_On_Scalar_Conversion (N);
    --  @param N a scalar expression requiring a check
    --  @param In_Left_Hand_Side True if N occurs in the lefthand side of an
    --         assignment.

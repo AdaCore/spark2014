@@ -986,7 +986,7 @@ package body Why.Gen.Expr is
 
             Do_Check : constant Boolean :=
               Domain = EW_Prog and then Check_Needed and then
-              Do_Check_On_Scalar_Converion (Ada_Node);
+              Do_Check_On_Scalar_Conversion (Ada_Node);
 
          begin
             T := Insert_Scalar_Conversion (Domain   => Domain,
@@ -1441,7 +1441,7 @@ package body Why.Gen.Expr is
 
          elsif Why_Type_Is_Float (W_Type) then
 
-            --  In the case of a convertion of a float into a bitvector, we
+            --  In the case of a conversion of a float into a bitvector, we
             --  perform the range check with floats by converting the bounds
             --  of the bitvector range into float and rounding W_Expr to the
             --  nearest integer (RNA). For this to be correct the first element
@@ -1970,8 +1970,8 @@ package body Why.Gen.Expr is
                 and then not Why_Type_Is_Float (Base_Why_Type (To)))
 
          --       or if From is a modular type and To is neither a modular nor
-         --       a float, insert a convertion to int since we only support
-         --       direct convertion from bitvector to int, float or another
+         --       a float, insert a conversion to int since we only support
+         --       direct conversion from bitvector to int, float or another
          --       bitvector types.
 
            or else (Why_Type_Is_BitVector (Base_Why_Type (From))

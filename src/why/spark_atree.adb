@@ -213,11 +213,11 @@ package body SPARK_Atree is
    function Discrete_Subtype_Definition (N : Node_Id) return Node_Id renames
     Sinfo.Discrete_Subtype_Definition;
 
-   ----------------------------------
-   -- Do_Check_On_Scalar_Converion --
-   ----------------------------------
+   -----------------------------------
+   -- Do_Check_On_Scalar_Conversion --
+   -----------------------------------
 
-   function Do_Check_On_Scalar_Converion (N : Node_Id) return Boolean is
+   function Do_Check_On_Scalar_Conversion (N : Node_Id) return Boolean is
      (Sinfo.Do_Range_Check (N)
       or else
         (Atree.Nkind (Atree.Parent (N)) = N_Type_Conversion

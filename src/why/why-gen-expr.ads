@@ -233,7 +233,7 @@ package Why.Gen.Expr is
    --  @return an addition in either the representation type of Typ or
    --          the representation type of left if Typ is left empty; This
    --          type should either be ew_int_type or a bitvector; Will
-   --          do the appropriate convertion for left and right.
+   --          do the appropriate conversion for left and right.
    --  beware that there is no modulo operation inserted when dealing
    --  with modulars.
 
@@ -247,7 +247,7 @@ package Why.Gen.Expr is
    --  @return a substraction in either the representation type of Typ or
    --          the representation type of left if Typ is left empty; This
    --          type should either be ew_int_type or a bitvector; Will
-   --          do the appropriate convertion for left and right.
+   --          do the appropriate conversion for left and right.
    --  beware that there is no modulo operation inserted when dealing
    --  with modulars.
 
