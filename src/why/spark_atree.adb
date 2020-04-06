@@ -218,7 +218,10 @@ package body SPARK_Atree is
    -----------------------------------
 
    function Do_Check_On_Scalar_Conversion (N : Node_Id) return Boolean is
-     (Sinfo.Do_Range_Check (N)
+      use type Einfo.Entity_Kind;
+   begin
+      return
+      Sinfo.Do_Range_Check (N)
       or else
         (Atree.Nkind (Atree.Parent (N)) = N_Type_Conversion
          and then Sinfo.Do_Overflow_Check (Atree.Parent (N)))
@@ -244,7 +247,8 @@ package body SPARK_Atree is
             then Einfo.Full_View (Etype (Atree.Parent (N)))
             else Etype (Atree.Parent (N)))
          /= (if Nkind (N) = N_Qualified_Expression then Etype (N)
-             else Entity (N))));
+             else Entity (N)));
+   end Do_Check_On_Scalar_Conversion;
 
    -----------------------
    -- Do_Division_Check --
