@@ -3,7 +3,7 @@ procedure P is
       Y : Boolean renames Boolean'(not X);
    begin
       X := not X;
-      pragma Assert (Y /= X);
+      pragma Assert (Y /= X);  --@ASSERT:FAIL
    end;
    X : Boolean := True;
 begin
