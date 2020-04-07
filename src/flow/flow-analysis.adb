@@ -2224,8 +2224,11 @@ package body Flow.Analysis is
       function Is_Empty_Record_Object (F : Flow_Id) return Boolean;
       --  Returns True iff F is a record that carries no data
 
-      function Is_Init_By_Proof (F : Flow_Id) return Boolean;
-      --  Returns True iff F is annotated with Has_Init_By_Proof
+      function Has_Relaxed_Initialization (F : Flow_Id) return Boolean
+      with Pre => not Is_Discriminant (F);
+      --  Returns True iff F is subject to Relaxed_Initialization aspect. This
+      --  routine is not called on discriminants, because they are initialized
+      --  anyway, no matter if the aspect applies to their type.
 
       ------------------------
       -- Emit_Check_Message --
@@ -2594,16 +2597,97 @@ package body Flow.Analysis is
          and then Ekind (Get_Direct_Mapping_Id (F)) /= E_Abstract_State
          and then Is_Empty_Record_Type (Get_Type (F, FA.B_Scope)));
 
-      ----------------------
-      -- Is_Init_By_Proof --
-      ----------------------
+      --------------------------------
+      -- Has_Relaxed_Initialization --
+      --------------------------------
 
-      function Is_Init_By_Proof (F : Flow_Id) return Boolean is
-        (F.Kind in Direct_Mapping | Record_Field
-         and then Ekind (Get_Direct_Mapping_Id (F)) /= E_Abstract_State
-         and then Entity_In_SPARK (Get_Direct_Mapping_Id (F))
-         and then Contains_Only_Relaxed_Init
-           (Get_Type (Entire_Variable (F), FA.B_Scope)));
+      function Has_Relaxed_Initialization (F : Flow_Id) return Boolean is
+      begin
+         case F.Kind is
+            when Direct_Mapping =>
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               begin
+                  case Ekind (E) is
+                     --  Abstract state will be annotated directly
+
+                     when E_Abstract_State =>
+                        return Has_Relaxed_Initialization (E);
+
+                     --  Other objects can be either annotated directly, or
+                     --  else the aspect can apply to their type, or else
+                     --  the type can be composite with types of all of its
+                     --  (sub)components annotated.
+
+                     when E_Function
+                        | E_Variable
+                        | Formal_Kind
+                     =>
+                        return
+                          Entity_In_SPARK (E)
+                            and then
+                          (Has_Relaxed_Initialization (E)
+                             or else
+                           Has_Relaxed_Init (Get_Type (E, FA.B_Scope))
+                             or else
+                           Contains_Only_Relaxed_Init
+                             (Get_Type (E, FA.B_Scope)));
+
+                     when others =>
+                        return False;
+                  end case;
+               end;
+
+            when Record_Field =>
+               --  If the Flow_Id represents the 'Hidden part of a record then
+               --  we do not consider it as initialized by proof.
+
+               if Is_Private_Part (F)
+                 or else Is_Extension (F)
+                 or else Is_Record_Tag (F)
+               then
+                  return False;
+               end if;
+
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               begin
+                  --  Record components like "X.Y.Z" can have aspect on the
+                  --  object (here "X"), or else on the type of the object, or
+                  --  else on the type of its components (here "Y" and "Z"). or
+                  --  else, the type can be composite with types of all of its
+                  --  (sub)components annotated.
+
+                  if Ekind (E) in E_Function
+                                | E_Variable
+                                | Formal_Kind
+                    and then Entity_In_SPARK (E)
+                  then
+                     return
+                       Has_Relaxed_Initialization (E)
+                         or else
+                       Has_Relaxed_Init (Get_Type (E, FA.B_Scope))
+                         or else
+                       (for some Comp of F.Component =>
+                          (Has_Relaxed_Init (Get_Type (Comp, FA.B_Scope))
+                             or else
+                           Contains_Only_Relaxed_Init
+                             (Get_Type (Comp, FA.B_Scope))));
+                  else
+                     return False;
+                  end if;
+               end;
+
+            --  Objects not visible by Entity_Id are assumed to have no
+            --  Relaxed_Initialization.
+
+            when Magic_String =>
+               return False;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Has_Relaxed_Initialization;
 
       --------------------------
       -- Might_Be_Initialized --
@@ -2793,7 +2877,7 @@ package body Flow.Analysis is
               and then not Parent_Atr.Is_Initialized
               and then not Synthetic (Parent_Key)
               and then not Is_Empty_Record_Object (Parent_Key)
-              and then not Is_Init_By_Proof (Parent_Key)
+              and then not Has_Relaxed_Initialization (Parent_Key)
             then
                OK := True;
 

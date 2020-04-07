@@ -17,17 +17,12 @@ test_pred_on_array.adb:34:36: info: data dependencies proved
 test_pred_on_array.adb:36:22: info: assertion proved (CVC4: 1 VC)
 test_pred_on_array.adb:39:04: warning: analyzing unreferenced procedure "P3"
 test_pred_on_array.adb:39:14: warning: subprogram "P3" has no effect
-test_pred_on_array.adb:42:13: high: "X.X.F" is not initialized
 test_pred_on_array.adb:42:13: high: "X.X.G" is not initialized
-test_pred_on_array.adb:42:13: high: "X.Y.F" is not initialized
 test_pred_on_array.adb:42:13: high: "X.Y.G" is not initialized
-test_pred_on_array.adb:42:13: high: "X.Z.F" is not initialized
 test_pred_on_array.adb:42:13: high: "X.Z.G" is not initialized
 test_pred_on_array.adb:45:04: warning: analyzing unreferenced procedure "P4"
 test_pred_on_array.adb:45:14: warning: subprogram "P4" has no effect
+test_pred_on_array.adb:46:07: info: initialization of "X" proved
 test_pred_on_array.adb:48:08: info: predicate check proved (CVC4: 1 VC)
 test_pred_on_array.adb:49:08: info: predicate check proved (CVC4: 1 VC)
 test_pred_on_array.adb:50:08: info: predicate check proved (CVC4: 1 VC)
-test_pred_on_array.adb:51:13: high: "X.X.F" is not initialized
-test_pred_on_array.adb:51:13: high: "X.Y.F" is not initialized
-test_pred_on_array.adb:51:13: high: "X.Z.F" is not initialized
