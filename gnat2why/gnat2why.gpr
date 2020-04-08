@@ -22,17 +22,13 @@ project GNAT2Why is
 
    Common_Switches := ("-g");
 
-   --  Disable warning on overlapping params due to spurious warnings,
-   --  see SB05-028. Cannot be shared in Common_Switches, as -gnatw.I needs to
-   --  come after -gnatg in order to overrule the warning set by -gnatg
-
    package Compiler is
       for Local_Configuration_Pragmas use "gnat.adc";
 
       case Build is
          when "Debug" | "Devel" =>
             for Switches ("Ada") use
-               Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa", "-gnatw.I");
+               Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa");
          when "Coverage" =>
             for Switches ("Ada") use
                Common_Switches & ("-O0");
