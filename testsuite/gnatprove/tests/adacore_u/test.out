@@ -1,9 +1,9 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: info: index check proved (CVC4: 2 VC)
-aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 1 and I = 0) [possible explanation: subprogram at aliasing.ads:17 should mention I in a precondition]
+aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0) [possible explanation: subprogram at aliasing.ads:17 should mention I in a precondition]
 aliasing.adb:26:23: info: index check proved (CVC4: 2 VC)
-aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0) [possible explanation: subprogram at aliasing.ads:17 should mention J in a precondition]
+aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 1 and J = 0) [possible explanation: subprogram at aliasing.ads:17 should mention J in a precondition]
 global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations)

@@ -2925,8 +2925,7 @@ package body Why.Atree.Modules is
                Is_Incompl     : constant Boolean :=
                  Designates_Incomplete_Type (Repr_Pointer_Type (E));
                Root           : constant Entity_Id := Root_Pointer_Type (E);
-               Root_Ty        : constant W_Type_Id :=
-                 New_Named_Type (To_Why_Type (Root));
+               Root_Ty        : constant W_Type_Id := EW_Abstract (Root);
                Full_Name_Node : constant String := Full_Name (Root);
                M_C            : constant W_Module_Id :=
                  (if Is_Incompl then E_Compl_Module (Repr_Pointer_Type (E))

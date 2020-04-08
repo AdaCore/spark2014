@@ -404,9 +404,6 @@ package body Why.Gen.Expr is
       From_Ent  : constant Entity_Id := Get_Ada_Node (+From);
       Dim       : constant Positive := Positive (Number_Dimensions (To_Ent));
 
-      function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean;
-      --  Check whether a conversion between those types requires sliding.
-
       function Insert_Array_Index_Check
         (Expr   : W_Expr_Id;
          To_Ent : Entity_Id) return W_Prog_Id;
@@ -516,54 +513,6 @@ package body Why.Gen.Expr is
               New_Located_Assert (Ada_Node, Check, VC_Length_Check, EW_Assert);
          end if;
       end Insert_Length_Check;
-
-      -----------------
-      -- Needs_Slide --
-      -----------------
-
-      function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean is
-      begin
-         --  Sliding is needed when we convert to a constrained type and the
-         --  'First of the From type is not known to be equal to the 'First
-         --  of the "To" type.
-
-         --  Sliding is only necessary when converting to a constrained array
-
-         if not Is_Constrained (To_Ent) then
-            return False;
-         end if;
-
-         --  When the "To" is constrained, sliding is always necessary when
-         --  converting from an unconstrained array
-
-         if not Is_Constrained (From_Ent) then
-            return True;
-         end if;
-
-         --  Here we have two constrained types, and we check if the 'First (I)
-         --  of both types differ for some dimension I
-
-         for I in 1 .. Dim loop
-            declare
-               Low_From : constant Node_Id :=
-                 Type_Low_Bound (Retysp (Nth_Index_Type (From_Ent, I)));
-               Low_To   : constant Node_Id :=
-                 Type_Low_Bound (Retysp (Nth_Index_Type (To_Ent, I)));
-            begin
-               if not Is_Static_Expression (Low_From)
-                 or else not Is_Static_Expression (Low_To)
-                 or else Expr_Value (Low_From) /= Expr_Value (Low_To)
-               then
-                  return True;
-               end if;
-            end;
-         end loop;
-
-         --  We statically know that the "first" are actually equal, no sliding
-         --  needed
-
-         return False;
-      end Needs_Slide;
 
       Need_Slide : constant Boolean := Needs_Slide (From_Ent, To_Ent);
       Sliding    : constant Boolean :=
@@ -2303,6 +2252,55 @@ package body Why.Gen.Expr is
          (Get_Kind (+P) = W_Literal and then
           Get_Value (+P) = EW_True);
    end Is_True_Boolean;
+
+   -----------------
+   -- Needs_Slide --
+   -----------------
+
+   function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean is
+      Dim : constant Positive := Positive (Number_Dimensions (To_Ent));
+   begin
+      --  Sliding is needed when we convert to a constrained type and the
+      --  'First of the From type is not known to be equal to the 'First
+      --  of the "To" type.
+
+      --  Sliding is only necessary when converting to a constrained array
+
+      if not Is_Constrained (To_Ent) then
+         return False;
+      end if;
+
+      --  When the "To" is constrained, sliding is always necessary when
+      --  converting from an unconstrained array
+
+      if not Is_Constrained (From_Ent) then
+         return True;
+      end if;
+
+      --  Here we have two constrained types, and we check if the 'First (I)
+      --  of both types differ for some dimension I
+
+      for I in 1 .. Dim loop
+         declare
+            Low_From : constant Node_Id :=
+              Type_Low_Bound (Retysp (Nth_Index_Type (From_Ent, I)));
+            Low_To   : constant Node_Id :=
+              Type_Low_Bound (Retysp (Nth_Index_Type (To_Ent, I)));
+         begin
+            if not Is_Static_Expression (Low_From)
+              or else not Is_Static_Expression (Low_To)
+              or else Expr_Value (Low_From) /= Expr_Value (Low_To)
+            then
+               return True;
+            end if;
+         end;
+      end loop;
+
+      --  We statically know that the "first" are actually equal, no sliding
+      --  needed
+
+      return False;
+   end Needs_Slide;
 
    ----------------------
    -- New_Ada_Equality --

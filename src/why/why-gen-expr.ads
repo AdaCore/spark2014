@@ -76,6 +76,9 @@ package Why.Gen.Expr is
    --  @param W a Why3 pred expression
    --  @return the equivalent Why3 term expression
 
+   function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean;
+   --  Check whether a conversion between those types might require sliding
+
    function New_And_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain) return W_Expr_Id;
