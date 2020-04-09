@@ -219,6 +219,16 @@ Note also the various warnings that |GNATprove| issues on unused parameters,
 global items and assignments, also based on the stricter |SPARK| interpretation
 of parameter and global modes.
 
+It is possible to opt out of the strong data initialization
+policy of |SPARK| on a case by case basis using the aspect
+``Relaxed_Initialization`` (see section :ref:`Aspect Relaxed_Initialization`).
+Parts of objects subjected to this aspect only need to be initialized when
+actually read. Using ``Relaxed_Initialization`` requires specifying data
+initialization through contracts that are verified by proof (as opposed to
+flow analysis). Thus, ``Relaxed_Initialization`` should only be used when
+needed as it requires more effort to verify data initialization from both the
+user and the tool.
+
 .. _Memory Ownership Policy:
 
 Memory Ownership Policy
