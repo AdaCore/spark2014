@@ -6079,10 +6079,16 @@ package body SPARK_Definition is
 
          --  If no violations were found and the type is annotated with
          --  relaxed initialization, populate the Relaxed_Init map.
+         --  For consistency between flow analysis and proof, we consider types
+         --  entirely made of components with relaxed initialization to be
+         --  annotated with relaxed initialization.
 
          if not Violation_Detected
-           and then Is_First_Subtype (E)
-           and then Has_Relaxed_Initialization (E)
+           and then
+             ((Is_First_Subtype (E)
+               and then Has_Relaxed_Initialization (E))
+              or else (Is_Composite_Type (E)
+                       and then Contains_Only_Relaxed_Init (E)))
          then
             Mark_Type_With_Relaxed_Init
               (N   => E,

@@ -1,19 +1,29 @@
-test_pred_on_array.adb:4:56: info: index check proved (CVC4: 2 VC)
-test_pred_on_array.adb:6:36: info: data dependencies proved
-test_pred_on_array.adb:8:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
-test_pred_on_array.adb:8:60: info: index check proved (CVC4: 2 VC)
+test_pred_on_array.adb:3:09: predicate on a type with initialization by proof is not yet supported
+test_pred_on_array.adb:4:34: subtype of "Integer" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:4:34: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:4:49: "E_Arr" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:4:49: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:8:57: "E_Arr" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:8:57: violation of aspect SPARK_Mode at line 1
 test_pred_on_array.adb:11:04: warning: analyzing unreferenced procedure "P1"
-test_pred_on_array.adb:11:14: warning: subprogram "P1" has no effect
-test_pred_on_array.adb:12:07: info: range check proved (CVC4: 2 VC)
 test_pred_on_array.adb:17:04: warning: analyzing unreferenced procedure "P2"
-test_pred_on_array.adb:17:14: warning: subprogram "P2" has no effect
-test_pred_on_array.adb:18:07: info: range check proved (CVC4: 2 VC)
-test_pred_on_array.adb:20:07: info: predicate check proved (Z3: 1 VC)
-test_pred_on_array.adb:20:10: info: index check proved (CVC4: 2 VC)
-test_pred_on_array.adb:29:36: info: data dependencies proved
-test_pred_on_array.adb:31:22: info: assertion proved (CVC4: 1 VC)
+test_pred_on_array.adb:20:07: subtype of "E_Arr" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:20:07: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:24:09: predicate on a type with initialization by proof is not yet supported
+test_pred_on_array.adb:27:18: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:27:18: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:27:35: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:27:35: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:27:52: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:27:52: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:31:22: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:31:22: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:31:41: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:31:41: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:31:60: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:31:60: violation of aspect SPARK_Mode at line 1
 test_pred_on_array.adb:34:04: warning: analyzing unreferenced procedure "P3"
-test_pred_on_array.adb:34:14: warning: subprogram "P3" has no effect
 test_pred_on_array.adb:40:04: warning: analyzing unreferenced procedure "P4"
-test_pred_on_array.adb:40:14: warning: subprogram "P4" has no effect
-test_pred_on_array.adb:43:08: info: predicate check proved (CVC4: 1 VC)
+test_pred_on_array.adb:43:07: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:43:07: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof
