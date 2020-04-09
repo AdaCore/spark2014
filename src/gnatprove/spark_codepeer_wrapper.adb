@@ -683,7 +683,6 @@ begin
 
    Append_Arg ("-no-race-conditions");
    Append_Arg ("-no-preconditions");
-   Append_Arg ("-no-text-output");
    Append_Arg ("-no-html-output");
 
    if Num_Procs /= null then
