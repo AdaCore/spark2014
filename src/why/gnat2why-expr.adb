@@ -14255,15 +14255,28 @@ package body Gnat2Why.Expr is
       --  Aspect or representation clause Address may involve computations
       --  that could lead to a RTE. Thus we need to check absence of RTE in
       --  the corresponding expression.
+      --  We also check for compatibility of the involved types.
 
       if Nkind (Decl) in N_Object_Declaration
                        | N_Subprogram_Declaration
       then
          declare
-            Expr : Node_Id :=
-              Get_Address_Rep_Item (Decl);
+            Expr : Node_Id := Get_Address_Rep_Item (Decl);
          begin
             if Present (Expr) then
+
+               --  We emit a static check that the type of the object is OK for
+               --  address clauses.
+
+               if Nkind (Decl) = N_Object_Declaration then
+                  Emit_Static_Proof_Result
+                    (Decl,
+                     VC_UC_No_Holes,
+                     Is_Valid_Bitpattern_No_Holes
+                       (Etype (Defining_Identifier (Decl))),
+                     Current_Subp,
+                     PC_Trivial);
+               end if;
 
                --  Attribute Address is only allowed at the top level of an
                --  Address aspect or attribute definition clause. Skip it to
@@ -14273,6 +14286,23 @@ package body Gnat2Why.Expr is
                  and then Get_Attribute_Id (Attribute_Name (Expr))
                    = Attribute_Address
                then
+                  if Nkind (Decl) = N_Object_Declaration then
+                     Emit_Static_Proof_Result
+                       (Expr,
+                        VC_UC_No_Holes,
+                        Is_Valid_Bitpattern_No_Holes
+                          (Etype (Prefix (Expr))),
+                        Current_Subp,
+                        PC_Trivial);
+                     Emit_Static_Proof_Result
+                       (Expr,
+                        VC_UC_Same_Size,
+                        Types_Have_Same_Known_Esize
+                          (Etype (Defining_Identifier (Decl)),
+                           Etype (Prefix (Expr))),
+                        Current_Subp,
+                        PC_Trivial);
+                  end if;
                   Expr := Prefix (Expr);
                end if;
 

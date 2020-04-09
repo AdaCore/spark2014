@@ -8,6 +8,7 @@ is
      with Volatile,
           Async_Writers,
           Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
+   pragma Annotate(Gnatprove, Intentional, "constraints on bit representation","");
 
    procedure Read (Time : out Times)
      with Refined_Global  => Tick_Ext,

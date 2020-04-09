@@ -1,3 +1,4 @@
+output_port_14.adb:7:04: info: object is suitable for aliasing via address clause (Trivial)
 output_port_14.adb:14:51: info: initialization of "Output_Shadow" proved
 output_port_14.adb:15:11: info: data dependencies proved
 output_port_14.adb:15:33: info: initialization of "Output_Port" constituent of "Outputs" proved

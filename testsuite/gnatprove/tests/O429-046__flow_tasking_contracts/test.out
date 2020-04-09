@@ -1,8 +1,11 @@
+alarm.adb:16:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
 alarm.adb:23:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 alarm.adb:23:09: info: nontermination of task proved (CVC4: 1 VC)
 alarm.ads:8:10: info: data dependencies proved
 alarm.ads:11:10: info: data dependencies proved
 main.adb:5:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+sensor.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
+sensor.adb:12:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
 sensor.ads:5:20: info: initialization of "T" proved
 sensor.ads:6:09: info: data dependencies proved
 sensor.ads:7:09: info: flow dependencies proved

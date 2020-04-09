@@ -1,4 +1,6 @@
 pixel.adb:10:65: medium: divide by zero might fail
 pixel.adb:14:66: medium: divide by zero might fail
+pixel.adb:16:04: info: object is suitable for aliasing via address clause (Trivial)
 pixel.adb:17:65: medium: divide by zero might fail
+pixel.adb:19:04: info: object is suitable for aliasing via address clause (Trivial)
 pixel.adb:21:63: medium: divide by zero might fail
