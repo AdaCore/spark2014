@@ -23,12 +23,12 @@ package My_Map with SPARK_Mode is
    function Pledge (Borrower : access constant Map; Prop : Boolean) return Boolean is
      (Prop)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
    function Pledge (Borrower : access constant Integer; Prop : Boolean) return Boolean is
      (Prop)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
    function Contains (M : access constant Map; K : Positive) return Boolean with
      Post => Contains'Result = Model_Contains (M, K);

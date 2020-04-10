@@ -1,5 +1,5 @@
 package Bad_Ext_Ax_With_Both with SPARK_Mode is
-   pragma Annotate (GNATProve, External_Axiomatization);
+   pragma Annotate (GNATprove, External_Axiomatization);
    type T is private;
    function Add (X, Y : T) return T;
 private

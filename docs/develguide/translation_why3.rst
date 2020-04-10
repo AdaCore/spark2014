@@ -3964,7 +3964,7 @@ of the expression function must return the second parameter:
       Prop     : Boolean) return Boolean
    is (Prop)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
 This subprogram can only be called on local borrowers, and on the result
 attribute of a borrowing traversal function (this is checked in marking).

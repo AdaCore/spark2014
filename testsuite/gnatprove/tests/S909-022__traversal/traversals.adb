@@ -15,14 +15,14 @@ procedure Traversals with SPARK_Mode is
    function Pledge (Borrower : access constant List2; Prop : Boolean) return Boolean is
      (Prop)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
    function Length (L : access constant List1) return Natural is
      (if L = null then 0
       elsif L.N = null then 1
       else Integer'Min (Natural'Last - 2, Length (L.N.N)) + 2)
    with Ghost,
-     Annotate => (GNATProve, Terminating),
+     Annotate => (GNATprove, Terminating),
      Post => (if L /= null then Length'Result = Integer'Min (Natural'Last - 1, Length (L.N)) + 1);
 
    function Length (L : access constant List2) return Natural is
@@ -30,7 +30,7 @@ procedure Traversals with SPARK_Mode is
       elsif L.N = null then 1
       else Integer'Min (Natural'Last - 2, Length (L.N.N)) + 2)
    with Ghost,
-     Annotate => (GNATProve, Terminating),
+     Annotate => (GNATprove, Terminating),
      Post => (if L /= null then Length'Result = Integer'Min (Natural'Last - 1, Length (L.N)) + 1);
 
    function Next (X : access List1) return access List2 with

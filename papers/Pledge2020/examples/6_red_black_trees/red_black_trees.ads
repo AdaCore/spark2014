@@ -58,7 +58,7 @@ package Red_Black_Trees with SPARK_Mode is
                      X.Value,
                      Model (X.Right, Fst + Size (X.Left) + 1),
                      Model'Result)),
-     Annotate => (GNATProve, Terminating);
+     Annotate => (GNATprove, Terminating);
    --  A model of a tree is an array containing the values of X in order. We
    --  first traverse the left subtree, then the root, and then the right
    --  subtree.
@@ -105,7 +105,7 @@ package Red_Black_Trees with SPARK_Mode is
       else Nb_Black (T.Left) + 1) with
      Pre  => Size (T) < Natural'Last,
      Post => Nb_Black'Result <= Size (T),
-     Annotate => (GNATProve, Terminating);
+     Annotate => (GNATprove, Terminating);
    --  Number of black nodes in the left most branch of T
 
    pragma Annotate
@@ -119,7 +119,7 @@ package Red_Black_Trees with SPARK_Mode is
                and then Same_Nb_Black (T.Right)))
    with Ghost,
      Pre => Size (T) < Natural'Last,
-     Annotate => (GNATProve, Terminating);
+     Annotate => (GNATprove, Terminating);
    --  All branches of T contain the same number of black nodes
 
    pragma Annotate
@@ -140,7 +140,7 @@ package Red_Black_Trees with SPARK_Mode is
          and Scarce_Red (T.Right)))
    with Ghost,
      Pre => Size (T) < Natural'Last,
-     Annotate => (GNATProve, Terminating);
+     Annotate => (GNATprove, Terminating);
    --  A red node is always followed by two black nodes
 
    pragma Annotate

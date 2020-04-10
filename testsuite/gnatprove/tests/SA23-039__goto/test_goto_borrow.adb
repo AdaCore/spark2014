@@ -19,7 +19,7 @@ procedure Test_Goto_Borrow with SPARK_Mode is
    function Pledge (L : access constant List_Cell; P : Boolean) return Boolean is
      (P)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
    procedure Truncate_After_V (L : access List_Cell; V : Integer; I : out Natural) with
      Pre  => Length (L) < Natural'Last,

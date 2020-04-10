@@ -42,7 +42,7 @@ package Test_List with SPARK_Mode is
    is
      (Property)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
    --  Pledge function, used to mark assertions as pledges for the analysis tool
 
    procedure Set_All_To_Zero (X : List) with

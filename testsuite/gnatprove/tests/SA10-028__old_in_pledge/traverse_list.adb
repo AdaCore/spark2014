@@ -10,7 +10,7 @@ procedure Traverse_List with SPARK_Mode is
    function Pledge (Borrower : access constant List; Prop : Boolean) return Boolean is
      (Prop)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
    function Tail (L : access List) return access List with
      Contract_Cases =>
