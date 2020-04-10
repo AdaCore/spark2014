@@ -37,7 +37,7 @@ test_init_by_proof.adb:93:15: info: initialization check proved (CVC4: 1 VC)
 test_init_by_proof.adb:94:15: medium: initialization check might fail
 test_init_by_proof.adb:96:04: warning: analyzing unreferenced procedure "P6"
 test_init_by_proof.adb:96:14: warning: subprogram "P6" has no effect
-test_init_by_proof.adb:97:07: info: initialization of "X2" proved
+test_init_by_proof.adb:97:07: info: initialization of parts of "X2" without Relaxed_Initialization proved
 test_init_by_proof.adb:103:15: medium: initialization check might fail (e.g. when X2 = (X => 1, Y => ?, Z => False))
 test_init_by_proof.adb:105:04: warning: analyzing unreferenced procedure "P7"
 test_init_by_proof.adb:105:14: warning: subprogram "P7" has no effect
@@ -55,11 +55,11 @@ test_init_by_proof.adb:129:14: warning: subprogram "P10" has no effect
 test_init_by_proof.adb:135:13: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
 test_init_by_proof.adb:137:04: warning: analyzing unreferenced procedure "Q"
 test_init_by_proof.adb:137:14: warning: subprogram "Q" has no effect
-test_init_by_proof.adb:138:07: info: initialization of "X" proved
+test_init_by_proof.adb:138:07: info: initialization of parts of "X" without Relaxed_Initialization proved
 test_init_by_proof.adb:142:14: medium: initialization check might fail (e.g. when X = (F => (X => 0, Y => ?, Z => True), G => ?))
 test_init_by_proof.adb:144:04: warning: analyzing unreferenced procedure "Q1"
 test_init_by_proof.adb:144:14: warning: subprogram "Q1" has no effect
-test_init_by_proof.adb:145:07: info: initialization of "X" proved
+test_init_by_proof.adb:145:07: info: initialization of parts of "X" without Relaxed_Initialization proved
 test_init_by_proof.adb:149:14: info: initialization check proved (CVC4: 2 VC; Trivial: 2 VC)
 test_init_by_proof_conv.adb:10:27: info: range check proved (CVC4: 1 VC)
 test_init_by_proof_conv.adb:12:27: info: range check proved (CVC4: 1 VC)

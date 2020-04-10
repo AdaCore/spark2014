@@ -2195,6 +2195,10 @@ package body Flow.Analysis is
       --  Returns True iff every path from V_Final going backwards in the CFG
       --  contains an infinite loop.
 
+      function Proved_Msg (Var : Flow_Id) return String
+      with Pre => Var.Kind in Direct_Mapping | Magic_String;
+      --  Returns message about initialization of Var
+
       procedure Scan_Children
         (Var                  : Flow_Id;
          Start                : Flow_Graphs.Vertex_Id;
@@ -2479,7 +2483,7 @@ package body Flow.Analysis is
          if not FA.Is_Generative then
             Error_Msg_Flow
               (FA       => FA,
-               Msg      => "initialization of & proved",
+               Msg      => Proved_Msg (Var),
                N        => Find_Global (FA.Spec_Entity, Var),
                F1       => Var,
                Tag      => Uninitialized,
@@ -2518,7 +2522,7 @@ package body Flow.Analysis is
          else
             Error_Msg_Flow
               (FA       => FA,
-               Msg      => "initialization of & proved",
+               Msg      => Proved_Msg (Var),
                N        => E,
                F1       => Var,
                Tag      => Uninitialized,
@@ -2730,6 +2734,33 @@ package body Flow.Analysis is
 
          return False;
       end Might_Be_Initialized;
+
+      ----------------
+      -- Proved_Msg --
+      ----------------
+
+      function Proved_Msg (Var : Flow_Id) return String is
+      begin
+         --  Tune message for entire objects whose components are subject to
+         --  Relaxed_Initialization.
+
+         if Var.Kind = Direct_Mapping then
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+            begin
+               if Ekind (E) /= E_Abstract_State
+                 and then Entity_In_SPARK (E)
+                 and then
+                   Contains_Relaxed_Init_Parts (Get_Type (E, FA.B_Scope))
+               then
+                  return "initialization of parts of & " &
+                    "without Relaxed_Initialization proved";
+               end if;
+            end;
+         end if;
+
+         return "initialization of & proved";
+      end Proved_Msg;
 
       -------------------
       -- Scan_Children --
