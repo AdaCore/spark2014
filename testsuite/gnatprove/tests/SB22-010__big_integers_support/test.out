@@ -331,7 +331,7 @@ curve25519.adb:59:39: warning: assuming "=" has no effect on global items
 curve25519.adb:59:39: warning: no Global contract available for "="
 curve25519.adb:59:41: info: precondition proved (CVC4: 6 VC)
 curve25519.adb:60:33: medium: loop invariant might fail after first iteration, cannot prove Y_256 = Partial_Conversion (Y, J) (e.g. when J = 1 and Y = (0 => 0, 1 => 0, others => 0))
-curve25519.adb:60:33: medium: loop invariant might fail in first iteration, cannot prove Y_256 = Partial_Conversion (Y, J) (e.g. when J = 0 and Y = (0 => 0, others => -2))
+curve25519.adb:60:33: medium: loop invariant might fail in first iteration, cannot prove Y_256 = Partial_Conversion (Y, J) (e.g. when J = 0 and Y = (0 => 0, others => 0))
 curve25519.adb:60:39: warning: assuming "=" has no effect on global items
 curve25519.adb:60:39: warning: no Global contract available for "="
 curve25519.adb:60:41: info: precondition proved (CVC4: 6 VC)
@@ -357,9 +357,9 @@ curve25519.ads:20:48: warning: assuming "+" has no effect on global items
 curve25519.ads:20:48: warning: no Global contract available for "+"
 types.ads:8:35: warning: assuming "To_Big_Integer" has no effect on global items
 types.ads:8:35: warning: no Global contract available for "To_Big_Integer"
-types.ads:19:09: warning: assuming "To_Big_Integer" has no effect on global items
-types.ads:19:09: warning: no Global contract available for "To_Big_Integer"
-types.ads:19:13: warning: assuming "**" has no effect on global items
-types.ads:19:13: warning: no Global contract available for "**"
+types.ads:19:08: warning: assuming "From_String" has no effect on global items
+types.ads:19:08: warning: no Global contract available for "From_String"
+types.ads:19:10: warning: assuming "**" has no effect on global items
+types.ads:19:10: warning: no Global contract available for "**"
 
 
