@@ -61,13 +61,13 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.15" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="996"/></proof>
   </goal>
   <goal name="def&#39;vc.16" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="72"/></proof>
+  <proof prover="0"><result status="valid" steps="938"/></proof>
   </goal>
   <goal name="def&#39;vc.17" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="216"/></proof>
+  <proof prover="0"><result status="valid" steps="1031"/></proof>
   </goal>
   <goal name="def&#39;vc.18" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
