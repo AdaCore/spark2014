@@ -35,7 +35,7 @@ with Sem_Warn;                    use Sem_Warn;
 with Snames;                      use Snames;
 
 with Common_Iterators;            use Common_Iterators;
-with SPARK_Annotate;              use SPARK_Annotate;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;

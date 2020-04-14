@@ -38,6 +38,7 @@ with Rtsfind;                            use Rtsfind;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Prag;                           use Sem_Prag;
 with SPARK_Definition;                   use SPARK_Definition;
+with SPARK_Definition.Annotate;          use SPARK_Definition.Annotate;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with VC_Kinds;                           use VC_Kinds;
@@ -689,6 +690,16 @@ package body SPARK_Util.Subprograms is
       Present (Find_Contract (E, Pragma_Depends))
         or else
       Is_Pure (E));
+
+   ----------------------------------------
+   -- Is_Possibly_Nonreturning_Procedure --
+   ----------------------------------------
+
+   function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
+   is
+     (No_Return (E)
+       or else
+      Has_Might_Not_Return_Annotation (E));
 
    ----------------------------------------
    -- Is_Predefined_Potentially_Blocking --

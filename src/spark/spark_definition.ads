@@ -236,4 +236,8 @@ private
 
    type Cursor is new Node_Lists.Cursor;
 
+   function In_SPARK (E : Entity_Id) return Boolean;
+   --  Returns whether the entity E is in SPARK; computes this information by
+   --  calling Mark_Entity, which is very cheap.
+
 end SPARK_Definition;

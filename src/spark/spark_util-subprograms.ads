@@ -25,7 +25,6 @@
 
 with Gnat2Why_Args;
 with Sem_Disp;
-with SPARK_Annotate; use SPARK_Annotate;
 
 package SPARK_Util.Subprograms is
 
@@ -367,10 +366,6 @@ package SPARK_Util.Subprograms is
    --     frontend in GNATprove mode
 
    function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
-   is
-     (No_Return (E)
-       or else
-      Has_Might_Not_Return_Annotation (E))
    with Pre => Ekind (E) in Entry_Kind
                           | E_Function
                           | E_Package

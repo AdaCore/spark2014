@@ -73,7 +73,7 @@ with Sem_Aux;                         use Sem_Aux;
 with Sem_Util;                        use Sem_Util;
 with Sinfo;                           use Sinfo;
 with Sinput;                          use Sinput;
-with SPARK_Annotate;                  use SPARK_Annotate;
+with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Register;                  use SPARK_Register;
 with SPARK_Rewrite;                   use SPARK_Rewrite;

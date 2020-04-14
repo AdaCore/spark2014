@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                        S P A R K _ A N N O T A T E                       --
+--              S P A R K _ D E F I N I T I O N - A N N O T A T E           --
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
@@ -33,18 +33,15 @@ with GNAT.Regpat;                  use GNAT.Regpat;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
 with Sem_Aux;                      use Sem_Aux;
-with Sem_Util;                     use Sem_Util;
-with Sinfo;                        use Sinfo;
 with Sinput;                       use Sinput;
 with Snames;                       use Snames;
---  ??? "use"ing SPARK_Definition would lead to a name resolution error
-with SPARK_Definition;
+with SPARK_Definition.Violations;  use SPARK_Definition.Violations;
 with SPARK_Util.Subprograms;       use SPARK_Util.Subprograms;
 with SPARK_Util.Types;             use SPARK_Util.Types;
 with Stringt;                      use Stringt;
 with String_Utils;                 use String_Utils;
 
-package body SPARK_Annotate is
+package body SPARK_Definition.Annotate is
 
    package Annot_Ranges is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Annotated_Range);
@@ -215,6 +212,8 @@ package body SPARK_Annotate is
       Nodes : Common_Containers.Node_Lists.List;
       Value : Node_Id;
 
+      package NL renames Common_Containers.Node_Lists;
+
       use type Ada.Containers.Count_Type;
 
    begin
@@ -232,24 +231,37 @@ package body SPARK_Annotate is
          return;
       end if;
 
-      if Is_Expression_Function_Or_Completion (E)
-        and then SPARK_Definition.Entity_Body_Compatible_With_SPARK (E)
-      then
-         Value := Expression (Get_Expression_Function (E));
-      else
+      --  Check if E has a postcondition
 
-         --  It must have a postcondition
+      Nodes := Find_Contracts (E, Pragma_Postcondition, False, False);
 
-         Nodes := Find_Contracts (E, Pragma_Postcondition, False, False);
+      --  If it does not have one, it must be an expresson function
 
-         if Nodes.Length /= 1 then
+      if Nodes.Length = 0 then
+         if not Is_Expression_Function_Or_Completion (E) then
             Error_Msg_N
-              ("function with Inline_For_Proof must be an expression function"
-               & " or have a postcondition of the form F'Result = Expr", E);
+              ("function with Inline_For_Proof and no postconditions must "
+               & "be an expression function", E);
             return;
+         elsif not SPARK_Definition.Entity_Body_Compatible_With_SPARK (E) then
+            Mark_Violation
+              ("expression function with Inline_For_Proof whose body is"
+               & " not in SPARK", E);
+            return;
+         else
+            Value := Expression (Get_Expression_Function (E));
          end if;
 
-         --  Its postcondition must be of the form F'Result = Expr
+      elsif Nodes.Length > 1 then
+         Error_Msg_N
+           ("function with Inline_For_Proof must be an expression function"
+            & " or have exactly one postcondition",
+            NL.Element (NL.Next (Nodes.First)));
+         return;
+
+      --  Otherwise, its postcondition must be of the form F'Result = Expr
+
+      else
 
          Value := Nodes.First_Element;
 
@@ -267,9 +279,9 @@ package body SPARK_Annotate is
             Value := Next_Actual (First_Actual (Value));
 
          else
-            Error_Msg_N
-              ("function with Inline_For_Proof must be an expression function"
-               & " or have a postcondition of the form F'Result = Expr", E);
+            Error_Msg_NE
+              ("function with Inline_For_Proof must"
+               & " have a postcondition of the form `&''Result = Expr`", E, E);
             return;
          end if;
       end if;
@@ -913,7 +925,7 @@ package body SPARK_Annotate is
    is
       use Annot_Ranges;
 
-      Cur : Cursor := Annotations.First;
+      Cur : Annot_Ranges.Cursor := Annotations.First;
    begin
       Pragma_Set.Include (Prgma);
       while Has_Element (Cur) and then First > Annotations (Cur).First loop
@@ -1257,4 +1269,4 @@ package body SPARK_Annotate is
       No_Wrap_Around_Annotations.Include (Unique_Entity (E));
    end Set_Has_No_Wrap_Around_Annotation;
 
-end SPARK_Annotate;
+end SPARK_Definition.Annotate;

@@ -35,8 +35,8 @@ with Gnat2Why.External_Axioms;   use Gnat2Why.External_Axioms;
 with Lib;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
-with SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
+with SPARK_Definition.Annotate;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with String_Utils;               use String_Utils;
@@ -1347,7 +1347,7 @@ package body Gnat2Why.Util is
 
         --  No axioms are generated for inlined functions
 
-        and then No (SPARK_Annotate.Retrieve_Inline_Annotation (E))
+        and then No (SPARK_Definition.Annotate.Retrieve_Inline_Annotation (E))
 
         --  Functions from predefined units should be safe
 

@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                        S P A R K _ A N N O T A T E                       --
+--              S P A R K _ D E F I N I T I O N - A N N O T A T E           --
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
@@ -24,12 +24,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;      use Atree;
-with Einfo;      use Einfo;
 with SPARK_Util; use SPARK_Util;
-with Types;      use Types;
 
-package SPARK_Annotate is
+package SPARK_Definition.Annotate is
 
    --  This package deals with justification of individual messages using
    --  pragma Annotate.
@@ -229,4 +226,4 @@ package SPARK_Annotate is
    function Has_Pledge_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a pledge function
 
-end SPARK_Annotate;
+end SPARK_Definition.Annotate;

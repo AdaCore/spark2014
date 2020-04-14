@@ -55,8 +55,8 @@ with Rtsfind;                        use Rtsfind;
 with Sem;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
-with SPARK_Annotate;                 use SPARK_Annotate;
 with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Util.External_Axioms;     use SPARK_Util.External_Axioms;
 with SPARK_Util.Hardcoded;           use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
@@ -17895,7 +17895,7 @@ package body Gnat2Why.Expr is
             --  type on which quantification should be done.
 
             while Found
-              and then Iterable_Info.Kind = SPARK_Annotate.Model
+              and then Iterable_Info.Kind = SPARK_Definition.Annotate.Model
             loop
                --  Replace W_Over_E by Model (W_Over_E) and Over_Type by the
                --  model's type.
