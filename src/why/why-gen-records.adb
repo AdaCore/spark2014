@@ -1348,7 +1348,9 @@ package body Why.Gen.Records is
                                    (Name  => A_Field_Access,
                                     Field => To_Local (Field_Id),
                                     Typ   => W_Type_Of_Component
-                                      (Field, E, Init_Wrapper => True)),
+                                      (Field, E, Init_Wrapper =>
+                                         Might_Contain_Relaxed_Init
+                                            (Etype (Field)))),
                                Force_No_Slide => True));
                      To_Wrapper_Field (Field_Index) :=
                        New_Field_Association
@@ -1358,7 +1360,9 @@ package body Why.Gen.Records is
                             Insert_Simple_Conversion
                               (Domain         => EW_Term,
                                To             => W_Type_Of_Component
-                                 (Field, E, Init_Wrapper => True),
+                                 (Field, E, Init_Wrapper =>
+                                    Might_Contain_Relaxed_Init
+                                       (Etype (Field))),
                                Expr           =>
                                  New_Record_Access
                                    (Name  => X_Field_Access,
