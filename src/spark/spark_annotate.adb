@@ -254,20 +254,18 @@ package body SPARK_Annotate is
          Value := Nodes.First_Element;
 
          if Nkind (Value) = N_Op_Eq
-           and then Nkind (Left_Opnd (Value)) = N_Attribute_Reference
-           and then Get_Attribute_Id (Attribute_Name (Left_Opnd (Value))) =
-           Attribute_Result
+           and then Is_Attribute_Result (Left_Opnd (Value))
          then
             Value := Right_Opnd (Value);
+
+         --  Or the equality operator has been rewritten into a function call
+
          elsif Nkind (Value) = N_Function_Call
            and then Nkind (Original_Node (Value)) = N_Op_Eq
-           and then Nkind (Left_Opnd (Original_Node (Value))) =
-           N_Attribute_Reference
-           and then Get_Attribute_Id
-             (Attribute_Name (Left_Opnd (Original_Node (Value)))) =
-           Attribute_Result
+           and then Is_Attribute_Result (Left_Opnd (Original_Node (Value)))
          then
             Value := Next_Actual (First_Actual (Value));
+
          else
             Error_Msg_N
               ("function with Inline_For_Proof must be an expression function"
