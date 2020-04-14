@@ -15617,8 +15617,7 @@ package body Gnat2Why.Expr is
             Has_Implicit_Contracts : constant Boolean :=
               Type_Needs_Dynamic_Invariant (Etype (Subp));
             Is_Expression_Function : constant Boolean :=
-              Ekind (Subp) = E_Function
-              and then Present (Get_Expression_Function (Subp))
+              Is_Expression_Function_Or_Completion (Subp)
               and then Entity_Body_Compatible_With_SPARK (Subp);
             Subp_Non_Returning     : constant Boolean :=
               Is_Potentially_Nonreturning (Subp);

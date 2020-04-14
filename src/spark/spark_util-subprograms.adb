@@ -598,7 +598,7 @@ package body SPARK_Util.Subprograms is
          else Original_Node (Subprogram_Body (E)));
 
    begin
-      if Nkind (Orig_N) = N_Expression_Function then
+      if Is_Expression_Function_Or_Completion (E) then
          return Orig_N;
       else
          return Empty;

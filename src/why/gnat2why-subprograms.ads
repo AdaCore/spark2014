@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Gnat2Why.Util;          use Gnat2Why.Util;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
-with Gnat2Why.Util;          use Gnat2Why.Util;
 with Types;                  use Types;
 with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Ids;                use Why.Ids;
@@ -119,7 +119,8 @@ package Gnat2Why.Subprograms is
 
    procedure Translate_Expression_Function_Body
      (File : W_Section_Id;
-      E    : Entity_Id);
+      E    : Entity_Id)
+   with Pre => Is_Expression_Function_Or_Completion (E);
    --  If subprogram E's body is in SPARK, generate a Why axiom that, given a
    --  function F with expression E, states that: "for all <args> => F(<args>)
    --  = E". Also generate a program function for E.

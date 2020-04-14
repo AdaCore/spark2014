@@ -232,7 +232,7 @@ package body SPARK_Annotate is
          return;
       end if;
 
-      if Present (Get_Expression_Function (E))
+      if Is_Expression_Function_Or_Completion (E)
         and then SPARK_Definition.Entity_Body_Compatible_With_SPARK (E)
       then
          Value := Expression (Get_Expression_Function (E));
@@ -668,7 +668,7 @@ package body SPARK_Annotate is
          elsif not Is_Standard_Boolean_Type (Etype (E)) then
             Error_Msg_N
               ("Pledge function must return Boolean", E);
-         elsif No (Get_Expression_Function (E)) then
+         elsif not Is_Expression_Function_Or_Completion (E) then
             Error_Msg_N
               ("Pledge function must be an expression function", E);
          else
@@ -702,6 +702,9 @@ package body SPARK_Annotate is
       end Check_Pledge_Entity;
 
       E : Entity_Id;
+
+   --  Start of processing for Check_Pledge_Annotation
+
    begin
       if Nkind (Arg3_Exp) not in N_Has_Entity then
          Error_Msg_N

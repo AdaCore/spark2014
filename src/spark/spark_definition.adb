@@ -50,11 +50,12 @@ with Sem_Aux;                         use Sem_Aux;
 with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
-with Sem_Util;                        use Sem_Util;
 with Snames;                          use Snames;
 with SPARK_Annotate;                  use SPARK_Annotate;
+with SPARK_Util;                      use SPARK_Util;
 with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Hardcoded;            use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
 with Stand;                           use Stand;
 with String_Utils;                    use String_Utils;
@@ -2254,7 +2255,7 @@ package body SPARK_Definition is
                --  declaration, so that entities declared afterwards have
                --  access to the axiom defining the expression function.
 
-               elsif Present (Get_Expression_Function (E))
+               elsif Is_Expression_Function_Or_Completion (E)
                  and then not Comes_From_Source (Original_Node (N))
                then
                   null;
@@ -2311,7 +2312,7 @@ package body SPARK_Definition is
                E      : constant Entity_Id := Defining_Entity (N);
                Body_N : constant Node_Id := Subprogram_Body (E);
             begin
-               if Present (Get_Expression_Function (E))
+               if Is_Expression_Function_Or_Completion (E)
                  and then not Comes_From_Source (Original_Node (Body_N))
                then
                   Mark_Entity (E);
@@ -7626,9 +7627,8 @@ package body SPARK_Definition is
          --  an axiom for analysis of its callers even in SPARK_Mode => Auto.
 
          if SPARK_Pragma_Is_On
-           or else (Ekind (E) = E_Function
-                     and then Present (Get_Expression_Function (E))
-                     and then not SPARK_Pragma_Is (Opt.Off))
+           or else (Is_Expression_Function_Or_Completion (E)
+                    and then not SPARK_Pragma_Is (Opt.Off))
          then
             declare
                Save_Violation_Detected : constant Boolean :=
@@ -7767,9 +7767,7 @@ package body SPARK_Definition is
                   --  body gets translated into an axiom for analysis of
                   --  its callers.
 
-                  if Ekind (E) = E_Function
-                    and then Present (Get_Expression_Function (E))
-                  then
+                  if Is_Expression_Function_Or_Completion (E) then
                      Bodies_Compatible_With_SPARK.Insert (E);
                   end if;
 

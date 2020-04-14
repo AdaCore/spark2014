@@ -3285,7 +3285,7 @@ package body Gnat2Why.Subprograms is
             Old_Policy  => Use_Map);
       begin
          if Present (Value) and then
-           (No (Get_Expression_Function (E))
+           (not Is_Expression_Function_Or_Completion (E)
             or else not Entity_Body_Compatible_With_SPARK (E))
          then
             return New_Assert
@@ -4303,7 +4303,7 @@ package body Gnat2Why.Subprograms is
          --  Expression functions will have their own definition axiom which
          --  may contradict the range axiom. Do not emit range axiom for them.
 
-         if Present (Get_Expression_Function (E))
+         if Is_Expression_Function_Or_Completion (E)
            and then Entity_Body_Compatible_With_SPARK (E)
          then
             return;
@@ -5251,9 +5251,6 @@ package body Gnat2Why.Subprograms is
                Domain => EW_Pred);
             --  Dynamic invariant and type invariant of the result
 
-            Expr_Fun_N          : constant Node_Id :=
-              Get_Expression_Function (E);
-
             Volatile_State  : constant W_Identifier_Id :=
               New_Identifier
                 (Domain => EW_Term,
@@ -5373,7 +5370,7 @@ package body Gnat2Why.Subprograms is
             --  If E is an expression function, add its body to its
             --  postcondition.
 
-            if Present (Expr_Fun_N)
+            if Is_Expression_Function_Or_Completion (E)
               and then Entity_Body_Compatible_With_SPARK (E)
               and then not Has_Pragma_Volatile_Function (E)
             then
@@ -5381,6 +5378,8 @@ package body Gnat2Why.Subprograms is
                   Domain    : constant EW_Domain :=
                     (if Is_Standard_Boolean_Type (Etype (E)) then EW_Pred
                      else EW_Term);
+                  Expr_Fun_N : constant Node_Id :=
+                    Get_Expression_Function (E);
                   Expr_Body : constant W_Expr_Id :=
                     Transform_Expr (Expression (Expr_Fun_N),
                                     Expected_Type => Why_Type,

@@ -43,9 +43,8 @@ with Atree;                             use Atree;
 with Common_Containers;                 use Common_Containers;
 with Einfo;                             use Einfo;
 with GNATCOLL.JSON;                     use GNATCOLL.JSON;
+with Sem_Util;                          use Sem_Util;
 with Sinfo;                             use Sinfo;
-with SPARK_Util;                        use SPARK_Util;
-with SPARK_Util.Subprograms;            use SPARK_Util.Subprograms;
 with Types;                             use Types;
 
 package SPARK_Definition is
@@ -139,9 +138,7 @@ package SPARK_Definition is
    --  violations.
 
    function Entity_Body_Compatible_With_SPARK (E : Entity_Id) return Boolean
-   with
-     Pre => Ekind (E) in E_Function
-              and then Present (Get_Expression_Function (E));
+   with Pre => Is_Expression_Function_Or_Completion (E);
    --  Returns True iff the body of expression function E contains no SPARK
    --  violations.
 
