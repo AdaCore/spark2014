@@ -5755,7 +5755,7 @@ package body Gnat2Why.Subprograms is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      Expr_Fun_N         : constant Node_Id := Get_Expression_Function (E);
+      Expr : constant Node_Id := Expression (Get_Expression_Function (E));
 
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Flat_Binders       : constant Binder_Array :=
@@ -5881,7 +5881,7 @@ package body Gnat2Why.Subprograms is
                Name     => Logic_Id,
                Binders  => Flat_Binders,
                Pre      => Func_Guard,
-               Def      => +Transform_Expr (Expression (Expr_Fun_N),
+               Def      => +Transform_Expr (Expr,
                                             EW_Pred,
                                             Params)));
 
@@ -5906,7 +5906,7 @@ package body Gnat2Why.Subprograms is
                   Binders     => Flat_Binders,
                   Pre         => Guard,
                   Def         => +Transform_Expr
-                    (Expression (Expr_Fun_N),
+                    (Expr,
                      Expected_Type => Equ_Ty,
                      Domain        => EW_Term,
                      Params        => Params)));
@@ -5927,7 +5927,7 @@ package body Gnat2Why.Subprograms is
               (Brower      => E,
                Borrowed_Id => Borrowed_Id,
                Brower_Id   => Brower_Id,
-               Path        => Expression (Expr_Fun_N));
+               Path        => Expr);
          begin
             Emit
               (File,
