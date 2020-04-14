@@ -257,13 +257,11 @@ package SPARK_Util.Subprograms is
    --     this is not a "new" failure.
 
    function Get_Expression_Function (E : Entity_Id) return Node_Id
-   with Pre  => Is_Subprogram (E),
-        Post => Present (Get_Expression_Function'Result) =
-                Is_Expression_Function_Or_Completion (E);
-   --  @param E subprogram
-   --  @return if E is the entity for an expression function, return the
-   --     corresponding N_Expression_Function original node. Otherwise,
-   --     return Empty.
+   with Pre  => Is_Expression_Function_Or_Completion (E),
+        Post => Nkind (Get_Expression_Function'Result) = N_Expression_Function;
+   --  @param E entity of an expression function (or a function declaration
+   --     completed by an expression_function)
+   --  @return the corresponding N_Expression_Function original node
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id
    with Pre => Is_DIC_Procedure (E)

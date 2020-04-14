@@ -5756,7 +5756,7 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
       Expr_Fun_N         : constant Node_Id := Get_Expression_Function (E);
-      pragma Assert (Present (Expr_Fun_N));
+
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Flat_Binders       : constant Binder_Array :=
         To_Binder_Array (Logic_Func_Binders);

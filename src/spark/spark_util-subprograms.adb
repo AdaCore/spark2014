@@ -586,23 +586,16 @@ package body SPARK_Util.Subprograms is
    function Get_Expression_Function (E : Entity_Id) return Node_Id is
       Decl_N : constant Node_Id := Parent (Subprogram_Specification (E));
 
-      Original_Decl_N : constant Node_Id := Original_Node (Decl_N);
-
       --  Get the original node either from the declaration for E, or from the
       --  subprogram body for E, which may be different if E is attached to a
       --  subprogram declaration.
 
-      Orig_N : constant Node_Id :=
-        (if Is_Rewrite_Substitution (Decl_N)
-         then Original_Decl_N
-         else Original_Node (Subprogram_Body (E)));
-
    begin
-      if Is_Expression_Function_Or_Completion (E) then
-         return Orig_N;
-      else
-         return Empty;
-      end if;
+      return
+        Original_Node
+          (if Is_Rewrite_Substitution (Decl_N)
+           then Decl_N
+           else Subprogram_Body (E));
    end Get_Expression_Function;
 
    ----------------------------------------
