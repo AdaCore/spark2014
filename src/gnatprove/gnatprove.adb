@@ -184,6 +184,7 @@ procedure Gnatprove with SPARK_Mode is
 
    begin
       Args.Append ("--restricted-to-languages=ada");
+      Args.Append ("--gnatprove");
 
       if Minimal_Compile then
          Args.Append ("-m");
@@ -296,7 +297,6 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--subdirs=" & Subd.Display_Full_Name);
       end;
       Args.Append ("--no-object-check");
-      Args.Append ("--gnatprove");
 
       --  Keep going after a compilation error in 'check' mode
 
