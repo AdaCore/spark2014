@@ -5070,9 +5070,8 @@ package body SPARK_Definition is
 
                else
                   declare
-                     Rng  : constant Node_Id := Get_Range (E);
-                     Low  : constant Node_Id := Low_Bound (Rng);
-                     High : constant Node_Id := High_Bound (Rng);
+                     Low  : constant Node_Id := Type_Low_Bound (E);
+                     High : constant Node_Id := Type_High_Bound (E);
                   begin
                      if Has_Fixed_Point_Type (Etype (Low))
                        or else Has_Fixed_Point_Type (Etype (High))
@@ -5088,9 +5087,8 @@ package body SPARK_Definition is
             --  Check that the range of the type is in SPARK
 
             declare
-               Rng  : constant Node_Id := Get_Range (E);
-               Low  : constant Node_Id := Low_Bound (Rng);
-               High : constant Node_Id := High_Bound (Rng);
+               Low  : constant Node_Id := Type_Low_Bound (E);
+               High : constant Node_Id := Type_High_Bound (E);
             begin
                if not Compile_Time_Known_Value (Low) then
                   Mark (Low);
