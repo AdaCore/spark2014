@@ -11515,14 +11515,36 @@ package body Gnat2Why.Expr is
 
       T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
 
-      Insert_Move_Of_Deep_Parts (Stmt    => Stmt,
-                                 Lhs_Typ => Typ,
-                                 Expr    => T);
+      --  If a move may be needed, force the use of a temporary to hold
+      --  the value of the expression including any moves. This is because
+      --  New_Assignment does not expect the rhs expression to modify the
+      --  target of the assignment.
 
-      T := Gnat2Why.Expr.New_Assignment
-        (Ada_Node => Stmt,
-         Lvalue   => Lvalue,
-         Expr     => T);
+      if Is_Deep (Typ)
+        and then not Is_Anonymous_Access_Type (Typ)
+      then
+         declare
+            Tmp : W_Expr_Id;
+         begin
+            Insert_Move_Of_Deep_Parts (Stmt    => Stmt,
+                                       Lhs_Typ => Typ,
+                                       Expr    => T);
+            Tmp := New_Temp_For_Expr (+T);
+            T := Gnat2Why.Expr.New_Assignment
+              (Ada_Node => Stmt,
+               Lvalue   => Lvalue,
+               Expr     => +Tmp);
+            T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
+         end;
+
+      --  Normal assignment that does not involve any move
+
+      else
+         T := Gnat2Why.Expr.New_Assignment
+           (Ada_Node => Stmt,
+            Lvalue   => Lvalue,
+            Expr     => T);
+      end if;
 
       --  Check that the assignment does not cause a memory leak. There is no
       --  special case for X:=X that would avoid issuing a message here.
