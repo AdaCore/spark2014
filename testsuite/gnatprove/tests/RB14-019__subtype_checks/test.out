@@ -2,18 +2,18 @@ subtype_check.adb:10:04: info: range check proved (CVC4: 2 VC)
 subtype_check.adb:20:14: warning: subprogram "Wrong" has no effect
 subtype_check.adb:21:07: info: range check proved (CVC4: 2 VC)
 subtype_check.adb:22:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-subtype_check.adb:22:41: medium: length check might fail (e.g. when Zero = 1) [possible explanation: precondition of subprogram at line 20 should mention Spark.Heap.Dynamic_Memory]
+subtype_check.adb:22:37: medium: length check might fail (e.g. when Zero = 1) [possible explanation: precondition of subprogram at line 20 should mention Spark.Heap.Dynamic_Memory]
 subtype_check.adb:27:14: warning: subprogram "Wrong_2" has no effect
 subtype_check.adb:29:44: info: division check proved (CVC4: 1 VC)
 subtype_check.adb:31:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-subtype_check.adb:31:40: info: range check proved (CVC4: 1 VC)
-subtype_check.adb:31:40: medium: predicate check might fail
+subtype_check.adb:31:36: info: range check proved (CVC4: 1 VC)
+subtype_check.adb:31:36: medium: predicate check might fail
 subtype_check.adb:36:04: medium: memory leak might occur at end of scope
 subtype_check.adb:37:04: medium: memory leak might occur at end of scope
 subtype_check.adb:38:04: medium: memory leak might occur at end of scope
 subtype_check.adb:38:27: info: range check proved (CVC4: 1 VC)
 subtype_check.adb:39:04: medium: memory leak might occur at end of scope
-subtype_check.adb:39:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+subtype_check.adb:39:34: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 subtype_check.adb:41:19: info: assertion proved (CVC4: 1 VC)
 subtype_check.adb:41:21: info: pointer dereference check proved (CVC4: 2 VC)
 subtype_check.adb:42:19: info: assertion proved (CVC4: 1 VC)

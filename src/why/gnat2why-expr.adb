@@ -15839,7 +15839,7 @@ package body Gnat2Why.Expr is
                              (Name    => Value_Id,
                               Domain  => Domain,
                               Def     => Insert_Checked_Conversion
-                                (Ada_Node => New_Expr,
+                                (Ada_Node => Expr,
                                  Domain   => Domain,
                                  Expr     => Value_Expr,
                                  To       => Get_Typ (Value_Id)),
