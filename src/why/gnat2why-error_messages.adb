@@ -702,7 +702,8 @@ package body Gnat2Why.Error_Messages is
          when VC_Loop_Invariant_Init       =>
             return "loop invariant might fail in first iteration";
          when VC_Loop_Invariant_Preserv    =>
-            return "loop invariant might fail after first iteration";
+            return "loop invariant might not be preserved by an arbitrary " &
+              "iteration";
          when VC_Loop_Variant              =>
             return "loop variant might fail";
          when VC_Assert                    =>

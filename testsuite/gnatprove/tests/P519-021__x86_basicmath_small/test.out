@@ -32,7 +32,7 @@ basicmath_small.adb:436:10: warning: unused assignment to "ZeroFlag"
 basicmath_small.adb:461:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:461:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:462:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:471:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:471:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:482:10: info: precondition proved (CVC4: 1 VC)
 basicmath_small.adb:482:10: warning: unused assignment to "CarryFlag"
 basicmath_small.adb:482:10: warning: unused assignment to "OverflowFlag"
@@ -41,11 +41,11 @@ basicmath_small.adb:482:10: warning: unused assignment to "ZeroFlag"
 basicmath_small.adb:522:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:522:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:523:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:528:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:528:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:576:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:576:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:577:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:582:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:582:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:628:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:628:39: info: range check proved (CVC4: 1 VC)
 basicmath_small.adb:629:07: warning: initialization of "ra0" has no effect

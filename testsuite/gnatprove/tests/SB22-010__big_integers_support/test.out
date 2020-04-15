@@ -330,12 +330,12 @@ curve25519.adb:59:33: info: loop invariant preservation proved (CVC4: 1 VC)
 curve25519.adb:59:39: warning: assuming "=" has no effect on global items
 curve25519.adb:59:39: warning: no Global contract available for "="
 curve25519.adb:59:41: info: precondition proved (CVC4: 6 VC)
-curve25519.adb:60:33: medium: loop invariant might fail after first iteration, cannot prove Y_256 = Partial_Conversion (Y, J) (e.g. when J = 1 and Y = (0 => 0, 1 => 0, others => 0))
+curve25519.adb:60:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Y_256 = Partial_Conversion (Y, J) (e.g. when J = 1 and Y = (0 => 0, 1 => 0, others => 0))
 curve25519.adb:60:33: medium: loop invariant might fail in first iteration, cannot prove Y_256 = Partial_Conversion (Y, J) (e.g. when J = 0 and Y = (0 => 0, others => 0))
 curve25519.adb:60:39: warning: assuming "=" has no effect on global items
 curve25519.adb:60:39: warning: no Global contract available for "="
 curve25519.adb:60:41: info: precondition proved (CVC4: 6 VC)
-curve25519.adb:61:33: medium: loop invariant might fail after first iteration, cannot prove Sum_256 = Partial_Conversion (Sum, J) (e.g. when J = 1 and Sum = (0 => 0, 1 => -2, others => 0))
+curve25519.adb:61:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sum_256 = Partial_Conversion (Sum, J) (e.g. when J = 1 and Sum = (0 => 0, 1 => -2, others => 0))
 curve25519.adb:61:33: medium: loop invariant might fail in first iteration, cannot prove Sum_256 = Partial_Conversion (Sum, J) (e.g. when J = 0 and Sum = (0 => -2, others => 0))
 curve25519.adb:61:41: warning: assuming "=" has no effect on global items
 curve25519.adb:61:41: warning: no Global contract available for "="

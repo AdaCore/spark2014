@@ -48,7 +48,7 @@ arithmetic.adb:113:19: medium: postcondition might fail, cannot prove Halve_B'Re
 arithmetic.adb:117:07: info: initialization of "R" proved
 arithmetic.adb:119:22: info: assertion proved
 arithmetic.adb:124:13: info: loop invariant initialization proved (CVC4: 2 VC)
-arithmetic.adb:124:13: medium: loop invariant might fail after first iteration, cannot prove N > R + R + 1 (e.g. when N = 2 and R = 2)
+arithmetic.adb:124:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove N > R + R + 1 (e.g. when N = 2 and R = 2)
 arithmetic.adb:130:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:134:07: info: initialization of "R" proved
 arithmetic.adb:136:22: info: assertion proved

@@ -479,7 +479,7 @@ def check_marks(strlist):
         elif 'loop invariant' in text:
             if 'initialization' in text or 'in first iteration' in text:
                 return 'LOOP_INVARIANT_INIT'
-            elif 'preservation' in text or 'after first iteration' in text:
+            elif 'preservation' in text or 'by an arbitrary iteration' in text:
                 return 'LOOP_INVARIANT_PRESERV'
             else:
                 return 'LOOP_INVARIANT'

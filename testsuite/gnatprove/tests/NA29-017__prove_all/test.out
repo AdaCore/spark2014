@@ -59,8 +59,8 @@ sorting.adb:77:18: info: index check proved (CVC4: 2 VC)
 sorting.adb:77:30: info: index check proved (CVC4: 2 VC)
 sorting.adb:79:05: info: initialization of "I" proved
 sorting.adb:79:08: info: initialization of "J" proved
-sorting.adb:87:11: medium: loop invariant might fail after first iteration, cannot prove Sorted (B, B'First, I + J)
 sorting.adb:87:11: medium: loop invariant might fail in first iteration, cannot prove Sorted (B, B'First, I + J)
+sorting.adb:87:11: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sorted (B, B'First, I + J)
 sorting.adb:87:23: info: range check proved (CVC4: 2 VC)
 sorting.adb:87:33: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:88:41: info: overflow check proved (CVC4: 2 VC)
@@ -101,8 +101,8 @@ sorting.adb:119:05: info: initialization of "I" proved
 sorting.adb:119:08: info: initialization of "L" proved
 sorting.adb:119:11: info: initialization of "K" proved
 sorting.adb:126:19: medium: overflow check might fail
-sorting.adb:127:14: medium: loop invariant might fail after first iteration, cannot prove Sorted (A, A_First + J * L, Natural'min)
 sorting.adb:127:14: medium: loop invariant might fail in first iteration, cannot prove Sorted (A, A_First + J * L, Natural'min)
+sorting.adb:127:14: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sorted (A, A_First + J * L, Natural'min)
 sorting.adb:127:33: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:33: info: range check proved (CVC4: 2 VC)
 sorting.adb:127:37: info: overflow check proved (CVC4: 2 VC)
@@ -110,7 +110,7 @@ sorting.adb:127:49: info: range check proved (CVC4: 2 VC)
 sorting.adb:127:65: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:69: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:134:13: info: loop invariant initialization proved (CVC4: 5 VC; Trivial: 3 VC; altergo: 1 VC)
-sorting.adb:135:33: medium: loop invariant might fail after first iteration, cannot prove I mod (L * 2) = 0
+sorting.adb:135:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I mod (L * 2) = 0
 sorting.adb:135:35: info: division check proved (CVC4: 2 VC)
 sorting.adb:135:42: medium: overflow check might fail
 sorting.adb:137:22: medium: overflow check might fail

@@ -270,7 +270,7 @@ partition_refinement.adb:258:33: info: precondition proved (Trivial: 2 VC)
 partition_refinement.adb:258:81: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:260:33: info: loop invariant initialization proved (CVC4: 2 VC)
 partition_refinement.adb:260:33: info: loop invariant preservation proved (CVC4: 2 VC)
-partition_refinement.adb:261:55: medium: loop invariant might fail after first iteration, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last
+partition_refinement.adb:261:55: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last
 partition_refinement.adb:261:55: medium: loop invariant might fail in first iteration, cannot prove J in Element (P, F(J)).First .. Element (P, F(J)).Last
 partition_refinement.adb:261:60: info: precondition proved (CVC4: 4 VC)
 partition_refinement.adb:261:87: info: precondition proved (CVC4: 4 VC)
@@ -278,7 +278,7 @@ partition_refinement.adb:262:106: info: precondition proved (CVC4: 4 VC)
 partition_refinement.adb:262:118: info: range check proved (CVC4: 2 VC)
 partition_refinement.adb:262:130: info: precondition proved (CVC4: 4 VC)
 partition_refinement.adb:262:142: info: range check proved (CVC4: 2 VC)
-partition_refinement.adb:262:153: medium: loop invariant might fail after first iteration, cannot prove F(K) = J
+partition_refinement.adb:262:153: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove F(K) = J
 partition_refinement.adb:262:153: medium: loop invariant might fail in first iteration, cannot prove F(K) = J
 partition_refinement.adb:262:155: info: index check proved (CVC4: 4 VC)
 partition_refinement.adb:268:07: info: precondition proved (CVC4: 7 VC)

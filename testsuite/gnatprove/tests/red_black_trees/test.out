@@ -43,7 +43,7 @@ binary_trees.adb:142:39: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:146:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 binary_trees.adb:146:13: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 binary_trees.adb:152:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 2 VC)
-binary_trees.adb:155:36: medium: loop invariant might fail after first iteration, cannot prove not (R (J).A < R (K).A)
+binary_trees.adb:155:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove not (R (J).A < R (K).A)
 binary_trees.adb:158:33: info: loop invariant initialization proved (CVC4: 2 VC)
 binary_trees.adb:158:33: info: loop invariant preservation proved (CVC4: 2 VC)
 binary_trees.adb:162:13: info: loop invariant initialization proved (CVC4: 2 VC; Trivial: 1 VC)
@@ -61,7 +61,7 @@ binary_trees.adb:189:13: info: loop invariant initialization proved (CVC4: 1 VC;
 binary_trees.adb:189:13: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 binary_trees.adb:190:67: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:194:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 2 VC)
-binary_trees.adb:198:24: medium: loop invariant might fail after first iteration, cannot prove J = K
+binary_trees.adb:198:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J = K
 binary_trees.adb:202:33: info: loop invariant initialization proved (CVC4: 2 VC)
 binary_trees.adb:202:33: info: loop invariant preservation proved (CVC4: 2 VC)
 binary_trees.adb:207:13: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -137,7 +137,7 @@ binary_trees.adb:329:53: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:329:53: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:330:17: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:330:17: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:330:17: medium: loop invariant might fail after first iteration, cannot prove Model (F1, Root) (I).K
+binary_trees.adb:330:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F1, Root) (I).K
 binary_trees.adb:339:16: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:339:16: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:339:51: info: invariant check proved (CVC4: 2 VC)
@@ -293,7 +293,7 @@ binary_trees.adb:508:25: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:508:35: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:509:25: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:509:25: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:509:25: medium: loop invariant might fail after first iteration, cannot prove Model (F, Root) (I).K
+binary_trees.adb:509:25: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F, Root) (I).K
 binary_trees.adb:514:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 binary_trees.adb:515:21: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:515:21: info: precondition proved (CVC4: 2 VC)
@@ -301,7 +301,7 @@ binary_trees.adb:515:60: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:515:60: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:516:23: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:516:23: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:516:23: medium: loop invariant might fail after first iteration, cannot prove Model (F_Old, Root) (I).K
+binary_trees.adb:516:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, Root) (I).K
 binary_trees.adb:521:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 binary_trees.adb:522:21: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:522:21: info: precondition proved (CVC4: 2 VC)
@@ -311,7 +311,7 @@ binary_trees.adb:522:57: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:522:67: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:523:23: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:523:23: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:523:23: medium: loop invariant might fail after first iteration, cannot prove Model (F_Old, Root) (I).K
+binary_trees.adb:523:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, Root) (I).K
 binary_trees.adb:529:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 2 VC)
 binary_trees.adb:529:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 2 VC)
 binary_trees.adb:530:21: info: invariant check proved (CVC4: 2 VC)
@@ -431,7 +431,7 @@ binary_trees.adb:606:16: info: loop invariant initialization proved (CVC4: 1 VC;
 binary_trees.adb:607:56: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:608:24: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:608:24: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:608:24: medium: loop invariant might fail after first iteration, cannot prove Model (F_Old, P) = Model (F, P)
+binary_trees.adb:608:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, P) = Model (F, P)
 binary_trees.adb:608:38: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:608:43: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:608:43: info: precondition proved (CVC4: 2 VC)
@@ -536,7 +536,7 @@ binary_trees.adb:750:49: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:750:49: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:751:26: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:751:26: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:751:26: medium: loop invariant might fail after first iteration, cannot prove Model (F_Old, V) (I).K
+binary_trees.adb:751:26: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, V) (I).K
 binary_trees.adb:751:40: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:752:26: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:752:26: info: precondition proved (CVC4: 2 VC)
@@ -547,7 +547,7 @@ binary_trees.adb:758:64: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:758:64: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:759:23: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:759:23: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:759:23: medium: loop invariant might fail after first iteration, cannot prove Model (F, Root) (I).K
+binary_trees.adb:759:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F, Root) (I).K
 binary_trees.adb:765:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 binary_trees.adb:766:21: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:766:21: info: precondition proved (CVC4: 2 VC)
@@ -561,7 +561,7 @@ binary_trees.adb:768:51: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:768:53: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:769:23: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:769:23: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:769:23: medium: loop invariant might fail after first iteration, cannot prove Model (F, Root) (I).K
+binary_trees.adb:769:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F, Root) (I).K
 binary_trees.adb:775:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 2 VC)
 binary_trees.adb:775:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 2 VC)
 binary_trees.adb:776:21: info: invariant check proved (CVC4: 2 VC)
@@ -703,7 +703,7 @@ binary_trees.adb:872:16: info: loop invariant initialization proved (CVC4: 1 VC;
 binary_trees.adb:873:55: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:874:20: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:874:20: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:874:20: medium: loop invariant might fail after first iteration, cannot prove Model (F, P) = Model (F_Old, P)
+binary_trees.adb:874:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F, P) = Model (F_Old, P)
 binary_trees.adb:874:30: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:874:35: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:874:35: info: precondition proved (CVC4: 2 VC)
@@ -771,7 +771,7 @@ binary_trees.adb:997:38: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:997:38: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:999:24: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:999:24: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:999:24: medium: loop invariant might fail after first iteration, cannot prove Model (F_Old, Root) (I).K
+binary_trees.adb:999:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, Root) (I).K
 binary_trees.adb:1008:19: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1008:19: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:1008:63: info: invariant check proved (CVC4: 2 VC)
@@ -809,7 +809,7 @@ binary_trees.adb:1042:16: info: loop invariant initialization proved (CVC4: 1 VC
 binary_trees.adb:1043:44: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:1044:20: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1044:20: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:1044:20: medium: loop invariant might fail after first iteration, cannot prove Model (F_Old, P) = Model (F, P)
+binary_trees.adb:1044:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, P) = Model (F, P)
 binary_trees.adb:1044:34: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:1044:39: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1044:39: info: precondition proved (CVC4: 2 VC)
@@ -844,7 +844,7 @@ binary_trees.adb:1135:16: info: loop invariant initialization proved (CVC4: 1 VC
 binary_trees.adb:1136:30: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:1136:53: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1136:53: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:1136:53: medium: loop invariant might fail after first iteration, cannot prove Model (F_Old, P) = Model (F, P)
+binary_trees.adb:1136:53: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, P) = Model (F, P)
 binary_trees.adb:1136:67: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:1136:72: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1136:72: info: precondition proved (CVC4: 2 VC)
@@ -1142,7 +1142,7 @@ red_black_trees.adb:70:13: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:74:13: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:74:13: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:81:13: info: loop invariant initialization proved (CVC4: 6 VC; Trivial: 1 VC)
-red_black_trees.adb:83:21: medium: loop invariant might fail after first iteration, cannot prove Length (M (I).A) < Max - N
+red_black_trees.adb:83:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Length (M (I).A) < Max - N
 red_black_trees.adb:87:26: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:88:26: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:89:38: info: overflow check proved (CVC4: 2 VC)
@@ -1171,10 +1171,10 @@ red_black_trees.adb:127:16: info: loop invariant preservation proved (CVC4: 1 VC
 red_black_trees.adb:131:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:132:25: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:132:39: info: index check proved (CVC4: 4 VC)
-red_black_trees.adb:133:24: medium: loop invariant might fail after first iteration, cannot prove Length (M (J).A) < Max - (N + 1)
+red_black_trees.adb:133:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Length (M (J).A) < Max - (N + 1)
 red_black_trees.adb:133:35: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:138:16: info: loop invariant initialization proved (CVC4: 4 VC; Trivial: 1 VC)
-red_black_trees.adb:142:23: medium: loop invariant might fail after first iteration, cannot prove Res (J).Status = (Res (Peek (T.Struct, J, Left)).Count = Res (Peek (T.Struct, J, Right)).Count)
+red_black_trees.adb:142:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (J).Status = (Res (Peek (T.Struct, J, Left)).Count = Res (Peek (T.Struct, J, Right)).Count)
 red_black_trees.adb:143:29: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:144:29: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:145:41: info: overflow check proved (CVC4: 2 VC)
@@ -1212,9 +1212,9 @@ red_black_trees.adb:220:30: info: precondition proved (CVC4: 2 VC), in call inli
 red_black_trees.adb:221:35: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:364
 red_black_trees.adb:221:35: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:368
 red_black_trees.adb:221:35: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:522
-red_black_trees.adb:222:24: medium: loop invariant might fail after first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:364
-red_black_trees.adb:222:24: medium: loop invariant might fail after first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:368
-red_black_trees.adb:222:24: medium: loop invariant might fail after first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:522
+red_black_trees.adb:222:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:364
+red_black_trees.adb:222:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:368
+red_black_trees.adb:222:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:522
 red_black_trees.adb:222:24: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:522
 red_black_trees.adb:222:28: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:364
 red_black_trees.adb:222:28: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:368
@@ -1240,8 +1240,8 @@ red_black_trees.adb:249:25: info: precondition proved (CVC4: 2 VC), in call inli
 red_black_trees.adb:249:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:252:24: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:252:24: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:471
-red_black_trees.adb:252:24: medium: loop invariant might fail after first iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:416
-red_black_trees.adb:252:24: medium: loop invariant might fail after first iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:471
+red_black_trees.adb:252:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:416
+red_black_trees.adb:252:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Nb_Blacks (T) (I).Status, in call inlined at red_black_trees.adb:471
 red_black_trees.adb:253:23: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:253:23: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:254:23: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:416
@@ -1274,16 +1274,16 @@ red_black_trees.adb:286:19: info: precondition proved (CVC4: 2 VC), in call inli
 red_black_trees.adb:286:19: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:287:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:287:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
-red_black_trees.adb:289:21: medium: loop invariant might fail after first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:427
-red_black_trees.adb:289:21: medium: loop invariant might fail after first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:482
+red_black_trees.adb:289:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:427
+red_black_trees.adb:289:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:289:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:289:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:289:44: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:289:44: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:291:16: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:291:16: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:482
-red_black_trees.adb:292:18: medium: loop invariant might fail after first iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:427
-red_black_trees.adb:292:18: medium: loop invariant might fail after first iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:482
+red_black_trees.adb:292:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:427
+red_black_trees.adb:292:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:292:18: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:292:18: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (Y), Nb_Blacks (T_Old) (Y)), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:292:22: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:427
@@ -1320,8 +1320,8 @@ red_black_trees.adb:328:19: info: precondition proved (CVC4: 2 VC), in call inli
 red_black_trees.adb:328:19: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:329:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:329:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
-red_black_trees.adb:332:21: medium: loop invariant might fail after first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:440
-red_black_trees.adb:332:21: medium: loop invariant might fail after first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:495
+red_black_trees.adb:332:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:440
+red_black_trees.adb:332:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:332:21: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:332:21: medium: loop invariant might fail in first iteration, cannot prove Eq (Nb_Blacks (T) (I), Nb_Blacks (T_Old) (I)), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:332:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
@@ -1336,8 +1336,8 @@ red_black_trees.adb:335:18: medium: loop invariant might fail in first iteration
 red_black_trees.adb:335:18: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (X).Status, in call inlined at red_black_trees.adb:495
 red_black_trees.adb:336:17: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:336:17: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
-red_black_trees.adb:336:17: medium: loop invariant might fail after first iteration, cannot prove Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (Y).Count, in call inlined at red_black_trees.adb:440
-red_black_trees.adb:336:17: medium: loop invariant might fail after first iteration, cannot prove Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (Y).Count, in call inlined at red_black_trees.adb:495
+red_black_trees.adb:336:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (Y).Count, in call inlined at red_black_trees.adb:440
+red_black_trees.adb:336:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (Y).Count, in call inlined at red_black_trees.adb:495
 red_black_trees.adb:336:43: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:336:43: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:338:13: info: loop invariant preservation proved (CVC4: 2 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:440
@@ -1404,16 +1404,16 @@ red_black_trees.adb:383:33: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:383:51: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:384:33: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:384:33: info: precondition proved (CVC4: 2 VC)
-red_black_trees.adb:384:33: medium: loop invariant might fail after first iteration, cannot prove Model (T.Struct) (X).K
+red_black_trees.adb:384:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (T.Struct) (X).K
 red_black_trees.adb:384:51: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:385:33: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:385:33: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:386:33: info: loop invariant initialization proved (CVC4: 1 VC)
-red_black_trees.adb:386:33: medium: loop invariant might fail after first iteration, cannot prove Color (T, Root (T.Struct)) = Black
+red_black_trees.adb:386:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Color (T, Root (T.Struct)) = Black
 red_black_trees.adb:386:43: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:388:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:392:36: info: index check proved (CVC4: 4 VC)
-red_black_trees.adb:393:21: medium: loop invariant might fail after first iteration, cannot prove T.Color (I) = Black
+red_black_trees.adb:393:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove T.Color (I) = Black
 red_black_trees.adb:394:33: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:394:33: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:395:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -1551,7 +1551,7 @@ search_trees.adb:34:37: info: range check proved (CVC4: 2 VC)
 search_trees.adb:34:45: info: index check proved (CVC4: 4 VC)
 search_trees.adb:34:78: info: index check proved (CVC4: 4 VC)
 search_trees.adb:36:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-search_trees.adb:36:13: medium: loop invariant might fail after first iteration
+search_trees.adb:36:13: medium: loop invariant might not be preserved by an arbitrary iteration
 search_trees.adb:39:25: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:39:43: info: range check proved (CVC4: 2 VC)
 search_trees.adb:51:14: info: precondition proved (CVC4: 1 VC)
@@ -1638,7 +1638,7 @@ search_trees.adb:197:31: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:198:39: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:198:56: info: index check proved (CVC4: 4 VC)
 search_trees.adb:198:62: info: overflow check proved (CVC4: 2 VC)
-search_trees.adb:200:28: medium: loop invariant might fail after first iteration, cannot prove Values (J) < Values (K)
+search_trees.adb:200:28: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (J) < Values (K)
 search_trees.adb:200:49: info: index check proved (CVC4: 4 VC)
 search_trees.adb:201:49: info: index check proved (CVC4: 4 VC)
 search_trees.adb:208:16: info: precondition proved (CVC4: 2 VC)
@@ -1691,7 +1691,7 @@ search_trees.adb:262:31: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:263:39: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:263:53: info: index check proved (CVC4: 4 VC)
 search_trees.adb:263:59: info: overflow check proved (CVC4: 2 VC)
-search_trees.adb:265:28: medium: loop invariant might fail after first iteration, cannot prove Values (J) < Values (K)
+search_trees.adb:265:28: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (J) < Values (K)
 search_trees.adb:265:49: info: index check proved (CVC4: 4 VC)
 search_trees.adb:266:49: info: index check proved (CVC4: 4 VC)
 search_trees.adb:273:16: info: precondition proved (CVC4: 2 VC)
@@ -1776,7 +1776,7 @@ search_trees.adb:384:31: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:385:39: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:385:56: info: index check proved (CVC4: 4 VC)
 search_trees.adb:385:62: info: overflow check proved (CVC4: 2 VC)
-search_trees.adb:387:28: medium: loop invariant might fail after first iteration, cannot prove Values (J) < Values (K)
+search_trees.adb:387:28: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (J) < Values (K)
 search_trees.adb:387:49: info: index check proved (CVC4: 4 VC)
 search_trees.adb:388:49: info: index check proved (CVC4: 4 VC)
 search_trees.adb:396:16: info: precondition proved (CVC4: 2 VC)
@@ -2312,7 +2312,7 @@ search_trees.adb:1191:57: info: index check proved (CVC4: 4 VC)
 search_trees.adb:1191:77: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1191:95: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1191:109: info: overflow check proved (CVC4: 2 VC)
-search_trees.adb:1192:28: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I) [possible explanation: subprogram at search_trees.ads:42 should mention T and V in a precondition]
+search_trees.adb:1192:28: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove V < T.Values (I) [possible explanation: subprogram at search_trees.ads:42 should mention T and V in a precondition]
 search_trees.adb:1196:27: info: index check proved (CVC4: 2 VC)
 search_trees.adb:1198:30: info: index check proved (CVC4: 2 VC)
 search_trees.adb:1199:15: warning: unused assignment
@@ -2444,7 +2444,7 @@ search_trees.adb:1360:74: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1360:92: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1360:100: info: index check proved (CVC4: 4 VC)
 search_trees.adb:1360:106: info: overflow check proved (CVC4: 2 VC)
-search_trees.adb:1361:31: medium: loop invariant might fail after first iteration, cannot prove T.Values (J) < T.Values (I)
+search_trees.adb:1361:31: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove T.Values (J) < T.Values (I)
 search_trees.adb:1361:31: medium: loop invariant might fail in first iteration, cannot prove T.Values (J) < T.Values (I)
 search_trees.adb:1361:56: info: index check proved (CVC4: 4 VC)
 search_trees.adb:1362:56: info: index check proved (CVC4: 4 VC)
@@ -2485,7 +2485,7 @@ search_trees.adb:1405:60: info: index check proved (CVC4: 4 VC)
 search_trees.adb:1405:80: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1405:98: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1405:112: info: overflow check proved (CVC4: 2 VC)
-search_trees.adb:1406:31: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I) [possible explanation: precondition of subprogram at search_trees.ads:45 should mention V]
+search_trees.adb:1406:31: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove V < T.Values (I) [possible explanation: precondition of subprogram at search_trees.ads:45 should mention V]
 search_trees.adb:1410:30: info: index check proved (CVC4: 2 VC)
 search_trees.adb:1412:31: info: assertion proved (CVC4: 1 VC)
 search_trees.adb:1413:33: info: invariant check proved (CVC4: 1 VC)
