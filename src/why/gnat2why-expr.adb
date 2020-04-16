@@ -352,6 +352,13 @@ package body Gnat2Why.Expr is
    --  complex), and Store contains the postprocessing steps necessary to store
    --  back the actuals after the call.
 
+   function Is_Simple_Actual (Actual : Node_Id) return Boolean
+     with Pre => Nkind (Actual) in N_Subexpr;
+   --  Return True if N is a simple enough object so that its binder can
+   --  be reused for parameter passing. Basically this is true for simple
+   --  identifiers that are not too complex (e.g. not Part_Of or other
+   --  complications).
+
    function Is_Terminal_Node (N : Node_Id) return Boolean;
    --  Decide whether this is a node where we should put a pretty printing
    --  label, or if we should descend further. Basically, everything that's
@@ -2834,10 +2841,6 @@ package body Gnat2Why.Expr is
          -------------------
 
          procedure Compute_Param (Formal : Entity_Id; Actual : Node_Id) is
-            Simple_Actual : constant Boolean :=
-              Nkind (Actual) in N_Identifier | N_Expanded_Name
-                and then not
-              Is_Protected_Component_Or_Discr (Entity (Actual));
             Needs_Havoc   : constant Boolean :=
               Present (Formal)
               and then Ekind (Formal) = E_Out_Parameter
@@ -2870,9 +2873,12 @@ package body Gnat2Why.Expr is
                --  an identifier, if aliasing can occur, or if the formal has
                --  asynchronous writers.
 
-               else Simple_Actual
-                 and then not Aliasing
-                 and then not Has_Async_Writers (Direct_Mapping_Id (Formal)));
+               else
+                 (Present (Actual)
+                  and then Is_Simple_Actual (Actual)
+                  and then not Aliasing
+                  and then not
+                    Has_Async_Writers (Direct_Mapping_Id (Formal))));
             Fetch_Ty      : constant W_Type_Id :=
               (if not Is_Self
                  and then Has_Array_Type (Etype (Formal))
@@ -4781,11 +4787,6 @@ package body Gnat2Why.Expr is
       Store          : W_Statement_Sequence_Unchecked_Id;
       Params         : Transformation_Params)
    is
-      Simple_Actual : constant Boolean :=
-        Nkind (Actual) in N_Identifier | N_Expanded_Name
-        and then not
-          Is_Protected_Component_Or_Discr (Entity (Actual));
-
    begin
       --  If needed, recompute the actual expression and store it in Actual
 
@@ -4809,7 +4810,7 @@ package body Gnat2Why.Expr is
 
       --  Handle the initialization flag on the actual if any
 
-      if Simple_Actual then
+      if Present (Actual) and then Is_Simple_Actual (Actual) then
          declare
             Actual_Binder : constant Item_Type :=
               Ada_Ent_To_Why.Element
@@ -6655,6 +6656,18 @@ package body Gnat2Why.Expr is
    end Insert_Ref_Context;
 
    ----------------------
+   -- Is_Simple_Actual --
+   ----------------------
+
+   function Is_Simple_Actual (Actual : Node_Id) return Boolean is
+   begin
+      return
+        Nkind (Actual) in N_Identifier | N_Expanded_Name
+          and then
+        not Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (Actual));
+   end Is_Simple_Actual;
+
+   ----------------------
    -- Is_Terminal_Node --
    ----------------------
 
@@ -6691,12 +6704,6 @@ package body Gnat2Why.Expr is
       Tmp  : W_Identifier_Id) return W_Prog_Id
    is
       Typ         : constant Entity_Id := Retysp (Etype (Expr));
-      Simple_Expr : constant Boolean :=
-        Nkind (Expr) in N_Identifier | N_Expanded_Name
-        and then
-          not Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (Expr));
-      --  True for whole objects, which can be directly updated or passed by
-      --  reference.
 
    begin
       --  Reach out past a type conversion or qualification
@@ -6715,7 +6722,7 @@ package body Gnat2Why.Expr is
          --
          --  is_moved := true
 
-         if Simple_Expr then
+         if Is_Simple_Actual (Expr) then
             declare
                Binder : constant Item_Type :=
                  Ada_Ent_To_Why.Element (Symbol_Table, Entity (Expr));
@@ -6758,7 +6765,7 @@ package body Gnat2Why.Expr is
          begin
             --  If Expr is a whole object, try to reuse the references of Expr
 
-            if Simple_Expr then
+            if Is_Simple_Actual (Expr) then
                declare
                   Binder : constant Item_Type :=
                     Ada_Ent_To_Why.Element (Symbol_Table, Entity (Expr));
