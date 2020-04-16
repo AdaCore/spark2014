@@ -30,11 +30,15 @@ my_map.adb:65:21: info: precondition proved (CVC4: 1 VC)
 my_map.adb:65:38: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:65:47: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:65:54: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.adb:67:10: medium: memory leak might occur at end of scope
 my_map.adb:67:48: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:67:55: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:69:37: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.adb:70:15: medium: memory leak might occur [possible explanation: precondition of subprogram at line 55 should mention R]
 my_map.adb:70:37: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.adb:76:07: medium: memory leak might occur at end of scope
 my_map.adb:77:07: info: initialization of "R" proved
+my_map.adb:77:07: medium: memory leak might occur at end of scope
 my_map.adb:81:33: info: loop invariant initialization proved (CVC4: 1 VC)
 my_map.adb:81:33: info: loop invariant preservation proved (CVC4: 1 VC)
 my_map.adb:82:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -136,13 +140,13 @@ my_map.ads:28:21: warning: unused variable "Borrower"
 my_map.ads:34:14: info: postcondition proved (CVC4: 2 VC)
 my_map.ads:38:14: info: postcondition proved (CVC4: 2 VC)
 my_map.ads:38:45: info: precondition proved (CVC4: 1 VC)
-my_map.ads:42:14: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC; Z3: 1 VC)
 my_map.ads:42:45: info: precondition proved (CVC4: 1 VC)
 my_map.ads:43:20: info: precondition proved (Trivial: 1 VC)
 my_map.ads:43:61: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.ads:43:87: info: range check proved (CVC4: 1 VC)
 my_map.ads:44:16: info: precondition proved (Trivial: 1 VC)
 my_map.ads:44:31: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:44:38: medium: postcondition might fail, cannot prove Model_Contains (Deep_Copy (M)'Old, L)
 my_map.ads:44:73: info: range check proved (CVC4: 1 VC)
 my_map.ads:45:41: info: precondition proved (CVC4: 1 VC)
 my_map.ads:45:57: info: range check proved (CVC4: 1 VC)

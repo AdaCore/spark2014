@@ -18,10 +18,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="197"/></proof>
+  <proof prover="0"><result status="valid" steps="346"/></proof>
   </goal>
   <goal name="def&#39;vc.3" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="242"/></proof>
+  <proof prover="0"><result status="valid" steps="392"/></proof>
   </goal>
   <goal name="def&#39;vc.4" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
