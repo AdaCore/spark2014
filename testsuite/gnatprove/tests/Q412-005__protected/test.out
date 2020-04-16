@@ -1,0 +1,2 @@
+pack.adb:10:25: warning: statement has no effect
+pack.ads:4:49: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)

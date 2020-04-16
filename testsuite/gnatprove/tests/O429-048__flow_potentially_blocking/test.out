@@ -75,6 +75,7 @@ p.ads:67:14: medium: the task might terminate, which is not allowed in SPARK
 pack.ads:5:13: info: ceiling priority protocol is respected (CVC4: 1 VC)
 pack.ads:10:13: info: ceiling priority protocol is respected (CVC4: 1 VC)
 pack.ads:14:14: warning: subprogram "External_Call_To_Protected_Func" has no effect
+pack.ads:19:13: info: ceiling priority protocol is respected (CVC4: 1 VC)
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported)
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported)
 remote.ads:7:14: warning: subprogram "Remote_Call" has no effect

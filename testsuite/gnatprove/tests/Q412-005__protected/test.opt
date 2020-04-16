@@ -1,1 +1,0 @@
-ALL XFAIL GNATprove crashes on protected function called to define constant
