@@ -34,7 +34,7 @@ my_map.adb:67:10: medium: memory leak might occur at end of scope
 my_map.adb:67:48: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:67:55: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:69:37: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.adb:70:15: medium: memory leak might occur [possible explanation: precondition of subprogram at line 55 should mention R]
+my_map.adb:70:15: info: absence of memory leak proved (CVC4: 1 VC)
 my_map.adb:70:37: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:76:07: medium: memory leak might occur at end of scope
 my_map.adb:77:07: info: initialization of "R" proved

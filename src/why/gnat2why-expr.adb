@@ -11537,11 +11537,22 @@ package body Gnat2Why.Expr is
                                        Lhs_Typ => Typ,
                                        Expr    => T);
             Tmp := New_Temp_For_Expr (+T);
-            T := Gnat2Why.Expr.New_Assignment
-              (Ada_Node => Stmt,
-               Lvalue   => Lvalue,
-               Expr     => +Tmp);
-            T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
+
+            --  Check that the assignment does not cause a memory leak. This
+            --  is done after moves, so that we properly handle the case where
+            --  the target of the assignment is moved by the expression of the
+            --  assignment, e.g. an aggregate with the target as element. This
+            --  also deals with the special case X:=X so that we avoid issuing
+            --  a message here.
+
+            T := +Binding_For_Temp
+              (Empty, EW_Prog, Tmp,
+               +Sequence
+                 (Check_No_Memory_Leaks (Stmt, Lvalue),
+                  Gnat2Why.Expr.New_Assignment
+                    (Ada_Node => Stmt,
+                     Lvalue   => Lvalue,
+                     Expr     => +Tmp)));
          end;
 
       --  Normal assignment that does not involve any move
@@ -11551,15 +11562,6 @@ package body Gnat2Why.Expr is
            (Ada_Node => Stmt,
             Lvalue   => Lvalue,
             Expr     => T);
-      end if;
-
-      --  Check that the assignment does not cause a memory leak. There is no
-      --  special case for X:=X that would avoid issuing a message here.
-
-      if Is_Deep (Typ)
-        and then not Is_Anonymous_Access_Type (Typ)
-      then
-         T := Sequence (Check_No_Memory_Leaks (Stmt, Lvalue), T);
       end if;
 
       --  Update pledge of local borrowers

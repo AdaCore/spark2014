@@ -46,6 +46,7 @@ begin
    Z := new Integer'(1);  -- @MEMORY_LEAK:PASS
 
    Y := Z;  -- @MEMORY_LEAK:FAIL
+   Y := Y;  -- @MEMORY_LEAK:PASS
 
    XX(1) := new Integer'(1);  -- @MEMORY_LEAK:PASS
    YY := XX;
@@ -130,6 +131,7 @@ begin
    begin
       U.X := new Integer'(1);  -- @MEMORY_LEAK:PASS
       U.Y := U.X;  -- @MEMORY_LEAK:PASS
+      U.Y := U.Y;  -- @MEMORY_LEAK:PASS
       U.X := null;  -- @MEMORY_LEAK:PASS
       U.Y := null;  -- @MEMORY_LEAK:FAIL
 
