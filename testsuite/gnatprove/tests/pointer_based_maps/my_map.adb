@@ -117,6 +117,7 @@ package body My_Map with SPARK_Mode is
          end if;
          X := X.Next;
       end loop;
+      pragma Assert (False);
    end Replace_Element_Ext;
 
    function Constant_Access (M : access constant Map; K : Positive) return not null access constant Integer is
