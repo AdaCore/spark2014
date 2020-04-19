@@ -835,7 +835,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.228" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="2624"/></proof>
+  <proof prover="0"><result status="valid" steps="3237"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.229" expl="loop invariant preservation" proved="true">
