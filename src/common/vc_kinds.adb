@@ -538,7 +538,7 @@ package body VC_Kinds is
       return Map;
    end From_JSON;
 
-   function From_JSON (V : JSON_Value) return  Cntexample_Lines is
+   function From_JSON (V : JSON_Value) return Cntexample_Lines is
       Res : Cntexample_Lines :=
         Cntexample_Lines'(VC_Line        =>
                             (if Has_Field (V, "vc_line")
