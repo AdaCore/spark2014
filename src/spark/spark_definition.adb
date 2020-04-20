@@ -2275,6 +2275,19 @@ package body SPARK_Definition is
          when N_Object_Renaming_Declaration =>
             null;
 
+         --  N_Expression_With_Actions is only generated from declare
+         --  expressions in GNATprove mode.
+
+         when N_Expression_With_Actions =>
+            pragma Assert (Comes_From_Source (N));
+            Mark_Actions (N, Actions (N));
+
+            if not Retysp_In_SPARK (Etype (N)) then
+               Mark_Violation (N, From => Etype (N));
+            else
+               Mark (Expression (N));
+            end if;
+
          --  The following nodes are rewritten by semantic analysis
 
          when N_Expression_Function
@@ -2285,8 +2298,7 @@ package body SPARK_Definition is
 
          --  The following nodes are never generated in GNATprove mode
 
-         when N_Expression_With_Actions
-            | N_Compound_Statement
+         when N_Compound_Statement
             | N_Unchecked_Expression
          =>
             raise Program_Error;
@@ -2377,9 +2389,17 @@ package body SPARK_Definition is
    ------------------
 
    procedure Mark_Actions (N : Node_Id; L : List_Id) is
+      In_Declare_Expr : constant Boolean :=
+        Nkind (N) = N_Expression_With_Actions;
+
       function Acceptable_Actions (L : List_Id) return Boolean;
-      --  Return whether L is a list of acceptable actions, which can be
-      --  translated into Why.
+      --  Go through the list of actions L and decide if it is acceptable for
+      --  translation into Why. When an unfit action is found, either a
+      --  precise violation is raised on the spot, and the iteration continues,
+      --  or we end the iteration and return False so that a generic violation
+      --  can be emitted. In particular, we do the later for actions which are
+      --  not coming from declare expressions, where the declared objects do
+      --  not correspond to anything user visible.
 
       ------------------------
       -- Acceptable_Actions --
@@ -2402,8 +2422,43 @@ package body SPARK_Definition is
                   null;
 
                when N_Object_Declaration =>
+
+                  --  We only accept constants
+
                   if Constant_Present (N) then
-                     null;
+
+                     --  We don't support local borrowers/observers in actions
+
+                     if Is_Anonymous_Access_Type
+                       (Etype (Defining_Identifier (N)))
+                     then
+                        if In_Declare_Expr then
+                           declare
+                              Kind : constant String :=
+                                (if Is_Access_Constant
+                                   (Etype (Defining_Identifier (N)))
+                                 then "observers"
+                                 else "borrowers");
+                           begin
+                              Mark_Violation
+                                ("local " & Kind & " in declare expression",
+                                 N);
+                           end;
+                        end if;
+                        return In_Declare_Expr;
+
+                     --  We don't support moves in actions
+
+                     elsif Is_Deep (Retysp (Etype (Defining_Identifier (N))))
+                       and then Is_Path_Expression (Expression (N))
+                       and then Present (Get_Root_Object (Expression (N)))
+                     then
+                        if In_Declare_Expr then
+                           Mark_Violation
+                             ("move in declare expression", N);
+                        end if;
+                        return In_Declare_Expr;
+                     end if;
                   else
                      return False;
                   end if;
@@ -5935,8 +5990,13 @@ package body SPARK_Definition is
                   null;
 
                when others =>
-                  Entity_List.Append (E);
 
+                  --  Do not translate objects from declare expressions. They
+                  --  are handled as local objects.
+
+                  if not Comes_From_Declare_Expr (E) then
+                     Entity_List.Append (E);
+                  end if;
             end case;
          end if;
 

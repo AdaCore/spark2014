@@ -15738,19 +15738,91 @@ package body Gnat2Why.Expr is
                     Local_Params);
 
          when N_Expression_With_Actions =>
-            if not (Domain = EW_Prog) then
-               Ada.Text_IO.Put_Line
-                 ("[Transform_Expr] expression with action");
-               raise Not_Implemented;
-            end if;
 
-            T :=
-               +Sequence
-                 (Transform_Statements_And_Declarations (Actions (Expr)),
-                  +Transform_Expr (Expression (Expr),
-                                   Expected_Type,
-                                   EW_Prog,
-                                   Local_Params));
+            --  We must be in a declare expression, so Actions (Expr)
+            --  should only contain renamings which we ignore and object
+            --  declarations which should be translated as let bindings.
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+            declare
+               Max_Vars : constant Natural :=
+                 Natural (Nlists.List_Length (Actions (Expr)));
+               Temps    : W_Identifier_Array (1 .. Max_Vars);
+               Values   : W_Expr_Array (1 .. Max_Vars);
+               Decl     : Node_Id := Nlists.First (Actions (Expr));
+               Count    : Natural := 0;
+
+            begin
+               while Present (Decl) loop
+                  case Nkind (Decl) is
+
+                     --  Create an item for the declared object, bind it
+                     --  to the Ada entity in the Symbol_Table and store the
+                     --  definition in Values to create the binding afterward.
+
+                     when N_Object_Declaration =>
+                        declare
+                           Name  : constant Entity_Id :=
+                             Defining_Identifier (Decl);
+                           Item  : constant Item_Type :=
+                             Mk_Item_Of_Entity (Name, Local => True);
+                           pragma Assert (Item.Kind = Regular);
+                           Value : constant W_Expr_Id :=
+                             Transform_Expr
+                               (Expr          => Expression (Decl),
+                                Domain        => Domain,
+                                Params        => Params,
+                                Expected_Type =>
+                                  Get_Typ (Item.Main.B_Name));
+                        begin
+                           Count := Count + 1;
+                           Values (Count) := Value;
+                           Temps (Count) := Item.Main.B_Name;
+
+                           Ada_Ent_To_Why.Insert (Symbol_Table, Name, Item);
+                        end;
+                     when N_Ignored_In_SPARK
+                        | N_Subtype_Declaration
+                        | N_Full_Type_Declaration
+                        =>
+                        null;
+                     when others =>
+                        raise Program_Error;
+                  end case;
+                  Nlists.Next (Decl);
+               end loop;
+
+               T := Transform_Expr
+                 (Expr          => Expression (Expr),
+                  Domain        => Domain,
+                  Params        => Params,
+                  Expected_Type => Expected_Type);
+
+               --  Add check for absence of memory leaks at end of scope
+
+               if Domain = EW_Prog then
+                  T := +Sequence
+                    (Left     => Check_No_Memory_Leaks_At_End_Of_Scope
+                       (Decls => Actions (Expr)),
+                     Right    => +T,
+                     Ada_Node => Expr);
+               end if;
+
+               --  Add bindings for declared constants
+
+               for I in reverse 1 .. Count loop
+                  T := New_Binding
+                    (Ada_Node => Expr,
+                     Domain   => Domain,
+                     Name     => Temps (I),
+                     Def      => Values (I),
+                     Context  => T,
+                     Typ      => Get_Type (T));
+               end loop;
+
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+            end;
 
          when N_Allocator =>
 

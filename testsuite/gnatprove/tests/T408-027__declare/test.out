@@ -1,0 +1,34 @@
+test_declare.adb:4:25: info: data dependencies proved
+test_declare.adb:8:55: info: overflow check proved (CVC4: 1 VC)
+test_declare.adb:9:39: medium: overflow check might fail
+test_declare.adb:10:21: info: overflow check proved (CVC4: 1 VC)
+test_declare.adb:13:25: info: data dependencies proved
+test_declare.adb:17:55: info: overflow check proved (CVC4: 1 VC)
+test_declare.adb:18:39: info: overflow check proved (CVC4: 1 VC)
+test_declare.adb:19:21: medium: overflow check might fail
+test_declare.adb:26:18: info: overflow check proved (CVC4: 1 VC)
+test_declare.adb:29:18: info: overflow check proved (CVC4: 1 VC)
+test_declare.adb:30:19: info: assertion proved (CVC4: 1 VC)
+test_declare.adb:32:09: info: assertion proved (CVC4: 1 VC)
+test_declare.adb:34:38: info: overflow check proved (CVC4: 1 VC)
+test_declare.adb:35:18: info: overflow check proved (CVC4: 1 VC)
+test_declare_deep.adb:7:14: warning: subprogram "OK1" has no effect
+test_declare_deep.adb:9:07: medium: memory leak might occur at end of scope
+test_declare_deep.adb:11:14: info: pointer dereference check proved (CVC4: 1 VC)
+test_declare_deep.adb:11:18: info: overflow check proved (CVC4: 1 VC)
+test_declare_deep.adb:14:14: warning: subprogram "OK2" has no effect
+test_declare_deep.adb:18:13: medium: memory leak might occur at end of scope
+test_declare_deep.adb:19:21: info: pointer dereference check proved (CVC4: 1 VC)
+test_declare_deep.adb:19:25: info: overflow check proved (CVC4: 1 VC)
+test_declare_illegal.adb:4:04: warning: analyzing unreferenced procedure "Bad1"
+test_declare_illegal.adb:8:37: allocators in interfering context is not allowed in SPARK
+test_declare_illegal.adb:8:37: violation of aspect SPARK_Mode at line 1
+test_declare_illegal.adb:9:19: "Y" is not allowed in SPARK (due to allocators in interfering context)
+test_declare_illegal.adb:9:19: violation of aspect SPARK_Mode at line 1
+test_declare_illegal.adb:12:04: warning: analyzing unreferenced procedure "Bad2"
+test_declare_illegal.adb:17:13: move in declare expression is not allowed in SPARK
+test_declare_illegal.adb:17:13: violation of aspect SPARK_Mode at line 1
+test_declare_illegal.adb:23:04: warning: analyzing unreferenced procedure "Bad3"
+test_declare_illegal.adb:26:13: expression as source of move is not allowed in SPARK
+test_declare_illegal.adb:26:13: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

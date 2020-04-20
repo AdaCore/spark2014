@@ -2051,6 +2051,15 @@ package body Gnat2Why.Borrow_Checker is
             Check_Expression (Prefix (Expr), Mode);
             Read_Expression (Discrete_Range (Expr));
 
+         when N_Expression_With_Actions =>
+
+            --  Go over the objects declared in a declare expressions and fill
+            --  the map for them. No need to handle local borrowers or
+            --  observers which are not allowed.
+
+            Check_List (Actions (Expr));
+            Check_Expression (Expression (Expr), Mode);
+
          --  Procedure calls are handled in Check_Node
 
          when N_Procedure_Call_Statement =>
@@ -2070,8 +2079,7 @@ package body Gnat2Why.Borrow_Checker is
 
          --  The following nodes are never generated in GNATprove mode
 
-         when N_Expression_With_Actions
-            | N_Reference
+         when N_Reference
             | N_Unchecked_Expression
          =>
             raise Program_Error;

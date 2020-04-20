@@ -26,15 +26,17 @@ is
 
    package M with Ghost,
      Initial_Condition =>
-       (Is_Empty (Model.Allocated) and then Length (Model.Allocated) = 0
-          and then
-        Length (Model.Available) = Capacity
-          and then
-        Get (Model.Available, 1) = 1
-          and then
-        (for all RR in 1 .. Capacity => Get (Model.Available, RR) = Resource (RR))
-          and then
-        (for all RR in 1 .. Capacity => Contains (Model.Available, Resource (RR))))
+       (declare
+          Avail : constant Sequence := Model.Available;
+          Alloc : constant S2.Set := Model.Allocated;
+        begin
+          (Is_Empty (Alloc) and then Length (Alloc) = 0
+           and then Length (Avail) = Capacity
+           and then Get (Avail, 1) = 1
+           and then
+             (for all RR in 1 .. Capacity => Contains (Avail, Resource (RR)))
+           and then
+             (for all RR in 1 .. Capacity => Get (Avail, RR) = Resource (RR))))
    is
       package S1 is new Ada.Containers.Functional_Vectors (Index_Type => Positive,
                                                            Element_Type => Resource);

@@ -56,13 +56,16 @@ package body My_Map with SPARK_Mode is
         Pre  => X /= null,
         Post => Model_Contains (R, X.Key)
         and then
-          (if Deep_Copy (R)'Old /= null
-           then (for all K in Deep_Copy (R)'Old.all => Model_Contains (R, K)
-             and then Model_Value (R, K) = Model_Value (Deep_Copy (R)'Old, K)))
-        and then (for all K in R.all => Model_Contains (Deep_Copy (R)'Old, K)
-                    or K = X.Key)
-        and then (if not Model_Contains (Deep_Copy (R)'Old, X.Key) then
-                    Model_Value (R, X.Key) = X.Value.all)
+          (declare
+             Old_R : constant Map_Acc := Deep_Copy (R)'Old;
+           begin
+             (if Old_R /= null
+                  then (for all K in Old_R.all => Model_Contains (R, K)
+                        and then Model_Value (R, K) = Model_Value (Old_R, K)))
+           and then (for all K in R.all => Model_Contains (Old_R, K)
+                     or K = X.Key)
+           and then (if not Model_Contains (Old_R, X.Key) then
+                       Model_Value (R, X.Key) = X.Value.all))
       is
          C : constant Int_Acc := new Integer'(X.Value.all) with Ghost;
       begin

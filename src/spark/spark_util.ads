@@ -314,6 +314,10 @@ package SPARK_Util is
    -- Queries related to objects or components --
    ----------------------------------------------
 
+   function Comes_From_Declare_Expr (E : Entity_Id) return Boolean;
+   --  True if E is an object declared in an expression with actions. In SPARK,
+   --  this should correspond to a declare expression.
+
    function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in E_Component | E_Discriminant;
    --  @param E component

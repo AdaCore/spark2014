@@ -1,9 +1,5 @@
 project Test is
 
-   package Prove is
-      for Proof_Dir use "proof";
-   end Prove;
-
    package Compiler is
       for Switches ("ada") use ("-gnat2020");
    end Compiler;
