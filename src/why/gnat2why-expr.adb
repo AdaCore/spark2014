@@ -18288,7 +18288,7 @@ package body Gnat2Why.Expr is
                begin
                   if Proved then
                      Emit_Static_Proof_Result
-                       (Expr, Reason, Proved, Current_Subp, PC_Trivial);
+                       (Expr, Reason, Proved, Current_Subp);
                      return +Void;
                   else
                      return

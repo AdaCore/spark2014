@@ -4157,20 +4157,17 @@ package body Gnat2Why.Subprograms is
               (Source,
                VC_UC_No_Holes,
                Is_Valid_Bitpattern_No_Holes (Src_Ty),
-               E,
-               PC_Trivial);
+               E);
             Emit_Static_Proof_Result
               (Target,
                VC_UC_No_Holes,
                Is_Valid_Bitpattern_No_Holes (Tar_Ty),
-               E,
-               PC_Trivial);
+               E);
             Emit_Static_Proof_Result
               (E,
                VC_UC_Same_Size,
                Types_Have_Same_Known_Esize (Src_Ty, Tar_Ty),
-               E,
-               PC_Trivial);
+               E);
          end;
       end if;
    end Generate_VCs_For_Subprogram;
