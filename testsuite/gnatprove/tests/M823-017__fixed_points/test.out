@@ -303,7 +303,7 @@ dynamic_fixed.adb:6:18: info: range check proved (CVC4: 20 VC)
 dynamic_fixed.adb:6:40: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:7:19: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:9:25: medium: assertion might fail, cannot prove Integer (T'Last) = I (e.g. when I = 1)
-dynamic_fixed.adb:10:25: info: assertion proved
+dynamic_fixed.adb:10:25: info: assertion proved (Trivial)
 unsupported.adb:19:13: operation between incompatible fixed-point types is not yet supported
 unsupported.adb:20:13: operation between incompatible fixed-point types is not yet supported
 unsupported.adb:21:15: real literal argument to fixed-point multiplication or division is not allowed in SPARK

@@ -1,2 +1,2 @@
-p.ads:10:19: info: assertion proved
+p.ads:10:19: info: assertion proved (Trivial)
 p.ads:17:04: medium: assertion might fail

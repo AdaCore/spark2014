@@ -1,8 +1,8 @@
 size_attr.adb:22:23: info: range check proved (CVC4: 1 VC)
 size_attr.adb:67:13: info: range check proved (CVC4: 1 VC)
-size_attr.adb:93:19: info: assertion proved
-size_attr.adb:94:19: info: assertion proved
-size_attr.adb:96:19: info: assertion proved
+size_attr.adb:93:19: info: assertion proved (Trivial)
+size_attr.adb:94:19: info: assertion proved (Trivial)
+size_attr.adb:96:19: info: assertion proved (Trivial)
 size_attr.adb:99:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:100:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:101:19: info: assertion proved (CVC4: 1 VC)

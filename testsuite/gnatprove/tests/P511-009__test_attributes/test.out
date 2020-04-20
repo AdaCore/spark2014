@@ -4,30 +4,30 @@ alignment_attribute.adb:47:04: warning: analyzing unreferenced procedure "Q"
 alignment_attribute.adb:47:14: high: all paths in "Q" raise exceptions or do not terminate normally
 alignment_attribute.adb:47:14: warning: subprogram "Q" has no effect
 alignment_attribute.adb:50:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-alignment_attribute.adb:53:22: info: assertion proved
+alignment_attribute.adb:53:22: info: assertion proved (Trivial)
 alignment_attribute.adb:54:07: medium: assertion might fail (e.g. when A1'Last = 0 and A2 = (others => (others => 1)))
 alignment_attribute.adb:60:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:61:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:62:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:63:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:64:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:65:19: info: assertion proved
-alignment_attribute.adb:66:19: info: assertion proved
-alignment_attribute.adb:67:19: info: assertion proved
+alignment_attribute.adb:65:19: info: assertion proved (Trivial)
+alignment_attribute.adb:66:19: info: assertion proved (Trivial)
+alignment_attribute.adb:67:19: info: assertion proved (Trivial)
 alignment_attribute.adb:68:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:69:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:70:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:74:19: info: assertion proved
-alignment_attribute.adb:75:19: info: assertion proved
-alignment_attribute.adb:76:19: info: assertion proved
-alignment_attribute.adb:77:19: info: assertion proved
-alignment_attribute.adb:78:19: info: assertion proved
-alignment_attribute.adb:79:19: info: assertion proved
-alignment_attribute.adb:80:19: info: assertion proved
-alignment_attribute.adb:81:19: info: assertion proved
-alignment_attribute.adb:82:19: info: assertion proved
-alignment_attribute.adb:83:19: info: assertion proved
-alignment_attribute.adb:84:19: info: assertion proved
+alignment_attribute.adb:74:19: info: assertion proved (Trivial)
+alignment_attribute.adb:75:19: info: assertion proved (Trivial)
+alignment_attribute.adb:76:19: info: assertion proved (Trivial)
+alignment_attribute.adb:77:19: info: assertion proved (Trivial)
+alignment_attribute.adb:78:19: info: assertion proved (Trivial)
+alignment_attribute.adb:79:19: info: assertion proved (Trivial)
+alignment_attribute.adb:80:19: info: assertion proved (Trivial)
+alignment_attribute.adb:81:19: info: assertion proved (Trivial)
+alignment_attribute.adb:82:19: info: assertion proved (Trivial)
+alignment_attribute.adb:83:19: info: assertion proved (Trivial)
+alignment_attribute.adb:84:19: info: assertion proved (Trivial)
 component_size_attribute.adb:13:04: warning: analyzing unreferenced procedure "P"
 component_size_attribute.adb:13:14: warning: subprogram "P" has no effect
 component_size_attribute.adb:17:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
@@ -40,22 +40,22 @@ component_size_attribute.adb:31:22: medium: assertion might fail, cannot prove R
 component_size_attribute.adb:34:04: warning: analyzing unreferenced procedure "Test2"
 component_size_attribute.adb:34:14: high: all paths in "Test2" raise exceptions or do not terminate normally
 component_size_attribute.adb:34:14: warning: subprogram "Test2" has no effect
-component_size_attribute.adb:36:22: info: assertion proved
+component_size_attribute.adb:36:22: info: assertion proved (Trivial)
 component_size_attribute.adb:37:07: medium: assertion might fail
 component_size_attribute.adb:40:04: warning: analyzing unreferenced procedure "Test3"
 component_size_attribute.adb:40:14: high: all paths in "Test3" raise exceptions or do not terminate normally
 component_size_attribute.adb:40:14: warning: subprogram "Test3" has no effect
-component_size_attribute.adb:42:22: info: assertion proved
+component_size_attribute.adb:42:22: info: assertion proved (Trivial)
 component_size_attribute.adb:43:07: medium: assertion might fail
 component_size_attribute.adb:46:04: warning: analyzing unreferenced procedure "Test4"
 component_size_attribute.adb:46:14: high: all paths in "Test4" raise exceptions or do not terminate normally
 component_size_attribute.adb:46:14: warning: subprogram "Test4" has no effect
-component_size_attribute.adb:48:22: info: assertion proved
+component_size_attribute.adb:48:22: info: assertion proved (Trivial)
 component_size_attribute.adb:49:07: medium: assertion might fail
 component_size_attribute.adb:52:04: warning: analyzing unreferenced procedure "Test5"
 component_size_attribute.adb:52:14: high: all paths in "Test5" raise exceptions or do not terminate normally
 component_size_attribute.adb:52:14: warning: subprogram "Test5" has no effect
-component_size_attribute.adb:54:22: info: assertion proved
+component_size_attribute.adb:54:22: info: assertion proved (Trivial)
 component_size_attribute.adb:55:07: medium: assertion might fail
 storage_place_attributes.adb:21:23: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:27:22: info: range check proved (CVC4: 1 VC)
