@@ -390,6 +390,9 @@ messages:
    :language: none
    :lines: 3,5
 
+Note that |SPARK| currently does not detect aliasing between objects that
+arises due to the use of Address clauses or aspects.
+
 .. _Raising Exceptions and Other Error Signaling Mechanisms:
 
 Raising Exceptions and Other Error Signaling Mechanisms
