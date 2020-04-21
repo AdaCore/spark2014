@@ -1,6 +1,6 @@
 crash.adb:20:13: high: types used for unchecked conversion do not have the same size
 crash.adb:20:51: info: type is suitable for unchecked conversion (Trivial)
-crash.adb:20:58: high: type with constraints on bit representation is unsuitable for unchecked conversion
+crash.adb:20:58: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type should have an Object_Size representation clause or aspect]
 crash.adb:22:13: info: types in unchecked conversion have the same size (Trivial)
 crash.adb:22:51: info: type is suitable for unchecked conversion (Trivial)
 crash.adb:22:57: info: type is suitable for unchecked conversion (Trivial)

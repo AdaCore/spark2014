@@ -1314,8 +1314,30 @@ package body Flow_Error_Messages is
 
    begin
 
-      --  ??? it would be nice to have explanations here
-      if Tag in VC_UC_No_Holes | VC_UC_Same_Size then
+      if Tag in VC_UC_No_Holes then
+         pragma Assert
+           (Nkind (N) in N_Identifier
+                       | N_Expanded_Name
+                       | N_Object_Declaration
+                       | N_Attribute_Reference);
+         declare
+            Ty : constant Entity_Id :=
+              (if Nkind (N) = N_Object_Declaration then
+                    Etype (Defining_Identifier (N))
+               elsif Nkind (N) = N_Attribute_Reference then
+                    Etype (Prefix (N))
+               else Entity (N));
+         begin
+            if not Is_Scalar_Type (Ty) and then not Known_Esize (Ty) then
+               return
+                 "type should have an Object_Size representation clause" &
+                 " or aspect";
+            end if;
+            if Is_Floating_Point_Type (Ty) then
+               return "floating-point types have invalid bit patterns" &
+                 " for SPARK";
+            end if;
+         end;
          return "";
       end if;
 

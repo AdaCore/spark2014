@@ -1,5 +1,5 @@
 uc.adb:5:13: high: types used for unchecked conversion do not have the same size
-uc.adb:5:51: high: type with constraints on bit representation is unsuitable for unchecked conversion
+uc.adb:5:51: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type should have an Object_Size representation clause or aspect]
 uc.adb:5:54: info: type is suitable for unchecked conversion (Trivial)
 uc.adb:8:19: high: "X" is not initialized
 uc.adb:8:19: medium: assertion might fail, cannot prove X'Size = Conv(X)'size

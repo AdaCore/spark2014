@@ -13,7 +13,7 @@ advancebutton.ads:33:26: info: initialization of "Result" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
 clock.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
 clock.ads:6:19: info: initialization of "Time" proved
-display.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
+display.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
 heatingsystem_dfa.adb:22:04: info: initialization of "OnOffTime" proved
 heatingsystem_dfa.adb:23:04: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:24:04: info: initialization of "HeatingIsOn" proved

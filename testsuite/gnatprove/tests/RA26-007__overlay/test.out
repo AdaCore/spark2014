@@ -1,0 +1,3 @@
+arrays.ads:14:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
+arrays.ads:15:26: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
+arrays.ads:15:26: high: types of aliased objects do not have the same size
