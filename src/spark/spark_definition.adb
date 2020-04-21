@@ -798,18 +798,20 @@ package body SPARK_Definition is
                         end if;
                      end if;
 
-                     --  Objects in local packages should be deallocated before
-                     --  returning from the enclosing subprogram.
+                  --  Objects in local packages should be deallocated before
+                  --  returning from the enclosing subprogram.
 
                   when N_Package_Declaration =>
                      Result :=
-                       Check_No_Owning_Decl (Visible_Declarations (Cur_Decl));
+                       Check_No_Owning_Decl
+                         (Visible_Declarations (Specification (Cur_Decl)));
                      if Present (Result) then
                         return Result;
                      end if;
 
                      Result :=
-                       Check_No_Owning_Decl (Private_Declarations (Cur_Decl));
+                       Check_No_Owning_Decl
+                         (Private_Declarations (Specification (Cur_Decl)));
                      if Present (Result) then
                         return Result;
                      end if;
