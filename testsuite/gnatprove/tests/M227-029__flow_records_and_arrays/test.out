@@ -45,8 +45,6 @@ untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve"
 untangle_tests.adb:44:21: info: initialization of "P" proved
 untangle_tests.adb:46:07: info: initialization of "N" proved
 untangle_tests.adb:51:46: info: cannot unroll loop (too many loop iterations)
-untangle_tests.adb:53:20: info: overflow check proved (CVC4: 1 VC)
-untangle_tests.adb:53:20: info: range check proved (CVC4: 1 VC)
 untangle_tests.adb:55:19: info: index check proved (CVC4: 2 VC)
 untangle_tests.adb:56:23: info: overflow check proved (CVC4: 1 VC)
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform"

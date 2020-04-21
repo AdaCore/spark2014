@@ -133,7 +133,6 @@ aco-math-very_longs.adb:292:44: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:304:15: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:307:15: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:307:93: info: overflow check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:307:115: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:313:07: info: initialization of "N" proved
 aco-math-very_longs.adb:314:07: info: initialization of "M" proved
 aco-math-very_longs.adb:315:07: info: initialization of "Shift_Distance" proved

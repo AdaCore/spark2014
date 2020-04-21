@@ -27,7 +27,6 @@ single_compilation_unit.adb:40:07: info: initialization of "Temp" proved
 single_compilation_unit.adb:43:16: medium: overflow check might fail [possible explanation: call at line 42 should mention Maximum (for argument Temp) in a postcondition]
 single_compilation_unit.adb:50:39: info: initialization of "Fact" proved
 single_compilation_unit.adb:53:25: info: range check proved (CVC4: 1 VC)
-single_compilation_unit.adb:54:23: info: range check proved (CVC4: 1 VC)
 single_compilation_unit.adb:54:23: medium: overflow check might fail [possible explanation: call at line 53 should mention Fact (for argument Fact) in a postcondition]
 single_compilation_unit.adb:69:30: info: overflow check proved (CVC4: 1 VC)
 single_compilation_unit.adb:69:35: medium: overflow check might fail [possible explanation: subprogram at line 64 should mention N in a precondition]

@@ -81,10 +81,6 @@ instr.adb:85:34: info: division check proved (CodePeer)
 instr.adb:86:27: info: overflow check proved (CodePeer)
 instr.adb:86:35: info: division check proved (CodePeer)
 instr.adb:104:07: info: initialization of "V" proved
-instr.adb:108:22: info: overflow check proved (CodePeer)
-instr.adb:108:34: info: overflow check proved (CodePeer)
-instr.adb:108:39: info: overflow check proved (CodePeer)
-instr.adb:108:49: info: overflow check proved (CodePeer)
 instr.adb:110:07: warning: assuming "Put" has no effect on global items
 instr.adb:110:07: warning: no Global contract available for "Put"
 instr.adb:111:07: warning: assuming "Put" has no effect on global items

@@ -1,3 +1,2 @@
 dyn_pred_in_loop.adb:8:35: medium: overflow check might fail (e.g. when I = 2) [possible explanation: predicate at line 7 should mention I in a guard G as in (if G then Condition)]
 dyn_pred_in_loop.adb:12:19: info: overflow check proved (CVC4: 1 VC)
-dyn_pred_in_loop.adb:12:19: info: range check proved (CVC4: 1 VC)

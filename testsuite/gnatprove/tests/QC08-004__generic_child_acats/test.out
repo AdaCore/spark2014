@@ -8,4 +8,3 @@ parent-child.adb:7:27: medium: overflow check might fail, in instantiation at pa
 parent-child.adb:7:27: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
 parent-child.adb:7:51: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
 parent-child.adb:7:51: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
-parent.adb:20:21: info: overflow check proved (CVC4: 1 VC), in instantiation at main.adb:11
