@@ -4158,20 +4158,24 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
          end loop;
-      end if;
 
-      --  If this type has a Default_Initial_Condition then we need to
-      --  create a vertex to check for uninitialized variables within the
-      --  Default_Initial_Condition's expression.
-      if Has_DIC (Typ) then
-         declare
-            DIC_Proc : constant Entity_Id := Get_Initial_DIC_Procedure (Typ);
+         --  If this type has a Default_Initial_Condition then we need to
+         --  create a vertex to check for uninitialized variables within
+         --  the Default_Initial_Condition's expression.
+         --  ??? what about DIC evaluated for individual components?
 
-         begin
-            if Present (DIC_Proc) then
-               Add_Vertex_For_DIC (DIC_Proc);
-            end if;
-         end;
+         if Has_DIC (Typ) then
+            declare
+               DIC_Proc : constant Entity_Id :=
+                 Get_Initial_DIC_Procedure (Typ);
+
+            begin
+               if Present (DIC_Proc) then
+                  Add_Vertex_For_DIC (DIC_Proc);
+               end if;
+            end;
+         end if;
+
       end if;
 
       --  If nothing has been initialized by this object declaration, then add
