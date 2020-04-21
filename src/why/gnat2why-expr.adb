@@ -14274,8 +14274,7 @@ package body Gnat2Why.Expr is
                      VC_UC_No_Holes,
                      Is_Valid_Bitpattern_No_Holes
                        (Etype (Defining_Identifier (Decl))),
-                     Current_Subp,
-                     PC_Trivial);
+                     Current_Subp);
                end if;
 
                --  Attribute Address is only allowed at the top level of an
@@ -14292,16 +14291,14 @@ package body Gnat2Why.Expr is
                         VC_UC_No_Holes,
                         Is_Valid_Bitpattern_No_Holes
                           (Etype (Prefix (Expr))),
-                        Current_Subp,
-                        PC_Trivial);
+                        Current_Subp);
                      Emit_Static_Proof_Result
                        (Expr,
                         VC_UC_Same_Size,
                         Types_Have_Same_Known_Esize
                           (Etype (Defining_Identifier (Decl)),
                            Etype (Prefix (Expr))),
-                        Current_Subp,
-                        PC_Trivial);
+                        Current_Subp);
                   end if;
                   Expr := Prefix (Expr);
                end if;
