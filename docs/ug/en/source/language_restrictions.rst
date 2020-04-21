@@ -110,7 +110,9 @@ language features that process or potentially produce invalid values.
 
 Calls to instances of  ``Unchecked_Conversion`` could potentially create
 invalid values; however, |SPARK| checks upon creation of such an instance, that
-no such invalid values can be produced. Conversely, as no invalid values can be
+no such invalid values can be produced. Similarly, |SPARK| checks upon
+specification of an Address clause or aspect for an object, that no invalid
+values can be produced in this way. Conversely, as no invalid values can be
 constructed in |SPARK|, the evaluation of the attribute ``Valid`` is assumed to
 always return True.
 
@@ -138,7 +140,9 @@ When checking an instance of ``Unchecked_Conversion``, |GNATprove| also checks
 that both types have the same ``Object_Size``. For non-scalar types,
 |GNATprove| doesn't know the ``Object_Size`` of the types, so representation
 clauses that specify ``Object_Size`` are required to prove such checks (see
-also :ref:`Sizes of Objects`).
+also :ref:`Sizes of Objects`). Similarly, for object declarations with an
+Address clause or aspect that refers to the ``'Address`` of another object,
+|SPARK| checks that both objects have the same known ``Object_Size``.
 
 The following example shows some typical usages of unchecked conversions and
 ``Object_Size`` clauses:
