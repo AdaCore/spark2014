@@ -1203,7 +1203,7 @@
   <proof prover="1"><result status="valid" steps="7439"/></proof>
   </goal>
   <goal name="def&#39;vc.373" expl="loop invariant preservation" proved="true">
-  <proof prover="1"><result status="valid" steps="7464"/></proof>
+  <proof prover="1"><result status="valid" steps="7336"/></proof>
   </goal>
   <goal name="def&#39;vc.374" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="14"/></proof>
