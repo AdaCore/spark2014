@@ -447,7 +447,8 @@ be *compatible with respect to volatility* with E2 if
 
    * the [right-hand side] expression of an assignment statement; or
 
-   * the expression of an initialization expression of an object declaration; or
+   * the expression of an initialization expression of an object declaration
+     which does not occur inside a declare expression; or
 
    * the ``object_name`` of an ``object_renaming_declaration``; or
 
