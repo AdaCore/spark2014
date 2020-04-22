@@ -1,0 +1,10 @@
+test_delta.adb:4:25: info: data dependencies proved
+test_delta.adb:7:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 2 VC)
+test_delta.adb:8:22: info: assertion proved (CVC4: 1 VC)
+test_delta.adb:11:25: info: data dependencies proved
+test_delta.adb:14:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 2 VC)
+test_delta.adb:15:22: info: assertion proved (CVC4: 1 VC)
+test_delta_enum.adb:5:25: info: data dependencies proved
+test_delta_enum.adb:9:22: info: assertion proved (CVC4: 1 VC)
+test_delta_enum.adb:12:25: info: data dependencies proved
+test_delta_enum.adb:16:22: info: assertion proved (CVC4: 1 VC)

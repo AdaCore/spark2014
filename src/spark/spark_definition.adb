@@ -733,6 +733,10 @@ package body SPARK_Definition is
       --  declared in the loop so that their translation into Why3 does not
       --  introduce constants.
 
+      procedure Check_No_Deep_Duplicates_In_Assoc (N : Node_Id);
+      --  Search for associations mapping a single deep value to several
+      --  components in the Component_Associations of N.
+
       function Inside_Named_Number_Declaration (N : Node_Id) return Boolean;
       --  Returns whether N is inside the declaration of a named number
 
@@ -1016,6 +1020,38 @@ package body SPARK_Definition is
          end loop;
       end Check_Loop_Invariant_Placement;
 
+      ---------------------------------------
+      -- Check_No_Deep_Duplicates_In_Assoc --
+      ---------------------------------------
+
+      procedure Check_No_Deep_Duplicates_In_Assoc (N : Node_Id) is
+         Assocs       : constant List_Id :=
+           Component_Associations (N);
+         Assoc        : Node_Id := Nlists.First (Assocs);
+         Choices_List : List_Id;
+
+      begin
+         while Present (Assoc) loop
+            Choices_List := Choices (Assoc);
+
+            --  There can be only one element for a value of deep type
+            --  in order to avoid aliasing.
+
+            if not Box_Present (Assoc)
+              and then Is_Deep (Etype (Expression (Assoc)))
+              and then not Is_Singleton_Choice (Choices_List)
+            then
+               Mark_Violation
+                 ("duplicate value of a type with ownership",
+                  First (Choices_List),
+                  Cont_Msg =>
+                    "singleton choice required to prevent aliasing");
+            end if;
+
+            Next (Assoc);
+         end loop;
+      end Check_No_Deep_Duplicates_In_Assoc;
+
       -------------------------
       -- Check_Unrolled_Loop --
       -------------------------
@@ -1216,37 +1252,7 @@ package body SPARK_Definition is
             else
                Mark_List (Expressions (N));
                Mark_List (Component_Associations (N));
-
-               --  Search for associations mapping a single deep value to
-               --  several components.
-
-               declare
-                  Assocs       : constant List_Id :=
-                    Component_Associations (N);
-                  Assoc        : Node_Id := Nlists.First (Assocs);
-                  Choices_List : List_Id;
-
-               begin
-                  while Present (Assoc) loop
-                     Choices_List := Choices (Assoc);
-
-                     --  There can be only one element for a value of deep type
-                     --  in order to avoid aliasing.
-
-                     if not Box_Present (Assoc)
-                       and then Is_Deep (Etype (Expression (Assoc)))
-                       and then not Is_Singleton_Choice (Choices_List)
-                     then
-                        Mark_Violation
-                          ("duplicate value of a type with ownership",
-                           First (Choices_List),
-                           Cont_Msg =>
-                             "singleton choice required to prevent aliasing");
-                     end if;
-
-                     Next (Assoc);
-                  end loop;
-               end;
+               Check_No_Deep_Duplicates_In_Assoc (N);
             end if;
 
          when N_Allocator =>
@@ -2267,9 +2273,22 @@ package body SPARK_Definition is
                Mark_Entity (Etype (N));
             end if;
 
-         when N_Delta_Aggregate
-            | N_Delta_Constraint =>
-            Mark_Unsupported ("delta expression", N);
+         when N_Delta_Aggregate =>
+            Mark (Expression (N));
+
+            if not Retysp_In_SPARK (Etype (N)) then
+               Mark_Violation (N, Etype (N));
+            else
+               --  Currently, the frontend does not associate an entity to the
+               --  choices in the component association.
+
+               if Is_Record_Type (Retysp (Etype (N))) then
+                  Mark_Unsupported ("delta aggregate on a record type", N);
+               else
+                  Mark_List (Component_Associations (N));
+                  Check_No_Deep_Duplicates_In_Assoc (N);
+               end if;
+            end if;
 
          --  Object renamings are rewritten by expansion, but they are kept in
          --  the tree, so just ignore them.
@@ -2327,6 +2346,7 @@ package body SPARK_Definition is
             | N_Defining_Operator_Symbol
             | N_Defining_Program_Unit_Name
             | N_Delay_Alternative
+            | N_Delta_Constraint
             | N_Derived_Type_Definition
             | N_Designator
             | N_Digits_Constraint

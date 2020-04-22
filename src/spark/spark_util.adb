@@ -933,7 +933,9 @@ package body SPARK_Util is
    is
 
       function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean
-      with Pre => Nkind (Aggr) = N_Aggregate;
+      with Pre => Nkind (Aggr) in N_Aggregate
+                                | N_Delta_Aggregate
+                                | N_Extension_Aggregate;
       --  Check the expressions of an aggregate for relaxed initialization
 
       ---------------------------
@@ -941,7 +943,9 @@ package body SPARK_Util is
       ---------------------------
 
       function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean is
-         Exprs  : constant List_Id := Expressions (Aggr);
+         Exprs  : constant List_Id :=
+           (if Nkind (Aggr) = N_Delta_Aggregate then No_List
+            else Expressions (Aggr));
          Assocs : constant List_Id := Component_Associations (Aggr);
          Expr   : Node_Id :=
            (if Present (Exprs) then Nlists.First (Exprs)
@@ -986,6 +990,11 @@ package body SPARK_Util is
          when N_Extension_Aggregate =>
             return Expr_Has_Relaxed_Init
               (Ancestor_Part (Expr), No_Eval => False)
+              or else Aggr_Has_Relaxed_Init (Expr);
+
+         when N_Delta_Aggregate =>
+            return Expr_Has_Relaxed_Init
+              (Expression (Expr), No_Eval => False)
               or else Aggr_Has_Relaxed_Init (Expr);
 
          when N_Slice =>

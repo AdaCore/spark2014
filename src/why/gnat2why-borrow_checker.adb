@@ -1577,6 +1577,46 @@ package body Gnat2Why.Borrow_Checker is
          procedure Read_Param (Formal : Entity_Id; Actual : Node_Id);
          --  Call Read_Expression on the actual
 
+         procedure Move_Associations (Assocs : List_Id);
+         --  Move all associations of an aggregate
+
+         -----------------------
+         -- Move_Associations --
+         -----------------------
+
+         procedure Move_Associations (Assocs : List_Id) is
+            CL     : List_Id;
+            Assoc  : Node_Id := Nlists.First (Assocs);
+            Choice : Node_Id;
+
+         begin
+            while Present (Assoc) loop
+               CL := Choices (Assoc);
+
+               --  For an array aggregate, we should also check that the
+               --  expressions used in choices are readable.
+
+               if Is_Array_Type (Etype (Expr)) then
+                  Choice := Nlists.First (CL);
+                  while Present (Choice) loop
+                     if Nkind (Choice) /= N_Others_Choice then
+                        Read_Expression (Choice);
+                     end if;
+                     Next (Choice);
+                  end loop;
+               end if;
+
+               --  The subexpressions of an aggregate are moved as part
+               --  of the implicit assignments.
+
+               if not Box_Present (Assoc) then
+                  Move_Expression (Expression (Assoc));
+               end if;
+
+               Next (Assoc);
+            end loop;
+         end Move_Associations;
+
          ----------------
          -- Read_Param --
          ----------------
@@ -1639,47 +1679,16 @@ package body Gnat2Why.Borrow_Checker is
                Read_Indexes (Expression (Expr));
 
             when N_Aggregate =>
-               declare
-                  Assocs : constant List_Id := Component_Associations (Expr);
-                  CL     : List_Id;
-                  Assoc  : Node_Id := Nlists.First (Assocs);
-                  Choice : Node_Id;
 
-               begin
-                  --  The subexpressions of an aggregate are moved as part
-                  --  of the implicit assignments. Handle the positional
-                  --  components first.
+               --  The subexpressions of an aggregate are moved as part
+               --  of the implicit assignments. Handle the positional
+               --  components first.
 
-                  Move_Expression_List (Expressions (Expr));
+               Move_Expression_List (Expressions (Expr));
 
-                  --  Handle the named components next
+               --  Handle the named components next
 
-                  while Present (Assoc) loop
-                     CL := Choices (Assoc);
-
-                     --  For an array aggregate, we should also check that the
-                     --  expressions used in choices are readable.
-
-                     if Is_Array_Type (Etype (Expr)) then
-                        Choice := Nlists.First (CL);
-                        while Present (Choice) loop
-                           if Nkind (Choice) /= N_Others_Choice then
-                              Read_Expression (Choice);
-                           end if;
-                           Next (Choice);
-                        end loop;
-                     end if;
-
-                     --  The subexpressions of an aggregate are moved as part
-                     --  of the implicit assignments.
-
-                     if not Box_Present (Assoc) then
-                        Move_Expression (Expression (Assoc));
-                     end if;
-
-                     Next (Assoc);
-                  end loop;
-               end;
+               Move_Associations (Component_Associations (Expr));
 
             when N_Extension_Aggregate =>
                declare
@@ -1741,6 +1750,10 @@ package body Gnat2Why.Borrow_Checker is
                      Next (Cur_Case);
                   end loop;
                end;
+
+            when N_Delta_Aggregate =>
+               Read_Expression (Expression (Expr));
+               Move_Associations (Component_Associations (Expr));
 
             when N_Attribute_Reference =>
                pragma Assert

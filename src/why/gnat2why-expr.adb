@@ -581,6 +581,14 @@ package body Gnat2Why.Expr is
    --  programs, also generate a check that dynamic choices are in the subtype
    --  Choice_Type.
 
+   function Transform_Delta_Aggregate
+     (Ada_Node : Node_Id;
+      Pref     : Node_Id;
+      Aggr     : Node_Id;
+      Domain   : EW_Domain;
+      Params   : Transformation_Params) return W_Expr_Id;
+   --  Transform either a delta aggregate or an Update attribute
+
    function Transform_Declaration (Decl : Node_Id) return W_Prog_Id;
    --  Transform a declaration. Return a program that takes into account the
    --  dynamic semantics of the declaration (checks and assumptions).
@@ -9422,7 +9430,8 @@ package body Gnat2Why.Expr is
          --  is not contained in the type.
 
          if Domain = EW_Prog
-           and then Present (Aggregate_Bounds (Expr))
+           and then (Nkind (Expr) = N_Aggregate
+                     and then Present (Aggregate_Bounds (Expr)))
            and then not Is_Static_Array_Type (Retysp (Etype (Expr)))
          then
             declare
@@ -9789,7 +9798,9 @@ package body Gnat2Why.Expr is
            (Decl_File, E_Module (Expr),
             Comment =>
               "Module for declaring an abstract function for the "
-                & (if In_Attribute_Update
+                & (if Nkind (Expr) = N_Delta_Aggregate
+                   then "delta aggregate"
+                   elsif In_Attribute_Update
                    then "update attribute"
                    else "aggregate")
                 & " at "
@@ -9825,7 +9836,9 @@ package body Gnat2Why.Expr is
            (Compl_File, E_Axiom_Module (Expr),
             Comment =>
               "Module for defining the value of the "
-                & (if In_Attribute_Update
+                & (if Nkind (Expr) = N_Delta_Aggregate
+                   then "delta aggregate"
+                   elsif In_Attribute_Update
                    then "update attribute"
                    else "aggregate")
                 & " at "
@@ -10039,7 +10052,9 @@ package body Gnat2Why.Expr is
             Index : Node_Id;
             Expr  : Node_Id)
          is
-            Exprs       : constant List_Id := Expressions (Expr);
+            Exprs       : constant List_Id :=
+              (if Nkind (Expr) = N_Delta_Aggregate then No_List
+               else Expressions (Expr));
             Assocs      : constant List_Id := Component_Associations (Expr);
             Expression  : Node_Id := Nlists.First (Exprs);
             Association : Node_Id := Nlists.First (Assocs);
@@ -10596,7 +10611,9 @@ package body Gnat2Why.Expr is
          is
             Callback : constant Transform_Rec_Func :=
                          Transform_Rec_Aggregate'Access;
-            Exprs    : constant List_Id := Expressions (Expr);
+            Exprs    : constant List_Id :=
+              (if Nkind (Expr) = N_Delta_Aggregate then No_List
+               else Expressions (Expr));
             Assocs   : constant List_Id := Component_Associations (Expr);
 
             Association : Node_Id;
@@ -12198,98 +12215,12 @@ package body Gnat2Why.Expr is
             end;
 
          when Attribute_Update =>
-            declare
-               Pref        : constant Node_Id := Prefix (Expr);
-               Pref_Typ    : constant Entity_Id := Retysp (Etype (Pref));
-               Aggr        : constant Node_Id := First (Expressions (Expr));
-               Prefix_Expr : W_Expr_Id;
-
-            begin
-               if Is_Record_Type (Pref_Typ) then
-                  Prefix_Expr := +Transform_Expr (Domain => Domain,
-                                                  Expr   => Pref,
-                                                  Params => Params);
-
-                  --  As discriminants may occur as bounds in types of
-                  --  discriminant dependent components, store them in the
-                  --  symbol table.
-
-                  declare
-                     Num_Discrs : constant Natural :=
-                       Count_Discriminants (Pref_Typ);
-                     Tmps       : W_Identifier_Array (1 .. Num_Discrs);
-                     Vals       : W_Expr_Array (1 .. Num_Discrs);
-                  begin
-                     Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-                     if Num_Discrs > 0 then
-                        declare
-                           D : Entity_Id := First_Discriminant (Pref_Typ);
-                        begin
-                           for I in 1 .. Num_Discrs loop
-                              Tmps (I) := New_Temp_Identifier
-                                (Typ => EW_Abstract (Etype (D)));
-                              Vals (I) := New_Ada_Record_Access
-                                (Ada_Node => Empty,
-                                 Domain   => EW_Term,
-                                 Name     => Prefix_Expr,
-                                 Field    => D,
-                                 Ty       => Pref_Typ);
-
-                              Insert_Entity (D, Tmps (I));
-
-                              Next_Discriminant (D);
-                           end loop;
-                           pragma Assert (No (D));
-                        end;
-                     end if;
-
-                     T := New_Ada_Record_Update
-                       (Name     => +Prefix_Expr,
-                        Domain   => Domain,
-                        Updates  =>
-                          Transform_Record_Component_Associations
-                            (Domain              => Domain,
-                             Typ                 => Pref_Typ,
-                             Assocs              =>
-                               Component_Associations (Aggr),
-                             Params              => Params,
-                             In_Attribute_Update => True,
-                             Init_Wrapper        =>
-                               Expr_Has_Relaxed_Init (Pref)));
-
-                     --  If the target type has a direct or inherited
-                     --  predicate, generate a corresponding check.
-
-                     if Domain = EW_Prog
-                       and then Has_Predicates (Pref_Typ)
-                     then
-                        T := +Insert_Predicate_Check (Ada_Node => Expr,
-                                                      Check_Ty => Pref_Typ,
-                                                      W_Expr   => +T);
-                     end if;
-
-                     --  Add bindings for discriminants
-
-                     for I in 1 .. Num_Discrs loop
-                        T := New_Binding
-                          (Domain  => Domain,
-                           Name    => Tmps (I),
-                           Def     => Vals (I),
-                           Context => T,
-                           Typ     => Get_Type (T));
-                     end loop;
-                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-                  end;
-
-               else
-                  pragma Assert (Is_Array_Type (Pref_Typ));
-                  T := Transform_Aggregate
-                    (Params        => Params,
-                     Domain        => Domain,
-                     Expr          => Aggr,
-                     Update_Prefix => Pref);
-               end if;
-            end;
+            T := Transform_Delta_Aggregate
+              (Ada_Node => Expr,
+               Pref     => Prefix (Expr),
+               Aggr     => First (Expressions (Expr)),
+               Domain   => Domain,
+               Params   => Params);
 
          when Attribute_Ceiling
             | Attribute_Floor
@@ -12746,12 +12677,23 @@ package body Gnat2Why.Expr is
       ------------------------
 
       function Is_Equal_Of_Update (Expr : Node_Id) return Boolean is
-         Var : constant Node_Id :=
+         Var  : constant Node_Id :=
            (if Nkind (Left_Opnd (Expr)) = N_Identifier
             then Left_Opnd (Expr) else Right_Opnd (Expr));
-         Upd : constant Node_Id :=
+         Upd  : constant Node_Id :=
            (if Nkind (Left_Opnd (Expr)) = N_Identifier
             then Right_Opnd (Expr) else Left_Opnd (Expr));
+         Pref : constant Node_Id :=
+           (if Nkind (Upd) = N_Attribute_Reference
+              and then
+                Get_Attribute_Id (Attribute_Name (Upd)) = Attribute_Update
+            then Prefix (Upd)
+            elsif Nkind (Upd) = N_Delta_Aggregate
+            then Expression (Upd)
+            else Empty);
+         --  If Upd is a 'Update attribute or a delta aggregate, Pref is the
+         --  node of the updated expression, otherwise it is empty.
+
       begin
          return Nkind (Expr) in N_Op_Eq | N_Op_Ne
 
@@ -12767,22 +12709,20 @@ package body Gnat2Why.Expr is
               or else No
                 (Get_User_Defined_Eq (Base_Type (Etype (Var)))))
 
-           --  Upd should be a 'Update attribute
+           --  Upd should be a 'Update attribute or a delta aggregate
 
-           and then Nkind (Upd) = N_Attribute_Reference
-           and then
-             Get_Attribute_Id (Attribute_Name (Upd)) = Attribute_Update
+           and then Present (Pref)
 
            --  whose prefix is a 'Old or 'Loop_Entry attribute
 
-           and then Nkind (Prefix (Upd)) = N_Attribute_Reference
-           and then Get_Attribute_Id (Attribute_Name (Prefix (Upd))) in
+           and then Nkind (Pref) = N_Attribute_Reference
+           and then Get_Attribute_Id (Attribute_Name (Pref)) in
                  Attribute_Old | Attribute_Loop_Entry
 
            --  whose prefix is Var.
 
-           and then Nkind (Prefix (Prefix (Upd))) = N_Identifier
-           and then Entity (Var) = Entity (Prefix (Prefix (Upd)));
+           and then Nkind (Prefix (Pref)) = N_Identifier
+           and then Entity (Var) = Entity (Prefix (Pref));
       end Is_Equal_Of_Update;
 
       -------------------------------
@@ -12815,7 +12755,8 @@ package body Gnat2Why.Expr is
             Upd           : constant Node_Id :=
               (if Nkind (Left_Opnd (Expr)) = N_Identifier
                then Right_Opnd (Expr) else Left_Opnd (Expr));
-            pragma Assert (Nkind (Upd) = N_Attribute_Reference);
+            pragma Assert
+              (Nkind (Upd) in N_Attribute_Reference | N_Delta_Aggregate);
             Arr_Ty        : constant Entity_Id := Etype (Var);
 
             T             : W_Expr_Id;
@@ -12824,7 +12765,12 @@ package body Gnat2Why.Expr is
             Subd_No_Check : constant EW_Domain :=
               (if Domain = EW_Prog then EW_Pterm else Subdomain);
             Assocs        : constant List_Id :=
-              Component_Associations (First (Expressions (Upd)));
+              (if Nkind (Upd) = N_Delta_Aggregate
+               then Component_Associations (Upd)
+               else Component_Associations (First (Expressions (Upd))));
+            Prefix_N      : constant Node_Id :=
+              (if Nkind (Upd) = N_Delta_Aggregate then Expression (Upd)
+               else Prefix (Upd));
             Association   : Node_Id := Nlists.First (Assocs);
             Dim           : constant Positive :=
               Positive (Number_Dimensions (Etype (Var)));
@@ -12974,7 +12920,7 @@ package body Gnat2Why.Expr is
                   Expr   => New_Array_Access
                     (Ada_Node => Empty,
                      Ar       => Transform_Expr
-                       (Expr          => Prefix (Upd),
+                       (Expr          => Prefix_N,
                         Domain        => Subdomain,
                         Params        => Params,
                         Expected_Type => Type_Of_Node (Arr_Ty)),
@@ -14377,6 +14323,108 @@ package body Gnat2Why.Expr is
       end loop;
       return +Result;
    end Transform_Declarations_For_Params;
+
+   -------------------------------
+   -- Transform_Delta_Aggregate --
+   -------------------------------
+
+   function Transform_Delta_Aggregate
+     (Ada_Node : Node_Id;
+      Pref     : Node_Id;
+      Aggr     : Node_Id;
+      Domain   : EW_Domain;
+      Params   : Transformation_Params) return W_Expr_Id
+   is
+      Pref_Typ : constant Entity_Id := Retysp (Etype (Pref));
+      T : W_Expr_Id;
+
+   begin
+      if Is_Record_Type (Pref_Typ) then
+         T := +Transform_Expr (Domain => Domain,
+                               Expr   => Pref,
+                               Params => Params);
+
+         --  As discriminants may occur as bounds in types of
+         --  discriminant dependent components, store them in the
+         --  symbol table.
+
+         declare
+            Num_Discrs : constant Natural :=
+              Count_Discriminants (Pref_Typ);
+            Tmps       : W_Identifier_Array (1 .. Num_Discrs);
+            Vals       : W_Expr_Array (1 .. Num_Discrs);
+         begin
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            if Num_Discrs > 0 then
+               declare
+                  D : Entity_Id := First_Discriminant (Pref_Typ);
+               begin
+                  for I in 1 .. Num_Discrs loop
+                     Tmps (I) := New_Temp_Identifier
+                       (Typ => EW_Abstract (Etype (D)));
+                     Vals (I) := New_Ada_Record_Access
+                       (Ada_Node => Empty,
+                        Domain   => EW_Term,
+                        Name     => T,
+                        Field    => D,
+                        Ty       => Pref_Typ);
+
+                     Insert_Entity (D, Tmps (I));
+
+                     Next_Discriminant (D);
+                  end loop;
+                  pragma Assert (No (D));
+               end;
+            end if;
+
+            T := New_Ada_Record_Update
+              (Name     => T,
+               Domain   => Domain,
+               Updates  =>
+                 Transform_Record_Component_Associations
+                   (Domain              => Domain,
+                    Typ                 => Pref_Typ,
+                    Assocs              =>
+                      Component_Associations (Aggr),
+                    Params              => Params,
+                    In_Attribute_Update => True,
+                    Init_Wrapper        =>
+                      Expr_Has_Relaxed_Init (Pref)));
+
+            --  If the target type has a direct or inherited
+            --  predicate, generate a corresponding check.
+
+            if Domain = EW_Prog
+              and then Has_Predicates (Pref_Typ)
+            then
+               T := +Insert_Predicate_Check (Ada_Node => Ada_Node,
+                                             Check_Ty => Pref_Typ,
+                                             W_Expr   => +T);
+            end if;
+
+            --  Add bindings for discriminants
+
+            for I in 1 .. Num_Discrs loop
+               T := New_Binding
+                 (Domain  => Domain,
+                  Name    => Tmps (I),
+                  Def     => Vals (I),
+                  Context => T,
+                  Typ     => Get_Type (T));
+            end loop;
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         end;
+
+      else
+         pragma Assert (Is_Array_Type (Pref_Typ));
+         T := Transform_Aggregate
+           (Params        => Params,
+            Domain        => Domain,
+            Expr          => Aggr,
+            Update_Prefix => Pref);
+      end if;
+      return T;
+   end Transform_Delta_Aggregate;
 
    -------------------------------
    -- Transform_Discrete_Choice --
@@ -16028,6 +16076,14 @@ package body Gnat2Why.Expr is
                      Right => +T);
                end if;
             end if;
+
+         when N_Delta_Aggregate =>
+            T := Transform_Delta_Aggregate
+              (Ada_Node => Expr,
+               Pref     => Expression (Expr),
+               Aggr     => Expr,
+               Domain   => Domain,
+               Params   => Params);
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="

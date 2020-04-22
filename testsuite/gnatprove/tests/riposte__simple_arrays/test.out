@@ -18,8 +18,8 @@ simple_arrays.adb:63:53: info: initialization of "B" proved
 simple_arrays.adb:66:11: info: flow dependencies proved
 simple_arrays.adb:68:22: medium: postcondition might fail, cannot prove A /= B
 simple_arrays.adb:79:11: info: flow dependencies proved
-simple_arrays.adb:81:13: info: postcondition proved (CVC4: 3 VC; Trivial: 5 VC)
-simple_arrays.adb:89:22: medium: assertion might fail, cannot prove A'Update (1 => 5,  N => 6) = A'update (e.g. when A = (1 => 5, others => 6) and N = 1) [possible explanation: subprogram at line 77 should mention A and N in a precondition]
+simple_arrays.adb:81:13: info: postcondition proved (CVC4: 2 VC; Trivial: 5 VC; Z3: 1 VC)
+simple_arrays.adb:89:22: medium: assertion might fail, cannot prove (A with delta 1 => 5,  N => 6) = ... (e.g. when A = (others => 5) and N = 0) [possible explanation: subprogram at line 77 should mention A and N in a precondition]
 simple_arrays.adb:98:11: info: flow dependencies proved
 simple_arrays.adb:101:22: info: postcondition proved (CVC4: 1 VC)
 simple_arrays.adb:110:11: info: flow dependencies proved
@@ -28,9 +28,9 @@ simple_arrays.adb:125:11: info: flow dependencies proved
 simple_arrays.adb:127:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 simple_arrays.adb:140:11: info: flow dependencies proved
 simple_arrays.adb:142:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-simple_arrays.adb:152:22: info: assertion proved (CVC4: 1 VC)
-simple_arrays.adb:157:22: info: assertion proved (CVC4: 1 VC)
-simple_arrays.adb:162:22: info: assertion proved (CVC4: 1 VC)
+simple_arrays.adb:152:22: info: assertion proved (Z3: 1 VC)
+simple_arrays.adb:157:22: info: assertion proved (Z3: 1 VC)
+simple_arrays.adb:162:22: info: assertion proved (Z3: 1 VC)
 simple_arrays.adb:173:11: info: flow dependencies proved
 simple_arrays.adb:179:22: info: postcondition proved (CVC4: 1 VC)
 simple_arrays.adb:189:11: info: flow dependencies proved
@@ -48,13 +48,13 @@ simple_arrays.adb:255:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
 simple_arrays.adb:267:11: info: flow dependencies proved
 simple_arrays.adb:270:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
 simple_arrays.adb:283:11: info: flow dependencies proved
-simple_arrays.adb:286:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+simple_arrays.adb:286:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 simple_arrays.adb:300:11: info: flow dependencies proved
-simple_arrays.adb:303:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+simple_arrays.adb:303:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 simple_arrays.adb:318:11: info: flow dependencies proved
-simple_arrays.adb:321:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+simple_arrays.adb:321:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 simple_arrays.adb:337:11: info: flow dependencies proved
-simple_arrays.adb:340:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+simple_arrays.adb:340:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 simple_arrays.adb:358:11: info: flow dependencies proved
 simple_arrays.adb:360:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 simple_arrays.adb:373:11: info: flow dependencies proved
