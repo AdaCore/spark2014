@@ -86,8 +86,12 @@ package My_Map with SPARK_Mode is
           (for all K in Deep_Copy'Result.all => Model_Contains (M, K)
            and then Model_Value (M, K) = Model_Value (Deep_Copy'Result, K)));
 
+   procedure Deep_Free (M : in out Map_Acc) with
+     Post => M = null;
+
 private
-   type Int_Acc is not null access Integer;
+   type Nullable_Int_Acc is access Integer;
+   subtype Int_Acc is not null Nullable_Int_Acc;
    type Map is record
       Key   : Positive;
       Value : Int_Acc;
