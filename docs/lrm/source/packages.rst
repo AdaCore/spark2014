@@ -2409,7 +2409,8 @@ Default_Initial_Condition Aspects
    which is checked (at run time) after any object of the given type (or of
    any descendant of the given type for which the specified aspect is
    inherited and not overridden), is "initialized by
-   default" (see Ada RM 3.3.1).
+   default" (see Ada RM 3.3.1). [Note that an imported object is not
+   "initialized by default" (see Ada RM B.3).]
 
    The *Boolean_*\ ``expression``, if any, causes freezing in the
    same way as the ``default_expression`` of a ``component_declaration``.
