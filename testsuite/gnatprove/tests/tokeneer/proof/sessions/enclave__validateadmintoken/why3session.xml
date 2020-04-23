@@ -192,7 +192,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.50" expl="check">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout" steps="1555"/></proof>
   </goal>
   <goal name="def&#39;vc.51" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
