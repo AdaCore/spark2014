@@ -1957,6 +1957,11 @@ search_trees.adb:660:18: medium: assertion might fail, cannot prove T.Values (I)
 search_trees.adb:668:07: info: initialization of "X" proved
 search_trees.adb:668:10: info: initialization of "Y" proved
 search_trees.adb:669:07: info: initialization of "YL" proved
+search_trees.adb:680:07: warning: initialization of "F_1" has no effect
+search_trees.adb:680:07: warning: initialization of "F_2" has no effect
+search_trees.adb:680:07: warning: initialization of "F_3" has no effect
+search_trees.adb:680:07: warning: initialization of "F_4" has no effect
+search_trees.adb:680:07: warning: initialization of "F_5" has no effect
 search_trees.adb:686:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:686:17: info: local subprogram "Prove_Extract_X" only analyzed in the context of calls
 search_trees.adb:694:13: info: precondition proved (CVC4: 12 VC; Trivial: 5 VC), in call inlined at search_trees.adb:882
@@ -2112,6 +2117,11 @@ search_trees.adb:921:10: info: initialization of "Y" proved
 search_trees.adb:922:07: info: initialization of "XR" proved
 search_trees.adb:923:41: info: invariant check proved (CVC4: 1 VC)
 search_trees.adb:923:41: info: precondition proved (CVC4: 1 VC)
+search_trees.adb:933:07: warning: initialization of "F_1" has no effect
+search_trees.adb:933:07: warning: initialization of "F_2" has no effect
+search_trees.adb:933:07: warning: initialization of "F_3" has no effect
+search_trees.adb:933:07: warning: initialization of "F_4" has no effect
+search_trees.adb:933:07: warning: initialization of "F_5" has no effect
 search_trees.adb:939:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:939:17: info: local subprogram "Prove_Extract_Y" only analyzed in the context of calls
 search_trees.adb:947:13: info: precondition proved (CVC4: 12 VC; Trivial: 5 VC), in call inlined at search_trees.adb:1134

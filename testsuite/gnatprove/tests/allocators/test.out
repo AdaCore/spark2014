@@ -49,6 +49,7 @@ list_allocator.adb:66:13: info: loop invariant preservation proved (altergo: 1 V
 list_allocator.adb:66:64: info: range check proved (CVC4: 2 VC)
 list_allocator.adb:68:22: info: assertion proved (CVC4: 1 VC)
 list_allocator.adb:72:07: info: initialization of "Next_Avail" proved
+list_allocator.adb:73:07: warning: initialization of "MA" has no effect
 list_allocator.adb:77:30: info: index check proved (CVC4: 2 VC)
 list_allocator.adb:78:16: info: index check proved (CVC4: 2 VC)
 list_allocator.adb:81:29: info: precondition proved (CVC4: 2 VC)
