@@ -10105,16 +10105,35 @@ package body Gnat2Why.Expr is
       -----------------------------
 
       procedure Insert_Check_For_Ranges (T : in out W_Expr_Id) is
-         Assocs      : constant List_Id := Component_Associations (Expr);
-         Association : Node_Id := Nlists.First (Assocs);
-      begin
-         while Present (Association) loop
-            if not Is_Others_Choice (Choices (Association)) then
-               declare
-                  Choice : Node_Id := First (Choices (Association));
-               begin
-                  while Present (Choice) loop
-                     case Nkind (Choice) is
+
+         procedure Insert_Check_Rec (Expr : Node_Id; Dim : Positive);
+         --  Introduce range checks for subtype indications in choices of an
+         --  expression. Recursively call itself to checkchoices for upper
+         --  dimensions in regular multidimensional aggregates.
+
+         ----------------------
+         -- Insert_Check_Rec --
+         ----------------------
+
+         procedure Insert_Check_Rec (Expr : Node_Id; Dim : Positive) is
+            Assocs      : constant List_Id := Component_Associations (Expr);
+            Association : Node_Id := Nlists.First (Assocs);
+            Exprs       : constant List_Id :=
+              (if Nkind (Expr) = N_Delta_Aggregate then No_List
+               else Expressions (Expr));
+            Expression  : Node_Id := Nlists.First (Exprs);
+
+         begin
+            --  Go over the list of association to check subtype indications
+            --  in choices if any.
+
+            while Present (Association) loop
+               if not Is_Others_Choice (Choices (Association)) then
+                  declare
+                     Choice : Node_Id := First (Choices (Association));
+                  begin
+                     while Present (Choice) loop
+                        case Nkind (Choice) is
                         when N_Subtype_Indication =>
                            T := +Sequence
                              (Ada_Node => Choice,
@@ -10125,13 +10144,39 @@ package body Gnat2Why.Expr is
                               Right    => +T);
                         when others =>
                            null;
-                     end case;
-                     Next (Choice);
-                  end loop;
-               end;
+                        end case;
+                        Next (Choice);
+                     end loop;
+                  end;
+               end if;
+
+               --  In regular multidimensional aggregates, we also need to
+               --  check subtype indication in expressions used for choices
+               --  in upper dimensions.
+
+               if not In_Attribute_Update and then Dim /= Nb_Dim then
+                  Insert_Check_Rec
+                    (SPARK_Atree.Expression (Association), Dim + 1);
+               end if;
+               Next (Association);
+            end loop;
+
+            --  In regular multidimensional aggregates, we may need to check
+            --  subtype indication in expressions used for choices in upper
+            --  dimensions.
+
+            if not In_Attribute_Update and then Dim /= Nb_Dim then
+               while Present (Expression) loop
+                  Insert_Check_Rec (Expression, Dim + 1);
+                  Next (Expression);
+               end loop;
             end if;
-            Next (Association);
-         end loop;
+         end Insert_Check_Rec;
+
+      --  Start of processing of Insert_Check_For_Ranges
+
+      begin
+         Insert_Check_Rec (Expr, 1);
       end Insert_Check_For_Ranges;
 
       --------------------------------------------
