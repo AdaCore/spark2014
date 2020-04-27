@@ -161,6 +161,7 @@ free from side-effects only retrieves or computes a value.
       borrowing operation, except for a single occurrence of the root object
       of the expression (see :ref:`access-types`).
 
+except when the context itself occurs within a declare expression.
 
 [An expression in one of these contexts may read a constant
 which is initialized with the value of a variable.]
