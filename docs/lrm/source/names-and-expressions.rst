@@ -150,9 +150,9 @@ free from side-effects only retrieves or computes a value.
     * a Type_Invariant aspect specification
       (see :ref:`type_invariants`);
 
-    * an indexing expression of an indexed_component or the discrete_range
-      of a slice in an object renaming declaration which renames
-      part of that index or slice (see :ref:`object_renaming_declarations`);
+    * an indexing expression of an indexed_component or the discrete_range of a
+      slice in an object renaming declaration which renames part of that
+      indexed_component or slice (see :ref:`object_renaming_declarations`);
 
     * a generic actual parameter corresponding to a generic formal object
       having mode **in** (see :ref:`generic_instantiation`);
