@@ -1,0 +1,12 @@
+p1.adb:9:03: medium: memory leak might occur at end of scope
+p2.adb:5:12: info: add a contract to analyze it separately from calling contexts
+p2.adb:5:12: info: local subprogram "Seven" only analyzed in the context of calls
+p2.adb:11:03: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+p2.adb:11:19: medium: length check might fail
+p3.adb:4:52: info: range check proved (CVC4: 1 VC)
+p3.adb:14:12: info: add a contract to analyze it separately from calling contexts
+p3.adb:14:12: info: local subprogram "Seven" only analyzed in the context of calls
+p3.adb:16:03: medium: memory leak might occur at end of scope
+p3.adb:16:21: info: range check proved (CVC4: 1 VC)
+p3.adb:18:03: medium: memory leak might occur at end of scope
+p3.adb:18:29: info: range check proved (CVC4: 1 VC)
