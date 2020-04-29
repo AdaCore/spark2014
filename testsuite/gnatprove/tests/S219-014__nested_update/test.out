@@ -12,6 +12,7 @@ generic_ring_buffer.adb:62:76: info: range check proved (CVC4: 1 VC), in instant
 generic_ring_buffer.adb:63:32: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:64:25: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:64:31: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:65:14: info: index check proved (CVC4: 2 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:65:52: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:65:71: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:73:14: info: discriminant check proved (Trivial: 1 VC), in instantiation at tester.adb:10

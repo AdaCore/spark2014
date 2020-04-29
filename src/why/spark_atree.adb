@@ -660,16 +660,7 @@ package body SPARK_Atree is
                      Pref := Prefix (Atree.Parent (Atree.Parent (Par)));
                   end if;
 
-                  --  When present, the Actual_Subtype of the entity should be
-                  --  used instead of the Etype of the prefix.
-
-                  if Einfo.Is_Entity_Name (Pref)
-                    and then Present (Einfo.Actual_Subtype (Entity (Pref)))
-                  then
-                     Prefix_Type := Einfo.Actual_Subtype (Entity (Pref));
-                  else
-                     Prefix_Type := Etype (Pref);
-                  end if;
+                  Prefix_Type := Etype (Pref);
 
                   if SPARK_Util.Types.Has_Record_Type (Prefix_Type) then
 
@@ -682,8 +673,6 @@ package body SPARK_Atree is
                      Check_Type :=
                        Einfo.Component_Type
                          (Sem_Util.Unique_Entity (Prefix_Type));
-
-                  --  ??? This is not working for unconstrained array types
 
                   else
                      Check_Type :=
@@ -701,42 +690,7 @@ package body SPARK_Atree is
             end;
 
          when N_Range =>
-            if Is_Choice_Of_Unconstrained_Array_Update (Par) then
-               declare
-                  Pref        : Node_Id;
-                  Prefix_Type : Entity_Id;
-
-               begin
-                  pragma Assert
-                    (Nkind (Atree.Parent (Atree.Parent (Par))) in
-                         N_Aggregate | N_Delta_Aggregate);
-
-                  if Nkind (Atree.Parent (Atree.Parent (Par))) =
-                    N_Delta_Aggregate
-                  then
-                     Pref := Expression (Atree.Parent (Atree.Parent (Par)));
-                  else
-                     Pref := Prefix
-                       (Atree.Parent (Atree.Parent (Atree.Parent (Par))));
-                  end if;
-
-                  if Einfo.Is_Entity_Name (Pref)
-                    and then Present (Einfo.Actual_Subtype (Entity (Pref)))
-                  then
-                     Prefix_Type := Einfo.Actual_Subtype (Entity (Pref));
-                  else
-                     Prefix_Type := Etype (Pref);
-                  end if;
-
-                  --  ??? This is not working for unconstrained array types
-
-                  Check_Type :=
-                    Etype (Einfo.First_Index
-                           (Sem_Util.Unique_Entity (Prefix_Type)));
-               end;
-            else
-               Check_Type := Etype (Par);
-            end if;
+            Check_Type := Etype (Par);
 
          when N_Aggregate =>
 

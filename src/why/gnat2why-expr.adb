@@ -521,10 +521,10 @@ package body Gnat2Why.Expr is
    --  On the aggregate (1 => (1 => X, others => Y), 2 => Z), components are
    --  {X, Y, Z}.)
    --
-   --  In_Attribute_Update is True for an aggregate used as argument of a
+   --  In_Delta_Aggregate is True for an aggregate used as argument of a
    --  'Update attribute_reference, and False for a regular aggregate.
    --
-   --  If In_Attribute_Update is True, there are some additional properties for
+   --  If In_Delta_Aggregate is True, there are some additional properties for
    --  the logic function created (F):
    --
    --    a) the prefix array is sent as an extra parameter. "Others" is not
@@ -725,16 +725,15 @@ package body Gnat2Why.Expr is
    --  string value corresponding to the string literal.
 
    function Transform_Record_Component_Associations
-     (Domain              : EW_Domain;
-      Typ                 : Entity_Id;
-      Assocs              : List_Id;
-      Params              : Transformation_Params;
-      In_Attribute_Update : Boolean := False;
-      Init_Wrapper        : Boolean) return W_Field_Association_Array;
+     (Domain             : EW_Domain;
+      Typ                : Entity_Id;
+      Assocs             : List_Id;
+      Params             : Transformation_Params;
+      In_Delta_Aggregate : Boolean := False;
+      Init_Wrapper       : Boolean) return W_Field_Association_Array;
    --  Returns a list of updates to be applied to a record value, to
-   --  translate either an aggregate or a reference to attribute Update.
-   --  In_Attribute_Update is True when translating a reference to attribute
-   --  Update.
+   --  translate either an aggregate or a delta aggregate.
+   --  In_Delta_Aggregate is True when translating a delta aggregate.
    --  Associations for discriminants are stored before associations for
    --  normal fields.
 
@@ -4149,7 +4148,7 @@ package body Gnat2Why.Expr is
       --  @param E not referenced
       --  @return predicate for individual components
       --          Dynamic_Invariant <C_Expr>
-      --              /\ C_Expr.rec__constrained = <Is_Contrained (C_Ty)>
+      --              /\ C_Expr.rec__constrained = <Is_Constrained (C_Ty)>
 
       function Invariant_For_Comp
         (C_Expr : W_Term_Id; C_Ty : Entity_Id)
@@ -9230,20 +9229,20 @@ package body Gnat2Why.Expr is
       Expr          : Node_Id;
       Update_Prefix : Node_Id := Empty) return W_Expr_Id
    is
-      --  The aggregate is the argument of a 'Update attribute_reference if and
-      --  only if Update_Prefix has been supplied.
+      --  The aggregate is the argument of a 'Update attribute_reference or a
+      --  delta aggregate if and only if Update_Prefix has been supplied.
 
-      In_Attribute_Update : constant Boolean := Present (Update_Prefix);
-      Expr_Typ            : constant Entity_Id := Type_Of_Node (Expr);
-      Nb_Dim              : constant Positive :=
+      In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
+      Expr_Typ           : constant Entity_Id := Type_Of_Node (Expr);
+      Nb_Dim             : constant Positive :=
         (if Ekind (Expr_Typ) = E_String_Literal_Subtype then 1
          else Integer (Number_Dimensions (Expr_Typ)));
-      Needs_Bounds        : constant Boolean :=
-        not In_Attribute_Update and then not Is_Static_Array_Type (Expr_Typ);
+      Needs_Bounds       : constant Boolean :=
+        not In_Delta_Aggregate and then not Is_Static_Array_Type (Expr_Typ);
       --  We do not need to give the array bounds as additional arguments to
-      --  the aggregate function if it is a 'Update (we will use the bounds of
-      --  the updated object) or if the type is static (the bounds are declared
-      --  in the type).
+      --  the aggregate function if it is a delta aggregate (we will use the
+      --  bounds of the updated object) or if the type is static (the bounds
+      --  are declared in the type).
       Init_Wrapper        : constant Boolean := Expr_Has_Relaxed_Init (Expr);
 
       -----------------------
@@ -9262,7 +9261,7 @@ package body Gnat2Why.Expr is
       --  stored at the same position in Types.
       --  For a normal aggregate each element of Values is an element of the
       --  (possibly multi-dimensional) aggregate.
-      --  For a 'Update aggregate, the choice indexes are
+      --  For a delta aggregate, the choice indexes are
       --  collected in Values in addition to the elements.
       --  For a normal aggregate, each element of Index_Values is a
       --  component_association whose choices need to be checked against
@@ -9320,13 +9319,13 @@ package body Gnat2Why.Expr is
       is
          use Node_Lists;
 
-         Cnt   : Positive;
-         Value : Node_Lists.Cursor;
-         Typ   : Node_Lists.Cursor;
-         Args  : W_Expr_Array (1 .. Natural (Values.Length));
+         Cnt      : Positive;
+         Value    : Node_Lists.Cursor;
+         Typ      : Node_Lists.Cursor;
+         Args     : W_Expr_Array (1 .. Natural (Values.Length));
          Bnd_Args : W_Expr_Array
            (1 .. (if Needs_Bounds then 2 * Nb_Dim else 0));
-         R     : W_Expr_Id;
+         R        : W_Expr_Id;
 
       begin
          --  Compute the arguments for the function call
@@ -9358,6 +9357,7 @@ package body Gnat2Why.Expr is
                   Name     => Args (Cnt),
                   Ty       => Element (Typ));
             end if;
+
             Next (Value);
             Next (Typ);
             Cnt := Cnt + 1;
@@ -9375,6 +9375,13 @@ package body Gnat2Why.Expr is
             end loop;
          end if;
 
+         --  If we are in a delta aggregate and we need checks, introduce
+         --  a temporary for the updated expression so that it can be reused
+         --  for checks of bounds of choices.
+
+         Args (1) := New_Temp_For_Expr
+           (Args (1), In_Delta_Aggregate and then Domain = EW_Prog);
+
          --  Compute the call
 
          R := New_Call (Ada_Node => Expr,
@@ -9382,6 +9389,105 @@ package body Gnat2Why.Expr is
                         Name     => Func,
                         Args     => Args & Bnd_Args,
                         Typ      => Type_Of_Node (Expr));
+
+         --  For delta aggregates, choices are passed as parameters and
+         --  checks inserted in Transform_Expr when arguments for the
+         --  function call are computed, above, so we don't need to check
+         --  absence of RTE for them. We still need to check that choices are
+         --  in the bounds of the updated expression. In the case of simple
+         --  values of an array constrained type, this check may be redundant.
+
+         if In_Delta_Aggregate and then Domain = EW_Prog then
+            Value := Index_Values.First;
+            Typ   := Index_Types.First;
+
+            declare
+               Checks : W_Statement_Sequence_Id := Void_Sequence;
+               Choice : Node_Id;
+               Tmp    : W_Identifier_Id;
+            begin
+               while Value /= No_Element loop
+                  Choice := First (Choices (Element (Value)));
+                  while Present (Choice) loop
+
+                     --  For multidimensional 'Update, we generate an
+                     --  index check for each value of the choice aggregate.
+                     --  For (I1, I2) => ... we generate:
+                     --  index_check <I1>; index_check <I2>
+
+                     if Nb_Dim > 1 then
+                        pragma Assert (Nkind (Choice) = N_Aggregate);
+                        declare
+                           Multi_Exprs      : constant List_Id :=
+                             Expressions (Choice);
+                           Multi_Expression : Node_Id :=
+                             Nlists.First (Multi_Exprs);
+                        begin
+                           for I in 1 .. Nb_Dim loop
+                              pragma Assert (Present (Multi_Expression));
+                              Sequence_Append
+                                (Checks,
+                                 (New_Ignore
+                                      (Prog => Do_Index_Check
+                                         (Ada_Node => Multi_Expression,
+                                          Arr_Expr => Args (1),
+                                          W_Expr   => Transform_Expr
+                                            (Expr          => Multi_Expression,
+                                             Domain        => EW_Pterm,
+                                             Params        => Params,
+                                             Expected_Type =>
+                                               Nth_Index_Rep_Type_No_Bool
+                                                 (Expr_Typ, I)),
+                                          Dim      => I))));
+                              Next (Multi_Expression);
+                           end loop;
+                        end;
+
+                     --  Choices of unary aggregates can involve ranges or
+                     --  subtype indications in addition to values. We reuse
+                     --  translation of choices to generate:
+                     --  let index = any <Index_Type> { result in <Choice> } in
+                     --    index_check index
+
+                     else
+                        Tmp := New_Temp_Identifier
+                          (Base_Name => "index",
+                           Typ       => Base_Why_Type_No_Bool (Element (Typ)));
+
+                        Sequence_Append
+                          (Checks,
+                           (New_Ignore
+                                (Prog => New_Binding
+                                   (Name    => Tmp,
+                                    Def     => New_Any_Expr
+                                      (Post        =>
+                                           +Transform_Discrete_Choice
+                                         (Choice      => Choice,
+                                          Choice_Type => Element (Typ),
+                                          Expr        =>
+                                            +New_Result_Ident (Get_Typ (Tmp)),
+                                          Domain      => EW_Pred,
+                                          Params      => Params),
+                                       Return_Type => Get_Typ (Tmp),
+                                       Labels      => Symbol_Sets.Empty_Set),
+                                    Context => +Do_Index_Check
+                                      (Ada_Node => Choice,
+                                       Arr_Expr => Args (1),
+                                       W_Expr   => +Tmp,
+                                       Dim      => 1)))));
+                     end if;
+                     Next (Choice);
+                  end loop;
+                  Next (Value);
+                  Next (Typ);
+               end loop;
+               R := +Sequence (+Checks, +R);
+
+               R := Binding_For_Temp
+                 (Domain  => EW_Prog,
+                  Tmp     => Args (1),
+                  Context => R);
+            end;
 
          --  Special case for choices of normal aggregate:
          --  In programs, we generate a check that all the choices are
@@ -9392,11 +9498,8 @@ package body Gnat2Why.Expr is
          --  Note that checks are done with respect to the aggregate's type
          --  Etype, as the aggregate's Etype may not respect its parent's
          --  constraints.
-         --  For 'Update aggregates, choices are passed as parameters and
-         --  checks inserted in Transform_Expr when arguments for the
-         --  function call are computed, above.
 
-         if not In_Attribute_Update and then Domain = EW_Prog then
+         elsif not In_Delta_Aggregate and then Domain = EW_Prog then
             Value    := Index_Values.First;
             Typ      := Index_Types.First;
 
@@ -9669,9 +9772,9 @@ package body Gnat2Why.Expr is
 
          Guard := +New_And_Expr (Guard_Conj, EW_Pred);
 
-         --  Assume values of the aggregate's bounds. For 'Update, take the
-         --  bounds of the array argument, otherwise, take the bounds of the
-         --  type.
+         --  Assume values of the aggregate's bounds. For delta aggregates,
+         --  take the bounds of the array argument, otherwise, take the bounds
+         --  of the type.
 
          if not Is_Static_Array_Type (Expr_Typ) then
             for Dim in 1 .. Nb_Dim loop
@@ -9679,7 +9782,7 @@ package body Gnat2Why.Expr is
                   BT     : constant W_Type_Id := Nth_Index_Rep_Type_No_Bool
                     (Expr_Typ, Dim);
                   F_Expr  : constant W_Expr_Id :=
-                    (if In_Attribute_Update then
+                    (if In_Delta_Aggregate then
                         Get_Array_Attr
                        (EW_Term, +Call_Args (1), Attribute_First, Dim)
                      else +New_Temp_Identifier (Typ => BT));
@@ -9692,7 +9795,7 @@ package body Gnat2Why.Expr is
                        (EW_Term, +Aggr_Temp, Attribute_First, Dim),
                      Right  => F_Expr);
                   L_Expr  : constant W_Expr_Id :=
-                    (if In_Attribute_Update then
+                    (if In_Delta_Aggregate then
                         Get_Array_Attr
                        (EW_Term, +Call_Args (1), Attribute_Last, Dim)
                      else +New_Temp_Identifier (Typ => BT));
@@ -9800,7 +9903,7 @@ package body Gnat2Why.Expr is
               "Module for declaring an abstract function for the "
                 & (if Nkind (Expr) = N_Delta_Aggregate
                    then "delta aggregate"
-                   elsif In_Attribute_Update
+                   elsif In_Delta_Aggregate
                    then "update attribute"
                    else "aggregate")
                 & " at "
@@ -9838,7 +9941,7 @@ package body Gnat2Why.Expr is
               "Module for defining the value of the "
                 & (if Nkind (Expr) = N_Delta_Aggregate
                    then "delta aggregate"
-                   elsif In_Attribute_Update
+                   elsif In_Delta_Aggregate
                    then "update attribute"
                    else "aggregate")
                 & " at "
@@ -9910,7 +10013,7 @@ package body Gnat2Why.Expr is
             --  go through the component association and collect the
             --  choices to be used later for:
             --  * Index checks, in the case of normal aggregates.
-            --  * Parameters to the logic function, in the case of 'Update
+            --  * Parameters to the logic function, in the case of delta
             --  aggregates.
 
             if Nkind (Expr_Or_Association) = N_Component_Association
@@ -9919,10 +10022,10 @@ package body Gnat2Why.Expr is
                Index_Values.Append (Expr_Or_Association);
                Index_Types.Append (Etype (Index));
 
-               --  For 'Update aggregates we also need the choices as
+               --  For delta aggregates we also need the choices as
                --  parameters since they can be dynamic
 
-               if In_Attribute_Update then
+               if In_Delta_Aggregate then
 
                   --  Collect the choices as parameters.
                   --  We cannot use Index_Values directly since they store
@@ -9935,13 +10038,15 @@ package body Gnat2Why.Expr is
                         when N_Range =>
 
                            --  The high and low bounds of a range both
-                           --  need to be parameters.
+                           --  need to be parameters. We don't use the index
+                           --  type for them as bounds can be outside of the
+                           --  index sutype in case of empty ranges.
 
                            Rng := Get_Range (Choice);
                            Values.Append (Low_Bound (Rng));
-                           Types.Append (Etype (Index));
+                           Types.Append (Etype (Low_Bound (Rng)));
                            Values.Append (High_Bound (Rng));
-                           Types.Append (Etype (Index));
+                           Types.Append (Etype (High_Bound (Rng)));
 
                         when N_Aggregate =>
 
@@ -9986,7 +10091,7 @@ package body Gnat2Why.Expr is
             end if;
 
             --  Next, for both positional and named associations, and for
-            --  both normal and for 'Update aggregates, we fill the
+            --  both normal and for delta aggregates, we fill the
             --  component expressions to the arrays Values and Types, to
             --  later be used as parameters.
 
@@ -10003,7 +10108,7 @@ package body Gnat2Why.Expr is
                   else
                     Expr_Or_Association);
 
-               if Dim < Num_Dim and then not In_Attribute_Update then
+               if Dim < Num_Dim and then not In_Delta_Aggregate then
 
                   --  Normal, multidimensional aggregate, for example:
                   --  Array_2D'(1      => (2 => Expr_1, others => Expr_2),
@@ -10018,7 +10123,7 @@ package body Gnat2Why.Expr is
 
                   --  Two cases here:
                   --
-                  --  1) A single dimensional aggregate, normal or 'Update,
+                  --  1) A single dimensional aggregate, normal or delta,
                   --  (for example an innermost of a multidimensional
                   --  aggregate), or
                   --
@@ -10028,7 +10133,7 @@ package body Gnat2Why.Expr is
                   --  in both cases there are no more aggregates to peel off.
 
                   pragma Assert (Dim = Num_Dim or else
-                                   (In_Attribute_Update and then Dim = 1));
+                                   (In_Delta_Aggregate and then Dim = 1));
                   declare
                      Exp_Type  : constant Node_Id := Component_Type (Typ);
                   begin
@@ -10061,13 +10166,13 @@ package body Gnat2Why.Expr is
 
          begin
 
-            --  Positional association is not allowed in 'Update aggregate
+            --  Positional association is not allowed in delta aggregate
             --  (except in an inner aggregate that is the choice in a
             --  component association of a multidimensional 'Update
             --  aggregate, but never on the outer level we are at here).
 
             pragma Assert (if Present (Expression) then
-                             not In_Attribute_Update);
+                             not In_Delta_Aggregate);
 
             while Present (Expression) loop
                Traverse_Value_At_Index (Dim, Index, Expression);
@@ -10087,10 +10192,10 @@ package body Gnat2Why.Expr is
       --  Start of processing for Get_Aggregate_Elements
 
       begin
-         --  In the case of a 'Update attribute_reference, add the prefix to be
+         --  In the case of a delta aggregate, add the prefix to be
          --  a parameter to the logic function.
 
-         if In_Attribute_Update then
+         if In_Delta_Aggregate then
             Values.Append (Update_Prefix);
             Types.Append (Etype (Update_Prefix));
          end if;
@@ -10154,7 +10259,7 @@ package body Gnat2Why.Expr is
                --  check subtype indication in expressions used for choices
                --  in upper dimensions.
 
-               if not In_Attribute_Update and then Dim /= Nb_Dim then
+               if not In_Delta_Aggregate and then Dim /= Nb_Dim then
                   Insert_Check_Rec
                     (SPARK_Atree.Expression (Association), Dim + 1);
                end if;
@@ -10165,7 +10270,7 @@ package body Gnat2Why.Expr is
             --  subtype indication in expressions used for choices in upper
             --  dimensions.
 
-            if not In_Attribute_Update and then Dim /= Nb_Dim then
+            if not In_Delta_Aggregate and then Dim /= Nb_Dim then
                while Present (Expression) loop
                   Insert_Check_Rec (Expression, Dim + 1);
                   Next (Expression);
@@ -10240,8 +10345,8 @@ package body Gnat2Why.Expr is
             L   : List_Id) return W_Expr_Id;
          --  Return a proposition that expresses that Index satisfies one
          --  choice in the list of choices L. In the case of an aggregate of
-         --  a 'Update attribute_reference, the (possibly dynamic) choices
-         --  will be pulled from the arguments to the logic function.
+         --  a delta aggregate, the (possibly dynamic) choices will be
+         --  pulled from the arguments to the logic function.
 
          function Transform_Rec_Aggregate
            (Dim  : Pos;
@@ -10264,8 +10369,9 @@ package body Gnat2Why.Expr is
             Expr_Or_Association : Node_Id;
             Callback            : Transform_Rec_Func) return W_Expr_Id
          is
-            --  Note that Expr_Or_Association here can be the prefix
-            --  in the default case of the logic function of 'Update
+            --  Note that Expr_Or_Association here can be the updated
+            --  expression in the default case of the logic function of a
+            --  delta aggregate.
             Expr  : Node_Id;
             C_Typ : constant Entity_Id := Component_Type (Typ);
 
@@ -10283,7 +10389,7 @@ package body Gnat2Why.Expr is
                   else
                      Expr_Or_Association);
 
-               if Dim < Num_Dim and then not In_Attribute_Update then
+               if Dim < Num_Dim and then not In_Delta_Aggregate then
                   pragma Assert (Nkind (Expr) = N_Aggregate);
                   return Callback (Dim + 1, Expr);
                   pragma Annotate
@@ -10322,7 +10428,7 @@ package body Gnat2Why.Expr is
                   end if;
 
                   --  For single dimensional aggregates (normal or
-                  --  'Update), and for multidimensional 'Update aggregates
+                  --  delta), and for multidimensional 'Update aggregates
                   --  there will be no more nested aggregates, so no
                   --  recursive callback, go ahead and create array
                   --  access and comparison.
@@ -10345,11 +10451,11 @@ package body Gnat2Why.Expr is
                                                Ar       => Arr,
                                                Index    => Indexes);
 
-                     --  Special case for the prefix of the 'Update
-                     --  attribute_reference. In that case, we want to build
+                     --  Special case for the expression of the delta
+                     --  aggregate. In that case, we want to build
                      --  the value Prefix(i,j..) with the default indexes.
 
-                     if In_Attribute_Update and then Expr = Update_Prefix then
+                     if In_Delta_Aggregate and then Expr = Update_Prefix then
                         Value := New_Array_Access (Ada_Node => Empty,
                                                    Domain   => EW_Term,
                                                    Ar       => Arg_Val,
@@ -10518,7 +10624,7 @@ package body Gnat2Why.Expr is
             Arg_Choice : W_Expr_Id;
          begin
             while Present (Choice) loop
-               if In_Attribute_Update then
+               if In_Delta_Aggregate then
                   case Nkind (Choice) is
                      when N_Range =>
                         declare
@@ -10675,11 +10781,11 @@ package body Gnat2Why.Expr is
 
             --  First, generate else part:
             if Present (Association) then
-               if In_Attribute_Update then
+               if In_Delta_Aggregate then
 
-                  --  Setting up for 'Update transformation/axiom generation...
+                  --  Setting up for delta transformation/axiom generation...
 
-                  --  For 'Update we always want a default value in
+                  --  For delta aggregates we always want a default value in
                   --  the logic function so populate the else part properly.
                   --  Send the Prefix in to use for default value in the
                   --  logic function.
@@ -10772,7 +10878,7 @@ package body Gnat2Why.Expr is
                begin
                   --  The conditional in the logic function axiom must be
                   --  generated in the reverse order of the associations
-                  --  for 'Update semantics which allows duplicate choices.
+                  --  for delta semantics which allows duplicate choices.
                   --  For a normal aggregate this order does not matter since
                   --  they cannot have overlapping choices. So we share this
                   --  implementation.
@@ -10910,7 +11016,7 @@ package body Gnat2Why.Expr is
 
          --  Create the proposition defining the aggregate
 
-         if not In_Attribute_Update
+         if not In_Delta_Aggregate
            and then Is_Simple_Aggregate (Dim => 1, Expr => Expr)
          then
             return +Transform_Rec_Simple_Aggregate (Dim => 1, Expr => Expr);
@@ -14438,7 +14544,7 @@ package body Gnat2Why.Expr is
                     Assocs              =>
                       Component_Associations (Aggr),
                     Params              => Params,
-                    In_Attribute_Update => True,
+                    In_Delta_Aggregate => True,
                     Init_Wrapper        =>
                       Expr_Has_Relaxed_Init (Pref)));
 
@@ -19357,12 +19463,12 @@ package body Gnat2Why.Expr is
    ---------------------------------------------
 
    function Transform_Record_Component_Associations
-     (Domain              : EW_Domain;
-      Typ                 : Entity_Id;
-      Assocs              : List_Id;
-      Params              : Transformation_Params;
-      In_Attribute_Update : Boolean := False;
-      Init_Wrapper        : Boolean) return W_Field_Association_Array
+     (Domain             : EW_Domain;
+      Typ                : Entity_Id;
+      Assocs             : List_Id;
+      Params             : Transformation_Params;
+      In_Delta_Aggregate : Boolean := False;
+      Init_Wrapper       : Boolean) return W_Field_Association_Array
    is
       function Components_Count (Assocs : List_Id) return Natural;
       --  Returns the number of component selectors in Assocs
@@ -19413,7 +19519,7 @@ package body Gnat2Why.Expr is
       --  Start with the first component
       CL := Choices (Association);
       --  normal, fully defined aggregate, has singleton choice lists
-      pragma Assert (In_Attribute_Update or else List_Length (CL) = 1);
+      pragma Assert (In_Delta_Aggregate or else List_Length (CL) = 1);
       Choice := First (CL);
 
       --  Loop over the associations and component choice lists
@@ -19421,7 +19527,7 @@ package body Gnat2Why.Expr is
          declare
             Expr : W_Expr_Id;
          begin
-            --  We don't expect "others" for 'Update aggregates (illegal). For
+            --  We don't expect "others" for delta aggregates (illegal). For
             --  normal aggregates occurances of "others" have been removed from
             --  the AST wich will have an association list is as long as the
             --  number of components, and with only singleton choice lists.
@@ -19495,14 +19601,14 @@ package body Gnat2Why.Expr is
 
             --  Getting the next component from the associations' component
             --  lists, which may require selecting the next choice (for
-            --  attribute Update), or selecting the next component association.
+            --  delta aggregates), or selecting the next component association.
 
             Next (Choice);
             if No (Choice) then
                Next (Association);
                if Present (Association) then
                   CL := Choices (Association);
-                  pragma Assert (In_Attribute_Update
+                  pragma Assert (In_Delta_Aggregate
                                   or else List_Length (CL) = 1);
                   Choice := First (CL);
                end if;
@@ -19512,7 +19618,7 @@ package body Gnat2Why.Expr is
 
       pragma Assert (No (Association));
       pragma Assert
-        ((In_Attribute_Update and then Field_Index = Result'Last + 1)
+        ((In_Delta_Aggregate and then Field_Index = Result'Last + 1)
          or else Is_Tagged_Type (Typ)
          or else Discr_Index = Discr_Assoc'Last + 1);
       Result := Discr_Assoc (1 .. Discr_Index - 1) &
