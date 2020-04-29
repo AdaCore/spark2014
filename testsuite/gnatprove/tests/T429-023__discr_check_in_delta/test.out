@@ -1,0 +1,5 @@
+test_delta_discr_checks.adb:14:09: info: discriminant check proved (Trivial: 1 VC)
+test_delta_discr_checks.adb:14:26: medium: discriminant check might fail
+test_delta_discr_checks.adb:19:09: info: discriminant check proved (Trivial: 1 VC)
+test_delta_discr_checks.adb:19:22: medium: discriminant check might fail
+test_delta_discr_checks.adb:24:04: info: precondition proved (Trivial: 1 VC)

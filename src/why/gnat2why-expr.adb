@@ -14381,13 +14381,19 @@ package body Gnat2Why.Expr is
       Params   : Transformation_Params) return W_Expr_Id
    is
       Pref_Typ : constant Entity_Id := Retysp (Etype (Pref));
-      T : W_Expr_Id;
+      W_Pref   : W_Expr_Id;
+      T        : W_Expr_Id;
 
    begin
       if Is_Record_Type (Pref_Typ) then
-         T := +Transform_Expr (Domain => Domain,
-                               Expr   => Pref,
-                               Params => Params);
+         W_Pref := +Transform_Expr (Domain => Domain,
+                                    Expr   => Pref,
+                                    Params => Params);
+
+         --  Introduce a temporary for the prefix to avoid recomputing it
+         --  several times if Pref_Typ has discriminants.
+
+         W_Pref := New_Temp_For_Expr (W_Pref, Has_Discriminants (Pref_Typ));
 
          --  As discriminants may occur as bounds in types of
          --  discriminant dependent components, store them in the
@@ -14410,7 +14416,7 @@ package body Gnat2Why.Expr is
                      Vals (I) := New_Ada_Record_Access
                        (Ada_Node => Empty,
                         Domain   => EW_Term,
-                        Name     => T,
+                        Name     => W_Pref,
                         Field    => D,
                         Ty       => Pref_Typ);
 
@@ -14423,7 +14429,7 @@ package body Gnat2Why.Expr is
             end if;
 
             T := New_Ada_Record_Update
-              (Name     => T,
+              (Name     => W_Pref,
                Domain   => Domain,
                Updates  =>
                  Transform_Record_Component_Associations
@@ -14435,6 +14441,38 @@ package body Gnat2Why.Expr is
                     In_Attribute_Update => True,
                     Init_Wrapper        =>
                       Expr_Has_Relaxed_Init (Pref)));
+
+            --  If we are in the program domain and Pref_Typ has discriminants,
+            --  check that selectors are present in the prefix.
+
+            if Domain = EW_Prog and then Has_Discriminants (Pref_Typ) then
+               declare
+                  Association : Node_Id :=
+                    Nlists.First (Component_Associations (Aggr));
+                  Choice      : Node_Id;
+                  Checks      : W_Statement_Sequence_Id := Void_Sequence;
+               begin
+                  while Present (Association) loop
+                     Choice := First (Choices (Association));
+
+                     while Present (Choice) loop
+                        Sequence_Append
+                          (Checks,
+                           (New_Ignore
+                                (Prog => +New_Ada_Record_Access
+                                   (Ada_Node => Choice,
+                                    Domain   => EW_Prog,
+                                    Name     => W_Pref,
+                                    Field    => Search_Component_In_Type
+                                      (Pref_Typ, Entity (Choice)),
+                                    Ty       => Pref_Typ))));
+                        Next (Choice);
+                     end loop;
+                     Next (Association);
+                  end loop;
+                  T := +Sequence (Ada_Node, +Checks, +T);
+               end;
+            end if;
 
             --  If the target type has a direct or inherited
             --  predicate, generate a corresponding check.
@@ -14458,6 +14496,12 @@ package body Gnat2Why.Expr is
                   Typ     => Get_Type (T));
             end loop;
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+            T := Binding_For_Temp
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Tmp      => W_Pref,
+               Context  => T);
          end;
 
       else
