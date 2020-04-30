@@ -9379,8 +9379,9 @@ package body Gnat2Why.Expr is
          --  a temporary for the updated expression so that it can be reused
          --  for checks of bounds of choices.
 
-         Args (1) := New_Temp_For_Expr
-           (Args (1), In_Delta_Aggregate and then Domain = EW_Prog);
+         if In_Delta_Aggregate and then Domain = EW_Prog then
+            Args (1) := New_Temp_For_Expr (Args (1));
+         end if;
 
          --  Compute the call
 
@@ -16215,7 +16216,7 @@ package body Gnat2Why.Expr is
                   declare
                      Value_Expr : W_Expr_Id := Transform_Expr
                        (Expr          => New_Expr,
-                        Expected_Type => Type_Of_Node (Des_Ty),
+                        Expected_Type => Type_Of_Node (Etype (New_Expr)),
                         Domain        => Domain,
                         Params        => Local_Params);
 
