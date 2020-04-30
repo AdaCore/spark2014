@@ -357,7 +357,7 @@ serial_generator.adb:37:07: info: initialization of "Month" proved
 serial_generator.adb:38:07: info: initialization of "Day" proved
 serial_generator.adb:39:07: info: initialization of "Seconds" proved
 serial_generator.adb:48:33: info: range check proved (CVC4: 1 VC)
-serial_generator.adb:51:28: info: range check proved (CVC4: 1 VC)
+serial_generator.adb:51:28: info: range check proved (Z3: 1 VC)
 serial_generator.ads:19:06: info: flow dependencies proved
 serial_generator.ads:27:19: info: initialization of "Number" proved
 serial_generator.ads:29:09: info: data dependencies proved

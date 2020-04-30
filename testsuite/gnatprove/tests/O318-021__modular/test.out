@@ -1,4 +1,4 @@
 fpmod.adb:7:04: info: initialization of "X" proved
-fpmod.adb:11:11: info: range check proved (CVC4: 1 VC)
+fpmod.adb:11:11: info: range check proved (Z3: 1 VC)
 fpmod.adb:13:11: medium: range check might fail (e.g. when X = -12/128)
 fpmod.adb:15:11: medium: range check might fail (e.g. when X = -64/128)

@@ -428,7 +428,13 @@ end
 
 module Fixed_Point_Shared
   use int.Int
-  use "_gnatprove_standard".Int_Division
+
+  (* We're using division to define the predicate pos_div_relation. The only
+     values which we care about are for non-negative arguments, for which
+     int.ComputerDivision and int.EuclideanDivision give the same result.
+     Use the latter as it is directly bound to SMT-LIB "div" operator.
+  *)
+  use int.EuclideanDivision
 
   (* Helper predicate to define the result of operations on fixed-points.
      It is used with non-negative values for [num] and positive values for [den].
