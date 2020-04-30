@@ -10315,20 +10315,10 @@ package body Gnat2Why.Expr is
          -- Local subprograms --
          -----------------------
 
-         type Transform_Rec_Func is not null access function
-           (Dim  : Pos;
-            Expr : Node_Id) return W_Expr_Id;
-         --  Type of callback used to refer to either one of the recursive
-         --  transformation functions for aggregate defined below, for use in
-         --  Constrain_Value_At_Index.
-
          function Constrain_Value_At_Index
-           (Dim                 : Pos;
-            Expr_Or_Association : Node_Id;
-            Callback            : Transform_Rec_Func) return W_Expr_Id;
+           (Expr : Node_Id) return W_Expr_Id;
          --  Return the proposition that the array at the given indices is
-         --  equal to the value given in Expr_Or_Association, or else "true"
-         --  for box association.
+         --  equal to the value given in Expr.
 
          function Is_Simple_Aggregate
            (Dim  : Pos;
@@ -10366,140 +10356,112 @@ package body Gnat2Why.Expr is
          ------------------------------
 
          function Constrain_Value_At_Index
-           (Dim                 : Pos;
-            Expr_Or_Association : Node_Id;
-            Callback            : Transform_Rec_Func) return W_Expr_Id
+           (Expr : Node_Id) return W_Expr_Id
          is
-            --  Note that Expr_Or_Association here can be the updated
-            --  expression in the default case of the logic function of a
-            --  delta aggregate.
-            Expr  : Node_Id;
+            --  Note that Expr here can be the updated expression in the
+            --  default case of the logic function of a delta aggregate.
             C_Typ : constant Entity_Id := Component_Type (Typ);
 
          begin
-            if Nkind (Expr_Or_Association) = N_Component_Association
-              and then Box_Present (Expr_Or_Association)
-            then
-               return +True_Pred;
-            else
-               Expr :=
-                 (if Nkind (Expr_Or_Association) =
-                    N_Component_Association
-                  then
-                     Expression (Expr_Or_Association)
-                  else
-                     Expr_Or_Association);
+            --  Whenever possible, take advantage of the why3 construct
+            --  for range constants.
 
-               if Dim < Num_Dim and then not In_Delta_Aggregate then
-                  pragma Assert (Nkind (Expr) = N_Aggregate);
-                  return Callback (Dim + 1, Expr);
-                  pragma Annotate
-                    (CodePeer, False_Positive, "validity check",
-                     "false alarm on implicit result of callback");
+            if Is_Range_Type_In_Why (Etype (Expr))
+              and then Compile_Time_Known_Value (Expr)
+            then
+               return New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => New_Array_Access
+                    (Ada_Node => Expr,
+                     Domain   => EW_Term,
+                     Ar       => Arr,
+                     Index    => Indexes),
+                  Right  =>
+                    (if Has_Relaxed_Init (C_Typ) or else Init_Wrapper
+                     then Insert_Simple_Conversion
+                       (Ada_Node       => Empty,
+                        Domain         => EW_Term,
+                        Expr           => New_Range_Constant
+                          (Value => Expr_Value (Expr),
+                           Typ   => EW_Abstract (C_Typ)),
+                        To             =>
+                          EW_Abstract (C_Typ, Relaxed_Init => True),
+                        Force_No_Slide => True)
+                     else New_Range_Constant
+                       (Value => Expr_Value (Expr),
+                        Typ   => EW_Abstract (C_Typ))),
+                  Domain => EW_Pred);
+            end if;
+
+            --  For single dimensional aggregates (normal or delta), and for
+            --  multidimensional 'Update aggregates there will be no more
+            --  nested aggregates, so no recursive callback, go ahead and
+            --  create array access and comparison.
+
+            declare
+               Binder  : constant Item_Type :=
+                 Ada_Ent_To_Why.Element (Args, Expr);
+               Arg_Val : constant W_Expr_Id :=
+                 (case Binder.Kind is
+                     when Regular => +Binder.Main.B_Name,
+                     when UCArray => +Binder.Content.B_Name,
+                     when others  => raise Program_Error);
+               Is_Init : W_Pred_Id := True_Pred;
+               Value   : W_Expr_Id;
+               Read    : W_Expr_Id;
+
+            begin
+               Read := New_Array_Access (Ada_Node => Expr,
+                                         Domain   => EW_Term,
+                                         Ar       => Arr,
+                                         Index    => Indexes);
+
+               --  Special case for the expression of the delta aggregate. In
+               --  that case, we want to build the value Prefix(i,j..) with the
+               --  default indexes.
+
+               if In_Delta_Aggregate and then Expr = Update_Prefix then
+                  Value := New_Array_Access (Ada_Node => Empty,
+                                             Domain   => EW_Term,
+                                             Ar       => Arg_Val,
+                                             Index    => Indexes);
+
+               --  Use the split form of the component type for the
+               --  comparison to avoid introducing unnecessary
+               --  conversions whenever possible (see Type_Of_Node). This
+               --  is only correct because the axiom is guarded so that
+               --  Arg_Val is always in the appropriate type.
 
                else
-                  --  Whenever possible, take advantage of the why3 construct
-                  --  for range constants.
+                  Value := Arg_Val;
 
-                  if Is_Range_Type_In_Why (Etype (Expr))
-                    and then Compile_Time_Known_Value (Expr)
+                  --  If the value has a type which does not have
+                  --  relaxed initialization, it must be initialized.
+
+                  if (Has_Relaxed_Init (C_Typ) or else Init_Wrapper)
+                    and then
+                      (Has_Scalar_Type (C_Typ)
+                       or else
+                         not Is_Init_Wrapper_Type (Get_Type (Value)))
                   then
-                     return New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => New_Array_Access
-                          (Ada_Node => Expr_Or_Association,
-                           Domain   => EW_Term,
-                           Ar       => Arr,
-                           Index    => Indexes),
-                        Right  =>
-                          (if Has_Relaxed_Init (C_Typ) or else Init_Wrapper
-                           then Insert_Simple_Conversion
-                             (Ada_Node       => Empty,
-                              Domain         => EW_Term,
-                              Expr           => New_Range_Constant
-                                (Value => Expr_Value (Expr),
-                                 Typ   => EW_Abstract (C_Typ)),
-                              To             =>
-                                EW_Abstract (C_Typ, Relaxed_Init => True),
-                              Force_No_Slide => True)
-                           else New_Range_Constant
-                             (Value => Expr_Value (Expr),
-                              Typ   => EW_Abstract (C_Typ))),
-                        Domain => EW_Pred);
+                     Is_Init := +Compute_Is_Initialized
+                       (C_Typ, +Read, Params.Ref_Allowed, EW_Pred);
                   end if;
 
-                  --  For single dimensional aggregates (normal or
-                  --  delta), and for multidimensional 'Update aggregates
-                  --  there will be no more nested aggregates, so no
-                  --  recursive callback, go ahead and create array
-                  --  access and comparison.
-
-                  declare
-                     Binder  : constant Item_Type :=
-                       Ada_Ent_To_Why.Element (Args, Expr);
-                     Arg_Val : constant W_Expr_Id :=
-                       (case Binder.Kind is
-                           when Regular => +Binder.Main.B_Name,
-                           when UCArray => +Binder.Content.B_Name,
-                           when others  => raise Program_Error);
-                     Is_Init : W_Pred_Id := True_Pred;
-                     Value   : W_Expr_Id;
-                     Read    : W_Expr_Id;
-
-                  begin
-                     Read := New_Array_Access (Ada_Node => Expr_Or_Association,
-                                               Domain   => EW_Term,
-                                               Ar       => Arr,
-                                               Index    => Indexes);
-
-                     --  Special case for the expression of the delta
-                     --  aggregate. In that case, we want to build
-                     --  the value Prefix(i,j..) with the default indexes.
-
-                     if In_Delta_Aggregate and then Expr = Update_Prefix then
-                        Value := New_Array_Access (Ada_Node => Empty,
-                                                   Domain   => EW_Term,
-                                                   Ar       => Arg_Val,
-                                                   Index    => Indexes);
-
-                     --  Use the split form of the component type for the
-                     --  comparison to avoid introducing unnecessary
-                     --  conversions whenever possible (see Type_Of_Node). This
-                     --  is only correct because the axiom is guarded so that
-                     --  Arg_Val is always in the appropriate type.
-
-                     else
-                        Value := Arg_Val;
-
-                        --  If the value has a type which does not have
-                        --  relaxed initialization, it must be initialized.
-
-                        if (Has_Relaxed_Init (C_Typ) or else Init_Wrapper)
-                          and then
-                            (Has_Scalar_Type (C_Typ)
-                             or else
-                               not Is_Init_Wrapper_Type (Get_Type (Value)))
-                        then
-                           Is_Init := +Compute_Is_Initialized
-                             (C_Typ, +Read, Params.Ref_Allowed, EW_Pred);
-                        end if;
-
-                        Read := Insert_Simple_Conversion
-                          (Domain => EW_Term,
-                           Expr   => Read,
-                           To     => Get_Type (Value));
-                     end if;
-
-                     return New_And_Expr
-                       (Left   => New_Comparison (Symbol => Why_Eq,
-                                                  Left   => Read,
-                                                  Right  => Value,
-                                                  Domain => EW_Pred),
-                        Right  => +Is_Init,
-                        Domain => EW_Pred);
-                  end;
+                  Read := Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   => Read,
+                     To     => Get_Type (Value));
                end if;
-            end if;
+
+               return New_And_Expr
+                 (Left   => New_Comparison (Symbol => Why_Eq,
+                                            Left   => Read,
+                                            Right  => Value,
+                                            Domain => EW_Pred),
+                  Right  => +Is_Init,
+                  Domain => EW_Pred);
+            end;
          end Constrain_Value_At_Index;
 
          -------------------------
@@ -10761,8 +10723,12 @@ package body Gnat2Why.Expr is
            (Dim  : Pos;
             Expr : Node_Id) return W_Expr_Id
          is
-            Callback : constant Transform_Rec_Func :=
-                         Transform_Rec_Aggregate'Access;
+            function Constrain_Value_Or_Recurse
+              (Expr : Node_Id) return W_Expr_Id
+            is (if Dim < Num_Dim and then not In_Delta_Aggregate
+                then Transform_Rec_Aggregate (Dim + 1, Expr)
+                else Constrain_Value_At_Index (Expr));
+
             Exprs    : constant List_Id :=
               (if Nkind (Expr) = N_Delta_Aggregate then No_List
                else Expressions (Expr));
@@ -10791,7 +10757,7 @@ package body Gnat2Why.Expr is
                   --  Send the Prefix in to use for default value in the
                   --  logic function.
                   Else_Part :=
-                    Constrain_Value_At_Index (Dim, Update_Prefix, Callback);
+                    Constrain_Value_Or_Recurse (Update_Prefix);
 
                   --  Next, constructing else part for a "normal" aggregate,
                   --  special case for "others" choice...
@@ -10814,8 +10780,8 @@ package body Gnat2Why.Expr is
                   --  is not known in the context of the proposition
                   --  generated here.
                   if not Box_Present (Association) then
-                     Else_Part :=
-                       Constrain_Value_At_Index (Dim, Association, Callback);
+                     Else_Part := Constrain_Value_Or_Recurse
+                       (SPARK_Atree.Expression (Association));
                   end if;
                   --  Dropping this single (and thus last) element.
                   Prev (Association);
@@ -10849,8 +10815,7 @@ package body Gnat2Why.Expr is
                              Right     => Select_Nth_Index (Dim, Offset),
                              Domain    => EW_Pred),
                         Then_Part =>
-                          Constrain_Value_At_Index
-                            (Dim, Expression, Callback));
+                          Constrain_Value_Or_Recurse (Expression));
                      Prev (Expression);
                   end loop;
 
@@ -10863,7 +10828,7 @@ package body Gnat2Why.Expr is
                           Right     => Select_Nth_Index (Dim, 0),
                           Domain    => EW_Pred),
                      Then_Part   =>
-                       Constrain_Value_At_Index (Dim, Expression, Callback),
+                       Constrain_Value_Or_Recurse (Expression),
                      Elsif_Parts => Elsif_Parts,
                      Else_Part   => Else_Part);
                end;
@@ -10890,9 +10855,9 @@ package body Gnat2Why.Expr is
                   --  the last association:
                   Condition := +Select_These_Choices (Dim,
                                                       Choices (Association));
-                  Then_Part := Constrain_Value_At_Index (Dim,
-                                                         Association,
-                                                         Callback);
+                  Then_Part := Constrain_Value_Or_Recurse
+                    (SPARK_Atree.Expression (Association));
+
                   Prev (Association);
                   if Present (Association) then
                      --  If we have any more associations they go into
@@ -10908,9 +10873,8 @@ package body Gnat2Why.Expr is
                            Condition =>
                              +Select_These_Choices
                                (Dim, Choices (Association)),
-                           Then_Part =>
-                             Constrain_Value_At_Index
-                             (Dim, Association, Callback));
+                           Then_Part => Constrain_Value_Or_Recurse
+                             (SPARK_Atree.Expression (Association)));
                         Prev (Association);
                      end loop;
                   end if;
@@ -10936,8 +10900,12 @@ package body Gnat2Why.Expr is
            (Dim  : Pos;
             Expr : Node_Id) return W_Expr_Id
          is
-            Callback    : constant Transform_Rec_Func :=
-                            Transform_Rec_Simple_Aggregate'Access;
+            function Constrain_Value_Or_Recurse
+              (Expr : Node_Id) return W_Expr_Id
+            is (if Dim < Num_Dim and then not In_Delta_Aggregate
+                then Transform_Rec_Simple_Aggregate (Dim + 1, Expr)
+                else Constrain_Value_At_Index (Expr));
+
             Exprs       : constant List_Id := Expressions (Expr);
             Assocs      : constant List_Id := Component_Associations (Expr);
             Association : Node_Id;
@@ -10958,7 +10926,7 @@ package body Gnat2Why.Expr is
                      Indexes (Integer (Dim)) :=
                        Select_Nth_Index (Dim, Offset - 1);
                      Conjuncts (Integer (Offset)) :=
-                       Constrain_Value_At_Index (Dim, Expression, Callback);
+                       Constrain_Value_Or_Recurse (Expression);
                      Next (Expression);
                   end loop;
 
@@ -10975,6 +10943,8 @@ package body Gnat2Why.Expr is
                begin
                   for Offset in 1 .. List_Length (Assocs) loop
                      pragma Assert (List_Length (Choices (Association)) = 1);
+                     pragma Assert (not Box_Present (Association));
+
                      Indexes (Integer (Dim)) :=
                        Transform_Expr (Expr          =>
                                          First (Choices (Association)),
@@ -10983,7 +10953,8 @@ package body Gnat2Why.Expr is
                                        Domain        => EW_Term,
                                        Params        => Params);
                      Conjuncts (Integer (Offset)) :=
-                       Constrain_Value_At_Index (Dim, Association, Callback);
+                       Constrain_Value_Or_Recurse
+                         (SPARK_Atree.Expression (Association));
                      Next (Association);
                   end loop;
 
