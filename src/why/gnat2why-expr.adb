@@ -14397,6 +14397,15 @@ package body Gnat2Why.Expr is
                           (Etype (Defining_Identifier (Decl)),
                            Etype (Prefix (Expr))),
                         Current_Subp);
+                     Emit_Static_Proof_Result
+                       (Decl,
+                        VC_UC_Alignment,
+                        Nkind (Prefix (Expr)) in N_Has_Entity
+                            and then
+                          Objects_Have_Compatible_Alignments
+                            (Defining_Identifier (Decl),
+                             Entity (Prefix (Expr))),
+                        Current_Subp);
                   end if;
                   Expr := Prefix (Expr);
                end if;

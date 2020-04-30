@@ -1048,6 +1048,7 @@ procedure SPARK_Report is
             | VC_Inline_Check
             | VC_UC_No_Holes
             | VC_UC_Same_Size
+            | VC_UC_Alignment
          =>
             return Functional_Contracts;
 

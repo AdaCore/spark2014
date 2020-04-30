@@ -2755,6 +2755,18 @@ package body SPARK_Util is
       end if;
    end Obj_Has_Relaxed_Init;
 
+   ----------------------------------------
+   -- Objects_Have_Compatible_Alignments --
+   ----------------------------------------
+
+   function Objects_Have_Compatible_Alignments (X, Y : Entity_Id) return
+     Boolean
+   is
+   begin
+      return Known_Alignment (X) and then Known_Alignment (Y) and then
+        Alignment (X) mod Alignment (Y) = Uint_0;
+   end Objects_Have_Compatible_Alignments;
+
    ----------------
    -- Real_Image --
    ----------------

@@ -1,6 +1,7 @@
 p.adb:31:28: medium: overflow check might fail (e.g. when Full_S = (A => Integer'First, B => 0.0) and X = -1) [possible explanation: subprogram at p.ads:30 should mention Full_S and X in a precondition]
 p.adb:32:28: medium: float overflow check might fail (e.g. when Full_S = (A => 0, B => 1.3292179E+36) and Y = 3.3895314E+38) [possible explanation: subprogram at p.ads:30 should mention Full_S and Y in a precondition]
 p.ads:21:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
+p.ads:21:04: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: overlaying object should have an Alignment representation clause]
 p.ads:22:26: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
 p.ads:22:26: high: types of aliased objects do not have the same size
 p.ads:25:11: info: data dependencies proved
@@ -16,6 +17,7 @@ p.ads:33:32: medium: missing dependency "Raw_S => Full_S"
 p2.adb:39:28: medium: overflow check might fail (e.g. when Full_S = (A => Integer'First, B => 0.0) and X = -1) [possible explanation: subprogram at p2.ads:30 should mention Full_S and X in a precondition]
 p2.adb:40:28: medium: float overflow check might fail (e.g. when Full_S = (A => 0, B => 1.3292179E+36) and Y = 3.3895314E+38) [possible explanation: subprogram at p2.ads:30 should mention Full_S and Y in a precondition]
 p2.ads:21:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
+p2.ads:21:04: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: overlaying object should have an Alignment representation clause]
 p2.ads:22:26: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
 p2.ads:22:26: high: types of aliased objects do not have the same size
 p2.ads:25:11: info: data dependencies proved

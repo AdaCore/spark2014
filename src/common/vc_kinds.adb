@@ -139,6 +139,7 @@ package body VC_Kinds is
             | VC_Stronger_Classwide_Post
             | VC_Warning_Kind
             | VC_Null_Exclusion
+            | VC_UC_Alignment
          => "");
    end CWE_ID;
 
@@ -342,6 +343,9 @@ package body VC_Kinds is
          when VC_UC_Same_Size                     =>
             return "Check that the two types in an unchecked conversion " &
               "instance are of the same size.";
+         when VC_UC_Alignment                     =>
+            return "Check that the first object's alignment is an integral " &
+              "multiple of the second object's alignment.";
          when VC_Weaker_Pre                       =>
             return "Check that the precondition aspect of the subprogram is " &
               "weaker than its class-wide precondition.";
@@ -877,6 +881,7 @@ package body VC_Kinds is
              when VC_Inline_Check => "Inline_For_Proof annotation",
              when VC_UC_No_Holes => "unchecked conversion check",
              when VC_UC_Same_Size => "unchecked conversion size check",
+             when VC_UC_Alignment => "alignment check",
              when VC_Weaker_Pre =>
                "precondition weaker than class-wide precondition",
              when VC_Trivial_Weaker_Pre =>

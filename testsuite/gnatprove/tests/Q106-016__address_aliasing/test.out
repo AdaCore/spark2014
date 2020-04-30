@@ -4,8 +4,10 @@ main1.adb:5:39: medium: "Z" might not be initialized after elaboration of main p
 main2.adb:9:19: info: assertion proved (CVC4: 3 VC)
 main2.adb:12:19: info: assertion proved (CVC4: 1 VC)
 p.ads:5:04: info: object is suitable for aliasing via address clause (Trivial)
+p.ads:5:04: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: overlaying object should have an Alignment representation clause]
 p.ads:6:22: info: object is suitable for aliasing via address clause (Trivial)
 p.ads:6:22: info: types of aliased objects have the same size (Trivial)
 p.ads:8:04: info: object is suitable for aliasing via address clause (Trivial)
+p.ads:8:04: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: overlaying object should have an Alignment representation clause]
 p.ads:8:32: info: object is suitable for aliasing via address clause (Trivial)
 p.ads:8:32: info: types of aliased objects have the same size (Trivial)

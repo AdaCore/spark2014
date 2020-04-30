@@ -466,6 +466,15 @@ package SPARK_Util is
    --  A trivial wrapper to be used in assertions when converting from the
    --  frontend to flow representation of discriminants and components.
 
+   function Objects_Have_Compatible_Alignments (X, Y : Entity_Id) return
+     Boolean
+   with Pre => Is_Object (X) and then Is_Object (Y);
+   --  @param X  object that overlays the other (object with Address clause)
+   --  @param Y  object that is overlayed (object whose 'Address is used in
+   --            the Address clause of X)
+   --  @return True iff X'Alignment and Y'Alignment are known and X'Alignment
+   --          is an integral multiple of Y
+
    --------------------------------
    -- Queries related to pragmas --
    --------------------------------
