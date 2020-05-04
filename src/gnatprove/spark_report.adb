@@ -1023,6 +1023,9 @@ procedure SPARK_Report is
             | VC_Task_Termination
             | VC_Raise
             | VC_Initialization_Check
+            | VC_UC_No_Holes
+            | VC_UC_Same_Size
+            | VC_UC_Alignment
          =>
             return Runtime_Checks;
 
@@ -1046,9 +1049,6 @@ procedure SPARK_Report is
             | VC_Disjoint_Contract_Cases
             | VC_Complete_Contract_Cases
             | VC_Inline_Check
-            | VC_UC_No_Holes
-            | VC_UC_Same_Size
-            | VC_UC_Alignment
          =>
             return Functional_Contracts;
 
