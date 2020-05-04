@@ -11,6 +11,7 @@ big_reals_test.adb:16:38: warning: assuming "=" has no effect on global items
 big_reals_test.adb:16:38: warning: no Global contract available for "="
 big_reals_test.adb:16:40: warning: assuming "To_Real" has no effect on global items
 big_reals_test.adb:16:40: warning: no Global contract available for "To_Real"
+big_reals_test.adb:17:12: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:17:14: medium: divide by zero might fail [possible explanation: subprogram at line 11 should mention R in a precondition]
 big_reals_test.adb:17:14: warning: assuming "/" has no effect on global items
 big_reals_test.adb:17:14: warning: no Global contract available for "/"
@@ -21,6 +22,7 @@ big_reals_test.adb:23:07: info: initialization of "D" proved
 big_reals_test.adb:26:12: warning: assuming "To_Big_Real" has no effect on global items
 big_reals_test.adb:26:12: warning: no Global contract available for "To_Big_Real"
 big_reals_test.adb:27:22: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:27:22: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:27:24: warning: assuming "*" has no effect on global items
 big_reals_test.adb:27:24: warning: no Global contract available for "*"
 big_reals_test.adb:27:26: warning: assuming "To_Real" has no effect on global items
@@ -32,6 +34,7 @@ big_reals_test.adb:27:40: warning: no Global contract available for "To_Real"
 big_reals_test.adb:28:12: warning: assuming "To_Big_Real" has no effect on global items
 big_reals_test.adb:28:12: warning: no Global contract available for "To_Big_Real"
 big_reals_test.adb:29:22: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:29:22: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:29:24: warning: assuming "*" has no effect on global items
 big_reals_test.adb:29:24: warning: no Global contract available for "*"
 big_reals_test.adb:29:26: warning: assuming "To_Real" has no effect on global items
@@ -53,53 +56,85 @@ big_reals_test.adb:36:09: warning: no Global contract available for "To_Real"
 big_reals_test.adb:37:09: warning: assuming "To_Real" has no effect on global items
 big_reals_test.adb:37:09: warning: no Global contract available for "To_Real"
 big_reals_test.adb:40:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:40:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:40:21: warning: assuming "=" has no effect on global items
 big_reals_test.adb:40:21: warning: no Global contract available for "="
+big_reals_test.adb:40:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:41:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:41:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:41:26: warning: assuming "=" has no effect on global items
 big_reals_test.adb:41:26: warning: no Global contract available for "="
+big_reals_test.adb:41:28: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:42:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:42:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:42:21: warning: assuming "<" has no effect on global items
 big_reals_test.adb:42:21: warning: no Global contract available for "<"
+big_reals_test.adb:42:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:43:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:43:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:43:21: warning: assuming "<" has no effect on global items
 big_reals_test.adb:43:21: warning: no Global contract available for "<"
+big_reals_test.adb:43:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:44:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:44:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:44:26: warning: assuming "<" has no effect on global items
 big_reals_test.adb:44:26: warning: no Global contract available for "<"
+big_reals_test.adb:44:28: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:45:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:45:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:45:21: warning: assuming "<=" has no effect on global items
 big_reals_test.adb:45:21: warning: no Global contract available for "<="
+big_reals_test.adb:45:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:46:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:46:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:46:21: warning: assuming "<=" has no effect on global items
 big_reals_test.adb:46:21: warning: no Global contract available for "<="
+big_reals_test.adb:46:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:47:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:47:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:47:26: warning: assuming "<=" has no effect on global items
 big_reals_test.adb:47:26: warning: no Global contract available for "<="
+big_reals_test.adb:47:29: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:48:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:48:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:48:21: warning: assuming ">" has no effect on global items
 big_reals_test.adb:48:21: warning: no Global contract available for ">"
+big_reals_test.adb:48:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:49:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:49:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:49:21: warning: assuming ">" has no effect on global items
 big_reals_test.adb:49:21: warning: no Global contract available for ">"
+big_reals_test.adb:49:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:50:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:50:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:50:26: warning: assuming ">" has no effect on global items
 big_reals_test.adb:50:26: warning: no Global contract available for ">"
+big_reals_test.adb:50:28: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:51:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:51:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:51:26: warning: assuming ">" has no effect on global items
 big_reals_test.adb:51:26: warning: no Global contract available for ">"
+big_reals_test.adb:51:28: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:52:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:52:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:52:21: warning: assuming ">=" has no effect on global items
 big_reals_test.adb:52:21: warning: no Global contract available for ">="
+big_reals_test.adb:52:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:53:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:53:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:53:21: warning: assuming ">=" has no effect on global items
 big_reals_test.adb:53:21: warning: no Global contract available for ">="
+big_reals_test.adb:53:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:54:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:54:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:54:26: warning: assuming ">" has no effect on global items
 big_reals_test.adb:54:26: warning: no Global contract available for ">"
+big_reals_test.adb:54:28: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:55:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:55:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:55:21: warning: assuming ">=" has no effect on global items
 big_reals_test.adb:55:21: warning: no Global contract available for ">="
+big_reals_test.adb:55:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:56:19: info: assertion proved (CVC4: 1 VC)
 big_reals_test.adb:56:19: warning: assuming "In_Range" has no effect on global items
 big_reals_test.adb:56:19: warning: no Global contract available for "In_Range"
@@ -111,50 +146,70 @@ big_reals_test.adb:63:09: warning: no Global contract available for "To_Real"
 big_reals_test.adb:64:09: warning: assuming "To_Real" has no effect on global items
 big_reals_test.adb:64:09: warning: no Global contract available for "To_Real"
 big_reals_test.adb:65:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:65:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:65:21: warning: assuming "+" has no effect on global items
 big_reals_test.adb:65:21: warning: no Global contract available for "+"
+big_reals_test.adb:65:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:65:25: warning: assuming "=" has no effect on global items
 big_reals_test.adb:65:25: warning: no Global contract available for "="
+big_reals_test.adb:65:27: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:66:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:66:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:66:21: warning: assuming "-" has no effect on global items
 big_reals_test.adb:66:21: warning: no Global contract available for "-"
+big_reals_test.adb:66:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:66:25: warning: assuming "=" has no effect on global items
 big_reals_test.adb:66:25: warning: no Global contract available for "="
+big_reals_test.adb:66:27: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:67:19: info: assertion proved (CVC4: 1 VC)
 big_reals_test.adb:67:19: warning: assuming "+" has no effect on global items
 big_reals_test.adb:67:19: warning: no Global contract available for "+"
+big_reals_test.adb:67:20: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:67:22: warning: assuming "=" has no effect on global items
 big_reals_test.adb:67:22: warning: no Global contract available for "="
+big_reals_test.adb:67:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:68:19: info: assertion proved (CVC4: 1 VC)
 big_reals_test.adb:68:19: warning: assuming "-" has no effect on global items
 big_reals_test.adb:68:19: warning: no Global contract available for "-"
+big_reals_test.adb:68:20: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:68:22: warning: assuming "=" has no effect on global items
 big_reals_test.adb:68:22: warning: no Global contract available for "="
+big_reals_test.adb:68:24: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:69:19: info: assertion proved (CVC4: 1 VC)
 big_reals_test.adb:69:19: warning: assuming "abs" has no effect on global items
 big_reals_test.adb:69:19: warning: no Global contract available for "abs"
+big_reals_test.adb:69:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:69:25: warning: assuming "=" has no effect on global items
 big_reals_test.adb:69:25: warning: no Global contract available for "="
+big_reals_test.adb:69:27: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:70:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:70:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:70:21: warning: assuming "*" has no effect on global items
 big_reals_test.adb:70:21: warning: no Global contract available for "*"
+big_reals_test.adb:70:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:70:25: warning: assuming "=" has no effect on global items
 big_reals_test.adb:70:25: warning: no Global contract available for "="
 big_reals_test.adb:70:27: warning: assuming "-" has no effect on global items
 big_reals_test.adb:70:27: warning: no Global contract available for "-"
+big_reals_test.adb:70:28: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:70:30: warning: assuming "*" has no effect on global items
 big_reals_test.adb:70:30: warning: no Global contract available for "*"
+big_reals_test.adb:70:32: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:71:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:71:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:71:21: warning: assuming "**" has no effect on global items
 big_reals_test.adb:71:21: warning: no Global contract available for "**"
 big_reals_test.adb:71:26: warning: assuming "=" has no effect on global items
 big_reals_test.adb:71:26: warning: no Global contract available for "="
+big_reals_test.adb:71:28: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:71:30: warning: assuming "**" has no effect on global items
 big_reals_test.adb:71:30: warning: no Global contract available for "**"
 big_reals_test.adb:72:19: info: assertion proved (CVC4: 1 VC)
+big_reals_test.adb:72:19: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:72:21: info: division check proved (CVC4: 1 VC)
 big_reals_test.adb:72:21: warning: assuming "/" has no effect on global items
 big_reals_test.adb:72:21: warning: no Global contract available for "/"
+big_reals_test.adb:72:23: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:72:25: warning: assuming "=" has no effect on global items
 big_reals_test.adb:72:25: warning: no Global contract available for "="
 big_reals_test.adb:72:27: warning: assuming "To_Real" has no effect on global items
@@ -162,13 +217,19 @@ big_reals_test.adb:72:27: warning: no Global contract available for "To_Real"
 big_reals_test.adb:75:19: info: assertion proved (CVC4: 1 VC)
 big_reals_test.adb:75:19: warning: assuming "Min" has no effect on global items
 big_reals_test.adb:75:19: warning: no Global contract available for "Min"
+big_reals_test.adb:75:24: info: predicate check proved (CVC4: 1 VC)
+big_reals_test.adb:75:27: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:75:30: warning: assuming "=" has no effect on global items
 big_reals_test.adb:75:30: warning: no Global contract available for "="
+big_reals_test.adb:75:32: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:76:19: info: assertion proved (CVC4: 1 VC)
 big_reals_test.adb:76:19: warning: assuming "Max" has no effect on global items
 big_reals_test.adb:76:19: warning: no Global contract available for "Max"
+big_reals_test.adb:76:24: info: predicate check proved (CVC4: 1 VC)
+big_reals_test.adb:76:27: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:76:30: warning: assuming "=" has no effect on global items
 big_reals_test.adb:76:30: warning: no Global contract available for "="
+big_reals_test.adb:76:32: info: predicate check proved (CVC4: 1 VC)
 big_reals_test.adb:78:04: info: precondition proved (Trivial: 1 VC)
 big_reals_test.adb:81:19: medium: assertion might fail, cannot prove In_Range (A, D, C)
 big_reals_test.adb:81:19: warning: assuming "In_Range" has no effect on global items

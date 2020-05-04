@@ -7218,6 +7218,13 @@ package body SPARK_Definition is
            and then Ekind (Scope (E)) = E_Package
            and then In_Visible_Declarations
              (Parent (Subprogram_Specification (E))))
+
+        --  We still mark predicate functions declared in the specification
+        --  of internal units.
+
+        and then not
+          (Ekind (E) = E_Function
+           and then Is_Predicate_Function (E))
       then
          return;
 
