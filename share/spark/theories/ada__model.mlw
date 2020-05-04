@@ -437,8 +437,8 @@ module Fixed_Point_Shared
   use int.EuclideanDivision
 
   (* Helper predicate to define the result of operations on fixed-points.
-     It is used with non-negative values for [num] and positive values for [den].
-     It expresses that [res] is either the result of the integer division
+     It is used with non-negative values for num and positive values for den.
+     It expresses that res is either the result of the integer division
      num/den when exact, or one of the two closest integers.
   *)
 
@@ -454,6 +454,31 @@ module Fixed_Point_Shared
        the closest integers. *)
     else
       exact <= res <= exact + 1
+
+  (* Helper predicate to define the result of conversion of fixed-points to
+     integers.  Like pos_div_relation, it is used with non-negative values for
+     num and positive values for den.  It expresses that res is either the
+     result of the integer division num/den when exact, or the closest integer
+     when rounding is needed, rounding away from zero in case of tie.
+  *)
+
+  predicate pos_div_relation_round_away (res : int) (num : int) (den : int) =
+    let exact = div num den in
+    (* case 1: special case for zero *)
+    if num = 0 then
+      res = 0
+    (* case 2: RM G.2.3(9,13) if the result is exact, that's it *)
+    else if num = exact * den then
+      res = exact
+    (* case 3: RM 4.6(33) if the result is not exact, that's the closest
+       integer, rounded away from zero if exactly halfway between two
+       integers. *)
+    else
+      let rest = num - exact * den in
+      if 2 * rest >= den then
+        res = exact + 1
+      else
+        res = exact
 
 end
 
@@ -550,21 +575,21 @@ module Fixed_Point_Rep
       else (* y = 0 *)
         true
 
-  (* conversion functions to/from int. 3 cases for the conversion to int:
+  (* conversion functions to int
      case 1:
          If the argument is zero, then the result is zero.
      case 2:
          If the argument is positive, then the mathematical result is either
-         exact, or between exact and exact+1, which are the possible results.
+         exact or exact+1, whichever is closest and rounding away from zero.
 
          for example, with small = 1/4:
-              x = 5, exact = 1, math = 1.25, result in { 1, 2 }
+              x = 5, exact = 1, math = 1.25, result = 1
      case 3:
          If the argument is negative, then the mathematical result is either
-         exact, or between exact-1 and exact, which are the possible results.
+         exact or exact-1, whichever is closest and rounding away from zero.
 
          for example, with small = 1/4:
-              x = -5, exact = -1, math = -1.25, result in { -2, -1 }
+              x = -5, exact = -1, math = -1.25, result = -1
   *)
 
   val function to_int (x : __fixed) : int
@@ -574,9 +599,26 @@ module Fixed_Point_Rep
       if x = 0 then
         to_int x = 0
       else if x > 0 then
-        pos_div_relation (to_int x) (x * num_small) den_small
+        pos_div_relation_round_away (to_int x) (x * num_small) den_small
       else (* x < 0 *)
-        pos_div_relation (- (to_int x)) (-x * num_small) (den_small)
+        pos_div_relation_round_away (- (to_int x)) (-x * num_small) (den_small)
+
+  (* conversion function from int
+     case 1:
+         If the argument is zero, then the result is zero.
+     case 2:
+         If the argument is positive, then the mathematical result is either
+         exact, or between exact and exact+1, which are the possible results.
+
+         for example, with small = 2:
+              x = 5, exact = 2, math = 2.5, result in { 2, 3 }
+     case 3:
+         If the argument is negative, then the mathematical result is either
+         exact, or between exact-1 and exact, which are the possible results.
+
+         for example, with small = 2:
+              x = -5, exact = -2, math = -2.5, result in { -3, -2 }
+  *)
 
   val function of_int (x : int) : __fixed
 
