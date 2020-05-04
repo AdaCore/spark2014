@@ -16216,7 +16216,7 @@ package body Gnat2Why.Expr is
                   declare
                      Value_Expr : W_Expr_Id := Transform_Expr
                        (Expr          => New_Expr,
-                        Expected_Type => Type_Of_Node (Etype (New_Expr)),
+                        Expected_Type => Type_Of_Node (Des_Ty),
                         Domain        => Domain,
                         Params        => Local_Params);
 
