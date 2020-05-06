@@ -1,7 +1,7 @@
 INLINING ENABLED:
-update.adb:6:14: info: add a contract to analyze it separately from calling contexts
-update.adb:6:14: info: local subprogram "Test" only analyzed in the context of calls
-update.adb:6:14: warning: subprogram "Test" has no effect
+update.adb:14:10: "Constraint_Error" would have been raised at run time
+update.adb:14:10: value not in range of type "Standard.Positive"
+gnatprove: error during generation of Global contracts
 
 INLINING DISABLED:
 update.adb:6:14: warning: subprogram "Test" has no effect

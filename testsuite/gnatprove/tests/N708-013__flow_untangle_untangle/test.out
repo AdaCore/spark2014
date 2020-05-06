@@ -14,7 +14,6 @@ foo.adb:57:07: info: initialization of "Tmp" proved
 foo.adb:65:23: info: initialization of "O" proved
 foo.adb:66:09: info: flow dependencies proved
 foo.adb:68:07: info: initialization of "Tmp" proved
-foo.adb:72:39: info: range check proved (CVC4: 1 VC)
 foo.adb:72:39: medium: overflow check might fail [possible explanation: subprogram at line 63 should mention A in a precondition]
 foo.adb:77:23: info: initialization of "O" proved
 foo.adb:78:09: info: flow dependencies proved

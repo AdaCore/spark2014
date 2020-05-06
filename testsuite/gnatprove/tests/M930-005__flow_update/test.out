@@ -11,7 +11,6 @@ update_legal.adb:13:22: info: assertion proved (CVC4: 5 VC)
 update_uninitialized.adb:15:26: info: index check proved (CVC4: 2 VC)
 update_uninitialized.adb:15:26: medium: "Element" might not be initialized
 update_uninitialized.adb:30:26: info: index check proved (CVC4: 2 VC)
-update_uninitialized.adb:30:31: info: range check proved (CVC4: 1 VC)
 update_uninitialized.adb:30:40: medium: "Element" might not be initialized
 update_uninitialized_2.adb:16:11: info: data dependencies proved
 update_uninitialized_2.adb:16:32: medium: "Z" might not be initialized
