@@ -4756,10 +4756,17 @@ package body Gnat2Why.Expr is
          --  the search.
 
          declare
-            Decl    : constant Node_Id := Enclosing_Declaration (Rep_Ty);
+            Decl    : constant Node_Id := Original_Node
+              (Enclosing_Declaration (Rep_Ty));
+            --  Derived type definitions are sometimes rewritten into record
+            --  definitions by the frontend.
             Sub_Ty  : constant Node_Id :=
               (if Nkind (Decl) = N_Subtype_Declaration
                then Subtype_Indication (Decl)
+               elsif Nkind (Decl) = N_Full_Type_Declaration
+                 and then Nkind (Type_Definition (Decl)) =
+                   N_Derived_Type_Definition
+               then Subtype_Indication (Type_Definition (Decl))
                else Empty);
             --  If Rep_Ty is a subtype, we need to use its declaration to find
             --  the next subtype in the derivation tree. Indeed, Etype on
