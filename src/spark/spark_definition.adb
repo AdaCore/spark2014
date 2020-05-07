@@ -2317,6 +2317,18 @@ package body SPARK_Definition is
          =>
             raise Program_Error;
 
+         --  For now, we don't support the use of target_name inside an
+         --  assignment which is a move or reborrow.
+
+         when N_Target_Name =>
+            if not Retysp_In_SPARK (Etype (N)) then
+               Mark_Violation (N, From => Etype (N));
+            elsif Is_Anonymous_Access_Type (Retysp (Etype (N))) then
+               Mark_Unsupported ("'@ inside a reborrow", N);
+            elsif Is_Deep (Etype (N)) then
+               Mark_Unsupported ("'@ inside a move assignment", N);
+            end if;
+
          --  Mark should not be called on other kinds
 
          when N_Abortable_Part
@@ -2386,7 +2398,6 @@ package body SPARK_Definition is
             | N_SCIL_Membership_Test
             | N_Signed_Integer_Type_Definition
             | N_Subunit
-            | N_Target_Name
             | N_Task_Definition
             | N_Terminate_Alternative
             | N_Triggering_Alternative

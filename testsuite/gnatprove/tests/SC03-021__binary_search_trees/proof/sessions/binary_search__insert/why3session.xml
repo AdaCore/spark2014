@@ -876,17 +876,17 @@
   </goal>
   <goal name="def&#39;vc.231" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="288608"/></proof>
+  <proof prover="1"><result status="valid" steps="279196"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.232" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="1545820"/></proof>
+  <proof prover="1"><result status="valid" steps="866768"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.233" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="701073"/></proof>
+  <proof prover="1"><result status="valid" steps="813051"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>

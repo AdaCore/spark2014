@@ -682,4 +682,11 @@ private
    Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
    --  Map storing predicates for invariants of access to incomplete types
 
+   Target_Name : W_Identifier_Id := Why_Empty;
+   Target_Used : Boolean := False;
+   --  Name to use for occurrences of target names @ in assignments. It should
+   --  be equal to Why_Empty when we are not translating an assignment.
+   --  Target_Used is set to True if the Target_Name is used somewhere and
+   --  should be bound.
+
 end Gnat2Why.Expr;

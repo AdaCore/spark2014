@@ -16332,6 +16332,11 @@ package body Gnat2Why.Expr is
                Domain   => Domain,
                Params   => Params);
 
+         when N_Target_Name =>
+            pragma Assert (Target_Name /= Why_Empty);
+            T := +Target_Name;
+            Target_Used := True;
+
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="
                                   & Node_Kind'Image (Nkind (Expr)));
@@ -20046,8 +20051,69 @@ package body Gnat2Why.Expr is
          when N_Ignored_In_SPARK =>
             return +Void;
 
+         --  Create an identifier for the target name and call
+         --  Transform_Assignment_Statement.
+
          when N_Assignment_Statement =>
-            return Transform_Assignment_Statement (Stmt_Or_Decl);
+            declare
+               Lvalue : constant Entity_Id := Name (Stmt_Or_Decl);
+               W_Ty   : constant W_Type_Id := Type_Of_Node (Lvalue);
+               pragma Assert
+                 (if Has_Array_Type (Etype (Lvalue))
+                    and then Get_Type_Kind (W_Ty) = EW_Split
+                  then Nkind (Lvalue) in N_Identifier | N_Expanded_Name
+                    and then Is_Object (Entity (Lvalue)));
+               --  Type_Of_Node only returns split array types on array objects
+
+               T      : W_Prog_Id;
+
+            begin
+               --  Sanity checking, the global state should be clean
+
+               pragma Assert (Target_Used = False);
+               pragma Assert (Target_Name = Why_Empty);
+
+               --  Create an identifier for references to the target name in
+               --  the assigned expression.
+
+               Target_Name := New_Temp_Identifier
+                 (Ada_Node  =>
+                    (if Has_Array_Type (Etype (Lvalue))
+                     and then Get_Type_Kind (W_Ty) = EW_Split
+                     then Entity (Lvalue)
+                     else Empty),
+                  --  If W_Ty is a split array type, we need to use the
+                  --  Ada_Node of the entity associated to Lvalue so that
+                  --  bounds can be retrieved.
+
+                  Typ       => W_Ty,
+                  Base_Name => "target");
+
+               T := Transform_Assignment_Statement (Stmt_Or_Decl);
+
+               --  Only introduce a binding for Target_Name if it was actually
+               --  used in the assignment.
+
+               if Target_Used then
+                  T := New_Binding
+                    (Ada_Node => Stmt_Or_Decl,
+                     Name     => Target_Name,
+                     Def      => Transform_Expr
+                       (Expr          => Lvalue,
+                        Expected_Type => W_Ty,
+                        Domain        => EW_Prog,
+                        Params        => Body_Params),
+                     Context  => +T,
+                     Typ      => W_Ty);
+               end if;
+
+               --  Clean up global state
+
+               Target_Name := Why_Empty;
+               Target_Used := False;
+
+               return T;
+            end;
 
          --  Translate a return statement by raising the predefined exception
          --  for returns, which is caught at the end of the subprogram. For

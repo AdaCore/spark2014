@@ -234,7 +234,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.65" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="504457"/></proof>
+  <proof prover="0"><result status="valid" steps="422715"/></proof>
   </goal>
   <goal name="def&#39;vc.66" expl="loop invariant init" proved="true">
   <proof prover="0"><result status="valid" steps="169102"/></proof>
@@ -304,10 +304,10 @@
   <proof prover="0"><result status="valid" steps="129129"/></proof>
   </goal>
   <goal name="def&#39;vc.86" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="715088"/></proof>
+  <proof prover="0"><result status="valid" steps="446170"/></proof>
   </goal>
   <goal name="def&#39;vc.87" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="251692"/></proof>
+  <proof prover="0"><result status="valid" steps="244862"/></proof>
   </goal>
   <goal name="def&#39;vc.88" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="48236"/></proof>
@@ -356,7 +356,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.101" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3014630"/></proof>
+  <proof prover="0"><result status="valid" steps="1856432"/></proof>
   </goal>
  </transf>
  </goal>

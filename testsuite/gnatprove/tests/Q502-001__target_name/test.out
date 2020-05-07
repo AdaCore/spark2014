@@ -1,0 +1,48 @@
+inc.adb:1:16: warning: unused initial value of "x"
+inc.adb:2:11: info: postcondition proved (CVC4: 1 VC)
+inc.adb:2:21: info: overflow check proved (CVC4: 1 VC)
+inc.adb:5:11: medium: overflow check might fail (e.g. when x = Integer'Last)
+test_array.adb:5:18: warning: unused initial value of "X"
+test_array.adb:9:07: info: range check proved (CVC4: 4 VC)
+test_array.adb:9:18: warning: unused assignment
+test_array.adb:10:10: info: index check proved (CVC4: 2 VC)
+test_array.adb:10:13: warning: unused assignment
+test_array.adb:10:18: info: overflow check proved (CVC4: 1 VC)
+test_array.adb:10:18: info: range check proved (CVC4: 1 VC)
+test_array.adb:11:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 2 VC)
+test_array.adb:11:26: info: index check proved (CVC4: 2 VC)
+test_array.adb:11:26: info: range check proved (CVC4: 1 VC)
+test_array.adb:11:34: info: index check proved (CVC4: 2 VC)
+test_array.adb:11:40: info: index check proved (CVC4: 2 VC)
+test_array.adb:14:18: warning: unused initial value of "X"
+test_array.adb:18:07: info: range check proved (CVC4: 4 VC)
+test_array.adb:18:18: warning: unused assignment
+test_array.adb:19:13: warning: unused assignment
+test_array.adb:19:18: info: overflow check proved (CVC4: 1 VC)
+test_array.adb:19:18: info: range check proved (CVC4: 1 VC)
+test_array.adb:20:26: info: index check proved (CVC4: 2 VC)
+test_array.adb:20:40: info: index check proved (CVC4: 2 VC)
+test_record.adb:25:34: info: discriminant check proved (CVC4: 1 VC)
+test_record.adb:28:09: info: discriminant check proved (CVC4: 1 VC)
+test_record.adb:28:20: info: discriminant check proved (CVC4: 1 VC)
+test_record.adb:28:23: info: overflow check proved (CVC4: 1 VC)
+test_record.adb:29:08: info: discriminant check proved (CVC4: 1 VC)
+test_record.adb:29:16: info: overflow check proved (CVC4: 1 VC)
+test_record.adb:33:49: info: discriminant check proved (CVC4: 1 VC)
+test_record.adb:36:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+test_record.adb:36:33: info: discriminant check proved (CVC4: 1 VC)
+test_record.adb:36:36: info: overflow check proved (CVC4: 1 VC)
+test_record.adb:37:08: info: discriminant check proved (CVC4: 1 VC)
+test_record.adb:37:16: info: overflow check proved (CVC4: 1 VC)
+test_record.adb:44:17: info: overflow check proved (CVC4: 1 VC)
+test_record.adb:44:26: info: overflow check proved (CVC4: 1 VC)
+test_record.adb:45:11: warning: unused assignment
+test_record.adb:45:16: info: overflow check proved (CVC4: 1 VC)
+test_record.adb:46:33: info: overflow check proved (CVC4: 1 VC)
+test_target_illegal.adb:5:04: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+test_target_illegal.adb:5:04: violation of aspect SPARK_Mode at line 1
+test_target_illegal.adb:7:09: @ inside a move assignment is not yet supported
+test_target_illegal.adb:8:04: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+test_target_illegal.adb:8:04: violation of aspect SPARK_Mode at line 1
+test_target_illegal.adb:8:09: @ inside a reborrow is not yet supported
+gnatprove: error during flow analysis and proof

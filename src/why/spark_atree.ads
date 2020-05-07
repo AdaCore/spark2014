@@ -175,6 +175,7 @@ package SPARK_Atree is
      Sinfo.N_Subtype_Declaration;
    N_Subtype_Indication             : Node_Kind renames
      Sinfo.N_Subtype_Indication;
+   N_Target_Name                    : Node_Kind renames Sinfo.N_Target_Name;
    N_Type_Conversion                : Node_Kind renames
      Sinfo.N_Type_Conversion;
    N_Unchecked_Type_Conversion      : Node_Kind renames
