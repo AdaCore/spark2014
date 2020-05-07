@@ -593,6 +593,77 @@ message for a possible division by zero in this case.
 
 Quantified expressions should always be parenthesized.
 
+.. _Declare Expressions:
+
+Declare Expressions
+-------------------
+
+[Ada 202X]
+
+Declare expressions are used to factorize parts of an expression. They allow to
+declare constants and renamings which are local to the expression. A
+declare expression is made of two parts:
+
+* A list of declarations of local constants and renamings
+* An expression using the names introduced in these declarations.
+
+To match the syntax of declare blocks, the first part is introduced by
+``declare`` and the second by ``begin``. The scope is delimited by enclosing
+parentheses, without ``end`` to close the scope.
+
+As an example, we introduce a ``Find_First_Zero`` function which finds the index
+of the first occurrence of ``0`` in an array of integers and a procedure
+``Set_Range_To_Zero`` which zeros out all elements located between the first
+and second occurrence of ``0`` in the array:
+
+.. code-block:: ada
+
+   function Has_Zero (A : My_Array) return Boolean is
+     (for some E of A => E = 0);
+
+   function Has_Two_Zeros (A : My_Array) return Boolean is
+     (for some I in A'Range => A (I) = 0 and
+        (for some J in A'Range => A (J) = 0 and I /= J));
+
+   function Find_First_Zero (A : My_Array) return Natural with
+     Pre  => Has_Zero (A),
+     Post => Find_First_Zero'Result in A'Range
+       and A (Find_First_Zero'Result) = 0
+       and not Has_Zero (A (A'First .. Find_First_Zero'Result - 1));
+
+   procedure Set_Range_To_Zero (A : in out My_Array) with
+     Pre  => Has_Two_Zeros (A),
+     Post =>
+        A = (A'Old with delta
+               Find_First_Zero (A'Old) ..
+                 Find_First_Zero
+	           (A'Old (Find_First_Zero (A'Old) + 1 .. A'Last)) => 0);
+
+In the contract of ``Set_Range_To_Zero``, we use :ref:`Delta Aggregates` to
+state that elements of ``A`` located in the range between the first and the
+second occurrence of ``0`` in ``A`` have been set to ``0`` by the procedure.
+The second occurrence is found by calling ``Find_First_Zero``
+on the slice of ``A`` starting just after the first occurrence of ``0``.
+
+To make the contract of ``Set_Range_To_Zero`` more readable, we can use a
+declare expression to introduce constants for the first and second occurrence
+of ``0`` in the array. The explicit names make it easier to understand what the
+bounds of the updated slice are supposed to be. It also avoids repeating the
+call to ``Find_First_Zero`` on ``A`` in the computation of
+the second bound:
+
+.. code-block:: ada
+
+   procedure Set_Range_To_Zero (A : in out My_Array) with
+     Pre  => Has_Two_Zeros (A),
+     Post =>
+       (declare
+          Fst_Zero : constant Positive := Find_First_Zero (A'Old);
+          Snd_Zero : constant Positive := Find_First_Zero
+	     (A'Old (Fst_Zero + 1 .. A'Last));
+        begin
+          A = (A'Old with delta Fst_Zero .. Snd_Zero => 0));
+
 .. _Expression Functions:
 
 Expression Functions
