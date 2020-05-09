@@ -8,7 +8,6 @@ test_delta_checks.adb:10:58: info: index check proved (CVC4: 2 VC)
 test_delta_checks.adb:11:22: info: assertion proved (CVC4: 1 VC)
 test_delta_checks.adb:14:25: info: data dependencies proved
 test_delta_checks.adb:17:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 2 VC)
-test_delta_checks.adb:17:22: info: range check proved (CVC4: 1 VC)
 test_delta_checks.adb:17:22: medium: array index check might fail (e.g. when Y = 6 and Z = (others => 1) and Z'First = 1 and Z'Last = 5) [possible explanation: subprogram at line 14 should mention Y in a precondition]
 test_delta_checks.adb:17:30: info: index check proved (CVC4: 2 VC)
 test_delta_checks.adb:17:38: info: index check proved (CVC4: 2 VC)
