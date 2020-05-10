@@ -1797,22 +1797,24 @@ The prefix of an Initialized attribute reference shall denote an object.
    the parameter X1 and the result of F are specified as having relaxed
    initialization; the parameters X2 and X3 are not:
 
-.. code-block:: ada
+   .. code-block:: ada
 
       function F (X1 : T1; X2 : T2; X3 : T3) return T4
         with Relaxed_Initialization => (X1 => True, F'Result);
-		
+
+..
+
    More precisely, the Relaxed_Initialization aspect for a subprogram
    or entry (or a generic subprogram) is specified by
    an ``aspect_specification`` where the ``aspect_mark`` is
    Relaxed_Initialization and the ``aspect_definition`` follows the
    following grammar for ``profile_aspect_spec``:
-		
-::
 
-  profile_aspect_spec ::= ( profile_spec_item {, profile_spec_item} )
-  profile_spec_item   ::= parameter_name [=> aspect_definition]
-                        | function_name'Result [=> aspect_definition]
+   ::
+
+      profile_aspect_spec ::= ( profile_spec_item {, profile_spec_item} )
+      profile_spec_item   ::= parameter_name [=> aspect_definition]
+                            | function_name'Result [=> aspect_definition]
 
 3. Relaxed_Initialization aspect specifications are inherited by
    a derived type (if the aspect is specified for the ancestor type)
@@ -1898,7 +1900,7 @@ The prefix of an Initialized attribute reference shall denote an object.
     of mode **in** or **in out** and does not have relaxed initialization,
     upon a call whose precondition implies X'Initialized, and upon return
     from a call whose postcondition implies X'Initialized.
-      
+
     [For updates to X that do not involve calls, this check that X is
     initialized is implemented via flow analysis and no additional
     annotations are required. Preconditions and postconditions that mention
@@ -1921,7 +1923,7 @@ The prefix of an Initialized attribute reference shall denote an object.
     The verification conditions described here are not needed if
     X does not have relaxed initialization because the more conservative
     whole-object-granularity rules that govern that case will ensure that X is
-    initialized whenever it is read.]  
+    initialized whenever it is read.]
 
 13. For any object X, evaluation of X'Initialized includes the evaluation
     of Y'Initialized for every scalar reachable element Y of X (excluding
