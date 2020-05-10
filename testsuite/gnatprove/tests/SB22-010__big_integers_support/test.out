@@ -30,6 +30,7 @@ big_integers_test.adb:34:11: warning: unused assignment
 big_integers_test.adb:34:14: medium: range check might fail
 big_integers_test.adb:34:14: warning: assuming "To_Integer" has no effect on global items
 big_integers_test.adb:34:14: warning: no Global contract available for "To_Integer"
+big_integers_test.adb:34:26: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:38:04: warning: analyzing unreferenced procedure "MSC_Range_Check_Fail"
 big_integers_test.adb:38:37: info: initialization of "Big_Int" proved
 big_integers_test.adb:38:64: info: initialization of "LL_Int" proved
@@ -44,6 +45,7 @@ big_integers_test.adb:42:14: warning: unused assignment
 big_integers_test.adb:42:20: medium: range check might fail
 big_integers_test.adb:42:20: warning: assuming "From_Big_Integer" has no effect on global items
 big_integers_test.adb:42:20: warning: no Global contract available for "From_Big_Integer"
+big_integers_test.adb:42:39: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:46:04: warning: analyzing unreferenced procedure "MUC_Range_Check_Fail"
 big_integers_test.adb:46:36: info: initialization of "Big_Int" proved
 big_integers_test.adb:46:63: info: initialization of "Uns" proved
@@ -58,6 +60,7 @@ big_integers_test.adb:50:11: warning: unused assignment
 big_integers_test.adb:50:17: medium: range check might fail
 big_integers_test.adb:50:17: warning: assuming "From_Big_Integer" has no effect on global items
 big_integers_test.adb:50:17: warning: no Global contract available for "From_Big_Integer"
+big_integers_test.adb:50:36: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:54:04: warning: analyzing unreferenced procedure "Divide_Division_Check_Fail"
 big_integers_test.adb:54:14: warning: subprogram "Divide_Division_Check_Fail" has no effect
 big_integers_test.adb:55:28: warning: assuming "To_Big_Integer" has no effect on global items
@@ -191,18 +194,22 @@ big_integers_test.adb:113:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:114:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:114:19: warning: assuming "In_Range" has no effect on global items
 big_integers_test.adb:114:19: warning: no Global contract available for "In_Range"
+big_integers_test.adb:114:29: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:116:07: warning: assuming "Is_Valid" has no effect on global items
 big_integers_test.adb:116:07: warning: function Is_Valid is assumed to return True
 big_integers_test.adb:116:07: warning: no Global contract available for "Is_Valid"
 big_integers_test.adb:121:09: info: range check proved (CVC4: 1 VC)
 big_integers_test.adb:121:09: warning: assuming "To_Integer" has no effect on global items
 big_integers_test.adb:121:09: warning: no Global contract available for "To_Integer"
+big_integers_test.adb:121:21: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:122:14: info: range check proved (CVC4: 1 VC)
 big_integers_test.adb:122:14: warning: assuming "From_Big_Integer" has no effect on global items
 big_integers_test.adb:122:14: warning: no Global contract available for "From_Big_Integer"
+big_integers_test.adb:122:33: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:123:12: info: range check proved (CVC4: 1 VC)
 big_integers_test.adb:123:12: warning: assuming "From_Big_Integer" has no effect on global items
 big_integers_test.adb:123:12: warning: no Global contract available for "From_Big_Integer"
+big_integers_test.adb:123:31: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:126:11: warning: assuming "To_Big_Integer" has no effect on global items
 big_integers_test.adb:126:11: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:127:11: warning: assuming "To_Big_Integer" has no effect on global items
