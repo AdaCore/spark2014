@@ -35,7 +35,7 @@ os.environ["PATH"] = cwd
 # This should add a prover of type cvc3 (which is recognized using the -version
 # string (see why3/share/provers-detection-data.conf)
 # "cvc3_2.4.1" is the shortcut and "cvc3" is the family of the prover.
-output = subprocess.check_output([why3config, "-C", "toto.conf", "--debug", "autodetect", "--add-prover", "cvc3","cvc3_2.4.1", fakecvc3],
+output = subprocess.check_output([why3config, "-C", "toto.conf", "--debug=autodetect", "--add-prover=cvc3,cvc3_2.4.1,"+fakecvc3],
                                  stderr=subprocess.STDOUT)
 
 os.environ["PATH"] = path_save
