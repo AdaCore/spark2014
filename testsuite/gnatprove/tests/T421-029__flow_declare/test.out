@@ -4,4 +4,3 @@ flow.adb:8:22: info: postcondition proved (CVC4: 2 VC)
 flow.adb:9:23: medium: missing dependency "Y1 => X2"
 flow.adb:9:33: medium: missing dependency "Y2 => X1"
 flow.adb:11:07: info: initialization of "Proxy" proved
-main.adb:6:33: warning: "X" may be referenced before it has a value

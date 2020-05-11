@@ -675,7 +675,8 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
         with open(default_project, 'w') as f_prj:
             f_prj.write('project Test is\n')
             f_prj.write('  package Compiler is\n')
-            f_prj.write('    for Default_Switches ("Ada") use ("-gnatws");\n')
+            f_prj.write('    for Default_Switches ("Ada")' +
+                        ' use ("-gnatws", "-gnat2020");\n')
             f_prj.write('    for Local_Configuration_Pragmas' +
                         ' use "test.adc";\n')
             f_prj.write('  end Compiler;\n')
