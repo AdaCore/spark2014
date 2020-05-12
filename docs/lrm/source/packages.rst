@@ -132,7 +132,7 @@ of an effectively volatile type. There are two exceptions to this rule:
     when a type conversion introduces a new object; in cases where it is
     unspecified whether a new object is created, we assume (for purposes
     of the rules in this section) that no new object is created].
-  
+
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
 abstraction; see :ref:`abstract-state-aspect`). [The term "external" does
@@ -385,7 +385,7 @@ be *compatible with respect to volatility* with E2 if
    * both E1 and E2 are effectively volatile and each of the four
      volatility refinement aspects is either False for E1 or
      True for E2.
-   
+
 .. centered:: **Legality Rules**
 
 
@@ -430,10 +430,10 @@ be *compatible with respect to volatility* with E2 if
    an effectively volatile object or an external state abstraction.
 
 9. A formal parameter (or result) of a nonvolatile function, or of a
-    function which is nonvolatile for internal calls, shall not be of
-    an effectively volatile type. [For a protected function, this rule
-    does not apply to the notional parameter denoting the current instance of
-    the associated protected unit described in section :ref:`global-aspects`.]
+   function which is nonvolatile for internal calls, shall not be of
+   an effectively volatile type. [For a protected function, this rule
+   does not apply to the notional parameter denoting the current instance of
+   the associated protected unit described in section :ref:`global-aspects`.]
 
 10. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object with
