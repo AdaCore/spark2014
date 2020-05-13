@@ -1,5 +1,4 @@
 discr_type_missing.ads:6:07: missing case value: "C"
 discr_type_missing.ads:16:25: value of discriminant "S" is out of range
 discr_type_missing.ads:18:25: "Y" is undefined
-discr_type_missing.ads:18:25: value for discriminant "S" must be static
 gnatprove: error during generation of Global contracts
