@@ -4942,7 +4942,11 @@ package body SPARK_Definition is
                  ("type invariant on private_type_declaration or"
                   & " private_type_extension", E, "SPARK RM 7.3.2(2)");
 
-            elsif Is_Effectively_Volatile (E) then
+            elsif Is_Effectively_Volatile (E)
+              and then (Async_Writers_Enabled (E)
+                          or else
+                        Effective_Reads_Enabled (E))
+            then
                Mark_Violation
                  ("type invariant on effectively volatile type",
                   E, "SPARK RM 7.3.2(4)");
@@ -5026,12 +5030,16 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  An effectively volatile type cannot have a predicate. Here, we do
-         --  not try to distinguish the case where the predicate is inherited
-         --  from a parent whose full view is not in SPARK.
+         --  An effectively volatile type with Async_Writers or Effective_Reads
+         --  cannot have a predicate. Here, we do not try to distinguish the
+         --  case where the predicate is inherited from a parent whose full
+         --  view is not in SPARK.
 
          if Has_Predicates (E)
-            and then Is_Effectively_Volatile (E)
+           and then Is_Effectively_Volatile (E)
+           and then (Async_Writers_Enabled (E)
+                       or else
+                     Effective_Reads_Enabled (E))
          then
             Mark_Violation
               ("subtype predicate on effectively volatile type",

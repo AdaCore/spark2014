@@ -2275,19 +2275,17 @@ language definition and what is not.]
 
 .. centered:: **Legality Rules**
 
-
 2. The aspect Type_Invariant may be specified in SPARK, but only for
    the completion of a private type. [In other words, the Type_Invariant
    aspect shall not be specified for a partial view of a type, nor for the
    completion of a private extension.]
    The aspect Type_Invariant'Class is not in SPARK.
 
-
 3. [A Type_Invariant expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
-
-4. A Type_Invariant shall not apply to an effectively volatile type.
+4. A Type_Invariant shall not apply to an effectively volatile type with the
+   properties Async_Writers or Effective_Reads set to True.
 
 .. centered:: **Verification Rules**
 
@@ -2300,7 +2298,6 @@ several points (described below) where, in fact, Ada defines no such checks.
 [This means that when we talk below about extending invariant checks,
 we are only talking about generating additional verification conditions;
 we are not talking about any changes in a program's behavior at run-time.]
-
 
 5. The type invariant expression for a type T shall not include a call
    to a boundary function for type T. [This often means that a type

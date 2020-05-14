@@ -1701,10 +1701,9 @@ package body SPARK_Util is
      (case Ekind (E) is
          when E_Abstract_State =>
             Is_External_State (E),
-         when Object_Kind =>
-            Is_Effectively_Volatile (E),
-         when E_Protected_Type | E_Task_Type =>
-            False,
+         when Object_Kind | Type_Kind =>
+            not Is_Concurrent_Type (E)
+              and then Is_Effectively_Volatile (E),
          when others =>
             raise Program_Error);
 
@@ -1712,9 +1711,10 @@ package body SPARK_Util is
    -- Has_Volatile_Property --
    ---------------------------
 
-   function Has_Volatile_Property (E : Checked_Entity_Id;
-                                   P : Volatile_Pragma_Id)
-                                   return Boolean
+   function Has_Volatile_Property
+     (E : Checked_Entity_Id;
+      P : Volatile_Pragma_Id)
+      return Boolean
    is
    begin
       --  Q: Why restrict the property of volatility for IN and OUT parameters?
@@ -1725,7 +1725,7 @@ package body SPARK_Util is
       --  silent side effects, so...
 
       case Ekind (E) is
-         when E_Abstract_State | E_Variable | E_Component =>
+         when E_Abstract_State | E_Variable | E_Component | Type_Kind =>
             return
               (case P is
                when Pragma_Async_Readers    => Async_Readers_Enabled (E),
