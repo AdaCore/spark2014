@@ -123,7 +123,6 @@ package body Gnat2Why.Expr.Loops is
      (Loop_Id            : Entity_Id;
       Loop_Start         : W_Prog_Id;
       Loop_End           : W_Prog_Id;
-      Loop_Restart       : W_Prog_Id;
       Enter_Condition    : W_Prog_Id;
       Exit_Condition     : W_Prog_Id;
       Implicit_Invariant : W_Pred_Id;
@@ -142,8 +141,7 @@ package body Gnat2Why.Expr.Loops is
    --  Loop_Start and Loop_End correspond to the statements and declarations
    --  respectively before and after the loop invariant pragma put by the
    --  user, if any. Otherwise, Loop_Start is the void expression, and
-   --  Loop_End corresponds to all statements in the loop. Loop_Restart is the
-   --  translation of Loop_Start adapted for being within the Why loop.
+   --  Loop_End corresponds to all statements in the loop.
    --
    --  Enter_Condition and Exit_Condition are respectively the conditions for
    --  entering the loop the first time, and exiting the loop at each execution
@@ -614,7 +612,6 @@ package body Gnat2Why.Expr.Loops is
             return Wrap_Loop (Loop_Id            => Loop_Id,
                               Loop_Start         => Initial_Prog,
                               Loop_End           => Final_Prog,
-                              Loop_Restart       => Initial_Prog,
                               Enter_Condition    => True_Prog,
                               Exit_Condition     => False_Prog,
                               Implicit_Invariant => Dyn_Types_Inv,
@@ -665,7 +662,6 @@ package body Gnat2Why.Expr.Loops is
                return Wrap_Loop (Loop_Id            => Loop_Id,
                                  Loop_Start         => Initial_Prog,
                                  Loop_End           => Final_Prog,
-                                 Loop_Restart       => Initial_Prog,
                                  Enter_Condition    => Cond_Prog,
                                  Exit_Condition     => +W_Not_OId'(New_Not
                                    (Ada_Node => Condition (Scheme),
@@ -1336,7 +1332,6 @@ package body Gnat2Why.Expr.Loops is
                     Wrap_Loop (Loop_Id            => Loop_Id,
                                Loop_Start         => Initial_Prog,
                                Loop_End           => Final_Prog,
-                               Loop_Restart       => Initial_Prog,
                                Enter_Condition    => Cond_Prog,
                                Exit_Condition     => Exit_Cond,
                                Implicit_Invariant => Impl_Inv,
@@ -1812,7 +1807,6 @@ package body Gnat2Why.Expr.Loops is
      (Loop_Id            : Entity_Id;
       Loop_Start         : W_Prog_Id;
       Loop_End           : W_Prog_Id;
-      Loop_Restart       : W_Prog_Id;
       Enter_Condition    : W_Prog_Id;
       Exit_Condition     : W_Prog_Id;
       Implicit_Invariant : W_Pred_Id;
@@ -1850,7 +1844,7 @@ package body Gnat2Why.Expr.Loops is
                            +Void
                          else
                            Update_Stmt),
-                   7 => Loop_Restart,
+                   7 => Loop_Start,
                    8 => Variant_Check,
                    9 => Invariant_Check));
 
