@@ -1,5 +1,5 @@
 counter.adb:7:51: info: index check proved (CVC4: 4 VC)
-counter.adb:8:13: info: loop variant proved (CVC4: 1 VC)
+counter.adb:8:34: info: loop variant proved (CVC4: 1 VC)
 counter.adb:9:36: info: loop invariant initialization proved (CVC4: 1 VC)
 counter.adb:9:36: info: loop invariant preservation proved (CVC4: 1 VC)
 counter.adb:9:82: info: index check proved (CVC4: 4 VC)

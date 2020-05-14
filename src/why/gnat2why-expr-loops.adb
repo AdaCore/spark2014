@@ -86,22 +86,14 @@ package body Gnat2Why.Expr.Loops is
    --     after the last select loop (in)variant, or all the statements of the
    --     loop if there is no loop (in)variant in the loop.
 
-   procedure Transform_Loop_Variant
-     (Stmt                  : Node_Id;
-      Check_Prog            : out W_Prog_Id;
-      Progress_Pred         : out W_Pred_Id;
-      Same_Or_Progress_Pred : out W_Pred_Id;
-      Tmp_Vars              : out Why_Node_Lists.List;
-      Update_Prog           : out W_Prog_Id);
+   function Transform_Loop_Variant (Stmt : Node_Id) return W_Variants_Id;
+   --  Given a pragma Loop_Variant in Stmt, returns the Variants Why3 node that
+   --  contains the same information in Why3 syntax (the variant expression as
+   --  a term).
+
+   function Check_Loop_Variant (Stmt : Node_Id) return W_Prog_Id;
    --  Given a pragma Loop_Variant in Stmt, returns the Why node for checking
-   --  that a loop variant does not raise run-time errors in Check_Prog;
-   --  the Why node for the logic proposition that the variant increases
-   --  or decreases as desired in Progress_Pred; the Why node for the logic
-   --  proposition that the variant either progresses or stays the same in
-   --  Same_Or_Progress_Pred. The last one is only used when the variant is
-   --  not one of the "selected" ones. Update_Prog is a list of assignments of
-   --  expression nodes in the loop variant to temporary names used to refer
-   --  to their saved values, returned in Tmp_Vars.
+   --  that a loop variant does not raise run-time errors.
 
    function Transform_Loop_Body_Statements
      (Instrs : Node_Lists.List) return W_Prog_Id;
@@ -128,8 +120,7 @@ package body Gnat2Why.Expr.Loops is
       Implicit_Invariant : W_Pred_Id;
       User_Invariants    : W_Pred_Array;
       Invariant_Check    : W_Prog_Id;
-      Variant_Tmps       : Why_Node_Lists.List;
-      Variant_Update     : W_Prog_Id;
+      Variants           : W_Variants_Array;
       Variant_Check      : W_Prog_Id;
       Update_Stmt        : W_Prog_Id := Why_Empty;
       First_Stmt         : Node_Id;
@@ -152,11 +143,9 @@ package body Gnat2Why.Expr.Loops is
    --  Why loop. Invariant_Check is the Why program checking that the user
    --  invariant does not raise a run-time error.
    --
-   --  Variant_Tmps is the list of temporary identifiers used to save the value
-   --  of the loop variant expressions. Variant_Update assigns the current
-   --  value of the loop variant expressions to these temporary variables.
-   --  Variant_Check checks both the absence of run-time errors in the loop
-   --  variant, and that the loop variant makes progress.
+   --  Variants is the list of Variants nodes (which themselves are lists of
+   --  Increases/Decreases items). Variant_Check checks the absence of run-time
+   --  errors in the loop variant.
    --
    --  First_Stmt is the first statement in the loop body, to help decide
    --  whether to issue a dead code warning. Similarly, Next_Stmt is the first
@@ -164,6 +153,33 @@ package body Gnat2Why.Expr.Loops is
    --  warning if control cannot reach that point.
    --
    --  See comments in Wrap_Loop's body for the actual transformation
+
+   ------------------------
+   -- Check_Loop_Variant --
+   ------------------------
+
+   function Check_Loop_Variant (Stmt : Node_Id) return W_Prog_Id is
+      Prog    : W_Prog_Id := +Void;
+      Variant : Node_Id;
+   begin
+      Variant := First (Pragma_Argument_Associations (Stmt));
+      while Present (Variant) loop
+         declare
+            Expr : constant Node_Id := Expression (Variant);
+         begin
+            Prog :=
+              Sequence (Prog,
+                        New_Ignore (Prog =>
+                          +Transform_Expr (Expr          => Expr,
+                                           Expected_Type =>
+                                             Base_Why_Type_No_Bool (Expr),
+                                           Domain        => EW_Prog,
+                                           Params        => Body_Params)));
+            Next (Variant);
+         end;
+      end loop;
+      return Prog;
+   end Check_Loop_Variant;
 
    ------------------------
    -- Get_Loop_Invariant --
@@ -399,6 +415,51 @@ package body Gnat2Why.Expr.Loops is
    ------------------------------
 
    function Transform_Loop_Statement (Stmt : Node_Id) return W_Prog_Id is
+
+      function Transform_Loop_Variants (List : Node_Lists.List)
+                                        return W_Variants_Array;
+
+      function Check_Loop_Variants (List : Node_Lists.List)
+                                    return W_Prog_Id;
+
+      -------------------------
+      -- Check_Loop_Variants --
+      -------------------------
+
+      function Check_Loop_Variants (List : Node_Lists.List)
+                                    return W_Prog_Id
+      is
+         Stmts : W_Prog_Array (1 .. Natural (List.Length));
+         Counter : Integer := 1;
+         use Ada.Containers;
+      begin
+         if List.Length = 0 then
+            return +Void;
+         end if;
+         for Variant of List loop
+            Stmts (Counter) := Check_Loop_Variant (Variant);
+            Counter := Counter + 1;
+         end loop;
+         return Sequence (Stmts);
+      end Check_Loop_Variants;
+
+      -----------------------------
+      -- Transform_Loop_Variants --
+      -----------------------------
+
+      function Transform_Loop_Variants (List : Node_Lists.List)
+                                        return W_Variants_Array
+      is
+         Variants_Ar : W_Variants_Array (1 .. Natural (List.Length));
+         Count       : Integer := 1;
+      begin
+         for Loop_Variant of List loop
+            Variants_Ar (Count) := Transform_Loop_Variant (Loop_Variant);
+            Count := Count + 1;
+         end loop;
+         return Variants_Ar;
+      end Transform_Loop_Variants;
+
       Loop_Body : constant List_Id   := Statements (Stmt);
       Scheme    : constant Node_Id   := Iteration_Scheme (Stmt);
       Loop_Id   : constant Entity_Id := Entity (Identifier (Stmt));
@@ -423,13 +484,6 @@ package body Gnat2Why.Expr.Loops is
 
       Dyn_Types_Inv   : W_Pred_Id := True_Pred;
 
-      --  Variables for the selected loop variants, default initialized to the
-      --  proper values when the loop does not have a selected variant.
-
-      Variant_Check   : W_Prog_Id := +Void;
-      Variant_Update  : W_Prog_Id := +Void;
-      Variant_Tmps    : Why_Node_Lists.List;
-
       Loop_Param_Ent  : Entity_Id := Empty;
       Loop_Index      : W_Identifier_Id := Why_Empty;
       Loop_Index_Type : W_Type_Id := EW_Int_Type;
@@ -439,6 +493,8 @@ package body Gnat2Why.Expr.Loops is
 
       Low_Id          : W_Identifier_Id := Why_Empty;
       High_Id         : W_Identifier_Id := Why_Empty;
+
+   --  Start of processing for Transform_Loop_Statement
 
    begin
       --  Push a scope for the exit statements of the loop. This scope is
@@ -560,51 +616,6 @@ package body Gnat2Why.Expr.Loops is
             end;
          end if;
 
-         --  Generate the relevant bits for the loop variants, if any
-
-         for Loop_Variant of Loop_Variants loop
-            declare
-               One_Variant_Prog   : W_Prog_Id;
-               One_Variant_Pred   : W_Pred_Id;
-               One_Variant_Update : W_Prog_Id;
-               One_Variant_Tmps   : Why_Node_Lists.List;
-               Unused_Pred        : W_Pred_Id;
-
-            begin
-               --  Generate the Why expressions for checking absence of
-               --  run-time errors and variant progress.
-
-               Transform_Loop_Variant
-                 (Stmt                  => Loop_Variant,
-                  Check_Prog            => One_Variant_Prog,
-                  Progress_Pred         => One_Variant_Pred,
-                  Same_Or_Progress_Pred => Unused_Pred,
-                  Tmp_Vars              => One_Variant_Tmps,
-                  Update_Prog           => One_Variant_Update);
-
-               --  Add new temporaries to the common list for loop variants
-
-               Append (To => Variant_Tmps, Elmts => One_Variant_Tmps);
-
-               --  Create the program that updates the variables holding saved
-               --  values of variant expressions.
-
-               Variant_Update := Sequence (Variant_Update, One_Variant_Update);
-
-               --  Combine the run-time check and the loop variant check in one
-               --  program Variant_Check, for use in Loop_Wrap.
-
-               Variant_Check :=
-                 Sequence
-                   ((1 => Variant_Check,
-                     2 => New_Ignore (Prog => One_Variant_Prog),
-                     3 => New_Located_Assert (Ada_Node => Loop_Variant,
-                                              Pred     => One_Variant_Pred,
-                                              Reason   => VC_Loop_Variant,
-                                              Kind     => EW_Check)));
-            end;
-         end loop;
-
          --  Depending on the form of the loop, put together the generated Why
          --  nodes in a different way. [Wrap_Loop] needs to be called on every
          --  path, as it takes care or popping the stack of exit paths by
@@ -621,9 +632,10 @@ package body Gnat2Why.Expr.Loops is
                               Implicit_Invariant => Dyn_Types_Inv,
                               User_Invariants    => Why_Invariants,
                               Invariant_Check    => Inv_Check,
-                              Variant_Tmps       => Variant_Tmps,
-                              Variant_Update     => Variant_Update,
-                              Variant_Check      => Variant_Check,
+                              Variants           =>
+                                Transform_Loop_Variants (Loop_Variants),
+                              Variant_Check      =>
+                                Check_Loop_Variants (Loop_Variants),
                               First_Stmt         => Loop_Stmts.First_Element,
                               Next_Stmt          => Next_Stmt,
                               Last_Inv           =>
@@ -674,9 +686,10 @@ package body Gnat2Why.Expr.Loops is
                                  Implicit_Invariant => Impl_Inv,
                                  User_Invariants    => Why_Invariants,
                                  Invariant_Check    => Inv_Check,
-                                 Variant_Tmps       => Variant_Tmps,
-                                 Variant_Update     => Variant_Update,
-                                 Variant_Check      => Variant_Check,
+                                 Variants           =>
+                                   Transform_Loop_Variants (Loop_Variants),
+                                 Variant_Check      =>
+                                   Check_Loop_Variants (Loop_Variants),
                                  First_Stmt         =>
                                    Loop_Stmts.First_Element,
                                  Next_Stmt          => Next_Stmt,
@@ -1341,9 +1354,10 @@ package body Gnat2Why.Expr.Loops is
                                Implicit_Invariant => Impl_Inv,
                                User_Invariants    => Why_Invariants,
                                Invariant_Check    => Inv_Check,
-                               Variant_Tmps       => Variant_Tmps,
-                               Variant_Update     => Variant_Update,
-                               Variant_Check      => Variant_Check,
+                               Variants           =>
+                                 Transform_Loop_Variants (Loop_Variants),
+                              Variant_Check      =>
+                                Check_Loop_Variants (Loop_Variants),
                                Update_Stmt        => Update_Stmt,
                                First_Stmt         => Loop_Stmts.First_Element,
                                Next_Stmt          => Next_Stmt,
@@ -1435,232 +1449,57 @@ package body Gnat2Why.Expr.Loops is
    -- Transform_Loop_Variant --
    ----------------------------
 
-   --  Given a pragma Loop_Variant of the form:
-
-   --    pragma Loop_Variant (Dir1 => Expr1,
-   --                         Dir2 => Expr2,
-   --                             ...
-   --                         Dirn => Exprn);
-
-   --  Generates a Why program Check_Prog of the form:
-
-   --    ignore (expr1);
-   --    if expr1 = sav1 then
-   --       (ignore (expr2);
-   --        if expr2 = sav2 then
-   --          ...
-   --          ignore (exprn));
-
-   --  where sav1, sav2 ... savn are the saved values of expr1, expr2 ... exprn
-   --  at the start of each loop run, and at the point of occurrence of the
-   --  loop variant. These names are returned in the list Tmp_Vars.
-
-   --  and a Why proposition Progress_Pred of the form:
-
-   --    expr1 op1 sav1 or (expr1 = sav1 and
-   --                       expr2 op2 sav2 or (expr2 = sav2 and
-   --                                          ...
-   --                                          exprn opn savn))
-
-   --  where op1, op2 ... opn is the operator < when the variant part is
-   --  decreasing, and > when the variant part is increasing.
-
-   --  and a Why proposition Same_Or_Progress_Pred of the form:
-
-   --    expr1 op1 sav1 or (expr1 = sav1 and
-   --                       expr2 op2 sav2 or (expr2 = sav2 and
-   --                                          ...
-   --                                          exprn opn savn or exprn = savn))
-
-   --  where op1, op2 ... opn are like for Progress_Pred.
-
-   --  Tmp_Assign is simply the list of assignments:
-
-   --    sav1 := expr1;
-   --    sav2 := expr2;
-   --        ...
-   --    savn := exprn
-
-   procedure Transform_Loop_Variant
-     (Stmt                  : Node_Id;
-      Check_Prog            : out W_Prog_Id;
-      Progress_Pred         : out W_Pred_Id;
-      Same_Or_Progress_Pred : out W_Pred_Id;
-      Tmp_Vars              : out Why_Node_Lists.List;
-      Update_Prog           : out W_Prog_Id)
+   function Transform_Loop_Variant (Stmt : Node_Id) return W_Variants_Id
    is
       Variant : Node_Id;
-
-      function Variant_Expr
-        (Expr   : Node_Id;
-         Domain : EW_Domain) return W_Expr_Id;
-      --  Returns the value of the variant expression Expr as an int
-
-      function Variant_Part_Does_Progress
-        (Variant : Node_Id;
-         Name    : W_Identifier_Id;
-         Domain  : EW_Domain) return W_Expr_Id;
-      --  Given a node Variant corresponding to a decreasing or increasing
-      --  part in a loop variant, and a name Name to designate that expression,
-      --  returns the Why term that corresponds to progress.
-
-      function Variant_Part_Stays_Constant
-        (Variant : Node_Id;
-         Name    : W_Identifier_Id) return W_Pred_Id;
-      --  Given a node Variant corresponding to a decreasing or increasing
-      --  part in a loop variant, and a name Name to designate that expression,
-      --  returns the Why term that expresses that it has not been modified.
-
-      ------------------
-      -- Variant_Expr --
-      ------------------
-
-      function Variant_Expr
-        (Expr   : Node_Id;
-         Domain : EW_Domain) return W_Expr_Id
-      is
-         Params : constant Transformation_Params :=
-           (if Domain = EW_Prog then Body_Params else Assert_Params);
-      begin
-         return Transform_Expr (Expr          => Expr,
-                                Expected_Type =>
-                                  Base_Why_Type_No_Bool (Expr),
-                                Domain        => Domain,
-                                Params        => Params);
-      end Variant_Expr;
-
-      --------------------------------
-      -- Variant_Part_Does_Progress --
-      --------------------------------
-
-      function Variant_Part_Does_Progress
-        (Variant : Node_Id;
-         Name    : W_Identifier_Id;
-         Domain  : EW_Domain) return W_Expr_Id
-      is
-         Expr : constant Node_Id := Expression (Variant);
-         WTyp : constant W_Type_Id := Base_Why_Type_No_Bool (Expr);
-         Cmp  : constant W_Identifier_Id :=
-           (if Chars (Variant) = Name_Decreases
-            then (if Why_Type_Is_BitVector (WTyp)
-              then MF_BVs (WTyp).Ult
-              else Int_Infix_Lt)
-            else (if Why_Type_Is_BitVector (WTyp)
-              then MF_BVs (WTyp).Ugt
-              else Int_Infix_Gt));
-         Sub_Domain : constant EW_Domain :=
-           (if Domain = EW_Pred then EW_Term else Domain);
-      begin
-         return
-           New_Comparison
-           (Symbol => Cmp,
-            Left   => Variant_Expr (Expr, Sub_Domain),
-            Right  => New_Deref (Right => +Name,
-                                 Typ   => WTyp),
-            Domain => Domain);
-      end Variant_Part_Does_Progress;
-
-      ---------------------------------
-      -- Variant_Part_Stays_Constant --
-      ---------------------------------
-
-      function Variant_Part_Stays_Constant
-        (Variant : Node_Id;
-         Name    : W_Identifier_Id) return W_Pred_Id
-      is
-         Expr : constant Node_Id := Expression (Variant);
-      begin
-         return
-           +New_Comparison
-           (Symbol => Why_Eq,
-            Left   => Variant_Expr (Expr, EW_Term),
-            Right  =>
-              New_Deref (Right => +Name,
-                         Typ   => Base_Why_Type_No_Bool (Expr)),
-            Domain => EW_Pred);
-      end Variant_Part_Stays_Constant;
-
-   --  Start of processing for Transform_Loop_Variant
-
+      Count   : Integer := 0;
    begin
-      --  Unused initialization to avoid compiler warning that variable may be
-      --  used before being assigned to.
 
-      Check_Prog := +Void;
-      Update_Prog := +Void;
-      Progress_Pred := True_Pred;
-      Same_Or_Progress_Pred := True_Pred;
+      --  count Variant items in the Loop_Variant pragma
 
-      --  Build incrementally Check_Prog and Logic_Part, assuming these
-      --  variables already contain the Why nodes created for the variant
-      --  cases that follow this one.
+      Variant := First (Pragma_Argument_Associations (Stmt));
 
-      --  Create a new name to designate the expression that is increasing or
-      --  decreasing, and update Tmp_Vars and Update_Prog accordingly.
-
-      Variant := Last (Pragma_Argument_Associations (Stmt));
       while Present (Variant) loop
-         declare
-            Expr : constant Node_Id := Expression (Variant);
-            Name : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => Base_Why_Type_No_Bool (Expr));
-
-            Pred_Progress : constant W_Pred_Id :=
-              +Variant_Part_Does_Progress (Variant, Name, EW_Pred);
-            Prog_Progress : constant W_Prog_Id :=
-              +Variant_Part_Does_Progress (Variant, Name, EW_Pterm);
-            Pred_Constant : constant W_Pred_Id :=
-              Variant_Part_Stays_Constant (Variant, Name);
-            Prog : constant W_Prog_Id :=
-              New_Ignore (Prog => +Variant_Expr (Expr, EW_Prog));
-            Assign : constant W_Assignment_Id :=
-              New_Assignment (Name   => Name,
-                              Value  => +Variant_Expr (Expr, EW_Pterm),
-                              Labels => Symbol_Sets.Empty_Set,
-                              Typ    => Base_Why_Type_No_Bool (Expr));
-
-         begin
-            Tmp_Vars.Append (+Name);
-
-            Update_Prog := Sequence (+Assign, Update_Prog);
-
-            Check_Prog :=
-              (if No (Next (Variant)) then
-                 Prog
-               else
-                 Sequence (Prog,
-                   +W_Expr_Id'(New_Conditional (Ada_Node  => Variant,
-                                                Domain    => EW_Prog,
-                                                Condition => +Prog_Progress,
-                                                Then_Part => +Check_Prog))));
-
-            Progress_Pred :=
-              (if No (Next (Variant)) then
-                 Pred_Progress
-               else
-                 +New_Or_Expr (Left   => +Pred_Progress,
-                               Right  => New_And_Expr
-                                           (Left   => +Pred_Constant,
-                                            Right  => +Progress_Pred,
-                                            Domain => EW_Pred),
-                               Domain => EW_Pred));
-
-            Same_Or_Progress_Pred :=
-              (if No (Next (Variant)) then
-                 +New_Or_Expr (Left   => +Pred_Progress,
-                               Right  => +Pred_Constant,
-                               Domain => EW_Pred)
-               else
-                 +New_Or_Expr (Left   => +Pred_Progress,
-                               Right  => New_And_Expr
-                                           (Left   => +Pred_Constant,
-                                            Right  => +Progress_Pred,
-                                            Domain => EW_Pred),
-                               Domain => EW_Pred));
-         end;
-
-         Prev (Variant);
+         Count := Count + 1;
+         Next (Variant);
       end loop;
+
+      Variant := First (Pragma_Argument_Associations (Stmt));
+      declare
+         Variants : W_Variant_Array (1 .. Count);
+      begin
+         for I in Variants'Range loop
+            declare
+               Expr : constant Node_Id := Expression (Variant);
+               WTyp : constant W_Type_Id := Base_Why_Type_No_Bool (Expr);
+               Cmp  : constant W_Identifier_Id :=
+                 (if Chars (Variant) = Name_Decreases
+                  then (if Why_Type_Is_BitVector (WTyp)
+                    then MF_BVs (WTyp).Ult
+                    else Int_Infix_Lt)
+                  else (if Why_Type_Is_BitVector (WTyp)
+                    then MF_BVs (WTyp).Ugt
+                    else Int_Infix_Gt));
+            begin
+               --  We delegate the creation of the assertion to Why3, so we
+               --  pass the labels used for the VC in an extra Labels node in
+               --  the tree.
+
+               Variants (I) :=
+                 New_Variant
+                   (Cmp_Op => Cmp,
+                    Labels =>
+                      New_VC_Labels (Variant, Reason => VC_Loop_Variant),
+                    Expr   =>
+                      +Transform_Expr (Expr          => Expr,
+                                       Expected_Type => WTyp,
+                                       Domain        => EW_Pterm,
+                                       Params        => Assert_Params));
+            end;
+            Next (Variant);
+         end loop;
+         return New_Variants (Variants => Variants);
+      end;
    end Transform_Loop_Variant;
 
    -----------------
@@ -1768,39 +1607,33 @@ package body Gnat2Why.Expr.Loops is
    -- Wrap_Loop --
    ---------------
 
-   --  Generate the following Why loop expression:
+   --  Generate the following loop expression:
    --
    --  if enter_condition then
    --    try
    --      [try]
    --        let loop_entry_tmps = saved_values in
    --        let variant_tmps = ref 0 in
-   --          loop_start;
-   --          invariant_check;
-   --          loop invariant { user_invariant }
-   --            assume { implicit_invariant };
-   --            variant_update;
-   --            loop_end;
-   --            if exit_condition then
-   --              raise loop_name;
-   --            [Update_Stmt;]
-   --            loop_restart;
-   --            variant_check;
-   --            invariant_check;
+   --          loop
+   --            code_before {
+   --              loop_start;
+   --              invariant_check;
+   --            }
+   --            invariant { user_invariant }
+   --            variants { user_variants }
+   --            code_after {
+   --              assume { implicit_invariant };
+   --              loop_end;
+   --              if exit_condition then
+   --                raise loop_name;
+   --              [Update_Stmt;]
+   --            }
    --          end loop
    --      [with exit_path_1 -> path_1
    --         | ...
    --         | exit_path_n -> path_n]
    --    with loop_name -> void
    --  end if
-   --
-   --  Note that the expression that checks that the user invariant does
-   --  not raise a run-time error is duplicated after [loop_start] and
-   --  [loop_restart]. An earlier design inserted it only once at the beginning
-   --  of the loop, but it led to unprovable runtime checks in some loop
-   --  invariants, because it did not benefit from the knowledge of the loop
-   --  invariant (including the implicit part) modified by the body of the
-   --  loop.
    --
    --  The inner try-catch block is only generated if needed for handling exit
    --  paths. In that case, the exit path inside the loop has been replaced
@@ -1816,8 +1649,7 @@ package body Gnat2Why.Expr.Loops is
       Implicit_Invariant : W_Pred_Id;
       User_Invariants    : W_Pred_Array;
       Invariant_Check    : W_Prog_Id;
-      Variant_Tmps       : Why_Node_Lists.List;
-      Variant_Update     : W_Prog_Id;
+      Variants           : W_Variants_Array;
       Variant_Check      : W_Prog_Id;
       Update_Stmt        : W_Prog_Id := Why_Empty;
       First_Stmt         : Node_Id;
@@ -1826,33 +1658,14 @@ package body Gnat2Why.Expr.Loops is
       return W_Prog_Id
    is
       Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
-      Loop_Inner : constant W_Prog_Id :=
-        Sequence ((1 => Variant_Update,
+      Loop_Before : constant W_Prog_Id :=
+        Sequence ((1 => Loop_Start,
                    2 => New_Comment
-                     (Comment => NID ("Loop statements appearing after the"
-                      & " loop invariant"
-                      & (if Sloc (Loop_Id) > 0 then
-                           " of loop " & Build_Location_String (Sloc (Loop_Id))
-                         else ""))),
-                   3 => Loop_End,
-                   4 => New_Comment
-                     (Comment => NID ("Check for the exit condition and loop"
-                      & " statements appearing before the loop invariant"
-                      & (if Sloc (Loop_Id) > 0 then
-                           " of loop " & Build_Location_String (Sloc (Loop_Id))
-                         else ""))),
-                   5 => New_Conditional
-                          (Condition => +Exit_Condition,
-                           Then_Part => New_Raise (Name => Loop_Ident)),
-                   6 => (if Update_Stmt = Why_Empty then
-                           +Void
-                         else
-                           Update_Stmt),
-                   7 => Loop_Start,
-                   8 => Variant_Check,
-                   9 => Invariant_Check));
-
-      Loop_Body : constant W_Prog_Id :=
+                     (Comment => NID ("Check for absence of RTE in the loop"
+                          & " invariant and variant")),
+                   3 => Invariant_Check,
+                   4 => Variant_Check));
+      Loop_After : constant W_Prog_Id :=
         Sequence ((1 => New_Comment
                    (Comment => NID ("Assume implicit invariants from the loop"
                     & (if Sloc (Loop_Id) > 0 then
@@ -1860,49 +1673,47 @@ package body Gnat2Why.Expr.Loops is
                       else ""))),
                    2 => New_Assume_Statement (Pred => Implicit_Invariant),
                    3 => New_Comment
-                     (Comment =>
-                          NID ("Check for absence of RTE in the invariant"
-                        & (if Sloc (Loop_Id) > 0 then
-                             " of loop " & Build_Location_String
-                            (Sloc (Loop_Id))
-                          else ""))),
-                   4 => Loop_Inner));
+                     (Comment => NID ("Continuation of loop after loop"
+                          & " invariant and variant")),
+                   4 => Loop_End,
+                   5 => New_Comment
+                     (Comment => NID ("Check for the exit condition and loop"
+                      & " statements appearing before the loop invariant"
+                      & (if Sloc (Loop_Id) > 0 then
+                           " of loop " & Build_Location_String (Sloc (Loop_Id))
+                        else ""))),
+                   6 => New_Conditional
+                          (Condition => +Exit_Condition,
+                           Then_Part => New_Raise (Name => Loop_Ident)),
+                   7 => (if Update_Stmt = Why_Empty then
+                           +Void
+                         else
+                            Update_Stmt)));
 
       Loop_Stmt : constant W_Prog_Id :=
         +Insert_Cnt_Loc_Label
         (Ada_Node     => (if Present (Last_Inv) then Last_Inv else Loop_Id),
-         E            => New_While_Loop
-           (Ada_Node     => Loop_Id,
-            Condition    => True_Prog,
-            Invariants   => User_Invariants,
-            Loop_Content => Loop_Body),
+         E            => New_Loop
+           (Ada_Node    => Loop_Id,
+            Code_Before => Loop_Before,
+            Invariants  => User_Invariants,
+            Variants    => Variants,
+            Code_After  => Loop_After),
          Is_Loop_Head => True);
 
       Try_Body : W_Prog_Id :=
         Bind_From_Mapping_In_Expr
           (Params => Body_Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
-           Expr   => Create_Zero_Binding
-                       (Vars => Variant_Tmps,
-                        Prog => Sequence
+           Expr   => Sequence
                           ((1 => New_Comment
-                            (Comment =>
-                                 NID ("First unroling of the loop statements"
-                               & " appearing before the loop invariant"
-                               & (if Sloc (Loop_Id) > 0 then
-                                    " of loop " & Build_Location_String
-                                   (Sloc (Loop_Id))
-                                  else ""))),
-                            2 => Loop_Start,
-                            3 => New_Comment
-                              (Comment =>
-                                   NID ("While loop translating the Ada loop"
-                                 & (if Sloc (Loop_Id) > 0 then
-                                      " from " & Build_Location_String
-                                     (Sloc (Loop_Id))
+                               (Comment =>
+                                    NID ("While loop translating the Ada loop"
+                                  & (if Sloc (Loop_Id) > 0 then
+                                       " from " & Build_Location_String
+                                      (Sloc (Loop_Id))
                                     else ""))),
-                            4 => Invariant_Check,
-                            5 => Loop_Stmt))));
+                           2 => Loop_Stmt)));
 
       Loop_Try : W_Prog_Id;
       Warn_Dead_Code : W_Prog_Id := +Void;

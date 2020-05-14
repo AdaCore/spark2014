@@ -18,7 +18,7 @@ test.adb:39:37: high: "X" is not initialized
 test.adb:41:36: info: loop invariant initialization proved (CVC4: 1 VC)
 test.adb:41:36: info: loop invariant preservation proved (CVC4: 1 VC)
 test.adb:47:04: warning: analyzing unreferenced procedure "Test_05"
-test.adb:52:10: medium: loop variant might fail
+test.adb:52:31: medium: loop variant might fail
 test.adb:52:44: high: "X" is not initialized
 test.adb:56:04: warning: analyzing unreferenced procedure "Test_06"
 test.adb:59:38: info: unrolling loop

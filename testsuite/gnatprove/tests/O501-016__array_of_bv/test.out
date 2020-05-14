@@ -86,10 +86,10 @@ x86.adb:503:56: info: range check proved (CVC4: 2 VC)
 x86.adb:504:56: info: range check proved (CVC4: 2 VC)
 x86.adb:534:07: info: initialization of "Val1" proved
 x86.adb:534:13: info: initialization of "Val2" proved
-x86.adb:538:10: info: loop variant proved (CVC4: 1 VC)
+x86.adb:538:31: info: loop variant proved (CVC4: 1 VC)
 x86.adb:558:07: info: initialization of "Val1" proved
 x86.adb:558:13: info: initialization of "Val2" proved
-x86.adb:562:10: info: loop variant proved (CVC4: 1 VC)
+x86.adb:562:31: info: loop variant proved (CVC4: 1 VC)
 x86.ads:36:06: info: data dependencies proved
 x86.ads:36:27: info: initialization of "Exit_Called" proved
 x86.ads:37:14: info: postcondition proved (CVC4: 1 VC)

@@ -5,5 +5,5 @@ loop_related_legal.adb:12:13: info: loop invariant preservation proved (CVC4: 1 
 loop_related_legal.adb:23:13: info: initialization of "X" proved
 loop_related_legal.adb:26:36: info: loop invariant initialization proved (CVC4: 1 VC)
 loop_related_legal.adb:26:36: info: loop invariant preservation proved (CVC4: 1 VC)
-loop_related_legal.adb:27:13: info: loop variant proved (CVC4: 1 VC)
+loop_related_legal.adb:27:34: info: loop variant proved (CVC4: 1 VC)
 loop_related_legal.adb:29:21: info: range check proved (CVC4: 1 VC)

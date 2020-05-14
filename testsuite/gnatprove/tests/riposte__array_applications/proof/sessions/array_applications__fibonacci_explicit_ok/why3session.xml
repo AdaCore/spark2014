@@ -122,7 +122,7 @@
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="610925"/></proof>
   <proof prover="2"><result status="unknown" steps="22013"/></proof>
-  <proof prover="3"><result status="timeout" steps="22013"/></proof>
+  <proof prover="3"><result status="unknown" steps="22013"/></proof>
   </goal>
   <goal name="def&#39;vc.33" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>

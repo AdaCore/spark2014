@@ -295,7 +295,7 @@ package body Why.Gen.Expr is
          when W_Literal =>
             return EW_Bool_Type;
 
-         when W_While_Loop
+         when W_Loop
             | W_Assignment
             | W_Assert
          =>

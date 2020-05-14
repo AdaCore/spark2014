@@ -1,4 +1,4 @@
 loop_variant.adb:2:33: info: initialization of "Result" proved
-loop_variant.adb:9:08: info: loop variant proved (CVC4: 1 VC)
+loop_variant.adb:9:29: info: loop variant proved (CVC4: 1 VC)
 loop_variant.adb:11:15: info: range check proved (CVC4: 1 VC)
 loop_variant.adb:13:18: info: range check proved (CVC4: 1 VC)

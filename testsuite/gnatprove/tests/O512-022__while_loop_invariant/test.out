@@ -1,4 +1,4 @@
-s.adb:14:09: info: loop variant proved (CVC4: 1 VC)
+s.adb:14:30: info: loop variant proved (CVC4: 1 VC)
 s.adb:15:32: info: loop invariant initialization proved (CVC4: 2 VC)
 s.adb:15:32: info: loop invariant preservation proved (CVC4: 2 VC)
 s.adb:25:24: info: range check proved (CVC4: 1 VC)
