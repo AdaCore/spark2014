@@ -579,6 +579,15 @@ package SPARK_Util is
    -- Queries for particular nodes --
    ----------------------------------
 
+   function Aggregate_Is_In_Assignment (Expr : Node_Id) return Boolean with
+     Pre => Nkind (Expr) in N_Aggregate
+                          | N_Delta_Aggregate
+                          | N_Extension_Aggregate
+       or else Is_Attribute_Update (Expr);
+   --  Returns whether Expr is on the rhs of an assignment, either directly or
+   --  through other enclosing aggregates, with possible type conversions and
+   --  qualifications.
+
    type Unrolling_Type is
      (No_Unrolling,
       Simple_Unrolling,

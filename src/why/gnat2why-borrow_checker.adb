@@ -1482,15 +1482,18 @@ package body Gnat2Why.Borrow_Checker is
    is
       --  Local subprograms
 
+      procedure Check_Anonymous_Object
+        (Expr : Node_Id;
+         Mode : Checking_Mode);
+      --  Read or move an anonymous object
+
+      procedure Check_Expression_List
+        (L    : List_Id;
+         Mode : Extended_Checking_Mode);
+      --  Read or move expressions in L
+
       function Is_Type_Name (Expr : Node_Id) return Boolean;
       --  Detect when a path expression is in fact a type name
-
-      procedure Move_Expression (Expr : Node_Id);
-      --  Some subexpressions are only analyzed in Move mode. This is a
-      --  specialized version of Check_Expression for that case.
-
-      procedure Move_Expression_List (L : List_Id);
-      --  Call Move_Expression on every expression in the list L
 
       procedure Read_Expression (Expr : Node_Id);
       --  Most subexpressions are only analyzed in Read mode. This is a
@@ -1503,6 +1506,23 @@ package body Gnat2Why.Borrow_Checker is
       --  When processing a path, the index expressions and function call
       --  arguments occurring on the path should be analyzed in Read mode.
 
+      ---------------------------
+      -- Check_Expression_List --
+      ---------------------------
+
+      procedure Check_Expression_List
+        (L    : List_Id;
+         Mode : Extended_Checking_Mode)
+      is
+         N : Node_Id;
+      begin
+         N := First (L);
+         while Present (N) loop
+            Check_Expression (N, Mode);
+            Next (N);
+         end loop;
+      end Check_Expression_List;
+
       ------------------
       -- Is_Type_Name --
       ------------------
@@ -1512,36 +1532,6 @@ package body Gnat2Why.Borrow_Checker is
          return Nkind_In (Expr, N_Expanded_Name, N_Identifier)
            and then Is_Type (Entity (Expr));
       end Is_Type_Name;
-
-      ---------------------
-      -- Move_Expression --
-      ---------------------
-
-      --  Distinguish the case where the argument is a path expression that
-      --  needs explicit moving.
-
-      procedure Move_Expression (Expr : Node_Id) is
-      begin
-         if Is_Path_Expression (Expr) then
-            Check_Expression (Expr, Move);
-         else
-            Read_Expression (Expr);
-         end if;
-      end Move_Expression;
-
-      --------------------------
-      -- Move_Expression_List --
-      --------------------------
-
-      procedure Move_Expression_List (L : List_Id) is
-         N : Node_Id;
-      begin
-         N := First (L);
-         while Present (N) loop
-            Move_Expression (N);
-            Next (N);
-         end loop;
-      end Move_Expression_List;
 
       ---------------------
       -- Read_Expression --
@@ -1557,34 +1547,35 @@ package body Gnat2Why.Borrow_Checker is
       --------------------------
 
       procedure Read_Expression_List (L : List_Id) is
-         N : Node_Id;
       begin
-         N := First (L);
-         while Present (N) loop
-            Read_Expression (N);
-            Next (N);
-         end loop;
+         Check_Expression_List (L, Read);
       end Read_Expression_List;
 
-      ------------------
-      -- Read_Indexes --
-      ------------------
+      ----------------------------
+      -- Check_Anonymous_Object --
+      ----------------------------
 
-      procedure Read_Indexes (Expr : Node_Id) is
-
+      procedure Check_Anonymous_Object
+        (Expr : Node_Id;
+         Mode : Checking_Mode)
+      is
          --  Local subprograms
 
-         procedure Read_Param (Formal : Entity_Id; Actual : Node_Id);
-         --  Call Read_Expression on the actual
+         procedure Check_Associations (Assocs : List_Id);
+         --  Check all associations of an aggregate
 
-         procedure Move_Associations (Assocs : List_Id);
-         --  Move all associations of an aggregate
+         procedure Check_Expressions (Expressions : List_Id);
+         --  Check all expressions of an aggregate
 
-         -----------------------
-         -- Move_Associations --
-         -----------------------
+         procedure Check_Subobject (Expr : Node_Id);
+         --  Check a subobject, passing on the toplevel Mode if it is an object
+         --  or forcing Read mode otherwise.
 
-         procedure Move_Associations (Assocs : List_Id) is
+         ------------------------
+         -- Check_Associations --
+         ------------------------
+
+         procedure Check_Associations (Assocs : List_Id) is
             CL     : List_Id;
             Assoc  : Node_Id := Nlists.First (Assocs);
             Choice : Node_Id;
@@ -1606,16 +1597,101 @@ package body Gnat2Why.Borrow_Checker is
                   end loop;
                end if;
 
-               --  The subexpressions of an aggregate are moved as part
+               --  The subexpressions of an aggregate are read or moved as part
                --  of the implicit assignments.
 
                if not Box_Present (Assoc) then
-                  Move_Expression (Expression (Assoc));
+                  Check_Subobject (Expression (Assoc));
                end if;
 
                Next (Assoc);
             end loop;
-         end Move_Associations;
+         end Check_Associations;
+
+         -----------------------
+         -- Check_Expressions --
+         -----------------------
+
+         procedure Check_Expressions (Expressions : List_Id) is
+            N : Node_Id;
+         begin
+            N := First (Expressions);
+            while Present (N) loop
+               Check_Subobject (N);
+               Next (N);
+            end loop;
+         end Check_Expressions;
+
+         ---------------------
+         -- Check_Subobject --
+         ---------------------
+
+         procedure Check_Subobject (Expr : Node_Id) is
+            Sub_Mode : constant Checking_Mode :=
+              (if Is_Path_Expression (Expr) then Mode else Read);
+         begin
+            Check_Expression (Expr, Sub_Mode);
+         end Check_Subobject;
+
+      --  Start of processing for Check_Anonymous_Object
+
+      begin
+         pragma Assert (Is_Path_Expression (Expr));
+
+         --  The cases considered below should correspond to those in
+         --  Collect_Moved_Objects in gnat2why-expr.adb
+
+         case N_Subexpr'(Nkind (Expr)) is
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               Check_Anonymous_Object (Expression (Expr), Mode);
+
+            --  The argument of an allocator is read or moved as part of the
+            --  implicit assignment.
+
+            when N_Allocator =>
+               Check_Subobject (Expression (Expr));
+
+            when N_Aggregate =>
+               Check_Expressions (Expressions (Expr));
+               Check_Associations (Component_Associations (Expr));
+
+            when N_Delta_Aggregate =>
+               Check_Subobject (Expression (Expr));
+               Check_Associations (Component_Associations (Expr));
+
+            when N_Extension_Aggregate =>
+               Check_Subobject (Ancestor_Part (Expr));
+               Check_Expressions (Expressions (Expr));
+               Check_Associations (Component_Associations (Expr));
+
+            --  Handle 'Update like delta aggregate
+
+            when N_Attribute_Reference =>
+               if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
+               then
+                  Check_Subobject (Prefix (Expr));
+                  Check_Expressions (Expressions (Expr));
+               end if;
+
+            when others =>
+               null;
+         end case;
+      end Check_Anonymous_Object;
+
+      ------------------
+      -- Read_Indexes --
+      ------------------
+
+      procedure Read_Indexes (Expr : Node_Id) is
+
+         --  Local subprograms
+
+         procedure Read_Param (Formal : Entity_Id; Actual : Node_Id);
+         --  Call Read_Expression on the actual
 
          ----------------
          -- Read_Param --
@@ -1641,6 +1717,13 @@ package body Gnat2Why.Borrow_Checker is
             =>
                null;
 
+            when N_Allocator
+               | N_Aggregate
+               | N_Delta_Aggregate
+               | N_Extension_Aggregate
+            =>
+               Check_Anonymous_Object (Expr, Read);
+
             when N_Explicit_Dereference
                | N_Selected_Component
             =>
@@ -1653,12 +1736,6 @@ package body Gnat2Why.Borrow_Checker is
             when N_Slice =>
                Read_Indexes (Prefix (Expr));
                Read_Expression (Discrete_Range (Expr));
-
-            --  The argument of an allocator is moved as part of the implicit
-            --  assignment.
-
-            when N_Allocator =>
-               Move_Expression (Expression (Expr));
 
             when N_Function_Call =>
                Read_Params (Expr);
@@ -1677,54 +1754,6 @@ package body Gnat2Why.Borrow_Checker is
                | N_Unchecked_Type_Conversion
             =>
                Read_Indexes (Expression (Expr));
-
-            when N_Aggregate =>
-
-               --  The subexpressions of an aggregate are moved as part
-               --  of the implicit assignments. Handle the positional
-               --  components first.
-
-               Move_Expression_List (Expressions (Expr));
-
-               --  Handle the named components next
-
-               Move_Associations (Component_Associations (Expr));
-
-            when N_Extension_Aggregate =>
-               declare
-                  Exprs  : constant List_Id := Expressions (Expr);
-                  Assocs : constant List_Id := Component_Associations (Expr);
-                  CL     : List_Id;
-                  Assoc  : Node_Id := Nlists.First (Assocs);
-
-               begin
-                  Move_Expression (Ancestor_Part (Expr));
-
-                  --  No positional components allowed at this stage
-
-                  if Present (Exprs) then
-                     raise Program_Error;
-                  end if;
-
-                  while Present (Assoc) loop
-                     CL := Choices (Assoc);
-
-                     --  Only singleton components allowed at this stage
-
-                     if not Is_Singleton_Choice (CL) then
-                        raise Program_Error;
-                     end if;
-
-                     --  The subexpressions of an aggregate are moved as part
-                     --  of the implicit assignments.
-
-                     if not Box_Present (Assoc) then
-                        Move_Expression (Expression (Assoc));
-                     end if;
-
-                     Next (Assoc);
-                  end loop;
-               end;
 
             when N_If_Expression =>
                declare
@@ -1750,10 +1779,6 @@ package body Gnat2Why.Borrow_Checker is
                      Next (Cur_Case);
                   end loop;
                end;
-
-            when N_Delta_Aggregate =>
-               Read_Expression (Expression (Expr));
-               Move_Associations (Component_Associations (Expr));
 
             when N_Attribute_Reference =>
                pragma Assert
@@ -1793,7 +1818,14 @@ package body Gnat2Why.Borrow_Checker is
          end if;
 
          if Mode /= Read_Subexpr then
-            Process_Path (+Expr, Mode);
+            --  As Process_Path only deals with named paths, deal here with
+            --  anonymous objects created by allocators and aggregates.
+
+            if No (Get_Root_Object (Expr)) then
+               Check_Anonymous_Object (Expr, Mode);
+            else
+               Process_Path (+Expr, Mode);
+            end if;
          end if;
 
          return;

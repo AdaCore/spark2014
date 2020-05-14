@@ -150,6 +150,65 @@ package body SPARK_Util is
               else Empty);
    end Dispatching_Contract;
 
+   --------------------------------
+   -- Aggregate_Is_In_Assignment --
+   --------------------------------
+
+   function Aggregate_Is_In_Assignment (Expr : Node_Id) return Boolean is
+      P    : Node_Id := Parent (Expr);
+      Prev : Node_Id := Expr;
+
+   begin
+      while Present (P) loop
+         --  Check if we reached an assignment from its expression
+
+         if Nkind (P) = N_Assignment_Statement
+           and then Prev = Expression (P)
+         then
+            return True;
+         end if;
+
+         --  Check if we reached outside of the expression without encountering
+         --  an assignment.
+
+         if Nkind (P) not in N_Subexpr then
+            return False;
+         end if;
+
+         case Nkind (P) is
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               null;
+
+            --  Reach past an enclosing aggregate
+
+            when N_Aggregate
+               | N_Delta_Aggregate
+               | N_Extension_Aggregate
+            =>
+               null;
+
+            when N_Attribute_Reference =>
+               if Attribute_Name (P) /= Name_Update then
+                  return False;
+               end if;
+
+            --  In other cases, the aggregate is not directly on the rhs of
+            --  an assignment.
+
+            when others =>
+               return False;
+         end case;
+
+         Prev := P;
+         P := Parent (P);
+      end loop;
+
+      return False;
+   end Aggregate_Is_In_Assignment;
+
    ---------------------------
    -- Append_Multiple_Index --
    ---------------------------
@@ -1632,6 +1691,7 @@ package body SPARK_Util is
 
          when N_Aggregate
             | N_Allocator
+            | N_Delta_Aggregate
             | N_Extension_Aggregate
             | N_Null
          =>
@@ -1658,7 +1718,9 @@ package body SPARK_Util is
 
          when N_Attribute_Reference =>
             pragma Assert
-              (Attribute_Name (Expr) in Name_Loop_Entry | Name_Old);
+              (Attribute_Name (Expr) in Name_Loop_Entry
+                                      | Name_Old
+                                      | Name_Update);
             return Empty;
 
          when others =>
@@ -2373,15 +2435,19 @@ package body SPARK_Util is
 
          when N_Aggregate
             | N_Allocator
+            | N_Delta_Aggregate
             | N_Extension_Aggregate
             | N_Function_Call
          =>
             return True;
 
-         --  Old and Loop_Entry attributes can only be called on new objects
+         --  Old and Loop_Entry attributes can only be called on new objects.
+         --  Update attribute is similar to delta aggregates.
 
          when N_Attribute_Reference =>
-            return Attribute_Name (Expr) in Name_Loop_Entry | Name_Old;
+            return Attribute_Name (Expr) in Name_Loop_Entry
+                                          | Name_Old
+                                          | Name_Update;
 
          when N_Qualified_Expression
             | N_Type_Conversion
