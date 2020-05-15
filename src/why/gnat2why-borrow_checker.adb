@@ -647,7 +647,7 @@ package body Gnat2Why.Borrow_Checker is
    function "+" (X : Node_Id) return Expr_Or_Ent is
       ((Is_Ent => False, Expr => X));
 
-   function "<=" (P1, P2 : Perm_Kind) return Boolean;
+   function "<" (P1, P2 : Perm_Kind) return Boolean;
    function ">=" (P1, P2 : Perm_Kind) return Boolean;
    function Glb  (P1, P2 : Perm_Kind) return Perm_Kind;
    function Lub  (P1, P2 : Perm_Kind) return Perm_Kind;
@@ -982,14 +982,14 @@ package body Gnat2Why.Borrow_Checker is
       Process_All (Subp);
    end Handle_Globals;
 
-   ----------
-   -- "<=" --
-   ----------
+   ---------
+   -- "<" --
+   ---------
 
-   function "<=" (P1, P2 : Perm_Kind) return Boolean is
+   function "<" (P1, P2 : Perm_Kind) return Boolean is
    begin
-      return P2 >= P1;
-   end "<=";
+      return P1 /= P2 and then P2 >= P1;
+   end "<";
 
    ----------
    -- ">=" --
@@ -2151,7 +2151,7 @@ package body Gnat2Why.Borrow_Checker is
 
       procedure Perm_Error_Loop_Exit
         (E          : Entity_Id;
-         Loop_Id    : Node_Id;
+         Loop_Stmt  : Node_Id;
          Perm       : Perm_Kind;
          Found_Perm : Perm_Kind;
          Expl       : Node_Id);
@@ -2202,15 +2202,15 @@ package body Gnat2Why.Borrow_Checker is
            (Tree : Perm_Tree_Access;
             Perm : Perm_Kind;
             E    : Entity_Id);
-         --  Auxiliary procedure to check that the tree N is less restrictive
-         --  than the given permission P.
+         --  Auxiliary procedure to check that Tree is less restrictive than
+         --  the given permission Perm.
 
          procedure Check_Is_More_Restrictive_Tree_Than
            (Tree : Perm_Tree_Access;
             Perm : Perm_Kind;
             E    : Entity_Id);
-         --  Auxiliary procedure to check that the tree N is more restrictive
-         --  than the given permission P.
+         --  Auxiliary procedure to check that Tree is more restrictive than
+         --  the given permission Perm.
 
          -----------------------------------------
          -- Check_Is_Less_Restrictive_Tree_Than --
@@ -2222,18 +2222,17 @@ package body Gnat2Why.Borrow_Checker is
             E    : Entity_Id)
          is
          begin
-            if not (Permission (Tree) >= Perm) then
+            if Permission (Tree) < Perm then
                Perm_Error_Loop_Exit
                  (E, Stmt, Permission (Tree), Perm, Explanation (Tree));
             end if;
 
             case Kind (Tree) is
                when Entire_Object =>
-                  if not (Children_Permission (Tree) >= Perm) then
+                  if Children_Permission (Tree) < Perm then
                      Perm_Error_Loop_Exit
                        (E, Stmt, Children_Permission (Tree), Perm,
                         Explanation (Tree));
-
                   end if;
 
                when Reference =>
@@ -2268,14 +2267,14 @@ package body Gnat2Why.Borrow_Checker is
             E    : Entity_Id)
          is
          begin
-            if not (Perm >= Permission (Tree)) then
+            if Perm < Permission (Tree) then
                Perm_Error_Loop_Exit
                  (E, Stmt, Permission (Tree), Perm, Explanation (Tree));
             end if;
 
             case Kind (Tree) is
                when Entire_Object =>
-                  if not (Perm >= Children_Permission (Tree)) then
+                  if Perm < Children_Permission (Tree) then
                      Perm_Error_Loop_Exit
                        (E, Stmt, Children_Permission (Tree), Perm,
                         Explanation (Tree));
@@ -2306,10 +2305,10 @@ package body Gnat2Why.Borrow_Checker is
       --  Start of processing for Check_Is_Less_Restrictive_Tree
 
       begin
-         if not (Permission (New_Tree) <= Permission (Orig_Tree)) then
+         if Permission (New_Tree) < Permission (Orig_Tree) then
             Perm_Error_Loop_Exit
               (E          => E,
-               Loop_Id    => Stmt,
+               Loop_Stmt  => Stmt,
                Perm       => Permission (New_Tree),
                Found_Perm => Permission (Orig_Tree),
                Expl       => Explanation (New_Tree));
@@ -2326,8 +2325,8 @@ package body Gnat2Why.Borrow_Checker is
             when Entire_Object =>
                case Kind (Orig_Tree) is
                when Entire_Object =>
-                  if not (Children_Permission (New_Tree) <=
-                          Children_Permission (Orig_Tree))
+                  if Children_Permission (New_Tree) <
+                     Children_Permission (Orig_Tree)
                   then
                      Perm_Error_Loop_Exit
                        (E, Stmt,
@@ -2393,6 +2392,7 @@ package body Gnat2Why.Borrow_Checker is
                begin
                   CompN :=
                     Perm_Tree_Maps.Get_First (Component (New_Tree));
+
                   case Kind (Orig_Tree) is
                   when Entire_Object =>
                      while CompN /= null loop
@@ -2405,7 +2405,6 @@ package body Gnat2Why.Borrow_Checker is
 
                   when Record_Component =>
                      declare
-
                         KeyO : Perm_Tree_Maps.Key_Option;
                         CompO : Perm_Tree_Access;
                      begin
@@ -2438,18 +2437,17 @@ package body Gnat2Why.Borrow_Checker is
 
       procedure Perm_Error_Loop_Exit
         (E          : Entity_Id;
-         Loop_Id    : Node_Id;
+         Loop_Stmt  : Node_Id;
          Perm       : Perm_Kind;
          Found_Perm : Perm_Kind;
          Expl       : Node_Id)
       is
       begin
-         Error_Msg_Node_2 := Loop_Id;
-         Error_Msg_N
-           ("insufficient permission for & when exiting loop &", E);
+         Error_Msg_NE ("insufficient permission for & when exiting the loop",
+                       Loop_Stmt, E);
          Perm_Mismatch (Exp_Perm => Perm,
                         Act_Perm => Found_Perm,
-                        N        => Loop_Id,
+                        N        => Loop_Stmt,
                         Expl     => Expl);
          Permission_Error := True;
       end Perm_Error_Loop_Exit;
