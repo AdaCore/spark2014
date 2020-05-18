@@ -2408,6 +2408,119 @@ package body SPARK_Definition is
          =>
             raise Program_Error;
       end case;
+
+      --  SPARK RM 3.10(6): If a prefix of a name is of an owning type, then
+      --  the prefix shall denote neither a non-traversal function call, an
+      --  aggregate, an allocator, nor any other expression whose associated
+      --  object is (or, as in the case of a conditional expression, might be)
+      --  the same as that of such a forbidden expression (e.g., a qualified
+      --  expression or type conversion whose operand would be forbidden as a
+      --  prefix by this rule).
+
+      if Nkind (N) in N_Attribute_Reference
+                    | N_Explicit_Dereference
+                    | N_Indexed_Component
+                    | N_Selected_Component
+                    | N_Slice
+      then
+         declare
+            procedure Validate_Owning_Prefix (Expr : Node_Id) with
+              Pre => Is_Deep (Etype (Expr));
+            --  Check that Expr is a valid owning prefix
+
+            ----------------------------
+            -- Validate_Owning_Prefix --
+            ----------------------------
+
+            procedure Validate_Owning_Prefix (Expr : Node_Id) is
+            begin
+               case Nkind (Expr) is
+                  when N_Qualified_Expression
+                     | N_Type_Conversion
+                     | N_Unchecked_Type_Conversion
+                  =>
+                     Validate_Owning_Prefix (Expression (Expr));
+
+                  when N_Allocator =>
+                     Mark_Violation
+                       ("allocator as the prefix of an expression",
+                        Expr,
+                        SRM_Reference => "SPARK RM 3.10(6)");
+
+                  when N_Aggregate
+                     | N_Delta_Aggregate
+                     | N_Extension_Aggregate
+                  =>
+                     Mark_Violation
+                       ("aggregate of owning type as the prefix of"
+                        & " an expression",
+                        Expr,
+                        SRM_Reference => "SPARK RM 3.10(6)");
+
+                  when N_Attribute_Reference =>
+                     if not Is_Attribute_Result (Expr) then
+                        Mark_Violation
+                          ("attribute reference of owning type as the prefix"
+                           & " of an expression",
+                           Expr,
+                           SRM_Reference => "SPARK RM 3.10(6)");
+                     end if;
+
+                  when N_Function_Call =>
+                     if not Is_Traversal_Function_Call (Expr) then
+                        Mark_Violation
+                          ("non-traversal function call of owning type as"
+                           & " the prefix of an expression",
+                           Expr,
+                           SRM_Reference => "SPARK RM 3.10(6)");
+                     end if;
+
+                  when N_If_Expression =>
+                     declare
+                        Condition : constant Node_Id :=
+                          First (Expressions (Expr));
+                        Then_Expr : constant Node_Id := Next (Condition);
+                        Else_Expr : constant Node_Id := Next (Then_Expr);
+                     begin
+                        Validate_Owning_Prefix (Then_Expr);
+                        Validate_Owning_Prefix (Else_Expr);
+                     end;
+
+                  when N_Case_Expression =>
+                     declare
+                        Cases    : constant List_Id := Alternatives (Expr);
+                        Cur_Case : Node_Id := First (Cases);
+                     begin
+                        while Present (Cur_Case) loop
+                           Validate_Owning_Prefix (Expression (Cur_Case));
+                           Next (Cur_Case);
+                        end loop;
+                     end;
+
+                  when others =>
+                     null;
+               end case;
+            end Validate_Owning_Prefix;
+
+            --  Local variables
+
+            Pref : constant Node_Id := Prefix (N);
+         begin
+            if Is_Deep (Etype (Pref))
+
+              --  Special case for attributes 'Old and 'Loop_Entry which should
+              --  be applicable to a call to a volatile function of owning type
+              --  in order to be able to compare a modified variable of owning
+              --  type with a previous value of the same variable. ??? This
+              --  should be expressed as a rule in SPARK RM.
+
+              and then not Is_Attribute_Old (N)
+              and then not Is_Attribute_Loop_Entry (N)
+            then
+               Validate_Owning_Prefix (Pref);
+            end if;
+         end;
+      end if;
    end Mark;
 
    ------------------

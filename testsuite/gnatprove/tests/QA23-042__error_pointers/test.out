@@ -179,9 +179,9 @@ pointers2.ads:20:14: insufficient permission for "Y" when returning from "Bad_Mo
 pointers2.ads:20:14: object was moved at pointers2.adb:36
 pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
-spark02.adb:32:04: assignment to a complex expression is not allowed in SPARK
+spark02.adb:32:04: non-traversal function call of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
 spark02.adb:32:04: violation of pragma SPARK_Mode at test.adc:3
-spark02.adb:34:09: expression as "in out" parameter is not allowed in SPARK
+spark02.adb:34:09: non-traversal function call of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
 spark02.adb:34:09: violation of pragma SPARK_Mode at test.adc:3
 spark02.adb:35:09: expression as "in out" parameter is not allowed in SPARK
 spark02.adb:35:09: violation of pragma SPARK_Mode at test.adc:3
