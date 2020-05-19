@@ -4190,13 +4190,13 @@ package body SPARK_Definition is
 
       procedure Mark_Subprogram_Entity (E : Entity_Id) is
 
-         procedure Mark_Function_Specification (N : Node_Id);
+         procedure Mark_Function_Specification (Id : Entity_Id);
          --  Mark violations related to impure functions
 
          procedure Mark_Subprogram_Contracts;
          --  Mark pre-post contracts
 
-         procedure Mark_Subprogram_Specification (N : Node_Id);
+         procedure Mark_Subprogram_Specification (Id : Entity_Id);
          --  Mark violations related to parameters, result and contract
 
          procedure Process_Class_Wide_Condition
@@ -4210,8 +4210,7 @@ package body SPARK_Definition is
          -- Mark_Function_Specification --
          ---------------------------------
 
-         procedure Mark_Function_Specification (N : Node_Id) is
-            Id               : constant Entity_Id := Defining_Entity (N);
+         procedure Mark_Function_Specification (Id : Entity_Id) is
             Is_Volatile_Func : constant Boolean   := Is_Volatile_Function (Id);
             Formal           : Entity_Id := First_Formal (Id);
 
@@ -4356,10 +4355,8 @@ package body SPARK_Definition is
          -- Mark_Subprogram_Specification --
          -----------------------------------
 
-         procedure Mark_Subprogram_Specification (N : Node_Id) is
-            Id     : constant Entity_Id := Defining_Entity (N);
-            Formal : Entity_Id := First_Formal (Id);
-
+         procedure Mark_Subprogram_Specification (Id : Entity_Id) is
+            Formal      : Entity_Id := First_Formal (Id);
             Contract    : Node_Id;
             Raw_Globals : Raw_Global_Nodes;
 
@@ -4387,10 +4384,10 @@ package body SPARK_Definition is
          begin
             case Ekind (Id) is
                when E_Function =>
-                  Mark_Function_Specification (N);
+                  Mark_Function_Specification (Id);
 
                when E_Entry_Family =>
-                  Mark_Violation ("entry family", N);
+                  Mark_Violation ("entry family", Id);
 
                when others =>
                   null;
@@ -4526,9 +4523,7 @@ package body SPARK_Definition is
             Mark_Violation_In_Tasking (E);
          end if;
 
-         Mark_Subprogram_Specification (if Is_Entry (E)
-                                        then Parent (E)
-                                        else Subprogram_Specification (E));
+         Mark_Subprogram_Specification (E);
 
          --  We mark bodies of predicate functions, and of expression functions
          --  when they are referenced (including those from other compilation
