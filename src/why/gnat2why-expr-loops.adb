@@ -374,12 +374,16 @@ package body Gnat2Why.Expr.Loops is
          pragma Assert (not Is_Pragma (Instr, Pragma_Loop_Variant));
 
          --  Block statements were inserted as markers for the end of the
-         --  corresponding scopes. Check the absence of memory leaks.
+         --  corresponding scopes. Check the absence of memory leaks and
+         --  havoc all entities borrowed in the block.
 
          if Nkind (Instr) = N_Block_Statement then
-            Sequence_Append
-              (Body_Prog,
-               Check_No_Memory_Leaks_At_End_Of_Scope (Declarations (Instr)));
+            if Present (Declarations (Instr)) then
+               Sequence_Append (Body_Prog,
+                 +Havoc_Borrowed_From_Block (Instr));
+               Sequence_Append (Body_Prog,
+                 Check_No_Memory_Leaks_At_End_Of_Scope (Declarations (Instr)));
+            end if;
          else
             Transform_Statement_Or_Declaration_In_List
               (Stmt_Or_Decl => Instr,
