@@ -247,6 +247,8 @@ package body Gnat2Why.Error_Messages is
                | VC_Stronger_Post
                | VC_Weaker_Classwide_Pre
                | VC_Stronger_Classwide_Post
+               | VC_Weaker_Pre_Access
+               | VC_Stronger_Post_Access
                | VC_Predicate_Check
                | VC_Predicate_Check_On_Default_Value
                | VC_Null_Pointer_Dereference
@@ -758,6 +760,13 @@ package body Gnat2Why.Error_Messages is
             return
               "class-wide postcondition might be weaker than overridden one";
 
+         when VC_Weaker_Pre_Access         =>
+            return "precondition of target might not be strong enough to"
+              & " imply precondition of source";
+         when VC_Stronger_Post_Access      =>
+            return "postcondition of source might not be strong enough to"
+              & " imply postcondition of target";
+
          --  VC_Warning_Kind - warnings
 
          --  Warnings should only be issued when the VC is proved
@@ -832,15 +841,16 @@ package body Gnat2Why.Error_Messages is
       -------------------
 
       procedure Handle_Result (V : JSON_Value; SD_Id : Session_Dir_Base_ID) is
-         Rec : constant Why3_Prove_Result := Parse_Why3_Prove_Result (V);
-         VC  : VC_Info renames VC_Table (Rec.Id);
+         Rec        : constant Why3_Prove_Result :=
+           Parse_Why3_Prove_Result (V);
+         VC         : VC_Info renames VC_Table (Rec.Id);
          Extra_Text : constant String :=
            (if not Rec.Result and then Present (Rec.Extra_Info)
             then String_Of_Node (Original_Node (Rec.Extra_Info))
             else "");
          Extra_Msg  : constant String :=
            (if Extra_Text /= "" then ", cannot prove " & Extra_Text else "");
-         Node   : constant Node_Id :=
+         Node       : constant Node_Id :=
            (if Present (Rec.Extra_Info)
             and then Rec.Kind not in VC_Precondition
                                    | VC_LSP_Kind
@@ -1101,6 +1111,12 @@ package body Gnat2Why.Error_Messages is
             return "class-wide precondition is weaker than overridden one";
          when VC_Stronger_Classwide_Post   =>
             return "class-wide postcondition is stronger than overridden one";
+         when VC_Weaker_Pre_Access         =>
+            return "precondition of target is strong enough to imply"
+              & " precondition of source";
+         when VC_Stronger_Post_Access      =>
+            return "postcondition of source is strong enough to imply"
+              & " postcondition of target";
 
          --  VC_Warning_Kind - warnings
 

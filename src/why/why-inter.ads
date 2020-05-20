@@ -250,6 +250,9 @@ package Why.Inter is
 
    function Is_Pointer_Conversion (Left, Right : W_Type_Id) return Boolean;
 
+   function Is_Subp_Pointer_Conversion
+     (Left, Right : W_Type_Id) return Boolean;
+
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean;
 
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean;

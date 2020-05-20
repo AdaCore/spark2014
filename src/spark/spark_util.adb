@@ -1823,6 +1823,17 @@ package body SPARK_Util is
       end case;
    end Has_Volatile_Property;
 
+   ------------------------------------------------
+   -- Is_Additional_Param_Of_Access_Subp_Wrapper --
+   ------------------------------------------------
+
+   function Is_Additional_Param_Of_Access_Subp_Wrapper
+     (E : Entity_Id) return Boolean
+   is (Ekind (E) = E_In_Parameter
+       and then Is_Access_Subprogram_Type (Etype (E))
+       and then Scope (E) = Access_Subprogram_Wrapper
+       (Directly_Designated_Type (Etype (E))));
+
    ---------------
    -- Is_Action --
    ---------------
@@ -2322,7 +2333,7 @@ package body SPARK_Util is
       T : constant Entity_Id := Retysp (Etype (E));
    begin
       return Ekind (E) in E_Variable | E_Constant
-        and then Is_Anonymous_Access_Type (T)
+        and then Is_Anonymous_Access_Object_Type (T)
         and then not Is_Access_Constant (T);
    end Is_Local_Borrower;
 

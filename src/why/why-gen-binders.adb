@@ -853,6 +853,7 @@ package body Why.Gen.Binders is
 
       elsif Entity_In_SPARK (Ty)
         and then Is_Access_Type (Ty)
+        and then not Is_Access_Subprogram_Type (Ty)
         and then Is_Mutable_In_Why (E)
         and then Ekind (E) /= E_Loop_Parameter
       then

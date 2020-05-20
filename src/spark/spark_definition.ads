@@ -122,7 +122,8 @@ package SPARK_Definition is
                          E_Package        |
                          E_Procedure      |
                          E_Protected_Type |
-                         E_Task_Type;
+                         E_Task_Type      |
+                         E_Subprogram_Type;
    --  @param E an entity
    --  @return True if the spec of E was marked in SPARK. Note this does not
    --    mean that the entity is valid SPARK, only that SPARK_Mode is On.
@@ -133,7 +134,8 @@ package SPARK_Definition is
                          E_Package        |
                          E_Procedure      |
                          E_Protected_Type |
-                         E_Task_Type;
+                         E_Task_Type      |
+                         E_Subprogram_Type;
    --  Returns True iff the body of E was marked in SPARK and contains no SPARK
    --  violations.
 

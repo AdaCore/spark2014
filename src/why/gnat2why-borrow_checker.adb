@@ -1032,7 +1032,7 @@ package body Gnat2Why.Borrow_Checker is
    --  Start of processing for Check_Assignment
 
    begin
-      if Is_Anonymous_Access_Type (Target_Typ) then
+      if Is_Anonymous_Access_Object_Type (Target_Typ) then
          if Is_Decl then
             Target_Root := Target;
          else
@@ -1189,11 +1189,7 @@ package body Gnat2Why.Borrow_Checker is
    begin
       Inside_Procedure_Call := True;
       Check_Params (Call);
-      if Ekind (Get_Called_Entity (Call)) = E_Subprogram_Type then
-         raise Program_Error;
-      else
-         Check_Globals (Get_Called_Entity (Call), Call);
-      end if;
+      Check_Globals (Get_Called_Entity (Call), Call);
 
       Inside_Procedure_Call := False;
       Update_Params (Call);
@@ -1702,11 +1698,7 @@ package body Gnat2Why.Borrow_Checker is
 
             when N_Function_Call =>
                Read_Params (Expr);
-               if Ekind (Get_Called_Entity (Expr)) = E_Subprogram_Type then
-                  raise Program_Error;
-               else
-                  Check_Globals (Get_Called_Entity (Expr), Expr);
-               end if;
+               Check_Globals (Get_Called_Entity (Expr), Expr);
 
             when N_Op_Concat =>
                Read_Expression (Left_Opnd (Expr));
@@ -2970,14 +2962,16 @@ package body Gnat2Why.Borrow_Checker is
 
             --  Anonymous access to constant is an observe
 
-            elsif Is_Anonymous_Access_Type (Typ)
+            elsif Is_Anonymous_Access_Object_Type (Typ)
               and then Is_Access_Constant (Typ)
             then
                Mode := Observe;
 
             --  Other access types are a borrow
 
-            elsif Is_Access_Type (Typ) then
+            elsif Is_Access_Type (Typ)
+              and then not Is_Access_Subprogram_Type (Typ)
+            then
                Mode := Borrow;
 
             --  Deep types other than access types define an observe
@@ -3117,7 +3111,7 @@ package body Gnat2Why.Borrow_Checker is
                --  well as observers of access-to-variable type inside
                --  traversal functions.
 
-               if Is_Anonymous_Access_Type (Etype (Target)) then
+               if Is_Anonymous_Access_Object_Type (Etype (Target)) then
                   declare
                      Root : constant Entity_Id := Get_Root_Object (Target);
                   begin
@@ -3232,7 +3226,7 @@ package body Gnat2Why.Borrow_Checker is
                      --  ??? Should we move that to marking? Do we need this
                      --  check for flow analysis?
 
-                     if Is_Anonymous_Access_Type (Return_Typ) then
+                     if Is_Anonymous_Access_Object_Type (Return_Typ) then
                         if Nkind (Expr) /= N_Null then
                            declare
                               Param : constant Entity_Id :=
@@ -4684,7 +4678,7 @@ package body Gnat2Why.Borrow_Checker is
 
          --  Anonymous access to constant is an observe
 
-         elsif Is_Anonymous_Access_Type (Typ)
+         elsif Is_Anonymous_Access_Object_Type (Typ)
            and then Is_Access_Constant (Typ)
          then
             return;
@@ -5395,7 +5389,7 @@ package body Gnat2Why.Borrow_Checker is
 
             --  Anonymous access to constant is an observe
 
-            elsif Is_Anonymous_Access_Type (Typ)
+            elsif Is_Anonymous_Access_Object_Type (Typ)
               and then Is_Access_Constant (Typ)
             then
                Perm := Read_Only;

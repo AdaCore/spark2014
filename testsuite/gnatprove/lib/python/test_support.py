@@ -345,6 +345,8 @@ def is_other_proof_tag(tag):
                    "STRONGER_POST",
                    "WEAKER_CLASSWIDE_PRE",
                    "STRONGER_CLASSWIDE_POST",
+                   "WEAKER_PRE_ACCESS",
+                   "STRONGER_POST_ACCESS",
                    "UNCHECKED_CONVERSION",
                    "UNCHECKED_CONVERSION_SIZE",
                    )
@@ -459,6 +461,8 @@ def check_marks(strlist):
                 return 'WEAKER_CLASSWIDE_PRE'
             elif 'class-wide' in text:
                 return 'WEAKER_PRE'
+            elif 'target' in text:
+                return 'WEAKER_PRE_ACCESS'
             else:
                 return 'PRECONDITION'
         elif 'postcondition' in text:
@@ -466,6 +470,8 @@ def check_marks(strlist):
                 return 'STRONGER_CLASSWIDE_POST'
             elif 'class-wide' in text:
                 return 'STRONGER_POST'
+            elif 'target' in text:
+                return 'STRONGER_POST_ACCESS'
             else:
                 return 'POSTCONDITION'
         elif 'refined post' in text:

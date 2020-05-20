@@ -252,8 +252,19 @@ package body SPARK_Atree.Entities is
    -- First_Formal --
    ------------------
 
-   function First_Formal (Subp : Entity_Id) return Entity_Id renames
-     Einfo.First_Formal;
+   function First_Formal (Subp : Entity_Id) return Entity_Id  is
+      First : Entity_Id := Einfo.First_Formal (Subp);
+
+   begin
+      --  There should never be more than one formal for subp wrappers
+
+      if Present (First)
+        and then SPARK_Util.Is_Additional_Param_Of_Access_Subp_Wrapper (First)
+      then
+         Einfo.Next_Formal (First);
+      end if;
+      return First;
+   end First_Formal;
 
    -----------------
    -- First_Index --
@@ -416,7 +427,8 @@ package body SPARK_Atree.Entities is
    ----------------------------------
 
    function Has_Pragma_Volatile_Function (Subp : Entity_Id) return Boolean is
-     ((Sem_Util.Is_Unchecked_Conversion_Instance (Subp)
+     ((Ekind (Subp) = E_Function
+       and then Sem_Util.Is_Unchecked_Conversion_Instance (Subp)
        and then Sem_Util.Has_Effectively_Volatile_Profile (Subp))
       or else Sem_Prag.Is_Enabled_Pragma
         (Get_Pragma (Subp, Pragma_Volatile_Function)));
@@ -434,6 +446,13 @@ package body SPARK_Atree.Entities is
 
    function Invariant_Procedure (Typ : Entity_Id) return Entity_Id renames
      Einfo.Invariant_Procedure;
+
+   -------------------------------
+   -- Is_Access_Subprogram_Type --
+   -------------------------------
+
+   function Is_Access_Subprogram_Type (E : Entity_Id) return Boolean is
+     (Einfo.Is_Access_Subprogram_Type (Einfo.Base_Type (E)));
 
    -----------------------
    -- Is_Actual_Subtype --
@@ -686,6 +705,37 @@ package body SPARK_Atree.Entities is
       end loop;
    end Next_Discriminant;
 
+   -----------------
+   -- Next_Formal --
+   -----------------
+
+   function Next_Formal (Formal : Entity_Id) return Entity_Id is
+      Next : Entity_Id := Einfo.Next_Formal (Formal);
+
+   begin
+      --  There should never be more than one formal for subp wrappers
+
+      if Present (Next)
+        and then SPARK_Util.Is_Additional_Param_Of_Access_Subp_Wrapper (Next)
+      then
+         Einfo.Next_Formal (Next);
+      end if;
+      return Next;
+   end Next_Formal;
+
+   procedure Next_Formal (Formal : in out Entity_Id) is
+   begin
+      Einfo.Next_Formal (Formal);
+
+      --  There should never be more than one formal for subp wrappers
+
+      if Present (Formal)
+        and then SPARK_Util.Is_Additional_Param_Of_Access_Subp_Wrapper (Formal)
+      then
+         Einfo.Next_Formal (Formal);
+      end if;
+   end Next_Formal;
+
    -----------------------
    -- No_Binary_Modulus --
    -----------------------
@@ -706,6 +756,25 @@ package body SPARK_Atree.Entities is
 
    function Number_Dimensions (Typ : Entity_Id) return Pos renames
      Einfo.Number_Dimensions;
+
+   --------------------
+   -- Number_Formals --
+   --------------------
+
+   function Number_Formals (Subp : Entity_Id) return Natural is
+      N      : Natural := 0;
+      Formal : Entity_Id := Einfo.First_Formal (Subp);
+   begin
+      while Present (Formal) loop
+         if not SPARK_Util.Is_Additional_Param_Of_Access_Subp_Wrapper (Formal)
+         then
+            N := N + 1;
+         end if;
+         Einfo.Next_Formal (Formal);
+      end loop;
+
+      return N;
+   end Number_Formals;
 
    -----------------
    -- Object_Size --

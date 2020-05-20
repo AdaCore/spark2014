@@ -47,6 +47,7 @@ with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
+with Gnat2Why.Subprograms.Pointers;  use Gnat2Why.Subprograms.Pointers;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
@@ -2823,27 +2824,33 @@ package body Gnat2Why.Expr is
       Store   : W_Statement_Sequence_Unchecked_Id;
       Params  : Transformation_Params) return W_Expr_Array
    is
-      Subp     : constant Entity_Id := Get_Called_Entity (Call);
-      Binders  : constant Item_Array :=
+      Subp                : constant Entity_Id := Get_Called_Entity (Call);
+      Binders             : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, Domain);
-      Patterns : Item_Array := Binders;
-      Aliasing : constant Boolean :=
+      Patterns            : Item_Array := Binders;
+      Aliasing            : constant Boolean :=
         Nkind (Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
         and then Get_Aliasing_Status_For_Proof (Call) in
-          Possible_Aliasing .. Unchecked;
+        Possible_Aliasing .. Unchecked;
       --  If aliasing can occur for this subprogram call, we should introduce
       --  intermediate variables for every parameters in order to avoid
       --  crashing inside Why3.
 
+      Call_Through_Access : constant Boolean :=
+        Ekind (Subp) = E_Subprogram_Type;
+      pragma Assert (if Call_Through_Access
+                     then Nkind (Name (Call)) = N_Explicit_Dereference);
+      --  Get_Called_Entity returns the profile on calls through access to
+      --  subprograms.
+
    begin
       Localize_Variable_Parts (Patterns);
 
-      if Binders'Length = 0 then
-         return (1 => +Void);
-      end if;
-
       declare
-         Why_Args : W_Expr_Array (1 .. Item_Array_Length (Binders));
+         Why_Args : W_Expr_Array (1 .. Item_Array_Length (Binders)
+                                  + (if Call_Through_Access then 1 else 0));
+         --  If the call is done through an access-to-subprogram, we need
+         --  an additional parameter for the subprogram object.
          Arg_Cnt  : Positive := 1;
          Bind_Cnt : Positive := Binders'First;
 
@@ -3090,7 +3097,28 @@ package body Gnat2Why.Expr is
            Iterate_Call_Parameters (Compute_Param);
 
       begin
+
          Statement_Sequence_Append_To_Statements (Store, +Void);
+
+         --  For calls through subprogram types, add the subprogram object as
+         --  an additional parameter.
+
+         if Call_Through_Access then
+            Why_Args (Arg_Cnt) := New_Subprogram_Value_Access
+              (Ada_Node => Name (Call),
+               Expr     => Transform_Expr
+                 (Expr   => Prefix (Name (Call)),
+                  Domain => Domain,
+                  Params => Params),
+               Domain   => Domain);
+            Arg_Cnt := Arg_Cnt + 1;
+         end if;
+
+         --  If there are no source parameters, add a void parameter and return
+
+         if Binders'Length = 0 then
+            return Why_Args & (1 => +Void);
+         end if;
 
          --  In the case of protected subprograms, there is an invisible first
          --  parameter, the protected object itself. We call "Compute_Arg" with
@@ -3970,6 +3998,14 @@ package body Gnat2Why.Expr is
                  Domain => EW_Pred);
          end if;
 
+      elsif Is_Access_Subprogram_Type (Ty_Ext) then
+
+         Assumption := Pred_Of_Boolean_Term
+           (New_Record_Access
+              (Name  => Expr,
+               Field => M_Subprogram_Access.Rec_Is_Null,
+               Typ   => EW_Bool_Type));
+
       elsif Is_Access_Type (Ty_Ext) then
 
          Assumption := Pred_Of_Boolean_Term
@@ -4368,6 +4404,27 @@ package body Gnat2Why.Expr is
                      Typ         => EW_Bool_Type));
             end;
          end if;
+      elsif Is_Access_Subprogram_Type (Ty_Ext) then
+
+         --  Assume the contract of the access-to-subprogram type if any
+
+         T := +New_Dynamic_Property_For_Subprogram
+           (Ty     => Ty_Ext,
+            Expr   => +Expr,
+            Params => Params);
+
+         if Can_Never_Be_Null (Ty_Ext) then
+            T := +New_And_Expr
+              (Left   => New_Not
+                 (Right  => New_Record_Access
+                      (Name  => +Expr,
+                       Field => M_Subprogram_Access.Rec_Is_Null,
+                       Typ   => EW_Bool_Type),
+                  Domain => EW_Pred),
+               Right  => +T,
+               Domain => EW_Pred);
+         end if;
+
       elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
          T := New_Not (Right => New_Pointer_Is_Null_Access (E    => Ty_Ext,
                                                             Name => +Expr));
@@ -4578,6 +4635,7 @@ package body Gnat2Why.Expr is
             Domain => EW_Pred);
 
       elsif Is_Access_Type (Ty_Ext)
+        and then not Is_Access_Subprogram_Type (Ty_Ext)
         and then Type_Needs_Dynamic_Invariant
           (Directly_Designated_Type (Ty_Ext))
       then
@@ -9076,6 +9134,15 @@ package body Gnat2Why.Expr is
       Old_Map.Clear;
    end Reset_Map_For_Old;
 
+   -------------------------
+   -- Restore_Map_For_Old --
+   -------------------------
+
+   procedure Restore_Map_For_Old (Saved_Map : Ada_To_Why_Ident.Map) is
+   begin
+      Old_Map.Assign (Saved_Map);
+   end Restore_Map_For_Old;
+
    ------------------
    -- Shift_Rvalue --
    ------------------
@@ -12752,6 +12819,17 @@ package body Gnat2Why.Expr is
                  (Etype (Var), Expr, Params.Ref_Allowed, Domain);
             end;
 
+         when Attribute_Access =>
+
+            --  We only support 'Access on subprograms
+
+            pragma Assert (Is_Access_Subprogram_Type (Etype (Expr)));
+
+            return Transform_Access_Attribute_Of_Subprogram
+              (Expr   => Expr,
+               Domain => Domain,
+               Params => Params);
+
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] not implemented: "
                                   & Attribute_Id'Image (Attr_Id));
@@ -14331,6 +14409,7 @@ package body Gnat2Why.Expr is
 
                   when E_Access_Type
                      | E_Access_Subtype
+                     | E_Access_Subprogram_Type
                   =>
                      null;
 
@@ -16077,34 +16156,40 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Function_Call =>
-            if Is_Simple_Shift_Or_Rotate (Get_Called_Entity (Expr)) then
-               T := Transform_Shift_Or_Rotate_Call
-                      (Expr, Domain, Local_Params);
-            elsif Is_Predicate_Function (Get_Called_Entity (Expr)) then
+            declare
+               Subp : constant Entity_Id := Get_Called_Entity (Expr);
+            begin
+               if Is_Simple_Shift_Or_Rotate (Subp) then
+                  T := Transform_Shift_Or_Rotate_Call
+                    (Expr, Domain, Local_Params);
+               elsif Ekind (Subp) = E_Function
+                 and then Is_Predicate_Function (Subp)
+               then
 
-               --  Calls to predicate functions are ignored. Inherited
-               --  predicates are handled by other means. This is needed to
-               --  be able to handle inherited predicates which are not
-               --  visible in SPARK.
+                  --  Calls to predicate functions are ignored. Inherited
+                  --  predicates are handled by other means. This is needed to
+                  --  be able to handle inherited predicates which are not
+                  --  visible in SPARK.
 
-               return New_Literal (Value => EW_True, Domain => Domain);
-            elsif Has_Pledge_Annotation (Get_Called_Entity (Expr)) then
-               declare
-                  Fst_Act : constant Node_Id := First_Actual (Expr);
-                  Brower  : constant Entity_Id :=
-                    (if Nkind (Fst_Act) in N_Expanded_Name | N_Identifier
-                     then Entity (Fst_Act)
-                     else Entity (Prefix (Fst_Act)));
-               begin
-                  T := Transform_Pledge_Call
-                    (Brower,
-                     Next_Actual (First_Actual (Expr)),
-                     Domain,
-                     Local_Params);
-               end;
-            else
-               T := Transform_Function_Call (Expr, Domain, Local_Params);
-            end if;
+                  return New_Literal (Value => EW_True, Domain => Domain);
+               elsif Has_Pledge_Annotation (Subp) then
+                  declare
+                     Fst_Act : constant Node_Id := First_Actual (Expr);
+                     Brower  : constant Entity_Id :=
+                       (if Nkind (Fst_Act) in N_Expanded_Name | N_Identifier
+                        then Entity (Fst_Act)
+                        else Entity (Prefix (Fst_Act)));
+                  begin
+                     T := Transform_Pledge_Call
+                       (Brower,
+                        Next_Actual (First_Actual (Expr)),
+                        Domain,
+                        Local_Params);
+                  end;
+               else
+                  T := Transform_Function_Call (Expr, Domain, Local_Params);
+               end if;
+            end;
 
          when N_Indexed_Component
             | N_Selected_Component
@@ -16900,9 +16985,11 @@ package body Gnat2Why.Expr is
               Is_Expression_Function_Or_Completion (Subp)
               and then Entity_Body_Compatible_With_SPARK (Subp);
             Subp_Non_Returning     : constant Boolean :=
-              Is_Potentially_Nonreturning (Subp);
+              Ekind (Subp) /= E_Subprogram_Type
+              and then Is_Potentially_Nonreturning (Subp);
             Subp_Recursive         : constant Boolean :=
-              Is_Recursive (Subp);
+              Ekind (Subp) /= E_Subprogram_Type
+              and then Is_Recursive (Subp);
          begin
 
             if Subp_Non_Returning
@@ -17538,6 +17625,18 @@ package body Gnat2Why.Expr is
                      end;
                   else
                      Result := True_Expr;
+                  end if;
+
+               --  For access-to-subprogram types, we only check null exclusion
+
+               elsif Is_Access_Subprogram_Type (Ty) then
+                  if Can_Never_Be_Null (Ty) then
+                     Result := New_Not
+                       (Right  => New_Record_Access
+                          (Name  => Var_Tmp,
+                           Field => M_Subprogram_Access.Rec_Is_Null,
+                           Typ   => EW_Bool_Type),
+                        Domain => Domain);
                   end if;
 
                --  For a constrained access type whose root is not constrained,
@@ -21465,6 +21564,7 @@ package body Gnat2Why.Expr is
                end if;
             end loop;
          elsif Is_Access_Type (Ty_Ext)
+           and then not Is_Access_Subprogram_Type (Ty_Ext)
            and then
              (not Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
               or else not Incompl_Acc.Contains (Repr_Pointer_Type (Ty_Ext)))
@@ -21673,10 +21773,18 @@ package body Gnat2Why.Expr is
      (E        : Entity_Id;
       Selector : Selection_Kind := Why.Inter.Standard) return Boolean
    is
+      Subp : constant Entity_Id :=
+        (if Ekind (E) = E_Subprogram_Type
+           and then Present (Access_Subprogram_Wrapper (E))
+         then Access_Subprogram_Wrapper (E)
+         else E);
+      --  To retrieve the contract associated to a subprogram type, we need
+      --  to go through the associated wrapper.
+
       Has_Precondition : constant Boolean :=
-        Has_Contracts (E, Pragma_Precondition);
+        Has_Contracts (Subp, Pragma_Precondition);
       Has_Classwide_Or_Inherited_Precondition : constant Boolean :=
-        Has_Contracts (E, Pragma_Precondition,
+        Has_Contracts (Subp, Pragma_Precondition,
                        Classwide => True,
                        Inherited => True);
    begin

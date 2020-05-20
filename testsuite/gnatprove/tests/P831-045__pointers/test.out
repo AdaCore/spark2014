@@ -86,7 +86,7 @@ test.adb:28:08: violation of aspect SPARK_Mode at line 7
 test.adb:64:09: warning: variable "X" is read but never assigned
 test.adb:78:03: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:78:03: violation of aspect SPARK_Mode at line 7
-test.adb:78:08: attribute "Access" is not allowed in SPARK
+test.adb:78:08: attribute "Access" on object is not allowed in SPARK
 test.adb:78:08: violation of aspect SPARK_Mode at line 7
 test.adb:84:08: warning: "B" may be null
 test.adb:86:11: warning: "x0" may be referenced before it has a value

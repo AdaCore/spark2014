@@ -61,6 +61,8 @@ package SPARK_Atree.Entities is
 
    E_Abstract_State              : Entity_Kind renames Einfo.E_Abstract_State;
    E_Access_Subtype              : Entity_Kind renames Einfo.E_Access_Subtype;
+   E_Access_Subprogram_Type      : Entity_Kind renames
+     Einfo.E_Access_Subprogram_Type;
    E_Access_Type                 : Entity_Kind renames Einfo.E_Access_Type;
    E_Array_Subtype               : Entity_Kind renames Einfo.E_Array_Subtype;
    E_Array_Type                  : Entity_Kind renames Einfo.E_Array_Type;
@@ -102,6 +104,7 @@ package SPARK_Atree.Entities is
    E_String_Literal_Subtype      : Entity_Kind renames
      Einfo.E_String_Literal_Subtype;
    E_Subprogram_Body             : Entity_Kind renames Einfo.E_Subprogram_Body;
+   E_Subprogram_Type             : Entity_Kind renames Einfo.E_Subprogram_Type;
    E_Task_Type                   : Entity_Kind renames Einfo.E_Task_Type;
    E_Variable                    : Entity_Kind renames Einfo.E_Variable;
    E_Void                        : Entity_Kind renames Einfo.E_Void;
@@ -115,6 +118,15 @@ package SPARK_Atree.Entities is
 
    function Get_Pragma (E : Entity_Id; Id : Pragma_Id) return Node_Id renames
      Einfo.Get_Pragma;
+
+   function Is_Access_Subprogram_Type (E : Entity_Id) return Boolean;
+   --  Return True if E's base type is an access-to-subprogram type
+
+   function Is_Access_Type (E : Entity_Id) return Boolean renames
+     Einfo.Is_Access_Type;
+
+   function Is_Anonymous_Access_Type (E : Entity_Id) return Boolean renames
+     Einfo.Is_Anonymous_Access_Type;
 
    function Is_Array_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Array_Type;
@@ -232,15 +244,6 @@ package SPARK_Atree.Entities is
 
    function Within_Protected_Type (E : Entity_Id) return Boolean renames
      Sem_Util.Within_Protected_Type;
-
-   function Is_Access_Type (E : Entity_Id) return Boolean renames
-     Einfo.Is_Access_Type;
-
-   function Is_Anonymous_Access_Type (E : Entity_Id) return Boolean renames
-     Einfo.Is_Anonymous_Access_Type;
-
-   function Associated_Node_For_Itype (E : Entity_Id) return Node_Id renames
-     Einfo.Associated_Node_For_Itype;
 
    ----------------
    --  For Types --
@@ -521,6 +524,9 @@ package SPARK_Atree.Entities is
    function Is_Access_Constant (E : Entity_Id) return Boolean renames
      Einfo.Is_Access_Constant;
 
+   function Access_Subprogram_Wrapper (E : Entity_Id) return Entity_Id renames
+     Einfo.Access_Subprogram_Wrapper;
+
    ------------------
    --  For Objects --
    ------------------
@@ -603,12 +609,25 @@ package SPARK_Atree.Entities is
                            | Einfo.E_Subprogram_Type,
      Post => (if Present (First_Formal'Result) then
                   Einfo.Is_Formal (First_Formal'Result));
+   --  Same as Einfo.First_Formal except that it ignores the formal introduced
+   --  for the access-to-subprogram object in access subprogram wrappers.
+
+   function Number_Formals (Subp : Entity_Id) return Natural with
+     Pre  => Ekind (Subp) in Einfo.Generic_Subprogram_Kind
+                           | Einfo.Overloadable_Kind
+                           | Einfo.E_Entry_Family
+                           | Einfo.E_Subprogram_Body
+                           | Einfo.E_Subprogram_Type;
+   --  Same as Einfo.Number_Formals except that it ignores the formal
+   --  introduced for the access-to-subprogram object in access subprogram
+   --  wrappers.
 
    function Has_Controlling_Result (Subp : Entity_Id) return Boolean with
      Pre => Ekind (Subp) = E_Function;
 
    function Has_Pragma_Volatile_Function (Subp : Entity_Id) return Boolean with
-     Pre => Ekind (Subp) = E_Function;
+     Pre  => Ekind (Subp) in Einfo.Subprogram_Kind
+                           | Einfo.E_Subprogram_Type;
    --  Return True if Subp has a pragma Volatile_Function or if it is an
    --  unchecked conversion with a volatile profile.
    --  This is different from Sem_Util.Is_Volatile_Function as it does not
@@ -617,7 +636,8 @@ package SPARK_Atree.Entities is
    function Is_Expression_Function_Or_Completion
      (Subp : Entity_Id)
       return Boolean
-   with Pre => Einfo.Is_Subprogram (Subp);
+   with Pre =>
+       Ekind (Subp) in  Einfo.Subprogram_Kind | Einfo.E_Subprogram_Type;
 
    function Is_Predicate_Function (Subp : Entity_Id) return Boolean with
      Pre => Einfo.Is_Subprogram (Subp);
@@ -627,10 +647,18 @@ package SPARK_Atree.Entities is
    --  tagged dispatching type (SPARK_Util.Subprograms.Find_Dispatching_Type
    --  returns True).
 
-   function Next_Formal (Formal : Entity_Id) return Entity_Id renames
-     Einfo.Next_Formal;
+   function Next_Formal (Formal : Entity_Id) return Entity_Id with
+     Pre  => Einfo.Is_Formal (Formal),
+     Post => No (Next_Formal'Result)
+       or else Einfo.Is_Formal (Next_Formal'Result);
+   --  Same as Einfo.Next_Formal except that it ignores the formal introduced
+   --  for the access-to-subprogram object in access subprogram wrappers.
 
-   procedure Next_Formal (Formal : in out Entity_Id) renames Einfo.Next_Formal;
+   procedure Next_Formal (Formal : in out Entity_Id) with
+     Pre  => Einfo.Is_Formal (Formal),
+     Post => No (Formal) or else Einfo.Is_Formal (Formal);
+   --  Same as Einfo.Next_Formal except that it ignores the formal introduced
+   --  for the access-to-subprogram object in access subprogram wrappers.
 
    function No_Return (Subp : Entity_Id) return Boolean renames
      Einfo.No_Return;
@@ -649,7 +677,7 @@ package SPARK_Atree.Entities is
    --  entries.
 
    function Is_Unchecked_Conversion_Instance (Subp : Entity_Id) return Boolean
-   with Pre => Ekind (Subp) in Subprogram_Kind | E_Entry;
+   with Pre => Ekind (Subp) in Subprogram_Kind | E_Entry | E_Subprogram_Type;
    --  Same as Sem_Util.Is_Unchecked_Conversion_Instance
 
    -------------------

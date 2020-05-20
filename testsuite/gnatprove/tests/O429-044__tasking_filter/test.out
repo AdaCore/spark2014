@@ -1,6 +1,6 @@
-tasks.adb:55:04: "Bad_Store" is not allowed in SPARK (due to attribute "Access")
+tasks.adb:55:04: "Bad_Store" is not allowed in SPARK (due to attribute "Access" on object)
 tasks.adb:55:04: violation of pragma SPARK_Mode at test.adc:1
-tasks.adb:58:04: "Bad_Store" is not allowed in SPARK (due to attribute "Access")
+tasks.adb:58:04: "Bad_Store" is not allowed in SPARK (due to attribute "Access" on object)
 tasks.adb:58:04: violation of pragma SPARK_Mode at test.adc:1
 tasks.adb:89:25: attribute "Identity" is not allowed in SPARK
 tasks.adb:89:25: violation of pragma SPARK_Mode at test.adc:1
@@ -10,7 +10,7 @@ tasks.ads:24:07: protected component with no default initialization is not allow
 tasks.ads:24:07: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:25:07: component of anonymous access type is not allowed in SPARK
 tasks.ads:25:07: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:25:45: attribute "Access" is not allowed in SPARK
+tasks.ads:25:45: attribute "Access" on object is not allowed in SPARK
 tasks.ads:25:45: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:51:07: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
 tasks.ads:51:07: violation of pragma SPARK_Mode at test.adc:1

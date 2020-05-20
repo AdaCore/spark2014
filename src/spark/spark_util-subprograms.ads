@@ -128,7 +128,8 @@ package SPARK_Util.Subprograms is
                        Ekind (E) in Entry_Kind
                                   | E_Function
                                   | E_Procedure
-                                  | E_Task_Type,
+                                  | E_Task_Type
+                                  | E_Subprogram_Type,
 
                     when others
                     =>
@@ -159,7 +160,8 @@ package SPARK_Util.Subprograms is
                             E_Procedure      |
                             Entry_Kind       |
                             E_Protected_Type |
-                            E_Task_Type
+                            E_Task_Type      |
+                            E_Subprogram_Type
                and then Name in Pragma_Precondition      |
                                 Pragma_Postcondition     |
                                 Pragma_Refined_Post      |
@@ -179,7 +181,8 @@ package SPARK_Util.Subprograms is
                              E_Function       |
                              E_Procedure      |
                              E_Protected_Type |
-                             E_Task_Type,
+                             E_Task_Type      |
+                             E_Subprogram_Type,
         Post => (if Present (Get_Body'Result)
                  then Nkind (Get_Body'Result) =
                    (case Ekind (E) is
@@ -299,12 +302,13 @@ package SPARK_Util.Subprograms is
       Name      : Pragma_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
-   with Pre => Ekind (E) in E_Function       |
-                            E_Package        |
-                            E_Procedure      |
-                            Entry_Kind       |
-                            E_Protected_Type |
-                            E_Task_Type
+   with Pre => Ekind (E) in E_Function        |
+                            E_Package         |
+                            E_Procedure       |
+                            Entry_Kind        |
+                            E_Protected_Type  |
+                            E_Task_Type       |
+                            E_Subprogram_Type
              and then Name in Pragma_Precondition      |
                               Pragma_Postcondition     |
                               Pragma_Refined_Post      |
@@ -317,7 +321,8 @@ package SPARK_Util.Subprograms is
    --  @return True iff there is at least one contract Name for E
 
    function Has_Extensions_Visible (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
+   with Pre =>
+       Ekind (E) in E_Function | E_Procedure | Entry_Kind | E_Subprogram_Type;
    --  @param E subprogram
    --  @return True iff Extensions_Visible is specified for E
 
@@ -339,6 +344,9 @@ package SPARK_Util.Subprograms is
                                                        | E_Procedure);
    --  @param callable entities
    --  @return True iff Calls include Ada.Task_Identification.Current_Task
+
+   function Is_Function_Type (E : Entity_Id) return Boolean is
+     (Ekind (E) = E_Subprogram_Type and then Is_Type (Etype (E)));
 
    function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean;
    --  Return true if E is a borrowing traversal function
@@ -399,7 +407,8 @@ package SPARK_Util.Subprograms is
    --  @return True iff E is a traversal function
 
    function Is_Unchecked_Deallocation_Instance (E : Entity_Id) return Boolean
-   with Pre => Is_Subprogram_Or_Entry (E) or else Ekind (E) = E_Task_Type;
+   with Pre => Is_Subprogram_Or_Entry (E)
+     or else Ekind (E) in E_Task_Type | E_Subprogram_Type;
    --  Return True iff E is an instance of Ada.Unchecked_Deallocation
 
    function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
@@ -430,7 +439,8 @@ package SPARK_Util.Subprograms is
                             E_Procedure      |
                             E_Entry          |
                             E_Task_Type      |
-                            E_Protected_Type;
+                            E_Protected_Type |
+                            E_Subprogram_Type;
    --  Retrieve the set of entities referenced from an entity's spec and body.
    --  It uses flow analysis and ignores entities which are opaque for proof
    --  (abstract states with invisible constituents and entities not in SPARK).

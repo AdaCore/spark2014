@@ -644,6 +644,13 @@ package body SPARK_Util.Types is
       end if;
    end Get_Specific_Type_From_Classwide;
 
+   ----------------------------------
+   -- Get_Access_Type_From_Profile --
+   ----------------------------------
+
+   function Get_Access_Type_From_Profile (Ty : Entity_Id) return Entity_Id is
+     (Defining_Entity (Associated_Node_For_Itype (Ty)));
+
    ------------------------------
    -- Get_Constraint_For_Discr --
    ------------------------------
@@ -784,7 +791,10 @@ package body SPARK_Util.Types is
    begin
       case Type_Kind'(Ekind (Rep_Typ)) is
          when Access_Kind =>
-            return True;
+
+            --  Access to subprograms are not subjected to ownership rules
+
+            return not Is_Access_Subprogram_Type (Base_Type (Rep_Typ));
 
          when E_Array_Type
             | E_Array_Subtype
@@ -1126,7 +1136,9 @@ package body SPARK_Util.Types is
             return True;
          elsif Is_Array_Type (Rep_Ty) then
             return Might_Contain_Relaxed (Component_Type (Rep_Ty));
-         elsif Is_Access_Type (Rep_Ty) then
+         elsif Is_Access_Type (Rep_Ty)
+           and then not Is_Access_Subprogram_Type (Base_Type (Rep_Ty))
+         then
             declare
                Des_Ty   : constant Entity_Id :=
                  Directly_Designated_Type (Rep_Ty);

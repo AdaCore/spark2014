@@ -198,7 +198,8 @@ package Flow_Utility is
    with Pre  => Ekind (Subprogram) in E_Entry
                                     | E_Function
                                     | E_Procedure
-                                    | E_Task_Type,
+                                    | E_Task_Type
+                                    | E_Subprogram_Type,
         Post => (for all G of Reads =>
                    Is_Entire_Variable (G) and then G.Variant = Normal_Use)
        and then (for all G of Writes =>
@@ -440,7 +441,8 @@ package Flow_Utility is
    --  Expand_Internal_Objects will be passed on to Get_Variables if necessary.
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
-   with Pre => Ekind (E) in Entry_Kind | E_Function | E_Procedure;
+   with Pre =>
+       Ekind (E) in Entry_Kind | E_Function | E_Procedure | E_Subprogram_Type;
    --  Given the entity for a subprogram, return the expression(s) for its
    --  precondition and the condition(s) of its Contract_Cases (or return
    --  the empty list if none of these exist).
@@ -448,7 +450,8 @@ package Flow_Utility is
    function Get_Postcondition_Expressions (E       : Entity_Id;
                                            Refined : Boolean)
                                            return Node_Lists.List
-   with Pre => Ekind (E) in Entry_Kind | E_Function | E_Package | E_Procedure;
+   with Pre => Ekind (E) in
+     Entry_Kind | E_Function | E_Package | E_Procedure | E_Subprogram_Type;
    --  Given the entity for a subprogram or package, return all expression(s)
    --  associated with postconditions: the postcondition, the rhs for contract
    --  cases and the initial condition; or an empty list of none of these

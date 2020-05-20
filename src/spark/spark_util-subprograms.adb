@@ -1172,15 +1172,17 @@ package body SPARK_Util.Subprograms is
         --  A function is said to be a traversal function if the result type of
         --  the function is an anonymous access-to-object type,
 
-        and then Is_Anonymous_Access_Type (Etype (E))
+        and then Is_Anonymous_Access_Object_Type (Etype (E))
 
         --  the function has at least one formal parameter,
 
         and then Present (First_Formal (E))
 
-        --  and the function's first parameter is of an access type.
+        --  and the function's first parameter is of an access-to-object type.
 
-        and then Is_Access_Type (Retysp (Etype (First_Formal (E))));
+        and then Is_Access_Type (Retysp (Etype (First_Formal (E))))
+        and then not Is_Access_Subprogram_Type
+          (Base_Type (Retysp (Etype (First_Formal (E)))));
    end Is_Traversal_Function;
 
    ----------------------------------------
@@ -1297,6 +1299,7 @@ package body SPARK_Util.Subprograms is
             | E_Function
             | E_Procedure
             | E_Task_Type
+            | E_Subprogram_Type
          =>
             declare
                Out_Ids    : Flow_Types.Flow_Id_Sets.Set;
@@ -1564,12 +1567,13 @@ package body SPARK_Util.Subprograms is
    function Get_Body (E : Entity_Id) return Node_Id is
    begin
       return (case Ekind (E) is
-                 when Entry_Kind       => Entry_Body (E),
+                 when Entry_Kind        => Entry_Body (E),
                  when E_Function
-                    | E_Procedure      => Subprogram_Body (E),
-                 when E_Protected_Type => Protected_Body (E),
-                 when E_Task_Type      => Task_Body (E),
-                 when others           => raise Program_Error);
+                    | E_Procedure       => Subprogram_Body (E),
+                 when E_Protected_Type  => Protected_Body (E),
+                 when E_Task_Type       => Task_Body (E),
+                 when E_Subprogram_Type => Empty,
+                 when others            => raise Program_Error);
    end Get_Body;
 
    ---------------------

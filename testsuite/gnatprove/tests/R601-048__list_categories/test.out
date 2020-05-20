@@ -80,6 +80,8 @@ VC_TRIVIAL_WEAKER_PRE - precondition not True while class-wide precondition is T
 VC_STRONGER_POST - postcondition stronger than class-wide postcondition - Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition.
 VC_WEAKER_CLASSWIDE_PRE - class-wide precondition weaker than overridden one - Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition.
 VC_STRONGER_CLASSWIDE_POST - class-wide postcondition stronger than overridden one - Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition.
+VC_WEAKER_PRE_ACCESS - precondition of the source weaker than precondition of the target - Check that the precondition aspect of the access-to-subprogram type used as the target of a conversion is sufficient to enfore the precondition of the source.
+VC_STRONGER_POST_ACCESS - postcondition of the source stronger than postcondition of the target - Check that the postcondition aspect of the access-to-subprogram type used as the target of a conversion is implied by the postcondition of the source.
 [Proof warnings categories]
 VC_INCONSISTENT_PRE - precondition always False - Warn if precondition is found to be always False
 VC_INCONSISTENT_POST - postcondition always False - Warn if postcondition is found to be always False

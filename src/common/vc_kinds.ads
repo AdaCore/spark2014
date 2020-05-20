@@ -125,6 +125,11 @@ package VC_Kinds is
       VC_Weaker_Classwide_Pre,        --  classwide pre weaker than inherited
       VC_Stronger_Classwide_Post,     --  classwide post stronger t/ inherited
 
+      VC_Weaker_Pre_Access,           --  pre of source is weaker than pre of
+                                       --  target.
+      VC_Stronger_Post_Access,        --  post of source is stronger than post
+                                       --  of target.
+
       --  VC_Warning_Kind - warnings
 
       VC_Inconsistent_Pre,
@@ -140,7 +145,7 @@ package VC_Kinds is
      VC_Initial_Condition .. VC_UC_Alignment;
 
    subtype VC_LSP_Kind is VC_Kind range
-     VC_Weaker_Pre .. VC_Stronger_Classwide_Post;
+     VC_Weaker_Pre .. VC_Stronger_Post_Access;
 
    subtype VC_Warning_Kind is VC_Kind range
      VC_Inconsistent_Pre .. VC_Dead_Code;

@@ -23,14 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.Symbols;  use GNATCOLL.Symbols;
-with Snames;            use Snames;
-with SPARK_Util;        use SPARK_Util;
-with Types;             use Types;
-with Why.Ids;           use Why.Ids;
-with Why.Sinfo;         use Why.Sinfo;
-with Why.Types;         use Why.Types;
-with Common_Containers; use Common_Containers;
+with Common_Containers;      use Common_Containers;
+with GNATCOLL.Symbols;       use GNATCOLL.Symbols;
+with Snames;                 use Snames;
+with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with SPARK_Util;             use SPARK_Util;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with Types;                  use Types;
+with Why.Ids;                use Why.Ids;
+with Why.Inter;              use Why.Inter;
+with Why.Sinfo;              use Why.Sinfo;
+with Why.Types;              use Why.Types;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
@@ -157,6 +160,26 @@ package Why.Gen.Names is
    --  Create a new identifier for an entity in program space, given
    --  the name of the corresponding entity in logic space.
 
+   function Logic_Function_Name
+     (E                      : Entity_Id;
+      Selector_Name          : Selection_Kind := Why.Inter.Standard;
+      Is_Access_Subp_Wrapper : Boolean := False)
+      return W_Identifier_Id
+   with
+     Pre => Is_Function_Type (E) or else Ekind (E) = E_Function;
+   --  Compute the name to be used to call a function or a function profile in
+   --  the logic domain.
+
+   function Guard_Predicate_Name
+     (E                      : Entity_Id;
+      Selector_Name          : Selection_Kind := Why.Inter.Standard;
+      Is_Access_Subp_Wrapper : Boolean := False)
+      return W_Identifier_Id
+   with
+      Pre => Is_Function_Type (E) or else Ekind (E) = E_Function;
+   --  Compute the name to be used for the guard of a function or a function
+   --  profile.
+
    Def_Axiom : constant String := "def_axiom";
    --  suffix for a definition axiom
 
@@ -221,6 +244,7 @@ package Why.Gen.Names is
       WNE_Array_Logical_Op_Suffix, --  Suffix for logical operators module
       WNE_Array_Prefix, --  Prefix of array modules
 
+      WNE_Attr_Access,
       WNE_Attr_Address,
       WNE_Attr_Alignment,
       WNE_Attr_Component_Size,
@@ -391,9 +415,10 @@ package Why.Gen.Names is
       WNE_Pointer_Value_Abstr,    --  "__pointer_value_abstr"
       WNE_Pointer_Open,           --  "__open"
       WNE_Pointer_Close,          --  "__close"
-      WNE_Is_Moved,               --  __is_moved
-      WNE_Move,                   --  __move
-      WNE_Moved_Relation,         --  __moved_relation
+      WNE_Is_Moved,               --  "__is_moved"
+      WNE_Move,                   --  "__move"
+      WNE_Moved_Relation,         --  "__moved_relation"
+      WNE_Pointer_Call,           --  "__call_"
 
       --  Names related to initialization checks
       WNE_Init_Value,             --  "rec__value"

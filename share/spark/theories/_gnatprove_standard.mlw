@@ -1440,3 +1440,42 @@ module BVConv_8_16
     requires { (BV16.ule f x) /\ (BV16.ule x l) }
     ensures { result = x }
 end
+
+(* Module for the representative type of all access-to-subprogram types *)
+
+module Subprogram_Pointer_Rep
+  type __subprogram
+
+  type __rep =
+    { __is_null_pointer : bool;
+      __pointer_value   : __subprogram }
+  
+  type __rep__ref = {
+    mutable __rep__content : __rep
+  }
+  
+  val __rep__havoc (x: __rep__ref) : unit writes { x }
+  
+  function bool_eq (a: __rep) (b: __rep) : bool =
+    a.__is_null_pointer = b.__is_null_pointer &&
+     (if not a.__is_null_pointer
+      then a.__pointer_value = b.__pointer_value
+      else true)
+  
+  val bool_eq (a: __rep) (b: __rep) : bool
+    ensures { result = bool_eq a b }
+  
+  val function __null_pointer : __rep
+  
+  axiom __null_pointer__def_axiom:
+    __null_pointer.__is_null_pointer
+  
+  val __pointer_value_ (a: __rep) : __subprogram
+    requires { not a.__is_null_pointer }
+    ensures { result = a.__pointer_value }
+
+  val assign_null_check_ (a: __rep) : __rep
+    requires { not a.__is_null_pointer }
+    ensures { result = a }
+
+end

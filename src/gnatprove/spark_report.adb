@@ -1057,6 +1057,8 @@ procedure SPARK_Report is
             | VC_Stronger_Post
             | VC_Weaker_Classwide_Pre
             | VC_Stronger_Classwide_Post
+            | VC_Weaker_Pre_Access
+            | VC_Stronger_Post_Access
          =>
             return LSP;
 

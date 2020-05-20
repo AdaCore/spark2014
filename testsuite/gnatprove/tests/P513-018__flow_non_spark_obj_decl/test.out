@@ -1,5 +1,1 @@
-p.ads:3:04: access to subprogram type is not allowed in SPARK
-p.ads:3:04: violation of pragma SPARK_Mode at test.adc:1
-p.ads:7:23: call through access to function is not allowed in SPARK
-p.ads:7:23: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
+p.ads:7:27: medium: pointer dereference check might fail
