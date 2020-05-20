@@ -40,7 +40,8 @@ package Flow.Analysis.Antialiasing is
    with Pre => Nkind (N) in N_Entry_Call_Statement
                           | N_Procedure_Call_Statement;
    --  This procedure looks at an entry/procedure call statement and determines
-   --  if it introduces aliasing that matters: for example aliasing between in
+   --  if it introduces aliasing that matters. For the full ruleset see the
+   --  SPARK RM 6.4.2, but for example aliasing between two immutable 'in'
    --  parameters is OK, but aliasing between two out parameters is not.
    --
    --  This procedure is aware of globals, both computed by gnat2why and

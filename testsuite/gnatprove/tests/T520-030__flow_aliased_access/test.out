@@ -1,0 +1,8 @@
+global_access_in.adb:5:04: info: initialization of "My_Int_Ptr" proved
+global_access_in.adb:19:11: info: data dependencies proved
+global_access_in.adb:25:11: info: data dependencies proved
+global_access_in.adb:31:34: warning: "X" is not modified, could be of access constant type
+global_access_in.adb:33:11: info: data dependencies proved
+global_access_in.adb:39:11: info: data dependencies proved
+main.adb:6:49: warning: "Y" is not modified, could be of access constant type
+main.adb:17:19: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
