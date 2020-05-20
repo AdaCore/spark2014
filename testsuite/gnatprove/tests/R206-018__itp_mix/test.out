@@ -1,12 +1,12 @@
 Replay removes the obsolete proofattempts in manual proof:
 math_euclid.ads:3:63: info: division check proved (CVC4: 1 VC)
 math_euclid.ads:7:06: info: data dependencies proved
-math_euclid.ads:9:14: medium: postcondition might fail, cannot prove Divides (X, A mod B)
+math_euclid.ads:9:14: info: postcondition proved (CVC4: 6 VC; Z3: 1 VC)
 math_euclid.ads:9:28: info: division check proved (CVC4: 1 VC)
 math_euclid.ads:9:28: info: range check proved (CVC4: 1 VC)
 Now launching gnatprove in normal mode; it should reuse the proof:
 math_euclid.ads:3:63: info: division check proved (CVC4: 1 VC)
 math_euclid.ads:7:06: info: data dependencies proved
-math_euclid.ads:9:14: medium: postcondition might fail, cannot prove Divides (X, A mod B) (e.g. when A = 17 and B = 6 and X = 2)
+math_euclid.ads:9:14: info: postcondition proved (CVC4: 6 VC; Z3: 1 VC)
 math_euclid.ads:9:28: info: division check proved (CVC4: 1 VC)
 math_euclid.ads:9:28: info: range check proved (CVC4: 1 VC)

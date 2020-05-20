@@ -2,98 +2,94 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="2" steplimit="0" memlimit="1000"/>
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="0"/>
 <prover id="1" name="CVC4_CE" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="2" steplimit="0" memlimit="1000"/>
-<file proved="true">
-<path name=".."/>
-<path name=".."/>
-<path name=".."/>
-<path name="gnatprove"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="0"/>
+<file format="gnat-json" proved="true">
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="math_euclid__lemma_divisor_mod.gnat-json"/>
 <theory name="Math_euclid__lemma_divisor_mod__subprogram_def" proved="true">
- <goal name="VC def" expl="VC for def" proved="true">
+ <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="VC def.0" expl="precondition" proved="true">
+  <goal name="def&#39;vc.0" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.1" expl="precondition" proved="true">
+  <goal name="def&#39;vc.1" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.2" expl="precondition" proved="true">
+  <goal name="def&#39;vc.2" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.3" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.3" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.4" expl="precondition" proved="true">
-  <proof prover="0" timelimit="1"><result status="valid" steps="5"/></proof>
+  <goal name="def&#39;vc.4" expl="precondition" proved="true">
+  <proof prover="0" timelimit="1" memlimit="1000"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.5" expl="precondition" proved="true">
-  <proof prover="0" timelimit="1"><result status="valid" steps="168"/></proof>
+  <goal name="def&#39;vc.5" expl="precondition" proved="true">
+  <proof prover="0" timelimit="1" memlimit="1000"><result status="valid" steps="168"/></proof>
   </goal>
-  <goal name="VC def.6" expl="precondition" proved="true">
+  <goal name="def&#39;vc.6" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.7" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.7" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.8" expl="postcondition" proved="true">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="2541"/></proof>
+  <goal name="def&#39;vc.8" expl="postcondition" proved="true">
+  <proof prover="0" timelimit="1" memlimit="1000"><result status="unknown" steps="2541"/></proof>
   <proof prover="1"><result status="unknown" steps="2488"/></proof>
   <transf name="introduce_premises" proved="true" >
-   <goal name="VC def.8.0" expl="postcondition" proved="true">
+   <goal name="def&#39;vc.8.0" expl="postcondition" proved="true">
    <transf name="assert" proved="true" arg1="(mod2 A B = B * (- div2 A B) + A)">
-    <goal name="VC def.8.0.0" expl="asserted formula" proved="true">
+    <goal name="def&#39;vc.8.0.0" expl="asserted formula" proved="true">
     <proof prover="0"><result status="valid" steps="154"/></proof>
+    <transf name="assert" arg1="(mod1 A B = B * (- div1 A B) + A)">
+     <goal name="def&#39;vc.8.0.0.0" expl="asserted formula">
+     </goal>
+     <goal name="def&#39;vc.8.0.0.1" expl="asserted formula">
+     </goal>
+    </transf>
     </goal>
-    <goal name="VC def.8.0.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="unknown" steps="5101"/></proof>
-    <proof prover="2"><result status="timeout"/></proof>
+    <goal name="def&#39;vc.8.0.1" expl="postcondition" proved="true">
     <transf name="assert" proved="true" arg1="(mod1 A B = B * (- div1 A B) + A)">
-     <goal name="VC def.8.0.1.0" expl="asserted formula" proved="true">
+     <goal name="def&#39;vc.8.0.1.0" expl="asserted formula" proved="true">
      <proof prover="0"><result status="valid" steps="5853"/></proof>
      </goal>
-     <goal name="VC def.8.0.1.1" expl="postcondition" proved="true">
-     <proof prover="0"><result status="unknown" steps="5896"/></proof>
-     <proof prover="2"><result status="timeout"/></proof>
+     <goal name="def&#39;vc.8.0.1.1" expl="postcondition" proved="true">
      <transf name="assert" proved="true" arg1="(B = X * div1 B X)">
-      <goal name="VC def.8.0.1.1.0" expl="asserted formula" proved="true">
+      <goal name="def&#39;vc.8.0.1.1.0" expl="asserted formula" proved="true">
       <proof prover="0"><result status="valid" steps="4545"/></proof>
       </goal>
-      <goal name="VC def.8.0.1.1.1" expl="postcondition" proved="true">
-      <proof prover="0"><result status="unknown" steps="6804"/></proof>
-      <proof prover="2"><result status="timeout"/></proof>
+      <goal name="def&#39;vc.8.0.1.1.1" expl="postcondition" proved="true">
       <transf name="assert" proved="true" arg1="(mod1 A B = X * ((div1 B X) * (-div1 A B)) + A)">
-       <goal name="VC def.8.0.1.1.1.0" expl="asserted formula" proved="true">
+       <goal name="def&#39;vc.8.0.1.1.1.0" expl="asserted formula" proved="true">
        <proof prover="0"><result status="valid" steps="2282"/></proof>
        </goal>
-       <goal name="VC def.8.0.1.1.1.1" expl="postcondition" proved="true">
-       <proof prover="0"><result status="timeout"/></proof>
-       <proof prover="2"><result status="timeout"/></proof>
+       <goal name="def&#39;vc.8.0.1.1.1.1" expl="postcondition" proved="true">
        <transf name="assert" proved="true" arg1="(mod1 (mod1 A B) X = 0)">
-        <goal name="VC def.8.0.1.1.1.1.0" expl="asserted formula" proved="true">
+        <goal name="def&#39;vc.8.0.1.1.1.1.0" expl="asserted formula" proved="true">
+        <proof prover="0"><result status="timeout"/></proof>
         <transf name="rewrite" proved="true" arg1="h1">
-         <goal name="VC def.8.0.1.1.1.1.0.0" expl="asserted formula" proved="true">
+         <goal name="def&#39;vc.8.0.1.1.1.1.0.0" expl="asserted formula" proved="true">
          <transf name="rewrite" proved="true" arg1="Mod_mult">
-          <goal name="VC def.8.0.1.1.1.1.0.0.0" expl="asserted formula" proved="true">
+          <goal name="def&#39;vc.8.0.1.1.1.1.0.0.0" expl="asserted formula" proved="true">
           <proof prover="0"><result status="valid" steps="155"/></proof>
           </goal>
-          <goal name="VC def.8.0.1.1.1.1.0.0.1" expl="rewrite premises" proved="true">
+          <goal name="def&#39;vc.8.0.1.1.1.1.0.0.1" expl="rewrite premises" proved="true">
           <proof prover="0"><result status="valid" steps="5"/></proof>
           </goal>
          </transf>
          </goal>
         </transf>
         </goal>
-        <goal name="VC def.8.0.1.1.1.1.1" expl="postcondition" proved="true">
-        <proof prover="2"><result status="valid" steps="7929"/></proof>
+        <goal name="def&#39;vc.8.0.1.1.1.1.1" expl="postcondition" proved="true">
+        <proof prover="2"><result status="valid" steps="11032"/></proof>
         </goal>
        </transf>
        </goal>

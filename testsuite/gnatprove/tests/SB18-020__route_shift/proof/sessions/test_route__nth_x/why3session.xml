@@ -32,10 +32,6 @@
   <goal name="def&#39;vc.6" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="1333"/></proof>
   </goal>
-  <goal name="def&#39;vc.7" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
  </transf>
  </goal>
 </theory>
