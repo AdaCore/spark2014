@@ -88,13 +88,13 @@ computations on real numbers.
       Y : Float := X;
       M : Big_Real := Float_Convs.To_Big_Real (X) with Ghost;
       --  M is used to mimic the computations done on Y on real numbers
- 
+
    begin
       Y := Y * 100.0;
       M := M * Float_Convs.To_Big_Real (100.0);
       Y := Y + 100.0;
       M := M + Float_Convs.To_Big_Real (100.0);
-      
+
       pragma Assert
         (In_Range (Float_Convs.To_Big_Real (Y) - M,
                    Low  => Float_Convs.To_Big_Real (- 0.001),
@@ -420,9 +420,10 @@ SPARK Lemma Library
 -------------------
 
 As part of the |SPARK| product, a library of lemmas is available through the
-project file :file:`<spark-install>/lib/gnat/spark_lemmas.gpr`. To use this
-library in a program, you need to add a corresponding dependency in your
-project file, for example:
+project file :file:`<spark-install>/lib/gnat/spark_lemmas.gpr`. Header files of
+the lemma library are available through :menuselection:`Help --> SPARK -->
+Lemmas` menu item in GNAT Studio. To use this library in a program, you need to
+add a corresponding dependency in your project file, for example:
 
 .. code-block:: gpr
 
