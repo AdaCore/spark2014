@@ -36,6 +36,8 @@ docs/guidance/* no-precommit-check
 docs/booklet/* no-precommit-check
 trace_units_script/* no-precommit-check
 include/*.adb no-precommit-check
+# Temporarily disable precommit checks, see T605-002
+testsuite/gnatprove/lib/python/test_support.py no-precommit-check
 
 *.ads diff=ada
 *.adb diff=ada

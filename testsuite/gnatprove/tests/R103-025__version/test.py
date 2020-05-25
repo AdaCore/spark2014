@@ -1,5 +1,5 @@
 from test_support import *
-from gnatpython.ex import Run
+from e3.os.process import Run
 
 # test the version output of gnatprove.
 # Typical output is like this:
@@ -33,4 +33,4 @@ for line in l:
     # output
     elts = text.split(" - ")
     text = elts[0]
-    print text
+    print(text)

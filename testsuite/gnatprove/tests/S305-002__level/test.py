@@ -1,4 +1,4 @@
-from gnatpython.ex import Run
+from e3.os.process import Run
 import re
 
 timeout_reg = re.compile ("--timeout (\d+)")

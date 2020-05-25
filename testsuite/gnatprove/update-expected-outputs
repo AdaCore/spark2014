@@ -1,50 +1,20 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-"""
-This script will update the expected output of all failed tests.
-"""
-
-import os
-import shutil
+from e3.testsuite.result import TestStatus
 from glob import glob
+import os.path
+import yaml
 
 
-def get_result(result_file):
-    fd = open(result_file, "rU")
-    tmp = fd.read().strip()
-    fd.close()
+def update_baseline(testname, out):
+    fn = os.path.join("tests", testname, "test.out")
+    print("Update output " + fn)
+    with open(fn, "w") as f:
+        f.write(out)
 
-    return tmp.split(":")[0]
 
-
-for result_file in glob("out/*.result"):
-    # Result is "DIFF" when run locally, and "D" in mailservers/nightly runs
-    if get_result(result_file) == "DIFF" or get_result(result_file) == "D":
-        # Output is in file .out.filtered when run locally, and in .out in
-        # mailservers/nightly runs
-        new_out_file = result_file.replace(".result", ".out.filtered")
-        if not os.path.exists(new_out_file):
-            new_out_file = result_file.replace(".result", ".out")
-        old_out_file = result_file\
-            .replace("out/", "tests/")\
-            .replace(".result", "/test.out")
-        old_out_dir = result_file\
-            .replace("out/", "tests/")\
-            .replace(".result", "")
-        if not os.path.exists(old_out_dir):
-            print "Ignore output %s" % old_out_file
-            continue
-        elif os.path.exists(new_out_file):
-            if not os.path.exists(old_out_file):
-                shutil.copyfile(new_out_file, old_out_file)
-                print "Add output %s" % old_out_file
-                print "THIS OUTPUT SHOULD BE ADDED TO VERSION CONTROL"
-            else:
-                shutil.copyfile(new_out_file, old_out_file)
-                print "Update output %s" % old_out_file
-                if os.stat(new_out_file).st_size == 0:
-                    print "THIS EMPTY OUTPUT SHOULD BE REMOVED FROM VERSION CONTROL"
-        else:
-            if os.path.exists(old_out_file):
-                os.remove(old_out_file)
-                print "Remove output %s" % old_out_file
+for yaml_file in glob("out/new/*.yaml"):
+    with open(yaml_file, "r") as f:
+        result = yaml.safe_load(f)
+    if result.status == TestStatus.FAIL:
+        update_baseline(result.env['test_name'], result.out)

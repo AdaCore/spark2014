@@ -13,6 +13,6 @@ for spec in sorted(glob("*.ads")):
 
 for i, fn in enumerate(files):
     if i > 0:
-        print
-    print "=== %s ===" % fn
+        print()
+    print("=== %s ===" % fn)
     do_flow(opt=["-u", fn])

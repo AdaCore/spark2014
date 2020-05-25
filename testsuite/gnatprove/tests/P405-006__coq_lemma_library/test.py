@@ -1,5 +1,6 @@
 from test_support import *
-from gnatpython.env import putenv
+import os
+
 import shutil
 
 def copy_project_file():
@@ -22,9 +23,9 @@ def copy_proof_files():
 copy_project_file()
 copy_lemma_files()
 copy_proof_files()
-putenv("SPARK_LEMMAS_OBJECT_DIR", "obj")
-putenv("SPARK_LEMMAS_BODY_MODE", "On")
-putenv("SPARK_LEMMAS_INSTALLED", "False")
+os.environ["SPARK_LEMMAS_OBJECT_DIR"] = "obj"
+os.environ["SPARK_LEMMAS_BODY_MODE"] = "On"
+os.environ["SPARK_LEMMAS_INSTALLED"] = "False"
 
 prove_all(opt=["--replay"],
           prover = ["coq","cvc4","z3","altergo"],

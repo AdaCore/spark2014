@@ -12,7 +12,7 @@ def print_session_proofs():
     with open(session_file) as f:
         content = f.readlines()
         proof = grep(".*proof.*", content)
-        print len(proof)
+        print(len(proof))
 
 # run gnatprove once
 prove_all(cache_allowed=False)

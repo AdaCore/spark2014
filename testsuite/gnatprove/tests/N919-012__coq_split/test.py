@@ -13,7 +13,7 @@ def check_session_file():
     assert len(manual_proof) == 1, "did not find manual proof at correct place"
 
 prove_all(opt=['--proof=progressive'], counterexample=False)
-print "======================================="
+print("=======================================")
 prove_all(prover=["coq"], opt=["--limit-line=greatest_common_divisor.ads:10", "--proof=progressive"], counterexample=False, filter_output=".*Grammar extension")
-print "======================================="
+print("=======================================")
 check_session_file()

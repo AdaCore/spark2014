@@ -9,7 +9,7 @@ sys.stdout = open('result1', 'w')
 with open("toto.conf", 'r') as outfile:
     for l in outfile:
         if "name" in l or "version" in l:
-            print l
+            print(l)
 
 sys.stdout = sys.__stdout__
 
@@ -45,7 +45,7 @@ sys.stdout = open('result2', 'w')
 with open("toto.conf", 'r') as outfile:
     for l in outfile:
         if "name" in l or "version" in l:
-            print l
+            print(l)
 
 # Here we check that something was added to the why3config. We cannot use the
 # whole why3config because there are a lot of platform dependant paths.

@@ -1,5 +1,5 @@
 from test_support import *
-from gnatpython.ex import Run
+from e3.os.process import Run
 
 # test should only be run when aunit is present
 

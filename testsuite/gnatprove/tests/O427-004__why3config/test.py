@@ -6,6 +6,6 @@ why3config = os.path.join(spark_install_path(), "libexec", "spark", "bin", "why3
 output = subprocess.check_output([why3config, "-C", "toto.conf", "--detect-provers"],
                                  stderr=subprocess.STDOUT)
 output = output.splitlines()
-output = grep("Save config", output)
+output = grep(rb"Save config", output)
 for l in output:
-    print l
+    print(l.decode("utf-8"))

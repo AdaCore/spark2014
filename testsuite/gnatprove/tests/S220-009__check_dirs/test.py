@@ -22,15 +22,15 @@ for l in result:
     count_lines += 1
     m = re.search(r':.*$', l)
     if m.group(0) is None:
-        print "TODO error"
+        print("TODO error")
     # Check that the exact same directory occurs at least twice
     if m.group(0) in list_dir:
         count += 1
     list_dir.append(m.group(0))
 
 
-print "Number of lines changing to a directory"
+print("Number of lines changing to a directory")
 print count_lines
 
 if count == 1:
-    print "Two change directory are exactly same (probably call to gnatwhy3)"
+    print("Two change directory are exactly same (probably call to gnatwhy3)")

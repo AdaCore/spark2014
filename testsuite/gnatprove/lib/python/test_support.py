@@ -8,9 +8,9 @@ import os
 import re
 import sys
 from time import sleep
-from gnatpython import fileutils
-from gnatpython.env import Env
-from gnatpython.ex import Run
+from e3.os.fs import which
+from e3.env import Env
+from e3.os.process import Run
 from test_util import sort_key_for_errors
 
 
@@ -101,7 +101,7 @@ def xfail_test():
 def print_sorted(strlist):
     strlist.sort(key=sort_key_for_errors)
     for line in strlist:
-        print line
+        print(line)
 
 
 def build_prover_switch(proverlist):
@@ -128,7 +128,7 @@ def cat(filename, sort=False, start=1, end=0):
                 if sort:
                     print_sorted(f.readlines())
                 else:
-                    print f.read()
+                    print(f.read())
             # Dump only the part of the file between lines start and end
             else:
                 lines = []
@@ -139,7 +139,7 @@ def cat(filename, sort=False, start=1, end=0):
                     print_sorted(lines)
                 else:
                     for line in lines:
-                        print line,
+                        print(line, end='')
 
 
 def ls(directory=None, filter_output=None):
@@ -187,7 +187,7 @@ def check_counterexamples():
 
     def not_found(f, line):
         """Print an error that the requested mark has not been found"""
-        print "MISSING COUNTEREXAMPLE at " + f + ":" + str(line)
+        print("MISSING COUNTEREXAMPLE at " + f + ":" + str(line))
 
     # store actual results in a map from (file,line) to a list of strings
     # for the counterexample, where each element of the list gives the
@@ -212,10 +212,12 @@ def check_counterexamples():
                 def str_elem(val):
                     return val["name"] + " = " + val["value"]
 
-                def location((loc, ctx)):
+                def location(arg):
+                    loc, ctx = arg
                     return loc
 
-                def trace((loc, ctx)):
+                def trace(arg):
+                    loc, ctx = arg
                     return ctx
 
                 if "cntexmp" in msg:
@@ -250,10 +252,10 @@ def check_counterexamples():
                 line = line + 1  # first line in file is 1, not 0
                 for mark in re.finditer(is_mark, linestr):
                     if (f, line) in results:
-                        print "counterexample expected for check at " + \
-                            f + ":" + str(line)
+                        print("counterexample expected for check at " +
+                              f + ":" + str(line))
                         for ctx in results[(f, line)]:
-                            print ctx
+                            print(ctx)
                     else:
                         not_found(f, line)
 
@@ -268,8 +270,8 @@ def check_fail(strlist, no_failures_allowed):
             if m is not None:
                 kind = m.group(3)
                 if kind in failures:
-                    print "FAILED CHECK UNEXPECTED at %s:%s" % (m.group(1),
-                                                                m.group(2))
+                    print("FAILED CHECK UNEXPECTED at %s:%s" % (m.group(1),
+                                                                m.group(2)))
 
 
 def is_dependency_tag(tag):
@@ -549,18 +551,18 @@ def check_marks(strlist):
     def not_found(f, line, tag, result):
         """Print an error that the requested mark has not been found"""
         if is_negative_result(result):
-            print "SOUNDNESS BUG",
+            print("SOUNDNESS BUG", end='')
         else:
             assert is_proof_tag(tag)
-            print "PROOF REGRESSION",
-        print "at " + f + ":" + str(line) + \
-            ": mark @" + tag + ":" + result + " not found"
+            print("PROOF REGRESSION", end='')
+        print("at " + f + ":" + str(line) +
+              ": mark @" + tag + ":" + result + " not found")
 
     def bad_found(f, line, tag, result):
         """Print an error that the mark has been unexpectedly found"""
-        print "SPURIOUS MESSAGE",
-        print "at " + f + ":" + str(line) + \
-            ": message @" + tag + ":" + result + " found"
+        print("SPURIOUS MESSAGE", end='')
+        print("at " + f + ":" + str(line) +
+              ": message @" + tag + ":" + result + " found")
 
     # store actual results in a map from (file,line) to (TAG,RESULT)
     results = {}
@@ -579,21 +581,21 @@ def check_marks(strlist):
 
     # check that marks in source code have a matching actual result
     for f in files:
-        with open(f, 'r') as ff:
+        with open(f, 'r', encoding='iso-8859-1') as ff:
             for line, linestr in enumerate(ff):
                 line = line + 1  # first line in file is 1, not 0
                 for mark in re.finditer(is_mark, linestr):
                     tag = mark.group(1).upper()
 
                     if not (is_flow_tag(tag) or is_proof_tag(tag)):
-                        print "unrecognized tag", \
-                            tag, "at", f + ":" + str(line)
+                        print("unrecognized tag",
+                              tag, "at", f + ":" + str(line))
                         sys.exit(1)
                     res = mark.group(2).upper()
 
                     if not is_valid_result(res):
-                        print "unrecognized result", \
-                            res, "at", f + ":" + str(line)
+                        print("unrecognized result",
+                              res, "at", f + ":" + str(line))
                         sys.exit(1)
 
                     if res == "NONE":
@@ -623,7 +625,7 @@ def gcc(src, opt=["-c"]):
 
 def spark_install_path():
     """the location of the SPARK install"""
-    exec_loc = fileutils.which("gnatprove")
+    exec_loc = which("gnatprove")
     return os.path.dirname(os.path.dirname(exec_loc))
 
 
@@ -644,7 +646,7 @@ def altergo(src, timeout=10, opt=None):
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
-    print process.out
+    print(process.out)
 
 
 def strip_provers_output(s):
@@ -718,7 +720,7 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
         cmd += ["--coverage"]
     cmd += to_list(opt)
     if verbose_mode():
-        print ' '.join(cmd)
+        print(' '.join(cmd))
     process = Run(cmd)
     # Replace line above by the one below for testing the scripts without
     # running the tool:
@@ -741,7 +743,7 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     check_fail(strlist, no_fail)
     # Check that the exit status is as expected
     if exit_status is not None and process.status != exit_status:
-        print "Unexpected exit status of", process.status
+        print("Unexpected exit status of", process.status)
         failure = True
     else:
         failure = False
@@ -754,7 +756,7 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
             print_sorted(strlist)
         else:
             for line in strlist:
-                print line
+                print(line)
 
 
 def prove_all(opt=None, steps=None, procs=parallel_procs,
@@ -980,7 +982,7 @@ def check_trace_files(only_flow=False):
     else:
         trace_files = glob.glob('gnatprove/*.trace')
 
-    print "Trace files' contents:"
+    print("Trace files' contents:")
     # Dump the contents of all trace files on stdout
     for trace_file in sorted(trace_files):
         cat(trace_file)
@@ -1021,4 +1023,4 @@ def check_output_file(sort=False):
     if sort:
         print_sorted(str.splitlines(output))
     else:
-        print output
+        print(output)
