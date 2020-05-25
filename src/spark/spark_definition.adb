@@ -2274,14 +2274,9 @@ package body SPARK_Definition is
             end if;
 
          when N_Delta_Aggregate =>
-
-            if Retysp_In_SPARK (Etype (N)) then
-               Mark (Expression (N));
-               Mark_List (Component_Associations (N));
-               Check_No_Deep_Duplicates_In_Assoc (N);
-            else
-               Mark_Violation (N, Etype (N));
-            end if;
+            Mark (Expression (N));
+            Mark_List (Component_Associations (N));
+            Check_No_Deep_Duplicates_In_Assoc (N);
 
          --  Object renamings are rewritten by expansion, but they are kept in
          --  the tree, so just ignore them.
@@ -2295,12 +2290,7 @@ package body SPARK_Definition is
          when N_Expression_With_Actions =>
             pragma Assert (Comes_From_Source (N));
             Mark_Actions (N, Actions (N));
-
-            if not Retysp_In_SPARK (Etype (N)) then
-               Mark_Violation (N, From => Etype (N));
-            else
-               Mark (Expression (N));
-            end if;
+            Mark (Expression (N));
 
          --  The following nodes are rewritten by semantic analysis
 
@@ -2321,9 +2311,7 @@ package body SPARK_Definition is
          --  assignment which is a move or reborrow.
 
          when N_Target_Name =>
-            if not Retysp_In_SPARK (Etype (N)) then
-               Mark_Violation (N, From => Etype (N));
-            elsif Is_Anonymous_Access_Type (Retysp (Etype (N))) then
+            if Is_Anonymous_Access_Type (Retysp (Etype (N))) then
                Mark_Unsupported ("'@ inside a reborrow", N);
             elsif Is_Deep (Etype (N)) then
                Mark_Unsupported ("'@ inside a move assignment", N);
