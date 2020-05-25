@@ -626,10 +626,11 @@ package SPARK_Util is
    --  @return a name that uniquely identifies the prefix
 
    function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Is_Generic_Instance (E),
+   with Pre  => Ekind (E) = E_Package and then Is_Generic_Instance (E),
         Post => (for all S of Generic_Actual_Subprograms'Result =>
                     Is_Subprogram (S));
-   --  @param E instance of a generic unit
+   --  @param E instance of a generic package (or a wrapper package for
+   --    instances of generic subprograms)
    --  @return actual subprogram parameters of E
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id

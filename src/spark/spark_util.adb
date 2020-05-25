@@ -911,6 +911,11 @@ package body SPARK_Util is
          if No (S) then
             return Empty;
          elsif Is_Generic_Instance (S) then
+            if Is_Subprogram (S) then
+               S := Scope (S);
+               pragma Assert (Is_Wrapper_Package (S));
+            end if;
+
             return S;
          else
             S := Scope (S);
