@@ -2469,8 +2469,14 @@ package body SPARK_Definition is
             --  Local variables
 
             Pref : constant Node_Id := Prefix (N);
+
          begin
-            if Is_Deep (Etype (Pref))
+            --  Check whether type is deep only if it has previously been
+            --  marked in SPARK. Otherwise there was already a violation, and
+            --  we should not call Is_Deep on a type possibly not marked.
+
+            if Entity_In_SPARK (Etype (Pref))
+              and then Is_Deep (Etype (Pref))
 
               --  Special case for attributes 'Old and 'Loop_Entry which should
               --  be applicable to a call to a volatile function of owning type
