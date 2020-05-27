@@ -876,7 +876,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.239" expl="check">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout" steps="9760"/></proof>
   </goal>
   <goal name="def&#39;vc.240" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

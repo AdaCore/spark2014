@@ -53,10 +53,6 @@
   <goal name="def&#39;vc.11" expl="precondition" proved="true">
   <proof prover="0" timelimit="20"><result status="valid" steps="37"/></proof>
   </goal>
-  <goal name="def&#39;vc.12" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
  </transf>
  </goal>
 </theory>
