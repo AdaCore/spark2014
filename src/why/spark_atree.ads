@@ -116,6 +116,8 @@ package SPARK_Atree is
    N_Not_In                         : Node_Kind renames Sinfo.N_Not_In;
    N_Object_Declaration             : Node_Kind renames
      Sinfo.N_Object_Declaration;
+   N_Object_Renaming_Declaration    : Node_Kind renames
+     Sinfo.N_Object_Renaming_Declaration;
    N_Op_Abs                         : Node_Kind renames Sinfo.N_Op_Abs;
    N_Op_Add                         : Node_Kind renames Sinfo.N_Op_Add;
    N_Op_And                         : Node_Kind renames Sinfo.N_Op_And;
@@ -685,6 +687,9 @@ package SPARK_Atree is
 
    function Unique_Defining_Entity (N : Node_Id) return Entity_Id renames
      Sem_Util.Unique_Defining_Entity;
+
+   function Unqual_Conv (N : Node_Id) return Node_Id with
+     Pre => Nkind (N) in Sinfo.N_Has_Etype;
 
    function Unit (N : Node_Id) return Node_Id with
      Pre => Nkind (N) = N_Compilation_Unit;

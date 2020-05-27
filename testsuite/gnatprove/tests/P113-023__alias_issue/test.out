@@ -13,4 +13,5 @@ aconv.adb:22:04: error in inlined body at line 14
 aconv.adb:22:04: error in inlined body at line 15
 aconv.adb:22:04: this conversion between array types is not yet supported
 aconv.adb:22:04: this conversion between array types is not yet supported
+aconv.adb:22:04: this conversion between array types is not yet supported
 gnatprove: error during flow analysis and proof

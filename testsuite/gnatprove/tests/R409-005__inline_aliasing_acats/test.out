@@ -4,7 +4,10 @@ c41107a.adb:7:19: warning: "X" is not modified, could be IN
 c41107a.adb:7:19: warning: unused variable "X"
 c41107a.adb:8:19: high: "Y" is not initialized in "P"
 c41107a.adb:8:19: warning: unused variable "Y"
+c41107a.adb:14:09: info: range check proved (CVC4: 4 VC)
 c41107a.adb:14:09: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
+c41107a.adb:14:17: info: index check proved (CVC4: 2 VC)
+c41107a.adb:14:21: info: range check proved (CVC4: 4 VC)
 main.adb:17:14: info: add a contract to analyze it separately from calling contexts
 main.adb:17:14: info: local subprogram "P" only analyzed in the context of calls
 main.adb:17:28: warning: unused initial value of "Y"

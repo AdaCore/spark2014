@@ -62,10 +62,14 @@ package SPARK_Util is
          | N_Number_Declaration
 
          --  Renamings are replaced by the renamed object in the frontend, but
-         --  the renaming objects are not removed from the tree. We can safely
-         --  ignore them.
+         --  the renaming declarations are not removed from the tree. We can
+         --  safely ignore them, except for renaming object declarations, which
+         --  need to be analyzed for possible RTE.
 
-         | N_Renaming_Declaration
+         | N_Exception_Renaming_Declaration
+         | N_Package_Renaming_Declaration
+         | N_Subprogram_Renaming_Declaration
+         | N_Generic_Renaming_Declaration
 
          --  Generic instantiations are expanded into the corresponding
          --  declarations in the frontend. The instantiations themselves can be

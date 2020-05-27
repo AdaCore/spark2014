@@ -2254,11 +2254,12 @@ package body SPARK_Definition is
             Mark_List (Component_Associations (N));
             Check_No_Deep_Duplicates_In_Assoc (N);
 
-         --  Object renamings are rewritten by expansion, but they are kept in
-         --  the tree, so just ignore them.
+         --  Uses of object renamings are rewritten by expansion, but the name
+         --  is still being evaluated at the location of the renaming, even if
+         --  there are no uses of the renaming.
 
          when N_Object_Renaming_Declaration =>
-            null;
+            Mark (Name (N));
 
          --  N_Expression_With_Actions is only generated from declare
          --  expressions in GNATprove mode.
@@ -2572,7 +2573,12 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               when N_Ignored_In_SPARK =>
+               --  Object renamings are not ignored, but simply checked for
+               --  absence of RTE in their name.
+
+               when N_Ignored_In_SPARK
+                  | N_Object_Renaming_Declaration
+               =>
                   null;
 
                when N_Pragma =>

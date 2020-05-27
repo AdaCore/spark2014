@@ -1555,6 +1555,7 @@ package body Gnat2Why.Expr.Loops.Inv is
             null;
 
          when N_Ignored_In_SPARK
+            | N_Object_Renaming_Declaration
             | N_Simple_Return_Statement
             | N_Subtype_Declaration
             | N_Full_Type_Declaration
