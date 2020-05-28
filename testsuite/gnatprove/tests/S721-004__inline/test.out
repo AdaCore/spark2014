@@ -1,2 +1,2 @@
-sem_cat.adb:18:09: too complex actions inserted in expression is not yet supported
-gnatprove: error during flow analysis and proof
+sem_cat.adb:11:45: warning: unused variable "Typ"
+sem_cat.ads:4:14: warning: subprogram "Validate_RT_RAT_Component" has no effect
