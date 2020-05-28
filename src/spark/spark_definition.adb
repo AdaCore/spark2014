@@ -6257,7 +6257,6 @@ package body SPARK_Definition is
             | E_Block
             | E_Operator
             | E_Package_Body
-            | E_Protected_Object
             | E_Protected_Body
             | E_Subprogram_Body
             | E_Task_Body

@@ -2631,7 +2631,6 @@ package body Flow_Utility is
                raise Program_Error;
 
             when E_Package_Body
-               | E_Protected_Object
                | E_Protected_Body
                | E_Return_Statement
                | E_Subprogram_Body
