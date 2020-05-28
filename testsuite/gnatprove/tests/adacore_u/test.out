@@ -48,7 +48,6 @@ p.adb:107:33: info: loop invariant initialization proved (CVC4: 2 VC)
 p.adb:107:33: info: loop invariant preservation proved (CVC4: 2 VC)
 p.adb:107:43: info: overflow check proved (CVC4: 2 VC)
 p.adb:108:10: info: precondition proved (CVC4: 4 VC)
-p.adb:110:35: info: range check proved (CVC4: 1 VC)
 p.adb:118:24: info: cannot unroll loop (too many loop iterations)
 p.adb:119:19: info: range check proved (CVC4: 1 VC)
 p.adb:124:37: info: index check proved (CVC4: 2 VC)
@@ -408,7 +407,6 @@ predicate_ints.adb:56:24: medium: overflow check might fail (e.g. when Arg1 = (M
 predicate_ints.adb:56:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
 predicate_ints.adb:60:30: info: overflow check proved (CVC4: 1 VC)
 predicate_ints.adb:78:25: info: precondition proved (CVC4: 2 VC)
-predicate_ints.adb:79:24: info: range check proved (CVC4: 1 VC)
 predicate_ints.adb:86:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at predicate_ints.ads:36 should mention Arg in a precondition]
 predicate_ints.ads:12:40: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639))
 predicate_ints.ads:13:20: info: postcondition proved (CVC4: 1 VC)

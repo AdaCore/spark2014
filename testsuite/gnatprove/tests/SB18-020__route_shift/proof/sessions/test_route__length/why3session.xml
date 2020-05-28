@@ -19,9 +19,6 @@
   <goal name="def&#39;vc.2" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="14"/></proof>
-  </goal>
  </transf>
  </goal>
 </theory>

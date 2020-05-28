@@ -9,7 +9,6 @@ linear_search.adb:12:12: info: implicit function contract might not be available
 linear_search.adb:12:12: medium: subprogram "Length" might not terminate, terminating annotation could be incorrect
 linear_search.adb:14:50: info: pointer dereference check proved (CVC4: 1 VC)
 linear_search.adb:14:58: info: overflow check proved (CVC4: 1 VC)
-linear_search.adb:14:58: info: range check proved (CVC4: 1 VC)
 linear_search.adb:17:12: info: implicit function contract might not be available on recursive calls
 linear_search.adb:17:12: medium: subprogram "Nth" might not terminate, terminating annotation could be incorrect
 linear_search.adb:18:20: info: pointer dereference check proved (CVC4: 1 VC)
