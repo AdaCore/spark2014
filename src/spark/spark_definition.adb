@@ -5556,6 +5556,16 @@ package body SPARK_Definition is
             then
                Mark_Violation ("general access type", E);
 
+            --  Storage_Pool is not in SPARK
+
+            elsif Present (Associated_Storage_Pool (Root_Type (E))) then
+               Mark_Violation ("access type with Storage_Pool", E);
+
+            --  Storage_Size is not in SPARK
+
+            elsif Has_Storage_Size_Clause (Root_Type (E)) then
+               Mark_Violation ("access type with Storage_Size", E);
+
             --  Store the type in the Incomplete_Type map to be marked later.
 
             elsif Is_Incomplete_Type (Directly_Designated_Type (E))
