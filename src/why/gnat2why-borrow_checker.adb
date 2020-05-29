@@ -257,20 +257,6 @@ package body Gnat2Why.Borrow_Checker is
       procedure Free_Tree (PT : in out Perm_Tree_Access);
       --  Procedure to free a permission tree
 
-      --------------------
-      -- Error Messages --
-      --------------------
-
-      procedure Perm_Mismatch
-        (N              : Node_Id;
-         Exp_Perm       : Perm_Kind;
-         Act_Perm       : Perm_Kind;
-         Expl           : Node_Id;
-         Forbidden_Perm : Boolean := False);
-      --  Issues a continuation error message about a mismatch between a
-      --  desired permission Exp_Perm and a permission obtained Act_Perm. N
-      --  is the node on which the error is reported.
-
    end Permissions;
 
    package body Permissions is
@@ -513,45 +499,6 @@ package body Gnat2Why.Borrow_Checker is
          return T.all.Tree.Permission;
       end Permission;
 
-      -------------------
-      -- Perm_Mismatch --
-      -------------------
-
-      procedure Perm_Mismatch
-        (N              : Node_Id;
-         Exp_Perm       : Perm_Kind;
-         Act_Perm       : Perm_Kind;
-         Expl           : Node_Id;
-         Forbidden_Perm : Boolean := False)
-      is
-      begin
-         Error_Msg_Sloc := Sloc (Expl);
-
-         if Forbidden_Perm then
-            if Exp_Perm = No_Access then
-               Error_Msg_N ("\object was moved #", N);
-            else
-               raise Program_Error;
-            end if;
-         else
-            case Exp_Perm is
-               when Write_Perm =>
-                  if Act_Perm = Read_Only then
-                     Error_Msg_N
-                       ("\object was declared as not writeable #", N);
-                  else
-                     Error_Msg_N ("\object was moved #", N);
-                  end if;
-
-               when Read_Only =>
-                  Error_Msg_N ("\object was moved #", N);
-
-               when No_Access =>
-                  raise Program_Error;
-            end case;
-         end if;
-      end Perm_Mismatch;
-
    end Permissions;
 
    use Permissions;
@@ -707,6 +654,12 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Not_Observed (Expr : Expr_Or_Ent; Root : Entity_Id);
    --  Check expression Expr originating in Root was not observed
 
+   function Check_On_Borrowed (Expr : Expr_Or_Ent) return Node_Id;
+   --  Return a previously borrowed expression in conflict with Expr if any
+
+   function Check_On_Observed (Expr : Expr_Or_Ent) return Node_Id;
+   --  Return a previously observed expression in conflict with Expr if any
+
    procedure Check_Package_Spec (Id : Entity_Id);
    --  Check the package visible and private declarations in the current
    --  context. Update the context accordingly.
@@ -816,6 +769,16 @@ package body Gnat2Why.Borrow_Checker is
    --  called with the node, the node of the returning function, and the
    --  permission that was expected, and adds an error message with the
    --  appropriate values.
+
+   procedure Perm_Mismatch
+     (N              : Expr_Or_Ent;
+      Exp_Perm       : Perm_Kind;
+      Act_Perm       : Perm_Kind;
+      Expl           : Node_Id;
+      Forbidden_Perm : Boolean := False);
+   --  Issues a continuation error message about a mismatch between a
+   --  desired permission Exp_Perm and a permission obtained Act_Perm. N
+   --  is the node on which the error is reported.
 
    procedure Process_Path (Expr : Expr_Or_Ent; Mode : Checking_Mode);
    pragma Precondition (Expr.Is_Ent or else Is_Path_Expression (Expr.Expr));
@@ -2474,12 +2437,14 @@ package body Gnat2Why.Borrow_Checker is
          Found_Perm : Perm_Kind;
          Expl       : Node_Id)
       is
+         Ent : constant Expr_Or_Ent :=
+           (Is_Ent => True, Ent => E, Loc => Loop_Stmt);
       begin
-         Error_Msg_NE ("insufficient permission for & when exiting the loop",
+         Error_Msg_NE ("loop iteration terminates with moved value for &",
                        Loop_Stmt, E);
          Perm_Mismatch (Exp_Perm => Perm,
                         Act_Perm => Found_Perm,
-                        N        => Loop_Stmt,
+                        N        => Ent,
                         Expl     => Expl);
          Permission_Error := True;
       end Perm_Error_Loop_Exit;
@@ -2741,75 +2706,17 @@ package body Gnat2Why.Borrow_Checker is
       --  expressions.
 
       declare
-         Key      : Variable_Maps.Key_Option :=
-           Get_First_Key (Current_Borrowers);
-         Var      : Entity_Id;
-         Borrowed : Node_Id;
-         B_Pledge : Entity_Id := Empty;
-
+         Borrowed : constant Node_Id := Check_On_Borrowed (Expr);
       begin
-         if not Expr.Is_Ent then
-
-            --  Search for a call to a pledge function in the parents of
-            --  Expr.
-
-            declare
-               Call : Node_Id := Expr.Expr;
-            begin
-               while Present (Call)
-                 and then
-                   (Nkind (Call) /= N_Function_Call
-                    or else
-                      not Has_Pledge_Annotation (Get_Called_Entity (Call)))
-               loop
-                  --  If the entity is under an Old or 'Loop_Entry attribute,
-                  --  it will not be quantified in the pledge expression, so
-                  --  reading it is not allowed.
-
-                  if Nkind (Call) = N_Attribute_Reference
-                    and then Get_Attribute_Id (Attribute_Name (Call)) in
-                      Attribute_Loop_Entry | Attribute_Old
-                  then
-                     Call := Empty;
-                  else
-                     Call := Parent (Call);
-                  end if;
-               end loop;
-
-               if Present (Call)
-                 and then Nkind (First_Actual (Call)) in N_Has_Entity
-               then
-                  B_Pledge := Entity (First_Actual (Call));
-               end if;
-            end;
-         end if;
-
-         --  For every borrowed object, check that:
-         --    * the borrowed expression is not a prefix of Expr
-         --    * Expr is not a prefix of the borrowed expression.
-
-         while Key.Present loop
-            Var := Key.K;
-            Borrowed := Get (Current_Borrowers, Var);
-
-            if (Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
-                or else
-                  (if Expr.Is_Ent then Get_Root_Object (Borrowed) = Expr.Ent
-                   else Is_Prefix_Or_Almost
-                     (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Borrowed)))
-              and then Var /= B_Pledge
-            then
-               Error_Msg_Sloc := Sloc (Borrowed);
-               if Expr.Is_Ent then
-                  Error_Msg_NE ("& was borrowed #", Expr.Loc, Expr.Ent);
-               else
-                  Error_Msg_N ("object was borrowed #", Expr.Expr);
-               end if;
-               Permission_Error := True;
+         if Present (Borrowed) then
+            Error_Msg_Sloc := Sloc (Borrowed);
+            if Expr.Is_Ent then
+               Error_Msg_NE ("& was borrowed #", Expr.Loc, Expr.Ent);
+            else
+               Error_Msg_N ("object was borrowed #", Expr.Expr);
             end if;
-
-            Key := Get_Next_Key (Current_Borrowers);
-         end loop;
+            Permission_Error := True;
+         end if;
       end;
    end Check_Not_Borrowed;
 
@@ -2829,39 +2736,123 @@ package body Gnat2Why.Borrow_Checker is
       --  expressions.
 
       declare
-         Key      : Variable_Maps.Key_Option :=
-           Get_First_Key (Current_Observers);
-         Var      : Entity_Id;
-         Observed : Node_Id;
-
+         Observed : constant Node_Id := Check_On_Observed (Expr);
       begin
-         --  For every observed object, check that:
-         --    * the observed expression is not a prefix of Expr
-         --    * Expr is not a prefix of the observed expression.
-
-         while Key.Present loop
-            Var := Key.K;
-            Observed := Get (Current_Observers, Var);
-
-            if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr)
-              or else
-                (if Expr.Is_Ent then Get_Root_Object (Observed) = Expr.Ent
-                 else Is_Prefix_Or_Almost
-                   (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Observed))
-            then
-               Error_Msg_Sloc := Sloc (Observed);
-               if Expr.Is_Ent then
-                  Error_Msg_NE ("& was observed #", Expr.Loc, Expr.Ent);
-               else
-                  Error_Msg_N ("object was observed #", Expr.Expr);
-               end if;
-               Permission_Error := True;
+         if Present (Observed) then
+            Error_Msg_Sloc := Sloc (Observed);
+            if Expr.Is_Ent then
+               Error_Msg_NE ("& was observed #", Expr.Loc, Expr.Ent);
+            else
+               Error_Msg_N ("object was observed #", Expr.Expr);
             end if;
-
-            Key := Get_Next_Key (Current_Observers);
-         end loop;
+            Permission_Error := True;
+         end if;
       end;
    end Check_Not_Observed;
+
+   -----------------------
+   -- Check_On_Borrowed --
+   -----------------------
+
+   function Check_On_Borrowed (Expr : Expr_Or_Ent) return Node_Id is
+      Key      : Variable_Maps.Key_Option := Get_First_Key (Current_Borrowers);
+      Var      : Entity_Id;
+      Borrowed : Node_Id;
+      B_Pledge : Entity_Id := Empty;
+
+   begin
+      if not Expr.Is_Ent then
+
+         --  Search for a call to a pledge function in the parents of
+         --  Expr.
+
+         declare
+            Call : Node_Id := Expr.Expr;
+         begin
+            while Present (Call)
+              and then
+                (Nkind (Call) /= N_Function_Call
+                 or else
+                   not Has_Pledge_Annotation (Get_Called_Entity (Call)))
+            loop
+               --  If the entity is under an Old or 'Loop_Entry attribute,
+               --  it will not be quantified in the pledge expression, so
+               --  reading it is not allowed.
+
+               if Nkind (Call) = N_Attribute_Reference
+                 and then Get_Attribute_Id (Attribute_Name (Call)) in
+                   Attribute_Loop_Entry | Attribute_Old
+               then
+                  Call := Empty;
+               else
+                  Call := Parent (Call);
+               end if;
+            end loop;
+
+            if Present (Call)
+              and then Nkind (First_Actual (Call)) in N_Has_Entity
+            then
+               B_Pledge := Entity (First_Actual (Call));
+            end if;
+         end;
+      end if;
+
+      --  For every borrowed object, check that:
+      --    * the borrowed expression is not a prefix of Expr
+      --    * Expr is not a prefix of the borrowed expression.
+
+      while Key.Present loop
+         Var := Key.K;
+         Borrowed := Get (Current_Borrowers, Var);
+
+         if (Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
+             or else
+               (if Expr.Is_Ent then Get_Root_Object (Borrowed) = Expr.Ent
+                else Is_Prefix_Or_Almost
+                  (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Borrowed)))
+           and then Var /= B_Pledge
+         then
+            return Borrowed;
+         end if;
+
+         Key := Get_Next_Key (Current_Borrowers);
+      end loop;
+
+      return Empty;
+   end Check_On_Borrowed;
+
+   -----------------------
+   -- Check_On_Observed --
+   -----------------------
+
+   function Check_On_Observed (Expr : Expr_Or_Ent) return Node_Id is
+      Key      : Variable_Maps.Key_Option := Get_First_Key (Current_Observers);
+      Var      : Entity_Id;
+      Observed : Node_Id;
+
+   begin
+      --  For every observed object, check that:
+      --    * the observed expression is not a prefix of Expr
+      --    * Expr is not a prefix of the observed expression.
+
+      while Key.Present loop
+         Var := Key.K;
+         Observed := Get (Current_Observers, Var);
+
+         if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr)
+           or else
+             (if Expr.Is_Ent then Get_Root_Object (Observed) = Expr.Ent
+              else Is_Prefix_Or_Almost
+                (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Observed))
+         then
+            return Observed;
+         end if;
+
+         Key := Get_Next_Key (Current_Observers);
+      end loop;
+
+      return Empty;
+   end Check_On_Observed;
 
    ------------------------
    -- Check_Package_Body --
@@ -3312,8 +3303,12 @@ package body Gnat2Why.Borrow_Checker is
                      Perm := Get_Perm (E_Obj);
 
                      if Perm /= Read_Write then
-                        Perm_Error (E_Obj, Read_Write, Perm,
-                                    Expl => Get_Expl (E_Obj));
+                        Perm_Error_Subprogram_End
+                          (E          => Obj,
+                           Subp       => Subp,
+                           Perm       => Read_Write,
+                           Found_Perm => Perm,
+                           Expl       => Get_Expl (E_Obj));
                      end if;
                   end;
                end if;
@@ -4235,9 +4230,10 @@ package body Gnat2Why.Borrow_Checker is
       procedure Set_Root_Object
         (Path  : Node_Id;
          Obj   : out Entity_Id;
+         Part  : out Boolean;
          Deref : out Boolean);
-      --  Set the root object Obj, and whether the path contains a dereference,
-      --  from a path Path.
+      --  Set the root object Obj, and whether the path contains a part and a
+      --  dereference, from a path Path.
 
       ---------------------
       -- Set_Root_Object --
@@ -4246,6 +4242,7 @@ package body Gnat2Why.Borrow_Checker is
       procedure Set_Root_Object
         (Path  : Node_Id;
          Obj   : out Entity_Id;
+         Part  : out Boolean;
          Deref : out Boolean)
       is
       begin
@@ -4254,55 +4251,60 @@ package body Gnat2Why.Borrow_Checker is
                | N_Expanded_Name
             =>
                Obj := Entity (Path);
+               Part := False;
                Deref := False;
 
             when N_Type_Conversion
                | N_Unchecked_Type_Conversion
                | N_Qualified_Expression
             =>
-               Set_Root_Object (Expression (Path), Obj, Deref);
+               Set_Root_Object (Expression (Path), Obj, Part, Deref);
 
             when N_Indexed_Component
                | N_Selected_Component
                | N_Slice
             =>
-               Set_Root_Object (Prefix (Path), Obj, Deref);
+               Set_Root_Object (Prefix (Path), Obj, Part, Deref);
+               Part := True;
 
             when N_Explicit_Dereference =>
-               Set_Root_Object (Prefix (Path), Obj, Deref);
+               Set_Root_Object (Prefix (Path), Obj, Part, Deref);
                Deref := True;
 
             when others =>
                raise Program_Error;
          end case;
       end Set_Root_Object;
+
       --  Local variables
 
-      Root     : Entity_Id;
-      Loc      : constant Node_Id :=
-        (if N.Is_Ent then N.Loc else N.Expr);
-      Is_Deref : Boolean;
+      Root           : Entity_Id;
+      Part, Is_Deref : Boolean;
+
+      Loc : constant Node_Id := (if N.Is_Ent then N.Loc else N.Expr);
 
    --  Start of processing for Perm_Error
 
    begin
       if N.Is_Ent then
+         Part := False;
          Is_Deref := False;
          Root := N.Ent;
       else
-         Set_Root_Object (N.Expr, Root, Is_Deref);
+         Set_Root_Object (N.Expr, Root, Part, Is_Deref);
       end if;
 
-      if Is_Deref then
-         Error_Msg_NE
-           ("insufficient permission on dereference from &", Loc, Root);
-      else
-         Error_Msg_NE ("insufficient permission for &", Loc, Root);
-      end if;
+      Error_Msg_NE
+        ((if Part then "part of " else "")
+         & (if Is_Deref then "dereference from " else "")
+         & "& is not "
+         & (if Perm in Read_Perm and then Found_Perm not in Read_Perm then
+              "readable"
+           else
+              "writable"), Loc, Root);
 
       Permission_Error := True;
-
-      Perm_Mismatch (Loc, Perm, Found_Perm, Expl, Forbidden_Perm);
+      Perm_Mismatch (N, Perm, Found_Perm, Expl, Forbidden_Perm);
    end Perm_Error;
 
    -------------------------------
@@ -4316,13 +4318,60 @@ package body Gnat2Why.Borrow_Checker is
       Found_Perm : Perm_Kind;
       Expl       : Node_Id)
    is
+      Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => Subp);
    begin
-      Error_Msg_Node_2 := Subp;
-      Error_Msg_NE ("insufficient permission for & when returning from &",
-                    Subp, E);
+      Error_Msg_Node_2 := E;
+      Error_Msg_NE ("return from & with moved value for &", Subp, Subp);
       Permission_Error := True;
-      Perm_Mismatch (Subp, Perm, Found_Perm, Expl);
+      Perm_Mismatch (Ent, Perm, Found_Perm, Expl);
    end Perm_Error_Subprogram_End;
+
+   -------------------
+   -- Perm_Mismatch --
+   -------------------
+
+   procedure Perm_Mismatch
+     (N              : Expr_Or_Ent;
+      Exp_Perm       : Perm_Kind;
+      Act_Perm       : Perm_Kind;
+      Expl           : Node_Id;
+      Forbidden_Perm : Boolean := False)
+   is
+      Loc      : constant Node_Id := (if N.Is_Ent then N.Loc else N.Expr);
+      Borrowed : constant Node_Id := Check_On_Borrowed (N);
+      Observed : constant Node_Id := Check_On_Observed (N);
+      Reason   : constant String :=
+        (if Present (Observed) then "observed"
+         elsif Present (Borrowed) then "borrowed"
+         else "moved");
+
+   begin
+      Error_Msg_Sloc := Sloc (Expl);
+
+      if Forbidden_Perm then
+         if Exp_Perm = No_Access then
+            Error_Msg_N ("\object was " & Reason & " #", Loc);
+         else
+            raise Program_Error;
+         end if;
+      else
+         case Exp_Perm is
+            when Write_Perm =>
+               if Act_Perm = Read_Only then
+                  Error_Msg_N
+                    ("\object was declared as not writable #", Loc);
+               else
+                  Error_Msg_N ("\object was " & Reason & " #", Loc);
+               end if;
+
+            when Read_Only =>
+               Error_Msg_N ("\object was " & Reason & " #", Loc);
+
+            when No_Access =>
+               raise Program_Error;
+         end case;
+      end if;
+   end Perm_Mismatch;
 
    ------------------
    -- Process_Path --

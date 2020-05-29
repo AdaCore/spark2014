@@ -1,5 +1,5 @@
 notnull.adb:4:04: info: initialization of "X" proved
-notnull.adb:7:21: insufficient permission for "X" when exiting the loop
+notnull.adb:7:21: loop iteration terminates with moved value for "X"
 notnull.adb:7:21: object was moved at line 8
 compilation abandoned due to previous error
 gnatprove: error during flow analysis and proof

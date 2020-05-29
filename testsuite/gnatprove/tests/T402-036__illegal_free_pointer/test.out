@@ -1,4 +1,4 @@
 free_pointer.adb:7:04: warning: initialization of "Y" has no effect
-free_pointer.adb:9:10: insufficient permission for "X"
+free_pointer.adb:9:10: "X" is not readable
 free_pointer.adb:9:10: object was moved at line 7
 gnatprove: error during flow analysis and proof

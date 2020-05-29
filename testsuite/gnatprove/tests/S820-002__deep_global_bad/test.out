@@ -1,6 +1,6 @@
 deep_globals.adb:8:04: info: initialization of "Z2" proved
-deep_globals.adb:10:14: insufficient permission for "X2" when returning from "P2"
 deep_globals.adb:10:14: object was moved at line 12
-deep_globals.adb:15:14: insufficient permission for "Z2" when returning from "Q2"
+deep_globals.adb:10:14: return from "P2" with moved value for "X2"
 deep_globals.adb:15:14: object was moved at line 17
+deep_globals.adb:15:14: return from "Q2" with moved value for "Z2"
 gnatprove: error during flow analysis and proof

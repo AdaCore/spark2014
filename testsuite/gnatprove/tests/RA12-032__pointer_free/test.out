@@ -1,3 +1,3 @@
-lists.adb:18:13: insufficient permission for "Next"
+lists.adb:18:13: "Next" is not readable
 lists.adb:18:13: object was moved at line 17
 gnatprove: error during flow analysis and proof
