@@ -477,6 +477,8 @@ be *compatible with respect to volatility* with E2 if
 
    * the expression of a type conversion occurring in a non-interfering context; or
 
+   * the expression of a qualified expression occurring in a non-interfering context; or
+
    * the expression in a ``delay_statement``.
 
    [The attributes listed above all have the property that when their prefix
