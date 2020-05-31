@@ -4941,14 +4941,17 @@ package body Flow_Utility is
                   else
                      Input := Expression (Component_Association);
                   end if;
+
                   Target := First (Choices (Component_Association));
-                  while Present (Target) loop
-                     Merge (M, Component => Unique_Component (Entity (Target)),
-                            Input => Input);
-                     Done.Insert (Unique_Component (Entity (Target)));
-                     --  ??? repeated calls to Unique_Component
-                     Next (Target);
-                  end loop;
+                  Merge (M, Component => Unique_Component (Entity (Target)),
+                         Input => Input);
+                  Done.Insert (Unique_Component (Entity (Target)));
+                  --  ??? repeated calls to Unique_Component
+
+                  --  Multiple component updates are expanded into individual
+                  --  component associations.
+                  pragma Assert (No (Next (Target)));
+
                   Next (Component_Association);
                end loop;
 
