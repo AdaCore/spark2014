@@ -642,7 +642,7 @@ initializer_demo.adb:30:07: info: initialization of "Offset" proved
 initializer_demo.adb:35:19: info: overflow check proved (CVC4: 1 VC)
 initializer_demo.adb:35:35: medium: overflow check might fail [possible explanation: subprogram at initializer_demo.ads:22 should mention P in a precondition]
 initializer_demo.ads:12:28: info: range check proved (CVC4: 1 VC)
-interval.ads:6:13: info: invariant check proved (CVC4: 1 VC)
+interval.ads:6:13: info: invariant check proved (CVC4: 2 VC)
 interval.ads:9:09: info: invariant check proved on default value (CVC4: 1 VC)
 interval_tree.ads:5:05: info: flow dependencies proved
 interval_tree.ads:18:19: info: implicit function contract not available for proof ("Size" might not return)

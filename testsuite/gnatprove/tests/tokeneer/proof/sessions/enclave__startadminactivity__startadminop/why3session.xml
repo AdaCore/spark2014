@@ -159,7 +159,7 @@
   <proof prover="0"><result status="valid" steps="842"/></proof>
   </goal>
   <goal name="def&#39;vc.41" expl="check">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout" steps="6885"/></proof>
   </goal>
   <goal name="def&#39;vc.42" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -274,7 +274,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.72" expl="check">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout" steps="6382"/></proof>
   </goal>
   <goal name="def&#39;vc.73" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -313,7 +313,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.83" expl="check">
-  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout" steps="6467"/></proof>
   </goal>
   <goal name="def&#39;vc.84" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
