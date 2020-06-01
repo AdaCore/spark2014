@@ -1,0 +1,9 @@
+binary_search_trees.adb:29:07: info: initialization of "Node" proved
+binary_search_trees.adb:31:17: object was moved at line 43
+binary_search_trees.adb:31:17: return from "Insert_Node" with moved value for "Node"
+binary_search_trees.adb:33:11: info: data dependencies proved
+binary_search_trees.adb:68:10: warning: unused assignment to "Node"
+binary_search_trees.adb:68:26: high: formal parameter "Starting_At" and global "Tree" are aliased (SPARK RM 6.4.2)
+binary_search_trees.adb:75:28: warning: "Starting_At" is not modified, could be of access constant type
+binary_search_trees.adb:76:10: info: initialization of "Result" proved
+gnatprove: error during flow analysis and proof
