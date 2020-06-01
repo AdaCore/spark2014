@@ -173,7 +173,7 @@ formals_rec_split.adb:43:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:47:10: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:47:13: medium: discriminant check might fail (e.g. when U = (D => ?, F => 1) and X = False)
 formals_rec_split.adb:53:10: info: precondition proved (Trivial: 1 VC)
-formals_rec_split.adb:53:13: medium: discriminant check might fail (e.g. when U = (D => ?, F => 1) and X = False)
+formals_rec_split.adb:53:13: medium: discriminant check might fail (e.g. when U = (D => True, F => ?) and X = False)
 formals_rec_split_pred.adb:13:31: info: range check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:14:29: info: discriminant check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:16:34: info: range check proved (CVC4: 1 VC)
@@ -242,10 +242,10 @@ formals_rec_split_pred.adb:77:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:77:08: medium: predicate check might fail (e.g. when Y = (D => ?, F => 1, G => 1, H => 0)) [possible explanation: call at line 76 should mention A (for argument Y) in a postcondition]
 formals_rec_split_pred.adb:78:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:79:04: info: precondition proved (Trivial: 1 VC)
-formals_rec_split_pred.adb:79:13: medium: predicate check might fail, cannot prove Constr_Rec.H /= 0 [possible explanation: call at line 78 should mention A (for argument Y) in a postcondition]
+formals_rec_split_pred.adb:79:13: medium: predicate check might fail (e.g. when Y = (D => True, others => ?)) [possible explanation: call at line 78 should mention A (for argument Y) in a postcondition]
 formals_rec_split_pred.adb:80:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:81:04: info: precondition proved (Trivial: 1 VC)
-formals_rec_split_pred.adb:81:13: medium: predicate check might fail, cannot prove Constr_Rec.H /= 0 [possible explanation: call at line 80 should mention A (for argument U) in a postcondition]
+formals_rec_split_pred.adb:81:13: medium: predicate check might fail (e.g. when U = (D => True, others => ?)) [possible explanation: call at line 80 should mention A (for argument U) in a postcondition]
 formals_rec_split_pred.adb:82:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:84:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:86:04: info: precondition proved (Trivial: 1 VC)

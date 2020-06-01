@@ -288,8 +288,8 @@ package body Gnat2Why.Expr is
       Reuse_Discr : Boolean := False)
    with Pre => (if Pattern.Kind = DRecord and then Pattern.Constr.Present
                 then Constr_Expr /= Why_Empty)
-     and Args'Length >= To_Binder_Array ((1 => Pattern))'Length
-     and Pattern.Init.Present = False,
+     and Args'Length >=
+       Item_Array_Length ((1 => Pattern), Ignore_Init => True),
      Post => Need_Store or Context.Length = Context.Length'Old;
    --  Split a Why expression into parts that will be used to call a
    --  subprogram. The parts are stored in Args. Pattern is an item
@@ -312,8 +312,8 @@ package body Gnat2Why.Expr is
    with Pre => Item_Is_Mutable (Pattern)
      and (if Pattern.Kind = DRecord and then Pattern.Constr.Present
             then Constr_Expr /= Why_Empty)
-     and Args'Length >= To_Binder_Array ((1 => Pattern))'Length
-     and Pattern.Init.Present = False,
+     and Args'Length >=
+       Item_Array_Length ((1 => Pattern), Ignore_Init => True),
      Post => Need_Store or Context.Length = Context.Length'Old;
    --  Try to reuse parts of the references of the actual Var for the
    --  formal. If the types do not match, fall back to Get_Item_From_Expr. If
@@ -376,7 +376,14 @@ package body Gnat2Why.Expr is
      (Ada_Node : Node_Id := Empty;
       Lvalue   : Node_Id;
       Expr     : W_Prog_Id;
-      No_Check : Boolean := False) return W_Prog_Id;
+      No_Check : Boolean := False) return W_Prog_Id
+   with
+
+   --  Expr might be converted without checks to Type_Of_Node (Lvalue), so we
+   --  should ensure that we are never missing checks by doing so.
+
+     Pre => Eq_Base (Type_Of_Node (Lvalue), Get_Type (+Expr));
+
    --  Translate an assignment of the form "Lvalue := Expr" (using Ada_Node
    --  for its source location). If No_Check is True, then no check should be
    --  introduced. This is used for generating code moving an owning object,
@@ -2997,11 +3004,6 @@ package body Gnat2Why.Expr is
                                  Labels      => Symbol_Sets.Empty_Set)));
                Why_Args (Arg_Cnt) := +Pattern.Init.Id;
                Arg_Cnt := Arg_Cnt + 1;
-
-               --  Remove the init flag on the pattern, as it was already
-               --  handled.
-
-               Pattern.Init := (Present => False);
             end if;
 
             --  For variable formals, we try to reuse parts of the actual for
@@ -3078,7 +3080,8 @@ package body Gnat2Why.Expr is
                   Params         => Params);
             end if;
 
-            Arg_Cnt := Arg_Cnt + Item_Array_Length ((1 => Pattern));
+            Arg_Cnt := Arg_Cnt + Item_Array_Length
+              ((1 => Pattern), Ignore_Init => True);
 
             Bind_Cnt := Bind_Cnt + 1;
          end Compute_Param;
@@ -5998,12 +6001,16 @@ package body Gnat2Why.Expr is
          when UCArray =>
 
             --  We can reuse the content of Var if no sliding might occur as
-            --  part of the conversion between Pattern and Var.
+            --  part of the conversion between Pattern and Var and both have
+            --  the same relaxed initialization status.
 
             if Eq_Base (Get_Why_Type_From_Item (Pattern),
                         Get_Why_Type_From_Item (Var))
-              or else not Needs_Slide (Get_Ada_Type_From_Item (Pattern),
-                                       Get_Ada_Type_From_Item (Var))
+              or else
+                (not Needs_Slide (Get_Ada_Type_From_Item (Pattern),
+                                  Get_Ada_Type_From_Item (Var))
+                 and then Get_Relaxed_Init (Get_Typ (Pattern.Content.B_Name)) =
+                     Get_Relaxed_Init (Get_Typ (Var.Content.B_Name)))
             then
 
                --  The actual can be either an array in split form or a
@@ -6236,7 +6243,7 @@ package body Gnat2Why.Expr is
                (Ada_Node => Brower,
                 Domain   => EW_Prog,
                 Expr     => +Expr_Id,
-                To       => Type_Of_Node (Etype (Expr)),
+                To       => Type_Of_Node (Expr),
                 Lvalue   => True))));
 
       return
@@ -8776,6 +8783,7 @@ package body Gnat2Why.Expr is
       No_Checks : Boolean;
       Pre_Expr  : W_Expr_Id) return W_Prog_Id
    is
+      T : W_Prog_Id;
    begin
       case Pattern.Kind is
          when Concurrent_Self =>
@@ -8789,7 +8797,7 @@ package body Gnat2Why.Expr is
                  New_Deref (Right => Pattern.Main.B_Name,
                             Typ   => Get_Typ (Pattern.Main.B_Name));
             begin
-               return +Insert_Checked_Conversion
+               T := +Insert_Checked_Conversion
                  (Ada_Node => Actual,
                   Domain   => (if No_Checks then EW_Pterm else EW_Prog),
                   Expr     => +Deref,
@@ -8830,22 +8838,22 @@ package body Gnat2Why.Expr is
 
             begin
                if Need_Check_On_Store then
-                  return +Insert_Checked_Conversion
+                  T := +Insert_Checked_Conversion
                     (Ada_Node => Actual,
                      Domain   => EW_Prog,
                      Expr     => +Deref,
                      Lvalue   => True,
                      To       =>
-                       (if Is_Init_Wrapper_Type (Formal_T)
+                       (if Is_Init_Wrapper_Type (Get_Type (+Deref))
                         then EW_Init_Wrapper (Actual_T)
                         else Actual_T));
                else
-                  return +Insert_Simple_Conversion
+                  T := +Insert_Simple_Conversion
                     (Ada_Node => Actual,
                      Domain   => EW_Prog,
                      Expr     => +Deref,
                      To       =>
-                       (if Is_Init_Wrapper_Type (Formal_T)
+                       (if Is_Init_Wrapper_Type (Get_Type (+Deref))
                         then EW_Init_Wrapper (Actual_T)
                         else Actual_T));
                end if;
@@ -8879,13 +8887,14 @@ package body Gnat2Why.Expr is
                --
                --    to_actual_type_ (from_formal_type (!tmp_var))
 
-               return +Insert_Simple_Conversion
+               T := +Insert_Simple_Conversion
                  (Ada_Node => Actual,
                   Domain   => EW_Pterm,
                   Expr     => +Reconstructed_Arg,
                   To       =>
                     (if Is_Init_Wrapper_Type (Formal_T)
-                     then EW_Init_Wrapper (Actual_T)
+                     then EW_Abstract
+                       (Get_Ada_Node (+Actual_T), Relaxed_Init => True)
                      else Actual_T));
             end;
 
@@ -8965,7 +8974,7 @@ package body Gnat2Why.Expr is
                      Relaxed_Init =>
                        Is_Init_Wrapper_Type (Formal_T)));
 
-               return Reconstructed_Arg;
+               T := Reconstructed_Arg;
             end;
 
          when Pointer =>
@@ -9028,10 +9037,34 @@ package body Gnat2Why.Expr is
                        Is_Init_Wrapper_Type
                          (Get_Type (+Reconstructed_Arg))));
 
-               return Reconstructed_Arg;
+               T := Reconstructed_Arg;
             end;
          when Func => raise Program_Error;
       end case;
+
+      --  T has the relaxed initialization status of the formal. We need to
+      --  check correct initialization if the actual does not have relaxed
+      --  initialization and we want to emit checks.
+
+      if not No_Checks
+        and then not Expr_Has_Relaxed_Init (Actual)
+        and then Is_Init_Wrapper_Type (Get_Type (+T))
+      then
+         T := +Insert_Initialization_Check
+           (Ada_Node               => Actual,
+            E                      => Etype (Actual),
+            Name                   => +T,
+            Domain                 => EW_Prog,
+            Exclude_Always_Relaxed => True);
+      end if;
+
+      --  Convert to the expected type. All the necessary checks should have
+      --  been inserted.
+
+      return +Insert_Simple_Conversion
+        (Domain   => EW_Pterm,
+         Expr     => +T,
+         To       => Type_Of_Node (Actual));
    end Reconstruct_Expr_From_Item;
 
    -----------------------
@@ -11560,9 +11593,9 @@ package body Gnat2Why.Expr is
       Typ        : constant Entity_Id := Retysp (Etype (Lvalue));
       L_Type     : constant W_Type_Id :=
         (if Expr_Has_Relaxed_Init (Lvalue)
-         and then not Is_Scalar_Type (Etype (Lvalue))
-         then EW_Init_Wrapper (Type_Of_Node (Etype (Lvalue)))
-         else Type_Of_Node (Etype (Lvalue)));
+         and then not Is_Scalar_Type (Typ)
+         then EW_Init_Wrapper (Type_Of_Node (Typ))
+         else Type_Of_Node (Typ));
       --  We go to the wrapper type if lvalue has relaxed initialization
       --  except for scalar types for which a copy is a read.
 
@@ -11726,7 +11759,18 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
+      --  T might not have type Type_Of_Node (Lvalue) for several reasons:
+      --    * Type_Of_Node (Lvalue) uses the Actual_Subtype
+      --    * Type_Of_Node (Lvalue) may have relaxed init even though T is
+      --      a scalar.
+      --  In both cases, the conversion can be done without checks.
+
+      T := +Binding_For_Temp
+        (Empty, EW_Prog, Tmp,
+         Insert_Simple_Conversion
+           (Domain => EW_Pterm,
+            Expr   => +T,
+            To     => Type_Of_Node (Lvalue)));
 
       --  If a move may be needed, force the use of a temporary to hold
       --  the value of the expression including any moves. This is because

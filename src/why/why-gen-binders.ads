@@ -157,10 +157,13 @@ package Why.Gen.Binders is
    type Item_Array is array (Positive range <>) of Item_Type;
 
    function Item_Array_Length
-     (Arr        : Item_Array;
-      Keep_Local : Boolean := True) return Natural;
+     (Arr         : Item_Array;
+      Keep_Local  : Boolean := True;
+      Ignore_Init : Boolean := False) return Natural;
    --  Return the number of variables that is introduced by the given
-   --  item_array (counting items plus e.g. array bounds).
+   --  item_array (counting items plus e.g. array bounds). If Keep_Local is
+   --  True, also count local parts. If Ignore_Init is True, do not count the
+   --  initialization flag.
 
    function To_Binder_Array
      (A          : Item_Array;

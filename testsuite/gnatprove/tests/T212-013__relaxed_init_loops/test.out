@@ -26,10 +26,10 @@ test_loops.adb:60:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in 
 test_loops.adb:60:12: info: range check proved (CVC4: 1 VC), in call inlined at test_loops.adb:74
 test_loops.adb:60:12: medium: initialization check might fail, in call inlined at test_loops.adb:74
 test_loops.adb:63:28: info: initialization of "X" proved
-test_loops.adb:67:30: medium: initialization check might fail
-test_loops.adb:68:30: info: initialization check proved (CVC4: 3 VC; Trivial: 3 VC)
+test_loops.adb:67:16: medium: initialization check might fail
+test_loops.adb:68:16: info: initialization check proved (CVC4: 3 VC; Trivial: 3 VC)
 test_loops.adb:69:07: info: precondition proved (CVC4: 2 VC)
-test_loops.adb:69:30: info: initialization check proved (CVC4: 3 VC; Trivial: 3 VC)
+test_loops.adb:69:16: info: initialization check proved (CVC4: 3 VC; Trivial: 3 VC)
 test_loops.adb:71:35: info: cannot unroll loop (too many loop iterations)
 test_loops.adb:71:35: warning: statement has no effect
 test_loops.adb:72:16: info: index check proved (CVC4: 2 VC)
@@ -37,13 +37,13 @@ test_loops.adb:72:22: warning: unused assignment
 test_loops.adb:74:39: info: index check proved (CVC4: 2 VC)
 test_loops.adb:75:27: info: cannot unroll loop (too many loop iterations)
 test_loops.adb:76:10: info: precondition proved (CVC4: 2 VC)
-test_loops.adb:76:34: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
+test_loops.adb:76:20: info: initialization check proved (CVC4: 3 VC; Trivial: 4 VC)
 test_loops.adb:76:34: info: range check proved (CVC4: 1 VC)
 test_loops.adb:78:35: info: cannot unroll loop (too many loop iterations)
 test_loops.adb:79:16: info: index check proved (CVC4: 2 VC)
 test_loops.adb:81:27: info: cannot unroll loop (too many loop iterations)
 test_loops.adb:82:10: info: precondition proved (CVC4: 2 VC)
-test_loops.adb:82:33: info: initialization check proved (CVC4: 3 VC; Trivial: 3 VC)
+test_loops.adb:82:19: info: initialization check proved (CVC4: 3 VC; Trivial: 3 VC)
 test_loops.adb:82:38: info: index check proved (CVC4: 2 VC)
 test_loops.adb:87:24: info: initialization of "X" proved
 test_loops.adb:91:41: info: range check proved (CVC4: 1 VC)
@@ -72,6 +72,7 @@ test_loops.adb:114:36: info: loop invariant initialization proved (CVC4: 1 VC)
 test_loops.adb:114:36: info: loop invariant preservation proved (CVC4: 1 VC)
 test_loops.adb:114:65: info: index check proved (CVC4: 4 VC)
 test_loops.adb:118:07: info: precondition proved (CVC4: 1 VC)
+test_loops.adb:118:15: info: initialization check proved (CVC4: 6 VC; Trivial: 9 VC)
 test_loops.adb:118:28: info: discriminant check proved (CVC4: 1 VC)
 test_loops_2.adb:11:07: info: range check proved (CVC4: 2 VC)
 test_loops_2.adb:17:14: info: postcondition proved (CVC4: 5 VC)
@@ -132,3 +133,4 @@ test_loops_2.adb:125:36: info: loop invariant initialization proved (CVC4: 1 VC)
 test_loops_2.adb:125:36: info: loop invariant preservation proved (CVC4: 1 VC)
 test_loops_2.adb:125:65: info: index check proved (CVC4: 4 VC)
 test_loops_2.adb:129:07: info: precondition proved (CVC4: 1 VC)
+test_loops_2.adb:129:15: info: initialization check proved (CVC4: 6 VC; Trivial: 9 VC)

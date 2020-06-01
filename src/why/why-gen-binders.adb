@@ -398,8 +398,9 @@ package body Why.Gen.Binders is
    -----------------------
 
    function Item_Array_Length
-     (Arr        : Item_Array;
-      Keep_Local : Boolean := True) return Natural
+     (Arr         : Item_Array;
+      Keep_Local  : Boolean := True;
+      Ignore_Init : Boolean := False) return Natural
    is
       Count : Natural := 0;
    begin
@@ -407,7 +408,7 @@ package body Why.Gen.Binders is
          declare
             B : constant Item_Type := Arr (Index);
          begin
-            if B.Init.Present then
+            if B.Init.Present and then not Ignore_Init then
                Count := Count + 1;
             end if;
 

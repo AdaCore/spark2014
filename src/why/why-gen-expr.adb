@@ -1075,6 +1075,12 @@ package body Why.Gen.Expr is
                                                Check_Entity,
                                                +Result);
          end if;
+      else
+         Result := New_Label
+           (Domain   => Domain,
+            Labels   => Symbol_Sets.Empty_Set,
+            Def      => Result,
+            Typ      => EW_Abstract (R, Is_Init_Wrapper_Type (Base)));
       end if;
 
       --  If From has relaxed initialization and not Base, introduce a
@@ -1130,7 +1136,12 @@ package body Why.Gen.Expr is
       --  When neither checks nor conversions need to be inserted, return
 
       if not Need_Check and then not Need_Conv then
-         return Expr;
+         return New_Label
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Labels   => Symbol_Sets.Empty_Set,
+            Def      => Result,
+            Typ      => To);
       end if;
 
       --  Conversion goes through the root type
@@ -1164,6 +1175,13 @@ package body Why.Gen.Expr is
                Args     => (1 => Result),
                Typ      => To);
          end;
+      else
+         Result := New_Label
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Labels   => Symbol_Sets.Empty_Set,
+            Def      => Result,
+            Typ      => To);
       end if;
 
       --  Predicate checks and null exclusion checks are performed after the
@@ -1185,7 +1203,7 @@ package body Why.Gen.Expr is
                Progs    => (1 => +Result),
                Domain   => EW_Prog,
                Reason   => VC_Null_Exclusion,
-               Typ      => Get_Type (+Expr));
+               Typ      => Get_Type (Result));
          end if;
 
       end if;
