@@ -450,14 +450,17 @@ attackers (for security).
 
 |GNATprove| provides a better solution, by allowing users to prove the absence
 of all run-time errors (or run-time errors of a specific kind, for example
-overflow checks) in a piece of code, provided the precondition of the enclosing
-subprogram is respected. Then, all run-time checks (or run-time errors of a
-specific kind) can be suppressed in that piece of code using pragma
-``Suppress``, knowing that they will never fail at run time, provided the
-precondition of the enclosing subprogram is checked (for example by using
-:ref:`Pragma Assertion_Policy`). By replacing many checks with one check, we
-can decrease the running time of the application by doing safe and controlled
-optimization of run-time checks.
+overflow checks) in a piece of code, provided the assumptions on which their
+proof relies are respected. This includes in particular the fact that the
+precondition of the enclosing subprogram is respected. Then, all run-time
+checks (or run-time errors of a specific kind) can be suppressed in that piece
+of code using pragma ``Suppress``, knowing that they will never fail at run
+time, provided the corresponding assumptions are checked. For example, this can
+be done for the precondition of the enclosing subprogram by using :ref:`Pragma
+Assertion_Policy`. For more details, see :ref:`Choosing Which Run-time Checking
+to Keep`. By replacing many checks with a few checks, we can decrease the
+running time of the application by doing safe and controlled optimization of
+run-time checks.
 
 .. _Address Data and Control Coupling:
 
@@ -1057,6 +1060,8 @@ code ``SPARK_Mode => On``:
 
 #. Now that |GNATprove| can analyze the unit without any errors, continue with
    whatever analysis is required to achieve the desired objectives.
+
+.. _Choosing Which Run-time Checking to Keep:
 
 Choosing Which Run-time Checking to Keep
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
