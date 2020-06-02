@@ -1,0 +1,3 @@
+main.adb:7:11: info: loop variant proved (CVC4: 1 VC)
+main.adb:9:27: medium: divide by zero might fail (e.g. when Y = 0)
+main.adb:10:14: info: overflow check proved (CVC4: 1 VC)
