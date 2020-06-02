@@ -1691,14 +1691,12 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     constituent from depending on the ghost input.]
 
 
-22. A ghost procedure shall not have an effectively volatile global input
-    with the properties Async_Writers or Effective_Reads set to True.
+22. A global input of a ghost procedure shall not be effectively volatile for reading.
     [This rule says, in effect, that ghost procedures are
     subject to the same restrictions as non-ghost nonvolatile
     functions with respect to reading volatile objects.]
-    A name occurring within a ghost statement shall not denote an
-    effectively volatile object with the properties Async_Writers or
-    Effective_Reads set to True. [In other words, a ghost statement is
+    A name occurring within a ghost statement shall not denote
+    an object that is effectively volatile for reading. [In other words, a ghost statement is
     subject to effectively the same restrictions as a ghost procedure.]
 
 
