@@ -566,8 +566,8 @@ generic_searchers.adb:33:33: info: loop invariant initialization proved (CVC4: 1
 generic_searchers.adb:33:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:33:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:33:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:34:10: info: loop variant proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
-generic_searchers.adb:34:10: info: loop variant proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
+generic_searchers.adb:34:31: info: loop variant proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
+generic_searchers.adb:34:31: info: loop variant proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:37:47: info: index check proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:37:47: info: index check proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:40:36: info: range check proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
@@ -817,7 +817,7 @@ searchers3.adb:32:33: info: loop invariant initialization proved (CVC4: 1 VC)
 searchers3.adb:32:33: info: loop invariant preservation proved (CVC4: 1 VC)
 searchers3.adb:33:33: info: loop invariant initialization proved (CVC4: 1 VC)
 searchers3.adb:33:33: info: loop invariant preservation proved (CVC4: 1 VC)
-searchers3.adb:34:10: info: loop variant proved (CVC4: 1 VC)
+searchers3.adb:34:31: info: loop variant proved (CVC4: 1 VC)
 searchers3.adb:37:46: info: index check proved (CVC4: 2 VC)
 searchers3.adb:40:36: info: range check proved (CVC4: 1 VC)
 searchers3.ads:9:29: info: initialization of "Found" proved
