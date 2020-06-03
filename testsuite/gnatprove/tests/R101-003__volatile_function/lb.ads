@@ -11,7 +11,7 @@ private
       E : Integer;
    end record
    with
-      Volatile, Async_Readers;
+      Volatile, Async_Readers, Object_Size => 32;
 
    type X is limited new A;
 end LB;

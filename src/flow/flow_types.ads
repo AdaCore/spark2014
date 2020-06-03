@@ -397,6 +397,11 @@ package Flow_Types is
    with Post => (if Has_Effective_Writes'Result then Has_Async_Readers (F));
    --  Checks if writes to F are always effective
 
+   function Is_Volatile_For_Reading (F : Flow_Id) return Boolean
+   --  Returns True if the given Flow_Id is effectively volatile for reading
+   is (Is_Volatile (F)
+       and then (Has_Async_Writers (F) or else Has_Effective_Reads (F)));
+
    function Is_Abstract_State (F : Flow_Id) return Boolean;
    --  Checks if F is an abstract state
 

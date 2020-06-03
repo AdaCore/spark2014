@@ -4,6 +4,6 @@ package Task_Param is
 
    procedure P (X : TT);
 
-   function F (X : TT) return Boolean;
+   function F (X : TT) return Boolean with Volatile_Function;
 
 end Task_Param;
