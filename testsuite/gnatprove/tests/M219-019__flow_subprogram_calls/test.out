@@ -24,9 +24,9 @@ test.adb:148:33: medium: "Counter" might not be initialized
 test.adb:153:23: medium: overflow check might fail [possible explanation: subprogram at line 142 should mention X in a precondition]
 test.adb:154:29: medium: overflow check might fail [possible explanation: subprogram at line 142 should mention Counter in a precondition]
 test.adb:167:07: high: "Counter" is not initialized
-test.adb:167:07: warning: unused assignment to "Counter"
+test.adb:167:07: warning: "Counter" is set by "Do_Stuff_A" but not used after the call
+test.adb:168:07: warning: "Counter" is set by "Do_Stuff_B" but not used after the call
 test.adb:168:07: warning: statement has no effect
-test.adb:168:07: warning: unused assignment to "Counter"
 test.adb:171:30: info: initialization of "N" proved
 test.adb:175:17: info: add a contract to analyze it separately from calling contexts
 test.adb:175:17: info: local subprogram "Do_Stuff_C" only analyzed in the context of calls

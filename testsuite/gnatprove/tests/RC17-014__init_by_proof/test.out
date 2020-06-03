@@ -140,7 +140,7 @@ var_init_by_proof.adb:10:22: info: assertion proved (Trivial: 1 VC)
 var_init_by_proof.adb:16:22: medium: assertion might fail, cannot prove not Z'initialized
 var_init_by_proof.adb:17:22: info: assertion proved (Trivial: 1 VC)
 var_init_by_proof.adb:18:07: warning: statement has no effect
-var_init_by_proof.adb:18:11: warning: unused assignment to "X"
+var_init_by_proof.adb:18:11: warning: "X" is set by "P3" but not used after the call
 var_init_by_proof.adb:19:12: medium: initialization check might fail
 var_init_by_proof.adb:29:18: info: initialization check proved (CVC4: 1 VC)
 var_init_by_proof.adb:33:12: medium: initialization check might fail [possible explanation: precondition of subprogram at line 29 should mention G]

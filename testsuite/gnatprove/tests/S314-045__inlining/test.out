@@ -190,7 +190,7 @@ compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at c
 compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1207 [possible explanation: loop at line 1193 should mention varcount in a loop invariant]
 compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1210 [possible explanation: loop at line 1208 should mention varcount in a loop invariant]
 compiler.adb:536:26: medium: range check might fail, in call inlined at compiler.adb:1237 [possible explanation: loop at line 1227 should mention varcount in a loop invariant]
-compiler.adb:540:14: warning: unused assignment to "sym", in call inlined at compiler.adb:1219
+compiler.adb:540:14: warning: "sym" is set by "Get_Symbol" but not used after the call, in call inlined at compiler.adb:1219
 compiler.adb:549:10: info: add a contract to analyze it separately from calling contexts
 compiler.adb:549:10: info: local subprogram "Position" only analyzed in the context of calls
 compiler.adb:554:12: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1055
@@ -425,7 +425,7 @@ compiler.adb:1250:24: info: in inlined body at line 108
 compiler.adb:1250:24: info: unrolling loop
 compiler.adb:1253:49: info: range check proved (CVC4: 1 VC)
 compiler.adb:1263:03: warning: initialization of "sym" has no effect
-compiler.adb:1268:15: warning: unused assignment to "sym"
+compiler.adb:1268:15: warning: "sym" is set by "Block" but not used after the call
 compiler.adb:1315:21: info: initialization of "new_thread" proved
 compiler.adb:1339:46: info: unrolling loop
 compiler.adb:1351:19: medium: range check might fail

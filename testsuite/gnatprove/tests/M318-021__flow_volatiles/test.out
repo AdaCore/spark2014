@@ -6,7 +6,7 @@ caller.adb:3:31: info: initialization of "E" proved
 caller.adb:5:08: info: data dependencies proved
 caller.adb:10:08: info: flow dependencies proved
 caller.adb:21:04: info: initialization of "Tmp" proved
-caller.adb:29:09: warning: unused assignment to "Tmp"
+caller.adb:29:09: warning: "Tmp" is set by "Get" but not used after the call
 devtest.adb:8:32: info: initialization of "X" proved
 devtest.adb:8:35: info: initialization of "Y" proved
 devtest.adb:10:09: info: data dependencies proved

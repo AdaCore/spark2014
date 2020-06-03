@@ -14,7 +14,7 @@ evoting.adb:66:49: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 evoting.adb:66:52: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 evoting.adb:66:52: info: range check proved (CVC4: 4 VC)
 evoting.adb:69:07: info: precondition proved (CVC4: 1 VC)
-evoting.adb:69:13: warning: unused assignment to "file"
+evoting.adb:69:13: warning: "file" is set by "close" but not used after the call
 evoting.adb:89:34: info: cannot unroll loop (too many loop iterations)
 evoting.adb:107:07: info: precondition proved (CVC4: 1 VC)
 evoting.adb:165:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -25,7 +25,7 @@ evoting.adb:180:07: info: initialization of "chosen_vote" proved
 evoting.adb:187:13: info: loop invariant initialization proved (CVC4: 1 VC)
 evoting.adb:187:13: info: loop invariant preservation proved (CVC4: 1 VC)
 evoting.adb:188:24: info: index check proved (CVC4: 4 VC)
-evoting.adb:191:40: warning: unused assignment to "last"
+evoting.adb:191:40: warning: "last" is set by "Get_Line" but not used after the call
 evoting.adb:193:13: info: precondition proved (CVC4: 1 VC)
 evoting.adb:196:63: info: range check proved (CVC4: 1 VC)
 evoting.adb:197:51: info: overflow check proved (CVC4: 1 VC)
@@ -68,7 +68,7 @@ evoting.adb:322:07: info: initialization of "candidates" proved
 evoting.adb:324:07: warning: initialization of "last_candidate" has no effect
 evoting.adb:329:07: info: precondition proved (Trivial: 1 VC)
 evoting.adb:331:07: info: precondition proved (CVC4: 2 VC; Trivial: 1 VC)
-evoting.adb:331:66: warning: unused assignment to "number_of_votes"
+evoting.adb:331:66: warning: "number_of_votes" is set by "Voting" but not used after the call
 evoting.adb:333:07: info: precondition proved (Trivial: 1 VC)
 evoting.ads:53:07: info: initialization of "candidates" proved
 evoting.ads:54:07: info: initialization of "last_candidate" proved

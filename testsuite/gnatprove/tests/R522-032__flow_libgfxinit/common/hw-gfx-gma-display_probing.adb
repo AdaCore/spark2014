@@ -132,7 +132,7 @@ is
          Pipe_Cfg.Port := Port;
          Pipe_Cfg.Mode := EDID.Preferred_Mode (Raw_EDID);
 
-         pragma Warnings (GNATprove, Off, "unused assignment to ""Raw_EDID""",
+         pragma Warnings (GNATprove, Off, """Raw_EDID"" is set by ""Read_Edid"" but not used after the call",
             Reason => "We just want to check if it's readable.");
          if Has_Sibling_Port (Port) then
             -- Probe sibling port too and bail out if something is detected.
@@ -150,7 +150,7 @@ is
                end if;
             end;
          end if;
-         pragma Warnings (GNATprove, On, "unused assignment to ""Raw_EDID""");
+         pragma Warnings (GNATprove, On, """Raw_EDID"" is set by ""Read_Edid"" but not used after the call");
       else
          Success := False;
       end if;

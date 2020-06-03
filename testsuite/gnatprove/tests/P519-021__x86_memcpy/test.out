@@ -24,9 +24,9 @@ memcpy.adb:88:26: warning: unused assignment
 memcpy.adb:89:27: warning: unused assignment
 memcpy.adb:90:30: warning: unused assignment
 memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
-memcpy.adb:110:16: warning: unused assignment to "RAX"
+memcpy.adb:110:16: warning: "RAX" is set by "ZSTLoopProc_400605" but not used after the call
 memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
-memcpy.adb:131:16: warning: unused assignment to "RAX"
+memcpy.adb:131:16: warning: "RAX" is set by "ZSTLoopProc_40064f" but not used after the call
 memcpy.adb:151:21: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:152:21: medium: assertion might fail, cannot prove X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr)
 memcpy.adb:160:21: medium: assertion might fail, cannot prove X86.RBP = saved_rbp [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
@@ -135,24 +135,24 @@ memcpy.adb:472:10: warning: initialization of "ra7" has no effect
 memcpy.adb:472:32: info: range check proved (CVC4: 1 VC)
 memcpy.adb:485:23: warning: unused assignment
 memcpy.adb:486:23: warning: unused assignment
+memcpy.adb:505:13: warning: "RCX" is set by "Write_ECX" but not used after the call
 memcpy.adb:505:13: warning: statement has no effect
-memcpy.adb:505:13: warning: unused assignment to "RCX"
 memcpy.adb:523:18: warning: unused assignment
 memcpy.adb:526:18: warning: unused assignment
 memcpy.adb:529:18: warning: unused assignment
+memcpy.adb:532:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 memcpy.adb:532:13: warning: statement has no effect
-memcpy.adb:532:13: warning: unused assignment to "RDI"
+memcpy.adb:535:13: warning: "RAX" is set by "Write_EAX" but not used after the call
 memcpy.adb:535:13: warning: statement has no effect
-memcpy.adb:535:13: warning: unused assignment to "RAX"
 memcpy.adb:543:18: warning: unused assignment
 memcpy.adb:546:18: warning: unused assignment
 memcpy.adb:574:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-memcpy.adb:574:10: warning: unused assignment to "RAX"
-memcpy.adb:574:10: warning: unused assignment to "RSI"
-memcpy.adb:574:10: warning: unused assignment to "RSP"
+memcpy.adb:574:10: warning: "RAX" is set by "memcpy2" but not used after the call
+memcpy.adb:574:10: warning: "RSI" is set by "memcpy2" but not used after the call
+memcpy.adb:574:10: warning: "RSP" is set by "memcpy2" but not used after the call
 memcpy.adb:590:18: warning: unused assignment
+memcpy.adb:591:10: warning: "RSP" is set by "printf" but not used after the call
 memcpy.adb:591:10: warning: statement has no effect
-memcpy.adb:591:10: warning: unused assignment to "RSP"
 memcpy.ads:17:06: info: data dependencies proved
 memcpy.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 memcpy.ads:21:06: info: data dependencies proved

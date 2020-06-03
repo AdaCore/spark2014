@@ -27,4 +27,4 @@ foo.adb:17:07: info: initialization of "L" proved
 foo.adb:17:17: info: range check proved (CVC4: 1 VC)
 foo.adb:20:07: info: precondition proved (CVC4: 1 VC)
 foo.adb:20:07: warning: statement has no effect
-foo.adb:20:15: warning: unused assignment to "L"
+foo.adb:20:15: warning: "L" is set by "Append" but not used after the call

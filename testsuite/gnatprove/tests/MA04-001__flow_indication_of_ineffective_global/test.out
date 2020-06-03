@@ -12,13 +12,13 @@ foo.adb:34:06: info: flow dependencies proved
 foo.adb:42:04: warning: analyzing unreferenced procedure "Test_03_E"
 foo.adb:42:25: info: initialization of "A" proved
 foo.adb:42:28: info: initialization of "B" proved
-foo.adb:44:19: warning: unused assignment to "A"
+foo.adb:44:19: warning: "A" is set by "Copy_Stuff" but not used after the call
 foo.adb:48:25: info: initialization of "A" proved
 foo.adb:48:28: info: initialization of "B" proved
 foo.adb:49:40: info: data dependencies proved
 foo.adb:49:62: info: initialization of "A" proved
 foo.adb:49:65: info: initialization of "B" proved
-foo.adb:56:07: warning: unused assignment to "B"
+foo.adb:56:07: warning: "B" is set by "Set" but not used after the call
 foo.adb:60:26: info: initialization of "A" proved
 foo.adb:60:29: info: initialization of "B" proved
 foo.adb:62:10: info: data dependencies proved

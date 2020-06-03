@@ -66,7 +66,7 @@ Generated contracts for p7
          G
          A.State_A
 Generated contracts for child
-a~child.adb:15:07: warning: unused assignment to "G" constituent of "State_A"
+a~child.adb:15:07: warning: "G" constituent of "State_A" is set by "P3" but not used after the call
 Generated contracts for p4
    Global =>
       In_Out =>
@@ -91,7 +91,7 @@ Generated contracts for p7
          G
          B.State_A
 Generated contracts for child
-b-child.adb:15:07: warning: unused assignment to "G" constituent of "State_A"
+b-child.adb:15:07: warning: "G" constituent of "State_A" is set by "P3" but not used after the call
 b-child.adb:20:52: info: initialization of "H" constituent of "State_B" proved
 b-child.adb:20:55: info: initialization of "J" constituent of "State_B" proved
 b-child.ads:4:22: info: data dependencies proved

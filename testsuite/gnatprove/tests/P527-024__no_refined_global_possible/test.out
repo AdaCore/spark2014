@@ -1,4 +1,4 @@
-outer-public_child.adb:8:12: warning: unused assignment to "Private_State" constituent of "A2"
+outer-public_child.adb:8:12: warning: "Private_State" constituent of "A2" is set by "Init_A2" but not used after the call
 outer-public_child.ads:5:14: info: initialization of "Private_State" constituent of "A2" proved
 outer-public_child.ads:6:11: info: data dependencies proved
 outer-public_child.ads:6:37: info: initialization of "Outer.A2" proved

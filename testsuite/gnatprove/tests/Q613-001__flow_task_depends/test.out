@@ -1,12 +1,12 @@
 single_explicit.adb:4:07: info: initialization of "Message" proved
-single_explicit.adb:7:30: warning: unused assignment to "Message"
+single_explicit.adb:7:30: warning: "Message" is set by "Get_Message" but not used after the call
 single_explicit.adb:8:10: warning: statement has no effect
 single_explicit.ads:5:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 single_explicit.ads:5:09: info: nontermination of task proved (CVC4: 1 VC)
 single_explicit.ads:6:11: info: data dependencies proved
 single_explicit.ads:7:11: info: flow dependencies proved
 single_implicit.adb:4:07: info: initialization of "Message" proved
-single_implicit.adb:7:30: warning: unused assignment to "Message"
+single_implicit.adb:7:30: warning: "Message" is set by "Get_Message" but not used after the call
 single_implicit.adb:8:10: warning: statement has no effect
 single_implicit.ads:5:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 single_implicit.ads:5:09: info: nontermination of task proved (CVC4: 1 VC)
@@ -18,14 +18,14 @@ tasking.adb:24:25: medium: range check might fail
 tasking.adb:32:34: info: range check proved (CVC4: 1 VC)
 tasking.ads:13:25: info: initialization of "M" proved
 type_explicit.adb:4:07: info: initialization of "Message" proved
-type_explicit.adb:7:30: warning: unused assignment to "Message"
+type_explicit.adb:7:30: warning: "Message" is set by "Get_Message" but not used after the call
 type_explicit.adb:8:10: warning: statement has no effect
 type_explicit.ads:5:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 type_explicit.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)
 type_explicit.ads:6:11: info: data dependencies proved
 type_explicit.ads:7:11: info: flow dependencies proved
 type_implicit.adb:4:07: info: initialization of "Message" proved
-type_implicit.adb:7:30: warning: unused assignment to "Message"
+type_implicit.adb:7:30: warning: "Message" is set by "Get_Message" but not used after the call
 type_implicit.adb:8:10: warning: statement has no effect
 type_implicit.ads:5:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 type_implicit.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)

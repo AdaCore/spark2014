@@ -56,10 +56,10 @@ is
          EtherH.Set_EtherH_Src_MAC_Address (Ehdr, Get_MAC_Address (Nid));
          EtherH.Set_EtherH_Frame_Type      (Ehdr, Frame_Type);
 
-         pragma Warnings (Off, "unused assignment to ""Err""");
+         pragma Warnings (Off, """Err"" is set by ""Link_Output"" but not used after the call");
          --  Ignore error from link output
          NIF.Link_Output (Nid, Buf, Err);
-         pragma Warnings (On, "unused assignment to ""Err""");
+         pragma Warnings (On, """Err"" is set by ""Link_Output"" but not used after the call");
       end if;
    end Send_Packet;
 
@@ -391,10 +391,10 @@ is
                      ARPH.Set_ARPH_Src_Eth_Address (Ahdr, Netif_MAC);
                      ARPH.Set_ARPH_Src_IP_Address  (Ahdr, Ifa);
 
-                     pragma Warnings (Off, "unused assignment to ""Err""");
+                     pragma Warnings (Off, """Err"" is set by ""Link_Output"" but not used after the call");
                      --  Ignore error from link output
                      NIF.Link_Output (Nid, Buf, Err);
-                     pragma Warnings (On, "unused assignment to ""Err""");
+                     pragma Warnings (On, """Err"" is set by ""Link_Output"" but not used after the call");
                   end if;
 
                when ARPH.ARP_Op_Reply =>

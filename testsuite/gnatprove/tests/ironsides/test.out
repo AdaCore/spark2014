@@ -120,7 +120,7 @@ dns_table_pkg.adb:664:10: info: initialization of "Lower_Key" proved
 dns_table_pkg.adb:686:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:688:10: info: initialization of "NumFound" proved
 dns_table_pkg.adb:689:10: info: initialization of "Lower_Key" proved
-dns_table_pkg.adb:697:38: warning: unused assignment to "ReturnedSOARecords"
+dns_table_pkg.adb:697:38: warning: "ReturnedSOARecords" is set by "QuerySOARecords" but not used after the call
 dns_table_pkg.ads:56:24: info: range check proved (CVC4: 2 VC)
 dns_table_pkg.ads:61:10: info: initialization of "Success" proved
 dns_table_pkg.ads:62:12: info: data dependencies proved
@@ -230,7 +230,7 @@ driver.adb:69:50: info: initialization of "Success" proved
 driver.adb:72:15: warning: unused assignment
 driver.adb:73:20: medium: precondition might fail, cannot prove not Is_Open (The_File)
 driver.adb:74:22: high: "ZoneFile" is not initialized
-driver.adb:86:40: warning: unused assignment to "ZoneFile"
+driver.adb:86:40: warning: "ZoneFile" is set by "ProcessZoneFile" but not used after the call
 driver.adb:90:04: info: initialization of "Success" proved
 driver.adb:95:17: info: precondition proved (CVC4: 1 VC)
 driver.adb:98:53: info: range check proved (CVC4: 1 VC)
@@ -1088,7 +1088,7 @@ spark_dns_main.adb:32:08: info: flow dependencies proved
 spark_dns_main.adb:36:04: info: initialization of "Success" proved
 spark_dns_main.adb:39:20: info: range check proved (CVC4: 2 VC)
 spark_dns_main.adb:40:04: info: initialization of "ZoneFile" proved
-spark_dns_main.adb:43:34: warning: unused assignment to "ZoneFile"
+spark_dns_main.adb:43:34: warning: "ZoneFile" is set by "ProcessZoneFile" but not used after the call
 task_limit.adb:42:16: info: refined post proved (CVC4: 5 VC; Trivial: 2 VC)
 task_limit.adb:50:38: info: range check proved (CVC4: 1 VC)
 task_limit.adb:64:16: info: refined post proved (CVC4: 3 VC; Trivial: 2 VC)
@@ -1188,8 +1188,8 @@ zone_file_parser.adb:327:59: info: index check proved (CVC4: 4 VC)
 zone_file_parser.adb:334:32: info: precondition proved (CVC4: 2 VC)
 zone_file_parser.adb:344:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:345:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:347:42: warning: unused assignment to "BegIdx"
-zone_file_parser.adb:348:42: warning: unused assignment to "EndIdx"
+zone_file_parser.adb:347:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
+zone_file_parser.adb:348:42: warning: "EndIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:363:07: info: initialization of "BegIdx" proved
 zone_file_parser.adb:364:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:365:07: info: initialization of "LengthOfToken" proved
@@ -1225,15 +1225,15 @@ zone_file_parser.adb:491:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:492:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:493:07: info: initialization of "LengthOfToken" proved
 zone_file_parser.adb:499:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:501:39: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:501:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:508:33: info: loop invariant initialization proved (CVC4: 1 VC)
 zone_file_parser.adb:508:33: info: loop invariant preservation proved (CVC4: 1 VC)
 zone_file_parser.adb:509:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:510:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:512:42: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:512:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:522:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:523:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:527:42: warning: unused assignment to "FoundType"
+zone_file_parser.adb:527:42: warning: "FoundType" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:530:45: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:538:17: info: range check proved (CVC4: 2 VC)
 zone_file_parser.adb:540:19: info: loop invariant initialization proved (CVC4: 3 VC)
@@ -1248,15 +1248,15 @@ zone_file_parser.adb:564:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:565:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:566:07: info: initialization of "LengthOfToken" proved
 zone_file_parser.adb:573:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:575:39: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:575:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:582:33: info: loop invariant initialization proved (CVC4: 1 VC)
 zone_file_parser.adb:582:33: info: loop invariant preservation proved (CVC4: 1 VC)
 zone_file_parser.adb:583:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:584:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:586:42: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:586:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:596:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:597:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:601:42: warning: unused assignment to "FoundType"
+zone_file_parser.adb:601:42: warning: "FoundType" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:604:45: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:612:17: info: range check proved (CVC4: 2 VC)
 zone_file_parser.adb:614:19: info: loop invariant initialization proved (CVC4: 3 VC)
@@ -1269,7 +1269,7 @@ zone_file_parser.adb:622:39: info: loop invariant initialization proved (CVC4: 1
 zone_file_parser.adb:622:39: info: loop invariant preservation proved (CVC4: 1 VC)
 zone_file_parser.adb:630:30: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:631:29: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:635:45: warning: unused assignment to "FoundType"
+zone_file_parser.adb:635:45: warning: "FoundType" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:639:48: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:648:20: info: range check proved (CVC4: 2 VC)
 zone_file_parser.adb:650:22: info: loop invariant initialization proved (CVC4: 3 VC)
@@ -1379,12 +1379,12 @@ zone_file_parser.adb:1084:07: info: initialization of "DigitVal" proved
 zone_file_parser.adb:1085:07: info: initialization of "TmpVal" proved
 zone_file_parser.adb:1086:07: info: initialization of "LengthOfToken" proved
 zone_file_parser.adb:1094:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1096:39: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:1096:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:1103:33: info: loop invariant initialization proved (CVC4: 1 VC)
 zone_file_parser.adb:1103:33: info: loop invariant preservation proved (CVC4: 1 VC)
 zone_file_parser.adb:1104:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:1105:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1107:42: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:1107:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:1117:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:1118:26: info: precondition proved (CVC4: 1 VC)
 zone_file_parser.adb:1127:17: info: range check proved (CVC4: 2 VC)
@@ -1408,12 +1408,12 @@ zone_file_parser.adb:1198:07: info: initialization of "DigitVal" proved
 zone_file_parser.adb:1199:07: info: initialization of "TmpVal" proved
 zone_file_parser.adb:1200:07: info: initialization of "LengthOfToken" proved
 zone_file_parser.adb:1209:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1211:39: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:1211:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:1218:33: info: loop invariant initialization proved (CVC4: 1 VC)
 zone_file_parser.adb:1218:33: info: loop invariant preservation proved (CVC4: 1 VC)
 zone_file_parser.adb:1219:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:1220:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1222:42: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:1222:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:1232:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:1233:26: info: precondition proved (CVC4: 1 VC)
 zone_file_parser.adb:1242:17: info: range check proved (CVC4: 2 VC)
@@ -1460,12 +1460,12 @@ zone_file_parser.adb:1475:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1476:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:1477:07: info: initialization of "LengthOfToken" proved
 zone_file_parser.adb:1484:23: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1486:39: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:1486:39: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:1493:33: info: loop invariant initialization proved (CVC4: 1 VC)
 zone_file_parser.adb:1493:33: info: loop invariant preservation proved (CVC4: 1 VC)
 zone_file_parser.adb:1494:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:1495:26: info: precondition proved (CVC4: 1 VC)
-zone_file_parser.adb:1497:42: warning: unused assignment to "BegIdx"
+zone_file_parser.adb:1497:42: warning: "BegIdx" is set by "FindNextToken" but not used after the call
 zone_file_parser.adb:1507:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:1508:26: info: precondition proved (CVC4: 1 VC)
 zone_file_parser.adb:1513:45: info: range check proved (CVC4: 1 VC)

@@ -2007,13 +2007,21 @@ package body Flow.Analysis is
 
                               pragma Assert (Is_Easily_Printable (Target));
 
+                              Callee : constant Flow_Id :=
+                                Direct_Mapping_Id
+                                  (Get_Called_Entity
+                                     (Get_Direct_Mapping_Id
+                                        (Atr.Call_Vertex)));
+
                            begin
                               Error_Msg_Flow
                                 (FA       => FA,
                                  Path     => Mask,
-                                 Msg      => "unused assignment to &",
+                                 Msg      => "& is set by &" &
+                                             " but not used after the call",
                                  N        => N,
                                  F1       => Target,
+                                 F2       => Callee,
                                  Tag      => Ineffective,
                                  Severity => Warning_Kind,
                                  Vertex   => V);

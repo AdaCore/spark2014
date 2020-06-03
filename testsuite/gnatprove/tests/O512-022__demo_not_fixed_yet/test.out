@@ -24,14 +24,14 @@ generic_stack.adb:27:25: medium: array index check might fail, in instantiation 
 generic_stack.adb:28:22: info: range check proved (CVC4: 1 VC), in instantiation at use_stacks.adb:47
 generic_stack.ads:8:19: info: initialization of "E" proved, in instantiation at use_stacks.adb:47
 main.adb:9:04: info: initialization of "A" proved
-main.adb:11:14: warning: unused assignment to "random_numbers.state"
+main.adb:11:14: warning: "random_numbers.state" is set by "Fill_ADT_Stack" but not used after the call
 main.adb:14:14: medium: overflow check might fail (e.g. when X = -1) [possible explanation: loop at line 13 should mention X in a loop invariant]
 main.adb:14:25: side effects of function "Pop" are not modeled in SPARK
 main.adb:15:21: medium: "My_Stack" might not be initialized
 main.adb:16:14: medium: overflow check might fail (e.g. when A = Integer'First and Y = -1) [possible explanation: call at line 15 should mention X (for argument A) in a postcondition]
 random_numbers.adb:6:04: info: initialization of "Seed" constituent of "State" proved
 random_numbers.adb:13:21: high: "My_Stack" is not initialized
-random_numbers.adb:13:21: warning: unused assignment to "My_Stack"
+random_numbers.adb:13:21: warning: "My_Stack" is set by "Pop" but not used after the call
 random_numbers.adb:15:19: side effects of function "Pop" are not modeled in SPARK
 random_numbers.adb:16:27: side effects of function "Pop" are not modeled in SPARK
 random_numbers.adb:28:29: info: division check proved (CVC4: 1 VC)

@@ -1,6 +1,6 @@
 console_pack.adb:39:07: warning: initialization of "Free_Bytes_In_Packet" has no effect
 console_pack.adb:42:24: info: cannot unroll loop (too many loop iterations)
-console_pack.adb:47:35: warning: unused assignment to "Has_Succeed"
+console_pack.adb:47:35: warning: "Has_Succeed" is set by "Console_Send_Message" but not used after the call
 console_pack.ads:12:29: info: initialization of "Has_Succeed" proved
 console_pack.ads:21:07: info: initialization of "Has_Succeed" proved
 console_pack.ads:34:36: info: initialization of "Has_Succeed" proved

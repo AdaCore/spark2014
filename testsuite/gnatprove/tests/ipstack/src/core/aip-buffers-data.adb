@@ -186,11 +186,11 @@ is
          while Insert_Buf /= Buffers.NOBUF
            and then Buf_List (Insert_Buf).Num_No_Jump < Num
          loop
-            pragma Warnings (Off, "unused assignment to ""Free_Count""");
+            pragma Warnings (Off, """Free_Count"" is set by ""Advance_To_Next_Contiguous_Block"" but not used after the call");
             Advance_To_Next_Contiguous_Block (Buf      => Insert_Buf,
                                               Prev_Buf => Prev_Insert_Buf,
                                               Num      => Free_Count);
-            pragma Warnings (On, "unused assignment to ""Free_Count""");
+            pragma Warnings (On, """Free_Count"" is set by ""Advance_To_Next_Contiguous_Block"" but not used after the call");
          end loop;
 
          --  Update the Num component for the previous buffers in the free list
@@ -475,11 +475,11 @@ is
          --  Advance_To_Next_Contiguous_Block is ignored.
 
          Free_Buf := First_Buf;
-         pragma Warnings (Off, "unused assignment to ""Last_Buf""");
+         pragma Warnings (Off, """Last_Buf"" is set by ""Advance_To_Next_Contiguous_Block"" but not used after the call");
          Advance_To_Next_Contiguous_Block (Buf      => Free_Buf,
                                            Prev_Buf => Last_Buf,
                                            Num      => Free_Count);
-         pragma Warnings (On, "unused assignment to ""Last_Buf""");
+         pragma Warnings (On, """Last_Buf"" is set by ""Advance_To_Next_Contiguous_Block"" but not used after the call");
 
          --  Adjust the number of buffers to insert, which might be smaller
          --  than the number of contiguous buffers from First_Buf.

@@ -3,3 +3,4 @@ pragma Profile (Ravenscar);
 pragma Partition_Elaboration_Policy (Sequential);
 pragma Warnings (Off, "no Global contract available");
 pragma Warnings (Off, "unused assignment");
+pragma Warnings (Off, "* but not used after the call");

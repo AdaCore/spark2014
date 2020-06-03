@@ -195,7 +195,7 @@ pointers.adb:65:09: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:65:09: warning: unused assignment
 pointers.adb:66:07: warning: statement has no effect
 pointers.adb:66:15: medium: memory leak might occur
-pointers.adb:66:15: warning: unused assignment to "Y"
+pointers.adb:66:15: warning: "Y" is set by "Assign" but not used after the call
 pointers.adb:68:09: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:68:09: warning: unused assignment
 pointers.adb:69:09: medium: memory leak might occur
@@ -238,19 +238,19 @@ pointers.adb:139:11: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:139:11: warning: unused assignment
 pointers.adb:140:07: warning: statement has no effect
 pointers.adb:140:15: medium: memory leak might occur
-pointers.adb:140:15: warning: unused assignment to "V"
+pointers.adb:140:15: warning: "V" is set by "Assign" but not used after the call
 pointers.adb:142:07: warning: statement has no effect
 pointers.adb:142:16: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:142:16: warning: unused assignment to "W.X"
+pointers.adb:142:16: warning: "W.X" is set by "Assign" but not used after the call
 pointers.adb:143:07: warning: statement has no effect
 pointers.adb:143:16: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:143:16: warning: unused assignment to "W.Y"
+pointers.adb:143:16: warning: "W.Y" is set by "Assign" but not used after the call
 pointers.adb:145:09: medium: memory leak might occur
 pointers.adb:146:22: info: assertion proved (CVC4: 1 VC)
 pointers.adb:147:22: info: assertion proved (CVC4: 1 VC)
 pointers.adb:148:07: warning: statement has no effect
 pointers.adb:148:15: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:148:15: warning: unused assignment to "W"
+pointers.adb:148:15: warning: "W" is set by "Assign" but not used after the call
 pointers.adb:150:11: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:150:11: warning: unused assignment
 pointers.adb:150:14: high: "A.Q.Z" is not initialized

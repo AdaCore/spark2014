@@ -280,6 +280,7 @@ lsc-bignum.adb:376:58: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:376:58: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:381:13: info: precondition proved (Z3: 9 VC)
 lsc-bignum.adb:384:10: info: precondition proved (Z3: 9 VC)
+lsc-bignum.adb:384:55: warning: "Carry" is set by "Sub_Inplace" but not used after the call
 lsc-bignum.adb:399:12: info: division check proved (Z3: 1 VC)
 lsc-bignum.adb:399:41: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:399:41: info: range check proved (Z3: 1 VC)

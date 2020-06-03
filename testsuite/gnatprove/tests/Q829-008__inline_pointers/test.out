@@ -12,5 +12,5 @@ update_lists.adb:31:13: info: initialization of "Next_Rover" proved
 update_lists.adb:31:13: medium: memory leak might occur at end of scope
 update_lists.adb:33:38: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists.adb:36:26: info: pointer dereference check proved (CVC4: 1 VC)
-update_lists.adb:40:28: warning: unused assignment to "Next_Rover"
+update_lists.adb:40:28: warning: "Next_Rover" is set by "Assign" but not used after the call
 update_lists.adb:44:29: medium: pointer dereference check might fail (e.g. when Prev = null) [possible explanation: call at line 43 should mention Target (for argument Prev) in a postcondition]

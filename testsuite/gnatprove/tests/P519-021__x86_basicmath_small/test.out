@@ -12,32 +12,32 @@ basicmath_small.adb:224:32: info: loop invariant initialization proved (CVC4: 1 
 basicmath_small.adb:224:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:225:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:225:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:281:10: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:281:10: warning: "ZeroFlag" is set by "loop_5d" but not used after the call
 basicmath_small.adb:314:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:314:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:315:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:315:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:334:10: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:334:10: warning: "ZeroFlag" is set by "loop_5c" but not used after the call
 basicmath_small.adb:359:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:359:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:360:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:360:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:383:10: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:383:10: warning: "ZeroFlag" is set by "loop_5b" but not used after the call
 basicmath_small.adb:408:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:408:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:409:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:409:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:436:10: warning: unused assignment to "XMM7"
-basicmath_small.adb:436:10: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:436:10: warning: "XMM7" is set by "loop_5a" but not used after the call
+basicmath_small.adb:436:10: warning: "ZeroFlag" is set by "loop_5a" but not used after the call
 basicmath_small.adb:461:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:461:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:462:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:471:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:482:10: info: precondition proved (CVC4: 1 VC)
-basicmath_small.adb:482:10: warning: unused assignment to "CarryFlag"
-basicmath_small.adb:482:10: warning: unused assignment to "OverflowFlag"
-basicmath_small.adb:482:10: warning: unused assignment to "SignFlag"
-basicmath_small.adb:482:10: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:482:10: warning: "CarryFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:482:10: warning: "OverflowFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:482:10: warning: "SignFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:482:10: warning: "ZeroFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:522:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:522:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:523:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
@@ -76,77 +76,77 @@ basicmath_small.adb:641:07: warning: initialization of "SaveR14" has no effect
 basicmath_small.adb:641:34: info: range check proved (CVC4: 1 VC)
 basicmath_small.adb:642:07: warning: initialization of "SaveR15" has no effect
 basicmath_small.adb:642:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:656:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:656:10: warning: statement has no effect
-basicmath_small.adb:656:10: warning: unused assignment to "RDI"
 basicmath_small.adb:686:15: warning: unused assignment
 basicmath_small.adb:695:16: warning: unused assignment
 basicmath_small.adb:698:16: warning: unused assignment
 basicmath_small.adb:701:16: warning: unused assignment
-basicmath_small.adb:733:07: warning: unused assignment to "CarryFlag"
-basicmath_small.adb:733:07: warning: unused assignment to "OverflowFlag"
-basicmath_small.adb:733:07: warning: unused assignment to "RBP"
-basicmath_small.adb:733:07: warning: unused assignment to "RDI"
-basicmath_small.adb:733:07: warning: unused assignment to "SignFlag"
-basicmath_small.adb:733:07: warning: unused assignment to "XMM0"
-basicmath_small.adb:733:07: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:733:07: warning: "CarryFlag" is set by "loop_1" but not used after the call
+basicmath_small.adb:733:07: warning: "OverflowFlag" is set by "loop_1" but not used after the call
+basicmath_small.adb:733:07: warning: "RBP" is set by "loop_1" but not used after the call
+basicmath_small.adb:733:07: warning: "RDI" is set by "loop_1" but not used after the call
+basicmath_small.adb:733:07: warning: "SignFlag" is set by "loop_1" but not used after the call
+basicmath_small.adb:733:07: warning: "XMM0" is set by "loop_1" but not used after the call
+basicmath_small.adb:733:07: warning: "ZeroFlag" is set by "loop_1" but not used after the call
+basicmath_small.adb:736:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:736:10: warning: statement has no effect
-basicmath_small.adb:736:10: warning: unused assignment to "RDI"
 basicmath_small.adb:756:16: warning: unused assignment
 basicmath_small.adb:759:16: warning: unused assignment
 basicmath_small.adb:762:16: warning: unused assignment
-basicmath_small.adb:793:07: warning: unused assignment to "CarryFlag"
-basicmath_small.adb:793:07: warning: unused assignment to "OverflowFlag"
-basicmath_small.adb:793:07: warning: unused assignment to "RBP"
-basicmath_small.adb:793:07: warning: unused assignment to "RDI"
-basicmath_small.adb:793:07: warning: unused assignment to "SignFlag"
-basicmath_small.adb:793:07: warning: unused assignment to "XMM0"
-basicmath_small.adb:793:07: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:793:07: warning: "CarryFlag" is set by "loop_2" but not used after the call
+basicmath_small.adb:793:07: warning: "OverflowFlag" is set by "loop_2" but not used after the call
+basicmath_small.adb:793:07: warning: "RBP" is set by "loop_2" but not used after the call
+basicmath_small.adb:793:07: warning: "RDI" is set by "loop_2" but not used after the call
+basicmath_small.adb:793:07: warning: "SignFlag" is set by "loop_2" but not used after the call
+basicmath_small.adb:793:07: warning: "XMM0" is set by "loop_2" but not used after the call
+basicmath_small.adb:793:07: warning: "ZeroFlag" is set by "loop_2" but not used after the call
+basicmath_small.adb:797:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:797:10: warning: statement has no effect
-basicmath_small.adb:797:10: warning: unused assignment to "RDI"
 basicmath_small.adb:811:15: warning: unused assignment
 basicmath_small.adb:817:16: warning: unused assignment
 basicmath_small.adb:820:16: warning: unused assignment
 basicmath_small.adb:823:16: warning: unused assignment
-basicmath_small.adb:854:07: warning: unused assignment to "CarryFlag"
-basicmath_small.adb:854:07: warning: unused assignment to "OverflowFlag"
-basicmath_small.adb:854:07: warning: unused assignment to "RBP"
-basicmath_small.adb:854:07: warning: unused assignment to "RDI"
-basicmath_small.adb:854:07: warning: unused assignment to "SignFlag"
-basicmath_small.adb:854:07: warning: unused assignment to "XMM0"
-basicmath_small.adb:854:07: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:854:07: warning: "CarryFlag" is set by "loop_3" but not used after the call
+basicmath_small.adb:854:07: warning: "OverflowFlag" is set by "loop_3" but not used after the call
+basicmath_small.adb:854:07: warning: "RBP" is set by "loop_3" but not used after the call
+basicmath_small.adb:854:07: warning: "RDI" is set by "loop_3" but not used after the call
+basicmath_small.adb:854:07: warning: "SignFlag" is set by "loop_3" but not used after the call
+basicmath_small.adb:854:07: warning: "XMM0" is set by "loop_3" but not used after the call
+basicmath_small.adb:854:07: warning: "ZeroFlag" is set by "loop_3" but not used after the call
+basicmath_small.adb:857:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:857:10: warning: statement has no effect
-basicmath_small.adb:857:10: warning: unused assignment to "RDI"
 basicmath_small.adb:874:15: warning: unused assignment
 basicmath_small.adb:880:16: warning: unused assignment
 basicmath_small.adb:883:16: warning: unused assignment
-basicmath_small.adb:914:07: warning: unused assignment to "CarryFlag"
-basicmath_small.adb:914:07: warning: unused assignment to "OverflowFlag"
-basicmath_small.adb:914:07: warning: unused assignment to "SignFlag"
-basicmath_small.adb:914:07: warning: unused assignment to "XMM0"
-basicmath_small.adb:914:07: warning: unused assignment to "ZeroFlag"
-basicmath_small.adb:933:07: warning: unused assignment to "CarryFlag"
-basicmath_small.adb:933:07: warning: unused assignment to "OverflowFlag"
-basicmath_small.adb:933:07: warning: unused assignment to "R12"
-basicmath_small.adb:933:07: warning: unused assignment to "R13"
-basicmath_small.adb:933:07: warning: unused assignment to "R14"
-basicmath_small.adb:933:07: warning: unused assignment to "R15"
-basicmath_small.adb:933:07: warning: unused assignment to "RSI"
-basicmath_small.adb:933:07: warning: unused assignment to "SignFlag"
-basicmath_small.adb:933:07: warning: unused assignment to "XMM0"
-basicmath_small.adb:933:07: warning: unused assignment to "XMM1"
-basicmath_small.adb:933:07: warning: unused assignment to "ZeroFlag"
-basicmath_small.adb:942:07: warning: unused assignment to "CarryFlag"
-basicmath_small.adb:942:07: warning: unused assignment to "OverflowFlag"
-basicmath_small.adb:942:07: warning: unused assignment to "RSI"
-basicmath_small.adb:942:07: warning: unused assignment to "SignFlag"
-basicmath_small.adb:942:07: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:914:07: warning: "CarryFlag" is set by "loop_4" but not used after the call
+basicmath_small.adb:914:07: warning: "OverflowFlag" is set by "loop_4" but not used after the call
+basicmath_small.adb:914:07: warning: "SignFlag" is set by "loop_4" but not used after the call
+basicmath_small.adb:914:07: warning: "XMM0" is set by "loop_4" but not used after the call
+basicmath_small.adb:914:07: warning: "ZeroFlag" is set by "loop_4" but not used after the call
+basicmath_small.adb:933:07: warning: "CarryFlag" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "OverflowFlag" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "R12" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "R13" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "R14" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "R15" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "RSI" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "SignFlag" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "XMM0" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "XMM1" is set by "loop_5" but not used after the call
+basicmath_small.adb:933:07: warning: "ZeroFlag" is set by "loop_5" but not used after the call
+basicmath_small.adb:942:07: warning: "CarryFlag" is set by "loop_6" but not used after the call
+basicmath_small.adb:942:07: warning: "OverflowFlag" is set by "loop_6" but not used after the call
+basicmath_small.adb:942:07: warning: "RSI" is set by "loop_6" but not used after the call
+basicmath_small.adb:942:07: warning: "SignFlag" is set by "loop_6" but not used after the call
+basicmath_small.adb:942:07: warning: "ZeroFlag" is set by "loop_6" but not used after the call
 basicmath_small.adb:956:07: info: precondition proved (CVC4: 1 VC)
-basicmath_small.adb:956:07: warning: unused assignment to "ZeroFlag"
-basicmath_small.adb:986:07: warning: unused assignment to "XMM0"
-basicmath_small.adb:986:07: warning: unused assignment to "XMM1"
-basicmath_small.adb:986:07: warning: unused assignment to "ZeroFlag"
-basicmath_small.adb:1002:07: warning: unused assignment to "RBP"
-basicmath_small.adb:1002:07: warning: unused assignment to "RBX"
+basicmath_small.adb:956:07: warning: "ZeroFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:986:07: warning: "XMM0" is set by "loop_7" but not used after the call
+basicmath_small.adb:986:07: warning: "XMM1" is set by "loop_7" but not used after the call
+basicmath_small.adb:986:07: warning: "ZeroFlag" is set by "loop_7" but not used after the call
+basicmath_small.adb:1002:07: warning: "RBP" is set by "loop_8" but not used after the call
+basicmath_small.adb:1002:07: warning: "RBX" is set by "loop_8" but not used after the call
 basicmath_small.adb:1080:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:1080:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:1132:07: warning: initialization of "SaveStackPtr" has no effect

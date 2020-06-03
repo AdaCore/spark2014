@@ -199,10 +199,11 @@ is
 
       if AIP.No (Err) then
          if Local then
-            pragma Warnings (Off, "unused assignment to ""Err""");
+            pragma Warnings (Off, """Err"" is set by ""Dispatch_Upper"" but not used after the call");
             --  Discard error from upper layer
             Dispatch_Upper (IPH.IPH_Protocol (Ihdr), Buf, Netif, Err);
-            pragma Warnings (On, "unused assignment to ""Err""");
+            pragma Warnings (On, """Err"" is set by ""Dispatch_Upper"" but not used after the call");
+            --  Discard error from upper layer
          else
             IP_Forward (Buf, Netif);
          end if;
