@@ -9,18 +9,14 @@
 <theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" proved="true">
  <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.1" expl="precondition" proved="true">
+  <goal name="def&#39;vc.0" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.1" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.3" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="629"/></proof>
   </goal>
  </transf>
