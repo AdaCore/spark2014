@@ -1,2 +1,1 @@
-bug_align.adb:8:48: info: range check proved (CVC4: 1 VC)
 bug_align.adb:11:20: medium: assertion might fail, cannot prove Alignment_Of_Var = 1
