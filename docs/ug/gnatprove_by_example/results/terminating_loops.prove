@@ -1,8 +1,8 @@
 terminating_loops.adb:4:04: info: initialization of "Y" proved
 terminating_loops.adb:7:12: info: overflow check proved
 terminating_loops.adb:8:14: info: overflow check proved
-terminating_loops.adb:9:07: info: loop variant proved
+terminating_loops.adb:9:28: info: loop variant proved
 terminating_loops.adb:13:12: info: overflow check proved
 terminating_loops.adb:14:14: info: overflow check proved
-terminating_loops.adb:15:07: info: loop variant proved
+terminating_loops.adb:15:28: info: loop variant proved
 terminating_loops.adb:15:43: info: overflow check proved

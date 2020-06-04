@@ -1,6 +1,6 @@
 terminating_annotations.adb:8:26: info: range check proved
 terminating_annotations.adb:16:17: info: range check proved
-terminating_annotations.adb:50:10: info: loop variant proved
+terminating_annotations.adb:50:31: info: loop variant proved
 terminating_annotations.adb:51:17: info: range check proved
 terminating_annotations.ads:3:13: medium: subprogram "F_Rec" might not terminate, terminating annotation could be incorrect
 terminating_annotations.ads:6:13: medium: subprogram "F_While" might not terminate, terminating annotation could be incorrect
