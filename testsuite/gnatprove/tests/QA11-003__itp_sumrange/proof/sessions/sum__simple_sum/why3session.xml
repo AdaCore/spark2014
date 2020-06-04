@@ -2,9 +2,8 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
-<prover id="1" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="18500" memlimit="0"/>
-<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
+<prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
+<prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="sum__simple_sum.gnat-json"/>
@@ -24,82 +23,63 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.3" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.4" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.6" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.7" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.8" expl="postcondition" proved="true">
-  <proof prover="0" obsolete="true"><result status="valid" steps="5"/></proof>
-  <transf name="trivial_true" proved="true" >
-  </transf>
+  <goal name="def&#39;vc.8" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.9" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="112"/></proof>
   </goal>
-  <goal name="def&#39;vc.10" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="112"/></proof>
+  <goal name="def&#39;vc.10" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="162"/></proof>
   </goal>
   <goal name="def&#39;vc.11" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="162"/></proof>
+  <proof prover="1"><result status="valid" steps="25"/></proof>
   </goal>
   <goal name="def&#39;vc.12" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="25"/></proof>
+  <proof prover="1"><result status="valid" steps="162"/></proof>
   </goal>
   <goal name="def&#39;vc.13" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="162"/></proof>
+  <proof prover="1"><result status="valid" steps="19"/></proof>
   </goal>
   <goal name="def&#39;vc.14" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="19"/></proof>
+  <proof prover="1"><result status="valid" steps="19"/></proof>
   </goal>
-  <goal name="def&#39;vc.15" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="19"/></proof>
+  <goal name="def&#39;vc.15" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.16" expl="postcondition" proved="true">
-  <proof prover="0" obsolete="true"><result status="valid" steps="157"/></proof>
+  <goal name="def&#39;vc.16" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" steps="157"/></proof>
+  </goal>
+  <goal name="def&#39;vc.17" expl="loop invariant preservation">
+  <proof prover="0"><result status="unknown" steps="25592"/></proof>
+  <proof prover="1"><result status="unknown" steps="365017"/></proof>
+  </goal>
+  <goal name="def&#39;vc.18" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="def&#39;vc.19" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.17" expl="postcondition" proved="true">
-  <proof prover="0" obsolete="true"><result status="unknown" steps="365017"/></proof>
-  <proof prover="2" obsolete="true"><result status="unknown" steps="25592"/></proof>
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.18" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="157"/></proof>
-  </goal>
-  <goal name="def&#39;vc.19" expl="loop invariant preservation">
-  <proof prover="0"><result status="unknown" steps="365017"/></proof>
-  <proof prover="1" obsolete="true"><result status="unknown" steps="18514"/></proof>
-  <proof prover="2"><result status="unknown" steps="25592"/></proof>
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.20" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
-  <proof prover="2" obsolete="true"><result status="unknown" steps="25690"/></proof>
-  </goal>
-  <goal name="def&#39;vc.21" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.22" expl="postcondition">
-  <proof prover="0"><result status="unknown" steps="365018"/></proof>
-  <proof prover="1" obsolete="true"><result status="unknown" steps="18512"/></proof>
-  <proof prover="2"><result status="unknown" steps="25690"/></proof>
+  <goal name="def&#39;vc.20" expl="postcondition">
+  <proof prover="0"><result status="unknown" steps="25690"/></proof>
+  <proof prover="1"><result status="unknown" steps="365018"/></proof>
   </goal>
  </transf>
  </goal>
