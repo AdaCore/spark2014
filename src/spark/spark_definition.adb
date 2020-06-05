@@ -1463,6 +1463,10 @@ package body SPARK_Definition is
                Mark_List (Expressions (N));
             end if;
 
+         when N_Iterated_Element_Association =>
+
+            Mark_Unsupported ("iterated element association", N);
+
          when N_Iterator_Specification =>
 
             --  Retrieve Iterable aspect specification if any
