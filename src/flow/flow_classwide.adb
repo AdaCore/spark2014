@@ -435,13 +435,11 @@ package body Flow_Classwide is
    -- Check_Classwide_Contracts --
    -------------------------------
 
-   procedure Check_Classwide_Contracts (E     : Entity_Id;
-                                        Valid : out Boolean)
+   procedure Check_Classwide_Contracts (E : Entity_Id)
    is
       Scope : constant Flow_Scope := Get_Flow_Scope (E);
+      Valid : Boolean := True;
    begin
-      Valid := True;
-
       if Has_Controlling_Formal_Or_Result (E) then
          if Present (Overridden_Operation (E)) then
 

@@ -250,6 +250,15 @@ package Flow.Analysis is
    --  information, here we need to make sure that we do not have anything
    --  exceeding what the contract allows.
 
+   procedure Check_Constant_Global_Contracts (E : Entity_Id)
+   with Pre => Ekind (E) in E_Function
+                          | E_Procedure
+                          | Entry_Kind
+                          | E_Task_Type
+               and then not Entity_Body_In_SPARK (E);
+   --  Check if the global contracts directly reference any constant without
+   --  variable inputs. This enforces SPARK RM 6.1.4(15).
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);

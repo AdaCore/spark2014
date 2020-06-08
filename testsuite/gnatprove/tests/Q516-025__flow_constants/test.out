@@ -1,0 +1,2 @@
+state.ads:5:49: medium: constant without variable input "Val" not allowed as input to "Proc" (SPARK RM 6.1.4(15))
+state.ads:6:49: medium: constant without variable input "Val" not allowed as input to "Func" (SPARK RM 6.1.4(15))

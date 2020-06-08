@@ -5928,4 +5928,65 @@ package body Flow.Analysis is
       end if;
    end Check_State_Volatility_Escalation;
 
+   ----------------------------------------
+   -- Check_Constant_Global_Contracts --
+   ----------------------------------------
+
+   procedure Check_Constant_Global_Contracts (E : Entity_Id) is
+      procedure Check_Constant_Global (G : Entity_Id);
+      --  Check whether a single entity G is allowed to appear as a Global
+      --  or Depends input.
+
+      ---------------------------
+      -- Check_Constant_Global --
+      ---------------------------
+
+      procedure Check_Constant_Global (G : Entity_Id) is
+      begin
+         if Ekind (G) = E_Constant
+           and then (Is_Access_Type (Etype (G))
+                     or else not Has_Variable_Input (G))
+         then
+            declare
+               The_Global_In : constant Flow_Id := Direct_Mapping_Id (G);
+               Unused        : Boolean;
+            begin
+               Error_Msg_Flow
+                 (E          => E,
+                  Msg        => "& not allowed as input to &",
+                  N          => Find_Global (S => E, F => The_Global_In),
+                  Suppressed => Unused,
+                  F1         => The_Global_In,
+                  F2         => Direct_Mapping_Id (E),
+                  SRM_Ref    => "6.1.4(15)",
+                  Tag        => Global_Wrong,
+                  Severity   => Medium_Check_Kind);
+            end;
+         end if;
+      end Check_Constant_Global;
+
+      --  Local variables
+
+      Spec_Globals : Raw_Global_Nodes;
+
+   begin
+      --  Only apply this check to entities with user supplied Global/Depends
+
+      if Has_User_Supplied_Globals (E) then
+         Spec_Globals := Contract_Globals (E);
+
+         --  Constants can only appear as Inputs and Proof_Ins (which are
+         --  disjoint so we iterate over them separately); frontend already
+         --  rejects them if they appear as Outputs.
+
+         for G of Spec_Globals.Proof_Ins loop
+            Check_Constant_Global (G);
+         end loop;
+
+         for G of Spec_Globals.Inputs loop
+            Check_Constant_Global (G);
+         end loop;
+      end if;
+   end Check_Constant_Global_Contracts;
+
 end Flow.Analysis;

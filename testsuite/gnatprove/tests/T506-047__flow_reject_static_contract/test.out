@@ -1,0 +1,1 @@
+constants.ads:6:26: medium: constant without variable input "My_Const" not allowed as input to "Proc" (SPARK RM 6.1.4(15))

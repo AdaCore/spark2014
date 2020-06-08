@@ -630,9 +630,10 @@ package Flow_Utility is
    with Pre => Ekind (C) = E_Constant;
    --  Returns True if V is a constant with variable input
    --
-   --  If called before the globals graph has been generated then the results
-   --  might not be accurate (this means that some constant that might not
-   --  actually have variable input will be reported as having variable input).
+   --  If this is called before the globals graph has been generated (i.e.
+   --  completion of phase 1) the results might not be accurate. The function
+   --  may erroneously report that some constant does have variable input when
+   --  it might not actually have variable input.
 
    function Has_Bounds
      (F     : Flow_Id;

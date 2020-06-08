@@ -5603,16 +5603,19 @@ package body Flow_Utility is
       --  from Refined_Global, Refined_Depends, Global or Depends (this order
       --  is hardcoded in Get_Globals).
 
-      Contract := Find_Contract (E, Pragma_Refined_Global);
+      --  We should only process refined contracts if the body is in SPARK
+      if Entity_Body_In_SPARK (E) then
+         Contract := Find_Contract (E, Pragma_Refined_Global);
 
-      if Present (Contract) then
-         return Parse_Global_Contract (E, Contract);
-      end if;
+         if Present (Contract) then
+            return Parse_Global_Contract (E, Contract);
+         end if;
 
-      Contract := Find_Contract (E, Pragma_Refined_Depends);
+         Contract := Find_Contract (E, Pragma_Refined_Depends);
 
-      if Present (Contract) then
-         return Parse_Depends_Contract (E, Contract);
+         if Present (Contract) then
+            return Parse_Depends_Contract (E, Contract);
+         end if;
       end if;
 
       Contract := Find_Contract (E, Pragma_Global);
