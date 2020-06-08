@@ -6867,7 +6867,11 @@ package body Gnat2Why.Expr is
               (Lvalue   => Expr,
                Expr     => +New_Pointer_Is_Moved_Update
                  (E      => Typ,
-                  Name   => +Tmp,
+                  Name   => Insert_Simple_Conversion
+                    (Domain         => EW_Pterm,
+                     Expr           => +Tmp,
+                     To             => Type_Of_Node (Expr),
+                     Force_No_Slide => True),
                   Value  => +True_Prog,
                   Domain => EW_Prog),
                No_Check => True);

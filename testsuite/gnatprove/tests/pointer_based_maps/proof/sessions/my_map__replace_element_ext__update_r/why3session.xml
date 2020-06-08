@@ -74,7 +74,7 @@
   </goal>
   <goal name="def&#39;vc.17" expl="assertion">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="23116434"/></proof>
+  <proof prover="1"><result status="unknown" steps="23050439"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>
