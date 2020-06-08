@@ -13,5 +13,5 @@ p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17 (e.
 p.adb:14:04: info: initialization of "Var" proved
 p.adb:14:04: info: predicate check proved on default value (CVC4: 1 VC)
 p.adb:17:04: info: analyzing call to "Bad" in context
-sub.ads:11:12: predicate cannot depend on variable input "Global" (SPARK RM 4.4(2))
+sub.ads:12:49: predicate cannot depend on variable input "Global" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

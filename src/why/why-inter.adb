@@ -351,7 +351,6 @@ package body Why.Inter is
       case Kind is
          when EW_Abstract
             | EW_Split
-            | EW_Wrapper
          =>
             return Base_Why_Type (Get_Ada_Node (+W));
 
@@ -723,12 +722,17 @@ package body Why.Inter is
 
       --  Builtin nodes can be compared directly
 
-      elsif Get_Type_Kind (Left) in EW_Builtin | EW_Wrapper then
+      elsif Get_Type_Kind (Left) in EW_Builtin then
          return False;
 
       --  Two types with different kinds cannot be equal
 
       elsif Get_Type_Kind (Left) /= Get_Type_Kind (Right) then
+         return False;
+
+      --  If one is a wrapper and not the other, they are not equal
+
+      elsif Get_Relaxed_Init (Left) /= Get_Relaxed_Init (Right) then
          return False;
 
       --  For EW_Abstract and EW_Split types, compare the ada node

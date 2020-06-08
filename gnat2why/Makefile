@@ -69,7 +69,7 @@ build: setup force
 # "Code Coverage and Profiling" in GNAT User's Guide.
 
 coverage-setup: force
-	gnatcov instrument -P gnat2why.gpr --level=stmt --dump-method=atexit
+	gnatcov instrument -P gnat2why.gpr --level=stmt --dump-trigger=atexit
 	# ??? insert newlines into the gnatcov output; otherwise we would have
 	# too long lines
 	sed -i 's/;[^ ]/\n&/g' obj/gnatcov-instr/gnat1drv.adb

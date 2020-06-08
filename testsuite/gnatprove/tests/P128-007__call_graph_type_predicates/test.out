@@ -1,6 +1,6 @@
 client.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p.adb:7:13: function with output global "Task_Identification.Tasking_State" is not allowed in SPARK
-p.adb:20:09: predicate cannot depend on variable input "Task_Identification.Tasking_State" (SPARK RM 4.4(2))
 p.adb:23:30: side effects of function "Foo" are not modeled in SPARK
+p.adb:23:34: predicate cannot depend on variable input "Task_Identification.Tasking_State" (SPARK RM 4.4(2))
 p.adb:30:20: warning: statement has no effect
 gnatprove: error during flow analysis and proof

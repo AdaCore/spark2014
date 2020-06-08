@@ -1994,13 +1994,8 @@ package body Flow_Utility is
    function Get_Variables_Internal
      (N   : Node_Id;
       Ctx : Get_Variables_Context)
-      return Flow_Id_Sets.Set;
-   --  Internal version with a context that we'll use to recurse
-
-   function Get_Variables_Internal
-     (L   : List_Id;
-      Ctx : Get_Variables_Context)
-      return Flow_Id_Sets.Set;
+      return Flow_Id_Sets.Set
+   with Pre => (if Ctx.Assume_In_Expression then Nkind (N) in N_Subexpr);
    --  Internal version with a context that we'll use to recurse
 
    -------------------
@@ -2027,27 +2022,6 @@ package body Flow_Utility is
 
    begin
       return Get_Variables_Internal (N, Ctx);
-   end Get_Variables;
-
-   function Get_Variables
-     (L                       : List_Id;
-      Scope                   : Flow_Scope;
-      Fold_Functions          : Reference_Kind;
-      Use_Computed_Globals    : Boolean;
-      Assume_In_Expression    : Boolean := True;
-      Expand_Internal_Objects : Boolean := False)
-      return Flow_Id_Sets.Set
-   is
-      Ctx : constant Get_Variables_Context :=
-        (Scope                   => Scope,
-         Fold_Functions          => Fold_Functions,
-         Use_Computed_Globals    => Use_Computed_Globals,
-         Assume_In_Expression    => Assume_In_Expression,
-         Expand_Internal_Objects => Expand_Internal_Objects,
-         Consider_Extensions     => False);
-
-   begin
-      return Get_Variables_Internal (L, Ctx);
    end Get_Variables;
 
    ----------------------------
@@ -2089,7 +2063,8 @@ package body Flow_Utility is
 
       function Recurse (N                   : Node_Id;
                         Consider_Extensions : Boolean := False)
-                        return Flow_Id_Sets.Set;
+                        return Flow_Id_Sets.Set
+      with Pre => Present (N);
       --  Helper function to recurse on N
 
       function Untangle_Record_Fields
@@ -2124,9 +2099,12 @@ package body Flow_Utility is
             Scope                   => Ctx.Scope,
             Fold_Functions          => Ctx.Fold_Functions,
             Use_Computed_Globals    => Ctx.Use_Computed_Globals,
-            Expand_Internal_Objects => Ctx.Expand_Internal_Objects));
+            Expand_Internal_Objects => Ctx.Expand_Internal_Objects))
+      with Pre => Ekind (Unchecked_Full_Type (Etype (Prefix (N))))
+                    in Record_Kind | Concurrent_Kind;
       --  Helper function to call Untangle_Record_Fields with the appropriate
-      --  context.
+      --  context. It can be called on types that have either components or
+      --  discriminants.
 
       -------------
       -- Recurse --
@@ -2583,9 +2561,7 @@ package body Flow_Utility is
                pragma Assert (Ekind (E) not in E_Exception_Type
                                              | E_Subprogram_Type);
 
-               if Is_Scalar_Type (E)
-                 and then Is_Constrained (E)
-               then
+               if Is_Scalar_Type (E) then
                   declare
                      SR : constant Node_Id := Scalar_Range (E);
                      LB : constant Node_Id := Low_Bound (SR);
@@ -2702,14 +2678,21 @@ package body Flow_Utility is
                  Flatten_Variable (Entity (Prefix (N)), Ctx.Scope);
 
             when Attribute_Update =>
-               if Is_Tagged_Type (Get_Type (N, Ctx.Scope)) then
-                  --  ??? Precise analysis is disabled for tagged types, so we
-                  --      just do the usual instead.
-                  null;
-
-               else
-                  return Untangle_With_Context (N);
-               end if;
+               declare
+                  T : constant Entity_Id := Get_Type (N, Ctx.Scope);
+               begin
+                  if Is_Record_Type (T) then
+                     if Is_Tagged_Type (T) then
+                        --  ??? Precise analysis is disabled for tagged types,
+                        --      so we just do the usual instead.
+                        null;
+                     else
+                        return Untangle_With_Context (N);
+                     end if;
+                  else
+                     pragma Assert (Is_Array_Type (T));
+                  end if;
+               end;
 
             when Attribute_Constrained =>
                for F of Recurse (Prefix (N)) loop
@@ -2993,7 +2976,8 @@ package body Flow_Utility is
                      begin
                         loop
                            Vars.Union
-                             (Get_Vars_Wrapper (Component_Association));
+                             (Get_Vars_Wrapper
+                                (Expression (Component_Association)));
                            Next (Component_Association);
                            exit when No (Component_Association);
                         end loop;
@@ -3423,7 +3407,14 @@ package body Flow_Utility is
                end if;
 
             when N_Aggregate =>
-               Variables.Union (Recurse (Aggregate_Bounds (N)));
+               declare
+                  Array_Bounds : constant Node_Id := Aggregate_Bounds (N);
+               begin
+                  if Present (Array_Bounds) then
+                     Variables.Union (Recurse (Low_Bound (Array_Bounds)));
+                     Variables.Union (Recurse (High_Bound (Array_Bounds)));
+                  end if;
+               end;
 
             when N_Selected_Component =>
                if Is_Subprogram_Or_Entry (Entity (Selector_Name (N))) then
@@ -3574,7 +3565,8 @@ package body Flow_Utility is
 
                begin
                   if Present (Iterator_Specification (N)) then
-                     Variables.Union (Recurse (Iterator_Specification (N)));
+                     Variables.Union
+                       (Recurse (Name (Iterator_Specification (N))));
                   else
                      declare
                         R : constant Node_Id :=
@@ -3609,6 +3601,28 @@ package body Flow_Utility is
                Variables.Include
                  (Direct_Mapping_Id (Flow.Dynamic_Memory.Heap_State));
 
+               declare
+                  Expr : constant Node_Id := Expression (N);
+               begin
+                  --  If the allocated expression is just a type name, then
+                  --  ignore it.
+                  --  ??? We shall pull dependencies coming from default
+                  --  expressions of the allocated record components.
+
+                  if Is_Entity_Name (Expr)
+                    and then Is_Type (Entity (Expr))
+                  then
+                     --  Subpools are not currently allowed in SPARK, but make
+                     --  sure that we don't forget to traverse them if they
+                     --  become allowed.
+
+                     pragma Assert (No (Subpool_Handle_Name (N)));
+                     return Skip;
+                  else
+                     return OK;
+                  end if;
+               end;
+
             when others =>
                null;
          end case;
@@ -3633,23 +3647,6 @@ package body Flow_Utility is
       Map_Generic_In_Formals (Ctx.Scope, Variables, Entire => False);
 
       return Variables;
-   end Get_Variables_Internal;
-
-   function Get_Variables_Internal (L   : List_Id;
-                                    Ctx : Get_Variables_Context)
-                                    return Flow_Id_Sets.Set
-   is
-      P : Node_Id;
-   begin
-      return Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set do
-         P := First (L);
-         while Present (P) loop
-            Variables.Union (Get_Variables_Internal
-                               (P,
-                                Ctx'Update (Consider_Extensions => False)));
-            Next (P);
-         end loop;
-      end return;
    end Get_Variables_Internal;
 
    -----------------------------

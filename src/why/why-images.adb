@@ -75,7 +75,6 @@ package body Why.Images is
          when EW_Builtin  => return "builtin";
          when EW_Abstract => return "[abstract node]";
          when EW_Split    => return "[split node]";
-         when EW_Wrapper  => return "[wrapper node]";
       end case;
    end Img;
 

@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
 with Common_Containers;        use Common_Containers;
 with SPARK_Atree;              use SPARK_Atree;
 with SPARK_Util.Types;         use SPARK_Util.Types;
@@ -44,21 +43,6 @@ with Why.Gen.Terms;            use Why.Gen.Terms;
 with Why.Inter;                use Why.Inter;
 
 package body Why.Gen.Init is
-
-   package Entity_W_Type_Map is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Entity_Id,
-        Element_Type    => W_Type_Id,
-        Hash            => Node_Hash,
-        Equivalent_Keys => "=");
-   Abst_Wrapper_Types  : Entity_W_Type_Map.Map;
-   Split_Wrapper_Types : Entity_W_Type_Map.Map;
-   --  Maps to store wrapper types. It is used to always return the same type
-   --  for a given entity. Also register whether a wrapper is in split form or
-   --  not.
-
-   function Is_Split_Wrapper_Type (Typ : W_Type_Id) return Boolean;
-   --  Return True if Typ is a wrapper type in split form
 
    ----------------------------
    -- Compute_Is_Initialized --
@@ -224,28 +208,21 @@ package body Why.Gen.Init is
    ---------------------
 
    function EW_Init_Wrapper (E : Entity_Id; K : EW_Type) return W_Type_Id is
-      use Entity_W_Type_Map;
-      Ty       : constant Entity_Id := Retysp (E);
-      C        : Cursor;
-      Inserted : Boolean;
+      Ty : constant Entity_Id := Retysp (E);
    begin
       if K = EW_Abstract then
 
          --  Create a new type for the wrapper
 
          if Needs_Init_Wrapper_Type (Ty) then
-            Abst_Wrapper_Types.Insert
-              (Key      => Ty,
-               New_Item => New_Type
-                 (Ada_Node   => Ty,
-                  Is_Mutable => False,
-                  Type_Kind  => EW_Wrapper,
-                  Name       => New_Name
-                    (Symb   => NID (Short_Name (Ty) & "__init_wrapper"),
-                     Module => E_Init_Module (Ty))),
-               Inserted => Inserted,
-               Position => C);
-            return Element (C);
+            return New_Type
+              (Ada_Node     => Ty,
+               Is_Mutable   => False,
+               Type_Kind    => EW_Abstract,
+               Relaxed_Init => True,
+               Name         => New_Name
+                 (Symb   => NID (Short_Name (Ty) & "__init_wrapper"),
+                  Module => E_Init_Module (Ty)));
          else
             return EW_Abstract (Ty);
          end if;
@@ -254,16 +231,12 @@ package body Why.Gen.Init is
          --  No new type is created, this is a placeholder for values
 
          if Needs_Init_Wrapper_Type (Ty) then
-            Split_Wrapper_Types.Insert
-              (Key      => Ty,
-               New_Item => New_Type
-                 (Ada_Node   => Ty,
-                  Is_Mutable => False,
-                  Type_Kind  => EW_Wrapper,
-                  Name       => Get_Name (EW_Split (Ty))),
-               Inserted => Inserted,
-               Position => C);
-            return Element (C);
+            return New_Type
+              (Ada_Node     => Ty,
+               Is_Mutable   => False,
+               Type_Kind    => EW_Split,
+               Relaxed_Init => True,
+               Name         => Get_Name (EW_Split (Ty)));
          else
             return EW_Split (Ty);
          end if;
@@ -321,19 +294,8 @@ package body Why.Gen.Init is
 
    function Is_Init_Wrapper_Type (Typ : W_Type_Id) return Boolean is
    begin
-      return Get_Type_Kind (Typ) = EW_Wrapper;
+      return Get_Relaxed_Init (Typ);
    end Is_Init_Wrapper_Type;
-
-   ---------------------------
-   -- Is_Split_Wrapper_Type --
-   ---------------------------
-
-   function Is_Split_Wrapper_Type (Typ : W_Type_Id) return Boolean is
-   begin
-      return Get_Type_Kind (Typ) = EW_Wrapper
-        and then Split_Wrapper_Types.Contains (Get_Ada_Node (+Typ))
-        and then Typ = Split_Wrapper_Types.Element (Get_Ada_Node (+Typ));
-   end Is_Split_Wrapper_Type;
 
    -------------------------------
    -- New_Init_Attribute_Access --
@@ -348,11 +310,12 @@ package body Why.Gen.Init is
       Field : W_Identifier_Id;
 
    begin
+      pragma Assert (Get_Relaxed_Init (Get_Type (Name)));
+
       --  If Name is in split form, use the Symbol_Table to get the init
       --  attribute.
 
-      if Is_Split_Wrapper_Type (Get_Type (Name)) then
-         pragma Assert (Get_Type (Name) = EW_Init_Wrapper (E, EW_Split));
+      if Get_Type_Kind (Get_Type (Name)) = EW_Split then
          declare
             Ent : constant Item_Type :=
               Ada_Ent_To_Why.Element
@@ -374,7 +337,7 @@ package body Why.Gen.Init is
       --  Otherwise, query the record component
 
       else
-         pragma Assert (Get_Type (Name) = EW_Init_Wrapper (E, EW_Abstract));
+         pragma Assert (Get_Type_Kind (Get_Type (Name)) = EW_Abstract);
          Field := E_Symb (E, WNE_Attr_Init);
          return New_Record_Access (Name   => +Name,
                                    Field  => Field,
@@ -404,8 +367,8 @@ package body Why.Gen.Init is
       --  just change the type of the node using an empty label. We also
       --  introduce an initialization check if Domain = EW_Prog.
 
-      elsif Is_Split_Wrapper_Type (Get_Type (Name)) then
-         pragma Assert (Get_Type (Name) = EW_Init_Wrapper (E, EW_Split));
+      elsif Get_Type_Kind (Get_Type (Name)) = EW_Split then
+         pragma Assert (Get_Relaxed_Init (Get_Type (Name)));
          declare
             Conv : constant W_Expr_Id := New_Label
               (Ada_Node => Ada_Node,
@@ -432,7 +395,9 @@ package body Why.Gen.Init is
 
       --  Otherwise, query the record component
 
-      pragma Assert (Get_Type (Name) = EW_Init_Wrapper (E, EW_Abstract));
+      pragma Assert
+        (Get_Relaxed_Init (Get_Type (Name))
+         and Get_Type_Kind (Get_Type (Name)) = EW_Abstract);
 
       Field := E_Symb (E, WNE_Init_Value);
 

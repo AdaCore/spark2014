@@ -137,28 +137,29 @@ package body Flow.Analysis.Sanity is
       procedure Check_Subtype_Constraints (N : Node_Id);
       --  Check that subtype constraints do not have variable inputs
 
-      procedure Check_Type_Declaration (N : Node_Id)
+      procedure Check_Subtype_Indication (N : Node_Id);
+      --  Check a subtype indication (roughly speaking, a node where a type
+      --  name is expected).
+
+      procedure Check_Type_Aspects (N : Node_Id)
       with Pre => Nkind (N) in N_Full_Type_Declaration
                              | N_Subtype_Declaration
                              | N_Incomplete_Type_Declaration
                              | N_Private_Type_Declaration
                              | N_Private_Extension_Declaration;
-      --  Check if the expressions for the type declaration N have variable
-      --  inputs. In particular this enforces SPARK RM 4.4(2) by checking:
-      --  * a constraint other than the range of a loop parameter specification
+      --  Enforce SPARK RM 4.4(2) by checking:
       --  * a Dynamic_Predicate aspect specification
       --  * a Type_Invariant aspect specification
 
-      procedure Check_Constrained_Array_Definition (N : Node_Id)
-      with Pre => Nkind (N) in N_Full_Type_Declaration
-                             | N_Object_Declaration;
-      --  Check if the constrained array definition in N has variable inputs,
-      --  as per SPARK RM 4.4(2);
+      procedure Check_Constrained_Array_Definition (Typ_Def : Node_Id)
+      with Pre => Nkind (Typ_Def) = N_Constrained_Array_Definition;
+      --  Check if Typ_Def is a constrained array definition with variable
+      --  inputs, as per SPARK RM 4.4(2).
 
       procedure Detect_Variable_Inputs
         (N        : Node_Id;
-         Err_Desc : String;
-         Err_Node : Node_Id);
+         Err_Desc : String)
+      with Pre => Nkind (N) in N_Subexpr;
       --  Emit error for any object referenced within N which does NOT denote
       --  a constant, a bound or a discriminant (of an enclosing concurrent
       --  type).
@@ -208,8 +209,7 @@ package body Flow.Analysis.Sanity is
                then
                   Detect_Variable_Inputs
                     (N        => Expression (Decl),
-                     Err_Desc => "actual for formal object with mode in",
-                     Err_Node => Decl);
+                     Err_Desc => "actual for formal object with mode in");
                end if;
             end;
 
@@ -228,30 +228,8 @@ package body Flow.Analysis.Sanity is
          --  Check that the subtype constraint for the component, if present,
          --  does not depend on variable inputs.
 
-         declare
-            S_Indication_Mark : constant Node_Id :=
-              Subtype_Indication (Component_Definition (N));
-
-         begin
-            case Nkind (S_Indication_Mark) is
-               --  Subtype either points to a constraint, for example
-               --  "String (1 .. 10)".
-
-               when N_Subtype_Indication =>
-                  Check_Subtype_Constraints
-                    (Constraint (S_Indication_Mark));
-
-               --  or to a type, for example "Integer", or "Standard.Integer"
-
-               when N_Identifier | N_Expanded_Name =>
-                  pragma Assert
-                    (Is_Type (Entity (S_Indication_Mark)));
-
-               when others =>
-                  raise Program_Error;
-
-            end case;
-         end;
+         Check_Subtype_Indication
+           (Subtype_Indication (Component_Definition (N)));
       end Check_Component_Declaration;
 
       ------------------------------
@@ -265,8 +243,7 @@ package body Flow.Analysis.Sanity is
          if Present (Default_Expression) then
             Detect_Variable_Inputs
               (N        => Default_Expression,
-               Err_Desc => "default initialization",
-               Err_Node => Default_Expression);
+               Err_Desc => "default initialization");
          end if;
       end Check_Default_Expression;
 
@@ -286,8 +263,7 @@ package body Flow.Analysis.Sanity is
                   loop
                      Detect_Variable_Inputs
                        (N        => Expr,
-                        Err_Desc => "renamed index",
-                        Err_Node => Expr);
+                        Err_Desc => "renamed index");
                      Next (Expr);
                      exit when No (Expr);
                   end loop;
@@ -296,8 +272,7 @@ package body Flow.Analysis.Sanity is
             when N_Slice =>
                Detect_Variable_Inputs
                  (N        => Discrete_Range (N),
-                  Err_Desc => "renamed slice",
-                  Err_Node => Discrete_Range (N));
+                  Err_Desc => "renamed slice");
 
             when others =>
                null;
@@ -321,13 +296,11 @@ package body Flow.Analysis.Sanity is
                begin
                   Detect_Variable_Inputs
                     (N        => Lo,
-                     Err_Desc => "subtype constraint",
-                     Err_Node => Lo);
+                     Err_Desc => "subtype constraint");
 
                   Detect_Variable_Inputs
                     (N        => Hi,
-                     Err_Desc => "subtype constraint",
-                     Err_Node => Hi);
+                     Err_Desc => "subtype constraint");
                end;
 
             when N_Range_Constraint =>
@@ -340,27 +313,46 @@ package body Flow.Analysis.Sanity is
                begin
                   Detect_Variable_Inputs
                     (N        => Lo,
-                     Err_Desc => "subtype constraint",
-                     Err_Node => Lo);
+                     Err_Desc => "subtype constraint");
 
                   Detect_Variable_Inputs
                     (N        => Hi,
-                     Err_Desc => "subtype constraint",
-                     Err_Node => Hi);
+                     Err_Desc => "subtype constraint");
                end;
 
             when N_Index_Or_Discriminant_Constraint =>
                declare
-                  Constraint : Node_Id := First (Constraints (N));
+                  Constr : Node_Id := First (Constraints (N));
 
                begin
                   loop
-                     Detect_Variable_Inputs
-                       (N        => Constraint,
-                        Err_Desc => "subtype constraint",
-                        Err_Node => Constraint);
-                     Next (Constraint);
-                     exit when No (Constraint);
+                     case Nkind (Constr) is
+                        when N_Subtype_Indication =>
+                           Check_Subtype_Constraints (Constraint (Constr));
+
+                        when N_Range =>
+                           Check_Subtype_Constraints (Constr);
+
+                        when N_Discriminant_Association =>
+                           Detect_Variable_Inputs
+                             (N        => Expression (Constr),
+                              Err_Desc => "subtype constraint");
+
+                        when others =>
+                           if Is_Entity_Name (Constr)
+                             and then Is_Type (Entity (Constr))
+                           then
+                              pragma Assert
+                                (Is_Discrete_Type (Entity (Constr)));
+                           else
+                              Detect_Variable_Inputs
+                                (N        => Constr,
+                                 Err_Desc => "subtype constraint");
+                           end if;
+                     end case;
+
+                     Next (Constr);
+                     exit when No (Constr);
                   end loop;
                end;
 
@@ -378,52 +370,68 @@ package body Flow.Analysis.Sanity is
          end case;
       end Check_Subtype_Constraints;
 
+      ------------------------------
+      -- Check_Subtype_Indication --
+      ------------------------------
+
+      procedure Check_Subtype_Indication (N : Node_Id) is
+      begin
+         case Nkind (N) is
+            when N_Access_Definition =>
+               pragma Assert (Is_Type (Entity (Subtype_Mark (N))));
+
+            when N_Attribute_Reference =>
+               pragma Assert (Is_Type_Attribute_Name (Attribute_Name (N)));
+
+            when N_Expanded_Name | N_Identifier =>
+               pragma Assert (Is_Type (Entity (N)));
+
+            when N_Subtype_Indication =>
+               Check_Subtype_Constraints (Constraint (N));
+
+            when N_Constrained_Array_Definition =>
+               Check_Constrained_Array_Definition (N);
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Check_Subtype_Indication;
+
       ----------------------------------------
       -- Check_Constrained_Array_Definition --
       ----------------------------------------
 
-      procedure Check_Constrained_Array_Definition (N : Node_Id) is
-         Typ_Def : constant Node_Id :=
-           (if Nkind (N) = N_Full_Type_Declaration
-            then Type_Definition (N)
-            else Object_Definition (N));
+      procedure Check_Constrained_Array_Definition (Typ_Def : Node_Id) is
+         DSD : Node_Id := First (Discrete_Subtype_Definitions (Typ_Def));
       begin
-         if Nkind (Typ_Def) = N_Constrained_Array_Definition then
-            declare
-               Sub_Constraint : Node_Id :=
-                 First (Discrete_Subtype_Definitions (Typ_Def));
+         loop
+            case Nkind (DSD) is
+               when N_Range =>
+                  Check_Subtype_Constraints (DSD);
 
-            begin
-               loop
-                  case Nkind (Sub_Constraint) is
-                     when N_Range =>
-                        Check_Subtype_Constraints (Sub_Constraint);
+               when N_Subtype_Indication =>
+                  pragma Assert
+                    (Nkind (Constraint (DSD)) = N_Range_Constraint);
+                  Check_Subtype_Constraints (Constraint (DSD));
 
-                     when N_Subtype_Indication =>
-                        Check_Subtype_Constraints
-                          (Constraint (Sub_Constraint));
+               when N_Identifier | N_Expanded_Name =>
+                  pragma Assert (Is_Discrete_Type (Entity (DSD)));
 
-                     when N_Identifier | N_Expanded_Name =>
-                        pragma Assert
-                          (Is_Type (Entity (Sub_Constraint)));
+               when others =>
+                  raise Program_Error;
+            end case;
 
-                     when others =>
-                        raise Program_Error;
-                  end case;
+            Next (DSD);
 
-                  Next (Sub_Constraint);
-
-                  exit when No (Sub_Constraint);
-               end loop;
-            end;
-         end if;
+            exit when No (DSD);
+         end loop;
       end Check_Constrained_Array_Definition;
 
-      ----------------------------
-      -- Check_Type_Declaration --
-      ----------------------------
+      ------------------------
+      -- Check_Type_Aspects --
+      ------------------------
 
-      procedure Check_Type_Declaration (N : Node_Id) is
+      procedure Check_Type_Aspects (N : Node_Id) is
          Typ : constant Type_Id := Defining_Identifier (N);
 
       begin
@@ -437,8 +445,7 @@ package body Flow.Analysis.Sanity is
             Detect_Variable_Inputs
               (N        => Get_Expr_From_Return_Only_Func
                              (Predicate_Function (Typ)),
-               Err_Desc => "predicate",
-               Err_Node => Typ);
+               Err_Desc => "predicate");
          end if;
 
          --  Check that the type invariant expression, if present, does not
@@ -462,8 +469,7 @@ package body Flow.Analysis.Sanity is
 
                Detect_Variable_Inputs
                  (N        => Expr,
-                  Err_Desc => "invariant",
-                  Err_Node => Full_View (Typ));
+                  Err_Desc => "invariant");
 
                --  Check 7.3.2(5) (no calls to boundary subprograms)
 
@@ -484,67 +490,7 @@ package body Flow.Analysis.Sanity is
                end loop;
             end;
          end if;
-
-         --  Check that the subtype constraint, if present, does not depend
-         --  on variable inputs.
-
-         if Nkind (N) in N_Subtype_Declaration
-                       | N_Full_Type_Declaration
-                       | N_Private_Extension_Declaration
-             and then
-               (not Is_Internal (Typ)
-                or else (Nkind (N) = N_Full_Type_Declaration
-                         and then Present (Incomplete_View (N)))
-                or else Is_Derived_Type (Typ))
-         then
-            declare
-               S_Indication : Node_Id;
-
-            begin
-               --  Find the subtype indication
-
-               case Nkind (N) is
-                  when N_Full_Type_Declaration =>
-                     declare
-                        Typ_Def : constant Node_Id := Type_Definition (N);
-
-                     begin
-                        S_Indication :=
-                          (case Nkind (Typ_Def) is
-                              when N_Derived_Type_Definition =>
-                                 Subtype_Indication (Typ_Def),
-                              when N_Array_Type_Definition =>
-                                 Subtype_Indication
-                             (Component_Definition (Typ_Def)),
-                              when others => Empty);
-                     end;
-
-                  when N_Subtype_Declaration
-                     | N_Private_Extension_Declaration
-                  =>
-                     S_Indication := Subtype_Indication (N);
-
-                  when others =>
-                     raise Program_Error;
-               end case;
-
-               if Present (S_Indication)
-                 and then Nkind (S_Indication) = N_Subtype_Indication
-               then
-                  Check_Subtype_Constraints
-                    (Constraint (S_Indication));
-               end if;
-            end;
-         end if;
-
-         --  Special case for N_Constrained_Array_Definition. Check that its
-         --  subtype constraints do not depend on variable inputs.
-
-         if Nkind (N) = N_Full_Type_Declaration then
-            Check_Constrained_Array_Definition (N);
-         end if;
-
-      end Check_Type_Declaration;
+      end Check_Type_Aspects;
 
       ---------------------------
       -- Detect_Variable_Inputs --
@@ -552,8 +498,7 @@ package body Flow.Analysis.Sanity is
 
       procedure Detect_Variable_Inputs
         (N        : Node_Id;
-         Err_Desc : String;
-         Err_Node : Node_Id)
+         Err_Desc : String)
       is
          function Is_Within_Protected_Function return Boolean;
          --  Returns True if we are inside a protected function, False if
@@ -593,9 +538,10 @@ package body Flow.Analysis.Sanity is
               (FA       => FA,
                Msg      => Err_Desc & " cannot depend on variable input &",
                SRM_Ref  => "4.4(2)",
-               N        => Err_Node,
+               N        => N,
                Severity => Error_Kind,
                F1       => Entire_Variable (F));
+            Sane := False;
          end Emit_Error;
 
       --  Start of processing for Detect_Variable_Inputs
@@ -645,14 +591,12 @@ package body Flow.Analysis.Sanity is
                              or else Is_Constant_Object (Var))
                      then
                         Emit_Error (F);
-                        Sane := False;
                      end if;
                   end;
 
                when Magic_String =>
                   if not GG_Is_Constant (F.Name) then
                      Emit_Error (F);
-                     Sane := False;
                   end if;
 
                when others =>
@@ -710,120 +654,9 @@ package body Flow.Analysis.Sanity is
 
       procedure Traverse_Declarations_Or_Statements (L : List_Id) is
          N : Node_Id := First (L);
-
       begin
-         --  Loop through statements or declarations
          while Present (N) loop
-
-            --  Check type declarations affected by SPARK RM 4.4(2)
-
-            case Nkind (N) is
-               when N_Full_Type_Declaration
-                  | N_Subtype_Declaration
-                  | N_Incomplete_Type_Declaration
-                  | N_Private_Type_Declaration
-                  | N_Private_Extension_Declaration
-               =>
-                  Check_Type_Declaration (N);
-
-               when N_Object_Declaration =>
-                  Traverse_Object_Declaration : declare
-
-                     Indexes : Node_Lists.List;
-                     --  List of indexes to check for variable input
-
-                     procedure Collect_Indexes (Expr : Node_Id);
-                     --  Add to Indexes all the indexes of indexed_component
-                     --  and slice in the path expression Expr.
-
-                     ---------------------
-                     -- Collect_Indexes --
-                     ---------------------
-
-                     procedure Collect_Indexes (Expr : Node_Id) is
-                     begin
-                        case Nkind (Expr) is
-                           when N_Expanded_Name
-                              | N_Identifier
-                           =>
-                              null;
-
-                           when N_Explicit_Dereference
-                              | N_Selected_Component
-                           =>
-                              Collect_Indexes (Prefix (Expr));
-
-                           when N_Indexed_Component =>
-                              declare
-                                 Ind_Expr : Node_Id :=
-                                   First (Expressions (Expr));
-                              begin
-                                 while Present (Ind_Expr) loop
-                                    Indexes.Append (Ind_Expr);
-                                    Next (Ind_Expr);
-                                 end loop;
-                              end;
-                              Collect_Indexes (Prefix (Expr));
-
-                           when N_Slice =>
-                              Indexes.Append (Discrete_Range (Expr));
-                              Collect_Indexes (Prefix (Expr));
-
-                           when N_Qualified_Expression
-                              | N_Type_Conversion
-                              | N_Unchecked_Type_Conversion
-                           =>
-                              Collect_Indexes (Expression (Expr));
-
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end Collect_Indexes;
-
-                     --  Local variables
-
-                     Target : constant Node_Id := Defining_Entity (N);
-                     Typ    : constant Entity_Id := Etype (Target);
-                     Root   : Node_Id;
-
-                  --  Start of processing for Traverse_Object_Declaration
-
-                  begin
-                     --  Check SPARK RM 4.4(2) rule about:
-                     --  * the root name of the expression of an object
-                     --    declaration defining a borrowing operation, except
-                     --    for a single occurrence of the root object of the
-                     --    expression.
-
-                     if Is_Anonymous_Access_Type (Typ)
-                       and then not Is_Access_Constant (Typ)
-                       and then not Is_Constant_Borrower (Target)
-                     then
-                        Root := Get_Observed_Or_Borrowed_Expr (Expression (N));
-                        Collect_Indexes (Root);
-
-                        for Ind_Expr of Indexes loop
-                           Detect_Variable_Inputs
-                             (N        => Ind_Expr,
-                              Err_Desc => "borrowed expression",
-                              Err_Node => Ind_Expr);
-                        end loop;
-                     end if;
-                  end Traverse_Object_Declaration;
-
-               --  Components and discriminants are not expected here
-
-               when N_Component_Declaration
-                  | N_Discriminant_Specification
-               =>
-                  pragma Assert (False);
-
-               when others =>
-                  null;
-            end case;
-
             Traverse_Declaration_Or_Statement (N);
-
             Next (N);
          end loop;
       end Traverse_Declarations_Or_Statements;
@@ -834,6 +667,17 @@ package body Flow.Analysis.Sanity is
 
       procedure Traverse_Declaration_Or_Statement (N : Node_Id) is
       begin
+         --  Check type declarations affected by SPARK RM 4.4(2)
+
+         if Nkind (N) in N_Full_Type_Declaration
+                       | N_Subtype_Declaration
+                       | N_Incomplete_Type_Declaration
+                       | N_Private_Type_Declaration
+                       | N_Private_Extension_Declaration
+         then
+            Check_Type_Aspects (N);
+         end if;
+
          case Nkind (N) is
             when N_Protected_Body =>
                declare
@@ -911,74 +755,100 @@ package body Flow.Analysis.Sanity is
                   end if;
                end;
 
-            when N_Full_Type_Declaration
-               | N_Private_Type_Declaration
-               | N_Private_Extension_Declaration
-            =>
+            when N_Full_Type_Declaration =>
                if Comes_From_Source (N) then
+                  declare
+                     Typ_Def : constant Node_Id := Type_Definition (N);
 
-                  --  Traverse discriminants
+                     Optional_Component_List : Node_Id;
 
-                  case Nkind (N) is
-                     when N_Private_Type_Declaration =>
-                        Traverse_Discriminants (N);
+                  begin
+                     --  We repeat effort here for private and incomplete
+                     --  types, because we traverse discriminants of both the
+                     --  partial declaration and its completion. When both have
+                     --  descriminants, we will emit multiple messages about
+                     --  the same variable input, but this is easier to
+                     --  maintain rather than filtering for each corner case.
 
-                     when N_Full_Type_Declaration =>
-                        declare
-                           Typ_Def : constant Node_Id := Type_Definition (N);
+                     Traverse_Discriminants (N);
 
-                           Optional_Component_List : Node_Id;
+                     case Nkind (Typ_Def) is
+                        when N_Access_To_Object_Definition =>
+                           Check_Subtype_Indication
+                             (Subtype_Indication (Typ_Def));
 
-                        begin
-                           --  We repeat effort here for private and incomplete
-                           --  types, because we traverse discriminants of both
-                           --  the partial declaration and its completion.
-                           --  In the event that both have descriminants, the
-                           --  user will see multiple flow error messages about
-                           --  the same variable input, but this one line of
-                           --  code is easier to maintain rather than
-                           --  code that filters for each corner case.
+                           Optional_Component_List := Empty;
 
-                           Traverse_Discriminants (N);
-
-                           --  Traverse record components
-                           case Nkind (Typ_Def) is
-                              when N_Record_Definition =>
-                                 Optional_Component_List :=
-                                   Component_List (Typ_Def);
-
-                              when N_Derived_Type_Definition =>
-                                 if Present (Record_Extension_Part (Typ_Def))
-                                 then
-                                    Optional_Component_List :=
-                                      Component_List
-                                        (Record_Extension_Part
-                                           (Typ_Def));
-                                 else
-                                    Optional_Component_List := Empty;
-                                 end if;
-
-                              when others =>
-                                 Optional_Component_List := Empty;
-                           end case;
+                        when N_Record_Definition =>
+                           Optional_Component_List :=
+                             Component_List (Typ_Def);
 
                            if Present (Optional_Component_List) then
                               Traverse_Component_List
                                 (Optional_Component_List);
                            end if;
 
-                        end;
+                        when N_Derived_Type_Definition =>
+                           Check_Subtype_Indication
+                             (Subtype_Indication (Typ_Def));
 
-                     --  Discriminants on derived type are not allowed in
-                     --  SPARK; SPARK RM 3.7(2).
+                           if Present (Record_Extension_Part (Typ_Def)) then
+                              Optional_Component_List :=
+                                Component_List
+                                  (Record_Extension_Part (Typ_Def));
 
-                     when N_Private_Extension_Declaration =>
-                        pragma Assert (No (Discriminant_Specifications (N)));
+                              if Present (Optional_Component_List) then
+                                 Traverse_Component_List
+                                   (Optional_Component_List);
+                              end if;
+                           end if;
 
-                     when others =>
-                        raise Program_Error;
-                  end case;
+                        when N_Array_Type_Definition =>
+                           Check_Subtype_Indication
+                             (Subtype_Indication
+                                (Component_Definition (Typ_Def)));
 
+                           if Nkind (Typ_Def) = N_Constrained_Array_Definition
+                           then
+                              Check_Constrained_Array_Definition (Typ_Def);
+                           end if;
+
+                        --  The following are either enumeration literals or
+                        --  static expressions.
+
+                        when N_Decimal_Fixed_Point_Definition
+                           | N_Enumeration_Type_Definition
+                           | N_Floating_Point_Definition
+                           | N_Modular_Type_Definition
+                           | N_Ordinary_Fixed_Point_Definition
+                           | N_Signed_Integer_Type_Definition
+                        =>
+                           null;
+
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                  end;
+               end if;
+
+            when N_Private_Type_Declaration =>
+               Traverse_Discriminants (N);
+
+            when N_Private_Extension_Declaration =>
+               --  Discriminants on derived type are not allowed in SPARK;
+               --  SPARK RM 3.7(2).
+
+               pragma Assert (No (Discriminant_Specifications (N)));
+               Check_Subtype_Indication (Subtype_Indication (N));
+
+            when N_Subtype_Declaration =>
+               --  Completions of incomplete types are rewritten from full type
+               --  declarations to subtypes that do not come from source.
+
+               if Comes_From_Source (N)
+                 or else Is_Rewrite_Substitution (N)
+               then
+                  Check_Subtype_Indication (Subtype_Indication (N));
                end if;
 
             when N_Block_Statement =>
@@ -1012,7 +882,7 @@ package body Flow.Analysis.Sanity is
 
             when N_Case_Statement =>
 
-               --  Process case branches
+               --  Process case alterantives
 
                declare
                   Alt : Node_Id := First (Alternatives (N));
@@ -1047,7 +917,88 @@ package body Flow.Analysis.Sanity is
             --  declaration does not contain variable inputs.
 
             when N_Object_Declaration =>
-               Check_Constrained_Array_Definition (N);
+               if Comes_From_Source (N) then
+                  Check_Subtype_Indication (Object_Definition (N));
+
+                  --  Check SPARK RM 4.4(2) rule about:
+                  --  * the root name of the expression of an object
+                  --    declaration defining a borrowing operation, except for
+                  --    a single occurrence of the root object of the
+                  --    expression.
+
+                  declare
+                     Indexes : Node_Lists.List;
+                     --  List of indexes to check for variable input
+
+                     procedure Collect_Indexes (Expr : Node_Id);
+                     --  Append to Indexes all the indexes of indexed_component
+                     --  and slice in the path expression Expr.
+
+                     ---------------------
+                     -- Collect_Indexes --
+                     ---------------------
+
+                     procedure Collect_Indexes (Expr : Node_Id) is
+                     begin
+                        case Nkind (Expr) is
+                           when N_Expanded_Name
+                              | N_Identifier
+                           =>
+                              null;
+
+                           when N_Explicit_Dereference
+                              | N_Selected_Component
+                           =>
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Indexed_Component =>
+                              declare
+                                 Ind_Expr : Node_Id :=
+                                   First (Expressions (Expr));
+                              begin
+                                 loop
+                                    Indexes.Append (Ind_Expr);
+                                    Next (Ind_Expr);
+                                    exit when No (Ind_Expr);
+                                 end loop;
+                              end;
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Slice =>
+                              Indexes.Append (Discrete_Range (Expr));
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Qualified_Expression
+                              | N_Type_Conversion
+                              | N_Unchecked_Type_Conversion
+                           =>
+                              Collect_Indexes (Expression (Expr));
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end Collect_Indexes;
+
+                     Target : constant Node_Id := Defining_Entity (N);
+                     Typ    : constant Entity_Id := Etype (Target);
+                     Root   : Node_Id;
+
+                  begin
+                     if Is_Anonymous_Access_Type (Typ)
+                       and then not Is_Access_Constant (Typ)
+                       and then not Is_Constant_Borrower (Target)
+                     then
+                        Root := Get_Observed_Or_Borrowed_Expr (Expression (N));
+                        Collect_Indexes (Root);
+
+                        for Ind_Expr of Indexes loop
+                           Detect_Variable_Inputs
+                             (N        => Ind_Expr,
+                              Err_Desc => "borrowed expression");
+                        end loop;
+                     end if;
+                  end;
+               end if;
 
             when others =>
                null;

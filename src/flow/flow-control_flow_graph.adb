@@ -2657,8 +2657,10 @@ package body Flow.Control_Flow_Graph is
          LP : constant Entity_Id := Defining_Identifier (LPS);
 
          DSD : constant Node_Id := Discrete_Subtype_Definition (LPS);
+         R   : constant Node_Id := Get_Loop_Range (N);
+         LB  : constant Node_Id := Low_Bound (R);
+         HB  : constant Node_Id := High_Bound (R);
 
-         R : constant Node_Id := Get_Loop_Range (N);
          V : Flow_Graphs.Vertex_Id;
          Funcs : Node_Sets.Set;
       begin
@@ -2668,7 +2670,7 @@ package body Flow.Control_Flow_Graph is
 
          --  Work out which of the three variants (empty, full,
          --  unknown) we have...
-         if Is_Null_Range (Low_Bound (R), High_Bound (R)) then
+         if Is_Null_Range (LB, HB) then
             --  We have an empty range. We should complain!
             Add_Vertex
               (FA,
@@ -2686,9 +2688,7 @@ package body Flow.Control_Flow_Graph is
 
             Fully_Initialized := Flow_Id_Sets.Empty_Set;
 
-         elsif Compile_Time_Compare
-           (Low_Bound (R), High_Bound (R), Assume_Valid => True) = EQ
-         then
+         elsif Compile_Time_Compare (LB, HB, Assume_Valid => True) = EQ then
             --  The loop is executed exactly once
 
             Add_Vertex
@@ -2710,7 +2710,7 @@ package body Flow.Control_Flow_Graph is
 
             Fully_Initialized := Variables_Initialized_By_Loop (N);
 
-         elsif Not_Null_Range (Low_Bound (R), High_Bound (R)) then
+         elsif Not_Null_Range (LB, HB) then
             --  We need to make sure the loop is executed at least once
 
             Add_Vertex
@@ -2747,16 +2747,24 @@ package body Flow.Control_Flow_Graph is
                Direct_Mapping_Id (N),
                Make_Basic_Attributes
                  (Var_Def    => Flatten_Variable (LP, FA.B_Scope),
-                  Var_Ex_Use => Get_Variables
-                    (DSD,
-                     Scope                => FA.B_Scope,
-                     Fold_Functions       => Inputs,
-                     Use_Computed_Globals => not FA.Generating_Globals),
+                  Var_Ex_Use =>
+                    Get_Variables
+                      (N                    => LB,
+                       Scope                => FA.B_Scope,
+                       Fold_Functions       => Inputs,
+                       Use_Computed_Globals => not FA.Generating_Globals)
+                      or
+                    Get_Variables
+                      (N                    => HB,
+                       Scope                => FA.B_Scope,
+                       Fold_Functions       => Inputs,
+                       Use_Computed_Globals => not FA.Generating_Globals),
                   Sub_Called => Funcs,
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
-            Ctx.Folded_Function_Checks.Append (DSD);
+            Ctx.Folded_Function_Checks.Append (LB);
+            Ctx.Folded_Function_Checks.Append (HB);
 
             --  Flow for the conditional for loop is like a while loop
             CM (Union_Id (N)).Standard_Entry := V;
@@ -5179,13 +5187,18 @@ package body Flow.Control_Flow_Graph is
       Typ : constant Entity_Id := Defining_Identifier (N);
       V   : Flow_Graphs.Vertex_Id;
    begin
-      if Is_Scalar_Type (Typ)
-        and then Is_Constrained (Typ)
-      then
+      if Is_Scalar_Type (Typ) then
          declare
+            R : constant Node_Id := Scalar_Range (Typ);
+
             Vars_Read : constant Flow_Id_Sets.Set :=
               Get_All_Variables
-                (N                    => Typ,
+                (N                    => Low_Bound (R),
+                 Scope                => FA.B_Scope,
+                 Use_Computed_Globals => not FA.Generating_Globals)
+                or
+              Get_All_Variables
+                (N                    => High_Bound (R),
                  Scope                => FA.B_Scope,
                  Use_Computed_Globals => not FA.Generating_Globals);
 

@@ -88,9 +88,10 @@ package Why.Sinfo is
    --  ------------
    --  -- W_Type --
    --  ------------
-   --  Base_Type   EW_Type
-   --  Name        W_Name_Id
-   --  Is_Mutable  Boolean
+   --  Base_Type     EW_Type
+   --  Name          W_Name_Id
+   --  Is_Mutable    Boolean
+   --  Relaxed_Init  Boolean
 
    --  A type node represents Why3 types. It also contains information that
    --  relates back to Ada types. Every type has a "name" field, which must
@@ -111,6 +112,9 @@ package Why.Sinfo is
    --  The kind EW_Split is somewhat similar: it corresponds to the "split"
    --  type of some Ada types, such as unconstrained arrays. Again, the
    --  Ada_node points to the Ada type entity.
+
+   --  Relaxed_Init is True for types introduced for expressions with relaxed
+   --  initialization.
 
    --  ---------------
    --  -- W_Effects --
@@ -812,10 +816,6 @@ package Why.Sinfo is
       --  This is a special marker for "split types"
 
       EW_Split,
-
-      --  This is a special marker for wrapper types for initialization
-
-      EW_Wrapper,
       EW_Abstract);
 
    type EW_Literal is
