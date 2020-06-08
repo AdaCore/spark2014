@@ -1638,7 +1638,14 @@ package body Gnat2Why.Expr.Loops is
    --  The inner try-catch block is only generated if needed for handling exit
    --  paths. In that case, the exit path inside the loop has been replaced
    --  by raising the corresponding exception. The declaration for these
-   --  exceptions is done at subprogram level.
+   --  exceptions is done at subprogram level. Hoisting the exit paths outside
+   --  of the main Why3 loop removes their effects from the frame condition
+   --  automatically generated in Why3 for the inner loop. In cases where some
+   --  variables are only modified in the exit paths, this means that they
+   --  won't be part of the frame condition of the inner loop, so the user
+   --  won't need to mention them in the loop invariant (to state in general
+   --  that their value is preserved). As the code in the exit path may itself
+   --  exit the loop, this try-catch block is nested inside the outter one.
 
    function Wrap_Loop
      (Loop_Id            : Entity_Id;
