@@ -1,1 +1,1 @@
-test_redispatch.adb:5:19: info: assertion proved (altergo: 1 VC)
+test_redispatch.adb:5:19: info: assertion proved (CVC4: 1 VC)

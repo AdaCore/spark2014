@@ -1,0 +1,9 @@
+bad_lsp.adb:4:19: info: overflow check proved (CVC4: 1 VC)
+bad_lsp.adb:9:57: info: overflow check proved (CVC4: 1 VC)
+bad_lsp.ads:8:35: info: initialization of "Res" proved
+bad_lsp.ads:10:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+bad_lsp.ads:10:46: medium: overflow check might fail (e.g. when X = (F => 1, G => Natural'Last))
+bad_lsp.ads:15:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+bad_lsp.ads:15:36: info: initialization of "Res" proved
+bad_lsp.ads:16:19: info: class-wide precondition is weaker than overridden one (Trivial: 1 VC)
+test_lsp.adb:6:11: info: precondition proved (Trivial: 1 VC)

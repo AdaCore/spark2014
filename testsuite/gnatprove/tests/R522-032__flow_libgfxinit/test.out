@@ -134,6 +134,9 @@ hw-gfx-gma-panel.adb:283:07: info: initialization of "Was_On" proved
 hw-gfx-gma-panel.adb:316:07: info: initialization of "Was_On" proved
 hw-gfx-gma-panel.adb:369:07: info: initialization of "Reg" proved
 hw-gfx-gma-panel.ads:25:07: info: data dependencies proved
+hw-gfx-gma-panel.ads:29:14: info: initialization of "Delays_US" constituent of "Panel_State" proved
+hw-gfx-gma-panel.ads:29:14: info: initialization of "Power_Cycle_Timer" constituent of "Panel_State" proved
+hw-gfx-gma-panel.ads:29:14: info: initialization of "Power_Up_Timer" constituent of "Panel_State" proved
 hw-gfx-gma-panel.ads:31:07: info: data dependencies proved
 hw-gfx-gma-panel.ads:35:07: info: flow dependencies proved
 hw-gfx-gma-panel.ads:59:33: info: initialization of "Level" proved
@@ -195,6 +198,7 @@ hw-gfx-gma-plls.adb:392:07: info: initialization of "Success" proved
 hw-gfx-gma-plls.adb:399:07: info: initialization of "Clk" proved
 hw-gfx-gma-plls.adb:479:07: info: initialization of "PLL" proved
 hw-gfx-gma-plls.adb:480:07: info: initialization of "Success" proved
+hw-gfx-gma-plls.ads:25:14: info: initialization of "PLLs" constituent of "State" proved
 hw-gfx-gma-plls.ads:27:07: info: data dependencies proved
 hw-gfx-gma-plls.ads:31:07: info: initialization of "PLL" proved
 hw-gfx-gma-plls.ads:32:07: info: initialization of "Success" proved
@@ -225,8 +229,14 @@ hw-gfx-gma-registers.ads:1666:08: info: initialization of "Result" proved
 hw-gfx-gma-registers.ads:1710:07: info: initialization of "Success" proved
 hw-gfx-gma-registers.ads:1720:07: info: data dependencies proved
 hw-gfx-gma-registers.ads:1721:07: info: flow dependencies proved
-hw-gfx-gma-registers.ads:1728:07: global Output "Registers.Address_State" constituent of "GMA.State" of "Set_Register_Base" not written
-hw-gfx-gma-registers.ads:1729:07: info: flow dependencies proved
+hw-gfx-gma-registers.ads:1726:14: high: "GTT.Base_Address" constituent of "Registers.Address_State" is not initialized
+hw-gfx-gma-registers.ads:1726:14: high: "Regs.Base_Address" constituent of "Registers.Address_State" is not initialized
+hw-gfx-gma-registers.ads:1728:07: info: data dependencies proved
+hw-gfx-gma-registers.ads:1728:30: low: unused global "Registers.Address_State" constituent of "GMA.State"
+hw-gfx-gma-registers.ads:1729:07: medium: missing dependency "null => Base"
+hw-gfx-gma-registers.ads:1729:07: medium: missing dependency "null => GTT_Base"
+hw-gfx-gma-registers.ads:1729:38: medium: incorrect dependency "Registers.Address_State constituent of GMA.State => Base"
+hw-gfx-gma-registers.ads:1729:44: medium: incorrect dependency "Registers.Address_State constituent of GMA.State => GTT_Base"
 hw-gfx-gma-transcoder.adb:153:07: info: data dependencies proved
 hw-gfx-gma-transcoder.adb:154:07: info: flow dependencies proved
 hw-gfx-gma-transcoder.adb:156:07: info: initialization of "Data_M" proved
@@ -245,9 +255,7 @@ hw-gfx-gma.adb:227:07: info: initialization of "Old_Configs" proved
 hw-gfx-gma.adb:262:13: info: initialization of "Unplug_Detected" proved
 hw-gfx-gma.adb:281:13: info: initialization of "Success" proved
 hw-gfx-gma.adb:282:13: info: initialization of "Scaler_Available" proved
-hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not an input in the Global contract of subprogram "Initialize" at hw-gfx-gma.ads:95
 hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not initialized
-hw-gfx-gma.adb:382:16: high: either make "Dev.Address_State" constituent of "GMA.State" an input in the Global contract or initialize it before use
 hw-gfx-gma.adb:382:16: low: unused global "Dev.Address_State" constituent of "GMA.State"
 hw-gfx-gma.adb:383:22: info: initialization of "Registers.Address_State" constituent of "GMA.State" proved
 hw-gfx-gma.adb:384:17: info: initialization of "PLLs.State" constituent of "GMA.State" proved
@@ -323,4 +331,3 @@ hw-pci-mmconf.ads:29:22: info: initialization of "Value" proved, in instantiatio
 hw-pci-mmconf.ads:32:22: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:44:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-time-timer.ads:21:07: info: flow dependencies proved
-gnatprove: error during analysis of data and information flow

@@ -1,6 +1,6 @@
 update.ads:22:30: medium: postcondition might fail, cannot prove A(J, K, L) = A'Old(J, J, J) (e.g. when J = 1 and K = 1 and L = 2)
-update.ads:31:19: info: postcondition proved (CVC4: 1 VC)
-update.ads:38:19: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when I = 1 and New_Val = Integer'First+1)
+update.ads:31:19: info: postcondition proved (CVC4: 1 VC; Trivial: 3 VC)
+update.ads:38:19: medium: postcondition might fail (e.g. when I = 6 and New_Val = 0)
 update_checks.adb:10:04: warning: analyzing unreferenced procedure "Test1"
 update_checks.adb:22:04: warning: analyzing unreferenced procedure "Test2"
 update_checks.adb:29:25: medium: range check might fail (e.g. when New_Val = 0 and X = 1) [possible explanation: subprogram at line 22 should mention X in a precondition]
@@ -64,7 +64,7 @@ update_checks.adb:136:26: info: range check proved (CVC4: 1 VC)
 update_checks.adb:136:34: info: range check proved (CVC4: 1 VC)
 update_checks.adb:136:42: info: range check proved (CVC4: 1 VC)
 update_checks.adb:136:62: info: range check proved (CVC4: 1 VC)
-update_checks.ads:26:06: info: postcondition proved (CVC4: 1 VC)
+update_checks.ads:26:06: info: postcondition proved (CVC4: 1 VC; Trivial: 3 VC)
 update_checks.ads:26:28: info: range check proved (CVC4: 1 VC)
 update_checks.ads:26:36: info: range check proved (CVC4: 1 VC)
 update_checks.ads:26:44: info: range check proved (CVC4: 1 VC)

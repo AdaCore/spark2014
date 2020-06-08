@@ -2,7 +2,7 @@ harness.adb:3:11: warning: subprogram "Harness" has no effect
 harness.adb:6:04: info: initialization of "R" proved
 harness.adb:7:04: info: initialization of "H" proved
 harness.adb:10:04: medium: precondition might fail, cannot prove not Is_Full (R) (e.g. when R = (Data => (others => 0), First => 1, Length => 0))
-harness.adb:11:04: medium: precondition might fail, cannot prove not Is_Full (R)
+harness.adb:11:04: medium: precondition might fail, cannot prove not Is_Full (R) (e.g. when R = (Data => (others => 0), First => 32767, Length => 0))
 harness.adb:12:04: medium: precondition might fail, cannot prove not Is_Empty (R) (e.g. when R = (Data => (0 => 0, others => 0), First => 18, Length => 0))
 harness.adb:13:19: medium: assertion might fail, cannot prove H = X (e.g. when H = 1 and X = 0) [possible explanation: subprogram at line 3 should mention X in a precondition]
 harness.adb:14:04: medium: precondition might fail, cannot prove not Is_Full (R) (e.g. when R = (Data => (others => 0), First => 21569, Length => 0))
@@ -18,7 +18,7 @@ ring_buf.ads:41:42: medium: range check might fail (e.g. when R = (Data => (othe
 ring_buf.ads:42:10: info: range check proved (CVC4: 4 VC)
 ring_buf.ads:43:47: medium: range check might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => Length_Type'Last)) [possible explanation: subprogram at line 38 should mention R in a precondition]
 ring_buf.ads:45:13: info: range check proved (CVC4: 4 VC)
-ring_buf.ads:45:52: medium: range check might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => -1)) [possible explanation: subprogram at line 38 should mention R in a precondition]
+ring_buf.ads:45:52: medium: range check might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => ?)) [possible explanation: subprogram at line 38 should mention R in a precondition]
 ring_buf.ads:47:58: info: index check proved (CVC4: 2 VC)
 ring_buf.ads:50:67: medium: range check might fail (e.g. when M = (others => 0) and M'First = 65535 and M'Last = 65535 and X = 0) [possible explanation: subprogram at line 50 should mention M and X in a precondition]
 ring_buf.ads:51:51: medium: range check might fail [possible explanation: precondition of subprogram at line 51 should mention M]

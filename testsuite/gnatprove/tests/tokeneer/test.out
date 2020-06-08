@@ -612,11 +612,6 @@ clock.ads:208:07: info: initialization of "Day" proved
 clock.ads:209:07: info: initialization of "Hour" proved
 clock.ads:210:07: info: initialization of "Min" proved
 clock.ads:211:11: info: flow dependencies proved
-commontypes.ads:61:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:63:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:65:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:67:12: info: range check proved (CVC4: 1 VC)
-commontypes.ads:69:12: info: range check proved (CVC4: 1 VC)
 configdata.adb:195:07: info: initialization of "OK" proved
 configdata.adb:207:30: info: initialization of "Value" proved
 configdata.adb:208:14: info: data dependencies proved

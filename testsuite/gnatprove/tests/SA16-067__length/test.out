@@ -1,0 +1,9 @@
+len_problem.adb:8:04: info: range check proved (CVC4: 2 VC)
+len_problem.adb:8:61: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+len_problem.adb:12:19: medium: assertion might fail, cannot prove S'Length < string_length'last (e.g. when S'First = 65535 and S'Last = 65791)
+len_problem.adb:12:20: info: range check proved (CVC4: 1 VC)
+len_problem_2.adb:6:14: warning: subprogram "P" has no effect
+len_problem_2.adb:6:42: info: range check proved (CVC4: 1 VC)
+len_problem_2.adb:11:14: warning: subprogram "User" has no effect
+len_problem_2.adb:13:07: info: precondition proved (CVC4: 1 VC)
+len_problem_2.adb:17:04: info: precondition proved (CVC4: 1 VC)

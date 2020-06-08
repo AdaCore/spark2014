@@ -212,6 +212,7 @@ type_invariant_legal_5.ads:17:26: info: data dependencies proved
 type_invariant_legal_5.ads:18:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.ads:18:27: info: data dependencies proved
 type_invariant_legal_5.ads:19:14: info: invariant check proved (CVC4: 1 VC)
+type_invariant_legal_5.ads:19:14: warning: unused initial value of "X" constituent of "State"
 type_invariant_legal_5.ads:19:30: info: data dependencies proved
 type_invariant_legal_5.ads:22:09: medium: invariant check might fail on default value
 type_invariant_legal_5.ads:26:38: info: data dependencies proved

@@ -4,7 +4,7 @@ is
    Var : Integer := 1
      with Constant_After_Elaboration;
 
-   procedure P;   --  Problem
+   procedure P with Global => (Output => Var);   --  Problem
 
    procedure P2;  --  Problem
 

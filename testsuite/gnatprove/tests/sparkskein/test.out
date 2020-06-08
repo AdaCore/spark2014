@@ -138,7 +138,7 @@ skein.adb:716:13: info: analyzing call to "Copy_Msg_To_B" in context
 skein.adb:721:13: info: precondition proved (CVC4: 6 VC)
 skein.adb:735:49: info: division check proved (CVC4: 1 VC)
 skein.adb:735:49: info: range check proved (CVC4: 1 VC)
-skein.adb:737:13: info: precondition proved (CVC4: 5 VC; altergo: 1 VC)
+skein.adb:737:13: info: precondition proved (CVC4: 6 VC)
 skein.adb:756:07: info: analyzing call to "Copy_Msg_To_B" in context
 skein.adb:770:07: info: initialization of "Local_Ctx" proved
 skein.adb:771:07: info: initialization of "N" proved

@@ -1,3 +1,2 @@
-ALL RLIMIT 1500
-!large SKIP part of large testsuite
+inverse-prover SKIP alt-ergo too slow
 ALL TIMING

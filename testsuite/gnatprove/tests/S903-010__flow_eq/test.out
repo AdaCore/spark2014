@@ -1,6 +1,82 @@
-x.adb:3:13: medium: subprogram "Oeq" might not terminate, terminating annotation could be incorrect
-x.adb:3:18: warning: unused variable "Left"
-x.adb:3:24: warning: unused variable "Right"
-x.adb:8:18: warning: statement has no effect
-x.adb:16:19: medium: assertion might fail, cannot prove A = B
-x.adb:16:21: info: precondition proved (Trivial: 1 VC)
+x.adb:6:13: medium: subprogram overriding operator "abs" might not terminate, terminating annotation could be incorrect
+x.adb:9:13: medium: subprogram overriding operator "and" might not terminate, terminating annotation could be incorrect
+x.adb:12:13: medium: subprogram overriding operator "mod" might not terminate, terminating annotation could be incorrect
+x.adb:15:13: medium: subprogram overriding operator "not" might not terminate, terminating annotation could be incorrect
+x.adb:18:13: medium: subprogram overriding operator "or" might not terminate, terminating annotation could be incorrect
+x.adb:21:13: medium: subprogram overriding operator "rem" might not terminate, terminating annotation could be incorrect
+x.adb:24:13: medium: subprogram overriding operator "xor" might not terminate, terminating annotation could be incorrect
+x.adb:27:13: medium: subprogram overriding operator "=" might not terminate, terminating annotation could be incorrect
+x.adb:30:13: medium: subprogram overriding operator "<" might not terminate, terminating annotation could be incorrect
+x.adb:33:13: medium: subprogram overriding operator "<=" might not terminate, terminating annotation could be incorrect
+x.adb:36:13: medium: subprogram overriding operator ">" might not terminate, terminating annotation could be incorrect
+x.adb:39:13: medium: subprogram overriding operator ">=" might not terminate, terminating annotation could be incorrect
+x.adb:42:13: medium: subprogram overriding operator "+" might not terminate, terminating annotation could be incorrect
+x.adb:45:13: medium: subprogram overriding operator "-" might not terminate, terminating annotation could be incorrect
+x.adb:48:13: medium: subprogram overriding operator "&" might not terminate, terminating annotation could be incorrect
+x.adb:51:13: medium: subprogram overriding operator "*" might not terminate, terminating annotation could be incorrect
+x.adb:54:13: medium: subprogram overriding operator "/" might not terminate, terminating annotation could be incorrect
+x.adb:57:13: medium: subprogram overriding operator "**" might not terminate, terminating annotation could be incorrect
+x.adb:62:18: warning: statement has no effect
+x.adb:70:19: warning: statement has no effect
+x.adb:78:19: warning: statement has no effect
+x.adb:86:19: warning: statement has no effect
+x.adb:94:19: warning: statement has no effect
+x.adb:102:19: warning: statement has no effect
+x.adb:110:19: warning: statement has no effect
+x.adb:118:19: warning: statement has no effect
+x.adb:121:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:126:19: warning: statement has no effect
+x.adb:134:19: warning: statement has no effect
+x.adb:142:19: warning: statement has no effect
+x.adb:145:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:150:19: warning: statement has no effect
+x.adb:158:19: warning: statement has no effect
+x.adb:161:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:166:19: warning: statement has no effect
+x.adb:169:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:174:19: warning: statement has no effect
+x.adb:177:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:182:19: warning: statement has no effect
+x.adb:185:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:190:19: warning: statement has no effect
+x.adb:193:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:198:19: warning: statement has no effect
+x.adb:201:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:207:19: medium: assertion might fail, cannot prove A = B
+x.adb:207:21: info: precondition proved (Trivial: 1 VC)
+x.adb:208:19: medium: assertion might fail, cannot prove A /= B
+x.adb:208:21: info: precondition proved (Trivial: 1 VC)
+x.adb:209:19: info: assertion proved (CVC4: 1 VC)
+x.adb:209:21: info: precondition proved (Trivial: 1 VC)
+x.adb:210:19: info: assertion proved (CVC4: 1 VC)
+x.adb:210:21: info: precondition proved (Trivial: 1 VC)
+x.adb:211:19: info: assertion proved (CVC4: 1 VC)
+x.adb:211:21: info: precondition proved (Trivial: 1 VC)
+x.adb:212:19: info: assertion proved (CVC4: 1 VC)
+x.adb:212:21: info: precondition proved (Trivial: 1 VC)
+x.adb:213:19: info: assertion proved (CVC4: 1 VC)
+x.adb:213:19: info: precondition proved (Trivial: 1 VC)
+x.adb:214:19: info: assertion proved (CVC4: 1 VC)
+x.adb:214:21: info: precondition proved (Trivial: 1 VC)
+x.adb:215:19: info: assertion proved (CVC4: 1 VC)
+x.adb:215:21: info: precondition proved (Trivial: 1 VC)
+x.adb:216:19: info: assertion proved (CVC4: 1 VC)
+x.adb:216:19: info: precondition proved (Trivial: 1 VC)
+x.adb:217:19: info: assertion proved (CVC4: 1 VC)
+x.adb:217:21: info: precondition proved (Trivial: 1 VC)
+x.adb:218:19: info: assertion proved (CVC4: 1 VC)
+x.adb:218:21: info: precondition proved (Trivial: 1 VC)
+x.adb:219:19: info: assertion proved (CVC4: 1 VC)
+x.adb:219:21: info: precondition proved (Trivial: 1 VC)
+x.adb:220:19: info: assertion proved (CVC4: 1 VC)
+x.adb:220:21: info: precondition proved (Trivial: 1 VC)
+x.adb:221:19: info: assertion proved (CVC4: 1 VC)
+x.adb:221:21: info: precondition proved (Trivial: 1 VC)
+x.adb:222:19: info: assertion proved (CVC4: 1 VC)
+x.adb:222:21: info: precondition proved (Trivial: 1 VC)
+x.adb:223:19: info: assertion proved (CVC4: 1 VC)
+x.adb:223:21: info: precondition proved (Trivial: 1 VC)
+x.adb:224:19: info: assertion proved (CVC4: 1 VC)
+x.adb:224:21: info: precondition proved (Trivial: 1 VC)
+x.adb:225:19: info: assertion proved (CVC4: 1 VC)
+x.adb:225:21: info: precondition proved (Trivial: 1 VC)

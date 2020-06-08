@@ -1,0 +1,12 @@
+spin-tunnel.adb:39:21: info: division check proved (CVC4: 1 VC)
+spin-tunnel.ads:5:04: info: flow dependencies proved
+spin-tunnel.ads:6:04: info: initial condition proved (CVC4: 1 VC)
+spin-tunnel.ads:10:08: info: initialization of "Result" proved
+spin-tunnel.ads:13:15: medium: postcondition might fail, cannot prove Result = (Is_Valid)
+spin-tunnel.ads:16:08: info: initialization of "Result" proved
+spin-tunnel.ads:19:15: medium: postcondition might fail, cannot prove Result = (Is_Valid)
+spin.ads:4:04: info: flow dependencies proved
+spin.ads:16:08: info: initialization of "State" proved
+spin_main.adb:7:04: info: initialization of "State" proved
+spin_main.adb:12:30: medium: loop invariant might fail after first iteration, cannot prove sPIN.State_Invariant (State)
+spin_main.adb:12:30: medium: loop invariant might fail in first iteration, cannot prove sPIN.State_Invariant (State)

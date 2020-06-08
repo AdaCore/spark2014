@@ -29,6 +29,9 @@ module Main
   type real__ref = { mutable real__content [@model_trace:] : real }
   type __private__ref = { mutable __private__content [@model_trace:] : __private }
 
+  (* Boolean value to simulate calls to possibly nonreturning procedures *)
+  val no__return : bool__ref
+
   (* Projections from records holding references over builtin types to builtin types *)
   function int__ref___projection
     (a : int__ref)  : int =
@@ -104,6 +107,20 @@ module Integer
 
   val length (x y : int) : int
   ensures { result = length x y }
+end
+
+module Int_Gcd
+  use number.Gcd as Gcd
+  use int.Int
+
+  function gcd int int : int
+
+  axiom gcd_pos :
+    forall x, y : int. x > 0 /\ y > 0 -> gcd x y = Gcd.gcd x y
+
+  val gcd_ (x:int) (y:int) : int
+     requires { x <> 0 /\ y <> 0 }
+     ensures { result = gcd x y }
 end
 
 module Int_Power
@@ -1265,6 +1282,56 @@ module BV64
 
   val t_int (x : t) : int
     ensures { result = t'int x }
+end
+
+module BV128
+  use export bv.BV128
+
+  type t__ref = { mutable t__content [@model_trace:] : t }
+  val t__havoc (x : t__ref) : unit
+     writes { x }
+
+  clone export BVAda with
+    type t = t,
+    predicate ult = ult,
+    predicate ule = ule,
+    predicate ugt = ugt,
+    predicate uge = uge,
+    function to_uint = t'int,
+    function ( * ) = mul,
+    function one = one
+
+  val of_int_ (i : int) : t
+    requires{ uint_in_range i }
+    ensures{ result = of_int i }
+
+  val udiv_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = udiv x y }
+
+  val urem_ (x : t) (y : t) : t
+    requires{ y <> zeros }
+    ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
+end
+
+(* For conversion to bv 128 bits, only need version from 64 bits, as part
+   of checking of overflows on some 64 bits modular operations. There are no
+   user-defined conversions to bv 128 bits otherwise.
+ *)
+module BVConv_64_128
+  use export bv.BVConverter_64_128
+
+  val range_check_ (f l x : BV128.t) : BV128.t
+    requires { (BV128.ule f x) /\ (BV128.ule x l) }
+    ensures { result = x }
 end
 
 module BVConv_32_64

@@ -1,2 +1,1 @@
-p.adb:6:33: warning: statement has no effect
 p.adb:8:25: high: call to potentially blocking predefined subprogram "Yield" in protected operation "Yielding_Entry"

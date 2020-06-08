@@ -1,1 +1,1 @@
-repro.ads:9:19: medium: assertion might fail, cannot prove Item_Array'Size = 256, in instantiation at repro_main.adb:6
+repro.ads:9:19: info: assertion proved (CVC4: 1 VC), in instantiation at repro_main.adb:6

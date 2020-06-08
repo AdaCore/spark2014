@@ -87,20 +87,17 @@ An object O1 is said to be a *reachable element* of an object O2 if
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-subprogram_declarations-06:
 
 6. A function declaration shall not have a ``parameter_specification``
    with a mode of **out** or **in out**. This rule also applies to
    a ``subprogram_body`` for a function for which no explicit declaration
    is given. A function shall have no outputs other than its result.
 
-.. _tu-fe-subprogram_declarations-07:
 
 7. A subprogram parameter of mode **in** shall not be an output of its
    subprogram unless the type of the parameter is an access type and
    the subprogram is not a function.
 
-.. _etu-subprogram_declarations:
 
 .. _preconditions-and-postconditions:
 
@@ -109,7 +106,6 @@ Preconditions and Postconditions
 
 .. centered:: **Legality Rules**
 
-.. _tu-sf-preconditions_and_postconditions-01:
 
 1. The corresponding expression for an inherited Pre'Class or Post'Class of an
    inherited subprogram S of a tagged type T shall not call a non-inherited
@@ -126,7 +122,6 @@ an inherited subprogram changes due to called subprograms in its contract being
 overridden, then the inherited subprogram would have to be re-verified for the
 derived type. This rule forbids the cases that require re-verification.]
 
-.. _tu-sf-preconditions_and_postconditions-02:
 
 2. The Pre aspect shall not be specified for a primitive operation of a
    type T at a point where T is tagged. [Pre'Class
@@ -136,7 +131,6 @@ derived type. This rule forbids the cases that require re-verification.]
 semantics and verification rules below would force an identical Pre'Class
 each time Pre is used on a dispatching operation.]
 
-.. _tu-sf-preconditions_and_postconditions-03:
 
 3. A subprogram_renaming_declaration shall not declare a primitive
    operation of a tagged type.
@@ -165,7 +159,6 @@ Note that a dispatching subprogram can be renamed as long as the renaming
 does not itself declare a dispatching operation. Note also that this rule
 would never apply to a renaming-as-body.]
 
-.. _etu-preconditions_and_postconditions:
 
 .. centered:: **Verification Rules**
 
@@ -213,7 +206,6 @@ In order to extend Ada's support for specification of subprogram contracts
 
 .. centered:: **Legality Rules**
 
-.. _tu-nt-subprogram_contracts-01:
 
 1. The Global, Depends and Contract_Cases aspects may be
    specified for a subprogram with an ``aspect_specification``. More
@@ -226,7 +218,6 @@ In order to extend Ada's support for specification of subprogram contracts
    abstract subprogram or a null procedure. Only Global'Class and Depends'Class
    may be specified for such a subprogram.
 
-.. _etu-subprogram_contracts:
 
 See section :ref:`contract-cases` for further detail on Contract_Case aspects, section
 :ref:`global-aspects` for further detail on Global aspects and section :ref:`depends-aspects`
@@ -308,34 +299,28 @@ where
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-contract_cases-01:
 
 1. A Contract_Cases aspect may have at most one **others**
    ``contract_case`` and if it exists it shall be the last one in the
    ``contract_case_list``.
 
-.. _tu-fe-contract_cases-02:
 
 2. A ``consequence`` expression is considered to be a postcondition
    expression for purposes of determining the legality of Old or
    Result ``attribute_references``.
 
-.. _etu-contract_cases-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-contract_cases-03:
 
 3. A Contract_Cases aspect is an assertion (as defined in RM
    11.4.2(1.1/3)); its assertion expressions are as described
    below. Contract_Cases may be specified as an
    ``assertion_aspect_mark`` in an Assertion_Policy pragma.
 
-.. _etu-contract_cases-ss:
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-fe-contract_cases-04:
 
 4. Upon a call of a subprogram which is subject to an enabled
    Contract_Cases aspect, Contract_Cases checks are
@@ -363,7 +348,6 @@ where
      evaluates to True; Assertions.Assertion_Error is raised if this
      check fails.
 
-.. _tu-fe-contract_cases-05:
 
 5. If an Old ``attribute_reference`` occurs within a ``consequence``
    other than the ``consequence`` selected for (later) evaluation
@@ -371,7 +355,6 @@ where
    (see Ada RM 6.1.1) is not elaborated. [In particular, the prefix of the
    Old ``attribute_reference`` is not evaluated].
 
-.. _etu-contract_cases-ds:
 
 .. centered:: **Verification Rules**
 
@@ -468,7 +451,6 @@ and Refined_Depends.]
 
 .. centered:: **Syntax**
 
-.. _tu-fe-global_aspects-syntax:
 
 ::
 
@@ -482,16 +464,13 @@ and Refined_Depends.]
    global_item                 ::= name
    null_global_specification   ::= null
 
-.. _etu-global_aspects-syntax:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fa-global_aspects-01:
 
 1. A ``global_specification`` that is a ``global_list`` is shorthand for a
    ``moded_global_list`` with the ``mode_selector`` Input.
 
-.. _tu-cbatu-global_aspects-02:
 
 2. A ``global_item`` is *referenced* by a subprogram if:
 
@@ -504,12 +483,10 @@ and Refined_Depends.]
      expression within another subprogram that is called either directly or
      indirectly by this subprogram.
 
-.. _tu-fa-global_aspects-03:
 
 3. A ``null_global_specification`` indicates that the subprogram does not
    reference any ``global_item`` directly or indirectly.
 
-.. _tu-fa-global_aspects-04:
 
 4. If a subprogram's Global aspect is not otherwise specified and either
 
@@ -521,50 +498,41 @@ and Refined_Depends.]
 
    then a Global aspect of *null* is implicitly specified for the subprogram.
 
-.. _etu-global_aspects-ss:
 
 .. centered:: **Name Resolution Rules**
 
-.. _tu-fe-global_aspects-05:
 
 5. A ``global_item`` shall denote an entire object or a state abstraction.
    [This is a name resolution rule because a ``global_item`` can unambiguously
    denote a state abstraction even if a function having the same fully qualified
    name is also present].
 
-.. _etu-global_aspects-nr:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-global_aspects-06:
 
 6. The Global aspect may only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub), of a
    protected entry, or of a task unit.
 
-.. _tu-fe-global_aspects-07:
 
 7. A ``global_item`` occurring in a Global aspect specification of a subprogram
    shall not denote a formal parameter of the subprogram.
 
-.. _tu-fe-global_aspects-08:
 
 8. A ``global_item`` shall not denote a state abstraction whose
    refinement is visible. [A state abstraction cannot be named within
    its enclosing package's body other than in its refinement. Its
    constituents shall be used rather than the state abstraction.]
 
-.. _tu-fe-global_aspects-09:
 
 9. Each ``mode_selector`` shall occur at most once in a single
    Global aspect.
 
-.. _tu-fe-global_aspects-10:
 
 10. A function subprogram shall not have a ``mode_selector`` of
     Output or In_Out in its Global aspect.
 
-.. _tu-fe-global_aspects-11:
 
 11. A user-defined equality operation on a record type shall have a Global
     aspect of ``null`` (see :ref:`overloading_of_operators`).
@@ -573,12 +541,10 @@ and Refined_Depends.]
     composite type, whose predefined equality operation now depends on
     variables through the primitive equality operation on its component.]
 
-.. _tu-fe-global_aspects-12:
 
 12. The ``global_items`` in a single Global aspect specification shall denote
     distinct entities.
 
-.. _tu-fe-global_aspects-13:
 
 13. If a subprogram is nested within another and if the
     ``global_specification`` of the outer subprogram has an entity
@@ -588,7 +554,6 @@ and Refined_Depends.]
     inner subprogram shall not denote the same entity with a
     ``mode_selector`` of In_Out or Output.
 
-.. _etu-global_aspects-lr:
 
 .. centered:: **Dynamic Semantics**
 
@@ -597,20 +562,17 @@ is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-global_aspects-14:
 
 14. For a subprogram that has a ``global_specification``, an object (except a
     constant without variable inputs) or state abstraction that is declared
     outside the scope of the subprogram, shall only be referenced within its
     implementation if it is a ``global_item`` in the ``global_specification``.
 
-.. _tu-fa-global_aspects-15:
 
 15. A ``global_item`` shall occur in a Global aspect of a subprogram if and
     only if it denotes an entity (except for a constant without variable
     inputs) that is referenced by the subprogram.
 
-.. _tu-cbatu-global_aspects-16:
 
 16. Where the refinement of a state abstraction is not visible (see
     :ref:`state_refinement`) and a subprogram references one or more
@@ -620,7 +582,6 @@ is used purely for static analysis purposes and is not executed.
     encapsulating a constituent is known from the Part_Of indicator on
     the declaration of the constituent.]
 
-.. _tu-fa-global_aspects-17:
 
 17. Each entity denoted by a ``global_item`` in a
     ``global_specification`` of a subprogram that is an input or
@@ -645,7 +606,6 @@ is used purely for static analysis purposes and is not executed.
     * otherwise the ``global_item`` denotes both an input and an output, and
       has a ``mode_selector`` of In_Out.
 
-.. _tu-fa-global_aspects-17.1:
 
    [For purposes of determining whether an output of a subprogram shall have a
    ``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
@@ -656,20 +616,17 @@ is used purely for static analysis purposes and is not executed.
    to be constrained ("known to be constrained" is defined in Ada RM 3.3), the
    discriminants of the output might or might not be updated by the call.]
 
-.. _tu-fa-global_aspects-18:
 
 18. An entity that is denoted by a ``global_item`` which is referenced
     by a subprogram but is neither an input nor an output but is only
     referenced directly, or indirectly in assertion expressions has a
     ``mode_selector`` of Proof_In.
 
-.. _tu-fa-global_aspects-19:
 
 19. A ``global_item`` shall not denote a constant object other than a formal
     parameter [of an enclosing subprogram] of mode **in**, a generic formal
     object of mode **in**, or a *constant with variable inputs*.
 
-.. _etu-global_aspects-vr1:
 
     If a ``global_item`` denotes a generic formal object of mode **in**,
     then the corresponding ``global_item`` in an instance of the generic
@@ -709,12 +666,10 @@ is used purely for static analysis purposes and is not executed.
         -- As seen from outside of Iii, Iii.Ppp's references to Iii.Xxx in its
         -- Global and Depends aspect specifications are ignored.
 
-.. _tu-fa-global_aspects-20:
 
 20. The ``mode_selector`` of a ``global_item`` denoting a *constant with
     variable inputs* shall be ``Input`` or ``Proof_In``.
 
-.. _tu-fa-global_aspects-21:
 
 21. The ``mode_selector`` of a ``global_item`` denoting a variable marked
     as a *constant after elaboration* shall be ``Input`` or ``Proof_In`` [,
@@ -724,7 +679,6 @@ is used purely for static analysis purposes and is not executed.
     during library unit elaboration[, to ensure only the final ("constant")
     value of the object is referenced].
 
-.. _etu-global_aspects-vr:
 
 .. centered:: **Examples**
 
@@ -812,7 +766,6 @@ the grammar of ``dependency_relation`` given below.
 
 .. centered:: **Syntax**
 
-.. _tu-fe-depends_aspects-syntax:
 
 ::
 
@@ -833,11 +786,9 @@ where
 
    ``function_result`` is a function Result ``attribute_reference``.
 
-.. _etu-depends_aspects-syntax:
 
 .. centered:: **Name Resolution Rules**
 
-.. _tu-fe-depends_aspects-01:
 
 1. An ``input`` or ``output`` of a ``dependency_relation`` shall denote only
    an entire object or a state abstraction. [This is a name resolution rule
@@ -845,30 +796,25 @@ where
    abstraction even if a function having the same fully qualified name is also
    present.]
 
-.. _etu-depends_aspects-nr:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-depends_aspects-02:
 
 2. The Depends aspect shall only be specified for the initial declaration of a
    subprogram (which may be a declaration, a body or a body stub), of a
    protected entry, or of a task unit.
 
-.. _tu-fe-depends_aspects-03:
 
 3. An ``input`` or ``output`` of a ``dependency_relation`` shall not denote a
    state abstraction whose refinement is visible [a state abstraction cannot be
    named within its enclosing package's body other than in its refinement].
 
-.. _tu-fe-depends_aspects-04:
 
 4. The *explicit input set* of a subprogram is the set of formal parameters of
    the subprogram of mode **in** and **in out** along with the entities denoted
    by ``global_items`` of the Global aspect of the subprogram with a
    ``mode_selector`` of Input and In_Out.
 
-.. _tu-fe-depends_aspects-05:
 
 5. The *input set* of a subprogram is the explicit input set of the
    subprogram augmented with those formal parameters of mode **out** and
@@ -887,7 +833,6 @@ where
    for some other reason (e.g., if the parameter is of an unconstrained
    discriminated subtype).
 
-.. _tu-fe-depends_aspects-06:
 
 6. The *output set* of a subprogram is the set of formal parameters of the
    subprogram of mode **in out** and **out** along with the entities denoted by
@@ -898,59 +843,48 @@ where
    [TBD: include in-mode parameters that are outputs. Do we want to
    define a term for such parameters?]
 
-.. _tu-fe-depends_aspects-07:
 
 7. The entity denoted by each ``input`` of a ``dependency_relation`` of a
    subprogram shall be a member of the input set of the subprogram.
 
-.. _tu-fe-depends_aspects-08:
 
 8. Every member of the explicit input set of a subprogram shall be denoted by
    at least one ``input`` of the ``dependency_relation`` of the subprogram.
 
-.. _tu-fe-depends_aspects-09:
 
 9. The entity denoted by each ``output`` of a ``dependency_relation`` of a
    subprogram shall be a member of the output set of the subprogram.
 
-.. _tu-fe-depends_aspects-10:
 
 10. Every member of the output set of a subprogram shall be denoted by exactly
     one ``output`` in the ``dependency_relation`` of the subprogram.
 
-.. _tu-fa-depends_aspects-11:
 
 11. For the purposes of determining the legality of a Result
     ``attribute_reference``, a ``dependency_relation`` is considered
     to be a postcondition of the function to which the enclosing
     ``aspect_specification`` applies.
 
-.. _tu-fe-depends_aspects-12:
 
 12. In a ``dependency_relation`` there can be at most one
     ``dependency_clause`` which is a ``null_dependency_clause`` and if
     it exists it shall be the last ``dependency_clause`` in the
     ``dependency_relation``.
 
-.. _tu-fe-depends_aspects-13:
 
 13. An entity denoted by an ``input`` which is in an ``input_list`` of
     a ``null_dependency_clause`` shall not be denoted by an ``input``
     in another ``input_list`` of the same ``dependency_relation``.
 
-.. _tu-fe-depends_aspects-14:
 
 14. The ``inputs`` in a single ``input_list`` shall denote distinct entities.
 
-.. _tu-fe-depends_aspects-15:
 
 15. A ``null_dependency_clause`` shall not have an ``input_list`` of **null**.
 
-.. _etu-depends_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fa-depends_aspects-16:
 
 16. A ``dependency_clause`` with a "+" symbol in the syntax
     ``output_list`` =>+ ``input_list`` means that each ``output`` in
@@ -958,14 +892,12 @@ where
     dependent on itself. [The text (A, B, C) =>+ Z is shorthand for
     (A => (A, Z), B => (B, Z), C => (C, Z)).]
 
-.. _tu-cbatu-depends_aspects-17:
 
 17. A ``dependency_clause`` of the form A =>+ A has the same meaning
     as A => A.  [The reason for this rule is to allow the short hand:
     ((A, B) =>+ (A, C)) which is equivalent to (A => (A, C), B => (A,
     B, C)).]
 
-.. _tu-fa-depends_aspects-18:
 
 18. A ``dependency_clause`` with a **null** ``input_list`` means that
     the final value of the entity denoted by each ``output`` in the
@@ -973,28 +905,24 @@ where
     the subprogram (other than itself, if the ``output_list`` =>+
     **null** self-dependency syntax is used).
 
-.. _tu-fa-depends_aspects-19:
 
 19. The ``inputs`` in the ``input_list`` of a
     ``null_dependency_clause`` may be read by the subprogram but play
     no role in determining the values of any outputs of the
     subprogram.
 
-.. _tu-fa-depends_aspects-20:
 
 20. A Depends aspect of a subprogram with a **null**
     ``dependency_relation`` indicates that the subprogram has no
     ``inputs`` or ``outputs``.  [From an information flow analysis
     viewpoint it is a null operation (a no-op).]
 
-.. _tu-cbatu-depends_aspects-21:
 
 21. A function without an explicit Depends aspect specification has
     the default ``dependency_relation`` that its result is dependent
     on all of its inputs. [Generally an explicit Depends aspect is
     not required for a function declaration.]
 
-.. _tu-fa-depends_aspects-22:
 
 22. A procedure without an explicit Depends aspect specification has a
     default ``dependency_relation`` that each member of its output set
@@ -1002,7 +930,6 @@ where
     approximation may be improved by analyzing the body of the
     subprogram if it is present.]
 
-.. _etu-depends_aspects-ss:
 
 .. centered:: **Dynamic Semantics**
 
@@ -1011,7 +938,6 @@ as it is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-depends_aspects-23:
 
 23. Each entity denoted by an ``output`` given in the Depends aspect
     of a subprogram shall be an output in the implementation of the
@@ -1019,17 +945,14 @@ as it is used purely for static analysis purposes and is not executed.
     entities denoted by the ``inputs`` given in the ``input_list``
     associated with the ``output``.
 
-.. _tu-fa-depends_aspects-24:
 
 24. Each output of the implementation of the subprogram body is denoted by
     an ``output`` in the Depends aspect of the subprogram.
 
-.. _tu-fa-depends_aspects-25:
 
 25. Each input of the implementation of a subprogram body is denoted by an
     ``input`` of the Depends aspect of the subprogram.
 
-.. _tu-fa-depends_aspects-26:
 
 26. If not all parts of an output are updated, then the updated entity is
     dependent on itself as the parts that are not updated have their
@@ -1040,7 +963,6 @@ as it is used purely for static analysis purposes and is not executed.
     the phrase "all parts" means in the preceding sentence.]
 
 
-.. _etu-depends_aspects-vr:
 
 .. centered:: **Examples**
 
@@ -1132,10 +1054,10 @@ conditions are met:
   or a direct or indirect constituent therof; and
 
 * each Output-mode item of G1 which is not a state abstraction whose
-  refinment is visible at the point of G2 is an Output-mode item of G2; and
+  refinement is visible at the point of G2 is an Output-mode item of G2; and
 
 * for each Output-mode item of G1 which is a state abstraction whose
-  refinment is visible at the point of G2, each direct or indirect
+  refinement is visible at the point of G2, each direct or indirect
   constituent thereof is an Output-mode item of G2.
 
 A Depends or Depends'Class aspect specification D2 is said to be a
@@ -1305,13 +1227,11 @@ it.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-formal_parameter_modes-01:
 
 1. A subprogram formal parameter of a composite type which is updated
    but not fully initialized by the subprogram shall have a mode of
    **in out**.
 
-.. _tu-fa-formal_parameter_modes-02:
 
 2. A subprogram formal parameter of mode **out** shall not be read by
    the subprogram until it has been updated by the subprogram.  The
@@ -1322,7 +1242,6 @@ it.
    dependent on the value of the formal parameter and shall not be
    used are X'Old and X'Update.]
 
-.. _etu-formal_parameter_modes:
 
 .. centered:: **Examples**
 
@@ -1410,7 +1329,6 @@ calls.
 
 .. centered:: **Verification Rules**
 
-.. _tu-anti_aliasing-03:
 
 3. A procedure call shall not pass two actual parameters which potentially
    introduce aliasing via parameter passing unless either
@@ -1420,7 +1338,6 @@ calls.
    * at least one of the corresponding formal parameters is immutable and is of
      a by-copy type that is not an access type.
 
-.. _tu-anti_aliasing-04:
 
 4. If an actual parameter in a procedure call and a ``global_item`` referenced
    by the called procedure potentially introduce aliasing via parameter
@@ -1432,7 +1349,6 @@ calls.
      corresponding formal parameter shall be of a by-copy type that is not an
      access type.
 
-.. _tu-anti_aliasing-05:
 
 5. Where one of these rules prohibits the occurrence of an object V or any of
    its subcomponents as an actual parameter, the following constructs are also
@@ -1446,7 +1362,6 @@ calls.
 
    * A prohibited construct enclosed in parentheses.
 
-.. _etu-anti_aliasing:
 
 .. centered:: **Examples**
 
@@ -1465,7 +1380,6 @@ Nonreturning Procedures
 
 .. centered:: **Verification Rules**
 
-.. _tu-nonreturning_procedures-01:
 
 1. A call to a nonreturning procedure introduces an obligation to prove that
    the statement will not be executed, much like the verification condition
@@ -1478,7 +1392,6 @@ Nonreturning Procedures
    which fails unconditionally. See also section :ref:`exceptions`, where a
    similar verification rule is imposed on ``raise_statements``.]
 
-.. _etu-nonreturning_procedures-vr:
 
 .. _overloading_of_operators:
 
@@ -1487,20 +1400,17 @@ Overloading of Operators
 
 .. centered:: **Legality Rules**
 
-.. _tu-overloading_of_operators-01:
 
 1. [A user-defined equality operation on a record type shall have a Global
    aspect of ``null``; see :ref:`global-aspects` for the statement of this
    rule.]
 
-.. _tu-overloading_of_operators-vr:
 
 .. centered:: **Verification Rules**
 
 2.  A user-defined equality operation on a record type shall always
     terminate.
 
-.. _etu-overloading_of_operators-lr:
 
 Null Procedures
 ---------------
@@ -1513,7 +1423,6 @@ Expression Functions
 
 .. centered:: **Legality Rules**
 
-.. _tu-expression_functions-01:
 
 1. Contract_Cases, Global and Depends aspects may be applied to an
    expression function as for any other function declaration if it
@@ -1521,7 +1430,6 @@ Expression Functions
    declaration then the aspects are applied to that.  It may have
    refined aspects applied (see :ref:`state_refinement`).
 
-.. _etu-expression_functions-lr:
 
 .. centered:: **Examples**
 
@@ -1555,7 +1463,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
 
 .. centered:: **Static Semantics**
 
-.. _tu-cbatu-ghost_entities-01:
 
 1. |SPARK| defines the Boolean-valued representation aspect Ghost.
    Ghost is an aspect of all entities (e.g., subprograms, types, objects).
@@ -1567,7 +1474,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    Ghost is an assertion aspect.
    [This means that Ghost can be named in an Assertion_Policy pragma.]
 
-.. _tu-nt-ghost_entities-02:
 
 2. The Ghost aspect of an entity declared inside of a ghost entity (e.g.,
    within the body of a ghost subprogram) is defined to be True.
@@ -1577,7 +1483,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    to be True. The Ghost aspect of a child of a ghost library unit
    is defined to be True.
 
-.. _tu-nt-ghost_entities-03:
 
 3. A statement or pragma is said to be a "ghost statement" if
 
@@ -1590,7 +1495,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    * it is a pragma which encloses a name denoting a ghost entity or
      which specifies an aspect of a ghost entity.
 
-.. _tu-nt-ghost_entities-04:
 
 4. If the Ghost assertion policy in effect at the point of a
    ghost statement or the declaration of a ghost entity is Ignore, then the
@@ -1605,11 +1509,9 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    terms such as "disabled ghost type" and "disabled ghost subprogram"
    are defined analogously.
 
-.. _etu-ghost_entities-ss:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-ghost_entities-05:
 
 5. The Ghost aspect may only be specified [explicitly] for
    the declaration of a subprogram, a
@@ -1626,7 +1528,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    subprograms. |SPARK| does define
    ghost state abstractions, but these are described elsewhere.]
 
-.. _tu-fe-ghost_entities-06:
 
 6. A Ghost aspect value of False shall not be explicitly specified
    except in a confirming aspect specification. [For example, a
@@ -1638,14 +1539,12 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    are not permitted.] The Ghost assertion policy in effect at any
    point of a SPARK program shall be either Check or Ignore.
 
-.. _tu-fe-ghost_entities-07:
 
 7.  A ghost type or object shall not be effectively volatile.
     A ghost object shall not be imported or exported.
     [In other words, no ghost objects for which reading or writing
     would constitute an external effect (see Ada RM 1.1.3).]
 
-.. _tu-fe-ghost_entities-08:
 
 8.  A ghost primitive subprogram of a non-ghost type extension shall
     not override an inherited non-ghost primitive subprogram.
@@ -1657,7 +1556,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     primitive subprograms of such a type may override inherited (ghost or
     non-ghost) subprograms.]
 
-.. _tu-fe-ghost_entities-09:
 
 9.  A Ghost pragma which applies to a declaration occuring
     in the visible part of a package shall not occur in the
@@ -1666,7 +1564,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     determined without having to look into the private part of the
     enclosing package.]
 
-.. _tu-fe-ghost_entities-10:
 
 10. A ghost entity shall only be referenced:
 
@@ -1685,7 +1582,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     * within a renaming_declaration which either renames a ghost entity
       or occurs within a ghost subprogram or package.
 
-.. _tu-fe-ghost_entities-11:
 
 11. A ghost entity shall not be referenced within an aspect specification
     [(including an aspect-specifying pragma)]
@@ -1705,12 +1601,10 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
    this participation. In the case of a Static_Predicate expression,
    there are also other reasons (e.g., case statements).]
 
-.. _tu-fe-ghost_entities-12:
 
 12. An **out** or **in out** mode actual parameter in a call to a ghost
     subprogram shall be a ghost variable.
 
-.. _tu-fe-ghost_entities-13:
 
 13. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost entity is Ignore, then the Ghost assertion policy in effect
@@ -1721,7 +1615,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     [This includes both assignment statements and passing a ghost variable
     as an **out** or **in out** mode actual parameter.]
 
-.. _tu-fe-ghost_entities-14:
 
 14. An Assertion_Policy pragma specifying a Ghost assertion policy
     shall not occur within a ghost subprogram or package.
@@ -1734,19 +1627,16 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     of an entity and at the point of an aspect specification
     which applies to that entity shall be the same.
 
-.. _tu-fe-ghost_entities-15:
 
 15. The Ghost assertion policies in effect at the declaration of a
     state abstraction and at the declaration of each constituent of that
     abstraction shall be the same.
 
-.. _tu-fe-ghost_entities-16:
 
 16. The Ghost assertion policies in effect at the declaration of a
     primitive subprogram of a ghost tagged type and at
     the declaration of the ghost tagged type shall be the same.
 
-.. _tu-fe-ghost_entities-17:
 
 17. If a tagged type is not a disabled ghost type, and if a
     primitive operation of the tagged type overrides an inherited operation,
@@ -1754,7 +1644,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     a disabled ghost subprogram if and only if the overriding subprogram
     is a disabled ghost subprogram.
 
-.. _tu-fe-ghost_entities-18:
 
 18. If the Ghost assertion policy in effect at the point of an
     a reference to a Ghost entity which occurs within an assertion expression
@@ -1762,7 +1651,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     expression (e.g., Pre for a precondition expression, Assert for the
     argument of an Assert pragma) shall [also] be Ignore.
 
-.. _tu-fe-ghost_entities-19:
 
 19. A ghost type shall not have a task or protected part.
     A ghost object shall not be of a type which yields synchronized objects
@@ -1771,15 +1659,12 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     A synchronized state abstraction shall not be a ghost state abstraction
     (see :ref:`abstract-state-aspect`).
 
-.. _etu-ghost_entities-lr:
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-ghost_entities-20:
 
 20. A ghost procedure shall not have a non-ghost [global] output.
 
-.. _tu-cbatu-ghost_entities-21:
 
 21. An output of a non-ghost subprogram other than a state abstraction
     or a ghost global shall not depend on a ghost input. [It is intended
@@ -1788,7 +1673,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     have a non-ghost constituent, other rules prevent such a non-ghost
     constituent from depending on the ghost input.]
 
-.. _tu-fe-ghost_entities-22:
 
 22. A ghost procedure shall not have an effectively volatile global input
     with the properties Async_Writers or Effective_Reads set to True.
@@ -1800,7 +1684,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     Effective_Reads set to True. [In other words, a ghost statement is
     subject to effectively the same restrictions as a ghost procedure.]
 
-.. _tu-fe-ghost_entities-23:
 
 23. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable or ghost state abstraction is Check, then the Ghost
@@ -1808,7 +1691,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
     for which that variable or state abstraction is a global output shall
     be Check.
 
-.. _etu-ghost_entities-vr:
 
 .. centered:: **Examples**
 

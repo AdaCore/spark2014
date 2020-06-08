@@ -1,0 +1,6 @@
+pack.ads:5:14: info: initialization of "V" constituent of "Var" proved
+pack.ads:6:06: info: data dependencies proved
+pack.ads:8:14: info: initialization of "V" constituent of "Var" proved
+pack.ads:9:06: info: data dependencies proved
+pack.ads:11:14: info: initialization of "V" constituent of "Var" proved
+pack.ads:12:06: info: data dependencies proved

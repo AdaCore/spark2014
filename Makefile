@@ -42,6 +42,7 @@
 
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
+SIDDIR=$(SHAREDIR)/gnat2why-sids
 INCLUDEDIR=$(INSTALLDIR)/include/spark
 LIBDIR=$(INSTALLDIR)/lib/gnat
 EXAMPLESDIR=$(SHAREDIR)/examples/spark
@@ -81,6 +82,8 @@ setup:
 
 why3:
 	$(MAKE) -C why3
+	mv ./why3/bin/why3.opt ./install/libexec/spark/bin/why3.opt
+	./install/libexec/spark/bin/why3.opt --list-transforms | python scripts/why3menus.py share/spark/config/generated_menus.json
 
 install-all:
 	$(MAKE) install
@@ -126,29 +129,42 @@ gnat2why:
 	# Produce Ada code that stores the reserved keywords of Why3
 	# This script should be run *ONLY* in developper build not in prod
 	# (gnat2why-nightly)
-	python scripts/why3keywords.py why3/src/parser/lexer.mll gnat2why/why/why-keywords.adb
+	python scripts/why3keywords.py why3/src/parser/lexer.mll src/why/why-keywords.adb
 	$(MAKE) -C gnat2why
 
 coverage:
 	$(MAKE) -C gnat2why AUTOMATED=1 coverage
 
 install-coverage:
-	$(CP) gnat2why/project.isi $(SHAREDIR)
+	rm -rf $(SIDDIR)
+	mkdir $(SIDDIR)
+	find gnat2why/obj -name '*.sid' -exec cp \{\} $(SIDDIR)/ \;
 
 coverage-report:
 	find $(COVERAGE_TRACES_DIR) -name "*.srctrace" > tracefiles
-	gnatcov coverage --level=stmt --annotate=dhtml --sid gnat2why/project.isi --output-dir=dhtml-report @tracefiles
+
+	# Look for SID files both in the installation tree given by the environment
+	# (COVERAGE_SIDS_DIR, for testsuite runs in production) and in our own
+	# object directory (for testsuite runs based on local builds).
+	> sidfiles
+	for dir in "$(COVERAGE_SIDS_DIR)" gnat2why/obj; do \
+		if [ -d "$$dir" ]; then \
+			find "$$dir" -name "*.sid" >> sidfiles; \
+		fi; \
+	done
+
+	gnatcov coverage --level=stmt --annotate=dhtml --sid @sidfiles --output-dir=dhtml-report @tracefiles
 
 codepeer-run:
 	$(MAKE) --no-print-directory -C gnat2why codepeer-run
-	$(MAKE) --no-print-directory -C gnatprove codepeer-run
+	$(MAKE) --no-print-directory -f Makefile.gnatprove codepeer-run
 
 codepeer: codepeer-run
 	mkdir -p out
 	codepeer --version | tee out/version.out
 	@echo "version:XFAIL:always fails" > out/results
 	@$(MAKE) --no-print-directory -C gnat2why codepeer 2>&1 | tee out/codepeer.out
-	@$(MAKE) --no-print-directory -C gnatprove codepeer 2>&1 | tee --append out/codepeer.out
+	@$(MAKE) --no-print-directory -f Makefile.gnatprove codepeer 2>&1 | tee --append out/codepeer.out
 	@if [ -s out/codepeer.out ]; then \
 	  echo "codepeer:FAILED:unexpected messages" >> out/results; \
 	else \
@@ -156,10 +172,10 @@ codepeer: codepeer-run
 	fi
 
 gnatprove:
-	$(MAKE) -C gnatprove build
+	$(MAKE) -f Makefile.gnatprove build
 
 gnatprove-nightly:
-	$(MAKE) -C gnatprove build PROD=$(PROD)
+	$(MAKE) -f Makefile.gnatprove build PROD=$(PROD)
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
@@ -177,7 +193,7 @@ install-examples:
 
 clean:
 	$(MAKE) -C gnat2why clean
-	$(MAKE) -C gnatprove clean
+	$(MAKE) -f Makefile.gnatprove clean
 	$(MAKE) -C docs/ug clean
 	$(MAKE) -C docs/lrm clean
 	$(MAKE) -C why3 clean

@@ -1,5 +1,5 @@
 sorters.adb:10:08: info: flow dependencies proved
-sorters.adb:15:16: info: postcondition proved (CVC4: 1 VC)
+sorters.adb:15:16: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 sorters.adb:15:45: info: range check proved (CVC4: 1 VC)
 sorters.adb:15:62: info: index check proved (CVC4: 2 VC)
 sorters.adb:16:45: info: range check proved (CVC4: 1 VC)

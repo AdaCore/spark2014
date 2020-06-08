@@ -1,5 +1,6 @@
 entry_call_from_elaboration.adb:5:14: info: nontermination of task proved (CVC4: 1 VC)
 entry_call_from_elaboration.adb:5:22: info: data dependencies proved
+entry_call_from_elaboration.adb:19:18: warning: unused assignment
 entry_call_from_elaboration.adb:23:04: high: possible data race when accessing variable "entry_call_from_elaboration.x"
 entry_call_from_elaboration.adb:23:04: high: with task "entry_call_from_elaboration.t1"
 entry_call_from_elaboration.adb:23:04: high: with task "entry_call_from_elaboration.t2"

@@ -1,7 +1,7 @@
 package body My_Map with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
 
-   function Deep_Copy (M : access constant Map) return Map_Acc is
+   function Deep_Copy (M : access constant Map) return Map_Acc with SPARK_Mode => Off is
    begin
       if M = null then
          return null;

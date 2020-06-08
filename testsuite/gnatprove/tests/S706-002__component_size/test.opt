@@ -1,1 +1,0 @@
-assertions XFAIL 'Component_Size on array-of-arrays (S706-002)

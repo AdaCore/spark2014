@@ -3,37 +3,37 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="8">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
-<file>
+<file format="whyml">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="configdata__thealarmthresholdentries.mlw"/>
 <theory name="Configdata__thealarmthresholdentries__subprogram_def">
- <goal name="def&#39;VC" expl="VC for def">
+ <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;VC.0" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;VC.1" expl="check">
+  <goal name="def&#39;vc.1" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="109"/></proof>
   </goal>
-  <goal name="def&#39;VC.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;VC.3" expl="check">
+  <goal name="def&#39;vc.3" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="109"/></proof>
   </goal>
-  <goal name="def&#39;VC.4" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.4" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;VC.5" expl="precondition" proved="true">
+  <goal name="def&#39;vc.5" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;VC.6" expl="precondition" proved="true">
+  <goal name="def&#39;vc.6" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="137"/></proof>
   </goal>
-  <goal name="def&#39;VC.7" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.7" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>

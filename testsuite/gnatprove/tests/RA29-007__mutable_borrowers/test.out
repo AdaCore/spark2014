@@ -1,9 +1,9 @@
-traversal.adb:11:22: warning: "X" is not modified, could be IN
-traversal.adb:11:69: medium: pointer dereference check might fail (e.g. when X = null) [possible explanation: subprogram at line 11 should mention X in a precondition]
-traversal.adb:22:09: info: pointer dereference check proved (CVC4: 1 VC)
-traversal.adb:25:19: medium: assertion might fail, cannot prove X.Fst.all = 1 (e.g. when X.all = (Fst => (all => 0), Snd => null))
-traversal.adb:25:20: info: pointer dereference check proved (CVC4: 1 VC)
-traversal.adb:25:25: medium: pointer dereference check might fail (e.g. when X.all = (Fst => null, Snd => (all => 4)))
+traversal.adb:11:69: info: pointer dereference check proved (CVC4: 1 VC)
+traversal.adb:21:29: info: precondition proved (CVC4: 1 VC)
+traversal.adb:23:09: info: pointer dereference check proved (CVC4: 1 VC)
+traversal.adb:26:19: medium: assertion might fail, cannot prove X.Fst.all = 1 (e.g. when X.all = (Fst => (all => 4), Snd => (all => 4)))
+traversal.adb:26:20: info: pointer dereference check proved (CVC4: 1 VC)
+traversal.adb:26:25: info: pointer dereference check proved (CVC4: 1 VC)
 walker.adb:9:04: info: initialization of "X" proved
 walker.adb:17:09: info: pointer dereference check proved (CVC4: 1 VC)
 walker.adb:19:19: medium: assertion might fail, cannot prove X.Fst.all = 1 (e.g. when X = (Fst => (all => 3), Snd => (all => 3)))

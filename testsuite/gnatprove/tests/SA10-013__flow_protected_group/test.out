@@ -1,0 +1,7 @@
+p.ads:18:27: info: data dependencies proved
+p.ads:18:55: medium: missing self-dependency "PT => PT"
+p.ads:18:75: medium: incorrect dependency "null => PT"
+p.ads:23:41: info: data dependencies proved
+p.ads:23:69: medium: missing self-dependency "C3 => C3"
+p.ads:23:89: medium: incorrect dependency "null => C3"
+Trace files' contents:

@@ -63,7 +63,7 @@ call_unknown.adb:2:25: info: initialization of "X" proved
 call_unknown_pos.adb:2:29: info: initialization of "X" proved
 call_unknown_pos.adb:4:13: medium: range check might fail [CWE 682]
 call_unknown_rel.adb:2:29: info: initialization of "X" proved
-call_unknown_rel.adb:5:19: medium: assertion might fail, cannot prove X < 2 * Y + 1 (e.g. when X = -1 and Y = -1) [possible explanation: call at line 4 should mention X (for argument X) in a postcondition]
+call_unknown_rel.adb:5:19: medium: assertion might fail, cannot prove X < 2 * Y + 1 (e.g. when X = 0 and Y = -1) [possible explanation: call at line 4 should mention X (for argument X) in a postcondition]
 call_unknown_rel.adb:5:25: medium: overflow check might fail [CWE 190] (e.g. when Y = -1073741825) [possible explanation: subprogram at line 2 should mention Y in a precondition]
 call_unknown_rel.adb:5:29: info: overflow check proved (CVC4: 1 VC)
 case_assign.adb:6:19: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at case_assign.ads:3 should mention Y in a precondition]

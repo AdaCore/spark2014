@@ -67,7 +67,7 @@ is
    end P3;
 
    procedure P4
-     with Refined_Global => (Input  => (A, V1), --  The refinment of both S1
+     with Refined_Global => (Input  => (A, V1), --  The refinement of both S1
                                                 --  and S2 are visible and
                              Output => (X, Y))  --  cannot be denoted here.
                                                 --  Their constituents must be

@@ -72,7 +72,7 @@ instr.adb:75:59: info: division check proved (CodePeer)
 instr.adb:79:07: info: initialization of "nInc" proved
 instr.adb:82:31: medium: overflow check might fail (e.g. when Inc = 2147483588 and X = (Name => (others => 'NUL'), Seconds => Sixty'Last, Minutes => Sixty'Last, Hours => 0)) [possible explanation: subprogram at instr.ads:75 should mention Inc and X in a precondition]
 instr.adb:82:38: info: division check proved (CodePeer)
-instr.adb:83:26: medium: overflow check might fail (e.g. when Inc = Integer'Last and X = (Name => (others => 'NUL'), Seconds => 7, Minutes => 0, Hours => 0)) [possible explanation: subprogram at instr.ads:75 should mention Inc and X in a precondition]
+instr.adb:83:26: medium: overflow check might fail (e.g. when Inc = Integer'Last and X = (Name => (others => 'NUL'), Seconds => 7, Minutes => 7, Hours => 0)) [possible explanation: subprogram at instr.ads:75 should mention Inc and X in a precondition]
 instr.adb:83:33: info: division check proved (CodePeer)
 instr.adb:84:31: info: overflow check proved (CodePeer)
 instr.adb:84:39: info: division check proved (CodePeer)

@@ -2,7 +2,7 @@ with Interfaces; use Interfaces;
 
 package Failsafe with SPARK_Mode,
   Abstract_State => Failsafe_State,
-  Initializes => Failsafe_State
+  Initializes => (Failsafe_State, Model.Battery_Level_At, Model.Current_Time)
 is
    pragma Unevaluated_Use_Of_Old(Allow);
 

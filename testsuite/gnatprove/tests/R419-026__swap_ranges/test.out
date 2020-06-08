@@ -15,7 +15,7 @@ swap_ranges.adb:16:13: medium: loop invariant might fail after first iteration, 
 swap_ranges.adb:16:14: info: range check proved (CVC4: 8 VC)
 swap_ranges.adb:16:43: info: range check proved (CVC4: 8 VC)
 swap_ranges.adb:18:13: info: loop invariant initialization proved (CVC4: 1 VC)
-swap_ranges.adb:18:13: info: loop invariant preservation proved (Z3: 1 VC)
+swap_ranges.adb:18:13: medium: loop invariant might fail after first iteration, cannot prove A'Loop_Entry (A'First .. K) = B (B'First..L)
 swap_ranges.adb:18:14: info: range check proved (CVC4: 8 VC)
 swap_ranges.adb:18:43: info: range check proved (CVC4: 8 VC)
 swap_ranges.adb:20:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)

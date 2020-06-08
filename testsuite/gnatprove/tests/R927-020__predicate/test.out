@@ -1,4 +1,4 @@
 foo.adb:5:14: warning: subprogram "Loc1" has no effect
 foo.adb:8:40: medium: predicate check might fail
 foo.adb:13:14: warning: subprogram "Loc2" has no effect
-foo.adb:16:39: medium: predicate check might fail
+foo.adb:16:39: medium: predicate check might fail, cannot prove My_Type2 = 42

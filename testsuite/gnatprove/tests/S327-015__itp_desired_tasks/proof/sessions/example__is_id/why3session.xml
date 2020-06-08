@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="8">
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="0" steplimit="18500" memlimit="0"/>
+<prover id="1" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="18500" memlimit="0"/>
+<file format="whyml">
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
+<path name="example__is_id.mlw"/>
+<theory name="Example__is_id__subprogram_def">
+ <goal name="def&#39;vc" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.1" expl="assertion">
+  <proof prover="0" obsolete="true"><result status="unknown" steps="84"/></proof>
+  <transf name="assert" arg1="(M (C) = M(M&#39;Last))">
+   <goal name="def&#39;vc.1.0" expl="asserted formula">
+   </goal>
+   <goal name="def&#39;vc.1.1" expl="assertion">
+   </goal>
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.2" expl="assertion">
+  <proof prover="0" obsolete="true"><result status="unknown" steps="84"/></proof>
+  <proof prover="1" obsolete="true"><result status="unknown" steps="91"/></proof>
+  </goal>
+  <goal name="def&#39;vc.3" expl="assertion">
+  <proof prover="0" obsolete="true"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="def&#39;vc.4" expl="assertion">
+  <proof prover="0" obsolete="true"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="def&#39;vc.5" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.6" expl="postcondition">
+  <proof prover="0" obsolete="true"><result status="unknown" steps="81"/></proof>
+  </goal>
+  <goal name="def&#39;vc.7" expl="postcondition">
+  <proof prover="0" obsolete="true"><result status="unknown" steps="84"/></proof>
+  <proof prover="1" obsolete="true"><result status="unknown" steps="104"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

@@ -94,4 +94,4 @@ depends_illegal_4.adb:39:11: info: flow dependencies proved
 depends_illegal_4.adb:43:17: medium: overflow check might fail (e.g. when Par1 = Natural'Last and X = 1) [possible explanation: subprogram at line 36 should mention Par1 and X in a precondition]
 depends_illegal_4.adb:43:24: medium: overflow check might fail (e.g. when Par1 = 0 and Par2 = Natural'Last and X = 1) [possible explanation: subprogram at line 36 should mention Par1 and Par2 and X in a precondition]
 depends_illegal_4.adb:44:15: high: "Y" must be listed in the Depends aspect of "P3" (SPARK RM 6.1.4(14))
-depends_illegal_4.adb:44:17: medium: overflow check might fail (e.g. when Par2 = 0 and Y = -2147483649) [possible explanation: subprogram at line 36 should mention Par2 in a precondition]
+depends_illegal_4.adb:44:17: medium: overflow check might fail [possible explanation: subprogram at line 36 should mention Par2 in a precondition]

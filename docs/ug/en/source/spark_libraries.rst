@@ -93,6 +93,13 @@ available resources:
     included in the container. This difference may make interaction between test
     and proof tricky when the equivalence relation is not the equality.
 
+.. note::
+
+   Functional containers do not comply with the ownership policy of SPARK if
+   element or key types are ownership types. Care should be taken to do the
+   required copies when storing these elements/keys inside the container or
+   retrieving them.
+
 .. _Formal Containers Library:
 
 Formal Containers Library
@@ -263,6 +270,14 @@ already traversed (otherwise the loop would have exited):
 
 .. literalinclude:: /gnatprove_by_example/results/my_find.prove
    :language: none
+
+.. note::
+
+   Just like functional containers, the formal containers do not comply with
+   the ownership policy of SPARK if
+   element or key types are ownership types. Care should be taken to do the
+   required copies when storing these elements/keys inside the container or
+   retrieving them.
 
 Quantification over Formal Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -533,6 +548,52 @@ Currently, the higher-order function library provides the following functions:
    not verified once and for all as their correction depends on the functions
    provided at each instance. As a result, each instance should be verified by
    running the SPARK tools.
+
+.. _SPARK Heap Library:
+
+SPARK Heap Library
+------------------
+
+To annotate subprograms that allocate and deallocate memory with explicit
+Global and Depends contract, a library is available through the project file
+:file:`<spark-install>/lib/gnat/spark_heap.gpr`. To use this library in a
+program, you need to add a corresponding dependency in your project file, for
+example:
+
+.. code-block:: gpr
+
+  with "spark_heap";
+  project My_Project is
+     ...
+  end My_Project;
+
+You may need to update ``GPR_PROJECT_PATH`` and set ``SPARK_HEAP_OBJECT_DIR``
+environment variables, just like for the :ref:`SPARK Lemma Library`.
+
+This library declares an abstract state, that is implicitly referenced by every
+occurrence of an allocator and by every call to an instance of the
+``Ada.Unchecked_Deallocation`` procedure:
+
+.. code-block:: ada
+
+   package SPARK.Heap with
+      SPARK_Mode,
+      Abstract_State => (Dynamic_Memory with External => Async_Writers) is ...
+
+For example:
+
+.. code-block:: ada
+
+   with SPARK.Heap;
+
+   function New_Integer with
+     Global => SPARK.Heap.Dynamic_Memory,
+     Volatile_Function
+   is
+      Result : T := new Integer'(0);
+   begin
+      return Result;
+   end;
 
 .. _Input-Output Libraries:
 

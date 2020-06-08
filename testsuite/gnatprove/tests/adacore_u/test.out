@@ -33,7 +33,7 @@ p.adb:63:24: info: cannot unroll loop (too many loop iterations)
 p.adb:65:20: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:70:14: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:76:07: info: initialization of "End_Of_Seq" proved
-p.adb:78:38: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = -2147483648 and A'Last = 0)
+p.adb:78:38: medium: overflow check might fail (e.g. when A'First = -2147483648 and A'Last = 0)
 p.adb:81:09: info: data dependencies proved
 p.adb:82:31: info: initialization of "End_Of_Seq" proved
 p.adb:84:09: info: flow dependencies proved
@@ -138,6 +138,8 @@ counting.ads:13:06: info: data dependencies proved
 counting.ads:14:16: info: postcondition proved (CVC4: 1 VC)
 counting.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 counting.ads:17:48: info: overflow check proved (CVC4: 1 VC)
+counting.ads:20:14: info: initialization of "Black_Counter" constituent of "State" proved
+counting.ads:20:14: info: initialization of "Red_Counter" constituent of "State" proved
 counting.ads:21:06: info: data dependencies proved
 data_package.adb:6:07: info: initialization of "Data" proved
 data_package.ads:3:01: info: flow dependencies proved
@@ -187,12 +189,12 @@ use_stack.adb:10:09: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: assertion proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:32: info: precondition proved (CVC4: 1 VC)
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
 p_max_array.adb:4:07: info: initialization of "R" proved
 p_max_array.adb:4:07: info: range check proved (CVC4: 2 VC)
 p_max_array.adb:8:33: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -213,7 +215,7 @@ p_max_array.adb:26:33: info: loop invariant preservation proved (CVC4: 1 VC)
 p_max_array.adb:26:39: info: overflow check proved (CVC4: 2 VC)
 p_max_array.adb:26:49: info: overflow check proved (CVC4: 2 VC)
 p_max_array.adb:28:13: info: loop invariant initialization proved (CVC4: 2 VC)
-p_max_array.adb:28:13: info: loop invariant preservation proved (altergo: 2 VC)
+p_max_array.adb:28:13: info: loop invariant preservation proved (Z3: 2 VC)
 p_max_array.adb:28:40: info: overflow check proved (CVC4: 2 VC)
 p_max_array.adb:29:24: info: index check proved (CVC4: 4 VC)
 p_max_array.adb:29:34: info: overflow check proved (CVC4: 2 VC)
@@ -254,7 +256,7 @@ p_max_array.adb:54:63: info: index check proved (CVC4: 4 VC)
 p_max_array.adb:55:24: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:56:25: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:58:17: info: overflow check proved (CVC4: 1 VC)
-p_max_array.ads:10:14: info: postcondition proved (Z3: 1 VC; altergo: 1 VC)
+p_max_array.ads:10:14: info: postcondition proved (Z3: 2 VC)
 p_max_array.ads:11:24: info: index check proved (CVC4: 2 VC)
 p_max_array.ads:11:34: info: overflow check proved (CVC4: 1 VC)
 p_max_array.ads:11:44: info: index check proved (CVC4: 2 VC)
@@ -370,7 +372,7 @@ abstract_ints.adb:37:30: info: overflow check proved (CVC4: 1 VC)
 abstract_ints.adb:55:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at abstract_ints.ads:28 should mention Arg in a precondition]
 abstract_ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
 abstract_ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
-abstract_ints.ads:23:25: info: postcondition proved (altergo: 1 VC)
+abstract_ints.ads:23:25: info: postcondition proved (CVC4: 1 VC)
 abstract_ints.ads:40:70: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [possible explanation: subprogram at line 9 should mention Arg in a precondition]
 distributed_file_system.ads:9:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:12:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
@@ -427,12 +429,12 @@ use_file_system.adb:11:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:12:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:14:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:15:05: medium: precondition might fail
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
 fixed_mem.adb:6:04: warning: variable "Data" is never read and never assigned
 fixed_mem.adb:9:55: medium: range check might fail (e.g. when Free = 1002) [possible explanation: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
@@ -459,7 +461,7 @@ resources.adb:6:24: info: unrolling loop
 resources.ads:9:13: info: implicit function contract might not be available on recursive calls
 resources.ads:9:13: medium: subprogram "Sum" might not terminate, terminating annotation could be incorrect
 resources.ads:10:32: info: index check proved (CVC4: 2 VC)
-resources.ads:10:36: medium: overflow check might fail (e.g. when D = (others => -2147483649) and To = 1) [possible explanation: subprogram at line 9 should mention D and To in a precondition]
+resources.ads:10:36: medium: overflow check might fail (e.g. when To = 1) [possible explanation: subprogram at line 9 should mention D and To in a precondition]
 resources.ads:10:46: info: range check proved (CVC4: 1 VC)
 resources.ads:14:22: info: initialization of "D" proved
 resources.ads:15:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, others => 6))

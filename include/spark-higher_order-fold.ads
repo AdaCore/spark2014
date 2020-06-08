@@ -420,7 +420,12 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
       procedure Count_Zero (A : Array_Type) with Ghost,
         Post => (Count (A) = 0) =
           (for all I in A'Range => not Choose (A (I)));
-      --  Lemma: Count returns 0 if and only if no element is chosen
+      --  Lemma: Count returns 0 if and only if no elements are chosen
+
+      procedure Count_Length (A : Array_Type) with Ghost,
+        Post => (Count (A) = A'Length) =
+          (for all I in A'Range => Choose (A (I)));
+      --  Lemma: Count returns A'Length if and only if all elements are chosen
    end Count;
 
    generic
@@ -694,7 +699,14 @@ package SPARK.Higher_Order.Fold with SPARK_Mode is
         Post => (Count (A) = 0) =
           (for all I in A'Range (1) =>
              (for all J in A'Range (2) => not Choose (A (I, J))));
-      --  Lemma: Count returns 0 if and only if no element is chosen
+      --  Lemma: Count returns 0 if and only if no elements are chosen
+
+      procedure Count_Length (A : Array_Type) with Ghost,
+        Post => (Count (A) = A'Length (1) * A'Length (2)) =
+          (for all I in A'Range (1) =>
+             (for all J in A'Range (2) => Choose (A (I, J))));
+      --  Lemma: Count returns A'Length (1) * A'Length (2) if and only if all
+      --  elements are chosen.
 
    end Count_2;
 

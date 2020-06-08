@@ -24,7 +24,7 @@ install
 gnat2why/obj
 gnat2why/why/xgen/obj
 gnat2why/obj-tools
-gnatprove/obj
+obj
 benchmark_script/data
 benchmark_script/bench
 gnat2why/why/xgen/b__xtree.ad?

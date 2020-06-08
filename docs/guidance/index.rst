@@ -12,7 +12,7 @@ SPARK Guidance
 
 .. only:: html
 
-   Copyright (C) 2016-2018, AdaCore and Thales
+   Copyright (C) 2016-2019, AdaCore and Thales
 
    .. image:: _static/licence-cc-by.png
       :align: left

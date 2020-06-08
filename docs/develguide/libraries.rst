@@ -96,7 +96,7 @@ GNAT patch
 Abstract state and global contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Refinment of the abstract state was necessary because it is not possible
+Refinement of the abstract state was necessary because it is not possible
 to put ``SPARK_Mode`` on the spec: there is an access type in the public
 part of the spec. All functions and procedures were annoted with Global,
 and Pre, Post if necessary. The Global contracts are most of the time

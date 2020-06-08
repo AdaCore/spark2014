@@ -13,6 +13,9 @@ Tool Limitations
    access-to-subprogram and dynamic binding) and indirect reads/writes to
    global variables (through access variables).
 
+#. Checks related to tasking, subprogram termination, or recursive calls do not
+   take into account dispatching calls.
+
 #. A subset of all Ada conversions between array types is supported:
 
    * element types must be exactly the same
@@ -24,9 +27,12 @@ Tool Limitations
 
    * multiplication and division between different fixed-point types and
      floating-point types are rejected
+   * multiplication and division between a fixed-point type and a real literal
+     are rejected, the fix is to qualify the real literal with a fixed-point
+     type as in ``Fp_Type'(0.25)``
    * multiplication and division between different fixed-point types are
      rejected if their smalls are not *compatible* as defined in Ada RM
-     G.2.3(21).
+     G.2.3(21)
    * conversions from fixed-point types to floating-point types are rejected
 
    These restrictions ensure that the result of fixed-point operations always

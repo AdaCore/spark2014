@@ -1121,7 +1121,7 @@ Axiom fliteral_axiom3 :
    (000000000000000000010842021724855044340074528008699417114257812500000000000000000000000 / 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000)%R).
 
 (* Why3 goal *)
-Theorem def'VC :
+Theorem def'vc :
   (dynamic_invariant fl_last_sqrt true false true true) ->
   (fliteral2 = fl_last_sqrt) ->
   (dynamic_invariant val1 true false true true) ->

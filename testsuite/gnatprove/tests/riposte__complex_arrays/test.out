@@ -9,7 +9,7 @@ complex_arrays.adb:55:22: medium: postcondition might fail, cannot prove A(I) = 
 complex_arrays.adb:64:11: info: flow dependencies proved
 complex_arrays.adb:65:22: medium: postcondition might fail, cannot prove A(I)(J) = A(J)(I) (e.g. when A = (0 => (1 => 1, 2 => 1, others => 0), 2 => (0 => 0, others => 1), others => (others => 0)) and I = 0 and J = 2)
 complex_arrays.adb:74:11: info: flow dependencies proved
-complex_arrays.adb:75:22: medium: postcondition might fail, cannot prove A(I) = A(J) (e.g. when A = (2 => (others => 0), others => (others => -1)) and I = 1 and J = 2)
+complex_arrays.adb:75:22: medium: postcondition might fail, cannot prove A(I) = A(J) (e.g. when A = (0 => (0 => -1, others => 0), 1 => (0 => -1, others => 0), 2 => (0 => 0, others => -1), others => (others => -1)) and I = 1 and J = 2)
 complex_arrays.adb:85:11: info: flow dependencies proved
 complex_arrays.adb:87:22: medium: postcondition might fail, cannot prove A(I)(J) /= 23 (e.g. when A = (1 => (others => 42), others => (others => 23)) and I = 0 and J = 1)
 complex_arrays.adb:97:11: info: flow dependencies proved

@@ -70,42 +70,42 @@ a-cofove.ads:581:57: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofove.ads:709:23: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
 a-cofove.ads:745:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
 a-cofove.ads:843:56: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.adb:8
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded.ads:6
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_bounded_tagged.ads:12
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at indefinite_unbounded_tagged.ads:14
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at unbounded.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at bounded.ads:6
 bounded.adb:11:07: info: initialization of "V" proved
 bounded.adb:11:19: info: range check proved (CVC4: 1 VC)
 bounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
@@ -1127,44 +1127,44 @@ indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:808
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:818
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:83
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cfinve.ads:96
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:108
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:109
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:119
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:110
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:120
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:130
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:121
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:131
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:144
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:160
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:174
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:177
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:132
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:145
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:161
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:175
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:178
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:191
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:194
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:179
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:192
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:195
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:210
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:228
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:237
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:268
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:271
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:280
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:196
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:211
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:229
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:238
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:269
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:272
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:281
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:283
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:282
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:284
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:285
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:297
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:286
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:298
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:299
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:301
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:303
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:308
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:312
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:323
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:325
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:300
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:302
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:304
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:309
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:313
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:324
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:326
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:331
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:335
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:352
-indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:360
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:327
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:332
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:336
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:353
+indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:361
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:52
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:83
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:92
@@ -2056,44 +2056,44 @@ indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:80
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:818
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:83
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cfinve.ads:96
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:108
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:109
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:119
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:110
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:120
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:130
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:121
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:131
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:144
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:160
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:174
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:177
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:132
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:145
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:161
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:175
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:178
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:191
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:194
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:179
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:192
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:195
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:210
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:228
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:237
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:268
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:271
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:280
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:196
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:211
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:229
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:238
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:269
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:272
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:281
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:283
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:282
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:284
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:285
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:297
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:286
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:298
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:299
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:301
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:303
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:308
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:312
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:323
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:325
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:300
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:302
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:304
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:309
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:313
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:324
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:326
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:331
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:335
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:352
-indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:360
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:327
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:332
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:336
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:353
+indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:361
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:52
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:83
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:92

@@ -13,11 +13,9 @@ Exception Handlers
 
 .. centered:: **Legality Rules**
 
-.. _tu-exception_handlers-01:
 
 1. Exception handlers are not permitted in |SPARK|.
 
-.. _etu-exception_handlers:
 
 Raise Statements
 ----------------
@@ -27,7 +25,6 @@ provably never executed.
 
 .. centered:: **Verification Rules**
 
-.. _tu-raise_statements-01:
 
 1. A ``raise_statement`` introduces an obligation to prove that the statement
    will not be executed, much like the verification condition associated with
@@ -43,7 +40,6 @@ provably never executed.
    for details) introduces a similar obligation to prove that the
    expression will not be evaluated.]
 
-.. _etu-raise_statements-vr:
 
 Exception Handling
 ------------------
@@ -58,7 +54,6 @@ Pragmas Assert and Assertion_Policy
 
 .. centered:: **Legality Rules**
 
-.. _tu-pragmas-assert and assertion_policy-01:
 
 1. The pragmas ``Assertion_Policy``, ``Suppress``, and ``Unsuppress`` are
    allowed in |SPARK|, but have no effect on the generation of verification
@@ -66,7 +61,6 @@ Pragmas Assert and Assertion_Policy
    bounds regardless of whether Index_Check is suppressed at the point
    of the array indexing.]
 
-.. _tu-pragmas-assert and assertion_policy-02:
 
 2. The following |SPARK| defined aspects and pragmas are assertions and
    their *Boolean_*\ ``expressions`` are assertion expressions:
@@ -89,4 +83,3 @@ Pragmas Assert and Assertion_Policy
    *assertion_*\ ``aspect_marks`` some of which may apply to groups of
    these assertions.
 
-.. _etu-pragmas-assert and assertion_policy:

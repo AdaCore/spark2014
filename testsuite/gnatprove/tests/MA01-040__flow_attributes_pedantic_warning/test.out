@@ -1,18 +1,18 @@
-pedantic.adb:7:15: medium: range check might fail [possible explanation: subprogram at pedantic.ads:17 should mention X in a precondition]
+error.adb:7:15: unknown value of object alignment is not yet supported
+gnatprove: error during flow analysis and proof
+pedantic.adb:7:15: medium: range check might fail
 pedantic.adb:7:15: warning: attribute "Alignment" has an implementation-defined value
-pedantic.adb:13:15: medium: range check might fail
-pedantic.adb:13:15: warning: attribute "Alignment" has an implementation-defined value
-pedantic.adb:25:15: warning: attribute "Component_Size" has an implementation-defined value
+pedantic.adb:19:15: warning: attribute "Component_Size" has an implementation-defined value
+pedantic.adb:25:18: medium: range check might fail [possible explanation: subprogram at pedantic.ads:23 should mention V in a precondition]
+pedantic.adb:25:18: warning: attribute "First_Bit" has an implementation-defined value
 pedantic.adb:31:18: medium: range check might fail [possible explanation: subprogram at pedantic.ads:25 should mention V in a precondition]
-pedantic.adb:31:18: warning: attribute "First_Bit" has an implementation-defined value
+pedantic.adb:31:18: warning: attribute "Last_Bit" has an implementation-defined value
 pedantic.adb:37:18: medium: range check might fail [possible explanation: subprogram at pedantic.ads:27 should mention V in a precondition]
-pedantic.adb:37:18: warning: attribute "Last_Bit" has an implementation-defined value
-pedantic.adb:43:18: medium: range check might fail [possible explanation: subprogram at pedantic.ads:29 should mention V in a precondition]
-pedantic.adb:43:18: warning: attribute "Position" has an implementation-defined value
-pedantic.adb:49:15: medium: range check might fail
+pedantic.adb:37:18: warning: attribute "Position" has an implementation-defined value
+pedantic.adb:43:15: medium: range check might fail
+pedantic.adb:43:15: warning: attribute "Size" has an implementation-defined value
+pedantic.adb:49:15: medium: range check might fail [possible explanation: subprogram at pedantic.ads:31 should mention V in a precondition]
 pedantic.adb:49:15: warning: attribute "Size" has an implementation-defined value
-pedantic.adb:55:15: medium: range check might fail [possible explanation: subprogram at pedantic.ads:33 should mention V in a precondition]
-pedantic.adb:55:15: warning: attribute "Size" has an implementation-defined value
 pedantic.ads:12:29: medium: range check might fail
 pedantic.ads:12:29: warning: attribute "Alignment" has an implementation-defined value
 pedantic.ads:15:30: warning: attribute "Alignment" has an implementation-defined value

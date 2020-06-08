@@ -184,13 +184,13 @@ they were imprecise. For example, for a code like this:
    X := X + 1;
 
 they would tell us that X is both written and read, so we would classify it as
-an In_Out global. Also, it was not possible to tell which references occurs in
+an In_Out global. Also, it was not possible to tell which references occur in
 proof contexts (e.g. in pragma Assert expressions), or to know which calls
 happen for sure, which only conditionally, and which only in proof contexts.
-Finally, some references were missing (e.g. in implicit calls to type
-predicates) while other were spurious (e.g. references in pragma Pre/Post
-expressions are believed to belong to the where the pragma occurs, not to which
-subprogram it annotates).
+Finally, some references were missing (e.g. in calls to predicates expressions)
+while other were spurious (e.g. references in pragma Pre/Post expressions are
+believed to belong to the where the pragma occurs, not to the subprogram it
+annotates).
 
 To get precise information we need a something smarter. It is natural to reuse
 the existing code for the flow analysis, thought it was designed for checking

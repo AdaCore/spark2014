@@ -1,4 +1,5 @@
 package Stacks with SPARK_Mode is
+   pragma Unevaluated_Use_Of_Old (Allow);
    Max : constant Natural := 100;
    subtype Less_Than_Max is Natural range 0 .. Max;
 
@@ -27,8 +28,8 @@ package Stacks with SPARK_Mode is
        and then Peek'Result = S.Get_Model (S.Get_Model'Last);
    procedure Pop (S : in out Stack_Root; E : out Element) is abstract with
      Pre'Class  => not S.Is_Empty,
-     Post'Class => E = S.Peek'Old and
-       S.Get_Model = S.Get_Model'Old (S.Get_Model'Old'First ..  S.Get_Model'Old'Last - 1);
+     Post'Class => S.Get_Model = S.Get_Model'Old (S.Get_Model'Old'First ..  S.Get_Model'Old'Last - 1)
+     and (if not S.Is_Empty'Old then E = S.Get_Model'Old (S.Get_Model'Last'Old));
    procedure Push (S : in out Stack_Root; E : Element) is abstract with
      Pre'Class  => not S.Is_Full,
      Post'Class => S.Get_Model = S.Get_Model'Old & E;

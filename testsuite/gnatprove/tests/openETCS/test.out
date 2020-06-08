@@ -1,10 +1,10 @@
-a-cfhama.ads:680:39: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:689:17: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:719:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:734:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
+a-cfhama.ads:681:39: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:690:17: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:720:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:735:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
 com_map.ads:39:22: info: precondition proved (CVC4: 1 VC)
 deceleration_curve.adb:33:07: info: initialization of "delta_speed" proved
 deceleration_curve.adb:37:25: info: assertion proved (CVC4: 4 VC)
@@ -80,7 +80,7 @@ sec_3_13_2_monitoring_inputs.ads:248:14: warning: subprogram "dummy" has no effe
 sec_3_13_4_gradient_accel_decel.ads:26:24: warning: unused variable "d"
 sec_3_13_6_deceleration.adb:26:37: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.adb:26:37: info: range check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.adb:27:71: info: range check proved (Z3: 1 VC)
+sec_3_13_6_deceleration.adb:27:71: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:34:43: warning: unused variable "d"
 sec_3_13_6_deceleration.ads:39:06: info: postcondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:40:37: info: precondition proved (CVC4: 1 VC)
@@ -120,14 +120,14 @@ step_function.adb:31:50: info: index check proved (CVC4: 4 VC)
 step_function.adb:32:61: info: index check proved (CVC4: 2 VC)
 step_function.adb:32:61: info: overflow check proved (CVC4: 1 VC)
 step_function.adb:46:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-step_function.adb:46:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
+step_function.adb:46:13: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 step_function.adb:47:34: info: index check proved (CVC4: 4 VC)
 step_function.adb:48:33: info: index check proved (CVC4: 4 VC)
 step_function.adb:50:13: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:50:13: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:51:31: info: index check proved (CVC4: 4 VC)
 step_function.adb:53:34: info: index check proved (CVC4: 4 VC)
-step_function.adb:59:16: info: assertion proved (CVC4: 1 VC)
+step_function.adb:59:16: info: assertion proved (Z3: 1 VC)
 step_function.adb:60:29: info: index check proved (CVC4: 2 VC)
 step_function.adb:60:55: info: index check proved (CVC4: 2 VC)
 step_function.adb:72:17: info: range check proved (CVC4: 1 VC)
@@ -146,7 +146,7 @@ step_function.adb:96:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:97:33: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:97:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:98:33: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:98:33: info: loop invariant preservation proved (CVC4: 1 VC)
+step_function.adb:98:33: info: loop invariant preservation proved (Z3: 1 VC)
 step_function.adb:102:13: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:102:13: info: loop invariant preservation proved (CVC4: 2 VC)
 step_function.adb:107:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
@@ -219,7 +219,7 @@ step_function.ads:56:12: info: postcondition proved (Z3: 1 VC)
 step_function.ads:58:27: info: index check proved (CVC4: 2 VC)
 step_function.ads:59:36: info: index check proved (CVC4: 2 VC)
 step_function.ads:60:50: info: index check proved (CVC4: 2 VC)
-step_function.ads:72:06: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
+step_function.ads:72:06: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 step_function.ads:73:28: info: index check proved (CVC4: 2 VC)
 step_function.ads:74:50: info: index check proved (CVC4: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC4: 2 VC)

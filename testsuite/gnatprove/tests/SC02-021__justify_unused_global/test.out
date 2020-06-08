@@ -1,0 +1,6 @@
+repro.adb:14:07: warning: no check message justified by this pragma
+repro.adb:27:07: warning: no check message justified by this pragma
+repro.ads:4:04: info: flow dependencies proved
+repro.ads:6:19: info: initialization of "Value" proved
+repro.ads:8:07: info: data dependencies proved
+repro.ads:9:07: info: flow dependencies proved

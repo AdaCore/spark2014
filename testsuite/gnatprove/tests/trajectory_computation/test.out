@@ -55,7 +55,7 @@ complex_trajectory.adb:44:48: info: range check proved (CodePeer)
 complex_trajectory.adb:44:70: info: range check proved (CodePeer)
 complex_trajectory.adb:46:25: medium: assertion might fail, cannot prove Average in Old_Speed .. Speed
 complex_trajectory.adb:48:25: medium: assertion might fail, cannot prove Average in Speed .. Old_Speed
-complex_trajectory.adb:50:22: info: assertion proved (Z3: 2 VC)
+complex_trajectory.adb:50:22: medium: assertion might fail, cannot prove Average in Low_Bound (N + 1) .. High_Bound (N + 1)
 complex_trajectory.adb:50:46: info: range check proved (CodePeer)
 complex_trajectory.adb:50:68: info: range check proved (CodePeer)
 complex_trajectory.adb:51:22: medium: assertion might fail, cannot prove Average >= 2.0 * Float64 (N) * (- Bound) * 0.5

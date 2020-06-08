@@ -1,0 +1,7 @@
+INLINING ENABLED:
+r.adb:1:53: info: initialization of "Result" proved
+r.adb:2:04: info: flow dependencies proved
+
+INLINING DISABLED:
+r.adb:1:53: info: initialization of "Result" proved
+r.adb:2:04: info: flow dependencies proved

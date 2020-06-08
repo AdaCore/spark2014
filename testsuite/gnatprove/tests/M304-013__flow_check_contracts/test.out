@@ -6,9 +6,7 @@ test.adb:16:11: info: data dependencies proved
 test.adb:16:33: info: initialization of "G" proved
 test.adb:17:11: info: flow dependencies proved
 test.adb:26:11: info: data dependencies proved
-test.adb:26:33: high: "G" is not an input in the Global contract of subprogram "Test_02" at line 25
 test.adb:26:33: high: "G" is not initialized
-test.adb:26:33: high: either make "G" an input in the Global contract or initialize it before use
 test.adb:26:33: low: unused global "G"
 test.adb:27:11: info: flow dependencies proved
 test.adb:33:14: medium: overflow check might fail [possible explanation: subprogram at line 25 should mention X in a precondition]

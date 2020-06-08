@@ -1,2 +1,1 @@
-im.adb:3:25: expect object name in renaming
-gnatprove: error during generation of Global contracts
+im.adb:1:11: warning: subprogram "Im" has no effect

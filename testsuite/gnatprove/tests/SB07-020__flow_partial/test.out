@@ -1,0 +1,5 @@
+test-child-user.adb:7:20: info: discriminant check proved (CVC4: 1 VC), in instantiation at instance.ads:11
+test-child-user.adb:7:20: info: discriminant check proved (CVC4: 1 VC), in instantiation at test-child.adb:7, in instantiation at instance.ads:10
+test-child.ads:5:03: info: flow dependencies proved, in instantiation at instance.ads:10
+test-child.ads:15:07: info: data dependencies proved, in instantiation at instance.ads:10
+test-child.ads:19:07: info: data dependencies proved, in instantiation at instance.ads:10

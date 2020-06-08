@@ -12,14 +12,14 @@ string_utilities.adb:32:26: info: cannot unroll loop (too many loop iterations)
 string_utilities.adb:33:29: info: cannot unroll loop (too many loop iterations)
 string_utilities.adb:38:39: medium: overflow check might fail (e.g. when X1 = 2 and X2 = 2) [possible explanation: loop at line 33 should mention Lengths in a loop invariant]
 string_utilities.adb:38:39: medium: range check might fail (e.g. when X1 = 2147483647 and X2 = 2147483647) [possible explanation: loop at line 33 should mention Lengths in a loop invariant]
-string_utilities.adb:38:41: high: "Lengths" is not initialized
+string_utilities.adb:38:41: medium: "Lengths" might not be initialized
 string_utilities.adb:38:56: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:38:64: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:38:64: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:40:47: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:40:68: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:40:73: info: range check proved (CVC4: 1 VC)
-string_utilities.adb:41:53: high: "Lengths" is not initialized
+string_utilities.adb:41:53: medium: "Lengths" might not be initialized
 string_utilities.adb:41:72: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:41:72: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:47:10: medium: "Lengths" might not be initialized
@@ -51,7 +51,7 @@ string_utilities.ads:4:48: info: range check proved (CVC4: 4 VC)
 string_utilities.ads:4:59: medium: overflow check might fail (e.g. when S = (others => 'NUL') and S'First = 2147483647 and S'Last = 0)
 string_utilities.ads:10:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
 string_utilities.ads:11:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
-string_utilities.ads:17:15: medium: overflow check might fail (e.g. when S1 = (others => 'NUL') and S1'First = 2147483647 and S1'Last = 2147483647 and S2 = (others => 'NUL') and S2'First = 2147483647 and S2'Last = 2147483647) [possible explanation: subprogram at line 13 should mention S1 and S2 in a precondition]
+string_utilities.ads:17:15: medium: overflow check might fail (e.g. when S1 = (others => 'NUL') and S1'First = 1 and S1'Last = 1 and S2 = (others => 'NUL') and S2'First = 1 and S2'Last = 1) [possible explanation: subprogram at line 13 should mention S1 and S2 in a precondition]
 string_utilities.ads:17:17: info: expression function body not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:17:17: info: implicit function contract not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:19:15: info: range check proved (CVC4: 1 VC)

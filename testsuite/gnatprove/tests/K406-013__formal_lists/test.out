@@ -1,25 +1,3 @@
-a-cfdlli.ads:469:49: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:610:49: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:700:57: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:766:57: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:852:28: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:852:39: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1028:43: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1209:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1348:20: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1363:20: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1378:20: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1393:20: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1415:14: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1421:23: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1470:14: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1477:23: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at formal_container.ads:7
-a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at formal_container.ads:7
-a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at formal_container.ads:7
-a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at formal_container.ads:7
-a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at formal_container.ads:7
-a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at formal_container.ads:7
 test_vdll.adb:9:04: info: initialization of "L1" proved
 test_vdll.adb:9:16: info: range check proved (CVC4: 1 VC)
 test_vdll.adb:10:04: info: initialization of "L2" proved
@@ -124,8 +102,8 @@ test_vdll.adb:141:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:141:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:142:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:142:36: info: precondition proved (CVC4: 1 VC)
+test_vdll.adb:143:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:143:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:143:19: medium: assertion might fail, cannot prove Test_Element (L3, Next (L3, First (L3)), 4)
 test_vdll.adb:143:37: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:146:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:149:19: info: assertion proved (CVC4: 1 VC)
@@ -138,16 +116,16 @@ test_vdll.adb:160:12: medium: precondition might fail, cannot prove Has_Element 
 test_vdll.adb:162:30: info: assertion proved (Trivial: 1 VC)
 test_vdll.adb:166:11: info: discriminant check proved (CVC4: 1 VC)
 test_vdll.adb:166:11: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:168:19: medium: assertion might fail, cannot prove Length (L4) = 1 [possible explanation: call at line 167 should mention Container (for argument L4) in a postcondition]
+test_vdll.adb:168:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:171:19: info: assertion proved (CVC4: 1 VC)
+test_vdll.adb:172:19: info: assertion proved (Z3: 1 VC)
 test_vdll.adb:172:19: info: precondition proved (CVC4: 1 VC)
-test_vdll.adb:172:19: medium: assertion might fail, cannot prove Test_Element (L4, First (L4), 4) [possible explanation: call at line 167 should mention Container (for argument L4) in a postcondition]
-test_vdll.adb:175:19: medium: assertion might fail, cannot prove not Has_Element (L4, Next (L1, First (L1))) [possible explanation: call at line 167 should mention Container (for argument L4) in a postcondition]
+test_vdll.adb:175:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:175:40: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:178:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:178:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:186:12: medium: precondition might fail, cannot prove Has_Element (Container, Position) or else Position = No_Element [possible explanation: call at line 167 should mention Container (for argument L4) in a postcondition]
-test_vdll.adb:187:18: medium: precondition might fail, cannot prove Has_Element (Container, Position) or else Position = No_Element
+test_vdll.adb:187:18: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:189:30: info: assertion proved (Trivial: 1 VC)
 test_vdll.adb:195:30: info: loop invariant initialization proved (CVC4: 1 VC)
 test_vdll.adb:195:30: info: loop invariant preservation proved (CVC4: 1 VC)

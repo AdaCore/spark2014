@@ -1,4 +1,4 @@
-sort.adb:12:15: medium: postcondition might fail, cannot prove Is_Perm (Values'Old, Values) (e.g. when Values = (1 => 1, 2 => 0, others => 1) and Values'First = 1 and Values'Last = 2 and Values'Old = (1 => 0, 2 => 1, others => 1))
+sort.adb:12:15: info: postcondition proved (CVC4: 1 VC)
 sort.adb:14:07: info: initialization of "Temp" proved
 sort.adb:16:29: info: index check proved (CVC4: 2 VC)
 sort.adb:17:15: info: index check proved (CVC4: 2 VC)

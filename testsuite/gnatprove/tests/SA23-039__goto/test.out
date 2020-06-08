@@ -1,0 +1,54 @@
+simple_flow.adb:1:37: info: initialization of "Y" proved
+simple_flow.adb:2:36: info: postcondition proved (CVC4: 1 VC)
+simple_flow.adb:2:43: info: data dependencies proved
+simple_flow.adb:14:28: info: raise statement proved unreachable (CVC4: 1 VC)
+simple_flow.adb:20:06: warning: this statement is never reached
+test_goto.adb:16:35: info: cannot unroll loop (too many loop iterations)
+test_goto.adb:17:29: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: loop at line 16 should mention X in a loop invariant]
+test_goto.adb:82:30: info: loop invariant initialization proved (Trivial: 1 VC)
+test_goto.adb:82:30: info: loop invariant preservation proved (Trivial: 1 VC)
+test_goto.adb:90:19: medium: assertion might fail, cannot prove B (X) (e.g. when X = 5) [possible explanation: loop invariant at line 82 should mention X]
+test_goto_borrow.adb:9:12: info: implicit function contract might not be available on recursive calls
+test_goto_borrow.adb:9:12: medium: subprogram "Length" might not terminate, terminating annotation could be incorrect
+test_goto_borrow.adb:11:50: info: pointer dereference check proved (CVC4: 1 VC)
+test_goto_borrow.adb:11:58: info: overflow check proved (CVC4: 1 VC)
+test_goto_borrow.adb:11:58: info: range check proved (CVC4: 1 VC)
+test_goto_borrow.adb:14:12: info: implicit function contract might not be available on recursive calls
+test_goto_borrow.adb:14:12: medium: subprogram "Nth" might not terminate, terminating annotation could be incorrect
+test_goto_borrow.adb:15:20: info: pointer dereference check proved (CVC4: 1 VC)
+test_goto_borrow.adb:15:31: info: precondition proved (CVC4: 1 VC)
+test_goto_borrow.adb:15:37: info: pointer dereference check proved (CVC4: 1 VC)
+test_goto_borrow.adb:15:46: info: range check proved (CVC4: 1 VC)
+test_goto_borrow.adb:19:21: warning: unused variable "L"
+test_goto_borrow.adb:24:67: info: initialization of "I" proved
+test_goto_borrow.adb:26:14: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+test_goto_borrow.adb:27:48: info: precondition proved (CVC4: 1 VC)
+test_goto_borrow.adb:27:56: info: range check proved (CVC4: 1 VC)
+test_goto_borrow.adb:35:36: info: loop invariant initialization proved (CVC4: 1 VC)
+test_goto_borrow.adb:35:36: info: loop invariant preservation proved (CVC4: 1 VC)
+test_goto_borrow.adb:35:62: info: overflow check proved (CVC4: 2 VC)
+test_goto_borrow.adb:37:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+test_goto_borrow.adb:37:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+test_goto_borrow.adb:37:42: info: overflow check proved (CVC4: 2 VC)
+test_goto_borrow.adb:37:82: info: overflow check proved (CVC4: 2 VC)
+test_goto_borrow.adb:39:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+test_goto_borrow.adb:39:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+test_goto_borrow.adb:39:43: info: overflow check proved (CVC4: 2 VC)
+test_goto_borrow.adb:39:64: info: precondition proved (CVC4: 2 VC)
+test_goto_borrow.adb:39:74: info: overflow check proved (CVC4: 2 VC)
+test_goto_borrow.adb:39:74: info: range check proved (CVC4: 2 VC)
+test_goto_borrow.adb:39:81: info: precondition proved (CVC4: 2 VC)
+test_goto_borrow.adb:39:89: info: range check proved (CVC4: 2 VC)
+test_goto_borrow.adb:41:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+test_goto_borrow.adb:41:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+test_goto_borrow.adb:41:84: info: overflow check proved (CVC4: 2 VC)
+test_goto_borrow.adb:41:92: info: precondition proved (CVC4: 2 VC)
+test_goto_borrow.adb:41:105: info: precondition proved (CVC4: 2 VC)
+test_goto_borrow.adb:41:115: info: overflow check proved (CVC4: 2 VC)
+test_goto_borrow.adb:43:20: info: overflow check proved (CVC4: 1 VC)
+test_goto_borrow.adb:45:17: info: pointer dereference check proved (CVC4: 1 VC)
+test_goto_borrow.adb:46:31: info: assertion proved (CVC4: 1 VC)
+test_goto_borrow.adb:46:31: info: precondition proved (CVC4: 1 VC)
+test_goto_borrow.adb:47:17: info: pointer dereference check proved (CVC4: 1 VC)
+test_goto_borrow.adb:48:31: info: assertion proved (CVC4: 1 VC)
+test_goto_borrow.adb:51:19: info: pointer dereference check proved (CVC4: 1 VC)

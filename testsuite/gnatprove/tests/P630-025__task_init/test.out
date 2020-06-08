@@ -63,7 +63,6 @@ decadriver.adb:299:35: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:313:10: info: initialization of "LDE_REPC_Reg" proved
 decadriver.adb:315:10: info: initialization of "SFD_Timeout" proved
 decadriver.adb:325:60: info: division check proved (CVC4: 1 VC)
-decadriver.adb:333:55: info: range check proved (CVC4: 1 VC)
 decadriver.adb:335:34: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:336:35: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:338:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
@@ -74,7 +73,6 @@ decadriver.adb:355:23: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:360:13: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Configure"
 decadriver.adb:364:36: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:377:35: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
-decadriver.adb:382:46: info: range check proved (CVC4: 1 VC)
 decadriver.adb:401:26: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Configure"
 decadriver.adb:407:29: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:408:29: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"

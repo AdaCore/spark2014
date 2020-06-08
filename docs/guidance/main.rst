@@ -41,7 +41,7 @@ of a project. The main difference in that case is that one would not want
 to start at the lowest level but already take into account the final
 targeted level starting with the initial design phase.
 
-This version of the document is based on the SPARK Pro 18 and GNAT Studio 18
+This version of the document is based on the SPARK Pro 19 and GNAT Studio 19
 versions. Further references are given at the end of this document.
 
 .. _Levels of Software Assurance:
@@ -327,7 +327,9 @@ GNATprove can only be run on the sources of a GNAT project (a file with
 extension 'gpr' describing source files and switches to the GNAT compiler
 and other tools in the GNAT tool suite). As an installation check,
 start by applying GNATprove to the project without any ``SPARK_Mode``
-markers::
+markers:
+
+.. code-block:: none
 
   > gnatprove -P my_project.gpr --mode=check -j0
 
@@ -336,7 +338,9 @@ markers::
 
 The ``-j0`` switch analyzes files from the project in parallel, using as
 many cores as available, and the ``--mode=check`` switch runs GNATprove
-in fast checking mode. GNATprove should output the following messages::
+in fast checking mode. GNATprove should output the following messages:
+
+.. code-block:: none
 
   Phase 1 of 2: generation of Global contracts ...
   Phase 2 of 2: fast partial checking of SPARK legality rules ...
@@ -361,21 +365,27 @@ the body file (typically a file with extension 'adb' for this unit:
 
    pragma SPARK_Mode;
 
-Then apply GNATprove to the project again::
+Then apply GNATprove to the project again:
+
+.. code-block:: none
 
   > gnatprove -P my_project.gpr --mode=check -j0
 
 GNATprove should output the following messages, stating that SPARK legality
 rules were checked on the unit marked, possibly followed by a number of
 error messages pointing to locations in the code where SPARK rules were
-violated::
+violated:
+
+.. code-block:: none
 
   Phase 1 of 2: generation of Global contracts ...
   Phase 2 of 2: checking of SPARK legality rules ...
 
 If you applied SPARK_Mode to a spec file without body (e.g., a unit defining
 only constants), GNATprove will notify you that no body was actually
-analyzed::
+analyzed:
+
+.. code-block:: none
 
   Phase 1 of 2: generation of Global contracts ...
   Phase 2 of 2: flow analysis and proof ...
@@ -388,9 +398,11 @@ At this point, you should switch to using GNAT Studio, the
 integrated development environment provided with GNAT, in order to more
 easily interact with GNATprove. For example, GNAT Studio provides basic facilities
 for code navigation and location of errors that facilitate the adoption of
-SPARK. Open GNAT Studio on your project::
+SPARK. Open GNAT Studio on your project:
 
-  > gps -P my_project.gpr
+.. code-block:: none
+
+  > gnatstudio -P my_project.gpr
 
 There should be a SPARK menu available. Repeat the previous action within GNAT Studio
 by selecting the :menuselection:`SPARK --> Examine All` menu, select the
@@ -435,22 +447,30 @@ These scripts, when called on a list of files as command-line arguments,
 insert a line with the pragma SPARK_Mode at the beginning of each file. The
 list of files from a project can be obtained by calling GPRls when the
 project has main files (that is, it generates executables instead of
-libraries)::
+libraries):
+
+.. code-block:: none
 
   > gprls -P my_project.gpr --closure
 
-or by calling GPRbuild with suitable arguments as follows::
+or by calling GPRbuild with suitable arguments as follows:
+
+.. code-block:: none
 
   > gprbuild -q -f -c -P my_project.gpr -gnatd.n | grep -v adainclude | sort | uniq
 
 One you've obtained the list of Ada source files in the project by one of
 the two methods mentioned previously, you can systematically apply the
 ``SPARK_Mode`` marker to all the files with the small shell or Python script
-shown above::
+shown above:
+
+.. code-block:: none
 
   > cat list_of_sources.txt | mark.sh
 
-or::
+or:
+
+.. code-block:: none
 
   > cat list_of_sources.txt | python mark.py
 
@@ -473,7 +493,9 @@ error messages located on code that violates SPARK rules, which should also be
 addressed as detailed in section :ref:`Dealing with SPARK Violations`.
 
 A warning frequently issued by GNATprove at this stage looks like the
-following::
+following:
+
+.. code-block:: none
 
   warning: no Global contract available for "F"
   warning: assuming "F" has no effect on global items
@@ -549,26 +571,18 @@ annotation on the subprogram spec is similar:
    procedure Proc_To_Exclude (..) with SPARK_Mode => Off;
    function Func_To_Exclude (..) return T with SPARK_Mode => Off;
 
-Only top-level subprograms can be excluded from analysis; i.e., subprogram
-units or subprograms declared inside package units, but not nested
-subprograms declared inside other subprograms. If a violation occurs inside
-a nested subprogram, you must exclude the enclosing top-level subprogram
-from analysis.
-
-When only the subprogram body is excluded from analysis, the subprogram can
-still be called in SPARK code. When you exclude both the subprogram spec
-and body from analysis, you must also exclude all code that calls the
-subprogram.
+Both top-level subprograms and nested subprograms declared inside other
+subprograms can be excluded from analysis. When only the subprogram body is
+excluded from analysis, the subprogram can still be called in SPARK code. When
+you exclude both the subprogram spec and body from analysis, you must also
+exclude all code that calls the subprogram.
 
 .. rubric:: Excluding a Package from Analysis
 
-Just as with subprograms, only top-level packages can be excluded from
-analysis; i.e., packages declared inside package units, but
-not nested packages declared inside subprograms. If a violation occurs
-inside a nested package, you need to exclude the enclosing top-level
-subprogram from analysis. The case of local packages declared inside
-packages is similar to the case of subprograms, so in the following we only
-consider package units.
+Just as with subprograms, both top-level packages and nested packages declared
+inside subprograms can be excluded from analysis. The case of local packages
+declared inside packages is similar to the case of subprograms, so in the
+following we only consider package units.
 
 .. index:: SPARK_Mode
 
@@ -697,7 +711,7 @@ typically addressed, as detailed in the rest of this section.
 
 In the following, we consider the error messages that are issued in each case.
 
-.. rubric:: access attribute is not allowed in SPARK
+.. rubric:: attribute "Access" is not allowed in SPARK
 
 See 'general access type is not allowed in SPARK'
 
@@ -1008,18 +1022,18 @@ This error is issued for exception handlers. For example:
    is
    begin
       for J in S'Range loop
-             if S(J) = Delim then
+         if S(J) = Delim then
             raise Not_Found;
          elsif S(J) = C then
-                Position := J;
-                Found := True;
-                    Return;
+            Position := J;
+            Found := True;
+            return;
          end if;
       end loop;
       raise Not_Found;
    exception             --<<--  VIOLATION
       when Not_Found =>
-             Position := 1;
+         Position := 1;
          Found := False;
    end Find_Before_Delim;
 
@@ -1098,6 +1112,13 @@ the permission of ``X`` in the last assertion:
      Y.all := 2;
      pragma Assert (X.all = 2);             --<<--  VIOLATION
   end Ownership_Transfer;
+
+GNATprove outputs the following messages:
+
+.. code-block:: none
+
+  ownership_transfer.adb:9:21: insufficient permission on dereference from "X"
+  ownership_transfer.adb:9:21: object was moved at line 7
 
 The continuation line explains that ``X`` was moved by the assignment into
 ``Y``. Indeed, when ``X`` is assigned into ``Y``, the permission
@@ -1225,13 +1246,17 @@ with these settings:
    :alt: Popup window from GNAT Studio for "flow analysis" mode
 
 GNATprove should output the following messages, possibly followed by a
-number of messages pointing to potential problems in your program::
+number of messages pointing to potential problems in your program:
+
+.. code-block:: none
 
   Phase 1 of 2: generation of Global contracts ...
   Phase 2 of 2: analysis of data and information flow ...
 
 The following messages output by GNATprove are check messages and should
-have the form::
+have the form:
+
+.. code-block:: none
 
   medium: "V" might not be initialized
 
@@ -1256,7 +1281,9 @@ http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_view_gnatprove_o
 Once you have addressed each check message, you can rerun flow analysis with
 the :guilabel:`Report checks proved` box checked to see the verification
 successfully performed by GNATprove.  This time, it should only issue 'info'
-messages, highlighted in green in GNAT Studio, like the following::
+messages, highlighted in green in GNAT Studio, like the following:
+
+.. code-block:: none
 
   info: initialization of "V" proved
 
@@ -1283,11 +1310,15 @@ Initialization checks are the most common check messages issued by
 GNATprove in flow analysis mode. Indeed, each time a variable is read or
 returned by a subprogram, GNATprove performs a check to make sure it has
 been initialized. A failed initialization check message can have one of the
-two forms::
+two forms:
+
+.. code-block:: none
 
   high: "V" is not initialized
 
-or::
+or:
+
+.. code-block:: none
 
   medium: "V" might not be initialized
 
@@ -1396,7 +1427,9 @@ example, consider the following ``Search`` procedure:
 
 This code is perfectly safe as long as the value of ``Result`` is only
 read when ``Found`` is ``True``. Nevertheless, flow analysis issues an
-unproved check on ``Result``'s declaration::
+unproved check on ``Result``'s declaration:
+
+.. code-block:: none
 
   medium: "Result" might not be initialized in "Search"
 
@@ -1747,7 +1780,9 @@ and by restricting aliasing between parameters and global variables so that
 only benign aliasing is accepted (i.e. aliasing that does not cause
 interference).
 
-A check message concerning a possible aliasing has the form::
+A check message concerning a possible aliasing has the form:
+
+.. code-block:: none
 
   high: formal parameter "X" and global "Y" are aliased (SPARK RM 6.4.2)
 
@@ -1939,7 +1974,9 @@ and :guilabel:`Report checks proved` boxes, and click
 :guilabel:`Execute`.
 
 GNATprove warnings, like the compiler warnings, are associated with a
-source location and prefixed with the word 'warning'::
+source location and prefixed with the word 'warning':
+
+.. code-block:: none
 
   warning: subprogram "Test" has no effect
 
@@ -2311,7 +2348,7 @@ contract allows specifying precisely the inputs for which each output depends:
 
    procedure P with
       Depends =>
-         (X1 =>+ (X2, X3),
+         (X1 => +(X2, X3),
          --  X1 output value depends on the input values of itself, X2 and X3
           (Y1, Y2) => null,
          --  Y1 and Y2 are outputs whose value does not depend on any input
@@ -2457,8 +2494,8 @@ certification standards in various domains (DO-178B/C in avionics, EN 50128 in
 railway, IEC 61508 in many safety-related industries, ECSS-Q-ST-80C in
 space, IEC 60880 in nuclear, IEC 62304 in medical, ISO 26262 in
 automotive). To date, the use of SPARK has been qualified in an EN 50128
-context. Qualification material for DO-178 projects is planned for
-2018. Qualification material in any context can be developed by AdaCore as
+context. Qualification plans for DO-178 have been developed by AdaCore.
+Qualification material in any context can be developed by AdaCore as
 part of a contract.
 
 .. rubric:: Impact on Process
@@ -2521,13 +2558,17 @@ window from GNAT Studio with these settings:
    :alt: Popup window from GNAT Studio for "prove" mode
 
 GNATprove should output the following messages, possibly followed by a
-number of messages pointing to potential problems in your program::
+number of messages pointing to potential problems in your program:
+
+.. code-block:: none
 
   Phase 1 of 2: generation of Global contracts ...
   Phase 2 of 2: flow analysis and proof ...
 
 The following messages output by GNATprove are check messages and should
-have the form::
+have the form:
+
+.. code-block:: none
 
   medium: overflow check might fail
 
@@ -2558,7 +2599,9 @@ message is not a real problem. This process is explained in section
 Once each unproved check message has been addressed in some way, you can run
 proof mode again with the box :guilabel:`Report checks proved` checked to see
 the verifications successfully performed by GNATprove. It should only issue
-'info' messages, highlighted in green in GNAT Studio, like the following::
+'info' messages, highlighted in green in GNAT Studio, like the following:
+
+.. code-block:: none
 
   info: overflow check proved
 
@@ -2884,7 +2927,7 @@ following steps:
    technology, you will have to justify its presence by inserting a ``pragma Annotate``
    after the line where the check message is reported so that future
    runs of GNATprove will not report it again . See SPARK User's Guide at
-   http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html.
+   http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_use_gnatprove_in_a_team.html#justifying-check-messages.
 
 Below we describe how you can change types to be more precise for analysis
 and how you can add contracts that will make it possible to prove AoRTE.
@@ -3602,10 +3645,10 @@ For each unproved property in this subprogram, you should follow the following s
    .. index:: pragma Annotate
 
 #. If the check turns out to be unprovable due to limitations in the proving
-   technology, you have to justify its presence by inserting a ``pragma Annotate``
-   after the line where the check message is reported so future runs of
-   GNATprove will not report it again. See the SPARK User's Guide section
-   http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_investigate_unproved_checks.html.
+   technology, you will have to justify its presence by inserting a ``pragma Annotate``
+   after the line where the check message is reported so that future
+   runs of GNATprove will not report it again . See SPARK User's Guide at
+   http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_use_gnatprove_in_a_team.html#justifying-check-messages.
 
 .. _Example:
 
@@ -3946,3 +3989,10 @@ usage of AdaCore's technology in conjunction with the DO-178C/ED-12C standard,
 and describes in particular the use of SPARK in relation with the Formal
 Methods supplement DO-333/ED-216. See:
 https://www.adacore.com/books/do-178c-tech
+
+The article "Climbing the Software Assurance Ladder - Practical Formal
+Verification for Reliable Software" presents both the well-established
+processes surrounding the use of SPARK at Altran UK, as well as the deployment
+experiments performed at Thales to fine-tune the gradual insertion of formal
+verification techniques in existing processes. See:
+https://www.adacore.com/papers/climbing-the-software-assurance-ladder

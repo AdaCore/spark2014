@@ -1,5 +1,6 @@
 communications.adb:13:28: info: range check proved (CVC4: 1 VC)
 communications.adb:21:25: info: range check proved (CVC4: 1 VC)
+communications.adb:31:31: warning: unused assignment to "Val"
 communications.ads:15:22: info: postcondition proved (CVC4: 1 VC)
 communications.ads:17:26: info: initialization of "N" proved
 communications.ads:26:14: info: ceiling priority protocol is respected (CVC4: 1 VC)

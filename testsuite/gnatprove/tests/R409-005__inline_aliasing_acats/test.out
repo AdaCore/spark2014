@@ -11,7 +11,7 @@ main.adb:17:28: warning: unused initial value of "Y"
 main.adb:26:07: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 p.adb:14:09: info: precondition proved (Trivial: 1 VC)
 p.adb:14:16: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
-p.adb:14:24: warning: unused assignment
+p.adb:14:24: warning: unused assignment to "A3.C.C"
 p.ads:16:23: warning: unused variable "X"
 p.ads:16:34: warning: "Y" is not modified, could be IN
 p.ads:16:34: warning: unused variable "Y"

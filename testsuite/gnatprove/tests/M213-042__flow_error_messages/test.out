@@ -12,6 +12,9 @@ test.adb:56:07: warning: statement has no effect
 test.adb:57:12: warning: unused assignment
 test.adb:59:12: warning: unused assignment
 Trace files' contents:
+test.adb:45
+test.adb:48
+
 test.adb:9
 test.adb:10
 
@@ -24,7 +27,4 @@ test.adb:65
 
 test.adb:63
 test.adb:65
-
-test.adb:45
-test.adb:48
 

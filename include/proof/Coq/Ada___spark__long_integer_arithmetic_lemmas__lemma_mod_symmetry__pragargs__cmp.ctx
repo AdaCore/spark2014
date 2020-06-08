@@ -182,7 +182,7 @@ Definition dynamic_invariant (temp___expr_158:Z) (temp___is_init_154:bool)
   in_range temp___expr_158.
 
 (* Why3 goal *)
-Theorem def'VC :
+Theorem def'vc :
   (dynamic_invariant arg1 true false true true) ->
   (dynamic_invariant arg2 true false true true) -> ~ (arg2 = 0%Z) ->
   (*      Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);  --  MANUAL PROOF               ^ spark-arithmetic_lemmas.ads:86:15:instantiated:spark-long_integer_arithmetic_lemmas.ads:31:1:VC_POSTCONDITION *)

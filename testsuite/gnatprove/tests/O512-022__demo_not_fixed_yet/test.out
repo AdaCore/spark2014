@@ -27,7 +27,7 @@ main.adb:9:04: info: initialization of "A" proved
 main.adb:11:14: warning: unused assignment to "random_numbers.state"
 main.adb:14:14: medium: overflow check might fail (e.g. when X = -1) [possible explanation: loop at line 13 should mention X in a loop invariant]
 main.adb:14:25: side effects of function "Pop" are not modeled in SPARK
-main.adb:15:21: high: "My_Stack" is not initialized
+main.adb:15:21: medium: "My_Stack" might not be initialized
 main.adb:16:14: medium: overflow check might fail (e.g. when A = Integer'First and Y = -1) [possible explanation: call at line 15 should mention X (for argument A) in a postcondition]
 random_numbers.adb:6:04: info: initialization of "Seed" constituent of "State" proved
 random_numbers.adb:13:21: high: "My_Stack" is not initialized
@@ -44,6 +44,6 @@ use_stacks.adb:23:07: info: initialization of "V" proved
 use_stacks.adb:35:07: info: initialization of "My_Stack" proved
 use_stacks.adb:36:07: info: initialization of "V" proved
 use_stacks.adb:49:25: info: cannot unroll loop (too many loop iterations)
-use_stacks.adb:50:19: high: "Stack_Vector" is not initialized
+use_stacks.adb:50:19: medium: "Stack_Vector" might not be initialized
 use_stacks.ads:6:14: warning: subprogram "Fill_Generic_Stack" has no effect
 gnatprove: error during flow analysis and proof

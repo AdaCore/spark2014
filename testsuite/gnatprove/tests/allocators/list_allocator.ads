@@ -7,7 +7,7 @@ use type Ada.Containers.Count_Type;
 package List_Allocator with
   SPARK_Mode,
   Abstract_State    => State,
-  Initializes       => State,
+  Initializes       => (State, M.Model),
   Initial_Condition => All_Available and Is_Valid
 is
    pragma Elaborate_Body;

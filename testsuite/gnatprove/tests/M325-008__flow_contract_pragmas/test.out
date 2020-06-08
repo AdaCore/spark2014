@@ -8,9 +8,7 @@ test.adb:47:16: high: "X" is not initialized
 test.adb:48:17: high: "X" is not initialized
 test.adb:48:17: info: postcondition proved (CVC4: 1 VC)
 test.adb:58:09: info: data dependencies proved
-test.adb:58:30: high: "G" is not an input in the Global contract of subprogram "T_Out_Global" at line 57
 test.adb:58:30: high: "G" is not initialized
-test.adb:58:30: high: either make "G" an input in the Global contract or initialize it before use
 test.adb:59:16: high: "G" is not an input in the Global contract of subprogram "T_Out_Global" at line 57
 test.adb:59:16: high: "G" is not initialized
 test.adb:59:16: high: either make "G" an input in the Global contract or initialize it before use

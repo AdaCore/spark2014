@@ -2,8 +2,6 @@ initializes_illegal.adb:6:11: aspect "Initializes" must apply to a package decla
 initializes_illegal.ads:11:30: initialization item must denote object or state
 initializes_illegal_3.ads:24:30: initialization item must denote object or state
 initializes_illegal_3.ads:26:27: "PrivVar" is undefined
-initializes_illegal_3.ads:28:30: initialization item "SS" must appear in the visible declarations of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:30:30: initialization item "XX" must appear in the visible declarations of package "Initializes_Illegal_3"
 initializes_illegal_3.ads:32:34: input item "Rec" cannot denote a visible object or state of package "Initializes_Illegal_3"
 initializes_illegal_3.ads:32:39: input item "S2" cannot denote a visible object or state of package "Initializes_Illegal_3"
 initializes_illegal_3.ads:32:46: input item "SS" cannot denote a visible object or state of package "Initializes_Illegal_3"

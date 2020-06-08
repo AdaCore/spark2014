@@ -1,7 +1,7 @@
 from subprocess import call
 from test_support import *
 
-prove_all(steps=1500,
+prove_all(steps=20000,
           counterexample=False,
           procs=4,
           prover=["z3", "cvc4"],

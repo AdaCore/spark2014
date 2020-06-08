@@ -1,7 +1,7 @@
 repro.adb:3:14: warning: subprogram "Proc" has no effect
 repro.adb:10:44: info: cannot unroll loop (too many loop iterations)
 repro.adb:11:33: info: index check proved (CVC4: 2 VC)
-repro.adb:11:37: medium: discriminant check might fail (e.g. when Arg = (Y => 1, X => (others => (B => False, S => (Len => 0, M => (others => (K => Kind0, XX => 0, YY => 0, ZZ => 0)))))) and Arg.X'First = 1 and Arg.X'Last = 1 and Ids = 1) [possible explanation: subprogram at repro.ads:40 should mention Arg in a precondition]
+repro.adb:11:37: medium: discriminant check might fail (e.g. when Arg = (Y => 1, X => (others => (B => False, S => (Len => ?, M => (others => (K => Kind0, XX => 0, YY => 0, ZZ => 0)))))) and Arg.X'First = 1 and Arg.X'Last = 1 and Ids = 1) [possible explanation: subprogram at repro.ads:40 should mention Arg in a precondition]
 repro.adb:11:44: info: unrolling loop
 repro.adb:12:13: info: precondition proved (Trivial: 14 VC)
 repro.adb:12:25: info: index check proved (CVC4: 28 VC)

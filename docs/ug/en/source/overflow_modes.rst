@@ -65,7 +65,8 @@ For example:
 specifies that general expressions outside assertions be evaluated in the usual
 strict mode, and expressions within assertions be evaluated in "eliminate
 intermediate overflows" mode. Currently, |GNATprove| only supports pragma
-``Overflow_Mode`` being specified in a configuration pragma file.
+``Overflow_Mode`` being specified as a configuration pragma, either in a
+configuration pragma file or directly in a unit.
 
 Additionally, a compiler switch ``-gnato??`` can be used to control the
 checking mode default. Here `?` is one of the digits `1` through `3`:

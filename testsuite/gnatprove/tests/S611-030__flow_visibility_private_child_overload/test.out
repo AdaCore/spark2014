@@ -1,0 +1,2 @@
+foo.adb:6:24: high: "Auto_Camera2" is not initialized
+parent.ads:4:21: warning: unused initial value of "Cam"

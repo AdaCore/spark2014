@@ -17,7 +17,9 @@ procedure Test_Constrained with SPARK_Mode is
       return X;
    end F;
    function F_Acc return CC_Acc with
-     Post => F_Acc'Result /= null
+     Post => F_Acc'Result /= null;
+   function F_Acc return CC_Acc with
+     SPARK_Mode => Off
    is
       X : CC_Acc := new CC_H'(C => (B => False));
    begin

@@ -1,5 +1,5 @@
-bit_converter.adb:20:55: medium: range check might fail (e.g. when Array_of_Bits = (others => False) and Array_of_Bits'First = 0 and Array_of_Bits'Last = -1 and First_Index = 0)
-bit_converter.adb:21:55: medium: range check might fail (e.g. when Array_of_Bits = (others => False) and Array_of_Bits'First = 1 and Array_of_Bits'Last = 0 and Last_Index = 0)
+bit_converter.adb:20:55: medium: range check might fail (e.g. when Array_of_Bits = (others => False) and Array_of_Bits'First = 0 and Array_of_Bits'Last = -1)
+bit_converter.adb:21:55: medium: range check might fail (e.g. when Array_of_Bits = (others => False) and Array_of_Bits'First = 1 and Array_of_Bits'Last = 0)
 bit_converter.adb:23:05: info: initialization of "Bit" proved
 bit_converter.adb:26:37: medium: array index check might fail (e.g. when Array_of_Bits = (others => False) and Array_of_Bits'First = 2 and Array_of_Bits'Last = 1 and First_Index = 2)
 bit_converter.adb:29:44: info: cannot unroll loop (too many loop iterations)

@@ -1,0 +1,27 @@
+project SPARK_Heap is
+
+   --  Environment variable SPARK_HEAP_OBJECT_DIR controls the object
+   --  directory used in compilation and/or verification.
+
+   for Object_Dir use External("SPARK_HEAP_OBJECT_DIR");
+
+   --  Environment variable SPARK_HEAP_INSTALLED controls whether the
+   --  project and its sources are being installed as part of SPARK install
+   --  (value "True") or whether they are in source repository configuration
+   --  (value "False"). Inside SPARK install, this project file is installed
+   --  in <install>/lib/gnat and the sources in <install>/include/spark
+
+   type SPARK_Heap_Installed_T is ("True", "False");
+   SPARK_Heap_Installed := External("SPARK_HEAP_INSTALLED", "True");
+
+   case SPARK_Heap_Installed is
+      when "True" =>
+         for Source_Dirs use ("../../include/spark/");
+      when others =>
+         for Source_Dirs use (".");
+   end case;
+
+   for Source_Files use ("spark.ads", "spark-heap.ads", "spark-heap.adb");
+   --  ??? spark.ads is shared with spark_lemmas.gpr, to be fixed
+
+end SPARK_Heap;

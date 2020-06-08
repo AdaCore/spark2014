@@ -39,14 +39,14 @@ uninitialized.adb:109:24: info: unrolling loop
 uninitialized.adb:115:04: warning: analyzing unreferenced procedure "Init_Array_Through_Call_Error"
 uninitialized.adb:115:45: medium: "An_Arr" might not be initialized in "Init_Array_Through_Call_Error"
 uninitialized.adb:117:24: info: unrolling loop
-uninitialized.adb:118:15: high: "An_Arr" is not initialized
+uninitialized.adb:118:15: medium: "An_Arr" might not be initialized
 uninitialized.adb:118:25: info: division check proved (CVC4: 10 VC)
 uninitialized.adb:118:25: medium: array index check might fail
 uninitialized.adb:123:04: warning: analyzing unreferenced procedure "Tab"
 uninitialized.adb:123:14: warning: subprogram "Tab" has no effect
 uninitialized.adb:125:07: info: initialization of "Tmp" proved
 uninitialized.adb:127:30: info: unrolling loop
-uninitialized.adb:128:18: high: "A" is not initialized
+uninitialized.adb:128:18: medium: "A" might not be initialized
 uninitialized.adb:134:04: warning: analyzing unreferenced procedure "Local"
 uninitialized.adb:134:21: info: initialization of "Y" proved
 uninitialized.adb:137:07: warning: statement has no effect

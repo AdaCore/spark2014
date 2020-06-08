@@ -8,7 +8,7 @@ fr.adb:14:14: info: range check proved (Interval)
 fr.adb:15:14: info: float overflow check proved (Interval)
 fr.adb:15:20: info: float overflow check proved (Interval)
 fr.adb:15:24: info: float overflow check proved (Interval)
-fr.adb:15:24: medium: range check might fail (e.g. when X = 8.9999980E-1 and Y = 8.9056396E-1) [possible explanation: precondition of subprogram at line 10 should mention X and Y]
+fr.adb:15:24: medium: range check might fail (e.g. when X = 8.9999998E-1 and Y = 8.9843738E-1) [possible explanation: precondition of subprogram at line 10 should mention X and Y]
 fr.adb:20:09: warning: unused assignment
 fr.adb:20:14: info: float overflow check proved (Interval)
 fr.adb:21:14: info: float overflow check proved (Interval)

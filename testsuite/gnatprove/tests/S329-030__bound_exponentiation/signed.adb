@@ -8,8 +8,6 @@ begin
    for I in 0 .. 62 loop
       Lemma_Exp_Is_Monotonic_2 (Val => 2, Exp1 => I, Exp2 => 62);
       pragma Assert (2 ** I <= 2 ** 62);
-      pragma Annotate (GNATprove, False_Positive, "assertion",
-                       "direct reexpression of lemma postcondition");
       pragma Annotate (GNATprove, False_Positive, "overflow check",
                        "consequence of lemma postcondition");
       pragma Loop_Invariant (for all K in 0 .. I => 2 ** K in U'Range);

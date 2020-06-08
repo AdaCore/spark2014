@@ -6,17 +6,17 @@ init.ads:3:08: info: flow dependencies proved
 outer.adb:15:30: info: initialization of "Inner.Inner_State" constituent of "Outer.State" proved
 outer.adb:16:30: info: initialization of "Inner.Inner_State_2" constituent of "Outer.State" proved
 outer.adb:17:11: info: flow dependencies proved
-outer.adb:25:14: info: flow dependencies proved
-outer.adb:31:14: info: data dependencies proved
-outer.adb:35:11: info: flow dependencies proved
-outer.adb:41:11: info: flow dependencies proved
-outer.adb:47:11: info: flow dependencies proved
-outer.adb:49:58: medium: overflow check might fail [possible explanation: subprogram at line 49 should mention X and Y in a precondition]
-outer.adb:59:32: info: initialization of "Nested_In_Body.Deep_State" constituent of "Inner.Inner_State" proved
-outer.adb:60:14: info: flow dependencies proved
-outer.adb:66:17: info: data dependencies proved
-outer.adb:69:07: info: initialization of "Y" constituent of "Inner_State" proved
-outer.adb:70:07: info: initialization of "Z" constituent of "Inner_State_2" proved
-outer.adb:84:14: info: overflow check proved (CVC4: 1 VC)
-outer.adb:85:36: medium: overflow check might fail
+outer.adb:26:14: info: flow dependencies proved
+outer.adb:32:14: info: data dependencies proved
+outer.adb:36:11: info: flow dependencies proved
+outer.adb:42:11: info: flow dependencies proved
+outer.adb:48:11: info: flow dependencies proved
+outer.adb:50:58: medium: overflow check might fail [possible explanation: subprogram at line 50 should mention X and Y in a precondition]
+outer.adb:60:32: info: initialization of "Nested_In_Body.Deep_State" constituent of "Inner.Inner_State" proved
+outer.adb:61:14: info: flow dependencies proved
+outer.adb:67:17: info: data dependencies proved
+outer.adb:70:07: info: initialization of "Y" constituent of "Inner_State" proved
+outer.adb:71:07: info: initialization of "Z" constituent of "Inner_State_2" proved
+outer.adb:85:14: info: overflow check proved (CVC4: 1 VC)
+outer.adb:86:36: medium: overflow check might fail
 outer.ads:6:08: info: flow dependencies proved

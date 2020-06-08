@@ -3,7 +3,7 @@ test.adb:114:14: info: local subprogram "os_mbx_inc_mbx_head" only analyzed in t
 test.adb:138:22: info: range check proved (CVC4: 1 VC)
 test.adb:140:07: info: data dependencies proved
 test.adb:150:07: info: data dependencies proved
-test.adb:152:15: info: postcondition proved (CVC4: 1 VC)
+test.adb:152:15: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 test.adb:152:151: info: range check proved (CVC4: 1 VC)
 test.adb:156:29: info: range check proved (CVC4: 1 VC)
 test.adb:167:51: info: range check proved (CVC4: 1 VC)
@@ -19,7 +19,7 @@ test.adb:262:26: info: precondition proved (CVC4: 1 VC)
 test.adb:265:36: info: precondition proved (CVC4: 1 VC)
 test.adb:267:34: info: precondition proved (CVC4: 1 VC)
 test.adb:302:07: info: data dependencies proved
-test.adb:304:15: info: postcondition proved (CVC4: 1 VC)
+test.adb:304:15: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 test.adb:304:131: info: range check proved (CVC4: 1 VC)
 test.adb:304:197: info: range check proved (CVC4: 1 VC)
 test.adb:304:314: info: range check proved (CVC4: 1 VC)

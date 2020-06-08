@@ -3,7 +3,6 @@ Packages
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-packages-01:
 
 1. The elaboration of a package shall not update, directly or
    indirectly, a reachable element of a variable that is not declared
@@ -11,13 +10,11 @@ Packages
    the outputs of the notional spec and body elaboration subprograms
    shall all be objects declared immediately within the package.]
 
-.. _tu-fa-packages-02:
 
 2. The elaboration of a package declaration or body shall not leave any
    object in the Moved state unless the object was already in the Moved
    state at the start of that elaboration.
 
-.. _etu-packages:
 
 Package Specifications and Declarations
 ---------------------------------------
@@ -50,7 +47,6 @@ themselves records.
 
 .. centered:: **Static Semantics**
 
-.. _tu-abstract_state-01:
 
 1. The visible state of a package P consists of:
 
@@ -76,7 +72,6 @@ themselves records.
    part of the visible state or hidden state of any package (see section
    :ref:`tasks-and-synchronization`).
 
-.. _etu-abstract_state:
 
 .. _external_state:
 
@@ -120,15 +115,24 @@ is because it is protected.]
 
 An *effectively volatile object* is a volatile object for which
 the property No_Caching (see below) is False, or an object
-of an effectively volatile type. There is one exception to this rule:
-the current instance of a protected unit whose (protected) type is nonvolatile
-during a protected action is, by definition, not an effectively volatile
-object. [This exception reflects the fact that the current instance
-cannot be referenced in contexts where unsynchronized updates are possible.
-This means, for example, that the Global aspect of a nonvolatile function
-which is declared inside of a protected operation may reference the current
-instance of the protected unit.]
+of an effectively volatile type. There are two exceptions to this rule:
 
+  * the current instance of a protected unit whose (protected) type is
+    nonvolatile during a protected action is, by definition, not an
+    effectively volatile object. [This exception reflects the fact that
+    the current instance cannot be referenced in contexts where
+    unsynchronized updates are possible. This means, for example, that the
+    Global aspect of a nonvolatile function which is declared inside of a
+    protected operation may reference the current instance of the protected
+    unit.]
+
+  * a constant object associated with the evaluation of a function
+    call, an aggregate, or a type conversion is, by definition,
+    not an effectively volatile object. [See Ada RM 4.6 for the rules about
+    when a type conversion introduces a new object; in cases where it is
+    unspecified whether a new object is created, we assume (for purposes
+    of the rules in this section) that no new object is created].
+  
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
 abstraction; see :ref:`abstract-state-aspect`). [The term "external" does
@@ -161,13 +165,18 @@ between accesses to the object (e.g. as a defense against fault injection).
 The Boolean aspect Volatile_Function may be specified as part of the
 (explicit) initial declaration of a function. A function whose
 Volatile_Function aspect is True is said to be a *volatile function*.
+Volatile functions can read volatile objects; nonvolatile functions
+cannot. However note that the rule that a function must not have any
+output other than its result still applies; in effect this bans
+a volatile function from reading an object with Effective_Reads => True.
+As a result, calling a volatile function is considered as having an effect,
+and such calls are only allowed in certain contexts
+(see :ref:`external_state-variables`).
 A protected function is also defined to be a *volatile function*, as is
 an instance of Unchecked_Conversion where one or both of the actual
 Source and Target types are effectively volatile types.
 [Unlike nonvolatile functions, two calls to a volatile function with all
-inputs equal need not return the same result. However note that the rule
-that a function must not have any output still applies; in effect this bans
-a volatile function from reading an object with Effective_Reads => True.]
+inputs equal need not return the same result.]
 
 A protected function whose corresponding protected type is
 nonvolatile during a protected action and whose Volatile_Function aspect is
@@ -175,31 +184,25 @@ False is said to be *nonvolatile for internal calls*.
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-external_state-01:
 
 1. If an external state is declared without any of the external
    properties specified then all of the external properties
    [i.e. except No_Caching] default to a value of True.
 
-.. _tu-fe-external_state-02:
 
 2. If just the name of the property is given then its value defaults
    to True [for instance Async_Readers defaults to Async_Readers =>
    True].
 
-.. _tu-fe-external_state-03:
 
 3. A property may be explicitly given the value False [for instance Async_Readers => False].
 
-.. _tu-fe-external_state-04:
 
 4. If any one property is explicitly defined, all undefined properties default to a value of False.
 
-.. _tu-fe-external_state-05:
 
 5. The expression defining the Boolean valued property shall be static.
 
-.. _tu-fe-external_state-06:
 
 6. Only the following combinations of properties are valid:
 
@@ -222,62 +225,51 @@ False is said to be *nonvolatile for internal calls*.
    only be True if Async_Writers is True and Effective_Writes can only
    be True if Async_Readers is True.]
 
-.. _etu-external_state-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fa-external_state-07:
 
 7. Every update of an external state is considered to be read by
    some external reader if Async_Readers => True.
 
-.. _tu-pr-external_state-08:
 
 8. Each successive read of an external state might have a different
    value [written by some external writer] if Async_Writers => True.
 
-.. _tu-fa-external_state-09:
 
 9. If Effective_Writes => True, then every value written to the
    external state is significant. [For instance writing a sequence of
    values to a port.]
 
-.. _tu-pr-external_state-10:
 
 10. If Effective_Reads => True, then every value read from the
     external state is significant. [For example a value read from a
     port might be used in determining how the next value is
     processed.]
 
-.. _tu-fa-external_state-11:
 
 11. Each update of an external state has no external effect if both
     Async_Readers => False and Effective_Writes => False.
 
-.. _tu-pr-external_state-12:
 
 12. Each successive read of an external state will result in the last
     value explicitly written [by the program] if Async_Writers => False.
 
-.. _tu-fa-external_state-13:
 
 13. Every explicit update of an external state might affect the next value
     read from the external state even if Async_Writers => True.
 
-.. _tu-fa-external_state-14:
 
 14. An external state which has the property Async_Writers => True
     need not be initialized before being read although explicit
     initialization is permitted. [The external state might be
     initialized by an external writer.]
 
-.. _tu-fa-external_state-15:
 
 15. A subprogram whose Volatile_Function aspect is True shall not override
     an inherited primitive operation of a tagged type whose
     Volatile_Function aspect is False. [The reverse is allowed.]
 
-.. _tu-fa-external_state-16:
 
 16. A protected object has at least the properties Async_Writers => True
     and Async_Readers => True. If and only if it has at least one Part_Of
@@ -287,12 +279,11 @@ False is said to be *nonvolatile for internal calls*.
     external state, or if a protected object is an input of a volatile
     function.]
 
-.. _etu-external_state-ss:
 
 .. _external_state-variables:
 
-External State - Variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+External State - Variables and Types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In Ada interfacing to an external device or subsystem normally entails
 using one or more effectively volatile objects to ensure that writes and reads
@@ -300,9 +291,12 @@ to the device are not optimized by the compiler into internal register
 reads and writes.
 
 |SPARK| refines the specification of volatility by introducing four new Boolean
-aspects which may be applied only to effectively volatile objects. The aspects
+aspects which may be applied only to effectively volatile objects or to
+volatile types. The aspects
 may be specified in the aspect specification of an object declaration
-(this excludes effectively volatile objects that are formal parameters).
+(this effectively excludes volatile objects that are formal parameters, but
+allows such aspect specifications for generic formal objects) or
+of a type declaration (including a formal_type_declaration).
 
 The new aspects are:
 
@@ -317,9 +311,10 @@ The new aspects are:
 These four aspects are said to be the *volatility refinement* aspects.
 Ada's notion of volatility corresponds to the case where all four
 aspects are True. Specifying a volatility
-refinement aspect value of False for an object
+refinement aspect value of False for an object or type
 grants permission for the |SPARK| implementation to make additional
-assumptions about how the object in question is accessed;
+assumptions about how the object in question (or, respectively,
+about how an object of the type in question) is accessed;
 it is the responsibility of the user to ensure that these assumptions hold.
 In contrast, specifying a value of True imposes no such obligation on the user.
 
@@ -342,88 +337,110 @@ The verification condition associated with the assertion can be
 successfully discharged but this success depends on the
 Async_Writers aspect specification.
 
+The volatility refinement aspects of types (as opposed to
+those of objects) are type related representation aspects.
+The value of a given volatility refinement aspect of a volatile type
+is determined as follows:
+
+  * if the aspect's value is explicitly specified, then it is the
+    specified value;
+
+  * otherwise, if the type is a derived type whose parent type is volatile then
+    the aspect value is inherited from the parent type;
+
+  * otherwise, if at least one other volatility refinement aspect is
+    explicitly specified for the type then the given aspect of the type
+    is implicitly specified to be False;
+
+  * otherwise, the given aspect of the type is implicitly specified to be True.
+
+[This is similar to the rules for external state abstractions, except that
+there is no notion of inheritance in that case.]
+
+The value of a given volatility refinement aspect of an effectively
+volatile object is determined as follows:
+
+  * if the object is a reachable element of a stand-alone object or
+    of a formal parameter but is not itself such an object, then it is
+    the value of the given aspect of that enclosing or owning object
+    (see section :ref:`subprogram-declarations` for definitions of
+    "reachable element" and "owning object").
+
+  * otherwise, if the object is declared by an object declaration and the
+    given aspect is explicitly specified for the object declaration then
+    it is the specified value;
+
+  * otherwise, if the object is declared by an object declaration and then
+    at least one other volatility refinement aspect is explicitly specified
+    for the object declaration then the given aspect of the object is
+    implicitly specified to be False;
+
+  * otherwise, it is the value of the given aspect of the type of the object.
+
+Given two entities (each either an object or a type) E1 and E2, E1 is said to
+be *compatible with respect to volatility* with E2 if
+
+   * E1 is not effectively volatile; or
+
+   * both E1 and E2 are effectively volatile and each of the four
+     volatility refinement aspects is either False for E1 or
+     True for E2.
+   
 .. centered:: **Legality Rules**
 
-.. _tu-cbatu-external_state_variables-01:
 
-1. In the absence of an explicit aspect specification, the value of a
-   volatility refinement aspect of an effectively volatile stand-alone object
-   other than a formal parameter is True. The Effective_Reads aspect of an
-   effectively volatile formal parameter of mode **in** is False; in all other
-   cases, the value of a volatility refinement aspect of an effectively
-   volatile formal parameter is True.
+1. Any specified value for a volatility refinement aspect shall be static.
 
-   The volatility refinement aspect values of a subcomponent of an object
-   are those of the enclosing object.
-
-.. _tu-fe-external_state_variables-02:
+   [If a volatility refinement aspect of a derived type is inherited from an
+   ancestor type and has the boolean value True, the inherited value shall
+   not be overridden to have the value False for the derived type. This
+   follows from the corresponding Ada RM 13.1.1 rule and is stated here only
+   to clarify the point that there is no exception to that rule for volatility
+   refinement aspects. This is consistent with Ada's treatment of the Volatile
+   aspect.]
 
 2. The value of a volatility refinement aspect shall only be specified
-   for an effectively volatile stand-alone object. [A formal parameter
-   is not a stand-alone object; see Ada RM 3.3.1 .]
+   for an effectively volatile stand-alone object or for an effectively
+   volatile type (which may be a formal type).
+   [A formal parameter is not a stand-alone object; see Ada RM 3.3.1 .]
+   If specified for a stand-alone object, the declared object shall be
+   compatible with respect to volatility with its type.
 
-.. _tu-fe-external_state_variables-03:
-
-3. The declaration of an effectively volatile stand-alone object
+3. The declaration of an effectively volatile stand-alone object or type
    shall be a library-level declaration. [In particular, it shall not be
    declared within a subprogram.]
-
-.. _tu-fe-external_state_variables-04:
 
 4. A constant object (other than a formal parameter of mode **in**)
    shall not be effectively volatile.
 
-.. _tu-fe-external_state_variables-05:
-
 5. An effectively volatile type other than a protected type
    shall not have a discriminated part.
 
-.. _tu-fe-external_state_variables-06:
+6. A component type of a composite type shall be compatible with
+   respect to volatility with the composite type. Similarly, the
+   [full view of] the designated type of a named nonderived access type
+   shall be compatible with respect to volatility with the access type.
 
-6. A type which is not effectively volatile shall not have an
-   effectively volatile component.
+7. If an object that is not of a by-copy type is passed as a parameter in a
+   call other than a call to an instance of Unchecked_Conversion, then the
+   actual parameter shall be compatible with respect to volatility with the
+   the corresponding formal parameter.
 
-.. _tu-fe-external_state_variables-07:
+8. In a generic instantiation, the actual parameter corresponding to a
+   formal type or formal object parameter shall be compatible with
+   respect to volatility with the corresponding formal parameter.
 
-7. An effectively volatile object shall not be used as an actual parameter in a
-   generic instantiation.
-
-.. _tu-fe-external_state_variables-08:
-
-8. A ``global_item`` of a nonvolatile function, or of a function which
+9. A ``global_item`` of a nonvolatile function, or of a function which
    is nonvolatile for internal calls, shall not denote either
    an effectively volatile object or an external state abstraction.
 
-.. _tu-fe-nt-external_state_variables-09:
+10. A formal parameter (or result) of a nonvolatile function, or of a
+    function which is nonvolatile for internal calls, shall not be of
+    an effectively volatile type. [For a protected function, this rule
+    does not apply to the notional parameter denoting the current instance of
+    the associated protected unit described in section :ref:`global-aspects`.]
 
-9. A formal parameter (or result) of a nonvolatile function, or of a
-   function which is nonvolatile for internal calls, shall not be of
-   an effectively volatile type. [For a protected function, this rule
-   does not apply to the notional parameter denoting the current instance of
-   the associated protected unit described in section :ref:`global-aspects`.]
-
-.. _tu-fe-external_state_variables-10:
-
-10. If a procedure has an **in** mode parameter of an effectively
-    volatile type, then the Effective_Reads aspect of any corresponding
-    actual parameter shall be False.
-    [This is because the parameter is passed by reference and the corresponding
-    aspect of the formal parameter is False. In the 11 other cases,
-    corresponding to the combination of a parameter mode and a volatility
-    refinement aspect, the volatility refinement aspect of the formal parameter
-    is True and so the aspect of the corresponding actual parameter may be
-    either True or False.]
-
-.. _tu-fe-nt-external_state_variables-11:
-
-11. An effectively volatile object shall only occur as an actual
-    parameter of a subprogram if the corresponding formal parameter is
-    of a non-scalar effectively volatile type or as an actual
-    parameter in a call to an instance of Unchecked_Conversion.
-
-.. _tu-fe-external_state_variables-12:
-
-12. Contrary to the general |SPARK| rule that expression evaluation
+11. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object with
     the properties Async_Writers or Effective_Reads set to True is
     considered to have an effect when read. To reconcile this
@@ -480,19 +497,16 @@ Async_Writers aspect specification.
    function is treated like a call to a nonvolatile function if the
    function's Volatile_Function aspect is False.]
 
-.. _etu-external_state_variables-lr:
 
 .. centered:: **Dynamic Semantics**
 
-13. There are no dynamic semantics associated with these aspects.
+12. There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Verification Rules**
 
-14. An effectively volatile formal parameter of mode **out** shall not be read,
+13. An effectively volatile formal parameter of mode **out** shall not be read,
     even after it has been updated. [This is because the
     Async_Writers aspect of the parameter is True].
-
-.. _etu-external_state_variables-vr:
 
 .. centered:: **Examples**
 
@@ -551,7 +565,6 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 .. centered:: **Syntax**
 
-..  _tu-fe-abstract_state_aspects-syntax:
 
 ::
 
@@ -576,28 +589,23 @@ shall follow the grammar of ``abstract_state_list`` given below.
   state_name               ::= defining_identifier
   abstract_state           ::= name
 
-.. _etu-abstract_state_aspects-syntax:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-abstract_state_aspects-01:
 
 1. An ``option`` shall not be repeated within a single ``option_list``.
 
-.. _tu-fe-abstract_state_aspects-02:
 
 2. If External is specified in an ``option_list`` then there shall be at most
    one occurrence of each of Async_Readers, Async_Writers, Effective_Writes
    and Effective_Reads.
 
-.. _tu-fe-abstract_state_aspects-03:
 
 3. If an ``option_list`` contains one or more ``name_value_option`` items
    then they shall be the final options in the list.
    [This eliminates the possibility of a positional
    association following a named association in the property list.]
 
-.. _tu-fe-abstract_state_aspects-04:
 
 4. A package_declaration or generic_package_declaration that contains a
    non-null Abstract_State aspect shall have a completion (i.e., a body).
@@ -618,11 +626,9 @@ shall follow the grammar of ``abstract_state_list`` given below.
    completion", but we want a SPARK program with its SPARK aspects removed
    (or ignored) to remain a legal Ada program.]
 
-.. _etu-abstract_state_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-cbatu-abstract_state_aspects-05:
 
 5. Each ``state_name`` occurring in an Abstract_State aspect
    specification for a given package P introduces an implicit
@@ -639,17 +645,14 @@ shall follow the grammar of ``abstract_state_list`` given below.
    be provided as part of a Refined_State ``aspect_specification``
    within the body of the package.]
 
-.. _tu-fe-abstract_state_aspects-06:
 
 6. A **null** ``abstract_state_list`` specifies that a package contains no
    hidden state.
 
-.. _tu-fe-abstract_state_aspects-07:
 
 7. An External state abstraction is one declared with an ``option_list``
    that includes the External ``option`` (see :ref:`external_state`).
 
-.. _tu-fe-abstract_state_aspects-08:
 
 8. If a state abstraction which is declared with an ``option_list`` that
    includes a Part_Of ``name_value_option`` whose ``name`` denote a state
@@ -658,7 +661,6 @@ shall follow the grammar of ``abstract_state_list`` given below.
    [Alternatively, the name may denote a task or protected unit (see section
    :ref:`tasks-and-synchronization`).]
 
-.. _tu-fe-abstract_state_aspects-09:
 
 9. A state abstraction for which the ``simple_option`` Ghost is
    specified is said to be a ghost state abstraction. A state
@@ -673,7 +675,6 @@ shall follow the grammar of ``abstract_state_list`` given below.
    and Async_Writers aspects specified to be True and its
    Effective_Writes and Effective_Reads aspects specified to be False.
 
-.. _etu-abstract_state_aspects-ss:
 
 .. centered:: **Dynamic Semantics**
 
@@ -697,7 +698,7 @@ There are no verification rules associated with the Abstract_State aspect.
 
       procedure Init                      -- Procedure to initialize the internal state of Q.
         with Global => (Output => State), -- State may be used in a global aspect.
-	     Post   => Is_Ready;
+             Post   => Is_Ready;
 
       procedure Op_1 (V : Integer)     -- Another procedure providing some operation on State
         with Global => (In_Out => State),
@@ -740,7 +741,6 @@ grammar of ``initialization_spec`` given below.
 
 .. centered:: **Syntax**
 
-.. _tu-fe-initializes_aspects-syntax:
 
 ::
 
@@ -752,16 +752,13 @@ grammar of ``initialization_spec`` given below.
 
   initialization_item ::= name [ => input_list]
 
-.. _etu-initializes_aspects-syntax:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-initializes_aspects-01:
 
 1. An Initializes aspect shall only appear in the ``aspect_specification`` of a
    ``package_specification``.
 
-.. _tu-fe-initializes_aspects-02:
 
 2. The ``name`` of each ``initialization_item`` in the Initializes aspect
    definition for a package shall denote a state abstraction of the package
@@ -770,32 +767,26 @@ grammar of ``initialization_spec`` given below.
    [For purposes of this rule, formal parameters of a generic package
    are not considered to be "declared in the package".]
 
-.. _tu-fe-initializes_aspects-03:
 
 3. Each ``name`` in the ``input_list`` shall denote an object, or a state
    abstraction but shall not denote an entity declared in the package with
    the ``aspect_specification`` containing the Initializes aspect.
 
-.. _tu-fe-initializes_aspects-04:
 
 4. Each entity in a single ``input_list`` shall be distinct.
 
-.. _tu-fe-initializes_aspects-05:
 
 5. An ``initialization_item`` with a **null** ``input_list`` is
    equivalent to the same ``initialization_item`` without an ``input_list``.
    [That is Initializes => (A => **null**) is equivalent to Initializes => A.]
 
-.. _etu-initializes_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-initializes_aspects-06:
 
 6. The Initializes aspect of a package has visibility of the declarations
    occurring immediately within the visible part of the package.
 
-.. _tu-fa-initializes_aspects-07:
 
 7. The Initializes aspect of a package specification asserts which
    state abstractions and visible variables of the package are initialized
@@ -805,7 +796,6 @@ grammar of ``initialization_spec`` given below.
    [A package with a **null** ``initialization_list``, or no Initializes aspect
    does not initialize any of its state abstractions or variables.]
 
-.. _tu-fe-initializes_aspects-08:
 
 8. An ``initialization_item`` shall have an ``input_list`` if and
    only if its initialization is dependent on visible variables and
@@ -816,7 +806,6 @@ grammar of ``initialization_spec`` given below.
    denoted by the ``name`` of the ``initialization_item`` but are not
    constituents of the state abstraction.
 
-.. _etu-initializes_aspects-ss:
 
 .. centered:: **Dynamic Semantics**
 
@@ -824,7 +813,6 @@ There are no dynamic semantics associated with the Initializes aspect.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-initializes_aspects-9:
 
 9. If the Initializes aspect is specified for a package, then after
    the body (which may be implicit if the package has no explicit
@@ -836,27 +824,23 @@ There are no dynamic semantics associated with the Initializes aspect.
    Other parts of the visible state of the package shall not be
    initialized.
 
-.. _tu-fa-initializes_aspects-10:
 
 10. If an ``initialization_item`` has an ``input_list`` then the
     variables and state abstractions denoted in the input list shall
     be used in determining the initialized value of the entity denoted
     by the ``name`` of the ``initialization_item``.
 
-.. _tu-fa-initializes_aspects-11:
 
 11. All variables and state abstractions which are not declared within
     the package but are used in the initialization of an
     ``initialization_item`` shall appear in an ``input_list`` of the
     ``initialization_item``.
 
-.. _tu-fa-initializes_aspects-12:
 
 12. Any ``initialization_item`` that is a constant shall be a *constant
     with variable input*. Any entity in an ``input_list`` that is a
     constant shall be a parameter or *constant with variable input*.
 
-.. _tu-nt-initializes_aspects-note_1:
 
 [Note: these rules allow a variable or state abstraction to be
 initialized by the elaboration of a package but not be denoted in an
@@ -864,7 +848,6 @@ Initializes aspect.  In such a case the analysis tools will treat the
 variable or state abstraction as uninitialized when analyzing clients
 of the package.]
 
-.. _etu-initializes_aspects-note:
 
 .. centered:: **Examples**
 
@@ -935,16 +918,13 @@ be a *Boolean_*\ ``expression``.
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-initial_condition_aspects-01:
 
 1. An Initial_Condition aspect shall only be placed in an ``aspect_specification``
    of a ``package_specification``.
 
-.. _etu-initial_condition_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-pf-initial_condition_aspects-02:
 
 2. An Initial_Condition aspect is an assertion and behaves as a
    postcondition for the elaboration of both the specification and
@@ -957,11 +937,9 @@ be a *Boolean_*\ ``expression``.
    functions declared in the visible part acting on the state
    abstractions of the package must be used.]
 
-.. _etu-initial_condition_aspects-ss:
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-pr-fa-initial_condition_aspects-03:
 
 3. With respect to dynamic semantics, specifying a given expression as
    the Initial_Condition aspect of a package is equivalent to
@@ -974,17 +952,14 @@ be a *Boolean_*\ ``expression``.
    point where it is evaluated [, at which point everything that it
    might freeze has already been frozen].
 
-.. _etu-initial_condition_aspects-ds:
 
 .. centered:: **Verification Rules**
 
-.. _tu-pr-initial_condition_aspects-04:
 
 4. [The Initial_Condition aspect gives a verification condition to show that the
    implementation of the ``package_specification`` and its body satisfy the
    predicate given in the Initial_Condition aspect.]
 
-.. _tu-fe-initial_condition_aspects-05:
 
 5. Each variable or indirectly referenced state abstraction in an
    Initial_Condition aspect of a package Q which is declared
@@ -992,7 +967,6 @@ be a *Boolean_*\ ``expression``.
    during the elaboration of Q and be denoted by a ``name`` of an
    ``initialization_item`` of the Initializes aspect of Q.
 
-.. _etu-initial_condition_aspects-vr:
 
 .. centered:: **Examples**
 
@@ -1003,7 +977,7 @@ be a *Boolean_*\ ``expression``.
        with Abstract_State    => State,    -- Declaration of abstract state name State
             Initializes       => State,    -- State will be initialized during elaboration
             Initial_Condition => Is_Ready  -- Predicate stating the logical state after
-	                                   -- initialization.
+                                           -- initialization.
     is
        function Is_Ready return Boolean
           with Global => State;
@@ -1015,9 +989,9 @@ be a *Boolean_*\ ``expression``.
     package X
        with Abstract_State    => A,      -- Declares an abstract state named A
             Initializes       => (A, B), -- A and visible variable B are initialized
-	                                 -- during package initialization.
+                                         -- during package initialization.
             Initial_Condition => A_Is_Ready and B = 0
-	                                 -- The logical conditions that hold
+                                         -- The logical conditions that hold
                                          -- after package elaboration.
     is
        ...
@@ -1069,7 +1043,6 @@ the grammar of ``refinement_list`` given below.
 
 .. centered:: **Syntax**
 
-.. _tu-fe-refined_state_aspects-syntax:
 
 ::
 
@@ -1083,46 +1056,37 @@ where
 
   ``constituent ::=`` *object_*\ ``name | state_name``
 
-.. _etu-refined_state_aspects-syntax:
 
 .. centered:: **Name Resolution Rules**
 
-.. _tu-fe-refined_state_aspects-01:
 
 1. A Refined_State aspect of a ``package_body`` has visibility extended to the
    ``declarative_part`` of the body.
 
-.. _etu-refined_state_aspects-nr:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-refined_state_aspects-02:
 
 2. A Refined_State aspect shall only appear in the ``aspect_specification`` of a
    ``package_body``. [The use of ``package_body`` rather than package body
    allows this aspect to be specified for generic package bodies.]
 
-.. _tu-fe-refined_state_aspects-03:
 
 3. If a ``package_specification`` has a non-null Abstract_State aspect its body
    shall have a Refined_State aspect.
 
-.. _tu-fe-refined_state_aspects-04:
 
 4. If a ``package_specification`` does not have an Abstract_State aspect,
    then the corresponding ``package_body`` shall not have a Refined_State
    aspect.
 
-.. _tu-fe-refined_state_aspects-05:
 
 5. Each ``constituent`` shall be either a variable, a constant, or a state
    abstraction.
 
-.. _tu-fe-refined_state_aspects-06:
 
 6. An object which is a ``constituent`` shall be an entire object.
 
-.. _tu-fe-refined_state_aspects-07:
 
 7. A ``constituent`` of a state abstraction of a package shall denote
    either an entity with no Part_Of ``option`` or aspect which is part
@@ -1130,14 +1094,12 @@ where
    has a Part_Of ``option`` or aspect which denotes this state
    abstraction (see :ref:`package_hierarchy`).
 
-.. _tu-fe-refined_state_aspects-08:
 
 8. Each *abstract_*\ ``state_name`` declared in the package
    specification shall be denoted exactly once as the ``state_name``
    of a ``refinement_clause`` in the Refined_State aspect of the body
    of the package.
 
-.. _tu-fe-refined_state_aspects-09:
 
 9. Every entity of the hidden state of a package shall be denoted as a
    ``constituent`` of exactly one *abstract_*\ ``state_name`` in the
@@ -1146,25 +1108,21 @@ where
    private part or body of the package, or the declarations from the
    visible part of nested packages declared immediately therein.]
 
-.. _tu-cbatu-refined_state_aspects-10:
 
 10. In a package body where the refinement of a state abstraction is
     visible the ``constituents`` of the state abstraction must be
     denoted in aspect specifications rather than the state
     abstraction.
 
-.. _tu-cbatu-refined_state_aspects-11:
 
 11. The legality rules related to a Refined_State aspect given in
     :ref:`package_hierarchy` also apply.
 
-.. _tu-cbatu-refined_state_aspects-12:
 
 12. Each ``constituent`` of a ghost state abstraction shall be either
     a ghost variable or a ghost state abstraction. [The reverse situation
     (i.e., a ghost constituent of a non-ghost state abstraction) is permitted.]
 
-.. _tu-fe-refined_state_aspects-13:
 
 13. A ``constituent`` of a synchronized state abstraction shall be
     either a synchronized object or another synchronized state abstraction.
@@ -1172,11 +1130,9 @@ where
     nor synchronized shall be not be an effectively volatile object,
     a synchronized state abstraction, or an external state abstraction.
 
-.. _etu-refined_state_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-refined_state_aspects-14:
 
 14. A Refined_State aspect of a ``package_body`` completes the
     declaration of the state abstractions occurring in the
@@ -1185,7 +1141,6 @@ where
     ``constituents`` of the *abstract_*\ ``state_names`` declared in
     the ``package_specification``.
 
-.. _tu-fe-refined_state_aspects-15:
 
 15. A **null** ``constituent_list`` indicates that the named abstract
     state has no constituents and termed a *null_refinement*. The
@@ -1194,7 +1149,6 @@ where
     Depends aspects if it is believed that a package may have some
     extra state in the future, or if hidden state is removed.]
 
-.. _etu-refined_state_aspects-ss:
 
 .. centered:: **Dynamic Semantics**
 
@@ -1202,12 +1156,10 @@ There are no dynamic semantics associated with Refined_State aspect.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-refined_state_aspects-16:
 
 16. Each ``constituent`` that is a constant shall be a constant *with
     variable inputs*.
 
-.. _tu-fe-refined_state_aspects-17:
 
 17. If the Async_Writers aspect of a state abstraction is True and the
     Async_Writers aspect of a constituent of that state abstraction is
@@ -1215,7 +1167,6 @@ There are no dynamic semantics associated with Refined_State aspect.
     of the package which declares the abstraction, the constituent
     shall be initialized.
 
-.. _etu-refined_state_aspects-vr:
 
 .. centered:: **Examples**
 
@@ -1261,7 +1212,6 @@ which reside in another package, initialization by their declaring package.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-initialization_issues-01:
 
 1. For each state abstraction denoted by the ``name`` of an
    ``initialization_item`` of an Initializes aspect of a package, all the
@@ -1277,7 +1227,6 @@ which reside in another package, initialization by their declaring package.
      that such constituents will appear in the initialization clause
      of the declaring unit unless they are external states.]
 
-.. _etu-initialization_issues:
 
 .. _refined-global-aspect:
 
@@ -1315,7 +1264,6 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-refined_global_aspects-02:
 
 2. A Refined_Global aspect is permitted on a body_stub (if one is
    present), subprogram body, entry body, or task body if and only if
@@ -1325,7 +1273,6 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
    either the refinement of the state abstraction is visible or a Part_Of
    specification specifying a constituent of the state abstraction is visible.
 
-.. _tu-fe-refined_global_aspects-03:
 
 3. A Refined_Global aspect specification shall *refine* the subprogram's
    Global aspect as follows:
@@ -1370,12 +1317,10 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
       other rules, but not in some cases involving optionally refinable
       state abstractions where the option is declined.]
 
-.. _tu-fe-refined_global_aspects-04:
 
 4. ``Global_items`` in a Refined_Global ``aspect_specification`` shall denote
    distinct entities.
 
-.. _tu-fe-refined_global_aspects-05:
 
 5. The mode of each ``global_item`` in a Refined_Global aspect shall match
    that of the corresponding ``global_item`` in the Global aspect unless
@@ -1406,12 +1351,10 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
    visible) then the mode of the state abstraction in the Global aspect
    plays no role in determining the legality of the Refined_Global aspect.]
 
-.. _tu-cbatu-refined_global_aspects-06:
 
 6. The legality rules for :ref:`global-aspects` and External states described in
    :ref:`refined_external_states` also apply.
 
-.. _etu-refined_global_aspects-lr:
 
 .. centered:: **Dynamic Semantics**
 
@@ -1419,16 +1362,13 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-refined_global_aspects-08:
 
 8. If a subprogram has a Refined_Global aspect it is used in the analysis of the
    subprogram body rather than its Global aspect.
 
-.. _tu-cbatu-refined_global_aspects-09:
 
 9. The verification rules given for :ref:`global-aspects` also apply.
 
-.. _etu-refined_global_aspects-vr:
 
 .. centered:: **Examples**
 
@@ -1470,7 +1410,6 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-refined_depends_aspects-02:
 
 2. A Refined_Depends aspect is permitted on a body_stub (if one is
    present), subprogram body, entry body, or task body if and only if
@@ -1479,7 +1418,6 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
    Depends aspect which denotes a state abstraction declared by the package and
    the refinement of the state abstraction is visible.
 
-.. _tu-fe-refined_depends_aspects-03:
 
 3. A Refined_Depends aspect specification is, in effect, a copy of the
    corresponding Depends aspect specification except that any
@@ -1554,21 +1492,18 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
         exclude denoting a ``constituent`` of such a state abstraction
         in an ``input_list``.]
 
-.. _tu-fe-refined_depends_aspects-04:
 
 4. These rules result in omitting each state abstraction whose **null**
    refinement is visible at the point of the Refined_Depends. If and only if
    required by the syntax, the state abstraction shall be replaced by a **null**
    symbol rather than being omitted.
 
-.. _tu-fe-refined_depends_aspects-05:
 
 5. No other ``outputs`` or ``inputs`` shall be included in the Refined_Depends
    aspect specification. ``Outputs`` in the Refined_Depends aspect
    specification shall denote distinct entities. ``Inputs`` in an ``input_list``
    shall denote distinct entities.
 
-.. _tu-cbatu-refined_depends_aspects-06:
 
 6. [The above rules may be viewed from the perspective of checking the
    consistency of a Refined_Depends aspect with its corresponding Depends
@@ -1587,11 +1522,9 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
    itself if not every ``constituent`` of the state abstraction
    appears as an ``output`` in the Refined_Depends aspect.]
 
-.. _tu-cbatu-refined_depends_aspects-07:
 
 7. The rules for :ref:`depends-aspects` also apply.
 
-.. _etu-refined_depends_aspects-lr:
 
 .. centered:: **Dynamic Semantics**
 
@@ -1600,16 +1533,13 @@ as it is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-refined_depends_aspects-08:
 
 8. If a subprogram has a Refined_Depends aspect it is used in the analysis of
    the subprogram body rather than its Depends aspect.
 
-.. _tu-cbatu-refined_depends_aspects-09:
 
 9. The verification rules given for :ref:`depends-aspects` also apply.
 
-.. _etu-refined_depends_aspects-vr:
 
 .. centered:: **Examples**
 
@@ -1662,7 +1592,6 @@ were declared within a protected unit or task unit (see section
 
 .. centered:: **Static Semantics**
 
-.. _tu-nt-abstract_state_package_hierarchy_and_part_of-01:
 
 1. A *Part_Of indicator* is a Part_Of ``option`` of a state
    abstraction declaration in an Abstract_State aspect, a Part_Of
@@ -1672,11 +1601,9 @@ were declared within a protected unit or task unit (see section
    of which the declaration is a constituent, or shall denote a
    task or protected unit (see section :ref:`tasks-and-synchronization`).
 
-.. _etu-abstract_state_package_hierarchy_and_part_of-ss:
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-abstract_state_package_hierarchy_and_part_of-02:
 
 2. A variable declared immediately within the private part of a given
    package or a variable or state abstraction that is part of the
@@ -1685,7 +1612,6 @@ were declared within a protected unit or task unit (see section
    specified; the Part_Of indicator shall denote a state abstraction
    declared by the given package.
 
-.. _tu-fe-abstract_state_package_hierarchy_and_part_of-03:
 
 3. A variable or state abstraction which is part of the visible state of a
    non-generic private child unit (or a public descendant thereof) shall have
@@ -1693,7 +1619,6 @@ were declared within a protected unit or task unit (see section
    abstraction declared by either the parent unit of the private unit or by a
    public descendant of that parent unit.
 
-.. _tu-nt-abstract_state_package_hierarchy_and_part_of-04:
 
 4. A Part_Of aspect specification for a package instantiation applies
    to each part of the visible state of the instantiation. More
@@ -1703,21 +1628,18 @@ were declared within a protected unit or task unit (see section
    such an implicit specification are the same as for an explicit
    specification.
 
-.. _tu-cbatu-abstract_state_package_hierarchy_and_part_of-05:
 
 5. No other declarations shall have a Part_Of indicator which denotes
    a state abstraction. [Other declarations may have a Part_Of indicator
    which denotes a task or protected unit (see section
    :ref:`tasks-and-synchronization`).]
 
-.. _tu-fe-abstract_state_package_hierarchy_and_part_of-06:
 
 6. The refinement of a state abstraction denoted in a Part_Of
    indicator shall denote as ``constituents`` all of the declarations
    that have a Part_Of indicator denoting the state abstraction. [This
    might be performed once the package body has been processed.]
 
-.. _tu-fe-abstract_state_package_hierarchy_and_part_of-07:
 
 7. A state abstraction and a constituent (direct or indirect) thereof
    shall not both be denoted in one Global, Depends, Initializes,
@@ -1726,11 +1648,9 @@ were declared within a protected unit or task unit (see section
    between Refined_Global and Refined_Depends aspects of a single
    subprogram.
 
-.. _etu-abstract_state_package_hierarchy_and_part_of-lr:
 
 .. centered:: **Verification Rules**
 
-.. _tu-fe-abstract_state_package_hierarchy_and_part_of-08:
 
 8. For flow analysis, where a state abstraction is visible as well as
    one or more of its ``constituents``, its refinement is not visible
@@ -1749,7 +1669,6 @@ were declared within a protected unit or task unit (see section
      dependency as it is unknown what other ``constituents`` the state
      abstraction encapsulates.
 
-.. _etu-abstract_state_package_hierarchy_and_part_of-vr:
 
 .. centered:: **Examples**
 
@@ -2059,7 +1978,6 @@ be a Boolean ``expression``.
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-refined_postcondition_aspects-01:
 
 1. A Refined_Post aspect may only appear on a body_stub (if one is
    present) or the body (if no stub is present) of a subprogram or
@@ -2068,23 +1986,19 @@ be a Boolean ``expression``.
    no explicit postcondition, a postcondition of True is assumed for
    the abstract view.
 
-.. _tu-cbatu-refined_postcondition_aspects-02:
 
 2. A Refined_Post aspect is an assertion. The same legality rules
    apply to a Refined_Post aspect as for a postcondition (a Post
    aspect).
 
-.. _etu-refined_postcondition_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-cbatu-refined_postcondition_aspects-03:
 
 3. [A Refined Postcondition of a subprogram defines a *refinement*
    of the postcondition of the subprogram and is intended for use
    by callers who can see the body of the subprogram.]
 
-.. _tu-pr-refined_postcondition_aspects-04:
 
 4. [Logically, the Refined Postcondition of a subprogram must imply
    its postcondition. This means that it is perfectly logical for the
@@ -2095,15 +2009,12 @@ be a Boolean ``expression``.
    prove at least as much about the results of the call as if the
    usual precondition were used instead.]
 
-.. _tu-cbatu-refined_postcondition_aspects-05:
 
 5. The static semantics are otherwise as for a postcondition.
 
-.. _etu-refined_postcondition_aspects-ss:
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-fe-refined_postcondition_aspects-06:
 
 6. When a subprogram or entry with a Refined Postcondition is called,
    the Refined Postcondition is evaluated
@@ -2114,11 +2025,9 @@ be a Boolean ``expression``.
    Otherwise, the postcondition is then evaluated and checked
    as described in the Ada RM.
 
-.. _etu-refined_postcondition_aspects-ds:
 
 .. centered:: **Verification Rules**
 
-.. _tu-pr-refined_postcondition_aspects-07:
 
 7. If a subprogram has both a Refined_Post aspect and a
    Post (and/or Post'Class) aspect, then the verification condition
@@ -2150,7 +2059,6 @@ be a Boolean ``expression``.
    the second subprogram are not available in proving the postcondition
    of the first).
 
-.. _tu-pr-refined_postcondition_aspects-08:
 
 8. If a Refined_Post aspect specification is visible at the
    point of a call to the subprogram, then the Refined_Post
@@ -2162,7 +2070,6 @@ be a Boolean ``expression``.
    instead of the corresponding non-refined aspects in the case where
    Refined_* aspect specifications are visible.]
 
-.. _etu-refined_postcondition_aspects-vr:
 
 .. centered:: **Examples**
 
@@ -2262,28 +2169,23 @@ abstraction on to external states which are given in this section.
 
 .. centered:: **Legality Rules**
 
-.. _tu-fe-refined_external_states-01:
 
 1. A state abstraction that is not specified as External shall not have
    ``constituents`` which are External states.
 
-.. _tu-fe-refined_external_states-02:
 
 2. An External state abstraction shall have each of the properties set to True
    which are True for any of its ``constituents``.
 
-.. _tu-cbatu-refined_external_states-03:
 
 3. Refined_Global aspects must respect the rules related to external
    properties of constituents which are external states given in
    :ref:`external_state` and :ref:`external_state-variables`.
 
-.. _tu-cbatu-refined_external_states-04:
 
 4. All other rules for Refined_State, Refined_Global and Refined_Depends aspect
    also apply.
 
-.. _etu-refined_external_states-lr:
 
 .. centered:: **Examples**
 
@@ -2377,7 +2279,6 @@ language definition and what is not.]
 
 .. centered:: **Legality Rules**
 
-.. _tu-type_invariants-02:
 
 2. The aspect Type_Invariant may be specified in SPARK, but only for
    the completion of a private type. [In other words, the Type_Invariant
@@ -2385,12 +2286,10 @@ language definition and what is not.]
    completion of a private extension.]
    The aspect Type_Invariant'Class is not in SPARK.
 
-.. _tu-type_invariants-03:
 
 3. [A Type_Invariant expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
-.. _tu-type_invariants-04:
 
 4. A Type_Invariant shall not apply to an effectively volatile type.
 
@@ -2406,34 +2305,29 @@ several points (described below) where, in fact, Ada defines no such checks.
 we are only talking about generating additional verification conditions;
 we are not talking about any changes in a program's behavior at run-time.]
 
-.. _tu-type_invariants-05:
 
 5. The type invariant expression for a type T shall not include a call
    to a boundary function for type T. [This often means that a type
    invariant expression cannot contain calls to functions declared in
    the visible part of the package in question.]
 
-.. _tu-type_invariants-ram-01:
 
 **Ramification:** It is a consequence of other rules that upon entry
 to a boundary subprogram for a type T, every part of every input that
 is of type T can be assumed to satisfy T's invariant.
 
-.. _tu-type_invariants-06:
 
 6. Upon returning from a boundary subprogram for a type T, a
    verification condition is introduced for every part of every output
    that is of type T (or a descendant thereof), to ensure that this part
    satisfies T's invariant.
 
-.. _tu-type_invariants-07:
 
 7. For every subprogram declared inside the immediate scope of type T,
    the preceding rule [and ramification] also apply to [any parts of]
    any global input or output and to [any parts of] any tagged
    subprogram parameter.
 
-.. _tu-type_invariants-08:
 
 8. When calling a boundary subprogram for a type T or a subprogram
    declared outside of the immediate scope of T, a verification
@@ -2445,14 +2339,12 @@ is of type T can be assumed to satisfy T's invariant.
    subject to rule 5 and constant for the caller. The idea here is to
    prevent invariant-violating values from "leaking out".]
 
-.. _tu-type_invariants-ram-02:
 
 **Ramification:** It is a consequence of other rules that upon return
 from a boundary subprogram for a type T or a subprogram declared
 outside of the immediate scope of T, every part of every output that
 is of type T (or a descendant thereof) can be assumed to satisfy T's invariant.
 
-.. _tu-type_invariants-09:
 
 9. For every subprogram, the preceding rule [and ramification] also
    apply to [any parts of] any global input or output and to [any
@@ -2461,7 +2353,6 @@ is of type T (or a descendant thereof) can be assumed to satisfy T's invariant.
    of the immediate scope of T, or if the input in question is subject
    to rule 4 and constant for the caller.]
 
-.. _tu-type_invariants-10:
 
 10. At the end of the elaboration of a package (i.e., at the point where the
     Initial_Condition, if any, is checked) a verification condition is
@@ -2471,13 +2362,11 @@ is of type T (or a descendant thereof) can be assumed to satisfy T's invariant.
     rule (very roughly speaking) says that the global outputs of this notional
     subprogram follow much the same rules as for other subprograms.]
 
-.. _tu-type_invariants-ram-03:
 
 **Ramification:** In determining whether a dispatching call is a call
 to a boundary subprogram or to a subprogram declared outside of the
 immediate scope of T, the statically named callee is used.
 
-.. _tu-type_invariants-ram-04:
 
 **Ramification:** It is possible that the underlying tag of a tagged
 object (at runtime) may differ from the tag of its nominal (compile
@@ -2564,11 +2453,9 @@ Assignment and Finalization
 
 .. centered:: **Legality Rules**
 
-.. _tu-assignment_and_finalization-01:
 
 1. Controlled types are not permitted in |SPARK|.
 
-.. _etu-assignment_and_finalization:
 
 .. _elaboration_issues:
 
@@ -2605,12 +2492,10 @@ global variables discussed later in this section.
 
 .. centered:: **Static Semantics**
 
-.. _tu-nt-elaboration_issues-01:
 
 1. A call which occurs within the same compilation_unit as the subprogram_body
    of the callee is said to be an *intra-compilation_unit call*.
 
-.. _tu-nt-elaboration_issues-02:
 
 2. A construct (specifically, a call to a subprogram or a read or write
    of a variable) which occurs in elaboration code for a library-level package
@@ -2641,11 +2526,9 @@ global variables discussed later in this section.
       elaboration of L3.
       [See Ada RM 10.1.1 for definition of semantic dependence.]
 
-.. _etu-elaboration_issues-ss:
 
 .. centered:: **Legality Rules**
 
-.. _tu-nt-elaboration_issues-03:
 
 3. |SPARK| requires that an intra-compilation_unit call which is
    executable during elaboration shall occur after a certain point in the unit
@@ -2657,7 +2540,6 @@ global variables discussed later in this section.
    before the start of the completion of the callee shall occur within the
    early call region of the callee.
 
-.. _tu-nt-elaboration_issues-04:
 
 4. The start of the early call region is obtained by starting at the
    subprogram's completion (typically a subprogram_body) and then traversing
@@ -2712,7 +2594,6 @@ global variables discussed later in this section.
 
           To be considered post release 1.
 
-.. _tu-nt-elaboration_issues-05:
 
 5. For purposes of the above rules, a subprogram completed by a
    renaming-as-body is treated as though it were a wrapper
@@ -2720,7 +2601,6 @@ global variables discussed later in this section.
    [The notional "call" occuring in this wrapper is then subject to the
    above rules, like any other call.]
 
-.. _tu-nt-elaboration_issues-06:
 
 6. If an instance of a generic occurs in the same compilation_unit as the
    body of the generic, the body must precede the instance.
@@ -2750,12 +2630,10 @@ global variables discussed later in this section.
    This stricter rule applies even if the declaration of the instantiation
    is not "executable during elaboration"].
 
-.. _tu-nt-elaboration_issues-07:
 
 7. In the case of a dispatching call, the subprogram_body mentioned
    in the above rules is that (if any) of the statically denoted callee.
 
-.. _tu-nt-elaboration_issues-08:
 
 8. The first freezing point of a tagged type shall occur within the
    early call region of each of its overriding primitive operations.
@@ -2776,7 +2654,6 @@ global variables discussed later in this section.
    freezing points in order to understand how the above rule applies to a
    particular example.]
 
-.. _tu-nt-elaboration_issues-09:
 
 9. For purposes of defining the early call region, the specification and body
    of a library unit package whose Elaborate_Body aspect is True are treated as
@@ -2786,7 +2663,6 @@ global variables discussed later in this section.
 
    This is important for tagged type declarations.
 
-.. _tu-nt-elaboration_issues-10:
 
 10. For each call that is executable during elaboration for a given
     library unit package spec or body, there are two cases: it is
@@ -2797,7 +2673,6 @@ global variables discussed later in this section.
     until after the complete semantic closure of the unit in which
     the (statically denoted) callee is declared.
 
-.. _tu-nt-elaboration_issues-11:
 
 11. For an instantiation of a generic package (excluding a bodiless generic
     package) which does not occur in the same compilation unit as the generic
@@ -2808,7 +2683,6 @@ global variables discussed later in this section.
     apply except that only an Elaborate (as opposed to an Elaborate_All)
     pragma is required.
 
-.. _tu-nt-elaboration_issues-12:
 
 12. An implementation is permitted to accept constructs which
     violate the preceding rules in this section (e.g., an
@@ -2823,7 +2697,6 @@ global variables discussed later in this section.
     chooses to take advantage of this permission, then the burden
     is entirely on the implementation to "get it right".]
 
-.. _etu-elaboration_issues-lr:
 
 [These rules correctly prohibit the following example:
 
@@ -2881,7 +2754,6 @@ To ensure the correct semantics of the Initializes and Initial_Condition
 aspects, when applied to library units, language restrictions (described below)
 are imposed in |SPARK| which have the following consequences:
 
-.. _tu-cbatu-use_of_initial_condition_and_initializes_aspects-01:
 
 1. During the elaboration of a library unit package (spec or body),
    library-level variables declared outside of that package cannot
@@ -2898,7 +2770,6 @@ are imposed in |SPARK| which have the following consequences:
       known to precede the elaboration of the spec or body which reads
       the variable.
 
-.. _tu-cbatu-use_of_initial_condition_and_initializes_aspects-02:
 
 2. From the end of the elaboration of a library package's body to the
    invocation of the main program (i.e., during subsequent library
@@ -2919,7 +2790,6 @@ are imposed in |SPARK| which have the following consequences:
    depends on no variable inputs can also be assumed to be true throughout
    the execution of the main subprogram.
 
-.. _tu-cbatu-use_of_initial_condition_and_initializes_aspects-03:
 
 3. If a package's Initializes aspect mentions a state abstraction
    whose refinement includes constituents declared outside of that
@@ -2933,11 +2803,9 @@ are imposed in |SPARK| which have the following consequences:
    the elaboration of other units (e.g., private children) which
    contribute to the abstraction.
 
-.. _etu-use_of_initial_condition_and_initializes_aspects-ss:
 
 .. centered:: **Verification Rules**
 
-.. _tu-nt-use_of_initial_condition_and_initializes_aspects-04:
 
 4. If a read of a variable (or state abstraction, in the case of a
    call to a subprogram which takes an abstraction as an input) declared in
@@ -2957,7 +2825,6 @@ are imposed in |SPARK| which have the following consequences:
    [This is needed to ensure that the variable has been initialized at the
    time of the read.]
 
-.. _tu-nt-use_of_initial_condition_and_initializes_aspects-05:
 
 5. If a variable is declared (immediately or not) within a library unit
    package specification, and if that variable is initialized (perhaps
@@ -2968,7 +2835,6 @@ are imposed in |SPARK| which have the following consequences:
    the variable remains unread between the elaboration of the
    specification and of the body of its enclosing library unit.]
 
-.. _tu-nt-use_of_initial_condition_and_initializes_aspects-06:
 
 6. The elaboration of a package's specification and body shall not
    write to a variable (or state abstraction, in the case of a call to
@@ -2981,11 +2847,9 @@ are imposed in |SPARK| which have the following consequences:
    of a library unit package) shall be as described in the Initializes
    aspect of the package.
 
-.. _etu-use_of_initial_condition_and_initializes_aspects-vr:
 
 .. centered:: **Legality Rules**
 
-.. _tu-nt-use_of_initial_condition_and_initializes_aspects-07:
 
 7. The elaboration of a package body shall be known to follow the
    elaboration of the body of each of the
@@ -2993,7 +2857,6 @@ are imposed in |SPARK| which have the following consequences:
    constituents for a state abstraction denoted in the Initializes
    aspect of the given package.
 
-.. _etu-use_of_initial_condition_and_initializes_aspects-lr:
 
 .. centered:: **Examples**
 

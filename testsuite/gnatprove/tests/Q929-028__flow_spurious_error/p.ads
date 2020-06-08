@@ -6,7 +6,7 @@ is
 
    package Inst with
       Abstract_State => State,
-      Initializes => State
+      Initializes => (State, Null_T)
    is
       Max : Integer := 30;
 

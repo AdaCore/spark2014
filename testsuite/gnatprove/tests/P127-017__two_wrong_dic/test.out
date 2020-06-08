@@ -1,2 +1,2 @@
 client.adb:4:04: medium: default initial condition might fail
-client.adb:5:04: info: default initial condition proved (CVC4: 1 VC; Trivial: 1 VC)
+client.adb:5:04: info: default initial condition proved (CVC4: 1 VC)

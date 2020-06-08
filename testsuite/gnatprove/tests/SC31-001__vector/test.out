@@ -1,0 +1,2 @@
+repr3.ads:9:40: info: discriminant check proved (CVC4: 1 VC)
+repr3.ads:9:40: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)

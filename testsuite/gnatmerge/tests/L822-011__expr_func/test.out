@@ -1,4 +1,0 @@
-segway.ads:16:4: goal not reached at Speed_Is_Valid (TEST FAILED)
-segway.ads:22:4: goal not reached at State_Update (PARTIALLY PROVED, TEST FAILED)
-segway.ads:26:4: info: goal reached at Halt (TEST FAILED, PROVED)
-segway.ads:32:4: goal not reached at Execute (TEST FAILED)

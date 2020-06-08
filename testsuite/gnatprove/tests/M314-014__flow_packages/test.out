@@ -1,7 +1,8 @@
 ic.adb:13:11: info: flow dependencies proved
 ic.adb:16:07: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
 ic.adb:23:11: info: flow dependencies proved
-ic.adb:24:36: "Test_02.Y" constituent of "IC.State_B" must be initialized at elaboration
+ic.adb:24:36: high: "Test_02.Y" constituent of "IC.State_B" is not initialized
+ic.adb:24:36: high: initialization of "IC.State_B" is specified at line 23
 ic.adb:26:07: info: initialization of "Test_02.X" constituent of "IC.State_A" proved
 ic.adb:31:11: info: flow dependencies proved
 ic.adb:34:07: high: "Test_01.X" constituent of "IC.State_A" is not initialized

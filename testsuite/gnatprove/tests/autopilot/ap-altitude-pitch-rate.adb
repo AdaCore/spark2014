@@ -19,10 +19,10 @@ is
       Average : Instruments.Pitchangle;
    begin
       for I in History_Range loop
+         Sum := Sum + Integer(H(I));
          pragma Loop_Invariant
            (Sum <= (I * Integer(Instruments.Pitchangle'Last))
               and Sum >= (I * Integer(Instruments.Pitchangle'First)));
-         Sum := Sum + Integer(H(I));
       end loop;
       -- Get the average pitch over this range
       Gap := (1 + History_Range'Last) - History_Range'First;

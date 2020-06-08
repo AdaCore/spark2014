@@ -64,7 +64,6 @@ are in |SPARK|.
 
 .. centered:: **Legality Rules**
 
-.. _tu-tasks_and_synchronization-02:
 
 2. Task and protected units are in |SPARK|, but their use requires
    the (extended) Ravenscar profile. [In other words, a task or protected unit
@@ -77,7 +76,6 @@ are in |SPARK|.
    predefined state abstraction Ada.Task_Identification.Tasking_State
    (described below) as a global requires the (extended) Ravenscar profile.
 
-.. _tu-tasks_and_synchronization-03:
 
 3. If the declaration of a variable or a package which declares a
    state abstraction follows (within the same immediately enclosing
@@ -134,7 +132,6 @@ are in |SPARK|.
    the statement list of the body of the immediately enclosing package
    (in either the task or the protected case).]
 
-.. _tu-tasks_and_synchronization-04:
 
 4. A protected type shall define full default initialization.
    A variable whose Part_Of aspect specifies a task unit or protected unit
@@ -142,29 +139,24 @@ are in |SPARK|.
    shall be declared with an initial value expression, or shall be
    imported.
 
-.. _tu-tasks_and_synchronization-05:
 
 5. A type which does not yield synchronized objects shall not have
    a component type which yields synchronized objects.
    [Roughly speaking, no mixing of synchronized and unsynchronized
    component types.]
 
-.. _tu-tasks_and_synchronization-06:
 
 6. A constituent of a synchronized state abstraction shall be a
    synchronized object or a synchronized state abstraction.
 
-.. _etu-tasks_and_synchronization-lr:
 
 .. centered:: **Verification Rules**
 
-.. _tu-tasks_and_synchronization-07:
 
 7. A ``global_item`` occurring in a Global aspect specification of a
    task unit or of a protected operation shall not denote an object
    or state abstraction which is not synchronized.
 
-.. _tu-tasks_and_synchronization-08:
 
 8. A ``global_item`` occurring in the Global aspect specification of
    the main subprogram shall not denote an object or state abstraction
@@ -172,18 +164,15 @@ are in |SPARK|.
    the environment task cannot reference objects which "belong" to other
    tasks.]
 
-.. _tu-tasks_and_synchronization-09:
 
 9. A state abstraction whose Part_Of aspect specifies a task unit or
    protected unit shall be named in the Initializes aspect of its
    enclosing package.
 
-.. _tu-tasks_and_synchronization-10:
 
 10. The precondition of a protected operation shall not reference a global
     variable, unless it is *constant after elaboration*.
 
-.. _tu-tasks_and_synchronization-11:
 
 11. The Ravenscar profile includes "Max_Entry_Queue_Length => 1" and
     "Max_Protected_Entries => 1" restrictions.
@@ -206,7 +195,6 @@ are in |SPARK|.
     the Ada rule that two tasks cannot simultaneously suspend on one
     suspension object (see Ada RM D.10(10)).]
 
-.. _tu-tasks_and_synchronization-12:
 
 12. The verification condition associated with the Ada rule that it is a bounded
     error to invoke an operation that is potentially blocking
@@ -236,12 +224,10 @@ are in |SPARK|.
     potential caller is no greater than the ceiling priority of the called
     protected object.
 
-.. _tu-tasks_and_synchronization-13:
 
 13. The end of a task body shall not be reachable. [This follows from
     from (extended) Ravenscar's No_Task_Termination restriction.]
 
-.. _tu-nt-tasks_and_synchronization-14:
 
 14. A nonvolatile function shall not be potentially blocking.
     [Strictly speaking this rule is already implied by other rules of |SPARK|,
@@ -252,7 +238,6 @@ are in |SPARK|.
     the corresponding primitive operation of any descendant of T is
     potentially blocking.]
 
-.. _tu-nt-tasks_and_synchronization-15:
 
 15. The package Ada.Task_Identification declares (and initializes)
     a synchronized external state abstraction named Tasking_State.
@@ -314,7 +299,6 @@ are in |SPARK|.
   [Functions excluded by the Extended Ravenscar profile (and
   therefore also by the Ravenscar profile) are not on this list.]
 
-.. _tu-nt-tasks_and_synchronization-16:
 
 16. For each of the following language-defined procedures, the
     Global aspect of the procedure specifies that the
@@ -325,7 +309,6 @@ are in |SPARK|.
 
   * Ada.Dispatching.Yield.
 
-.. _tu-tasks_and_synchronization-17:
 
 17. For purposes of determining global inputs and outputs, a delay
     statement is considered to reference the state abstraction
@@ -334,7 +317,6 @@ are in |SPARK|.
     a procedure which takes the delay expression as an actual parameter
     and references the Clock_Time state abstraction as an Input global.]
 
-.. _tu-tasks_and_synchronization-18:
 
 18. For purposes of determining global inputs and outputs, a use of
     any of the Callable, Caller, Count, or Terminated attributes is considered
@@ -347,7 +329,6 @@ are in |SPARK|.
     [On the other hand, use of the Identity or Storage_Size
     attributes introduces no such dependency.]
 
-.. _tu-nt-tasks_and_synchronization-19:
 
 19. Preconditions are added to suprogram specifications as needed in order
     to avoid the failure of language-defined runtime checks for the
@@ -370,10 +351,8 @@ are in |SPARK|.
     preconditions are defined to ensure that the result belongs to the
     result type.
 
-.. _tu-nt-tasks_and_synchronization-20:
 
 20. All procedures declared in the visible part of Ada.Synchronous_Task_Control
     have a dependency "(S => null)" despite the fact that S has mode **in
     out**.
 
-.. _etu-tasks_and_synchronization-vr:

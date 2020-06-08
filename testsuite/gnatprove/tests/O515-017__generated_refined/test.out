@@ -1,1 +1,3 @@
-justifinit.ads:6:11: medium: "Justifinit.State" must be a global In_Out of "P"
+justifinit.ads:5:14: high: "Y" constituent of "State" is not initialized
+justifinit.ads:5:14: info: initialization of "X" constituent of "State" proved
+justifinit.ads:6:11: info: data dependencies proved

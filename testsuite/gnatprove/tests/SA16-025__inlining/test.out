@@ -1,0 +1,24 @@
+time.adb:5:07: info: initialization of "result" proved
+time.adb:19:40: warning: formal parameter "time_out" is not referenced
+time.adb:22:07: info: initialization of "temp_time" proved
+time.adb:24:07: warning: unused variable "temp_seconds"
+time.adb:24:07: warning: variable "temp_seconds" is never read and never assigned
+time.adb:25:07: warning: unused variable "temp_days"
+time.adb:25:07: warning: variable "temp_days" is never read and never assigned
+time.adb:26:07: info: initialization of "temp_years" proved
+time.adb:27:07: warning: unused variable "temp_days_in_year"
+time.adb:27:07: warning: variable "temp_days_in_year" is never read and never assigned
+time.adb:30:17: warning: unused assignment
+time.adb:32:18: warning: unused assignment
+time.adb:34:34: info: no contextual analysis of "ddays_in_year" (in while loop condition)
+time.adb:34:57: info: range check proved (CVC4: 2 VC)
+time.adb:34:70: info: overflow check proved (CVC4: 2 VC)
+time.adb:35:07: warning: statement has no effect
+time.ads:71:40: warning: unused initial value of "time_in"
+time.ads:72:40: warning: unused initial value of "seconds"
+time.ads:73:40: high: "time_out.day" is not initialized in "add_DDS_duration_seconds"
+time.ads:73:40: high: "time_out.fraction" is not initialized in "add_DDS_duration_seconds"
+time.ads:73:40: high: "time_out.second" is not initialized in "add_DDS_duration_seconds"
+time.ads:73:40: high: "time_out.valid" is not initialized in "add_DDS_duration_seconds"
+time.ads:73:40: high: "time_out.year" is not initialized in "add_DDS_duration_seconds"
+time.ads:73:40: warning: unused variable "time_out"

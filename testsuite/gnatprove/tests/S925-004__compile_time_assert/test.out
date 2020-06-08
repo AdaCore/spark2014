@@ -1,0 +1,9 @@
+###########
+compilation
+###########
+bad_assert.adb:5:33: condition is not known at compile time
+
+############
+verification
+############
+bad_assert.adb:6:19: info: assertion proved (CVC4: 1 VC)

@@ -101,12 +101,10 @@ constrained by other language restrictions.
 The Package Strings.Maps (A.4.2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _tu-nk-the-package-strings.maps-01:
 
 1. The type declaration Character_Mapping_Function is not in |SPARK| and
    cannot be referenced within |SPARK| program text.
 
-.. _etu-the-package-strings.maps:
 
 The function To_Mapping may raise the exception Translation_Error if
 its actual parameters are inconsistent.  To guard against this
@@ -149,13 +147,11 @@ assert statement checking that the actual parameters are correct.
 Fixed-Length String Handling (A.4.3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _tu-nk-fixed-length-string-handling-01:
 
 1. Translate (with Maps.Character_Mapping_Function formal parameter)
    is not callable from |SPARK| as it has a an access to function type
    parameter.
 
-.. _etu-fixed-length-string-handling:
 
 All other subprograms may be called but the subprograms Move, Index,
 Count (with a mapping formal parameter), Find_Token, Replace_Slice,
@@ -168,13 +164,11 @@ parameters are consistent.
 Bounded-Length String Handling (A.4.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _tu-nk-bounded-length-string-handling-01:
 
 1. The subprograms Index, Count and Translate with
    Maps.Character_Mapping_Function formal parameters are not callable
    from |SPARK|.
 
-.. _etu-bounded-length-string-handling:
 
 The other subprograms in Bounded-Length String Handling are callable
 from |SPARK| program texts but many of them may raise an exception if
@@ -185,19 +179,16 @@ that the actual parameters are consistent.
 Unbounded-Length String Handling (A.4.5)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _tu-nk-unbounded-length-string-handling-01:
 
 1. The type String_Access and the procedure Free are not in |SPARK| as
    they require non-owning access types and cannot be denoted in
    |SPARK| program text.
 
-.. _tu-nk-unbounded-length-string-handling-02:
 
 2. The subprograms Index, Count and Translate with
    Maps.Character_Mapping_Function formal parameters are not callable
    from |SPARK|.
 
-.. _etu-unbounded-length-string-handling:
 
 The function and procedure Unbounded_Slice both may propagate
 Index_Error if Low > Length(Source)+1 or High > Length(Source) and so
@@ -217,14 +208,12 @@ No additions or restrictions.
 Wide_String Handling (A.4.7)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _tu-nk-wide-string-handling-01:
 
 1. The types Wide_String_Access and Wide_Character_Mapping_Function
    are not in |SPARK| nor are the subprograms which have formal
    parameters of these types and cannot be denoted in |SPARK| program
    texts.
 
-.. _etu-wide-string-handling:
 
 Each call of a subprogram which may raise an exception if it is called
 with inconsistent actual parameters should be immediately preceded by
@@ -233,14 +222,12 @@ a pragma Assert checking the consistency of the actual parameters.
 Wide_Wide_String Handling (A.4.8)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. _tu-nk-wide-wide-string-handling-01:
 
 1. The types Wide_Wide_String_Access and Wide_Wide_Character_Mapping_Function
    are not in |SPARK| nor are the subprograms which have formal
    parameters of these types and cannot be denoted in |SPARK| program
    texts.
 
-.. _etu-wide-wide-string-handling:
 
 Each call of a subprogram which may raise an exception if it is called
 with inconsistent actual parameters should be immediately preceded by
@@ -542,12 +529,10 @@ and objects in |SPARK|:
 
 .. centered:: **Legality Rules**
 
-.. _tu-shared_variable_control-01:
 
 1. A volatile representation aspect may only be applied to an
    ``object_declaration`` or a ``full_type_declaration``.
 
-.. _tu-shared_variable_control-02:
 
 2. A type which is not effectively volatile shall not have a
    volatile subcomponent.
@@ -556,23 +541,18 @@ and objects in |SPARK|:
 
 .. todo:: The above two rules may be relaxed in a future version.
 
-.. _tu-shared_variable_control-03:
 
 3. A discriminant shall not be volatile.
 
-.. _tu-shared_variable_control-04:
 
 4. Neither a discriminated type nor an object of such a type shall be volatile.
 
-.. _tu-shared_variable_control-05:
 
 5. Neither a tagged type nor an object of such a type shall be volatile.
 
-.. _tu-shared_variable_control-06:
 
 6. An effectively volatile object shall only be declared at library-level.
 
-.. _etu-shared_variable_control:
 
 Real-Time Systems (Annex D)
 ---------------------------

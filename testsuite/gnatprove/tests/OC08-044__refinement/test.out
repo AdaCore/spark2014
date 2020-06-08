@@ -26,33 +26,17 @@ ok_semantics-priv.adb:18:45: warning: "Priv.YY" constituent of "OK_Semantics.Sta
 ok_semantics-priv.adb:18:49: low: unused global "ZZ" constituent of "State"
 ok_semantics-priv.adb:18:49: warning: "ZZ" constituent of "State" is not modified, could be INPUT
 ok_semantics-priv.ads:6:06: info: data dependencies proved
-ok_semantics-priv.ads:8:14: high: "Priv.YY" constituent of "OK_Semantics.State2" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics-priv.ads:8:14: high: "Priv.YY" constituent of "OK_Semantics.State2" is not initialized
-ok_semantics-priv.ads:8:14: high: "X" constituent of "State1" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics-priv.ads:8:14: high: "X" constituent of "State1" is not initialized
-ok_semantics-priv.ads:8:14: high: "Y" constituent of "State2" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics-priv.ads:8:14: high: "Y" constituent of "State2" is not initialized
-ok_semantics-priv.ads:8:14: high: "Z" constituent of "State3" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics-priv.ads:8:14: high: "Z" constituent of "State3" is not initialized
-ok_semantics-priv.ads:8:14: high: "ZZ" constituent of "State" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics-priv.ads:8:14: high: "ZZ" constituent of "State" is not initialized
-ok_semantics-priv.ads:8:14: high: either make "Priv.YY" constituent of "OK_Semantics.State2" an input in the Global contract or initialize it before use
-ok_semantics-priv.ads:8:14: high: either make "X" constituent of "State1" an input in the Global contract or initialize it before use
-ok_semantics-priv.ads:8:14: high: either make "Y" constituent of "State2" an input in the Global contract or initialize it before use
-ok_semantics-priv.ads:8:14: high: either make "Z" constituent of "State3" an input in the Global contract or initialize it before use
-ok_semantics-priv.ads:8:14: high: either make "ZZ" constituent of "State" an input in the Global contract or initialize it before use
 ok_semantics-priv.ads:9:06: info: data dependencies proved
-ok_semantics-priv.ads:9:28: high: "OK_Semantics.State1" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics-priv.ads:9:28: high: "OK_Semantics.State1" is not initialized
-ok_semantics-priv.ads:9:28: high: either make "OK_Semantics.State1" an input in the Global contract or initialize it before use
 ok_semantics-priv.ads:9:28: low: unused global "OK_Semantics.State1"
-ok_semantics-priv.ads:9:36: high: "OK_Semantics.State2" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics-priv.ads:9:36: high: "OK_Semantics.State2" is not initialized
-ok_semantics-priv.ads:9:36: high: either make "OK_Semantics.State2" an input in the Global contract or initialize it before use
 ok_semantics-priv.ads:9:36: low: unused global "OK_Semantics.State2"
-ok_semantics-priv.ads:9:44: high: "OK_Semantics.State3" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics-priv.ads:9:44: high: "OK_Semantics.State3" is not initialized
-ok_semantics-priv.ads:9:44: high: either make "OK_Semantics.State3" an input in the Global contract or initialize it before use
 ok_semantics-priv.ads:9:44: low: unused global "OK_Semantics.State3"
 ok_semantics-priv.ads:12:06: info: data dependencies proved
 ok_semantics-pub.adb:7:35: low: unused global "X" constituent of "State1"
@@ -71,33 +55,17 @@ ok_semantics-pub.adb:19:49: warning: "Priv.YY" constituent of "OK_Semantics.Stat
 ok_semantics-pub.adb:19:58: low: unused global "Priv.State" constituent of "OK_Semantics.State3"
 ok_semantics-pub.adb:19:58: warning: "Priv.State" constituent of "OK_Semantics.State3" is not modified, could be INPUT
 ok_semantics-pub.ads:5:06: info: data dependencies proved
-ok_semantics-pub.ads:7:14: high: "Priv.State" constituent of "OK_Semantics.State3" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics-pub.ads:7:14: high: "Priv.State" constituent of "OK_Semantics.State3" is not initialized
-ok_semantics-pub.ads:7:14: high: "Priv.YY" constituent of "OK_Semantics.State2" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics-pub.ads:7:14: high: "Priv.YY" constituent of "OK_Semantics.State2" is not initialized
-ok_semantics-pub.ads:7:14: high: "X" constituent of "State1" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics-pub.ads:7:14: high: "X" constituent of "State1" is not initialized
-ok_semantics-pub.ads:7:14: high: "Y" constituent of "State2" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics-pub.ads:7:14: high: "Y" constituent of "State2" is not initialized
-ok_semantics-pub.ads:7:14: high: "Z" constituent of "State3" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics-pub.ads:7:14: high: "Z" constituent of "State3" is not initialized
-ok_semantics-pub.ads:7:14: high: either make "Priv.State" constituent of "OK_Semantics.State3" an input in the Global contract or initialize it before use
-ok_semantics-pub.ads:7:14: high: either make "Priv.YY" constituent of "OK_Semantics.State2" an input in the Global contract or initialize it before use
-ok_semantics-pub.ads:7:14: high: either make "X" constituent of "State1" an input in the Global contract or initialize it before use
-ok_semantics-pub.ads:7:14: high: either make "Y" constituent of "State2" an input in the Global contract or initialize it before use
-ok_semantics-pub.ads:7:14: high: either make "Z" constituent of "State3" an input in the Global contract or initialize it before use
 ok_semantics-pub.ads:8:06: info: data dependencies proved
-ok_semantics-pub.ads:8:28: high: "OK_Semantics.State1" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics-pub.ads:8:28: high: "OK_Semantics.State1" is not initialized
-ok_semantics-pub.ads:8:28: high: either make "OK_Semantics.State1" an input in the Global contract or initialize it before use
 ok_semantics-pub.ads:8:28: low: unused global "OK_Semantics.State1"
-ok_semantics-pub.ads:8:36: high: "OK_Semantics.State2" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics-pub.ads:8:36: high: "OK_Semantics.State2" is not initialized
-ok_semantics-pub.ads:8:36: high: either make "OK_Semantics.State2" an input in the Global contract or initialize it before use
 ok_semantics-pub.ads:8:36: low: unused global "OK_Semantics.State2"
-ok_semantics-pub.ads:8:44: high: "OK_Semantics.State3" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics-pub.ads:8:44: high: "OK_Semantics.State3" is not initialized
-ok_semantics-pub.ads:8:44: high: either make "OK_Semantics.State3" an input in the Global contract or initialize it before use
 ok_semantics-pub.ads:8:44: low: unused global "OK_Semantics.State3"
 ok_semantics-pub.ads:11:06: info: data dependencies proved
 ok_semantics.adb:10:35: low: unused global "X" constituent of "State1"
@@ -105,25 +73,15 @@ ok_semantics.adb:10:38: low: unused global "Y" constituent of "State2"
 ok_semantics.adb:10:41: low: unused global "Z" constituent of "State3"
 ok_semantics.adb:10:48: low: unused global "Priv.YY" constituent of "OK_Semantics.State2"
 ok_semantics.adb:10:57: low: unused global "Priv.State" constituent of "OK_Semantics.State3"
-ok_semantics.adb:17:36: high: "X" constituent of "State1" is not an input in the Global contract of subprogram "Create" at ok_semantics.ads:14
 ok_semantics.adb:17:36: high: "X" constituent of "State1" is not initialized
-ok_semantics.adb:17:36: high: either make "X" constituent of "State1" an input in the Global contract or initialize it before use
 ok_semantics.adb:17:36: low: unused global "X" constituent of "State1"
-ok_semantics.adb:17:39: high: "Y" constituent of "State2" is not an input in the Global contract of subprogram "Create" at ok_semantics.ads:14
 ok_semantics.adb:17:39: high: "Y" constituent of "State2" is not initialized
-ok_semantics.adb:17:39: high: either make "Y" constituent of "State2" an input in the Global contract or initialize it before use
 ok_semantics.adb:17:39: low: unused global "Y" constituent of "State2"
-ok_semantics.adb:17:42: high: "Z" constituent of "State3" is not an input in the Global contract of subprogram "Create" at ok_semantics.ads:14
 ok_semantics.adb:17:42: high: "Z" constituent of "State3" is not initialized
-ok_semantics.adb:17:42: high: either make "Z" constituent of "State3" an input in the Global contract or initialize it before use
 ok_semantics.adb:17:42: low: unused global "Z" constituent of "State3"
-ok_semantics.adb:17:49: high: "Priv.YY" constituent of "OK_Semantics.State2" is not an input in the Global contract of subprogram "Create" at ok_semantics.ads:14
 ok_semantics.adb:17:49: high: "Priv.YY" constituent of "OK_Semantics.State2" is not initialized
-ok_semantics.adb:17:49: high: either make "Priv.YY" constituent of "OK_Semantics.State2" an input in the Global contract or initialize it before use
 ok_semantics.adb:17:49: low: unused global "Priv.YY" constituent of "OK_Semantics.State2"
-ok_semantics.adb:17:58: high: "Priv.State" constituent of "OK_Semantics.State3" is not an input in the Global contract of subprogram "Create" at ok_semantics.ads:14
 ok_semantics.adb:17:58: high: "Priv.State" constituent of "OK_Semantics.State3" is not initialized
-ok_semantics.adb:17:58: high: either make "Priv.State" constituent of "OK_Semantics.State3" an input in the Global contract or initialize it before use
 ok_semantics.adb:17:58: low: unused global "Priv.State" constituent of "OK_Semantics.State3"
 ok_semantics.adb:24:36: low: unused global "X" constituent of "State1"
 ok_semantics.adb:24:36: warning: "X" constituent of "State1" is not modified, could be INPUT
@@ -138,6 +96,11 @@ ok_semantics.adb:24:58: warning: "Priv.State" constituent of "OK_Semantics.State
 ok_semantics.ads:12:06: info: data dependencies proved
 ok_semantics.ads:15:06: info: data dependencies proved
 ok_semantics.ads:18:06: info: data dependencies proved
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => X constituent of State1"
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => Y constituent of State2"
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => Z constituent of State3"
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => ZZ constituent of State"
 ok_semantics2-priv.adb:6:43: medium: incorrect dependency "Check'Result => X constituent of State1"
 ok_semantics2-priv.adb:6:46: medium: incorrect dependency "Check'Result => Y constituent of State2"
 ok_semantics2-priv.adb:6:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
@@ -148,35 +111,14 @@ ok_semantics2-priv.ads:5:13: low: unused global "X" constituent of "State1"
 ok_semantics2-priv.ads:5:13: low: unused global "Y" constituent of "State2"
 ok_semantics2-priv.ads:5:13: low: unused global "Z" constituent of "State3"
 ok_semantics2-priv.ads:5:13: low: unused global "ZZ" constituent of "State"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => X constituent of State1"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => Y constituent of State2"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => Z constituent of State3"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => ZZ constituent of State"
-ok_semantics2-priv.ads:8:14: high: "OK_Semantics2.State1" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics2-priv.ads:8:14: high: "OK_Semantics2.State1" is not initialized
-ok_semantics2-priv.ads:8:14: high: "OK_Semantics2.State2" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics2-priv.ads:8:14: high: "OK_Semantics2.State2" is not initialized
-ok_semantics2-priv.ads:8:14: high: "OK_Semantics2.State3" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics2-priv.ads:8:14: high: "OK_Semantics2.State3" is not initialized
-ok_semantics2-priv.ads:8:14: high: "Priv.YY" constituent of "OK_Semantics2.State2" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics2-priv.ads:8:14: high: "Priv.YY" constituent of "OK_Semantics2.State2" is not initialized
-ok_semantics2-priv.ads:8:14: high: "X" constituent of "State1" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics2-priv.ads:8:14: high: "X" constituent of "State1" is not initialized
-ok_semantics2-priv.ads:8:14: high: "Y" constituent of "State2" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics2-priv.ads:8:14: high: "Y" constituent of "State2" is not initialized
-ok_semantics2-priv.ads:8:14: high: "Z" constituent of "State3" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics2-priv.ads:8:14: high: "Z" constituent of "State3" is not initialized
-ok_semantics2-priv.ads:8:14: high: "ZZ" constituent of "State" is not an input in the Global contract of subprogram "Create" at line 8
 ok_semantics2-priv.ads:8:14: high: "ZZ" constituent of "State" is not initialized
-ok_semantics2-priv.ads:8:14: high: either make "OK_Semantics2.State1" an input in the Global contract or initialize it before use
-ok_semantics2-priv.ads:8:14: high: either make "OK_Semantics2.State2" an input in the Global contract or initialize it before use
-ok_semantics2-priv.ads:8:14: high: either make "OK_Semantics2.State3" an input in the Global contract or initialize it before use
-ok_semantics2-priv.ads:8:14: high: either make "Priv.YY" constituent of "OK_Semantics2.State2" an input in the Global contract or initialize it before use
-ok_semantics2-priv.ads:8:14: high: either make "X" constituent of "State1" an input in the Global contract or initialize it before use
-ok_semantics2-priv.ads:8:14: high: either make "Y" constituent of "State2" an input in the Global contract or initialize it before use
-ok_semantics2-priv.ads:8:14: high: either make "Z" constituent of "State3" an input in the Global contract or initialize it before use
-ok_semantics2-priv.ads:8:14: high: either make "ZZ" constituent of "State" an input in the Global contract or initialize it before use
 ok_semantics2-priv.ads:8:14: low: unused global "OK_Semantics2.State1"
 ok_semantics2-priv.ads:8:14: low: unused global "OK_Semantics2.State2"
 ok_semantics2-priv.ads:8:14: low: unused global "OK_Semantics2.State3"
@@ -192,6 +134,11 @@ ok_semantics2-priv.ads:11:14: warning: "Y" constituent of "State2" is not modifi
 ok_semantics2-priv.ads:11:14: warning: "Z" constituent of "State3" is not modified, could be INPUT
 ok_semantics2-priv.ads:11:14: warning: "ZZ" constituent of "State" is not modified, could be INPUT
 ok_semantics2-priv.ads:12:06: info: flow dependencies proved
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => Priv.State constituent of OK_Semantics2.State3"
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => X constituent of State1"
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => Y constituent of State2"
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => Z constituent of State3"
 ok_semantics2-pub.adb:7:43: medium: incorrect dependency "Check'Result => X constituent of State1"
 ok_semantics2-pub.adb:7:46: medium: incorrect dependency "Check'Result => Y constituent of State2"
 ok_semantics2-pub.adb:7:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
@@ -202,35 +149,14 @@ ok_semantics2-pub.ads:4:13: low: unused global "Priv.YY" constituent of "OK_Sema
 ok_semantics2-pub.ads:4:13: low: unused global "X" constituent of "State1"
 ok_semantics2-pub.ads:4:13: low: unused global "Y" constituent of "State2"
 ok_semantics2-pub.ads:4:13: low: unused global "Z" constituent of "State3"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => Priv.State constituent of OK_Semantics2.State3"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => X constituent of State1"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => Y constituent of State2"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => Z constituent of State3"
-ok_semantics2-pub.ads:7:14: high: "OK_Semantics2.State1" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics2-pub.ads:7:14: high: "OK_Semantics2.State1" is not initialized
-ok_semantics2-pub.ads:7:14: high: "OK_Semantics2.State2" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics2-pub.ads:7:14: high: "OK_Semantics2.State2" is not initialized
-ok_semantics2-pub.ads:7:14: high: "OK_Semantics2.State3" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics2-pub.ads:7:14: high: "OK_Semantics2.State3" is not initialized
-ok_semantics2-pub.ads:7:14: high: "Priv.State" constituent of "OK_Semantics2.State3" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics2-pub.ads:7:14: high: "Priv.State" constituent of "OK_Semantics2.State3" is not initialized
-ok_semantics2-pub.ads:7:14: high: "Priv.YY" constituent of "OK_Semantics2.State2" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics2-pub.ads:7:14: high: "Priv.YY" constituent of "OK_Semantics2.State2" is not initialized
-ok_semantics2-pub.ads:7:14: high: "X" constituent of "State1" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics2-pub.ads:7:14: high: "X" constituent of "State1" is not initialized
-ok_semantics2-pub.ads:7:14: high: "Y" constituent of "State2" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics2-pub.ads:7:14: high: "Y" constituent of "State2" is not initialized
-ok_semantics2-pub.ads:7:14: high: "Z" constituent of "State3" is not an input in the Global contract of subprogram "Create" at line 7
 ok_semantics2-pub.ads:7:14: high: "Z" constituent of "State3" is not initialized
-ok_semantics2-pub.ads:7:14: high: either make "OK_Semantics2.State1" an input in the Global contract or initialize it before use
-ok_semantics2-pub.ads:7:14: high: either make "OK_Semantics2.State2" an input in the Global contract or initialize it before use
-ok_semantics2-pub.ads:7:14: high: either make "OK_Semantics2.State3" an input in the Global contract or initialize it before use
-ok_semantics2-pub.ads:7:14: high: either make "Priv.State" constituent of "OK_Semantics2.State3" an input in the Global contract or initialize it before use
-ok_semantics2-pub.ads:7:14: high: either make "Priv.YY" constituent of "OK_Semantics2.State2" an input in the Global contract or initialize it before use
-ok_semantics2-pub.ads:7:14: high: either make "X" constituent of "State1" an input in the Global contract or initialize it before use
-ok_semantics2-pub.ads:7:14: high: either make "Y" constituent of "State2" an input in the Global contract or initialize it before use
-ok_semantics2-pub.ads:7:14: high: either make "Z" constituent of "State3" an input in the Global contract or initialize it before use
 ok_semantics2-pub.ads:7:14: low: unused global "OK_Semantics2.State1"
 ok_semantics2-pub.ads:7:14: low: unused global "OK_Semantics2.State2"
 ok_semantics2-pub.ads:7:14: low: unused global "OK_Semantics2.State3"
@@ -246,6 +172,11 @@ ok_semantics2-pub.ads:10:14: warning: "X" constituent of "State1" is not modifie
 ok_semantics2-pub.ads:10:14: warning: "Y" constituent of "State2" is not modified, could be INPUT
 ok_semantics2-pub.ads:10:14: warning: "Z" constituent of "State3" is not modified, could be INPUT
 ok_semantics2-pub.ads:11:06: info: flow dependencies proved
+ok_semantics2.adb:10:06: medium: missing dependency "null => Priv.State constituent of OK_Semantics2.State3"
+ok_semantics2.adb:10:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
+ok_semantics2.adb:10:06: medium: missing dependency "null => X constituent of State1"
+ok_semantics2.adb:10:06: medium: missing dependency "null => Y constituent of State2"
+ok_semantics2.adb:10:06: medium: missing dependency "null => Z constituent of State3"
 ok_semantics2.adb:10:43: medium: incorrect dependency "Check'Result => X constituent of State1"
 ok_semantics2.adb:10:46: medium: incorrect dependency "Check'Result => Y constituent of State2"
 ok_semantics2.adb:10:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
@@ -256,26 +187,11 @@ ok_semantics2.ads:11:13: low: unused global "Priv.YY" constituent of "OK_Semanti
 ok_semantics2.ads:11:13: low: unused global "X" constituent of "State1"
 ok_semantics2.ads:11:13: low: unused global "Y" constituent of "State2"
 ok_semantics2.ads:11:13: low: unused global "Z" constituent of "State3"
-ok_semantics2.ads:12:06: medium: missing dependency "null => Priv.State constituent of OK_Semantics2.State3"
-ok_semantics2.ads:12:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
-ok_semantics2.ads:12:06: medium: missing dependency "null => X constituent of State1"
-ok_semantics2.ads:12:06: medium: missing dependency "null => Y constituent of State2"
-ok_semantics2.ads:12:06: medium: missing dependency "null => Z constituent of State3"
-ok_semantics2.ads:14:14: high: "Priv.State" constituent of "OK_Semantics2.State3" is not an input in the Global contract of subprogram "Create" at line 14
 ok_semantics2.ads:14:14: high: "Priv.State" constituent of "OK_Semantics2.State3" is not initialized
-ok_semantics2.ads:14:14: high: "Priv.YY" constituent of "OK_Semantics2.State2" is not an input in the Global contract of subprogram "Create" at line 14
 ok_semantics2.ads:14:14: high: "Priv.YY" constituent of "OK_Semantics2.State2" is not initialized
-ok_semantics2.ads:14:14: high: "X" constituent of "State1" is not an input in the Global contract of subprogram "Create" at line 14
 ok_semantics2.ads:14:14: high: "X" constituent of "State1" is not initialized
-ok_semantics2.ads:14:14: high: "Y" constituent of "State2" is not an input in the Global contract of subprogram "Create" at line 14
 ok_semantics2.ads:14:14: high: "Y" constituent of "State2" is not initialized
-ok_semantics2.ads:14:14: high: "Z" constituent of "State3" is not an input in the Global contract of subprogram "Create" at line 14
 ok_semantics2.ads:14:14: high: "Z" constituent of "State3" is not initialized
-ok_semantics2.ads:14:14: high: either make "Priv.State" constituent of "OK_Semantics2.State3" an input in the Global contract or initialize it before use
-ok_semantics2.ads:14:14: high: either make "Priv.YY" constituent of "OK_Semantics2.State2" an input in the Global contract or initialize it before use
-ok_semantics2.ads:14:14: high: either make "X" constituent of "State1" an input in the Global contract or initialize it before use
-ok_semantics2.ads:14:14: high: either make "Y" constituent of "State2" an input in the Global contract or initialize it before use
-ok_semantics2.ads:14:14: high: either make "Z" constituent of "State3" an input in the Global contract or initialize it before use
 ok_semantics2.ads:14:14: low: unused global "Priv.State" constituent of "OK_Semantics2.State3"
 ok_semantics2.ads:14:14: low: unused global "Priv.YY" constituent of "OK_Semantics2.State2"
 ok_semantics2.ads:14:14: low: unused global "X" constituent of "State1"

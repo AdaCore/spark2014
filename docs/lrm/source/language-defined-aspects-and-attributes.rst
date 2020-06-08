@@ -4,7 +4,6 @@ Language-Defined Aspects and Attributes (Annex K)
 Language-Defined Aspects
 ------------------------
 
-.. _tu-fe-language_defined_aspects-01:
 
 1. Ada language aspects are permitted as shown in the following table:
 
@@ -80,7 +79,6 @@ Volatile_Components 	      Yes
 Write			      No		     No streams
 ============================= ====================== ===============================================
 
-.. _tu-fe-language_defined_aspects-02:
 
 2. |SPARK| defines the following aspects:
 
@@ -112,7 +110,6 @@ SPARK_Mode		      Yes		     Language defined but implementation dependent
 Volatile_Function             Yes
 ============================= ====================== =================================================
 
-.. _etu-language_defined_aspects:
 
 .. todo:: Complete this section
 
@@ -121,7 +118,6 @@ Volatile_Function             Yes
 Language-Defined Attributes
 ---------------------------
 
-.. _tu-fe-language_defined_attributes-01:
 
 1. The following attributes are in |SPARK|.
 
@@ -249,7 +245,6 @@ S'Class'Write			      No		     No streams
 S'Write				      No		     No streams
 ===================================== ====================== ====================================================
 
-.. _etu-language_defined_attributes:
 
 GNAT Implementation-Defined Attributes
 --------------------------------------

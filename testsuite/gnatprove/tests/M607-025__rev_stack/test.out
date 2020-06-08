@@ -3,12 +3,12 @@ a-cofove.ads:709:23: info: precondition proved (Z3: 1 VC), in instantiation at l
 a-cofove.ads:712:38: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
 a-cofove.ads:745:14: info: precondition proved (Z3: 1 VC), in instantiation at list.ads:8
 a-cofove.ads:749:35: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
-a-cofuve.ads:231:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
-a-cofuve.ads:236:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
-a-cofuve.ads:237:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
-a-cofuve.ads:237:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
-a-cofuve.ads:238:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
-a-cofuve.ads:299:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
+a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
+a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:8
 list.adb:18:14: info: initialization of "Res" proved
 list.adb:22:10: info: precondition proved (Z3: 2 VC)
 list.adb:22:19: info: precondition proved (Z3: 4 VC)

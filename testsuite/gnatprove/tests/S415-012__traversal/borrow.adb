@@ -14,7 +14,7 @@ procedure Borrow with SPARK_Mode is
    procedure P (X : access List) is
 
       function Get return Integer with Pre => True is
-         Y : access List := Next (Next (X));
+         Y : access constant List := Next (Next (X));
       begin
          return Y.V;
       end Get;

@@ -1,0 +1,11 @@
+status.ads:4:28: warning: no procedure exists that can initialize abstract state "Status.S"
+status.ads:4:31: warning: no procedure exists that can initialize abstract state "Status.mode"
+status.ads:7:11: info: data dependencies proved
+status.ads:10:23: medium: missing dependency "Time.s => Status.S"
+status.ads:10:23: medium: missing dependency "Time.s => Status.mode"
+time.ads:3:09: info: flow dependencies proved
+Trace files' contents:
+status.adb:18
+
+status.adb:18
+

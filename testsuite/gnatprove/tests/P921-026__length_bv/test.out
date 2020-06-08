@@ -6,7 +6,7 @@ test_length.adb:7:35: medium: range check might fail (e.g. when A'First = 0 and 
 test_length.adb:12:14: warning: subprogram "P2" has no effect
 test_length.adb:15:24: medium: range check might fail
 test_length.adb:20:14: warning: subprogram "P3" has no effect
-test_length.adb:23:23: medium: range check might fail (e.g. when A2'First = 0 and A2'Last = 65532)
+test_length.adb:23:23: medium: range check might fail
 test_length.adb:29:04: info: precondition proved (Trivial: 1 VC)
 test_length.adb:30:04: info: precondition proved (Trivial: 1 VC)
 test_length.adb:31:04: info: precondition proved (Trivial: 1 VC)

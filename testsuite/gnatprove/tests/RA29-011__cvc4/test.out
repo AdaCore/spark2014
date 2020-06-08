@@ -27,9 +27,9 @@ See the file COPYING (distributed with the source code, and with
 all binaries) for the full CVC4 copyright, licensing, and (lack of)
 warranty information.
 
-version       : 1.7.1-prerelease
+version       : 1.8-prerelease
 
-library       : 1.7.1
+library       : 1.8.0
 
 debug code    : no
 statistics    : yes
@@ -42,6 +42,8 @@ proof         : no
 coverage      : no
 profiling     : no
 asan          : no
+ubsan         : no
+tsan          : no
 competition   : no
 
 abc           : no

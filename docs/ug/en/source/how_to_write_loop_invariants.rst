@@ -22,8 +22,7 @@ Automatic Unrolling of Simple For-Loops
 
 In addition, |GNATprove| always unrolls loops of the form ``for J in 1 .. 1
 loop`` that don't have a :ref:`loop invariants` or :ref:`loop variants`, even
-when they declare local variables of non-scalar type. This special form of loop
-is used to simulate forward gotos by using exit statements instead.
+when they declare local variables of non-scalar type.
 
 As a result of unrolling, |GNATprove| conveys the exact meaning of the loop to
 provers, without requiring a loop invariant. While this is quite powerful, it

@@ -1,4 +1,5 @@
 list_borrow.adb:8:13: medium: subprogram "All_Pos" might not terminate, terminating annotation could be incorrect
+list_borrow.adb:8:22: warning: "X" is not modified, could be of access constant type
 list_borrow.adb:9:26: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:10:26: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:16:21: info: predicate check proved (CVC4: 1 VC)
@@ -19,6 +20,6 @@ list_borrow.adb:31:30: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:32:19: info: assertion proved (CVC4: 1 VC)
 list_borrow.adb:32:20: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:32:25: info: pointer dereference check proved (CVC4: 1 VC)
-list_borrow.adb:35:07: medium: predicate check might fail
+list_borrow.adb:35:07: medium: predicate check might fail, cannot prove All_Pos (List (list_pos))
 list_borrow.adb:37:13: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:38:08: info: pointer dereference check proved (CVC4: 1 VC)

@@ -14,9 +14,7 @@ data_initialization.ads:14:07: warning: "P3" is not modified, could be IN
 data_initialization.ads:14:07: warning: unused variable "P3"
 data_initialization.ads:16:06: info: data dependencies proved
 data_initialization.ads:16:27: low: unused global "G1"
-data_initialization.ads:17:27: high: "G2.Val" is not an input in the Global contract of subprogram "Proc" at line 11
 data_initialization.ads:17:27: high: "G2.Val" is not initialized
-data_initialization.ads:17:27: high: either make "G2.Val" an input in the Global contract or initialize it before use
 data_initialization.ads:18:27: low: unused global "G3"
 data_initialization.ads:18:27: warning: "G3" is not modified, could be INPUT
 data_initialization.ads:21:06: info: data dependencies proved

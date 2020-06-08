@@ -1,6 +1,7 @@
 main.adb:4:22: info: predicate check proved (CVC4: 1 VC)
+main.adb:6:04: warning: initialization of "Z" has no effect
 main.adb:6:13: info: predicate check proved (CVC4: 1 VC)
-main.adb:7:14: medium: predicate check might fail (e.g. when Global = 1)
+main.adb:7:14: medium: predicate check might fail, cannot prove (Global + T) mod 2 = 0 (e.g. when Global = 1)
 main.adb:13:06: warning: unused assignment
 main.adb:13:12: info: predicate check proved (CVC4: 1 VC)
 main.adb:19:14: warning: unused assignment to "TV"

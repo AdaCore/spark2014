@@ -46,7 +46,7 @@ setup_precheck:
 	fi
 
 setup: setup_precheck
-	$(MAKE) -C why/xgen
+	$(MAKE) -C ../src/why/xgen
 	mkdir -p obj obj-tools ../install/bin
 	sed -e "s^@ADAINCLUDE@^$(adainclude)^" \
 	    -e "s^@ADALIB@^$(adalib)^" \
@@ -69,7 +69,7 @@ build: setup force
 # "Code Coverage and Profiling" in GNAT User's Guide.
 
 coverage-setup: force
-	gnatcov instrument -P gnat2why.gpr --level=stmt --dump-method=atexit project.isi
+	gnatcov instrument -P gnat2why.gpr --level=stmt --dump-method=atexit
 	# ??? insert newlines into the gnatcov output; otherwise we would have
 	# too long lines
 	sed -i 's/;[^ ]/\n&/g' obj/gnatcov-instr/gnat1drv.adb
@@ -92,5 +92,5 @@ codepeer:
 force:
 
 clean:
-	$(MAKE) -C why/xgen clean
+	$(MAKE) -C ../src/why/xgen clean
 	-$(RM) obj obj-tools

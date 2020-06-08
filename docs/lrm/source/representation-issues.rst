@@ -85,23 +85,19 @@ The Package System
 
 .. centered:: **Legality Rules**
 
-.. _tu-the_package_system-01:
 
 1. The use of the operators defined for type Address are not permitted
    in |SPARK| except for use within representation clauses.
 
-.. _etu-the_package_system:
 
 Machine Code Insertions
 -----------------------
 
 .. centered:: **Legality Rules**
 
-.. _tu-machine_code_insertions-01:
 
 1. Machine code insertions are not in |SPARK|.
 
-.. _etu-machine_code_insertions:
 
 Unchecked Type Conversions
 --------------------------
@@ -140,18 +136,15 @@ Unchecked Access Value Creation
 
 .. centered:: **Legality Rules**
 
-.. _tu-unchecked_access_value_creation-01:
 
 1. The Unchecked_Access attribute is not in |SPARK|.
 
-.. _etu-unchecked_access_value_creation:
 
 Storage Management
 ------------------
 
 .. centered:: **Legality Rules**
 
-.. _tu-storage_management-01:
 
 1. Aspect specifications for the Storage_Pool and Storage_Size aspects
 are not in |SPARK|, nor are uses of the corresponding attributes.
@@ -159,7 +152,6 @@ The predefined unit System.Storage_Pools is not in |SPARK|, nor is
 any other predefined unit that semantically depends on it. The pragma
 Default_Storage_Pool is not in SPARK.
 
-.. _etu-storage_management:
 
 Pragma Restrictions and Pragma Profile
 --------------------------------------
@@ -172,11 +164,9 @@ Streams
 
 .. centered:: **Legality Rules**
 
-.. _tu-streams-01:
 
 1. Stream types and operations are not in |SPARK|.
 
-.. _etu-streams:
 
 Freezing Rules
 --------------

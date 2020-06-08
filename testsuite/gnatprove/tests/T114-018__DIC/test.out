@@ -1,0 +1,11 @@
+test.ads:9:09: info: default initial condition proved (CVC4: 1 VC)
+test_dic.adb:1:11: warning: subprogram "Test_DIC" has no effect
+test_dic.adb:9:29: info: range check proved (CVC4: 1 VC)
+test_dic.adb:17:04: info: default initial condition proved (CVC4: 1 VC; Trivial: 1 VC)
+test_dic.adb:17:04: info: initialization of "X" proved
+test_dic.adb:17:11: info: range check proved (CVC4: 1 VC)
+test_dic.adb:18:04: info: default initial condition proved (CVC4: 1 VC; Trivial: 1 VC)
+test_dic.adb:18:04: info: initialization of "Y" proved
+test_dic.adb:19:04: info: initialization of "Z" proved
+test_dic.adb:19:04: medium: default initial condition might fail (e.g. when C = 0 and Z = (X => False, F => ?) and Z'Constrained = False)
+test_dic.adb:19:11: info: range check proved (CVC4: 1 VC)

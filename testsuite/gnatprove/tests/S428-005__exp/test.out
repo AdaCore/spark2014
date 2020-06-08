@@ -5,8 +5,8 @@ exp_le_last.adb:10:23: info: assertion proved (CVC4: 1 VC), in instantiation at 
 exp_le_last.adb:10:27: info: overflow check proved (CVC4: 1 VC), in instantiation at useit.ads:5
 exp_le_last.adb:11:22: info: assertion proved (CVC4: 1 VC), in instantiation at useit.ads:5
 exp_le_last.adb:11:26: info: overflow check proved (CVC4: 1 VC), in instantiation at useit.ads:5
-exp_le_last.adb:12:22: medium: assertion might fail, cannot prove 2 ** (Off + (Element_Type'Size - Off)) = 2 ** Element_Type'size, in instantiation at useit.ads:5
-exp_le_last.adb:12:24: medium: overflow check might fail, in instantiation at useit.ads:5
+exp_le_last.adb:12:22: info: assertion proved (altergo: 1 VC), in instantiation at useit.ads:5
+exp_le_last.adb:12:24: info: overflow check proved (altergo: 1 VC), in instantiation at useit.ads:5
 exp_le_last.adb:12:32: info: overflow check proved (CVC4: 1 VC), in instantiation at useit.ads:5
 exp_le_last.adb:12:32: info: range check proved (CVC4: 1 VC), in instantiation at useit.ads:5
 useit.ads:6:04: warning: subprogram "Bar" has no effect

@@ -1,4 +1,4 @@
-base_repr.adb:9:21: warning: "L" is not modified, could be IN
+base_repr.adb:9:21: warning: "L" is not modified, could be of access constant type
 base_repr.adb:11:14: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention L in a precondition]
 base_repr.adb:11:16: info: expression function body not available for proof ("Length" might not return)
 base_repr.adb:11:16: info: implicit function contract not available for proof ("Length" might not return)

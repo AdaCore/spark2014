@@ -1,4 +1,5 @@
 p.adb:3:21: info: unrolling loop
+p.adb:15:22: warning: "X" is not modified, could be of access constant type
 p.adb:16:14: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:16:19: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:16:24: info: pointer dereference check proved (CVC4: 1 VC)
@@ -9,23 +10,28 @@ p.adb:18:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:18:25: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:18:30: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:18:35: info: pointer dereference check proved (CVC4: 1 VC)
+p.adb:20:22: warning: "X" is not modified, could be of access constant type
 p.adb:21:14: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:21:19: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:22:44: info: pointer dereference check proved (CVC4: 1 VC)
 p.adb:23:20: medium: postcondition might fail, cannot prove H'Result > I (e.g. when H'Result = 0 and I = 1)
+rec_inv.adb:12:16: warning: "X" is not modified, could be of access constant type
 rec_inv.adb:13:08: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:15:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 rec_inv.adb:15:19: info: pointer dereference check proved (CVC4: 1 VC)
+rec_inv.adb:17:16: warning: "X" is not modified, could be of access constant type
 rec_inv.adb:18:08: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:18:13: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:19:38: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:20:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 rec_inv.adb:20:19: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:20:24: info: pointer dereference check proved (CVC4: 1 VC)
+rec_inv.adb:22:16: warning: "X" is not modified, could be of access constant type
 rec_inv.adb:23:08: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:23:13: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:24:38: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:25:14: medium: postcondition might fail, cannot prove H'Result > 0
+rec_inv.adb:27:16: warning: "X" is not modified, could be of access constant type
 rec_inv.adb:28:08: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:28:13: info: pointer dereference check proved (CVC4: 1 VC)
 rec_inv.adb:28:18: info: pointer dereference check proved (CVC4: 1 VC)

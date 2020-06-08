@@ -1,6 +1,0 @@
-pack.ads:10:4: info: goal reached at P1 (TEST FAILED, PROVED)
-pack.ads:20:4: goal not reached at P2 (PARTIALLY PROVED, TEST FAILED)
-pack.ads:30:4: goal not reached at P3 (TEST FAILED, NOT PROVED)
-pack.ads:40:4: goal not reached at P4 (TEST FAILED, NOT PROVED)
-pack.ads:50:4: goal not reached at P5 (TEST FAILED)
-pack.ads:60:4: goal not reached at P6 (TEST FAILED)

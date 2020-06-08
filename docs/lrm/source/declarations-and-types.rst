@@ -75,14 +75,12 @@ function which (directly or indirectly) reads a variable.
 
 .. centered:: **Legality Rules**
 
-.. _tu-subtype_declarations-01:
 
 1. [A ``constraint``, excluding the ``range`` of a
    ``loop_parameter_specification``, shall not be defined using an
    expression with a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
-.. _etu-subtype_declarations-lr:
 
 
 Classification of Operations
@@ -100,14 +98,11 @@ Static predicates and dynamic predicates are both in
 
 .. centered:: **Legality Rules**
 
-.. _tu-sf-subtype_predicates-01:
 
 1. [A Dynamic_Predicate expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
-.. _etu-subtype_predicates-01:
 
-.. _tu-sf-subtype_predicates-02:
 
 2. If a Dynamic_Predicate applies to the subtype of a composite object,
    then a verification condition is generated to ensure that the object
@@ -133,24 +128,18 @@ Static predicates and dynamic predicates are both in
   :ref:`update-expressions`).
   These are assignment operations but not assignment statements.]
 
-.. _etu-subtype_predicates-02:
 
-.. _tu-sf-subtype_predicates-03:
 
 3. A Static_Predicate or Dynamic_Predicate shall not apply to an effectively
    volatile type.
 
-.. _etu-subtype_predicates-03:
 
-.. _tu-subtype_predicates-vr:
 
 .. centered:: **Verification Rules**
 
-.. _tu-sf-subtype_predicates-04:
 
 4. A Dynamic_Predicate expression shall always terminate.
 
-.. _etu-subtype_predicates-04:
 
 Objects and Named Numbers
 -------------------------
@@ -184,7 +173,6 @@ Otherwise, a stand-alone constant is a *constant without variable inputs*.
 
 .. centered:: **Legality Rules**
 
-.. _tu-object_declarations-01:
 
 1. [The borrowed name of the expression of an object declaration defining a
    borrowing operation shall not have a variable input, except for a single
@@ -193,14 +181,12 @@ Otherwise, a stand-alone constant is a *constant without variable inputs*.
 
 .. centered:: **Verification Rules**
 
-.. _tu-object_declarations-02:
 
 2. Constants without variable inputs shall not be denoted in Global,
    Depends, Initializes or Refined_State aspect specifications.
    [Two elaborations of such a constant declaration will always
    yield equal initialization expression values.]
 
-.. _etu-object_declarations-vr:
 
 .. centered:: **Examples**
 
@@ -230,7 +216,6 @@ The following rules apply to derived types in |SPARK|.
 
 .. centered:: **Legality Rules**
 
-.. _tu-derived_types-01:
 
 1. A private type that is not visibly tagged but whose full view is tagged
    cannot be derived.
@@ -240,7 +225,6 @@ on this type cannot have class-wide preconditions and postconditions, it is
 impossible to check the verification rules associated to overridding operations
 on the derived type.]
 
-.. _etu-derived_types:
 
 Scalar Types
 ------------
@@ -277,22 +261,18 @@ The following rules apply to discriminants in |SPARK|.
 
 .. centered:: **Legality Rules**
 
-.. _tu-discriminants-01:
 
 1. The type of a ``discriminant_specification`` shall be discrete.
 
-.. _tu-discriminants-02:
 
 2. A ``discriminant_specification`` shall not occur as part of a
    derived type declaration.
 
-.. _tu-discriminants-03:
 
 3. [The ``default_expression`` of a ``discriminant_specification``
    shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
-.. _etu-discriminants:
 
 .. _record_types:
 
@@ -303,14 +283,12 @@ Default initialization expressions must not have variable inputs in |SPARK|.
 
 .. centered:: **Legality Rules**
 
-.. _tu-record_types-01:
 
 1. [The ``default_expression`` of a ``component_declaration`` shall not
    have any variable inputs, nor shall it contain a name denoting
    the current instance of the enclosing type;
    see :ref:`expressions` for the statement of this rule.]
 
-.. _etu-record_types:
 
 [The rule in this section applies to any ``component_declaration``; this
 includes the case of a ``component_declaration`` which is a
@@ -322,19 +300,16 @@ Tagged Types and Type Extensions
 
 .. centered:: **Legality Rules**
 
-.. _tu-tagged_types-01:
 
 1. No construct shall introduce a semantic dependence on the Ada language
    defined package Ada.Tags.  [See Ada RM 10.1.1 for the definition of semantic
    dependence.  This rule implies, among other things, that any use of the Tag
    attribute is not in |SPARK|.]
 
-.. _tu-tagged_types-02:
 
 2. The identifier External_Tag shall not be used as an
    ``attribute_designator``.
 
-.. _etu-tagged_types:
 
 
 Type Extensions
@@ -342,13 +317,11 @@ Type Extensions
 
 .. centered:: **Legality Rules**
 
-.. _tu-type_extensions-01:
 
 1. A type extension shall not be declared within a subprogram body, block
    statement, or generic body which does not also enclose the declaration of
    each of its ancestor types.
 
-.. _etu-type_extensions:
 
 
 Dispatching Operations of Tagged Types
@@ -425,6 +398,25 @@ not mentioned in these contexts.
 This approach has the benefit that the same |SPARK| language rules which
 prevent unsafe concurrent access to non-allocated variables also
 provide the same safeguards for allocated objects.
+
+For purposes of determining global inputs and outputs, both memory allocation
+and deallocation are considered to reference an external state abstraction
+SPARK.Heap.Dynamic_Memory that has property Async_Writers. In particular, each
+occurence of an allocator is considered to reference this state abstraction as
+an input. [In other words, an allocator can be treated like a call to a
+volatile function which takes the allocated object as an actual parameter and
+references the mentioned state abstraction as an Input global.] Similarly,
+instances of the predefined generic Ada.Unchecked_Deallocation procedure behave
+as if the generic procedure would be annotated with the following contract:
+
+.. code-block:: ada
+
+   procedure Ada.Unchecked_Deallocation (X : in out Name) with
+     Depends => (SPARK.Heap.Dynamic_Memory => SPARK.Heap.Dynamic_Memory,
+                 X => null, null => X);
+
+so each call to an instance of this procedure is also considered to reference
+the mentioned state abstraction.
 
 The rules which accomplish all of this are described below.
 
@@ -751,14 +743,12 @@ not be a tagged type; stating that rule earlier eliminates the need to say
 anything about the circumstances, if any, under which a class-wide type might
 be an owning type).]
 
-..  _tu-access_types-01:
 
 1. At the point of a move operation the state of the source object (if any) and
    all of its reachable elements shall be Unrestricted. After a move operation,
    the state of any access parts of the source object (if there is one) becomes
    Moved.
 
-.. _tu-access_types-02:
 
 2. An owning object's state shall be Moved or Unrestricted at any point where
 
@@ -771,7 +761,6 @@ be an owning type).]
    the call returns - either model yields the same results); the state of an
    actual parameter of mode **out** becomes Unrestricted.]
 
-.. _tu-access_types-03:
 
 3. If the target of an assignment operation is an object of an anonymous
    access-to-object type (including copy-in for a parameter), then the source
@@ -781,7 +770,6 @@ be an owning type).]
    [Redundant: One consequence of this rule is that every allocator is of a
    named access type.]
 
-.. _tu-access_types-04:
 
 4. A declaration of a stand-alone object of an anonymous access type shall have
    an explicit initial value and shall occur immediately within a subprogram
@@ -793,7 +781,6 @@ be an owning type).]
    is not necessary to add rules restricting the visibility of such
    declarations.]
 
-.. _tu-access_types-05:
 
 5. A return statement that applies to a traversal function that has an
    anonymous access-to-constant (respectively, access-to-variable) result type,
@@ -802,7 +789,6 @@ be an owning type).]
    [Redundant: Roughly speaking, a traversal function always yields either null
    or a result which is reachable from the traversed parameter.]
 
-.. _tu-access_types-06:
 
 6. If a prefix of a name is of an owning type, then the prefix shall denote
    neither a non-traversal function call, an aggregate, an allocator, nor any
@@ -811,7 +797,6 @@ be an owning type).]
    expression (e.g., a qualified expression or type conversion whose operand
    would be forbidden as a prefix by this rule).
 
-.. _tu-access_types-07:
 
 7. For an assignment statement where the target is a stand-alone object of an
    anonymous access-to-object type:
@@ -835,12 +820,10 @@ be an owning type).]
      not in the Moved state and is not declared at a statically deeper
      accessibility level than that of the target object.
 
-.. _tu-access_types-08:
 
 8. At the point of a dereference of an object, the object shall not be in the
    Moved or Borrowed state.
 
-.. _tu-access_types-09:
 
 9. At the point of a read of an object, or of passing an object as an actual
    parameter of mode **in** or **in out**, or of a call where the object is a
@@ -864,17 +847,14 @@ be an owning type).]
    The source of a move operation shall not be a part of a library-level
    constant without variable inputs.
 
-.. _tu-access_types-10:
 
 10. If the state of a name that denotes a managed object is Observed, the name
     shall not be moved, borrowed, or assigned.
 
-.. _tu-access_types-11:
 
 11. If the state of a name that denotes a managed object is Borrowed, the name
     shall not be moved, borrowed, observed, or assigned.
 
-.. _tu-access_types-12:
 
 12. At the point of a call, any name that denotes a managed object that is a
     global output of the callee (i.e., an output other than a parameter of the
@@ -882,17 +862,23 @@ be an owning type).]
     state.  Similarly, any name that denotes a managed object that is a global
     input of the callee shall not be in the Moved or Borrowed state.
 
-.. _tu-access_types-13:
 
 13. The prefix of an Old or Loop_Entry attribute reference shall not be of an
     owning or observing type unless the prefix is a function_call and the
     called function is not a traversal function.
 
+14. If the designated type of a named nonderived access type is incomplete
+    at the point of the access type's declaration then the incomplete
+    type declaration and its completion shall occur in the same
+    declaration list. [This implies that the incomplete type shall not be
+    declared in the limited view of a package, and that if it is declared
+    in the private part of a package then its completion shall also occur
+    in that private part.]
+
 .. centered:: **Verification Rules**
 
-.. _tu-access_types-14:
 
-14. When an owning access object other than a borrower, an observer,
+15. When an owning access object other than a borrower, an observer,
     or an object in the Moved state is finalized, or when such an object
     is passed as a part of an actual parameter of mode **out**, its value
     shall be null.
@@ -906,7 +892,6 @@ be an owning type).]
     the Ada RM 13.11.2 rule "Free(X), ... first performs finalization of
     the object designated by X".]
 
-.. _etu-access_types:
 
 Declarative Parts
 -----------------

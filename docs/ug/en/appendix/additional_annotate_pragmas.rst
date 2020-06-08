@@ -1,23 +1,46 @@
-
 .. _Uses_of_Pragma_Annotate_GNATprove:
 
-Uses of Pragma Annotate GNATprove
-=================================
+Aspects or Pragmas Specific to GNATprove
+========================================
 
-This appendix lists all the uses of pragma ``Annotate`` for |GNATprove|.
-Pragma ``Annotate`` can also be used to control other AdaCore tools. The uses
-of this pragma are explained in the User's guide of each tool.
+This appendix lists all the aspects or pragmas specific to |GNATprove|,
+in particular all the uses of aspect or pragma ``Annotate`` for
+|GNATprove|.  Aspect or pragma ``Annotate`` can also be used to control other
+AdaCore tools. The uses of such annotations are explained in the User's guide
+of each tool.
 
-The main usage of pragmas ``Annotate`` for |GNATprove| is for justifying check
-messages using :ref:`Direct Justification with Pragma Annotate`. Specific
-versions of this pragma can also be used to influence the generation of proof
-obligations. Some of these uses can be seen in :ref:`SPARK Libraries` for
-example. These forms of pragma ``Annotate`` should be used with care as they
-can introduce additional assumptions which are not verified by the |GNATprove|
-tool.
+Annotations in |GNATprove| are useful in two cases:
 
-Using Pragma Annotate to Justify Check Messages
------------------------------------------------
+1. for justifying check messages using :ref:`Direct Justification with Pragma
+   Annotate`, typically using a pragma rather than an aspect, as the
+   justification is generally associated to a statement or declaration.
+
+2. for influencing the generation of proof obligations, typically using an
+   aspect rather than a pragma, as the annotation is generally associated to an
+   entity in that case. Some of these uses can be seen in :ref:`SPARK
+   Libraries` for example. Some of these annotations introduce additional
+   assumptions which are not verified by the |GNATprove| tool, and thus should
+   be used with care.
+
+When the annotation is associated to an entity, both the pragma and aspect form
+can be used and are equivalent, for example on a subprogram:
+
+.. code-block:: ada
+
+    function Func (X : T) return T
+      with Annotate => (GNATprove, <annotation name>);
+
+or
+
+.. code-block:: ada
+
+    function Func (X : T) return T;
+    pragma Annotate (GNATprove, <annotation name>, Func);
+
+In the following, we use the aspect form whenever possible.
+
+Using Annotations to Justify Check Messages
+-------------------------------------------
 
 You can use annotations of the form
 
@@ -30,18 +53,59 @@ to justify an unproved check message that cannot be proved by other means. See
 the section :ref:`Direct Justification with Pragma Annotate` for more details
 about this use of pragma ``Annotate``.
 
-Using pragma Annotate to force Proof of Termination
----------------------------------------------------
+Using Annotations to Specify Possibly Nonreturning Procedures
+-------------------------------------------------------------
 
-SPARK doesn't usually prove termination of subprograms. You can instruct it do
-so using annotations of this form:
+You can use annotations of the form
 
 .. code-block:: ada
 
-   pragma Annotate (GNATprove, Terminating, Subp_Or_Package_Entity);
+    procedure Proc
+      with Annotate => (GNATprove, Might_Not_Return);
+
+to specify that a procedure might not return. See the section
+:ref:`Nonreturning Procedures` for more details about this use of
+annotations.
+
+Using Annotations to Request Proof of Termination
+-------------------------------------------------
+
+By default, |GNATprove| does not prove termination of subprograms. You can
+instruct it to do so using annotations of the form:
+
+.. code-block:: ada
+
+   procedure Proc
+     with Annotate => (GNATprove, Terminating);
 
 See the section :ref:`Subprogram Termination` about details of this use of
-pragma ``Annotate``.
+annotations.
+
+Using Annotations to Request Overflow Checking on Modular Types
+---------------------------------------------------------------
+
+The standard semantics of arithmetic on modular types is that operations wrap
+around, hence |GNATprove| issues no overflow checks on such operations.
+You can instruct it to issue such checks (hence detecting possible wrap-around)
+using annotations of the form:
+
+.. code-block:: ada
+
+   type T is mod 2**32
+     with Annotate => (GNATprove, No_Wrap_Around);
+
+or on a derived type:
+
+.. code-block:: ada
+
+   type T is new U
+     with Annotate => (GNATprove, No_Wrap_Around);
+
+This annotation is inherited by derived types. It must be specified on a type
+declaration (and cannot be specified on a subtype declaration). All three
+binary arithmetic operations + - * are checked for possible overflows. Division
+cannot lead to overflow. Unary negation is checked for possible non-nullity
+of its argument, which leads to overflow.
 
 Customize Quantification over Types with the Iterable Aspect
 ------------------------------------------------------------
@@ -382,3 +446,266 @@ Note that, since the translation through axioms is necessary for ordering
 issues, this annotation can sometimes lead to a crash in GNATprove. It is the
 case for example when the definition of the function uses quantification over a
 container using the ``Iterable`` aspect.
+
+.. _Pledge_Of_Borrow:
+
+Supplying a `Pledge` for a Borrower
+-----------------------------------
+
+Local borrowers are objects of an anonymous access-to-variable type. At their
+declaration, the ownership of (a part of) an existing data-structure is
+temporarily transferred to the new object. The borrowed data-structure
+will regain ownership afterward.
+
+During the lifetime of the borrower, the borrowed object can be modified
+indirectly through the borrower. It is forbidden to modify or even read the
+borrowed object during the borrow. It can be problematic in some cases, for
+example if a borrower is modified inside a loop, as GNATprove will need
+information supplied in a loop invariant to know how the borrowed object and
+the borrower are related in the loop and after it.
+
+In assertions, we are still allowed to
+express properties over a borrowed object using a `pledge`. The notion of
+pledges was introduced by researchers from ETH Zurich to verify Rust programs
+(see https://2019.splashcon.org/details/splash-2019-oopsla/31/Leveraging-Rust-Types-for-Modular-Specification-and-Verification).
+Conceptually, a pledge is a property involving a borrower and/or the objet it
+borrows which is known to always hold during the scope of the borrow, no matter
+the modifications that may be done to either the borrower or the borrowed
+object. As pledges are not yet supported at a language level in SPARK, it is
+possible to mark (a part of) an assertion as a pledge by using an expression
+function which is annotated with a ``Pledge Annotate`` pragma:
+
+.. code-block:: ada
+
+   function Pledge (Borrower : access constant T; Prop : Boolean) return Boolean is
+     (Prop)
+   with Ghost,
+     Annotate => (GNATProve, Pledge);
+
+Note that the name of the function could be something other than ``Pledge``, but
+the annotation should use the string ``Pledge``. |GNATprove| will check that a
+function associated with the ``Pledge`` annotation is a ghost
+expression function which takes a borrower and a property and simply returns the
+property.
+
+When |GNATprove| encounters a call to such a function, it knows that
+the property given as a second parameter to the call must be handled as a pledge
+of the local borrower given as a first parameter. It will not interpret it as
+a property which should hold over the current values of the borrower and the
+borrowed object, but as a sort of invariant, which should be known to always
+hold during the scope of ``Borrower``.
+Access to a borrowed variable inside a pledge is allowed by the |SPARK|
+reference manual, which gives a provision for reading borrowed variables at any
+time and in any context during the borrow. However, |GNATprove| will reject
+such reads if they do not occur as part of a pledge.
+
+As an example, let us consider a recursive type of doubly-linked lists:
+
+.. code-block:: ada
+
+    type List;
+    type List_Acc is access List;
+    type List is record
+       Val  : Integer;
+       Next : List_Acc;
+    end record;
+
+Using this type, let us construct a list ``X`` which stored the numbers form
+1 to 5:
+
+.. code-block:: ada
+
+    X := new List'(1, null);
+    X.Next := new List'(2, null);
+    X.Next.Next := new List'(3, null);
+    X.Next.Next.Next := new List'(4, null);
+    X.Next.Next.Next.Next := new List'(5, null);
+
+We can borrow the structure designated by ``X`` in a local borrower ``Y``:
+
+.. code-block:: ada
+
+   declare
+      Y : access List := X;
+   begin
+     ...
+   end;
+
+While in the scope of ``Y``, the ownership of the list designated by ``X`` is
+transferred to ``Y``, so that it is not allowed to access it from ``X``
+anymore. After the end of the declare block, ownership is restored to ``X``,
+which can again be accessed or modified directly.
+
+Let us now define a pledge function that can be used to relate the values
+designated by ``X`` and ``Y`` during the time of the borrow:
+
+.. code-block:: ada
+
+   function Pledge (Borrower : access constant List; Prop : Boolean) return Boolean is
+     (Prop)
+   with Ghost,
+     Annotate => (GNATProve, Pledge);
+
+We can use this function to give properties that are known to hold during the
+scope of ``Y``. Since ``Y`` and ``X`` designate the same value, we can
+state in a pledge that the ``Val`` and ``Next`` components of ``X`` and ``Y``
+always match:
+
+.. code-block:: ada
+
+      pragma Assert (Pledge (Y, X.Val = Y.Val));
+      pragma Assert (Pledge (Y, X.Next = Y.Next));
+
+However, even though at the beginning of the declare block, the first value of
+``X`` is 1, it is not correct to assert that it will remain so inside a pledge:
+
+.. code-block:: ada
+
+      pragma Assert (Y.Val = 1);             --  proved
+      pragma Assert (Pledge (Y, X.Val = 1)); --  incorrect
+
+Indeed, ``Y`` could be modified later so that ``X.Val`` is not 1 anymore:
+
+.. code-block:: ada
+
+   declare
+      Y : access List := X;
+   begin
+      Y.Val := 2;
+   end;
+   pragma Assert (X.Val = 2);
+
+Note that the pledge above is invalid even if ``Y.Val`` is `not` modified in the
+following statements. A pledge is a contract about what
+`is known to necessarily hold` in the
+scope of ``Y``, not what will happen in practice. The analysis performed by
+GNATprove remains a forward analysis, which should not be impacted by statements
+occurring after the current one.
+
+Let us now consider a case where ``X`` is not borrowed completely. In the
+declaration of ``Y``, we can decide to borrow only the last three elements of
+the list:
+
+.. code-block:: ada
+
+   declare
+      Y : access List := X.Next.Next;
+   begin
+      pragma Assert (Pledge (Y, X.Next.Next.Val = Y.Val));
+
+      pragma Assert (Pledge (Y, X.Next /= null));
+      pragma Assert (Pledge (Y, X.Next.Next /= null));
+
+      pragma Assert (Pledge (Y, X.Next.Next.Val = 3)); -- incorrect
+      pragma Assert (Pledge (Y, X.Val = 1));           -- incorrect
+      X.Val := 42;
+   end;
+
+Here, like in the previous example, we can state in a pledge that
+``X.Next.Next.Val`` is ``Y.Val``. Additionally, since ``Y.Next.Next`` has been
+borrowed, we know that ``Y.Next.Next`` will remain a valid path throughout
+the borrow. This is why we can state in a pledge that ``X.Next`` will never
+be null. Like in the previous example, we cannot assume anything about the
+part of ``X`` designated by ``Y``, so we won't be able to prove that
+``X.Next.Next.Val`` will remain 3. This is also true for parts of ``X`` which
+have not been borrowed by ``Y``. During the scope of ``Y``, we are allowed to
+modify ``X.Val`` for example, so we cannot assert in a pledge that it will
+remain 1.
+
+Inside the scope of ``Y``, it is possible to modify the variable ``Y`` itself,
+as opposed to modifying the structure it designates, so that it gives access to
+a subcomponent of the borrowed structure. It is called a reborrow. In case of
+reborrow, the pledge of the borrower is modified so that it corresponds to the
+relation between the object borrowed initially and the new borrower. For
+example, let's use ``Y`` to borrow ``X`` entirely and then modify it to only
+designate ``X.Next.Next``:
+
+.. code-block:: ada
+
+   declare
+      Y : access List := X;
+   begin
+      Y := Y.Next.Next;
+
+      pragma Assert (Pledge (Y, X.Next.Next /= null));
+      pragma Assert (Pledge (Y, X.Val = 1));
+      pragma Assert (Pledge (Y, X.Next.Val = 2));
+      pragma Assert (Pledge (Y, X.Next.Next.Val = 3));      --  incorrect
+      pragma Assert (Pledge (Y, X.Next.Next.Next /= null)); --  incorrect
+   end;
+
+After the assignment, the part of ``X`` still accessible from the borrower is
+reduced, but since ``X`` was borrowed entirely to begin with, the ownership
+policy of SPARK still forbids direct access to any components of ``X`` while in
+the scope of ``Y``. As a result, we have a bit more information about the final
+value of ``X`` than in the previous case. As before, we know that ``X`` will
+hold at least three elements, that is ``X.Next.Next /= null``. Additionally,
+the first and second components of ``X`` are no longer accessible from
+``Y``, and since they cannot be accessed directly through ``X``, we know that
+they will keep their current values. This is why we can now assert in a pledge
+that ``X.Val`` is 1 and ``X.Next.Val`` is 2.
+
+However, we still cannot know anything
+about the part of ``X`` still accessible from ``Y`` as these properties
+could be modified later in the borrow:
+
+.. code-block:: ada
+
+      Y.Val := 42;
+      Y.Next := null;
+
+Pledge functions are also useful in postconditions of borrowing traversal
+functions. A borrowing traversal function is a function which returns a local
+borrower of its first parameter. As |GNATprove| works modularly on a per
+subprogram basis, it is necessary to specify the pledge of the result of such
+a function in its postcondition, or proof would not be able to recompute the
+value of the borrowed parameter after the returned borrower goes out of scope.
+
+As an example, we can define a ``Tail`` function which returns the ``Next``
+component of a list if there is one, and ``null`` otherwise:
+
+.. code-block:: ada
+
+   function Tail (L : access List) return access List is
+   begin
+      if L = null then
+         return null;
+      else
+         return L.Next;
+      end if;
+   end Tail;
+
+In its postcondition, we want to consider the two cases, and, in each case,
+specify both the value returned by the function and how the
+parameter ``L`` is related to the returned borrower:
+
+.. code-block:: ada
+
+   function Tail (L : access List) return access List with
+     Contract_Cases =>
+       (L = null =>
+          Tail'Result = null and Pledge (Tail'Result, L = null),
+        others   => Tail'Result = L.Next
+          and Pledge (Tail'Result, L.Val = L.Val'Old)
+          and Pledge (Tail'Result, L.Next = Tail'Result));
+
+If ``L`` is ``null`` then ``Tail`` returns ``null`` and ``L`` will stay ``null``
+for the duration of the borrow. Otherwise, ``Tail`` returns ``L.Next``, the
+first element of ``L`` will stay as it was at the time of call, and the rest
+of ``L`` stays equal to the object returned by ``Tail``.
+
+Thanks to this postcondition, we can verify a program which borrows a part of
+``L`` using the ``Tail`` function and modifies ``L`` through this borrower:
+
+.. code-block:: ada
+
+   declare
+      Y : access List := Tail (Tail (X));
+   begin
+      Y.Val := 42;
+   end;
+
+   pragma Assert (X.Val = 1);
+   pragma Assert (X.Next.Val = 2);
+   pragma Assert (X.Next.Next.Val = 42);
+   pragma Assert (X.Next.Next.Next.Val = 4);

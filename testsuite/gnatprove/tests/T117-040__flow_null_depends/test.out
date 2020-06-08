@@ -1,0 +1,4 @@
+test.adb:11:07: info: initialization of "C" proved
+test.ads:7:20: info: initialization of "C" proved
+test.ads:7:75: info: flow dependencies proved
+test.ads:7:123: info: postcondition proved (CVC4: 1 VC)

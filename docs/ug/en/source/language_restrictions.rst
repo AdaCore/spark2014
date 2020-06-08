@@ -29,7 +29,8 @@ simplifications to Ada. The most notable simplifications are:
   verification of programs with aliasing is less precise and requires more
   manual work. See :ref:`Absence of Interferences`.
 
-* The goto statement is not permitted. Gotos can be used to create loops, which
+* The backward goto statement is not permitted. Backward gotos can be used
+  to create loops, which
   require a specific treatment in formal verification, and thus should be
   precisely identified. See :ref:`Loop Invariants` and :ref:`Loop Variants`.
 
@@ -44,6 +45,13 @@ simplifications to Ada. The most notable simplifications are:
   which is not doable precisely without a lot of manual work. But raising
   exceptions is allowed (see :ref:`Raising Exceptions and Other Error Signaling
   Mechanisms`).
+
+* Unless explicitly specified as (possibly) nonreturning, subprograms should
+  always terminate when called on inputs satisfying the subprogram
+  precondition.  While care is taken in |GNATprove| to reduce possibilities of
+  unsoundness resulting from nonreturning subprograms, it is possible that
+  axioms generated for nonreturning subprograms not specified as such may lead
+  to unsoundness. See :ref:`Nonreturning Procedures`.
 
 * Generic code is not analyzed directly. Doing so would require lengthy
   contracts on generic parameters, and would restrict the kind of code that can
@@ -208,6 +216,40 @@ argument as ``X`` is already accessed as a global variable by ``Proc``.
 .. literalinclude:: /gnatprove_by_example/results/ownership_transfer_at_call.flow
    :language: none
 
+It is also possible to transfer the ownership of an object temporarily, for
+the duration of the lifetime of a local object. This can be achieved by
+declaring a local object of an anonymous access type and initializing it with
+a part of an existing object. In the following example, ``B`` temporarily
+borrows the ownership of ``X``:
+
+.. literalinclude:: /gnatprove_by_example/examples/ownership_borrowing.adb
+   :language: ada
+   :linenos:
+
+During the lifetime of ``B``, it is incorrect to either read or modify ``X``,
+but complete ownership is restored to ``X`` when ``B`` goes out of scope.
+GNATprove correctly detects that reading or assigning to ``X`` in the scope of
+``B`` is incorrect.
+
+.. literalinclude:: /gnatprove_by_example/results/ownership_borrowing.flow
+   :language: none
+
+It is also possible to only transfer read access to a local variable. This
+happens when the variable has an anonymous access-to-constant type, as in the
+following example:
+
+.. literalinclude:: /gnatprove_by_example/examples/ownership_observing.adb
+   :language: ada
+   :linenos:
+
+In this case, we say that ``B`` observes the value of ``X``. During the
+lifetime of an observer, it is illegal to move or modify the observed object.
+GNATprove correctly flags the write inside ``X`` in the scope of ``B`` as
+illegal. Note that reading ``X`` is still possible in the scope of ``B``:
+
+.. literalinclude:: /gnatprove_by_example/results/ownership_observing.flow
+   :language: none
+
 Only pool-specific access types are allowed in SPARK, so it is not possible to
 declare access types with the qualifiers ``all`` or ``const``, as these define
 general access types. This ensures in particular that access values in SPARK
@@ -314,9 +356,10 @@ Multiple error signaling mechanisms are treated the same way:
  * ``pragma Assert (X)`` where ``X`` is an expression statically equivalent to
    ``False``
  * calling a procedure with an aspect or pragma ``No_Return`` that has no
-   outputs (unless the call is itself inside such a procedure, in which case
-   the check is only generated on the call to the enclosing error-signaling
-   procedure)
+   outputs (unless the call is itself inside a (possibly) nonreturning
+   procedure, see :ref:`Nonreturning Procedures`, in which case the check
+   is only generated on the call to the enclosing error-signaling procedure
+   if any)
 
 For example, consider the artificial subprogram ``Check_OK`` which raises an
 exception when parameter ``OK`` is ``False``:
@@ -347,6 +390,57 @@ thanks to the precondition of ``Check_OK`` which states that parameter
 |GNATprove| also checks that procedures that are marked with aspect or pragma
 ``No_Return`` do not return: they should either raise an exception or loop
 forever on any input.
+
+.. _Nonreturning Procedures:
+
+Nonreturning Procedures
+-----------------------
+
+|GNATprove| assumes that, unless explicitly specified as (possibly)
+nonreturning, subprograms should always terminate when called on inputs
+satisfying the subprogram precondition. In particular, functions should
+always terminate. Procedures might not terminate, in which case they
+should be annotated with a suitable pragma or aspect:
+
+* ``No_Return`` to specify that the procedure never returns. This is a
+  nonreturning procedure.
+
+* ``Annotate Might_Not_Return`` to specify that the procedure might not
+  return in some cases. This is a possibly nonreturning procedure.
+
+Nonreturning and possibly nonreturning procedures are handled differently.
+It is an error to call a possibly nonreturning procedure from a function
+or from a procedure that is not itself (possibly) nonreturning.
+Calling a nonreturning procedure from a procedure that is not
+itself (possibly) nonreturning leads to a check that the call is unreachable.
+Such a call is in effect interpreted as an error signaling mechanism
+(see :ref:`Raising Exceptions and Other Error Signaling Mechanisms`).
+
+For example, consider the procedure ``Conditional_Exit`` which conditionally
+calls the nonterminating ``Always_Exit`` procedure:
+
+.. literalinclude:: /gnatprove_by_example/examples/possibly_nonreturning.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /gnatprove_by_example/examples/possibly_nonreturning.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| issues an error here on the call to the possibly nonreturning
+procedure ``Conditional_Exit`` in procedure ``Regular``:
+
+.. literalinclude:: /gnatprove_by_example/results/possibly_nonreturning.flow
+   :language: none
+
+It would be legal to call the nonreturning procedure ``Always_Exit`` from
+procedure ``Regular`` though, in which case it will be interpreted as
+an error signaling mechanism, and |GNATprove| will attempt to prove that
+the call is unreachable.
+
+Note that it is also possible to specify explicitly that a subprogram
+terminates, in which case |GNATprove| will verify that it indeed terminates.
+See :ref:`Subprogram Termination`.
 
 .. _Analysis of Generics:
 
