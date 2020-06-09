@@ -35,7 +35,6 @@ with Elists;                         use Elists;
 with Errout;                         use Errout;
 with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
-with Flow_Error_Messages;            use Flow_Error_Messages;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
@@ -9079,6 +9078,10 @@ package body Gnat2Why.Expr is
       --  generate the actual call to Func by translating arguments Values
       --  of type Types in the context given by Params.
 
+      procedure Insert_Check_For_Ranges (T : in out W_Expr_Id)
+      with Pre => Domain = EW_Prog;
+      --  Insert checks for range constraints
+
       --------------------------
       -- Complete_Translation --
       --------------------------
@@ -9254,6 +9257,12 @@ package body Gnat2Why.Expr is
             R := +Insert_Predicate_Check (Ada_Node => Expr,
                                           Check_Ty => Retysp (Etype (Expr)),
                                           W_Expr   => +R);
+         end if;
+
+         --  Insert checks for subtype indications in ranges in the aggregate
+
+         if Domain = EW_Prog then
+            Insert_Check_For_Ranges (R);
          end if;
 
          return R;
@@ -9853,6 +9862,40 @@ package body Gnat2Why.Expr is
                                  Index => First_Index (Typ),
                                  Expr  => Expr);
       end Get_Aggregate_Elements;
+
+      -----------------------------
+      -- Insert_Check_For_Ranges --
+      -----------------------------
+
+      procedure Insert_Check_For_Ranges (T : in out W_Expr_Id) is
+         Assocs      : constant List_Id := Component_Associations (Expr);
+         Association : Node_Id := Nlists.First (Assocs);
+      begin
+         while Present (Association) loop
+            if not Is_Others_Choice (Choices (Association)) then
+               declare
+                  Choice : Node_Id := First (Choices (Association));
+               begin
+                  while Present (Choice) loop
+                     case Nkind (Choice) is
+                        when N_Subtype_Indication =>
+                           T := +Sequence
+                             (Ada_Node => Choice,
+                              Left     => +Check_Scalar_Range
+                                (Params => Params,
+                                 N      => Get_Range (Choice),
+                                 Base   => Entity (Subtype_Mark (Choice))),
+                              Right    => +T);
+                        when others =>
+                           null;
+                     end case;
+                     Next (Choice);
+                  end loop;
+               end;
+            end if;
+            Next (Association);
+         end loop;
+      end Insert_Check_For_Ranges;
 
       --------------------------------------------
       -- Transform_Array_Component_Associations --
@@ -15300,8 +15343,12 @@ package body Gnat2Why.Expr is
                --  Uninitialized allocator
                --  Subtype indication are rewritten by the frontend into the
                --  corresponding Itype, so we only expect subtype names here.
+               --  Attribute references like Type'Base are also rewritten, but
+               --  it feels safer to not rely on this rewriting.
 
-               if Nkind (New_Expr) in N_Identifier then
+               if Is_Entity_Name (New_Expr)
+                 and then Is_Type (Entity (New_Expr))
+               then
                   Func_New_Uninitialized_Name :=
                     E_Symb (Etype (Expr), WNE_Uninit_Allocator);
 
@@ -15409,7 +15456,7 @@ package body Gnat2Why.Expr is
                --  ??? 6/3 If the designated type of the type of the allocator
 
                else
-                  pragma Assert (Nkind (New_Expr) in N_Qualified_Expression);
+                  pragma Assert (Nkind (New_Expr) = N_Qualified_Expression);
 
                   Func_New_Initialized_Name :=
                     E_Symb (Etype (Expr), WNE_Init_Allocator);
@@ -16383,15 +16430,16 @@ package body Gnat2Why.Expr is
                      --  If Ty is constrained, we need to check its
                      --  discriminant.
                      --  It is also the case if Ty's specific type is
-                     --  constrained, see RM 3.9 (14)
+                     --  constrained, see RM 3.9 (14).
 
-                     if Root_Retysp (Spec_Ty) /= Spec_Ty and then
-                       Count_Discriminants (Spec_Ty) > 0 and then
-                       Is_Constrained (Spec_Ty)
+                     if Root_Retysp (Spec_Ty) /= Spec_Ty
+                       and then Count_Discriminants (Spec_Ty) > 0
+                       and then Is_Constrained (Spec_Ty)
                      then
                         Discr_Cond := New_Call
                           (Domain => Domain,
-                           Name => E_Symb (Spec_Ty, WNE_Range_Pred),
+                           Name => E_Symb
+                             (Root_Retysp (Spec_Ty), WNE_Range_Pred),
                            Args =>
                              Prepare_Args_For_Subtype_Check (Spec_Ty, Var),
                            Typ  => EW_Bool_Type);
@@ -16552,6 +16600,18 @@ package body Gnat2Why.Expr is
                         Typ    => EW_Bool_Type);
                   else
                      Result := True_Expr;
+                  end if;
+
+                  --  For non null access types, check null exclusion
+
+                  if Can_Never_Be_Null (Ty) then
+                     Result := New_And_Then_Expr
+                       (Left   => Result,
+                        Right  => New_Not
+                          (Right  => New_Pointer_Is_Null_Access (E    => Ty,
+                                                                 Name => Var),
+                           Domain => Domain),
+                        Domain => Domain);
                   end if;
 
                else
@@ -17653,14 +17713,8 @@ package body Gnat2Why.Expr is
                      else Is_True_Boolean (+Pred));
                begin
                   if Proved then
-                     Emit_Proof_Result
-                       (Expr,
-                        Register_VC (Expr, Reason, Current_Subp),
-                        Kind       => Reason,
-                        E          => Current_Subp,
-                        Proved     => Proved,
-                        SD_Id      => No_Session_Dir,
-                        How_Proved => PC_Prover);
+                     Emit_Static_Proof_Result
+                       (Expr, Reason, Proved, Current_Subp, PC_Prover);
                      return +Void;
                   else
                      return
@@ -18986,6 +19040,18 @@ package body Gnat2Why.Expr is
           (Domain  => Domain,
            Tmp     => High_Expr,
            Context => T);
+
+      if Domain = EW_Prog
+        and then Nkind (Discrete_Range (Expr)) = N_Subtype_Indication
+      then
+         T := +Sequence
+           (Ada_Node => Expr,
+            Left     => +Check_Scalar_Range
+              (Params => Params,
+               N      => Get_Range (Discrete_Range (Expr)),
+               Base   => Entity (Subtype_Mark (Discrete_Range (Expr)))),
+            Right    => +T);
+      end if;
 
       return T;
    end Transform_Slice;

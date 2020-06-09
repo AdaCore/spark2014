@@ -1,8 +1,8 @@
 pi_euler.adb:3:04: info: initialization of "Index" proved
 pi_euler.adb:4:04: info: initialization of "Pi" proved
 pi_euler.adb:4:08: info: initialization of "Erreur" proved
-pi_euler.adb:11:33: info: loop invariant initialization proved (altergo: 1 VC)
-pi_euler.adb:11:33: info: loop invariant preservation proved (altergo: 1 VC)
+pi_euler.adb:11:33: info: loop invariant initialization proved (CVC4: 1 VC)
+pi_euler.adb:11:33: info: loop invariant preservation proved (CVC4: 1 VC)
 pi_euler.adb:12:25: info: assertion proved (CVC4: 1 VC)
 pi_euler.adb:12:36: info: range check proved (Interval)
 pi_euler.adb:13:23: info: division check proved (CVC4: 1 VC)
@@ -17,7 +17,7 @@ pi_euler_2.adb:5:04: info: initialization of "Index_Float" proved
 pi_euler_2.adb:8:10: warning: unused assignment
 pi_euler_2.adb:15:33: info: loop invariant initialization proved (CVC4: 1 VC)
 pi_euler_2.adb:15:33: medium: loop invariant might fail after first iteration, cannot prove Index_Float >= 1.0
-pi_euler_2.adb:16:25: info: assertion proved (altergo: 1 VC)
+pi_euler_2.adb:16:25: info: assertion proved (CVC4: 1 VC)
 pi_euler_2.adb:17:23: info: division check proved (CVC4: 1 VC)
 pi_euler_2.adb:17:23: info: float overflow check proved (Interval)
 pi_euler_2.adb:17:35: info: division check proved (CVC4: 1 VC)

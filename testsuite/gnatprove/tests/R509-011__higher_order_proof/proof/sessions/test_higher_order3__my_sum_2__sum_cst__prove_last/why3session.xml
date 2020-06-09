@@ -63,11 +63,11 @@
   <proof prover="1"><result status="valid" steps="20"/></proof>
   </goal>
   <goal name="def&#39;vc.15" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2276"/></proof>
+  <proof prover="0"><result status="valid" steps="3792"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.16" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1352"/></proof>
+  <proof prover="0"><result status="valid" steps="1676"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.17" expl="precondition" proved="true">
@@ -79,7 +79,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.19" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1854"/></proof>
+  <proof prover="0"><result status="valid" steps="3084"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>

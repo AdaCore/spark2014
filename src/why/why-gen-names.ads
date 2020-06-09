@@ -381,7 +381,6 @@ package Why.Gen.Names is
 
       --  Names related to the pointer type
       WNE_Null_Pointer,           --  "__null_pointer"
-      WNE_Null_Exclusion_Val,     --  "__null_exclusion_val"
       WNE_Is_Null_Pointer,        --  "__is_null_pointer"
       WNE_Pointer_Address,        --  "__pointer_address"
       WNE_Pointer_Value,          --  "__pointer_value"

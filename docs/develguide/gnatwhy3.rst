@@ -213,7 +213,7 @@ let count task =
 
 - Forget about the goal special state during iteration
 - Returning an ill-formed task: checks for that are dynamically done (the task
-has to end with a goal etc)
+  has to end with a goal etc)
 - Using high-level collections of elements like ``Trans.on_tagged_ls`` combined
   with ``Trans.decl`` and assume in the latter that the set of ls given in the
   former are all defined at the beginning (it is not the case).
@@ -510,7 +510,7 @@ single line with nothing else on the line, it means that the result is invalid
      valid "^unsat$"
 
 The next section redefines a theory of the standard library originally defined
-in :download:`int.why <../../why3/theories/int.why>`. In this case, the
+in :download:`int.mlw <../../why3/stdlib/int.mlw>`. In this case, the
 theory for ``int`` is known by the prover so we map the elements of this theory
 to the predefined operator (it is more efficient to rely on the prover
 constructs than on Why3's):

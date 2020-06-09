@@ -304,7 +304,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.90" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="8656"/></proof>
+  <proof prover="0"><result status="valid" steps="12962"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.91" expl="assertion" proved="true">

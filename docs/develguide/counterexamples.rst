@@ -523,7 +523,7 @@ variables during the generation of the code. For definition of records, you
 need to add a "model_trace:.<entity_id_of_current_field>". This should be
 enough to get counterexamples working. All of this should be done in function
 Get_Model_Trace_Label from
-:download:`gnat2why-util.adb <../../gnat2why/why/gnat2why-util.ads>`.
+:download:`gnat2why-util.adb <../../src/why/gnat2why-util.ads>`.
 
 .. warning:: Note that theories and external axiomatization should also contain
              model_trace attributes. Otherwise, the stuff relying on those will
@@ -541,7 +541,7 @@ Translation from JSON
 ---------------------
 
 This is done by functions From_JSON of the file
-:download:`vc_kinds.ads <../../common/vc_kinds.ads>`. It translates the
+:download:`vc_kinds.ads <../../src/common/vc_kinds.ads>`. It translates the
 counterexamples values to type ``Cntexample_File_Maps``:
 
 .. code-block:: Ada
@@ -586,13 +586,13 @@ When trying to print the value for a counterexample we check that the
 associated Entity_id has a compatible type. If the type is complex and the
 counterexample was of records/arrays/arrays of records of arrays/etc, the code
 tries to print the correct structure in ``Refine_*`` functions. These are
-defined in :download:`gnat2why-counter_examples.ads <../../gnat2why/why/gnat2why-counter_examples.ads>`
+defined in :download:`gnat2why-counter_examples.ads <../../src/counterexamples/gnat2why-counter_examples.ads>`
 
 
 If the counterexample type is not a record/array/etc but still the entity is
 supposed to be a record, we try to remake a properly structured counterexample
 in Get_CNT_Element_Value (from the else part of the if "Refined_Value is the
-empty string") in :download:`gnat2why-counter_examples.adb <../../gnat2why/why/gnat2why-counter_examples.adb>`
+empty string") in :download:`gnat2why-counter_examples.adb <../../src/counterexamples/gnat2why-counter_examples.adb>`
 
 
 If-branching special case
@@ -660,7 +660,7 @@ The idea is now to replace every translated if statement to an assignment to
 ``spark__branch`` and then an if statement on the new value of spark__branch.
 The function handling this new assignment of ``spark__branch`` is called
 New_Counterexample_Assign which is defined in
-:download:`why-gen-expr.adb <../../gnat2why/why/why-gen-expr.adb>`. This
+:download:`why-gen-expr.adb <../../src/why/why-gen-expr.adb>`. This
 function adds a specific attribute called "branch_id:<entity_id_of_if>" which
 is used when getting the counterexample to know which if-entity the value
 corresponds to.
@@ -679,7 +679,7 @@ to
 So, we are sure that the counterexample given at that line is indeed the value
 (in the model) of the if. The function New_Counterexample_Assign is used both
 for ``if`` and ``case``
-(:download:`gnat2why-expr.adb <../../gnat2why/why/gnat2why-expr.adb>` in
+(:download:`gnat2why-expr.adb <../../src/why/gnat2why-expr.adb>` in
 ``Case_Expr_Of_Ada_Node`` and ``Transform_Statement_Or_Declaration``)
 as ``case`` are translated to successions of ``if``.
 Note that we don't need more than one variable like ``spark__branch`` because
@@ -689,7 +689,7 @@ associated to the counterexample.
 
 During the parsing of the counterexamples in gnat2why, we remove part of the
 counterexamples. In
-:download:`gnat2why-counter_examples.adb <../../gnat2why/why/gnat2why-counter_examples.adb>`
+:download:`gnat2why-counter_examples.adb <../../src/counterexamples/gnat2why-counter_examples.adb>`
 , function ``Remove_Irrelevant_Branches`` is used for this. It proceeds in two
 steps:
 First, it searches for the counterexamples for spark__branch:
@@ -703,7 +703,7 @@ First, it searches for the counterexamples for spark__branch:
          end loop;
 
 It will populate a set of disjoint intervals (representing the removed lines
-from counterexamples): it is defined in :download:`ce_interval_sets.ads <../../gnat2why/why/ce_interval_sets.ads>`.
+from counterexamples): it is defined in :download:`ce_interval_sets.ads <../../src/counterexamples/ce_interval_sets.ads>`.
 
 The second part of this function will go through the counterexample removing
 all counterexamples that are not relevant (by searching into the set

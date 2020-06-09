@@ -498,7 +498,7 @@ package body SPARK_Definition is
          Prefix_Node     : Node_Id;
          Node            : Node_Id;
 
-         Profile : Profile_Data renames Profile_Info (GNAT_Extended_Ravenscar);
+         Profile : Profile_Data renames Profile_Info (Jorvik);
          --  A minimal settings required for tasking constructs to be allowed
          --  in SPARK.
 
@@ -600,13 +600,13 @@ package body SPARK_Definition is
                                   (J in All_Parameter_Restrictions
                                      and then Restrictions.Value (J) > V (J)))
                   then
-                     if (J in No_Implicit_Task_Allocations |
-                              No_Implicit_Protected_Object_Allocations
-                         and then
-                           Restrictions.Set (No_Implicit_Heap_Allocations))
-                       or else
-                        (J = Pure_Barriers
-                         and then Restrictions.Set (Simple_Barriers))
+                     --  Any code that complies with the Simple_Barriers
+                     --  restriction (which is required by the Ravenscar
+                     --  profile) also complies with Pure_Barriers (which is
+                     --  its relaxed variant required by the Jorvik profile).
+
+                     if J = Pure_Barriers
+                       and then Restrictions.Set (Simple_Barriers)
                      then
                         null;
                      else
@@ -4688,12 +4688,6 @@ package body SPARK_Definition is
          function Is_Controlled (E : Entity_Id) return Boolean;
          --  Return True if E is in Ada.Finalization
 
-         function Is_Synchronous_Barrier (E : Entity_Id) return Boolean;
-         --  Return True if E is Ada.Synchronous_Barriers.Synchronous_Barrier
-         --
-         --  Synchronous barriers are allowed by the Ravenscar profile, but we
-         --  do not want them in SPARK.
-
          procedure Mark_Default_Expression (C : Entity_Id)
          with Pre => Ekind (C) in E_Component | E_Discriminant;
          --  Mark default expression of component or discriminant and check it
@@ -4827,46 +4821,9 @@ package body SPARK_Definition is
                 (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))) = Off;
          end Is_Private_Entity_Mode_Off;
 
-         ----------------------------
-         -- Is_Synchronous_Barrier --
-         ----------------------------
-
-         function Is_Synchronous_Barrier (E : Entity_Id) return Boolean is
-            S_Ptr : Entity_Id := E;
-            --  Scope pointer
-
-            Name_Synchronous_Barrier : constant Name_Id :=
-              Name_Find ("synchronous_barrier");
-            --  ??? this should be moved to snames.ads-tmpl
-         begin
-            if Chars (S_Ptr) /= Name_Synchronous_Barrier then
-               return False;
-            end if;
-
-            S_Ptr := Scope (S_Ptr);
-
-            if Chars (S_Ptr) /= Name_Synchronous_Barriers then
-               return False;
-            end if;
-
-            S_Ptr := Scope (S_Ptr);
-
-            if Chars (S_Ptr) /= Name_Ada then
-               return False;
-            end if;
-
-            return Scope (S_Ptr) = Standard_Standard;
-         end Is_Synchronous_Barrier;
-
       --  Start of processing for Mark_Type_Entity
 
       begin
-         --  Synchronous barriers are allowed by the Ravenscar profile, but
-         --  we do not want them in SPARK.
-         if Is_Synchronous_Barrier (E) then
-            Mark_Violation ("synchronous barriers", E);
-         end if;
-
          --  Controlled types are not allowed in SPARK
 
          if Is_Controlled (E) then
@@ -5426,7 +5383,10 @@ package body SPARK_Definition is
             --  and this function merges all the predicates applying to the
             --  type so that we cannot tell the difference.
 
-            if Present (Full_View (E)) and then Has_Predicates (E) then
+            if Is_Base_Type (E)
+              and then Present (Full_View (E))
+              and then Has_Predicates (E)
+            then
                declare
                   Scop : constant Entity_Id := Scope (E);
                   pragma Assert (Ekind (Scop) = E_Package);

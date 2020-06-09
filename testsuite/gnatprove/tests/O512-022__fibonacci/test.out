@@ -67,7 +67,7 @@ fib.adb:101:28: medium: assertion might fail, cannot prove (p1 * b1) * (b1 ** (k
 fib.adb:101:51: info: range check proved (CVC4: 1 VC)
 fib.adb:102:22: info: range check proved (CVC4: 1 VC)
 fib.adb:103:22: medium: overflow check might fail
-fib.adb:111:27: medium: loop invariant might fail after first iteration, cannot prove p2 <= a2 ** n2
+fib.adb:110:33: medium: loop invariant might fail after first iteration, cannot prove a2 ** n2 = p2 * (b2 ** k2)
 fib.adb:111:27: medium: loop invariant might fail in first iteration, cannot prove p2 <= a2 ** n2
 fib.adb:112:10: info: loop variant proved (CVC4: 1 VC)
 fib.adb:113:17: info: division check proved (CVC4: 1 VC)

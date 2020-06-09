@@ -568,8 +568,11 @@ package body Why.Gen.Pointers is
 
             Check_Pred :=
               New_Call
-                (Name => E_Symb (Des_Ty, WNE_Range_Pred),
-                 Args => Args (1 .. Num) & R_Val,
+                (Name => E_Symb (Root_Retysp (Des_Ty), WNE_Range_Pred),
+                 Args => Args (1 .. Num) & New_Discriminants_Access
+                 (Domain => EW_Term,
+                  Name   => R_Val,
+                  Ty     => Des_Ty),
                  Typ  => EW_Bool_Type);
          end if;
 

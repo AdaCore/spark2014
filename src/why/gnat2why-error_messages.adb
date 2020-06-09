@@ -423,6 +423,30 @@ package body Gnat2Why.Error_Messages is
       end;
    end Emit_Proof_Result;
 
+   ------------------------------
+   -- Emit_Static_Proof_Result --
+   ------------------------------
+
+   procedure Emit_Static_Proof_Result
+     (Node       : Node_Id;
+      Kind       : VC_Kind;
+      Proved     : Boolean;
+      E          : Entity_Id;
+      How_Proved : Prover_Category)
+   is
+      Id : constant VC_Id :=
+        Register_VC (Node, Kind, E, Present_In_Why3 => False);
+   begin
+      Emit_Proof_Result
+        (Node,
+         Id,
+         Kind,
+         Proved,
+         E,
+         No_Session_Dir,
+         How_Proved);
+   end Emit_Static_Proof_Result;
+
    ------------------------
    -- Num_Registered_VCs --
    ------------------------
@@ -782,13 +806,12 @@ package body Gnat2Why.Error_Messages is
            (if Extra_Text /= "" then ", cannot prove " & Extra_Text else "");
          Node   : constant Node_Id :=
            (if Present (Rec.Extra_Info)
-            and then not
-              (Rec.Kind in VC_Precondition
-                         | VC_LSP_Kind
-                         | VC_Predicate_Check
-                         | VC_Predicate_Check_On_Default_Value)
+            and then Rec.Kind not in VC_Precondition
+                                   | VC_LSP_Kind
+                                   | VC_Predicate_Check
+                                   | VC_Predicate_Check_On_Default_Value
             then Rec.Extra_Info else VC.Node);
-         --  Extra_info contains the locations of the first failing part of the
+         --  Extra_Info contains the locations of the first failing part of the
          --  VC (which is required in messages). VC_Sloc contains the location
          --  of the check (required in messages for manual provers).
          --  We do not use this node if the node may switch the context, this

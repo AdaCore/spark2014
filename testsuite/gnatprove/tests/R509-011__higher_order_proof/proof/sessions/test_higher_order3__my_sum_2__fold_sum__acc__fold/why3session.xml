@@ -81,11 +81,11 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.21" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="1343"/></proof>
+  <proof prover="0"><result status="valid" steps="1677"/></proof>
   <proof prover="2"><result status="unknown" steps="270"/></proof>
   </goal>
   <goal name="def&#39;vc.22" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="1340"/></proof>
+  <proof prover="0"><result status="valid" steps="1652"/></proof>
   <proof prover="2"><result status="unknown" steps="240"/></proof>
   </goal>
   <goal name="def&#39;vc.23" expl="postcondition" proved="true">
@@ -947,7 +947,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.283" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="192"/></proof>
+  <proof prover="0"><result status="valid" steps="331"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.284" expl="loop invariant init" proved="true">
@@ -958,7 +958,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.286" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="598"/></proof>
+  <proof prover="0"><result status="valid" steps="980"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.287" expl="loop invariant init" proved="true">
@@ -1455,7 +1455,7 @@
   <proof prover="2"><result status="valid" steps="2012"/></proof>
   </goal>
   <goal name="def&#39;vc.439" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="3202"/></proof>
+  <proof prover="0"><result status="valid" steps="4655"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.440" expl="loop invariant preservation" proved="true">
@@ -1463,11 +1463,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.441" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="8082"/></proof>
+  <proof prover="0"><result status="valid" steps="17482"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.442" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="7410"/></proof>
+  <proof prover="0"><result status="valid" steps="13356"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.443" expl="loop invariant preservation" proved="true">
@@ -1879,11 +1879,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.568" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="4850"/></proof>
+  <proof prover="0"><result status="valid" steps="9869"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.569" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="5029"/></proof>
+  <proof prover="0"><result status="valid" steps="10678"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.570" expl="loop invariant preservation" proved="true">
@@ -1891,7 +1891,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.571" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="11239"/></proof>
+  <proof prover="0"><result status="valid" steps="21718"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.572" expl="loop invariant preservation" proved="true">
@@ -2025,11 +2025,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.611" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="11192"/></proof>
+  <proof prover="0"><result status="valid" steps="17816"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.612" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="4474"/></proof>
+  <proof prover="0"><result status="valid" steps="8557"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.613" expl="assertion" proved="true">
@@ -2419,7 +2419,7 @@
   <proof prover="2"><result status="valid" steps="170"/></proof>
   </goal>
   <goal name="def&#39;vc.730" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="327"/></proof>
+  <proof prover="0"><result status="valid" steps="540"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.731" expl="postcondition" proved="true">
@@ -2430,11 +2430,11 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.733" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="12534"/></proof>
+  <proof prover="0"><result status="valid" steps="22804"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.734" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="10224"/></proof>
+  <proof prover="0"><result status="valid" steps="16937"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.735" expl="postcondition" proved="true">

@@ -356,15 +356,15 @@ ring_buffer.ads:43:14: info: postcondition proved (CVC4: 2 VC)
 ring_buffer.ads:49:24: info: postcondition proved (CVC4: 1 VC)
 ring_buffer.ads:51:26: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 ring_buffer.ads:52:26: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
-mailbox_predicate.adb:5:27: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+mailbox_predicate.adb:5:27: from profile "Jorvik" at Concurrency/spark.adc:1
 mailbox_predicate.adb:5:27: violation of restriction "Pure_Barriers"
-mailbox_predicate.adb:16:28: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+mailbox_predicate.adb:16:28: from profile "Jorvik" at Concurrency/spark.adc:1
 mailbox_predicate.adb:16:28: violation of restriction "Pure_Barriers"
-protected_complex.adb:7:24: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+protected_complex.adb:7:24: from profile "Jorvik" at Concurrency/spark.adc:1
 protected_complex.adb:7:24: violation of restriction "Pure_Barriers"
-rendezvous.adb:3:04: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+rendezvous.adb:3:04: from profile "Jorvik" at Concurrency/spark.adc:1
 rendezvous.adb:3:04: violation of restriction "No_Task_Hierarchy"
-rendezvous.adb:4:07: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+rendezvous.adb:4:07: from profile "Jorvik" at Concurrency/spark.adc:1
 rendezvous.adb:4:07: violation of restriction "Max_Task_Entries = 0"
 gnatprove: error during generation of Global contracts
 abstract_ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)

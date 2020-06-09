@@ -1,4 +1,4 @@
 pragma SPARK_Mode (On);
-pragma Profile (GNAT_Extended_Ravenscar);
+pragma Profile (Jorvik);
 pragma Restrictions (Max_Entry_Queue_Length => 3);
 pragma Partition_Elaboration_Policy (Sequential);
