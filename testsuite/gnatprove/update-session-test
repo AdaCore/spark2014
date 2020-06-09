@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import glob
 import os
@@ -17,39 +17,39 @@ test_name = sys.argv[1]
 
 sys.path.insert(0, os.path.join(curdir, 'tests', test_name))
 sys.path.append(os.path.join(curdir, 'lib', 'python'))
-import test
+import test  # noqa This import is required to be here because of change of python path above
 
 
 def main():
     dir = os.path.join("tests", test_name)
-    print "switching to", dir
+    print("switching to", dir)
     os.chdir(dir)
 
     if not hasattr(test, 'contains_manual_proof'):
-        print ("""test should define variable 'contains_manual_proof'"""
-               """ in order to be replayed""")
+        print("""test should define variable 'contains_manual_proof'"""
+              """ in order to be replayed""")
         exit(1)
     if test.contains_manual_proof is False:
-        print """deleting subdir "proof/sessions" """
+        print("""deleting subdir "proof/sessions" """)
         shutil.rmtree(os.path.join("proof", "sessions"), ignore_errors=True)
 
     if not hasattr(test, 'replay'):
         print ("""test should define function 'replay'"""
                """ in order to be replayed""")
         exit(1)
-    print "running gnatprove to rebuild sessions"
+    print("running gnatprove to rebuild sessions")
     test.replay()
 
     for shape_file in glob.glob("proof/sessions/*/why3shapes*"):
-        print "deleting shapes file ", shape_file
+        print("deleting shapes file ", shape_file)
         os.remove(shape_file)
     shutil.rmtree("gnatprove")
 
     os.chdir(curdir)
-    print "running test again"
-    out = subprocess.check_output(["./run-tests", "-d", "large", "--diffs",
+    print("running test again")
+    out = subprocess.check_output(["./run-tests", "--disc", "large", "--diffs",
                                    test_name])
-    print out
+    print(out)
 
 
 main()
