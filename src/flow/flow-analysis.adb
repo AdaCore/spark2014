@@ -33,6 +33,7 @@ with Sem_Type;                    use Sem_Type;
 with Sem_Util;                    use Sem_Util;
 with Sem_Warn;                    use Sem_Warn;
 with Snames;                      use Snames;
+with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
@@ -3470,31 +3471,54 @@ package body Flow.Analysis is
       if Is_Child_Unit (FA.Spec_Entity)
         and then Is_Private_Descendant (FA.Spec_Entity)
       then
-         --  For a private child we enforce SPARK RM 7.2.6(3) and therefore we
-         --  traverse its visible declarations setting the flag Part_Of to
-         --  True. Note that if the private child has or has not an abstract
-         --  state does not have any influence on this because the Part_Of
-         --  indicator could also denote a state abstraction declared by the
-         --  parent unit of the or by a public descendant of that parent unit.
+         --  For a private child (or public descendant thereof) we enforce
+         --  SPARK RM 7.2.6(3) and therefore we traverse its visible
+         --  declarations setting the flag Part_Of to True. Note that whether
+         --  or not the child itself has abstract state does not influence
+         --  this because the Part_Of indicator could also denote a state
+         --  abstraction declared by a parent unit of the private unit or by
+         --  a public descendant of that parent unit.
 
+         --  Traverse locally-visibly-declared abstract state
          Traverse_Declarations (Visible_Declarations (Pkg_Spec),
                                 Part_Of => True);
 
-         --  If the private child does not have an abstract state but the
-         --  parent does, then we need to check if it contains any hidden state
-         --  for the parent abstract state and we therefore traverse the
-         --  private and body part.
+         --  If the child unit does not declare an abstract state but any
+         --  ancestor of that child does, then we need to check if the child
+         --  contains any hidden state which is effectively part of the
+         --  ancestor's abstract state.
 
-         if No (Abstract_States (FA.Spec_Entity))
-           and then Present (Abstract_States (Scope (FA.Spec_Entity)))
-         then
-            Traverse_Declarations (Private_Declarations (Pkg_Spec));
+         if No (Abstract_States (FA.Spec_Entity)) then
 
-            if Entity_Body_In_SPARK (FA.Spec_Entity) then
-               Traverse_Declarations (Declarations (Pkg_Body));
-            end if;
+            --  Search upwards through the Spec_Entity's scope and the scope of
+            --  its ancestors, until we find a declaration of abstract state or
+            --  run out of ancestry i.e. hitting "Standard_Standard".
+
+            declare
+               Ancestor_Id : Entity_Id := FA.Spec_Entity;
+            begin
+               loop
+                  Ancestor_Id := Scope (Ancestor_Id);
+
+                  if Ancestor_Id = Standard_Standard then
+                     exit;
+
+                  elsif Present (Abstract_States (Ancestor_Id)) then
+
+                     --  We must traverse the private and body part of the
+                     --  child to check state declared therein.
+
+                     Traverse_Declarations (Private_Declarations (Pkg_Spec));
+
+                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                        Traverse_Declarations (Declarations (Pkg_Body));
+                     end if;
+
+                     exit;
+                  end if;
+               end loop;
+            end;
          end if;
-
       else
 
          if Present (Abstract_States (FA.Spec_Entity)) then
