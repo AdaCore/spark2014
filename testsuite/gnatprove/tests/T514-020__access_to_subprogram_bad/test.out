@@ -4,6 +4,7 @@ test_callback_bad.adb:23:23: access to dispatching operation is not yet supporte
 test_callback_bad.adb:24:23: access to volatile function is not allowed in SPARK
 test_callback_bad.adb:24:23: violation of aspect SPARK_Mode at line 1
 test_callback_bad.adb:25:32: access to subprogram annotated with Relaxed_Initialization is not yet supported
+test_callback_bad.adb:26:28: Access attribute on a complex expression is not yet supported
 test_callback_bad.ads:9:09: access to protected subprogram is not yet supported
 test_callback_bad.ads:12:09: access to borrowing traversal function is not yet supported
 test_callback_bad.ads:34:07: "T" is not allowed in SPARK

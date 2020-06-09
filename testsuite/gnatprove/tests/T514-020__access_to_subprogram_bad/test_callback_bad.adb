@@ -23,6 +23,7 @@ package body Test_Callback_Bad with SPARK_Mode is
       Y : Proc := Prim'Access;
       X : Incr_Fun := F_Vol'Access;
       Z : Incr_Fun := F_Relaxed'Access;
+      W : Incr_Fun := Z.all'Access;
    begin
       null;
    end Test;

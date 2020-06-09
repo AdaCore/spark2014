@@ -17641,6 +17641,8 @@ package body Gnat2Why.Expr is
                            Field => M_Subprogram_Access.Rec_Is_Null,
                            Typ   => EW_Bool_Type),
                         Domain => Domain);
+                  else
+                     Result := True_Expr;
                   end if;
 
                --  For a constrained access type whose root is not constrained,

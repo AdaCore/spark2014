@@ -2872,6 +2872,15 @@ package body SPARK_Definition is
                Mark_Violation
                  ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
                   & """ on object", N);
+
+            --  We only support 'Access if it is directly called on a
+            --  subprogram name. Otherwise, we return early to avoid trying
+            --  to mark the prefix.
+
+            elsif Nkind (P) not in N_Identifier | N_Expanded_Name then
+               Mark_Unsupported
+                 ("Access attribute on a complex expression", N);
+               return;
             else
                pragma Assert (Nkind (P) in N_Identifier | N_Expanded_Name);
                declare
