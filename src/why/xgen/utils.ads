@@ -26,15 +26,15 @@
 package Utils is
    --  Some utilities used by xtree
 
-   function Strip_Prefix (Name : Wide_String) return Wide_String;
+   function Strip_Prefix (Name : String) return String;
    --  Strip anything that precedes the first underscore in Name
    --  and return the result.
 
-   function Strip_Suffix (Name : Wide_String) return Wide_String;
+   function Strip_Suffix (Name : String) return String;
    --  Strip anything that follows the last underscore in Name
    --  and return the result.
 
-   function Suffix (Name : Wide_String) return Wide_String;
+   function Suffix (Name : String) return String;
    --  Return the end of the string passed in parameters, starting from
    --  the last underscore.
 

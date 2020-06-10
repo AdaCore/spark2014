@@ -501,10 +501,6 @@ package Gnat2Why.Util is
    function Get_Container_In_Iterator_Specification
      (N : Node_Id) return Node_Id;
 
-   function Needs_Init_Wrapper_Type (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
-   --  Whether we need a wrapper type with a specific initialization flag for E
-
    procedure Get_Borrows_From_Decls
      (Decls   : List_Id;
       Borrows : in out Node_Lists.List);

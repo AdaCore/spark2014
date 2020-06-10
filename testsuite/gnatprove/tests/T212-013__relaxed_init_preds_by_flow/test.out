@@ -1,0 +1,29 @@
+test_pred_on_array.adb:3:09: predicate on a type with initialization by proof is not yet supported
+test_pred_on_array.adb:4:34: subtype of "Integer" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:4:34: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:4:49: "E_Arr" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:4:49: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:8:57: "E_Arr" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:8:57: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:11:04: warning: analyzing unreferenced procedure "P1"
+test_pred_on_array.adb:17:04: warning: analyzing unreferenced procedure "P2"
+test_pred_on_array.adb:20:07: subtype of "E_Arr" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:20:07: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:24:09: predicate on a type with initialization by proof is not yet supported
+test_pred_on_array.adb:27:17: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:27:17: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:27:34: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:27:34: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:27:51: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:27:51: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:31:22: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:31:22: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:31:41: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:31:41: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:31:60: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:31:60: violation of aspect SPARK_Mode at line 1
+test_pred_on_array.adb:34:04: warning: analyzing unreferenced procedure "P3"
+test_pred_on_array.adb:40:04: warning: analyzing unreferenced procedure "P4"
+test_pred_on_array.adb:43:07: "E_Rec" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:43:07: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

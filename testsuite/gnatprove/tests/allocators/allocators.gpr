@@ -6,4 +6,8 @@ project Allocators is
                         "--no-axiom-guard");
    end Prove;
 
+   package Compiler is
+      for Switches ("ada") use ("-gnat2020");
+   end Compiler;
+
 end Allocators;

@@ -30,19 +30,19 @@ max steps used for successful proof: 1
 -
 =========================
 Analyzed 2 units
-Assertions . . . . . . .
-Concurrency . . . . . . .
-Data Dependencies 2 2 . . . . .
-Flow Dependencies . . . . . . .
-Functional Contracts 5 . . . 5 . .
-Initialization . . . . . . .
-LSP Verification . . . . . . .
-Non-Aliasing . . . . . . .
-Run-time Checks 2 . . . 2 . .
-SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
+Assertions . . . . . .
+Concurrency . . . . . .
+Data Dependencies 2 2 . . . .
+Flow Dependencies . . . . . .
+Functional Contracts 5 . . 5 . .
+Initialization . . . . . .
+LSP Verification . . . . . .
+Non-Aliasing . . . . . .
+Run-time Checks 2 . . 2 . .
+SPARK Analysis results Total Flow CodePeer Provers Justified Unproved
 Summary of SPARK analysis
-Termination . . . . . . .
-Total 9 2 (22%) . . 7 (78%) . .
+Termination . . . . . .
+Total 9 2 (22%) . 7 (78%) . .
 absence of run-time errors of Full fully established
 absence of run-time errors of Full.Bump fully established
 absence of run-time errors of Full.Use_Bump fully established

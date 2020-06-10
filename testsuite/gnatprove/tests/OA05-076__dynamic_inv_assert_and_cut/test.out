@@ -90,8 +90,8 @@ lsc-bignum.adb:152:39: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:166:07: info: initialization of "J" proved
 lsc-bignum.adb:167:07: info: initialization of "Result" proved
 lsc-bignum.adb:171:11: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:174:13: medium: loop invariant might fail after first iteration, cannot prove Num_Of_Big_Int (A, I + 1, A_Last - I) = Num_Of_Big_Int (B, B_First + (I - A_First) + 1, A_Last - I) [possible explanation: precondition of subprogram at lsc-bignum.ads:120 should mention A and B]
 lsc-bignum.adb:174:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A, I + 1, A_Last - I) = Num_Of_Big_Int (B, B_First + (I - A_First) + 1, A_Last - I) [possible explanation: precondition of subprogram at lsc-bignum.ads:120 should mention A and B]
+lsc-bignum.adb:174:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num_Of_Big_Int (A, I + 1, A_Last - I) = Num_Of_Big_Int (B, B_First + (I - A_First) + 1, A_Last - I) [possible explanation: precondition of subprogram at lsc-bignum.ads:120 should mention A and B]
 lsc-bignum.adb:174:34: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:174:34: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:174:46: info: overflow check proved (Z3: 2 VC)
@@ -120,9 +120,9 @@ lsc-bignum.adb:231:41: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:249:08: info: flow dependencies proved
 lsc-bignum.adb:254:17: medium: overflow check might fail
 lsc-bignum.adb:257:18: medium: overflow check might fail
-lsc-bignum.adb:257:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.adb:257:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:259:18: medium: overflow check might fail
-lsc-bignum.adb:259:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.adb:259:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:261:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.adb:261:41: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:261:53: info: overflow check proved (Z3: 1 VC)
@@ -310,7 +310,7 @@ lsc-bignum.adb:446:07: medium: precondition might fail, cannot prove Num_Of_Big_
 lsc-bignum.adb:447:39: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:451:07: medium: precondition might fail, cannot prove A_Last in A'range
 lsc-bignum.adb:452:39: medium: overflow check might fail
-lsc-bignum.adb:456:07: medium: precondition might fail, cannot prove B_First + (A_Last - A_First) in B'range
+lsc-bignum.adb:456:07: medium: precondition might fail
 lsc-bignum.adb:457:39: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:462:21: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:463:10: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux1, Aux1_First, L + 1) = Math_Int.From_Word32 (1)
@@ -344,23 +344,19 @@ lsc-bignum.adb:491:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:492:22: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:493:16: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux4, Aux4_First + N * (L + 1), L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (2 * N + 1) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)
 lsc-bignum.adb:493:50: medium: overflow check might fail
-lsc-bignum.adb:493:50: medium: range check might fail
 lsc-bignum.adb:493:54: medium: overflow check might fail
 lsc-bignum.adb:493:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:493:67: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:494:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:494:58: medium: overflow check might fail
 lsc-bignum.adb:494:62: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:494:62: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:495:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:496:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:498:10: medium: precondition might fail, cannot prove B_First in B'range
 lsc-bignum.adb:500:30: medium: overflow check might fail
-lsc-bignum.adb:500:30: medium: range check might fail
 lsc-bignum.adb:500:40: medium: overflow check might fail
 lsc-bignum.adb:500:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:503:10: medium: precondition might fail, cannot prove B_First in B'range
-lsc-bignum.adb:503:53: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:503:53: medium: overflow check might fail
 lsc-bignum.adb:503:57: medium: overflow check might fail
 lsc-bignum.adb:503:62: info: overflow check proved (Z3: 1 VC)
@@ -377,14 +373,12 @@ lsc-bignum.adb:516:43: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:517:22: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:518:16: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux4, Aux4_First + N * (L + 1), L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (2 * N + 1) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1) [possible explanation: precondition of subprogram at lsc-bignum.ads:176 should mention X]
 lsc-bignum.adb:518:50: medium: overflow check might fail
-lsc-bignum.adb:518:50: medium: range check might fail
 lsc-bignum.adb:518:54: medium: overflow check might fail
 lsc-bignum.adb:518:59: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:518:67: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:519:47: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:519:58: medium: overflow check might fail
 lsc-bignum.adb:519:62: info: overflow check proved (Z3: 1 VC)
-lsc-bignum.adb:519:62: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:520:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:521:47: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:524:34: info: overflow check proved (Z3: 1 VC)
@@ -396,8 +390,8 @@ lsc-bignum.adb:532:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:533:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:534:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:535:43: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:536:13: medium: loop invariant might fail after first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M...)
 lsc-bignum.adb:536:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M...)
+lsc-bignum.adb:536:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M...)
 lsc-bignum.adb:536:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:537:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:538:49: info: overflow check proved (Z3: 2 VC)
@@ -409,14 +403,12 @@ lsc-bignum.adb:543:22: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:543:48: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:543:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:544:50: medium: overflow check might fail
-lsc-bignum.adb:544:50: medium: range check might fail
 lsc-bignum.adb:544:54: medium: overflow check might fail
 lsc-bignum.adb:544:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:544:67: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:545:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:545:58: medium: overflow check might fail
 lsc-bignum.adb:545:62: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:545:62: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:546:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:547:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:548:39: info: overflow check proved (Z3: 2 VC)
@@ -440,18 +432,16 @@ lsc-bignum.adb:572:28: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:572:54: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:572:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:573:56: medium: overflow check might fail
-lsc-bignum.adb:573:56: medium: range check might fail
 lsc-bignum.adb:573:60: medium: overflow check might fail
 lsc-bignum.adb:573:65: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:573:73: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:574:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:574:64: medium: overflow check might fail
 lsc-bignum.adb:574:68: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:574:68: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:575:34: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:576:53: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:577:19: medium: loop invariant might fail after first iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3...
 lsc-bignum.adb:577:19: medium: loop invariant might fail in first iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3...
+lsc-bignum.adb:577:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3...
 lsc-bignum.adb:577:77: medium: overflow check might fail
 lsc-bignum.adb:577:81: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:577:81: info: range check proved (Z3: 2 VC)
@@ -488,14 +478,12 @@ lsc-bignum.adb:619:28: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:619:54: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:619:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:620:56: medium: overflow check might fail
-lsc-bignum.adb:620:56: medium: range check might fail
 lsc-bignum.adb:620:60: medium: overflow check might fail
 lsc-bignum.adb:620:65: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:620:73: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:621:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:621:64: medium: overflow check might fail
 lsc-bignum.adb:621:68: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:621:68: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:622:34: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:623:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:625:54: info: overflow check proved (Z3: 2 VC)
@@ -526,14 +514,12 @@ lsc-bignum.adb:658:28: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:658:54: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:658:59: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:659:56: medium: overflow check might fail
-lsc-bignum.adb:659:56: medium: range check might fail
 lsc-bignum.adb:659:60: medium: overflow check might fail
 lsc-bignum.adb:659:65: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:659:73: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:660:53: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:660:64: medium: overflow check might fail
 lsc-bignum.adb:660:68: info: overflow check proved (Z3: 1 VC)
-lsc-bignum.adb:660:68: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:661:34: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:662:53: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:664:54: info: overflow check proved (Z3: 1 VC)
@@ -545,7 +531,6 @@ lsc-bignum.adb:671:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:671:45: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:674:13: medium: precondition might fail, cannot prove C_First in C'range
 lsc-bignum.adb:677:33: medium: overflow check might fail
-lsc-bignum.adb:677:33: medium: range check might fail
 lsc-bignum.adb:677:54: medium: range check might fail
 lsc-bignum.adb:677:75: medium: overflow check might fail
 lsc-bignum.adb:677:80: info: overflow check proved (Z3: 1 VC)
@@ -571,14 +556,12 @@ lsc-bignum.adb:708:22: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:708:48: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:708:53: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:709:50: medium: overflow check might fail
-lsc-bignum.adb:709:50: medium: range check might fail
 lsc-bignum.adb:709:54: medium: overflow check might fail
 lsc-bignum.adb:709:59: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:709:67: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:710:47: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:710:58: medium: overflow check might fail
 lsc-bignum.adb:710:62: info: overflow check proved (Z3: 1 VC)
-lsc-bignum.adb:710:62: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:711:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:712:47: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:715:39: info: overflow check proved (Z3: 1 VC)
@@ -590,7 +573,7 @@ lsc-bignum.ads:74:19: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:74:63: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:83:08: info: flow dependencies proved
 lsc-bignum.ads:90:18: medium: overflow check might fail
-lsc-bignum.ads:90:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:90:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:92:10: info: postcondition proved (Trivial: 2 VC; Z3: 2 VC)
 lsc-bignum.ads:92:19: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:93:42: info: overflow check proved (Z3: 1 VC)
@@ -606,7 +589,7 @@ lsc-bignum.ads:96:32: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:104:07: info: initialization of "Carry" proved
 lsc-bignum.ads:106:08: info: flow dependencies proved
 lsc-bignum.ads:112:18: medium: overflow check might fail
-lsc-bignum.ads:112:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:112:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:115:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.ads:115:49: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:115:59: info: overflow check proved (Z3: 1 VC)
@@ -621,7 +604,7 @@ lsc-bignum.ads:118:26: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:118:36: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:118:36: info: range check proved (Z3: 1 VC)
 lsc-bignum.ads:132:18: medium: overflow check might fail
-lsc-bignum.ads:132:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:132:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:135:10: medium: postcondition might fail, cannot prove Less'Result = (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) < Num_Of_Big_Int (B, B_First, A_Last - A_First + 1))
 lsc-bignum.ads:136:46: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:136:56: info: overflow check proved (Z3: 1 VC)
@@ -632,11 +615,11 @@ lsc-bignum.ads:137:56: info: range check proved (Z3: 1 VC)
 lsc-bignum.ads:140:07: info: initialization of "A" proved
 lsc-bignum.ads:151:08: info: flow dependencies proved
 lsc-bignum.ads:158:18: medium: overflow check might fail
-lsc-bignum.ads:158:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:158:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:160:18: medium: overflow check might fail
-lsc-bignum.ads:160:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:160:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:162:18: medium: overflow check might fail
-lsc-bignum.ads:162:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:162:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:163:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:163:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:163:55: info: range check proved (Z3: 1 VC)
@@ -673,23 +656,23 @@ lsc-bignum.ads:192:07: info: initialization of "Aux3" proved
 lsc-bignum.ads:194:07: info: initialization of "Aux4" proved
 lsc-bignum.ads:200:08: info: flow dependencies proved
 lsc-bignum.ads:224:18: medium: overflow check might fail
-lsc-bignum.ads:224:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:224:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:229:18: medium: overflow check might fail
-lsc-bignum.ads:229:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:229:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:231:21: medium: overflow check might fail
-lsc-bignum.ads:231:31: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:231:31: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:233:21: medium: overflow check might fail
-lsc-bignum.ads:233:31: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:233:31: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:235:21: medium: overflow check might fail
-lsc-bignum.ads:235:31: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:235:31: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:237:21: medium: overflow check might fail
 lsc-bignum.ads:237:26: medium: overflow check might fail
 lsc-bignum.ads:237:31: medium: overflow check might fail
-lsc-bignum.ads:237:41: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:237:51: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:237:41: info: overflow check proved (Z3: 1 VC)
+lsc-bignum.ads:237:51: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:237:56: medium: overflow check might fail
 lsc-bignum.ads:240:18: medium: overflow check might fail
-lsc-bignum.ads:240:28: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.ads:240:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:241:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:241:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:241:55: info: range check proved (Z3: 1 VC)

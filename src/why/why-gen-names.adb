@@ -36,6 +36,7 @@ with Why.Conversions;     use Why.Conversions;
 with Why.Images;          use Why.Images;
 with Why.Inter;           use Why.Inter;
 with Why.Gen.Arrays;      use Why.Gen.Arrays;
+with Why.Gen.Init;        use Why.Gen.Init;
 with Why.Gen.Scalars;     use Why.Gen.Scalars;
 
 package body Why.Gen.Names is
@@ -334,13 +335,19 @@ package body Why.Gen.Names is
                      if Is_Record_Type_In_Why (From_Node) then
                         pragma Assert (Is_Record_Type_In_Why (To_Node));
                         declare
-                           From_Base : constant Node_Id :=
+                           From_Base    : constant Node_Id :=
                              Root_Retysp (From_Node);
+                           Init_Wrapper : constant Boolean :=
+                             Is_Init_Wrapper_Type (From);
+                           pragma Assert
+                             (Init_Wrapper = Is_Init_Wrapper_Type (To));
                         begin
                            if From_Base = From_Node then
-                              return E_Symb (To_Node, WNE_Of_Base);
+                              return E_Symb
+                                (To_Node, WNE_Of_Base, Init_Wrapper);
                            else
-                              return E_Symb (From_Node, WNE_To_Base);
+                              return E_Symb
+                                (From_Node, WNE_To_Base, Init_Wrapper);
                            end if;
                         end;
 
@@ -561,6 +568,25 @@ package body Why.Gen.Names is
            Module   => Get_Module (Name),
            Ada_Node => Get_Ada_Node (+Name));
    end Init_Append;
+
+   ---------------------
+   -- Is_Moved_Append --
+   ---------------------
+
+   function Is_Moved_Append (Base : W_Identifier_Id;
+                             Typ  : W_Type_Id) return W_Identifier_Id
+   is
+      Name : constant W_Name_Id := Get_Name (Base);
+   begin
+      return
+        Append_Num
+          (S        =>
+             Img (Get_Symb (Name)) & To_String (WNE_Is_Moved_Pointer),
+           Count    => 1,
+           Typ      => Typ,
+           Module   => Get_Module (Name),
+           Ada_Node => Get_Ada_Node (+Name));
+   end Is_Moved_Append;
 
    --------------------
    -- Is_Null_Append --
@@ -883,6 +909,7 @@ package body Why.Gen.Names is
          when WNE_Fixed_Point_Mult_Div_Prefix => "Fixed_Point_Mult_Div",
          when WNE_Havoc                      => "__havoc",
          when WNE_Hide_Extension             => "hide_ext__",
+         when WNE_Init_Wrapper_Suffix        => "__init_wrapper",
          when WNE_No_Return_Module           => "No_Return",
          when WNE_Rec_Rep                    => "__rep",
          when WNE_Rec_Comp_Prefix            => "rec__",
@@ -897,10 +924,14 @@ package body Why.Gen.Names is
          when WNE_Rec_Split_Fields   => "__split_fields",
          when WNE_Null_Pointer       => "__null_pointer",
          when WNE_Is_Null_Pointer    => "__is_null_pointer",
+         when WNE_Is_Moved_Pointer   => "__is_moved_pointer",
          when WNE_Pointer_Address    => "__pointer_address",
          when WNE_Pointer_Value      => "__pointer_value",
          when WNE_Init_Allocator     => "__new_initialized_allocator",
          when WNE_Uninit_Allocator   => "__new_uninitialized_allocator",
+         when WNE_Is_Moved           => "__is_moved",
+         when WNE_Move               => "__move",
+         when WNE_Moved_Relation     => "__moved_relation",
 
          --  please use these only in conjunction with E_Symb function
 
@@ -963,6 +994,7 @@ package body Why.Gen.Names is
             | WNE_Of_Int
             | WNE_Of_Real
             | WNE_Of_Rep
+            | WNE_Of_Wrapper
             | WNE_Private_Eq
             | WNE_Private_Type
             | WNE_Pointer_Close
@@ -990,6 +1022,7 @@ package body Why.Gen.Names is
             | WNE_To_Int_3
             | WNE_To_Int_4
             | WNE_To_Rep
+            | WNE_To_Wrapper
             | WNE_Type_Invariant
             | WNE_Empty
          =>

@@ -25,8 +25,8 @@ longest_common_prefix.ads:15:15: medium: range check might fail
 longest_common_prefix.ads:15:25: info: overflow check proved (CVC4: 1 VC)
 longest_common_prefix.ads:15:45: medium: range check might fail
 longest_common_prefix.ads:15:55: medium: overflow check might fail
-longest_common_prefix.ads:17:29: info: overflow check proved (CVC4: 2 VC)
-longest_common_prefix.ads:18:37: info: overflow check proved (CVC4: 2 VC)
+longest_common_prefix.ads:17:29: info: overflow check proved (CVC4: 1 VC)
+longest_common_prefix.ads:18:37: info: overflow check proved (CVC4: 1 VC)
 longest_common_prefix.ads:19:31: info: index check proved (CVC4: 2 VC)
 longest_common_prefix.ads:19:31: info: overflow check proved (CVC4: 1 VC)
 longest_common_prefix.ads:19:53: info: index check proved (CVC4: 2 VC)

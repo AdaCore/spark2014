@@ -6,5 +6,9 @@ project Test is
       for Default_Switches ("ada") use ("-gnata");
    end Compiler;
 
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
 end Test;
 

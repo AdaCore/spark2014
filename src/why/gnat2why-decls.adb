@@ -53,7 +53,7 @@ package body Gnat2Why.Decls is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      Typ : constant W_Type_Id := Type_Of_Node (Etype (E));
+      Typ : constant W_Type_Id := Type_Of_Node (E);
    begin
       --  Start with opening the theory to define, as the creation of a
       --  function for the logic term needs the current theory to insert an
@@ -153,14 +153,17 @@ package body Gnat2Why.Decls is
       --  include X'Loop_Entry for a constant inserted in a block of actions).
       --  We also check for the presence of calls to volatile functions and
       --  allocators which we can't handle in axioms.
+      --  Finally we check if we are in a protected object, as in that case the
+      --  expression may require the "self" object, but it's not set up here.
 
       if Present (Expr)
         and then not Expression_Contains_Old_Or_Loop_Entry (Expr)
         and then not Contains_Volatile_Function_Call (Expr)
         and then not Contains_Allocator (Expr)
+        and then not Within_Protected_Type (E)
       then
          declare
-            Typ : constant W_Type_Id := Type_Of_Node (Etype (E));
+            Typ : constant W_Type_Id := Type_Of_Node (E);
             Def : W_Term_Id;
 
          begin
@@ -490,6 +493,14 @@ package body Gnat2Why.Decls is
                      Labels      => Get_Counterexample_Labels (E, "'Is_Null"),
                      Return_Type => Get_Typ (Var.Is_Null)));
             end if;
+
+            Emit
+              (File,
+               New_Global_Ref_Declaration
+                 (Name     => To_Local (Var.Is_Moved),
+                  Location => Safe_First_Sloc (E),
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Ref_Type => Get_Typ (Var.Is_Moved)));
 
          when Regular =>
             begin

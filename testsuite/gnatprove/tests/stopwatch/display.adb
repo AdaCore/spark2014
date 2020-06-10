@@ -46,7 +46,7 @@ is
    is
    begin
       Control.Set_Zero;
-      pragma Annotate (GNATProve, False_Positive,
+      pragma Annotate (GNATprove, False_Positive,
                        "constituent of ""LCD"" is not set",
                        "Set_Zero really does initialize.");
    end Initialize;

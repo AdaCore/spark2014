@@ -1,8 +1,0 @@
-dbname=gnattracker
-dbhost=postgres.gnat.com
-tndir=/reportd/gnatbugs/M5/M524-002
-
-comment	78584b781d959fb956e7b3b582f3e778b7bdd702
-test.gpr	0aad1636adadaa1eafdf30206a7a0910547582ac
-test.adb	3cdcb1a00d5b242e8c37b9f1bffded2db56eed03
-test.ads	c331471e329d9c1832bd01460c79ab9aeebd0d2c

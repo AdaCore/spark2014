@@ -2,6 +2,7 @@ a-cfhama.ads:681:39: info: precondition proved (CVC4: 1 VC), in instantiation at
 a-cfhama.ads:690:17: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
 a-cfhama.ads:720:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
 a-cfhama.ads:735:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
 a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
@@ -39,9 +40,7 @@ deceleration_curve.adb:89:13: medium: float overflow check might fail [possible 
 deceleration_curve.adb:89:29: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:13: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:46: info: division check proved (CVC4: 1 VC)
-deceleration_curve.adb:90:46: info: float overflow check proved (Interval)
-deceleration_curve.adb:95:36: info: overflow check proved (CVC4: 1 VC)
-deceleration_curve.adb:95:36: info: range check proved (CVC4: 1 VC)
+deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
 deceleration_curve.adb:105:09: medium: precondition might fail, cannot prove d <= Braking_Curve_Maximum_End_Point [possible explanation: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
@@ -90,14 +89,14 @@ sec_3_13_6_deceleration.ads:45:23: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail [possible explanation: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:38: info: float overflow check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Interval)
+sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Trivial)
 sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [possible explanation: subprogram at line 44 should mention d and V in a precondition]
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Is_Valid_Speed(V) [possible explanation: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:52:26: info: range check proved (Interval)
+sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail, cannot prove Target.location <= Braking_Curve_Maximum_End_Point
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve" proved
 section_3_5_3.adb:41:54: info: overflow check proved (CVC4: 1 VC)
@@ -151,43 +150,43 @@ step_function.adb:102:13: info: loop invariant initialization proved (CVC4: 2 VC
 step_function.adb:102:13: info: loop invariant preservation proved (CVC4: 2 VC)
 step_function.adb:107:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 step_function.adb:107:28: medium: "Merge.Step" might not be initialized
-step_function.adb:107:28: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(0).Delimiter = Function_Range'first
+step_function.adb:107:28: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(0).Delimiter = Function_Range'first
 step_function.adb:109:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 step_function.adb:110:16: medium: "Merge.Step" might not be initialized
-step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
+step_function.adb:110:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
 step_function.adb:110:29: info: index check proved (CVC4: 4 VC)
 step_function.adb:112:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 step_function.adb:113:16: medium: "Merge.Step" might not be initialized
-step_function.adb:113:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
+step_function.adb:113:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
 step_function.adb:113:29: info: index check proved (CVC4: 4 VC)
 step_function.adb:115:13: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:116:15: medium: "Merge.Step" might not be initialized
-step_function.adb:116:15: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
+step_function.adb:116:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
 step_function.adb:116:27: info: index check proved (CVC4: 4 VC)
 step_function.adb:116:54: info: index check proved (CVC4: 4 VC)
 step_function.adb:120:13: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:120:13: medium: loop invariant might fail after first iteration
+step_function.adb:120:13: medium: loop invariant might not be preserved by an arbitrary iteration
 step_function.adb:122:30: info: index check proved (CVC4: 4 VC)
 step_function.adb:122:45: medium: "Merge.Step" might not be initialized
 step_function.adb:122:56: info: index check proved (CVC4: 4 VC)
 step_function.adb:124:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-step_function.adb:124:13: medium: loop invariant might fail after first iteration
+step_function.adb:124:13: medium: loop invariant might not be preserved by an arbitrary iteration
 step_function.adb:127:36: info: index check proved (CVC4: 4 VC)
 step_function.adb:127:51: medium: "Merge.Step" might not be initialized
 step_function.adb:127:62: info: index check proved (CVC4: 4 VC)
 step_function.adb:131:13: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:131:13: medium: loop invariant might fail after first iteration
+step_function.adb:131:13: medium: loop invariant might not be preserved by an arbitrary iteration
 step_function.adb:133:30: info: index check proved (CVC4: 4 VC)
 step_function.adb:133:45: medium: "Merge.Step" might not be initialized
 step_function.adb:133:56: info: index check proved (CVC4: 4 VC)
 step_function.adb:135:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-step_function.adb:135:13: medium: loop invariant might fail after first iteration
+step_function.adb:135:13: medium: loop invariant might not be preserved by an arbitrary iteration
 step_function.adb:138:36: info: index check proved (CVC4: 4 VC)
 step_function.adb:138:51: medium: "Merge.Step" might not be initialized
 step_function.adb:138:62: info: index check proved (CVC4: 4 VC)
 step_function.adb:142:13: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:143:15: medium: "Merge.Step" might not be initialized
-step_function.adb:143:15: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter))
+step_function.adb:143:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter))
 step_function.adb:143:26: info: index check proved (CVC4: 4 VC)
 step_function.adb:144:19: info: precondition proved (CVC4: 2 VC)
 step_function.adb:144:47: info: index check proved (CVC4: 4 VC)
@@ -267,8 +266,8 @@ step_function_test.adb:67:19: info: precondition proved (CVC4: 1 VC)
 step_function_test.adb:67:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun_merge, 11) = 0.5
 units.adb:24:38: info: float overflow check proved (CVC4: 1 VC)
 units.adb:24:48: info: division check proved (CVC4: 1 VC)
-units.adb:24:48: info: float overflow check proved (Interval)
+units.adb:24:48: info: float overflow check proved (Trivial)
 units.ads:37:22: info: float overflow check proved (CVC4: 1 VC)
 units.ads:37:32: info: division check proved (CVC4: 1 VC)
-units.ads:37:32: info: float overflow check proved (Interval)
+units.ads:37:32: info: float overflow check proved (Trivial)
 units.ads:43:20: info: precondition proved (CVC4: 1 VC)

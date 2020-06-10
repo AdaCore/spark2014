@@ -1,7 +1,7 @@
 dimensions.ads:6:18: warning: unit "Ada.Numerics.Generic_Elementary_Functions" is not referenced
 steering.adb:11:53: info: division check proved (CodePeer)
-steering.adb:11:53: info: float overflow check proved (Interval)
-steering.adb:11:53: info: range check proved (Interval)
+steering.adb:11:53: info: float overflow check proved (Trivial)
+steering.adb:11:53: info: range check proved (Trivial)
 steering.ads:10:58: info: data dependencies proved
 steering.ads:10:74: info: flow dependencies proved
 steering.ads:12:100: info: data dependencies proved

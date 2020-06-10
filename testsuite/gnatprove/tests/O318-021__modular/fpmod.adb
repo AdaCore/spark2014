@@ -8,9 +8,9 @@ is
    Y : M;
 begin
    X := 0.5;
-   Y := M(X);
+   Y := M(X);  --  @RANGE_CHECK:PASS
    X := -0.1;
-   Y := M(X);
+   Y := M(X);  --  @RANGE_CHECK:PASS
    X := -0.5;
    Y := M(X);  --  @RANGE_CHECK:FAIL
 end Fpmod;

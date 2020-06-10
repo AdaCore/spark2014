@@ -17,7 +17,7 @@ infoflow.adb:89:47: medium: "OutKeys_V2" might not be initialized
 infoflow.adb:96:10: info: initialization of "T_V1" proved
 infoflow.adb:97:10: info: initialization of "M_V1" proved
 infoflow.adb:99:28: info: division check proved (CVC4: 1 VC)
-infoflow.adb:103:34: medium: loop invariant might fail after first iteration, cannot prove H_V1 (K) = H_V1'Loop_Entry (K + M_V1)
+infoflow.adb:103:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove H_V1 (K) = H_V1'Loop_Entry (K + M_V1)
 infoflow.adb:103:40: info: index check proved (CVC4: 4 VC)
 infoflow.adb:103:64: medium: array index check might fail
 infoflow.adb:105:34: medium: loop invariant might fail in first iteration, cannot prove H_V1 (K) = H_V1'Loop_Entry (K - M_V1)
@@ -35,7 +35,7 @@ infoflow.adb:113:30: info: assertion proved (Trivial: 1 VC)
 infoflow.adb:118:10: info: initialization of "T_V2" proved
 infoflow.adb:119:10: info: initialization of "M_V2" proved
 infoflow.adb:121:28: info: division check proved (CVC4: 1 VC)
-infoflow.adb:125:34: medium: loop invariant might fail after first iteration, cannot prove H_V2 (K) = H_V2'Loop_Entry (K + M_V2)
+infoflow.adb:125:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove H_V2 (K) = H_V2'Loop_Entry (K + M_V2)
 infoflow.adb:125:40: info: index check proved (CVC4: 4 VC)
 infoflow.adb:125:64: medium: array index check might fail
 infoflow.adb:127:34: medium: loop invariant might fail in first iteration, cannot prove H_V2 (K) = H_V2'Loop_Entry (K - M_V2)
@@ -65,7 +65,7 @@ infoflow.adb:150:69: info: index check proved (CVC4: 4 VC)
 infoflow.adb:152:34: medium: loop invariant might fail in first iteration, cannot prove H (K) = H'Loop_Entry (K - M)
 infoflow.adb:152:37: info: index check proved (CVC4: 4 VC)
 infoflow.adb:152:58: info: index check proved (CVC4: 4 VC)
-infoflow.adb:153:36: medium: loop invariant might fail after first iteration, cannot prove H (K) = H'Loop_Entry (K)
+infoflow.adb:153:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove H (K) = H'Loop_Entry (K)
 infoflow.adb:153:39: info: index check proved (CVC4: 4 VC)
 infoflow.adb:153:58: info: index check proved (CVC4: 4 VC)
 infoflow.adb:154:29: info: index check proved (CVC4: 2 VC)

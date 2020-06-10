@@ -1,3 +1,4 @@
+deep_globals.adb:4:04: medium: memory leak might occur at end of scope
 deep_globals.adb:5:04: info: initialization of "Z" proved
 deep_globals.adb:9:14: info: pointer dereference check proved (CVC4: 1 VC)
 deep_globals.adb:14:09: info: pointer dereference check proved (CVC4: 1 VC)

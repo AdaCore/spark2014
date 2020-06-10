@@ -360,7 +360,7 @@ package Why.Gen.Names is
       WNE_Of_Float64,             --  for fixed-point
       WNE_Of_BitVector,
       WNE_Range_Check_Fun,
-      WNE_Range_Check_Fun_BV_Int, --  for convertion from int to bitvector
+      WNE_Range_Check_Fun_BV_Int, --  for conversion from int to bitvector
       WNE_Rec_Split_Discrs,
       WNE_Rec_Split_Fields,
       WNE_Range_Pred,
@@ -382,6 +382,7 @@ package Why.Gen.Names is
       --  Names related to the pointer type
       WNE_Null_Pointer,           --  "__null_pointer"
       WNE_Is_Null_Pointer,        --  "__is_null_pointer"
+      WNE_Is_Moved_Pointer,       --  "__is_moved_pointer"
       WNE_Pointer_Address,        --  "__pointer_address"
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Init_Allocator,         --  "__new_initialized_allocator"
@@ -390,10 +391,16 @@ package Why.Gen.Names is
       WNE_Pointer_Value_Abstr,    --  "__pointer_value_abstr"
       WNE_Pointer_Open,           --  "__open"
       WNE_Pointer_Close,          --  "__close"
+      WNE_Is_Moved,               --  __is_moved
+      WNE_Move,                   --  __move
+      WNE_Moved_Relation,         --  __moved_relation
 
       --  Names related to initialization checks
       WNE_Init_Value,             --  "rec__value"
-      WNE_Attr_Init               --  "attr__init"
+      WNE_Init_Wrapper_Suffix,    --  "__init_wrapper"
+      WNE_Attr_Init,              --  "attr__init"
+      WNE_To_Wrapper,             --  "to_wrapper"
+      WNE_Of_Wrapper              --  "of_wrapper"
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
@@ -429,6 +436,9 @@ package Why.Gen.Names is
 
    function Is_Null_Append (Base : W_Identifier_Id;
                             Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Is_Moved_Append (Base : W_Identifier_Id;
+                             Typ  : W_Type_Id) return W_Identifier_Id;
 
    function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id;
 

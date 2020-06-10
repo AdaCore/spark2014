@@ -120,6 +120,37 @@ then`` ensures that a precondition failure will occur before the expression
    instead of ``and`` in preconditions. This is required in some cases by
    |GNATprove| to prove absence of run-time errors inside preconditions.
 
+Raise expressions occuring in preconditions are handled in a special way.
+Indeed, it is a common pattern to use a raise expression to change the
+exception raised by a failed precondition. To support this use case, raising
+an expression in a precondition is considered in |SPARK| to be a failure of the
+precondition, as opposed to a runtime failure, which would not be allowed in
+|SPARK|. As an example, we may want to introduce specific exceptions for the
+the failure of each part of the precondition of ``Add_To_Total``, so as to
+debug them more easily. This can be done by using two raise expressions as in
+the following snippet:
+
+.. code-block:: ada
+
+   Negative_Increment  : exception;
+   Total_Out_Of_Bounds : exception;
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Pre => (Incr >= 0 or else raise Negative_Increment)
+     and then (Total in 0 .. Integer'Last - Incr
+               or else raise Total_Out_Of_Bounds);
+
+The raise expressions are associated to each conjunct using an ``or else``
+short circuit operator, so that they will be evaluated when the conjunct
+evaluates to ``False`` and the exception will be raised.
+
+On this code, |GNATprove| will not attempt to verify that the exceptions can
+never be raised when evaluating the precondition in any context, like it does
+for other runtime exceptions. Instead, it will consider them being raised as a
+failure of the precondition. So, for |GNATprove|, the precondition with
+the raise expressions above is effectively equivalent to the precondition of
+the previous example.
+
 .. _Postconditions:
 
 Postconditions

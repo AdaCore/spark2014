@@ -184,6 +184,7 @@ procedure Gnatprove with SPARK_Mode is
 
    begin
       Args.Append ("--restricted-to-languages=ada");
+      Args.Append ("--gnatprove");
 
       if Minimal_Compile then
          Args.Append ("-m");
@@ -296,7 +297,6 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--subdirs=" & Subd.Display_Full_Name);
       end;
       Args.Append ("--no-object-check");
-      Args.Append ("--gnatprove");
 
       --  Keep going after a compilation error in 'check' mode
 
@@ -492,7 +492,7 @@ procedure Gnatprove with SPARK_Mode is
          if Configuration.Mode in GPM_All | GPM_Prove then
             Close (Id);
             GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
-            if not CL_Switches.Dbg_No_Sem then
+            if Use_Semaphores then
                Close (Why3_Semaphore);
             end if;
             Delete (Base_Name (Socket_Name.all));
@@ -854,7 +854,7 @@ procedure Gnatprove with SPARK_Mode is
       end if;
       Id := Non_Blocking_Spawn ("why3server", Args);
       Ada.Directories.Set_Directory (Cur);
-      if not CL_Switches.Dbg_No_Sem then
+      if Use_Semaphores then
          declare
             Sem_Name : constant String := Base_Name (Socket_Name.all);
          begin

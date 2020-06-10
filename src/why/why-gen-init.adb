@@ -24,13 +24,13 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;        use Common_Containers;
+with GNATCOLL.Symbols;         use GNATCOLL.Symbols;
 with SPARK_Atree;              use SPARK_Atree;
-with SPARK_Util.Types;         use SPARK_Util.Types;
+with SPARK_Definition;         use SPARK_Definition;
+with SPARK_Util;               use SPARK_Util;
 with VC_Kinds;                 use VC_Kinds;
-with Why.Atree.Accessors;      use Why.Atree.Accessors;
 with Why.Atree.Builders;       use Why.Atree.Builders;
 with Why.Atree.Modules;        use Why.Atree.Modules;
-with Why.Conversions;          use Why.Conversions;
 with Why.Gen.Arrays;           use Why.Gen.Arrays;
 with Why.Gen.Binders;          use Why.Gen.Binders;
 with Why.Gen.Decl;             use Why.Gen.Decl;
@@ -41,18 +41,28 @@ with Why.Gen.Progs;            use Why.Gen.Progs;
 with Why.Gen.Records;          use Why.Gen.Records;
 with Why.Gen.Terms;            use Why.Gen.Terms;
 with Why.Inter;                use Why.Inter;
+with Why.Types;                use Why.Types;
 
 package body Why.Gen.Init is
+
+   function New_Init_Attribute_Access
+     (E           : Entity_Id;
+      Name        : W_Expr_Id;
+      Ref_Allowed : Boolean := True)
+      return W_Expr_Id;
+   --  Access the initialization flag of an expression of a wrapper type
 
    ----------------------------
    -- Compute_Is_Initialized --
    ----------------------------
 
    function Compute_Is_Initialized
-     (E           : Entity_Id;
-      Name        : W_Term_Id;
-      Ref_Allowed : Boolean)
-      return W_Pred_Id
+     (E                      : Entity_Id;
+      Name                   : W_Expr_Id;
+      Ref_Allowed            : Boolean;
+      Domain                 : EW_Domain;
+      Exclude_Always_Relaxed : Boolean := False)
+      return W_Expr_Id
    is
 
       function Is_Initialized_For_Comp
@@ -62,8 +72,14 @@ package body Why.Gen.Init is
       function Is_Initialized_For_Comp
         (C_Expr : W_Term_Id; C_Ty : Entity_Id)
          return W_Pred_Id
-      is (Compute_Is_Initialized
-          (E => C_Ty, Name => C_Expr, Ref_Allowed => Ref_Allowed));
+      is (if Exclude_Always_Relaxed and then Has_Relaxed_Init (C_Ty)
+          then True_Pred
+          else +Compute_Is_Initialized
+            (E                      => C_Ty,
+             Name                   => +C_Expr,
+             Ref_Allowed            => Ref_Allowed,
+             Domain                 => EW_Pred,
+             Exclude_Always_Relaxed => Exclude_Always_Relaxed));
 
       -----------------------------
       -- Is_Initialized_For_Comp --
@@ -75,8 +91,16 @@ package body Why.Gen.Init is
       is
          pragma Unreferenced (E);
       begin
-         return Compute_Is_Initialized
-           (E => C_Ty, Name => C_Expr, Ref_Allowed => Ref_Allowed);
+         if Exclude_Always_Relaxed and then Has_Relaxed_Init (C_Ty) then
+            return True_Pred;
+         else
+            return +Compute_Is_Initialized
+              (E                      => C_Ty,
+               Name                   => +C_Expr,
+               Ref_Allowed            => Ref_Allowed,
+               Domain                 => EW_Pred,
+               Exclude_Always_Relaxed => Exclude_Always_Relaxed);
+         end if;
       end Is_Initialized_For_Comp;
 
       function Is_Initialized_For_Array is new Build_Predicate_For_Array
@@ -85,46 +109,49 @@ package body Why.Gen.Init is
       function Is_Initialized_For_Record is new Build_Predicate_For_Record
         (Is_Initialized_For_Comp, Is_Initialized_For_Comp);
 
-      P    : W_Pred_Id := True_Pred;
+      P    : W_Expr_Id;
       Tmp  : constant W_Expr_Id := New_Temp_For_Expr (+Name);
-      Expr : W_Expr_Id := Tmp;
+
    begin
-      if Has_Init_By_Proof (E) then
+      --  An object is necessarily initialized if it does not have a wrapper
+      --  type and either it does not have parts which have relaxed
+      --  initialization, or we do not need to check subcomponents with relaxed
+      --  initialization.
+
+      if not Get_Relaxed_Init (Get_Type (+Name))
+        and then (Has_Scalar_Type (E)
+                  or else Exclude_Always_Relaxed
+                  or else not Contains_Relaxed_Init_Parts (E))
+      then
+         return New_Literal (Value => EW_True, Domain => Domain);
+      else
 
          --  Initialization of top level type
 
-         if Needs_Init_Wrapper_Type (E)
-           and then Is_Init_Wrapper_Type (Get_Type (+Name))
-         then
-            P := Pred_Of_Boolean_Term
-              (+New_Init_Attribute_Access (E, +Name, Ref_Allowed));
-            Expr := New_Init_Wrapper_Value_Access
-              (Ada_Node    => Empty,
-               E           => E,
-               Name        => Expr,
-               Domain      => EW_Term,
-               Ref_Allowed => Ref_Allowed);
-         end if;
+         if Has_Scalar_Type (E) then
+            P := +New_Init_Attribute_Access (E, +Name, Ref_Allowed);
+            if Domain = EW_Pred then
+               P := +Pred_Of_Boolean_Term (+P);
+            end if;
+            return P;
 
          --  Initialization of components
 
-         if Has_Array_Type (E) then
-            P := +New_And_Then_Expr
-              (Left   => +P,
-               Right  => +Is_Initialized_For_Array (+Expr, Retysp (E)),
-               Domain => EW_Pred);
+         elsif Has_Array_Type (E) then
+            P := +Is_Initialized_For_Array (+Tmp, Retysp (E));
          elsif Has_Record_Type (E) then
-            P := +New_And_Then_Expr
-              (Left   => +P,
-               Right  => +Is_Initialized_For_Record (+Expr, Retysp (E)),
-               Domain => EW_Pred);
+            P := +Is_Initialized_For_Record (+Tmp, Retysp (E));
+         else
+            raise Program_Error;
          end if;
 
-         return +Binding_For_Temp (Domain  => EW_Pred,
+         P := Boolean_Expr_Of_Pred
+           (W      => +P,
+            Domain => Domain);
+
+         return +Binding_For_Temp (Domain  => Domain,
                                    Tmp     => Tmp,
                                    Context => +P);
-      else
-         return True_Pred;
       end if;
    end Compute_Is_Initialized;
 
@@ -133,73 +160,88 @@ package body Why.Gen.Init is
    --------------------------
 
    procedure Declare_Init_Wrapper (P : W_Section_Id; E : Entity_Id) is
-      Ty        : constant W_Type_Id := EW_Abstract (E);
-      W_Nam     : constant W_Name_Id :=
-        To_Local (Get_Name (EW_Init_Wrapper (E, EW_Abstract)));
-      W_Ty      : constant W_Type_Id := New_Named_Type (W_Nam);
-      Init_Val  : constant W_Identifier_Id :=
-        To_Local (E_Symb (E, WNE_Init_Value));
-      Attr_Init : constant W_Identifier_Id :=
-        To_Local (E_Symb (E, WNE_Attr_Init));
+      Init_Ty : constant W_Type_Id := EW_Abstract (E);
 
    begin
-      --  Add with close for the type that we are wrapping
+      if Is_Scalar_Type (E) then
 
-      if Has_Static_Array_Type (E) then
-         Add_With_Clause (P, Get_Array_Theory (E).Module, EW_Clone_Default);
-      elsif not Is_Standard_Boolean_Type (E) then
-         Add_With_Clause (P, E_Module (E), EW_Clone_Default);
-      end if;
+         declare
+            W_Nam     : constant W_Name_Id :=
+              To_Why_Type
+                (E, Local => True, Relaxed_Init => True);
+            W_Ty      : constant W_Type_Id := New_Named_Type (W_Nam);
+            Init_Val  : constant W_Identifier_Id :=
+              To_Local (E_Symb (E, WNE_Init_Value));
+            Attr_Init : constant W_Identifier_Id :=
+              To_Local (E_Symb (E, WNE_Attr_Init));
+            A_Ident   : constant W_Identifier_Id :=
+              New_Identifier (Name => "a", Typ => W_Ty);
+            A_Binder  : constant Binder_Array :=
+              (1 => (B_Name => A_Ident,
+                     others => <>));
+            X_Ident   : constant W_Identifier_Id :=
+              New_Identifier (Name => "x", Typ => Init_Ty);
+            X_Binder  : constant Binder_Array :=
+              (1 => (B_Name => X_Ident,
+                     others => <>));
 
-      --  Wrappers have two fields, a value field and an initialization flag
+         begin
+            --  Wrappers have two fields, a value field and an initialization
+            --  flag.
 
-      Emit_Record_Declaration
-        (Section      => P,
-         Name         => W_Nam,
-         Binders      =>
-           (1 =>
-              (B_Name => Init_Val,
-               others => <>),
-            2 =>
-              (B_Name => Attr_Init,
-               others => <>)),
-         SPARK_Record => True);
+            Emit_Record_Declaration
+              (Section      => P,
+               Name         => W_Nam,
+               Binders      =>
+                 (1 =>
+                    (B_Name => Init_Val,
+                     others => <>),
+                  2 =>
+                    (B_Name => Attr_Init,
+                     others => <>)));
 
-      --  Define a program function to access the value field. It checks that
-      --  the initialization flag is set.
+            --  Declare conversion functions to and from the wrapper type
 
-      declare
-         A_Ident  : constant W_Identifier_Id :=
-           New_Identifier (Name => "a", Typ => W_Ty);
-         A_Binder : constant Binder_Array :=
-           (1 => (B_Name => A_Ident,
-                  others => <>));
-         Pre      : constant W_Pred_Id :=
-           Pred_Of_Boolean_Term
-             (New_Record_Access (Name  => +A_Ident,
-                                 Field => Attr_Init,
-                                 Typ   => EW_Bool_Type));
-         Post     : constant W_Pred_Id :=
-           +New_Comparison
-             (Symbol => Why_Eq,
-              Left   => +New_Result_Ident (Ty),
-              Right  => New_Record_Access (Name  => +A_Ident,
-                                           Field => Init_Val,
-                                           Typ   => Ty),
-              Domain => EW_Pred);
-
-      begin
-         Emit (P,
+            Emit
+              (P,
                New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => To_Program_Space (Init_Val),
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (E_Symb (E, WNE_Of_Wrapper)),
                   Binders     => A_Binder,
-                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
-                  Return_Type => Ty,
-                  Pre         => Pre,
-                  Post        => Post));
-      end;
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Return_Type => Init_Ty,
+                  Def         => New_Record_Access (Name  => +A_Ident,
+                                                    Field => Init_Val,
+                                                    Typ   => Init_Ty)));
+            Emit
+              (P,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (E_Symb (E, WNE_To_Wrapper)),
+                  Binders     => X_Binder,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Return_Type => W_Ty,
+                  Def         =>
+                    New_Record_Aggregate
+                      (Associations =>
+                           (1 => New_Field_Association
+                              (Domain => EW_Term,
+                               Field  => Init_Val,
+                               Value  => +X_Ident),
+                            2 => New_Field_Association
+                              (Domain => EW_Term,
+                               Field  => Attr_Init,
+                               Value  => +True_Term)))));
+         end;
+      elsif Is_Record_Type (E) then
+         Declare_Init_Wrapper_For_Record (P, E);
+      elsif Is_Array_Type (E) then
+         Declare_Init_Wrapper_For_Array (P, E);
+      else
+         raise Why.Not_Implemented;
+      end if;
 
    end Declare_Init_Wrapper;
 
@@ -207,50 +249,16 @@ package body Why.Gen.Init is
    -- EW_Init_Wrapper --
    ---------------------
 
-   function EW_Init_Wrapper (E : Entity_Id; K : EW_Type) return W_Type_Id is
-      Ty : constant Entity_Id := Retysp (E);
-   begin
-      if K = EW_Abstract then
-
-         --  Create a new type for the wrapper
-
-         if Needs_Init_Wrapper_Type (Ty) then
-            return New_Type
-              (Ada_Node     => Ty,
-               Is_Mutable   => False,
-               Type_Kind    => EW_Abstract,
-               Relaxed_Init => True,
-               Name         => New_Name
-                 (Symb   => NID (Short_Name (Ty) & "__init_wrapper"),
-                  Module => E_Init_Module (Ty)));
-         else
-            return EW_Abstract (Ty);
-         end if;
-      else
-
-         --  No new type is created, this is a placeholder for values
-
-         if Needs_Init_Wrapper_Type (Ty) then
-            return New_Type
-              (Ada_Node     => Ty,
-               Is_Mutable   => False,
-               Type_Kind    => EW_Split,
-               Relaxed_Init => True,
-               Name         => Get_Name (EW_Split (Ty)));
-         else
-            return EW_Split (Ty);
-         end if;
-      end if;
-   end EW_Init_Wrapper;
-
    function EW_Init_Wrapper (Ty : W_Type_Id) return W_Type_Id is
-      K : constant EW_Type := Get_Type_Kind (Ty);
    begin
-      if K in EW_Abstract | EW_Split then
-         return EW_Init_Wrapper (Get_Ada_Node (+Ty), K);
-      else
-         return Ty;
-      end if;
+      case Get_Type_Kind (Ty) is
+         when EW_Abstract =>
+            return EW_Abstract (Get_Ada_Node (+Ty), Relaxed_Init => True);
+         when EW_Split =>
+            return EW_Split (Get_Ada_Node (+Ty), Relaxed_Init => True);
+         when EW_Builtin =>
+            raise Program_Error;
+      end case;
    end EW_Init_Wrapper;
 
    ---------------------------------
@@ -258,31 +266,45 @@ package body Why.Gen.Init is
    ---------------------------------
 
    function Insert_Initialization_Check
-     (Ada_Node : Node_Id;
-      E        : Entity_Id;
-      Name     : W_Expr_Id;
-      Domain   : EW_Domain)
+     (Ada_Node               : Node_Id;
+      E                      : Entity_Id;
+      Name                   : W_Expr_Id;
+      Domain                 : EW_Domain;
+      Exclude_Always_Relaxed : Boolean := False)
       return W_Expr_Id
    is
-      Tmp : constant W_Identifier_Id := New_Temp_Identifier
-        (Typ => Get_Type (Name));
+      Tmp : constant W_Expr_Id := New_Temp_For_Expr (Name);
+      T   : W_Expr_Id;
    begin
-      if Domain = EW_Prog and then Has_Init_By_Proof (E) then
-         return New_Binding
-           (Ada_Node => Ada_Node,
-            Domain   => EW_Prog,
-            Name     => Tmp,
-            Def      => Name,
-            Context  => +Sequence
-              (Ada_Node => Ada_Node,
+      --  We need initialization checking if either Name is an expression with
+      --  relaxed initialization or if it contains subcomponents with
+      --  relaxed initialization and checks should be introduced for
+      --  these subcomponents (Exclude_Always_Relaxed is False).
+
+      if Domain = EW_Prog
+        and then
+          (Is_Init_Wrapper_Type (Get_Type (Name))
+           or else
+             (not Exclude_Always_Relaxed
+              and then Contains_Relaxed_Init_Parts (E, Ignore_Top => True)))
+      then
+         T := +Sequence
+              (Ada_Node => Get_Ada_Node (+Tmp),
                Left     => New_Located_Assert
                  (Ada_Node => Ada_Node,
-                  Pred     => Compute_Is_Initialized
-                    (E, +Tmp, Ref_Allowed => True),
+                  Pred     => +Compute_Is_Initialized
+                    (E, +Tmp,
+                     Ref_Allowed            => True,
+                     Exclude_Always_Relaxed => Exclude_Always_Relaxed,
+                     Domain                 => EW_Pred),
                   Reason   => VC_Initialization_Check,
                   Kind     => EW_Assert),
-               Right    => +Tmp),
-            Typ      => Get_Type (Name));
+               Right    => +Tmp);
+         T := Binding_For_Temp (Ada_Node => Get_Ada_Node (+Tmp),
+                                Domain   => Domain,
+                                Tmp      => Tmp,
+                                Context  => T);
+         return T;
       else
          return Name;
       end if;
@@ -345,105 +367,25 @@ package body Why.Gen.Init is
       end if;
    end New_Init_Attribute_Access;
 
-   -----------------------------------
-   -- New_Init_Wrapper_Value_Access --
-   -----------------------------------
+   --------------------
+   -- To_Init_Module --
+   --------------------
 
-   function New_Init_Wrapper_Value_Access
-     (Ada_Node    : Node_Id;
-      E           : Entity_Id;
-      Name        : W_Expr_Id;
-      Domain      : EW_Domain;
-      Ref_Allowed : Boolean := True)
-      return W_Expr_Id
-   is
-      Field : W_Identifier_Id;
-
-   begin
-      if not Needs_Init_Wrapper_Type (E) then
-         return Name;
-
-      --  If Name is in split form, we don't need any actual conversion. We
-      --  just change the type of the node using an empty label. We also
-      --  introduce an initialization check if Domain = EW_Prog.
-
-      elsif Get_Type_Kind (Get_Type (Name)) = EW_Split then
-         pragma Assert (Get_Relaxed_Init (Get_Type (Name)));
-         declare
-            Conv : constant W_Expr_Id := New_Label
-              (Ada_Node => Ada_Node,
-               Domain   => Domain,
-               Labels   => Symbol_Sets.Empty_Set,
-               Def      => Name,
-               Typ      => EW_Split (E));
-         begin
-            if Domain = EW_Prog then
-               return +Sequence
-                 (Ada_Node => Ada_Node,
-                  Left     => New_Located_Assert
-                    (Ada_Node => Ada_Node,
-                     Pred     => Pred_Of_Boolean_Term
-                       (+New_Init_Attribute_Access (E, Name, Ref_Allowed)),
-                     Reason   => VC_Initialization_Check,
-                     Kind     => EW_Assert),
-                  Right    => +Conv);
-            else
-               return Conv;
-            end if;
-         end;
-      end if;
-
-      --  Otherwise, query the record component
-
+   function To_Init_Module (Name : W_Identifier_Id) return W_Identifier_Id is
+      W_Name : constant W_Name_Id := Get_Name (Name);
+      Module : constant W_Module_Id := Get_Module (W_Name);
       pragma Assert
-        (Get_Relaxed_Init (Get_Type (Name))
-         and Get_Type_Kind (Get_Type (Name)) = EW_Abstract);
-
-      Field := E_Symb (E, WNE_Init_Value);
-
-      if Domain = EW_Prog then
-         return
-           +New_VC_Call
-           (Ada_Node => Ada_Node,
-            Name     => To_Program_Space (Field),
-            Progs    => (1 => +Name),
-            Domain   => EW_Prog,
-            Reason   => VC_Initialization_Check,
-            Typ      => EW_Abstract (E));
-      else
-         return New_Record_Access (Name  => +Name,
-                                   Field => Field,
-                                   Typ   => EW_Abstract (E));
-      end if;
-   end New_Init_Wrapper_Value_Access;
-
-   ------------------------------
-   -- Reconstruct_Init_Wrapper --
-   ------------------------------
-
-   function Reconstruct_Init_Wrapper
-     (Ada_Node : Node_Id := Empty;
-      Ty       : Entity_Id;
-      Value    : W_Expr_Id)
-      return W_Expr_Id
-   is
+        (Module /= Why_Empty and then Present (Get_Ada_Node (+Module)));
    begin
-      if not Needs_Init_Wrapper_Type (Ty) then
-         return Value;
-      else
-         return New_Record_Aggregate
-           (Ada_Node     => Ada_Node,
-            Associations =>
-              (1 => New_Field_Association
-                   (Domain => EW_Term,
-                    Field  => E_Symb (Ty, WNE_Init_Value),
-                    Value  => Value),
-               2 => New_Field_Association
-                 (Domain => EW_Term,
-                  Field  => E_Symb (Ty, WNE_Attr_Init),
-                  Value  => +True_Term)),
-            Typ          => EW_Init_Wrapper (Ty, EW_Abstract));
-      end if;
-   end Reconstruct_Init_Wrapper;
+      return
+        New_Identifier
+          (Ada_Node  => Get_Ada_Node (+W_Name),
+           Symb      => Get_Symb (W_Name),
+           Namespace => Get_Namespace (W_Name),
+           Domain    => Get_Domain (+Name),
+           Module    => E_Init_Module (Get_Ada_Node (+Module)),
+           Typ       => Get_Typ (Name),
+           Attrs     => Get_Labels (Name));
+   end To_Init_Module;
 
 end Why.Gen.Init;

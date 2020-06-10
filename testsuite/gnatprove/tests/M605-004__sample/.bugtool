@@ -1,6 +1,0 @@
-dbname=gnattracker
-dbhost=postgres.gnat.com
-tndir=/reportd/gnatbugs/M6/M605-004
-
-comment	a859746fffc309d94db3a354758e92d615b68eb5
-file_2.bin	9e2e5884d060f51065ade7aec3c0766a6d1c237a

@@ -1,3 +1,12 @@
+port.adb:5:13: info: types in unchecked conversion have the same size (Trivial)
+port.adb:5:48: info: type is suitable for unchecked conversion (Trivial)
+port.adb:5:53: info: type is suitable for unchecked conversion (Trivial)
+port.adb:7:13: info: types in unchecked conversion have the same size (Trivial)
+port.adb:7:49: info: type is suitable for unchecked conversion (Trivial)
+port.adb:7:53: high: type with constraints on bit representation is unsuitable for unchecked conversion
+port.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+port.adb:9:49: info: type is suitable for unchecked conversion (Trivial)
+port.adb:9:53: high: type with constraints on bit representation is unsuitable for unchecked conversion
 port.adb:22:07: info: initialization of "Tmp" proved
 port.adb:29:16: medium: range check might fail
 port.adb:35:07: info: initialization of "T" proved
@@ -19,7 +28,7 @@ port.adb:143:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T
 port.adb:153:07: info: initialization of "T1" proved
 port.adb:154:07: info: initialization of "T2" proved
 port.adb:160:22: info: assertion proved (CVC4: 1 VC)
-port.ads:16:19: info: assertion proved
+port.ads:16:19: info: assertion proved (Trivial)
 port.ads:65:28: info: initialization of "X" proved
 port.ads:66:11: info: data dependencies proved
 port.ads:67:11: info: flow dependencies proved

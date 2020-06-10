@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="8">
+<why3session shape_version="6">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<file format="whyml">
+<file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
-<path name="configdata__init.mlw"/>
+<path name="configdata__init.gnat-json"/>
 <theory name="Configdata__init__subprogram_def">
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
@@ -14,10 +14,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.1" expl="assertion" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="5"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="57"/></proof>
   </goal>
   <goal name="def&#39;vc.2" expl="assertion" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="57"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.3" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >

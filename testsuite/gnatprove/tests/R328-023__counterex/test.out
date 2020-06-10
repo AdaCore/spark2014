@@ -1,4 +1,3 @@
 p.ads:8:14: medium: overflow check might fail (e.g. when A = (others => 1) and A'First = 0 and A'Last = -2147483648 and B = (others => 1) and B'First = 1 and B'Last = 1)
 p.ads:8:24: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = 0 and A'Last = -2147483571 and B = (others => 0) and B'First = 0 and B'Last = 38)
-p.ads:8:28: info: overflow check proved (CVC4: 1 VC)
 p.ads:8:31: info: range check proved (CVC4: 1 VC)

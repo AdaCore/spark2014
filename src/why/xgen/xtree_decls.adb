@@ -29,9 +29,9 @@ with Why.Sinfo;    use Why.Sinfo;
 
 package body Xtree_Decls is
 
-   Node_Kind_Name : constant Wide_String := "Why_Node_Kind";
-   Node_Type_Name : constant Wide_String := "Why_Node";
-   Kind_Name      : constant Wide_String := "Kind";
+   Node_Kind_Name : constant String := "Why_Node_Kind";
+   Node_Type_Name : constant String := "Why_Node";
+   Kind_Name      : constant String := "Kind";
 
    ---------------------
    -- Print_Node_Type --

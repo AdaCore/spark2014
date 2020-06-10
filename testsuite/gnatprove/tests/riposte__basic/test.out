@@ -38,7 +38,7 @@ basic.adb:101:19: info: postcondition proved (CVC4: 1 VC)
 basic.adb:103:07: info: initialization of "R" proved
 basic.adb:114:11: info: flow dependencies proved
 basic.adb:117:22: info: postcondition proved (CVC4: 1 VC)
-basic.adb:120:22: info: assertion proved
+basic.adb:120:22: info: assertion proved (Trivial)
 basic.adb:121:22: info: assertion proved (CVC4: 1 VC)
 counterexample expected for check at basic.adb:9
   trace at basic.adb:5 --> A = 1 and B = Unsigned_Byte'Last

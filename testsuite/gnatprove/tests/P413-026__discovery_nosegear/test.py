@@ -7,4 +7,4 @@ from test_support import *
 # Do not use CVC4, which crashes on one VC on Darwin, the range check on line
 # 65 column 37 of ng.adb
 
-prove_all(prover=None, steps=1200, counterexample=False)
+prove_all(prover=None, steps=3000, counterexample=False)

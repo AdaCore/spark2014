@@ -2,5 +2,5 @@ strlit.adb:4:07: warning: initialization of "X" has no effect
 strlit.adb:5:07: warning: initialization of "Y" has no effect
 strlit.adb:6:07: warning: initialization of "Z" has no effect
 strlit.adb:7:07: warning: initialization of "F" has no effect
-strlit.adb:9:22: info: assertion proved
+strlit.adb:9:22: info: assertion proved (Trivial)
 strlit.ads:7:20: info: postcondition proved (CVC4: 1 VC)

@@ -19,9 +19,9 @@ procedure Test_Goto_Borrow with SPARK_Mode is
    function Pledge (L : access constant List_Cell; P : Boolean) return Boolean is
      (P)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
-   procedure Truncate_After_V (L : access List_Cell; V : Integer; I : out Natural) with
+   procedure Truncate_After_V (L : access List_Cell; Rest : out List; V : Integer; I : out Natural) with
      Pre  => Length (L) < Natural'Last,
      Post => Length (L) = I
      and (if Length (L) /= Length (L)'Old then Nth (L, I) = V)
@@ -31,7 +31,9 @@ procedure Test_Goto_Borrow with SPARK_Mode is
          D : access List_Cell := L;
       begin
          I := 0;
+         Rest := null;
          while D /= null loop
+            pragma Loop_Invariant (Rest = null);
             pragma Loop_Invariant (I = Length (D)'Loop_Entry - Length (D));
             pragma Loop_Invariant
               (Pledge (D, Length (L) = I + Integer'Min (Length (D), Natural'Last - I)));
@@ -44,6 +46,7 @@ procedure Test_Goto_Borrow with SPARK_Mode is
 
             if D.Data = V then
                pragma Assert (Nth (D, 1) = V);
+               Rest := D.Next;
                D.Next := null;
                pragma Assert (Length (D) = 1);
                goto EEnd;
@@ -51,7 +54,8 @@ procedure Test_Goto_Borrow with SPARK_Mode is
             D := D.Next;
          end loop;
       end;
-      <<EEnd>>
+      pragma Assert (Length (L) = I);
+  <<EEnd>>
    end Truncate_After_V;
 begin
    null;

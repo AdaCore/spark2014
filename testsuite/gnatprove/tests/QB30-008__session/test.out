@@ -5,14 +5,14 @@
   total: 7  proved: 6
 
 == Goals not proved ==
-  +-- file [../add__addtwo.mlw]
+  +-- file [../add__addtwo.gnat-json]
     +-- theory Add__addtwo__subprogram_def
       +-- goal def'vc
         +-- transformation split_goal_wp_conj
           +-- goal def'vc.0
 
 == Goals proved by only one prover ==
-  +-- file [../add__addtwo.mlw]
+  +-- file [../add__addtwo.gnat-json]
     +-- theory Add__addtwo__subprogram_def
       +-- goal def'vc
         +-- transformation split_goal_wp_conj

@@ -43,9 +43,8 @@ with Atree;                             use Atree;
 with Common_Containers;                 use Common_Containers;
 with Einfo;                             use Einfo;
 with GNATCOLL.JSON;                     use GNATCOLL.JSON;
+with Sem_Util;                          use Sem_Util;
 with Sinfo;                             use Sinfo;
-with SPARK_Util;                        use SPARK_Util;
-with SPARK_Util.Subprograms;            use SPARK_Util.Subprograms;
 with Types;                             use Types;
 
 package SPARK_Definition is
@@ -139,9 +138,7 @@ package SPARK_Definition is
    --  violations.
 
    function Entity_Body_Compatible_With_SPARK (E : Entity_Id) return Boolean
-   with
-     Pre => Ekind (E) in E_Function
-              and then Present (Get_Expression_Function (E));
+   with Pre => Is_Expression_Function_Or_Completion (E);
    --  Returns True iff the body of expression function E contains no SPARK
    --  violations.
 
@@ -166,6 +163,15 @@ package SPARK_Definition is
    function Get_SPARK_JSON return JSON_Array;
    --  Should be called after marking is finished. Returns the result of
    --  marking as a JSON record.
+
+   function Has_Relaxed_Init (E : Entity_Id) return Boolean with
+     Post => (if Has_Relaxed_Init'Result then In_Relaxed_Init (E));
+   --  True is E is annotated with relaxed initialization
+
+   function In_Relaxed_Init (E : Entity_Id) return Boolean
+   with Pre => Is_Type (E);
+   --  True if E is the type of a part of a type annotated with relaxed
+   --  initialization.
 
    function Is_Actions_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff entity E is defined in actions and thus requires a
@@ -194,6 +200,10 @@ package SPARK_Definition is
      Post => Present (Get_Incomplete_Access'Result)
      and then Is_Access_Type (Get_Incomplete_Access'Result);
    --  Return an access type to E
+
+   function Raise_Occurs_In_Pre (N : Node_Id) return Boolean with
+     Pre => Nkind (N) = N_Raise_Expression;
+   --  Return True if N occurs in a precondition
 
    ----------------------------------------------------------------------
    --  Marked entity collections
@@ -225,5 +235,9 @@ package SPARK_Definition is
 private
 
    type Cursor is new Node_Lists.Cursor;
+
+   function In_SPARK (E : Entity_Id) return Boolean;
+   --  Returns whether the entity E is in SPARK; computes this information by
+   --  calling Mark_Entity, which is very cheap.
 
 end SPARK_Definition;

@@ -4,7 +4,7 @@ package body P is
                    Target :    out Str)
    is
       --  pragma Annotate
-      --    (GNATProve, Intentional,
+      --    (GNATprove, Intentional,
       --     """Target.Value"" might not be initialized*",
       --     "Value is always initialized up to Length");
    begin

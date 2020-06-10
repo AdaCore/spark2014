@@ -8,84 +8,90 @@ floating_point.adb:29:16: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:29:20: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:30:22: medium: assertion might fail, cannot prove Res >= 0.0
 floating_point.adb:40:24: info: division check proved (Z3: 1 VC)
-floating_point.adb:40:24: info: float overflow check proved (Interval)
+floating_point.adb:40:24: info: float overflow check proved (Trivial)
 floating_point.adb:41:16: info: division check proved (Z3: 1 VC)
 floating_point.adb:41:16: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:42:22: medium: assertion might fail, cannot prove Res <= Threshold
 floating_point.adb:51:24: info: division check proved (Z3: 1 VC)
-floating_point.adb:51:24: info: float overflow check proved (Interval)
+floating_point.adb:51:24: info: float overflow check proved (Trivial)
 floating_point.adb:52:16: info: division check proved (Z3: 1 VC)
 floating_point.adb:52:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:18 should mention X and Y in a precondition]
 floating_point.adb:61:24: info: division check proved (Z3: 1 VC)
-floating_point.adb:61:24: info: float overflow check proved (Interval)
+floating_point.adb:61:24: info: float overflow check proved (Trivial)
 floating_point.adb:62:16: info: division check proved (Z3: 1 VC)
 floating_point.adb:62:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:19 should mention X and Y in a precondition]
 floating_point.adb:69:33: info: division check proved (Trivial: 1 VC; Z3: 1 VC)
 floating_point.adb:69:33: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:22 should mention N in a precondition]
 floating_point.adb:69:41: info: division check proved (Z3: 1 VC)
-floating_point.adb:69:41: info: float overflow check proved (Interval)
-floating_point.adb:69:49: info: float overflow check proved (Interval)
+floating_point.adb:69:41: info: float overflow check proved (Trivial)
+floating_point.adb:69:49: info: float overflow check proved (Trivial)
 floating_point.adb:70:33: info: division check proved (Trivial: 1 VC; Z3: 1 VC)
 floating_point.adb:70:33: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:22 should mention N in a precondition]
 floating_point.adb:70:41: info: division check proved (Z3: 1 VC)
-floating_point.adb:70:41: info: float overflow check proved (Interval)
-floating_point.adb:70:49: info: float overflow check proved (Interval)
+floating_point.adb:70:41: info: float overflow check proved (Trivial)
+floating_point.adb:70:49: info: float overflow check proved (Trivial)
 floating_point.adb:71:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:22 should mention X and Y in a precondition]
 floating_point.adb:72:22: medium: assertion might fail, cannot prove Res < (1.6181**N)/2.2360 + 1.0 [possible explanation: subprogram at floating_point.ads:22 should mention N in a precondition]
 floating_point.adb:72:35: info: division check proved (Trivial: 1 VC; Z3: 1 VC)
 floating_point.adb:72:35: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:22 should mention N in a precondition]
 floating_point.adb:72:39: info: division check proved (Z3: 1 VC)
-floating_point.adb:72:39: info: float overflow check proved (Interval)
-floating_point.adb:72:47: info: float overflow check proved (Interval)
-floating_point.adb:85:24: info: range check proved (Interval)
+floating_point.adb:72:39: info: float overflow check proved (Trivial)
+floating_point.adb:72:47: info: float overflow check proved (Trivial)
+floating_point.adb:85:24: info: range check proved (Trivial)
 floating_point.adb:85:27: info: division check proved (Z3: 1 VC)
-floating_point.adb:85:27: info: float overflow check proved (Interval)
+floating_point.adb:85:27: info: float overflow check proved (Trivial)
 floating_point.adb:87:21: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:89:18: info: division check proved (Z3: 1 VC)
 floating_point.adb:89:18: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:25 should mention Y in a precondition]
 floating_point.adb:97:22: info: assertion proved (Z3: 1 VC)
-floating_point.adb:97:32: info: range check proved (Interval)
+floating_point.adb:97:32: info: range check proved (Trivial)
 floating_point.adb:98:16: info: division check proved (Z3: 1 VC)
 floating_point.adb:98:16: info: float overflow check proved (CVC4: 1 VC)
-floating_point.adb:98:28: info: range check proved (Interval)
+floating_point.adb:98:28: info: range check proved (Trivial)
 floating_point.adb:103:07: info: initialization of "Tmp" proved
 floating_point.adb:108:13: info: assertion proved (Z3: 2 VC)
-floating_point.adb:118:67: info: range check proved (Interval)
-floating_point.adb:118:70: info: float overflow check proved (Interval)
+floating_point.adb:118:67: info: range check proved (Trivial)
+floating_point.adb:118:70: info: float overflow check proved (Trivial)
 floating_point.adb:119:22: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:120:22: medium: assertion might fail, cannot prove State in C .. Float_32 (X + 1) * C [possible explanation: subprogram at floating_point.ads:39 should mention State and X in a precondition]
-floating_point.adb:120:48: info: range check proved (Interval)
-floating_point.adb:120:53: info: float overflow check proved (Interval)
+floating_point.adb:120:48: info: range check proved (Trivial)
+floating_point.adb:120:53: info: float overflow check proved (Trivial)
+floating_point.adb:128:16: info: types in unchecked conversion have the same size (Trivial)
+floating_point.adb:128:68: info: type is suitable for unchecked conversion (Trivial)
+floating_point.adb:129:68: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+floating_point.adb:130:16: info: types in unchecked conversion have the same size (Trivial)
+floating_point.adb:130:66: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+floating_point.adb:131:66: info: type is suitable for unchecked conversion (Trivial)
 floating_point.adb:132:07: info: initialization of "I" proved
 floating_point.adb:133:07: info: initialization of "Y" proved
-floating_point.adb:134:40: info: float overflow check proved (Interval)
+floating_point.adb:134:40: info: float overflow check proved (Trivial)
 floating_point.adb:139:25: medium: overflow check might fail
 floating_point.adb:139:30: info: division check proved (Z3: 1 VC)
 floating_point.adb:141:14: medium: float overflow check might fail
 floating_point.adb:141:28: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:141:34: medium: float overflow check might fail
 floating_point.adb:141:39: medium: float overflow check might fail
-floating_point.adb:144:22: medium: assertion might fail, cannot prove (Y * Y) * X in 1.0 - 0.005 .. 1.0 + 5.0E-3 [possible explanation: subprogram at floating_point.ads:48 should mention X in a precondition]
+floating_point.adb:144:22: medium: assertion might fail [possible explanation: subprogram at floating_point.ads:48 should mention X in a precondition]
 floating_point.adb:144:25: medium: float overflow check might fail
 floating_point.adb:144:30: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:48 should mention X in a precondition]
-floating_point.adb:153:40: info: float overflow check proved (Interval)
-floating_point.adb:154:40: info: float overflow check proved (Interval)
-floating_point.adb:155:40: info: float overflow check proved (Interval)
-floating_point.adb:156:40: info: float overflow check proved (Interval)
+floating_point.adb:153:40: info: float overflow check proved (Trivial)
+floating_point.adb:154:40: info: float overflow check proved (Trivial)
+floating_point.adb:155:40: info: float overflow check proved (Trivial)
+floating_point.adb:156:40: info: float overflow check proved (Trivial)
 floating_point.adb:158:46: medium: float overflow check might fail
 floating_point.adb:158:57: medium: float overflow check might fail
 floating_point.adb:159:46: medium: float overflow check might fail
 floating_point.adb:161:70: info: precondition proved (Z3: 1 VC)
-floating_point.adb:162:15: info: float overflow check proved (Interval)
+floating_point.adb:162:15: info: float overflow check proved (Trivial)
 floating_point.adb:162:22: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:52 should mention A_X and B_X in a precondition]
 floating_point.adb:162:27: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:52 should mention A_X and A_Y and B_X and B_Y in a precondition]
-floating_point.adb:162:34: info: float overflow check proved (Interval)
+floating_point.adb:162:34: info: float overflow check proved (Trivial)
 floating_point.adb:162:41: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:52 should mention A_Y and B_Y in a precondition]
 floating_point.adb:164:70: info: precondition proved (Z3: 1 VC)
-floating_point.adb:165:15: info: float overflow check proved (Interval)
+floating_point.adb:165:15: info: float overflow check proved (Trivial)
 floating_point.adb:165:22: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:52 should mention B_X and C_X in a precondition]
 floating_point.adb:165:27: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:52 should mention B_X and B_Y and C_X and C_Y in a precondition]
-floating_point.adb:165:34: info: float overflow check proved (Interval)
+floating_point.adb:165:34: info: float overflow check proved (Trivial)
 floating_point.adb:165:41: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:52 should mention B_Y and C_Y in a precondition]
 floating_point.adb:169:24: medium: divide by zero might fail
 floating_point.adb:169:24: medium: float overflow check might fail
@@ -155,12 +161,12 @@ floating_point.adb:339:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:349:04: warning: analyzing unreferenced procedure "Polynomial"
 floating_point.adb:349:14: warning: subprogram "Polynomial" has no effect
 floating_point.adb:353:22: info: assertion proved (CVC4: 2 VC)
-floating_point.adb:353:27: info: float overflow check proved (Z3: 2 VC)
-floating_point.adb:353:34: info: float overflow check proved (CVC4: 1 VC; Z3: 1 VC)
-floating_point.adb:353:38: info: float overflow check proved (Z3: 2 VC)
-floating_point.adb:353:45: info: float overflow check proved (Z3: 2 VC)
-floating_point.adb:353:52: info: float overflow check proved (CVC4: 1 VC; Z3: 1 VC)
-floating_point.adb:353:56: info: float overflow check proved (Z3: 2 VC)
+floating_point.adb:353:27: info: float overflow check proved (Z3: 1 VC)
+floating_point.adb:353:34: info: float overflow check proved (CVC4: 1 VC)
+floating_point.adb:353:38: info: float overflow check proved (Z3: 1 VC)
+floating_point.adb:353:45: info: float overflow check proved (Z3: 1 VC)
+floating_point.adb:353:52: info: float overflow check proved (CVC4: 1 VC)
+floating_point.adb:353:56: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:359:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:109 should mention X and Y in a precondition]
 floating_point.adb:360:22: info: assertion proved (CVC4: 1 VC)
 floating_point.adb:366:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:110 should mention X and Y in a precondition]
@@ -177,7 +183,7 @@ floating_point.adb:392:16: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:392:21: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:393:22: medium: assertion might fail, cannot prove Res <= X [possible explanation: subprogram at floating_point.ads:117 should mention X in a precondition]
 floating_point.adb:394:22: medium: assertion might fail, cannot prove Res >= Y [possible explanation: subprogram at floating_point.ads:117 should mention Y in a precondition]
-floating_point.adb:400:26: info: float overflow check proved (Interval)
+floating_point.adb:400:26: info: float overflow check proved (Trivial)
 floating_point.adb:401:22: info: assertion proved (Z3: 2 VC)
 floating_point.ads:8:39: info: initialization of "Res" proved
 floating_point.ads:11:40: info: initialization of "Res" proved

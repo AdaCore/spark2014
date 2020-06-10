@@ -25,14 +25,13 @@
 
 package SPARK_Util.Hardcoded is
 
-   type Hardcoded_Enum is (Big_Integers);
+   type Hardcoded_Enum is (Big_Integers, Big_Reals);
    --  Enum type of the hardcoded units
 
    package Big_Integers_Names is
       Big_Integer              : constant String := "big_integer";
       Is_Valid                 : constant String := "is_valid";
       To_Big_Integer           : constant String := "to_big_integer";
-      In_Range                 : constant String := "in_range";
       To_Integer               : constant String := "to_integer";
       Min                      : constant String := "min";
       Max                      : constant String := "max";
@@ -42,6 +41,26 @@ package SPARK_Util.Hardcoded is
    end Big_Integers_Names;
    --  Names of entities that will be considered as hardcoded in the
    --  Big_Integers unit.
+   --  Currently, functions to read or write a big integer from or to a string
+   --  are left uninterpreted. The In_Range expression function is
+   --  translated using the normal mechanism.
+
+   package Big_Reals_Names is
+      Big_Real              : constant String := "big_real";
+      Is_Valid              : constant String := "is_valid";
+      Min                   : constant String := "min";
+      Max                   : constant String := "max";
+      Generic_To_Big_Real   : constant String := "to_big_real";
+   end Big_Reals_Names;
+   --  Names of entities that will be considered as hardcoded in the
+   --  Big_Reals unit.
+   --  Currently, functions to read or write a big real from or to a string,
+   --  as well as the numerator and denominator functions are left
+   --  uninterpreted. Expression functions To_Real and To_Big_Real as well as
+   --  In_Range are translated using the normal mechanism.
+   --  Conversions to a fixed or floating point type from a big real are also
+   --  left uninterpreted. However, because they have a precondition featuring
+   --  a raise expression, they are not currently supported in SPARK.
 
    function Is_From_Hardcoded_Unit
      (E    : Entity_Id;

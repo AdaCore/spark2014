@@ -5,7 +5,9 @@ foo.adb:18:22: info: division check proved (CVC4: 1 VC)
 foo.adb:23:23: info: initialization of "B" proved
 foo.adb:24:09: info: flow dependencies proved
 foo.adb:27:15: info: range check proved (CVC4: 2 VC)
+foo.adb:29:13: info: range check proved (CVC4: 1 VC)
 foo.adb:33:23: info: initialization of "B" proved
 foo.adb:34:09: info: flow dependencies proved
 foo.adb:37:15: info: range check proved (CVC4: 2 VC)
+foo.adb:39:13: info: range check proved (CVC4: 1 VC)
 foo.adb:42:23: info: initialization of "A" proved

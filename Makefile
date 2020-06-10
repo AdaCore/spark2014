@@ -82,8 +82,7 @@ setup:
 
 why3:
 	$(MAKE) -C why3
-	mv ./why3/bin/why3.opt ./install/libexec/spark/bin/why3.opt
-	./install/libexec/spark/bin/why3.opt --list-transforms | python scripts/why3menus.py share/spark/config/generated_menus.json
+	why3/bin/gnatwhy3.opt --list-transforms | python scripts/why3menus.py share/spark/config/generated_menus.json
 
 install-all:
 	$(MAKE) install
@@ -131,6 +130,11 @@ gnat2why:
 	# (gnat2why-nightly)
 	python scripts/why3keywords.py why3/src/parser/lexer.mll src/why/why-keywords.adb
 	$(MAKE) -C gnat2why
+	# (The timestamp of) src/why/xgen/gnat_ast.ml is updated every time `make` is called in
+	# `gnat2why`, causing a recompilation of why3 every time because Why3's makefile is
+	# based on timestamps not file content. So we check if anything changed before copying.
+	SOURCE=src/why/xgen/gnat_ast.ml; TARGET=why3/src/gnat/gnat_ast.ml; \
+	cmp "$$SOURCE" "$$TARGET" || $(CP) $$SOURCE $$TARGET
 
 coverage:
 	$(MAKE) -C gnat2why AUTOMATED=1 coverage

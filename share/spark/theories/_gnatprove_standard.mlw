@@ -194,6 +194,57 @@ module Int_Division
 
 end
 
+module Real
+  use export "_gnatprove_standard_th".Real
+
+  val bool_eq (x y : real) : bool
+  ensures { result = bool_eq x y }
+  val bool_ne (x y : real) : bool
+  ensures { result = bool_ne x y }
+  val bool_lt (x y : real) : bool
+  ensures { result = bool_lt x y }
+  val bool_le (x y : real) : bool
+  ensures { result = bool_le x y }
+  val bool_gt (x y : real) : bool
+  ensures { result = bool_gt x y }
+  val bool_ge (x y : real) : bool
+  ensures { result = bool_ge x y }
+end
+
+module Real_Power
+  use export real.PowerInt
+  val power (x : real) (n : int) : real
+  ensures { result = power x n }
+end
+
+module Real_Minmax
+  use real.RealInfix
+  use export real.MinMax
+
+  let min (x y : real) : real
+    ensures { result = min x y }
+  = if x <=. y then x else y
+
+  let max (x y : real) : real
+    ensures { result = max x y }
+   = if x <=. y then y else x
+
+end
+
+module Real_FromInt
+  use export real.FromInt
+
+  val from_int (x : int) : real
+    ensures { result = from_int x }
+
+end
+
+module Real_Abs
+  use export real.Abs
+  val abs (x : real) : real
+  ensures { result = abs x }
+end
+
 module Floating_power
   (* Ada's exponentiation operator "**" axiomatization:
 
@@ -366,6 +417,10 @@ module Float32RNE
 
   val constant _zeroF : t
     ensures { result = zeroF }
+
+  function to_real (x : t) : real = t'real x
+  val to_real (x:t) : real
+    ensures { result = t'real x }
 end
 
 module Float64RNE
@@ -419,6 +474,10 @@ module Float64RNE
 
   val constant _zeroF : t
     ensures { result = zeroF }
+
+  function to_real (x : t) : real = t'real x
+  val to_real (x:t) : real
+    ensures { result = t'real x }
 end
 
 module Float32_power

@@ -33,7 +33,6 @@ with Nlists;                  use Nlists;
 with Opt;                     use type Opt.Warning_Mode_Type;
 with Sinput;                  use Sinput;
 with Snames;                  use Snames;
-with SPARK_Util.Types;        use SPARK_Util.Types;
 with Uintp;                   use Uintp;
 with VC_Kinds;                use VC_Kinds;
 with Why;                     use Why;
@@ -87,10 +86,6 @@ package body Gnat2Why.Expr.Loops is
    --     after the last select loop (in)variant, or all the statements of the
    --     loop if there is no loop (in)variant in the loop.
 
-   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id;
-   --  Return the Defining_Identifier of the loop that belongs to an exit
-   --  statement.
-
    procedure Transform_Loop_Variant
      (Stmt                  : Node_Id;
       Check_Prog            : out W_Prog_Id;
@@ -109,9 +104,9 @@ package body Gnat2Why.Expr.Loops is
    --  to their saved values, returned in Tmp_Vars.
 
    function Transform_Loop_Body_Statements
-     (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id;
+     (Instrs : Node_Lists.List) return W_Prog_Id;
    --  Returns Why nodes for the transformation of the list of statements and
-   --  declaration Stmts_And_Decls from a loop body.
+   --  declaration Instrs from a loop body.
 
    function Unroll_Loop
      (Loop_Id         : Entity_Id;
@@ -307,32 +302,6 @@ package body Gnat2Why.Expr.Loops is
       return Loop_Invariants;
    end Get_Loop_Invariant;
 
-   -----------------------------------
-   -- Loop_Entity_Of_Exit_Statement --
-   -----------------------------------
-
-   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id is
-      function Is_Loop_Statement (N : Node_Id) return Boolean is
-        (Nkind (N) = N_Loop_Statement);
-      --  Returns True if N is a loop statement
-
-      function Innermost_Loop_Stmt is new
-        First_Parent_With_Property (Is_Loop_Statement);
-   begin
-      --  If the name is directly in the given node, return that name
-
-      if Present (Name (N)) then
-         return Entity (Name (N));
-
-      --  Otherwise the exit statement belongs to the innermost loop, so
-      --  simply go upwards (follow parent nodes) until we encounter the
-      --  loop.
-
-      else
-         return Entity (Identifier (Innermost_Loop_Stmt (N)));
-      end if;
-   end Loop_Entity_Of_Exit_Statement;
-
    ------------------------------
    -- Transform_Exit_Statement --
    ------------------------------
@@ -396,20 +365,28 @@ package body Gnat2Why.Expr.Loops is
    ------------------------------------
 
    function Transform_Loop_Body_Statements
-     (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id
+     (Instrs : Node_Lists.List) return W_Prog_Id
    is
-      Body_Prog : W_Statement_Sequence_Id :=
-        Void_Sequence;
+      Body_Prog : W_Statement_Sequence_Id := Void_Sequence;
    begin
-      for Stmt_Or_Decl of Stmts_And_Decls loop
+      for Instr of Instrs loop
 
          --  Loop variants should not occur here anymore
 
-         pragma Assert (not Is_Pragma (Stmt_Or_Decl, Pragma_Loop_Variant));
+         pragma Assert (not Is_Pragma (Instr, Pragma_Loop_Variant));
 
-         Transform_Statement_Or_Declaration_In_List
-           (Stmt_Or_Decl => Stmt_Or_Decl,
-            Seq          => Body_Prog);
+         --  Block statements were inserted as markers for the end of the
+         --  corresponding scopes. Check the absence of memory leaks.
+
+         if Nkind (Instr) = N_Block_Statement then
+            Sequence_Append
+              (Body_Prog,
+               Check_No_Memory_Leaks_At_End_Of_Scope (Declarations (Instr)));
+         else
+            Transform_Statement_Or_Declaration_In_List
+              (Stmt_Or_Decl => Instr,
+               Seq          => Body_Prog);
+         end if;
       end loop;
 
       return +Body_Prog;

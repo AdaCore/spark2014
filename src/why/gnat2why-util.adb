@@ -35,8 +35,8 @@ with Gnat2Why.External_Axioms;   use Gnat2Why.External_Axioms;
 with Lib;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
-with SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
+with SPARK_Definition.Annotate;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with String_Utils;               use String_Utils;
@@ -966,6 +966,11 @@ package body Gnat2Why.Util is
       then
          return False;
 
+      --  Entities of tasks are modeled as constants
+
+      elsif Ekind (E) = E_Task_Type then
+         return False;
+
       --  A component or discriminant is not separately considered as mutable,
       --  only the enclosing object is. This ensures that components used in
       --  the named notation of aggregates are not considered as references
@@ -1102,13 +1107,6 @@ package body Gnat2Why.Util is
      (Present (DIC_Procedure (Ty))
        and then Present (Get_Initial_DIC_Procedure (Ty))
        and then not Check_DIC_At_Declaration (Ty));
-
-   -----------------------------
-   -- Needs_Init_Wrapper_Type --
-   -----------------------------
-
-   function Needs_Init_Wrapper_Type (E : Entity_Id) return Boolean is
-     (SPARK_Annotate.Scalar_Has_Init_By_Proof (E));
 
    --------------------------------
    -- Nth_Index_Rep_Type_No_Bool --
@@ -1349,7 +1347,7 @@ package body Gnat2Why.Util is
 
         --  No axioms are generated for inlined functions
 
-        and then not Present (SPARK_Annotate.Retrieve_Inline_Annotation (E))
+        and then No (SPARK_Definition.Annotate.Retrieve_Inline_Annotation (E))
 
         --  Functions from predefined units should be safe
 

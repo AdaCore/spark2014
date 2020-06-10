@@ -14,6 +14,7 @@ a-cfdlli.ads:1416:14: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1422:23: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:14
 a-cfdlli.ads:1471:14: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:14
 a-cfdlli.ads:1478:23: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:14
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:69, in instantiation at lists.ads:14
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at lists.ads:14
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at lists.ads:14
 a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at lists.ads:14

@@ -23,15 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Conversions; use Ada.Characters.Conversions;
-with Ada.Containers;             use Ada.Containers;
 with GNAT.Case_Util;             use GNAT.Case_Util;
 with Utils;                      use Utils;
 
 package body Xtree_Tables is
 
-   function List_Type_Name (Kind : Wide_String) return Wide_String;
-   function Param_Name (Field_Name : Wide_String) return Wide_String;
+   function List_Type_Name (Kind : String) return String;
+   function Param_Name (Field_Name : String) return String;
    --  Helper functions for the corresponding homonyms
 
    -------------------
@@ -42,7 +40,7 @@ package body Xtree_Tables is
      (Kind : Why_Node_Kind;
       IK   : Id_Kind;
       FI   : Field_Info)
-     return Wide_String is
+     return String is
    begin
       if FI.Field_Kind = Field_Variant then
          if IK = Derived then
@@ -62,9 +60,9 @@ package body Xtree_Tables is
    -----------------
 
    function Builder_Name
-     (Prefix : Wide_String;
+     (Prefix : String;
       IK     : Id_Kind := Regular)
-     return Wide_String is
+     return String is
    begin
       if IK = Unchecked then
          return "New_Unchecked_" & Strip_Prefix (Prefix);
@@ -80,7 +78,7 @@ package body Xtree_Tables is
    function Builder_Name
      (Kind : Why_Node_Kind;
       IK   : Id_Kind := Regular)
-     return Wide_String is
+     return String is
    begin
       return Builder_Name (Mixed_Case_Name (Kind), IK);
    end Builder_Name;
@@ -93,7 +91,7 @@ package body Xtree_Tables is
      (FI      : Field_Info;
       IK      : Id_Kind;
       Context : Builder_Context)
-     return Wide_String
+     return String
    is
    begin
       if Context = In_Builder_Spec
@@ -114,7 +112,7 @@ package body Xtree_Tables is
       FI      : Field_Info;
       IK      : Id_Kind := Regular;
       Context : Builder_Context := In_Builder_Body)
-     return Wide_String is
+     return String is
    begin
       if Is_List (FI)
         and then (IK = Unchecked or else Maybe_Null (FI))
@@ -149,7 +147,7 @@ package body Xtree_Tables is
    function Element_Type_Name
      (FI   : Field_Info;
       Kind : Id_Kind)
-     return Wide_String is
+     return String is
    begin
       case Kind is
          when Opaque =>
@@ -176,7 +174,7 @@ package body Xtree_Tables is
    -- Field_Name --
    ----------------
 
-   function Field_Name (FI : Field_Info) return Wide_String is
+   function Field_Name (FI : Field_Info) return String is
    begin
       return FI.Field_Name.all;
    end Field_Name;
@@ -191,11 +189,9 @@ package body Xtree_Tables is
    end Get_Domain;
 
    function Get_Domain (Kind : Why_Node_Kind) return Class_Info is
-      use Class_Lists;
-
       DK : constant EW_ODomain := Get_Domain (Kind);
-      DN : constant Wide_String := Mixed_Case_Name (DK);
-      CN : constant Wide_String :=
+      DN : constant String := Mixed_Case_Name (DK);
+      CN : constant String :=
              "W" & DN (DN'First + 2 .. DN'Last);
    begin
       for CI of Classes loop
@@ -227,9 +223,8 @@ package body Xtree_Tables is
    ----------------------
 
    function Has_Variant_Part (Kind : Why_Node_Kind) return Boolean is
-      use Node_Lists;
    begin
-      return Why_Tree_Info (Kind).Fields.Length > 0;
+      return not Why_Tree_Info (Kind).Fields.Is_Empty;
    end Has_Variant_Part;
 
    -------------
@@ -265,11 +260,11 @@ package body Xtree_Tables is
 
    function List_Op_Name
      (List_Op : List_Op_Kind)
-     return Wide_String is
+     return String is
       Literal_Name : String := List_Op_Kind'Image (List_Op);
    begin
       To_Mixed (Literal_Name);
-      return Strip_Prefix (To_Wide_String (Literal_Name));
+      return Strip_Prefix (Literal_Name);
    end List_Op_Name;
 
    ------------------
@@ -280,7 +275,7 @@ package body Xtree_Tables is
      (Kind    : Why_Node_Kind;
       FI      : Field_Info;
       List_Op : List_Op_Kind)
-     return Wide_String is
+     return String is
    begin
       return Strip_Prefix (Mixed_Case_Name (Kind))
         & "_" & List_Op_Name (List_Op)
@@ -292,12 +287,12 @@ package body Xtree_Tables is
    -- List_Type_Name --
    --------------------
 
-   function List_Type_Name (Kind : Why_Node_Kind) return Wide_String is
+   function List_Type_Name (Kind : Why_Node_Kind) return String is
    begin
       return List_Type_Name (Mixed_Case_Name (Kind));
    end List_Type_Name;
 
-   function List_Type_Name (Kind : Wide_String) return Wide_String is
+   function List_Type_Name (Kind : String) return String is
    begin
       return Kind & "_List";
    end List_Type_Name;
@@ -339,7 +334,7 @@ package body Xtree_Tables is
    function Mutator_Name
      (Kind : Why_Node_Kind;
       FI   : Field_Info)
-     return Wide_String is
+     return String is
    begin
       if FI.Field_Kind = Field_Variant then
          return Strip_Prefix (Mixed_Case_Name (Kind))
@@ -357,20 +352,20 @@ package body Xtree_Tables is
    procedure New_Field
      (NI         : in out Why_Node_Info;
       Field_Kind : Field_Kind_Type;
-      Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String)
+      Field_Name : String;
+      Field_Type : String;
+      Default    : String)
    is
       FI           : Field_Info :=
-                       (Field_Name     => new Wide_String'(Field_Name),
-                        Field_Type     => new Wide_String'(Field_Type),
-                        Default        => new Wide_String'(Default),
+                       (Field_Name     => new String'(Field_Name),
+                        Field_Type     => new String'(Field_Type),
+                        Default        => new String'(Default),
                         Id_Type        => null,
                         Field_Kind     => Field_Kind,
                         Is_Why_Id      => False,
                         Is_List        => False,
                         Maybe_Null     => False);
-      Multiplicity : constant Wide_String := Suffix (FI.Field_Type.all);
+      Multiplicity : constant String := Suffix (FI.Field_Type.all);
    begin
       if Multiplicity = "Id"
         or else Multiplicity = "OId"
@@ -378,9 +373,9 @@ package body Xtree_Tables is
         or else Multiplicity = "OList"
       then
          declare
-            Node_Kind : constant Wide_String :=
+            Node_Kind : constant String :=
                           Strip_Suffix (FI.Field_Type.all);
-            Checking  : constant Wide_String := Suffix (Node_Kind);
+            Checking  : constant String := Suffix (Node_Kind);
          begin
             if Checking = "Opaque" then
                FI.Is_Why_Id := True;
@@ -393,14 +388,14 @@ package body Xtree_Tables is
                   FI.Maybe_Null := True;
                end if;
 
-               FI.Id_Type := new Wide_String'(Strip_Suffix (Node_Kind)
+               FI.Id_Type := new String'(Strip_Suffix (Node_Kind)
                                               & "_" & Multiplicity);
             else
-               FI.Id_Type := new Wide_String'(FI.Field_Type.all);
+               FI.Id_Type := new String'(FI.Field_Type.all);
             end if;
          end;
       else
-         FI.Id_Type := new Wide_String'(FI.Field_Type.all);
+         FI.Id_Type := new String'(FI.Field_Type.all);
       end if;
 
       NI.Fields.Append (FI);
@@ -413,10 +408,10 @@ package body Xtree_Tables is
    -- Node_Kind --
    ---------------
 
-   function Node_Kind (FI : Field_Info) return Wide_String is
-      Type_With_Visibility_Info : constant Wide_String :=
+   function Node_Kind (FI : Field_Info) return String is
+      Type_With_Visibility_Info : constant String :=
                                     Strip_Suffix (FI.Field_Type.all);
-      Visibility_Info           : constant Wide_String :=
+      Visibility_Info           : constant String :=
                                     Suffix (Type_With_Visibility_Info);
    begin
       if Visibility_Info = "Opaque"
@@ -433,12 +428,12 @@ package body Xtree_Tables is
    -- Param_Name --
    ----------------
 
-   function Param_Name (Field_Name : Wide_String) return Wide_String is
+   function Param_Name (Field_Name : String) return String is
    begin
       return Strip_Prefix (Field_Name);
    end Param_Name;
 
-   function Param_Name (FI : Field_Info) return Wide_String is
+   function Param_Name (FI : Field_Info) return String is
    begin
       if FI.Field_Kind = Field_Variant then
          return Param_Name (FI.Field_Name.all);
@@ -452,8 +447,6 @@ package body Xtree_Tables is
    ---------------------------
 
    function Max_Field_Name_Length (Kind : Why_Node_Kind) return Natural is
-      use Node_Lists;
-
       Variant_Part  : constant Why_Node_Info := Why_Tree_Info (Kind);
    begin
       return Natural'Max
@@ -470,23 +463,21 @@ package body Xtree_Tables is
       Common_Field_Included : Boolean := True)
      return Natural
    is
-      use Node_Lists;
-
       Variant_Part : constant Why_Node_Info := Why_Tree_Info (Kind);
       CF_Length    : constant Natural :=
                        (if Common_Field_Included then
                            Common_Fields.Max_Field_Name_Length
                        else 0);
    begin
-      if Length (Variant_Part.Fields) = 0 then
+      if Variant_Part.Fields.Is_Empty then
          return CF_Length;
       else
          declare
             First_FI      : constant Field_Info :=
                               Variant_Part.Fields.First_Element;
-            First_Field   : constant Wide_String :=
+            First_Field   : constant String :=
                               First_FI.Field_Name.all;
-            First_Param   : constant Wide_String :=
+            First_Param   : constant String :=
                               Param_Name (First_Field);
             Prefix_Len    : constant Natural :=
                               First_Field'Length - First_Param'Length;
@@ -503,9 +494,9 @@ package body Xtree_Tables is
    ----------------------
 
    procedure New_Common_Field
-     (Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String := "") is
+     (Field_Name : String;
+      Field_Type : String;
+      Default    : String := "") is
    begin
       New_Field (Common_Fields, Field_Common, Field_Name, Field_Type, Default);
    end New_Common_Field;
@@ -515,9 +506,9 @@ package body Xtree_Tables is
    ----------------------
 
    procedure New_Domain_Field
-     (Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String := "") is
+     (Field_Name : String;
+      Field_Type : String;
+      Default    : String := "") is
    begin
       New_Field (Common_Fields, Field_Domain, Field_Name, Field_Type, Default);
    end New_Domain_Field;
@@ -528,12 +519,11 @@ package body Xtree_Tables is
 
    procedure New_Field
      (Kind       : Why_Node_Kind;
-      Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String := "")
+      Field_Name : String;
+      Field_Type : String;
+      Default    : String := "")
    is
-      Prefix : Wide_String :=
-                 Integer'Wide_Image (Why_Node_Kind'Pos (Kind)) & "_";
+      Prefix : String := Integer'Image (Why_Node_Kind'Pos (Kind)) & "_";
    begin
       Prefix (1) := 'K';
       New_Field (Why_Tree_Info (Kind),
@@ -545,8 +535,8 @@ package body Xtree_Tables is
 
    procedure New_Field
      (Kind         : Why_Node_Kind;
-      Field_Name   : Wide_String;
-      Field_Kind   : Wide_String;
+      Field_Name   : String;
+      Field_Kind   : String;
       Multiplicity : Id_Multiplicity) is
    begin
       New_Field (Kind,
@@ -563,9 +553,9 @@ package body Xtree_Tables is
    -----------------------
 
    procedure New_Special_Field
-     (Field_Name : Wide_String;
-      Field_Type : Wide_String;
-      Default    : Wide_String := "") is
+     (Field_Name : String;
+      Field_Type : String;
+      Default    : String := "") is
    begin
       New_Field (Common_Fields, Field_Special,
                  Field_Name, Field_Type, Default);
@@ -593,7 +583,7 @@ package body Xtree_Tables is
    -- Traversal_Post_Op --
    -----------------------
 
-   function Traversal_Post_Op (Kind : Why_Node_Kind) return Wide_String is
+   function Traversal_Post_Op (Kind : Why_Node_Kind) return String is
    begin
       return Strip_Prefix (Mixed_Case_Name (Kind)) & "_Post_Op";
    end Traversal_Post_Op;
@@ -602,7 +592,7 @@ package body Xtree_Tables is
    -- Traversal_Pre_Op --
    ----------------------
 
-   function Traversal_Pre_Op (Kind : Why_Node_Kind) return Wide_String is
+   function Traversal_Pre_Op (Kind : Why_Node_Kind) return String is
    begin
       return Strip_Prefix (Mixed_Case_Name (Kind)) & "_Pre_Op";
    end Traversal_Pre_Op;
@@ -611,7 +601,7 @@ package body Xtree_Tables is
    -- Type_Name --
    ---------------
 
-   function Type_Name (FI   : Field_Info; Kind : Id_Kind) return Wide_String is
+   function Type_Name (FI   : Field_Info; Kind : Id_Kind) return String is
    begin
       if Is_Why_Id (FI) then
          return Id_Subtype (Strip_Suffix (FI.Id_Type.all),

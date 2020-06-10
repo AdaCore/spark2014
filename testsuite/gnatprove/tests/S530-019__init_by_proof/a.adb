@@ -4,7 +4,7 @@ package body A
   with SPARK_Mode,
     Refined_State => (Global_AS => Global_A)
 is
-   function Global_A_Initalized return Boolean is (Global_A'Valid_Scalars);
+   function Global_A_Initalized return Boolean is (Global_A'Initialized);
 
    procedure initGlobalsA (Status : out Natural) is
    begin
@@ -21,15 +21,15 @@ is
          -- succeed.
 
          Global_A := 1;
-         UseAA (Global_A);
+         UseAA (Natural (Global_A));
       end loop Main_Body;
    end initGlobalsA;
 
    procedure UseA (X : in out Natural) is
    begin
       -- X := X + Global_Var;
-      if X < Natural'Last - Global_A then
-         X := X + Global_A;
+      if X < Natural'Last - Natural (Global_A) then
+         X := X + Natural (Global_A);
       else
          X := 0;
       end if;

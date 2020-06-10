@@ -1,3 +1,15 @@
+cubedos-lib-xdr.adb:13:13: info: types in unchecked conversion have the same size (Trivial)
+cubedos-lib-xdr.adb:14:45: info: type is suitable for unchecked conversion (Trivial)
+cubedos-lib-xdr.adb:14:68: info: type is suitable for unchecked conversion (Trivial)
+cubedos-lib-xdr.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
+cubedos-lib-xdr.adb:16:45: info: type is suitable for unchecked conversion (Trivial)
+cubedos-lib-xdr.adb:16:69: info: type is suitable for unchecked conversion (Trivial)
+cubedos-lib-xdr.adb:18:13: info: types in unchecked conversion have the same size (Trivial)
+cubedos-lib-xdr.adb:19:45: info: type is suitable for unchecked conversion (Trivial)
+cubedos-lib-xdr.adb:19:66: info: type is suitable for unchecked conversion (Trivial)
+cubedos-lib-xdr.adb:20:13: info: types in unchecked conversion have the same size (Trivial)
+cubedos-lib-xdr.adb:21:45: info: type is suitable for unchecked conversion (Trivial)
+cubedos-lib-xdr.adb:21:75: info: type is suitable for unchecked conversion (Trivial)
 cubedos-lib-xdr.adb:31:07: info: precondition proved (CVC4: 5 VC)
 cubedos-lib-xdr.adb:42:07: info: initialization of "Temporary_2" proved
 cubedos-lib-xdr.adb:44:23: info: unrolling loop

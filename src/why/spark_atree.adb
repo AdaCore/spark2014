@@ -25,9 +25,8 @@
 
 with Ada.Text_IO; -- debugging purpose
 with Aspects;
-with Einfo;
 with Nlists;             use Nlists;
-with Sem_Aux;
+with Sem_Ch12;
 with Sem_Disp;
 with SPARK_Util.Types;
 with Stand;              use Stand;
@@ -212,12 +211,15 @@ package body SPARK_Atree is
    function Discrete_Subtype_Definition (N : Node_Id) return Node_Id renames
     Sinfo.Discrete_Subtype_Definition;
 
-   ----------------------------------
-   -- Do_Check_On_Scalar_Converion --
-   ----------------------------------
+   -----------------------------------
+   -- Do_Check_On_Scalar_Conversion --
+   -----------------------------------
 
-   function Do_Check_On_Scalar_Converion (N : Node_Id) return Boolean is
-     (Sinfo.Do_Range_Check (N)
+   function Do_Check_On_Scalar_Conversion (N : Node_Id) return Boolean is
+      use type Einfo.Entity_Kind;
+   begin
+      return
+      Sinfo.Do_Range_Check (N)
       or else
         (Atree.Nkind (Atree.Parent (N)) = N_Type_Conversion
          and then Sinfo.Do_Overflow_Check (Atree.Parent (N)))
@@ -232,18 +234,29 @@ package body SPARK_Atree is
       or else
         (Atree.Nkind (Atree.Parent (N)) = N_Range
          and then Sinfo.Do_Range_Check (Atree.Parent (N)))
-      or else
 
       --  Do_Range_Check flag is not set on allocators. Do the check if the
       --  designated subtype and the provided subtype do not match.
+      --  For uninitialized allocators, N is the allocator node itself.
 
+      or else
+        (Atree.Nkind (N) = N_Allocator
+         and then Einfo.Directly_Designated_Type
+           (if Present (Einfo.Full_View (Etype (N)))
+            then Einfo.Full_View (Etype (N))
+            else Etype (N)) /= Entity (Expression (N)))
+
+      --  On initialized allocators, it is the allocated expression, so the
+      --  allocator is its parent.
+
+      or else
         (Atree.Nkind (Atree.Parent (N)) = N_Allocator
          and then Einfo.Directly_Designated_Type
            (if Present (Einfo.Full_View (Etype (Atree.Parent (N))))
             then Einfo.Full_View (Etype (Atree.Parent (N)))
             else Etype (Atree.Parent (N)))
-         /= (if Nkind (N) = N_Qualified_Expression then Etype (N)
-             else Entity (N))));
+         /= Etype (N));
+   end Do_Check_On_Scalar_Conversion;
 
    -----------------------
    -- Do_Division_Check --
@@ -468,13 +481,9 @@ package body SPARK_Atree is
    -----------------------
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id is
-      E : constant Entity_Id :=
-        (if Nkind (N) in N_Op then Entity (N)
-         else Sem_Aux.Get_Called_Entity (N));
-   begin
-      return (if Einfo.Is_Intrinsic_Subprogram (E) then E
-              else Sem_Aux.Ultimate_Alias (E));
-   end Get_Called_Entity;
+     (if Nkind (N) in N_Op
+      then Entity (N)
+      else Sem_Aux.Get_Called_Entity (N));
 
    --------------------------
    -- Get_Enclosing_Object --
@@ -522,6 +531,13 @@ package body SPARK_Atree is
       Par : Node_Id := Atree.Parent (N);
 
    begin
+      --  For uninitialized allocators, N is not a scalar expression but
+      --  the allocator itself.
+
+      if Nkind (N) = N_Allocator then
+         Par := N;
+      end if;
+
       --  In proof, we use the original node for unchecked conversions
       --  coming from source.
 
@@ -629,39 +645,35 @@ package body SPARK_Atree is
                --  3) an expression of a regular record aggregate, and
                --  needs a range check towards the expected type.
 
-               if Nkind (Atree.Parent (Par)) = N_Aggregate
-                 and then
+               if (Nkind (Atree.Parent (Par)) = N_Aggregate
+                   and then
                    Nkind (Atree.Parent (Atree.Parent (Par))) =
                      N_Attribute_Reference
-                 and then
+                   and then
                    Sem_Util.Is_Attribute_Update
-                     (Atree.Parent (Atree.Parent (Par)))
+                     (Atree.Parent (Atree.Parent (Par))))
+                 or else Nkind (Atree.Parent (Par)) = N_Delta_Aggregate
                then
-
-                  Pref := Prefix (Atree.Parent (Atree.Parent (Par)));
-
-                  --  When present, the Actual_Subtype of the entity should be
-                  --  used instead of the Etype of the prefix.
-
-                  if Einfo.Is_Entity_Name (Pref)
-                    and then Present (Einfo.Actual_Subtype (Entity (Pref)))
-                  then
-                     Prefix_Type := Einfo.Actual_Subtype (Entity (Pref));
+                  if Nkind (Atree.Parent (Par)) = N_Delta_Aggregate then
+                     Pref := Expression (Atree.Parent (Par));
                   else
-                     Prefix_Type := Etype (Pref);
+                     Pref := Prefix (Atree.Parent (Atree.Parent (Par)));
                   end if;
+
+                  Prefix_Type := Etype (Pref);
 
                   if SPARK_Util.Types.Has_Record_Type (Prefix_Type) then
 
                      Check_Type := Etype (Nlists.First (Choices (Par)));
 
-                     --  it's an array type, determine whether the check is for
-                     --  the component or the index
+                  --  it's an array type, determine whether the check is for
+                  --  the component or the index
 
                   elsif Expression (Par) = N then
                      Check_Type :=
                        Einfo.Component_Type
                          (Sem_Util.Unique_Entity (Prefix_Type));
+
                   else
                      Check_Type :=
                        Etype (Einfo.First_Index
@@ -678,32 +690,7 @@ package body SPARK_Atree is
             end;
 
          when N_Range =>
-            if Is_Choice_Of_Unconstrained_Array_Update (Par) then
-               declare
-                  Pref        : Node_Id;
-                  Prefix_Type : Entity_Id;
-
-               begin
-                  pragma Assert
-                    (Nkind (Atree.Parent (Atree.Parent (Par))) = N_Aggregate);
-                  Pref :=
-                    Prefix (Atree.Parent (Atree.Parent (Atree.Parent (Par))));
-
-                  if Einfo.Is_Entity_Name (Pref)
-                    and then Present (Einfo.Actual_Subtype (Entity (Pref)))
-                  then
-                     Prefix_Type := Einfo.Actual_Subtype (Entity (Pref));
-                  else
-                     Prefix_Type := Etype (Pref);
-                  end if;
-
-                  Check_Type :=
-                    Etype (Einfo.First_Index
-                           (Sem_Util.Unique_Entity (Prefix_Type)));
-               end;
-            else
-               Check_Type := Etype (Par);
-            end if;
+            Check_Type := Etype (Par);
 
          when N_Aggregate =>
 
@@ -871,6 +858,24 @@ package body SPARK_Atree is
    function Get_Return_Object (N : Node_Id) return Entity_Id renames
      Sem_Util.Get_Return_Object;
 
+   -----------------------------------
+   -- Get_Unchecked_Conversion_Args --
+   -----------------------------------
+
+   procedure Get_Unchecked_Conversion_Args (E              : Entity_Id;
+                                            Source, Target : out Node_Id)
+   is
+      Wrapper_Pkg : constant Node_Id :=
+        Sinfo.Defining_Unit_Name (Atree.Parent (Sem_Aux.Subprogram_Spec (E)));
+      pragma Assert (Einfo.Is_Wrapper_Package (Wrapper_Pkg));
+      First_Assoc : constant Node_Id :=
+        First (Sinfo.Generic_Associations (Sem_Ch12.Get_Unit_Instantiation_Node
+               (Wrapper_Pkg)));
+   begin
+      Source := Sinfo.Explicit_Generic_Actual_Parameter (First_Assoc);
+      Target := Sinfo.Explicit_Generic_Actual_Parameter (Next (First_Assoc));
+   end Get_Unchecked_Conversion_Args;
+
    --------------------------------
    -- Handled_Statement_Sequence --
    --------------------------------
@@ -910,7 +915,7 @@ package body SPARK_Atree is
    function Is_Choice_Of_Unconstrained_Array_Update
      (N : Node_Id) return Boolean
    is
-      Possibly_Choice_Node, Attribute_Node : Node_Id;
+      Possibly_Choice_Node, Prefix_Node : Node_Id;
    begin
       if Nkind (Atree.Parent (N)) = N_Component_Association then
          Possibly_Choice_Node := N;
@@ -926,17 +931,30 @@ package body SPARK_Atree is
       if Nkind
         (Atree.Parent (Atree.Parent (Possibly_Choice_Node))) = N_Aggregate
       then
-         Attribute_Node :=
-           Atree.Parent
-             (Atree.Parent (Atree.Parent (Possibly_Choice_Node)));
+         declare
+            Attribute_Node : constant Node_Id :=
+              Atree.Parent
+                (Atree.Parent (Atree.Parent (Possibly_Choice_Node)));
+         begin
+            if Nkind (Attribute_Node) = N_Attribute_Reference
+              and then Sem_Util.Is_Attribute_Update (Attribute_Node)
+            then
+               Prefix_Node := Prefix (Attribute_Node);
+            else
+               return False;
+            end if;
+         end;
+      elsif Nkind (Atree.Parent (Atree.Parent (Possibly_Choice_Node))) =
+        N_Delta_Aggregate
+      then
+         Prefix_Node := Expression
+           (Atree.Parent (Atree.Parent (Possibly_Choice_Node)));
       else
          return False;
       end if;
 
-      if Nkind (Attribute_Node) = N_Attribute_Reference
-        and then Sem_Util.Is_Attribute_Update (Attribute_Node)
-        and then Einfo.Is_Array_Type (Etype (Prefix (Attribute_Node)))
-        and then not Einfo.Is_Constrained (Etype (Prefix (Attribute_Node)))
+      if Einfo.Is_Array_Type (Etype (Prefix_Node))
+        and then not Einfo.Is_Constrained (Etype (Prefix_Node))
         and then Is_List_Member (Possibly_Choice_Node)
         and then Present (Choices (Atree.Parent (Possibly_Choice_Node)))
         and then List_Containing (Possibly_Choice_Node)
@@ -1257,6 +1275,16 @@ package body SPARK_Atree is
 
    function Then_Statements (N : Node_Id) return List_Id renames
      Sinfo.Then_Statements;
+
+   ------------------------
+   -- Traverse_More_Proc --
+   ------------------------
+
+   procedure Traverse_More_Proc (Node : Node_Id) is
+      procedure Traverse_Proc is new Sem_Util.Traverse_More_Proc (Process);
+   begin
+      Traverse_Proc (Node);
+   end Traverse_More_Proc;
 
    ---------------------
    -- Type_Definition --

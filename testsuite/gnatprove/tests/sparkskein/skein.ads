@@ -52,7 +52,8 @@ is
    subtype I64  is U64 range 0 .. 63;
    subtype I128 is U64 range 0 .. 127;
 
-   type Byte_Seq is array (U64 range <>) of Byte with Predicate => Byte_Seq'Last < U64'Last;
+   type Byte_Seq is array (U64 range <>) of Byte;
+   subtype Byte_Seq_Pred is Byte_Seq with Predicate => Byte_Seq_Pred'Last < U64'Last;
    for Byte_Seq'Alignment use 8;
 
    subtype Byte_Seq_4   is Byte_Seq (I4);
@@ -97,7 +98,8 @@ is
    subtype Skein_512_State_Words_Index is U64
      range 0 .. (Skein_512_State_Words_C - 1);
 
-   subtype Skein_512_State_Words is U64_Seq (Skein_512_State_Words_Index);
+   subtype Skein_512_State_Words is U64_Seq (Skein_512_State_Words_Index)
+   with Object_Size => Skein_512_State_Words_C * U64'Object_Size;
 
    subtype Skein_512_Block_Bytes_Count is U64
      range 0 .. Skein_512_Block_Bytes_C;
@@ -107,7 +109,8 @@ is
 
    subtype Skein_512_State_Bytes_Index is U64
      range 0 .. (Skein_512_State_Bytes_C - 1);
-   subtype Skein_512_State_Bytes is Byte_Seq (Skein_512_State_Bytes_Index);
+   subtype Skein_512_State_Bytes is Byte_Seq (Skein_512_State_Bytes_Index)
+   with Object_Size => Skein_512_State_Bytes_C * Byte'Object_Size;
 
    --  2**64 bytes is 2**58 512-bit blocks
    subtype Block_512_Count_T is U64 range 0 .. (2**58 - 1);
@@ -179,7 +182,7 @@ is
                   Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count;
 
    procedure Skein_512_Update (Ctx : in out Skein_512_Context;
-                               Msg : in     Byte_Seq)
+                               Msg : in     Byte_Seq_Pred)
      with Global => null,
           Pre  => Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
                   Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count and
@@ -192,7 +195,7 @@ is
                   Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count;
 
    procedure Skein_512_Final (Ctx  : in     Skein_512_Context;
-                              Hash :    out Byte_Seq)
+                              Hash :    out Byte_Seq_Pred)
      with Global => null,
           Pre => Hash_Bit_Len_Of (Ctx) in Initialized_Hash_Bit_Length and
                  Byte_Count_Of (Ctx) in Skein_512_Block_Bytes_Count and
@@ -201,7 +204,7 @@ is
                  (Hash_Bit_Len_Of (Ctx) + 7) / 8 - 1 <= Hash'Last;
 
    --  Returns a 512-bit hash of Data using 512-bit block size.
-   function Skein_512_Hash (Data : in Byte_Seq) return Skein_512_State_Bytes
+   function Skein_512_Hash (Data : in Byte_Seq_Pred) return Skein_512_State_Bytes
      with Global => null,
           Pre => Data'First = 0 and
                  Add_In_Range (Data'Last, Skein_512_Block_Bytes_C) and
@@ -218,7 +221,7 @@ is
 
    --  Prints Msg followed by Count Bytes from S to Standard_Output
    procedure Show_Msg_8 (Msg   : in String;
-                         S     : in Byte_Seq;
+                         S     : in Byte_Seq_Pred;
                          Count : in U64)
      with Global => null,
           Depends => (null => (Msg, S, Count)),
@@ -235,7 +238,8 @@ private
 
    subtype Modifier_Words_Index is U64
      range 0 .. (Skein_Modifier_Words_C - 1);
-   subtype Modifier_Words is U64_Seq (Modifier_Words_Index);
+   subtype Modifier_Words is U64_Seq (Modifier_Words_Index)
+   with Object_Size => Skein_Modifier_Words_C * U64'Object_Size;
 
    type U6 is mod 2**6;
 
@@ -318,6 +322,7 @@ private
         range 127 - (SDBO * 63) .. 127 - (SDBO * 63) + 0;  --  1 bit
    end record;
    for Tweak_Value'Size use 128;
+   for Tweak_Value'Object_Size use 128;
    for Tweak_Value'Alignment use 8;
 
    Null_Tweak_Value : constant Tweak_Value :=

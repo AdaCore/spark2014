@@ -29,21 +29,21 @@ with Xkind_Tables;  use Xkind_Tables;
 
 package body Xtree_Builders is
 
-   New_Node      : constant Wide_String := "New_Node";
-   New_Node_Id   : constant Wide_String := "New_Id";
+   New_Node      : constant String := "New_Node";
+   New_Node_Id   : constant String := "New_Id";
 
    procedure Print_Builder_Declaration
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
-      Return_Type : Wide_String);
+      Return_Type : String);
    --  Print builder declaration for the given node kind
 
    procedure Print_Builder_Specification
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
-      Return_Type : Wide_String);
+      Return_Type : String);
    --  Ditto, but with a return type that is different from the
    --  default one.
 
@@ -57,7 +57,7 @@ package body Xtree_Builders is
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
-      Return_Type : Wide_String);
+      Return_Type : String);
    --  Ditto, but with a return type that is different from the
    --  default one.
 
@@ -65,7 +65,7 @@ package body Xtree_Builders is
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
-      Return_Type : Wide_String := "");
+      Return_Type : String := "");
    --  Print the handled sequence of statements that implements this builder
 
    procedure Print_Builder_Local_Declarations
@@ -90,9 +90,9 @@ package body Xtree_Builders is
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
-      Return_Type : Wide_String)
+      Return_Type : String)
    is
-      BN : constant Wide_String := Builder_Name (Kind, IK);
+      BN : constant String := Builder_Name (Kind, IK);
    begin
       Print_Box (O, BN);
       NL (O);
@@ -118,7 +118,7 @@ package body Xtree_Builders is
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
-      Return_Type : Wide_String)
+      Return_Type : String)
    is
    begin
       Print_Builder_Specification (O, Kind, IK, Return_Type);
@@ -133,13 +133,13 @@ package body Xtree_Builders is
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
-      Return_Type : Wide_String := "")
+      Return_Type : String := "")
    is
       use Node_Lists;
 
       Variant_Part : constant Why_Node_Info := Why_Tree_Info (Kind);
 
-      function K (S : Wide_String) return Wide_String;
+      function K (S : String) return String;
       --  If IK /= Derived, return S. Otherwise, prefix S by a call to
       --  a conversion.
 
@@ -149,7 +149,7 @@ package body Xtree_Builders is
       -- K --
       -------
 
-      function K (S : Wide_String) return Wide_String is
+      function K (S : String) return String is
       begin
          if IK = Derived then
             return Return_Type & " (" & S & ")";
@@ -164,9 +164,9 @@ package body Xtree_Builders is
 
       procedure Print_Record_Initialization (Position : Cursor) is
          FI : constant Field_Info := Element (Position);
-         FN : constant Wide_String := Field_Name (FI);
+         FN : constant String := Field_Name (FI);
 
-         function K (S : Wide_String) return Wide_String;
+         function K (S : String) return String;
          --  If IK is Derived or FI is a Why Id, prefix S by a call to a
          --  conversion operator ("+").
 
@@ -174,7 +174,7 @@ package body Xtree_Builders is
          -- K --
          -------
 
-         function K (S : Wide_String) return Wide_String is
+         function K (S : String) return String is
          begin
             if IK = Derived and Is_Why_Id (FI) then
                declare
@@ -291,7 +291,7 @@ package body Xtree_Builders is
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
-      Return_Type : Wide_String)
+      Return_Type : String)
    is
       use Node_Lists;
 
@@ -310,7 +310,7 @@ package body Xtree_Builders is
       is
          Name_Len : Natural;
          FI       : constant Field_Info := Element (Position);
-         PN       : constant Wide_String := Param_Name (FI);
+         PN       : constant String := Param_Name (FI);
       begin
          if Field_Kind (FI) = Field_Special then
             return;
@@ -421,7 +421,6 @@ package body Xtree_Builders is
    -------------------------------------
 
    procedure Print_Class_Wide_Builder_Bodies (O : in out Output_Record) is
-      use Node_Lists;
    begin
       for Kind in Valid_Kind'Range loop
          Print_Builder_Body (O, Kind, Derived,

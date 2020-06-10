@@ -41,8 +41,9 @@ with Why.Atree.Accessors;        use Why.Atree.Accessors;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Arrays;             use Why.Gen.Arrays;
-with Why.Images;                 use Why.Images;
+with Why.Gen.Init;               use Why.Gen.Init;
 with Why.Gen.Pointers;           use Why.Gen.Pointers;
+with Why.Images;                 use Why.Images;
 with Why.Inter;                  use Why.Inter;
 
 package body Why.Atree.Modules is
@@ -62,6 +63,11 @@ package body Why.Atree.Modules is
    procedure Init_Int_Gcd_Module;
    procedure Init_Labels;
    procedure Init_Main_Module;
+   procedure Init_Real_Module;
+   procedure Init_Real_Abs_Module;
+   procedure Init_Real_From_Int_Module;
+   procedure Init_Real_Minmax_Module;
+   procedure Init_Real_Power_Module;
 
    procedure Insert_Why_Symbols (E : Entity_Id);
    --  For the type entity E, add all the Why symbols which can be used for
@@ -132,20 +138,28 @@ package body Why.Atree.Modules is
    -- E_Symb --
    ------------
 
-   function E_Symb (E : Entity_Id;
-                    S : Why_Name_Enum) return W_Identifier_Id
+   function E_Symb
+     (E            : Entity_Id;
+      S            : Why_Name_Enum;
+      Relaxed_Init : Boolean := False) return W_Identifier_Id
    is
       use Why_Symb_Maps;
       E2 : constant Entity_Id := (if Is_Type (E) then Retysp (E) else E);
       Key : constant Why_Symb := Why_Symb'(Entity => E2, Symb => S);
       C : constant Why_Symb_Maps.Cursor := Why_Symb_Map.Find (Key);
    begin
-      if Has_Element (C) then
-         return Element (C);
-      else
-         Insert_Why_Symbols (E2);
-         return Why_Symb_Map.Element (Key);
-      end if;
+      return Id : W_Identifier_Id do
+         if Has_Element (C) then
+            Id := Element (C);
+         else
+            Insert_Why_Symbols (E2);
+            Id := Why_Symb_Map.Element (Key);
+         end if;
+
+         if Relaxed_Init then
+            Id := To_Init_Module (Id);
+         end if;
+      end return;
    end E_Symb;
 
    --------------------
@@ -220,7 +234,8 @@ package body Why.Atree.Modules is
               New_Module
                 (Ada_Node => E,
                  File     => No_Symbol,
-                 Name     => Full_Name (E) & "__init");
+                 Name     =>
+                   Full_Name (E) & To_String (WNE_Init_Wrapper_Suffix));
          begin
             Init_Modules.Insert (E, Why_Node_Id (M));
             return M;
@@ -353,6 +368,11 @@ package body Why.Atree.Modules is
       Init_Floating_Module;
       Init_Floating_Conv_Module;
       Init_Boolean_Module;
+      Init_Real_Module;
+      Init_Real_From_Int_Module;
+      Init_Real_Power_Module;
+      Init_Real_Abs_Module;
+      Init_Real_Minmax_Module;
       Init_Labels;
       --  modules of "ada__model" file
 
@@ -554,6 +574,10 @@ package body Why.Atree.Modules is
         New_Identifier (Domain => EW_Term,
                         Symb   => NID ("-"),
                         Typ    => M_Main.Fixed_Type);
+      Real_Unary_Minus :=
+        New_Identifier (Domain => EW_Term,
+                        Symb   => NID ("-."),
+                        Typ    => EW_Real_Type);
 
       Void := New_Identifier (Domain => EW_Term,
                               Symb   => NID ("()"),
@@ -632,6 +656,61 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symb   => NID ("*"),
                         Typ    => M_Main.Fixed_Type,
+                        Infix  => True);
+
+      Real_Infix_Add :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("+."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Subtr :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("-."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Mult :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("*."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Div :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("/."),
+                        Typ    => EW_Real_Type,
+                        Infix  => True);
+      Real_Infix_Le :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("<=."),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Real_Infix_Lt :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("<."),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Real_Infix_Ge :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID (">=."),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Real_Infix_Gt :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID (">."),
+                        Typ    => EW_Bool_Type,
+                        Infix  => True);
+      Real_Infix_Eq :=
+        New_Identifier (Module => RealInfix,
+                        Domain => EW_Term,
+                        Symb   => NID ("=."),
+                        Typ    => EW_Bool_Type,
                         Infix  => True);
 
       --  String image module
@@ -1689,6 +1768,11 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symb   => NID ("range_check_"),
                            Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).To_Real :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symb   => NID ("to_real"),
+                           Typ    => EW_Int_Type);
       end loop;
 
       EW_Float_32_Type := M_Floats (Float32).T;
@@ -1789,6 +1873,23 @@ package body Why.Atree.Modules is
                         Typ    => EW_Int_Type);
    end Init_Int_Minmax_Module;
 
+   ---------------------------
+   -- Init_Int_Power_Module --
+   ---------------------------
+
+   procedure Init_Int_Power_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Int_Power");
+   begin
+      M_Int_Power.Module := M;
+      M_Int_Power.Power :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("power"),
+                        Typ    => EW_Int_Type);
+   end Init_Int_Power_Module;
+
    -------------------------
    -- Init_Integer_Module --
    -------------------------
@@ -1834,23 +1935,6 @@ package body Why.Atree.Modules is
                         Symb   => NID ("length"),
                         Typ    => EW_Int_Type);
    end Init_Integer_Module;
-
-   ---------------------------
-   -- Init_Int_Power_Module --
-   ---------------------------
-
-   procedure Init_Int_Power_Module is
-      M : constant W_Module_Id :=
-        New_Module (File => Gnatprove_Standard_File,
-                    Name => "Int_Power");
-   begin
-      M_Int_Power.Module := M;
-      M_Int_Power.Power :=
-        New_Identifier (Module => M,
-                        Domain => EW_Term,
-                        Symb   => NID ("power"),
-                        Typ    => EW_Int_Type);
-   end Init_Int_Power_Module;
 
    -----------------
    -- Init_Labels --
@@ -1924,6 +2008,122 @@ package body Why.Atree.Modules is
                         Symb   => NID ("no__return"),
                         Typ    => EW_Bool_Type);
    end Init_Main_Module;
+
+   --------------------------
+   -- Init_Real_Abs_Module --
+   --------------------------
+
+   procedure Init_Real_Abs_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Real_Abs");
+   begin
+      M_Real_Abs.Module := M;
+      M_Real_Abs.Abs_Id :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("abs"),
+                        Typ    => EW_Real_Type);
+   end Init_Real_Abs_Module;
+
+   -------------------------------
+   -- Init_Real_From_Int_Module --
+   -------------------------------
+
+   procedure Init_Real_From_Int_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Real_FromInt");
+
+   begin
+      M_Real_From_Int.Module := M;
+      M_Real_From_Int.From_Int :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("from_int"),
+                        Typ    => EW_Real_Type);
+   end Init_Real_From_Int_Module;
+
+   -----------------------------
+   -- Init_Real_Minmax_Module --
+   -----------------------------
+
+   procedure Init_Real_Minmax_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Real_Minmax");
+
+   begin
+      M_Real_Minmax.Module := M;
+      M_Real_Minmax.Max :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("max"),
+                        Typ    => EW_Real_Type);
+      M_Real_Minmax.Min :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("min"),
+                        Typ    => EW_Real_Type);
+   end Init_Real_Minmax_Module;
+
+   ----------------------
+   -- Init_Real_Module --
+   ----------------------
+
+   procedure Init_Real_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File, Name => "Real");
+   begin
+      M_Real.Module := M;
+      M_Real.Bool_Eq :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_eq"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Ne :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_ne"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Le :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_le"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Lt :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_lt"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Ge :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_ge"),
+                        Typ    => EW_Bool_Type);
+      M_Real.Bool_Gt :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("bool_gt"),
+                        Typ    => EW_Bool_Type);
+   end Init_Real_Module;
+
+   ----------------------------
+   -- Init_Real_Power_Module --
+   ----------------------------
+
+   procedure Init_Real_Power_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Real_Power");
+   begin
+      M_Real_Power.Module := M;
+      M_Real_Power.Power :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("power"),
+                        Typ    => EW_Real_Type);
+   end Init_Real_Power_Module;
 
    -------------------------
    -- Insert_Extra_Module --
@@ -2100,26 +2300,49 @@ package body Why.Atree.Modules is
          Ty   : constant W_Type_Id   := EW_Abstract (E);
 
       begin
-         --  Insert symbols for the initialization wrapper if any
+         --  Insert symbols for the initialization wrapper if any. We need
+         --  extra fields to create the wrapper type for scalars, and
+         --  conversion functions to and from the wrapper types for scalars
+         --  and records. For array, conversion goes through the base array
+         --  type, so conversion functions are rather stored with other
+         --  array conversion theories.
 
-         if Needs_Init_Wrapper_Type (E) then
+         if Might_Contain_Relaxed_Init (E)
+           and then (Is_Scalar_Type (E) or else Is_Record_Type (E))
+         then
             declare
                WM  : constant W_Module_Id := E_Init_Module (E);
             begin
+               if Has_Scalar_Type (E) then
+                  Insert_Symbol
+                    (E, WNE_Init_Value,
+                     New_Identifier
+                       (Symb   => NID ("rec__value"),
+                        Module => WM,
+                        Domain => EW_Term,
+                        Typ    => Ty));
+                  Insert_Symbol
+                    (E, WNE_Attr_Init,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Attr_Init)),
+                        Module => WM,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+               end if;
                Insert_Symbol
-                 (E, WNE_Init_Value,
+                 (E, WNE_To_Wrapper,
                   New_Identifier
-                    (Symb   => NID ("rec__value"),
+                    (Symb   => NID ("to_wrapper"),
                      Module => WM,
                      Domain => EW_Term,
                      Typ    => Ty));
                Insert_Symbol
-                 (E, WNE_Attr_Init,
+                 (E, WNE_Of_Wrapper,
                   New_Identifier
-                    (Symb   => NID ("attr__init"),
+                    (Symb   => NID ("of_wrapper"),
                      Module => WM,
                      Domain => EW_Term,
-                     Typ    => EW_Bool_Type));
+                     Typ    => EW_Init_Wrapper (Ty)));
             end;
          end if;
 
@@ -2202,6 +2425,31 @@ package body Why.Atree.Modules is
               (E, WNE_Default_Init,
                New_Identifier
                  (Symb   => NID ("default_initial_assumption"),
+                  Module => AM,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+         end if;
+
+         if Is_Deep (E)
+           and then not Has_Access_Type (E)
+         then
+            Insert_Symbol
+              (E, WNE_Is_Moved,
+               New_Identifier
+                 (Symb   => NID (To_String (WNE_Is_Moved)),
+                  Module => AM,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+            Insert_Symbol
+              (E, WNE_Move,
+               New_Identifier
+                 (Symb   => NID (To_String (WNE_Move)),
+                  Module => AM,
+                  Domain => EW_Prog));
+            Insert_Symbol
+              (E, WNE_Moved_Relation,
+               New_Identifier
+                 (Symb   => NID (To_String (WNE_Moved_Relation)),
                   Module => AM,
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
@@ -2702,8 +2950,7 @@ package body Why.Atree.Modules is
                Is_Incompl     : constant Boolean :=
                  Designates_Incomplete_Type (Repr_Pointer_Type (E));
                Root           : constant Entity_Id := Root_Pointer_Type (E);
-               Root_Ty        : constant W_Type_Id :=
-                 New_Named_Type (To_Why_Type (Root));
+               Root_Ty        : constant W_Type_Id := EW_Abstract (Root);
                Full_Name_Node : constant String := Full_Name (Root);
                M_C            : constant W_Module_Id :=
                  (if Is_Incompl then E_Compl_Module (Repr_Pointer_Type (E))
@@ -2717,13 +2964,23 @@ package body Why.Atree.Modules is
                   New_Identifier
                     (Symb   => NID ("__null_pointer"),
                      Module => M_C,
-                     Domain => EW_Term));
+                     Domain => EW_Term,
+                     Typ    => Root_Ty));
 
                Insert_Symbol
                  (E, WNE_Is_Null_Pointer,
                   New_Identifier
                     (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
                              Full_Name_Node & "__is_null_pointer"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+
+               Insert_Symbol
+                 (E, WNE_Is_Moved_Pointer,
+                  New_Identifier
+                    (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
+                       Full_Name_Node & To_String (WNE_Is_Moved_Pointer)),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));

@@ -19,7 +19,7 @@ package Binary_Search with SPARK_Mode is
    is
      (Property)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
    --  Pledge function, used to mark assertions as pledges for the analysis tool
 
    function M_Contains (T : access constant Tree; V : Integer) return Boolean is

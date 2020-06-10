@@ -1,18 +1,13 @@
 math.adb:10:10: info: precondition proved
 math.adb:12:43: info: range check proved
-math.adb:13:48: info: overflow check proved
 math.adb:13:54: info: division check proved
 math.adb:14:10: info: precondition proved
 math.adb:17:10: info: precondition proved
-math.adb:17:54: info: overflow check proved
-math.adb:18:48: info: overflow check proved
 math.adb:19:43: info: range check proved
 math.adb:20:25: info: assertion proved
 math.adb:21:31: info: index check proved
-math.adb:21:44: info: overflow check proved
 math.adb:21:50: info: division check proved
 math.adb:24:10: info: predicate check proved
-math.adb:24:23: info: overflow check proved
 math.adb:24:29: info: division check proved
 math.adb:24:29: info: range check proved
 math.adb:26:33: info: loop invariant initialization proved
@@ -20,17 +15,15 @@ math.adb:26:33: info: loop invariant preservation proved
 math.adb:27:33: info: loop invariant initialization proved
 math.adb:27:33: info: loop invariant preservation proved
 math.adb:29:13: info: loop invariant initialization proved
-math.adb:29:46: medium: loop invariant might fail after first iteration, cannot prove V(K) = V'Loop_Entry(K) * Num / Denom
+math.adb:29:46: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove V(K) = V'Loop_Entry(K) * Num / Denom
 math.adb:29:48: info: index check proved
 math.adb:29:66: info: index check proved
-math.adb:29:69: info: overflow check proved
 math.adb:29:75: info: division check proved
 math.adb:31:13: info: loop invariant initialization proved
 math.adb:31:13: info: loop invariant preservation proved
 math.adb:31:51: info: index check proved
 math.adb:31:69: info: index check proved
 math.ads:16:14: info: postcondition proved
-math.ads:16:53: info: overflow check proved
 math.ads:16:59: info: division check proved
 spark-arithmetic_lemmas.ads:112:51: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:112:51: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31

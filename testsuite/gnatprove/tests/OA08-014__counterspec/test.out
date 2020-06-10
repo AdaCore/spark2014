@@ -1,1 +1,1 @@
-nano.adb:7:22: medium: assertion might fail, cannot prove Ticks_Per_Second in 1 .. 10
+nano.adb:7:22: medium: assertion might fail

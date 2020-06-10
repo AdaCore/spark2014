@@ -29,7 +29,7 @@ with Xkind_Tables; use Xkind_Tables;
 
 package body Xtree_Accessors is
 
-   Node_Id_Param : constant Wide_String := "Id";
+   Node_Id_Param : constant String := "Id";
    --  Name of the formal parameter of all accessors; this will be the
    --  id of the node whose children are accessible through the
    --  corresponding accessor.
@@ -49,9 +49,9 @@ package body Xtree_Accessors is
 
    procedure Print_Accessor_Specification
      (O           : in out Output_Record;
-      Name        : Wide_String;
-      Param_Type  : Wide_String;
-      Return_Type :  Wide_String);
+      Name        : String;
+      Param_Type  : String;
+      Return_Type : String);
    --  Print an accessor specification from the name of its formals
 
    procedure Print_Accessor_Expression
@@ -302,9 +302,9 @@ package body Xtree_Accessors is
 
    procedure Print_Accessor_Specification
      (O           : in out Output_Record;
-      Name        : Wide_String;
-      Param_Type  : Wide_String;
-      Return_Type :  Wide_String) is
+      Name        : String;
+      Param_Type  : String;
+      Return_Type : String) is
    begin
       PL (O, "function " & Name);
       PL (O, "  (" & Node_Id_Param & " : " & Param_Type  & ")");

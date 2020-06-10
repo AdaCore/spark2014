@@ -63,6 +63,8 @@ package VC_Kinds is
       --  field of the why record corresponding to the pointer type.
 
       VC_Null_Exclusion,
+      VC_Memory_Leak,
+      VC_Memory_Leak_At_End_Of_Scope,
 
       VC_Length_Check,
       VC_Discriminant_Check,
@@ -103,6 +105,16 @@ package VC_Kinds is
                                      --  annotation provided for a function is
                                      --  correct.
 
+      VC_UC_No_Holes,                --  Check that Unchecked_Conversion is
+                                    --  safe from/to type
+      VC_UC_Same_Size,               --  Check that the two types of an
+                                    --  Unchecked_Conversion are of the same
+                                    --  size
+
+      VC_UC_Alignment,                --  Check that the two objects
+                                      --  in an overlay have compatible
+                                      --  alignments
+
       --  VC_LSP_Kind - Liskov Substitution Principle
 
       VC_Weaker_Pre,                  --  pre weaker than classwide pre
@@ -125,7 +137,7 @@ package VC_Kinds is
      VC_Division_Check .. VC_Task_Termination;
 
    subtype VC_Assert_Kind is VC_Kind range
-     VC_Initial_Condition .. VC_Inline_Check;
+     VC_Initial_Condition .. VC_UC_Alignment;
 
    subtype VC_LSP_Kind is VC_Kind range
      VC_Weaker_Pre .. VC_Stronger_Classwide_Post;
@@ -360,10 +372,15 @@ package VC_Kinds is
                                              "="          => "=");
    --  The prover stats JSON format is defined in gnat_report.mli
 
-   type Prover_Category is (PC_Interval, PC_Codepeer, PC_Prover, PC_Flow);
+   type Prover_Category is (PC_Trivial, PC_Codepeer, PC_Prover, PC_Flow);
    --  Type that describes the possible ways a check is proved. PC_Prover
    --  stands for automatic or manual proofs from Why3 and does not specify
    --  which prover proves it.
+   --  PC_Trivial is used here for any "proofs" that come from gnat2why. For
+   --  checks that are proved by a transformation in gnatwhy3, PC_Prover is
+   --  used with a prover of name "Trivial". The distinction is necessary in
+   --  some cases (e.g. to avoid redoing checks in why3). The two notions are
+   --  merged by spark_report to present a single "Trivial" prover to the user.
 
    type CEE_Kind is (CEE_Variable,
                      CEE_Error_Msg,
@@ -504,9 +521,9 @@ package VC_Kinds is
       VC_Line        : Cntexample_Elt_Lists.List;
       --  Counterexamples on the VC line
       Other_Lines    : Cntexample_Line_Maps.Map;
-      --  Counterexamples on all oter lines
+      --  Counterexamples on all other lines
       Previous_Lines : Previous_Line_Maps.Map;
-      --  Additional Counterexamples for the previous lines
+      --  Additional counterexamples for the previous lines
    end record;
    --  Previous lines is a feature related to loops. For Why3, intuitively, the
    --  check inside the loop assumes the loop invariant at previous iterations.

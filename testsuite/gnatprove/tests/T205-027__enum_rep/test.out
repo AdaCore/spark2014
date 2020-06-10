@@ -1,0 +1,2 @@
+rep.adb:1:11: warning: subprogram "Rep" has no effect
+rep.adb:2:12: info: range check proved (CVC4: 2 VC)

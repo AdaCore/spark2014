@@ -1,0 +1,26 @@
+test_delta.adb:4:25: info: data dependencies proved
+test_delta.adb:7:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 2 VC)
+test_delta.adb:7:26: info: index check proved (CVC4: 2 VC)
+test_delta.adb:7:34: info: index check proved (CVC4: 2 VC)
+test_delta.adb:7:42: info: index check proved (CVC4: 2 VC)
+test_delta.adb:7:50: info: index check proved (CVC4: 2 VC)
+test_delta.adb:8:22: info: assertion proved (CVC4: 1 VC)
+test_delta.adb:11:25: info: data dependencies proved
+test_delta.adb:14:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 2 VC)
+test_delta.adb:14:22: info: index check proved (CVC4: 2 VC)
+test_delta.adb:14:30: info: index check proved (CVC4: 2 VC)
+test_delta.adb:14:38: info: index check proved (CVC4: 2 VC)
+test_delta.adb:14:46: info: index check proved (CVC4: 2 VC)
+test_delta.adb:15:22: info: assertion proved (CVC4: 1 VC)
+test_delta_enum.adb:5:25: info: data dependencies proved
+test_delta_enum.adb:8:26: info: index check proved (CVC4: 2 VC)
+test_delta_enum.adb:8:36: info: index check proved (CVC4: 2 VC)
+test_delta_enum.adb:8:46: info: index check proved (CVC4: 2 VC)
+test_delta_enum.adb:8:58: info: index check proved (CVC4: 2 VC)
+test_delta_enum.adb:9:22: info: assertion proved (CVC4: 1 VC)
+test_delta_enum.adb:12:25: info: data dependencies proved
+test_delta_enum.adb:15:22: info: index check proved (CVC4: 2 VC)
+test_delta_enum.adb:15:32: info: index check proved (CVC4: 2 VC)
+test_delta_enum.adb:15:42: info: index check proved (CVC4: 2 VC)
+test_delta_enum.adb:15:54: info: index check proved (CVC4: 2 VC)
+test_delta_enum.adb:16:22: info: assertion proved (CVC4: 1 VC)

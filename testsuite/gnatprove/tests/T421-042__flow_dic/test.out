@@ -1,0 +1,3 @@
+dic.adb:4:12: medium: default initial condition might fail
+dic.adb:8:51: info: range check proved (CVC4: 1 VC)
+dic.adb:16:19: info: assertion proved (CVC4: 1 VC)

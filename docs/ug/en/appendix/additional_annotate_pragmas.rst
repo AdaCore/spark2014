@@ -480,7 +480,7 @@ function which is annotated with a ``Pledge Annotate`` pragma:
    function Pledge (Borrower : access constant T; Prop : Boolean) return Boolean is
      (Prop)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
 Note that the name of the function could be something other than ``Pledge``, but
 the annotation should use the string ``Pledge``. |GNATprove| will check that a
@@ -544,7 +544,7 @@ designated by ``X`` and ``Y`` during the time of the borrow:
    function Pledge (Borrower : access constant List; Prop : Boolean) return Boolean is
      (Prop)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
 We can use this function to give properties that are known to hold during the
 scope of ``Y``. Since ``Y`` and ``X`` designate the same value, we can

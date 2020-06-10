@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="8">
+<why3session shape_version="6">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<file format="whyml" proved="true">
+<file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
-<path name="use_maps__apply_f_4.mlw"/>
+<path name="use_maps__apply_f_4.gnat-json"/>
 <theory name="Use_maps__apply_f_4__subprogram_def" proved="true">
  <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
@@ -394,7 +394,7 @@
   <proof prover="0"><result status="valid" steps="8872"/></proof>
   </goal>
   <goal name="def&#39;vc.107" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="6952"/></proof>
+  <proof prover="0"><result status="valid" steps="6937"/></proof>
   </goal>
   <goal name="def&#39;vc.108" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="7722"/></proof>
@@ -414,7 +414,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.113" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="11142"/></proof>
+  <proof prover="0"><result status="valid" steps="11577"/></proof>
   </goal>
   <goal name="def&#39;vc.114" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >

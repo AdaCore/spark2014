@@ -28,7 +28,7 @@ is
 
    E : Record_T;
 
-   --  We can't do this, thankfully (SPARK RM 7.1.3(6))
+   --  We can't do this, thankfully (SPARK RM 7.1.3(4))
    --  VC : constant Record_T with Address => To_Address (16#deadbeef#);
 
    procedure Test_01 (R : in Record_T)

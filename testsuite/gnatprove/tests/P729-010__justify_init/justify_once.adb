@@ -4,7 +4,7 @@ package body Justify_Once with SPARK_Mode is
       A : My_Array (1 .. 4);
    begin
       Check_Init (A);
-      pragma Annotate (GNATProve, False_Positive, """A"" is not initialized",
+      pragma Annotate (GNATprove, False_Positive, """A"" is not initialized",
                        "Fully_Init is fully initialized by default");
       case K is
          when One =>
@@ -23,7 +23,7 @@ package body Justify_Once with SPARK_Mode is
       P : Fully_Init;
    begin
       Check_Init (P);
-      pragma Annotate (GNATProve, False_Positive, """P"" is not initialized",
+      pragma Annotate (GNATprove, False_Positive, """P"" is not initialized",
                        "Fully_Init is fully initialized by default");
       Update (P);
       return P;

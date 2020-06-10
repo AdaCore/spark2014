@@ -297,6 +297,16 @@ package body SPARK_Atree.Entities is
    function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
    is (Sem_Util.Get_Enum_Lit_From_Pos (Typ, P, No_Location));
 
+   ---------------------------------
+   -- Get_Iterable_Type_Primitive --
+   ---------------------------------
+
+   function Get_Iterable_Type_Primitive
+     (Typ : Entity_Id;
+      Nam : Name_Id)
+      return Entity_Id
+   renames Sem_Util.Get_Iterable_Type_Primitive;
+
    ------------------
    -- Get_Rep_Item --
    ------------------
@@ -460,6 +470,15 @@ package body SPARK_Atree.Entities is
    function Is_Entity_Name (N : Node_Id) return Boolean renames
      Einfo.Is_Entity_Name;
 
+   ------------------------------------------
+   -- Is_Expression_Function_Or_Completion --
+   ------------------------------------------
+
+   function Is_Expression_Function_Or_Completion
+     (Subp : Entity_Id)
+      return Boolean
+      renames Sem_Util.Is_Expression_Function_Or_Completion;
+
    ---------------------
    -- Is_Limited_View --
    ---------------------
@@ -480,6 +499,13 @@ package body SPARK_Atree.Entities is
 
    function Is_Tagged_Type (Typ : Entity_Id) return Boolean renames
      Einfo.Is_Tagged_Type;
+
+   --------------------------------------
+   -- Is_Unchecked_Conversion_Instance --
+   --------------------------------------
+
+   function Is_Unchecked_Conversion_Instance (Subp : Entity_Id) return Boolean
+     renames Sem_Util.Is_Unchecked_Conversion_Instance;
 
    --------------------------------------
    -- Is_Visible_Dispatching_Operation --
@@ -624,7 +650,21 @@ package body SPARK_Atree.Entities is
    -- Modular_Size --
    ------------------
 
-   function Modular_Size (Typ : Entity_Id) return Uint renames Einfo.Esize;
+   function Modular_Size (Typ : Entity_Id) return Uint is
+      M : constant Uint := Modulus (Typ);
+   begin
+      if M <= UI_Expon (Uint_2, Uint_8) then
+         return Uint_8;
+      elsif M <= UI_Expon (Uint_2, Uint_16) then
+         return Uint_16;
+      elsif M <= UI_Expon (Uint_2, Uint_32) then
+         return Uint_32;
+      elsif M <= UI_Expon (Uint_2, Uint_64) then
+         return Uint_64;
+      else
+         raise Program_Error;
+      end if;
+   end Modular_Size;
 
    -------------
    -- Modulus --

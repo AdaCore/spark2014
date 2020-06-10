@@ -1,5 +1,7 @@
+data.adb:4:13: info: absence of memory leak proved (CVC4: 1 VC)
 data.adb:4:18: medium: pointer dereference check might fail [possible explanation: subprogram at data.ads:4 should mention A in a precondition]
 data.adb:5:09: medium: pointer dereference check might fail [possible explanation: subprogram at data.ads:4 should mention A in a precondition]
+data.adb:5:13: info: absence of memory leak proved (CVC4: 1 VC)
 data.ads:4:40: info: initialization of "B" proved
 data.ads:5:07: info: data dependencies proved
 data.ads:6:07: medium: expected to see "A" on the left-hand-side of a dependency relation

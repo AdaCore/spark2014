@@ -44,6 +44,8 @@ VC_PREDICATE_CHECK - predicate check - Check that the given value respects the a
 VC_PREDICATE_CHECK_ON_DEFAULT_VALUE - predicate check on default value - Check that the default value for the type respects the applicable type predicate.
 VC_NULL_POINTER_DEREFERENCE - null pointer dereference - Check that the given pointer is not null so that it can be dereferenced.
 VC_NULL_EXCLUSION - null exclusion - Check that the subtype_indication of the allocator does not specify a null_exclusion
+VC_MEMORY_LEAK - memory leak - Check that the assignment does not lead to a memory leak
+VC_MEMORY_LEAK_AT_END_OF_SCOPE - memory leak at end of scope - Check that the declaration does not lead to a memory leak
 VC_LENGTH_CHECK - length check - Check that the given array is of the length of the expected array subtype.
 VC_DISCRIMINANT_CHECK - discriminant check - Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required.
 VC_TAG_CHECK - tag check - Check that the tag of the given tagged object has the expected value.
@@ -68,8 +70,11 @@ VC_LOOP_INVARIANT_INIT - loop invariant in first iteration - Check that the loop
 VC_LOOP_INVARIANT_PRESERV - loop invariant after first iteration - Check that the loop invariant evaluates to True at each further iteration of the loop.
 VC_LOOP_VARIANT - loop variant - Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop.
 VC_ASSERT - assertion - Check that the given assertion evaluates to True.
-VC_RAISE - raised exception - Check that the raise statement can never be reached.
+VC_RAISE - raised exception - Check that the raise statement or expression can never be reached.
 VC_INLINE_CHECK - Inline_For_Proof annotation - Check that an Annotate pragma with the Inline_For_Proof identifier is correct.
+VC_UC_NO_HOLES - unchecked conversion check - Check that a type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object, and no invalid bitpatterns occur.
+VC_UC_SAME_SIZE - unchecked conversion size check - Check that the two types in an unchecked conversion instance are of the same size.
+VC_UC_ALIGNMENT - alignment check - Check that the first object's alignment is an integral multiple of the second object's alignment.
 VC_WEAKER_PRE - precondition weaker than class-wide precondition - Check that the precondition aspect of the subprogram is weaker than its class-wide precondition.
 VC_TRIVIAL_WEAKER_PRE - precondition not True while class-wide precondition is True - Check that the precondition aspect of the subprogram is True if its class-wide precondition is True.
 VC_STRONGER_POST - postcondition stronger than class-wide postcondition - Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition.

@@ -28,7 +28,7 @@ with Xkind_Tables; use Xkind_Tables;
 
 package body Xkind_Decls is
 
-   Kind_Type_Name : constant Wide_String := "Why_Node_Kind";
+   Kind_Type_Name : constant String := "Why_Node_Kind";
 
    ------------------------
    -- Print_Node_Classes --

@@ -27,7 +27,8 @@ GENERATED_FILES= \
  why-ids.ads                  \
  why-kind_validity.ads        \
  why-opaque_ids.ads           \
- why-unchecked_ids.ads
+ why-unchecked_ids.ads        \
+ why-atree-to_json.adb
 
 all:
 	gprbuild -j0 -p -Phelpers xtree
@@ -37,4 +38,4 @@ all:
 clean:
 	-rm -rf obj
 	-rm -f xtree
-	-rm -f $(GENERATED_FILES)
+	-rm -f $(GENERATED_FILES) gnat_ast.ml

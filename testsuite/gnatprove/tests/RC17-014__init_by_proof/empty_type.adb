@@ -1,16 +1,16 @@
 procedure Empty_Type (C : Natural) with SPARK_Mode is
-   subtype Empty is Integer range 1 .. C;
-   pragma Annotate (GNATprove, Init_By_Proof, Empty);
+   type Empty is new Integer range 1 .. C with
+     Relaxed_Initialization;
    subtype My_Nat is Natural;
-   pragma Annotate (GNATprove, Init_By_Proof, My_Nat);
 
    type Rec is record
       F : Empty;
       G : My_Nat;
-   end record;
+   end record with
+     Relaxed_Initialization;
 
    procedure Update_G (X : in out Rec) with
-     Pre => X.G'Valid_Scalars
+     Pre => X.G'Initialized
    is
    begin
       pragma Assert (C > 0);  --@ASSERT:FAIL

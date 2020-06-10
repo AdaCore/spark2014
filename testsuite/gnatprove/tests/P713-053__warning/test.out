@@ -1,1 +1,4 @@
 typconv.adb:4:33: info: initialization of "Y" proved
+typconv.adb:5:13: high: types used for unchecked conversion do not have the same size
+typconv.adb:5:51: info: type is suitable for unchecked conversion (Trivial)
+typconv.adb:5:60: info: type is suitable for unchecked conversion (Trivial)

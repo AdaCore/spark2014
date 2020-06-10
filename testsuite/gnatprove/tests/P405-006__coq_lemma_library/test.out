@@ -28,8 +28,8 @@ spark-arithmetic_lemmas.ads:77:06: info: data dependencies proved, in instantiat
 spark-arithmetic_lemmas.ads:77:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:78:14: info: postcondition proved (CVC4: 2 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:78:14: info: postcondition proved (CVC4: 2 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:78:19: info: division check proved (CVC4: 2 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:78:19: info: division check proved (CVC4: 2 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:78:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:78:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:80:14: info: subprogram "Lemma_Mod_Symmetry" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:80:14: info: subprogram "Lemma_Mod_Symmetry" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:84:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31

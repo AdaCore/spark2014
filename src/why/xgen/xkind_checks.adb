@@ -28,11 +28,11 @@ with Xkind_Tables; use Xkind_Tables;
 package body Xkind_Checks is
    --  This package provides routines to print kind-validity checks
 
-   Node_Id_Param : constant Wide_String := "Id";
+   Node_Id_Param : constant String := "Id";
 
    procedure Print_Kind_Checks_Specification
      (O      : in out Output_Record;
-      Prefix : Wide_String;
+      Prefix : String;
       M      : Id_Multiplicity);
    --  Print subprogram specification for the kind-validity check of
    --  a node kind.
@@ -53,7 +53,7 @@ package body Xkind_Checks is
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
       --  Same as Print_Kind_Check_Body, but only for classes
 
-      procedure Print_Kind_Check_Body (Prefix : Wide_String; S : State);
+      procedure Print_Kind_Check_Body (Prefix : String; S : State);
       --  Print the body of kind-validity checks for the given node
       --  kind; S tells us if the Prefix designates a node kind
       --  or a node class.
@@ -62,7 +62,7 @@ package body Xkind_Checks is
       -- Print_Kind_Check_Body --
       ---------------------------
 
-      procedure Print_Kind_Check_Body (Prefix : Wide_String; S : State) is
+      procedure Print_Kind_Check_Body (Prefix : String; S : State) is
       begin
          for M in Id_Multiplicity'Range loop
             Print_Kind_Checks_Specification (O, Prefix, M);
@@ -143,7 +143,7 @@ package body Xkind_Checks is
       ---------------------------
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
+         S : constant String_Access := String_Lists.Element (Position);
       begin
          Print_Kind_Check_Body (S.all, Processing_Nodes);
 
@@ -173,7 +173,7 @@ package body Xkind_Checks is
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor);
       --  Same as Print_Kind_Checks_Declaration, but only for node kinds
 
-      procedure Print_Kind_Checks_Declaration (Prefix : Wide_String);
+      procedure Print_Kind_Checks_Declaration (Prefix : String);
       --  Print the declarations of kind-validity checks for the given node
       --  kind; S tells us if the Prefix designates a node kind
       --  or a node class.
@@ -182,7 +182,7 @@ package body Xkind_Checks is
       -- Print_Kind_Checks_Declaration --
       -----------------------------------
 
-      procedure Print_Kind_Checks_Declaration (Prefix : Wide_String) is
+      procedure Print_Kind_Checks_Declaration (Prefix : String) is
       begin
          for M in Id_Multiplicity'Range loop
             Print_Kind_Checks_Specification (O, Prefix, M);
@@ -213,7 +213,7 @@ package body Xkind_Checks is
       ---------------------------
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
-         S : constant Wide_String_Access := String_Lists.Element (Position);
+         S : constant String_Access := String_Lists.Element (Position);
       begin
          Print_Kind_Checks_Declaration (S.all);
 
@@ -234,7 +234,7 @@ package body Xkind_Checks is
 
    procedure Print_Kind_Checks_Specification
      (O      : in out Output_Record;
-      Prefix : Wide_String;
+      Prefix : String;
       M      : Id_Multiplicity) is
    begin
       PL (O, "function " & Kind_Check (Prefix, M));

@@ -3,30 +3,27 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
-<file proved="true">
-<path name=".."/>
-<path name=".."/>
-<path name=".."/>
-<path name="gnatprove"/>
-<path name="bar__double_tests__test_15.mlw"/>
+<file format="gnat-json" proved="true">
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
+<path name="bar__double_tests__test_15.gnat-json"/>
 <theory name="Bar__double_tests__test_15__subprogram_def" proved="true">
- <goal name="VC def" expl="VC for def" proved="true">
+ <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="VC def.0" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.1" expl="precondition" proved="true">
+  <goal name="def&#39;vc.1" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="8241"/></proof>
   </goal>
-  <goal name="VC def.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.3" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.3" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="8518"/></proof>
   </goal>
-  <goal name="VC def.4" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.4" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="8547"/></proof>
   </goal>
  </transf>

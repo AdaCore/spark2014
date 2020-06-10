@@ -11,7 +11,7 @@ package Anonymous_Access with SPARK_Mode is
      (if L = null then 0
       else Integer'Min (Natural'Last - 1, Length (L.N)) + 1)
    with Ghost,
-     Annotate => (GNATProve, Terminating);
+     Annotate => (GNATprove, Terminating);
 
    function Copy (X : List_Acc) return List_Acc with
      Volatile_Function,

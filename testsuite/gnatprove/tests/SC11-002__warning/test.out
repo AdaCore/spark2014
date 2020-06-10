@@ -3,6 +3,7 @@ a-cofove.ads:709:23: info: precondition proved (CVC4: 1 VC), in instantiation at
 a-cofove.ads:712:38: info: range check proved (CVC4: 1 VC), in instantiation at cont.ads:6
 a-cofove.ads:745:14: info: precondition proved (CVC4: 1 VC), in instantiation at cont.ads:6
 a-cofove.ads:749:35: info: range check proved (CVC4: 1 VC), in instantiation at cont.ads:6
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:87, in instantiation at cont.ads:6
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at cont.ads:6
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at cont.ads:6
 a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at cont.ads:6

@@ -51,10 +51,10 @@ package Outputs is
    --  Increase the indentation level of O by Level (or decrease it
    --  if Level is lesser than zero).
 
-   procedure P  (O : in out Output_Record; S : Wide_String);
+   procedure P  (O : in out Output_Record; S : String);
    --  Put S to output O, indenting it if need be
 
-   procedure PL (O : in out Output_Record; S : Wide_String);
+   procedure PL (O : in out Output_Record; S : String);
    --  Put_Line S to output O, indenting it if need be
 
    procedure NL (O : in out Output_Record);
@@ -63,7 +63,7 @@ package Outputs is
 
    procedure Print_Box
      (O               : in out Output_Record;
-      Subprogram_Name : Wide_String);
+      Subprogram_Name : String);
    --  Print a comment box of the form:
    --  ---------------------
    --  -- Subprogram_Name --

@@ -2551,12 +2551,12 @@ package body Flow_Utility is
                   return Vars;
                end;
 
-           --  Types sometimes just appear, e.g. in statements like a FOR loop
-           --  over a type (??? those are acceptable as long as assertion that
-           --  "not Ctx.Assume_In_Expression" holds) or in expressions like
-           --  Type'Pos attribute (??? those should be rather special-cased).
+            --  Types can only appear when we traverse statements; when we
+            --  traverse expressions we special-case type identifiers depending
+            --  on the context.
 
             when Type_Kind =>
+               pragma Assert (not Ctx.Assume_In_Expression);
 
                --  These kinds of types are not allowed in SPARK (yet)
                pragma Assert (Ekind (E) not in E_Exception_Type
@@ -2816,7 +2816,36 @@ package body Flow_Utility is
          --  looking at the prefix (e.g. address) or do something strange (e.g.
          --  update).
 
-         Variables.Union (Recurse (Prefix (N)));
+         --  If the prefix denotes a type (which happens for quite a few
+         --  attributes), then we have either already dealt with its prefix
+         --  above (e.g. 'First) or this prefix is ignored below (e.g. 'Min).
+
+         if Is_Entity_Name (Prefix (N))
+           and then Is_Type (Entity (Prefix (N)))
+         then
+            pragma Assert (The_Attribute in Attribute_Alignment
+                                          | Attribute_Ceiling
+                                          | Attribute_Component_Size
+                                          | Attribute_Enum_Rep
+                                          | Attribute_Enum_Val
+                                          | Attribute_Floor
+                                          | Attribute_Image
+                                          | Attribute_Max
+                                          | Attribute_Min
+                                          | Attribute_Mod
+                                          | Attribute_Object_Size
+                                          | Attribute_Pos
+                                          | Attribute_Pred
+                                          | Attribute_Remainder
+                                          | Attribute_Rounding
+                                          | Attribute_Size
+                                          | Attribute_Succ
+                                          | Attribute_Truncation
+                                          | Attribute_Val
+                                          | Attribute_Value);
+         else
+            Variables.Union (Recurse (Prefix (N)));
+         end if;
 
          if Present (Expressions (N)) then
             declare
@@ -3380,10 +3409,21 @@ package body Flow_Utility is
                   elsif Ekind (Entity (N)) = E_Constant
                     and then Is_Action (Parent (Entity (N)))
                   then
-                     pragma Assert (not Comes_From_Source (Entity (N)));
+                     pragma Assert
+                       (Comes_From_Declare_Expr (Entity (N))
+                          or else
+                        not Comes_From_Source (Entity (N)));
                      Variables.Union
                        (Recurse (Expression (Parent (Entity (N)))));
                   else
+                     --  Within expressions identifiers are processed depending
+                     --  on the context. We can only traverse them when this
+                     --  routine is executed in a special mode for statements.
+
+                     pragma Assert
+                       (if Is_Type (Entity (N))
+                        then not Ctx.Assume_In_Expression);
+
                      Variables.Union (Do_Entity (Entity (N)));
                   end if;
                end if;
@@ -3469,6 +3509,85 @@ package body Flow_Utility is
 
             when N_Attribute_Reference =>
                Variables.Union (Do_Attribute_Reference (N));
+               return Skip;
+
+            when N_Case_Expression_Alternative =>
+               --  We special case case_expression_alternative because their
+               --  discrete_choice_list may include subtype_indication, whose
+               --  processing depends on the context. Here only subtypes with
+               --  static bounds can appear and those can be safely ignored.
+
+               Variables.Union (Recurse (Expression (N)));
+               return Skip;
+
+            when N_Component_Association =>
+               declare
+                  Choice : Node_Id := First (Choices (N));
+               begin
+                  loop
+                     --  Record component choice; it always appears as a name
+                     --  of a component or of a discriminant, "(C => ...)".
+
+                     if Nkind (Choice) in N_Identifier | N_Expanded_Name
+                       and then Ekind (Entity (Choice)) in E_Component
+                                                         | E_Discriminant
+                     then
+                        null;
+
+                     --  Array component choice; it appears in various forms
+
+                     --  "(Low .. High => ...)"
+
+                     elsif Nkind (Choice) = N_Range then
+                        Variables.Union (Recurse (Low_Bound (Choice)));
+                        Variables.Union (Recurse (High_Bound (Choice)));
+
+                     --  "(A_Subtype range Low .. High => ...)"
+
+                     elsif Nkind (Choice) = N_Subtype_Indication then
+                        declare
+                           R : constant Node_Id :=
+                             Range_Expression (Constraint (Choice));
+                        begin
+                           Variables.Union (Recurse (Low_Bound (R)));
+                           Variables.Union (Recurse (High_Bound (R)));
+                        end;
+
+                     --  "(A_Subtype => ...)"
+
+                     elsif Is_Entity_Name (Choice)
+                       and then Is_Type (Entity (Choice))
+                     then
+                        Variables.Union
+                          (Recurse (Type_Low_Bound (Entity (Choice))));
+                        Variables.Union
+                          (Recurse (Type_High_Bound (Entity (Choice))));
+
+                     --  "(others => ...)"
+
+                     elsif Nkind (Choice) = N_Others_Choice then
+                        null;
+
+                     --  "(1 => ...)" or "(X + Y => ...)", etc.
+
+                     elsif Nkind (Choice) in N_Subexpr then
+                        Variables.Union (Recurse (Choice));
+
+                     else
+                        raise Program_Error;
+                     end if;
+
+                     Next (Choice);
+                     exit when No (Choice);
+                  end loop;
+               end;
+
+               if Box_Present (N) then
+                  null;  -- ??? use default component expression
+               else
+                  Variables.Union (Recurse (Expression (N)));
+               end if;
+
                return Skip;
 
             when N_Membership_Test =>
@@ -3651,6 +3770,16 @@ package body Flow_Utility is
                end;
                return Skip;
 
+            when N_Slice =>
+               declare
+                  R : constant Node_Id := Get_Range (Discrete_Range (N));
+               begin
+                  Variables.Union (Recurse (Low_Bound (R)));
+                  Variables.Union (Recurse (High_Bound (R)));
+               end;
+               Variables.Union (Recurse (Prefix (N)));
+               return Skip;
+
             when N_Allocator =>
                Variables.Include
                  (Direct_Mapping_Id (Flow.Dynamic_Memory.Heap_State));
@@ -3677,13 +3806,35 @@ package body Flow_Utility is
                   end if;
                end;
 
+            --  For a declare expression we recurse into the expression itself
+            --  and then we recurse into the expression of declared constants
+            --  whenever it is referenced. ??? This is incorrect when the
+            --  declared constant is not referenced, e.g.:
+            --     declare
+            --        X : constant Integer := V;
+            --        -- constant with variable input
+            --     begin
+            --        0;
+            --  because this expression has a null dependency on V, but this
+            --  is acceptable for now.
+
+            when N_Expression_With_Actions =>
+               Variables.Union (Recurse (Expression (N)));
+               return Skip;
+
             when others =>
                null;
          end case;
          return OK;
       end Proc;
 
-      procedure Traverse is new Traverse_More_Proc (Process => Proc);
+      procedure Traverse is new Traverse_Proc (Process => Proc);
+      --  While finding objects referenced within an expression we ignore
+      --  actions (by instantiating Traverse_Proc and not Traverse_More_Proc),
+      --  because actions contain constructs that can't appear in expressions,
+      --  e.g. itype declarations. We ignore those constructs so that we can
+      --  have more assertions, e.g. about subtype names that can only appear
+      --  in specific contexts.
 
    --  Start of processing for Get_Variables_Internal
 
@@ -3715,7 +3866,7 @@ package body Flow_Utility is
 
    begin
       --  Ignore references to array bounds of objects (because they are never
-      --  mutable) but keep references to array bounds of components (becayse
+      --  mutable) but keep references to array bounds of components (because
       --  they might be mutable).
 
       for V of Get_All_Variables
@@ -4787,7 +4938,7 @@ package body Flow_Utility is
                Component_Association := First (Component_Associations (N));
                while Present (Component_Association) loop
                   if Box_Present (Component_Association) then
-                     Input := Empty;
+                     Input := Empty;  -- ??? use default component expression
                   else
                      Input := Expression (Component_Association);
                   end if;
@@ -5298,15 +5449,21 @@ package body Flow_Utility is
                Process_Type_Conversions := False;
 
             when N_Slice =>
-               Vars_Used.Union
-                 (Get_Vars_Wrapper (Discrete_Range (N), Fold => Inputs));
-               Vars_Proof.Union
-                 (Get_Vars_Wrapper (Discrete_Range (N), Fold => Proof_Ins));
+               declare
+                  R  : constant Node_Id := Get_Range (Discrete_Range (N));
+                  LB : constant Node_Id := Low_Bound (R);
+                  HB : constant Node_Id := High_Bound (R);
+               begin
+                  Vars_Used.Union (Get_Vars_Wrapper (LB, Fold => Inputs));
+                  Vars_Used.Union (Get_Vars_Wrapper (HB, Fold => Inputs));
+
+                  Vars_Proof.Union (Get_Vars_Wrapper (LB, Fold => Proof_Ins));
+                  Vars_Proof.Union (Get_Vars_Wrapper (HB, Fold => Proof_Ins));
+               end;
 
                Process_Type_Conversions := False;
 
-            when N_Selected_Component
-            =>
+            when N_Selected_Component =>
                Idx := Idx + 1;
 
             when N_Unchecked_Type_Conversion
@@ -5371,7 +5528,7 @@ package body Flow_Utility is
                   begin
                      return Is_Empty_Record_Type (Root_T)
                        and then
-                       (not Present (Ext)
+                       (No (Ext)
                           or else Null_Present (Ext)
                           or else No (Component_List (Ext)));
                   end;

@@ -29,7 +29,7 @@ package body Utils is
    -- Strip_Prefix --
    ------------------
 
-   function Strip_Prefix (Name : Wide_String) return Wide_String is
+   function Strip_Prefix (Name : String) return String is
       Start : Integer := Name'First;
    begin
       for J in Name'Range loop
@@ -46,7 +46,7 @@ package body Utils is
    -- Strip_Suffix --
    ------------------
 
-   function Strip_Suffix (Name : Wide_String) return Wide_String is
+   function Strip_Suffix (Name : String) return String is
       Stop : Integer := Name'Last;
    begin
       for J in reverse Name'Range loop
@@ -63,7 +63,7 @@ package body Utils is
    -- Suffix --
    ------------
 
-   function Suffix (Name : Wide_String) return Wide_String is
+   function Suffix (Name : String) return String is
       Stop : Integer := Name'Last;
    begin
       for J in reverse Name'Range loop

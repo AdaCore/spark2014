@@ -1548,6 +1548,12 @@ package body Gnat2Why.Expr.Loops.Inv is
             Process_Loop_Statement
               (N, Loop_Writes, Inv_Objects, Inv_Seen, In_Nested => True);
 
+         --  Block statements were inserted as markers for the end of the
+         --  corresponding scopes. Ignore them here.
+
+         when N_Block_Statement =>
+            null;
+
          when N_Ignored_In_SPARK
             | N_Simple_Return_Statement
             | N_Subtype_Declaration

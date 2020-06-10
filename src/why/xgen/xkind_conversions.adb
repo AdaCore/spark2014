@@ -28,7 +28,7 @@ with Why.Sinfo;    use Why.Sinfo;
 
 package body Xkind_Conversions is
 
-   Node_Id_Param : constant Wide_String := "Id";
+   Node_Id_Param : constant String := "Id";
 
    type Printed_Entities is (Decls, Bodies);
    --  Used to specify the kind of entity to print (declarations of bodies)
@@ -41,23 +41,23 @@ package body Xkind_Conversions is
 
    procedure Print_Conversion_Couple
      (O         : in out Output_Record;
-      Id_Type   : Wide_String;
-      Base_Type : Wide_String;
+      Id_Type   : String;
+      Base_Type : String;
       E         : Printed_Entities);
    --  Print a couple of couversions from/to the given types
 
    procedure Print_Conversion
      (O    : in out Output_Record;
-      From : Wide_String;
-      To   : Wide_String;
+      From : String;
+      To   : String;
       E    : Printed_Entities);
    --  Print a conversion from From to To. If E = Decls, print a declaration;
    --  otherwise, print parameterized expressions.
 
    procedure Print_Conversion_Spec
      (O    : in out Output_Record;
-      From : Wide_String;
-      To   : Wide_String);
+      From : String;
+      To   : String);
    --  Print spec of conversion from From to To
 
    -----------------------
@@ -84,9 +84,9 @@ package body Xkind_Conversions is
       ---------------------------
 
       procedure Process_One_Node_Kind (Position : String_Lists.Cursor) is
-         S      : constant Wide_String_Access :=
+         S      : constant String_Access :=
                     String_Lists.Element (Position);
-         Prefix : constant Wide_String := S.all;
+         Prefix : constant String := S.all;
       begin
          for Multiplicity in Id_Lone .. Id_Set loop
 
@@ -112,7 +112,7 @@ package body Xkind_Conversions is
 
       procedure Process_One_Class_Kind (Position : Class_Lists.Cursor) is
          CI1    : constant Class_Info := Class_Lists.Element (Position);
-         Prefix : constant Wide_String := Class_Name (CI1);
+         Prefix : constant String := Class_Name (CI1);
          F1     : constant Why_Node_Kind := Class_First (CI1);
          L1     : constant Why_Node_Kind := Class_Last (CI1);
       begin
@@ -191,8 +191,8 @@ package body Xkind_Conversions is
 
    procedure Print_Conversion_Couple
      (O         : in out Output_Record;
-      Id_Type   : Wide_String;
-      Base_Type : Wide_String;
+      Id_Type   : String;
+      Base_Type : String;
       E         : Printed_Entities) is
    begin
       Print_Conversion (O, Id_Type, Base_Type, E);
@@ -206,8 +206,8 @@ package body Xkind_Conversions is
 
    procedure Print_Conversion
      (O    : in out Output_Record;
-      From : Wide_String;
-      To   : Wide_String;
+      From : String;
+      To   : String;
       E    : Printed_Entities)
    is
    begin
@@ -227,8 +227,8 @@ package body Xkind_Conversions is
 
    procedure Print_Conversion_Spec
      (O    : in out Output_Record;
-      From : Wide_String;
-      To   : Wide_String)
+      From : String;
+      To   : String)
    is
    begin
       PL (O, "function ""+""");

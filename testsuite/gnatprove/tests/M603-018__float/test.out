@@ -1,11 +1,11 @@
 testfloat.adb:7:20: info: float overflow check proved (CVC4: 1 VC)
 testfloat.adb:7:25: info: division check proved (CVC4: 1 VC)
-testfloat.adb:7:25: info: float overflow check proved (Interval)
+testfloat.adb:7:25: info: float overflow check proved (Trivial)
 testfloat.adb:11:14: warning: subprogram "Triplet" has no effect
 testfloat.adb:14:23: info: float overflow check proved (CVC4: 1 VC)
 testfloat.adb:19:23: info: float overflow check proved (CVC4: 1 VC)
 testfloat.adb:19:28: info: division check proved (CVC4: 1 VC)
-testfloat.adb:19:28: info: float overflow check proved (Interval)
+testfloat.adb:19:28: info: float overflow check proved (Trivial)
 testfloat.adb:21:22: info: assertion proved (CVC4: 1 VC)
 testfloat.adb:22:22: info: assertion proved (CVC4: 1 VC)
 testfloat.adb:23:22: info: assertion proved (CVC4: 1 VC)

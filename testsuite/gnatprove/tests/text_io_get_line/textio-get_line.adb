@@ -56,16 +56,22 @@ is
            Rest = 1
 
         elsif No_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) then
-           Last = Last'Old + Find_Char_In_Slice (ASCII.LF, Cur_Position'Old, Cur_Position'Old + N - 2) - Cur_Position'Old and then
-           (for all Idx in Cur_Position'Old .. Find_Char_In_Slice (ASCII.LF, Cur_Position'Old, Cur_Position'Old + N - 2) - 1 =>
-              Item (Last'Old + Idx - Cur_Position'Old + 1) = The_File (Idx)) and then
-           Rest = 0
+            (declare
+                 LF_Pos : constant Positive := Find_Char_In_Slice (ASCII.LF, Cur_Position'Old, Cur_Position'Old + N - 2);
+             begin
+               Last = Last'Old + LF_Pos - Cur_Position'Old and then
+                 (for all Idx in Cur_Position'Old .. LF_Pos - 1 =>
+                        Item (Last'Old + Idx - Cur_Position'Old + 1) = The_File (Idx)) and then
+                   Rest = 0)
 
         else
-           Last = Last'Old + Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) - Cur_Position'Old and then
-           (for all Idx in Cur_Position'Old .. Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) - 1 =>
-              Item (Last'Old + Idx - Cur_Position'Old + 1) = The_File (Idx)) and then
-           Rest = 0);
+          (declare
+               EOF_Pos : constant Positive := Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2);
+           begin
+             Last = Last'Old + Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) - Cur_Position'Old and then
+               (for all Idx in Cur_Position'Old .. Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) - 1 =>
+                      Item (Last'Old + Idx - Cur_Position'Old + 1) = The_File (Idx)) and then
+                 Rest = 0));
    --  Reads at most N - 1 characters into Item (Last + 1 .. Item'Last),
    --  updating Last. Raises End_Error if nothing was read (End_Of_File).
    --  Returns number of characters still to read (either 0 or 1) in

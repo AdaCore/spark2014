@@ -15,3 +15,4 @@ pf.ads:5:39: info: division check proved (CVC4: 1 VC)
 pf.ads:9:36: info: initialization of "B" proved
 pf.ads:10:17: info: postcondition proved (CVC4: 2 VC)
 pfmain.adb:8:04: info: initialization of "B" proved
+sink.ads:5:09: info: object is suitable for aliasing via address clause (Trivial)

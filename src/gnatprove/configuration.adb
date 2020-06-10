@@ -1389,6 +1389,7 @@ package body Configuration is
          Set_Proof_Dir;
 
          CodePeer := CodePeer and then Mode in GPM_Prove | GPM_All;
+         Use_Semaphores := (not Debug) and then (not CL_Switches.Dbg_No_Sem);
       end Postprocess;
 
       ----------------------------
@@ -2249,7 +2250,7 @@ package body Configuration is
       --  This may freeze the developer's machine if each of these processes
       --  takes a lot of memory.
 
-      if not CL_Switches.Dbg_No_Sem then
+      if Use_Semaphores then
          Args.Append ("spark_semaphore_wrapper");
          Args.Append (Base_Name (Socket_Name.all));
       end if;

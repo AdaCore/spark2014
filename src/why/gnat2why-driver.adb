@@ -73,7 +73,7 @@ with Sem_Aux;                         use Sem_Aux;
 with Sem_Util;                        use Sem_Util;
 with Sinfo;                           use Sinfo;
 with Sinput;                          use Sinput;
-with SPARK_Annotate;                  use SPARK_Annotate;
+with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Register;                  use SPARK_Register;
 with SPARK_Rewrite;                   use SPARK_Rewrite;
@@ -90,7 +90,7 @@ with Tempdir;                         use Tempdir;
 with VC_Kinds;
 with Why;                             use Why;
 with Why.Atree.Modules;               use Why.Atree.Modules;
-with Why.Atree.Sprint;                use Why.Atree.Sprint;
+with Why.Atree.To_Json;               use Why.Atree.To_Json;
 with Why.Atree.Tables;                use Why.Atree.Tables;
 with Why.Gen.Binders;                 use Why.Gen.Binders;
 with Why.Gen.Names;
@@ -151,11 +151,11 @@ package body Gnat2Why.Driver is
    procedure Do_Ownership_Checking;
    --  Perform SPARK access legality checking
 
-   procedure Print_Why_File (Filename : String);
-   --  Print the input Why3 file on disk
+   procedure Print_GNAT_Json_File (Filename : String);
+   --  Print the GNAT AST as Json into file
 
    procedure Create_JSON_File (Proof_Done : Boolean);
-   --  At the very end, write the analysis results to disk
+   --  At the very end, write the analysis results into file
 
    procedure Generate_Assumptions;
    --  For all calls from a SPARK subprogram to another, register assumptions
@@ -208,9 +208,12 @@ package body Gnat2Why.Driver is
    --  why3 file so that users still have 150 chars or so for their own project
    --  structure.
 
-   function Compute_Why3_File_Name (E : Entity_Id) return String
-     with Post =>
-       Compute_Why3_File_Name'Result'Length <= Max_Why3_Filename_Length;
+   function Compute_Why3_File_Name
+     (E         : Entity_Id;
+      Extension : String)
+      return String
+   with
+     Post => Compute_Why3_File_Name'Result'Length <= Max_Why3_Filename_Length;
    --  Compute the why3 file to be used. Guarantees to be no longer than
    --  Max_Why3_Filename_Length and makes some effort to still be unique.
 
@@ -262,8 +265,7 @@ package body Gnat2Why.Driver is
                   File : constant W_Section_Id :=
                     Dispatch_Entity_Completion (E);
                begin
-                  if Ekind (E) = E_Function
-                    and then Present (Get_Expression_Function (E))
+                  if Is_Expression_Function_Or_Completion (E)
                     and then Entity_Body_Compatible_With_SPARK (E)
                   then
                      Translate_Expression_Function_Body (File, E);
@@ -297,24 +299,29 @@ package body Gnat2Why.Driver is
    -- Compute_Why3_File_Name --
    ----------------------------
 
-   function Compute_Why3_File_Name (E : Entity_Id) return String is
+   function Compute_Why3_File_Name
+     (E         : Entity_Id;
+      Extension : String)
+      return String
+   is
       S : constant String := Full_Name (E);
       Digest_Length : constant := 20;
-      --  arbitrary number of digits that we take from the SHA1 digest to
-      --  achieve uniqueness
+      --  Arbitrary number of digits that we take from the SHA1 digest to
+      --  achieve uniqueness.
    begin
-      if S'Length > Max_Why3_Filename_Length - 4 then
+      if S'Length > Max_Why3_Filename_Length - Extension'Length then
          --  the slice bound is computed as follows:
          --  take Max_Why3_Filename_Length - 1
-         --  remove 4 for the file ending
+         --  remove the file ending
          --  remove 1 for the dash
          --  remove Digest_Length for the digest
          return GNAT.SHA1.Digest (S) (1 .. Digest_Length) & "-" &
-           S (S'Last - (Max_Why3_Filename_Length - 1 - 4 - 1 - Digest_Length)
+           S (S'Last - (Max_Why3_Filename_Length - 1 -
+                          Extension'Length - 1 - Digest_Length)
               .. S'Last)
-           & ".mlw";
+           & Extension;
       else
-         return S  & ".mlw";
+         return S & Extension;
       end if;
    end Compute_Why3_File_Name;
 
@@ -466,9 +473,10 @@ package body Gnat2Why.Driver is
       end case;
       if Num_Registered_VCs_In_Why3 > Old_Num then
          declare
-            File_Name : constant String := Compute_Why3_File_Name (E);
+            File_Name : constant String :=
+              Compute_Why3_File_Name (E, ".gnat-json");
          begin
-            Print_Why_File (File_Name);
+            Print_GNAT_Json_File (File_Name);
             Run_Gnatwhy3 (File_Name);
          end;
       end if;
@@ -884,30 +892,43 @@ package body Gnat2Why.Driver is
 
        and then not Is_Hardcoded_Entity (E));
 
-   --------------------
-   -- Print_Why_File --
-   --------------------
+   --------------------------
+   -- Print_GNAT_Json_File --
+   --------------------------
 
-   procedure Print_Why_File (Filename : String) is
+   procedure Print_GNAT_Json_File (Filename : String) is
+      Modules    : constant Why_Node_Lists.List := Build_Printing_Plan;
+      Json_File  : constant JSON_Value := Create_Object;
+      Json_Decls : JSON_Value;
    begin
-      Open_Current_File (Filename);
-      declare
-         Modules : constant Why_Node_Lists.List := Build_Printing_Plan;
-      begin
-         if Modules.Is_Empty then
 
-            --  Fall back to previous printing
-
-            for WF in W_Section_Id loop
-               Print_Section (Why_Sections (WF), Current_File);
+      if Modules.Is_Empty then
+         --  Construct Json from theories
+         Json_Decls := Create (Empty_Array);
+         for WF in W_Section_Id loop
+            --  If there was a procedure
+            --    GNATCOLL.JSON.Append (Arr : in out JSON_Array;
+            --                          Arr1 : JSON_Array);
+            --  we could just do
+            --    Append (Json, Why_Node_Lists_List_To_Json
+            --                    (Why_Sections (WF).Theories));
+            --  but helas!
+            for WN_Id of Why_Sections (WF).Theories loop
+               Append (Json_Decls, Why_Node_To_Json (Get_Node (WN_Id)));
             end loop;
+         end loop;
+      else
+         --  Construct Json from printing plan
+         Json_Decls := Why_Node_Lists_List_To_Json (Modules);
+      end if;
 
-         else
-            Print_Modules_List (Modules, Current_File);
-         end if;
-      end;
+      Set_Field (Json_File, "theory_declarations", Json_Decls);
+
+      --  Output to file
+      Open_Current_File (Filename);
+      P (Current_File, Write (Json_File, Compact => True));
       Close_Current_File;
-   end Print_Why_File;
+   end Print_GNAT_Json_File;
 
    ------------------
    -- Run_Gnatwhy3 --
@@ -1077,9 +1098,11 @@ package body Gnat2Why.Driver is
                end if;
 
                if not Is_Mutable_In_Why (E) then
-                  Insert_Entity (E,
-                                 To_Why_Id (E, No_Comp => True,
-                                            Typ => Type_Of_Node (Etype (E))));
+                  Insert_Entity
+                    (E,
+                     To_Why_Id
+                       (E, No_Comp => True,
+                        Typ        => Type_Of_Node (E)));
                else
                   Insert_Item (E, Mk_Item_Of_Entity (E));
                end if;

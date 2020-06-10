@@ -25,8 +25,8 @@ assert (no_overflow RNE (t'real val1 * t'real val3)) as no_ov_v1v3.
   apply Rmult_le_compat; try (apply Abs.Abs_pos).
   destruct (neg_finite fliteral2) as [finite neg_finite]. auto. rewrite neg_finite in *. auto.
   rewrite Abs.Abs_le. auto.
-  rewrite Abs.Abs_le. rewrite l_real3 in *; split; auto. apply Rle_trans with (0/10); auto.
-  fourier. }
+  rewrite Abs.Abs_le. rewrite l_real3 in *; split; auto. apply Rle_trans with (0/10); fourier.
+}
 
 (* proof that val2 * val3 does not overflow to be able to use mul_finite *)
 assert (no_overflow RNE (t'real val2 * t'real val3)) as no_ov_v2v3.

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="8">
+<why3session shape_version="6">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
-<file format="whyml">
+<file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
-<path name="admin__opisavailable.mlw"/>
+<path name="admin__opisavailable.gnat-json"/>
 <theory name="Admin__opisavailable__subprogram_def">
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
@@ -64,7 +64,7 @@
   <proof prover="0"><result status="valid" steps="222"/></proof>
   </goal>
   <goal name="def&#39;vc.15" expl="check">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="7418"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="7418"/></proof>
   </goal>
   <goal name="def&#39;vc.16" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

@@ -11,7 +11,7 @@
 <path name=".."/>
 <path name=".."/>
 <path name="gnatprove"/>
-<path name="array_applications__fibonacci_explicit_ok.mlw"/>
+<path name="array_applications__fibonacci_explicit_ok.gnat-json"/>
 <theory name="Array_applications__fibonacci_explicit_ok__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >

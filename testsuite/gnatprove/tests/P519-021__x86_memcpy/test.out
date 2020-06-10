@@ -42,16 +42,16 @@ memcpy.adb:207:32: info: loop invariant preservation proved (CVC4: 1 VC)
 memcpy.adb:210:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:210:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:216:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:216:32: medium: loop invariant might fail after first iteration, cannot prove saved_rbp_16 = X86.ReadMem64(X86.RBP - 16)
+memcpy.adb:216:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove saved_rbp_16 = X86.ReadMem64(X86.RBP - 16)
 memcpy.adb:217:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:217:32: medium: loop invariant might fail after first iteration, cannot prove saved_rbp_72 = X86.ReadMem64(X86.RBP - 72)
+memcpy.adb:217:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove saved_rbp_72 = X86.ReadMem64(X86.RBP - 72)
 memcpy.adb:219:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:219:32: info: loop invariant preservation proved (CVC4: 1 VC)
 memcpy.adb:219:59: info: division check proved (CVC4: 2 VC)
 memcpy.adb:222:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:222:32: medium: loop invariant might fail after first iteration, cannot prove X86.ReadMem64(X86.RBP) = saved_rbp
+memcpy.adb:222:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.ReadMem64(X86.RBP) = saved_rbp
 memcpy.adb:223:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:223:32: medium: loop invariant might fail after first iteration, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
+memcpy.adb:223:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
 memcpy.adb:242:23: warning: unused assignment
 memcpy.adb:243:23: warning: unused assignment
 memcpy.adb:262:23: warning: unused assignment
@@ -87,15 +87,15 @@ memcpy.adb:353:32: info: loop invariant preservation proved (CVC4: 1 VC)
 memcpy.adb:356:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:356:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:362:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:362:32: medium: loop invariant might fail after first iteration, cannot prove saved_32 = X86.ReadMem64(X86.RBP - 32)
+memcpy.adb:362:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove saved_32 = X86.ReadMem64(X86.RBP - 32)
 memcpy.adb:363:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:363:32: medium: loop invariant might fail after first iteration, cannot prove saved_72 = X86.ReadMem64(X86.RBP - 72)
+memcpy.adb:363:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove saved_72 = X86.ReadMem64(X86.RBP - 72)
 memcpy.adb:365:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:365:32: info: loop invariant preservation proved (CVC4: 1 VC)
 memcpy.adb:369:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:369:32: medium: loop invariant might fail after first iteration, cannot prove X86.ReadMem64(X86.RBP) = saved_rbp
+memcpy.adb:369:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.ReadMem64(X86.RBP) = saved_rbp
 memcpy.adb:371:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:371:32: medium: loop invariant might fail after first iteration, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
+memcpy.adb:371:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
 memcpy.adb:385:23: warning: unused assignment
 memcpy.adb:386:23: warning: unused assignment
 memcpy.adb:401:23: warning: unused assignment

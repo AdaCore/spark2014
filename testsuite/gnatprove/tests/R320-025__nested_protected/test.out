@@ -1,2 +1,2 @@
-p.adb:5:25: protected type within protected type is not yet supported
-gnatprove: error during flow analysis and proof
+p.adb:5:25: effectively volatile type "Inner_Type" must be declared at library level (SPARK RM 7.1.3(3))
+gnatprove: error during generation of Global contracts

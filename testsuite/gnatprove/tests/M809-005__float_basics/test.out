@@ -388,8 +388,8 @@ generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, i
 generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:34:19: info: postcondition proved (CVC4: 2 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:34:19: info: postcondition proved (CVC4: 2 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:34:21: info: float overflow check proved (CVC4: 2 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:34:21: info: float overflow check proved (CVC4: 2 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:34:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:34:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:41:21: medium: float overflow check might fail, in instantiation at bar.ads:12

@@ -128,6 +128,9 @@ package SPARK_Atree.Entities is
    function Is_Compilation_Unit (E : Entity_Id) return Boolean renames
      Einfo.Is_Compilation_Unit;
 
+   function Is_Composite_Type (E : Entity_Id) return Boolean renames
+     Einfo.Is_Composite_Type;
+
    function Is_Concurrent_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Concurrent_Type;
 
@@ -264,6 +267,23 @@ package SPARK_Atree.Entities is
      and then Present (Aspects.Find_Aspect
                        (Typ, A => Aspects.Aspect_Iterable));
 
+   function Get_Iterable_Type_Primitive
+     (Typ : Entity_Id;
+      Nam : Name_Id)
+      return Entity_Id
+   with Pre  => Is_Type (Typ)
+                  and then
+                Nam in Name_Element
+                     | Name_First
+                     | Name_Has_Element
+                     | Name_Last
+                     | Name_Next
+                     | Name_Previous,
+        Post => Ekind (Get_Iterable_Type_Primitive'Result) = E_Function
+                  and then
+                Get_Iterable_Type_Primitive'Result =
+                Sem_Aux.Ultimate_Alias (Get_Iterable_Type_Primitive'Result);
+
    function Get_User_Defined_Eq (Typ : Entity_Id) return Entity_Id with
      Pre => Is_Type (Typ);
    --  Same as Einfo.Get_User_Defined_Eq except that it goes through renamings
@@ -380,6 +400,11 @@ package SPARK_Atree.Entities is
 
    function Modular_Size (Typ : Entity_Id) return Uint with
      Pre => Is_Modular_Integer_Type (Typ);
+   --  Out of 8, 16, 32 and 64, return the smallest X such that 2 ** X is
+   --  greater or equal to the modulus of the type. This is basically used to
+   --  determine the bitvector used for proof. Note that this can be different
+   --  from the Ada RM Size of the type, which can be changed via a Size
+   --  declaration.
 
    function Modulus (Typ : Entity_Id) return Uint with
      Pre => Is_Modular_Integer_Type (Typ);
@@ -589,6 +614,11 @@ package SPARK_Atree.Entities is
    --  This is different from Sem_Util.Is_Volatile_Function as it does not
    --  return True of protected functions.
 
+   function Is_Expression_Function_Or_Completion
+     (Subp : Entity_Id)
+      return Boolean
+   with Pre => Einfo.Is_Subprogram (Subp);
+
    function Is_Predicate_Function (Subp : Entity_Id) return Boolean with
      Pre => Einfo.Is_Subprogram (Subp);
 
@@ -617,6 +647,10 @@ package SPARK_Atree.Entities is
        | N_Entry_Declaration;
    --  Same as Sem_Aux.Subprogram_Specification except that it also works on
    --  entries.
+
+   function Is_Unchecked_Conversion_Instance (Subp : Entity_Id) return Boolean
+   with Pre => Ekind (Subp) in Subprogram_Kind | E_Entry;
+   --  Same as Sem_Util.Is_Unchecked_Conversion_Instance
 
    -------------------
    --  For Packages --

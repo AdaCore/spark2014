@@ -1,2 +1,2 @@
-oper-float_sub.adb:4:23: info: float overflow check proved (Interval)
-oper-float_sub_2.adb:4:23: info: float overflow check proved (Interval)
+oper-float_sub.adb:4:23: info: float overflow check proved (Trivial)
+oper-float_sub_2.adb:4:23: info: float overflow check proved (Trivial)

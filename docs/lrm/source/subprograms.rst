@@ -99,6 +99,14 @@ An object O1 is said to be a *reachable element* of an object O2 if
    the subprogram is not a function.
 
 
+.. centered:: **Verification Rules**
+
+8. At the point of a call, all inputs of the callee except for those that have
+   relaxed initialization (see :ref:`relaxed-initialization`) shall be
+   fully initialized. Similarly, upon return from a call all outputs of the
+   callee except for those that have relaxed initialization shall be
+   fully initialized.
+
 .. _preconditions-and-postconditions:
 
 Preconditions and Postconditions
@@ -601,7 +609,12 @@ is used purely for static analysis purposes and is not executed.
         attributes that are dependent on the value of the object and
         shall not be used are X'Old and X'Update] and
 
-      - is always fully initialized by a call of the subprogram;
+      - it does not have relaxed initialization
+        (see :ref:`relaxed-initialization`);
+
+    * a ``global_item`` that denotes an output which is not an input and
+      which has relaxed initialization may have a ``mode_selector`` of
+      Output or In_Out;
 
     * otherwise the ``global_item`` denotes both an input and an output, and
       has a ``mode_selector`` of In_Out.
@@ -1156,10 +1169,14 @@ Extensions_Visible Aspects
 
 .. centered:: **Verification Rules**
 
-8. |SPARK| requires that an actual parameter corresponding
+#. [|SPARK| typically requires that an actual parameter corresponding
    to an in mode or in out mode formal parameter in a call shall be fully
-   initialized before the call; similarly, the callee is responsible
-   for fully initializing any out-mode parameters before returning.
+   initialized before the call; similarly, the callee is typically responsible
+   for fully initializing any out-mode formal parameters before returning.
+   For details (including interactions with relaxed initialization), see
+   the verification rule about full initialization of subprogram inputs
+   and outputs (which include parameters) in :ref:`subprogram-declarations`
+   and then :ref:`relaxed-initialization`].
 
 #. In the case of a formal parameter of a specific tagged type T (or of a
    private type whose full view is a specific tagged type), the set of
@@ -1714,3 +1731,209 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
           Ghost,
           Import;
    -- The body of the function is not declared elsewhere.
+
+.. _relaxed-initialization:
+
+Relaxed Initialization
+----------------------
+
+|SPARK| defines the Boolean-valued aspect Relaxed_Initialization and the related
+Boolean-valued attribute, Initialized.
+
+Without the Relaxed_Initialization aspect, the rules that statically prevent
+reading an uninitialized scalar object are defined with "whole object"
+granularity. For example, all inputs of a subprogram are required
+to be fully initialized at the point of a call to the subprogram and all
+outputs of a subprogram are required to be fully initialized at the point of a
+return from the subprogram. The Relaxed_Initialization aspect, together with
+the Initialized attribute, provides a mechanism for safely (i.e., without
+introducing the possibility of improperly reading an uninitialized scalar)
+referencing partially initialized Inputs and Outputs.
+
+The Relaxed_Initialization aspect may be specified for a type, for
+a standalone object, for a state abstraction, or (at least in effect - see
+below for details) for a parameter or function result of a subprogram or entry.
+The prefix of an Initialized attribute reference shall denote an object.
+
+.. centered:: **Static Semantics**
+
+1. An object is said to *have relaxed initialization* if and only if
+
+   * its Relaxed_Initialization aspect is True; or
+
+   * the Relaxed_Initialization aspect of its type is True; or
+
+   * it is a subcomponent of an object that has relaxed initialization; or
+
+   * it is the return object of a function call and the Relaxed_Initialization
+     aspect of the function's result is True; or
+
+   * it is the return object of a call to a predefined concatenation
+     operator and at least one of the operands is a name denoting an
+     object having relaxed initialization; or
+
+   * it is the result object of an aggregate having a least one component
+     whose value is that of an object that has relaxed initialization; or
+
+   * it is the result of evaluating a value conversion whose operand
+     has relaxed initialization; or
+
+   * it is the associated object of an expression (e.g., a view conversion,
+     a qualified expression, or a conditional expression) which has at least
+     one operative constituent (see Ada RM 4.4) which is not the expression
+     itself and whose associated object has relaxed initialization.
+
+   A state abstraction or a type has relaxed initialization if its
+   Relaxed_Initialization aspect is True. An expression has relaxed
+   initialization if its evaluation yields an object that has relaxed
+   initialization.
+
+2. A Relaxed_Initialization aspect specification for a formal parameter
+   of a callable entity or for a function's result is expressed syntactically
+   as an aspect_specification of the declaration of the enclosing callable
+   entity.  [This is expressed this way because Ada does not
+   provide syntax for specifying aspects for subprogram/entry parameters,
+   or for the result of a function.] In the following example,
+   the parameter X1 and the result of F are specified as having relaxed
+   initialization; the parameters X2 and X3 are not:
+
+   .. code-block:: ada
+
+      function F (X1 : T1; X2 : T2; X3 : T3) return T4
+        with Relaxed_Initialization => (X1 => True, F'Result);
+
+..
+
+   More precisely, the Relaxed_Initialization aspect for a subprogram
+   or entry (or a generic subprogram) is specified by
+   an ``aspect_specification`` where the ``aspect_mark`` is
+   Relaxed_Initialization and the ``aspect_definition`` follows the
+   following grammar for ``profile_aspect_spec``:
+
+   ::
+
+      profile_aspect_spec ::= ( profile_spec_item {, profile_spec_item} )
+      profile_spec_item   ::= parameter_name [=> aspect_definition]
+                            | function_name'Result [=> aspect_definition]
+
+3. Relaxed_Initialization aspect specifications are inherited by
+   a derived type (if the aspect is specified for the ancestor type)
+   and by an inherited subprogram (if the aspect is specified for the
+   corresponding primitive subprogram of the ancestor type).
+
+4. For a prefix *X* that denotes an object, the following attribute is defined:
+
+   ::
+
+      X'Initialized
+
+   X'Initialized is True if and only if every scalar reachable element of X
+   has been initialized. [It typicallly follows as a consequence of this
+   definition and the other rules of |SPARK| that if X'Initialized is True,
+   then for every reachable element Y of X (scalar or not), Y belongs to its
+   subtype. There are pathological counterexamples, such as a componentless
+   record declared with "Dynamic_Predicate => False".] An Initialized attribute
+   reference is never a static expression.
+
+.. centered:: **Legality Rules**
+
+5. The following rules apply to the profile_aspect_spec of a
+   Relaxed_Initialization aspect specification for a subprogram, a
+   generic subprogram, or an entry.
+
+   * Each parameter_name shall name a parameter of the given callable
+     entity and no parameter shall be named more than once. It is not
+     required that every parameter be named.
+
+   * Each aspect_definition within a profile_aspect_spec shall be as for a
+     Boolean aspect.
+
+   * The form of profile_spec_item that includes a Result
+     attribute reference shall only be provided if the given callable
+     entity is a function or generic function; in that case, the prefix
+     of the attribute reference shall denote that function or generic
+     function. Such a Result attribute reference is allowed,
+     other language restrictions on the use of Result attribute
+     references notwithstanding (i.e., despite the fact that such a
+     Result attribute reference does not occur within a postcondition
+     expression).
+
+   * A Boolean value of True is implicitly specified if no aspect_definition
+     is provided, as per Ada RM 13.1.1's rules for Boolean-valued aspects.
+     A Boolean value of False is implicitly specified if a given parameter
+     (or, in the case of a function or generic function, the result) is not
+     mentioned in any profile_spec_item.
+
+6. A constituent of a state abstraction shall have relaxed initialization
+   if and only if the state abstraction has relaxed initialization.
+
+7. No part of a tagged type, or of a tagged object, shall have relaxed
+   initialization.
+
+8. No part of an effectively volatile type, or of an effectively volatile
+   object, shall have relaxed initialization.
+
+9. No part of an Unchecked_Union type shall have relaxed initialization.
+   No part of the type of the prefix of an Initialized attribute reference
+   shall be of an Unchecked_Union type.
+
+10. A Relaxed_Initialization aspect specification which applies to a
+    declaration occuring in the visible part of a package [(e.g., the
+    declaration of a private type or of a deferred constant)] shall not
+    occur in the private part of that package.
+
+11. A formal parameter of a dispatching operation shall not have relaxed
+    initialization; the result of a dispatching function shall not have
+    relaxed initialization.
+
+.. centered:: **Verification Rules**
+
+12. At the point of a read of a scalar object X that has relaxed initialization,
+    a verification condition is introduced to ensure that X is initialized.
+    This includes the case where X is a subcomponent of a composite object
+    that is passed as an argument in a call to a predefined relational
+    operator (e.g., "=" or "<"). Such a verification condition is also
+    introduced in the case where X is a reachable element of the [source]
+    expression of an assignment operation and the target of the assignment
+    does not have relaxed initialization, where X is a reachable element of
+    an actual parameter in a call where the corresponding formal parameter is
+    of mode **in** or **in out** and does not have relaxed initialization,
+    upon a call whose precondition implies X'Initialized, and upon return
+    from a call whose postcondition implies X'Initialized.
+
+    [For updates to X that do not involve calls, this check that X is
+    initialized is implemented via flow analysis and no additional
+    annotations are required. Preconditions and postconditions that mention
+    X'Initialized may also be used to communicate information about the
+    initialization status of X across subprogram boundaries.
+
+    These rules statically prevent any of the bounded-error or erroneous
+    execution scenarios associated with reading an uninitialized scalar
+    object described in Ada RM 13.9.1. It may provide useful intuition to
+    think of a subprogram as having (roughly speaking) an implicit
+    precondition of X'Initialized for each of its inputs X that does not have
+    relaxed initialization and an implicit postcondition of Y'Initialized for
+    each of its outputs Y that does not have relaxed initialization; this
+    imprecise description ignores things like volatile objects and state
+    abstractions. For a particular call, this notional precondition is also
+    in effect for a given formal parameter if the corresponding actual
+    parameter does not have relaxed initialization (even if the formal
+    parameter does).
+
+    The verification conditions described here are not needed if
+    X does not have relaxed initialization because the more conservative
+    whole-object-granularity rules that govern that case will ensure that X is
+    initialized whenever it is read.]
+
+13. For any object X, evaluation of X'Initialized includes the evaluation
+    of Y'Initialized for every scalar reachable element Y of X (excluding
+    "hidden" components of tagged objects - see :ref:`type_invariants`).
+    Evaluation of X'Initialized for a scalar object X is considered to be a
+    read of X if and only if X does not have relaxed initialization. If X has
+    relaxed initialization, then an evaluation of X'Initialized is instead
+    treated like an evaluation of X'Valid [, which is not a read
+    of X]. If X does not have relaxed initialization, then this implies
+    that evaluation of X'Initialized introduces the same initialization
+    requirements as would be introduced for any other read of X; as a result
+    of meeting these requirements, X'Initialized will always return
+    True for such an object.

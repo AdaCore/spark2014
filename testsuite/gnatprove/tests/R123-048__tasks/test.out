@@ -2,17 +2,17 @@ psu_monitoring.adb:69:41: info: float overflow check proved (CVC4: 1 VC)
 psu_monitoring.adb:86:07: info: initialization of "expanded_lower_threshold" proved
 psu_monitoring.adb:87:07: info: initialization of "expanded_upper_threshold" proved
 psu_monitoring.adb:91:41: info: float overflow check proved (CVC4: 1 VC)
-psu_monitoring.adb:91:94: info: float overflow check proved (Interval)
+psu_monitoring.adb:91:94: info: float overflow check proved (Trivial)
 psu_monitoring.adb:98:75: info: division check proved (CVC4: 1 VC)
-psu_monitoring.adb:98:75: info: float overflow check proved (Interval)
-psu_monitoring.adb:98:75: info: range check proved (Interval)
-psu_monitoring.adb:100:75: info: float overflow check proved (Interval)
+psu_monitoring.adb:98:75: info: float overflow check proved (Trivial)
+psu_monitoring.adb:98:75: info: range check proved (Trivial)
+psu_monitoring.adb:100:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:100:75: medium: range check might fail [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
-psu_monitoring.adb:104:75: info: float overflow check proved (Interval)
+psu_monitoring.adb:104:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:104:75: medium: range check might fail [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
 psu_monitoring.adb:106:75: info: division check proved (CVC4: 1 VC)
-psu_monitoring.adb:106:75: info: float overflow check proved (Interval)
-psu_monitoring.adb:106:75: info: range check proved (Interval)
+psu_monitoring.adb:106:75: info: float overflow check proved (Trivial)
+psu_monitoring.adb:106:75: info: range check proved (Trivial)
 psu_monitoring.adb:122:22: medium: assertion might fail, cannot prove all_config_is_set (e.g. when all_config_is_set = False)
 psu_monitoring.adb:135:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible explanation: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
 psu_monitoring.adb:158:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible explanation: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]

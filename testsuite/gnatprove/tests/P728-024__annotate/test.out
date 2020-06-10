@@ -1,3 +1,4 @@
+foo.adb:8:07: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:11:07: warning: no check message justified by this pragma
 foo.adb:13:12: high: "Result" is not initialized
 foo.ads:3:23: info: initialization of "X" proved

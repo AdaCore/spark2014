@@ -25,24 +25,20 @@ start of files:
    pragma Profile (Ravenscar);
    pragma Partition_Elaboration_Policy (Sequential);
 
-GNATprove also supports the GNAT Extended Ravenscar profile
-(see Section 4.5 "The Extended Ravenscar Profiles" in GNAT User’s Guide
-Supplement for GNAT Pro Safety-Critical and GNAT Pro High-Security).
-To use the GNAT Extended Ravenscar profile simply replace ``Ravenscar`` with
-``GNAT_Extended_Ravenscar`` in the pragma ``Profile`` in the above code.
-The extended profile is intended for hard real-time/embedded systems that may
-require schedulability analysis but not the most stringent analyses required
-for other domains.
+GNATprove also supports the Jorvik profile, as defined in Ada 202X RM, D.13. To
+use this profile simply replace ``Ravenscar`` with ``Jorvik`` in the pragma
+``Profile`` in the above code. The extended profile is intended for hard
+real-time/embedded systems that may require schedulability analysis but not the
+most stringent analyses required for other domains.
 
-In particular, to increase expressive power the GNAT Extended Ravenscar
-profile relaxes certain restrictions defined by the standard Ravenscar profile.
-Notably, these relaxed constraints allow multiple protected entries per
-protected object, multiple queued callers per entry, and more expressive
-protected entry barrier expressions. The profile also allows the use of
-relative delay statements in addition to the absolute delay statements
-allowed by Ravenscar. The two forms of delay statement are processed by
-GNATprove based on the type of their expression, as follows (absolute and
-relative delays, respectively):
+In particular, to increase expressive power the Jorvik profile relaxes certain
+restrictions defined by the standard Ravenscar profile. Notably, these relaxed
+constraints allow multiple protected entries per protected object, multiple
+queued callers per entry, and more expressive protected entry barrier
+expressions. The profile also allows the use of relative delay statements in
+addition to the absolute delay statements allowed by Ravenscar. The two forms
+of delay statement are processed by GNATprove based on the type of their
+expression, as follows (absolute and relative delays, respectively):
 
 * If the expression is of the type Ada.Real_Time.Time then for the purposes of
   determining global inputs and outputs the absolute delay statement is considered

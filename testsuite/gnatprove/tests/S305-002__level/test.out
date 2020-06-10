@@ -1,0 +1,10 @@
+level 0:
+{'memlimit': '1000', 'prover': 'cvc4', 'steps': '0', 'timeout': '1', 'proof': 'per_check'}
+level 1:
+{'memlimit': '1000', 'prover': 'cvc4,z3,altergo', 'steps': '0', 'timeout': '1', 'proof': 'per_check'}
+level 2:
+{'memlimit': '1000', 'prover': 'cvc4,z3,altergo', 'steps': '0', 'timeout': '5', 'proof': 'per_check'}
+level 3:
+{'memlimit': '2000', 'prover': 'cvc4,z3,altergo', 'steps': '0', 'timeout': '20', 'proof': 'per_check'}
+level 4:
+{'memlimit': '2000', 'prover': 'cvc4,z3,altergo', 'steps': '0', 'timeout': '60', 'proof': 'per_check'}

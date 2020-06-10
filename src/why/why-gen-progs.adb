@@ -43,7 +43,7 @@ package body Why.Gen.Progs is
    is
    begin
       Emit_Static_Proof_Result (Ada_Node, To_VC_Kind (Check_Kind), True,
-                                Current_Subp, PC_Interval);
+                                Current_Subp);
    end Emit_Always_True_Range_Check;
 
    -----------------------

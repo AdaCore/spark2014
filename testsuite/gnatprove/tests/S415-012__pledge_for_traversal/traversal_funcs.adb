@@ -10,13 +10,13 @@ procedure Traversal_Funcs with SPARK_Mode is
 
    function Pledge ( X : access constant List; B : Boolean) return Boolean is (B) with
      Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
    function Length (L : access constant List) return Natural is
      (if L = null then 0
       else Integer'Min (Natural'Last - 1, Length (L.N)) + 1)
    with Ghost,
-     Annotate => (GNATProve, Terminating);
+     Annotate => (GNATprove, Terminating);
 
    function Next (X : access List) return access List with
      Pre => Length (X) < Natural'Last,

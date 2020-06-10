@@ -181,6 +181,37 @@ package Why.Atree.Modules is
       Gcd    : W_Identifier_Id;
    end record;
 
+   type M_Real_Type is record
+      Module  : W_Module_Id;
+      Bool_Eq : W_Identifier_Id;
+      Bool_Ne : W_Identifier_Id;
+      Bool_Le : W_Identifier_Id;
+      Bool_Lt : W_Identifier_Id;
+      Bool_Ge : W_Identifier_Id;
+      Bool_Gt : W_Identifier_Id;
+   end record;
+
+   type M_Real_Power_Type is record
+      Module : W_Module_Id;
+      Power  : W_Identifier_Id;
+   end record;
+
+   type M_Real_Abs_Type is record
+      Module : W_Module_Id;
+      Abs_Id : W_Identifier_Id;
+   end record;
+
+   type M_Real_From_Int_Type is record
+      Module   : W_Module_Id;
+      From_Int : W_Identifier_Id;
+   end record;
+
+   type M_Real_Minmax_Type is record
+      Module : W_Module_Id;
+      Min    : W_Identifier_Id;
+      Max    : W_Identifier_Id;
+   end record;
+
    type M_Floating_Type is record
       Module                : W_Module_Id;
       Power_Module          : W_Module_Id;
@@ -237,6 +268,7 @@ package Why.Atree.Modules is
       Plus_Zero             : W_Identifier_Id;
       One                   : W_Identifier_Id;
       Sqrt                  : W_Identifier_Id;
+      To_Real               : W_Identifier_Id;
    end record;
 
    type M_Floating_Conv_Type is record
@@ -391,6 +423,11 @@ package Why.Atree.Modules is
    M_Int_Abs       : M_Int_Abs_Type;
    M_Int_Minmax    : M_Int_Minmax_Type;
    M_Int_Gcd       : M_Int_Gcd_Type;
+   M_Real          : M_Real_Type;
+   M_Real_Power    : M_Real_Power_Type;
+   M_Real_Abs      : M_Real_Abs_Type;
+   M_Real_From_Int : M_Real_From_Int_Type;
+   M_Real_Minmax   : M_Real_Minmax_Type;
    M_Boolean       : M_Boolean_Type;
    M_Floating_Conv : M_Floating_Conv_Type;
 
@@ -510,6 +547,7 @@ package Why.Atree.Modules is
 
    Int_Unary_Minus   : W_Identifier_Id;
    Fixed_Unary_Minus : W_Identifier_Id;
+   Real_Unary_Minus  : W_Identifier_Id;
 
    --  Built-in void ident
 
@@ -530,6 +568,16 @@ package Why.Atree.Modules is
    Fixed_Infix_Add   : W_Identifier_Id;
    Fixed_Infix_Subtr : W_Identifier_Id;
    Fixed_Infix_Mult  : W_Identifier_Id;
+
+   Real_Infix_Add    : W_Identifier_Id;
+   Real_Infix_Subtr  : W_Identifier_Id;
+   Real_Infix_Mult   : W_Identifier_Id;
+   Real_Infix_Div    : W_Identifier_Id;
+   Real_Infix_Le     : W_Identifier_Id;
+   Real_Infix_Ge     : W_Identifier_Id;
+   Real_Infix_Gt     : W_Identifier_Id;
+   Real_Infix_Lt     : W_Identifier_Id;
+   Real_Infix_Eq     : W_Identifier_Id;
 
    String_Image_Module : W_Module_Id;
    To_String_Id        : W_Identifier_Id;
@@ -556,12 +604,17 @@ package Why.Atree.Modules is
    --  Memoization may be used. Returns Empty when it is called with a node
    --  which is not an entity, and no module is known for this entity.
 
-   function E_Symb (E : Entity_Id; S : Why_Name_Enum)
-                    return W_Identifier_Id;
+   function E_Symb
+     (E            : Entity_Id;
+      S            : Why_Name_Enum;
+      Relaxed_Init : Boolean := False) return W_Identifier_Id;
    --  Return the symbol which corresponds to [S] in the Why3 module which
    --  corresponds to E
    --  @param E the Ada type entity
    --  @param S a symbol which is allowed for that type entity
+   --  @param Relaxed_Init should be True if we should search S in the wrapper
+   --    module. This should only be used for symbols which are duplicated
+   --    between the two modules.
 
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
 

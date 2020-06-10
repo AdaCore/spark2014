@@ -1,3 +1,4 @@
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:7
 database.adb:12:04: info: initialization of "Database" proved
 database.adb:13:04: info: initialization of "DB_Model" proved
 database.adb:20:07: warning: "Email" is not modified, could be of access constant type

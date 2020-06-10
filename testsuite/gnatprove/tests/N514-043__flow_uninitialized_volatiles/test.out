@@ -1,1 +1,2 @@
+foo.adb:8:07: info: object is suitable for aliasing via address clause (Trivial)
 foo.ads:3:23: info: initialization of "X" proved

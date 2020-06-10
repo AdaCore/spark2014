@@ -15,7 +15,7 @@ is
       Counter : U64;
    end record;
 
-   pragma Warnings (GNATProve, Off, "volatile function ""Is_Active"" has no volatile effects",
+   pragma Warnings (GNATprove, Off, "volatile function ""Is_Active"" has no volatile effects",
                     reason => "False_Positive: Is_Active IS a Volatile_Function");
    function Is_Active (State_Ext : in GCounter_Type) return Boolean
    with
@@ -23,7 +23,7 @@ is
       Pre => True,
       Volatile_Function;
 
-   pragma Warnings (GNATProve, Off, "volatile function ""Read"" has no volatile effects",
+   pragma Warnings (GNATprove, Off, "volatile function ""Read"" has no volatile effects",
                     reason => "False_Positive: Read IS a Volatile_Function");
    function Read (State_Ext : GCounter_Type)
       return State_Type

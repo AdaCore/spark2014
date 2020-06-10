@@ -187,12 +187,8 @@ auditlog.adb:511:35: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:564:11: info: data dependencies proved
 auditlog.adb:568:11: info: flow dependencies proved
 auditlog.adb:585:72: info: range check proved (CVC4: 1 VC)
-auditlog.adb:585:77: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:586:42: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:587:22: info: postcondition proved (CVC4: 6 VC; Trivial: 2 VC)
 auditlog.adb:588:72: info: range check proved (CVC4: 1 VC)
-auditlog.adb:588:77: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:589:42: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:620:14: info: data dependencies proved
 auditlog.adb:623:14: info: flow dependencies proved
 auditlog.adb:633:25: info: postcondition proved (CVC4: 4 VC)
@@ -215,9 +211,7 @@ auditlog.adb:768:07: info: initialization of "Description" proved
 auditlog.adb:769:11: info: data dependencies proved
 auditlog.adb:769:35: info: initialization of "AuditAlarm" constituent of "State" proved
 auditlog.adb:773:11: info: flow dependencies proved
-auditlog.adb:784:73: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:785:22: info: postcondition proved (CVC4: 4 VC)
-auditlog.adb:790:73: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:792:07: info: initialization of "TheFile" proved
 auditlog.adb:793:07: info: initialization of "Head" proved
 auditlog.adb:811:76: info: range check proved (CVC4: 1 VC)
@@ -225,12 +219,8 @@ auditlog.adb:813:70: info: range check proved (CVC4: 1 VC)
 auditlog.adb:838:11: info: data dependencies proved
 auditlog.adb:843:11: info: flow dependencies proved
 auditlog.adb:858:69: info: range check proved (CVC4: 1 VC)
-auditlog.adb:858:74: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:859:39: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:860:19: info: postcondition proved (CVC4: 2 VC)
 auditlog.adb:862:69: info: range check proved (CVC4: 1 VC)
-auditlog.adb:862:74: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:863:39: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:865:07: info: initialization of "TruncateDescription" proved
 auditlog.adb:871:10: info: precondition proved (CVC4: 3 VC)
 auditlog.adb:874:10: info: precondition proved (CVC4: 4 VC)
@@ -241,8 +231,6 @@ auditlog.adb:908:42: info: initialization of "LogFilesStatus" constituent of "St
 auditlog.adb:909:42: info: initialization of "LogFileState" constituent of "State" proved
 auditlog.adb:917:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:919:80: info: range check proved (CVC4: 1 VC)
-auditlog.adb:919:85: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:920:50: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:924:06: info: initialization of "FileAges" proved
 auditlog.adb:925:06: info: initialization of "OK" proved
 auditlog.adb:941:32: info: initialization of "LogFileEntries" proved
@@ -285,21 +273,14 @@ auditlog.adb:1093:95: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1100:90: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1101:91: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1122:88: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1122:93: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1123:27: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1123:27: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1172:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:1174:80: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1174:85: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1175:50: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1178:07: info: initialization of "OldAlarm" proved
 auditlog.adb:1182:07: info: precondition proved (CVC4: 2 VC)
 auditlog.adb:1187:26: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:1193:10: info: precondition proved (CVC4: 2 VC)
 auditlog.adb:1240:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:1242:80: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1242:85: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1243:50: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1246:07: info: initialization of "Description" proved
 auditlog.adb:1247:07: info: initialization of "TheFile" proved
 auditlog.adb:1248:07: info: initialization of "OK" proved
@@ -313,8 +294,6 @@ auditlog.adb:1256:22: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:1289:16: info: loop invariant initialization proved (CVC4: 1 VC)
 auditlog.adb:1289:16: info: loop invariant preservation proved (CVC4: 1 VC)
 auditlog.adb:1290:66: info: range check proved (CVC4: 2 VC)
-auditlog.adb:1290:71: info: overflow check proved (CVC4: 2 VC)
-auditlog.adb:1290:91: info: overflow check proved (CVC4: 2 VC)
 auditlog.adb:1320:52: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1328:10: info: invariant check proved (CVC4: 1 VC)
 auditlog.adb:1328:10: info: precondition proved (CVC4: 1 VC)
@@ -322,14 +301,10 @@ auditlog.adb:1338:07: info: invariant check proved (CVC4: 1 VC)
 auditlog.adb:1338:07: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:1381:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:1383:80: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1383:85: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:1384:50: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1387:07: info: initialization of "OldAlarm" proved
 auditlog.adb:1400:13: info: loop invariant initialization proved (CVC4: 3 VC)
 auditlog.adb:1400:13: info: loop invariant preservation proved (CVC4: 3 VC)
 auditlog.adb:1404:63: info: range check proved (CVC4: 2 VC)
-auditlog.adb:1404:68: info: overflow check proved (CVC4: 2 VC)
-auditlog.adb:1404:88: info: overflow check proved (CVC4: 2 VC)
 auditlog.adb:1412:79: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1415:73: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1428:10: info: invariant check proved (CVC4: 1 VC)
@@ -356,36 +331,30 @@ auditlog.ads:144:11: info: flow dependencies proved
 auditlog.ads:156:11: info: data dependencies proved
 auditlog.ads:168:11: info: data dependencies proved
 auditlog.ads:277:46: info: range check proved (CVC4: 1 VC)
-auditlog.ads:277:51: info: overflow check proved (CVC4: 1 VC)
-auditlog.ads:277:71: info: overflow check proved (CVC4: 1 VC)
 auditlog.ads:281:09: info: invariant check proved on default value (CVC4: 1 VC)
 audittypes.ads:78:16: info: range check proved (CVC4: 1 VC)
 bio.adb:84:15: info: range check proved (CVC4: 1 VC)
-bio.adb:99:13: info: add a contract to analyze it separately from calling contexts
-bio.adb:99:13: info: local subprogram "ValueOf" only analyzed in the context of calls
-bio.adb:120:13: info: add a contract to analyze it separately from calling contexts
-bio.adb:120:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls
-bio.adb:126:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:190
-bio.adb:126:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:190
-bio.adb:129:25: info: analyzing call to "ValueOf" in context
-bio.adb:151:11: info: data dependencies proved
-bio.adb:160:07: info: initialization of "TheCodeName" proved
-bio.adb:172:17: info: postcondition proved (Trivial: 1 VC)
-bio.adb:174:38: info: range check proved (CVC4: 1 VC)
-bio.adb:175:12: info: range check proved (CVC4: 1 VC)
-bio.adb:175:41: info: range check proved (CVC4: 1 VC)
-bio.adb:176:12: info: range check proved (CVC4: 1 VC)
-bio.adb:176:57: info: range check proved (CVC4: 1 VC)
-bio.adb:182:13: info: range check proved (CVC4: 4 VC)
-bio.adb:182:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-bio.adb:182:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-bio.adb:184:23: info: range check proved (CVC4: 4 VC)
-bio.adb:190:22: info: analyzing call to "GetReturnCode" in context
-bio.adb:241:07: info: initialization of "NumericReturn" proved
-bio.adb:263:27: info: analyzing call to "ValueOf" in context
-bio.adb:266:18: info: precondition proved (CVC4: 1 VC)
-bio.adb:271:35: info: predicate check proved (CVC4: 1 VC)
-bio.adb:271:35: info: range check proved (CVC4: 1 VC)
+bio.adb:123:13: info: add a contract to analyze it separately from calling contexts
+bio.adb:123:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls
+bio.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:193
+bio.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:193
+bio.adb:154:11: info: data dependencies proved
+bio.adb:163:07: info: initialization of "TheCodeName" proved
+bio.adb:175:17: info: postcondition proved (Trivial: 1 VC)
+bio.adb:177:38: info: range check proved (CVC4: 1 VC)
+bio.adb:178:12: info: range check proved (CVC4: 1 VC)
+bio.adb:178:41: info: range check proved (CVC4: 1 VC)
+bio.adb:179:12: info: range check proved (CVC4: 1 VC)
+bio.adb:179:57: info: range check proved (CVC4: 1 VC)
+bio.adb:185:13: info: range check proved (CVC4: 4 VC)
+bio.adb:185:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bio.adb:185:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bio.adb:187:23: info: range check proved (CVC4: 4 VC)
+bio.adb:193:22: info: analyzing call to "GetReturnCode" in context
+bio.adb:244:07: info: initialization of "NumericReturn" proved
+bio.adb:269:18: info: precondition proved (CVC4: 1 VC)
+bio.adb:274:35: info: predicate check proved (CVC4: 1 VC)
+bio.adb:274:35: info: range check proved (CVC4: 1 VC)
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:41:11: info: data dependencies proved
 bio.ads:42:11: info: flow dependencies proved
@@ -649,8 +618,6 @@ configdata.adb:351:10: info: initialization of "Char" proved
 configdata.adb:365:35: info: overflow check proved (CVC4: 1 VC)
 configdata.adb:365:35: info: range check proved (CVC4: 1 VC)
 configdata.adb:366:35: info: range check proved (CVC4: 1 VC)
-configdata.adb:366:45: info: overflow check proved (CVC4: 1 VC)
-configdata.adb:366:50: info: overflow check proved (CVC4: 1 VC)
 configdata.adb:366:68: info: range check proved (CVC4: 1 VC)
 configdata.adb:386:26: info: initialization of "Value" proved
 configdata.adb:387:14: info: data dependencies proved
@@ -1366,7 +1333,6 @@ keystore.adb:203:51: info: division check proved (CVC4: 1 VC)
 keystore.adb:208:16: info: loop invariant initialization proved (CVC4: 9 VC)
 keystore.adb:208:16: info: loop invariant preservation proved (CVC4: 9 VC)
 keystore.adb:208:56: info: division check proved (CVC4: 2 VC)
-keystore.adb:211:57: info: overflow check proved (CVC4: 2 VC)
 keystore.adb:211:67: info: overflow check proved (CVC4: 2 VC)
 keystore.adb:220:22: info: precondition proved (CVC4: 5 VC)
 keystore.adb:232:36: info: range check proved (CVC4: 1 VC)

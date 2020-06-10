@@ -61,13 +61,12 @@ nwa.adb:144:14: info: division check proved (CVC4: 1 VC)
 nwa.adb:151:14: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:151:14: medium: range check might fail (e.g. when X = 512 and Y = 512) [possible explanation: subprogram at nwa.ads:46 should mention X and Y in a precondition]
 nwa.adb:152:14: medium: divide by zero might fail [possible explanation: subprogram at nwa.ads:46 should mention X and Y in a precondition]
-nwa.adb:152:14: medium: range check might fail (e.g. when X = 520 and Y = 0) [possible explanation: subprogram at nwa.ads:46 should mention X and Y in a precondition]
 nwa.adb:153:14: info: overflow check proved (CVC4: 1 VC)
-nwa.adb:153:14: medium: range check might fail (e.g. when X = NvU32b'Last and Y = 1) [possible explanation: subprogram at nwa.ads:46 should mention X and Y in a precondition]
-nwa.adb:154:14: medium: overflow check might fail (e.g. when X = 6 and Y = 8) [possible explanation: subprogram at nwa.ads:46 should mention X and Y in a precondition]
-nwa.adb:154:14: medium: range check might fail (e.g. when X = 0 and Y = 1) [possible explanation: subprogram at nwa.ads:46 should mention X and Y in a precondition]
-nwa.adb:155:12: medium: overflow check might fail (e.g. when X = 8) [possible explanation: subprogram at nwa.ads:46 should mention X in a precondition]
-nwa.adb:155:12: medium: range check might fail (e.g. when X = 512) [possible explanation: subprogram at nwa.ads:46 should mention X in a precondition]
+nwa.adb:153:14: medium: range check might fail (e.g. when X = 1 and Y = NvU32b'Last) [possible explanation: subprogram at nwa.ads:46 should mention X and Y in a precondition]
+nwa.adb:154:14: medium: overflow check might fail (e.g. when X = 0 and Y = 99) [possible explanation: subprogram at nwa.ads:46 should mention X and Y in a precondition]
+nwa.adb:154:14: medium: range check might fail (e.g. when X = 0 and Y = 32) [possible explanation: subprogram at nwa.ads:46 should mention X and Y in a precondition]
+nwa.adb:155:12: medium: overflow check might fail (e.g. when X = 128) [possible explanation: subprogram at nwa.ads:46 should mention X in a precondition]
+nwa.adb:155:12: medium: range check might fail (e.g. when X = 256) [possible explanation: subprogram at nwa.ads:46 should mention X in a precondition]
 nwa.adb:162:15: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:162:15: info: range check proved (CVC4: 1 VC)
 nwa.adb:165:14: info: overflow check proved (CVC4: 1 VC)
@@ -77,7 +76,6 @@ nwa.adb:166:14: info: range check proved (CVC4: 1 VC)
 nwa.adb:167:14: info: overflow check proved (CVC4: 1 VC)
 nwa.adb:167:14: info: range check proved (CVC4: 1 VC)
 nwa.adb:168:14: info: division check proved (CVC4: 1 VC)
-nwa.adb:168:14: info: range check proved (CVC4: 1 VC)
 nwa.adb:175:14: medium: overflow check might fail (e.g. when X = 12797496590450976783 and Y = 1095781697649581119) [possible explanation: subprogram at nwa.ads:55 should mention X and Y in a precondition]
 nwa.adb:176:14: medium: divide by zero might fail [possible explanation: subprogram at nwa.ads:55 should mention X and Y in a precondition]
 nwa.adb:177:14: medium: overflow check might fail (e.g. when X = 9223372036854775808 and Y = 9223372036854775808) [possible explanation: subprogram at nwa.ads:55 should mention X and Y in a precondition]

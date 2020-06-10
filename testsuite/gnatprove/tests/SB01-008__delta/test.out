@@ -1,2 +1,2 @@
-test.adb:19:26: delta expression is not yet supported
-gnatprove: error during flow analysis and proof
+test.adb:17:05: warning: initialization of "L1" has no effect
+test.adb:19:05: warning: initialization of "L" has no effect

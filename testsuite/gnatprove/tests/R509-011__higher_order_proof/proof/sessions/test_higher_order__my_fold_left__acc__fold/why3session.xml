@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="8">
+<why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="2000"/>
 <prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="2000"/>
-<file format="whyml" proved="true">
+<file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
-<path name="test_higher_order__my_fold_left__acc__fold.mlw"/>
+<path name="test_higher_order__my_fold_left__acc__fold.gnat-json"/>
 <theory name="Test_higher_order__my_fold_left__acc__fold__subprogram_def" proved="true">
  <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
@@ -259,7 +259,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.73" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="777"/></proof>
+  <proof prover="0"><result status="valid" steps="674"/></proof>
   <proof prover="1"><result status="unknown" steps="414"/></proof>
   </goal>
   <goal name="def&#39;vc.74" expl="precondition" proved="true">
@@ -269,7 +269,7 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.76" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="546"/></proof>
+  <proof prover="0"><result status="valid" steps="599"/></proof>
   <proof prover="1"><result status="unknown" steps="394"/></proof>
   </goal>
   <goal name="def&#39;vc.77" expl="precondition" proved="true">
@@ -416,11 +416,11 @@
   <proof prover="1"><result status="valid" steps="27"/></proof>
   </goal>
   <goal name="def&#39;vc.120" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="4700"/></proof>
+  <proof prover="0"><result status="valid" steps="4301"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.121" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="6367"/></proof>
+  <proof prover="0"><result status="valid" steps="5264"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.122" expl="loop invariant preservation" proved="true">

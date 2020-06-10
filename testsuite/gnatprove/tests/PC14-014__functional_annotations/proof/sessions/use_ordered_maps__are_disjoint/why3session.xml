@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="8">
+<why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<file format="whyml" proved="true">
+<file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
-<path name="use_ordered_maps__are_disjoint.mlw"/>
+<path name="use_ordered_maps__are_disjoint.gnat-json"/>
 <theory name="Use_ordered_maps__are_disjoint__subprogram_def" proved="true">
  <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
@@ -146,7 +146,7 @@
   <proof prover="1"><result status="valid" steps="4102"/></proof>
   </goal>
   <goal name="def&#39;vc.37" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="4268"/></proof>
+  <proof prover="0"><result status="valid" steps="5184"/></proof>
   <proof prover="1"><result status="unknown" steps="9525"/></proof>
   </goal>
  </transf>

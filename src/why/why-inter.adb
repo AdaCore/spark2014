@@ -70,7 +70,8 @@ package body Why.Inter is
 
    subtype N_Has_Theory is Node_Kind with
      Static_Predicate => N_Has_Theory in N_String_Literal |
-                                         N_Aggregate;
+                                         N_Aggregate |
+                                         N_Delta_Aggregate;
    --  Subtype of nodes (instead of entities) which have an associated theory,
    --  and should be treated specially.
 
@@ -91,18 +92,21 @@ package body Why.Inter is
    --  even in the case Left = Right.
 
    function EW_Abstract_Shared
-     (N    : Node_Id;
-      Kind : EW_Type) return W_Type_Id
+     (N            : Node_Id;
+      Kind         : EW_Type;
+      Relaxed_Init : Boolean := False) return W_Type_Id
      with Pre => Is_Type (N)
                  and then Kind in EW_Abstract | EW_Split;
    --  Build a type node from an Ada type node, either of kind Split or
    --  Abstract.
 
-   function New_Kind_Base_Type (E : Entity_Id; Kind : EW_Type) return W_Type_Id
+   function New_Kind_Base_Type
+     (E : Entity_Id; Kind : EW_Type; Relaxed_Init : Boolean) return W_Type_Id
      with Pre => Kind in EW_Abstract | EW_Split;
    --  @param E The type entity for which we want to construct a why type
    --  @param Kind The kind we want the Why type to have. For now, EW_Split is
    --              only supported for arrays and discrete types.
+   --  @param Relaxed_Init True if we are interested in a wrapper type.
    --  @return The why type to be used for E. It will have the kind Kind. Its
    --          name may be the same as another type's name to avoid name
    --          duplication. It is the case for split forms and static array
@@ -167,6 +171,25 @@ package body Why.Inter is
       procedure Fixed_Constant_Pre_Op
         (State : in out Search_State;
          Node  : W_Fixed_Constant_Id);
+
+      procedure Clone_Substitution_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Clone_Substitution_Id);
+
+      -------------------------------
+      -- Clone_Substitution_Pre_Op --
+      -------------------------------
+
+      procedure Clone_Substitution_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Clone_Substitution_Id) is
+      begin
+         --  For clone substitutions, the node for the original name is
+         --  irrelevant
+
+         Traverse (State, +Get_Image (Node));
+         State.Control := Abandon_Children;
+      end Clone_Substitution_Pre_Op;
 
       ---------------------------
       -- Fixed_Constant_Pre_Op --
@@ -455,7 +478,7 @@ package body Why.Inter is
                            and then
                              (if Ekind (N) = E_Loop_Parameter
                               then not Is_Quantified_Loop_Param (N))
-                         else Nkind (N) = N_Aggregate
+                         else Nkind (N) in N_Aggregate | N_Delta_Aggregate
                            and then Is_Array_Type (Etype (N))));
       --  Returns True if N is relevant for theory imports
       --
@@ -792,9 +815,11 @@ package body Why.Inter is
    -- EW_Abstract --
    -----------------
 
-   function EW_Abstract (N : Node_Id) return W_Type_Id is
+   function EW_Abstract
+     (N : Node_Id; Relaxed_Init : Boolean := False) return W_Type_Id
+   is
    begin
-      return EW_Abstract_Shared (N, EW_Abstract);
+      return EW_Abstract_Shared (N, EW_Abstract, Relaxed_Init);
    end EW_Abstract;
 
    ------------------------
@@ -802,8 +827,9 @@ package body Why.Inter is
    ------------------------
 
    function EW_Abstract_Shared
-     (N    : Node_Id;
-      Kind : EW_Type) return W_Type_Id is
+     (N            : Node_Id;
+      Kind         : EW_Type;
+      Relaxed_Init : Boolean := False) return W_Type_Id is
    begin
       if Is_Standard_Boolean_Type (N) then
          return EW_Bool_Type;
@@ -815,13 +841,13 @@ package body Why.Inter is
       --  types.
 
       elsif Is_Class_Wide_Type (N) then
-         return EW_Abstract_Shared (Specific_Tagged (N), Kind);
+         return EW_Abstract_Shared (Specific_Tagged (N), Kind, Relaxed_Init);
 
       elsif Retysp (N) /= N then
-         return EW_Abstract_Shared (Retysp (N), Kind);
+         return EW_Abstract_Shared (Retysp (N), Kind, Relaxed_Init);
       else
          pragma Assert (Entity_In_SPARK (N));
-         return New_Kind_Base_Type (N, Kind);
+         return New_Kind_Base_Type (N, Kind, Relaxed_Init);
       end if;
    end EW_Abstract_Shared;
 
@@ -836,9 +862,11 @@ package body Why.Inter is
    -- EW_Split --
    --------------
 
-   function EW_Split (N : Node_Id) return W_Type_Id is
+   function EW_Split
+     (N : Node_Id; Relaxed_Init : Boolean := False) return W_Type_Id
+   is
    begin
-      return EW_Abstract_Shared (N, EW_Split);
+      return EW_Abstract_Shared (N, EW_Split, Relaxed_Init);
    end EW_Split;
 
    -------------------------
@@ -1108,7 +1136,7 @@ package body Why.Inter is
 
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id is
    begin
-      return New_Kind_Base_Type (E, EW_Abstract);
+      return New_Kind_Base_Type (E, EW_Abstract, False);
    end New_Abstract_Base_Type;
 
    ------------------------
@@ -1116,8 +1144,8 @@ package body Why.Inter is
    ------------------------
 
    function New_Kind_Base_Type
-     (E    : Entity_Id;
-      Kind : EW_Type) return W_Type_Id is
+     (E : Entity_Id; Kind : EW_Type; Relaxed_Init : Boolean) return W_Type_Id
+   is
    begin
 
       --  We avoid having renaming of types in Why to allow using the same
@@ -1130,17 +1158,20 @@ package body Why.Inter is
          --  Static array types and arrays split forms are in fact Why3 maps
 
          return New_Type
-           (Ada_Node   => E,
-            Is_Mutable => False,
-            Type_Kind  => Kind,
-            Name       =>
+           (Ada_Node     => E,
+            Is_Mutable   => False,
+            Type_Kind    =>
+              (if Is_Static_Array_Type (Retysp (E)) then EW_Abstract
+               else Kind),
+            Relaxed_Init => Relaxed_Init,
+            Name         =>
               New_Name
                 (Ada_Node => E,
                  Symb     => NID ("map"),
                  Module   =>
                    New_Module
                      (File => No_Symbol,
-                      Name => Img (Get_Array_Theory_Name (E)))));
+                      Name => Img (Get_Array_Theory_Name (E, Relaxed_Init)))));
       elsif Kind = EW_Split and then Has_Fixed_Point_Type (E) then
 
          --  The base type of a fixed point type is __fixed. Do not call
@@ -1148,25 +1179,29 @@ package body Why.Inter is
          --  E has not been constructed yet.
 
          return New_Type
-           (Ada_Node   => E,
-            Is_Mutable => False,
-            Type_Kind  => Kind,
-            Name       => Get_Name (M_Main.Fixed_Type));
+           (Ada_Node     => E,
+            Is_Mutable   => False,
+            Type_Kind    => Kind,
+            Relaxed_Init => Relaxed_Init,
+            Name         => Get_Name (M_Main.Fixed_Type));
       elsif Kind = EW_Split then
 
          --  Discrete types split forms are their base why type
 
          pragma Assert (Use_Split_Form_For_Type (E));
          return New_Type
-           (Ada_Node   => E,
-            Is_Mutable => False,
-            Type_Kind  => EW_Split,
-            Name       => Get_Name (Base_Why_Type (E)));
+           (Ada_Node     => E,
+            Is_Mutable   => False,
+            Relaxed_Init => Relaxed_Init,
+            Type_Kind    => EW_Split,
+            Name         => Get_Name (Base_Why_Type (E)));
       else
-         return New_Type (Ada_Node   => E,
-                          Is_Mutable => False,
-                          Type_Kind  => EW_Abstract,
-                          Name       => To_Why_Type (E));
+         return New_Type (Ada_Node     => E,
+                          Is_Mutable   => False,
+                          Relaxed_Init => Relaxed_Init,
+                          Type_Kind    => EW_Abstract,
+                          Name         => To_Why_Type
+                            (E, Relaxed_Init => Relaxed_Init));
       end if;
    end New_Kind_Base_Type;
 
@@ -1224,13 +1259,14 @@ package body Why.Inter is
    ---------------
 
    function To_Why_Id
-     (E        : Entity_Id;
-      Domain   : EW_Domain := EW_Prog;
-      Local    : Boolean := False;
-      Selector : Selection_Kind := Standard;
-      No_Comp  : Boolean := False;
-      Rec      : Entity_Id := Empty;
-      Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
+     (E            : Entity_Id;
+      Domain       : EW_Domain := EW_Prog;
+      Local        : Boolean := False;
+      Selector     : Selection_Kind := Standard;
+      No_Comp      : Boolean := False;
+      Rec          : Entity_Id := Empty;
+      Typ          : W_Type_Id := Why_Empty;
+      Relaxed_Init : Boolean := False) return W_Identifier_Id
    is
       Suffix : constant String := Short_Name (E);
 
@@ -1246,7 +1282,9 @@ package body Why.Inter is
          pragma Assert (Rec /= Empty);
          declare
             Ada_N  : constant Entity_Id := Retysp (Rec);
-            Module : constant W_Module_Id := E_Module (Ada_N);
+            Module : constant W_Module_Id :=
+              (if Relaxed_Init then E_Init_Module (Ada_N)
+               else E_Module (Ada_N));
             Orig   : constant Entity_Id :=
               (if Ekind (E) in E_Component | E_Discriminant | Type_Kind
                then Representative_Component (E)
@@ -1277,9 +1315,11 @@ package body Why.Inter is
               (if Ekind (E) in Subprogram_Kind | Entry_Kind
                  and then Domain = EW_Prog
                then
-                 E_Axiom_Module (E)
+                  E_Axiom_Module (E)
+               elsif Relaxed_Init then
+                  E_Init_Module (E)
                else
-                 E_Module (E));
+                  E_Module (E));
             Namespace : constant Symbol :=
               (case Selector is
                  when Dispatch  => NID (To_String (WNE_Dispatch_Module)),
@@ -1332,16 +1372,19 @@ package body Why.Inter is
    -----------------
 
    function To_Why_Type
-     (E     : Entity_Id;
-      Local : Boolean := False) return W_Name_Id
+     (E            : Entity_Id;
+      Local        : Boolean := False;
+      Relaxed_Init : Boolean := False) return W_Name_Id
    is
-      Suffix : constant String := Short_Name (E);
+      Suffix : constant String := Short_Name (E)
+        & (if Relaxed_Init then To_String (WNE_Init_Wrapper_Suffix)
+           else "");
    begin
       --  Classwide types are translated as their corresponding specific tagged
       --  types.
 
       if Is_Class_Wide_Type (E) then
-         return To_Why_Type (Specific_Tagged (E), Local);
+         return To_Why_Type (Specific_Tagged (E), Local, Relaxed_Init);
 
       elsif Local then
          return New_Name (Ada_Node => E, Symb => NID (Suffix));
@@ -1351,30 +1394,20 @@ package body Why.Inter is
            New_Name
              (Ada_Node => E,
               Symb     => NID (Suffix),
-              Module   => E_Module (E));
+              Module   => (if Relaxed_Init then E_Init_Module (E)
+                           else E_Module (E)));
       end if;
-
    end To_Why_Type;
 
    ------------------
    -- Type_Of_Node --
    ------------------
 
-   function Type_Of_Node (N : Node_Id) return W_Type_Id
-   is
-      E : constant Entity_Id := Type_Of_Node (N);
+   function Type_Of_Node (N : Node_Id) return W_Type_Id is
    begin
-
-      --  Handle special cases boolean/real
-
-      if Is_Standard_Boolean_Type (E) then
-         return EW_Bool_Type;
-      elsif E = Universal_Fixed then
-         return EW_Real_Type;
-
       --  look through 'old and 'loop_entry
 
-      elsif Nkind (N) = N_Attribute_Reference
+      if Nkind (N) = N_Attribute_Reference
         and then Get_Attribute_Id (Attribute_Name (N)) in
           Attribute_Old | Attribute_Loop_Entry
       then
@@ -1388,12 +1421,40 @@ package body Why.Inter is
         and then not Is_Part_Of_Protected_Object (Entity (N))
       then
          return Why_Type_Of_Entity (Entity (N));
-      elsif Is_Type (E)
-        and then Use_Split_Form_For_Type (E)
-      then
-         return EW_Split (E);
       else
-         return EW_Abstract (E);
+         declare
+            E            : constant Entity_Id := Type_Of_Node (N);
+            Init_Wrapper : constant Boolean :=
+              (case Nkind (N) is
+                  when N_Entity                       =>
+                    (if Is_Type (N) then False
+                     elsif Is_Object (N) then Obj_Has_Relaxed_Init (N)
+                     elsif Ekind (N) = E_Function then Fun_Has_Relaxed_Init (N)
+                     else Has_Relaxed_Init (Etype (N))),
+                  when N_Identifier | N_Expanded_Name =>
+                    Obj_Has_Relaxed_Init (Entity (N)),
+                  when others                         =>
+                    Expr_Has_Relaxed_Init (N));
+         begin
+            --  If N might be partially initialized, use a wrapper type
+
+            if Init_Wrapper then
+               return EW_Abstract (E, Relaxed_Init => True);
+
+            --  Handle special cases boolean/real
+
+            elsif Is_Standard_Boolean_Type (E) then
+               return EW_Bool_Type;
+            elsif E = Universal_Fixed then
+               return EW_Real_Type;
+            elsif Is_Type (E)
+              and then Use_Split_Form_For_Type (E)
+            then
+               return EW_Split (E);
+            else
+               return EW_Abstract (E);
+            end if;
+         end;
       end if;
    end Type_Of_Node;
 

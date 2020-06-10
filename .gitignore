@@ -16,6 +16,7 @@
 *.pyc
 *.swp
 *.bak
+.bugtool
 _build
 auto.cgpr
 GNAT-*

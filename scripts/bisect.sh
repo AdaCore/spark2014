@@ -15,6 +15,7 @@
 # 4. clean up afterwards
 #    $ git bisect reset
 
+git submodule update
 make || exit 125
 make install-all || exit 125
 cd testsuite/gnatprove

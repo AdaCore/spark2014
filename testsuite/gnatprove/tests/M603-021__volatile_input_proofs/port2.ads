@@ -5,7 +5,7 @@
 package Port2
 is
    -------------------------------------
-   -- Evaluation order and LRM 7.1.3(12)
+   -- Evaluation order and LRM 7.1.3(10)
    -------------------------------------
 
    V1 : Integer

@@ -1,5 +1,3 @@
 uninit_alloc.ads:10:25: uninitialized allocator without default initialization is not allowed in SPARK
 uninit_alloc.ads:10:25: violation of aspect SPARK_Mode at line 1
-uninit_alloc.ads:12:27: uninitialized allocator without default initialization is not allowed in SPARK
-uninit_alloc.ads:12:27: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

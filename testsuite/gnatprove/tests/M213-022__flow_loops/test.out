@@ -63,7 +63,6 @@ test.adb:113:12: warning: unreachable code (CVC4: 1 VC)
 test.adb:117:04: warning: analyzing unreferenced procedure "For_Test_02"
 test.adb:117:27: info: initialization of "X" proved
 test.adb:120:38: info: unrolling loop
-test.adb:130:17: info: range check proved (CVC4: 1 VC)
 test.adb:130:17: medium: overflow check might fail [possible explanation: loop at line 129 should mention X in a loop invariant]
 test.adb:134:17: medium: range check might fail [possible explanation: loop at line 129 should mention X in a loop invariant]
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"

@@ -1,10 +1,10 @@
 a.adb:11:35: info: unrolling loop
 a.adb:12:10: high: "Global_AA" must be listed in the Global aspect of "initGlobalsA" (SPARK RM 6.1.4(14))
-a.adb:23:16: info: initialization check proved (CVC4: 1 VC)
+a.adb:23:25: info: initialization check proved (CVC4: 1 VC)
 a.adb:30:27: info: overflow check proved (CVC4: 1 VC)
-a.adb:30:29: info: initialization check proved (CVC4: 1 VC)
+a.adb:30:38: info: initialization check proved (CVC4: 1 VC)
 a.adb:31:17: info: overflow check proved (CVC4: 1 VC)
-a.adb:31:19: info: initialization check proved (CVC4: 1 VC)
+a.adb:31:28: info: initialization check proved (CVC4: 1 VC)
 a.ads:15:15: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 a.ads:26:06: info: data dependencies proved
 aa.adb:20:27: info: overflow check proved (CVC4: 1 VC)

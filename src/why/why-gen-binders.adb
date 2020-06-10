@@ -86,6 +86,50 @@ package body Why.Gen.Binders is
       return New_Identifier (Name => "self__", Typ => Typ);
    end Concurrent_Self_Ident;
 
+   ---------------------------
+   -- Effects_Append_Binder --
+   ---------------------------
+
+   procedure Effects_Append_Binder (Eff : W_Effects_Id; Binder : Item_Type) is
+   begin
+      case Binder.Kind is
+         when Regular
+            | Concurrent_Self
+         =>
+            if Binder.Main.Mutable then
+               Effects_Append (Eff, Binder.Main.B_Name);
+            end if;
+
+         when UCArray =>
+            Effects_Append (Eff, Binder.Content.B_Name);
+
+         --  The is_moved field is never included in the effects, as a call
+         --  cannot leave any output, whether parameter or global, in a moved
+         --  state.
+
+         when Pointer =>
+            if Binder.Mutable then
+               Effects_Append (Eff, Binder.Value.B_Name);
+               Effects_Append (Eff, Binder.Is_Null);
+               Effects_Append (Eff, Binder.Address);
+            elsif Binder.Value.Mutable then
+               Effects_Append (Eff, Binder.Value.B_Name);
+            end if;
+
+         when DRecord =>
+            if Binder.Fields.Present then
+               Effects_Append (Eff, Binder.Fields.Binder.B_Name);
+            end if;
+            if Binder.Discrs.Present
+              and then Binder.Discrs.Binder.Mutable
+            then
+               Effects_Append (Eff, Binder.Discrs.Binder.B_Name);
+            end if;
+
+         when Func => raise Program_Error;
+      end case;
+   end Effects_Append_Binder;
+
    ----------------------------
    -- Get_Ada_Node_From_Item --
    ----------------------------
@@ -307,7 +351,8 @@ package body Why.Gen.Binders is
    -- Get_Why_Type_From_Item --
    ----------------------------
 
-   function Get_Why_Type_From_Item (B : Item_Type) return W_Type_Id is
+   function Get_Why_Type_From_Item
+     (B : Item_Type) return W_Type_Id is
    begin
       case B.Kind is
          when Regular
@@ -316,13 +361,31 @@ package body Why.Gen.Binders is
             return Get_Typ (B.Main.B_Name);
 
          when DRecord =>
-            return EW_Abstract (B.Typ);
+
+            --  To know if we should use the wrapper type, see if the
+            --  fields component comes from the wrapper module.
+
+            declare
+               Relaxed_Init : constant Boolean :=
+                 (if B.Fields.Present and Might_Contain_Relaxed_Init (B.Typ)
+                  then Get_Module (Get_Name (Get_Typ (B.Fields.Binder.B_Name)))
+                     = E_Init_Module (B.Typ)
+                  else False);
+            begin
+               return EW_Abstract (B.Typ, Relaxed_Init => Relaxed_Init);
+            end;
 
          when UCArray =>
             return Get_Typ (B.Content.B_Name);
 
          when Pointer =>
-            return EW_Abstract (Etype (B.Value.Ada_Node));
+
+            --  Currently, we do not create wrapper modules for pointers
+
+            return
+              EW_Abstract
+                (Etype (B.Value.Ada_Node),
+                 Relaxed_Init => False);
 
          when Func =>
             return Get_Typ (B.For_Logic.B_Name);
@@ -359,9 +422,9 @@ package body Why.Gen.Binders is
                when Pointer =>
                   pragma Assert (B.Value.Mutable);
                   if B.Mutable or else (Keep_Local and then B.Local) then
-                     Count := Count + 3;
+                     Count := Count + 4;
                   else
-                     Count := Count + 1;
+                     Count := Count + 2;
                   end if;
 
                when UCArray =>
@@ -514,6 +577,12 @@ package body Why.Gen.Binders is
                           Typ      => Get_Typ (B.Is_Null));
                   end if;
 
+                  B.Is_Moved :=
+                    New_Identifier
+                      (Ada_Node => Get_Ada_Node (+B.Is_Moved),
+                       Name     => Local_Name & "__is_moved",
+                       Typ      => Get_Typ (B.Is_Moved));
+
                   if B.Init.Present then
                      B.Init.Id :=
                        New_Identifier
@@ -579,28 +648,23 @@ package body Why.Gen.Binders is
       --  If we are not in a function declaration, we use the actual subtype
       --  for the parameter if one is provided.
 
-      Spec_Ty : constant Entity_Id :=
+      Spec_Ty         : constant Entity_Id :=
         (if Is_Type (Use_Ty) and then Is_Class_Wide_Type (Use_Ty)
          then Get_Specific_Type_From_Classwide (Use_Ty)
          else Use_Ty);
-
-      Ty : constant Entity_Id :=
+      Ty              : constant Entity_Id :=
         (if Is_Type (Spec_Ty) then Retysp (Spec_Ty) else Spec_Ty);
+      Needs_Init_Flag : constant Boolean :=
+        Is_Object (E)
+         and then Is_Mutable_In_Why (E)
+         and then Is_Scalar_Type (Ty)
+         and then Obj_Has_Relaxed_Init (E);
+      --  We only need an initialization flag for mutable scalar objects
 
       function New_Init_Id (Name : W_Identifier_Id) return Opt_Id is
-        (if Is_Mutable_In_Why (E)
-         and then Needs_Init_Wrapper_Type (Ty)
-         and then
-           (Ekind (E) = E_Out_Parameter
-            or else
-              (Ekind (E) = E_Variable
-               and then Nkind (Enclosing_Declaration (E)) =
-                 N_Object_Declaration
-               and then No (Expression (Enclosing_Declaration (E)))))
+        (if Needs_Init_Flag
          then (Present => True, Id => Init_Append (Name))
          else (Present => False));
-      --  We only need an initialization flag for out parameters and default
-      --  initialized variables.
 
    begin
       --  For procedures, use a regular binder
@@ -622,7 +686,7 @@ package body Why.Gen.Binders is
 
       elsif Ekind (E) = E_Function then
          declare
-            Typ : constant W_Type_Id := Type_Of_Node (Ty);
+            Typ : constant W_Type_Id := Type_Of_Node (E);
          begin
             return (Func,
                     False,
@@ -665,7 +729,8 @@ package body Why.Gen.Binders is
          --    val p (a : ref __split, a__first : rep, a__last : rep)
 
          declare
-            Typ    : constant W_Type_Id := EW_Split (Ty);
+            Typ    : constant W_Type_Id :=
+              EW_Split (Ty, Relaxed_Init => Obj_Has_Relaxed_Init (E));
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ, Local => Local);
             Binder : constant Binder_Type :=
@@ -729,15 +794,18 @@ package body Why.Gen.Binders is
                Result.Fields :=
                  (Present => True,
                   Binder  =>
-                    Binder_Type'(Ada_Node => E,
-                                 B_Name   =>
-                                   Field_Append
-                                     (Base => Name,
-                                      Typ  =>
-                                        Field_Type_For_Fields (Ty)),
-                                 B_Ent    => Null_Entity_Name,
-                                 Mutable  => True,
-                                 Labels   => <>));
+                    Binder_Type'
+                      (Ada_Node => E,
+                       B_Name   =>
+                         Field_Append
+                           (Base     => Name,
+                            Typ      =>
+                              Field_Type_For_Fields
+                                (Ty,
+                                 Init_Wrapper => Obj_Has_Relaxed_Init (E))),
+                       B_Ent    => Null_Entity_Name,
+                       Mutable  => True,
+                       Labels   => <>));
             end if;
 
             if Count_Discriminants (Ty) > 0 then
@@ -794,12 +862,11 @@ package body Why.Gen.Binders is
             --  don't give it a type). It is only used to prefix generic names
             --  of elements of the pointer.
 
-            Mutable : constant Boolean := not Is_Constant_Object (E);
             Result  : Item_Type :=
               (Kind    => Pointer,
                Local   => Local,
                Init    => New_Init_Id (Name),
-               Mutable => Mutable,
+               Mutable => not Is_Constant_Object (E),
                others  => <>);
 
          begin
@@ -825,6 +892,11 @@ package body Why.Gen.Binders is
                 (Base => Name,
                  Typ  => EW_Bool_Type);
 
+            Result.Is_Moved :=
+              Is_Moved_Append
+                (Base => Name,
+                 Typ  => EW_Bool_Type);
+
             return Result;
          end;
 
@@ -832,12 +904,24 @@ package body Why.Gen.Binders is
          declare
             Typ : constant W_Type_Id :=
               (if Ekind (E) = E_Loop_Parameter
-               and then Is_Standard_Boolean_Type (Ty) then
-                    EW_Int_Type
+               and then Is_Standard_Boolean_Type (Ty)
+               then EW_Int_Type
+
+               --  Use an init wrapper type for objects with relaxed init
+
+               elsif Obj_Has_Relaxed_Init (E)
+               then EW_Init_Wrapper (Type_Of_Node (Ty))
 
                --  Otherwise we use Why3 representation for the type
 
                else Type_Of_Node (Ty));
+
+            pragma Assert
+              (if Is_Scalar_Type (Ty) and then Obj_Has_Relaxed_Init (E)
+               then Needs_Init_Flag);
+            --  Scalar types are translated as split types. If they have
+            --  relaxed initialization, they should have a separate init
+            --  flag.
 
             Name   : constant W_Identifier_Id :=
               To_Why_Id (E => E, Typ => Typ, Local => Local);
@@ -1374,7 +1458,7 @@ package body Why.Gen.Binders is
                Domain   => EW_Term,
                Labels   => Symbol_Sets.Empty_Set,
                Def      => T,
-               Typ      => EW_Init_Wrapper (Etype (Ent), EW_Split));
+               Typ      => EW_Split (Etype (Ent), Relaxed_Init => True));
          end;
       end if;
 
@@ -1446,6 +1530,12 @@ package body Why.Gen.Binders is
                         others  => <>);
                      Count := Count + 2;
                   end if;
+
+                  Result (Count) :=
+                    (B_Name  => Cur.Is_Moved,
+                     Mutable => True,
+                     others  => <>);
+                  Count := Count + 1;
 
                when DRecord =>
                   if Cur.Fields.Present

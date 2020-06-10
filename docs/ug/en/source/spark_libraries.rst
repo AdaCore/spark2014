@@ -3,6 +3,106 @@
 |SPARK| Libraries
 =================
 
+Big Numbers Library
+-------------------
+
+Annotations such as preconditions, postconditions, assertions, loop invariants,
+are analyzed by |GNATprove| with the exact same meaning that they have during
+execution. In particular, evaluating the expressions in an annotation may raise
+a run-time error, in which case |GNATprove| will attempt to prove that this
+error cannot occur, and report a warning otherwise.
+
+In |SPARK|, scalar types such as integer and floating point types are bounded
+machine types, so arithmetic computations over them can lead to overflows when
+the result does not fit in the bounds of the type used to hold it. In some
+cases, it is convenient to express properties in annotations as they would be
+expressed in mathematics, where quantities are unbounded, for example:
+
+.. code-block:: ada
+
+ function Add (X, Y : Integer) return Integer with
+   Pre  => X + Y in Integer,
+   Post => Add'Result = X + Y;
+
+The precondition of ``Add`` states that the result of adding its two parameters
+should fit in type ``Integer``. Unfortunately, evaluating this expression will
+fail an overflow check, because the result of ``X + Y`` is stored in a temporary
+of type ``Integer``.
+
+To alleviate this issue, it is possible to use the standard library for big
+numbers. It contains support for:
+
+* Unbounded integers in ``Ada.Numerics.Big_Numbers.Big_Integers``.
+
+* Unbounded rational numbers in ``Ada.Numerics.Big_Numbers.Big_Reals``.
+
+Theses libraries define representations for big numbers and basic arithmetic
+operations over them, as well as conversions from bounded scalar types such as
+floating point numbers or integer types.
+Though these operations do not have postconditions, they are interpreted by
+|GNATprove| as the equivalent operations on mathematical integers and real
+numbers. This allows to benefit from precise support on code using them.
+
+.. note::
+
+   Some functionality of the library are not precisely supported. This includes
+   in particular conversions to and from strings, conversions of ``Big_Real`` to
+   fixed-point or floating-point types, and ``Numerator`` and ``Denominator``
+   functions.
+
+The big number library can be used both in annotations and in actual code, as
+it is executable, though of course, using it in production code means incurring
+its runtime costs. It can be considered a good trade-off to only use it in
+contracts, if they are disabled in production builds. For example, we can
+rewrite the precondition of our ``Add`` function with big integers to avoid
+overflows:
+
+.. code-block:: ada
+
+   function Add (X, Y : Integer) return Integer with
+     Pre  => In_Range (To_Big_Integer (X) + To_Big_Integer (Y),
+                       Low  => To_Big_Integer (Integer'First),
+                       High => To_Big_Integer (Integer'Last)),
+     Post => Add'Result = X + Y;
+
+As a more advanced example, it is also possible to introduce a ghost model for
+numerical computations on floating point numbers as a mathematical real
+number so as to be able to express properties about rounding errors. In the
+following snippet, we use the ghost variable ``M`` as a model of the
+floating point variable ``Y``, so we can assert that the result of our
+floating point calculations are not too far from the result of the same
+computations on real numbers.
+
+.. code-block:: ada
+
+   declare
+      package Float_Convs is new Float_Conversions (Num => Float);
+      --  Introduce conversions to and from values of type Float
+
+      subtype Small_Float is Float range -100.0 .. 100.0;
+
+      function Init return Small_Float with Import;
+      --  Unknown initial value of the computation
+
+      X : constant Small_Float := Init;
+      Y : Float := X;
+      M : Big_Real := Float_Convs.To_Big_Real (X) with Ghost;
+      --  M is used to mimic the computations done on Y on real numbers
+ 
+   begin
+      Y := Y * 100.0;
+      M := M * Float_Convs.To_Big_Real (100.0);
+      Y := Y + 100.0;
+      M := M + Float_Convs.To_Big_Real (100.0);
+      
+      pragma Assert
+        (In_Range (Float_Convs.To_Big_Real (Y) - M,
+                   Low  => Float_Convs.To_Big_Real (- 0.001),
+                   High => Float_Convs.To_Big_Real (0.001)));
+      --  The rounding errors introduced by the floating-point computations
+      --  are not too big.
+   end;
+
 .. _Functional Containers Library:
 
 Functional Containers Library

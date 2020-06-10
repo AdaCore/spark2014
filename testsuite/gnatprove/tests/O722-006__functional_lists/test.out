@@ -20,13 +20,13 @@ use_lists.adb:3:22: side effects of function "First" are not modeled in SPARK
 use_lists.adb:5:14: medium: "L2" is not set
 use_lists.adb:5:14: medium: private part of "L2" is not set
 use_lists.adb:6:13: side effects of function "Has_Element" are not modeled in SPARK
-use_lists.adb:8:13: medium: loop invariant might fail after first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
 use_lists.adb:8:13: medium: loop invariant might fail in first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
+use_lists.adb:8:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
 use_lists.adb:8:35: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.adb:8:64: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:10:13: info: loop invariant initialization proved (CVC4: 1 VC)
 use_lists.adb:10:40: info: function contract not available for proof ("Length" might not return)
-use_lists.adb:11:18: medium: loop invariant might fail after first iteration, cannot prove Is_Incr (Get (Get_Element_Model (L1), N), Get (Get_Element_Model (L2), N))
+use_lists.adb:11:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Is_Incr (Get (Get_Element_Model (L1), N), Get (Get_Element_Model (L2), N))
 use_lists.adb:11:32: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:12:32: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:13:13: info: precondition proved (CVC4: 1 VC)

@@ -24,8 +24,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Hashed_Maps;
-with Ada.Strings.Fixed;               use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Aspects;                         use Aspects;
@@ -41,20 +39,20 @@ with Gnat2Why_Args;
 with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
-with Nmake;                           use Nmake;
+with Nmake;
 with Opt;                             use Opt;
-with Restrict;                        use Restrict;
-with Rident;                          use Rident;
 with Rtsfind;                         use Rtsfind;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
-with Sem_Util;                        use Sem_Util;
 with Snames;                          use Snames;
-with SPARK_Annotate;                  use SPARK_Annotate;
+with SPARK_Util;                      use SPARK_Util;
+with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
+with SPARK_Definition.Violations;     use SPARK_Definition.Violations;
 with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Hardcoded;            use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
 with Stand;                           use Stand;
 with String_Utils;                    use String_Utils;
@@ -125,31 +123,10 @@ package body SPARK_Definition is
    -- Adding Entities for Translation --
    -------------------------------------
 
-   Emit_Messages : Boolean := True;
-   --  Messages are emitted only if this flag is set
-
-   Current_SPARK_Pragma : Node_Id := Empty;
-   --  The current applicable SPARK_Mode pragma, if any, to reference in error
-   --  messages when a violation is encountered.
-
-   Current_Delayed_Aspect_Type : Entity_Id := Empty;
-   --  When processing delayed aspect type (e.g. Predicate) this is set to the
-   --  delayed type itself; used to reference the type in the error message.
-
-   Current_Incomplete_Type : Entity_Id := Empty;
-   --  When processing incomplete types, this is set to the access type to the
-   --  incomplete type; used to reference the type in the error message.
-
    Inside_Actions : Boolean := False;
    --  Set to True when traversing actions (statements introduced by the
    --  compiler inside expressions), which require a special translation.
    --  Those entities are stored in Actions_Entity_Set.
-
-   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean
-   with Global => (Input => (Current_SPARK_Pragma,
-                             Current_Delayed_Aspect_Type));
-   --  Returns True iff Current_SPARK_Pragma is not Empty, and corresponds to
-   --  the given Mode.
 
    --  There are two possibilities when marking an entity, depending on whether
    --  this is in the context of a toplevel subprogram body or not. In the
@@ -240,6 +217,14 @@ package body SPARK_Definition is
    Goto_Labels : Node_Sets.Set;
    --  Goto labels encountered during marking
 
+   Raise_Exprs_From_Pre : Node_Sets.Set;
+   --  Store raise expressions occuring in preconditions
+
+   Relaxed_Init : Node_To_Bool_Maps.Map;
+   --  Map representative types which can be parts of objects with relaxed
+   --  initialization to a flag which is true if the type has relaxed
+   --  initialization itself.
+
    function Entity_In_SPARK (E : Entity_Id) return Boolean
      renames Entities_In_SPARK.Contains;
 
@@ -260,6 +245,9 @@ package body SPARK_Definition is
 
    function Get_Incomplete_Access (E : Entity_Id) return Entity_Id is
      (Access_To_Incomplete_Views.Element (Retysp (E)));
+
+   function Raise_Occurs_In_Pre (N : Node_Id) return Boolean renames
+     Raise_Exprs_From_Pre.Contains;
 
    function Is_Loop_Entity (E : Entity_Id) return Boolean
      renames Loop_Entity_Set.Contains;
@@ -335,563 +323,6 @@ package body SPARK_Definition is
    end Private_Spec_In_SPARK;
 
    ----------------------
-   -- SPARK_Violations --
-   ----------------------
-
-   package SPARK_Violations is
-
-      package Violation_Root_Causes is
-        new Ada.Containers.Indefinite_Hashed_Maps
-          (Key_Type        => Node_Id,
-           Element_Type    => String,
-           Hash            => Node_Hash,
-           Equivalent_Keys => "=",
-           "="             => "=");
-      use Violation_Root_Causes;
-
-      Violation_Detected : Boolean := False;
-      --  Set to True when a violation is detected
-
-      Violation_Root_Cause : Violation_Root_Causes.Map;
-      --  Mapping from nodes not in SPARK to a description of the root cause
-      --  of the underlying violation. This is used in error messages when the
-      --  violation originates in that node.
-
-      Last_Violation_Root_Cause_Node : Node_Id := Empty;
-      --  Last node which had a corresponding root cause for which a violation
-      --  was detected. This node is used for the analysis of entities, and is
-      --  saved/restored around Mark_Entity. Its value is not relevant outside
-      --  of the analysis of an entity.
-
-      function Get_Violation_Root_Cause (N : Node_Id) return String
-      --  Return a message explaining the root cause of the violation in N not
-      --  being in SPARK, if any, or the empty string otherwise.
-      is
-        (if Violation_Root_Cause.Contains (N) then
-           Violation_Root_Cause.Element (N)
-         else "");
-
-      procedure Add_Violation_Root_Cause (N : Node_Id; Msg : String)
-        --  Add a message explaining the root cause of the violation in N not
-        --  being in SPARK.
-      with Pre => Emit_Messages and then Present (N) and then Msg /= "";
-
-      procedure Add_Violation_Root_Cause (N : Node_Id; From : Node_Id)
-        --  Propagate the root cause message explaining the violation in From
-        --  not being in SPARK to N.
-      with Pre => Emit_Messages;
-
-      procedure Mark_Unsupported
-        (Msg      : String;
-         N        : Node_Id;
-         Cont_Msg : String := "")
-      with
-        Global => (Output => Violation_Detected,
-                   Input  => Current_SPARK_Pragma);
-      --  Mark node N as an unsupported SPARK construct. An error message is
-      --  issued if current SPARK_Mode is On. Cont_Msg is a continuous message
-      --  when specified.
-
-      procedure Mark_Violation
-        (Msg           : String;
-         N             : Node_Id;
-         SRM_Reference : String := "";
-         Cont_Msg      : String := "")
-      with
-        Global => (Output => Violation_Detected,
-                   Input  => Current_SPARK_Pragma),
-        Pre => SRM_Reference = ""
-                 or else
-              (SRM_Reference'Length > 9
-               and then Head (SRM_Reference, 9) = "SPARK RM ");
-      --  Mark node N as a violation of SPARK. An error message pointing to the
-      --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is
-      --  On. If SRM_Reference is set, the reference to the SRM is appended
-      --  to the error message. If Cont_Msg is set, a continuation message
-      --  is issued.
-
-      procedure Mark_Violation
-        (N    : Node_Id;
-         From : Entity_Id)
-      with Global => (Output => Violation_Detected,
-                      Input  => Current_SPARK_Pragma);
-      --  Mark node N as a violation of SPARK, due to the use of entity
-      --  From which is not in SPARK. An error message is issued if current
-      --  SPARK_Mode is On.
-
-      procedure Mark_Violation_In_Tasking (N : Node_Id)
-      with
-        Global => (Output => Violation_Detected,
-                   Input  => Current_SPARK_Pragma),
-        Pre => not Is_SPARK_Tasking_Configuration;
-      --  Mark node N as a violation of SPARK because of unsupported tasking
-      --  configuration. An error message is issued if current SPARK_Mode is
-      --  On.
-
-      procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id)
-      with Global => (Input => (Current_SPARK_Pragma,
-                                Current_Delayed_Aspect_Type));
-      --  Issue an error continuation message for node N with the location of
-      --  the violated SPARK_Mode pragma/aspect.
-
-      Ravenscar_Profile_Result : Boolean := False;
-      --  This switch memoizes the result of Ravenscar_Profile function calls
-      --  for improved efficiency. Valid only if Ravenscar_Profile_Cached is
-      --  True. Note: if this switch is ever set True, it is never turned off
-      --  again.
-
-      Ravenscar_Profile_Cached : Boolean := False;
-      --  This flag is set to True if the Ravenscar_Profile_Result contains the
-      --  correct cached result of Ravenscar_Profile calls.
-
-      function GNATprove_Tasking_Profile return Boolean;
-      --  Tests if configuration pragmas and restrictions corresponding to the
-      --  tasking profile supported by the GNATprove (which is in the middle
-      --  between the Ravenscar profile and GNAT Extended Ravenscar profile)
-      --  are currently in effect (set by pragma Profile or by an appropriate
-      --  set of individual Restrictions pragmas). Returns True only if all the
-      --  required settings are set.
-
-      function Sequential_Elaboration return Boolean is
-      --  Check if Partition_Elaboration_Policy is set to Sequential
-        (Partition_Elaboration_Policy = 'S');
-
-      function Is_SPARK_Tasking_Configuration return Boolean is
-      --  Check tasking configuration required by SPARK and possibly mark
-      --  violation on node N.
-        (GNATprove_Tasking_Profile and then Sequential_Elaboration);
-
-   end SPARK_Violations;
-
-   package body SPARK_Violations is
-
-      ------------------------------
-      -- Add_Violation_Root_Cause --
-      ------------------------------
-
-      procedure Add_Violation_Root_Cause (N : Node_Id; Msg : String) is
-      begin
-         Violation_Root_Cause.Include (N, Msg);
-         Last_Violation_Root_Cause_Node := N;
-      end Add_Violation_Root_Cause;
-
-      procedure Add_Violation_Root_Cause (N : Node_Id; From : Node_Id) is
-         Msg : constant String := Get_Violation_Root_Cause (From);
-      begin
-         if Msg /= "" then
-            Add_Violation_Root_Cause (N, Msg);
-         end if;
-      end Add_Violation_Root_Cause;
-
-      -------------------------------
-      -- GNATprove_Tasking_Profile --
-      -------------------------------
-
-      --  Check that the current settings match those in
-      --  Sem_Prag.Set_Ravenscar_Profile.
-      --  ??? Older versions of Ada are also supported to ease reuse once this
-      --  code is moved to Restrict package.
-
-      function GNATprove_Tasking_Profile return Boolean is
-         Prefix_Entity   : Entity_Id;
-         Selector_Entity : Entity_Id;
-         Prefix_Node     : Node_Id;
-         Node            : Node_Id;
-
-         Profile : Profile_Data renames Profile_Info (Jorvik);
-         --  A minimal settings required for tasking constructs to be allowed
-         --  in SPARK.
-
-         function Restriction_No_Dependence (Unit : Node_Id) return Boolean;
-         --  Check if restriction No_Dependence is set for Unit.
-
-         -------------------------------
-         -- Restriction_No_Dependence --
-         -------------------------------
-
-         function Restriction_No_Dependence (Unit : Node_Id) return Boolean is
-            function Same_Unit (U1, U2 : Node_Id) return Boolean;
-            --  Returns True iff U1 and U2 represent the same library unit.
-            --  Used for handling of No_Dependence => Unit restriction case.
-            --  ??? This duplicates the code from Restrict package.
-
-            ---------------
-            -- Same_Unit --
-            ---------------
-
-            function Same_Unit (U1, U2 : Node_Id) return Boolean is
-            begin
-               if Nkind (U1) = N_Identifier and then Nkind (U2) = N_Identifier
-               then
-                  return Chars (U1) = Chars (U2);
-
-               elsif Nkind (U1) in N_Selected_Component | N_Expanded_Name
-                       and then
-                     Nkind (U2) in N_Selected_Component | N_Expanded_Name
-               then
-                  return Same_Unit (Prefix (U1), Prefix (U2))
-                    and then
-                      Same_Unit (Selector_Name (U1), Selector_Name (U2));
-               else
-                  return False;
-               end if;
-            end Same_Unit;
-
-         --  Start of processing for Restriction_No_Dependence
-
-         begin
-            --  Loop to look for entry
-
-            for J in No_Dependences.First .. No_Dependences.Last loop
-
-               --  Entry is in table
-
-               if Same_Unit (Unit, No_Dependences.Table (J).Unit) then
-                  return True;
-               end if;
-
-            end loop;
-
-            --  Entry is not in table
-
-            return False;
-         end Restriction_No_Dependence;
-
-      --  Start of processing for GNATprove_Tasking_Profile
-
-      begin
-         if Ravenscar_Profile_Cached then
-            return Ravenscar_Profile_Result;
-
-         else
-            Ravenscar_Profile_Result := True;
-            Ravenscar_Profile_Cached := True;
-
-            --  pragma Task_Dispatching_Policy (FIFO_Within_Priorities)
-
-            if Task_Dispatching_Policy /= 'F' then
-               Ravenscar_Profile_Result := False;
-               return False;
-            end if;
-
-            --  pragma Locking_Policy (Ceiling_Locking)
-
-            if Locking_Policy /= 'C' then
-               Ravenscar_Profile_Result := False;
-               return False;
-            end if;
-
-            --  pragma Detect_Blocking
-
-            if not Detect_Blocking then
-               Ravenscar_Profile_Result := False;
-               return False;
-            end if;
-
-            declare
-               R : Restriction_Flags  renames Profile.Set;
-               V : Restriction_Values renames Profile.Value;
-            begin
-               for J in R'Range loop
-                  if R (J)
-                    and then (Restrictions.Set (J) = False
-                                or else Restriction_Warnings (J)
-                                or else
-                                  (J in All_Parameter_Restrictions
-                                     and then Restrictions.Value (J) > V (J)))
-                  then
-                     --  Any code that complies with the Simple_Barriers
-                     --  restriction (which is required by the Ravenscar
-                     --  profile) also complies with Pure_Barriers (which is
-                     --  its relaxed variant required by the Jorvik profile).
-
-                     if J = Pure_Barriers
-                       and then Restrictions.Set (Simple_Barriers)
-                     then
-                        null;
-                     else
-                        Ravenscar_Profile_Result := False;
-                        return False;
-                     end if;
-                  end if;
-               end loop;
-            end;
-
-            --  The following No_Dependence restrictions:
-            --    No_Dependence => Ada.Asynchronous_Task_Control
-            --    No_Dependence => Ada.Calendar
-            --    No_Dependence => Ada.Task_Attributes
-            --  are already checked by the above loop.
-
-            --  The following restrictions were added to Ada 2005:
-            --    No_Dependence => Ada.Execution_Time.Group_Budget
-            --    No_Dependence => Ada.Execution_Time.Timers.
-
-            if Ada_Version >= Ada_2005 then
-
-               Name_Buffer (1 .. 3) := "ada";
-               Name_Len := 3;
-
-               Prefix_Entity := Make_Identifier (No_Location, Name_Find);
-
-               Name_Buffer (1 .. 14) := "execution_time";
-               Name_Len := 14;
-
-               Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-               Prefix_Node :=
-                 Make_Selected_Component
-                   (Sloc          => No_Location,
-                    Prefix        => Prefix_Entity,
-                    Selector_Name => Selector_Entity);
-
-               Name_Buffer (1 .. 13) := "group_budgets";
-               Name_Len := 13;
-
-               Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-               Node :=
-                 Make_Selected_Component
-                   (Sloc          => No_Location,
-                    Prefix        => Prefix_Node,
-                    Selector_Name => Selector_Entity);
-
-               if not Restriction_No_Dependence (Unit => Node) then
-                  Ravenscar_Profile_Result := False;
-                  return False;
-               end if;
-
-               Name_Buffer (1 .. 6) := "timers";
-               Name_Len := 6;
-
-               Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-               Node :=
-                 Make_Selected_Component
-                   (Sloc          => No_Location,
-                    Prefix        => Prefix_Node,
-                    Selector_Name => Selector_Entity);
-
-               if not Restriction_No_Dependence (Unit => Node) then
-                  Ravenscar_Profile_Result := False;
-                  return False;
-               end if;
-
-            end if;
-
-            --  The following restriction was added to Ada 2005:
-            --    No_Dependence => System.Multiprocessors.Dispatching_Domains.
-
-            if Ada_Version >= Ada_2012 then
-
-               Name_Buffer (1 .. 6) := "system";
-               Name_Len := 6;
-
-               Prefix_Entity := Make_Identifier (No_Location, Name_Find);
-
-               Name_Buffer (1 .. 15) := "multiprocessors";
-               Name_Len := 15;
-
-               Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-               Prefix_Node :=
-                 Make_Selected_Component
-                   (Sloc          => No_Location,
-                    Prefix        => Prefix_Entity,
-                    Selector_Name => Selector_Entity);
-
-               Name_Buffer (1 .. 19) := "dispatching_domains";
-               Name_Len := 19;
-
-               Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-               Node :=
-                 Make_Selected_Component
-                   (Sloc          => No_Location,
-                    Prefix        => Prefix_Node,
-                    Selector_Name => Selector_Entity);
-
-               if not Restriction_No_Dependence (Unit => Node) then
-                  Ravenscar_Profile_Result := False;
-                  return False;
-               end if;
-
-            end if;
-
-            return True;
-         end if;
-      end GNATprove_Tasking_Profile;
-
-      ----------------------
-      -- Mark_Unsupported --
-      ----------------------
-
-      procedure Mark_Unsupported
-        (Msg      : String;
-         N        : Node_Id;
-         Cont_Msg : String := "")
-      is
-      begin
-         --  Flag the violation, so that the current entity is marked
-         --  accordingly.
-
-         Violation_Detected := True;
-
-         --  Define the root cause
-
-         if Emit_Messages then
-            Add_Violation_Root_Cause (N, Msg);
-         end if;
-
-         --  If SPARK_Mode is On, raise an error
-
-         if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-            Error_Msg_N (Msg & " is not yet supported", N);
-
-            if Cont_Msg /= "" then
-               Error_Msg_N ('\' & Cont_Msg, N);
-            end if;
-         end if;
-      end Mark_Unsupported;
-
-      --------------------
-      -- Mark_Violation --
-      --------------------
-
-      procedure Mark_Violation
-        (Msg           : String;
-         N             : Node_Id;
-         SRM_Reference : String := "";
-         Cont_Msg      : String := "") is
-      begin
-         --  Flag the violation, so that the current entity is marked
-         --  accordingly.
-
-         Violation_Detected := True;
-
-         --  Define the root cause
-
-         if Emit_Messages then
-            Add_Violation_Root_Cause (N, Msg);
-         end if;
-
-         --  If SPARK_Mode is On, raise an error
-
-         if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-
-            if SRM_Reference /= "" then
-               Error_Msg_F
-                 (Msg & " is not allowed in SPARK (" & SRM_Reference & ")", N);
-            else
-               Error_Msg_F (Msg & " is not allowed in SPARK", N);
-            end if;
-
-            if Cont_Msg /= "" then
-               Error_Msg_F ('\' & Cont_Msg, N);
-            end if;
-
-            Mark_Violation_Of_SPARK_Mode (N);
-         end if;
-      end Mark_Violation;
-
-      procedure Mark_Violation
-        (N    : Node_Id;
-         From : Entity_Id) is
-      begin
-         --  Flag the violation, so that the current entity is marked
-         --  accordingly.
-
-         Violation_Detected := True;
-
-         --  Propagate the root cause to N if it is an entity
-
-         if Emit_Messages then
-            Add_Violation_Root_Cause (N, From);
-         end if;
-
-         --  If SPARK_Mode is On, raise an error
-
-         if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-            declare
-               Root_Cause : constant String := Get_Violation_Root_Cause (From);
-               Root_Msg   : constant String :=
-                 (if Root_Cause = "" then ""
-                  else " (due to " & Root_Cause & ")");
-            begin
-               Error_Msg_FE ("& is not allowed in SPARK" & Root_Msg, N, From);
-               Mark_Violation_Of_SPARK_Mode (N);
-            end;
-         end if;
-      end Mark_Violation;
-
-      -------------------------------
-      -- Mark_Violation_In_Tasking --
-      -------------------------------
-
-      procedure Mark_Violation_In_Tasking (N : Node_Id) is
-         Msg_Prefix : constant String := "tasking in SPARK requires ";
-         Msg_Suffix : constant String := " (SPARK RM 9(2))";
-      begin
-         --  Flag the violation, so that the current entity is marked
-         --  accordingly.
-
-         Violation_Detected := True;
-
-         if Emit_Messages then
-            Add_Violation_Root_Cause (N, "tasking configuration");
-         end if;
-
-         --  If SPARK_Mode is On, raise an error
-
-         if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-
-            if not GNATprove_Tasking_Profile then
-               Error_Msg_F (Msg_Prefix &
-                              "Ravenscar profile" & Msg_Suffix, N);
-            elsif not Sequential_Elaboration then
-               Error_Msg_F (Msg_Prefix &
-                              "sequential elaboration" & Msg_Suffix, N);
-            end if;
-
-            Mark_Violation_Of_SPARK_Mode (N);
-         end if;
-      end Mark_Violation_In_Tasking;
-
-      ----------------------------------
-      -- Mark_Violation_Of_SPARK_Mode --
-      ----------------------------------
-
-      procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id) is
-      begin
-         if Present (Current_SPARK_Pragma) then
-            Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
-
-            Error_Msg_F ("\\violation of " &
-                         (if From_Aspect_Specification (Current_SPARK_Pragma)
-                          then "aspect"
-                          else "pragma") &
-                         " SPARK_Mode #", N);
-         elsif Present (Current_Incomplete_Type) then
-            Error_Msg_Sloc := Sloc (Current_Incomplete_Type);
-
-            Error_Msg_FE
-              ("\\access to incomplete type & is required to be in SPARK",
-               N, Current_Incomplete_Type);
-         else
-            pragma Assert (Present (Current_Delayed_Aspect_Type));
-            Error_Msg_Sloc := Sloc (Current_Delayed_Aspect_Type);
-
-            Error_Msg_FE
-              ("\\delayed type aspect on & is required to be in SPARK", N,
-               Current_Delayed_Aspect_Type);
-         end if;
-      end Mark_Violation_Of_SPARK_Mode;
-
-   end SPARK_Violations;
-
-   use SPARK_Violations;
-
-   ----------------------
    -- Inhibit_Messages --
    ----------------------
 
@@ -909,10 +340,6 @@ package body SPARK_Definition is
 
    procedure Mark (N : Node_Id);
    --  Generic procedure for marking code
-
-   function In_SPARK (E : Entity_Id) return Boolean;
-   --  Returns whether the entity E is in SPARK; computes this information by
-   --  calling Mark_Entity, which is very cheap.
 
    function Most_Underlying_Type_In_SPARK (Id : Entity_Id) return Boolean
    with Pre => Is_Type (Id);
@@ -1002,6 +429,17 @@ package body SPARK_Definition is
      with Pre => Ekind (E) = E_Package;
    --  Mark pragma Annotate that could appear at the beginning of a declaration
    --  list of a package.
+
+   procedure Mark_Type_With_Relaxed_Init
+     (N   : Node_Id;
+      Ty  : Entity_Id;
+      Own : Boolean := False)
+   with Pre => Is_Type (Ty) and then Entity_In_SPARK (Ty);
+   --  Checks restrictions on types marked with a Relaxed_Initialization aspect
+   --  and store them in the Relaxed_Init map for further use.
+   --  @param N node on which violations should be emitted.
+   --  @param Ty type which should be compatible with relaxed initialization.
+   --  @param Own True if Ty is itself annotated with relaxed initialization.
 
    function Emit_Warning_Info_Messages return Boolean is
      (Emit_Messages and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
@@ -1212,6 +650,25 @@ package body SPARK_Definition is
       return Subcomponents_With_Predicates (E);
    end Has_Deep_Subcomponents_With_Predicates;
 
+   ----------------------
+   -- Has_Relaxed_Init --
+   ----------------------
+
+   function Has_Relaxed_Init (E : Entity_Id) return Boolean is
+      use Node_To_Bool_Maps;
+      C : constant Node_To_Bool_Maps.Cursor :=
+        Relaxed_Init.Find (Base_Retysp (E));
+   begin
+      return Has_Element (C) and then Element (C);
+   end Has_Relaxed_Init;
+
+   ---------------------
+   -- In_Relaxed_Init --
+   ---------------------
+
+   function In_Relaxed_Init (E : Entity_Id) return Boolean is
+     (Relaxed_Init.Contains (Base_Retysp (E)));
+
    --------------
    -- In_SPARK --
    --------------
@@ -1244,6 +701,16 @@ package body SPARK_Definition is
       -- Local subprograms --
       -----------------------
 
+      procedure Check_Exit_Return_Goto_Placement (N : Node_Id)
+        with Pre => Nkind (N) in N_Exit_Statement
+                               | N_Extended_Return_Statement
+                               | N_Goto_Statement
+                               | N_Simple_Return_Statement;
+      --  Issue an error if an exit, return or goto statement is located inside
+      --  a block statement declaring an object of owning type. This ensures
+      --  that there is no need for special detection of memory leaks on exit
+      --  and return for these variables or constants.
+
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
          Goto_Labels : in out Node_Sets.Set;
@@ -1265,6 +732,10 @@ package body SPARK_Definition is
       --  If Loop_Stmt is candidate for loop unrolling, then mark all objects
       --  declared in the loop so that their translation into Why3 does not
       --  introduce constants.
+
+      procedure Check_No_Deep_Duplicates_In_Assoc (N : Node_Id);
+      --  Search for associations mapping a single deep value to several
+      --  components in the Component_Associations of N.
 
       function Inside_Named_Number_Declaration (N : Node_Id) return Boolean;
       --  Returns whether N is inside the declaration of a named number
@@ -1290,6 +761,145 @@ package body SPARK_Definition is
       --  case here.
       --  Why aren't these kind of nodes Indexed_Components instead?
 
+      --------------------------------------
+      -- Check_Exit_Return_Goto_Placement --
+      --------------------------------------
+
+      procedure Check_Exit_Return_Goto_Placement (N : Node_Id) is
+
+         function Check_No_Owning_Decl (Decls : List_Id) return Node_Id;
+         --  Return the first owning declaration in Decls, taking into account
+         --  local packages if any. This function follows the same traversal
+         --  structure as GNAT2Why.Expr.Check_No_Memory_Leaks
+
+         --------------------------
+         -- Check_No_Owning_Decl --
+         --------------------------
+
+         function Check_No_Owning_Decl (Decls : List_Id) return Node_Id is
+            Cur_Decl : Node_Id := First (Decls);
+            Typ      : Entity_Id;
+            Result   : Node_Id;
+
+         begin
+            while Present (Cur_Decl) loop
+               case Nkind (Cur_Decl) is
+
+                  --  Only consider objects in SPARK, so that parts of packages
+                  --  marked SPARK_Mode Off are ignored.
+
+                  when N_Object_Declaration =>
+                     if Entity_In_SPARK (Defining_Identifier (Cur_Decl)) then
+                        Typ := Retysp (Etype (Defining_Identifier (Cur_Decl)));
+
+                        --  Nothing to check on borrow/observe of anonymous
+                        --  access type.
+
+                        if Is_Deep (Typ)
+                          and then not Is_Anonymous_Access_Type (Typ)
+                        then
+                           return Cur_Decl;
+                        end if;
+                     end if;
+
+                  --  Objects in local packages should be deallocated before
+                  --  returning from the enclosing subprogram.
+
+                  when N_Package_Declaration =>
+                     Result :=
+                       Check_No_Owning_Decl
+                         (Visible_Declarations (Specification (Cur_Decl)));
+                     if Present (Result) then
+                        return Result;
+                     end if;
+
+                     Result :=
+                       Check_No_Owning_Decl
+                         (Private_Declarations (Specification (Cur_Decl)));
+                     if Present (Result) then
+                        return Result;
+                     end if;
+
+                  when N_Package_Body =>
+                     Result := Check_No_Owning_Decl (Declarations (Cur_Decl));
+                     if Present (Result) then
+                        return Result;
+                     end if;
+
+                  when others =>
+                     null;
+               end case;
+
+               Next (Cur_Decl);
+            end loop;
+
+            return Empty;
+         end Check_No_Owning_Decl;
+
+         --  Local variables
+
+         P : Node_Id := Parent (N);
+
+      --  Start of processing for Check_Exit_Return_Goto_Placement
+
+      begin
+         loop
+            case Nkind (P) is
+               when N_Block_Statement =>
+                  declare
+                     Decl : constant Node_Id :=
+                       Check_No_Owning_Decl (Declarations (P));
+                  begin
+                     if Present (Decl) then
+                        Error_Msg_Sloc := Sloc (Decl);
+                        Mark_Unsupported
+                          ((case Nkind (N) is
+                              when N_Exit_Statement => "exit",
+                              when N_Goto_Statement => "goto",
+                              when others           => "return")
+                           & " statement in the scope of local owning"
+                           & " declaration #",
+                           N);
+                        return;
+                     end if;
+                  end;
+
+               --  Stop the search when reaching the entry or subprogram body
+
+               when N_Entry_Body
+                  | N_Subprogram_Body
+               =>
+                  return;
+
+               --  Contrary to a return or exit, a goto can be used in a
+               --  a task body or package body. Stop the search when reaching
+               --  that point.
+
+               when N_Package_Body
+                  | N_Task_Body
+               =>
+                  return;
+
+               --  If we reach the loop which is exited, we can stop the search
+               --  here. Declarations in outter scopes won't be affected.
+
+               when N_Loop_Statement =>
+                  if Nkind (N) = N_Exit_Statement
+                    and then
+                      Loop_Entity_Of_Exit_Statement (N)
+                      = Entity (Identifier (P))
+                  then
+                     return;
+                  end if;
+
+               when others =>
+                  null;
+            end case;
+
+            P := Parent (P);
+         end loop;
+      end Check_Exit_Return_Goto_Placement;
+
       ------------------------------------
       -- Check_Loop_Invariant_Placement --
       ------------------------------------
@@ -1303,8 +913,8 @@ package body SPARK_Definition is
       procedure Check_Loop_Invariant_Placement
         (Stmts       : List_Id;
          Goto_Labels : in out Node_Sets.Set;
-         Nested      : Boolean) is
-
+         Nested      : Boolean)
+      is
          use Node_Lists;
 
          Loop_Stmts : constant Node_Lists.List :=
@@ -1409,6 +1019,38 @@ package body SPARK_Definition is
             end if;
          end loop;
       end Check_Loop_Invariant_Placement;
+
+      ---------------------------------------
+      -- Check_No_Deep_Duplicates_In_Assoc --
+      ---------------------------------------
+
+      procedure Check_No_Deep_Duplicates_In_Assoc (N : Node_Id) is
+         Assocs       : constant List_Id :=
+           Component_Associations (N);
+         Assoc        : Node_Id := Nlists.First (Assocs);
+         Choices_List : List_Id;
+
+      begin
+         while Present (Assoc) loop
+            Choices_List := Choices (Assoc);
+
+            --  There can be only one element for a value of deep type
+            --  in order to avoid aliasing.
+
+            if not Box_Present (Assoc)
+              and then Is_Deep (Etype (Expression (Assoc)))
+              and then not Is_Singleton_Choice (Choices_List)
+            then
+               Mark_Violation
+                 ("duplicate value of a type with ownership",
+                  First (Choices_List),
+                  Cont_Msg =>
+                    "singleton choice required to prevent aliasing");
+            end if;
+
+            Next (Assoc);
+         end loop;
+      end Check_No_Deep_Duplicates_In_Assoc;
 
       -------------------------
       -- Check_Unrolled_Loop --
@@ -1610,68 +1252,48 @@ package body SPARK_Definition is
             else
                Mark_List (Expressions (N));
                Mark_List (Component_Associations (N));
-
-               --  Search for associations mapping a single deep value to
-               --  several components.
-
-               declare
-                  Assocs       : constant List_Id :=
-                    Component_Associations (N);
-                  Assoc        : Node_Id := Nlists.First (Assocs);
-                  Choices_List : List_Id;
-
-               begin
-                  while Present (Assoc) loop
-                     Choices_List := Choices (Assoc);
-
-                     --  There can be only one element for a value of deep type
-                     --  in order to avoid aliasing.
-
-                     if not Box_Present (Assoc)
-                       and then Is_Deep (Etype (Expression (Assoc)))
-                       and then not Is_Singleton_Choice (Choices_List)
-                     then
-                        Mark_Violation
-                          ("duplicate value of a type with ownership",
-                           First (Choices_List),
-                           Cont_Msg =>
-                             "singleton choice required to prevent aliasing");
-                     end if;
-
-                     Next (Assoc);
-                  end loop;
-               end;
+               Check_No_Deep_Duplicates_In_Assoc (N);
             end if;
 
          when N_Allocator =>
             --  Disallow allocators in the revert mode -gnatdF
             if not Debug_Flag_FF then
-               Mark (Expression (N));
-
-               --  Check that the type of the allocator is visibly an access
-               --  type.
-
-               if not Retysp_In_SPARK (Etype (N))
-                 or else not Is_Access_Type (Retysp (Etype (N)))
+               if Is_OK_Volatile_Context (Context => Parent (N), Obj_Ref => N)
                then
-                  Mark_Violation (N, Etype (N));
-               end if;
+                  --  Check that the type of the allocator is visibly an access
+                  --  type.
 
-               --  Uninitialized allocators are only allowed on types defining
-               --  full default initialization.
+                  if Retysp_In_SPARK (Etype (N))
+                    and then Is_Access_Type (Retysp (Etype (N)))
+                  then
+                     --  If the expression is a qualified expression, then we
+                     --  have an initialized allocator.
 
-               if Nkind (Expression (N)) in N_Expanded_Name | N_Identifier
-                 and then In_SPARK (Entity (Expression (N)))
-                 and then Default_Initialization
-                   (Entity (Expression (N))) /= Full_Default_Initialization
-               then
-                  Mark_Violation ("uninitialized allocator without"
-                                  & " default initialization", N);
-               end if;
+                     if Nkind (Expression (N)) = N_Qualified_Expression then
+                        Mark (Expression (N));
 
-               if not Is_OK_Volatile_Context (Context => Parent (N),
-                                              Obj_Ref => N)
-               then
+                     --  Otherwise the expression is a subtype indicator and we
+                     --  have an uninitialized allocator.
+
+                     else
+                        --  In non-interfering contexts the subtype indicator
+                        --  is always a subtype name, because frontend creates
+                        --  an itype for each constrained subtype indicator.
+
+                        pragma Assert (Is_Entity_Name (Expression (N)));
+
+                        if Default_Initialization (Entity (Expression (N)))
+                          not in Full_Default_Initialization
+                               | No_Possible_Initialization
+                        then
+                           Mark_Violation ("uninitialized allocator without"
+                                           & " default initialization", N);
+                        end if;
+                     end if;
+                  else
+                     Mark_Violation (N, Etype (N));
+                  end if;
+               else
                   Mark_Violation ("allocators in interfering context", N);
                end if;
             else
@@ -1786,6 +1408,7 @@ package body SPARK_Definition is
             if Present (Condition (N)) then
                Mark (Condition (N));
             end if;
+            Check_Exit_Return_Goto_Placement (N);
 
          when N_Expanded_Name
             | N_Identifier
@@ -1802,6 +1425,7 @@ package body SPARK_Definition is
 
          when N_Extended_Return_Statement =>
             Mark_Extended_Return_Statement (N);
+            Check_Exit_Return_Goto_Placement (N);
 
          when N_Extension_Aggregate =>
             if not Most_Underlying_Type_In_SPARK (Etype (N)) then
@@ -1999,7 +1623,129 @@ package body SPARK_Definition is
             Mark_Unsupported ("compiler-generated raise statement", N);
 
          when N_Raise_Expression =>
-            Mark_Violation ("raise expression", N);
+            declare
+               procedure Check_Raise_Context (Expr : Node_Id);
+               --  If a raise expression occurs in a precondition, it should
+               --  not be handled as a RTE, as this is a common pattern for
+               --  modifying the error raised in case of a failed precondition.
+               --  The restrictions below make sure that raise expressions
+               --  can be replaced by False, while still maintaining these
+               --  properties:
+               --  - when the original expression evaluates to True, the
+               --    modified formula evaluates to True as well;
+               --  - when the modified formula evaluates to True, the original
+               --    formula evaluates to True or raises an exception;
+               --  - when the modified formula evaluates to True, the original
+               --    formula does not raise an exception.
+
+               --  The first two properties (equivalence without taking into
+               --  account exceptions) are guaranteed by making sure that raise
+               --  expressions only appear in positive polarity. For the last
+               --  property, we introduce these additional syntactic
+               --  restrictions on precondition expressions that contain raise
+               --  expressions:
+
+               --  A and/and then B    raise expressions are allowed in A and B
+               --  A or else B         raise expressions only allowed in B
+               --  if A then B else C  raise expressions not allowed in A
+               --  case A then is ...  raise expressions not allowed in A
+
+               --  No raise expressions are allowed in other expressions.
+
+               --  We store encountered Raise_Expressions in the
+               --  Raise_Exprs_From_Pre set for later use.
+
+               -------------------------
+               -- Check_Raise_Context --
+               -------------------------
+
+               procedure Check_Raise_Context (Expr : Node_Id) is
+                  Prag : Node_Id;
+                  --  Node to store the precondition enclosing Expr if any
+
+                  N    : Node_Id := Expr;
+                  P    : Node_Id;
+               begin
+                  --  First, decide if we are in a precondition
+
+                  Prag := Parent (N);
+                  while Present (Prag) loop
+                     exit when Nkind (Prag) = N_Pragma_Argument_Association
+                       and then Get_Pragma_Id (Pragma_Name (Parent (Prag))) in
+                       Pragma_Precondition | Pragma_Pre;
+                     Prag := Parent (Prag);
+                  end loop;
+
+                  --  If we are in a precondition, check whether it is safe to
+                  --  translate raise statements as False.
+
+                  if Present (Prag) then
+                     while Parent (N) /= Prag loop
+                        P := Parent (N);
+                        case Nkind (P) is
+
+                        --  And connectors will ensure both operands hold, so
+                        --  the operands will be protected by the precondition.
+                        --  For example, (X and Y) protects:
+                        --  (X or else raise) and (Y or else raise)
+
+                        when N_Op_And | N_And_Then =>
+                           null;
+
+                        --  In or else connectors, only the right operand is
+                        --  protected as the left one can evaluate to False
+                        --  even when the disjunction holds.
+                        --  For example, (X or else Y) protects:
+                        --  X or else (Y or else raise)
+                        --  but not: (X or else raise) or else Y
+                        --  NB. In or connectors, no operands is protected.
+
+                        when N_Or_Else =>
+                           if N = Left_Opnd (P) then
+                              exit;
+                           end if;
+
+                        --  In conditional expressions, raise expressions
+                        --  should not occur in the conditions.
+
+                        when N_If_Expression =>
+                           if N = First (Expressions (P)) then
+                              exit;
+                           end if;
+                        when N_Case_Expression =>
+                           if N = Expression (P) then
+                              exit;
+                           end if;
+                        when N_Case_Expression_Alternative =>
+                           null;
+
+                        --  Other expressions are not supported
+
+                        when others =>
+                           exit;
+                        end case;
+                        N := P;
+                     end loop;
+
+                     --  If we have stopped the search before reaching Prag, we
+                     --  have found an unsupported construct, report it.
+
+                     if Parent (N) /= Prag then
+                        Mark_Unsupported
+                          (Msg => "raise expression in a complex expression in"
+                             & " a precondition",
+                           N   => Expr);
+
+                     --  Otherwise, store Expr in Raise_Exprs_From_Pre
+
+                     else
+                        Raise_Exprs_From_Pre.Insert (Expr);
+                     end if;
+                  end if;
+               end Check_Raise_Context;
+            begin
+               Check_Raise_Context (N);
+            end;
 
          when N_Range =>
             Mark (Low_Bound (N));
@@ -2015,6 +1761,7 @@ package body SPARK_Definition is
 
          when N_Simple_Return_Statement =>
             Mark_Simple_Return_Statement (N);
+            Check_Exit_Return_Goto_Placement (N);
 
          when N_Selected_Component =>
 
@@ -2069,37 +1816,39 @@ package body SPARK_Definition is
             end if;
 
          when N_Subprogram_Body =>
+            declare
+               E : constant Entity_Id := Unique_Defining_Entity (N);
+            begin
+               if Is_Generic_Subprogram (E) then
+                  null;
 
-            --  For expression functions that have a unique declaration, the
-            --  body inserted by the frontend may be far from the original
-            --  point of declaration, after the private declarations of the
-            --  package (to avoid premature freezing.) In those cases, mark the
-            --  subprogram body at the same point as the subprogram
-            --  declaration, so that entities declared afterwards have access
-            --  to the axiom defining the expression function.
+               --  For expression functions that have a unique declaration, the
+               --  body inserted by the frontend may be far from the original
+               --  point of declaration, after the private declarations of the
+               --  package (to avoid premature freezing.) In those cases, mark
+               --  the subprogram body at the same point as the subprogram
+               --  declaration, so that entities declared afterwards have
+               --  access to the axiom defining the expression function.
 
-            if Present (Get_Expression_Function (Unique_Defining_Entity (N)))
-              and then not Comes_From_Source (Original_Node (N))
-            then
-               null;
+               elsif Is_Expression_Function_Or_Completion (E)
+                 and then not Comes_From_Source (Original_Node (N))
+               then
+                  null;
 
-            --  In GNATprove_Mode, a separate declaration is usually generated
-            --  before the body for a subprogram if not defined by the user
-            --  (unless the subprogram defines a unit or has a contract). So
-            --  in general Mark_Subprogram_Declaration is always called on the
-            --  declaration before Mark_Subprogram_Body is called on the body.
-            --  In the remaining cases where a subprogram unit body does not
-            --  have a prior declaration, call Mark_Subprogram_Declaration on
-            --  the subprogram body.
+               --  In GNATprove_Mode, a separate declaration is usually
+               --  generated before the body for a subprogram if not defined
+               --  by the user (unless the subprogram defines a unit or has
+               --  a contract). So in general Mark_Subprogram_Declaration is
+               --  always called on the declaration before Mark_Subprogram_Body
+               --  is called on the body. In the remaining cases where a
+               --  subprogram unit body does not have a prior declaration,
+               --  call Mark_Subprogram_Declaration on the subprogram body.
 
-            else
-               if Acts_As_Spec (N) then
-                  Mark_Subprogram_Declaration (N);
-               end if;
+               else
+                  if Acts_As_Spec (N) then
+                     Mark_Subprogram_Declaration (N);
+                  end if;
 
-               declare
-                  E : constant Entity_Id := Unique_Defining_Entity (N);
-               begin
                   if Ekind (E) = E_Function
                     and then (Is_Predicate_Function (E)
                               or else
@@ -2109,14 +1858,17 @@ package body SPARK_Definition is
                   else
                      Mark_Subprogram_Body (N);
                   end if;
-               end;
-            end if;
+               end if;
+            end;
 
          when N_Subprogram_Body_Stub =>
             if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
                Mark_Subprogram_Declaration (N);
             end if;
-            Mark_Subprogram_Body (Get_Body_From_Stub (N));
+
+            if not Is_Generic_Subprogram (Unique_Defining_Entity (N)) then
+               Mark_Subprogram_Body (Get_Body_From_Stub (N));
+            end if;
 
          when N_Subprogram_Declaration =>
             if not Is_Predicate_Function (Defining_Entity (N)) then
@@ -2135,7 +1887,7 @@ package body SPARK_Definition is
                E      : constant Entity_Id := Defining_Entity (N);
                Body_N : constant Node_Id := Subprogram_Body (E);
             begin
-               if Present (Get_Expression_Function (E))
+               if Is_Expression_Function_Or_Completion (E)
                  and then not Comes_From_Source (Original_Node (Body_N))
                then
                   Mark_Entity (E);
@@ -2521,15 +2273,34 @@ package body SPARK_Definition is
                Mark_Entity (Etype (N));
             end if;
 
-         when N_Delta_Aggregate
-            | N_Delta_Constraint =>
-            Mark_Unsupported ("delta expression", N);
+         when N_Delta_Aggregate =>
+
+            if Retysp_In_SPARK (Etype (N)) then
+               Mark (Expression (N));
+               Mark_List (Component_Associations (N));
+               Check_No_Deep_Duplicates_In_Assoc (N);
+            else
+               Mark_Violation (N, Etype (N));
+            end if;
 
          --  Object renamings are rewritten by expansion, but they are kept in
          --  the tree, so just ignore them.
 
          when N_Object_Renaming_Declaration =>
             null;
+
+         --  N_Expression_With_Actions is only generated from declare
+         --  expressions in GNATprove mode.
+
+         when N_Expression_With_Actions =>
+            pragma Assert (Comes_From_Source (N));
+            Mark_Actions (N, Actions (N));
+
+            if not Retysp_In_SPARK (Etype (N)) then
+               Mark_Violation (N, From => Etype (N));
+            else
+               Mark (Expression (N));
+            end if;
 
          --  The following nodes are rewritten by semantic analysis
 
@@ -2541,11 +2312,22 @@ package body SPARK_Definition is
 
          --  The following nodes are never generated in GNATprove mode
 
-         when N_Expression_With_Actions
-            | N_Compound_Statement
+         when N_Compound_Statement
             | N_Unchecked_Expression
          =>
             raise Program_Error;
+
+         --  For now, we don't support the use of target_name inside an
+         --  assignment which is a move or reborrow.
+
+         when N_Target_Name =>
+            if not Retysp_In_SPARK (Etype (N)) then
+               Mark_Violation (N, From => Etype (N));
+            elsif Is_Anonymous_Access_Type (Retysp (Etype (N))) then
+               Mark_Unsupported ("'@ inside a reborrow", N);
+            elsif Is_Deep (Etype (N)) then
+               Mark_Unsupported ("'@ inside a move assignment", N);
+            end if;
 
          --  Mark should not be called on other kinds
 
@@ -2569,6 +2351,7 @@ package body SPARK_Definition is
             | N_Defining_Operator_Symbol
             | N_Defining_Program_Unit_Name
             | N_Delay_Alternative
+            | N_Delta_Constraint
             | N_Derived_Type_Definition
             | N_Designator
             | N_Digits_Constraint
@@ -2615,7 +2398,6 @@ package body SPARK_Definition is
             | N_SCIL_Membership_Test
             | N_Signed_Integer_Type_Definition
             | N_Subunit
-            | N_Target_Name
             | N_Task_Definition
             | N_Terminate_Alternative
             | N_Triggering_Alternative
@@ -2633,9 +2415,17 @@ package body SPARK_Definition is
    ------------------
 
    procedure Mark_Actions (N : Node_Id; L : List_Id) is
+      In_Declare_Expr : constant Boolean :=
+        Nkind (N) = N_Expression_With_Actions;
+
       function Acceptable_Actions (L : List_Id) return Boolean;
-      --  Return whether L is a list of acceptable actions, which can be
-      --  translated into Why.
+      --  Go through the list of actions L and decide if it is acceptable for
+      --  translation into Why. When an unfit action is found, either a
+      --  precise violation is raised on the spot, and the iteration continues,
+      --  or we end the iteration and return False so that a generic violation
+      --  can be emitted. In particular, we do the later for actions which are
+      --  not coming from declare expressions, where the declared objects do
+      --  not correspond to anything user visible.
 
       ------------------------
       -- Acceptable_Actions --
@@ -2658,8 +2448,43 @@ package body SPARK_Definition is
                   null;
 
                when N_Object_Declaration =>
+
+                  --  We only accept constants
+
                   if Constant_Present (N) then
-                     null;
+
+                     --  We don't support local borrowers/observers in actions
+
+                     if Is_Anonymous_Access_Type
+                       (Etype (Defining_Identifier (N)))
+                     then
+                        if In_Declare_Expr then
+                           declare
+                              Kind : constant String :=
+                                (if Is_Access_Constant
+                                   (Etype (Defining_Identifier (N)))
+                                 then "observers"
+                                 else "borrowers");
+                           begin
+                              Mark_Violation
+                                ("local " & Kind & " in declare expression",
+                                 N);
+                           end;
+                        end if;
+                        return In_Declare_Expr;
+
+                     --  We don't support moves in actions
+
+                     elsif Is_Deep (Retysp (Etype (Defining_Identifier (N))))
+                       and then Is_Path_Expression (Expression (N))
+                       and then Present (Get_Root_Object (Expression (N)))
+                     then
+                        if In_Declare_Expr then
+                           Mark_Violation
+                             ("move in declare expression", N);
+                        end if;
+                        return In_Declare_Expr;
+                     end if;
                   else
                      return False;
                   end if;
@@ -2892,15 +2717,22 @@ package body SPARK_Definition is
                Error_Msg_F ("?attribute Valid is assumed to return True", N);
             end if;
 
-         --  Attribute Valid_Scalars is used on types with init by proof
+         --  Attribute Initialized is used on prefixes with relaxed
+         --  initialization. It does not mandate the evaluation of its prefix.
+         --  Thus it can be called on scalar "names" which are not initialized
+         --  without generating a bounded error.
 
-         when Attribute_Valid_Scalars =>
+         when Attribute_Initialized =>
+
             if not Retysp_In_SPARK (Etype (P))
-              or else not Has_Init_By_Proof (Etype (P))
+              or else not
+                (Expr_Has_Relaxed_Init (P, No_Eval => True)
+                 or else Has_Relaxed_Init (Etype (P)))
             then
                Mark_Violation
-                 ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
-                  & """ only allowed on types with initialization by proof",
+                 ("prefix of attribute """
+                  & Standard_Ada_Case (Get_Name_String (Aname))
+                  & """ without initialization by proof",
                   N);
             end if;
 
@@ -3175,7 +3007,7 @@ package body SPARK_Definition is
          then
             --  An effectively volatile object may act as an actual when the
             --  corresponding formal is of a non-scalar effectively volatile
-            --  type (SPARK RM 7.1.3(11)).
+            --  type (SPARK RM 7.1.3(10)).
 
             if not Is_Scalar_Type (Etype (Formal))
               and then Is_Effectively_Volatile (Etype (Formal))
@@ -3183,7 +3015,7 @@ package body SPARK_Definition is
                null;
 
             --  An effectively volatile object may act as an actual in a call
-            --  to an instance of Unchecked_Conversion. (SPARK RM 7.1.3(11)).
+            --  to an instance of Unchecked_Conversion. (SPARK RM 7.1.3(10)).
 
             elsif Is_Unchecked_Conversion_Instance (E) then
                null;
@@ -3197,7 +3029,7 @@ package body SPARK_Definition is
                    when others => "volatile object")
                   & " as actual",
                   N             => Actual,
-                  SRM_Reference => "SPARK RM 7.1.3(11)");
+                  SRM_Reference => "SPARK RM 7.1.3(10)");
             end if;
          end if;
 
@@ -3256,6 +3088,15 @@ package body SPARK_Definition is
 
       else
          E := Get_Called_Entity (N);
+
+         --  Calls to aliases, i.e. subprograms created by the frontend
+         --  that operate on derived types, are rewritten with calls to
+         --  corresponding subprograms that operate on the base types.
+
+         pragma Assert
+           (if Is_Overloadable (E)
+            then E = Ultimate_Alias (E)
+            else Ekind (E) = E_Entry_Family);
       end if;
 
       --  A possibly nonreturning procedure should only be called from
@@ -3705,13 +3546,6 @@ package body SPARK_Definition is
 
                      if not Retysp_In_SPARK (Des_Ty) then
                         Mark_Violation (E, From => Des_Ty);
-
-                     --  We do not support initialization by proof on access
-                     --  types yet.
-
-                     elsif Has_Init_By_Proof (Des_Ty) then
-                        Mark_Unsupported
-                          ("access to a type with initialization by proof", E);
                      else
 
                         --  Attempt to insert the view in the incomplete views
@@ -3906,7 +3740,8 @@ package body SPARK_Definition is
       --  E is a subprogram or a loop parameter, or a discriminant
 
       procedure Mark_Number_Entity     (E : Entity_Id);
-      procedure Mark_Object_Entity     (E : Entity_Id);
+      procedure Mark_Object_Entity     (E : Entity_Id) with
+        Pre => Ekind (E) in E_Variable | E_Constant;
       procedure Mark_Package_Entity    (E : Entity_Id) with
         Pre =>
           Entity_In_Ext_Axioms (E)
@@ -3915,7 +3750,15 @@ package body SPARK_Definition is
             and then
               Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = On;
 
-      procedure Mark_Subprogram_Entity (E : Entity_Id);
+      procedure Mark_Subprogram_Entity (E : Entity_Id)
+      with Pre => (if Is_Subprogram (E)
+                   then (Ekind (E) = E_Function
+                         and then Is_Intrinsic_Subprogram (E))
+                        or else E = Ultimate_Alias (E)
+                   else Is_Entry (E));
+      --  Mark subprogram or entry. Make sure that we don't mark aliases
+      --  (except for intrinsic functions).
+
       procedure Mark_Type_Entity       (E : Entity_Id);
 
       use type Node_Lists.Cursor;
@@ -4008,7 +3851,7 @@ package body SPARK_Definition is
          --  block statement (SPARK RM 3.10(4)).
 
          if Nkind (N) = N_Object_Declaration
-           and then Is_Anonymous_Access_Type (Etype (E))
+           and then Is_Anonymous_Access_Type (T)
          then
             declare
                Scop : constant Entity_Id := Scope (E);
@@ -4043,7 +3886,7 @@ package body SPARK_Definition is
             --  the rules.
 
             if Nkind (N) = N_Object_Declaration
-              and then Is_Anonymous_Access_Type (Etype (E))
+              and then Is_Anonymous_Access_Type (T)
             then
                Check_Source_Of_Borrow_Or_Observe (Expr);
 
@@ -4063,11 +3906,24 @@ package body SPARK_Definition is
             --  If we are performing a move operation, check that we are
             --  moving a path.
 
-            elsif Is_Deep (Etype (E))
+            elsif Is_Deep (T)
               and then not Is_Path_Expression (Expr)
             then
                Mark_Violation ("expression as source of move", Expr);
             end if;
+         end if;
+
+         --  If no violations were found and the object is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         if not Violation_Detected
+           and then Ekind (E) = E_Variable
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => T,
+               Own => False);
          end if;
       end Mark_Object_Entity;
 
@@ -4200,6 +4056,18 @@ package body SPARK_Definition is
       begin
          if not Retysp_In_SPARK (T) then
             Mark_Violation (E, From => T);
+
+         --  If no violations were found and the object is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         elsif not Violation_Detected
+           and then Is_Formal (E)
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => T,
+               Own => False);
          end if;
       end Mark_Parameter_Entity;
 
@@ -4545,7 +4413,7 @@ package body SPARK_Definition is
             Mark_Violation_In_Tasking (E);
          end if;
 
-         Mark_Subprogram_Specification (if Ekind (E) in Entry_Kind
+         Mark_Subprogram_Specification (if Is_Entry (E)
                                         then Parent (E)
                                         else Subprogram_Specification (E));
 
@@ -4567,13 +4435,6 @@ package body SPARK_Definition is
                  and then
                    (Was_Expression_Function (My_Body)
                     or else Is_Predicate_Function (E))
-
-                 --  Protect against marking the same body twice. This can
-                 --  happen, when the frontend creates a new entity for the
-                 --  same syntactic subprogram, e.g. for primitive operations
-                 --  of derived types.
-
-                 and then E = Ultimate_Alias (E)
 
                  --  ??? Exclude functions from external axioms, that check
                  --  could certainly be moved higher up.
@@ -4671,6 +4532,19 @@ package body SPARK_Definition is
                     ("subprogram inherited from multiple interfaces", E);
                end if;
             end;
+         end if;
+
+         --  If no violations were found and the function is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         if not Violation_Detected
+           and then Ekind (E) = E_Function
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => Etype (E),
+               Own => False);
          end if;
       end Mark_Subprogram_Entity;
 
@@ -4828,6 +4702,17 @@ package body SPARK_Definition is
 
          if Is_Controlled (E) then
             Mark_Violation ("controlled types", E);
+         end if;
+
+         --  Hardcoded entities are private types whose definition should not
+         --  be translated in SPARK. We add the entity of their full views to
+         --  the set of marked entities so that they will not be considered for
+         --  translation later.
+
+         if Is_Hardcoded_Entity (E) then
+            pragma Assert (Present (Full_View (E))
+                           and then not Entity_Marked (Full_View (E)));
+            Entity_Set.Insert (Full_View (E));
          end if;
 
          --  The base type or original type should be marked before the current
@@ -5229,16 +5114,6 @@ package body SPARK_Definition is
                     (Ultimate_Alias
                        (Get_User_Defined_Eq (Base_Type (Component_Typ))));
                end if;
-
-               --  Check use of pragma Annotate Init_By_Proof
-
-               if Has_Init_By_Proof (Component_Typ)
-                 and then Has_Predicates (E)
-               then
-                  Mark_Unsupported
-                    ("component with initialization by proof in a type with"
-                     & " predicates", E);
-               end if;
             end;
 
          --  Most discrete and floating-point types are in SPARK
@@ -5276,9 +5151,8 @@ package body SPARK_Definition is
 
                else
                   declare
-                     Rng  : constant Node_Id := Get_Range (E);
-                     Low  : constant Node_Id := Low_Bound (Rng);
-                     High : constant Node_Id := High_Bound (Rng);
+                     Low  : constant Node_Id := Type_Low_Bound (E);
+                     High : constant Node_Id := Type_High_Bound (E);
                   begin
                      if Has_Fixed_Point_Type (Etype (Low))
                        or else Has_Fixed_Point_Type (Etype (High))
@@ -5294,9 +5168,8 @@ package body SPARK_Definition is
             --  Check that the range of the type is in SPARK
 
             declare
-               Rng  : constant Node_Id := Get_Range (E);
-               Low  : constant Node_Id := Low_Bound (Rng);
-               High : constant Node_Id := High_Bound (Rng);
+               Low  : constant Node_Id := Type_Low_Bound (E);
+               High : constant Node_Id := Type_High_Bound (E);
             begin
                if not Compile_Time_Known_Value (Low) then
                   Mark (Low);
@@ -5464,8 +5337,6 @@ package body SPARK_Definition is
                declare
                   Comp              : Entity_Id := First_Component (E);
                   Comp_Type         : Entity_Id;
-                  Init_By_Proof     : Entity_Id := Empty;
-                  Not_Init_By_Proof : Entity_Id := Empty;
 
                begin
                   while Present (Comp) loop
@@ -5488,6 +5359,17 @@ package body SPARK_Definition is
                            then
                               Mark_Violation
                                 ("owning component of a tagged type", Comp);
+                           end if;
+
+                           --  Tagged types with components with relaxed init
+                           --  are not supported yet.
+
+                           if Is_Tagged_Type (E)
+                             and then Contains_Relaxed_Init_Parts (Comp_Type)
+                           then
+                              Mark_Violation
+                                ("component of a tagged type with relaxed"
+                                 & " initialization", Comp);
                            end if;
 
                            --  Check that the component is not of an anonymous
@@ -5514,39 +5396,11 @@ package body SPARK_Definition is
 
                            --  Mark default value of component or discriminant
                            Mark_Default_Expression (Comp);
-
-                           if Has_Init_By_Proof (Comp_Type) then
-                              Init_By_Proof := Comp;
-                           else
-                              Not_Init_By_Proof := Comp;
-                           end if;
                         end if;
                      end if;
 
                      Next_Component (Comp);
                   end loop;
-
-                  --  Check use of pragma Annotate Init_By_Proof.
-                  --  E is considered Init_By_Proof if any of its component is
-                  --  Init_By_Proof.
-
-                  if Present (Init_By_Proof) then
-                     if Is_Tagged_Type (E) then
-                        Mark_Unsupported
-                          ("component with initialization by proof in a tagged"
-                           & " type", Init_By_Proof);
-                     elsif Has_Predicates (E) then
-                        Mark_Unsupported
-                          ("component with initialization by proof in a type"
-                           & " with predicates", Init_By_Proof);
-                     elsif Present (Not_Init_By_Proof) then
-                        Mark_Unsupported
-                          ("component without initialization by proof in a"
-                           & " record with initialization by proof",
-                           Not_Init_By_Proof);
-                     end if;
-                  end if;
-
                end;
             end if;
 
@@ -5640,12 +5494,6 @@ package body SPARK_Definition is
 
             elsif not Retysp_In_SPARK (Directly_Designated_Type (E)) then
                Mark_Violation (E, From => Directly_Designated_Type (E));
-
-            --  We do not support initialization by proof on access types yet
-
-            elsif Has_Init_By_Proof (Directly_Designated_Type (E)) then
-               Mark_Unsupported
-                 ("access to a type with initialization by proof", E);
             end if;
 
          elsif Is_Concurrent_Type (E) then
@@ -5757,7 +5605,7 @@ package body SPARK_Definition is
                            --  Initialization by proof of protected components
                            --  is not supported yet.
 
-                           if Has_Init_By_Proof (Etype (Comp)) then
+                           if Contains_Relaxed_Init_Parts (Etype (Comp)) then
                               Mark_Unsupported
                                 ("protected component with initialization by"
                                  & " proof", E);
@@ -5792,7 +5640,9 @@ package body SPARK_Definition is
 
                               if Ekind (Part) = E_Variable
                                 and then Retysp_In_SPARK (Etype (Part))
-                                and then Has_Init_By_Proof (Etype (Part))
+                                and then (Obj_Has_Relaxed_Init (Part)
+                                          or else Contains_Relaxed_Init_Parts
+                                            (Etype (Part)))
                               then
                                  Mark_Unsupported
                                    ("Part_Of variable with initialization by"
@@ -5872,6 +5722,25 @@ package body SPARK_Definition is
 
          else
             raise Program_Error;
+         end if;
+
+         --  If no violations were found and the type is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+         --  For consistency between flow analysis and proof, we consider types
+         --  entirely made of components with relaxed initialization to be
+         --  annotated with relaxed initialization.
+
+         if not Violation_Detected
+           and then
+             ((Is_First_Subtype (E)
+               and then Has_Relaxed_Initialization (E))
+              or else (Is_Composite_Type (E)
+                       and then Contains_Only_Relaxed_Init (E)))
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => E,
+               Own => True);
          end if;
       end Mark_Type_Entity;
 
@@ -6147,35 +6016,41 @@ package body SPARK_Definition is
                   null;
 
                when others =>
-                  Entity_List.Append (E);
 
+                  --  Do not translate objects from declare expressions. They
+                  --  are handled as local objects.
+
+                  if not Comes_From_Declare_Expr (E) then
+                     Entity_List.Append (E);
+                  end if;
             end case;
          end if;
-      end if;
 
-      --  Mark predicate function, if any Predicate functions should be
-      --  marked after the subtype, that's why we need to do this here, after
-      --  inserting the subtype into the entity list.
+         --  Mark predicate function, if any Predicate functions should be
+         --  marked after the subtype, that's why we need to do this here,
+         --  after inserting the subtype into the entity list.
 
-      if Is_Type (E) and then Has_Predicates (E) then
-         declare
-            PF : constant Entity_Id := Predicate_Function (E);
-         begin
-            if Present (PF) then
-               Queue_For_Marking (PF);
-            end if;
-         end;
-      end if;
+         if Is_Type (E) and then Has_Predicates (E) then
+            declare
+               PF : constant Entity_Id := Predicate_Function (E);
+            begin
+               if Present (PF) then
+                  Queue_For_Marking (PF);
+               end if;
+            end;
+         end if;
 
-      --  Currently, proof looks at overriding operations for a given
-      --  subprogram operation on tagged types. To make this work, they should
-      --  be marked. Easiest is to mark all primitive operations of a tagged
-      --  type.
+         --  Currently, proof looks at overriding operations for a given
+         --  subprogram operation on tagged types. To make this work, they
+         --  should be marked. Easiest is to mark all primitive operations of
+         --  a tagged type.
 
-      if Is_Tagged_Type (E) then
-         for Prim of Iter (Direct_Primitive_Operations (E)) loop
-            Queue_For_Marking (Ultimate_Alias (Prim));
-         end loop;
+         if Is_Tagged_Type (E) then
+            for Prim of Iter (Direct_Primitive_Operations (E)) loop
+               Queue_For_Marking (Ultimate_Alias (Prim));
+            end loop;
+         end if;
+
       end if;
 
       --  Restore prestate
@@ -6371,13 +6246,8 @@ package body SPARK_Definition is
         Component_Associations (Expression (Iterable_Aspect));
       Iterable_Field           : Node_Id := First (Iterable_Component_Assoc);
    begin
-
-      --  Nodes in Iterable fields are not rewritten. The ultimate alias should
-      --  be considered.
-
       while Present (Iterable_Field) loop
-         Mark_Entity (Ultimate_Alias
-                      (Entity (Expression (Iterable_Field))));
+         Mark_Entity (Entity (Expression (Iterable_Field)));
          Next (Iterable_Field);
       end loop;
    end Mark_Iterable_Aspect;
@@ -7321,6 +7191,9 @@ package body SPARK_Definition is
       Def_E             : constant Entity_Id := Defining_Entity (N);
       E                 : constant Entity_Id := Unique_Entity (Def_E);
 
+      pragma Assert
+        (Ekind (E) in E_Function | E_Procedure | Entry_Kind | E_Task_Type);
+
       In_Pred_Function_Body : constant Boolean :=
         Ekind (E) = E_Function and then Is_Predicate_Function (E);
       --  Set to True iff processing body of a predicate function, which is
@@ -7344,12 +7217,26 @@ package body SPARK_Definition is
 
       if In_Internal_Unit (N)
         and then not Is_Internal_Unit (Main_Unit)
+
+        --  We still mark expression functions declared in the specification
+        --  of internal units, so that GNATprove can use their definition.
+
+        and then not
+          (Ekind (E) = E_Function
+           and then Nkind
+             (Original_Node (Parent (Subprogram_Specification (E)))) =
+               N_Expression_Function
+           and then Ekind (Scope (E)) = E_Package
+           and then In_Visible_Declarations
+             (Parent (Subprogram_Specification (E))))
+
+        --  We still mark predicate functions declared in the specification
+        --  of internal units.
+
+        and then not
+          (Ekind (E) = E_Function
+           and then Is_Predicate_Function (E))
       then
-         return;
-
-      --  Ignore generic subprograms
-
-      elsif Is_Generic_Subprogram (E) then
          return;
 
       --  Ignore some functions generated by the frontend for aspects
@@ -7398,9 +7285,8 @@ package body SPARK_Definition is
          --  an axiom for analysis of its callers even in SPARK_Mode => Auto.
 
          if SPARK_Pragma_Is_On
-           or else (Ekind (E) = E_Function
-                     and then Present (Get_Expression_Function (E))
-                     and then not SPARK_Pragma_Is (Opt.Off))
+           or else (Is_Expression_Function_Or_Completion (E)
+                    and then not SPARK_Pragma_Is (Opt.Off))
          then
             declare
                Save_Violation_Detected : constant Boolean :=
@@ -7434,28 +7320,21 @@ package body SPARK_Definition is
                   end case;
                end if;
 
-               --  Mark Actual_Subtypes of parameters if any
+               --  Mark Actual_Subtypes of body formal parameters, if any
 
                if Nkind (N) /= N_Task_Body then
                   declare
-                     Formals    : constant List_Id :=
-                       Parameter_Specifications
-                         (if Nkind (N) = N_Entry_Body
-                          then Entry_Body_Formal_Part (N)
-                          else Specification (N));
-                     Formal     : Entity_Id;
-                     Sub        : Entity_Id;
-                     Param_Spec : Node_Id := First (Formals);
+                     Body_Formal : Entity_Id := First_Formal (Def_E);
+                     Sub         : Entity_Id;
                   begin
-                     while Present (Param_Spec) loop
-                        Formal := Defining_Identifier (Param_Spec);
-                        Sub := Actual_Subtype (Formal);
+                     while Present (Body_Formal) loop
+                        Sub := Actual_Subtype (Body_Formal);
                         if Present (Sub)
                           and then not In_SPARK (Sub)
                         then
-                           Mark_Violation (Formal, From => Sub);
+                           Mark_Violation (Body_Formal, From => Sub);
                         end if;
-                        Next (Param_Spec);
+                        Next_Formal (Body_Formal);
                      end loop;
                   end;
                end if;
@@ -7546,9 +7425,7 @@ package body SPARK_Definition is
                   --  body gets translated into an axiom for analysis of
                   --  its callers.
 
-                  if Ekind (E) = E_Function
-                    and then Present (Get_Expression_Function (E))
-                  then
+                  if Is_Expression_Function_Or_Completion (E) then
                      Bodies_Compatible_With_SPARK.Insert (E);
                   end if;
 
@@ -7718,6 +7595,102 @@ package body SPARK_Definition is
                                  | N_Index_Or_Discriminant_Constraint);
    end Mark_Subtype_Indication;
 
+   ---------------------------------
+   -- Mark_Type_With_Relaxed_Init --
+   ---------------------------------
+
+   procedure Mark_Type_With_Relaxed_Init
+     (N   : Node_Id;
+      Ty  : Entity_Id;
+      Own : Boolean := False)
+   is
+      use Node_To_Bool_Maps;
+      Rep_Ty   : constant Entity_Id := Base_Retysp (Ty);
+      C        : Node_To_Bool_Maps.Cursor;
+      Inserted : Boolean;
+
+   begin
+      --  Store Rep_Ty in the Relaxed_Init map or update its mapping if
+      --  necessary.
+
+      Relaxed_Init.Insert (Rep_Ty, Own, C, Inserted);
+
+      if not Inserted then
+         if Own then
+            Relaxed_Init.Replace_Element (C, Own);
+         end if;
+         return;
+      end if;
+
+      --  Raise violations on currently unsupported cases
+
+      if Has_Predicates (Ty) then
+         Mark_Unsupported
+           ("predicate on a type with initialization by proof", N);
+      elsif Has_Invariants_In_SPARK (Ty) then
+         Mark_Unsupported
+           ("invariant on a type with initialization by proof", N);
+      elsif Is_Tagged_Type (Rep_Ty) then
+         Mark_Unsupported
+           ("tagged type with initialization by proof", N);
+      elsif Is_Access_Type (Rep_Ty) then
+         Mark_Unsupported
+           ("access type with initialization by proof", N);
+      elsif Is_Concurrent_Type (Rep_Ty) then
+         Mark_Unsupported
+           ("concurrent type with initialization by proof", N);
+      end if;
+
+      --  Using conversions, expressions of any ancestor of Rep_Ty can also
+      --  be partially initialized. It is not the case for scalar types as
+      --  conversions would evaluate them.
+      --  Descendants are not added to the map. They are handled specifically
+      --  in routines deciding whether a type might be partially initialized.
+
+      if Retysp (Etype (Rep_Ty)) /= Rep_Ty
+        and then not Is_Scalar_Type (Rep_Ty)
+      then
+         Mark_Type_With_Relaxed_Init (N, Retysp (Etype (Rep_Ty)));
+      end if;
+
+      --  Components of composite types can be partially initialized
+
+      if Is_Array_Type (Rep_Ty) then
+         Mark_Type_With_Relaxed_Init (N, Component_Type (Rep_Ty));
+      elsif Is_Record_Type (Rep_Ty) then
+         declare
+            Comp      : Entity_Id := First_Component (Rep_Ty);
+            Comp_Type : Entity_Id;
+
+         begin
+            while Present (Comp) loop
+               pragma Assert (Ekind (Comp) = E_Component);
+
+               if not Is_Tag (Comp)
+
+                 --  Ignore components which are declared in a part with
+                 --  SPARK_Mode => Off.
+
+                 and then Component_Is_Visible_In_SPARK (Comp)
+               then
+                  Comp_Type := Etype (Comp);
+
+                  --  Protect against calling marking of relaxed init types
+                  --  on components of a non spark record, in case Rep_Ty is
+                  --  not in SPARK.
+
+                  if In_SPARK (Comp_Type) then
+                     Mark_Type_With_Relaxed_Init (N, Comp_Type);
+                  end if;
+               end if;
+
+               Next_Component (Comp);
+            end loop;
+         end;
+      end if;
+
+   end Mark_Type_With_Relaxed_Init;
+
    -------------------
    -- Mark_Unary_Op --
    -------------------
@@ -7775,30 +7748,6 @@ package body SPARK_Definition is
       Mark_Entity (Retysp (E));
       return Entities_In_SPARK.Contains (Retysp (E));
    end Retysp_In_SPARK;
-
-   ---------------------
-   -- SPARK_Pragma_Is --
-   ---------------------
-
-   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
-     (if Present (Current_Incomplete_Type)
-      or else (Present (Current_Delayed_Aspect_Type)
-               and then In_SPARK (Current_Delayed_Aspect_Type))
-      then Mode = Opt.On
-      --  Force SPARK_Mode => On for expressions of a delayed aspects, if the
-      --  type bearing this aspect was marked in SPARK, as we have assumed
-      --  it when marking everything between their declaration and freezing
-      --  point, so we cannot revert that. Also force it for completion of
-      --  incomplete types.
-
-      elsif Present (Current_SPARK_Pragma)
-      then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
-      --  In the usual case where Current_SPARK_Pragma is a pragma node, get
-      --  the current mode from the pragma.
-
-      else Mode = Opt.None
-      --  Otherwise there is no applicable pragma, so SPARK_Mode is None
-     );
 
    ----------------------------
    -- SPARK_Pragma_Of_Entity --

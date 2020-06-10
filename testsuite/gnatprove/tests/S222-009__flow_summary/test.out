@@ -14,21 +14,21 @@ depends_exercise.ads:23:11: info: flow dependencies proved
 Summary of SPARK analysis
 =========================
 
--------------------------------------------------------------------------------------------------------
-SPARK Analysis results        Total       Flow   Interval   CodePeer     Provers   Justified   Unproved
--------------------------------------------------------------------------------------------------------
-Data Dependencies                 3          3          .          .           .           .          .
-Flow Dependencies                 4          4          .          .           .           .          .
-Initialization                    2          2          .          .           .           .          .
-Non-Aliasing                      .          .          .          .           .           .          .
-Run-time Checks                   3          .          .          .    2 (CVC4)           .          1
-Assertions                        .          .          .          .           .           .          .
-Functional Contracts              .          .          .          .           .           .          .
-LSP Verification                  .          .          .          .           .           .          .
-Termination                       .          .          .          .           .           .          .
-Concurrency                       .          .          .          .           .           .          .
--------------------------------------------------------------------------------------------------------
-Total                            12    9 (75%)          .          .     2 (17%)           .     1 (8%)
+--------------------------------------------------------------------------------------------
+SPARK Analysis results        Total       Flow   CodePeer     Provers   Justified   Unproved
+--------------------------------------------------------------------------------------------
+Data Dependencies                 3          3          .           .           .          .
+Flow Dependencies                 4          4          .           .           .          .
+Initialization                    2          2          .           .           .          .
+Non-Aliasing                      .          .          .           .           .          .
+Run-time Checks                   3          .          .    2 (CVC4)           .          1
+Assertions                        .          .          .           .           .          .
+Functional Contracts              .          .          .           .           .          .
+LSP Verification                  .          .          .           .           .          .
+Termination                       .          .          .           .           .          .
+Concurrency                       .          .          .           .           .          .
+--------------------------------------------------------------------------------------------
+Total                            12    9 (75%)          .     2 (17%)           .     1 (8%)
 
 
 max steps used for successful proof: 1

@@ -71,19 +71,50 @@ as errors. Formal verification is not possible on subprograms using these
 features. But these features can be used in subprograms in Ada not identified
 as |SPARK| code, see :ref:`Identifying SPARK Code`.
 
-Partially Analyzed Ada Features
--------------------------------
+.. _Sizes of Objects:
+
+Sizes of Objects
+----------------
+
+|GNATprove| generally only knows the values of the ``Size`` and ``Object_Size``
+attributes in simple cases such as scalar objects. For any more complex types
+such as arrays and records, the value of these attributes is unknown, and e.g.
+assertions referring to them remain unproved.
+The user can indicate the values of these attributes to SPARK via confirming
+representation clauses, using ``for Type'Size use ...`` or the aspect syntax
+``with Size => ...``. Note that only static values can be used in these
+representation clauses.
+Note that for an object ``X`` of type ``T``, the value of ``X'Size`` is *not*
+necessarily equal to ``T'Size``, but equal to ``T'Object_Size``. So it is
+generally more useful to specify ``Object_Size`` on types to be able to know
+the value the ``Size`` attribute of the type's objects. However, to compute the
+size of ``T'Object_Size`` for composite types, the value of ``C'Size`` is
+generally used, ``C`` being the type of a component. The value of
+``Object_Size`` must be 8, 16, 32 or a multiple of 64, while the ``Size`` of a
+type can be any value.
+
+The following code example shows some simple representation clauses using the
+aspect syntax:
+
+.. literalinclude:: /gnatprove_by_example/examples/uc.ads
+   :language: ada
+   :lines: 5-22
+
+Data Validity
+-------------
 
 |SPARK| reinforces the strong typing of Ada with a stricter initialization
 policy (see :ref:`Data Initialization Policy`), and thus provides no means
-currently of specifying that some input data may be invalid. As a result, the
-following features are allowed in |SPARK|, but only partially analyzed by
-|GNATprove|:
+of specifying that some input data may be invalid. This has some impact on
+language features that process or potentially produce invalid values.
 
-* The result of a call to ``Unchecked_Conversion`` is assumed to be a valid
-  value of the resulting type.
-
-* The evaluation of attribute ``Valid`` is assumed to always return True.
+Calls to instances of  ``Unchecked_Conversion`` could potentially create
+invalid values; however, |SPARK| checks upon creation of such an instance, that
+no such invalid values can be produced. Similarly, |SPARK| checks upon
+specification of an Address clause or aspect for an object, that no invalid
+values can be produced in this way. Conversely, as no invalid values can be
+constructed in |SPARK|, the evaluation of the attribute ``Valid`` is assumed to
+always return True.
 
 This is illustrated in the following example:
 
@@ -97,10 +128,28 @@ This is illustrated in the following example:
 
 |GNATprove| proves both assertions, but issues warnings about its assumptions
 that the evaluation of attribute ``Valid`` on both input parameter ``X`` and
-the result of the call to ``Unchecked_Conversion`` return True:
+the result of the call to ``Unchecked_Conversion`` return True. It also issues
+a "high" unproved check that the unchecked conversion to ``Float`` may produce
+invalid values (for example, if an ``Integer`` is converted whose bit
+representation corresponds to a ``NaN`` float, which is not allowed in SPARK).
 
 .. literalinclude:: /gnatprove_by_example/results/validity.prove
    :language: none
+
+When checking an instance of ``Unchecked_Conversion``, |GNATprove| also checks
+that both types have the same ``Object_Size``. For non-scalar types,
+|GNATprove| doesn't know the ``Object_Size`` of the types, so representation
+clauses that specify ``Object_Size`` are required to prove such checks (see
+also :ref:`Sizes of Objects`). Similarly, for object declarations with an
+Address clause or aspect that refers to the ``'Address`` of another object,
+|SPARK| checks that both objects have the same known ``Object_Size``.
+
+The following example shows some typical usages of unchecked conversions and
+``Object_Size`` clauses:
+
+.. literalinclude:: /gnatprove_by_example/examples/uc.ads
+   :language: ada
+   :linenos:
 
 .. _Data Initialization Policy:
 
@@ -173,6 +222,16 @@ initialized before being read.
 Note also the various warnings that |GNATprove| issues on unused parameters,
 global items and assignments, also based on the stricter |SPARK| interpretation
 of parameter and global modes.
+
+It is possible to opt out of the strong data initialization
+policy of |SPARK| on a case by case basis using the aspect
+``Relaxed_Initialization`` (see section :ref:`Aspect Relaxed_Initialization`).
+Parts of objects subjected to this aspect only need to be initialized when
+actually read. Using ``Relaxed_Initialization`` requires specifying data
+initialization through contracts that are verified by proof (as opposed to
+flow analysis). Thus, ``Relaxed_Initialization`` should only be used when
+needed as it requires more effort to verify data initialization from both the
+user and the tool.
 
 .. _Memory Ownership Policy:
 
@@ -330,6 +389,9 @@ messages:
 .. literalinclude:: /gnatprove_by_example/results/check_aliasing.flow
    :language: none
    :lines: 3,5
+
+Note that |SPARK| currently does not detect aliasing between objects that
+arises due to the use of Address clauses or aspects.
 
 .. _Raising Exceptions and Other Error Signaling Mechanisms:
 

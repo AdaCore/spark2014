@@ -31,20 +31,20 @@ package Xkind_Tables is
    --  This package provides an interface to record information about
    --  kinds and classes of nodes in the Why syntax tree.
 
-   type Wide_String_Access is access Wide_String;
+   type String_Access is access String;
 
    package String_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Wide_String_Access, "=");
+     new Ada.Containers.Doubly_Linked_Lists (String_Access, "=");
 
-   Kinds   : String_Lists.List;
+   Kinds : String_Lists.List;
    --  List of node kinds; extracted from the syntax tree of Why.Sinfo
    --  by the ASIS traversal.
 
    type Class_Info is record
-      Name   : Wide_String_Access;
-      Father : Wide_String_Access;
-      First  : Wide_String_Access;
-      Last   : Wide_String_Access;
+      Name   : String_Access;
+      Father : String_Access;
+      First  : String_Access;
+      Last   : String_Access;
    end record;
 
    package Class_Lists is
@@ -77,34 +77,34 @@ package Xkind_Tables is
    procedure Display_Domains;
 
    procedure New_Class
-     (Name  : Wide_String;
+     (Name  : String;
       First : Why_Node_Kind;
       Last  : Why_Node_Kind);
 
    procedure New_Domain
-     (Name   : Wide_String;
-      Father : Wide_String;
+     (Name   : String;
+      Father : String;
       First  : Why_Node_Kind;
       Last   : Why_Node_Kind);
 
-   function Mixed_Case_Name (Kind : Why_Node_Kind) return Wide_String;
-   function Mixed_Case_Name (M : Id_Multiplicity) return Wide_String;
-   function Mixed_Case_Name (D : EW_ODomain) return Wide_String;
+   function Mixed_Case_Name (Kind : Why_Node_Kind) return String;
+   function Mixed_Case_Name (M : Id_Multiplicity) return String;
+   function Mixed_Case_Name (D : EW_ODomain) return String;
    --  Return the mixed case name of the given node kind
 
    function Default_Kind return Why_Node_Kind;
-   function Default_Kind return Wide_String;
+   function Default_Kind return String;
 
    function Multiplicity_Suffix
      (Multiplicity : Id_Multiplicity)
-     return Wide_String;
+     return String;
    --  Return the string suffix that corresponds to the given multiplicity
 
    function Id_Subtype
-     (Prefix       : Wide_String;
+     (Prefix       : String;
       Kind         : Id_Kind := Regular;
       Multiplicity : Id_Multiplicity := Id_One)
-     return Wide_String;
+     return String;
    --  Return the subtype for the given Kind and the given Multiplicity.
    --  e.g. Id_Subtype ("W_Type", Opaque, Lone) would return
    --  "W_Type_Opaque_OId".
@@ -113,49 +113,49 @@ package Xkind_Tables is
      (N_Kind       : Why_Node_Kind;
       I_Kind       : Id_Kind := Regular;
       Multiplicity : Id_Multiplicity := Id_One)
-     return Wide_String;
+     return String;
    --  Ditto
 
-   function Arr_Type (Prefix : Wide_String; Kind : Id_Kind) return Wide_String
+   function Arr_Type (Prefix : String; Kind : Id_Kind) return String
      with Pre => (Kind in Regular .. Derived);
    --  Return the name of an array type for the elements of the given Prefix
    --  (e.g. of type W_Type_Id is Prefix is "W_Type").
 
    function Base_Id_Subtype
-     (Prefix       : Wide_String;
+     (Prefix       : String;
       Kind         : Id_Kind;
       Multiplicity : Id_Multiplicity)
-     return Wide_String;
+     return String;
    --  Same as Id_Subtype, but returning the base subtype: i.e. Why_Node_Id
    --  for Opaque Ids, Opaque Ids for Unchecked Ids, Unchecked Ids for
    --  Regular Ids.
 
    function Kind_Check
-     (Prefix : Wide_String;
+     (Prefix : String;
       M      : Id_Multiplicity)
-     return Wide_String;
+     return String;
    --  Return the name of the kind-validity check for the given
    --  node kind
 
    function Tree_Check
-     (Prefix : Wide_String;
+     (Prefix : String;
       M      : Id_Multiplicity)
-     return Wide_String;
+     return String;
    --  Return the name of the tree-validity check for the given
    --  node kind
 
    function Children_Check
-     (Prefix : Wide_String;
+     (Prefix : String;
       M      : Id_Multiplicity)
-     return Wide_String;
+     return String;
    --  Return the name of the tree-validity check for the children of node
    --  whose kind is given in parameters
 
-   function Cache_Check (M : Id_Multiplicity) return Wide_String;
+   function Cache_Check (M : Id_Multiplicity) return String;
    --  Return the name of the cached tree-validity check for the given
    --  multiplicity
 
-   function Class_Name (CI : Class_Info) return Wide_String;
+   function Class_Name (CI : Class_Info) return String;
 
    function Class_First (CI : Class_Info) return Why_Node_Kind;
    --  Given the string representation of a node class, return
@@ -170,11 +170,11 @@ package Xkind_Tables is
    function Is_Subclass (Inner, Outer : Class_Info) return Boolean;
    --  Return True in Inner is a strict subclass of Outer
 
-   function Is_Domain (Id_Type : Wide_String) return Boolean;
+   function Is_Domain (Id_Type : String) return Boolean;
    --  Return True if Id_Type is in a domain class (e.g. W_Term_Id
    --  is in the domain class W_Term, that corresponds to the domain EW_Term).
 
-   function Get_Domain (Id_Type : Wide_String) return EW_ODomain;
+   function Get_Domain (Id_Type : String) return EW_ODomain;
    --  Return the domain of Id_Type
 
 end Xkind_Tables;

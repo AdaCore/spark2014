@@ -32,14 +32,14 @@ package body Xtree_Classes is
    procedure Print_Class_Case_Expression
      (O            : in out Output_Record;
       CI           : Class_Info;
-      Param        : Wide_String;
-      Default      : Wide_String;
+      Param        : String;
+      Default      : String;
       Process_Kind : not null access procedure
                        (O    : in out Output_Record;
                         Kind : Why_Node_Kind);
       Case_Expr    : Boolean := True)
    is
-      Sep : constant Wide_String := (if Case_Expr then "," else ";");
+      Sep : constant String := (if Case_Expr then "," else ";");
    begin
       if Case_Expr then
          P (O, "(");

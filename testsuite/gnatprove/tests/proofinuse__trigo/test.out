@@ -60,43 +60,43 @@ trigo.ads:11:73: medium: float overflow check might fail [possible explanation: 
 trigo.ads:11:77: medium: float overflow check might fail [possible explanation: subprogram at line 11 should mention X in a precondition]
 trigo.ads:14:10: info: float overflow check proved (CVC4: 1 VC)
 trigo.ads:14:21: info: division check proved (CVC4: 1 VC)
-trigo.ads:14:21: info: float overflow check proved (Interval)
+trigo.ads:14:21: info: float overflow check proved (Trivial)
 trigo.ads:14:27: medium: float overflow check might fail [possible explanation: subprogram at line 13 should mention X in a precondition]
 trigo.ads:14:38: info: division check proved (CVC4: 1 VC)
-trigo.ads:14:38: info: float overflow check proved (Interval)
+trigo.ads:14:38: info: float overflow check proved (Trivial)
 trigo.ads:14:46: medium: float overflow check might fail [possible explanation: subprogram at line 13 should mention X in a precondition]
 trigo.ads:14:57: info: division check proved (CVC4: 1 VC)
-trigo.ads:14:57: info: float overflow check proved (Interval)
+trigo.ads:14:57: info: float overflow check proved (Trivial)
 trigo.ads:18:14: medium: postcondition might fail, cannot prove abs (Sin'Result - Approx_Sin (X)) < 3.0E-6
 trigo.ads:18:30: medium: float overflow check might fail
-trigo.ads:21:12: info: float overflow check proved (Interval)
+trigo.ads:21:12: info: float overflow check proved (Trivial)
 trigo.ads:21:23: info: division check proved (CVC4: 1 VC)
-trigo.ads:21:23: info: float overflow check proved (Interval)
-trigo.ads:21:29: info: float overflow check proved (Interval)
+trigo.ads:21:23: info: float overflow check proved (Trivial)
+trigo.ads:21:29: info: float overflow check proved (Trivial)
 trigo.ads:21:40: info: division check proved (CVC4: 1 VC)
-trigo.ads:21:40: info: float overflow check proved (Interval)
-trigo.ads:21:47: info: float overflow check proved (Interval)
+trigo.ads:21:40: info: float overflow check proved (Trivial)
+trigo.ads:21:47: info: float overflow check proved (Trivial)
 trigo.ads:21:58: info: division check proved (CVC4: 1 VC)
-trigo.ads:21:58: info: float overflow check proved (Interval)
-trigo.ads:21:66: info: float overflow check proved (Interval)
+trigo.ads:21:58: info: float overflow check proved (Trivial)
+trigo.ads:21:66: info: float overflow check proved (Trivial)
 trigo.ads:21:77: info: division check proved (CVC4: 1 VC)
-trigo.ads:21:77: info: float overflow check proved (Interval)
+trigo.ads:21:77: info: float overflow check proved (Trivial)
 trigo.ads:25:14: medium: postcondition might fail, cannot prove abs (Cos'Result - Approx_Cos (X)) < 3.0E-6
 trigo.ads:25:30: medium: float overflow check might fail
 trigo.ads:28:10: medium: float overflow check might fail [possible explanation: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:21: info: division check proved (CVC4: 1 VC)
-trigo.ads:28:21: info: float overflow check proved (Interval)
+trigo.ads:28:21: info: float overflow check proved (Trivial)
 trigo.ads:28:27: medium: float overflow check might fail [possible explanation: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:33: medium: float overflow check might fail [possible explanation: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:44: info: division check proved (CVC4: 1 VC)
-trigo.ads:28:44: info: float overflow check proved (Interval)
+trigo.ads:28:44: info: float overflow check proved (Trivial)
 trigo.ads:28:51: medium: float overflow check might fail [possible explanation: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:58: medium: float overflow check might fail [possible explanation: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:69: info: division check proved (CVC4: 1 VC)
-trigo.ads:28:69: info: float overflow check proved (Interval)
+trigo.ads:28:69: info: float overflow check proved (Trivial)
 trigo.ads:28:77: medium: float overflow check might fail [possible explanation: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:84: medium: float overflow check might fail [possible explanation: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:95: info: division check proved (CVC4: 1 VC)
-trigo.ads:28:95: info: float overflow check proved (Interval)
+trigo.ads:28:95: info: float overflow check proved (Trivial)
 trigo.ads:32:14: medium: postcondition might fail, cannot prove abs (Tan'Result - Approx_Tan (X)) < 1.0E-4
 trigo.ads:32:30: medium: float overflow check might fail

@@ -67,8 +67,12 @@ build: setup force
 
 # Compilation and linking settings for coverage and profiling; for details see
 # "Code Coverage and Profiling" in GNAT User's Guide.
+#
+# Note: "gnatcov instrument" requires a full compilable closure, so
+# this target depends on "setup", which generates some required
+# source files.
 
-coverage-setup: force
+coverage-setup: setup force
 	gnatcov instrument -P gnat2why.gpr --level=stmt --dump-trigger=atexit
 	# ??? insert newlines into the gnatcov output; otherwise we would have
 	# too long lines

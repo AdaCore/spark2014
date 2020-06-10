@@ -26,7 +26,6 @@
 with Ada.Text_IO;                use Ada.Text_IO;
 with Ada.Containers;             use Ada.Containers;
 with GNAT.Regpat;                use GNAT.Regpat;
-with Ada.Characters.Conversions; use Ada.Characters.Conversions;
 
 with Ada.Strings.Hash;
 with Ada.Containers.Hashed_Maps;
@@ -137,10 +136,10 @@ package body Templates is
                end;
             else
                if End_Of_File (Input) then
-                  P (O, To_Wide_String (Line));
+                  P (O, Line);
                   exit;
                else
-                  PL (O, To_Wide_String (Line));
+                  PL (O, Line);
                end if;
             end if;
          end;

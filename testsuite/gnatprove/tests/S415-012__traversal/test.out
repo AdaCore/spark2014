@@ -2,6 +2,7 @@ borrow.adb:11:15: medium: pointer dereference check might fail [possible explana
 borrow.adb:17:38: info: precondition proved (Trivial: 1 VC)
 borrow.adb:17:44: info: precondition proved (Trivial: 1 VC)
 borrow.adb:19:18: medium: pointer dereference check might fail (e.g. when Y = null)
+borrow.adb:23:10: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 borrow.adb:23:10: info: initialization of "X" proved
 borrow.adb:24:29: info: precondition proved (Trivial: 1 VC)
 borrow.adb:24:35: info: precondition proved (Trivial: 1 VC)

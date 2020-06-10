@@ -350,7 +350,7 @@ Attribute Loop_Entry
      postcondition expression;
 
    * the rule that a potentially unevaluated Old ``attribute_reference``
-     shall statically denote an entity;
+     shall statically name an entity;
 
    * the prefix of the ``attribute_reference`` shall not contain a Loop_Entry
      ``attribute_reference.``
@@ -384,7 +384,7 @@ Attribute Loop_Entry
    changed].
 
 
-7. The prefix of a Loop_Entry ``attribute_reference`` shall statically denote
+7. The prefix of a Loop_Entry ``attribute_reference`` shall statically name
    an entity, or shall denote an ``object_renaming_declaration``, if
 
    * the ``attribute_reference`` is potentially unevaluated; or
@@ -393,9 +393,9 @@ Attribute Loop_Entry
      enclosing ``loop_statement``.
 
 
-   [This rule follows the corresponding Ada RM rule for 'Old.
-   The prefix of an Old attribute_reference that is potentially unevaluated
-   shall statically denote an entity and have the same rationale. If the
+   [This rule follows the corresponding Ada RM rule for 'Old:
+   the prefix of an Old attribute_reference that is potentially unevaluated
+   shall statically name an entity. This rule has the same rationale. If the
    following was allowed:
 
    .. code-block:: ada

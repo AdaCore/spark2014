@@ -1,5 +1,5 @@
-atom.ads:5:41: volatile object cannot appear in this context (SPARK RM 7.1.3(12))
-atom.ads:7:50: volatile object cannot appear in this context (SPARK RM 7.1.3(12))
-atom3.ads:5:41: volatile object cannot appear in this context (SPARK RM 7.1.3(12))
-atom3.ads:7:50: volatile object cannot appear in this context (SPARK RM 7.1.3(12))
+atom.ads:5:41: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+atom.ads:7:50: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+atom3.ads:5:41: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+atom3.ads:7:50: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
 gnatprove: error during generation of Global contracts

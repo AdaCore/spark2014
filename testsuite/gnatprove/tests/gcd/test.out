@@ -25,7 +25,6 @@ math_euclid.adb:62:23: info: range check proved (Z3: 1 VC)
 math_euclid.adb:63:07: info: initialization of "C" proved
 math_euclid.adb:67:16: info: range check proved (Z3: 2 VC)
 math_euclid.adb:68:18: info: division check proved (Z3: 2 VC)
-math_euclid.adb:68:18: info: range check proved (Z3: 2 VC)
 math_euclid.adb:71:13: info: loop invariant initialization proved (Z3: 4 VC)
 math_euclid.adb:71:13: info: loop invariant preservation proved (Z3: 4 VC)
 math_euclid.adb:74:64: info: range check proved (Z3: 2 VC)

@@ -314,6 +314,10 @@ package SPARK_Util is
    -- Queries related to objects or components --
    ----------------------------------------------
 
+   function Comes_From_Declare_Expr (E : Entity_Id) return Boolean;
+   --  True if E is an object declared in an expression with actions. In SPARK,
+   --  this should correspond to a declare expression.
+
    function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in E_Component | E_Discriminant;
    --  @param E component
@@ -461,6 +465,15 @@ package SPARK_Util is
      (E = Unique_Component (E)) with Ghost;
    --  A trivial wrapper to be used in assertions when converting from the
    --  frontend to flow representation of discriminants and components.
+
+   function Objects_Have_Compatible_Alignments (X, Y : Entity_Id) return
+     Boolean
+   with Pre => Is_Object (X) and then Is_Object (Y);
+   --  @param X  object that overlays the other (object with Address clause)
+   --  @param Y  object that is overlayed (object whose 'Address is used in
+   --            the Address clause of X)
+   --  @return True iff X'Alignment and Y'Alignment are known and X'Alignment
+   --          is an integral multiple of Y
 
    --------------------------------
    -- Queries related to pragmas --
@@ -726,12 +739,30 @@ package SPARK_Util is
    --  Return whether Choices is a singleton choice
 
    function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean;
-   --  @param N any node
-   --  @return True iff N is a call to a traversal function
+   --  @param Expr any node
+   --  @return True iff Expr is a call to a traversal function
+
+   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id
+     with Pre => Nkind (N) = N_Exit_Statement;
+   --  Return the Defining_Identifier of the loop that belongs to an exit
+   --  statement.
 
    function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
    --  @param N any node
    --  @return the number of N_Component_Association nodes in N.
+
+   function Expr_Has_Relaxed_Init
+     (Expr    : Node_Id;
+      No_Eval : Boolean := True) return Boolean;
+   --  Return True if Expr is an expression with relaxed initialization. If
+   --  No_Eval is True, then we don't consider the expression to be evaluated.
+
+   function Obj_Has_Relaxed_Init (Obj : Entity_Id) return Boolean;
+   --  Return True if Obj is an object with relaxed initialization
+
+   function Fun_Has_Relaxed_Init (Subp : Entity_Id) return Boolean with
+     Pre => Ekind (Subp) = E_Function;
+   --  Return True if the result of Subp has relaxed initialization
 
    ---------------------------------
    -- Misc operations and queries --
@@ -757,6 +788,9 @@ package SPARK_Util is
    --  Given a list of statements and declarations Stmts, returns the flattened
    --  list that includes these statements and declarations, and recursively
    --  all inner declarations and statements that appear in block statements.
+   --  Block statements are kept to mark the end of the corresponding scope,
+   --  in order to apply some treatments at the end of local scopes, like
+   --  checking the absence of memory leaks at the end of scope.
 
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element

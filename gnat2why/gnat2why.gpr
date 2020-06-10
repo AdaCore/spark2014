@@ -34,7 +34,7 @@ project GNAT2Why is
                Common_Switches & ("-O0");
          when "Production" =>
             for Switches ("Ada") use
-               Common_Switches & ("-O2", "-gnatpn", "-gnatg");
+               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatwn");
       end case;
    end Compiler;
 
@@ -77,7 +77,6 @@ project GNAT2Why is
          "flow-control_flow_graph.adb",
          "flow-data_dependence_graph.adb",
          "graphs.adb",
-         "why-atree-sprint.adb",
 
          --  the following files contain instances of Graphs
          --  leading to false alarms in graphs.adb

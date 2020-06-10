@@ -13,7 +13,6 @@ arithmetic.adb:32:11: info: range check proved (CVC4: 2 VC)
 arithmetic.adb:33:17: info: overflow check proved (CVC4: 2 VC)
 arithmetic.adb:34:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arithmetic.adb:34:33: info: loop invariant preservation proved (CVC4: 2 VC)
-arithmetic.adb:34:48: info: overflow check proved (CVC4: 2 VC)
 arithmetic.adb:43:07: info: initialization of "R" proved
 arithmetic.adb:45:14: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:45:14: info: range check proved (CVC4: 1 VC)
@@ -41,17 +40,17 @@ arithmetic.adb:90:36: info: loop invariant preservation proved (CVC4: 2 VC)
 arithmetic.adb:90:42: info: overflow check proved (CVC4: 2 VC)
 arithmetic.adb:97:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:101:07: info: initialization of "R" proved
-arithmetic.adb:103:22: info: assertion proved
+arithmetic.adb:103:22: info: assertion proved (Trivial)
 arithmetic.adb:107:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arithmetic.adb:107:33: info: loop invariant preservation proved (CVC4: 2 VC)
 arithmetic.adb:113:19: medium: postcondition might fail, cannot prove Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N (e.g. when Halve_B'Result = 0 and N = 2)
 arithmetic.adb:117:07: info: initialization of "R" proved
-arithmetic.adb:119:22: info: assertion proved
+arithmetic.adb:119:22: info: assertion proved (Trivial)
 arithmetic.adb:124:13: info: loop invariant initialization proved (CVC4: 2 VC)
-arithmetic.adb:124:13: medium: loop invariant might fail after first iteration, cannot prove N > R + R + 1 (e.g. when N = 2 and R = 2)
+arithmetic.adb:124:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove N > R + R + 1 (e.g. when N = 2 and R = 2)
 arithmetic.adb:130:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:134:07: info: initialization of "R" proved
-arithmetic.adb:136:22: info: assertion proved
+arithmetic.adb:136:22: info: assertion proved (Trivial)
 arithmetic.adb:140:33: info: loop invariant initialization proved (CVC4: 3 VC)
 arithmetic.adb:140:33: info: loop invariant preservation proved (CVC4: 3 VC)
 arithmetic.adb:148:19: info: postcondition proved (CVC4: 1 VC)
@@ -73,7 +72,6 @@ arithmetic.adb:185:24: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:185:24: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:191:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:191:39: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:194:14: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:194:14: medium: overflow check might fail (e.g. when N = Integer'First) [possible explanation: subprogram at line 190 should mention N in a precondition]
 arithmetic.adb:198:19: medium: postcondition might fail, cannot prove Test_Mod_A'Result = N (e.g. when N = -1 and Test_Mod_A'Result = 9)
 arithmetic.adb:201:16: info: division check proved (CVC4: 1 VC)
@@ -106,13 +104,9 @@ arithmetic.adb:277:22: medium: assertion might fail, cannot prove 100 rem A /= 0
 arithmetic.adb:277:26: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:283:19: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
 arithmetic.adb:288:29: info: range check proved (CVC4: 1 VC)
-arithmetic.adb:288:34: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:288:42: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:288:47: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:293:22: medium: postcondition might fail, cannot prove IsPositive_Wrong'Result = 0 (e.g. when IsPositive_Wrong'Result = 1 and X = 2)
 arithmetic.adb:298:29: info: range check proved (CVC4: 1 VC)
-arithmetic.adb:298:34: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:298:42: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:298:47: info: division check proved (CVC4: 1 VC)
 counterexample expected for check at arithmetic.adb:10
   trace at arithmetic.adb:6 --> A = -2 and B = Integer'Last

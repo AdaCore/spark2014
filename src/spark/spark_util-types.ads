@@ -179,16 +179,6 @@ package SPARK_Util.Types is
    --  Get the type of the given entity. This function looks through private
    --  types and should be used with extreme care.
 
-   function Get_Iterable_Type_Primitive
-     (Typ : Entity_Id;
-      Nam : Name_Id) return Entity_Id
-   with Pre => Is_Type (Typ)
-                 and then
-               Nam in Name_First | Name_Next | Name_Has_Element | Name_Element;
-   --  Retrieve one of the primitives First, Next, Has_Element, Element from
-   --  the value of the Iterable aspect of a formal type.
-   --  Return the ultimate alias.
-
    function Get_Parent_Type_If_Check_Needed (N : Node_Id) return Entity_Id
      with Pre => Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration;
    --  @param N a (sub)type declaration
@@ -263,7 +253,9 @@ package SPARK_Util.Types is
    with Pre => Is_Type (E);
    --  @param E type
    --  @return True if we can determine that E is Standard_Boolean or a subtype
-   --    of Standard_Boolean which also ranges over False .. True
+   --    of Standard_Boolean which also ranges over False .. True.
+   --    Always return False if the type might be contained in a type with
+   --    relaxed initialization.
 
    function Is_Standard_Type (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);
@@ -275,12 +267,6 @@ package SPARK_Util.Types is
    --  @return True if E needs a specific module to check its default
    --     expression at declaration.
 
-   function Has_Init_By_Proof (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
-   --  @param E type
-   --  @return True if initialization of objects of type E should be checked by
-   --     proof.
-
    function Is_Deep (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
    --  Returns True if the type passed as argument is deep
@@ -289,6 +275,43 @@ package SPARK_Util.Types is
    with Pre => Is_Type (Ty);
    --  Go over the items linked from Rep_Item to search for a predicate
    --  pragma or aspect applying to Ty.
+
+   function Is_Valid_Bitpattern_No_Holes (Typ : Entity_Id) return Boolean with
+     Pre => Is_Type (Typ);
+   --  Returns True if, for the type passed as argument, any bit pattern of the
+   --  right size is a valid value, and the type has no holes. See comments in
+   --  the function for more details.
+
+   function Types_Have_Same_Known_Esize (A, B : Entity_Id) return Boolean
+     with Pre => Is_Type (A) and then Is_Type (B);
+   --  Returns True if the two types in argument have the same Esize
+
+   function Contains_Relaxed_Init_Parts
+     (Typ        : Entity_Id;
+      Ignore_Top : Boolean := False) return Boolean
+   with
+     Pre  => Is_Type (Typ),
+     Post => (if Contains_Relaxed_Init_Parts'Result
+              then Might_Contain_Relaxed_Init (Typ));
+   --  Returns True if Typ has subcomponents whose type is annotated with
+   --  relaxed initialization.
+   --  If Ignore_Top is True, ignore a potential Relaxed_Initialization
+   --  aspect on the type itself.
+
+   function Contains_Only_Relaxed_Init (Typ : Entity_Id) return Boolean with
+     Pre  => Is_Type (Typ),
+     Post => (if Contains_Only_Relaxed_Init'Result
+              then Contains_Relaxed_Init_Parts (Typ));
+   --  Returns True if Typ has at least a subcomponent whose type is annotated
+   --  with relaxed initialization, all its scalar subcomponents have this
+   --  annotation and it contains no predicates.
+   --  These types are considered to have relaxed initialization even if they
+   --  don't have the aspect.
+
+   function Might_Contain_Relaxed_Init (Typ : Entity_Id) return Boolean with
+     Pre => Is_Type (Typ);
+   --  Returns True if Typ has subcomponents whose type may be used for
+   --  expressions with relaxed initialization.
 
    --------------------------------
    -- Queries related to records --

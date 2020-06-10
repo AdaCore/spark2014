@@ -1,0 +1,9 @@
+INLINING ENABLED:
+update.adb:14:10: "Constraint_Error" would have been raised at run time
+update.adb:14:10: value not in range of type "Standard.Positive"
+gnatprove: error during generation of Global contracts
+
+INLINING DISABLED:
+update.adb:6:14: warning: subprogram "Test" has no effect
+update.adb:8:33: info: range check proved (CVC4: 1 VC)
+update.adb:8:33: medium: range check might fail (e.g. when V = 0) [possible explanation: subprogram at line 6 should mention V in a precondition]

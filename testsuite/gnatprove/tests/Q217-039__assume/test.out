@@ -22,19 +22,19 @@ max steps used for successful proof: 1
 -
 =========================
 Analyzed 1 unit
-Assertions . . . . . . .
-Concurrency . . . . . . .
-Data Dependencies . . . . . . .
-Flow Dependencies . . . . . . .
-Functional Contracts 2 . . . 2 . .
-Initialization . . . . . . .
-LSP Verification . . . . . . .
-Non-Aliasing . . . . . . .
-Run-time Checks 2 . . . 1 . 1
-SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
+Assertions . . . . . .
+Concurrency . . . . . .
+Data Dependencies . . . . . .
+Flow Dependencies . . . . . .
+Functional Contracts 2 . . 2 . .
+Initialization . . . . . .
+LSP Verification . . . . . .
+Non-Aliasing . . . . . .
+Run-time Checks 2 . . 1 . 1
+SPARK Analysis results Total Flow CodePeer Provers Justified Unproved
 Summary of SPARK analysis
-Termination . . . . . . .
-Total 4 . . . 3 (75%) . 1 (25%)
+Termination . . . . . .
+Total 4 . . 3 (75%) . 1 (25%)
 absence of run-time errors of Assume_Call fully established
 absence of run-time errors of Assume_Call.Caller depends on
 absence of run-time errors of Assume_Call.Wrong_Pre fully established

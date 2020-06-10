@@ -1,4 +1,5 @@
 display.adb:10:34: info: range check proved (CVC4: 2 VC)
+display.adb:20:04: info: object is suitable for aliasing via address clause (Trivial)
 display.adb:37:32: info: overflow check proved (CVC4: 1 VC)
 display.ads:10:06: info: data dependencies proved
 display.ads:11:06: info: flow dependencies proved

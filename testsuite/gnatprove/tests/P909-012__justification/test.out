@@ -1,7 +1,7 @@
-numerics.ads:10:99: info: range check proved (Interval)
-numerics.ads:13:99: info: range check proved (Interval)
-numerics.ads:16:99: info: range check proved (Interval)
+numerics.ads:10:99: info: range check proved (Trivial)
+numerics.ads:13:99: info: range check proved (Trivial)
+numerics.ads:16:99: info: range check proved (Trivial)
 numerics.ads:16:99: medium: float overflow check might fail (e.g. when Left = 3.3752146E+38 and Right = 1.9359426E+0) [possible explanation: precondition of subprogram at line 16 should mention Left and Right]
 numerics.ads:18:99: info: division check proved (CVC4: 1 VC)
-numerics.ads:18:99: info: range check proved (Interval)
+numerics.ads:18:99: info: range check proved (Trivial)
 numerics.ads:18:99: medium: float overflow check might fail (e.g. when Left = 1.4994155E+0 and Right = 1.4696328E-39) [possible explanation: precondition of subprogram at line 18 should mention Left]

@@ -1,3 +1,6 @@
+array_borrows.adb:5:05: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+array_borrows.adb:6:05: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+array_borrows.adb:7:05: medium: memory leak might occur at end of scope
 array_borrows.adb:10:06: info: data dependencies proved
 array_borrows.adb:12:16: medium: postcondition might fail, cannot prove X (True).all = I
 array_borrows.adb:12:25: info: pointer dereference check proved (CVC4: 1 VC)
@@ -6,6 +9,9 @@ array_borrows.adb:23:23: info: assertion proved (CVC4: 1 VC)
 array_borrows.adb:23:25: info: pointer dereference check proved (CVC4: 1 VC)
 array_borrows.adb:25:20: info: assertion proved (CVC4: 1 VC)
 array_borrows.adb:25:29: info: pointer dereference check proved (CVC4: 1 VC)
+flow_borrows.adb:7:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+flow_borrows.adb:8:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+flow_borrows.adb:9:04: medium: memory leak might occur at end of scope
 flow_borrows.adb:12:06: info: data dependencies proved
 flow_borrows.adb:14:16: info: postcondition proved (CVC4: 1 VC)
 flow_borrows.adb:14:20: info: pointer dereference check proved (CVC4: 1 VC)
@@ -15,6 +21,9 @@ flow_borrows.adb:27:22: info: assertion proved (CVC4: 1 VC)
 flow_borrows.adb:27:24: info: pointer dereference check proved (CVC4: 1 VC)
 flow_borrows.adb:29:19: info: assertion proved (CVC4: 1 VC)
 flow_borrows.adb:29:23: info: pointer dereference check proved (CVC4: 1 VC)
+list_borrow.adb:9:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+list_borrow.adb:10:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+list_borrow.adb:11:04: medium: memory leak might occur at end of scope
 list_borrow.adb:16:13: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:17:08: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:19:19: info: assertion proved (CVC4: 1 VC)

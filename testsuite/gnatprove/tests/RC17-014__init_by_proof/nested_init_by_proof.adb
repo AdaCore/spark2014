@@ -1,10 +1,5 @@
 procedure Nested_Init_By_Proof with SPARK_Mode is
-   subtype My_Nat is Natural;
-   pragma Annotate (GNATprove, Init_By_Proof, My_Nat);
-
-   function My_Eq (X, Y : My_Nat) return Boolean is
-     (X'Valid_Scalars = X'Valid_Scalars and then
-        (if X'Valid_Scalars then X = Y));
+   type My_Nat is new Natural;
 
    type Rec (D : Boolean := False) is record
       F2 : My_Nat;
@@ -14,17 +9,18 @@ procedure Nested_Init_By_Proof with SPARK_Mode is
       when False =>
       F3 : My_Nat;
       end case;
-   end record;
+   end record with
+     Relaxed_Initialization;
 
    function My_Eq (X, Y : Rec) return Boolean is
      (X.D = Y.D
-      and then X.F2'Valid_Scalars = Y.F2'Valid_Scalars
-      and then (if X.F2'Valid_Scalars then X.F2 = Y.F2)
+      and then X.F2'Initialized = Y.F2'Initialized
+      and then (if X.F2'Initialized then X.F2 = Y.F2)
       and then
-      (if X.D then X.F1'Valid_Scalars = Y.F1'Valid_Scalars
-         and then (if X.F1'Valid_Scalars then X.F1 = Y.F1)
-       else X.F3'Valid_Scalars = Y.F3'Valid_Scalars
-         and then (if X.F3'Valid_Scalars then X.F3 = Y.F3)));
+      (if X.D then X.F1'Initialized = Y.F1'Initialized
+         and then (if X.F1'Initialized then X.F1 = Y.F1)
+       else X.F3'Initialized = Y.F3'Initialized
+         and then (if X.F3'Initialized then X.F3 = Y.F3)));
 
    type My_Arr is array (My_Nat range <>) of Rec;
 
@@ -45,9 +41,9 @@ procedure Nested_Init_By_Proof with SPARK_Mode is
    procedure Init_F3 (X : in out Rec) with
      Post => X.D = X.D'Old
      and then (if X.D then My_Eq (X, X'Old)
-               else X.F3'Valid_Scalars
-               and then X.F2'Valid_Scalars = X'Old.F2'Valid_Scalars
-               and then (if X.F2'Valid_Scalars then
+               else X.F3'Initialized
+               and then X.F2'Initialized = X'Old.F2'Initialized
+               and then (if X.F2'Initialized then
                              X.F2 = X'Old.F2))
    is
    begin
@@ -57,19 +53,19 @@ procedure Nested_Init_By_Proof with SPARK_Mode is
    end Init_F3;
 
    X : Holder (15);
-   C : Integer;
+   C : My_Nat;
    B : Boolean;
    R : Rec (True);
 begin
    X.Content (10) := (D => True, F1 => 0, F2 => 0);
-   pragma Assert (X.Content(10)'Valid_Scalars);
+   pragma Assert (X.Content(10)'Initialized);
    X.Content (8) := R;
    X.Content (8).F2 := 14;
-   pragma Assert (X.Content(8)'Valid_Scalars);
+   pragma Assert (X.Content(8)'Initialized);
    Init (X.Content (6).F2);
    Assign (X.Content (6).F2);
    Init_F3 (X.Content (6));
-   pragma Assert (X.Content(6)'Valid_Scalars);
+   pragma Assert (X.Content(6)'Initialized);
    C := X.Content (10).F1;
-   C := X.Content (12).F3;
+   C := X.Content (12).F3; -- @INIT_BY_PROOF:FAIL
 end Nested_Init_By_Proof;

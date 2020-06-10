@@ -1,0 +1,31 @@
+test_global_out.adb:14:32: info: initialization check proved (CVC4: 1 VC)
+test_global_out.adb:17:14: info: postcondition proved (CVC4: 4 VC)
+test_global_out.adb:26:06: info: data dependencies proved
+test_global_out.adb:27:14: info: postcondition proved (CVC4: 4 VC)
+test_global_out.adb:36:06: info: data dependencies proved
+test_global_out.adb:37:06: info: flow dependencies proved
+test_global_out.adb:38:14: info: postcondition proved (CVC4: 4 VC)
+test_global_out.adb:39:28: high: "G.G" is not initialized at subprogram entry
+test_global_out.adb:40:23: high: "G.F" is not initialized at subprogram entry
+test_global_out.adb:40:23: high: "G.G" is not initialized at subprogram entry
+test_global_out.adb:48:04: info: initialization of "B" proved
+test_global_out.adb:52:29: info: initialization check proved (CVC4: 1 VC)
+test_global_out.adb:55:14: info: postcondition proved (CVC4: 4 VC)
+test_global_out.adb:66:06: info: data dependencies proved
+test_global_out.adb:67:14: info: postcondition proved (CVC4: 4 VC)
+test_global_out.adb:78:06: info: data dependencies proved
+test_global_out.adb:79:14: info: postcondition proved (CVC4: 4 VC)
+test_global_out.adb:80:36: high: "I" is not initialized at subprogram entry
+test_global_out.adb:81:32: high: "I" is not initialized at subprogram entry
+test_global_out.adb:91:19: info: assertion proved (CVC4: 1 VC)
+test_global_out.adb:91:20: info: initialization check proved (CVC4: 1 VC)
+test_global_out.adb:93:19: info: assertion proved (CVC4: 1 VC)
+test_global_out.adb:93:20: info: initialization check proved (CVC4: 1 VC)
+test_global_out.adb:95:19: medium: assertion might fail, cannot prove G.G = 1
+test_global_out.adb:95:20: medium: initialization check might fail
+test_global_out.adb:103:19: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+test_global_out.adb:103:33: info: initialization check proved (CVC4: 1 VC)
+test_global_out.adb:105:19: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+test_global_out.adb:105:33: info: initialization check proved (CVC4: 1 VC)
+test_global_out.adb:107:33: medium: assertion might fail, cannot prove I = 1 (e.g. when I = 0)
+test_global_out.adb:107:33: medium: initialization check might fail (e.g. when B = False)

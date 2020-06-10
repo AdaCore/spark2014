@@ -10,6 +10,5 @@ legality.ads:47:19: inappropriate entity for aspect "Volatile_Components"
 legality.ads:51:19: inappropriate entity for aspect "Volatile_Components"
 legality.ads:52:29: inappropriate entity for aspect "Volatile_Components"
 legality.ads:53:19: inappropriate entity for aspect "Volatile_Components"
-vc5.ads:16:11: incorrect placement of aspect "ASYNC_WRITERS"
-vc5.ads:24:11: external property "ASYNC_WRITERS" must apply to a volatile object
+vc5.ads:24:11: external property "ASYNC_WRITERS" must apply to a volatile type or object
 gnatprove: error during generation of Global contracts

@@ -137,7 +137,7 @@ package body Why.Images is
    begin
       --  ??? The Why Reference does not give any detail about
       --  the syntax of integer constants. We shall suppose that
-      --  it is similar to Ocaml's integer litterals:
+      --  it is similar to OCaml's integer litterals:
       --
       --  IntegerLiteral ::=
       --     [-]  UnprefixedIntegerLiteral
@@ -296,7 +296,7 @@ package body Why.Images is
    begin
       --  ??? Same remark as in the case of integer constants:
       --  I suppose that Why's real constants follows the same syntax
-      --  as Ocaml's floating-point literals:
+      --  as OCaml's floating-point literals:
       --
       --      FloatingPointLiteral ::=
       --        [-]  UnprefixedFloatingPointLiteral

@@ -16,6 +16,7 @@ project No_SPARK_Mode is
       --  units with detection of useless pragma Warnings
       for Switches ("warns.adb") use ("-gnatw.w");
       for Switches ("warns2.adb") use ("-gnatw.w");
+      for Switches ("update_range_arr_zero.adb") use ("-gnat2020");
    end Compiler;
 
   package Prove is

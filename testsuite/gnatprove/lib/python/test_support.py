@@ -300,6 +300,7 @@ def is_rte_tag(tag):
                    "DISCRIMINANT_CHECK",
                    "TAG_CHECK",
                    "NULL_EXCLUSION",
+                   "MEMORY_LEAK",
                    "DEREFERENCE_CHECK")
 
 
@@ -342,7 +343,10 @@ def is_other_proof_tag(tag):
                    "WEAKER_PRE",
                    "STRONGER_POST",
                    "WEAKER_CLASSWIDE_PRE",
-                   "STRONGER_CLASSWIDE_POST")
+                   "STRONGER_CLASSWIDE_POST",
+                   "UNCHECKED_CONVERSION",
+                   "UNCHECKED_CONVERSION_SIZE",
+                   )
 
 
 def is_flow_tag(tag):
@@ -437,6 +441,8 @@ def check_marks(strlist):
             return 'INIT_BY_PROOF'
         elif 'null exclusion check' in text:
             return 'NULL_EXCLUSION'
+        elif 'memory leak' in text:
+            return 'MEMORY_LEAK'
         elif 'dereference check' in text:
             return 'DEREFERENCE_CHECK'
         elif 'default initial condition' in text:
@@ -473,7 +479,7 @@ def check_marks(strlist):
         elif 'loop invariant' in text:
             if 'initialization' in text or 'in first iteration' in text:
                 return 'LOOP_INVARIANT_INIT'
-            elif 'preservation' in text or 'after first iteration' in text:
+            elif 'preservation' in text or 'by an arbitrary iteration' in text:
                 return 'LOOP_INVARIANT_PRESERV'
             else:
                 return 'LOOP_INVARIANT'
@@ -483,6 +489,11 @@ def check_marks(strlist):
             return 'ASSERT'
         elif 'raise statement' in text or 'exception' in text:
             return 'RAISE'
+        elif 'bit representation' in text or 'unchecked conversion' in text:
+            if 'size' in text:
+                return 'UNCHECKED_CONVERSION_SIZE'
+            else:
+                return 'UNCHECKED_CONVERSION'
 
         # no tag recognized
         return None
@@ -664,7 +675,8 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
         with open(default_project, 'w') as f_prj:
             f_prj.write('project Test is\n')
             f_prj.write('  package Compiler is\n')
-            f_prj.write('    for Default_Switches ("Ada") use ("-gnatws");\n')
+            f_prj.write('    for Default_Switches ("Ada")' +
+                        ' use ("-gnatws", "-gnat2020");\n')
             f_prj.write('    for Local_Configuration_Pragmas' +
                         ' use "test.adc";\n')
             f_prj.write('  end Compiler;\n')

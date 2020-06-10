@@ -43,9 +43,9 @@ with Name_Ordered_Entities;
 with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
-with SPARK_Annotate;              use SPARK_Annotate;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with String_Utils;                use String_Utils;
@@ -549,7 +549,8 @@ package body Gnat2Why.Counter_Examples is
             --  Contains iterable annotation is provided, no temporary
             --  should be introduced for "for of" quantification.
 
-            pragma Assert (Iterable_Info.Kind = SPARK_Annotate.Model);
+            pragma Assert
+              (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
 
             --  Prepend the name of the Model function to the container name
 
@@ -1211,7 +1212,8 @@ package body Gnat2Why.Counter_Examples is
                --  a Contains iterable annotation is provided, no temporary
                --  should be introduced for "for of" quantification.
 
-               pragma Assert (Iterable_Info.Kind = SPARK_Annotate.Model);
+               pragma Assert
+                 (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
 
                --  Prepend the name of the Model function to the container name
                --  and refine value on model type.
@@ -1612,15 +1614,20 @@ package body Gnat2Why.Counter_Examples is
          if not Variables.Map_Is_Empty then
             Build_Pretty_Line (Variables, Pretty_Line_Cntexmp_Arr);
 
-            --  Add the counterexample line only if there are some
-            --  pretty printed counterexample elements
+            --  Add the counterexample line only if there are some pretty
+            --  printed counterexample elements. Due to inlining, and because
+            --  only a single line number is currently used in Line, we may end
+            --  up with multiple counterexample values for the same value of
+            --  Line. In such a case, the last value encountered is kept by
+            --  using Include below.
+
             if not Pretty_Line_Cntexmp_Arr.Is_Empty then
                if Is_Previous then
-                  Pretty_File_Cntexmp.Previous_Lines.Insert
+                  Pretty_File_Cntexmp.Previous_Lines.Include
                     (Line, (Line_Cnt => Pretty_Line_Cntexmp_Arr,
                             Ada_Node => Integer (LI_Node)));
                else
-                  Pretty_File_Cntexmp.Other_Lines.Insert
+                  Pretty_File_Cntexmp.Other_Lines.Include
                     (Line, Pretty_Line_Cntexmp_Arr);
                end if;
             end if;

@@ -2,7 +2,7 @@ dynamic_preds.ads:5:53: "Get" is not allowed in SPARK (due to allocators in inte
 dynamic_preds.ads:5:53: delayed type aspect on "Bad" is required to be in SPARK
 dynamic_preds.ads:21:16: anonymous access type for result for non-traversal functions is not allowed in SPARK
 dynamic_preds.ads:21:16: violation of aspect SPARK_Mode at line 19
-dynamic_preds.ads:21:46: uninitialized allocator without default initialization is not allowed in SPARK
+dynamic_preds.ads:21:46: allocators in interfering context is not allowed in SPARK
 dynamic_preds.ads:21:46: violation of aspect SPARK_Mode at line 19
 dynamic_preds.ads:23:56: "Get" is not allowed in SPARK (due to allocators in interfering context)
 dynamic_preds.ads:23:56: violation of aspect SPARK_Mode at line 19

@@ -37,6 +37,7 @@ with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why_Args;
 with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with Sinput;                  use Sinput;
+with SPARK_Definition;        use SPARK_Definition;
 with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
 with SPARK_Util.Types;        use SPARK_Util.Types;
 with Stand;                   use Stand;
@@ -54,6 +55,7 @@ with Why.Gen.Preds;           use Why.Gen.Preds;
 with Why.Gen.Progs;           use Why.Gen.Progs;
 with Why.Gen.Records;         use Why.Gen.Records;
 with Why.Gen.Scalars;         use Why.Gen.Scalars;
+with Why.Gen.Terms;           use Why.Gen.Terms;
 with Why.Images;              use Why.Images;
 
 package body Why.Gen.Expr is
@@ -148,7 +150,7 @@ package body Why.Gen.Expr is
      return W_Expr_Id
    is
       use Why_Node_Maps;
-      C : Cursor := Temp_Names_Map.Find (+Tmp);
+      C : Why_Node_Maps.Cursor := Temp_Names_Map.Find (+Tmp);
    begin
 
       --  if Tmp is in the map, we really introduced a temp variable and need
@@ -180,6 +182,51 @@ package body Why.Gen.Expr is
          return Context;
       end if;
    end Binding_For_Temp;
+
+   --------------------------
+   -- Boolean_Expr_Of_Pred --
+   --------------------------
+
+   function Boolean_Expr_Of_Pred
+     (W      : W_Pred_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+   begin
+      case Domain is
+         when EW_Prog | EW_Pterm => return +Boolean_Prog_Of_Pred (W);
+         when EW_Term            => return +Boolean_Term_Of_Pred (W);
+         when EW_Pred            => return +W;
+      end case;
+   end Boolean_Expr_Of_Pred;
+
+   --------------------------
+   -- Boolean_Prog_Of_Pred --
+   --------------------------
+
+   function Boolean_Prog_Of_Pred (W : W_Pred_Id) return W_Prog_Id is
+     (New_Any_Expr (Post        =>
+                      New_Connection
+                        (Left  =>
+                           New_Call (Domain => EW_Pred,
+                                     Name   => Why_Eq,
+                                     Typ    => EW_Bool_Type,
+                                     Args   =>
+                                       (+New_Result_Ident (EW_Bool_Type),
+                                        +True_Term)),
+                         Op    => EW_Equivalent,
+                         Right => +W),
+                    Labels      => Symbol_Sets.Empty_Set,
+                    Return_Type => EW_Bool_Type));
+
+   --------------------------
+   -- Boolean_Term_Of_Pred --
+   --------------------------
+
+   function Boolean_Term_Of_Pred (W : W_Pred_Id) return W_Term_Id is
+     (New_Conditional (Condition => +W,
+                       Then_Part => +True_Term,
+                       Else_Part => +False_Term,
+                       Typ       => EW_Bool_Type));
 
    ---------------------
    -- Compute_VC_Sloc --
@@ -357,9 +404,6 @@ package body Why.Gen.Expr is
       From_Ent  : constant Entity_Id := Get_Ada_Node (+From);
       Dim       : constant Positive := Positive (Number_Dimensions (To_Ent));
 
-      function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean;
-      --  Check whether a conversion between those types requires sliding.
-
       function Insert_Array_Index_Check
         (Expr   : W_Expr_Id;
          To_Ent : Entity_Id) return W_Prog_Id;
@@ -470,54 +514,6 @@ package body Why.Gen.Expr is
          end if;
       end Insert_Length_Check;
 
-      -----------------
-      -- Needs_Slide --
-      -----------------
-
-      function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean is
-      begin
-         --  Sliding is needed when we convert to a constrained type and the
-         --  'First of the From type is not known to be equal to the 'First
-         --  of the "To" type.
-
-         --  Sliding is only necessary when converting to a constrained array
-
-         if not Is_Constrained (To_Ent) then
-            return False;
-         end if;
-
-         --  When the "To" is constrained, sliding is always necessary when
-         --  converting from an unconstrained array
-
-         if not Is_Constrained (From_Ent) then
-            return True;
-         end if;
-
-         --  Here we have two constrained types, and we check if the 'First (I)
-         --  of both types differ for some dimension I
-
-         for I in 1 .. Dim loop
-            declare
-               Low_From : constant Node_Id :=
-                 Type_Low_Bound (Retysp (Nth_Index_Type (From_Ent, I)));
-               Low_To   : constant Node_Id :=
-                 Type_Low_Bound (Retysp (Nth_Index_Type (To_Ent, I)));
-            begin
-               if not Is_Static_Expression (Low_From)
-                 or else not Is_Static_Expression (Low_To)
-                 or else Expr_Value (Low_From) /= Expr_Value (Low_To)
-               then
-                  return True;
-               end if;
-            end;
-         end loop;
-
-         --  We statically know that the "first" are actually equal, no sliding
-         --  needed
-
-         return False;
-      end Needs_Slide;
-
       Need_Slide : constant Boolean := Needs_Slide (From_Ent, To_Ent);
       Sliding    : constant Boolean :=
         not Force_No_Slide and then Need_Slide and then not Is_Qualif;
@@ -534,13 +530,25 @@ package body Why.Gen.Expr is
         Domain = EW_Prog
         and then not No_Init
         and then Need_Check
-        and then Has_Init_By_Proof (From_Ent)
-        and then not Has_Init_By_Proof (To_Ent);
+        and then Is_Init_Wrapper_Type (From)
+        and then not Is_Init_Wrapper_Type (To);
+
+      On_Wrapper : constant Boolean :=
+        Is_Init_Wrapper_Type (From)
+        and Is_Init_Wrapper_Type (To);
+      From_Split : constant W_Type_Id :=
+        (if Is_Static_Array_Type (From_Ent) then From
+         else EW_Split (From_Ent, Relaxed_Init => On_Wrapper));
+      To_Split : constant W_Type_Id :=
+        (if Is_Static_Array_Type (To_Ent) then To
+         else EW_Split (To_Ent, Relaxed_Init => On_Wrapper));
 
    --  Beginning of processing for Insert_Array_Conversion
 
    begin
-      if To_Ent = From_Ent then
+      if To_Ent = From_Ent
+        and then Is_Init_Wrapper_Type (From) = Is_Init_Wrapper_Type (To)
+      then
 
          --  In the case of unconstrained arrays, the Ada entity may be equal,
          --  but in Why we have to convert from the split representation to the
@@ -567,12 +575,16 @@ package body Why.Gen.Expr is
          end if;
       end if;
 
-      --  If we are converting to a type which does not have initialization by
-      --  proof, check that the expression is initialized.
+      --  Check for initialization if needed. We also need an initialization
+      --  check if we should check predicates.
 
-      if Init_Check then
+      if Init_Check or else Pred_Check then
          Arr_Expr := Insert_Initialization_Check
-           (Ada_Node, From_Ent, Arr_Expr, Domain);
+           (Ada_Node               => Ada_Node,
+            E                      => From_Ent,
+            Name                   => Arr_Expr,
+            Domain                 => Domain,
+            Exclude_Always_Relaxed => True);
       end if;
 
       Arr_Expr :=
@@ -587,6 +599,10 @@ package body Why.Gen.Expr is
          Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
          Arg_Ind : Positive := 1;
 
+         Split_T : W_Expr_Id;
+         --  Placeholder to store the value of T before reconstruction. It is
+         --  used to generate the predicate check.
+
          To_Is_Abstract      : constant Boolean :=
            not Is_Static_Array_Type (To_Ent)
            and then Get_Type_Kind (To) /= EW_Split;
@@ -597,9 +613,6 @@ package body Why.Gen.Expr is
          --  Reconstruction is needed if To is in abstract form or if a
          --  predicate check is required.
 
-         Split_To            : constant W_Type_Id :=
-           (if not Need_Reconstruction then To
-            else EW_Split (To_Ent));
          Need_Elt_Conv       : constant Boolean :=
            Retysp (Component_Type (To_Ent)) /=
              Retysp (Component_Type (From_Ent));
@@ -626,10 +639,10 @@ package body Why.Gen.Expr is
 
                T := New_Call
                  (Domain => Domain,
-                  Name   => Get_Array_Theory (From_Ent).Slide,
+                  Name   => Get_Array_Theory
+                    (From_Ent, Is_Init_Wrapper_Type (From)).Slide,
                   Args   => Args,
-                  Typ    => (if Is_Static_Array_Type (From_Ent) then From
-                             else EW_Split (From_Ent)));
+                  Typ    => Get_Type (Args (1)));
             end;
 
             --  If reconstruction is needed, fill the Args array.
@@ -669,22 +682,32 @@ package body Why.Gen.Expr is
          --  To is in split form but not From. Split From.
 
          else
-            T :=
-              New_Call
-                (Domain => Domain,
-                 Name   => E_Symb (From_Ent, WNE_To_Array),
-                 Args   => (1 => Arr_Expr),
-                 Typ    => To);
+            T := Array_Convert_To_Base
+              (Domain => Domain,
+               Ar     => Arr_Expr);
          end if;
 
-         --  2. To_Ent and From_Ent do not have the same component type, apply
+         --  2. If From has relaxed initialization and we are not doing the
+         --  conversion on init wrappers, add a conversion from the wrapper
+         --  type.
+
+         if Is_Init_Wrapper_Type (From) and then not On_Wrapper then
+            T := New_Call
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => Get_Array_Of_Wrapper_Name (From_Ent),
+               Args     => (1 => T),
+               Typ      => From_Split);
+         end if;
+
+         --  3. To_Ent and From_Ent do not have the same component type, apply
          --  the appropriate conversion.
 
          if Need_Elt_Conv then
             T := Insert_Single_Conversion
               (Ada_Node => Empty,
                Domain   => Domain,
-               To       => Split_To,
+               To       => To_Split,
                Expr     => T);
 
          --  No actual why call or conversion may have been inserted, but we
@@ -695,22 +718,41 @@ package body Why.Gen.Expr is
             T := New_Label (Labels => Symbol_Sets.Empty_Set,
                             Def    => T,
                             Domain => Domain,
-                            Typ    => Split_To);
+                            Typ    => To_Split);
          end if;
 
-         --  3. Reconstruct the array if needed
+         --  Store the split value of T before attempting reconstruction. To
+         --  avoid introducing duplicated checks, use a temporary.
+
+         T := New_Temp_For_Expr (T);
+         Split_T := T;
+
+         --  4. If To has relaxed initialization and the conversion is not done
+         --  on wrapper types, go to the wrapper now.
+
+         if Is_Init_Wrapper_Type (To) and then not On_Wrapper then
+            T := New_Call
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => Get_Array_To_Wrapper_Name (To_Ent),
+               Args     => (1 => T),
+               Typ      => EW_Split (To_Ent, Relaxed_Init => True));
+         end if;
+
+         --  5. Reconstruct the array if needed
 
          if To_Is_Abstract then
             Args (1) := T;
             T :=
               New_Call
                 (Domain => Domain,
-                 Name   => E_Symb (To_Ent, WNE_Of_Array),
+                 Name   =>
+                   E_Symb (To_Ent, WNE_Of_Array, Is_Init_Wrapper_Type (To)),
                  Args   => Args,
                  Typ    => To);
          end if;
 
-         --  4. Insert length, range, index, and predicate check when necessary
+         --  6. Insert length, range, index, and predicate check when necessary
 
          if Domain = EW_Prog and then Need_Check then
             declare
@@ -736,42 +778,49 @@ package body Why.Gen.Expr is
                --  inside the definition of a predicate function.
 
                if Pred_Check then
+
+                  Args (1) := Split_T;
+
+                  --  To apply the predicate check, we need to have initialized
+                  --  values. Don't produce an initialization check, it was
+                  --  done earlier.
+
+                  if On_Wrapper then
+                     pragma Assert (not Has_Relaxed_Init (To_Ent));
+                     Args (1) := New_Call
+                       (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Name     => Get_Array_Of_Wrapper_Name (To_Ent),
+                        Args     => (1 => Args (1)),
+                        Typ      =>
+                          (if Is_Static_Array_Type (To_Ent)
+                           then EW_Abstract (To_Ent)
+                           else EW_Split (To_Ent)));
+                  end if;
+
                   declare
-                     W_Tmp   : constant W_Identifier_Id :=
-                       New_Temp_Identifier (Typ => Get_Type (+T));
-                     Do_Rec  : constant Boolean :=
-                       not Is_Static_Array_Type (To_Ent)
-                       and then Get_Type_Kind (To) = EW_Split;
                      Rec_Tmp : constant W_Expr_Id :=
-                       (if Do_Rec then
-                           New_Call
+                       (if not Is_Static_Array_Type (To_Ent)
+                        then New_Call
                           (Domain => Domain,
                            Name   => E_Symb (To_Ent, WNE_Of_Array),
                            Args   => Args,
                            Typ    => EW_Abstract (To_Ent))
-                        else +W_Tmp);
+                        else Args (1));
                      --  If it is in split form, the array should be
                      --  reconstructed.
-
-                     W_Seq  : W_Prog_Id;
                   begin
-                     Args (1) := +W_Tmp;
-
-                     W_Seq := Sequence
+                     T := +Sequence
                        (New_Predicate_Check (Ada_Node, Check_Type, Rec_Tmp),
-                        +W_Tmp);
-
-                     T := +W_Expr_Id'(New_Binding
-                                      (Ada_Node => Ada_Node,
-                                       Domain   => EW_Prog,
-                                       Name     => W_Tmp,
-                                       Def      => T,
-                                       Context  => +W_Seq,
-                                       Typ      => Get_Type (+T)));
+                        +T);
                   end;
                end if;
             end;
          end if;
+
+         T := Binding_For_Temp (Domain  => Domain,
+                                Tmp     => Split_T,
+                                Context => T);
       end;
 
       T := Binding_For_Temp (Domain  => Domain,
@@ -810,6 +859,8 @@ package body Why.Gen.Expr is
       --  if it does not respect the associated predicate of the expected type.
       --  As a result, do not rely on the call to Check_Needed_On_Conversion in
       --  that case.
+      --  If From has relaxed initialization and not To, we may need an
+      --  initialization check.
 
       Check_Needed :=
         (if Get_Type_Kind (From) in EW_Abstract | EW_Split
@@ -821,6 +872,9 @@ package body Why.Gen.Expr is
                                         To   => Get_Ada_Node (+To))
          or else
             Is_Choice_Of_Unconstrained_Array_Update (Ada_Node)
+         or else (Is_Init_Wrapper_Type (From)
+           and then not Is_Init_Wrapper_Type (To)
+           and then not No_Init)
          else
             True);
 
@@ -881,7 +935,7 @@ package body Why.Gen.Expr is
 
             Do_Check : constant Boolean :=
               Domain = EW_Prog and then Check_Needed and then
-              Do_Check_On_Scalar_Converion (Ada_Node);
+              Do_Check_On_Scalar_Conversion (Ada_Node);
 
          begin
             T := Insert_Scalar_Conversion (Domain   => Domain,
@@ -921,8 +975,6 @@ package body Why.Gen.Expr is
         Oldest_Parent_With_Same_Fields (L) /=
         Oldest_Parent_With_Same_Fields (R);
 
-      Base : constant W_Type_Id := EW_Abstract (Root_Retysp (L));
-
       Need_Discr_Check : constant Boolean :=
         Need_Check and then Count_Discriminants (R) > 0
         and then Is_Constrained (R);
@@ -938,56 +990,105 @@ package body Why.Gen.Expr is
           and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
       Check_Entity    : constant Entity_Id := Get_Ada_Node (+To);
 
+      Base            : constant W_Type_Id :=
+        EW_Abstract
+          (Root_Retysp (L),
+           Relaxed_Init => Is_Init_Wrapper_Type (From)
+              and Is_Init_Wrapper_Type (To)
+              and not Need_Pred_Check);
+      pragma Assert (not Has_Relaxed_Init (R) or else not Need_Pred_Check);
+      --  If To has predicate, the check must be done on initialized values
+
    begin
+      --  If From has relaxed initialization and not Base, introduce a
+      --  conversion and possibly a check.
+
+      if Is_Init_Wrapper_Type (From)
+        and then not Is_Init_Wrapper_Type (Base)
+      then
+         if Domain = EW_Prog and then not No_Init and then Need_Check then
+            Result := Insert_Initialization_Check
+              (Ada_Node               => Ada_Node,
+               E                      => L,
+               Name                   => Result,
+               Domain                 => Domain,
+               Exclude_Always_Relaxed => True);
+         end if;
+         Result := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Name     => E_Symb (L, WNE_Of_Wrapper),
+            Args     => (1 => Result),
+            Typ      => EW_Abstract (L));
+      end if;
+
       --  When From = To and no check needs to be inserted, do nothing
 
-      if not Need_Conv and then not Need_Check then
-         return Expr;
-      end if;
+      if Need_Conv or else Need_Check then
 
-      --  1. Convert From -> Base
+         --  1. Convert From -> Base
 
-      Result := Insert_Single_Conversion (Domain   => Domain,
-                                          Ada_Node => Ada_Node,
-                                          To       => Base,
-                                          Expr     => Result);
+         Result := Insert_Single_Conversion (Domain   => Domain,
+                                             Ada_Node => Ada_Node,
+                                             To       => Base,
+                                             Expr     => Result);
 
-      --  2. Possibly perform checks on root type
+         --  2. Possibly perform checks on root type
 
-      if Domain = EW_Prog then
+         if Domain = EW_Prog then
 
-         --  2.a Possibly perform a discriminant check
+            --  2.a Possibly perform a discriminant check
 
-         if Need_Discr_Check then
-            Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
-                                                          Check_Entity,
-                                                          +Result);
-         end if;
+            if Need_Discr_Check then
+               Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
+                                                             Check_Entity,
+                                                             +Result);
+            end if;
 
-         --  2.b Possibly perform a tag check
+            --  2.b Possibly perform a tag check
 
-         if Need_Tag_Check then
-            Result := +Insert_Tag_Check (Ada_Node,
-                                         Check_Entity,
-                                         +Result);
-         end if;
-      end if;
-
-      --  3. Convert Base -> To
-
-      Result := Insert_Single_Conversion (Domain   => Domain,
-                                          Ada_Node => Ada_Node,
-                                          To       => To,
-                                          Expr     => Result);
-
-      --  4. Possibly perform a predicate check on target type To
-
-      if Domain = EW_Prog
-        and then Need_Pred_Check
-      then
-         Result := +Insert_Predicate_Check (Ada_Node,
+            if Need_Tag_Check then
+               Result := +Insert_Tag_Check (Ada_Node,
                                             Check_Entity,
                                             +Result);
+            end if;
+         end if;
+
+         --  3. Convert Base -> To
+
+         Result := Insert_Single_Conversion
+           (Domain   => Domain,
+            Ada_Node => Ada_Node,
+            To       =>
+              (if Is_Init_Wrapper_Type (To)
+               and then not Is_Init_Wrapper_Type (Base)
+               then EW_Abstract (R)
+               else To),
+            Expr     => Result);
+
+         --  4. Possibly perform a predicate check on target type To
+
+         if Domain = EW_Prog
+           and then Need_Pred_Check
+         then
+            Result := +Insert_Predicate_Check (Ada_Node,
+                                               Check_Entity,
+                                               +Result);
+         end if;
+      end if;
+
+      --  If From has relaxed initialization and not Base, introduce a
+      --  conversion.
+
+      if Is_Init_Wrapper_Type (To)
+        and then not Is_Init_Wrapper_Type (Base)
+      then
+         Result := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Name     => E_Symb (R, WNE_To_Wrapper),
+            Args     => (1 => Result),
+            Typ      => To);
       end if;
 
       return Result;
@@ -1289,7 +1390,7 @@ package body Why.Gen.Expr is
 
          elsif Why_Type_Is_Float (W_Type) then
 
-            --  In the case of a convertion of a float into a bitvector, we
+            --  In the case of a conversion of a float into a bitvector, we
             --  perform the range check with floats by converting the bounds
             --  of the bitvector range into float and rounding W_Expr to the
             --  nearest integer (RNA). For this to be correct the first element
@@ -1589,14 +1690,11 @@ package body Why.Gen.Expr is
    is
       From    : constant W_Type_Id := Get_Type (Expr);
       To_Conc : constant W_Type_Id :=
-        (if Is_Init_Wrapper_Type (To) then EW_Abstract (Get_Ada_Node (+To))
-         else To);
+        (if not Is_Init_Wrapper_Type (To) then To
+         elsif Get_Type_Kind (To) = EW_Abstract
+         then EW_Abstract (Get_Ada_Node (+To))
+         else EW_Split (Get_Ada_Node (+To)));
       --  Concrete type for To if To is a wrapper for initialization
-
-      Init_Domain : constant EW_Domain :=
-        (if Domain = EW_Prog and then No_Init then EW_Pterm
-         else Domain);
-      --  Domain for initialization checks
 
       --  Do not generate a predicate check for an internal call to a parent
       --  predicate function inside the definition of a predicate function.
@@ -1719,15 +1817,36 @@ package body Why.Gen.Expr is
       --  for a range check of a modular type, int for a range check of a
       --  discrete type).
 
-      --  0. If From is a wrapper type, access the value (this may introduce an
-      --     initialization check).
+      --  0. If From is a wrapper type, access the value. This may introduce an
+      --     initialization check.
 
       if Is_Init_Wrapper_Type (From) then
-         Result := New_Init_Wrapper_Value_Access
-           (Ada_Node => Ada_Node,
-            E        => Get_Ada_Node (+Cur),
-            Name     => Result,
-            Domain   => Init_Domain);
+         declare
+            From_Node : constant Entity_Id := Get_Ada_Node (+From);
+         begin
+            if Domain = EW_Prog and then not No_Init then
+               Result := Insert_Initialization_Check
+                 (Ada_Node               => Ada_Node,
+                  E                      => From_Node,
+                  Name                   => Result,
+                  Domain                 => Domain,
+                  Exclude_Always_Relaxed => True);
+            end if;
+
+            if Get_Type_Kind (From) = EW_Split then
+               Result := New_Label (Labels => Symbol_Sets.Empty_Set,
+                                    Def    => Result,
+                                    Domain => Domain,
+                                    Typ    => EW_Split (From_Node));
+            else
+               Result := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => E_Symb (From_Node, WNE_Of_Wrapper),
+                  Args     => (1 => Result),
+                  Typ      => EW_Abstract (From_Node));
+            end if;
+         end;
          Cur := Get_Type (Result);
       end if;
 
@@ -1800,8 +1919,8 @@ package body Why.Gen.Expr is
                 and then not Why_Type_Is_Float (Base_Why_Type (To)))
 
          --       or if From is a modular type and To is neither a modular nor
-         --       a float, insert a convertion to int since we only support
-         --       direct convertion from bitvector to int, float or another
+         --       a float, insert a conversion to int since we only support
+         --       direct conversion from bitvector to int, float or another
          --       bitvector types.
 
            or else (Why_Type_Is_BitVector (Base_Why_Type (From))
@@ -1917,10 +2036,19 @@ package body Why.Gen.Expr is
       --  9. Reconstruct the wrapper if necessary
 
       if Is_Init_Wrapper_Type (To) then
-         Result := Reconstruct_Init_Wrapper
-           (Ada_Node => Ada_Node,
-            Ty       => Get_Ada_Node (+To),
-            Value    => Result);
+         if Get_Type_Kind (To) = EW_Split then
+            Result := New_Label (Labels => Symbol_Sets.Empty_Set,
+                                 Def    => Result,
+                                 Domain => Domain,
+                                 Typ    => To);
+         else
+            Result := New_Call
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => E_Symb (Get_Ada_Node (+To), WNE_To_Wrapper),
+               Args     => (1 => Result),
+               Typ      => To);
+         end if;
       end if;
 
       return Result;
@@ -2124,6 +2252,55 @@ package body Why.Gen.Expr is
          (Get_Kind (+P) = W_Literal and then
           Get_Value (+P) = EW_True);
    end Is_True_Boolean;
+
+   -----------------
+   -- Needs_Slide --
+   -----------------
+
+   function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean is
+      Dim : constant Positive := Positive (Number_Dimensions (To_Ent));
+   begin
+      --  Sliding is needed when we convert to a constrained type and the
+      --  'First of the From type is not known to be equal to the 'First
+      --  of the "To" type.
+
+      --  Sliding is only necessary when converting to a constrained array
+
+      if not Is_Constrained (To_Ent) then
+         return False;
+      end if;
+
+      --  When the "To" is constrained, sliding is always necessary when
+      --  converting from an unconstrained array
+
+      if not Is_Constrained (From_Ent) then
+         return True;
+      end if;
+
+      --  Here we have two constrained types, and we check if the 'First (I)
+      --  of both types differ for some dimension I
+
+      for I in 1 .. Dim loop
+         declare
+            Low_From : constant Node_Id :=
+              Type_Low_Bound (Retysp (Nth_Index_Type (From_Ent, I)));
+            Low_To   : constant Node_Id :=
+              Type_Low_Bound (Retysp (Nth_Index_Type (To_Ent, I)));
+         begin
+            if not Is_Static_Expression (Low_From)
+              or else not Is_Static_Expression (Low_To)
+              or else Expr_Value (Low_From) /= Expr_Value (Low_To)
+            then
+               return True;
+            end if;
+         end;
+      end loop;
+
+      --  We statically know that the "first" are actually equal, no sliding
+      --  needed
+
+      return False;
+   end Needs_Slide;
 
    ----------------------
    -- New_Ada_Equality --
@@ -2578,7 +2755,7 @@ package body Why.Gen.Expr is
       elsif Count_Discriminants (Ty) > 0 and then Is_Constrained (Ty) then
          declare
             Base_Expr : constant W_Expr_Id :=
-              Insert_Single_Conversion (Domain   => EW_Term,
+              Insert_Simple_Conversion (Domain   => EW_Term,
                                         Ada_Node => Ty,
                                         To       =>
                                           EW_Abstract
@@ -3109,9 +3286,14 @@ package body Why.Gen.Expr is
       --  necessary. We do not anymore as we could not know how many times
       --  New_Temp_For_Expr had been called for Expr and so how long we should
       --  keep Expr => Empty in the table.
+      --
+      --  We always generate a temp for an expression which itself is a
+      --  temporary. Otherwise we would be missing the reference the second
+      --  time we call Binding_For_Temp.
 
-      if Need_Temp
-        and then Get_Kind (+E) not in W_Identifier | W_Deref
+      if (Need_Temp
+          and then Get_Kind (+E) not in W_Identifier | W_Deref)
+        or else Temp_Names_Map.Contains (+E)
       then
          declare
             Tmp : constant W_Expr_Id :=

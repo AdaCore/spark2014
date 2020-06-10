@@ -2,4 +2,5 @@ m.adb:4:14: info: initialization of "Result" proved
 m.adb:5:08: medium: missing dependency "null => Data"
 m.adb:5:58: medium: incorrect dependency "Result => Data"
 m.adb:6:19: info: postcondition proved (CVC4: 1 VC)
+m.adb:17:04: medium: memory leak might occur at end of scope
 m.adb:22:15: info: pointer dereference check proved (CVC4: 1 VC)

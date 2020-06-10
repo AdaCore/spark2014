@@ -3,6 +3,6 @@ main.adb:3:14: info: local subprogram "Sub" only analyzed in the context of call
 main.adb:3:14: warning: subprogram "Sub" has no effect
 main.adb:5:22: info: assertion proved (CVC4: 1 VC), in call inlined at main.adb:12
 main.adb:6:22: info: assertion proved (CVC4: 1 VC), in call inlined at main.adb:12
-main.adb:9:19: info: assertion proved
-main.adb:10:19: info: assertion proved
+main.adb:9:19: info: assertion proved (Trivial)
+main.adb:10:19: info: assertion proved (Trivial)
 main.adb:11:19: info: assertion proved (CVC4: 1 VC)

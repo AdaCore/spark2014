@@ -25,7 +25,10 @@
 
 with Gnat2Why.Util;            use Gnat2Why.Util;
 with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
+with SPARK_Util.Types;         use SPARK_Util.Types;
 with Types;                    use Types;
+with Why.Atree.Accessors;      use Why.Atree.Accessors;
+with Why.Conversions;          use Why.Conversions;
 with Why.Ids;                  use Why.Ids;
 with Why.Sinfo;                use Why.Sinfo;
 
@@ -36,58 +39,45 @@ package Why.Gen.Init is
      Pre => Is_Type (E);
    --  Add declarations for a wrapper type for E in P
 
-   function New_Init_Wrapper_Value_Access
-     (Ada_Node    : Node_Id;
-      E           : Entity_Id;
-      Name        : W_Expr_Id;
-      Domain      : EW_Domain;
-      Ref_Allowed : Boolean := True)
-      return W_Expr_Id;
-   --  Access the value of an expression of a wrapper type
-
-   function New_Init_Attribute_Access
-     (E           : Entity_Id;
-      Name        : W_Expr_Id;
-      Ref_Allowed : Boolean := True)
-      return W_Expr_Id;
-   --  Access the initialization flag of an expression of a wrapper type
-
-   function EW_Init_Wrapper (E : Entity_Id; K : EW_Type) return W_Type_Id with
-     Pre => Is_Type (E) and then K in EW_Abstract | EW_Split;
-   --  Wrappers can be either in abstract or in split form. If they are in
-   --  abstract form, they are records with an initialization flag and a value.
-   --  If they are in split form, the initialization flag should be queried
-   --  from the Symbol_Table using the Ada_Node.
-
-   function EW_Init_Wrapper (Ty : W_Type_Id) return W_Type_Id;
-   --  Get ada node and kind from existing type
-
    function Is_Init_Wrapper_Type (Typ : W_Type_Id) return Boolean;
-   --  True is a type is a wrapper type
 
-   function Reconstruct_Init_Wrapper
-     (Ada_Node : Node_Id := Empty;
-      Ty       : Entity_Id;
-      Value    : W_Expr_Id)
-      return W_Expr_Id;
-   --  From a value of type EW_Abstract (Ty), reconstruct the corresponding
-   --  wrapper if any.
+   function EW_Init_Wrapper (Ty : W_Type_Id) return W_Type_Id with
+     Pre => Get_Type_Kind (Ty) in EW_Abstract | EW_Split
+     and then Might_Contain_Relaxed_Init (Get_Ada_Node (+Ty));
+   --  Return the init wrapper type with the same ada node and kind as Ty
 
    function Compute_Is_Initialized
-     (E           : Entity_Id;
-      Name        : W_Term_Id;
-      Ref_Allowed : Boolean)
-      return W_Pred_Id;
+     (E                      : Entity_Id;
+      Name                   : W_Expr_Id;
+      Ref_Allowed            : Boolean;
+      Domain                 : EW_Domain;
+      Exclude_Always_Relaxed : Boolean := False)
+      return W_Expr_Id;
    --  Whether Name is initialized. This does not only include the top level
    --  initialization flag of E but also the flags of nested components for
    --  composite types.
+   --  If Exclude_Always_Relaxed is True, do not include initialization of
+   --  subcomponents whose type is annotated with relaxed initialization. A
+   --  part of an expression which has relaxed initialization may not be of a
+   --  type with relaxed initialization, for example, if it comes from an
+   --  object which has relaxed initialization, or if it is a part of a
+   --  composite expression which itself has a type with relaxed
+   --  initialization. Some initialization checks are only interested with
+   --  these parts which do not have a type with relaxed initialization. This
+   --  happens for example when storing the expression in an object of its
+   --  type, or when giving it as a parameter to a function call.
 
    function Insert_Initialization_Check
-     (Ada_Node : Node_Id;
-      E        : Entity_Id;
-      Name     : W_Expr_Id;
-      Domain   : EW_Domain)
+     (Ada_Node               : Node_Id;
+      E                      : Entity_Id;
+      Name                   : W_Expr_Id;
+      Domain                 : EW_Domain;
+      Exclude_Always_Relaxed : Boolean := False)
       return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that Name is initialized
+
+   function To_Init_Module (Name : W_Identifier_Id) return W_Identifier_Id;
+   --  For an identifier from the module of an entity (queried from E_Symb
+   --  for example) return the same symbol but in the init wrapper module.
 
 end Why.Gen.Init;
