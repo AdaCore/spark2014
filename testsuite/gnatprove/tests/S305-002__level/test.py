@@ -65,6 +65,12 @@ def get_or_check_level_info(info, string):
         info["proof"] = my_proof
 
 
+def print_info(info):
+    """custom printing routine to fix ordering of fields while printing"""
+    print("timeout:" + info["timeout"] + ", steps:" + info["steps"] +
+          ", memlimit:" + info["memlimit"] + ", prover:" + info["prover"] +
+          ", proof:" + info["proof"])
+
 def run_level_test(level):
     process = Run(["gnatprove", "-P", "test.gpr", "-d", "--level="+str(level)])
     info = {"timeout"  : None,
@@ -75,7 +81,7 @@ def run_level_test(level):
     strlist = str.splitlines(process.out)
     for line in strlist:
         get_or_check_level_info(info, line)
-    print(info)
+    print_info(info)
 
 
 print("level 0:")
