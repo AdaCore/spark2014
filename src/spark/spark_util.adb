@@ -1939,6 +1939,7 @@ package body SPARK_Util is
       return Ekind (E) in E_Constant | E_In_Parameter
             and then (not Is_Access_Type (Ty)
               or else Is_Access_Constant (Ty)
+              or else Is_Access_Subprogram_Type (Base_Type (Ty))
               or else Comes_From_Declare_Expr (E));
    end Is_Constant_In_SPARK;
 

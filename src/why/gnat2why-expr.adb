@@ -15074,6 +15074,7 @@ package body Gnat2Why.Expr is
 
         and then
           not (Nkind (Expr) = N_Function_Call
+             and then Ekind (Get_Called_Entity (Expr)) = E_Function
              and then Is_Predicate_Function (Get_Called_Entity (Expr)))
       then
          T := +Pred_Of_Boolean_Term

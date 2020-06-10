@@ -750,6 +750,21 @@ package body Gnat2Why.Subprograms.Pointers is
          Why_Sections (Decl_File).Cur_Theory := Save_Theory;
       end if;
 
+      if Params.File = Compl_File then
+         Save_Theory := Why_Sections (Compl_File).Cur_Theory;
+         Why_Sections (Compl_File).Cur_Theory := Why_Empty;
+      end if;
+
+      Open_Theory
+        (Compl_File, E_Axiom_Module (Expr),
+         Comment =>
+           "Module for defining the value of the subprogram Access"
+         & " attribute at "
+         & (if Sloc (Expr) > 0 then
+              Build_Location_String (Sloc (Expr))
+           else "<no location>")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
       --  For functions, generate the axiom in a completion module. It states
       --  that __call and pred_call match the specific symbols for the Subp.
 
@@ -794,20 +809,6 @@ package body Gnat2Why.Subprograms.Pointers is
                   Typ    => EW_Bool_Type),
                Op    => EW_Equivalent);
          begin
-            if Params.File = Compl_File then
-               Save_Theory := Why_Sections (Compl_File).Cur_Theory;
-               Why_Sections (Compl_File).Cur_Theory := Why_Empty;
-            end if;
-
-            Open_Theory
-              (Compl_File, E_Axiom_Module (Expr),
-               Comment =>
-                 "Module for defining the value of the subprogram Access"
-               & " attribute at "
-               & (if Sloc (Expr) > 0 then
-                    Build_Location_String (Sloc (Expr))
-                 else "<no location>")
-               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
             Emit (Compl_File,
                   New_Guarded_Axiom (Name     => NID (Def_Axiom),
@@ -826,15 +827,15 @@ package body Gnat2Why.Subprograms.Pointers is
                                     Labels    => <>)
                      & To_Binder_Array (Binders),
                      Def      => Pred_Eq));
-
-            Close_Theory (Compl_File,
-                          Kind           => Axiom_Theory,
-                          Defined_Entity => Expr);
-
-            if Params.File = Compl_File then
-               Why_Sections (Compl_File).Cur_Theory := Save_Theory;
-            end if;
          end;
+      end if;
+
+      Close_Theory (Compl_File,
+                    Kind           => Axiom_Theory,
+                    Defined_Entity => Expr);
+
+      if Params.File = Compl_File then
+         Why_Sections (Compl_File).Cur_Theory := Save_Theory;
       end if;
    end Declare_Theory_For_Access_If_Needed;
 
