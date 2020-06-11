@@ -517,11 +517,9 @@ package body Flow_Refinement is
       --  they should be refactored.
 
       function Visible_View (E : Entity_Id) return Entity_Id
-      with Pre  => Present (E);
-      --   Post => Present (Visible_View'Result);
+      with Pre  => Present (E),
+           Post => Present (Visible_View'Result);
       --  Return the most precise representation of F visible from Scope
-      --  ??? postcondition is temporarily disabled because of a frontend
-      --  problem with tampering checks (T601-001)
 
       procedure Add_Mapping (Item : Entity_Id);
       --  Add mapping from Item to its most precise representation
