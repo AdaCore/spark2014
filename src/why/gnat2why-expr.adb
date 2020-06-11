@@ -5585,7 +5585,7 @@ package body Gnat2Why.Expr is
 
          when N_Identifier
             | N_Expanded_Name
-            =>
+         =>
             declare
                Ent : constant Entity_Id := Entity (N);
             begin
@@ -6825,7 +6825,7 @@ package body Gnat2Why.Expr is
      (Expr : Node_Id;
       Tmp  : W_Identifier_Id) return W_Prog_Id
    is
-      Typ         : constant Entity_Id := Retysp (Etype (Expr));
+      Typ : constant Entity_Id := Retysp (Etype (Expr));
 
    begin
       --  Reach out past a type conversion or qualification
@@ -7890,7 +7890,7 @@ package body Gnat2Why.Expr is
       --  (when it is called on an actual parameter). In the latter case, the
       --  constrained attribute is the attribute of the converted object.
 
-      while Nkind (Var) in N_Type_Conversion loop
+      while Nkind (Var) = N_Type_Conversion loop
          Var := Expression (Var);
       end loop;
 

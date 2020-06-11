@@ -1,11 +1,10 @@
 procedure Repr with SPARK_Mode is
-   type U64 is mod 2**64 with
-     Annotate => (GNATprove, No_Wrap_Around);
-   procedure Insert (Val : U64)
-      with Pre => Val < U64'Last - 1;
+   type U64 is mod 2**64;
 
-   procedure Insert (Val : U64) is
-      LSE_Value : constant Long_Integer := (U64'Pos (Val) mod 256); --@RANGE_CHECK:FAIL
+   procedure Insert (Val : U64)
+      with Pre => Val < U64'Last - 1
+   is
+      LSE_Value : constant Short_Integer := U64'Pos (Val) mod 256; --@RANGE_CHECK:FAIL
    begin
       null;
    end Insert;

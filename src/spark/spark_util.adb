@@ -1745,6 +1745,7 @@ package body SPARK_Util is
          case Nkind (N) is
             when N_Explicit_Dereference =>
                return True;
+
             when N_Indexed_Component
                | N_Selected_Component
                | N_Slice
