@@ -6962,6 +6962,7 @@ package body SPARK_Definition is
             --  Pragma_Max_Queue_Length is handled specially above
             | Pragma_No_Elaboration_Code_All
             | Pragma_No_Heap_Finalization
+            | Pragma_No_Inline
             | Pragma_No_Tagged_Streams
             --  Pragma_Overflow_Mode is handled specially above
             | Pragma_Post
@@ -7074,7 +7075,6 @@ package body SPARK_Definition is
             | Pragma_Main_Storage
             | Pragma_Memory_Size
             | Pragma_No_Body
-            | Pragma_No_Inline
             | Pragma_No_Run_Time
             | Pragma_No_Strict_Aliasing
             | Pragma_Obsolescent
