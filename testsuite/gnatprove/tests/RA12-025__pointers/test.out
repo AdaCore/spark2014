@@ -1,3 +1,4 @@
+pointers.adb:13:14: info: non-aliasing of formal parameters "X" and "Y" proved
 pointers.adb:13:14: object was declared as not writable at pointers.ads:16
 pointers.adb:13:14: part of "R" is not writable
 pointers.adb:13:19: object was declared as not writable at pointers.ads:16
