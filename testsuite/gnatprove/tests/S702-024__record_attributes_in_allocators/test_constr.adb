@@ -21,7 +21,7 @@ procedure Test_Constr with SPARK_Mode is
 
    procedure Test1 is
    begin
-      pragma Assert (Create.C.C'Constrained);  --@ASSERT:FAIL
+      pragma Assert (declare V : constant I := Create; begin V.C.C'Constrained);  --@ASSERT:FAIL
    end Test1;
 
    procedure Test2 is
@@ -36,7 +36,7 @@ procedure Test_Constr with SPARK_Mode is
 
    procedure Test4 is
    begin
-      pragma Assert (not R'(Create.C.C)'Constrained);  --@ASSERT:FAIL
+      pragma Assert (declare V : constant I := Create; begin not R'(V.C.C)'Constrained);  --@ASSERT:FAIL
    end Test4;
 begin
    null;

@@ -31,7 +31,7 @@ procedure Test_Constrained with SPARK_Mode is
    end F_H;
 
    pragma Assert (F'Constrained);
-   pragma Assert (not F_Acc.C'Constrained);
+   pragma Assert (declare A : constant CC_Acc := F_Acc; begin not A.C'Constrained);
    pragma Assert (F_H.C'Constrained);
 
    subtype CC_2 is CC;

@@ -20,6 +20,7 @@ parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc4", "altergo", "z3"]
 provers_output_regex = re.compile("\((Trivial|Interval|CVC4|Z3|altergo).*\)")
+default_ada = 2020
 
 #  Change directory
 
@@ -659,7 +660,7 @@ def strip_provers_output_from_testout():
 
 def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
               filter_output=None, cache_allowed=True, subdue_flow=False,
-              sort_output=True, exit_status=None):
+              sort_output=True, exit_status=None, ada=default_ada):
     """Invoke gnatprove, and in case of success return list of output lines
 
     PARAMETERS
@@ -676,7 +677,7 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
             f_prj.write('project Test is\n')
             f_prj.write('  package Compiler is\n')
             f_prj.write('    for Default_Switches ("Ada")' +
-                        ' use ("-gnatws", "-gnat2020");\n')
+                        ' use ("-gnatws", "-gnat' + str(ada) + '");\n')
             f_prj.write('    for Local_Configuration_Pragmas' +
                         ' use "test.adc";\n')
             f_prj.write('  end Compiler;\n')
@@ -764,6 +765,7 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
               filter_output=None,
               subdue_flow=False,
               codepeer=False,
+              ada=default_ada,
               replay=False):
     """Call gnatprove with standard options.
 
@@ -823,11 +825,12 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
               sort_output=sort_output,
               cache_allowed=cache_allowed,
               subdue_flow=subdue_flow,
+              ada=ada,
               filter_output=filter_output)
 
 
 def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all",
-            gg=True, sort_output=True):
+            gg=True, sort_output=True, ada=default_ada):
     """
     Call gnatprove with standard options for flow. We do generate
     verification conditions, but we don't actually try very hard to
@@ -841,16 +844,17 @@ def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all",
 
     prove_all(opt, procs=procs, steps=1, counterexample=False,
               prover=["cvc4"], no_fail=no_fail, mode=mode,
-              sort_output=sort_output)
+              sort_output=sort_output, ada=ada)
 
 
-def do_flow_only(opt=None, procs=parallel_procs, no_fail=False):
+def do_flow_only(opt=None, procs=parallel_procs, no_fail=False,
+                 ada=default_ada):
     """
     Similar to do_flow, but we disable VCG. Should only be used for flow
     tests that take an undue amount of time.
     """
 
-    do_flow(opt, procs, no_fail, mode="flow")
+    do_flow(opt, procs, no_fail, mode="flow", ada=ada)
 
 
 def no_crash():

@@ -2408,6 +2408,119 @@ package body SPARK_Definition is
          =>
             raise Program_Error;
       end case;
+
+      --  SPARK RM 3.10(6): If a prefix of a name is of an owning type, then
+      --  the prefix shall denote neither a non-traversal function call, an
+      --  aggregate, an allocator, nor any other expression whose associated
+      --  object is (or, as in the case of a conditional expression, might be)
+      --  the same as that of such a forbidden expression (e.g., a qualified
+      --  expression or type conversion whose operand would be forbidden as a
+      --  prefix by this rule).
+
+      if Nkind (N) in N_Attribute_Reference
+                    | N_Explicit_Dereference
+                    | N_Indexed_Component
+                    | N_Selected_Component
+                    | N_Slice
+      then
+         declare
+            procedure Validate_Owning_Prefix (Expr : Node_Id) with
+              Pre => Is_Deep (Etype (Expr));
+            --  Check that Expr is a valid owning prefix
+
+            ----------------------------
+            -- Validate_Owning_Prefix --
+            ----------------------------
+
+            procedure Validate_Owning_Prefix (Expr : Node_Id) is
+            begin
+               case Nkind (Expr) is
+                  when N_Qualified_Expression
+                     | N_Type_Conversion
+                     | N_Unchecked_Type_Conversion
+                  =>
+                     Validate_Owning_Prefix (Expression (Expr));
+
+                  when N_Allocator =>
+                     Mark_Violation
+                       ("allocator as the prefix of an expression",
+                        Expr,
+                        SRM_Reference => "SPARK RM 3.10(6)");
+
+                  when N_Aggregate
+                     | N_Delta_Aggregate
+                     | N_Extension_Aggregate
+                  =>
+                     Mark_Violation
+                       ("aggregate of owning type as the prefix of"
+                        & " an expression",
+                        Expr,
+                        SRM_Reference => "SPARK RM 3.10(6)");
+
+                  when N_Attribute_Reference =>
+                     if not Is_Attribute_Result (Expr) then
+                        Mark_Violation
+                          ("attribute reference of owning type as the prefix"
+                           & " of an expression",
+                           Expr,
+                           SRM_Reference => "SPARK RM 3.10(6)");
+                     end if;
+
+                  when N_Function_Call =>
+                     if not Is_Traversal_Function_Call (Expr) then
+                        Mark_Violation
+                          ("non-traversal function call of owning type as"
+                           & " the prefix of an expression",
+                           Expr,
+                           SRM_Reference => "SPARK RM 3.10(6)");
+                     end if;
+
+                  when N_If_Expression =>
+                     declare
+                        Condition : constant Node_Id :=
+                          First (Expressions (Expr));
+                        Then_Expr : constant Node_Id := Next (Condition);
+                        Else_Expr : constant Node_Id := Next (Then_Expr);
+                     begin
+                        Validate_Owning_Prefix (Then_Expr);
+                        Validate_Owning_Prefix (Else_Expr);
+                     end;
+
+                  when N_Case_Expression =>
+                     declare
+                        Cases    : constant List_Id := Alternatives (Expr);
+                        Cur_Case : Node_Id := First (Cases);
+                     begin
+                        while Present (Cur_Case) loop
+                           Validate_Owning_Prefix (Expression (Cur_Case));
+                           Next (Cur_Case);
+                        end loop;
+                     end;
+
+                  when others =>
+                     null;
+               end case;
+            end Validate_Owning_Prefix;
+
+            --  Local variables
+
+            Pref : constant Node_Id := Prefix (N);
+         begin
+            if Is_Deep (Etype (Pref))
+
+              --  Special case for attributes 'Old and 'Loop_Entry which should
+              --  be applicable to a call to a volatile function of owning type
+              --  in order to be able to compare a modified variable of owning
+              --  type with a previous value of the same variable. ??? This
+              --  should be expressed as a rule in SPARK RM.
+
+              and then not Is_Attribute_Old (N)
+              and then not Is_Attribute_Loop_Entry (N)
+            then
+               Validate_Owning_Prefix (Pref);
+            end if;
+         end;
+      end if;
    end Mark;
 
    ------------------
@@ -4077,13 +4190,13 @@ package body SPARK_Definition is
 
       procedure Mark_Subprogram_Entity (E : Entity_Id) is
 
-         procedure Mark_Function_Specification (N : Node_Id);
+         procedure Mark_Function_Specification (Id : Entity_Id);
          --  Mark violations related to impure functions
 
          procedure Mark_Subprogram_Contracts;
          --  Mark pre-post contracts
 
-         procedure Mark_Subprogram_Specification (N : Node_Id);
+         procedure Mark_Subprogram_Specification (Id : Entity_Id);
          --  Mark violations related to parameters, result and contract
 
          procedure Process_Class_Wide_Condition
@@ -4097,8 +4210,7 @@ package body SPARK_Definition is
          -- Mark_Function_Specification --
          ---------------------------------
 
-         procedure Mark_Function_Specification (N : Node_Id) is
-            Id               : constant Entity_Id := Defining_Entity (N);
+         procedure Mark_Function_Specification (Id : Entity_Id) is
             Is_Volatile_Func : constant Boolean   := Is_Volatile_Function (Id);
             Formal           : Entity_Id := First_Formal (Id);
 
@@ -4243,10 +4355,8 @@ package body SPARK_Definition is
          -- Mark_Subprogram_Specification --
          -----------------------------------
 
-         procedure Mark_Subprogram_Specification (N : Node_Id) is
-            Id     : constant Entity_Id := Defining_Entity (N);
-            Formal : Entity_Id := First_Formal (Id);
-
+         procedure Mark_Subprogram_Specification (Id : Entity_Id) is
+            Formal      : Entity_Id := First_Formal (Id);
             Contract    : Node_Id;
             Raw_Globals : Raw_Global_Nodes;
 
@@ -4274,10 +4384,10 @@ package body SPARK_Definition is
          begin
             case Ekind (Id) is
                when E_Function =>
-                  Mark_Function_Specification (N);
+                  Mark_Function_Specification (Id);
 
                when E_Entry_Family =>
-                  Mark_Violation ("entry family", N);
+                  Mark_Violation ("entry family", Id);
 
                when others =>
                   null;
@@ -4413,9 +4523,7 @@ package body SPARK_Definition is
             Mark_Violation_In_Tasking (E);
          end if;
 
-         Mark_Subprogram_Specification (if Is_Entry (E)
-                                        then Parent (E)
-                                        else Subprogram_Specification (E));
+         Mark_Subprogram_Specification (E);
 
          --  We mark bodies of predicate functions, and of expression functions
          --  when they are referenced (including those from other compilation
@@ -4942,7 +5050,11 @@ package body SPARK_Definition is
                  ("type invariant on private_type_declaration or"
                   & " private_type_extension", E, "SPARK RM 7.3.2(2)");
 
-            elsif Is_Effectively_Volatile (E) then
+            elsif Is_Effectively_Volatile (E)
+              and then (Async_Writers_Enabled (E)
+                          or else
+                        Effective_Reads_Enabled (E))
+            then
                Mark_Violation
                  ("type invariant on effectively volatile type",
                   E, "SPARK RM 7.3.2(4)");
@@ -5026,12 +5138,16 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  An effectively volatile type cannot have a predicate. Here, we do
-         --  not try to distinguish the case where the predicate is inherited
-         --  from a parent whose full view is not in SPARK.
+         --  An effectively volatile type with Async_Writers or Effective_Reads
+         --  cannot have a predicate. Here, we do not try to distinguish the
+         --  case where the predicate is inherited from a parent whose full
+         --  view is not in SPARK.
 
          if Has_Predicates (E)
-            and then Is_Effectively_Volatile (E)
+           and then Is_Effectively_Volatile (E)
+           and then (Async_Writers_Enabled (E)
+                       or else
+                     Effective_Reads_Enabled (E))
          then
             Mark_Violation
               ("subtype predicate on effectively volatile type",

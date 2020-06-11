@@ -338,21 +338,24 @@ package SPARK_Util is
    with Pre  => Ekind (E) in E_Abstract_State
                            | E_Protected_Type
                            | E_Task_Type
-                           | Object_Kind,
+                           | Object_Kind
+                           | Type_Kind,
         Post => (if Ekind (E) in E_Protected_Type | E_Task_Type
                  then not Has_Volatile'Result);
-   --  @param E an abstract state or object (including concurrent types, which
-   --     might be implicit parameters and globals)
-   --  @return True iff E is an external state or a volatile object
+   --  @param E an abstract state, object (including concurrent types, which
+   --     might be implicit parameters and globals) or type
+   --  @return True iff E is an external state or a volatile object or type
 
-   function Has_Volatile_Property (E : Checked_Entity_Id;
-                                   P : Volatile_Pragma_Id)
-                                 return Boolean
+   function Has_Volatile_Property
+     (E : Checked_Entity_Id;
+      P : Volatile_Pragma_Id)
+      return Boolean
    with Pre => Has_Volatile (E)
      and then Ekind (E) /= E_Constant;
-   --  @param E an external state, a volatile object, or a protected component
+   --  @param E an external state, a volatile object or type, or a protected
+   --     component
    --  @return True iff E has the specified property P of volatility, either
-   --     directly or through its type.
+   --     directly or through its (base) type.
 
    function Is_Constant_After_Elaboration (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_Variable;
