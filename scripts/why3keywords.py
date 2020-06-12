@@ -64,9 +64,9 @@ f = open(sys.argv[2], 'w')
 try:
     update = find_keywords(sys.argv[1])
 except Exception:
-    print "Generation of Keywords: Abort"
-    print "Problem during the opening or parsing of lexer.mll"
-    print "Please check you are in developper build"
+    print("Generation of Keywords: Abort")
+    print("Problem during the opening or parsing of lexer.mll")
+    print("Please check you are in developper build")
     exit(1)
 
 f.write(header + prelude + update + postlude)
