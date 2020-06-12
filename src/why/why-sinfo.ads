@@ -702,6 +702,8 @@ package Why.Sinfo is
       -- Prog structure --
       --------------------
 
+      W_Postcondition,
+      W_Exn_Condition,
       W_Handler,
       W_Field_Association,
 

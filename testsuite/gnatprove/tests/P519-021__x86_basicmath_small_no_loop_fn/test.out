@@ -1,7 +1,7 @@
 basicmath_small.adb:28:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:28:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:29:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:38:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:38:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:49:10: info: precondition proved (CVC4: 1 VC)
 basicmath_small.adb:49:10: warning: unused assignment to "CarryFlag"
 basicmath_small.adb:49:10: warning: unused assignment to "OverflowFlag"
@@ -10,11 +10,11 @@ basicmath_small.adb:49:10: warning: unused assignment to "ZeroFlag"
 basicmath_small.adb:89:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:89:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:90:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:95:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:95:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:143:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:143:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:144:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:149:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:149:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:195:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:195:39: info: range check proved (CVC4: 1 VC)
 basicmath_small.adb:196:07: warning: initialization of "ra0" has no effect
@@ -122,19 +122,19 @@ basicmath_small.adb:624:10: warning: unused assignment to "RDI"
 basicmath_small.adb:642:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:642:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:643:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:660:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:660:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:672:35: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:672:35: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:673:35: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:686:40: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:686:40: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:698:38: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:698:38: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:699:38: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:708:43: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:708:43: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:720:41: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:720:41: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:721:41: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-basicmath_small.adb:726:46: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
+basicmath_small.adb:726:46: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:728:27: warning: unused assignment
 basicmath_small.adb:746:28: warning: unused assignment
 basicmath_small.adb:749:28: warning: unused assignment

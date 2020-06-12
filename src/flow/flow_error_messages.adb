@@ -48,8 +48,8 @@ with Sem_Util;                  use Sem_Util;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
 with Snames;                    use Snames;
+with SPARK_Annotate;            use SPARK_Annotate;
 with SPARK_Atree;
-with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 with SPARK_Xrefs;               use SPARK_Xrefs;
@@ -657,24 +657,12 @@ package body Flow_Error_Messages is
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc);
-
       One_Liner : constant String :=
         (if Pretty_Cntexmp.Is_Empty then ""
-
-         --  Do not include a one-liner in the message for memory leak checks,
-         --  as the exact values of variables seldom plays a role in that case.
-         --  Keep the counterexample though as the path is relevant.
-
-         elsif Tag in VC_Memory_Leak
-                    | VC_Memory_Leak_At_End_Of_Scope
-         then ""
-
          else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
-
       Msg3     : constant String :=
         (if One_Liner = "" then Msg2
          else (Msg2 & " (e.g. when " & One_Liner & ")"));
-
       Severity : constant Msg_Severity := Get_Severity (N, Is_Proved, Tag);
       Suppr    : String_Id := No_String;
       Msg_Id   : Message_Id := No_Message_Id;
@@ -1209,7 +1197,27 @@ package body Flow_Error_Messages is
             pragma Assert (Nkind (N) in N_Subexpr
                            and then Nkind (N) /= N_Procedure_Call_Statement);
 
-            Vars := Get_Variables_For_Proof (N, N);
+            --  If the expression is an identifier of a non-object, then it
+            --  is identifier of a type within an uninitialized allocator.
+            --  Flow would crash if we ask for variables referenced in such
+            --  an ill-formed expression, so instead we ask for variables
+            --  referenced the allocator itself.
+            --
+            --  ??? Arguably, it is be problematic for proof to attach check to
+            --  the allocator itself.
+
+            if Is_Entity_Name (N)
+              and then Ekind (Entity (N)) not in Object_Kind
+                                               | E_Enumeration_Literal
+            then
+               pragma Assert
+                 (Is_Type (Entity (N))
+                  and then Nkind (Parent (N)) = N_Allocator);
+
+               Vars := Get_Variables_For_Proof (Parent (N), N);
+            else
+               Vars := Get_Variables_For_Proof (N, N);
+            end if;
          end if;
 
          return Vars;
@@ -1314,55 +1322,9 @@ package body Flow_Error_Messages is
 
    begin
 
-      if Tag = VC_UC_No_Holes then
-         pragma Assert
-           (Nkind (N) in N_Identifier
-                       | N_Expanded_Name
-                       | N_Object_Declaration
-                       | N_Attribute_Reference);
-         declare
-            Ty : constant Entity_Id :=
-              (if Nkind (N) = N_Object_Declaration then
-                    Etype (Defining_Identifier (N))
-               elsif Nkind (N) = N_Attribute_Reference then
-                    Etype (Prefix (N))
-               else Entity (N));
-         begin
-            if not Is_Scalar_Type (Ty) and then not Known_Esize (Ty) then
-               return
-                 "type should have an Object_Size representation clause" &
-                 " or aspect";
-            end if;
-            if Is_Floating_Point_Type (Ty) then
-               return "floating-point types have invalid bit patterns" &
-                 " for SPARK";
-            end if;
-         end;
+      --  ??? it would be nice to have explanations here
+      if Tag in VC_UC_No_Holes | VC_UC_Same_Size then
          return "";
-      elsif Tag = VC_UC_Alignment then
-         pragma Assert (Nkind (N) = N_Object_Declaration);
-         declare
-            Obj    : constant Entity_Id := Defining_Identifier (N);
-            Expr   : constant Node_Id :=
-              SPARK_Atree.Get_Address_Rep_Item (N);
-            Common : constant String :=
-              "should have an Alignment representation clause";
-         begin
-            --  Alignment VC is only issued with overlays
-            pragma Assert
-              (Present (Expr)
-               and then Nkind (Expr) = N_Attribute_Reference
-               and then Get_Attribute_Id (Attribute_Name (Expr))
-                 = Attribute_Address);
-            if not Known_Alignment (Obj) then
-               return "overlaying object " & Common;
-            elsif Nkind (Prefix (Expr)) not in N_Has_Entity
-              or else not Known_Alignment (Entity (Prefix (Expr)))
-            then
-               return "overlaid object " & Common;
-            end if;
-            return "";
-         end;
       end if;
 
       --  Adjust the enclosing subprogram entity

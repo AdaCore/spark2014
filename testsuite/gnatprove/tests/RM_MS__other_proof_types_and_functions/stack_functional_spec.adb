@@ -19,7 +19,7 @@ is
    --  Pointer => Pointer).
    My_Stack : Stack_Type;
 
-   --  No conversion necessary as the abstract and implementation type
+   --  No convertion necessary as the abstract and implementation type
    --  is the same.
    function State return Stack_Type is (My_Stack)
      with Refined_Global => My_Stack;

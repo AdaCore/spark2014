@@ -1,5 +1,7 @@
 very_longs-divide.adb:15:12: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:19:12: info: range check proved (CVC4: 2 VC)
+very_longs-divide.adb:20:48: info: overflow check proved (CVC4: 1 VC)
+very_longs-divide.adb:20:64: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:26:04: info: initialization of "N" proved
 very_longs-divide.adb:27:04: info: initialization of "M" proved
 very_longs-divide.adb:28:04: info: initialization of "Shift_Distance" proved
@@ -279,6 +281,7 @@ very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
 very_longs.ads:20:10: info: flow dependencies proved
 very_longs.ads:21:23: info: range check proved (CVC4: 1 VC)
+very_longs.ads:21:34: info: overflow check proved (CVC4: 1 VC)
 very_longs.ads:46:18: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:52:18: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:58:18: info: postcondition proved (CVC4: 1 VC)
@@ -286,5 +289,6 @@ very_longs.ads:62:19: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:67:22: info: initialization of "Quotient" proved
 very_longs.ads:68:22: info: initialization of "Remainder" proved
 very_longs.ads:70:10: info: flow dependencies proved
+very_longs.ads:75:37: info: overflow check proved (CVC4: 1 VC)
 very_longs.ads:86:10: info: range check proved (CVC4: 2 VC)
 very_longs.ads:90:68: info: index check proved (CVC4: 2 VC)

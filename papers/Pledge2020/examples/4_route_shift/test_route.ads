@@ -88,7 +88,7 @@ package Test_Route with SPARK_Mode is
    is
      (Property)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATProve, Pledge);
    --  Pledge function, used to mark assertions as pledges for the analysis tool
 
    function Nth_Point (R : access Route; N : My_Pos) return not null access Point

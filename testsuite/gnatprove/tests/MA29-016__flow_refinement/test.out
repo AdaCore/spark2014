@@ -4,9 +4,12 @@ fruit-priv_child.adb:21:42: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:22:45: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:29:07: info: initialization of "Money" proved
 fruit-priv_child.adb:30:07: info: initialization of "Fruit_Salads" proved
+fruit-priv_child.adb:34:31: info: range check proved (CVC4: 1 VC)
 fruit-priv_child.adb:34:31: medium: overflow check might fail [possible explanation: call at line 33 should mention Fruit_Salads_Made (for argument Fruit_Salads) and Extra_Cost and Apples and Oranges and Price_Of_Apple and Price_Of_Orange in a postcondition]
+fruit-priv_child.adb:36:24: info: range check proved (CVC4: 1 VC)
 fruit-priv_child.adb:36:24: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
 fruit-priv_child.adb:36:33: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
+fruit-priv_child.adb:37:24: info: range check proved (CVC4: 1 VC)
 fruit-priv_child.adb:37:24: medium: overflow check might fail [possible explanation: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
 fruit-priv_child.adb:37:34: medium: overflow check might fail [possible explanation: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
 fruit-priv_child.ads:5:08: info: flow dependencies proved
@@ -19,13 +22,19 @@ fruit-priv_child.ads:22:09: info: data dependencies proved
 fruit-pub_child.adb:20:30: medium: divide by zero might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Apples_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
 fruit-pub_child.adb:21:33: medium: divide by zero might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Oranges_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
 fruit-pub_child.adb:23:30: medium: divide by zero might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Apples_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
+fruit-pub_child.adb:23:30: medium: range check might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Apples_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
 fruit-pub_child.adb:25:31: medium: divide by zero might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Oranges_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
+fruit-pub_child.adb:25:31: medium: range check might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Oranges_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
 fruit-pub_child.adb:27:07: info: precondition proved (CVC4: 1 VC)
-fruit-pub_child.adb:27:41: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Apples_In_Fruit_Salad in a precondition]
+fruit-pub_child.adb:27:41: info: overflow check proved (CVC4: 1 VC)
+fruit-pub_child.adb:27:41: info: range check proved (CVC4: 1 VC)
 fruit-pub_child.adb:28:07: medium: precondition might fail, cannot prove Oranges_To_Consume <= (Number_Of_Oranges) [possible explanation: call at line 27 should mention Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a postcondition]
-fruit-pub_child.adb:28:42: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Oranges_In_Fruit_Salad in a precondition]
+fruit-pub_child.adb:28:42: info: overflow check proved (CVC4: 1 VC)
+fruit-pub_child.adb:28:42: info: range check proved (CVC4: 1 VC)
+fruit-pub_child.adb:33:31: info: range check proved (CVC4: 1 VC)
 fruit-pub_child.adb:33:31: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:13 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad and Price_Of_Apple in a precondition]
 fruit-pub_child.adb:33:56: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:13 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad in a precondition]
+fruit-pub_child.adb:34:32: info: range check proved (CVC4: 1 VC)
 fruit-pub_child.adb:34:32: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:13 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad and Price_Of_Orange in a precondition]
 fruit-pub_child.adb:34:57: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:13 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad in a precondition]
 fruit-pub_child.ads:3:08: info: flow dependencies proved

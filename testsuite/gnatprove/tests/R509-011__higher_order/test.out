@@ -67,7 +67,9 @@ spark-higher_order-fold.ads:320:56: info: overflow check proved (CVC4: 1 VC), in
 spark-higher_order-fold.ads:321:30: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:77
 spark-higher_order-fold.ads:321:52: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:77
 spark-higher_order-fold.ads:325:16: info: subprogram "In_Range_Last" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:77
+spark-higher_order-fold.ads:327:34: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:77
 spark-higher_order-fold.ads:327:37: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:77
+spark-higher_order-fold.ads:328:30: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:77
 spark-higher_order-fold.ads:328:33: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:77
 spark-higher_order-fold.ads:331:16: info: subprogram "Add_Value" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:77
 spark-higher_order-fold.ads:333:21: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:77
@@ -223,9 +225,13 @@ spark-higher_order-fold.ads:576:16: info: overflow check proved (CVC4: 1 VC), in
 spark-higher_order-fold.ads:576:38: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:580:12: info: postcondition proved (Trivial: 1 VC; altergo: 2 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:586:16: info: subprogram "Result_In_Range" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:96
+spark-higher_order-fold.ads:590:30: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:590:33: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
+spark-higher_order-fold.ads:590:45: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:590:48: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
+spark-higher_order-fold.ads:591:31: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:591:34: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
+spark-higher_order-fold.ads:591:46: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:591:49: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:593:16: info: subprogram "Add_Value" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:595:21: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
@@ -253,6 +259,7 @@ spark-higher_order-fold.ads:658:17: info: postcondition proved (CVC4: 1 VC), in 
 spark-higher_order-fold.ads:658:56: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:661:16: info: subprogram "Result_In_Range" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:663:17: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108
+spark-higher_order-fold.ads:663:29: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:663:32: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:675:16: info: subprogram "Count" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:676:20: info: precondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108

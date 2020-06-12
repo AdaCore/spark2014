@@ -2,7 +2,7 @@ project Test is
    for Excluded_Source_Files use ("helpers.adb", "test_get_line.adb");
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnato13", "-gnata", "-gnateDTEST_GET_LINE=False", "-gnat2020");
+      for Default_Switches ("Ada") use ("-gnato13", "-gnata", "-gnateDTEST_GET_LINE=False");
    end Compiler;
 
    package Builder is

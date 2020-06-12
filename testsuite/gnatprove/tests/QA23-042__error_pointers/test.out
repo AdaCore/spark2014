@@ -1,20 +1,10 @@
 n01.adb:16:04: info: initialization of "X" proved
 n01.adb:27:11: insufficient permission on dereference from "X"
 n01.adb:27:11: object was moved at line 23
-n03.adb:24:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-n03.adb:25:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-n03.adb:26:04: medium: memory leak might occur at end of scope
-n03.adb:27:04: medium: memory leak might occur at end of scope
-n03.adb:27:16: info: pointer dereference check proved (CVC4: 1 VC)
-n03.adb:29:06: info: pointer dereference check proved (CVC4: 1 VC)
-n03.adb:31:04: medium: memory leak might occur
-n03.adb:34:24: info: range check proved (CVC4: 1 VC)
-n03.adb:34:42: info: pointer dereference check proved (CVC4: 1 VC)
-n03.adb:37:07: info: absence of memory leak proved (CVC4: 1 VC)
+n03.adb:31:18: insufficient permission for "X"
+n03.adb:31:18: object was moved at line 27
 n03.adb:37:07: warning: unused assignment
-n03.adb:38:07: info: absence of memory leak proved (CVC4: 1 VC)
 n03.adb:38:07: warning: unused assignment
-n03.adb:39:06: info: absence of memory leak proved (CVC4: 1 VC)
 n03.adb:39:06: warning: unused assignment
 n04.adb:11:10: component of anonymous access type is not allowed in SPARK
 n04.adb:11:10: violation of pragma SPARK_Mode at test.adc:3
@@ -179,20 +169,14 @@ pointers2.ads:20:14: insufficient permission for "Y" when returning from "Bad_Mo
 pointers2.ads:20:14: object was moved at pointers2.adb:36
 pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
-spark02.adb:32:04: non-traversal function call of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
+spark02.adb:32:04: assignment to a complex expression is not allowed in SPARK
 spark02.adb:32:04: violation of pragma SPARK_Mode at test.adc:3
-spark02.adb:34:09: non-traversal function call of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
+spark02.adb:34:09: expression as "in out" parameter is not allowed in SPARK
 spark02.adb:34:09: violation of pragma SPARK_Mode at test.adc:3
 spark02.adb:35:09: expression as "in out" parameter is not allowed in SPARK
 spark02.adb:35:09: violation of pragma SPARK_Mode at test.adc:3
-spark03.adb:6:12: medium: memory leak might occur
-spark03.adb:7:18: info: absence of memory leak proved (CVC4: 1 VC)
-spark03.adb:12:18: info: absence of memory leak proved (CVC4: 1 VC)
-spark03.adb:13:11: info: absence of memory leak proved (CVC4: 1 VC)
 spark03.adb:19:09: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at spark03.ads:21 should mention Y in a precondition]
-spark03.adb:22:16: info: absence of memory leak proved (CVC4: 1 VC)
 spark03.adb:23:09: medium: pointer dereference check might fail (e.g. when Z = null)
-spark03.adb:24:16: info: absence of memory leak proved (CVC4: 1 VC)
 spark03.adb:25:09: medium: pointer dereference check might fail (e.g. when W = null)
 spark03.ads:8:07: medium: missing dependency "null => AA"
 spark03.ads:8:36: medium: incorrect dependency "AA => AA"

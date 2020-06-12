@@ -25,13 +25,9 @@ is
          (for all E of M.Allocated => E in Valid_Resource)
             and then
          (for all R in Valid_Resource =>
-            (declare
-               In_Avail : constant Boolean := Contains (M.Available, R);
-               In_Alloc : constant Boolean := Contains (M.Allocated, R);
-             begin
-               (case Data (R) is
-                   when Available => In_Avail and not In_Alloc,
-                   when Allocated => not In_Avail and In_Alloc))));
+            (case Data (R) is
+               when Available => Contains (M.Available, R) and not Contains (M.Allocated, R),
+               when Allocated => not Contains (M.Available, R) and Contains (M.Allocated, R))));
 
       function Model return T is
          Avail : Set;
@@ -50,13 +46,9 @@ is
                (for all E of Alloc => E in 1 .. R)
                   and then
                (for all RR in 1 .. R =>
-                 (declare
-                    In_Avail : constant Boolean := Contains (Avail, RR);
-                    In_Alloc : constant Boolean := Contains (Alloc, RR);
-                  begin
-                    (case Data (RR) is
-                       when Available => In_Avail and not In_Alloc,
-                       when Allocated => not In_Avail and In_Alloc))));
+                 (case Data (RR) is
+                    when Available => Contains (Avail, RR) and not Contains (Alloc, RR),
+                    when Allocated => not Contains (Avail, RR) and Contains (Alloc, RR))));
          end loop;
          return T'(Available => Avail, Allocated => Alloc);
       end Model;

@@ -6,5 +6,5 @@ arithmetic.adb:15:33: info: loop invariant preservation proved (CVC4: 3 VC)
 arithmetic.adb:7:19: medium: postcondition might fail, cannot prove Halve_D'Result = N / 2
 arithmetic.adb:7:38: info: division check proved (altergo: 1 VC)
 arithmetic.adb:9:07: info: initialization of "R" proved
+arithmetic.adb:15:33: medium: loop invariant might fail after first iteration, cannot prove R = I
 arithmetic.adb:15:33: medium: loop invariant might fail in first iteration, cannot prove R = I
-arithmetic.adb:15:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove R = I

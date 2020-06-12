@@ -59,7 +59,7 @@ procedure Test_Route with SPARK_Mode is
    function Pledge (P : access constant Point; W : Boolean) return Boolean is
      (W)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATProve, Pledge);
 
    function Nth_Point (R : access Route; N : Positive) return not null access Point
    with

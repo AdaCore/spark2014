@@ -48,7 +48,7 @@ package body PolyORB_HI.Utils is
 
          end loop;
 
-         --  XXX GNATprove GPL2014 cannot prove the code below, which
+         --  XXX GNATProve GPL2014 cannot prove the code below, which
          --  appears equivalent, TBI
          --  R (1 .. S'Length) := S (S'First .. S'Last);
 

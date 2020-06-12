@@ -2,7 +2,6 @@
 test_01.adb:9:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 test_01.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_01.adb:9:09: info: nontermination of task proved (CVC4: 1 VC)
-test_01.adb:18:04: info: object is suitable for aliasing via address clause (Trivial)
 test_01.ads:5:04: info: flow dependencies proved
 test_01.ads:10:09: info: data dependencies proved
 
@@ -10,20 +9,9 @@ test_01.ads:10:09: info: data dependencies proved
 test_02.adb:9:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 test_02.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_02.adb:9:09: info: nontermination of task proved (CVC4: 1 VC)
-test_02.adb:18:04: info: object is suitable for aliasing via address clause (Trivial)
 test_02.ads:5:04: info: flow dependencies proved
 test_02.ads:10:09: info: data dependencies proved
 
 === test_03.adb ===
-test_03.adb:21:04: info: object is suitable for aliasing via address clause (Trivial)
-test_03.adb:26:04: info: object is suitable for aliasing via address clause (Trivial)
-test_03.adb:31:04: info: object is suitable for aliasing via address clause (Trivial)
-test_03.adb:36:04: info: object is suitable for aliasing via address clause (Trivial)
-test_03.adb:41:04: info: object is suitable for aliasing via address clause (Trivial)
 
 === test_04.adb ===
-test_04.adb:21:04: info: object is suitable for aliasing via address clause (Trivial)
-test_04.adb:26:04: info: object is suitable for aliasing via address clause (Trivial)
-test_04.adb:31:04: info: object is suitable for aliasing via address clause (Trivial)
-test_04.adb:36:04: info: object is suitable for aliasing via address clause (Trivial)
-test_04.adb:41:04: info: object is suitable for aliasing via address clause (Trivial)

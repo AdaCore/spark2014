@@ -24,10 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Atree;
-with Einfo;
 with Exp_Util;
 with Namet;       use Namet;
-with Sem_Aux;
 with Sem_Eval;
 with Sem_Util;
 with Sinfo;       use all type Sinfo.Node_Kind;
@@ -82,8 +80,6 @@ package SPARK_Atree is
      Sinfo.N_Defining_Identifier;
    N_Defining_Operator_Symbol       : Node_Kind renames
      Sinfo.N_Defining_Operator_Symbol;
-   N_Delta_Aggregate                : Node_Kind renames
-     Sinfo.N_Delta_Aggregate;
    N_Derived_Type_Definition        : Node_Kind renames
      Sinfo.N_Derived_Type_Definition;
    N_Elsif_Part                     : Node_Kind renames Sinfo.N_Elsif_Part;
@@ -175,7 +171,6 @@ package SPARK_Atree is
      Sinfo.N_Subtype_Declaration;
    N_Subtype_Indication             : Node_Kind renames
      Sinfo.N_Subtype_Indication;
-   N_Target_Name                    : Node_Kind renames Sinfo.N_Target_Name;
    N_Type_Conversion                : Node_Kind renames
      Sinfo.N_Type_Conversion;
    N_Unchecked_Type_Conversion      : Node_Kind renames
@@ -335,7 +330,7 @@ package SPARK_Atree is
                        | N_Entry_Index_Specification
                        | N_Loop_Parameter_Specification;
 
-   function Do_Check_On_Scalar_Conversion (N : Node_Id) return Boolean with
+   function Do_Check_On_Scalar_Converion (N : Node_Id) return Boolean with
      Pre => Nkind (N) in Sinfo.N_Subexpr;
    --  Return True if a check is needed on an expression which requires a
    --  scalar conversion. The check may be either a range check, an index
@@ -429,13 +424,10 @@ package SPARK_Atree is
    --  the defining entity of the declaration N if any.
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id with
-     Pre  => Nkind (N) in N_Subprogram_Call
+     Pre => Nkind (N) in N_Function_Call
+                       | N_Procedure_Call_Statement
                        | N_Entry_Call_Statement
-                       | N_Op,
-     Post => (if Nkind (N) in N_Op
-              then Einfo.Is_Intrinsic_Subprogram (Get_Called_Entity'Result)
-              else Get_Called_Entity'Result =
-                   Sem_Aux.Ultimate_Alias (Get_Called_Entity'Result));
+                       | N_Op;
    --  Same as Sem_Aux.Get_Called_Entity except that, on intrinsic operators,
    --  it returns the associated function instead of the operator name.
 
@@ -457,7 +449,7 @@ package SPARK_Atree is
       Check_Type        : out Entity_Id;
       Check_Kind        : out SPARK_Util.Scalar_Check_Kind)
    with Pre => Nkind (N) in Sinfo.N_Subexpr
-     and then Do_Check_On_Scalar_Conversion (N);
+     and then Do_Check_On_Scalar_Converion (N);
    --  @param N a scalar expression requiring a check
    --  @param In_Left_Hand_Side True if N occurs in the lefthand side of an
    --         assignment.

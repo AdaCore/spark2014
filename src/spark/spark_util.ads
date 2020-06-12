@@ -314,10 +314,6 @@ package SPARK_Util is
    -- Queries related to objects or components --
    ----------------------------------------------
 
-   function Comes_From_Declare_Expr (E : Entity_Id) return Boolean;
-   --  True if E is an object declared in an expression with actions. In SPARK,
-   --  this should correspond to a declare expression.
-
    function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean
      with Pre => Ekind (E) in E_Component | E_Discriminant;
    --  @param E component
@@ -338,24 +334,21 @@ package SPARK_Util is
    with Pre  => Ekind (E) in E_Abstract_State
                            | E_Protected_Type
                            | E_Task_Type
-                           | Object_Kind
-                           | Type_Kind,
+                           | Object_Kind,
         Post => (if Ekind (E) in E_Protected_Type | E_Task_Type
                  then not Has_Volatile'Result);
-   --  @param E an abstract state, object (including concurrent types, which
-   --     might be implicit parameters and globals) or type
-   --  @return True iff E is an external state or a volatile object or type
+   --  @param E an abstract state or object (including concurrent types, which
+   --     might be implicit parameters and globals)
+   --  @return True iff E is an external state or a volatile object
 
-   function Has_Volatile_Property
-     (E : Checked_Entity_Id;
-      P : Volatile_Pragma_Id)
-      return Boolean
+   function Has_Volatile_Property (E : Checked_Entity_Id;
+                                   P : Volatile_Pragma_Id)
+                                 return Boolean
    with Pre => Has_Volatile (E)
      and then Ekind (E) /= E_Constant;
-   --  @param E an external state, a volatile object or type, or a protected
-   --     component
+   --  @param E an external state, a volatile object, or a protected component
    --  @return True iff E has the specified property P of volatility, either
-   --     directly or through its (base) type.
+   --     directly or through its type.
 
    function Is_Constant_After_Elaboration (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_Variable;
@@ -469,15 +462,6 @@ package SPARK_Util is
    --  A trivial wrapper to be used in assertions when converting from the
    --  frontend to flow representation of discriminants and components.
 
-   function Objects_Have_Compatible_Alignments (X, Y : Entity_Id) return
-     Boolean
-   with Pre => Is_Object (X) and then Is_Object (Y);
-   --  @param X  object that overlays the other (object with Address clause)
-   --  @param Y  object that is overlaid (object whose 'Address is used in
-   --            the Address clause of X)
-   --  @return True iff X'Alignment and Y'Alignment are known and X'Alignment
-   --          is an integral multiple of Y
-
    --------------------------------
    -- Queries related to pragmas --
    --------------------------------
@@ -579,15 +563,6 @@ package SPARK_Util is
    -- Queries for particular nodes --
    ----------------------------------
 
-   function Aggregate_Is_In_Assignment (Expr : Node_Id) return Boolean with
-     Pre => Nkind (Expr) in N_Aggregate
-                          | N_Delta_Aggregate
-                          | N_Extension_Aggregate
-       or else Is_Attribute_Update (Expr);
-   --  Returns whether Expr is on the rhs of an assignment, either directly or
-   --  through other enclosing aggregates, with possible type conversions and
-   --  qualifications.
-
    type Unrolling_Type is
      (No_Unrolling,
       Simple_Unrolling,
@@ -626,11 +601,10 @@ package SPARK_Util is
    --  @return a name that uniquely identifies the prefix
 
    function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Ekind (E) = E_Package and then Is_Generic_Instance (E),
+   with Pre  => Is_Generic_Instance (E),
         Post => (for all S of Generic_Actual_Subprograms'Result =>
                     Is_Subprogram (S));
-   --  @param E instance of a generic package (or a wrapper package for
-   --    instances of generic subprograms)
+   --  @param E instance of a generic unit
    --  @return actual subprogram parameters of E
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
@@ -752,13 +726,8 @@ package SPARK_Util is
    --  Return whether Choices is a singleton choice
 
    function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean;
-   --  @param Expr any node
-   --  @return True iff Expr is a call to a traversal function
-
-   function Loop_Entity_Of_Exit_Statement (N : Node_Id) return Entity_Id
-     with Pre => Nkind (N) = N_Exit_Statement;
-   --  Return the Defining_Identifier of the loop that belongs to an exit
-   --  statement.
+   --  @param N any node
+   --  @return True iff N is a call to a traversal function
 
    function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
    --  @param N any node
@@ -771,11 +740,7 @@ package SPARK_Util is
    --  No_Eval is True, then we don't consider the expression to be evaluated.
 
    function Obj_Has_Relaxed_Init (Obj : Entity_Id) return Boolean;
-   --  Return True if Obj is an object with relaxed initialization
-
-   function Fun_Has_Relaxed_Init (Subp : Entity_Id) return Boolean with
-     Pre => Ekind (Subp) = E_Function;
-   --  Return True if the result of Subp has relaxed initialization
+   --  Return True if Obj is an object with relaxed initialization.
 
    ---------------------------------
    -- Misc operations and queries --
@@ -801,9 +766,6 @@ package SPARK_Util is
    --  Given a list of statements and declarations Stmts, returns the flattened
    --  list that includes these statements and declarations, and recursively
    --  all inner declarations and statements that appear in block statements.
-   --  Block statements are kept to mark the end of the corresponding scope,
-   --  in order to apply some treatments at the end of local scopes, like
-   --  checking the absence of memory leaks at the end of scope.
 
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element

@@ -194,8 +194,8 @@ package body Why.Gen.Init is
                Name         => W_Nam,
                Binders      =>
                  (1 =>
-                    (B_Name => Init_Val,
-                     others => <>),
+                      (B_Name => Init_Val,
+                       others => <>),
                   2 =>
                     (B_Name => Attr_Init,
                      others => <>)));
@@ -289,7 +289,7 @@ package body Why.Gen.Init is
               and then Contains_Relaxed_Init_Parts (E, Ignore_Top => True)))
       then
          T := +Sequence
-              (Ada_Node => Get_Ada_Node (+Tmp),
+              (Ada_Node => Ada_Node,
                Left     => New_Located_Assert
                  (Ada_Node => Ada_Node,
                   Pred     => +Compute_Is_Initialized
@@ -300,7 +300,7 @@ package body Why.Gen.Init is
                   Reason   => VC_Initialization_Check,
                   Kind     => EW_Assert),
                Right    => +Tmp);
-         T := Binding_For_Temp (Ada_Node => Get_Ada_Node (+Tmp),
+         T := Binding_For_Temp (Ada_Node => Ada_Node,
                                 Domain   => Domain,
                                 Tmp      => Tmp,
                                 Context  => T);

@@ -19,7 +19,7 @@ GNATprove Developer's Guide
 Contents:
 
 .. toctree::
-   :maxdepth: 6
+   :maxdepth: 2
 
    tool_structure
    legality_checking

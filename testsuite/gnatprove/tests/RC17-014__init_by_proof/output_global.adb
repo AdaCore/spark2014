@@ -1,6 +1,6 @@
 procedure Output_Global with SPARK_Mode is
-   type My_Nat is new Integer range 10 .. 150 with
-     Relaxed_Initialization;
+   type My_Nat is new Integer range 10 .. 150;
+   pragma Annotate (GNATprove, Init_By_Proof, My_Nat);
 
    G : My_Nat;
 

@@ -35,39 +35,35 @@ is
       --  need a reachability predicate on available cells.
 
       function Model_Is_Well_Formed (M : T) return Boolean is
-        (declare
-            Avail : constant Sequence := M.Available;
-            Alloc : constant S2.Set := M.Allocated;
-         begin
-            Length (Avail) <= Capacity
+        (Length (M.Available) <= Capacity
+         and then
+           (if First_Available /= No_Resource then
+                 Length (M.Available) > 0 and then Get (M.Available, 1) = First_Available
+            else Length (M.Available) = 0)
+         and then
+           (for all J in 1 .. Integer (Length (M.Available)) =>
+                 Get (M.Available, J) in Valid_Resource
             and then
-              (if First_Available /= No_Resource then
-                    Length (Avail) > 0 and then Get (Avail, 1) = First_Available
-               else Length (Avail) = 0)
-            and then
-              (for all J in 1 .. Integer (Length (Avail)) =>
-                    Get (Avail, J) in Valid_Resource
-               and then
-                 (if J < Integer (Length (Avail)) then
-                       Data (Get (Avail, J)).Next = Get (Avail, J + 1)))
-            and then
-              (for all J in 1 .. Integer (Length (Avail)) =>
-                   (if J > 1 then
-                         Get (Avail, J - 1) in Valid_Resource
-                       and then  Get (Avail, J) = Data (Get (Avail, J - 1)).Next))
-            and then
-              (for all J in 1 .. Integer (Length (Avail)) =>
-                   (for all K in 1 .. Integer (Length (Avail)) =>
-                        (if Get (Avail, J) = Get (Avail, K) then J = K)))
-            and then (if First_Available /= No_Resource
-                      and then Data (Get (Avail, Integer (Length (Avail)))).Next in Valid_Resource
-                      then Contains (Avail, Data (Get (Avail, Integer (Length (Avail)))).Next))
-            and then
-              (for all E of Alloc => E in Valid_Resource)
-            and then (for all R in Valid_Resource =>
-                          (case Data (R).Stat is
-                              when Available => not Contains (Alloc, R),
-                              when Allocated => not Contains (Avail, R) and Contains (Alloc, R))));
+              (if J < Integer (Length (M.Available)) then
+                    Data (Get (M.Available, J)).Next = Get (M.Available, J + 1)))
+         and then
+           (for all J in 1 .. Integer (Length (M.Available)) =>
+                (if J > 1 then
+                      Get (M.Available, J - 1) in Valid_Resource
+                    and then  Get (M.Available, J) = Data (Get (M.Available, J - 1)).Next))
+         and then
+           (for all J in 1 .. Integer (Length (M.Available)) =>
+                (for all K in 1 .. Integer (Length (M.Available)) =>
+                     (if Get (M.Available, J) = Get (M.Available, K) then J = K)))
+         and then (if First_Available /= No_Resource
+                   and then Data (Get (M.Available, Integer (Length (M.Available)))).Next in Valid_Resource
+                   then Contains (M.Available, Data (Get (M.Available, Integer (Length (M.Available)))).Next))
+         and then
+           (for all E of M.Allocated => E in Valid_Resource)
+         and then (for all R in Valid_Resource =>
+                       (case Data (R).Stat is
+                           when Available => not Contains (M.Allocated, R),
+                           when Allocated => not Contains (M.Available, R) and Contains (M.Allocated, R))));
       --  If the allocator is well-formed, then its model is well-formed
       --  following this definition. In particular, the list of available cells
       --  is allowed to be cyclic or incomplete, that is, not to contain every

@@ -1,7 +1,5 @@
 binary_search_trees.adb:6:21: info: pointer dereference check proved (CVC4: 1 VC)
 binary_search_trees.adb:6:55: info: pointer dereference check proved (CVC4: 1 VC)
 binary_search_trees.adb:7:21: info: pointer dereference check proved (CVC4: 1 VC)
-binary_search_trees.adb:7:28: medium: memory leak might occur [possible explanation: subprogram at binary_search_trees.ads:17 should mention Starting_At in a precondition]
 binary_search_trees.adb:8:21: info: pointer dereference check proved (CVC4: 1 VC)
-binary_search_trees.adb:8:28: medium: memory leak might occur [possible explanation: subprogram at binary_search_trees.ads:17 should mention Starting_At in a precondition]
 binary_search_trees.ads:18:09: info: data dependencies proved

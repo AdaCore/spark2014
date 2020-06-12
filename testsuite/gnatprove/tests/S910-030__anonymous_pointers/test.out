@@ -1,8 +1,5 @@
-anonymous_access.adb:4:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-anonymous_access.adb:4:07: info: initialization of "N" proved
-anonymous_access.adb:7:12: info: absence of memory leak proved (CVC4: 1 VC)
-anonymous_access.adb:7:22: info: pointer dereference check proved (CVC4: 1 VC)
-anonymous_access.adb:8:33: info: pointer dereference check proved (CVC4: 1 VC)
+anonymous_access.adb:7:36: info: pointer dereference check proved (CVC4: 1 VC)
+anonymous_access.adb:9:36: info: pointer dereference check proved (CVC4: 1 VC)
 anonymous_access.ads:10:13: info: implicit function contract might not be available on recursive calls
 anonymous_access.ads:10:13: medium: subprogram "Length" might not terminate, terminating annotation could be incorrect
 anonymous_access.ads:10:21: warning: "L" is not modified, could be of access constant type

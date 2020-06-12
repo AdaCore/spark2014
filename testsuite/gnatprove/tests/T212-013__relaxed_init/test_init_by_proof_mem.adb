@@ -1,21 +1,21 @@
 procedure Test_Init_By_Proof_Mem with SPARK_Mode is
    function Branch (X : Integer) return Boolean with
      Import;
-   type My_Int is new Integer with
-     Relaxed_Initialization;
+   type My_Int is new Integer;
+   pragma Annotate (GNATProve, Init_By_Proof, My_Int);
    subtype My_Nat is My_Int range 0 .. 10;
 
    type Rec_2 (D : My_Int) is record
       X : Integer;
       Y : My_Int;
       Z : Boolean;
-   end record with
-     Relaxed_Initialization;
+   end record;
+   pragma Annotate (GNATProve, Init_By_Proof, Rec_2);
    subtype Rec_3 is Rec_2 (15);
 
    type My_Arr is array (Positive range <>) of Natural;
-   type My_Arr_2 is new My_Arr with
-     Relaxed_Initialization;
+   type My_Arr_2 is new My_Arr;
+   pragma Annotate (GNATProve, Init_By_Proof, My_Arr_2);
    subtype My_Arr_3 is My_Arr_2 (15 .. 18);
 
    X1 : Rec_2 (15);

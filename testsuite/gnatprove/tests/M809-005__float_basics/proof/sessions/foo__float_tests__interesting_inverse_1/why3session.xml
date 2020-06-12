@@ -11,38 +11,46 @@
 <theory name="Foo__float_tests__interesting_inverse_1__subprogram_def">
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="precondition">
+  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.1" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="1174"/></proof>
   <proof prover="2"><result status="unknown" steps="3394"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="precondition">
+  <goal name="def&#39;vc.2" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="338008"/></proof>
   <proof prover="2"><result status="unknown" steps="5511"/></proof>
   </goal>
-  <goal name="def&#39;vc.2" expl="precondition" proved="true">
+  <goal name="def&#39;vc.3" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="5696"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="precondition">
+  <goal name="def&#39;vc.4" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="3701382"/></proof>
   <proof prover="2"><result status="unknown" steps="8971"/></proof>
   </goal>
-  <goal name="def&#39;vc.4" expl="precondition" proved="true">
+  <goal name="def&#39;vc.5" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="8153"/></proof>
   </goal>
-  <goal name="def&#39;vc.5" expl="precondition" proved="true">
+  <goal name="def&#39;vc.6" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="15397"/></proof>
   </goal>
-  <goal name="def&#39;vc.6" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.7" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.7" expl="assertion">
+  <goal name="def&#39;vc.8" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450237"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
+  </goal>
+  <goal name="def&#39;vc.9" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>

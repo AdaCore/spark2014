@@ -1,11 +1,11 @@
-const.adb:7:22: info: assertion proved (Trivial)
-const.adb:8:22: info: assertion proved (Trivial)
+const.adb:7:22: info: assertion proved
+const.adb:8:22: info: assertion proved
 const.adb:10:22: info: assertion proved (CVC4: 1 VC)
 const.adb:11:22: info: assertion proved (CVC4: 1 VC)
 const.adb:12:22: info: assertion proved (CVC4: 1 VC)
 const.adb:13:22: info: assertion proved (CVC4: 1 VC)
-const.adb:16:22: info: assertion proved (Trivial)
-const.adb:17:22: info: assertion proved (Trivial)
+const.adb:16:22: info: assertion proved
+const.adb:17:22: info: assertion proved
 const.adb:18:22: info: assertion proved (CVC4: 1 VC)
 const.adb:19:22: info: assertion proved (CVC4: 1 VC)
 const.adb:23:22: info: assertion proved (CVC4: 1 VC)

@@ -1,2 +1,1 @@
-pragma Profile (Jorvik);
 pragma Detect_Blocking;

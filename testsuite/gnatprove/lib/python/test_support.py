@@ -20,7 +20,6 @@ parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc4", "altergo", "z3"]
 provers_output_regex = re.compile("\((Trivial|Interval|CVC4|Z3|altergo).*\)")
-default_ada = 2020
 
 #  Change directory
 
@@ -301,7 +300,6 @@ def is_rte_tag(tag):
                    "DISCRIMINANT_CHECK",
                    "TAG_CHECK",
                    "NULL_EXCLUSION",
-                   "MEMORY_LEAK",
                    "DEREFERENCE_CHECK")
 
 
@@ -442,8 +440,6 @@ def check_marks(strlist):
             return 'INIT_BY_PROOF'
         elif 'null exclusion check' in text:
             return 'NULL_EXCLUSION'
-        elif 'memory leak' in text:
-            return 'MEMORY_LEAK'
         elif 'dereference check' in text:
             return 'DEREFERENCE_CHECK'
         elif 'default initial condition' in text:
@@ -480,7 +476,7 @@ def check_marks(strlist):
         elif 'loop invariant' in text:
             if 'initialization' in text or 'in first iteration' in text:
                 return 'LOOP_INVARIANT_INIT'
-            elif 'preservation' in text or 'by an arbitrary iteration' in text:
+            elif 'preservation' in text or 'after first iteration' in text:
                 return 'LOOP_INVARIANT_PRESERV'
             else:
                 return 'LOOP_INVARIANT'
@@ -660,7 +656,7 @@ def strip_provers_output_from_testout():
 
 def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
               filter_output=None, cache_allowed=True, subdue_flow=False,
-              sort_output=True, exit_status=None, ada=default_ada):
+              sort_output=True, exit_status=None):
     """Invoke gnatprove, and in case of success return list of output lines
 
     PARAMETERS
@@ -676,8 +672,7 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
         with open(default_project, 'w') as f_prj:
             f_prj.write('project Test is\n')
             f_prj.write('  package Compiler is\n')
-            f_prj.write('    for Default_Switches ("Ada")' +
-                        ' use ("-gnatws", "-gnat' + str(ada) + '");\n')
+            f_prj.write('    for Default_Switches ("Ada") use ("-gnatws");\n')
             f_prj.write('    for Local_Configuration_Pragmas' +
                         ' use "test.adc";\n')
             f_prj.write('  end Compiler;\n')
@@ -765,7 +760,6 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
               filter_output=None,
               subdue_flow=False,
               codepeer=False,
-              ada=default_ada,
               replay=False):
     """Call gnatprove with standard options.
 
@@ -825,12 +819,11 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
               sort_output=sort_output,
               cache_allowed=cache_allowed,
               subdue_flow=subdue_flow,
-              ada=ada,
               filter_output=filter_output)
 
 
 def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all",
-            gg=True, sort_output=True, ada=default_ada):
+            gg=True, sort_output=True):
     """
     Call gnatprove with standard options for flow. We do generate
     verification conditions, but we don't actually try very hard to
@@ -844,17 +837,16 @@ def do_flow(opt=None, procs=parallel_procs, no_fail=False, mode="all",
 
     prove_all(opt, procs=procs, steps=1, counterexample=False,
               prover=["cvc4"], no_fail=no_fail, mode=mode,
-              sort_output=sort_output, ada=ada)
+              sort_output=sort_output)
 
 
-def do_flow_only(opt=None, procs=parallel_procs, no_fail=False,
-                 ada=default_ada):
+def do_flow_only(opt=None, procs=parallel_procs, no_fail=False):
     """
     Similar to do_flow, but we disable VCG. Should only be used for flow
     tests that take an undue amount of time.
     """
 
-    do_flow(opt, procs, no_fail, mode="flow", ada=ada)
+    do_flow(opt, procs, no_fail, mode="flow")
 
 
 def no_crash():

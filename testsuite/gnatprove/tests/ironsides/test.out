@@ -19,6 +19,7 @@ dns_table_pkg.adb:45:62: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:45:70: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:57:16: info: loop invariant initialization proved (CVC4: 3 VC)
 dns_table_pkg.adb:57:16: info: loop invariant preservation proved (CVC4: 3 VC)
+dns_table_pkg.adb:57:30: info: overflow check proved (CVC4: 2 VC)
 dns_table_pkg.adb:61:24: info: overflow check proved (CVC4: 1 VC)
 dns_table_pkg.adb:63:22: info: division check proved (CVC4: 1 VC)
 dns_table_pkg.adb:72:10: info: initialization of "Bucket" proved
@@ -387,6 +388,7 @@ parser_utilities.adb:762:13: info: loop invariant preservation proved (CVC4: 2 V
 parser_utilities.adb:765:55: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:766:22: info: overflow check proved (CVC4: 1 VC)
 parser_utilities.adb:766:30: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:766:30: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:773:45: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:784:07: info: initialization of "DigitVal" proved
 parser_utilities.adb:785:07: info: initialization of "TmpVal" proved
@@ -396,6 +398,7 @@ parser_utilities.adb:791:13: info: loop invariant preservation proved (CVC4: 2 V
 parser_utilities.adb:793:55: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:794:22: info: overflow check proved (CVC4: 1 VC)
 parser_utilities.adb:794:30: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:794:30: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:802:46: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:813:07: info: initialization of "DigitVal" proved
 parser_utilities.adb:814:07: info: initialization of "TmpVal" proved
@@ -424,16 +427,22 @@ parser_utilities.adb:936:13: info: loop invariant preservation proved (CVC4: 6 V
 parser_utilities.adb:942:47: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:944:24: info: overflow check proved (CVC4: 1 VC)
 parser_utilities.adb:944:31: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:944:31: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:946:25: info: overflow check proved (CVC4: 1 VC)
 parser_utilities.adb:946:33: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:946:33: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:948:22: info: overflow check proved (CVC4: 1 VC)
 parser_utilities.adb:948:28: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:948:28: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:950:24: info: overflow check proved (CVC4: 1 VC)
 parser_utilities.adb:950:31: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:950:31: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:952:25: info: overflow check proved (CVC4: 1 VC)
 parser_utilities.adb:952:34: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:952:34: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:955:26: info: overflow check proved (CVC4: 1 VC)
 parser_utilities.adb:955:35: info: overflow check proved (CVC4: 1 VC)
+parser_utilities.adb:955:35: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:991:07: info: initialization of "BegIdx" proved
 parser_utilities.adb:992:07: info: initialization of "EndIdx" proved
 parser_utilities.adb:993:07: info: initialization of "ReturnedType" proved

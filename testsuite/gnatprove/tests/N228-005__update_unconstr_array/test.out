@@ -1,33 +1,39 @@
-update_checks_1.adb:9:09: info: length check proved (Trivial: 1 VC; altergo: 3 VC)
-update_checks_1.adb:9:21: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 2 and A'Last = 0 and I = 1) [possible explanation: subprogram at update_checks_1.ads:5 should mention I in a precondition]
-update_checks_1.adb:14:09: info: length check proved (Trivial: 1 VC; altergo: 3 VC)
-update_checks_1.adb:14:23: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 3 and A'Last = 0 and I = 1) [possible explanation: subprogram at update_checks_1.ads:8 should mention I in a precondition]
-update_checks_1.adb:14:23: medium: range check might fail (e.g. when I = 8) [possible explanation: subprogram at update_checks_1.ads:8 should mention I in a precondition]
-update_checks_1.adb:19:09: info: length check proved (Trivial: 1 VC; altergo: 3 VC)
-update_checks_1.adb:19:23: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 2 and A'Last = 0) [possible explanation: subprogram at update_checks_1.ads:11 should mention I in a precondition]
-update_checks_1.adb:26:09: info: length check proved (Trivial: 1 VC; altergo: 3 VC)
-update_checks_1.adb:26:24: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 2 and A'Last = 0) [possible explanation: subprogram at update_checks_1.ads:14 should mention I in a precondition]
-update_checks_1.adb:26:37: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 2 and A'Last = 0) [possible explanation: subprogram at update_checks_1.ads:14 should mention J and K in a precondition]
-update_checks_1.adb:26:44: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 2 and A'Last = 0 and L = 1) [possible explanation: subprogram at update_checks_1.ads:14 should mention L in a precondition]
+update_checks_1.adb:9:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; altergo: 2 VC)
+update_checks_1.adb:9:21: medium: range check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [possible explanation: subprogram at update_checks_1.ads:5 should mention I in a precondition]
+update_checks_1.adb:14:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; altergo: 2 VC)
+update_checks_1.adb:14:23: medium: range check might fail (e.g. when A'First = 3 and A'Last = 0 and I = 1) [possible explanation: subprogram at update_checks_1.ads:8 should mention I in a precondition]
+update_checks_1.adb:19:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; altergo: 2 VC)
+update_checks_1.adb:19:26: medium: range check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [possible explanation: subprogram at update_checks_1.ads:11 should mention I in a precondition]
+update_checks_1.adb:26:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; altergo: 2 VC)
+update_checks_1.adb:26:27: medium: range check might fail (e.g. when A'First = 2 and A'Last = 2 and I = 1 and L = 2) [possible explanation: subprogram at update_checks_1.ads:14 should mention I in a precondition]
+update_checks_1.adb:26:35: medium: range check might fail (e.g. when A'First = 2 and A'Last = 2 and J = 1 and L = 2) [possible explanation: subprogram at update_checks_1.ads:14 should mention J in a precondition]
+update_checks_1.adb:26:40: medium: range check might fail (e.g. when A'First = 2 and A'Last = 2 and K = 1 and L = 2) [possible explanation: subprogram at update_checks_1.ads:14 should mention K in a precondition]
+update_checks_1.adb:26:44: medium: range check might fail (e.g. when A'First = 2 and A'Last = 0 and L = 1) [possible explanation: subprogram at update_checks_1.ads:14 should mention L in a precondition]
 update_checks_1.adb:29:04: warning: analyzing unreferenced procedure "P6"
-update_checks_1.adb:33:09: info: length check proved (Trivial: 1 VC; altergo: 3 VC)
-update_checks_1.adb:33:27: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 2 and A'Last = 0)
+update_checks_1.adb:33:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; altergo: 2 VC)
+update_checks_1.adb:33:27: medium: range check might fail (e.g. when A'First = 2 and A'Last = 8)
+update_checks_1.adb:33:27: medium: range check might fail (e.g. when A'First = 9 and A'Last = 0)
 update_checks_1.adb:51:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; altergo: 2 VC)
-update_checks_1.adb:51:21: info: index check proved (CVC4: 2 VC)
+update_checks_1.adb:51:21: info: range check proved (CVC4: 1 VC)
 update_checks_1.adb:62:10: medium: array index check might fail (e.g. when A'First = 2 and I = 1 and New_Val = 0) [possible explanation: subprogram at update_checks_1.ads:23 should mention I in a precondition]
 update_checks_1.adb:69:07: medium: range check might fail (e.g. when A'First = 3 and I = 2) [possible explanation: subprogram at update_checks_1.ads:26 should mention A and I in a precondition]
 update_checks_1.adb:69:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:69:21: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:69:24: info: range check proved (CVC4: 2 VC)
-update_checks_1.adb:76:21: medium: array index check might fail (e.g. when I = 6) [possible explanation: subprogram at update_checks_1.ads:29 should mention I in a precondition]
 update_checks_1.adb:76:21: medium: range check might fail (e.g. when I = 6) [possible explanation: subprogram at update_checks_1.ads:29 should mention I in a precondition]
-update_checks_1.adb:83:21: info: index check proved (CVC4: 2 VC)
 update_checks_1.ads:6:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+update_checks_1.ads:6:37: info: range check proved (CVC4: 1 VC)
 update_checks_1.ads:9:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 update_checks_1.ads:9:39: info: range check proved (CVC4: 1 VC)
 update_checks_1.ads:12:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+update_checks_1.ads:12:42: info: range check proved (CVC4: 1 VC)
 update_checks_1.ads:15:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+update_checks_1.ads:15:42: info: range check proved (CVC4: 1 VC)
+update_checks_1.ads:15:50: info: range check proved (CVC4: 1 VC)
+update_checks_1.ads:15:55: info: range check proved (CVC4: 1 VC)
+update_checks_1.ads:15:59: info: range check proved (CVC4: 1 VC)
 update_checks_1.ads:19:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+update_checks_1.ads:19:32: info: range check proved (CVC4: 1 VC)
 update_checks_1.ads:24:19: info: postcondition proved (CVC4: 1 VC)
 update_checks_1.ads:24:22: info: index check proved (CVC4: 2 VC)
 update_checks_1.ads:27:19: medium: postcondition might fail, cannot prove A (1 .. I) = (1 .. I => New_Val) (e.g. when A = (others => 0) and I = 8 and New_Val = 0)

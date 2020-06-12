@@ -1,2 +1,2 @@
-u.adb:11:19: info: assertion proved (Trivial)
+u.adb:11:19: info: assertion proved
 u.adb:13:19: info: assertion proved (CVC4: 1 VC)

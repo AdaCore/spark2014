@@ -2,23 +2,23 @@ procedure Test_Init_By_Proof_Out_Params with SPARK_Mode is
    function Branch (X : Integer) return Boolean with
      Import;
 
-   type My_Int is new Integer with
-     Relaxed_Initialization;
+   type My_Int is new Integer;
+   pragma Annotate (GNATProve, Init_By_Proof, My_Int);
    type Rec is record
       X : Integer;
       Y : My_Int;
       Z : Boolean;
    end record;
-   type Rec_2 is new Rec with
-     Relaxed_Initialization;
+   type Rec_2 is new Rec;
+   pragma Annotate (GNATProve, Init_By_Proof, Rec_2);
 
    type Unc_Arr is array (My_Int range <>) of My_Int;
-   type Unc_Arr_2 is array (My_Int range <>) of Integer with
-     Relaxed_Initialization;
+   type Unc_Arr_2 is array (My_Int range <>) of Integer;
+   pragma Annotate (GNATProve, Init_By_Proof, Unc_Arr_2);
 
    type Constr_Arr is array (My_Int range 1 .. 10) of My_Int;
-   type Constr_Arr_2 is array (My_Int range 1 .. 10) of Integer with
-     Relaxed_Initialization;
+   type Constr_Arr_2 is array (My_Int range 1 .. 10) of Integer;
+   pragma Annotate (GNATProve, Init_By_Proof, Constr_Arr_2);
 
    type Arr_Rec is array (Positive range <>) of Rec;
    type Holder (D : Natural) is record
@@ -32,140 +32,140 @@ procedure Test_Init_By_Proof_Out_Params with SPARK_Mode is
    end record;
 
    procedure P (X : out Rec) with
-     Pre => X.Y'Initialized
+     Pre => X.Y'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Rec) with
-     Pre => X.Y'Initialized
+     Pre => X.Y'Valid_Scalars
    is
    begin
       null;
    end Q;
 
    procedure P (X : out Rec_2) with
-     Pre => X.X'Initialized
+     Pre => X.X'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Rec_2) with
-     Pre => X.X'Initialized
+     Pre => X.X'Valid_Scalars
    is
    begin
       null;
    end Q;
 
    procedure P (X : out Unc_Arr) with
-     Pre => X'Length > 0 and then X (X'First)'Initialized
+     Pre => X'Length > 0 and then X (X'First)'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Unc_Arr) with
-     Pre => X'Length > 0 and then X (X'First)'Initialized
+     Pre => X'Length > 0 and then X (X'First)'Valid_Scalars
    is
    begin
       null;
    end Q;
 
    procedure P (X : out Unc_Arr_2) with
-     Pre => X'Length > 0 and then X (X'First)'Initialized
+     Pre => X'Length > 0 and then X (X'First)'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Unc_Arr_2) with
-     Pre => X'Length > 0 and then X (X'First)'Initialized
+     Pre => X'Length > 0 and then X (X'First)'Valid_Scalars
    is
    begin
       null;
    end Q;
 
    procedure P (X : out Constr_Arr) with
-     Pre => X (X'First)'Initialized
+     Pre => X (X'First)'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Constr_Arr) with
-     Pre => X (X'First)'Initialized
+     Pre => X (X'First)'Valid_Scalars
    is
    begin
       null;
    end Q;
 
    procedure P (X : out Constr_Arr_2) with
-     Pre => X (X'First)'Initialized
+     Pre => X (X'First)'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Constr_Arr_2) with
-     Pre => X (X'First)'Initialized
+     Pre => X (X'First)'Valid_Scalars
    is
    begin
       null;
    end Q;
 
    procedure P (X : out Arr_Rec) with
-     Pre => X'Length > 0 and then X (X'First).Y'Initialized
+     Pre => X'Length > 0 and then X (X'First).Y'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Arr_Rec) with
-     Pre => X'Length > 0 and then X (X'First).Y'Initialized
+     Pre => X'Length > 0 and then X (X'First).Y'Valid_Scalars
    is
    begin
       null;
    end Q;
 
    procedure P (X : out Holder) with
-     Pre => X.D > 0 and then X.C (1).Y'Initialized
+     Pre => X.D > 0 and then X.C (1).Y'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Holder) with
-     Pre => X.D > 0 and then X.C (1).Y'Initialized
+     Pre => X.D > 0 and then X.C (1).Y'Valid_Scalars
    is
    begin
       null;
    end Q;
 
    procedure P (X : out Rec_Rec) with
-     Pre => X.C.Y'Initialized
+     Pre => X.C.Y'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Rec_Rec) with
-     Pre => X.C.Y'Initialized
+     Pre => X.C.Y'Valid_Scalars
    is
    begin
       null;
    end Q;
 
    procedure P (X : out Rec_Rec_2) with
-     Pre => X.C.X'Initialized
+     Pre => X.C.X'Valid_Scalars
    is
    begin
       null;
    end P;
 
    procedure Q (X : in out Rec_Rec_2) with
-     Pre => X.C.Z'Initialized
+     Pre => X.C.Z'Valid_Scalars
    is
    begin
       null;

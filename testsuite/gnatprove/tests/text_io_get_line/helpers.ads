@@ -103,16 +103,13 @@ package Helpers with SPARK_Mode is
                          and then
                        No_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2)
                  then
-                   (declare
-                        LF_Pos : constant Positive := Find_Char_In_Slice (ASCII.LF, Cur_Position'Old, Cur_Position'Old + N - 2);
-                    begin
-                      Cur_Position = LF_Pos and then
-                        (for all Idx in Cur_Position'Old .. LF_Pos - 1 =>
-                             Strng (Idx - Cur_Position'Old + 1) = The_File (Idx)) and then
-                          Strng (LF_Pos - Cur_Position'Old + 1) = ASCII.LF and then
-                        Strng (LF_Pos - Cur_Position'Old + 2) = ASCII.NUL and then
-                        (for all Idx in LF_Pos - Cur_Position'Old + 3 .. Strng'Last =>
-                             Strng (Idx) = Strng'Old (Idx)))
+                    Cur_Position = Find_Char_In_Slice (ASCII.LF, Cur_Position'Old, Cur_Position'Old + N - 2) and then
+                    (for all Idx in Cur_Position'Old .. Find_Char_In_Slice (ASCII.LF, Cur_Position'Old, Cur_Position'Old + N - 2) - 1 =>
+                       Strng (Idx - Cur_Position'Old + 1) = The_File (Idx)) and then
+                    Strng (Find_Char_In_Slice (ASCII.LF, Cur_Position'Old, Cur_Position'Old + N - 2) - Cur_Position'Old + 1) = ASCII.LF and then
+                    Strng (Find_Char_In_Slice (ASCII.LF, Cur_Position'Old, Cur_Position'Old + N - 2) - Cur_Position'Old + 2) = ASCII.NUL and then
+                    (for all Idx in Find_Char_In_Slice (ASCII.LF, Cur_Position'Old, Cur_Position'Old + N - 2) - Cur_Position'Old + 3 .. Strng'Last =>
+                       Strng (Idx) = Strng'Old (Idx))
 
                  --  Case 3: EOF is found
 
@@ -124,17 +121,14 @@ package Helpers with SPARK_Mode is
                          and then
                        Has_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2)
                  then
-                   (declare
-                        EOF_Pos : constant Positive := Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2);
-                    begin
-                      Cur_Position = EOF_Pos and then
-                        (for all Idx in Cur_Position'Old .. EOF_Pos - 1 =>
-                             Strng (Idx - Cur_Position'Old + 1) = The_File (Idx)) and then
-                          Strng (EOF_Pos - Cur_Position'Old + 1) = ASCII.NUL and then
-                        (for all Idx in EOF_Pos - Cur_Position'Old + 2 .. Strng'Last =>
-                             Strng (Idx) = Strng'Old (Idx)) and then
-                        --  redundant proposition to help automatic provers
-                      No_Char_In_String (Strng, ASCII.LF, EOF_Pos - Cur_Position'Old + 1))
+                    Cur_Position = Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) and then
+                    (for all Idx in Cur_Position'Old .. Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) - 1 =>
+                       Strng (Idx - Cur_Position'Old + 1) = The_File (Idx)) and then
+                    Strng (Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) - Cur_Position'Old + 1) = ASCII.NUL and then
+                    (for all Idx in Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) - Cur_Position'Old + 2 .. Strng'Last =>
+                       Strng (Idx) = Strng'Old (Idx)) and then
+                    --  redundant proposition to help automatic provers
+                    No_Char_In_String (Strng, ASCII.LF, Find_Char_In_Slice (EOF_Ch, Cur_Position'Old, Cur_Position'Old + N - 2) - Cur_Position'Old + 1)
 
                  --  Case 4: both newline and EOF appear
 

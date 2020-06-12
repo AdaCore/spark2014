@@ -8,17 +8,9 @@ package Arrays with SPARK_Mode is
 
 
    Arr_1 : First(0.. 255);
-   for Arr_1'Alignment use 4;
 
 
    Length : constant Uint64 := arr_1'Length / 4;
    Arr_2 : Second(0 .. Length);
    for Arr_2'Address use arr_1'Address;
-   for Arr_2'Alignment use 4;
-
-
-   Arr_3 : First(0.. 255);
-   for Arr_3'Address use Arr_1(0..255)'Address;
-   for Arr_3'Alignment use 4;
-
 end Arrays;

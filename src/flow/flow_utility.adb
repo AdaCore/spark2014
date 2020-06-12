@@ -3409,10 +3409,7 @@ package body Flow_Utility is
                   elsif Ekind (Entity (N)) = E_Constant
                     and then Is_Action (Parent (Entity (N)))
                   then
-                     pragma Assert
-                       (Comes_From_Declare_Expr (Entity (N))
-                          or else
-                        not Comes_From_Source (Entity (N)));
+                     pragma Assert (not Comes_From_Source (Entity (N)));
                      Variables.Union
                        (Recurse (Expression (Parent (Entity (N)))));
                   else
@@ -3805,22 +3802,6 @@ package body Flow_Utility is
                      return OK;
                   end if;
                end;
-
-            --  For a declare expression we recurse into the expression itself
-            --  and then we recurse into the expression of declared constants
-            --  whenever it is referenced. ??? This is incorrect when the
-            --  declared constant is not referenced, e.g.:
-            --     declare
-            --        X : constant Integer := V;
-            --        -- constant with variable input
-            --     begin
-            --        0;
-            --  because this expression has a null dependency on V, but this
-            --  is acceptable for now.
-
-            when N_Expression_With_Actions =>
-               Variables.Union (Recurse (Expression (N)));
-               return Skip;
 
             when others =>
                null;

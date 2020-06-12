@@ -51,6 +51,6 @@ pack.adb:84:04: warning: analyzing unreferenced procedure "P"
 pack.adb:84:14: warning: subprogram "P" has no effect
 pack.adb:85:07: info: initialization of "A" proved
 pack.adb:88:22: info: assertion proved (CVC4: 1 VC)
-pack.adb:89:22: medium: assertion might fail, cannot prove A (9) = 2 (e.g. when A = (8 => 1, 9 => 1, others => 7))
+pack.adb:89:22: medium: assertion might fail, cannot prove A (9) = 2 (e.g. when A = (8 => 1, 9 => 1, others => 10))
 pack.ads:3:14: warning: subprogram "A1" has no effect
 pack.ads:5:14: warning: subprogram "A2" has no effect

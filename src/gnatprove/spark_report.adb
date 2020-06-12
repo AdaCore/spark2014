@@ -1012,8 +1012,6 @@ procedure SPARK_Report is
             | VC_Invariant_Check_On_Default_Value
             | VC_Null_Pointer_Dereference
             | VC_Null_Exclusion
-            | VC_Memory_Leak
-            | VC_Memory_Leak_At_End_Of_Scope
             | VC_Length_Check
             | VC_Discriminant_Check
             | VC_Tag_Check
@@ -1023,9 +1021,6 @@ procedure SPARK_Report is
             | VC_Task_Termination
             | VC_Raise
             | VC_Initialization_Check
-            | VC_UC_No_Holes
-            | VC_UC_Same_Size
-            | VC_UC_Alignment
          =>
             return Runtime_Checks;
 
@@ -1049,6 +1044,8 @@ procedure SPARK_Report is
             | VC_Disjoint_Contract_Cases
             | VC_Complete_Contract_Cases
             | VC_Inline_Check
+            | VC_UC_No_Holes
+            | VC_UC_Same_Size
          =>
             return Functional_Contracts;
 

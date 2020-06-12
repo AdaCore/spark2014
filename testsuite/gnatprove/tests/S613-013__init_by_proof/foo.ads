@@ -1,8 +1,8 @@
 package Foo with
   SPARK_Mode => On
 is
-   type Init_String is array (Positive range <>) of Character with
-     Relaxed_Initialization;
+   type Init_String is array (Positive range <>) of Character;
+   pragma Annotate (GNATprove, Init_By_Proof, Init_String);
 
    procedure Read (Fd : Integer; Buf : out Init_String; Has_Read : out Integer);
 

@@ -1,0 +1,2 @@
+Windows SKIP timing issues on these platforms
+ALL XFAIL waiting for S305-002

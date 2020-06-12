@@ -43,9 +43,9 @@ with Name_Ordered_Entities;
 with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
+with SPARK_Annotate;              use SPARK_Annotate;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
-with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with String_Utils;                use String_Utils;
@@ -549,8 +549,7 @@ package body Gnat2Why.Counter_Examples is
             --  Contains iterable annotation is provided, no temporary
             --  should be introduced for "for of" quantification.
 
-            pragma Assert
-              (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
+            pragma Assert (Iterable_Info.Kind = SPARK_Annotate.Model);
 
             --  Prepend the name of the Model function to the container name
 
@@ -1212,8 +1211,7 @@ package body Gnat2Why.Counter_Examples is
                --  a Contains iterable annotation is provided, no temporary
                --  should be introduced for "for of" quantification.
 
-               pragma Assert
-                 (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
+               pragma Assert (Iterable_Info.Kind = SPARK_Annotate.Model);
 
                --  Prepend the name of the Model function to the container name
                --  and refine value on model type.

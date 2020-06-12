@@ -129,7 +129,7 @@ package body SPARK_Register is
                            then
                               null;
                            elsif Ekind (E) = E_Operator then
-                              pragma Assert (Is_Intrinsic_Subprogram (E));
+                              null;
                            else
                               Register_Entity (E);
 
@@ -243,10 +243,8 @@ package body SPARK_Register is
          --  or raises an exception. None of these cause flow information (and
          --  that's why it is not registered in Direct_Calls).
          --
-         --  Type_Invariant: just like DIC.
-         --
          --  Predicate: expression is traversed anyway (because it is attached
-         --  to the tree); just like DIC, it doesn't need to be registered,
+         --  to the tree); just like DIC, it don't need to be registered,
          --  because it doesn't appear in Direct_Calls.
 
          if Nkind (N) in N_Entity
@@ -261,47 +259,19 @@ package body SPARK_Register is
             then
                declare
                   DIC_Proc : constant Node_Id := DIC_Procedure (N);
-                  DIC_Expr : Node_Id;
+
+                  Expr : Node_Id;
 
                begin
                   --  Default_Initial_Condition may be given without any
                   --  expression, which means it defaults to True.
                   if Present (DIC_Proc) then
-                     DIC_Expr := Get_Expr_From_Check_Only_Proc (DIC_Proc);
+                     Expr := Get_Expr_From_Check_Only_Proc (DIC_Proc);
 
-                     Process_Tree (DIC_Expr);
+                     Process_Tree (Expr);
                   end if;
                end;
             end if;
-
-            declare
-               Inv_Proc : constant Entity_Id := Invariant_Procedure (N);
-               Inv_Expr : Node_Id;
-            begin
-               if Present (Inv_Proc) then
-                  Inv_Expr := Get_Expr_From_Check_Only_Proc (Inv_Proc);
-
-                  if Present (Inv_Expr) then
-                     Process_Tree (Inv_Expr);
-
-                  --  If the invariant procedure has no expression then
-                  --  it calls the partial invariant procedure, so get the
-                  --  expression from there. (Such partial invariant procedures
-                  --  come from Type_Invariant on a private part, which as
-                  --  of today is not allowed in SPARK, but it is better to
-                  --  traverse it anyway.)
-
-                  else
-                     Inv_Expr :=
-                       Get_Expr_From_Check_Only_Proc
-                         (Partial_Invariant_Procedure (N));
-
-                     pragma Assert (Present (Inv_Expr));
-
-                     Process_Tree (Inv_Expr);
-                  end if;
-               end if;
-            end;
          end if;
 
          --  Register dispatching operations, because they might be called only

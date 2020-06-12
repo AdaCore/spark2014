@@ -2,6 +2,7 @@ example.adb:24:14: medium: postcondition might fail, cannot prove B * A = A'old
 example.adb:24:16: medium: overflow check might fail
 example.adb:27:14: medium: range check might fail
 example.adb:28:14: medium: divide by zero might fail
+example.adb:28:14: medium: range check might fail
 example.adb:29:14: medium: range check might fail
 example.adb:30:14: medium: overflow check might fail
 example.adb:30:14: medium: range check might fail

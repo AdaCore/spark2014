@@ -88,6 +88,7 @@ simulink_functions.adb:208:47: medium: precondition might fail, cannot prove X >
 simulink_functions.adb:219:14: medium: precondition might fail, cannot prove X > 0.0 [possible explanation: subprogram at simulink_functions.ads:62 should mention F in a precondition]
 simulink_functions.adb:234:40: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:64 should mention Left in a precondition]
 simulink_functions.adb:234:51: info: division check proved (CodePeer)
+simulink_functions.adb:234:51: info: overflow check proved (CodePeer)
 simulink_functions.adb:234:51: info: range check proved (CVC4: 1 VC)
 simulink_functions.adb:234:53: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:64 should mention Right in a precondition]
 simulink_functions.adb:236:28: info: overflow check proved (CVC4: 1 VC)
@@ -100,6 +101,7 @@ simulink_functions.adb:239:33: medium: overflow check might fail [possible expla
 simulink_functions.adb:239:42: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:255:41: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:65 should mention Left in a precondition]
 simulink_functions.adb:255:52: info: division check proved (CodePeer)
+simulink_functions.adb:255:52: info: overflow check proved (CodePeer)
 simulink_functions.adb:255:52: info: range check proved (CVC4: 1 VC)
 simulink_functions.adb:255:54: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:65 should mention Right in a precondition]
 simulink_functions.adb:257:28: info: overflow check proved (CVC4: 1 VC)
@@ -112,6 +114,7 @@ simulink_functions.adb:261:28: medium: overflow check might fail [possible expla
 simulink_functions.adb:261:37: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:277:41: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:66 should mention Left in a precondition]
 simulink_functions.adb:277:52: info: division check proved (CodePeer)
+simulink_functions.adb:277:52: info: overflow check proved (CodePeer)
 simulink_functions.adb:277:52: info: range check proved (CVC4: 1 VC)
 simulink_functions.adb:277:54: medium: overflow check might fail [possible explanation: subprogram at simulink_functions.ads:66 should mention Right in a precondition]
 simulink_functions.adb:279:28: info: overflow check proved (CVC4: 1 VC)

@@ -1,5 +1,6 @@
 nonlinear.adb:10:17: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:10:22: info: division check proved (CVC4: 1 VC)
+nonlinear.adb:10:22: info: range check proved (CVC4: 1 VC)
 nonlinear.adb:11:22: info: assertion proved (CVC4: 1 VC)
 nonlinear.adb:19:22: info: division check proved (CVC4: 1 VC)
 nonlinear.adb:20:22: medium: assertion might fail, cannot prove Res <= X [possible explanation: subprogram at nonlinear.ads:8 should mention X in a precondition]

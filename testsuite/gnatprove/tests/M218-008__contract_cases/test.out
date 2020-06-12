@@ -1,3 +1,4 @@
+subprograms.adb:4:18: info: overflow check proved (CVC4: 1 VC)
 subprograms.adb:17:21: info: division check proved (CVC4: 1 VC)
 subprograms.adb:17:21: info: overflow check proved (CVC4: 1 VC)
 subprograms.adb:33:16: info: overflow check proved (CVC4: 1 VC)

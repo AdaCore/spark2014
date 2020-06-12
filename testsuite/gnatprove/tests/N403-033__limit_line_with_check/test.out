@@ -1,2 +1,2 @@
 test_if.ads:5:37: info: overflow check proved (CVC4: 1 VC)
-test_if.adb:16:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove B < Integer'Last / 2 - 1 (e.g. when B = 1073741822)
+test_if.adb:16:33: medium: loop invariant might fail after first iteration, cannot prove B < Integer'Last / 2 - 1 (e.g. when B = 1073741822)

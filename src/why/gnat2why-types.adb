@@ -44,7 +44,6 @@ with Why;                     use Why;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Builders;      use Why.Atree.Builders;
 with Why.Atree.Modules;       use Why.Atree.Modules;
-with Why.Atree.Mutators;      use Why.Atree.Mutators;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Arrays;          use Why.Gen.Arrays;
 with Why.Gen.Binders;         use Why.Gen.Binders;
@@ -60,7 +59,6 @@ with Why.Gen.Scalars;         use Why.Gen.Scalars;
 with Why.Inter;               use Why.Inter;
 with Why.Sinfo;               use Why.Sinfo;
 with Why.Types;               use Why.Types;
-with Why.Gen.Terms; use Why.Gen.Terms;
 
 package body Gnat2Why.Types is
 
@@ -72,8 +70,6 @@ package body Gnat2Why.Types is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      --  Local subprograms
-
       procedure Create_Axioms_For_Scalar_Bounds
         (File : W_Section_Id;
          E    : Entity_Id);
@@ -97,34 +93,6 @@ package body Gnat2Why.Types is
          E    : Entity_Id)
       with Pre => Has_Predicates (E);
       --  Create a function to express type E's predicate
-
-      procedure Create_Is_Moved_Function
-        (File : W_Section_Id;
-         E    : Entity_Id)
-      with Pre => Is_Deep (E)
-        and then (Is_Record_Type (E) or else Is_Array_Type (E));
-      --  Create a function to express that all pointers in E are null
-
-      procedure Create_Move_Function
-        (File : W_Section_Id;
-         E    : Entity_Id)
-      with Pre => Is_Deep (E)
-        and then (Is_Record_Type (E) or else Is_Array_Type (E));
-      --  Create a function to express the relation between a value of type E
-      --  and a previous value of the same object, when moving all pointers
-      --  in the object:
-      --
-      --    predicate __moved_relation (a : t) (b : t) =
-      --      a.pointer_field.__is_moved = True
-      --      /\ a.normal_field = b.normal_field
-      --
-      --  Also create a program function that takes a reference of type E and
-      --  sets all its pointer fields to null:
-      --
-      --    val __move (a : t ref) : unit
-      --      writes { a }
-      --      ensures { let b = old !a in
-      --                  __moved_relation !a b }
 
       procedure Create_Type_Invariant
         (File : W_Section_Id;
@@ -509,123 +477,6 @@ package body Gnat2Why.Types is
          end;
       end Create_Dynamic_Predicate;
 
-      ------------------------------
-      -- Create_Is_Moved_Function --
-      ------------------------------
-
-      procedure Create_Is_Moved_Function
-        (File : W_Section_Id;
-         E    : Entity_Id)
-      is
-         A_Ident  : constant W_Identifier_Id :=
-           New_Identifier (Name => "a", Typ => Type_Of_Node (E));
-         R_Binder : constant Binder_Array :=
-           (1 => (B_Name => A_Ident,
-                  others => <>));
-      begin
-         Emit
-           (File,
-            New_Function_Decl
-              (Domain      => EW_Pred,
-               Name        => To_Local (E_Symb (E, WNE_Is_Moved)),
-               Binders     => R_Binder,
-               Location    => No_Location,
-               Labels      => Symbol_Sets.Empty_Set,
-               Def         =>
-                 +Compute_Is_Moved_Property (Expr     => +A_Ident,
-                                             Ty       => E,
-                                             Use_Pred => False)));
-      end Create_Is_Moved_Function;
-
-      --------------------------
-      -- Create_Move_Function --
-      --------------------------
-
-      procedure Create_Move_Function
-        (File : W_Section_Id;
-         E    : Entity_Id)
-      is
-      begin
-         --  Start with creating the predicate __moved_relation
-
-         declare
-            A_Ident  : constant W_Identifier_Id :=
-              New_Identifier (Name => "a", Typ => Type_Of_Node (E));
-            B_Ident  : constant W_Identifier_Id :=
-              New_Identifier (Name => "b", Typ => Type_Of_Node (E));
-            R_Binder : constant Binder_Array :=
-              (1 => (B_Name => A_Ident,
-                     others => <>),
-               2 => (B_Name => B_Ident,
-                     others => <>));
-         begin
-            Emit
-              (File,
-               New_Function_Decl
-                 (Domain      => EW_Pred,
-                  Name        =>
-                    To_Local (E_Symb (E, WNE_Moved_Relation)),
-                  Binders     => R_Binder,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Def         =>
-                    +Compute_Moved_Relation (Expr1    => +A_Ident,
-                                             Expr2    => +B_Ident,
-                                             Ty       => E,
-                                             Use_Pred => False)));
-         end;
-
-         --  Then create the program function __move
-
-         declare
-            Param     : constant Item_Type := Move_Param_Item (Retysp (E));
-            Binders   : constant Binder_Array :=
-              To_Binder_Array ((1 => Param));
-            Relation  : W_Pred_Id;
-            Eff       : constant W_Effects_Id := New_Effects;
-            Rec_Param : constant W_Expr_Id :=
-              (if Param.Kind = UCArray
-               then Array_Convert_From_Base
-                 (Domain => EW_Term,
-                  Ty     => Retysp (E),
-                  Ar     => New_Deref
-                    (Right => Param.Content.B_Name,
-                     Typ   => Get_Typ (Param.Content.B_Name)),
-                  Bounds => Get_Args_From_Binders
-                    (Binders (Binders'First + 1 .. Binders'Last),
-                     Ref_Allowed => True))
-               else Reconstruct_Item (Param));
-            --  Reconstructed parameter. If the parameter is a split array,
-            --  reconstruct it to be able to query the bounds since Param
-            --  is not tied to a real Ada objects.
-
-            procedure Effects_Append_Binder_To_Writes is
-              new Effects_Append_Binder (Effects_Append_To_Writes);
-
-         begin
-            Effects_Append_Binder_To_Writes (Eff, Param);
-
-            Relation :=
-              New_Call (Name => To_Ident (WNE_Moved_Relation),
-                        Args => (1 => Rec_Param,
-                                 2 => New_Old
-                                   (Rec_Param, Domain => EW_Term)),
-                        Typ  => EW_Bool_Type);
-
-            Emit
-              (File,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => To_Local (E_Symb (E, WNE_Move)),
-                  Binders     => To_Binder_Array ((1 => Param)),
-                  Return_Type => EW_Unit_Type,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Location    => No_Location,
-                  Effects     => Eff,
-                  Post        => Relation));
-         end;
-      end Create_Move_Function;
-
       ---------------------------
       -- Create_Type_Invariant --
       ---------------------------
@@ -806,13 +657,6 @@ package body Gnat2Why.Types is
          Create_Type_Invariant (File, E);
       end if;
 
-      if Is_Deep (E)
-        and then not Has_Access_Type (E)
-      then
-         Create_Is_Moved_Function (File, E);
-         Create_Move_Function (File, E);
-      end if;
-
       --  If E is a scalar type with dynamic bounds, we give axioms for the
       --  values of its bounds.
 
@@ -926,63 +770,10 @@ package body Gnat2Why.Types is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-
-      procedure Generate_Ref_Type_And_Havoc_Fun
-        (File         : W_Section_Id;
-         E            : Entity_Id;
-         Relaxed_Init : Boolean);
-      --  Generate a record type containing only one mutable field of
-      --  type t. This is used to store mutable variables of type t.
-      --  Also generate a havoc function for this type.
-
       procedure Translate_Underlying_Type
         (File : W_Section_Id;
          E    : Entity_Id);
       --  Translate a non-private type entity E
-
-      -------------------------------------
-      -- Generate_Ref_Type_And_Havoc_Fun --
-      -------------------------------------
-
-      procedure Generate_Ref_Type_And_Havoc_Fun
-        (File         : W_Section_Id;
-         E            : Entity_Id;
-         Relaxed_Init : Boolean)
-      is
-      begin
-         --  We do not generate these declarations for array or record types
-         --  which are clones of existing types with the same name and
-         --  statically constrained array type as no new type is declared for
-         --  them.
-         --  Classwide types are a special case as they are clones of their
-         --  specific types but do not have the same short name.
-
-         if (not (Has_Record_Type (E) or else Has_Private_Type (E))
-             or else not Record_Type_Is_Clone (Retysp (E))
-             or else Short_Name (Retysp (E)) /=
-               Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
-           and then not Is_Class_Wide_Type (Retysp (E))
-           and then (not Has_Array_Type (E)
-                     or else not Is_Static_Array_Type (Retysp (E)))
-           and then (not Has_Array_Type (E)
-                     or else not Array_Type_Is_Clone (Retysp (E))
-                     or else Short_Name (Retysp (E)) /=
-                       Short_Name (Array_Type_Cloned_Subtype (Retysp (E))))
-         then
-            Emit_Ref_Type_Definition
-              (File, To_Why_Type
-                 (Retysp (E),
-                  Local        => True,
-                  Relaxed_Init => Relaxed_Init));
-            Emit
-              (File,
-               New_Havoc_Declaration
-                 (Name => To_Why_Type
-                      (Retysp (E),
-                       Local        => True,
-                       Relaxed_Init => Relaxed_Init)));
-         end if;
-      end Generate_Ref_Type_And_Havoc_Fun;
 
       -------------------------------
       -- Translate_Underlying_Type --
@@ -1071,7 +862,35 @@ package body Gnat2Why.Types is
                     +New_Named_Type (Name => To_Why_Type (E, Local => True))));
          end if;
 
-         Generate_Ref_Type_And_Havoc_Fun (File, E, Relaxed_Init => False);
+         --  We generate a record type containing only one mutable field of
+         --  type t. This is used to store mutable variables of type t.
+         --  We also generate a havoc function for this type.
+         --  We do not generate these declarations for array or record types
+         --  which are clones of existing types with the same name and
+         --  statically constrained array type as no new type is declared for
+         --  them.
+         --  Classwide types are a special case as they are clones of their
+         --  specific types but do not have the same short name.
+
+         if (not (Has_Record_Type (E) or else Has_Private_Type (E))
+             or else not Record_Type_Is_Clone (Retysp (E))
+             or else Short_Name (Retysp (E)) /=
+               Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
+           and then not Is_Class_Wide_Type (Retysp (E))
+           and then (not Has_Array_Type (E)
+                     or else not Is_Static_Array_Type (Retysp (E)))
+           and then (not Has_Array_Type (E)
+                     or else not Array_Type_Is_Clone (Retysp (E))
+                     or else Short_Name (Retysp (E)) /=
+                       Short_Name (Array_Type_Cloned_Subtype (Retysp (E))))
+         then
+            Emit_Ref_Type_Definition
+              (File, To_Why_Type (Retysp (E), Local => True));
+            Emit
+              (File,
+               New_Havoc_Declaration
+                 (Name => To_Why_Type (Retysp (E), Local => True)));
+         end if;
 
          --  If E is the full view of a private type, use its partial view as
          --  the filtering entity, as it is the entity used everywhere in AST.
@@ -1137,8 +956,6 @@ package body Gnat2Why.Types is
             & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
          Declare_Init_Wrapper (File, E);
-
-         Generate_Ref_Type_And_Havoc_Fun (File, E, Relaxed_Init => True);
 
          Close_Theory (File, Kind => Definition_Theory);
       end if;

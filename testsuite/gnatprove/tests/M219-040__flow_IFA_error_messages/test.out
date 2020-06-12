@@ -44,6 +44,7 @@ test.adb:129:15: info: flow dependencies proved
 test.adb:135:07: warning: statement has no effect
 test.adb:135:07: warning: unused assignment to "Temp"
 test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
+test.adb:150:24: info: range check proved (CVC4: 1 VC)
 test.adb:150:24: medium: overflow check might fail [possible explanation: subprogram at line 147 should mention Val in a precondition]
 test.adb:150:41: info: range check proved (CVC4: 1 VC)
 test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect

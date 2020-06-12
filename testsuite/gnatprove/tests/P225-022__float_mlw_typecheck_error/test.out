@@ -1,3 +1,3 @@
-foo.adb:7:19: info: assertion proved (Trivial)
+foo.adb:7:19: info: assertion proved
 foo.adb:17:04: warning: analyzing unreferenced procedure "Wibble"
 foo.adb:17:14: warning: subprogram "Wibble" has no effect

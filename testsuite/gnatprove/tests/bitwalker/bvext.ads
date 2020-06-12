@@ -3,7 +3,7 @@ with Interfaces; use Interfaces;
 package Bvext
 with SPARK_Mode, Ghost
 is
-   pragma Annotate (GNATprove, External_Axiomatization);
+   pragma Annotate (GNATProve, External_Axiomatization);
 
    function Nth (X : Unsigned_64; Pos : Natural) return Boolean with Import;
    function Nth (X : Unsigned_8; Pos : Natural) return Boolean with Import;

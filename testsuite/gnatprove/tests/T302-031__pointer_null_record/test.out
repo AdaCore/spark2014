@@ -1,9 +1,4 @@
 alloc.adb:4:25: info: range check proved (CVC4: 1 VC)
 alloc.adb:13:25: info: range check proved (CVC4: 1 VC)
-alloc.adb:23:04: medium: memory leak might occur at end of scope
-alloc.adb:24:04: medium: memory leak might occur at end of scope
 alloc.adb:24:26: info: range check proved (CVC4: 1 VC)
-alloc.adb:25:04: medium: memory leak might occur at end of scope
-alloc.adb:26:04: medium: memory leak might occur at end of scope
 alloc.adb:26:26: info: range check proved (CVC4: 1 VC)
-alloc.adb:27:04: medium: memory leak might occur at end of scope

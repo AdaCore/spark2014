@@ -13,10 +13,10 @@ logic.adb:29:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:30:33: medium: assertion might fail, cannot prove F (e.g. when F = False)
 logic.adb:32:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:33:22: medium: assertion might fail, cannot prove not (if T then T else true) (e.g. when F = False and T = True)
-logic.adb:43:22: info: assertion proved (Trivial)
+logic.adb:43:22: info: assertion proved
 logic.adb:44:22: info: assertion proved (CVC4: 1 VC)
 logic.adb:45:22: info: assertion proved (CVC4: 1 VC)
-logic.adb:46:22: info: assertion proved (Trivial)
+logic.adb:46:22: info: assertion proved
 logic.adb:50:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:51:22: medium: assertion might fail, cannot prove F = T (e.g. when F = False)
 logic.adb:53:30: info: assertion proved (Trivial: 1 VC)

@@ -38,7 +38,6 @@ with Rtsfind;                            use Rtsfind;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Prag;                           use Sem_Prag;
 with SPARK_Definition;                   use SPARK_Definition;
-with SPARK_Definition.Annotate;          use SPARK_Definition.Annotate;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
 with VC_Kinds;                           use VC_Kinds;
@@ -587,16 +586,23 @@ package body SPARK_Util.Subprograms is
    function Get_Expression_Function (E : Entity_Id) return Node_Id is
       Decl_N : constant Node_Id := Parent (Subprogram_Specification (E));
 
+      Original_Decl_N : constant Node_Id := Original_Node (Decl_N);
+
       --  Get the original node either from the declaration for E, or from the
       --  subprogram body for E, which may be different if E is attached to a
       --  subprogram declaration.
 
+      Orig_N : constant Node_Id :=
+        (if Is_Rewrite_Substitution (Decl_N)
+         then Original_Decl_N
+         else Original_Node (Subprogram_Body (E)));
+
    begin
-      return
-        Original_Node
-          (if Is_Rewrite_Substitution (Decl_N)
-           then Decl_N
-           else Subprogram_Body (E));
+      if Nkind (Orig_N) = N_Expression_Function then
+         return Orig_N;
+      else
+         return Empty;
+      end if;
    end Get_Expression_Function;
 
    ----------------------------------------
@@ -690,16 +696,6 @@ package body SPARK_Util.Subprograms is
       Present (Find_Contract (E, Pragma_Depends))
         or else
       Is_Pure (E));
-
-   ----------------------------------------
-   -- Is_Possibly_Nonreturning_Procedure --
-   ----------------------------------------
-
-   function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
-   is
-     (No_Return (E)
-       or else
-      Has_Might_Not_Return_Annotation (E));
 
    ----------------------------------------
    -- Is_Predefined_Potentially_Blocking --

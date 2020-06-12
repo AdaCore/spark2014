@@ -11,7 +11,7 @@ begin
    While not (Erreur<0.00000008) loop
       begin
          -- erreur := 1.0/Long_Float(Index)/Long_Float(Index);
-         -- bug GNATprove sur les conversion Entier <=> Flottants
+         -- bug GNATProve sur les conversion Entier <=> Flottants
          pragma Loop_Invariant (Index_Float >= 1.0);
          Pragma Assert (Index_Float >= 1.0);
          Erreur := 1.0/Index_Float/Index_Float;

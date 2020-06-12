@@ -39,7 +39,7 @@ package Linear_Search with SPARK_Mode is
    is
      (Property)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATProve, Pledge);
    --  Pledge function, used to mark assertions as pledges for the analysis tool
 
    function Pledge
@@ -48,7 +48,7 @@ package Linear_Search with SPARK_Mode is
    is
      (Property)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATProve, Pledge);
    --  Pledge function, used to mark assertions as pledges for the analysis tool
 
    package Int_Seqs is new Ada.Containers.Functional_Vectors

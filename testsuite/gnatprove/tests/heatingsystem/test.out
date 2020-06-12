@@ -1,5 +1,5 @@
-actuator.adb:15:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
-actuator.adb:23:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+actuator.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+actuator.adb:22:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 actuator.ads:5:11: info: data dependencies proved
 actuator.ads:6:11: info: flow dependencies proved
 actuator.ads:10:11: info: data dependencies proved
@@ -36,7 +36,7 @@ advancebutton.ads:57:11: info: flow dependencies proved
 clock.ads:7:19: info: initialization of "Time" proved
 clock.ads:8:10: info: data dependencies proved
 clock.ads:9:10: info: flow dependencies proved
-display.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+display.adb:13:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 display.ads:10:11: info: data dependencies proved
 display.ads:11:11: info: flow dependencies proved
 heatingsystem_dfa.adb:12:08: info: data dependencies proved
@@ -94,8 +94,8 @@ heatingsystem_dfa.adb:224:14: info: flow dependencies proved
 heatingsystem_dfa.adb:243:14: info: data dependencies proved
 heatingsystem_dfa.adb:245:45: info: initialization of "Indicator.Outputs" proved
 heatingsystem_dfa.adb:248:14: info: flow dependencies proved
-indicator.adb:15:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
-indicator.adb:23:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+indicator.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+indicator.adb:22:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 indicator.ads:5:11: info: data dependencies proved
 indicator.ads:6:11: info: flow dependencies proved
 indicator.ads:10:11: info: data dependencies proved

@@ -1,20 +1,20 @@
 with Ada.Text_IO;
 procedure Var_Init_By_Proof with SPARK_Mode is
-   type My_Nat is new Integer range 10 .. 150 with
-     Relaxed_Initialization;
+   type My_Nat is new Integer range 10 .. 150;
+   pragma Annotate (GNATprove, Init_By_Proof, My_Nat);
 
    procedure P3 (X : out My_Nat); -- @INIT_BY_PROOF:FAIL
 
    procedure P1 (X : My_Nat) is
    begin
-      pragma Assert (X'Initialized);
+      pragma Assert (X'Valid_Scalars);
    end P1;
 
    procedure P2 (X : in out My_Nat) is
       Z : My_Nat;
    begin
-      pragma Assert (not Z'Initialized); -- @ASSERT:FAIL
-      pragma Assert (X'Initialized);
+      pragma Assert (not Z'Valid_Scalars); -- @ASSERT:FAIL
+      pragma Assert (X'Valid_Scalars);
       P3 (X);
       X := Z; -- @INIT_BY_PROOF:FAIL
    end P2;
@@ -27,7 +27,7 @@ procedure Var_Init_By_Proof with SPARK_Mode is
    G : My_Nat;
 
    procedure P4 (X : out My_Nat) with
-     Pre => X'Initialized
+     Pre => X'Valid_Scalars
    is
    begin
       X := G; -- @INIT_BY_PROOF:FAIL
@@ -44,7 +44,7 @@ begin
 
    P1 (X);
    P2 (Y);
-   pragma Assert (Y'Initialized);
+   pragma Assert (Y'Valid_Scalars);
    P3 (Z);
    P2 (W); -- @INIT_BY_PROOF:FAIL
 end Var_Init_By_Proof;

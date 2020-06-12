@@ -267,23 +267,6 @@ package SPARK_Atree.Entities is
      and then Present (Aspects.Find_Aspect
                        (Typ, A => Aspects.Aspect_Iterable));
 
-   function Get_Iterable_Type_Primitive
-     (Typ : Entity_Id;
-      Nam : Name_Id)
-      return Entity_Id
-   with Pre  => Is_Type (Typ)
-                  and then
-                Nam in Name_Element
-                     | Name_First
-                     | Name_Has_Element
-                     | Name_Last
-                     | Name_Next
-                     | Name_Previous,
-        Post => Ekind (Get_Iterable_Type_Primitive'Result) = E_Function
-                  and then
-                Get_Iterable_Type_Primitive'Result =
-                Sem_Aux.Ultimate_Alias (Get_Iterable_Type_Primitive'Result);
-
    function Get_User_Defined_Eq (Typ : Entity_Id) return Entity_Id with
      Pre => Is_Type (Typ);
    --  Same as Einfo.Get_User_Defined_Eq except that it goes through renamings
@@ -613,11 +596,6 @@ package SPARK_Atree.Entities is
    --  unchecked conversion with a volatile profile.
    --  This is different from Sem_Util.Is_Volatile_Function as it does not
    --  return True of protected functions.
-
-   function Is_Expression_Function_Or_Completion
-     (Subp : Entity_Id)
-      return Boolean
-   with Pre => Einfo.Is_Subprogram (Subp);
 
    function Is_Predicate_Function (Subp : Entity_Id) return Boolean with
      Pre => Einfo.Is_Subprogram (Subp);

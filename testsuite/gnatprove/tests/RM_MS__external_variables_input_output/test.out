@@ -4,11 +4,9 @@ copy_14.adb:10:08: info: flow dependencies proved
 copy_14.adb:12:04: info: initialization of "The_Stack" proved
 copy_14.adb:13:04: info: initialization of "Value" proved
 copy_14.adb:14:04: info: initialization of "Done" proved
-input_port_14.adb:7:04: info: object is suitable for aliasing via address clause (Trivial)
 input_port_14.ads:5:29: info: initialization of "Input_Value" proved
 input_port_14.ads:6:11: info: data dependencies proved
 input_port_14.ads:7:11: info: flow dependencies proved
-output_port_14.adb:7:04: info: object is suitable for aliasing via address clause (Trivial)
 output_port_14.adb:13:41: info: initialization of "Output_S" constituent of "Output_State" proved
 output_port_14.ads:6:11: info: data dependencies proved
 output_port_14.ads:7:11: info: flow dependencies proved

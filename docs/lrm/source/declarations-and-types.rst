@@ -98,8 +98,11 @@ Static predicates and dynamic predicates are both in
 
 .. centered:: **Legality Rules**
 
+
 1. [A Dynamic_Predicate expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
+
+
 
 2. If a Dynamic_Predicate applies to the subtype of a composite object,
    then a verification condition is generated to ensure that the object
@@ -125,11 +128,15 @@ Static predicates and dynamic predicates are both in
   :ref:`update-expressions`).
   These are assignment operations but not assignment statements.]
 
+
+
 3. A Static_Predicate or Dynamic_Predicate shall not apply to an effectively
-   volatile type with the properties Async_Writers or Effective_Reads set to
-   True.
+   volatile type.
+
+
 
 .. centered:: **Verification Rules**
+
 
 4. A Dynamic_Predicate expression shall always terminate.
 

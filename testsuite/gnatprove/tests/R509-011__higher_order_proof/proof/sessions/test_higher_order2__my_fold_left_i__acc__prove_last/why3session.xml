@@ -12,40 +12,56 @@
 <theory name="Test_higher_order2__my_fold_left_i__acc__prove_last__subprogram_def">
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="def&#39;vc.1" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="56"/></proof>
+  <goal name="def&#39;vc.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="def&#39;vc.2" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="49"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
+  <goal name="def&#39;vc.3" expl="precondition" proved="true">
+  <proof prover="2"><result status="valid" steps="56"/></proof>
   </goal>
   <goal name="def&#39;vc.4" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <proof prover="2"><result status="valid" steps="49"/></proof>
   </goal>
-  <goal name="def&#39;vc.5" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <goal name="def&#39;vc.5" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="def&#39;vc.6" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <goal name="def&#39;vc.6" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="def&#39;vc.7" expl="precondition" proved="true">
+  <proof prover="2"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="def&#39;vc.8" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.8" expl="precondition" proved="true">
+  <goal name="def&#39;vc.9" expl="assertion" proved="true">
+  <proof prover="2"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="def&#39;vc.10" expl="assertion" proved="true">
+  <proof prover="2"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="def&#39;vc.11" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.12" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="75"/></proof>
   </goal>
-  <goal name="def&#39;vc.9" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.13" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.10" expl="postcondition">
+  <goal name="def&#39;vc.14" expl="postcondition">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="27086"/></proof>
   <proof prover="2"><result status="unknown" steps="116"/></proof>

@@ -2,10 +2,8 @@ test_constrained.adb:10:19: info: postcondition proved (CVC4: 1 VC)
 test_constrained.adb:15:22: info: assertion proved (CVC4: 1 VC)
 test_constrained.adb:16:22: info: assertion proved (CVC4: 1 VC)
 test_constrained.adb:33:19: info: assertion proved (Trivial: 1 VC)
-test_constrained.adb:34:19: info: assertion proved (CVC4: 1 VC)
-test_constrained.adb:34:27: medium: memory leak might occur at end of scope
-test_constrained.adb:34:50: info: function contract not available for proof ("F_Acc" might not return)
-test_constrained.adb:34:68: info: pointer dereference check proved (CVC4: 1 VC)
+test_constrained.adb:34:19: info: assertion proved (Trivial: 1 VC)
+test_constrained.adb:34:28: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:35:19: info: assertion proved (Trivial: 1 VC)
 test_constrained.adb:39:24: warning: "X" is not modified, could be IN
 test_constrained.adb:50:22: info: assertion proved (CVC4: 1 VC)

@@ -109,7 +109,8 @@ package Gnat2Why.Error_Messages is
      (Node       : Node_Id;
       Kind       : VC_Kind;
       Proved     : Boolean;
-      E          : Entity_Id);
+      E          : Entity_Id;
+      How_Proved : Prover_Category);
    --  Register a new VC and save it as proved (or not proved depending on
    --  Proved argument). This function is similar to calling Register_VC, then
    --  Emit_Proof_Result.

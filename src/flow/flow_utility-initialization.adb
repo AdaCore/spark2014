@@ -68,14 +68,8 @@ package body Flow_Utility.Initialization is
          if Comes_From_Source (ORC)
            or else Chars (ORC) = Name_uParent
          then
-            --  If a component is not visible in SPARK, we assume it to be not
-            --  initialized.
-
-            Init :=
-              (if Component_Is_Visible_In_SPARK (ORC)
-               then Default_Initialization (Base_Type (Etype (ORC)),
-                                            Ignore_DIC)
-               else No_Default_Initialization);
+            Init := Default_Initialization (Base_Type (Etype (ORC)),
+                                            Ignore_DIC);
 
             --  A component with mixed initialization renders the whole
             --  record/protected type mixed.

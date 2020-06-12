@@ -41,6 +41,11 @@ with Why.Types;                  use Why.Types;
 
 package Gnat2Why.Expr is
 
+   function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id
+   with Pre => Nkind (N) = N_Object_Declaration;
+   --  @param N the object declaration
+   --  @return an assignment of the declared variable to its initial value
+
    procedure Assume_Declaration_Of_Entity
      (E             : Entity_Id;
       Params        : Transformation_Params;
@@ -102,13 +107,6 @@ package Gnat2Why.Expr is
    --  ??? This is especially needed for record aggregates containing floating
    --      point numbers and should not be needed anymore once floating point
    --      numbers are properly handled by solvers.
-
-   function Check_No_Memory_Leaks_At_End_Of_Scope
-     (Decls : List_Id) return W_Prog_Id;
-   --  Go through the list of declarations Decls and generate checks that no
-   --  variable leads to a memory leak at the end of its scope. This function
-   --  follows the same traversal structure as Check_No_Owning_Decl in
-   --  SPARK_Definition.
 
    function Check_Scalar_Range
      (Params : Transformation_Params;
@@ -259,30 +257,6 @@ package Gnat2Why.Expr is
    --    they are also in the local scope.
    --  @param Expand_Incompl true if dynamic predicates for values of
    --    incomplete types should be expanded.
-
-   function Compute_Is_Moved_Property
-     (Expr     : W_Term_Id;
-      Ty       : Entity_Id;
-      Use_Pred : Boolean := True) return W_Pred_Id
-   with Pre => Is_Deep (Ty);
-   --  @param Expr term on which to check all pointers are moved
-   --  @param Ty corresponding Ada type
-   --  @param Use_Pred True iff the predicate __is_moved should be called
-   --  @result predicate expressing that all pointers in [Expr] are moved
-
-   function Compute_Moved_Relation
-     (Expr1    : W_Term_Id;
-      Expr2    : W_Term_Id;
-      Ty       : Entity_Id;
-      Use_Pred : Boolean := True) return W_Pred_Id
-   with Pre => Is_Deep (Ty);
-   --  @param Expr1 term corresponding to the new value of an object
-   --  @param Expr2 term corresponding to the old value of the same object
-   --  @param Ty corresponding Ada type
-   --  @param Use_Pred True iff the predicate __moved_relation should
-   --         be called
-   --  @result predicate expressing that all pointers in [Expr1] are moved,
-   --          while all other subcomponents retain their value from [Expr2]
 
    function Compute_Top_Level_Type_Invariant
      (Expr     : W_Term_Id;
@@ -681,12 +655,5 @@ private
 
    Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
    --  Map storing predicates for invariants of access to incomplete types
-
-   Target_Name : W_Identifier_Id := Why_Empty;
-   Target_Used : Boolean := False;
-   --  Name to use for occurrences of target names @ in assignments. It should
-   --  be equal to Why_Empty when we are not translating an assignment.
-   --  Target_Used is set to True if the Target_Name is used somewhere and
-   --  should be bound.
 
 end Gnat2Why.Expr;

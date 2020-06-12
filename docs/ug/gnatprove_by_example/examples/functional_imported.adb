@@ -5,11 +5,9 @@ package body Functional_Imported with
   Refined_State => (Max_And_Snd => (Max, Snd))
 is
    Max : Natural := 0;  --  max value seen
-   pragma Annotate(Gnatprove, Intentional, "constraints on bit representation", "");
    for Max'Address use System.Storage_Elements.To_Address (16#8000_0000#);
 
    Snd : Natural := 0;  --  second max value seen
-   pragma Annotate(Gnatprove, Intentional, "constraints on bit representation", "");
    for Snd'Address use System.Storage_Elements.To_Address (16#8000_0004#);
 
    function Invariant return Boolean is

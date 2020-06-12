@@ -1,250 +1,249 @@
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:45
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:43
 a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:32
 a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at simple_allocator.ads:26
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:45
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:43
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:32
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at simple_allocator.ads:26
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at list_allocator.ads:41
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at list_allocator.ads:39
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:41
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:41
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:41
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
 a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:41
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
 a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:41
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
 a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:41
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
 list_allocator.adb:18:39: info: index check proved (CVC4: 2 VC)
 list_allocator.adb:20:39: info: index check proved (CVC4: 2 VC)
-list_allocator.adb:33:26: info: overflow check proved (CVC4: 1 VC)
-list_allocator.adb:35:42: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:40:14: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:42:20: info: index check proved (CVC4: 2 VC)
-list_allocator.adb:42:20: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:43:54: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:43:68: info: overflow check proved (CVC4: 1 VC)
-list_allocator.adb:46:17: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:46:35: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:48:12: info: precondition proved (Trivial: 1 VC)
-list_allocator.adb:56:22: info: assertion proved (CVC4: 1 VC)
-list_allocator.adb:58:29: info: precondition proved (CVC4: 4 VC)
-list_allocator.adb:59:33: info: loop invariant initialization proved (CVC4: 1 VC)
-list_allocator.adb:59:33: info: loop invariant preservation proved (CVC4: 1 VC)
-list_allocator.adb:60:33: info: loop invariant initialization proved (CVC4: 1 VC)
-list_allocator.adb:60:33: info: loop invariant preservation proved (CVC4: 1 VC)
-list_allocator.adb:61:33: info: loop invariant initialization proved (CVC4: 1 VC)
-list_allocator.adb:61:33: info: loop invariant preservation proved (CVC4: 1 VC)
-list_allocator.adb:62:33: info: loop invariant initialization proved (CVC4: 1 VC)
-list_allocator.adb:62:33: info: loop invariant preservation proved (CVC4: 1 VC)
-list_allocator.adb:62:33: info: precondition proved (CVC4: 4 VC)
-list_allocator.adb:64:13: info: loop invariant initialization proved (CVC4: 1 VC)
-list_allocator.adb:64:13: info: loop invariant preservation proved (CVC4: 1 VC)
-list_allocator.adb:64:37: info: precondition proved (CVC4: 4 VC)
-list_allocator.adb:66:13: info: loop invariant initialization proved (CVC4: 1 VC)
-list_allocator.adb:66:13: info: loop invariant preservation proved (altergo: 1 VC)
-list_allocator.adb:66:64: info: range check proved (CVC4: 2 VC)
-list_allocator.adb:68:22: info: assertion proved (CVC4: 1 VC)
-list_allocator.adb:72:07: info: initialization of "Next_Avail" proved
-list_allocator.adb:73:07: warning: initialization of "MA" has no effect
-list_allocator.adb:77:30: info: index check proved (CVC4: 2 VC)
-list_allocator.adb:78:16: info: index check proved (CVC4: 2 VC)
-list_allocator.adb:81:29: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:82:29: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:85:13: info: assertion proved (CVC4: 1 VC)
-list_allocator.adb:87:20: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:87:48: info: precondition proved (CVC4: 2 VC)
-list_allocator.adb:95:44: info: index check proved (CVC4: 2 VC)
-list_allocator.adb:96:16: info: index check proved (CVC4: 2 VC)
-list_allocator.adb:99:29: info: precondition proved (CVC4: 1 VC)
-list_allocator.adb:100:29: info: precondition proved (CVC4: 3 VC)
-list_allocator.adb:106:47: info: range check proved (CVC4: 2 VC)
-list_allocator.adb:108:10: info: loop invariant initialization proved (CVC4: 1 VC)
-list_allocator.adb:108:10: info: loop invariant preservation proved (CVC4: 1 VC)
-list_allocator.adb:109:18: info: index check proved (CVC4: 4 VC)
-list_allocator.adb:109:72: info: overflow check proved (CVC4: 2 VC)
-list_allocator.adb:110:30: info: loop invariant initialization proved (CVC4: 1 VC)
-list_allocator.adb:110:30: info: loop invariant preservation proved (CVC4: 1 VC)
-list_allocator.adb:111:30: info: loop invariant initialization proved (CVC4: 1 VC)
-list_allocator.adb:111:30: info: loop invariant preservation proved (CVC4: 1 VC)
+list_allocator.adb:29:35: info: overflow check proved (CVC4: 1 VC)
+list_allocator.adb:31:51: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:36:13: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:38:19: info: index check proved (CVC4: 2 VC)
+list_allocator.adb:38:19: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:39:63: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:39:87: info: overflow check proved (CVC4: 1 VC)
+list_allocator.adb:42:16: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:42:44: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:44:11: info: precondition proved (Trivial: 1 VC)
+list_allocator.adb:52:22: info: assertion proved (CVC4: 1 VC)
+list_allocator.adb:54:29: info: precondition proved (CVC4: 4 VC)
+list_allocator.adb:55:33: info: loop invariant initialization proved (CVC4: 1 VC)
+list_allocator.adb:55:33: info: loop invariant preservation proved (CVC4: 1 VC)
+list_allocator.adb:56:33: info: loop invariant initialization proved (CVC4: 1 VC)
+list_allocator.adb:56:33: info: loop invariant preservation proved (CVC4: 1 VC)
+list_allocator.adb:57:33: info: loop invariant initialization proved (CVC4: 1 VC)
+list_allocator.adb:57:33: info: loop invariant preservation proved (CVC4: 1 VC)
+list_allocator.adb:58:33: info: loop invariant initialization proved (CVC4: 1 VC)
+list_allocator.adb:58:33: info: loop invariant preservation proved (CVC4: 1 VC)
+list_allocator.adb:58:33: info: precondition proved (CVC4: 4 VC)
+list_allocator.adb:60:13: info: loop invariant initialization proved (CVC4: 1 VC)
+list_allocator.adb:60:13: info: loop invariant preservation proved (CVC4: 1 VC)
+list_allocator.adb:60:37: info: precondition proved (CVC4: 4 VC)
+list_allocator.adb:62:13: info: loop invariant initialization proved (CVC4: 1 VC)
+list_allocator.adb:62:13: info: loop invariant preservation proved (altergo: 1 VC)
+list_allocator.adb:62:64: info: range check proved (CVC4: 2 VC)
+list_allocator.adb:64:22: info: assertion proved (CVC4: 1 VC)
+list_allocator.adb:68:07: info: initialization of "Next_Avail" proved
+list_allocator.adb:73:30: info: index check proved (CVC4: 2 VC)
+list_allocator.adb:74:16: info: index check proved (CVC4: 2 VC)
+list_allocator.adb:77:29: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:78:29: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:81:13: info: assertion proved (CVC4: 1 VC)
+list_allocator.adb:83:20: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:83:48: info: precondition proved (CVC4: 2 VC)
+list_allocator.adb:91:44: info: index check proved (CVC4: 2 VC)
+list_allocator.adb:92:16: info: index check proved (CVC4: 2 VC)
+list_allocator.adb:95:29: info: precondition proved (CVC4: 1 VC)
+list_allocator.adb:96:29: info: precondition proved (CVC4: 3 VC)
+list_allocator.adb:102:47: info: range check proved (CVC4: 2 VC)
+list_allocator.adb:104:10: info: loop invariant initialization proved (CVC4: 1 VC)
+list_allocator.adb:104:10: info: loop invariant preservation proved (CVC4: 1 VC)
+list_allocator.adb:105:18: info: index check proved (CVC4: 4 VC)
+list_allocator.adb:105:72: info: overflow check proved (CVC4: 2 VC)
+list_allocator.adb:106:30: info: loop invariant initialization proved (CVC4: 1 VC)
+list_allocator.adb:106:30: info: loop invariant preservation proved (CVC4: 1 VC)
+list_allocator.adb:107:30: info: loop invariant initialization proved (CVC4: 1 VC)
+list_allocator.adb:107:30: info: loop invariant preservation proved (CVC4: 1 VC)
 list_allocator.ads:10:03: info: flow dependencies proved
 list_allocator.ads:11:03: info: initial condition proved (CVC4: 2 VC)
-list_allocator.ads:28:06: info: initial condition proved (CVC4: 1 VC)
-list_allocator.ads:35:21: info: precondition proved (CVC4: 2 VC)
-list_allocator.ads:39:46: info: precondition proved (CVC4: 2 VC)
-list_allocator.ads:55:53: info: precondition proved (CVC4: 2 VC)
-list_allocator.ads:63:48: info: overflow check proved (CVC4: 1 VC)
-list_allocator.ads:64:19: info: precondition proved (CVC4: 2 VC)
-list_allocator.ads:65:19: info: precondition proved (CVC4: 4 VC; Trivial: 2 VC)
-list_allocator.ads:82:07: info: initialization of "Model" proved
-list_allocator.ads:88:21: info: initialization of "Res" proved
-list_allocator.ads:90:14: info: postcondition proved (CVC4: 1 VC)
-list_allocator.ads:96:38: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
-list_allocator.ads:103:16: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
-list_allocator.ads:110:14: info: postcondition proved (CVC4: 1 VC)
-list_allocator.ads:115:41: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
-list_allocator.ads:122:16: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+list_allocator.ads:28:06: info: initial condition proved (CVC4: 6 VC)
+list_allocator.ads:33:09: info: precondition proved (CVC4: 2 VC)
+list_allocator.ads:35:41: info: precondition proved (CVC4: 2 VC)
+list_allocator.ads:53:53: info: precondition proved (CVC4: 2 VC)
+list_allocator.ads:61:48: info: overflow check proved (CVC4: 1 VC)
+list_allocator.ads:62:19: info: precondition proved (CVC4: 2 VC)
+list_allocator.ads:63:19: info: precondition proved (CVC4: 4 VC; Trivial: 2 VC)
+list_allocator.ads:80:07: info: initialization of "Model" proved
+list_allocator.ads:86:21: info: initialization of "Res" proved
+list_allocator.ads:88:14: info: postcondition proved (CVC4: 1 VC)
+list_allocator.ads:94:38: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
+list_allocator.ads:101:16: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
+list_allocator.ads:108:14: info: postcondition proved (CVC4: 1 VC)
+list_allocator.ads:113:41: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
+list_allocator.ads:120:16: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 list_mod_allocator.adb:18:39: info: index check proved (CVC4: 2 VC)
 list_mod_allocator.adb:20:39: info: index check proved (CVC4: 2 VC)
 list_mod_allocator.adb:28:22: info: index check proved (CVC4: 2 VC)
 list_mod_allocator.adb:31:42: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:45:49: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:49:21: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:52:30: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:52:30: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:52:53: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:52:67: info: overflow check proved (CVC4: 1 VC)
-list_mod_allocator.adb:56:26: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:57:34: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:57:57: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:57:57: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:61:29: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:61:46: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:63:38: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:63:38: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:64:51: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:64:51: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:66:16: info: precondition proved (Trivial: 1 VC)
-list_mod_allocator.adb:77:10: info: initialization of "Avail" proved
-list_mod_allocator.adb:78:10: info: initialization of "Alloc" proved
-list_mod_allocator.adb:79:10: info: initialization of "Unseen" proved
-list_mod_allocator.adb:87:16: info: loop invariant initialization proved (CVC4: 2 VC)
-list_mod_allocator.adb:87:16: info: loop invariant preservation proved (CVC4: 2 VC)
-list_mod_allocator.adb:87:16: info: precondition proved (Trivial: 2 VC)
-list_mod_allocator.adb:89:16: info: loop invariant initialization proved (CVC4: 2 VC)
-list_mod_allocator.adb:89:16: info: loop invariant preservation proved (CVC4: 2 VC)
-list_mod_allocator.adb:89:16: info: precondition proved (Trivial: 2 VC)
-list_mod_allocator.adb:91:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-list_mod_allocator.adb:91:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
-list_mod_allocator.adb:94:16: info: loop invariant initialization proved (CVC4: 2 VC)
-list_mod_allocator.adb:94:16: info: loop invariant preservation proved (CVC4: 2 VC)
-list_mod_allocator.adb:95:28: info: index check proved (CVC4: 4 VC)
-list_mod_allocator.adb:95:70: info: range check proved (CVC4: 2 VC)
-list_mod_allocator.adb:96:42: info: range check proved (CVC4: 2 VC)
-list_mod_allocator.adb:97:36: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:97:36: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:98:36: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:98:36: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:100:25: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:102:26: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:110:26: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:111:25: info: precondition proved (CVC4: 4 VC)
-list_mod_allocator.adb:112:27: info: index check proved (CVC4: 4 VC)
-list_mod_allocator.adb:114:16: info: loop variant proved (CVC4: 1 VC)
-list_mod_allocator.adb:115:39: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:115:39: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:116:39: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:116:39: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:118:19: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-list_mod_allocator.adb:118:19: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
-list_mod_allocator.adb:122:19: info: loop invariant initialization proved (CVC4: 2 VC)
-list_mod_allocator.adb:122:19: info: loop invariant preservation proved (CVC4: 2 VC)
-list_mod_allocator.adb:122:47: info: precondition proved (CVC4: 4 VC)
-list_mod_allocator.adb:124:19: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:124:19: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:125:21: info: precondition proved (CVC4: 4 VC)
-list_mod_allocator.adb:127:19: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:127:19: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:127:29: info: index check proved (CVC4: 4 VC)
-list_mod_allocator.adb:127:29: info: precondition proved (CVC4: 4 VC)
-list_mod_allocator.adb:129:19: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:129:19: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:130:33: info: index check proved (CVC4: 4 VC)
-list_mod_allocator.adb:130:33: info: precondition proved (CVC4: 4 VC)
-list_mod_allocator.adb:130:56: info: precondition proved (CVC4: 4 VC)
-list_mod_allocator.adb:130:70: info: overflow check proved (CVC4: 2 VC)
-list_mod_allocator.adb:132:19: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:132:19: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:133:21: info: precondition proved (CVC4: 4 VC)
-list_mod_allocator.adb:133:44: info: index check proved (CVC4: 4 VC)
-list_mod_allocator.adb:133:44: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:41:52: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:45:18: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:48:27: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:48:27: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:48:56: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:48:76: info: overflow check proved (CVC4: 1 VC)
+list_mod_allocator.adb:52:23: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:53:31: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:53:60: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:53:60: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:57:26: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:57:49: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:59:35: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:59:35: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:60:54: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:60:54: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:62:13: info: precondition proved (Trivial: 1 VC)
+list_mod_allocator.adb:73:10: info: initialization of "Avail" proved
+list_mod_allocator.adb:74:10: info: initialization of "Alloc" proved
+list_mod_allocator.adb:75:10: info: initialization of "Unseen" proved
+list_mod_allocator.adb:83:16: info: loop invariant initialization proved (CVC4: 2 VC)
+list_mod_allocator.adb:83:16: info: loop invariant preservation proved (CVC4: 2 VC)
+list_mod_allocator.adb:83:16: info: precondition proved (Trivial: 2 VC)
+list_mod_allocator.adb:85:16: info: loop invariant initialization proved (CVC4: 2 VC)
+list_mod_allocator.adb:85:16: info: loop invariant preservation proved (CVC4: 2 VC)
+list_mod_allocator.adb:85:16: info: precondition proved (Trivial: 2 VC)
+list_mod_allocator.adb:87:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+list_mod_allocator.adb:87:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+list_mod_allocator.adb:90:16: info: loop invariant initialization proved (CVC4: 2 VC)
+list_mod_allocator.adb:90:16: info: loop invariant preservation proved (CVC4: 2 VC)
+list_mod_allocator.adb:91:28: info: index check proved (CVC4: 4 VC)
+list_mod_allocator.adb:91:70: info: range check proved (CVC4: 2 VC)
+list_mod_allocator.adb:92:42: info: range check proved (CVC4: 2 VC)
+list_mod_allocator.adb:93:36: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:93:36: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:94:36: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:94:36: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:96:25: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:98:26: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:106:26: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:107:25: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:108:27: info: index check proved (CVC4: 4 VC)
+list_mod_allocator.adb:110:16: info: loop variant proved (CVC4: 1 VC)
+list_mod_allocator.adb:111:39: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:111:39: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:112:39: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:112:39: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:114:19: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+list_mod_allocator.adb:114:19: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+list_mod_allocator.adb:118:19: info: loop invariant initialization proved (CVC4: 2 VC)
+list_mod_allocator.adb:118:19: info: loop invariant preservation proved (CVC4: 2 VC)
+list_mod_allocator.adb:118:47: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:120:19: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:120:19: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:121:21: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:123:19: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:123:19: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:123:29: info: index check proved (CVC4: 4 VC)
+list_mod_allocator.adb:123:29: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:125:19: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:125:19: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:126:33: info: index check proved (CVC4: 4 VC)
+list_mod_allocator.adb:126:33: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:126:56: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:126:70: info: overflow check proved (CVC4: 2 VC)
+list_mod_allocator.adb:128:19: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:128:19: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:129:21: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:129:44: info: index check proved (CVC4: 4 VC)
+list_mod_allocator.adb:129:44: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:131:19: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+list_mod_allocator.adb:131:19: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC)
+list_mod_allocator.adb:133:30: info: precondition proved (CVC4: 4 VC)
+list_mod_allocator.adb:133:47: info: precondition proved (CVC4: 4 VC)
 list_mod_allocator.adb:135:19: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-list_mod_allocator.adb:135:19: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC)
-list_mod_allocator.adb:137:30: info: precondition proved (CVC4: 4 VC)
-list_mod_allocator.adb:137:47: info: precondition proved (CVC4: 4 VC)
-list_mod_allocator.adb:139:19: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-list_mod_allocator.adb:139:19: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
-list_mod_allocator.adb:146:25: info: assertion proved (CVC4: 3 VC)
-list_mod_allocator.adb:157:19: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:157:19: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:157:24: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:157:58: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:160:62: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:167:14: info: add a contract to analyze it separately from calling contexts
-list_mod_allocator.adb:167:14: info: local subprogram "Prove_Is_Preprend" only analyzed in the context of calls
-list_mod_allocator.adb:175:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:175:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:175:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:175:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:175:40: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:175:40: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:177:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:177:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:177:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:177:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:178:15: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:178:15: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:178:29: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:178:29: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:178:40: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:178:40: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:180:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:180:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:180:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:180:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:180:33: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:180:33: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:181:15: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:181:15: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:181:33: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:181:33: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:182:25: info: assertion proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:182:25: info: assertion proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:182:45: info: overflow check proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:182:45: info: overflow check proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:183:27: info: precondition proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:183:27: info: precondition proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:183:48: info: index check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:183:48: info: index check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:183:48: info: precondition proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:201
-list_mod_allocator.adb:183:48: info: precondition proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:214
-list_mod_allocator.adb:188:07: info: initialization of "Next_Avail" proved
-list_mod_allocator.adb:189:33: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:193:30: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:194:16: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:198:13: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
-list_mod_allocator.adb:200:35: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:201:29: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:208:33: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:210:44: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:211:16: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:214:33: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:218:14: info: add a contract to analyze it separately from calling contexts
-list_mod_allocator.adb:218:14: info: local subprogram "Prove_Init" only analyzed in the context of calls
-list_mod_allocator.adb:226:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:240
-list_mod_allocator.adb:226:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:240
-list_mod_allocator.adb:226:36: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:240
-list_mod_allocator.adb:226:65: info: range check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:240
-list_mod_allocator.adb:232:47: info: range check proved (CVC4: 2 VC)
-list_mod_allocator.adb:234:10: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:234:10: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:235:18: info: index check proved (CVC4: 4 VC)
-list_mod_allocator.adb:235:72: info: overflow check proved (CVC4: 2 VC)
-list_mod_allocator.adb:236:30: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:236:30: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:237:30: info: loop invariant initialization proved (CVC4: 1 VC)
-list_mod_allocator.adb:237:30: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:240:16: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:242:07: info: assertion proved (CVC4: 1 VC)
-list_mod_allocator.adb:242:13: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:242:13: info: precondition proved (CVC4: 2 VC)
-list_mod_allocator.adb:242:18: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:242:52: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:244:07: info: assertion proved (altergo: 1 VC)
-list_mod_allocator.adb:244:49: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:135:19: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+list_mod_allocator.adb:142:25: info: assertion proved (CVC4: 3 VC)
+list_mod_allocator.adb:153:19: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:153:19: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:153:24: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:153:58: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:156:62: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:163:14: info: add a contract to analyze it separately from calling contexts
+list_mod_allocator.adb:163:14: info: local subprogram "Prove_Is_Preprend" only analyzed in the context of calls
+list_mod_allocator.adb:171:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:171:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:171:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:171:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:171:40: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:171:40: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:173:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:173:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:173:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:173:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:174:15: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:174:15: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:174:29: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:174:29: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:174:40: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:174:40: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:176:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:176:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:176:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:176:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:176:33: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:176:33: info: overflow check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:177:15: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:177:15: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:177:33: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:177:33: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:178:25: info: assertion proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:178:25: info: assertion proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:178:45: info: overflow check proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:178:45: info: overflow check proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:179:27: info: precondition proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:179:27: info: precondition proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:179:48: info: index check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:179:48: info: index check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:179:48: info: precondition proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:197
+list_mod_allocator.adb:179:48: info: precondition proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:210
+list_mod_allocator.adb:184:07: info: initialization of "Next_Avail" proved
+list_mod_allocator.adb:185:33: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:189:30: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:190:16: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:194:13: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+list_mod_allocator.adb:196:35: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:197:29: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:204:33: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:206:44: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:207:16: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:210:33: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:214:14: info: add a contract to analyze it separately from calling contexts
+list_mod_allocator.adb:214:14: info: local subprogram "Prove_Init" only analyzed in the context of calls
+list_mod_allocator.adb:222:13: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:236
+list_mod_allocator.adb:222:13: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at list_mod_allocator.adb:236
+list_mod_allocator.adb:222:36: info: precondition proved (CVC4: 4 VC), in call inlined at list_mod_allocator.adb:236
+list_mod_allocator.adb:222:65: info: range check proved (CVC4: 2 VC), in call inlined at list_mod_allocator.adb:236
+list_mod_allocator.adb:228:47: info: range check proved (CVC4: 2 VC)
+list_mod_allocator.adb:230:10: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:230:10: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:231:18: info: index check proved (CVC4: 4 VC)
+list_mod_allocator.adb:231:72: info: overflow check proved (CVC4: 2 VC)
+list_mod_allocator.adb:232:30: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:232:30: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:233:30: info: loop invariant initialization proved (CVC4: 1 VC)
+list_mod_allocator.adb:233:30: info: loop invariant preservation proved (CVC4: 1 VC)
+list_mod_allocator.adb:236:16: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:238:07: info: assertion proved (CVC4: 1 VC)
+list_mod_allocator.adb:238:13: info: index check proved (CVC4: 2 VC)
+list_mod_allocator.adb:238:13: info: precondition proved (CVC4: 2 VC)
+list_mod_allocator.adb:238:18: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:238:52: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.adb:240:07: info: assertion proved (altergo: 1 VC)
+list_mod_allocator.adb:240:49: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.ads:10:03: info: flow dependencies proved
 list_mod_allocator.ads:11:03: info: initial condition proved (CVC4: 2 VC)
 list_mod_allocator.ads:42:53: info: precondition proved (CVC4: 2 VC)
@@ -277,23 +276,25 @@ simple_allocator.adb:14:39: info: index check proved (CVC4: 2 VC)
 simple_allocator.adb:16:39: info: index check proved (CVC4: 2 VC)
 simple_allocator.adb:23:11: info: precondition proved (Trivial: 1 VC)
 simple_allocator.adb:25:11: info: precondition proved (Trivial: 1 VC)
-simple_allocator.adb:37:10: info: initialization of "Avail" proved
-simple_allocator.adb:38:10: info: initialization of "Alloc" proved
-simple_allocator.adb:42:43: info: precondition proved (CVC4: 4 VC)
-simple_allocator.adb:43:43: info: precondition proved (CVC4: 4 VC)
-simple_allocator.adb:46:16: info: loop invariant initialization proved (CVC4: 6 VC)
-simple_allocator.adb:46:16: info: loop invariant preservation proved (CVC4: 6 VC)
-simple_allocator.adb:46:31: info: overflow check proved (CVC4: 2 VC)
-simple_allocator.adb:48:17: info: precondition proved (Trivial: 2 VC)
-simple_allocator.adb:50:17: info: precondition proved (Trivial: 2 VC)
-simple_allocator.adb:54:69: info: range check proved (CVC4: 2 VC)
-simple_allocator.adb:55:69: info: range check proved (CVC4: 2 VC)
-simple_allocator.adb:57:33: info: index check proved (CVC4: 4 VC)
-simple_allocator.adb:75:13: info: loop invariant initialization proved (CVC4: 2 VC)
-simple_allocator.adb:75:13: info: loop invariant preservation proved (CVC4: 2 VC)
-simple_allocator.adb:76:53: info: index check proved (CVC4: 4 VC)
-simple_allocator.adb:83:44: info: index check proved (CVC4: 2 VC)
-simple_allocator.adb:84:16: info: index check proved (CVC4: 2 VC)
+simple_allocator.adb:33:10: info: initialization of "Avail" proved
+simple_allocator.adb:34:10: info: initialization of "Alloc" proved
+simple_allocator.adb:38:43: info: precondition proved (CVC4: 4 VC)
+simple_allocator.adb:39:43: info: precondition proved (CVC4: 4 VC)
+simple_allocator.adb:42:16: info: loop invariant initialization proved (CVC4: 9 VC)
+simple_allocator.adb:42:16: info: loop invariant preservation proved (CVC4: 9 VC)
+simple_allocator.adb:42:31: info: overflow check proved (CVC4: 2 VC)
+simple_allocator.adb:44:17: info: precondition proved (Trivial: 2 VC)
+simple_allocator.adb:46:17: info: precondition proved (Trivial: 2 VC)
+simple_allocator.adb:49:30: info: index check proved (CVC4: 4 VC)
+simple_allocator.adb:50:56: info: range check proved (CVC4: 2 VC)
+simple_allocator.adb:50:85: info: range check proved (CVC4: 2 VC)
+simple_allocator.adb:51:60: info: range check proved (CVC4: 2 VC)
+simple_allocator.adb:51:85: info: range check proved (CVC4: 2 VC)
+simple_allocator.adb:67:13: info: loop invariant initialization proved (CVC4: 2 VC)
+simple_allocator.adb:67:13: info: loop invariant preservation proved (CVC4: 2 VC)
+simple_allocator.adb:68:53: info: index check proved (CVC4: 4 VC)
+simple_allocator.adb:75:44: info: index check proved (CVC4: 2 VC)
+simple_allocator.adb:76:16: info: index check proved (CVC4: 2 VC)
 simple_allocator.ads:9:03: info: flow dependencies proved
 simple_allocator.ads:10:03: info: initial condition proved (CVC4: 1 VC)
 simple_allocator.ads:52:44: info: postcondition proved (CVC4: 1 VC)

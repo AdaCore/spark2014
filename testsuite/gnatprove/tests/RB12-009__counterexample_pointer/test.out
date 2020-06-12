@@ -5,37 +5,29 @@ counterexamples.adb:21:30: medium: pointer dereference check might fail (e.g. wh
 counterexamples.adb:22:22: medium: assertion might fail, cannot prove X.Second.all = 1 (e.g. when X = (First => (all => 1), Second => (all => 0)))
 counterexamples.adb:22:31: info: pointer dereference check proved (CVC4: 1 VC)
 counterexamples.adb:25:14: warning: subprogram "Bad_2" has no effect
-counterexamples.adb:26:07: medium: memory leak might occur at end of scope
 counterexamples.adb:28:22: medium: assertion might fail, cannot prove Y.all >= C (e.g. when C = 11 and Y.all = 10)
 counterexamples.adb:28:24: info: pointer dereference check proved (CVC4: 1 VC)
 counterexamples.adb:31:14: warning: subprogram "Bad_3" has no effect
-counterexamples.adb:32:07: medium: memory leak might occur at end of scope
 counterexamples.adb:34:22: medium: assertion might fail, cannot prove V.all'Length <= C (e.g. when C = 0 and V.all = (1 => 'h', 2 => 'e', 5 => 'o', others => 'l') and V.all'First = 1 and V.all'Last = 5)
 counterexamples.adb:34:24: info: pointer dereference check proved (CVC4: 2 VC)
 counterexamples.adb:34:27: info: range check proved (CVC4: 1 VC)
 counterexamples.adb:37:14: warning: subprogram "Bad_4" has no effect
-counterexamples.adb:38:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-counterexamples.adb:39:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 counterexamples.adb:41:22: info: pointer dereference check proved (CVC4: 1 VC)
 counterexamples.adb:41:22: medium: assertion might fail, cannot prove A (1) (3) /= 'r' (e.g. when A.all = (1 => (all => (1 => 'w', 2 => 'o', 4 => 'l', 5 => 'd', others => 'r')), others => (all => (others => 'r'))) and A.all'First = 1 and A.all'Last = 1)
 counterexamples.adb:41:25: info: index check proved (CVC4: 2 VC)
 counterexamples.adb:41:29: info: index check proved (CVC4: 2 VC)
 counterexamples.adb:44:14: warning: subprogram "Bad_5" has no effect
-counterexamples.adb:45:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-counterexamples.adb:46:07: medium: memory leak might occur at end of scope
 counterexamples.adb:48:22: info: pointer dereference check proved (CVC4: 2 VC)
 counterexamples.adb:48:22: medium: assertion might fail, cannot prove A (1).all'Length < C (e.g. when A.all = (1 => (all => (2 => 'o', 3 => 'r', 4 => 'l', 5 => 'd', others => 'w')), others => (all => (others => 'w'))) and A.all'First = 1 and A.all'Last = 1 and C = 0)
 counterexamples.adb:48:25: info: index check proved (CVC4: 4 VC)
 counterexamples.adb:48:28: info: pointer dereference check proved (CVC4: 2 VC)
 counterexamples.adb:48:31: info: range check proved (CVC4: 1 VC)
 counterexamples.adb:51:14: warning: subprogram "Bad_6" has no effect
-counterexamples.adb:52:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 counterexamples.adb:52:48: info: range check proved (CVC4: 2 VC)
 counterexamples.adb:54:22: medium: assertion might fail, cannot prove C in A.all'range (e.g. when A.all = (others => 1) and C = 0)
 counterexamples.adb:54:29: info: pointer dereference check proved (CVC4: 2 VC)
 counterexamples.adb:55:22: info: pointer dereference check proved (CVC4: 1 VC)
 counterexamples.adb:55:22: medium: assertion might fail, cannot prove A (C) = 15 (e.g. when A.all = (others => 1) and A.all'First = 1 and A.all'Last = 1 and C = 1)
 counterexamples.adb:55:25: info: index check proved (CVC4: 2 VC)
-counterexamples.adb:58:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 counterexamples.adb:58:04: info: initialization of "X" proved
 counterexamples.adb:61:04: medium: precondition might fail, cannot prove X.Second /= null (e.g. when X = (First => null, Second => null))

@@ -491,59 +491,35 @@ package body SPARK_Rewrite is
             when N_Freeze_Entity =>
                return Skip;
 
+            --  Traverse procedure calls rewritten as null statements
+
+            when N_Null_Statement =>
+               if Nkind (Original_Node (N)) = N_Procedure_Call_Statement
+               then
+                  Rewrite_Nodes (Original_Node (N));
+               end if;
+
             --  Traverse expressions for DIC procedures
 
             when N_Full_Type_Declaration =>
-               if Comes_From_Source (N) then
-                  declare
-                     Ty       : constant Entity_Id := Defining_Entity (N);
-                     Inv_Proc : constant Entity_Id := Invariant_Procedure (Ty);
-                     Inv_Expr : Node_Id;
-                     DIC_Proc : Entity_Id;
-                     DIC_Expr : Node_Id;
+               declare
+                  Ty       : constant Entity_Id := Defining_Entity (N);
+                  DIC_Subp : Entity_Id;
+                  DIC_Expr : Node_Id;
 
-                  begin
-                     --  ??? The following is slighly different from
-                     --  SPARK_Register; both should be unified.
+               begin
+                  if Has_DIC (Ty) then
+                     DIC_Subp := DIC_Procedure (Ty);
 
-                     if Present (Inv_Proc) then
-                        Inv_Expr := Get_Expr_From_Check_Only_Proc (Inv_Proc);
-
-                        if Present (Inv_Expr) then
-                           Rewrite_Nodes (Inv_Expr);
-
-                        --  If the invariant procedure has no expression then
-                        --  it calls the partial invariant procedure, so get
-                        --  the expression from there. (Such partial invariant
-                        --  procedures come from Type_Invariant on a private
-                        --  part, which as of today is not allowed in SPARK,
-                        --  but it is better to traverse it anyway.)
-
-                        else
-                           Inv_Expr :=
-                             Get_Expr_From_Check_Only_Proc
-                               (Partial_Invariant_Procedure (Ty));
-
-                           pragma Assert (Present (Inv_Expr));
-
-                           Rewrite_Nodes (Inv_Expr);
-                        end if;
+                     if Present (DIC_Subp) then
+                        DIC_Expr := SPARK_Util.Subprograms.
+                          Get_Expr_From_Check_Only_Proc (DIC_Subp);
+                        Rewrite_Nodes (DIC_Expr);
+                        --  ??? this is slighly different from SPARK_Register;
+                        --  both should be unified.
                      end if;
-
-                     if Has_Own_DIC (Ty) then
-                        DIC_Proc := DIC_Procedure (Ty);
-
-                        if Present (DIC_Proc) then
-                           DIC_Expr :=
-                             Get_Expr_From_Check_Only_Proc (DIC_Proc);
-
-                           if Present (DIC_Expr) then
-                              Rewrite_Nodes (DIC_Expr);
-                           end if;
-                        end if;
-                     end if;
-                  end;
-               end if;
+                  end if;
+               end;
 
             when others =>
                null;

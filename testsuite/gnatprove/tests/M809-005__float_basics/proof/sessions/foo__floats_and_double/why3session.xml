@@ -11,22 +11,30 @@
 <theory name="Foo__floats_and_double__subprogram_def">
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="precondition">
+  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.1" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="36147"/></proof>
   <proof prover="2"><result status="unknown" steps="5050"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.2" expl="assertion">
+  <goal name="def&#39;vc.3" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="85851"/></proof>
   <proof prover="2"><result status="unknown" steps="5359"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="assertion" proved="true">
+  <goal name="def&#39;vc.4" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="7263"/></proof>
+  </goal>
+  <goal name="def&#39;vc.5" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>

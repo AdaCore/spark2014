@@ -19,9 +19,11 @@ evoting.adb:89:34: info: cannot unroll loop (too many loop iterations)
 evoting.adb:107:07: info: precondition proved (CVC4: 1 VC)
 evoting.adb:165:33: info: loop invariant initialization proved (CVC4: 1 VC)
 evoting.adb:165:33: info: loop invariant preservation proved (CVC4: 1 VC)
+evoting.adb:165:70: info: overflow check proved (CVC4: 2 VC)
 evoting.adb:166:21: info: overflow check proved (CVC4: 1 VC)
 evoting.adb:178:07: info: initialization of "buf" proved
 evoting.adb:180:07: info: initialization of "chosen_vote" proved
+evoting.adb:184:55: info: overflow check proved (CVC4: 2 VC)
 evoting.adb:187:13: info: loop invariant initialization proved (CVC4: 1 VC)
 evoting.adb:187:13: info: loop invariant preservation proved (CVC4: 1 VC)
 evoting.adb:188:24: info: index check proved (CVC4: 4 VC)
@@ -59,6 +61,7 @@ evoting.adb:277:07: info: initialization of "valid_total" proved
 evoting.adb:278:07: info: initialization of "winners" proved
 evoting.adb:283:32: info: loop invariant initialization proved (CVC4: 5 VC; Trivial: 1 VC)
 evoting.adb:283:32: info: loop invariant preservation proved (CVC4: 5 VC; Trivial: 1 VC)
+evoting.adb:289:51: info: overflow check proved (CVC4: 2 VC)
 evoting.adb:290:25: info: range check proved (CVC4: 1 VC)
 evoting.adb:293:28: info: range check proved (CVC4: 1 VC)
 evoting.adb:295:34: info: cannot unroll loop (too many loop iterations)

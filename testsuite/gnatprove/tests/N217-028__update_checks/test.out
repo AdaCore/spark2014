@@ -1,17 +1,11 @@
-ar.adb:9:24: medium: array index check might fail (e.g. when I = 1) [possible explanation: subprogram at ar.ads:16 should mention I in a precondition]
 ar.adb:9:24: medium: range check might fail (e.g. when E = 1 and I = 1) [possible explanation: subprogram at ar.ads:16 should mention I in a precondition]
-ar.adb:9:32: medium: array index check might fail [possible explanation: subprogram at ar.ads:16 should mention I and J in a precondition]
 ar.adb:9:37: medium: range check might fail (e.g. when E = 1 and J = 9) [possible explanation: subprogram at ar.ads:16 should mention J in a precondition]
 ar.adb:9:46: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at ar.ads:16 should mention E in a precondition]
-ar.adb:9:53: medium: array index check might fail (e.g. when J = 10) [possible explanation: subprogram at ar.ads:16 should mention J in a precondition]
 ar.adb:9:53: medium: range check might fail (e.g. when E = 0 and J = 10) [possible explanation: subprogram at ar.ads:16 should mention J in a precondition]
 ar.adb:9:62: medium: range check might fail (e.g. when E = ET1'Last) [possible explanation: subprogram at ar.ads:16 should mention E in a precondition]
-ar.adb:19:27: info: index check proved (CVC4: 2 VC)
 ar.adb:19:27: info: range check proved (CVC4: 1 VC)
-ar.adb:19:35: info: index check proved (CVC4: 2 VC)
 ar.adb:19:40: info: range check proved (CVC4: 1 VC)
 ar.adb:19:49: info: range check proved (CVC4: 1 VC)
-ar.adb:19:56: info: index check proved (CVC4: 2 VC)
 ar.adb:19:56: info: range check proved (CVC4: 1 VC)
 ar.adb:19:65: info: range check proved (CVC4: 1 VC)
 ar.adb:30:04: warning: analyzing unreferenced procedure "Test3"
@@ -28,30 +22,23 @@ ar.adb:68:20: medium: array index check might fail (e.g. when E = 1 and I = 1) [
 ar.adb:68:24: info: range check proved (CVC4: 1 VC)
 ar.adb:68:33: info: range check proved (CVC4: 1 VC)
 ar.adb:76:04: warning: analyzing unreferenced procedure "Test7"
-ar.adb:79:23: info: index check proved (CVC4: 2 VC)
 ar.adb:85:04: warning: analyzing unreferenced procedure "Test8"
-ar.adb:88:25: medium: array index check might fail (e.g. when I = 1) [possible explanation: subprogram at line 85 should mention I in a precondition]
 ar.adb:88:25: medium: range check might fail (e.g. when E = 1 and I = 1) [possible explanation: subprogram at line 85 should mention I in a precondition]
 ar.adb:88:34: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at line 85 should mention E in a precondition]
 ar.adb:94:04: warning: analyzing unreferenced procedure "Test9"
-ar.adb:98:27: info: index check proved (CVC4: 2 VC)
 ar.adb:98:27: info: range check proved (CVC4: 1 VC)
 ar.adb:98:36: info: range check proved (CVC4: 1 VC)
 ar.adb:106:04: warning: analyzing unreferenced procedure "Test10"
-ar.adb:109:25: info: index check proved (CVC4: 2 VC)
 ar.adb:115:04: warning: analyzing unreferenced procedure "Test11"
 ar.adb:119:25: medium: range check might fail (e.g. when E = 1 and I = 1) [possible explanation: subprogram at line 115 should mention I in a precondition]
-ar.adb:119:29: medium: array index check might fail [possible explanation: subprogram at line 115 should mention I and J in a precondition]
 ar.adb:119:34: medium: range check might fail (e.g. when E = 1 and J = 10) [possible explanation: subprogram at line 115 should mention J in a precondition]
 ar.adb:119:43: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at line 115 should mention E in a precondition]
 ar.adb:125:04: warning: analyzing unreferenced procedure "Test12"
-ar.adb:128:25: medium: array index check might fail (e.g. when I = 1) [possible explanation: subprogram at line 125 should mention I in a precondition]
 ar.adb:128:25: medium: range check might fail (e.g. when E = 1 and I = 1) [possible explanation: subprogram at line 125 should mention I in a precondition]
-ar.adb:128:33: medium: array index check might fail (e.g. when J = 10) [possible explanation: subprogram at line 125 should mention J in a precondition]
 ar.adb:128:33: medium: range check might fail (e.g. when E = 1 and J = 10) [possible explanation: subprogram at line 125 should mention J in a precondition]
 ar.adb:128:42: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at line 125 should mention E in a precondition]
 ar.adb:134:04: warning: analyzing unreferenced procedure "Test13"
-ar.adb:137:27: info: index check proved (CVC4: 2 VC)
+ar.adb:137:27: info: range check proved (CVC4: 1 VC)
 ar.adb:137:39: medium: range check might fail [possible explanation: subprogram at line 134 should mention E in a precondition]
 ar.ads:17:10: info: flow dependencies proved
 ar.ads:19:05: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)

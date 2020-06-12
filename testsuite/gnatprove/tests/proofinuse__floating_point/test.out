@@ -58,9 +58,9 @@ floating_point.adb:120:48: info: range check proved (Trivial)
 floating_point.adb:120:53: info: float overflow check proved (Trivial)
 floating_point.adb:128:16: info: types in unchecked conversion have the same size (Trivial)
 floating_point.adb:128:68: info: type is suitable for unchecked conversion (Trivial)
-floating_point.adb:129:68: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+floating_point.adb:129:68: high: type with constraints on bit representation is unsuitable for unchecked conversion
 floating_point.adb:130:16: info: types in unchecked conversion have the same size (Trivial)
-floating_point.adb:130:66: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+floating_point.adb:130:66: high: type with constraints on bit representation is unsuitable for unchecked conversion
 floating_point.adb:131:66: info: type is suitable for unchecked conversion (Trivial)
 floating_point.adb:132:07: info: initialization of "I" proved
 floating_point.adb:133:07: info: initialization of "Y" proved

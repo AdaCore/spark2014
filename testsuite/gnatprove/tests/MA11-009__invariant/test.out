@@ -4,9 +4,9 @@ kmp.adb:8:07: info: initialization of "J" proved
 kmp.adb:11:23: info: overflow check proved (CVC4: 1 VC)
 kmp.adb:12:39: info: overflow check proved (CVC4: 2 VC)
 kmp.adb:14:17: info: loop invariant initialization proved (CVC4: 3 VC)
-kmp.adb:14:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J in P'range
+kmp.adb:14:17: medium: loop invariant might fail after first iteration, cannot prove J in P'range
+kmp.adb:16:17: medium: loop invariant might fail after first iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
 kmp.adb:16:17: medium: loop invariant might fail in first iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
-kmp.adb:16:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
 kmp.adb:16:17: medium: range check might fail [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
 kmp.adb:16:22: medium: overflow check might fail
 kmp.adb:16:34: medium: range check might fail [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]

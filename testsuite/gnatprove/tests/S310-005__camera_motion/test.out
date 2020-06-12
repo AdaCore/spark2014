@@ -63,6 +63,7 @@ camera_motion.adb:130:20: warning: unused assignment, in call inlined at camera_
 camera_motion.adb:132:24: medium: overflow check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:133:28: medium: overflow check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:137:19: medium: divide by zero might fail, in call inlined at camera_motion.adb:240
+camera_motion.adb:137:19: medium: range check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:143:32: medium: overflow check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:143:32: medium: range check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:143:55: medium: overflow check might fail, in call inlined at camera_motion.adb:240
@@ -72,6 +73,7 @@ camera_motion.adb:149:21: warning: unused assignment, in call inlined at camera_
 camera_motion.adb:150:35: medium: range check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:151:37: medium: range check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:151:51: medium: divide by zero might fail, in call inlined at camera_motion.adb:240
+camera_motion.adb:151:51: medium: range check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:158:07: info: initialization of "v" proved
 camera_motion.adb:160:07: medium: "Result" might not be initialized
 camera_motion.adb:160:14: info: range check proved (CVC4: 2 VC)
@@ -165,8 +167,10 @@ camera_motion.adb:274:35: medium: overflow check might fail [possible explanatio
 camera_motion.adb:274:60: info: index check proved (CVC4: 2 VC)
 camera_motion.adb:274:65: info: index check proved (CVC4: 2 VC)
 camera_motion.adb:282:43: info: division check proved (CVC4: 1 VC)
+camera_motion.adb:282:43: info: range check proved (CVC4: 1 VC)
 camera_motion.adb:282:57: medium: range check might fail [possible explanation: loop at line 246 should mention Sum_Weights in a loop invariant]
 camera_motion.adb:283:43: info: division check proved (CVC4: 1 VC)
+camera_motion.adb:283:43: info: range check proved (CVC4: 1 VC)
 camera_motion.adb:283:57: info: range check proved (CVC4: 1 VC)
 camera_motion.adb:287:28: info: in inlined body at line 24
 camera_motion.adb:287:28: info: unrolling loop

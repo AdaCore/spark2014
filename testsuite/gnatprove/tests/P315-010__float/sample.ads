@@ -19,7 +19,7 @@ package Sample is
    --------------------------------------------------------------------------------------------
    -- Study_Case:
    --
-   -- Two results misunderstood when running GNATprove on this sub-program:
+   -- Two results misunderstood when running GNATProve on this sub-program:
    --
    --    1/ Pre => Time < Float'Last - (Nb_Of_Fp + Nb_Of_Pp) * Delta_Time : still get "overflow
    --    2/ Post    => (if Nb_Of_Fill_Pulse >= 0.0 then Time > Time'Old);

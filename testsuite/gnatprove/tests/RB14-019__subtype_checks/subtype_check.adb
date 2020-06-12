@@ -19,7 +19,7 @@ procedure Subtype_Check with SPARK_Mode is
 
    procedure Wrong with Pre => True is
       subtype Small_Nat_Array_3 is Nat_Array (Zero .. 10);
-      Z : Small_Nat_Array_Access := new Small_Nat_Array_3;--@RANGE_CHECK:FAIL
+      Z : Small_Nat_Array_Access := new Small_Nat_Array_3;--@LENGTH_CHECK:FAIL
    begin
       null;
    end Wrong;
@@ -33,15 +33,10 @@ procedure Subtype_Check with SPARK_Mode is
       null;
    end Wrong_2;
 
-   procedure Wrong_3 with Pre => True is
-   Z : Small_Nat_Array_Access := new Small_Nat_Array_2;--@RANGE_CHECK:FAIL
-   begin
-      null;
-   end Wrong_3;
-
    X : Nat_Array_Access := new Small_Nat_Array;
    X2 : Nat_Array_Access := new Nat_Array (1 .. 5);
    Y : R_Access := new R (10);
+   Z : Small_Nat_Array_Access := new Small_Nat_Array_2;
 begin
    pragma Assert (X.all'First = 1);
    pragma Assert (X2.all'First = 1);

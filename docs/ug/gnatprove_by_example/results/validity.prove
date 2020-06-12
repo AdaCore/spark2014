@@ -1,6 +1,6 @@
 validity.adb:7:13: info: types in unchecked conversion have the same size
 validity.adb:7:59: info: type is suitable for unchecked conversion
-validity.adb:7:68: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+validity.adb:7:68: high: type with constraints on bit representation is unsuitable for unchecked conversion
 validity.adb:11:22: info: assertion proved
 validity.adb:11:22: warning: attribute Valid is assumed to return True
 validity.adb:13:22: info: assertion proved

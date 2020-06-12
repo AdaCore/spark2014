@@ -1,11 +1,13 @@
 package body Anonymous_Access with SPARK_Mode is
 
    function Copy (X : List_Acc) return List_Acc is
-      N : List_Acc;
    begin
       if X /= null then
-         N := Copy (X.N);
-         return new List'(V => X.V, N => N);
+         declare
+            N : List_Acc := Copy (X.N);
+         begin
+            return new List'(V => X.V, N => N);
+         end;
       end if;
       return null;
    end Copy;

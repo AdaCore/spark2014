@@ -1,3 +1,2 @@
 soc.ads:3:18: info: flow dependencies proved
 soc.ads:8:04: info: initialization of "Periph" proved
-soc.ads:8:04: info: object is suitable for aliasing via address clause (Trivial)

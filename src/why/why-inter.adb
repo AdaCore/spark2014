@@ -70,8 +70,7 @@ package body Why.Inter is
 
    subtype N_Has_Theory is Node_Kind with
      Static_Predicate => N_Has_Theory in N_String_Literal |
-                                         N_Aggregate |
-                                         N_Delta_Aggregate;
+                                         N_Aggregate;
    --  Subtype of nodes (instead of entities) which have an associated theory,
    --  and should be treated specially.
 
@@ -478,7 +477,7 @@ package body Why.Inter is
                            and then
                              (if Ekind (N) = E_Loop_Parameter
                               then not Is_Quantified_Loop_Param (N))
-                         else Nkind (N) in N_Aggregate | N_Delta_Aggregate
+                         else Nkind (N) = N_Aggregate
                            and then Is_Array_Type (Etype (N))));
       --  Returns True if N is relevant for theory imports
       --
@@ -1429,7 +1428,6 @@ package body Why.Inter is
                   when N_Entity                       =>
                     (if Is_Type (N) then False
                      elsif Is_Object (N) then Obj_Has_Relaxed_Init (N)
-                     elsif Ekind (N) = E_Function then Fun_Has_Relaxed_Init (N)
                      else Has_Relaxed_Init (Etype (N))),
                   when N_Identifier | N_Expanded_Name =>
                     Obj_Has_Relaxed_Init (Entity (N)),

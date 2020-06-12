@@ -12,6 +12,7 @@ time.adb:30:17: warning: unused assignment
 time.adb:32:18: warning: unused assignment
 time.adb:34:34: info: no contextual analysis of "ddays_in_year" (in while loop condition)
 time.adb:34:57: info: range check proved (CVC4: 2 VC)
+time.adb:34:70: info: overflow check proved (CVC4: 2 VC)
 time.adb:35:07: warning: statement has no effect
 time.ads:71:40: warning: unused initial value of "time_in"
 time.ads:72:40: warning: unused initial value of "seconds"

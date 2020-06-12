@@ -25,6 +25,7 @@
 
 with Gnat2Why_Args;
 with Sem_Disp;
+with SPARK_Annotate; use SPARK_Annotate;
 
 package SPARK_Util.Subprograms is
 
@@ -255,19 +256,14 @@ package SPARK_Util.Subprograms is
    --     lied about contracts (as in, stated it has no outputs), then
    --     this is not a "new" failure.
 
-   function Get_Expression_Function (E : Entity_Id) return Node_Id
-   with Pre  => Is_Expression_Function_Or_Completion (E),
-        Post => Nkind (Get_Expression_Function'Result) = N_Expression_Function;
-   --  @param E entity of an expression function (or a function declaration
-   --     completed by an expression_function)
-   --  @return the corresponding N_Expression_Function original node
+   function Get_Expression_Function (E : Entity_Id) return Node_Id;
+   --  @param E subprogram
+   --  @return if E is the entity for an expression function, return the
+   --     corresponding N_Expression_Function original node. Otherwise,
+   --     return Empty.
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id
-   with Pre => Is_DIC_Procedure (E)
-                 or else
-               Is_Invariant_Procedure (E)
-                 or else
-               Is_Partial_Invariant_Procedure (E);
+   with Pre => Is_DIC_Procedure (E) or else Is_Invariant_Procedure (E);
    --  @param E a Default_Initial_Condition or Type_Invariant procedure
    --  @return the expression in the first pragma Check found in the body of E,
    --     if any, or Empty otherwise
@@ -366,6 +362,10 @@ package SPARK_Util.Subprograms is
    --     frontend in GNATprove mode
 
    function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
+   is
+     (No_Return (E)
+       or else
+      Has_Might_Not_Return_Annotation (E))
    with Pre => Ekind (E) in Entry_Kind
                           | E_Function
                           | E_Package
@@ -481,9 +481,8 @@ package SPARK_Util.Subprograms is
 
    function Corresponding_Primitive (Subp, Ty : Entity_Id) return Entity_Id
    with
-       Pre  => Is_Dispatching_Operation (Subp)
-               and then Present (Find_Dispatching_Type (Subp)),
-       Post => Is_Dispatching_Operation (Corresponding_Primitive'Result);
+       Pre => Is_Dispatching_Operation (Subp)
+          and then Present (Find_Dispatching_Type (Subp));
    --  @params Subp a dispatching operation
    --  @params Ty a descendant of the dispatching type of Subp
    --  @return the primitive of Ty that corresponds to Subp

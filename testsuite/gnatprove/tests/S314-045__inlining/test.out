@@ -4,6 +4,14 @@ compiler.adb:49:24: info: cannot unroll loop (too many loop iterations)
 compiler.adb:50:18: medium: range check might fail
 compiler.adb:103:10: info: add a contract to analyze it separately from calling contexts
 compiler.adb:103:10: info: local subprogram "To_String80" only analyzed in the context of calls
+compiler.adb:108:14: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
+compiler.adb:108:14: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
+compiler.adb:108:14: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
+compiler.adb:108:14: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
+compiler.adb:108:25: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
+compiler.adb:108:25: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
+compiler.adb:108:25: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
+compiler.adb:108:25: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
 compiler.adb:109:14: info: index check proved (CVC4: 10 VC), in call inlined at compiler.adb:1037, in call inlined at compiler.adb:1163
 compiler.adb:109:14: info: index check proved (CVC4: 10 VC), in call inlined at compiler.adb:1126
 compiler.adb:109:14: info: index check proved (CVC4: 10 VC), in call inlined at compiler.adb:1149
@@ -56,6 +64,10 @@ compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at c
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
+compiler.adb:109:20: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
+compiler.adb:109:20: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
+compiler.adb:109:20: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
+compiler.adb:109:20: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
 compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
 compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
 compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:312
@@ -310,16 +322,12 @@ compiler.adb:950:03: info: initialization of "cx0" proved
 compiler.adb:950:03: info: initialization of "cx0" proved, in call inlined at compiler.adb:1161
 compiler.adb:950:08: info: initialization of "cx1" proved
 compiler.adb:950:08: info: initialization of "cx1" proved, in call inlined at compiler.adb:1161
-compiler.adb:971:11: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1161
-compiler.adb:979:11: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1161
 compiler.adb:1004:11: info: add a contract to analyze it separately from calling contexts
 compiler.adb:1004:11: info: local subprogram "Process_Cobegin" only analyzed in the context of calls
 compiler.adb:1006:03: info: initialization of "sym" proved
 compiler.adb:1011:03: info: initialization of "cx1" proved
 compiler.adb:1011:03: info: initialization of "cx1" proved, in call inlined at compiler.adb:1163
 compiler.adb:1016:34: medium: overflow check might fail, in call inlined at compiler.adb:1163
-compiler.adb:1023:09: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1163
-compiler.adb:1031:09: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1163
 compiler.adb:1047:03: info: initialization of "i" proved
 compiler.adb:1048:03: info: initialization of "cx1" proved
 compiler.adb:1048:08: info: initialization of "cx2" proved

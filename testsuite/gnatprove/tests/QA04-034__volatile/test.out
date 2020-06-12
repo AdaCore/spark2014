@@ -1,4 +1,3 @@
-hw-dbc-transfer_rings.adb:33:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
 hw-dbc-transfer_rings.adb:116:07: info: initialization of "Toggle" proved
 hw-dbc-transfer_rings.adb:133:13: info: add a contract to analyze it separately from calling contexts
 hw-dbc-transfer_rings.adb:133:13: info: local subprogram "Prev" only analyzed in the context of calls

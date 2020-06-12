@@ -135,13 +135,10 @@ package body Flow.Analysis.Antialiasing is
       function Full (A, B : Node_Id) return Boolean is
         (Compile_Time_Compare (A, B, True) in LT | LE | EQ);
 
-      Range_Expr_A : constant Node_Id := Get_Range (Range_A);
-      Range_Expr_B : constant Node_Id := Get_Range (Range_B);
-
-      AL : constant Node_Id := Low_Bound  (Range_Expr_A);
-      AH : constant Node_Id := High_Bound (Range_Expr_A);
-      BL : constant Node_Id := Low_Bound  (Range_Expr_B);
-      BH : constant Node_Id := High_Bound (Range_Expr_B);
+      AL : constant Node_Id := Low_Bound  (Range_A);
+      AH : constant Node_Id := High_Bound (Range_A);
+      BL : constant Node_Id := Low_Bound  (Range_B);
+      BH : constant Node_Id := High_Bound (Range_B);
 
    --  Start of processing for Check_Range
 
@@ -185,8 +182,7 @@ package body Flow.Analysis.Antialiasing is
          N_Expanded_Name             => True,
          N_Defining_Identifier       => True,
 
-         --  Explicit dereference is now in SPARK
-         N_Explicit_Dereference      => True,
+         --  Explicit dereference is not in SPARK
 
          --  Indexed component and slices
          N_Indexed_Component         => True,
@@ -211,6 +207,8 @@ package body Flow.Analysis.Antialiasing is
          --  Generalized reference and indexing are suitably expanded
 
          --  Everything else must be an expression and is thus not interesting
+
+         N_Explicit_Dereference      => True,
 
          others                      => False);
 
@@ -414,16 +412,9 @@ package body Flow.Analysis.Antialiasing is
 
       --  We now know that the root nodes refer to the same entity
 
-      --  From the SPARK RM 6.4.2(1) an object is 'interfering' if it is
-      --  unsynchronised or it is synchronised only due to being constant after
-      --  elaboration.
-
-      if Is_Synchronized_Object (Entity (Ptr_A))
+      if Is_Synchronized (Entity (Ptr_A))
         and then not Is_Constant_After_Elaboration (Entity (Ptr_A))
       then
-         if Trace_Antialiasing then
-            Write_Line ("   -> non-interfering objects");
-         end if;
          return Impossible;
       end if;
 

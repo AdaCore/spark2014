@@ -4,7 +4,7 @@ procedure Test_Pred with SPARK_Mode is
       X, Y, Z : Integer;
    end record;
 
-   type My_Rec_2 is new My_Rec with Relaxed_Initialization;
+   type My_Rec_2 is new My_Rec with Annotate => (GNATprove, Init_By_Proof);
 
    function Ignore (X : Integer) return Boolean is (True);
 
@@ -36,7 +36,7 @@ procedure Test_Pred with SPARK_Mode is
       end if;
    end Test_2;
 
-   type Int is new Integer with Relaxed_Initialization;
+   type Int is new Integer with Annotate => (GNATprove, Init_By_Proof);
 
    type My_Rec_N is record
       X, Z : Int;
@@ -46,9 +46,9 @@ procedure Test_Pred with SPARK_Mode is
    type Holder_N is record
       C : My_Rec_N;
    end record
-     with Predicate => (if C.X'Initialized then C.X > 0 and then Ignore (C.Y));
+     with Predicate => (if C.X'Valid_Scalars then C.X > 0 and then Ignore (C.Y));
 
-   type My_Rec_N_2 is new My_Rec_N with Relaxed_Initialization;
+   type My_Rec_N_2 is new My_Rec_N with Annotate => (GNATprove, Init_By_Proof);
 
    procedure Test_3 with Global => null is
       X : My_Rec_N_2;
@@ -58,7 +58,7 @@ procedure Test_Pred with SPARK_Mode is
       pragma Assert (Holder_N'(C => My_Rec_N (X)).C.Y > 0); -- @INIT_BY_PROOF:PASS @PREDICATE_CHECK:FAIL
       --  No initialization check is introduced for Y which is known to have
       --  relaxed init while checking the predicate. The predicate is not
-      --  provable because C.X'Initialized is not known to be False on
+      --  provable because C.X'Valid_Scalars is not known to be False on
       --  uninitialized data (to match the executable semantics).
    end Test_3;
 
@@ -81,10 +81,10 @@ procedure Test_Pred with SPARK_Mode is
       Y    : Integer;
    end record;
 
-   type My_Rec_D_2 is new My_Rec_D with Relaxed_Initialization;
+   type My_Rec_D_2 is new My_Rec_D with Annotate => (GNATprove, Init_By_Proof);
 
    subtype My_Rec_D_3 is My_Rec_D
-     with Predicate => (if My_Rec_D_3.X'Initialized then My_Rec_D_3.X > 0 and then Ignore (My_Rec_D_3.Y));
+     with Predicate => (if My_Rec_D_3.X'Valid_Scalars then My_Rec_D_3.X > 0 and then Ignore (My_Rec_D_3.Y));
 
    procedure Test_5 with Global => null is
       X : My_Rec_D_2;

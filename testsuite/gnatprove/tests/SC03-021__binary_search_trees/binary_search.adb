@@ -15,7 +15,7 @@ procedure Binary_Search with SPARK_Mode is
    function Pledge (T : access constant Tree; P : Boolean) return Boolean is
      (P)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATProve, Pledge);
 
    function M_Contains (T : access constant Tree; V : Integer) return Boolean is
       (if T = null then False

@@ -9,20 +9,28 @@
 <theory name="Auditlog__deletearchivefile__subprogram_def" proved="true">
  <goal name="def&#39;vc" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="def&#39;vc.0" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="39"/></proof>
+  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="def&#39;vc.1" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="36"/></proof>
+  <goal name="def&#39;vc.2" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="39"/></proof>
   </goal>
   <goal name="def&#39;vc.3" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="36"/></proof>
+  </goal>
+  <goal name="def&#39;vc.4" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.4" expl="precondition" proved="true">
+  <goal name="def&#39;vc.5" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.6" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>

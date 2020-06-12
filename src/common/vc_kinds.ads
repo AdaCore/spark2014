@@ -63,8 +63,6 @@ package VC_Kinds is
       --  field of the why record corresponding to the pointer type.
 
       VC_Null_Exclusion,
-      VC_Memory_Leak,
-      VC_Memory_Leak_At_End_Of_Scope,
 
       VC_Length_Check,
       VC_Discriminant_Check,
@@ -111,10 +109,6 @@ package VC_Kinds is
                                     --  Unchecked_Conversion are of the same
                                     --  size
 
-      VC_UC_Alignment,                --  Check that the two objects
-                                      --  in an overlay have compatible
-                                      --  alignments
-
       --  VC_LSP_Kind - Liskov Substitution Principle
 
       VC_Weaker_Pre,                  --  pre weaker than classwide pre
@@ -137,7 +131,7 @@ package VC_Kinds is
      VC_Division_Check .. VC_Task_Termination;
 
    subtype VC_Assert_Kind is VC_Kind range
-     VC_Initial_Condition .. VC_UC_Alignment;
+     VC_Initial_Condition .. VC_UC_Same_Size;
 
    subtype VC_LSP_Kind is VC_Kind range
      VC_Weaker_Pre .. VC_Stronger_Classwide_Post;

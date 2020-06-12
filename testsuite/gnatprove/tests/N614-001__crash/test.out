@@ -4,7 +4,7 @@ main.adb:8:14: info: add a contract to analyze it separately from calling contex
 main.adb:8:14: info: local subprogram "Print_Part" only analyzed in the context of calls
 main.adb:19:15: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:42
 main.adb:19:15: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:44
-main.adb:28:11: info: range check proved (CVC4: 8 VC), in call inlined at main.adb:45
+main.adb:28:18: info: range check proved (CVC4: 8 VC), in call inlined at main.adb:45
 main.adb:29:15: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:45
 main.adb:29:15: info: range check proved (CVC4: 4 VC), in call inlined at main.adb:45
 main.adb:39:04: info: initialization of "NP" proved

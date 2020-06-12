@@ -1,6 +1,4 @@
 a.adb:7:27: warning: unused initial value of "X"
 a.adb:7:52: info: data dependencies proved
-a.adb:9:09: medium: memory leak might occur [possible explanation: subprogram at line 7 should mention X in a precondition]
-a.adb:12:04: medium: memory leak might occur at end of scope
 a.adb:12:28: info: null exclusion check proved (CVC4: 1 VC)
 a.adb:15:17: medium: null exclusion check might fail (e.g. when X = null)

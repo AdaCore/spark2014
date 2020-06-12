@@ -888,23 +888,6 @@ These settings will speed up |GNATprove|:
   with a small timeout or a small steps limit will result in much faster
   execution.
 
-* If you have access to up-to-date session files, (see
-  :ref:`Running GNATprove from the Command Line`) and you only want to check
-  the proof results of the stored session, you can use ``--replay``. Replay
-  only runs previously successful provers and is therefore much faster than a
-  run of |GNATprove| without this option.
-
-* Use ``--no-axiom-guard``. Generally, SPARK checks that subprograms  correctly
-  implement their implicit and explicit contracts, and assumes that this is the
-  case as well for subprograms that are not verified by |GNATprove|, see
-  also :ref:`Managing Assumptions`. To limit the impact of incorrect contracts,
-  |GNATprove| inserts by default special guards, so that potentially incorrect
-  postconditions are only used when the unverified subprogram is actually
-  called. These guards have a non-negligible impact on prover performance. If
-  in your project, all subprograms are in the |SPARK| subset, or you have
-  confidence in the contracts you wrote for the subprograms which are not in
-  |SPARK|, you can disable these guards using the ``--no-axiom-guard`` option.
-
 |GNATprove| and Network File Systems or Shared Folders
 ------------------------------------------------------
 

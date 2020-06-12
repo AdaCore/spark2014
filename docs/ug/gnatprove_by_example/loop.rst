@@ -676,7 +676,7 @@ in array ``A`` between indexes ``First`` and ``Last``:
 The loop invariant expresses that all elements between ``First`` and the
 current loop index ``J`` have been zeroed out, and that other elements have not
 been modified (using a combination of :ref:`Attribute Loop_Entry` and
-:ref:`Delta Aggregates` to express this concisely). With this loop invariant,
+:ref:`Attribute Update` to express this concisely). With this loop invariant,
 |GNATprove| is able to prove the postcondition of ``Update_Range_Arr_Zero``,
 namely that all elements between ``First`` and ``Last`` have been zeroed out,
 and that other elements have not been modified:

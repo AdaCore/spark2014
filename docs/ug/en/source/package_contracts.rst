@@ -518,32 +518,6 @@ assumed to have all four aspects set to ``True``. A volatile variable on which
 some of the four aspects are set to ``True`` is assumed to have the remaining
 ones set to ``False``. See SPARK RM 7.1.3 for details.
 
-.. _Properties of Volatile Types:
-
-Properties of Volatile Types
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The four aspects ``Async_Writers``, ``Async_Readers``, ``Effective_Reads`` and
-``Effective_Writes`` can be specified for a volatile type as well as a volatile
-variable. The rules stated for variables apply also to types for deciding on
-the value of the four aspects, when none, one or more values are specified
-explicitly. These aspects can only be specified on a type declaration, not on a
-subtype declaration.
-
-Thus the declaration:
-
-.. code-block:: ada
-
-   type T is new Integer;
-   Log_In : T with Volatile, Async_Writers, Effective_Reads;
-
-can be written equivalently:
-
-.. code-block:: ada
-
-   type T is new Integer with Volatile, Async_Writers, Effective_Reads;
-   Log_In : T;
-
 .. _External State Abstraction:
 
 External State Abstraction

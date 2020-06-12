@@ -5,5 +5,5 @@ integer_arrays.adb:14:20: info: index check proved (CVC4: 4 VC)
 integer_arrays.adb:17:32: info: loop invariant initialization proved (CVC4: 1 VC)
 integer_arrays.adb:17:32: info: loop invariant preservation proved (CVC4: 1 VC)
 integer_arrays.adb:18:32: info: loop invariant initialization proved (CVC4: 1 VC)
-integer_arrays.adb:18:32: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove result_index <= result'first (e.g. when result_index = 2)
+integer_arrays.adb:18:32: medium: loop invariant might fail after first iteration, cannot prove result_index <= result'first (e.g. when result_index = 2)
 integer_arrays.ads:4:14: warning: subprogram "make_unique" has no effect

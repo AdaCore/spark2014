@@ -1,22 +1,9 @@
 local_borrow.adb:14:15: info: pointer dereference check proved (CVC4: 1 VC)
-local_borrow.adb:17:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow.adb:18:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow.adb:19:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow.adb:20:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow.adb:21:04: medium: memory leak might occur at end of scope
 local_borrow.adb:24:26: medium: precondition might fail, cannot prove X /= null
 local_borrow.adb:24:36: medium: precondition might fail, cannot prove X /= null
 local_borrow.adb:24:46: info: precondition proved (CVC4: 1 VC)
 local_borrow.adb:26:08: medium: pointer dereference check might fail
 local_borrow_array.adb:16:15: info: pointer dereference check proved (CVC4: 1 VC)
-local_borrow_array.adb:19:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow_array.adb:20:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow_array.adb:21:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow_array.adb:22:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow_array.adb:23:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow_array.adb:24:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow_array.adb:25:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
-local_borrow_array.adb:26:04: medium: memory leak might occur at end of scope
 local_borrow_array.adb:29:26: medium: pointer dereference check might fail
 local_borrow_array.adb:29:26: medium: precondition might fail, cannot prove X /= null
 local_borrow_array.adb:29:37: medium: pointer dereference check might fail

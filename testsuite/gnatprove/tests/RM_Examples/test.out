@@ -2,13 +2,11 @@ update_examples.ads:23:19: info: postcondition proved (CVC4: 1 VC)
 update_examples.ads:30:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 update_examples.ads:38:19: info: postcondition proved (CVC4: 1 VC; Trivial: 2 VC)
 update_examples.ads:54:19: info: postcondition proved (CVC4: 1 VC)
-update_examples.ads:56:61: info: index check proved (CVC4: 2 VC)
 update_examples.ads:69:08: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-update_examples.ads:71:63: info: index check proved (CVC4: 2 VC)
-update_examples.ads:71:66: info: index check proved (CVC4: 2 VC)
-update_examples.ads:75:62: info: index check proved (CVC4: 2 VC)
 loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
+loop_var_loop_invar.adb:8:39: info: overflow check proved (CVC4: 2 VC)
+loop_var_loop_invar.adb:8:44: info: overflow check proved (CVC4: 2 VC)
 loop_var_loop_invar.adb:9:07: info: loop variant proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:11:14: info: range check proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:12:14: info: range check proved (CVC4: 1 VC)
@@ -40,11 +38,6 @@ param_1_illegal.adb:9:10: info: index check proved (CVC4: 2 VC)
 param_1_legal.adb:7:10: info: index check proved (CVC4: 2 VC)
 anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
 gnatprove: error during generation of Global contracts
-multiple_ports.ads:18:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
-multiple_ports.ads:27:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
-multiple_ports.ads:36:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
-multiple_ports.ads:42:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
-multiple_ports.ads:55:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
 refined_global_examples.adb:14:40: info: initialization of "B" constituent of "S1" proved
 refined_global_examples.adb:23:40: info: initialization of "A" constituent of "S1" proved
 refined_global_examples.adb:41:41: info: initialization of "A" constituent of "S1" proved
@@ -89,7 +82,6 @@ refined_depends_examples.ads:31:11: info: flow dependencies proved
 refined_depends_examples.ads:34:11: info: data dependencies proved
 refined_depends_examples.ads:36:11: info: flow dependencies proved
 stacks_1.adb:16:27: info: refined post proved (CVC4: 2 VC)
-stacks_1.adb:17:44: info: index check proved (CVC4: 2 VC)
 stacks_1.adb:17:44: info: range check proved (CVC4: 1 VC)
 stacks_1.adb:23:30: info: range check proved (CVC4: 1 VC)
 stacks_1.adb:24:18: info: index check proved (CVC4: 2 VC)
@@ -117,8 +109,6 @@ stacks_2.ads:21:16: info: postcondition proved (CVC4: 1 VC)
 stacks_2.ads:24:11: info: data dependencies proved
 externals.adb:27:04: high: "Out_Reg" constituent of "Complex_Device" is not written in "Externals"
 externals.adb:27:04: high: initialization of "Externals.Complex_Device" is specified at externals.ads:8
-externals.adb:27:04: info: object is suitable for aliasing via address clause (Trivial)
-externals.adb:33:04: info: object is suitable for aliasing via address clause (Trivial)
 externals.adb:43:07: info: initialization of "Temp" proved
 externals.adb:44:07: info: initialization of "Press" proved
 externals.adb:49:31: medium: overflow check might fail (e.g. when Press = -341 and Temp = -1740262) [possible explanation: call at line 48 should mention Press (for argument Press) in a postcondition]
@@ -138,11 +128,6 @@ externals.ads:22:11: info: flow dependencies proved
 externals.ads:26:11: info: data dependencies proved
 externals.ads:35:11: info: data dependencies proved
 externals.ads:36:11: info: flow dependencies proved
-hal.adb:13:04: info: object is suitable for aliasing via address clause (Trivial)
-hal.adb:21:04: info: object is suitable for aliasing via address clause (Trivial)
-hal.adb:30:04: info: object is suitable for aliasing via address clause (Trivial)
-hal.adb:38:04: info: object is suitable for aliasing via address clause (Trivial)
-hal.adb:46:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
 hal.adb:70:07: info: initialization of "Current_Status" proved
 hal.adb:71:07: info: initialization of "Next_Byte" proved
 hal.adb:94:41: info: initialization of "Write_FIFO" constituent of "Serial_Out" proved

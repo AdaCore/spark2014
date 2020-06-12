@@ -13,6 +13,9 @@ decadriver.adb:105:10: info: initialization of "RX_FINFO_Reg" proved
 decadriver.adb:107:10: info: initialization of "Frame_Length" proved
 decadriver.adb:108:10: info: initialization of "Next_Idx" proved
 decadriver.adb:112:35: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
+decadriver.adb:113:56: info: overflow check proved (CVC4: 1 VC)
+decadriver.adb:113:56: info: range check proved (CVC4: 1 VC)
+decadriver.adb:114:55: info: overflow check proved (CVC4: 1 VC)
 decadriver.adb:116:25: info: assertion proved (CVC4: 1 VC)
 decadriver.adb:123:63: info: range check proved (CVC4: 1 VC)
 decadriver.adb:125:37: info: overflow check proved (CVC4: 1 VC)
@@ -20,7 +23,7 @@ decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:127:38: info: precondition proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: range check proved (CVC4: 4 VC)
-decadriver.adb:133:38: medium: predicate check might fail (e.g. when Frame_Length = 127 and Next_Idx = 1)
+decadriver.adb:133:38: medium: predicate check might fail (e.g. when Frame_Length = 1023 and Next_Idx = 1)
 decadriver.adb:133:50: info: range check proved (CVC4: 1 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:135:38: info: predicate check proved (CVC4: 1 VC)

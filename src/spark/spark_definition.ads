@@ -43,8 +43,9 @@ with Atree;                             use Atree;
 with Common_Containers;                 use Common_Containers;
 with Einfo;                             use Einfo;
 with GNATCOLL.JSON;                     use GNATCOLL.JSON;
-with Sem_Util;                          use Sem_Util;
 with Sinfo;                             use Sinfo;
+with SPARK_Util;                        use SPARK_Util;
+with SPARK_Util.Subprograms;            use SPARK_Util.Subprograms;
 with Types;                             use Types;
 
 package SPARK_Definition is
@@ -138,7 +139,9 @@ package SPARK_Definition is
    --  violations.
 
    function Entity_Body_Compatible_With_SPARK (E : Entity_Id) return Boolean
-   with Pre => Is_Expression_Function_Or_Completion (E);
+   with
+     Pre => Ekind (E) in E_Function
+              and then Present (Get_Expression_Function (E));
    --  Returns True iff the body of expression function E contains no SPARK
    --  violations.
 
@@ -205,6 +208,13 @@ package SPARK_Definition is
      Pre => Nkind (N) = N_Raise_Expression;
    --  Return True if N occurs in a precondition
 
+   procedure Mark_Type_With_Relaxed_Init
+     (N   : Node_Id;
+      Ty  : Entity_Id;
+      Own : Boolean := False)
+   with Pre => Is_Type (Ty) and then Entity_In_SPARK (Ty);
+   --  ??? Should be private once relaxed init is an aspect
+
    ----------------------------------------------------------------------
    --  Marked entity collections
    ----------------------------------------------------------------------
@@ -235,9 +245,5 @@ package SPARK_Definition is
 private
 
    type Cursor is new Node_Lists.Cursor;
-
-   function In_SPARK (E : Entity_Id) return Boolean;
-   --  Returns whether the entity E is in SPARK; computes this information by
-   --  calling Mark_Entity, which is very cheap.
 
 end SPARK_Definition;

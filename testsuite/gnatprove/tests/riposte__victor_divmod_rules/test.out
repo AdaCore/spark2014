@@ -61,11 +61,13 @@ victor_divmod_rules.adb:184:45: medium: divide by zero might fail
 victor_divmod_rules.adb:185:22: info: postcondition proved (CVC4: 1 VC)
 victor_divmod_rules.adb:185:24: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:185:34: info: division check proved (CVC4: 1 VC)
+victor_divmod_rules.adb:185:40: info: overflow check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:193:11: info: flow dependencies proved
 victor_divmod_rules.adb:194:45: medium: divide by zero might fail
 victor_divmod_rules.adb:195:22: info: postcondition proved (CVC4: 1 VC)
 victor_divmod_rules.adb:195:24: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:195:34: info: division check proved (CVC4: 1 VC)
+victor_divmod_rules.adb:195:40: info: overflow check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:203:11: info: flow dependencies proved
 victor_divmod_rules.adb:205:22: medium: postcondition might fail, cannot prove X mod Y = X rem Y (e.g. when X = -1 and Y = -1)
 victor_divmod_rules.adb:205:24: info: division check proved (CVC4: 1 VC)

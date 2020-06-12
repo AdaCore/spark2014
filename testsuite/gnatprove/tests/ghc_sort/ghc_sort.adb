@@ -1,7 +1,4 @@
-with Ada.Unchecked_Deallocation;
-
 package body GHC_Sort with SPARK_Mode is
-
    function Cut (S : Int_Array) return Cut_Points is
       Cut : Cut_Points (1 .. S'Length + 1) := (others => 1);
       Top : Positive := 1;
@@ -123,8 +120,6 @@ package body GHC_Sort with SPARK_Mode is
       Next  : Int_Array_List;
    end record;
 
-   procedure Free is new Ada.Unchecked_Deallocation (Int_Array_List_Cell, Int_Array_List);
-
    --  Recursive predicate: All elements of a list are sorted
 
    function All_Sorted (L : Int_Array_List) return Boolean is
@@ -159,20 +154,13 @@ package body GHC_Sort with SPARK_Mode is
       if L = null or else L.Next = null then
          return;
       else
-         declare
-            New_L : constant Int_Array_List :=
-              new Int_Array_List_Cell'
-                (L.L + L.Next.L, Merge (L.Value, L.Next.Value), L.Next.Next);
-         begin
-            Free (L.Next);
-            Free (L);
-            L := New_L;
-            Merge_By_Two (L.Next);
-         end;
+         L := new Int_Array_List_Cell'
+           (L.L + L.Next.L, Merge (L.Value, L.Next.Value), L.Next.Next);
+         Merge_By_Two (L.Next);
       end if;
    end Merge_By_Two;
 
-   procedure Sort (S : Int_Array; Result : out Int_Array) is
+   function Sort (S : Int_Array) return Int_Array is
 
       --  Compute the cut sequence
 
@@ -203,13 +191,7 @@ package body GHC_Sort with SPARK_Mode is
          pragma Loop_Invariant (Sum_Length (L) = S'Length);
          Merge_By_Two (L);
       end loop;
-
-      if L = null then
-         Result := S;
-      else
-         Result := L.Value;
-         Free (L);
-      end if;
+      return (if L = null then S else L.Value);
    end Sort;
 
 end GHC_Sort;

@@ -2350,8 +2350,7 @@ package body Flow.Control_Flow_Graph is
       function Get_Loop_Variable (N : Node_Id) return Entity_Id
       is (Defining_Identifier
             (Loop_Parameter_Specification (Iteration_Scheme (N))))
-      with Pre => Is_For_Loop (N),
-           Post => Ekind (Get_Loop_Variable'Result) = E_Loop_Parameter;
+      with Pre => Is_For_Loop (N);
       --  Obtain the entity of a for loops loop parameter
 
       function Get_Loop_Range (N : Node_Id) return Node_Id
@@ -4158,27 +4157,20 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
          end loop;
+      end if;
 
-         --  If this type has a Default_Initial_Condition (DIC) then we need to
-         --  create a vertex to check for uninitialized variables within
-         --  the Default_Initial_Condition's expression. For imported objects
-         --  the DIC expression is not evaluated.
-         --  ??? what about DIC evaluated for individual components?
+      --  If this type has a Default_Initial_Condition then we need to
+      --  create a vertex to check for uninitialized variables within the
+      --  Default_Initial_Condition's expression.
+      if Has_DIC (Typ) then
+         declare
+            DIC_Proc : constant Entity_Id := Get_Initial_DIC_Procedure (Typ);
 
-         if not Is_Imported (E)
-           and then Has_DIC (Typ)
-         then
-            declare
-               DIC_Proc : constant Entity_Id :=
-                 Get_Initial_DIC_Procedure (Typ);
-
-            begin
-               if Present (DIC_Proc) then
-                  Add_Vertex_For_DIC (DIC_Proc);
-               end if;
-            end;
-         end if;
-
+         begin
+            if Present (DIC_Proc) then
+               Add_Vertex_For_DIC (DIC_Proc);
+            end if;
+         end;
       end if;
 
       --  If nothing has been initialized by this object declaration, then add

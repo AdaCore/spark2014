@@ -64,9 +64,7 @@ on `gnatstudio-<version>-i686-pc-mingw32.exe` and follow the instructions.
   the GNAT GPL installer, which installs GNAT Studio.
 
 Then similarly run the |GNATprove| installer, by e.g. double clicking on
-`spark-<version>-x86-windows-bin.exe`. If you intend to install |GNATprove| in
-a location where a previous installation of |GNATprove| exists, we recommend
-that you uninstall the previous installation first.
+`spark-<version>-x86-windows-bin.exe`.
 
 You should have sufficient rights for installing the package (administrator
 or normal rights depending on whether it is installed for all users or a

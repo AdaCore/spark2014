@@ -14,10 +14,10 @@ package body Old_Loop_Entry is
       loop
          pragma Loop_Invariant (X.all = X.all'Loop_Entry);
          pragma Loop_Invariant (Y.A.all = Y.A.all'Loop_Entry);
-         pragma Loop_Invariant (declare YY : constant P := Copy(Y)'Loop_Entry; begin Y.A.all = YY.A.all);
+         pragma Loop_Invariant (Y.A.all = Copy(Y)'Loop_Entry.A.all);
          pragma Loop_Variant (Increases => X.all - X.all'Loop_Entry);
          pragma Loop_Variant (Decreases => Y.A.all - Y.A.all'Loop_Entry);
-         pragma Loop_Variant (Increases => (declare YY : constant P := Copy(Y)'Loop_Entry; begin Y.A.all - YY.A.all));
+         pragma Loop_Variant (Increases => Y.A.all - Copy(Y)'Loop_Entry.A.all);
       end loop;
    end Proc;
 
@@ -52,3 +52,4 @@ package body Old_Loop_Entry is
    end Bad_Body;
 
 end Old_Loop_Entry;
+

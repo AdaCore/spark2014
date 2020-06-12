@@ -5,6 +5,10 @@ main.adb:16:19: medium: assertion might fail, cannot prove off_c1 < 10000 (e.g. 
 main.adb:17:19: medium: assertion might fail, cannot prove off_c2 = 0 (e.g. when off_c2 = 1)
 main.adb:18:24: info: range check proved (CVC4: 1 VC)
 main.adb:19:24: info: range check proved (CVC4: 1 VC)
-main2.adb:4:11: high: all paths in "main2" raise exceptions or do not terminate normally
+main2.adb:16:04: info: initialization of "foo" proved
+main2.adb:18:39: info: range check proved (CVC4: 1 VC)
+main2.adb:19:39: info: range check proved (CVC4: 1 VC)
 main2.adb:21:19: info: assertion proved (CVC4: 1 VC)
-main2.adb:22:04: medium: assertion might fail
+main2.adb:22:19: medium: assertion might fail, cannot prove off_c2 = 0 (e.g. when off_c2 = 1)
+main2.adb:23:24: info: range check proved (CVC4: 1 VC)
+main2.adb:24:24: info: range check proved (CVC4: 1 VC)

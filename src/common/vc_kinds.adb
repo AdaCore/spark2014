@@ -83,11 +83,6 @@ package body VC_Kinds is
 
          when VC_Loop_Variant              => "835",
 
-         --  CWE-401: Missing Release of Memory after Effective Lifetime
-
-         when VC_Memory_Leak
-            | VC_Memory_Leak_At_End_Of_Scope => "401",
-
          --  CWE-476: NULL Pointer Dereference
 
          when VC_Null_Pointer_Dereference  => "476",
@@ -99,7 +94,7 @@ package body VC_Kinds is
          --  CWE-628: Function Call with Incorrectly Specified Arguments
 
          when VC_Precondition
-            | VC_Precondition_Main         => "628",
+             | VC_Precondition_Main        => "628",
 
          --  CWE-682: Incorrect Calculation
 
@@ -111,7 +106,8 @@ package body VC_Kinds is
          --  Confusion')
 
          when VC_UC_No_Holes
-            | VC_UC_Same_Size              => "843",
+            | VC_UC_Same_Size
+              => "843",
 
          --  We did not find a relevant CWE for the following yet
 
@@ -139,7 +135,6 @@ package body VC_Kinds is
             | VC_Stronger_Classwide_Post
             | VC_Warning_Kind
             | VC_Null_Exclusion
-            | VC_UC_Alignment
          => "");
    end CWE_ID;
 
@@ -250,10 +245,6 @@ package body VC_Kinds is
          when VC_Null_Exclusion                   =>
             return "Check that the subtype_indication of the allocator " &
               "does not specify a null_exclusion";
-         when VC_Memory_Leak                      =>
-            return "Check that the assignment does not lead to a memory leak";
-         when VC_Memory_Leak_At_End_Of_Scope      =>
-            return "Check that the declaration does not lead to a memory leak";
          when VC_Invariant_Check                  =>
             return "Check that the given value respects the applicable type " &
               "invariant.";
@@ -343,9 +334,6 @@ package body VC_Kinds is
          when VC_UC_Same_Size                     =>
             return "Check that the two types in an unchecked conversion " &
               "instance are of the same size.";
-         when VC_UC_Alignment                     =>
-            return "Check that the first object's alignment is an integral " &
-              "multiple of the second object's alignment.";
          when VC_Weaker_Pre                       =>
             return "Check that the precondition aspect of the subprogram is " &
               "weaker than its class-wide precondition.";
@@ -542,7 +530,7 @@ package body VC_Kinds is
       return Map;
    end From_JSON;
 
-   function From_JSON (V : JSON_Value) return Cntexample_Lines is
+   function From_JSON (V : JSON_Value) return  Cntexample_Lines is
       Res : Cntexample_Lines :=
         Cntexample_Lines'(VC_Line        =>
                             (if Has_Field (V, "vc_line")
@@ -844,12 +832,9 @@ package body VC_Kinds is
              when VC_Range_Check => "range check",
              when VC_Predicate_Check => "predicate check",
              when VC_Predicate_Check_On_Default_Value =>
-               "predicate check on default value",
+                "predicate check on default value",
              when VC_Null_Pointer_Dereference => "null pointer dereference",
              when VC_Null_Exclusion => "null exclusion",
-             when VC_Memory_Leak => "memory leak",
-             when VC_Memory_Leak_At_End_Of_Scope =>
-               "memory leak at end of scope",
              when VC_Invariant_Check => "invariant check",
              when VC_Invariant_Check_On_Default_Value =>
                "invariant check on default value",
@@ -881,7 +866,6 @@ package body VC_Kinds is
              when VC_Inline_Check => "Inline_For_Proof annotation",
              when VC_UC_No_Holes => "unchecked conversion check",
              when VC_UC_Same_Size => "unchecked conversion size check",
-             when VC_UC_Alignment => "alignment check",
              when VC_Weaker_Pre =>
                "precondition weaker than class-wide precondition",
              when VC_Trivial_Weaker_Pre =>

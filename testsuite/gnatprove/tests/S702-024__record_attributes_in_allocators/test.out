@@ -1,9 +1,7 @@
 test_constr.adb:22:04: warning: analyzing unreferenced procedure "Test1"
 test_constr.adb:22:14: warning: subprogram "Test1" has no effect
-test_constr.adb:24:22: medium: assertion might fail, cannot prove V.C.all.C'Constrained
-test_constr.adb:24:30: medium: memory leak might occur at end of scope
-test_constr.adb:24:48: info: function contract not available for proof ("Create" might not return)
-test_constr.adb:24:65: info: pointer dereference check proved (CVC4: 1 VC)
+test_constr.adb:24:22: medium: assertion might fail, cannot prove (Create).C.all.C'Constrained
+test_constr.adb:24:30: info: pointer dereference check proved (CVC4: 1 VC)
 test_constr.adb:27:04: warning: analyzing unreferenced procedure "Test2"
 test_constr.adb:27:14: warning: subprogram "Test2" has no effect
 test_constr.adb:29:22: medium: assertion might fail, cannot prove not H'(Create).C'constrained
@@ -11,45 +9,36 @@ test_constr.adb:32:14: warning: subprogram "Test3" has no effect
 test_constr.adb:34:22: medium: assertion might fail, cannot prove not R'(Create)'constrained
 test_constr.adb:37:04: warning: analyzing unreferenced procedure "Test4"
 test_constr.adb:37:14: warning: subprogram "Test4" has no effect
-test_constr.adb:39:22: medium: assertion might fail, cannot prove not (R'(V.C.all.C)'Constrained)
-test_constr.adb:39:30: medium: memory leak might occur at end of scope
-test_constr.adb:39:48: info: function contract not available for proof ("Create" might not return)
-test_constr.adb:39:72: info: pointer dereference check proved (CVC4: 1 VC)
+test_constr.adb:39:22: medium: assertion might fail, cannot prove not R'(Create.C.C)'constrained
+test_constr.adb:39:37: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:5:22: info: range check proved (CVC4: 1 VC)
 test_constrained.adb:12:04: warning: analyzing unreferenced procedure "Test_1"
 test_constrained.adb:12:14: warning: subprogram "Test_1" has no effect
-test_constrained.adb:13:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test_constrained.adb:15:22: medium: assertion might fail, cannot prove not Y.all'constrained
 test_constrained.adb:15:28: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:18:04: warning: analyzing unreferenced procedure "Test_2"
 test_constrained.adb:18:14: warning: subprogram "Test_2" has no effect
-test_constrained.adb:19:07: medium: memory leak might occur at end of scope
 test_constrained.adb:21:09: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:21:09: info: range check proved (CVC4: 1 VC)
 test_constrained.adb:21:16: medium: discriminant check might fail (e.g. when Y.all = (B => True, X => 0))
 test_constrained.adb:24:04: warning: analyzing unreferenced procedure "Test_3"
 test_constrained.adb:24:14: warning: subprogram "Test_3" has no effect
-test_constrained.adb:25:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test_constrained.adb:27:22: medium: assertion might fail, cannot prove not Y.all'constrained
 test_constrained.adb:27:28: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:30:04: warning: analyzing unreferenced procedure "Test_4"
 test_constrained.adb:30:14: warning: subprogram "Test_4" has no effect
-test_constrained.adb:31:07: medium: memory leak might occur at end of scope
 test_constrained.adb:33:09: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:33:09: info: range check proved (CVC4: 1 VC)
 test_constrained.adb:33:16: medium: discriminant check might fail
 test_constrained.adb:36:04: warning: analyzing unreferenced procedure "Test_5"
 test_constrained.adb:36:14: warning: subprogram "Test_5" has no effect
-test_constrained.adb:37:07: medium: memory leak might occur at end of scope
 test_constrained.adb:39:09: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:39:09: info: range check proved (CVC4: 1 VC)
 test_constrained.adb:39:16: medium: discriminant check might fail
 test_constrained.adb:42:04: warning: analyzing unreferenced procedure "Test_6"
 test_constrained.adb:42:14: warning: subprogram "Test_6" has no effect
-test_constrained.adb:43:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test_constrained.adb:45:22: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:45:22: medium: assertion might fail, cannot prove X.all (1)'Constrained
-test_constrained.adb:48:04: medium: memory leak might occur at end of scope
 test_constrained.adb:51:06: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_constrained.adb:52:19: info: assertion proved (Trivial: 1 VC)
 test_constrained.adb:52:23: info: pointer dereference check proved (CVC4: 1 VC)
@@ -57,24 +46,18 @@ test_constrained.adb:53:04: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:53:10: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_tag.adb:13:04: warning: analyzing unreferenced procedure "Test_Uninit_1"
 test_tag.adb:13:14: warning: subprogram "Test_Uninit_1" has no effect
-test_tag.adb:14:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test_tag.adb:16:22: medium: assertion might fail, cannot prove X.all not in Root
 test_tag.adb:16:24: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:19:04: warning: analyzing unreferenced procedure "Test_Uninit_2"
 test_tag.adb:19:14: warning: subprogram "Test_Uninit_2" has no effect
-test_tag.adb:20:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test_tag.adb:22:22: medium: assertion might fail, cannot prove Y.all not in Child
 test_tag.adb:22:24: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:25:04: warning: analyzing unreferenced procedure "Test_Uninit_3"
 test_tag.adb:25:14: warning: subprogram "Test_Uninit_3" has no effect
-test_tag.adb:26:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test_tag.adb:28:22: medium: assertion might fail, cannot prove Z.all not in Root
 test_tag.adb:28:24: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:31:04: warning: analyzing unreferenced procedure "Test_Uninit_4"
 test_tag.adb:31:14: warning: subprogram "Test_Uninit_4" has no effect
-test_tag.adb:32:07: medium: memory leak might occur at end of scope
-test_tag.adb:33:07: medium: memory leak might occur at end of scope
-test_tag.adb:34:07: medium: memory leak might occur at end of scope
 test_tag.adb:36:22: info: assertion proved (CVC4: 1 VC)
 test_tag.adb:36:24: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:37:22: info: assertion proved (CVC4: 1 VC)
@@ -84,28 +67,22 @@ test_tag.adb:38:24: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:41:04: warning: analyzing unreferenced procedure "Test_Init_1"
 test_tag.adb:41:14: warning: subprogram "Test_Init_1" has no effect
 test_tag.adb:42:07: info: initialization of "R" proved
-test_tag.adb:43:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test_tag.adb:45:22: medium: assertion might fail, cannot prove X.all not in Root
 test_tag.adb:45:24: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:48:04: warning: analyzing unreferenced procedure "Test_Init_2"
 test_tag.adb:48:14: warning: subprogram "Test_Init_2" has no effect
 test_tag.adb:49:07: info: initialization of "C" proved
-test_tag.adb:50:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test_tag.adb:52:22: medium: assertion might fail, cannot prove Y.all not in Child
 test_tag.adb:52:24: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:55:04: warning: analyzing unreferenced procedure "Test_Init_3"
 test_tag.adb:55:14: warning: subprogram "Test_Init_3" has no effect
 test_tag.adb:56:07: info: initialization of "C" proved
-test_tag.adb:57:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 test_tag.adb:59:22: medium: assertion might fail, cannot prove Z.all not in Root
 test_tag.adb:59:24: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:62:04: warning: analyzing unreferenced procedure "Test_Init_4"
 test_tag.adb:62:14: warning: subprogram "Test_Init_4" has no effect
 test_tag.adb:63:07: info: initialization of "R" proved
 test_tag.adb:64:07: info: initialization of "C" proved
-test_tag.adb:65:07: medium: memory leak might occur at end of scope
-test_tag.adb:66:07: medium: memory leak might occur at end of scope
-test_tag.adb:67:07: medium: memory leak might occur at end of scope
 test_tag.adb:69:22: info: assertion proved (CVC4: 1 VC)
 test_tag.adb:69:24: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:70:22: info: assertion proved (CVC4: 1 VC)
@@ -116,6 +93,5 @@ test_tag.adb:74:04: warning: analyzing unreferenced procedure "Test_Init_5"
 test_tag.adb:74:14: warning: subprogram "Test_Init_5" has no effect
 test_tag.adb:75:07: info: initialization of "C" proved
 test_tag.adb:76:07: info: initialization of "R" proved
-test_tag.adb:77:07: medium: memory leak might occur at end of scope
 test_tag.adb:79:09: info: pointer dereference check proved (CVC4: 1 VC)
 test_tag.adb:79:13: medium: tag check might fail

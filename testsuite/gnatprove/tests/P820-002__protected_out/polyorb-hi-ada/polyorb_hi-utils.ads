@@ -99,7 +99,7 @@ package PolyORB_HI.Utils is
    function Parse_String (S : String; First : Integer; Delimiter : Character)
                          return Integer
      with Pre => (First >= S'First and First <= S'Last);
-   --  XXX GNATprove GPL2014 cannot prove this, TBI
+   --  XXX GNATProve GPL2014 cannot prove this, TBI
    --            Post => ((Parse_String'Result = S'Last)
    --                     or (Parse_String'Result in S'Range
    --                           and then Parse_String'Result > S'First

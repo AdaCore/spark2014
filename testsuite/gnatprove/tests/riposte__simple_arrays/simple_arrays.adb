@@ -1,4 +1,4 @@
-package body Simple_Arrays with SPARK_Mode
+package body Simple_Arrays
 is
    pragma Warnings (Off, "* has no effect");
 
@@ -78,16 +78,16 @@ is
                                N : in Integer)
      with Depends => (A =>+ N),
           Post    =>
-            (if N /= 1 then A = (A'Old with delta 1 => 5,  --  @POSTCONDITION:PASS
+            (if N /= 1 then A = A'Old'Update (1 => 5,  --  @POSTCONDITION:PASS
                                               N => 6))
-               and (if N /= 1 then A = (A'Old with delta N => 6,
+               and (if N /= 1 then A = A'Old'Update (N => 6,
                                                      1 => 5))
-               and (if N /= 1 then A = (A with delta N => 6,
+               and (if N /= 1 then A = A'Update (N => 6,
                                                  1 => 5))
    is
    begin
-      pragma Assert ((A with delta 1 => 5,  --  @ASSERT:FAIL
-                               N => 6) = (A with delta N => 6,
+      pragma Assert (A'Update (1 => 5,  --  @ASSERT:FAIL
+                               N => 6) = A'Update (N => 6,
                                                    1 => 5));
       A(1) := 5;
       A(N) := 6;
@@ -109,8 +109,8 @@ is
                                            return Integer
      with Depends => (Array_Axiom_Transitivity_Worse'Result => D,
                       null => (A, B, C)),
-          Pre     => B = (A with delta 23 => 42)
-                       and C = (A with delta 42 => 23,
+          Pre     => B = A'Update (23 => 42)
+                       and C = A'Update (42 => 23,
                                          23 => 42)
                        and (D = B or D = C),
           Post    => Array_Axiom_Transitivity_Worse'Result = 42  --  @POSTCONDITION:PASS
@@ -124,7 +124,7 @@ is
                                 I, J, K : Integer)
      with Depends => (A =>+ (I, J, K)),
           Pre     => I /= J and J /= K and K /= I,
-          Post    => A = (A'Old with delta I => 1,  --  @POSTCONDITION:PASS
+          Post    => A = A'Old'Update (I => 1,  --  @POSTCONDITION:PASS
                                        J => 2,
                                        K => 3)
    is
@@ -139,7 +139,7 @@ is
                                           I, J, K : Integer)
      with Depends => (A =>+ (I, J, K)),
           Pre     => I /= J and J /= K and K /= I,
-          Post    => A = (A'Old with delta I => 1,  --  @POSTCONDITION:PASS
+          Post    => A = A'Old'Update (I => 1,  --  @POSTCONDITION:PASS
                                        J => 2,
                                        K => 3)
    is
@@ -149,19 +149,19 @@ is
       A(J) := 2;
       A(I) := 1;
 
-      pragma Assert ((A_Old with delta I => 1,  --  @ASSERT:PASS
+      pragma Assert (A_Old'Update (I => 1,  --  @ASSERT:PASS
                                    J => 2,
-                                   K => 3) = (A_Old with delta I => 1,
+                                   K => 3) = A_Old'Update (I => 1,
                                                            K => 3,
                                                            J => 2));
-      pragma Assert ((A_Old with delta I => 1,  --  @ASSERT:PASS
+      pragma Assert (A_Old'Update (I => 1,  --  @ASSERT:PASS
                                    K => 3,
-                                   J => 2) = (A_Old with delta K => 3,
+                                   J => 2) = A_Old'Update (K => 3,
                                                            I => 1,
                                                            J => 2));
-      pragma Assert ((A_Old with delta K => 3,  --  @ASSERT:PASS
+      pragma Assert (A_Old'Update (K => 3,  --  @ASSERT:PASS
                                    I => 1,
-                                   J => 2) = (A_Old with delta K => 3,
+                                   J => 2) = A_Old'Update (K => 3,
                                                            J => 2,
                                                            I => 1));
    end Update_Reordering_With_Help;
@@ -173,8 +173,8 @@ is
      with Depends => (B =>+ J,
                       C =>+ I,
                       null => A),
-          Pre     => B = (A with delta I => 23)
-                       and C = (A with delta J => 42)
+          Pre     => B = A'Update (I => 23)
+                       and C = A'Update (J => 42)
                        and I /= J,
           Post    => B = C  --  @POSTCONDITION:PASS
    is
@@ -189,7 +189,7 @@ is
      with Depends => (null => (A, I))
    is
    begin
-      pragma Assert ((A = (A with delta I => (42))) =  --  @ASSERT:PASS
+      pragma Assert ((A = A'Update (I => (42))) =  --  @ASSERT:PASS
                        (A (I) = 42));
 
       null;
@@ -201,8 +201,8 @@ is
      with Depends => (null => (A, I))
    is
    begin
-      pragma Assert ((A = (A with delta I => (42))) =  --  @ASSERT:PASS
-                       (A (I) = IntI_IntC'(A with delta I => 42) (I)));
+      pragma Assert ((A = A'Update (I => (42))) =  --  @ASSERT:PASS
+                       (A (I) = A'Update (I => 42) (I)));
 
       null;
    end Update_Equality_Test_2;
@@ -213,8 +213,8 @@ is
      with Depends => (null => (A, B, I))
    is
    begin
-      pragma Assert (if B = A then (B = (A with delta I => (42))) =
-                       (A (I) = IntI_IntC'(A with delta I => 42) (I)));
+      pragma Assert (if B = A then (B = A'Update (I => (42))) =
+                       (A (I) = A'Update (I => 42) (I)));
 
       null;
    end Update_Equality_Test_3;
@@ -226,8 +226,8 @@ is
    is
    begin
       pragma Assert
-        (if (B = A and C = A) then (B = (C with delta I => 42)) =
-                                      (A (I) = IntI_IntC'(A with delta I => 42) (I)));
+        (if (B = A and C = A) then (B = C'Update (I => 42)) =
+                                      (A (I) = A'Update (I => 42) (I)));
 
       null;
    end Update_Equality_Test_4;
@@ -240,8 +240,8 @@ is
    begin
       pragma Assert (if (B = A
                            and C = A
-                           and D = (C with delta I => 42))
-                     then (B = D) = (A (I) = IntI_IntC'(A with delta I => 42) (I)));
+                           and D = C'Update (I => 42))
+                     then (B = D) = (A (I) = A'Update (I => 42) (I)));
 
       null;
    end Update_Equality_Test_5;
@@ -254,9 +254,9 @@ is
    begin
       pragma Assert (if (B = A
                            and C = A
-                           and D = (C with delta I => 42)
+                           and D = C'Update (I => 42)
                            and E = A)
-                     then (B = D) = (E (I) = IntI_IntC'(A with delta I => 42) (I)));
+                     then (B = D) = (E (I) = A'Update (I => 42) (I)));
 
       null;
    end Update_Equality_Test_6;
@@ -269,10 +269,10 @@ is
    begin
       pragma Assert (if (B = A
                            and C = A
-                           and D = (C with delta I => 42)
+                           and D = C'Update (I => 42)
                            and E = A
                            and F = A)
-                     then (B = D) = (E (I) = IntI_IntC'(F with delta I => 42) (I)));
+                     then (B = D) = (E (I) = F'Update (I => 42) (I)));
 
       null;
    end Update_Equality_Test_7;
@@ -285,10 +285,10 @@ is
    begin
       pragma Assert (if (B = A
                            and C = A
-                           and D = (C with delta I => 42)
+                           and D = C'Update (I => 42)
                            and E = A
                            and F = A
-                           and G = (F with delta I => 42))
+                           and G = F'Update (I => 42))
                      then (B = D) = (E (I) = G (I)));
 
       null;
@@ -302,10 +302,10 @@ is
    begin
       pragma Assert (if (B = A
                            and C = A
-                           and D = (C with delta I => 42)
+                           and D = C'Update (I => 42)
                            and E = A
                            and F = A
-                           and G = (F with delta I => 42)
+                           and G = F'Update (I => 42)
                            and E (I) = X)
                      then (B = D) = (X = G (I)));
 
@@ -320,10 +320,10 @@ is
    begin
       pragma Assert (if (B = A
                            and C = A
-                           and D = (C with delta I => 42)
+                           and D = C'Update (I => 42)
                            and E = A
                            and F = A
-                           and G = (F with delta I => 42)
+                           and G = F'Update (I => 42)
                            and E (I) = X
                            and G (I) = Y)
                      then ((B = D) = (X = Y)));
@@ -339,10 +339,10 @@ is
    begin
       pragma Assert (if (B = A
                            and C = A
-                           and D = (C with delta J => 42)
+                           and D = C'Update (J => 42)
                            and E = A
                            and F = A
-                           and G = (F with delta I => 42)
+                           and G = F'Update (I => 42)
                            and E (I) = X
                            and G (J) = Y
                            and I = J)
@@ -373,7 +373,7 @@ is
      with Depends => (null => (A, I, X))
    is
    begin
-      pragma Assert (IntI_IntC'(A with delta I => X)(I) = X);  --  @ASSERT:PASS
+      pragma Assert (A'Update (I => X)(I) = X);  --  @ASSERT:PASS
       null;
    end Axiom_Test_1;
 
@@ -382,7 +382,7 @@ is
      with Depends => (null => (A, I))
    is
    begin
-      pragma Assert (IntI_IntC'(A with delta I => A(I)) = A);  --  @ASSERT:PASS
+      pragma Assert (A'Update (I => A(I)) = A);  --  @ASSERT:PASS
       null;
    end Axiom_Test_2;
 
@@ -391,7 +391,7 @@ is
      with Depends => (null => (A, J, K, X))
    is begin
       pragma Assert (if J /= K then  --  @ASSERT:PASS
-                       IntI_IntC'(A with delta J => X) (K) = A (K));
+                       A'Update (J => X) (K) = A (K));
       null;
    end Axiom_Test_3;
 

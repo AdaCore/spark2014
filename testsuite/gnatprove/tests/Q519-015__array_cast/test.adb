@@ -29,7 +29,7 @@ begin
                     (for all J in Y (I)'Range =>
                          Y (I) (J) = 1));
    pragma Assert (for all I in Z'Range => Z (I).Y = 1);
-   result_array := Int_array2(test_array); --GNat OK, GNATprove error
+   result_array := Int_array2(test_array); --GNat OK, GNATProve error
    pragma Assert (result_array (1) = 2);
    result_array := cast (test_array);  --GNAT OK, GNATPROVE OK
    pragma Assert (result_array (1) = 2);

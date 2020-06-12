@@ -297,16 +297,6 @@ package body SPARK_Atree.Entities is
    function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
    is (Sem_Util.Get_Enum_Lit_From_Pos (Typ, P, No_Location));
 
-   ---------------------------------
-   -- Get_Iterable_Type_Primitive --
-   ---------------------------------
-
-   function Get_Iterable_Type_Primitive
-     (Typ : Entity_Id;
-      Nam : Name_Id)
-      return Entity_Id
-   renames Sem_Util.Get_Iterable_Type_Primitive;
-
    ------------------
    -- Get_Rep_Item --
    ------------------
@@ -469,15 +459,6 @@ package body SPARK_Atree.Entities is
 
    function Is_Entity_Name (N : Node_Id) return Boolean renames
      Einfo.Is_Entity_Name;
-
-   ------------------------------------------
-   -- Is_Expression_Function_Or_Completion --
-   ------------------------------------------
-
-   function Is_Expression_Function_Or_Completion
-     (Subp : Entity_Id)
-      return Boolean
-      renames Sem_Util.Is_Expression_Function_Or_Completion;
 
    ---------------------
    -- Is_Limited_View --

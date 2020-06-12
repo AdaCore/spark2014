@@ -57,12 +57,6 @@ package Why.Gen.Pointers is
    --  fields: pointer_address, is_null_pointer, and pointer_address.
    --  It also defines the needed functions to manipulate this type.
 
-   function Move_Param_Item
-     (Typ : Entity_Id) return Item_Type
-   with Pre => Is_Deep (Typ) and then Is_Composite_Type (Typ);
-   --  Create an item for the parameter of the __move function for deep
-   --  composite types.
-
    function New_Ada_Pointer_Update
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
@@ -95,26 +89,6 @@ package Why.Gen.Pointers is
    --  @param E the Ada type entity
    --  @param Name name of the pointer to access
    --  @param Local whether we want the local or the global access
-
-   function New_Pointer_Is_Moved_Access
-     (E     : Entity_Id;
-      Name  : W_Expr_Id;
-      Local : Boolean := False)
-      return W_Expr_Id;
-   --  Return an access to the Is_Moved field of the pointer why record.
-   --  @param E the Ada type entity
-   --  @param Name name of the pointer to access
-   --  @param Local whether we want the local or the global access
-
-   function New_Pointer_Is_Moved_Update
-     (E      : Entity_Id;
-      Name   : W_Expr_Id;
-      Value  : W_Expr_Id;
-      Domain : EW_Domain;
-      Local  : Boolean := False)
-      return W_Expr_Id;
-   --  Return an update of the Is_Moved field of the pointer why record Name
-   --  with value Value.
 
    function New_Pointer_Value_Access
      (Ada_Node : Node_Id;
@@ -151,7 +125,7 @@ package Why.Gen.Pointers is
       return W_Expr_Id;
    --  Reconstructs a complete pointer of type Ty from an array of expressions
    --  representing a split form. A should contain first the value, then the
-   --  address, is_null and is_moved.
+   --  address, and is_null.
 
    function Prepare_Args_For_Access_Subtype_Check
      (Check_Ty : Entity_Id;

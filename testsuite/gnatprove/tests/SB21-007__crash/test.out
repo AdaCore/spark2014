@@ -1,37 +1,7 @@
-a-cfdlli.ads:469:49: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:610:49: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:700:57: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:766:57: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:853:28: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:853:39: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1029:43: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1210:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1349:20: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1364:20: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1379:20: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1394:20: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1416:14: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1422:23: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1471:14: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cfdlli.ads:1478:23: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:7
-a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at database.ads:18
-a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at database.ads:18
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:7
-a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:7
-a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:7
-a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:7
-a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:7
-a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:7
-a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:7
 database.adb:12:04: info: initialization of "Database" proved
-database.adb:12:29: info: range check proved (CVC4: 1 VC)
 database.adb:13:04: info: initialization of "DB_Model" proved
 database.adb:20:07: warning: "Email" is not modified, could be of access constant type
-database.adb:32:08: info: precondition proved (Trivial: 1 VC)
-database.adb:33:11: info: precondition proved (Trivial: 1 VC)
-database.adb:34:31: info: precondition proved (CVC4: 2 VC)
-database.adb:35:32: info: precondition proved (CVC4: 2 VC)
-database.adb:40:12: info: precondition proved (CVC4: 2 VC)
-database.adb:40:12: info: precondition proved (Trivial: 1 VC)
-database.adb:41:12: info: precondition proved (Trivial: 1 VC)
-database.ads:8:03: info: initial condition proved (CVC4: 1 VC)
+database.adb:22:34: insufficient permission for "Email"
+database.adb:22:34: object was declared as not writeable at line 20
+gnatprove: error during flow analysis and proof

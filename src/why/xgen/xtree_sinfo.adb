@@ -176,6 +176,26 @@ package body Xtree_Sinfo is
                  "Terms", "W_Expr", Id_Some);
       Set_Domain (W_Trigger, EW_Term);
 
+      ---------------------
+      -- W_Postcondition --
+      ---------------------
+
+      New_Field (W_Postcondition,
+                 "Pred", "W_Pred", Id_One);
+      New_Field (W_Postcondition,
+                 "Handlers", "W_Exn_Condition", Id_Set);
+      Set_Domain (W_Postcondition, EW_Pred);
+
+      ---------------------
+      -- W_Exn_Condition --
+      ---------------------
+
+      New_Field (W_Exn_Condition,
+                 "Exn_Case", "W_Identifier", Id_One);
+      New_Field (W_Exn_Condition,
+                 "Pred", "W_Pred", Id_One);
+      Set_Domain (W_Exn_Condition, EW_Pred);
+
       ---------------
       -- W_Handler --
       ---------------

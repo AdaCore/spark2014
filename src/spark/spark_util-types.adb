@@ -590,6 +590,15 @@ package body SPARK_Util.Types is
       end if;
    end Get_Initial_DIC_Procedure;
 
+   ---------------------------------
+   -- Get_Iterable_Type_Primitive --
+   ---------------------------------
+
+   function Get_Iterable_Type_Primitive
+     (Typ : Entity_Id;
+      Nam : Name_Id) return Entity_Id
+     is (Ultimate_Alias (Sem_Util.Get_Iterable_Type_Primitive (Typ, Nam)));
+
    -------------------------------------
    -- Get_Parent_Type_If_Check_Needed --
    -------------------------------------
@@ -634,13 +643,14 @@ package body SPARK_Util.Types is
 
    function Get_Specific_Type_From_Classwide (E : Entity_Id) return Entity_Id
    is
-      Specific_Type : constant Entity_Id := Etype (Base_Type (E));
-
+      S : constant Entity_Id :=
+        (if Ekind (E) = E_Class_Wide_Subtype then Etype (Etype (E))
+         else Etype (E));
    begin
-      if Is_Full_View (Specific_Type) then
-         return Partial_View (Specific_Type);
+      if Is_Full_View (S) then
+         return Partial_View (S);
       else
-         return Specific_Type;
+         return S;
       end if;
    end Get_Specific_Type_From_Classwide;
 

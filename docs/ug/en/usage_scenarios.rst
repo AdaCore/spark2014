@@ -197,8 +197,6 @@ This strategy has been applied at Altran on UK military projects submitted to
 Def Stan 00-56 certification: AoRTE was proved on all the code, and contracts
 were exercised during integration testing, which allowed to scrap unit testing.
 
-.. _Between Proof and Unit Testing:
-
 Between Proof and Unit Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -880,7 +878,7 @@ results of |GNATprove|'s analysis depend on assumptions on the correct behavior
 of the non-|SPARK| code. For example, callers of a |SPARK| subprogram should
 only pass initialized input values, and non-|SPARK| subprograms called from
 |SPARK| code should respect their postcondition. See section :ref:`Managing
-Assumptions` for more details on assumptions.
+Assumptions` for the complete list of assumptions.
 
 In particular, when changing the target characteristics, |GNATprove|'s analysis
 can be used to show that no possible overflow can occur as a result of changing
@@ -1006,6 +1004,9 @@ Depending on the violation, it may be more or less easy to rewrite the code in
   Messages` or removed by introducing a copy of the object to pass as argument
   to the call.
 
+* Goto statements should be rewritten into regular control and looping
+  structures when possible.
+
 * Controlled types cannot be rewritten easily.
 
 * Top-level exception handlers can be moved to a wrapper subprogram, which
@@ -1057,63 +1058,6 @@ code ``SPARK_Mode => On``:
 
 #. Now that |GNATprove| can analyze the unit without any errors, continue with
    whatever analysis is required to achieve the desired objectives.
-
-Choosing Which Run-time Checking to Keep
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Inside proven |SPARK| code, no run-time errors of the kinds that |GNATprove|
-targets can be raised (see :ref:`Avoiding Errors to Enhance Portability` for
-details), provided the analysis assumptions are respected. See section
-:ref:`Managing Assumptions` for more details on assumptions. In such proven
-code, it is possible to remove run-time checking as described in section
-:ref:`Safe Optimization of Run-Time Checks`.
-
-Note that |GNATprove|'s analysis does not detect possible run-time errors
-corresponding to raising exception ``Storage_Error`` at run time. As described
-in "GNAT User's Guide for Native Platforms", section 6.6.1 on "Stack Overflow
-Checking", ``gcc`` option ``-fstack-check`` can be used to activate stack
-checking.
-
-An important use case is the one of unproven code calling proven code, typically
-when rewriting core components of the application in |SPARK|. In that case, the
-guarantees provided by proof on |SPARK| code rely on the following main
-assumptions:
-
-- The preconditions of proven |SPARK| subprograms should be respected. If these
-  subprograms can be called from subprograms that are not proved, it is
-  recommended to activate their preconditions at run time with :ref:`Pragma
-  Assertion_Policy`, as shown in :ref:`Writing Contracts for Program
-  Integrity`.
-
-- All inputs of proven |SPARK| subprograms should have valid values for their
-  types. This is enforced by the combination of flow analysis and proof in
-  |SPARK| code, both for parameters and global variables that are read in the
-  subprogram. It can be partially verified (for parameters but not global
-  variables) during testing for calls from unproven subprograms by compiling
-  the program with special switches to add run-time checks related to validity,
-  as described in section :ref:`Between Proof and Unit Testing`.
-
-- Inputs and outputs that may interfere should not be aliased. See section
-  :ref:`Absence of Interferences` for details. Similar to validity, it can be
-  partially verified (for parameters but not global
-  variables) during testing for calls from unproven
-  subprograms by compiling the program with special switch ``-gnateA``, as
-  described in section :ref:`Between Proof and Unit Testing`.
-
-Inside unproven code, users may opt for keeping run-time checking and/or
-assertion checking in the executable or not, depending on their overall error
-detection and recovery policy. At the level of a compilation unit, this choice
-can be made through compilation switch ``-gnatp`` (for suppressing run-time
-checking) and ``-gnata`` (for activating assertion checking). These choices can
-be reversed for a selected piece of code with pragmas ``Suppress`` and
-``Unsuppress`` (for all checks) and ``Assertion_Policy`` (for assertions only).
-
-Additional compilation switches that activate validity checking are best kept
-for verification, as described in section :ref:`Between Proof and Unit
-Testing`. Activating them in the final executable may lead to large increases
-in running time, with some checks being inserted at unexpected/extra places, as
-these validity checks do not follow a formal definition like the one found in
-Ada Reference Manual for other run-time checks.
 
 .. _New Developments in SPARK:
 

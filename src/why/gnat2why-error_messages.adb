@@ -258,9 +258,6 @@ package body Gnat2Why.Error_Messages is
                | VC_Initialization_Check
                | VC_UC_No_Holes
                | VC_UC_Same_Size
-               | VC_UC_Alignment
-               | VC_Memory_Leak
-               | VC_Memory_Leak_At_End_Of_Scope
             =>
                return (OK => False);
          end case;
@@ -436,7 +433,8 @@ package body Gnat2Why.Error_Messages is
      (Node       : Node_Id;
       Kind       : VC_Kind;
       Proved     : Boolean;
-      E          : Entity_Id)
+      E          : Entity_Id;
+      How_Proved : Prover_Category)
    is
       Id : constant VC_Id :=
         Register_VC (Node, Kind, E, Present_In_Why3 => False);
@@ -448,7 +446,7 @@ package body Gnat2Why.Error_Messages is
          Proved,
          E,
          No_Session_Dir,
-         PC_Trivial);
+         How_Proved);
    end Emit_Static_Proof_Result;
 
    ------------------------
@@ -647,10 +645,6 @@ package body Gnat2Why.Error_Messages is
             return "pointer dereference check might fail";
          when VC_Null_Exclusion =>
             return "null exclusion check might fail";
-         when VC_Memory_Leak =>
-            return "memory leak might occur";
-         when VC_Memory_Leak_At_End_Of_Scope =>
-            return "memory leak might occur at end of scope";
          when VC_Invariant_Check           =>
             return "invariant check might fail";
          when VC_Invariant_Check_On_Default_Value =>
@@ -702,8 +696,7 @@ package body Gnat2Why.Error_Messages is
          when VC_Loop_Invariant_Init       =>
             return "loop invariant might fail in first iteration";
          when VC_Loop_Invariant_Preserv    =>
-            return "loop invariant might not be preserved by an arbitrary " &
-              "iteration";
+            return "loop invariant might fail after first iteration";
          when VC_Loop_Variant              =>
             return "loop variant might fail";
          when VC_Assert                    =>
@@ -713,32 +706,11 @@ package body Gnat2Why.Error_Messages is
          when VC_Inline_Check              =>
             return "Inline_For_Proof annotation might be incorrect";
          when VC_UC_No_Holes               =>
-            declare
-               Common : constant String :=
-                 " with constraints on bit representation is unsuitable for ";
-            begin
-               if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
-               then
-                  return "object" & Common &
-                    "aliasing via address clause";
-               else
-                  return "type" & Common & "unchecked conversion";
-               end if;
-            end;
-
+            return "type with constraints on bit representation is " &
+              "unsuitable for unchecked conversion";
          when VC_UC_Same_Size              =>
-            declare
-               Prefix : constant String :=
-                 (if Nkind (Node) = N_Attribute_Reference then
-                       "types of aliased objects"
-                  else "types used for unchecked conversion");
-            begin
-               return Prefix & " do not have the same size";
-            end;
-
-         when VC_UC_Alignment =>
-            return "alignment of overlaying object might not be an integral " &
-              "multiple of alignment of overlaid object";
+            return "types used for unchecked conversion do not have the " &
+              "same size";
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
@@ -1013,10 +985,6 @@ package body Gnat2Why.Error_Messages is
             return "pointer dereference check proved";
          when VC_Null_Exclusion =>
             return "null exclusion check proved";
-         when VC_Memory_Leak =>
-            return "absence of memory leak proved";
-         when VC_Memory_Leak_At_End_Of_Scope =>
-            return "absence of memory leak at end of scope proved";
          when VC_Invariant_Check           => return "invariant check proved";
          when VC_Invariant_Check_On_Default_Value =>
             return "invariant check proved on default value";
@@ -1069,28 +1037,9 @@ package body Gnat2Why.Error_Messages is
          when VC_Inline_Check              =>
             return "Inline_For_Proof annotation proved";
          when VC_UC_No_Holes               =>
-            declare
-               Common : constant String := " is suitable for ";
-            begin
-               if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
-               then
-                  return "object" & Common &
-                    "aliasing via address clause";
-               else
-                  return "type" & Common & "unchecked conversion";
-               end if;
-            end;
-
+            return "type is suitable for unchecked conversion";
          when VC_UC_Same_Size              =>
-            if Nkind (Node) = N_Attribute_Reference then
-               return "types of aliased objects have the same size";
-            else
-               return "types in unchecked conversion have the same size";
-            end if;
-
-         when VC_UC_Alignment =>
-            return "alignment of overlaid objects is compatible";
-
+            return "types in unchecked conversion have the same size";
          when VC_Weaker_Pre                =>
             return "precondition is weaker than class-wide precondition";
          when VC_Trivial_Weaker_Pre        =>

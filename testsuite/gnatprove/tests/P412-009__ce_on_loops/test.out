@@ -1,30 +1,30 @@
 counter_example_loop_index.adb:14:33: info: loop invariant initialization proved (CVC4: 1 VC)
-counter_example_loop_index.adb:14:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J = 0 (e.g. when J = 1)
+counter_example_loop_index.adb:14:33: medium: loop invariant might fail after first iteration, cannot prove J = 0 (e.g. when J = 1)
 counter_example_loop_index.adb:19:04: warning: analyzing unreferenced procedure "P1"
 counter_example_loop_index.adb:19:14: warning: subprogram "P1" has no effect
 counter_example_loop_index.adb:24:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:24:33: info: loop invariant preservation proved (Trivial: 1 VC)
 counter_example_loop_index.adb:25:33: info: loop invariant initialization proved (CVC4: 1 VC)
-counter_example_loop_index.adb:25:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J <= 50 (e.g. when J = 51)
+counter_example_loop_index.adb:25:33: medium: loop invariant might fail after first iteration, cannot prove J <= 50 (e.g. when J = 51)
 counter_example_loop_index.adb:26:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:26:33: info: loop invariant preservation proved (Trivial: 1 VC)
 counter_example_loop_index.adb:41:04: warning: analyzing unreferenced procedure "P2"
 counter_example_loop_index.adb:41:14: warning: subprogram "P2" has no effect
 counter_example_loop_index.adb:46:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:46:33: info: loop invariant preservation proved (Trivial: 1 VC)
+counter_example_loop_index.adb:47:33: medium: loop invariant might fail after first iteration, cannot prove F (J) (e.g. when J = 1)
 counter_example_loop_index.adb:47:33: medium: loop invariant might fail in first iteration, cannot prove F (J) (e.g. when J = 0)
-counter_example_loop_index.adb:47:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove F (J) (e.g. when J = 1)
 counter_example_loop_index.adb:47:33: medium: precondition might fail, cannot prove X < 50 (e.g. when J = 50)
 counter_example_loop_index.adb:48:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:48:33: info: loop invariant preservation proved (Trivial: 1 VC)
 counter_example_loop_index.adb:55:04: warning: analyzing unreferenced procedure "P3"
 counter_example_loop_index.adb:55:14: warning: subprogram "P3" has no effect
 counter_example_loop_index.adb:61:33: info: loop invariant initialization proved (CVC4: 1 VC)
-counter_example_loop_index.adb:61:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J <= 50 (e.g. when J = 51)
+counter_example_loop_index.adb:61:33: medium: loop invariant might fail after first iteration, cannot prove J <= 50 (e.g. when J = 51)
 counter_example_loop_index.adb:67:04: warning: analyzing unreferenced procedure "P4"
 counter_example_loop_index.adb:67:14: warning: subprogram "P4" has no effect
 counter_example_loop_index.adb:74:33: info: loop invariant initialization proved (CVC4: 1 VC)
-counter_example_loop_index.adb:74:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J <= 50 (e.g. when J = 51)
+counter_example_loop_index.adb:74:33: medium: loop invariant might fail after first iteration, cannot prove J <= 50 (e.g. when J = 51)
 counter_example_loop_index.ads:8:14: warning: subprogram "P" has no effect
 counterexample expected for check at counter_example_loop_index.adb:14
   trace at counter_example_loop_index.adb:12 --> I = 2

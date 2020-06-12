@@ -27,6 +27,10 @@
   <proof prover="1"><result status="unknown" steps="98202"/></proof>
   <proof prover="2"><result status="unknown" steps="5450"/></proof>
   </goal>
+  <goal name="def&#39;vc.4" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>

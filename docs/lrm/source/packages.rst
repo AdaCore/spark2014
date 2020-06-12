@@ -132,7 +132,7 @@ of an effectively volatile type. There are two exceptions to this rule:
     when a type conversion introduces a new object; in cases where it is
     unspecified whether a new object is created, we assume (for purposes
     of the rules in this section) that no new object is created].
-
+  
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
 abstraction; see :ref:`abstract-state-aspect`). [The term "external" does
@@ -385,7 +385,7 @@ be *compatible with respect to volatility* with E2 if
    * both E1 and E2 are effectively volatile and each of the four
      volatility refinement aspects is either False for E1 or
      True for E2.
-
+   
 .. centered:: **Legality Rules**
 
 
@@ -430,10 +430,10 @@ be *compatible with respect to volatility* with E2 if
    an effectively volatile object or an external state abstraction.
 
 9. A formal parameter (or result) of a nonvolatile function, or of a
-   function which is nonvolatile for internal calls, shall not be of
-   an effectively volatile type. [For a protected function, this rule
-   does not apply to the notional parameter denoting the current instance of
-   the associated protected unit described in section :ref:`global-aspects`.]
+    function which is nonvolatile for internal calls, shall not be of
+    an effectively volatile type. [For a protected function, this rule
+    does not apply to the notional parameter denoting the current instance of
+    the associated protected unit described in section :ref:`global-aspects`.]
 
 10. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object with
@@ -447,8 +447,7 @@ be *compatible with respect to volatility* with E2 if
 
    * the [right-hand side] expression of an assignment statement; or
 
-   * the expression of an initialization expression of an object declaration
-     which does not occur inside a declare expression; or
+   * the expression of an initialization expression of an object declaration; or
 
    * the ``object_name`` of an ``object_renaming_declaration``; or
 
@@ -2275,17 +2274,19 @@ language definition and what is not.]
 
 .. centered:: **Legality Rules**
 
+
 2. The aspect Type_Invariant may be specified in SPARK, but only for
    the completion of a private type. [In other words, the Type_Invariant
    aspect shall not be specified for a partial view of a type, nor for the
    completion of a private extension.]
    The aspect Type_Invariant'Class is not in SPARK.
 
+
 3. [A Type_Invariant expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
-4. A Type_Invariant shall not apply to an effectively volatile type with the
-   properties Async_Writers or Effective_Reads set to True.
+
+4. A Type_Invariant shall not apply to an effectively volatile type.
 
 .. centered:: **Verification Rules**
 
@@ -2298,6 +2299,7 @@ several points (described below) where, in fact, Ada defines no such checks.
 [This means that when we talk below about extending invariant checks,
 we are only talking about generating additional verification conditions;
 we are not talking about any changes in a program's behavior at run-time.]
+
 
 5. The type invariant expression for a type T shall not include a call
    to a boundary function for type T. [This often means that a type
@@ -2406,8 +2408,7 @@ Default_Initial_Condition Aspects
    which is checked (at run time) after any object of the given type (or of
    any descendant of the given type for which the specified aspect is
    inherited and not overridden), is "initialized by
-   default" (see Ada RM 3.3.1). [Note that an imported object is not
-   "initialized by default" (see Ada RM B.3).]
+   default" (see Ada RM 3.3.1).
 
    The *Boolean_*\ ``expression``, if any, causes freezing in the
    same way as the ``default_expression`` of a ``component_declaration``.

@@ -4,6 +4,6 @@ pack.ads:10:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 pack.ads:13:14: info: postcondition proved (CVC4: 1 VC)
 user.adb:2:11: warning: subprogram "User" has no effect
 user.adb:5:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
-user.adb:6:22: info: assertion proved (Trivial)
+user.adb:6:22: info: assertion proved
 user.adb:8:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 user.adb:9:22: info: assertion proved (CVC4: 1 VC)

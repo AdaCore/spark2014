@@ -22,12 +22,12 @@ procedure Linear_Search with SPARK_Mode is
    function Pledge (L : access constant List_Cell; P : Boolean) return Boolean is
      (P)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATProve, Pledge);
 
    function Pledge (L : access constant Integer; P : Boolean) return Boolean is
      (P)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATProve, Pledge);
 
    function Linear_Search (L : access constant List_Cell; V : Integer) return Natural with
      Pre => Length (L) < Integer'Last,

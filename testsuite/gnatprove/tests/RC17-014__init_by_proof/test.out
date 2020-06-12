@@ -57,7 +57,7 @@ init_by_proof.adb:66:15: info: index check proved (CVC4: 2 VC)
 init_by_proof.adb:66:26: info: index check proved (CVC4: 2 VC)
 init_by_proof.adb:66:29: info: division check proved (CVC4: 1 VC)
 init_by_proof.adb:71:04: info: initialization of "Error" proved
-init_by_proof.adb:74:19: medium: assertion might fail, cannot prove not Buf'initialized
+init_by_proof.adb:74:19: medium: assertion might fail, cannot prove not Buf'valid_scalars
 init_by_proof.adb:75:04: info: precondition proved (CVC4: 1 VC)
 init_by_proof.adb:77:12: info: initialization check proved (CVC4: 1 VC)
 init_by_proof.adb:78:07: info: precondition proved (CVC4: 2 VC; Trivial: 1 VC)
@@ -68,22 +68,22 @@ init_by_proof.adb:80:48: info: range check proved (CVC4: 4 VC)
 init_by_proof.adb:82:10: info: precondition proved (CVC4: 1 VC)
 init_by_proof.adb:84:12: info: initialization check proved (CVC4: 1 VC)
 init_by_proof.adb:85:12: medium: initialization check might fail
-nested_init_by_proof.adb:18:43: info: initialization check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:18:50: info: initialization check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:18:45: info: initialization check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:18:52: info: initialization check proved (CVC4: 1 VC)
 nested_init_by_proof.adb:20:21: info: discriminant check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:20:40: info: discriminant check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:20:42: info: discriminant check proved (CVC4: 1 VC)
 nested_init_by_proof.adb:21:24: info: discriminant check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:21:46: info: discriminant check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:21:46: info: initialization check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:21:53: info: discriminant check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:21:53: info: initialization check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:21:48: info: discriminant check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:21:48: info: initialization check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:21:55: info: discriminant check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:21:55: info: initialization check proved (CVC4: 1 VC)
 nested_init_by_proof.adb:22:14: info: discriminant check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:22:33: info: discriminant check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:22:35: info: discriminant check proved (CVC4: 1 VC)
 nested_init_by_proof.adb:23:24: info: discriminant check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:23:46: info: discriminant check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:23:46: info: initialization check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:23:53: info: discriminant check proved (CVC4: 1 VC)
-nested_init_by_proof.adb:23:53: info: initialization check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:23:48: info: discriminant check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:23:48: info: initialization check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:23:55: info: discriminant check proved (CVC4: 1 VC)
+nested_init_by_proof.adb:23:55: info: initialization check proved (CVC4: 1 VC)
 nested_init_by_proof.adb:28:07: info: range check proved (CVC4: 2 VC)
 nested_init_by_proof.adb:31:20: info: initialization of "X" proved
 nested_init_by_proof.adb:36:22: warning: unused initial value of "X"
@@ -108,16 +108,16 @@ output_global.adb:7:22: info: data dependencies proved
 output_global.adb:7:43: low: unused global "G"
 rec_init_by_proof.adb:15:14: info: postcondition proved (CVC4: 8 VC; Trivial: 2 VC)
 rec_init_by_proof.adb:18:16: info: initialization check proved (CVC4: 1 VC)
-rec_init_by_proof.adb:19:42: info: initialization check proved (CVC4: 1 VC)
-rec_init_by_proof.adb:19:53: info: initialization check proved (CVC4: 1 VC)
-rec_init_by_proof.adb:20:42: info: initialization check proved (CVC4: 1 VC)
-rec_init_by_proof.adb:20:53: info: initialization check proved (CVC4: 1 VC)
+rec_init_by_proof.adb:19:44: info: initialization check proved (CVC4: 1 VC)
+rec_init_by_proof.adb:19:55: info: initialization check proved (CVC4: 1 VC)
+rec_init_by_proof.adb:20:44: info: initialization check proved (CVC4: 1 VC)
+rec_init_by_proof.adb:20:55: info: initialization check proved (CVC4: 1 VC)
 rec_init_by_proof.adb:27:14: info: postcondition proved (CVC4: 8 VC; Trivial: 2 VC)
 rec_init_by_proof.adb:30:16: info: initialization check proved (CVC4: 1 VC)
-rec_init_by_proof.adb:31:42: info: initialization check proved (CVC4: 1 VC)
-rec_init_by_proof.adb:31:53: info: initialization check proved (CVC4: 1 VC)
-rec_init_by_proof.adb:32:42: info: initialization check proved (CVC4: 1 VC)
-rec_init_by_proof.adb:32:53: info: initialization check proved (CVC4: 1 VC)
+rec_init_by_proof.adb:31:44: info: initialization check proved (CVC4: 1 VC)
+rec_init_by_proof.adb:31:55: info: initialization check proved (CVC4: 1 VC)
+rec_init_by_proof.adb:32:44: info: initialization check proved (CVC4: 1 VC)
+rec_init_by_proof.adb:32:55: info: initialization check proved (CVC4: 1 VC)
 rec_init_by_proof.adb:40:14: info: postcondition proved (CVC4: 3 VC; Trivial: 3 VC)
 rec_init_by_proof.adb:43:16: info: initialization check proved (CVC4: 1 VC)
 rec_init_by_proof.adb:43:20: info: division check proved (CVC4: 1 VC)
@@ -137,7 +137,7 @@ var_init_by_proof.adb:6:18: medium: initialization check might fail
 var_init_by_proof.adb:6:18: warning: unused variable "X"
 var_init_by_proof.adb:8:14: warning: subprogram "P1" has no effect
 var_init_by_proof.adb:10:22: info: assertion proved (Trivial: 1 VC)
-var_init_by_proof.adb:16:22: medium: assertion might fail, cannot prove not Z'initialized
+var_init_by_proof.adb:16:22: medium: assertion might fail, cannot prove not Z'valid_scalars
 var_init_by_proof.adb:17:22: info: assertion proved (Trivial: 1 VC)
 var_init_by_proof.adb:18:07: warning: statement has no effect
 var_init_by_proof.adb:18:11: warning: unused assignment to "X"
@@ -145,7 +145,7 @@ var_init_by_proof.adb:19:12: medium: initialization check might fail
 var_init_by_proof.adb:29:18: info: initialization check proved (CVC4: 1 VC)
 var_init_by_proof.adb:33:12: medium: initialization check might fail [possible explanation: precondition of subprogram at line 29 should mention G]
 var_init_by_proof.adb:42:09: info: initialization check proved (CVC4: 1 VC)
-var_init_by_proof.adb:43:04: medium: precondition might fail, cannot prove X'Initialized
+var_init_by_proof.adb:43:04: medium: precondition might fail, cannot prove X'Valid_Scalars
 var_init_by_proof.adb:45:08: info: initialization check proved (CVC4: 1 VC)
 var_init_by_proof.adb:46:08: info: initialization check proved (CVC4: 1 VC)
 var_init_by_proof.adb:47:19: info: assertion proved (CVC4: 1 VC)

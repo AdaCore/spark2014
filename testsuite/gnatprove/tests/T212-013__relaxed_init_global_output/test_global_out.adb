@@ -6,16 +6,16 @@ procedure Test_Global_Out with SPARK_Mode is
    type Rec is record
       F, G : Integer;
    end record with
-     Relaxed_Initialization;
+     Annotate => (GNATprove, Init_By_Proof);
 
    G : Rec;
 
    function Safe_Get_G return Integer is
-     (if G.G'Initialized then G.G else 0);
+     (if G.G'Valid_Scalars then G.G else 0);
 
    procedure Init_F_1 with
-     Post => G.F'Initialized
-     and G.G'Initialized = G.G'Initialized'Old
+     Post => G.F'Valid_Scalars
+     and G.G'Valid_Scalars = G.G'Valid_Scalars'Old
      and Safe_Get_G = Safe_Get_G'Old
    is
    begin
@@ -24,8 +24,8 @@ procedure Test_Global_Out with SPARK_Mode is
 
    procedure Init_F_2 with
      Global => (In_Out => G),
-     Post => G.F'Initialized
-     and G.G'Initialized = G.G'Initialized'Old
+     Post => G.F'Valid_Scalars
+     and G.G'Valid_Scalars = G.G'Valid_Scalars'Old
      and Safe_Get_G = Safe_Get_G'Old
    is
    begin
@@ -35,25 +35,25 @@ procedure Test_Global_Out with SPARK_Mode is
    procedure Init_F_3 with
      Global => (Output => G),
      Depends => (G => null),
-     Post => G.F'Initialized
-     and G.G'Initialized = G.G'Initialized'Old -- no flow checks should be emitted here
+     Post => G.F'Valid_Scalars
+     and G.G'Valid_Scalars = G.G'Valid_Scalars'Old -- no flow checks should be emitted here
      and Safe_Get_G = Safe_Get_G'Old
    is
    begin
       G.F := 1;
    end Init_F_3;
 
-   type My_Int is new Integer with Relaxed_Initialization;
+   type My_Int is new Integer with Annotate => (GNATprove, Init_By_Proof);
 
    B : Boolean;
    I : My_Int;
 
    function Safe_Get_I return My_Int is
-     (if I'Initialized then I else 0);
+     (if I'Valid_Scalars then I else 0);
 
    procedure Init_Cond_1 with
-     Post => (if B then I'Initialized
-              else I'Initialized = I'Initialized'Old
+     Post => (if B then I'Valid_Scalars
+              else I'Valid_Scalars = I'Valid_Scalars'Old
               and Safe_Get_I = Safe_Get_I'Old)
    is
    begin
@@ -64,8 +64,8 @@ procedure Test_Global_Out with SPARK_Mode is
 
    procedure Init_Cond_2 with
      Global => (In_Out => I, Input => B),
-     Post => (if B then I'Initialized
-              else I'Initialized = I'Initialized'Old
+     Post => (if B then I'Valid_Scalars
+              else I'Valid_Scalars = I'Valid_Scalars'Old
               and Safe_Get_I = Safe_Get_I'Old)
    is
    begin
@@ -76,8 +76,8 @@ procedure Test_Global_Out with SPARK_Mode is
 
    procedure Init_Cond_3 with
      Global => (Output => I, Input => B),
-     Post => (if B then I'Initialized
-              else I'Initialized = I'Initialized'Old -- no flow checks should be emitted here
+     Post => (if B then I'Valid_Scalars
+              else I'Valid_Scalars = I'Valid_Scalars'Old -- no flow checks should be emitted here
               and Safe_Get_I = Safe_Get_I'Old)
    is
    begin

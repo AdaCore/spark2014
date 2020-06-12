@@ -19,7 +19,7 @@ optional.adb:19:21: warning: unused assignment
 optional.adb:27:11: medium: array index check might fail
 optional.adb:29:48: info: unrolling loop
 optional.adb:31:36: info: loop invariant initialization proved (CVC4: 3 VC)
-optional.adb:31:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove TA'Loop_Entry (Outer, Inner) = 0 (e.g. when Inner = 2 and Outer = 1)
+optional.adb:31:36: medium: loop invariant might fail after first iteration, cannot prove TA'Loop_Entry (Outer, Inner) = 0 (e.g. when Inner = 2 and Outer = 1)
 utils.adb:10:29: info: range check proved (CodePeer)
 utils.adb:10:34: medium: overflow check might fail (e.g. when Val = 1) [possible explanation: subprogram at utils.ads:2 should mention Val in a precondition]
 while_loops.adb:14:21: info: implicit function contract not available for proof ("Sum_Of" might not return)

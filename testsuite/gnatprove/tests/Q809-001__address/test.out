@@ -1,7 +1,3 @@
-addr.ads:7:04: info: object is suitable for aliasing via address clause (Trivial)
-addr.ads:7:04: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: overlaying object should have an Alignment representation clause]
-addr.ads:8:22: info: object is suitable for aliasing via address clause (Trivial)
-addr.ads:8:22: info: types of aliased objects have the same size (Trivial)
 aspect.ads:5:04: "Z" is not allowed in SPARK
 aspect.ads:5:04: violation of pragma SPARK_Mode at test.adc:1
 aspect.ads:5:32: "F" is not allowed in SPARK

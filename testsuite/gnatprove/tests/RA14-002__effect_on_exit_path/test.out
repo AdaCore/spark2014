@@ -14,17 +14,22 @@ test.adb:194:04: warning: analyzing unreferenced procedure "os_mbx_set_mbx_entry
 test.adb:221:44: info: precondition proved (CVC4: 1 VC)
 test.adb:224:07: info: data dependencies proved
 test.adb:228:14: info: precondition proved (CVC4: 1 VC)
-test.adb:286:07: info: data dependencies proved
-test.adb:288:15: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-test.adb:288:131: info: range check proved (CVC4: 1 VC)
-test.adb:288:314: info: index check proved (CVC4: 2 VC)
-test.adb:300:07: info: precondition proved (CVC4: 1 VC)
-test.adb:328:36: info: loop invariant initialization proved (CVC4: 2 VC)
-test.adb:328:36: info: loop invariant preservation proved (CVC4: 2 VC)
-test.adb:335:16: info: precondition proved (CVC4: 4 VC)
-test.adb:335:54: info: range check proved (CVC4: 1 VC)
-test.adb:338:60: info: range check proved (CVC4: 1 VC)
-test.adb:340:16: info: precondition proved (CVC4: 2 VC)
+test.adb:257:15: info: postcondition proved (Z3: 4 VC)
+test.adb:262:26: info: precondition proved (CVC4: 1 VC)
+test.adb:265:36: info: precondition proved (CVC4: 1 VC)
+test.adb:267:34: info: precondition proved (CVC4: 1 VC)
+test.adb:302:07: info: data dependencies proved
+test.adb:304:15: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+test.adb:304:131: info: range check proved (CVC4: 1 VC)
+test.adb:304:197: info: range check proved (CVC4: 1 VC)
+test.adb:304:314: info: range check proved (CVC4: 1 VC)
+test.adb:316:07: info: precondition proved (CVC4: 1 VC)
+test.adb:344:36: info: loop invariant initialization proved (CVC4: 2 VC)
+test.adb:344:36: info: loop invariant preservation proved (CVC4: 2 VC)
+test.adb:351:16: info: precondition proved (CVC4: 4 VC)
+test.adb:351:54: info: range check proved (CVC4: 1 VC)
+test.adb:354:60: info: range check proved (CVC4: 1 VC)
+test.adb:356:16: info: precondition proved (CVC4: 2 VC)
 test.ads:80:30: info: initialization of "status" proved
 test.ads:81:30: info: initialization of "mbx_entry" proved
 test.ads:85:15: info: postcondition proved (Z3: 1 VC)

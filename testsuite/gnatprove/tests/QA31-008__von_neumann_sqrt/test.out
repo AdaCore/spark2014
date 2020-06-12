@@ -3,8 +3,10 @@ p.adb:16:07: info: initialization of "Upper" proved
 p.adb:17:07: info: initialization of "Middle" proved
 p.adb:23:33: info: loop invariant initialization proved (CVC4: 2 VC)
 p.adb:23:33: info: loop invariant preservation proved (CVC4: 2 VC)
+p.adb:23:40: info: overflow check proved (CVC4: 2 VC)
 p.adb:24:40: medium: overflow check might fail
 p.adb:27:36: info: division check proved (CVC4: 1 VC)
+p.adb:28:21: info: overflow check proved (CVC4: 1 VC)
 p.adb:29:13: warning: unreachable code (CVC4: 1 VC)
 p.adb:31:13: warning: unreachable code (CVC4: 1 VC)
 p.adb:34:14: warning: unreachable code (CVC4: 1 VC)
@@ -27,26 +29,28 @@ p.adb:92:36: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:92:36: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:92:56: info: range check proved (CVC4: 2 VC)
 p.adb:93:36: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:93:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Y mod M = 0
+p.adb:93:36: medium: loop invariant might fail after first iteration, cannot prove Y mod M = 0
 p.adb:93:38: info: division check proved (CVC4: 2 VC)
 p.adb:94:36: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:94:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Left_Y < 2 ** Integer(I)
+p.adb:94:36: medium: loop invariant might fail after first iteration, cannot prove Left_Y < 2 ** Integer(I)
 p.adb:94:58: info: range check proved (CVC4: 1 VC; Z3: 1 VC)
 p.adb:95:36: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:95:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove UX mod M = U64 (X) mod M
+p.adb:95:36: medium: loop invariant might fail after first iteration, cannot prove UX mod M = U64 (X) mod M
 p.adb:95:39: info: division check proved (CVC4: 2 VC)
 p.adb:95:55: info: division check proved (CVC4: 2 VC)
 p.adb:96:36: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:96:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Left_UX = Left_X - Left_Y * Left_Y
+p.adb:96:36: medium: loop invariant might fail after first iteration, cannot prove Left_UX = Left_X - Left_Y * Left_Y
 p.adb:97:36: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:97:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Left_Y * Left_Y <= Left_X
+p.adb:97:36: medium: loop invariant might fail after first iteration, cannot prove Left_Y * Left_Y <= Left_X
 p.adb:98:36: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:98:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove U64(Left_Y + 1) * U64(Left_Y + 1) > U64(Left_X)
+p.adb:98:36: medium: loop invariant might fail after first iteration, cannot prove U64(Left_Y + 1) * U64(Left_Y + 1) > U64(Left_X)
 p.adb:100:17: info: division check proved (CVC4: 1 VC)
 p.adb:103:26: medium: range check might fail
 p.ads:9:19: info: postcondition proved (CVC4: 2 VC)
+p.ads:9:39: info: overflow check proved (CVC4: 1 VC)
 p.ads:10:44: info: overflow check proved (CVC4: 1 VC)
 p.ads:14:19: medium: postcondition might fail, cannot prove (Sqrt_Von_Neumann'Result * Sqrt_Von_Neumann'Result) <= X
+p.ads:14:44: medium: overflow check might fail
 p.ads:16:49: medium: overflow check might fail
 test_sqrt.adb:7:25: info: cannot unroll loop (too many loop iterations)
 test_sqrt.adb:7:25: warning: statement has no effect

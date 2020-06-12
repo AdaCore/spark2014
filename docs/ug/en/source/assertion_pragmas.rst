@@ -217,7 +217,7 @@ multiple loop invariants instead of a conjunction can be improved readability
 and better provability (because |GNATprove| checks each pragma
 ``Loop_Invariant`` separately).
 
-Finally, :ref:`Attribute Loop_Entry` and :ref:`Delta Aggregates` can be very
+Finally, :ref:`Attribute Loop_Entry` and :ref:`Attribute Update` can be very
 useful to express complex loop invariants.
 
 .. note::
