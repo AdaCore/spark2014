@@ -473,7 +473,7 @@ package SPARK_Util is
      Boolean
    with Pre => Is_Object (X) and then Is_Object (Y);
    --  @param X  object that overlays the other (object with Address clause)
-   --  @param Y  object that is overlayed (object whose 'Address is used in
+   --  @param Y  object that is overlaid (object whose 'Address is used in
    --            the Address clause of X)
    --  @return True iff X'Alignment and Y'Alignment are known and X'Alignment
    --          is an integral multiple of Y
@@ -579,6 +579,15 @@ package SPARK_Util is
    -- Queries for particular nodes --
    ----------------------------------
 
+   function Aggregate_Is_In_Assignment (Expr : Node_Id) return Boolean with
+     Pre => Nkind (Expr) in N_Aggregate
+                          | N_Delta_Aggregate
+                          | N_Extension_Aggregate
+       or else Is_Attribute_Update (Expr);
+   --  Returns whether Expr is on the rhs of an assignment, either directly or
+   --  through other enclosing aggregates, with possible type conversions and
+   --  qualifications.
+
    type Unrolling_Type is
      (No_Unrolling,
       Simple_Unrolling,
@@ -617,10 +626,11 @@ package SPARK_Util is
    --  @return a name that uniquely identifies the prefix
 
    function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Is_Generic_Instance (E),
+   with Pre  => Ekind (E) = E_Package and then Is_Generic_Instance (E),
         Post => (for all S of Generic_Actual_Subprograms'Result =>
                     Is_Subprogram (S));
-   --  @param E instance of a generic unit
+   --  @param E instance of a generic package (or a wrapper package for
+   --    instances of generic subprograms)
    --  @return actual subprogram parameters of E
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id

@@ -726,12 +726,9 @@ package body Gnat2Why.Driver is
          Timing_Phase_Completed (Timing, "flow analysis");
 
          --  Perform the new SPARK checking rules for pointer aliasing. This is
-         --  only activated on SPARK code. The debug flag -gnatdF is used to
-         --  deactivate the new pointer rules.
+         --  only activated on SPARK code.
 
-         if not Debug_Flag_FF then
-            Do_Ownership_Checking;
-         end if;
+         Do_Ownership_Checking;
 
          --  Start the translation to Why
 

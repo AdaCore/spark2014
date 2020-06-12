@@ -1359,7 +1359,7 @@ package body Flow_Error_Messages is
             elsif Nkind (Prefix (Expr)) not in N_Has_Entity
               or else not Known_Alignment (Entity (Prefix (Expr)))
             then
-               return "overlayed object " & Common;
+               return "overlaid object " & Common;
             end if;
             return "";
          end;

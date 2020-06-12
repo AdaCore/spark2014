@@ -29,7 +29,6 @@ with Ada.Text_IO;
 with Aspects;                         use Aspects;
 with Assumption_Types;                use Assumption_Types;
 with Common_Iterators;                use Common_Iterators;
-with Debug;                           use Debug;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
@@ -1256,48 +1255,43 @@ package body SPARK_Definition is
             end if;
 
          when N_Allocator =>
-            --  Disallow allocators in the revert mode -gnatdF
-            if not Debug_Flag_FF then
-               if Is_OK_Volatile_Context (Context => Parent (N), Obj_Ref => N)
+            if Is_OK_Volatile_Context (Context => Parent (N), Obj_Ref => N)
+            then
+               --  Check that the type of the allocator is visibly an access
+               --  type.
+
+               if Retysp_In_SPARK (Etype (N))
+                 and then Is_Access_Type (Retysp (Etype (N)))
                then
-                  --  Check that the type of the allocator is visibly an access
-                  --  type.
+                  --  If the expression is a qualified expression, then we
+                  --  have an initialized allocator.
 
-                  if Retysp_In_SPARK (Etype (N))
-                    and then Is_Access_Type (Retysp (Etype (N)))
-                  then
-                     --  If the expression is a qualified expression, then we
-                     --  have an initialized allocator.
+                  if Nkind (Expression (N)) = N_Qualified_Expression then
+                     Mark (Expression (N));
 
-                     if Nkind (Expression (N)) = N_Qualified_Expression then
-                        Mark (Expression (N));
+                  --  Otherwise the expression is a subtype indicator and we
+                  --  have an uninitialized allocator.
 
-                     --  Otherwise the expression is a subtype indicator and we
-                     --  have an uninitialized allocator.
-
-                     else
-                        --  In non-interfering contexts the subtype indicator
-                        --  is always a subtype name, because frontend creates
-                        --  an itype for each constrained subtype indicator.
-
-                        pragma Assert (Is_Entity_Name (Expression (N)));
-
-                        if Default_Initialization (Entity (Expression (N)))
-                          not in Full_Default_Initialization
-                               | No_Possible_Initialization
-                        then
-                           Mark_Violation ("uninitialized allocator without"
-                                           & " default initialization", N);
-                        end if;
-                     end if;
                   else
-                     Mark_Violation (N, Etype (N));
+                     --  In non-interfering contexts the subtype indicator
+                     --  is always a subtype name, because frontend creates
+                     --  an itype for each constrained subtype indicator.
+
+                     pragma Assert (Is_Entity_Name (Expression (N)));
+
+                     if Default_Initialization (Entity (Expression (N)))
+                       not in Full_Default_Initialization
+                            | No_Possible_Initialization
+                     then
+                        Mark_Violation ("uninitialized allocator without"
+                                        & " default initialization", N);
+                     end if;
                   end if;
                else
-                  Mark_Violation ("allocators in interfering context", N);
+                  Mark_Violation (N, Etype (N));
                end if;
             else
-               Mark_Violation ("allocator", N);
+               Mark_Violation ("allocators in interfering context", N);
             end if;
 
          when N_Assignment_Statement =>
@@ -1416,12 +1410,7 @@ package body SPARK_Definition is
             Mark_Identifier_Or_Expanded_Name (N);
 
          when N_Explicit_Dereference =>
-            --  Disallow explicit dereference in the revert mode -gnatdF
-            if not Debug_Flag_FF then
-               Mark (Prefix (N));
-            else
-               Mark_Violation ("explicit dereference", N);
-            end if;
+            Mark (Prefix (N));
 
          when N_Extended_Return_Statement =>
             Mark_Extended_Return_Statement (N);
@@ -1557,21 +1546,13 @@ package body SPARK_Definition is
                Mark (Right_Opnd (N));
             end if;
 
+         --  Check that the type of null is visibly an access type
+
          when N_Null =>
-
-            --  Disallow Null objects of access type in the revert mode -gnatdF
-
-            if not Debug_Flag_FF then
-
-               --  Check that the type of null is visibly an access type
-
-               if not Retysp_In_SPARK (Etype (N))
-                 or else not Is_Access_Type (Retysp (Etype (N)))
-               then
-                  Mark_Violation (N, Etype (N));
-               end if;
-            else
-               Mark_Violation ("null", N);
+            if not Retysp_In_SPARK (Etype (N))
+              or else not Is_Access_Type (Retysp (Etype (N)))
+            then
+               Mark_Violation (N, Etype (N));
             end if;
 
          when N_Number_Declaration =>
@@ -1777,12 +1758,7 @@ package body SPARK_Definition is
                  Unique_Entity (Etype (Name));
 
             begin
-               if Is_Access_Type (Prefix_Type)
-                 and then Debug_Flag_FF
-               then
-                  Mark_Violation ("implicit dereference", N);
-
-               elsif No (Search_Component_By_Name (Prefix_Type, Selector)) then
+               if No (Search_Component_By_Name (Prefix_Type, Selector)) then
                   if SPARK_Pragma_Is (Opt.On) then
                      Apply_Compile_Time_Constraint_Error
                        (N, "component not present in }",
@@ -2274,14 +2250,9 @@ package body SPARK_Definition is
             end if;
 
          when N_Delta_Aggregate =>
-
-            if Retysp_In_SPARK (Etype (N)) then
-               Mark (Expression (N));
-               Mark_List (Component_Associations (N));
-               Check_No_Deep_Duplicates_In_Assoc (N);
-            else
-               Mark_Violation (N, Etype (N));
-            end if;
+            Mark (Expression (N));
+            Mark_List (Component_Associations (N));
+            Check_No_Deep_Duplicates_In_Assoc (N);
 
          --  Object renamings are rewritten by expansion, but they are kept in
          --  the tree, so just ignore them.
@@ -2295,12 +2266,7 @@ package body SPARK_Definition is
          when N_Expression_With_Actions =>
             pragma Assert (Comes_From_Source (N));
             Mark_Actions (N, Actions (N));
-
-            if not Retysp_In_SPARK (Etype (N)) then
-               Mark_Violation (N, From => Etype (N));
-            else
-               Mark (Expression (N));
-            end if;
+            Mark (Expression (N));
 
          --  The following nodes are rewritten by semantic analysis
 
@@ -2321,9 +2287,7 @@ package body SPARK_Definition is
          --  assignment which is a move or reborrow.
 
          when N_Target_Name =>
-            if not Retysp_In_SPARK (Etype (N)) then
-               Mark_Violation (N, From => Etype (N));
-            elsif Is_Anonymous_Access_Type (Retysp (Etype (N))) then
+            if Is_Anonymous_Access_Type (Retysp (Etype (N))) then
                Mark_Unsupported ("'@ inside a reborrow", N);
             elsif Is_Deep (Etype (N)) then
                Mark_Unsupported ("'@ inside a move assignment", N);
@@ -2505,8 +2469,14 @@ package body SPARK_Definition is
             --  Local variables
 
             Pref : constant Node_Id := Prefix (N);
+
          begin
-            if Is_Deep (Etype (Pref))
+            --  Check whether type is deep only if it has previously been
+            --  marked in SPARK. Otherwise there was already a violation, and
+            --  we should not call Is_Deep on a type possibly not marked.
+
+            if Entity_In_SPARK (Etype (Pref))
+              and then Is_Deep (Etype (Pref))
 
               --  Special case for attributes 'Old and 'Loop_Entry which should
               --  be applicable to a call to a volatile function of owning type
@@ -5561,14 +5531,9 @@ package body SPARK_Definition is
 
          elsif Is_Access_Type (E) then
 
-            --  Disallow access types in the revert mode -gnatdF
-
-            if Debug_Flag_FF then
-               Mark_Violation ("access type", E);
-
             --  Reject access to subprogram types
 
-            elsif Is_Access_Subprogram_Type (Base_Type (E)) then
+            if Is_Access_Subprogram_Type (Base_Type (E)) then
                Mark_Violation ("access to subprogram type", E);
 
             elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
@@ -8047,7 +8012,7 @@ package body SPARK_Definition is
             --    type L_Ptr is access L;
             --    type SL_Ptr3 is new L_Ptr(7);
 
-            if not Debug_Flag_FF and then Is_Nouveau_Type (E) then
+            if Is_Nouveau_Type (E) then
                case Nkind (Decl) is
                   when N_Object_Declaration =>
                      return SPARK_Pragma (Defining_Identifier (Decl));

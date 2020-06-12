@@ -1,0 +1,4 @@
+aggr.ads:9:22: medium: range check might fail [possible explanation: subprogram at line 8 should mention Z in a precondition]
+aggr.ads:11:17: warning: unused variable "R"
+aggr.ads:12:27: medium: range check might fail [possible explanation: subprogram at line 11 should mention Z in a precondition]
+aggr.ads:15:31: medium: range check might fail [possible explanation: subprogram at line 14 should mention Z in a precondition]

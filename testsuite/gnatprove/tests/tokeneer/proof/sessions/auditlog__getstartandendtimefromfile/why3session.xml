@@ -9,7 +9,7 @@
 <theory name="Auditlog__getstartandendtimefromfile__subprogram_def">
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.0" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
@@ -21,36 +21,36 @@
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.3" expl="precondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.4" expl="check">
+  <goal name="def&#39;vc.3" expl="check">
   <proof prover="0"><result status="unknown" steps="159"/></proof>
   </goal>
-  <goal name="def&#39;vc.5" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.4" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.6" expl="precondition" proved="true">
+  <goal name="def&#39;vc.5" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.7" expl="check">
+  <goal name="def&#39;vc.6" expl="check">
   <proof prover="0"><result status="unknown" steps="159"/></proof>
   </goal>
-  <goal name="def&#39;vc.8" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.7" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.9" expl="precondition" proved="true">
+  <goal name="def&#39;vc.8" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.10" expl="check">
+  <goal name="def&#39;vc.9" expl="check">
   <proof prover="0"><result status="unknown" steps="192"/></proof>
   </goal>
-  <goal name="def&#39;vc.11" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.10" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.11" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
@@ -58,26 +58,18 @@
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.13" expl="precondition" proved="true">
+  <goal name="def&#39;vc.13" expl="check">
+  <proof prover="0"><result status="unknown" steps="192"/></proof>
+  </goal>
+  <goal name="def&#39;vc.14" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.14" expl="check">
-  <proof prover="0"><result status="unknown" steps="192"/></proof>
-  </goal>
-  <goal name="def&#39;vc.15" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.15" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.16" expl="precondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.17" expl="precondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.18" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>

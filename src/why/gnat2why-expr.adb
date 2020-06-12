@@ -6347,6 +6347,58 @@ package body Gnat2Why.Expr is
          Toplevel : Boolean;
          Map      : in out Ada_To_Why_Ident.Map)
       is
+         --  Local subprograms
+
+         procedure Collect_Associations (Assocs : List_Id);
+         --  Collect objects in all associations of an aggregate
+
+         procedure Collect_Expressions (Expressions : List_Id);
+         --  Collect objects in all expressions of an aggregate
+
+         procedure Collect_Subobject (Expr : Node_Id);
+         --  Collect a subobject, passing in the value False for Toplevel and
+         --  the Map.
+
+         --------------------------
+         -- Collect_Associations --
+         --------------------------
+
+         procedure Collect_Associations (Assocs : List_Id) is
+            Assoc : Node_Id := Nlists.First (Assocs);
+         begin
+            while Present (Assoc) loop
+               if not Box_Present (Assoc) then
+                  Collect_Subobject (SPARK_Atree.Expression (Assoc));
+               end if;
+               Next (Assoc);
+            end loop;
+         end Collect_Associations;
+
+         -------------------------
+         -- Collect_Expressions --
+         -------------------------
+
+         procedure Collect_Expressions (Expressions : List_Id) is
+            N : Node_Id;
+         begin
+            N := First (Expressions);
+            while Present (N) loop
+               Collect_Subobject (N);
+               Next (N);
+            end loop;
+         end Collect_Expressions;
+
+         -----------------------
+         -- Collect_Subobject --
+         -----------------------
+
+         procedure Collect_Subobject (Expr : Node_Id) is
+         begin
+            Collect_Moved_Objects (Expr, Toplevel => False, Map => Map);
+         end Collect_Subobject;
+
+      --  Start of processing for Collect_Moved_Objects
+
       begin
          --  Object can be moved, insert it in the map unless at top-level
 
@@ -6361,6 +6413,9 @@ package body Gnat2Why.Expr is
 
          --  Otherwise, look at sub-objects that may be moved
 
+         --  The cases considered below should correspond to those in
+         --  Check_Anonymous_Object in gnat2why-borrow_checker.adb
+
          case Nkind (Expr) is
             when N_Qualified_Expression
                | N_Type_Conversion
@@ -6373,42 +6428,30 @@ package body Gnat2Why.Expr is
 
             when N_Allocator =>
                if Nkind (Expression (Expr)) = N_Qualified_Expression then
-                  Collect_Moved_Objects
-                    (Expression (Expr), Toplevel => False, Map => Map);
+                  Collect_Subobject (Expression (Expr));
                end if;
 
             when N_Aggregate =>
-               declare
-                  Exprs  : constant List_Id := Expressions (Expr);
-                  Assocs : constant List_Id := Component_Associations (Expr);
+               Collect_Expressions (Expressions (Expr));
+               Collect_Associations (Component_Associations (Expr));
 
-                  Expression  : Node_Id;
-                  Association : Node_Id;
-               begin
-                  Expression :=
-                    (if Nlists.Is_Empty_List (Exprs) then Empty
-                     else Nlists.First (Exprs));
-                  while Present (Expression) loop
-                     Collect_Moved_Objects
-                       (Expression,
-                        Toplevel => False,
-                        Map      => Map);
-                     Next (Expression);
-                  end loop;
+            when N_Delta_Aggregate =>
+               Collect_Subobject (Expression (Expr));
+               Collect_Associations (Component_Associations (Expr));
 
-                  Association :=
-                    (if Nlists.Is_Empty_List (Assocs) then Empty
-                     else Nlists.First (Assocs));
-                  while Present (Association) loop
-                     if Present (SPARK_Atree.Expression (Association)) then
-                        Collect_Moved_Objects
-                          (SPARK_Atree.Expression (Association),
-                           Toplevel => False,
-                           Map      => Map);
-                     end if;
-                     Next (Association);
-                  end loop;
-               end;
+            when N_Extension_Aggregate =>
+               Collect_Subobject (Ancestor_Part (Expr));
+               Collect_Expressions (Expressions (Expr));
+               Collect_Associations (Component_Associations (Expr));
+
+            --  Handle 'Update like delta aggregate
+
+            when N_Attribute_Reference =>
+               if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
+               then
+                  Collect_Subobject (Prefix (Expr));
+                  Collect_Expressions (Expressions (Expr));
+               end if;
 
             when others =>
                null;
@@ -14606,6 +14649,59 @@ package body Gnat2Why.Expr is
             Expr          => Aggr,
             Update_Prefix => Pref);
       end if;
+
+      --  Detect possible memory leaks in the assignment of component
+      --  associations.
+
+      declare
+         function Has_Deep_Association (Assocs : List_Id) return Boolean;
+         --  Returns whether the list of component associations Assocs
+         --  has a deep component.
+
+         --------------------------
+         -- Has_Deep_Association --
+         --------------------------
+
+         function Has_Deep_Association (Assocs : List_Id) return Boolean
+         is
+            Assoc  : Node_Id := Nlists.First (Assocs);
+         begin
+            while Present (Assoc) loop
+               if not Box_Present (Assoc)
+                 and then Is_Deep (Etype (Expression (Assoc)))
+               then
+                  return True;
+               end if;
+               Next (Assoc);
+            end loop;
+
+            return False;
+         end Has_Deep_Association;
+
+      begin
+         --  If all associations in the delta aggregate are not deep, then
+         --  there is no possibility of a memory leak when moving the prefix
+         --  and assigning component associations in turn. There is also no
+         --  possibility of move unless the delta aggregate appears directly
+         --  or indirectly on the rhs of an assignment, due to SPARK RM 3.10(6)
+         --  which prevents using the aggregate as the prefix of an enclosing
+         --  expression. Otherwise, it is correct over-approximation to check
+         --  that the prefix before any update does not own any memory. We
+         --  could improve on that if this is too imprecise for real code.
+
+         --  ??? What about the case of an array delta aggregate with
+         --  components of deep type? Then multiple component associations can
+         --  refer to the same index, making it possible to leak memory even if
+         --  the prefix did not own memory at start. Possibly we could reject
+         --  such cases.
+
+         if Has_Deep_Association (Component_Associations (Aggr))
+           and then Aggregate_Is_In_Assignment (Aggr)
+         then
+            T := +Sequence (Check_No_Memory_Leaks (Pref, Pref), +T);
+         end if;
+      end;
+
       return T;
    end Transform_Delta_Aggregate;
 
