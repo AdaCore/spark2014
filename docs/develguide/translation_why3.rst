@@ -4079,8 +4079,9 @@ case its body is simply repeated up to 20 times (the current internal limit for
 unrolling) in Why3. If the loop is not unrolled, it is translated into a
 suitable loop node in the shared AST.
 
-The shared AST is described in :file:`gnat_ast.ml`. The loop node variant
-:code:`Loop` differs from the Why3 loop in that:
+The shared AST is described in :file:`why-sinfo.ads` (and in
+:file:`gnat_ast.ml` for the OCaml side). The loop node variant :code:`Loop`
+differs from the Why3 loop in that:
 
 - its invariant and variants are located inside the loop (like in SPARK) with
   preceding and following statements;

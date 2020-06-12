@@ -6388,7 +6388,7 @@ package body Gnat2Why.Expr is
          Toplevel : Boolean;
          Map      : in out Ada_To_Why_Ident.Map);
       --  Add in Map all moved objects from Expr. If Toplevel is True, this is
-      --  the outter toplevel call, for which the top-level object should not
+      --  the outer toplevel call, for which the top-level object should not
       --  be inserted in the map as it is handled specially.
 
       ------------------
