@@ -1258,10 +1258,10 @@ package body Flow_Error_Messages is
             Ent : Entity_Id;
 
          begin
-            if Nkind_In (N, N_Explicit_Dereference, N_Function_Call) then
+            if Nkind (N) in N_Explicit_Dereference | N_Function_Call then
                return Abandon;
 
-            elsif Nkind_In (N, N_Expanded_Name, N_Identifier) then
+            elsif Nkind (N) in N_Expanded_Name | N_Identifier then
                Ent := Entity (N);
 
                --  Treat an undecorated reference as OK

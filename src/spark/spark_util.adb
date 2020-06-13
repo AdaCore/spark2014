@@ -2623,10 +2623,11 @@ package body SPARK_Util is
       Choice : constant Node_Id := First (Choices);
    begin
       return List_Length (Choices) = 1
-        and then Nkind (Choice) /= N_Others_Choice
-        and then not Nkind_In (Choice, N_Subtype_Indication, N_Range)
+        and then
+          Nkind (Choice)
+            not in N_Others_Choice | N_Subtype_Indication | N_Range
         and then not
-          (Nkind_In (Choice, N_Identifier, N_Expanded_Name)
+          (Nkind (Choice) in N_Identifier | N_Expanded_Name
            and then Is_Type (Entity (Choice)));
    end Is_Singleton_Choice;
 

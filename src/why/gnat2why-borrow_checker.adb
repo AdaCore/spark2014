@@ -610,13 +610,14 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Declaration (Decl : Node_Id);
 
-   procedure Check_Expression (Expr : Node_Id; Mode : Extended_Checking_Mode);
-   pragma Precondition (Nkind_In (Expr, N_Index_Or_Discriminant_Constraint,
-                                        N_Range_Constraint,
-                                        N_Subtype_Indication,
-                                        N_Digits_Constraint,
-                                        N_Delta_Constraint)
-                        or else Nkind (Expr) in N_Subexpr);
+   procedure Check_Expression (Expr : Node_Id; Mode : Extended_Checking_Mode)
+     with Pre =>
+       Nkind (Expr) in N_Index_Or_Discriminant_Constraint
+                     | N_Range_Constraint
+                     | N_Subtype_Indication
+                     | N_Digits_Constraint
+                     | N_Delta_Constraint
+                     | N_Subexpr;
 
    procedure Check_Expr_Or_Ent
      (Expr : Expr_Or_Ent;
@@ -1240,7 +1241,7 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Check the read-write permissions of borrowed parameters/globals
 
-      if Ekind_In (Id, E_Procedure, E_Entry)
+      if Ekind (Id) in E_Procedure | E_Entry
         and then not No_Return (Id)
       then
          Return_Parameters (Id);
@@ -1488,7 +1489,7 @@ package body Gnat2Why.Borrow_Checker is
 
       function Is_Type_Name (Expr : Node_Id) return Boolean is
       begin
-         return Nkind_In (Expr, N_Expanded_Name, N_Identifier)
+         return Nkind (Expr) in N_Expanded_Name | N_Identifier
            and then Is_Type (Entity (Expr));
       end Is_Type_Name;
 
@@ -3264,7 +3265,7 @@ package body Gnat2Why.Borrow_Checker is
                         Check_Expression (Expr, Read);
                      end if;
 
-                     if Ekind_In (Subp, E_Procedure, E_Entry)
+                     if Ekind (Subp) in E_Procedure | E_Entry
                        and then not No_Return (Subp)
                      then
                         Return_Parameters (Subp);
@@ -3307,7 +3308,7 @@ package body Gnat2Why.Borrow_Checker is
                   end;
                end if;
 
-               if Ekind_In (Subp, E_Procedure, E_Entry)
+               if Ekind (Subp) in E_Procedure | E_Entry
                  and then not No_Return (Subp)
                then
                   Return_Parameters (Subp);
@@ -3863,7 +3864,7 @@ package body Gnat2Why.Borrow_Checker is
                when N_Indexed_Component
                   | N_Slice
                =>
-                  if not Nkind_In (Expr_Elt, N_Indexed_Component, N_Slice) then
+                  if Nkind (Expr_Elt) not in N_Indexed_Component | N_Slice then
                      return False;
                   end if;
 
