@@ -690,7 +690,8 @@ package body Why.Gen.Expr is
 
                T := New_Call
                  (Domain => Domain,
-                  Name   => Get_Array_Theory (From_Ent, On_Wrapper).Slide,
+                  Name   => Get_Array_Theory
+                    (From_Ent, Is_Init_Wrapper_Type (From)).Slide,
                   Args   => Args,
                   Typ    => Get_Type (Args (1)));
             end;

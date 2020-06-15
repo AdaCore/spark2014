@@ -261,7 +261,7 @@
   </goal>
   <goal name="def&#39;vc.69" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="106628"/></proof>
+  <proof prover="1"><result status="valid" steps="106838"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>

@@ -44,10 +44,10 @@
   <proof prover="0"><result status="valid" steps="16"/></proof>
   </goal>
   <goal name="def&#39;vc.9" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="3569"/></proof>
   </goal>
   <goal name="def&#39;vc.10" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="3569"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.11" expl="assertion" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -93,10 +93,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.23" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="3745"/></proof>
   </goal>
   <goal name="def&#39;vc.24" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="3745"/></proof>
+  <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.25" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="2185"/></proof>

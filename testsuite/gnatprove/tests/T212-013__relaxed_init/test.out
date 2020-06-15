@@ -122,28 +122,27 @@ test_init_by_proof_out_params.adb:146:17: high: "X.C.Z" is not initialized in "P
 test_init_by_proof_out_params.adb:147:13: high: "X.C.Y" is not initialized
 test_init_by_proof_out_params.adb:153:17: warning: "X" is not modified, could be IN
 test_init_by_proof_out_params.adb:167:17: warning: "X" is not modified, could be IN
-test_init_by_proof_out_params.adb:184:22: info: initialization check proved (Trivial: 1 VC)
-test_init_by_proof_out_params.adb:187:07: medium: precondition might fail, cannot prove X.Y'Valid_Scalars (e.g. when R1 = (X => 10, Y => ?, Z => True))
+test_init_by_proof_out_params.adb:187:07: medium: precondition might fail, cannot prove X.Y'Initialized (e.g. when R1 = (X => 10, Y => ?, Z => True))
 test_init_by_proof_out_params.adb:189:07: info: precondition proved (CVC4: 1 VC)
-test_init_by_proof_out_params.adb:192:07: medium: precondition might fail, cannot prove X.X'Valid_Scalars
+test_init_by_proof_out_params.adb:192:07: medium: precondition might fail, cannot prove X.X'Initialized
 test_init_by_proof_out_params.adb:194:07: info: precondition proved (CVC4: 1 VC)
-test_init_by_proof_out_params.adb:197:07: medium: precondition might fail, cannot prove X (X'First)'Valid_Scalars
+test_init_by_proof_out_params.adb:197:07: medium: precondition might fail, cannot prove X (X'First)'Initialized
 test_init_by_proof_out_params.adb:199:07: info: precondition proved (CVC4: 2 VC)
-test_init_by_proof_out_params.adb:202:07: medium: precondition might fail, cannot prove X (X'First)'Valid_Scalars
+test_init_by_proof_out_params.adb:202:07: medium: precondition might fail, cannot prove X (X'First)'Initialized
 test_init_by_proof_out_params.adb:204:07: info: precondition proved (CVC4: 2 VC)
-test_init_by_proof_out_params.adb:207:07: medium: precondition might fail, cannot prove X (1)'Valid_Scalars
+test_init_by_proof_out_params.adb:207:07: medium: precondition might fail, cannot prove X (1)'Initialized
 test_init_by_proof_out_params.adb:209:07: info: precondition proved (CVC4: 1 VC)
-test_init_by_proof_out_params.adb:212:07: medium: precondition might fail, cannot prove X (1)'Valid_Scalars
+test_init_by_proof_out_params.adb:212:07: medium: precondition might fail, cannot prove X (1)'Initialized
 test_init_by_proof_out_params.adb:214:07: info: precondition proved (CVC4: 1 VC)
-test_init_by_proof_out_params.adb:217:07: medium: precondition might fail, cannot prove X (X'First).Y'Valid_Scalars
+test_init_by_proof_out_params.adb:217:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized
 test_init_by_proof_out_params.adb:219:07: info: precondition proved (CVC4: 2 VC)
-test_init_by_proof_out_params.adb:222:07: medium: precondition might fail, cannot prove X (X'First).Y'Valid_Scalars (e.g. when H1 = (D => 10, C => ?))
+test_init_by_proof_out_params.adb:222:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized (e.g. when H1 = (D => 10, C => ?))
 test_init_by_proof_out_params.adb:222:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 test_init_by_proof_out_params.adb:224:07: info: precondition proved (CVC4: 2 VC)
 test_init_by_proof_out_params.adb:224:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-test_init_by_proof_out_params.adb:227:07: medium: precondition might fail, cannot prove X.C (1).Y'Valid_Scalars (e.g. when H2 = (D => ?, C => (1 => (X => 10, Y => ?, Z => True), others => (X => 10, Y => ?, Z => True))) and H2.C'First = 1 and H2.C'Last = 10)
+test_init_by_proof_out_params.adb:227:07: medium: precondition might fail, cannot prove X.C (1).Y'Initialized (e.g. when H2 = (D => ?, C => (1 => (X => 10, Y => ?, Z => True), others => (X => 10, Y => ?, Z => True))) and H2.C'First = 1 and H2.C'Last = 10)
 test_init_by_proof_out_params.adb:229:07: info: precondition proved (CVC4: 2 VC)
-test_init_by_proof_out_params.adb:232:07: medium: precondition might fail, cannot prove X.C.Y'Valid_Scalars (e.g. when R3 = (C => (X => 10, Y => ?, Z => True)))
+test_init_by_proof_out_params.adb:232:07: medium: precondition might fail, cannot prove X.C.Y'Initialized (e.g. when R3 = (C => (X => 10, Y => ?, Z => True)))
 test_init_by_proof_out_params.adb:234:07: info: precondition proved (CVC4: 1 VC)
-test_init_by_proof_out_params.adb:237:07: medium: precondition might fail, cannot prove X.C.X'Valid_Scalars
+test_init_by_proof_out_params.adb:237:07: medium: precondition might fail, cannot prove X.C.X'Initialized
 test_init_by_proof_out_params.adb:239:07: info: precondition proved (CVC4: 1 VC)

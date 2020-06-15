@@ -57,7 +57,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.12" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="361"/></proof>
+  <proof prover="0"><result status="valid" steps="363"/></proof>
   <proof prover="1"><result status="unknown" steps="204"/></proof>
   </goal>
  </transf>

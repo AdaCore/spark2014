@@ -256,14 +256,21 @@ package SPARK_Util.Subprograms is
    --     lied about contracts (as in, stated it has no outputs), then
    --     this is not a "new" failure.
 
-   function Get_Expression_Function (E : Entity_Id) return Node_Id;
+   function Get_Expression_Function (E : Entity_Id) return Node_Id
+   with Pre  => Is_Subprogram (E),
+        Post => Present (Get_Expression_Function'Result) =
+                Is_Expression_Function_Or_Completion (E);
    --  @param E subprogram
    --  @return if E is the entity for an expression function, return the
    --     corresponding N_Expression_Function original node. Otherwise,
    --     return Empty.
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id
-   with Pre => Is_DIC_Procedure (E) or else Is_Invariant_Procedure (E);
+   with Pre => Is_DIC_Procedure (E)
+                 or else
+               Is_Invariant_Procedure (E)
+                 or else
+               Is_Partial_Invariant_Procedure (E);
    --  @param E a Default_Initial_Condition or Type_Invariant procedure
    --  @return the expression in the first pragma Check found in the body of E,
    --     if any, or Empty otherwise

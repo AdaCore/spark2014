@@ -770,10 +770,63 @@ package body Gnat2Why.Types is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
+
+      procedure Generate_Ref_Type_And_Havoc_Fun
+        (File         : W_Section_Id;
+         E            : Entity_Id;
+         Relaxed_Init : Boolean);
+      --  Generate a record type containing only one mutable field of
+      --  type t. This is used to store mutable variables of type t.
+      --  Also generate a havoc function for this type.
+
       procedure Translate_Underlying_Type
         (File : W_Section_Id;
          E    : Entity_Id);
       --  Translate a non-private type entity E
+
+      -------------------------------------
+      -- Generate_Ref_Type_And_Havoc_Fun --
+      -------------------------------------
+
+      procedure Generate_Ref_Type_And_Havoc_Fun
+        (File         : W_Section_Id;
+         E            : Entity_Id;
+         Relaxed_Init : Boolean)
+      is
+      begin
+         --  We do not generate these declarations for array or record types
+         --  which are clones of existing types with the same name and
+         --  statically constrained array type as no new type is declared for
+         --  them.
+         --  Classwide types are a special case as they are clones of their
+         --  specific types but do not have the same short name.
+
+         if (not (Has_Record_Type (E) or else Has_Private_Type (E))
+             or else not Record_Type_Is_Clone (Retysp (E))
+             or else Short_Name (Retysp (E)) /=
+               Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
+           and then not Is_Class_Wide_Type (Retysp (E))
+           and then (not Has_Array_Type (E)
+                     or else not Is_Static_Array_Type (Retysp (E)))
+           and then (not Has_Array_Type (E)
+                     or else not Array_Type_Is_Clone (Retysp (E))
+                     or else Short_Name (Retysp (E)) /=
+                       Short_Name (Array_Type_Cloned_Subtype (Retysp (E))))
+         then
+            Emit_Ref_Type_Definition
+              (File, To_Why_Type
+                 (Retysp (E),
+                  Local        => True,
+                  Relaxed_Init => Relaxed_Init));
+            Emit
+              (File,
+               New_Havoc_Declaration
+                 (Name => To_Why_Type
+                      (Retysp (E),
+                       Local        => True,
+                       Relaxed_Init => Relaxed_Init)));
+         end if;
+      end Generate_Ref_Type_And_Havoc_Fun;
 
       -------------------------------
       -- Translate_Underlying_Type --
@@ -862,35 +915,7 @@ package body Gnat2Why.Types is
                     +New_Named_Type (Name => To_Why_Type (E, Local => True))));
          end if;
 
-         --  We generate a record type containing only one mutable field of
-         --  type t. This is used to store mutable variables of type t.
-         --  We also generate a havoc function for this type.
-         --  We do not generate these declarations for array or record types
-         --  which are clones of existing types with the same name and
-         --  statically constrained array type as no new type is declared for
-         --  them.
-         --  Classwide types are a special case as they are clones of their
-         --  specific types but do not have the same short name.
-
-         if (not (Has_Record_Type (E) or else Has_Private_Type (E))
-             or else not Record_Type_Is_Clone (Retysp (E))
-             or else Short_Name (Retysp (E)) /=
-               Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
-           and then not Is_Class_Wide_Type (Retysp (E))
-           and then (not Has_Array_Type (E)
-                     or else not Is_Static_Array_Type (Retysp (E)))
-           and then (not Has_Array_Type (E)
-                     or else not Array_Type_Is_Clone (Retysp (E))
-                     or else Short_Name (Retysp (E)) /=
-                       Short_Name (Array_Type_Cloned_Subtype (Retysp (E))))
-         then
-            Emit_Ref_Type_Definition
-              (File, To_Why_Type (Retysp (E), Local => True));
-            Emit
-              (File,
-               New_Havoc_Declaration
-                 (Name => To_Why_Type (Retysp (E), Local => True)));
-         end if;
+         Generate_Ref_Type_And_Havoc_Fun (File, E, Relaxed_Init => False);
 
          --  If E is the full view of a private type, use its partial view as
          --  the filtering entity, as it is the entity used everywhere in AST.
@@ -956,6 +981,8 @@ package body Gnat2Why.Types is
             & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
          Declare_Init_Wrapper (File, E);
+
+         Generate_Ref_Type_And_Havoc_Fun (File, E, Relaxed_Init => True);
 
          Close_Theory (File, Kind => Definition_Theory);
       end if;

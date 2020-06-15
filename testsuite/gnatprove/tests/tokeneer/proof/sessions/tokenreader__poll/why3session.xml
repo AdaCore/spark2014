@@ -91,10 +91,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.22" expl="assertion" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="5"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="99"/></proof>
   </goal>
   <goal name="def&#39;vc.23" expl="assertion" proved="true">
-  <proof prover="0" timelimit="20"><result status="valid" steps="99"/></proof>
+  <proof prover="0" timelimit="20"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.24" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >

@@ -16,14 +16,14 @@
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.1" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="92"/></proof>
-  </goal>
-  <goal name="def&#39;vc.2" expl="assertion">
+  <goal name="def&#39;vc.1" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="16851"/></proof>
-  <proof prover="2"><result status="unknown" steps="170"/></proof>
-  <proof prover="3"><result status="unknown" steps="185"/></proof>
+  <proof prover="1"><result status="unknown" steps="17213"/></proof>
+  <proof prover="2"><result status="unknown" steps="138"/></proof>
+  <proof prover="3"><result status="unknown" steps="162"/></proof>
+  </goal>
+  <goal name="def&#39;vc.2" expl="assertion" proved="true">
+  <proof prover="2"><result status="valid" steps="106"/></proof>
   </goal>
   <goal name="def&#39;vc.3" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

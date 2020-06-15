@@ -2350,7 +2350,8 @@ package body Flow.Control_Flow_Graph is
       function Get_Loop_Variable (N : Node_Id) return Entity_Id
       is (Defining_Identifier
             (Loop_Parameter_Specification (Iteration_Scheme (N))))
-      with Pre => Is_For_Loop (N);
+      with Pre => Is_For_Loop (N),
+           Post => Ekind (Get_Loop_Variable'Result) = E_Loop_Parameter;
       --  Obtain the entity of a for loops loop parameter
 
       function Get_Loop_Range (N : Node_Id) return Node_Id

@@ -165,11 +165,6 @@ package body SPARK_Annotate is
    --  has been detected, or if the pragma Annotate is not used for
    --  justification purposes.
 
-   procedure Check_Init_Annotation (Arg3_Exp : Node_Id) with
-     Pre => Present (Arg3_Exp);
-   --  Check validity of a pragma Annotate (Gnatprove, Init_By_Proof, E) and
-   --  insert it in the Init_Annotations map.
-
    procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id);
    --  Check validity of a pragma Annotate (Gnatprove, Inline_For_Proof, E)
    --  and insert it in the Inline_Annotations map.
@@ -210,31 +205,6 @@ package body SPARK_Annotate is
    begin
       return L.First < R.First;
    end "<";
-
-   ---------------------------
-   -- Check_Init_Annotation --
-   ---------------------------
-
-   procedure Check_Init_Annotation (Arg3_Exp : Node_Id) is
-      E : constant Entity_Id := Entity (Arg3_Exp);
-
-   begin
-      if not Is_Type (E) then
-         Error_Msg_N
-           ("Entity parameter of a pragma Init_By_Proof must be a type",
-            Arg3_Exp);
-         return;
-      elsif not Is_Base_Type (E) and then not Is_First_Subtype (E) then
-         Error_Msg_N
-           ("Pragma Init_By_Proof cannot be applied on a subtype",
-            Arg3_Exp);
-         return;
-      end if;
-
-      if SPARK_Definition.Entity_In_SPARK (E) then
-         SPARK_Definition.Mark_Type_With_Relaxed_Init (E, E, True);
-      end if;
-   end Check_Init_Annotation;
 
    -----------------------------
    -- Check_Inline_Annotation --
@@ -435,9 +405,9 @@ package body SPARK_Annotate is
                --  Type of the second argument of the Contains function
 
                Cont_Element   : constant Entity_Id :=
-                 SPARK_Util.Types.Get_Iterable_Type_Primitive
-                   (Container_Type, Name_Element);
+                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
                --  Element primitive of Container_Type
+
             begin
                if No (Cont_Element) then
                   Error_Msg_N
@@ -476,14 +446,13 @@ package body SPARK_Annotate is
                --  Return type of the model function
 
                Cont_Element   : constant Entity_Id :=
-                 SPARK_Util.Types.Get_Iterable_Type_Primitive
-                   (Container_Type, Name_Element);
+                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
                --  Element primitive of Container_Type
 
                Model_Element  : constant Entity_Id :=
-                 SPARK_Util.Types.Get_Iterable_Type_Primitive
-                   (Model_Type, Name_Element);
+                 Get_Iterable_Type_Primitive (Model_Type, Name_Element);
                --  Element primitive of Model_Type
+
             begin
                if No (Cont_Element) then
                   Error_Msg_N
@@ -1211,9 +1180,6 @@ package body SPARK_Annotate is
          null;
 
       --  Annotations with 3 arguments
-
-      elsif Name = "init_by_proof" then
-         Check_Init_Annotation (Arg3_Exp);
 
       elsif Name = "inline_for_proof" then
          Check_Inline_Annotation (Arg3_Exp, Prag);

@@ -38,7 +38,6 @@ with Opt;
 with Osint;
 with Output;
 with Pprint;                 use Pprint;
-with SPARK_Annotate;         use SPARK_Annotate;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
@@ -969,8 +968,6 @@ package body SPARK_Util is
         or else not Might_Contain_Relaxed_Init (Etype (Expr))
       then
          return False;
-      elsif Has_Relaxed_Init (Etype (Expr)) then
-         return True;
       end if;
 
       case Nkind (Expr) is
@@ -1026,22 +1023,7 @@ package body SPARK_Util is
             return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval);
 
          when N_Function_Call =>
-
-            --  Shift and rotate always return initialized results
-
-            if Is_Simple_Shift_Or_Rotate (Get_Called_Entity (Expr))
-
-              --  Predicate and pledge functions return Boolean, they cannot
-              --  be partly initialized.
-
-              or else Is_Predicate_Function (Get_Called_Entity (Expr))
-              or else Has_Pledge_Annotation (Get_Called_Entity (Expr))
-            then
-               return False;
-            else
-               --  ??? Retrieve annotation on called entity
-               return Has_Relaxed_Init (Etype (Get_Called_Entity (Expr)));
-            end if;
+            return Fun_Has_Relaxed_Init (Get_Called_Entity (Expr));
 
          when N_Identifier
             | N_Expanded_Name
@@ -1052,15 +1034,13 @@ package body SPARK_Util is
             | N_Selected_Component
             | N_Explicit_Dereference
          =>
-            return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False);
+            return Has_Relaxed_Init (Etype (Expr))
+              or else Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False);
 
          when N_Attribute_Reference =>
             case Get_Attribute_Id (Attribute_Name (Expr)) is
                when Attribute_Result =>
-
-                  --  ??? Retrieve annotation on subprogram
-
-                  return Has_Relaxed_Init (Etype (Entity (Prefix (Expr))));
+                  return Fun_Has_Relaxed_Init (Entity (Prefix (Expr)));
 
                when Attribute_Old
                   | Attribute_Loop_Entry
@@ -1257,6 +1237,22 @@ package body SPARK_Util is
          return Full_Source_Name (Scope (E)) & "." & Name;
       end if;
    end Full_Source_Name;
+
+   --------------------------
+   -- Fun_Has_Relaxed_Init --
+   --------------------------
+
+   function Fun_Has_Relaxed_Init (Subp : Entity_Id) return Boolean is
+   begin
+      --  It is illegal to return an uninitialized scalar object
+
+      if Is_Scalar_Type (Retysp (Etype (Subp))) then
+         return False;
+      else
+         return Has_Relaxed_Initialization (Subp)
+           or else Has_Relaxed_Init (Etype (Subp));
+      end if;
+   end Fun_Has_Relaxed_Init;
 
    --------------------------------
    -- Generic_Actual_Subprograms --
@@ -2600,15 +2596,74 @@ package body SPARK_Util is
 
    function Obj_Has_Relaxed_Init (Obj : Entity_Id) return Boolean is
    begin
-      --  Discriminants, loop parameters and quantified expression parameters
-      --  are always initialized.
 
-      if Ekind (Obj) in E_Discriminant | E_Loop_Parameter
+      --  Discriminants are always initialized
+
+      if Ekind (Obj) in E_Discriminant then
+         return False;
+
+      --  Parameters of loops may not be initialized if they are not scalar
+      --  objects.
+
+      elsif Ekind (Obj) = E_Loop_Parameter
         or else
          (Ekind (Obj) = E_Variable
           and then Is_Quantified_Loop_Param (Obj))
       then
-         return False;
+         declare
+            Q_Expr : constant Node_Id :=
+              (if Ekind (Obj) = E_Variable
+               then Original_Node (Parent (Scope (Obj)))
+               else Parent (Parent (Obj)));
+            I_Spec : constant Node_Id := Iterator_Specification (Q_Expr);
+         begin
+            if Has_Scalar_Type (Etype (Obj)) then
+               return False;
+
+            --  On for of quantification over arrays, the quantified variable
+            --  ranges over array elements.
+
+            elsif Present (I_Spec) and then Is_Iterator_Over_Array (I_Spec)
+            then
+               declare
+                  Arr_Expr : constant Node_Id := Name (I_Spec);
+               begin
+                  return Expr_Has_Relaxed_Init (Arr_Expr)
+                    or else Has_Relaxed_Init
+                      (Component_Type (Etype (Arr_Expr)));
+               end;
+
+            --  On for of quantification over containers, the quantified
+            --  variable is assigned the result of Element.
+
+            elsif Present (I_Spec) and then Of_Present (I_Spec) then
+               declare
+                  Element : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Name (I_Spec)), Name_Element);
+               begin
+                  return Fun_Has_Relaxed_Init (Element);
+               end;
+
+            --  On for in quantification over containers, the quantified
+            --  variable is assigned the result of First and Next.
+
+            elsif Present (I_Spec) then
+               declare
+                  First : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Name (I_Spec)), Name_First);
+                  Next  : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Name (I_Spec)), Name_Next);
+               begin
+                  return Fun_Has_Relaxed_Init (First)
+                    or else Fun_Has_Relaxed_Init (Next);
+               end;
+            else
+               return False;
+            end if;
+         end;
 
       --  Uninitialized scalar types cannot be copied. A scalar object can
       --  only be uninitialized if it is either an out parameter or a
@@ -2622,10 +2677,17 @@ package body SPARK_Util is
       then
          return False;
 
+      --  Check whether the object is subjected to a Relaxed_Initialization
+      --  aspect.
+
+      elsif Ekind (Obj) in E_Variable | Formal_Kind
+        and then Has_Relaxed_Initialization (Obj)
+      then
+         return True;
+
       --  Otherwise, the object has relaxed initialization if its type does
 
       else
-         --  ??? Add cases for formal and variables annotated directly
          return Has_Relaxed_Init (Etype (Obj));
       end if;
    end Obj_Has_Relaxed_Init;

@@ -4,7 +4,7 @@ package body A
   with SPARK_Mode,
     Refined_State => (Global_AS => Global_A)
 is
-   function Global_A_Initalized return Boolean is (Global_A'Valid_Scalars);
+   function Global_A_Initalized return Boolean is (Global_A'Initialized);
 
    procedure initGlobalsA (Status : out Natural) is
    begin

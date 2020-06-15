@@ -1,5 +1,7 @@
 with Ada.Numerics.Big_Numbers.Big_Integers;
 with Interfaces.C; use Interfaces.C;
+with Types; use Types;
+with Curve25519; use Curve25519;
 
 procedure Big_Integers_Test with SPARK_Mode is
 
@@ -73,12 +75,15 @@ procedure Big_Integers_Test with SPARK_Mode is
       C := Greatest_Common_Divisor (Big_Int, C); --  @PRECONDITION:FAIL
    end Gcd_Precondition_Fail;
 
-   A, B, C, D : Big_Integer;
+   A, B, C, D : Big_Integer := BI.To_Big_Integer (1);
    I : Integer;
-   Pos : Big_Positive;
-   Nat : Big_Natural;
+   Pos : Big_Positive := A;
+   Nat : Big_Natural := A;
    LLI : Long_Long_Integer;
    U : Unsigned;
+
+   C_1, C_2 : Integer_255 := (others => 2**28);
+   C_3 : Integer_255;
 
 begin
    A := BI.To_Big_Integer (5);
@@ -135,4 +140,6 @@ begin
    pragma Assert (Min (A, B) = B);
    pragma Assert (Max (B, A) = A);
    pragma Assert (Greatest_Common_Divisor (A, C) = BI.To_Big_Integer (1));
+
+   C_3 := Add (C_1, C_2);
 end Big_Integers_Test;

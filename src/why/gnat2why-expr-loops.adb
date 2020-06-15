@@ -33,7 +33,6 @@ with Nlists;                  use Nlists;
 with Opt;                     use type Opt.Warning_Mode_Type;
 with Sinput;                  use Sinput;
 with Snames;                  use Snames;
-with SPARK_Util.Types;        use SPARK_Util.Types;
 with Uintp;                   use Uintp;
 with VC_Kinds;                use VC_Kinds;
 with Why;                     use Why;

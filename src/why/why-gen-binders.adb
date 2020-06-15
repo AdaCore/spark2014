@@ -624,7 +624,7 @@ package body Why.Gen.Binders is
 
       elsif Ekind (E) = E_Function then
          declare
-            Typ : constant W_Type_Id := Type_Of_Node (Ty);
+            Typ : constant W_Type_Id := Type_Of_Node (E);
          begin
             return (Func,
                     False,

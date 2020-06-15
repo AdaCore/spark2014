@@ -1012,6 +1012,17 @@ package body SPARK_Definition is
    --  Mark pragma Annotate that could appear at the beginning of a declaration
    --  list of a package.
 
+   procedure Mark_Type_With_Relaxed_Init
+     (N   : Node_Id;
+      Ty  : Entity_Id;
+      Own : Boolean := False)
+   with Pre => Is_Type (Ty) and then Entity_In_SPARK (Ty);
+   --  Checks restrictions on types marked with a Relaxed_Initialization aspect
+   --  and store them in the Relaxed_Init map for further use.
+   --  @param N node on which violations should be emitted.
+   --  @param Ty type which should be compatible with relaxed initialization.
+   --  @param Own True if Ty is itself annotated with relaxed initialization.
+
    function Emit_Warning_Info_Messages return Boolean is
      (Emit_Messages and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
    --  Emit warning/info messages only when messages should be emitted, and
@@ -2232,6 +2243,9 @@ package body SPARK_Definition is
             declare
                E : constant Entity_Id := Unique_Defining_Entity (N);
             begin
+               if Is_Generic_Subprogram (E) then
+                  null;
+
                --  For expression functions that have a unique declaration, the
                --  body inserted by the frontend may be far from the original
                --  point of declaration, after the private declarations of the
@@ -2240,7 +2254,7 @@ package body SPARK_Definition is
                --  declaration, so that entities declared afterwards have
                --  access to the axiom defining the expression function.
 
-               if Present (Get_Expression_Function (E))
+               elsif Present (Get_Expression_Function (E))
                  and then not Comes_From_Source (Original_Node (N))
                then
                   null;
@@ -2275,7 +2289,10 @@ package body SPARK_Definition is
             if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
                Mark_Subprogram_Declaration (N);
             end if;
-            Mark_Subprogram_Body (Get_Body_From_Stub (N));
+
+            if not Is_Generic_Subprogram (Unique_Defining_Entity (N)) then
+               Mark_Subprogram_Body (Get_Body_From_Stub (N));
+            end if;
 
          when N_Subprogram_Declaration =>
             if not Is_Predicate_Function (Defining_Entity (N)) then
@@ -3051,16 +3068,17 @@ package body SPARK_Definition is
                Error_Msg_F ("?attribute Valid is assumed to return True", N);
             end if;
 
-         --  Attribute Valid_Scalars is used on prefixes with init by proof.
-         --  Valid_Scalars does not mandate the evaluation of its prefix.
+         --  Attribute Initialized is used on prefixes with relaxed
+         --  initialization. It does not mandate the evaluation of its prefix.
          --  Thus it can be called on scalar "names" which are not initialized
          --  without generating a bounded error.
 
-         when Attribute_Valid_Scalars =>
+         when Attribute_Initialized =>
 
             if not Retysp_In_SPARK (Etype (P))
               or else not
-                Expr_Has_Relaxed_Init (P, No_Eval => True)
+                (Expr_Has_Relaxed_Init (P, No_Eval => True)
+                 or else Has_Relaxed_Init (Etype (P)))
             then
                Mark_Violation
                  ("prefix of attribute """
@@ -3421,6 +3439,15 @@ package body SPARK_Definition is
 
       else
          E := Get_Called_Entity (N);
+
+         --  Calls to aliases, i.e. subprograms created by the frontend
+         --  that operate on derived types, are rewritten with calls to
+         --  corresponding subprograms that operate on the base types.
+
+         pragma Assert
+           (if Is_Overloadable (E)
+            then E = Ultimate_Alias (E)
+            else Ekind (E) = E_Entry_Family);
       end if;
 
       --  A possibly nonreturning procedure should only be called from
@@ -4064,7 +4091,8 @@ package body SPARK_Definition is
       --  E is a subprogram or a loop parameter, or a discriminant
 
       procedure Mark_Number_Entity     (E : Entity_Id);
-      procedure Mark_Object_Entity     (E : Entity_Id);
+      procedure Mark_Object_Entity     (E : Entity_Id) with
+        Pre => Ekind (E) in E_Variable | E_Constant;
       procedure Mark_Package_Entity    (E : Entity_Id) with
         Pre =>
           Entity_In_Ext_Axioms (E)
@@ -4166,7 +4194,7 @@ package body SPARK_Definition is
          --  block statement (SPARK RM 3.10(4)).
 
          if Nkind (N) = N_Object_Declaration
-           and then Is_Anonymous_Access_Type (Etype (E))
+           and then Is_Anonymous_Access_Type (T)
          then
             declare
                Scop : constant Entity_Id := Scope (E);
@@ -4201,7 +4229,7 @@ package body SPARK_Definition is
             --  the rules.
 
             if Nkind (N) = N_Object_Declaration
-              and then Is_Anonymous_Access_Type (Etype (E))
+              and then Is_Anonymous_Access_Type (T)
             then
                Check_Source_Of_Borrow_Or_Observe (Expr);
 
@@ -4221,11 +4249,24 @@ package body SPARK_Definition is
             --  If we are performing a move operation, check that we are
             --  moving a path.
 
-            elsif Is_Deep (Etype (E))
+            elsif Is_Deep (T)
               and then not Is_Path_Expression (Expr)
             then
                Mark_Violation ("expression as source of move", Expr);
             end if;
+         end if;
+
+         --  If no violations were found and the object is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         if not Violation_Detected
+           and then Ekind (E) = E_Variable
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => T,
+               Own => False);
          end if;
       end Mark_Object_Entity;
 
@@ -4358,6 +4399,18 @@ package body SPARK_Definition is
       begin
          if not Retysp_In_SPARK (T) then
             Mark_Violation (E, From => T);
+
+         --  If no violations were found and the object is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         elsif not Violation_Detected
+           and then Is_Formal (E)
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => T,
+               Own => False);
          end if;
       end Mark_Parameter_Entity;
 
@@ -4703,7 +4756,7 @@ package body SPARK_Definition is
             Mark_Violation_In_Tasking (E);
          end if;
 
-         Mark_Subprogram_Specification (if Ekind (E) in Entry_Kind
+         Mark_Subprogram_Specification (if Is_Entry (E)
                                         then Parent (E)
                                         else Subprogram_Specification (E));
 
@@ -4829,6 +4882,19 @@ package body SPARK_Definition is
                     ("subprogram inherited from multiple interfaces", E);
                end if;
             end;
+         end if;
+
+         --  If no violations were found and the function is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         if not Violation_Detected
+           and then Ekind (E) = E_Function
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => Etype (E),
+               Own => False);
          end if;
       end Mark_Subprogram_Entity;
 
@@ -6008,6 +6074,19 @@ package body SPARK_Definition is
 
          else
             raise Program_Error;
+         end if;
+
+         --  If no violations were found and the type is annotated with
+         --  relaxed initialization, populate the Relaxed_Init map.
+
+         if not Violation_Detected
+           and then Is_First_Subtype (E)
+           and then Has_Relaxed_Initialization (E)
+         then
+            Mark_Type_With_Relaxed_Init
+              (N   => E,
+               Ty  => E,
+               Own => True);
          end if;
       end Mark_Type_Entity;
 
@@ -7457,6 +7536,9 @@ package body SPARK_Definition is
       Def_E             : constant Entity_Id := Defining_Entity (N);
       E                 : constant Entity_Id := Unique_Entity (Def_E);
 
+      pragma Assert
+        (Ekind (E) in E_Function | E_Procedure | Entry_Kind | E_Task_Type);
+
       In_Pred_Function_Body : constant Boolean :=
         Ekind (E) = E_Function and then Is_Predicate_Function (E);
       --  Set to True iff processing body of a predicate function, which is
@@ -7493,11 +7575,6 @@ package body SPARK_Definition is
            and then In_Visible_Declarations
              (Parent (Subprogram_Specification (E))))
       then
-         return;
-
-      --  Ignore generic subprograms
-
-      elsif Is_Generic_Subprogram (E) then
          return;
 
       --  Ignore some functions generated by the frontend for aspects
@@ -7582,28 +7659,21 @@ package body SPARK_Definition is
                   end case;
                end if;
 
-               --  Mark Actual_Subtypes of parameters if any
+               --  Mark Actual_Subtypes of body formal parameters, if any
 
                if Nkind (N) /= N_Task_Body then
                   declare
-                     Formals    : constant List_Id :=
-                       Parameter_Specifications
-                         (if Nkind (N) = N_Entry_Body
-                          then Entry_Body_Formal_Part (N)
-                          else Specification (N));
-                     Formal     : Entity_Id;
-                     Sub        : Entity_Id;
-                     Param_Spec : Node_Id := First (Formals);
+                     Body_Formal : Entity_Id := First_Formal (Def_E);
+                     Sub         : Entity_Id;
                   begin
-                     while Present (Param_Spec) loop
-                        Formal := Defining_Identifier (Param_Spec);
-                        Sub := Actual_Subtype (Formal);
+                     while Present (Body_Formal) loop
+                        Sub := Actual_Subtype (Body_Formal);
                         if Present (Sub)
                           and then not In_SPARK (Sub)
                         then
-                           Mark_Violation (Formal, From => Sub);
+                           Mark_Violation (Body_Formal, From => Sub);
                         end if;
-                        Next (Param_Spec);
+                        Next_Formal (Body_Formal);
                      end loop;
                   end;
                end if;

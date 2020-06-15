@@ -122,12 +122,12 @@
   </goal>
   <goal name="def&#39;vc.30" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="255786"/></proof>
+  <proof prover="1"><result status="valid" steps="255896"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.31" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="1037665"/></proof>
+  <proof prover="1"><result status="valid" steps="1037775"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>

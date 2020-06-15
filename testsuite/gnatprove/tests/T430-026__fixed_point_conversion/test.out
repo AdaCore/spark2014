@@ -1,2 +1,0 @@
-fp.ads:8:37: info: overflow check proved (CVC4: 1 VC)
-fp.ads:8:37: info: range check proved (Z3: 1 VC)

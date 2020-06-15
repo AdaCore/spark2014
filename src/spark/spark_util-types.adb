@@ -590,15 +590,6 @@ package body SPARK_Util.Types is
       end if;
    end Get_Initial_DIC_Procedure;
 
-   ---------------------------------
-   -- Get_Iterable_Type_Primitive --
-   ---------------------------------
-
-   function Get_Iterable_Type_Primitive
-     (Typ : Entity_Id;
-      Nam : Name_Id) return Entity_Id
-     is (Ultimate_Alias (Sem_Util.Get_Iterable_Type_Primitive (Typ, Nam)));
-
    -------------------------------------
    -- Get_Parent_Type_If_Check_Needed --
    -------------------------------------

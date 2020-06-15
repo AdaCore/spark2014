@@ -6073,13 +6073,19 @@ package body Gnat2Why.Expr is
                              Domain   => EW_Prog,
                              Expr     => +Tmp_Var_Deref,
                              Lvalue   => True,
-                             To       => Actual_T)
+                             To       =>
+                               (if Obj_Has_Relaxed_Init (Formal)
+                                then EW_Init_Wrapper (Actual_T)
+                                else Actual_T))
                         else
                            +Insert_Simple_Conversion
                              (Ada_Node => Actual,
                               Domain   => EW_Prog,
                               Expr     => +Tmp_Var_Deref,
-                              To       => Actual_T));
+                              To       =>
+                                (if Obj_Has_Relaxed_Init (Formal)
+                                 then EW_Init_Wrapper (Actual_T)
+                                 else Actual_T)));
 
                      --  ...then store it into the actual:
 
@@ -6197,7 +6203,10 @@ package body Gnat2Why.Expr is
                        (Ada_Node => Actual,
                         Domain   => EW_Pterm,
                         Expr     => +Reconstructed_Temp,
-                        To       => Actual_T);
+                        To       =>
+                          (if Obj_Has_Relaxed_Init (Formal)
+                           then EW_Init_Wrapper (Actual_T)
+                           else Actual_T));
 
                      --  ...then store it into the actual:
 
@@ -6478,7 +6487,10 @@ package body Gnat2Why.Expr is
                           +Insert_Simple_Conversion
                             (Domain   => EW_Pterm,
                              Expr     => +Reconstructed_Arg,
-                             To       => Actual_T);
+                             To       => EW_Abstract
+                               (Etype (Actual),
+                                Relaxed_Init =>
+                                  Obj_Has_Relaxed_Init (Formal)));
                      end;
 
                      --  Store the assignment, the assumption, and the required
@@ -6532,8 +6544,6 @@ package body Gnat2Why.Expr is
                      declare
                         Formal_T                : constant W_Type_Id :=
                           Get_Why_Type_From_Item (Binders (Bind_Cnt));
-                        Actual_T                : constant W_Type_Id :=
-                          Type_Of_Node (Actual);
 
                         Actual_Is_Split         : constant Boolean :=
                           Simple_Actual and then not Aliasing;
@@ -6676,7 +6686,10 @@ package body Gnat2Why.Expr is
                              +Insert_Simple_Conversion
                              (Domain   => EW_Pterm,
                               Expr     => +Reconstructed_Arg,
-                              To       => Actual_T);
+                              To       => EW_Abstract
+                               (Etype (Actual),
+                                Relaxed_Init =>
+                                  Obj_Has_Relaxed_Init (Formal)));
                         end;
 
                         --  Store the assignment and the required declarations
@@ -8542,6 +8555,18 @@ package body Gnat2Why.Expr is
         (if Nkind (N) in N_Selected_Component | N_Indexed_Component | N_Slice
          then Expected_Type_Of_Prefix (Prefix (N))
          else Empty);
+      Init_Val : constant W_Expr_Id :=
+        (if Domain = EW_Prog
+         and then Is_Init_Wrapper_Type (Get_Type (Value))
+         and then not Expr_Has_Relaxed_Init (N)
+         then Insert_Initialization_Check
+           (Ada_Node               => N,
+            E                      =>
+              Get_Ada_Node (+Get_Type (Value)),
+            Name                   => Value,
+            Domain                 => EW_Prog,
+            Exclude_Always_Relaxed => True)
+         else Value);
       Result : W_Expr_Id;
    begin
       case Nkind (N) is
@@ -8563,22 +8588,19 @@ package body Gnat2Why.Expr is
             --  type instead.
 
             declare
-               Selector : constant Entity_Id :=
+               Selector  : constant Entity_Id :=
                  (if Nkind (N) in N_Identifier | N_Expanded_Name
                   then Entity (N)
                   else Search_Component_In_Type
                     (Pref_Ty, Entity (Selector_Name (N))));
-
-               To_Type : constant W_Type_Id :=
+               To_Type   : constant W_Type_Id :=
                  EW_Abstract
                    (Etype (Selector),
-                    Relaxed_Init => Is_Init_Wrapper_Type (Get_Type (Pref))
-                    or else Has_Relaxed_Init (Etype (Selector)));
-
+                    Relaxed_Init => Expr_Has_Relaxed_Init (N));
                New_Value : constant W_Expr_Id := Insert_Simple_Conversion
                       (Ada_Node => N,
                        Domain   => Domain,
-                       Expr     => Value,
+                       Expr     => Init_Val,
                        To       => To_Type);
             begin
                --  The code should never update a discrimiant by assigning to
@@ -8599,12 +8621,11 @@ package body Gnat2Why.Expr is
             declare
                To_Type   : constant W_Type_Id := EW_Abstract
                  (Etype (N),
-                  Relaxed_Init => Is_Init_Wrapper_Type (Get_Type (Pref))
-                  or else Has_Relaxed_Init (Etype (N)));
+                  Relaxed_Init => Expr_Has_Relaxed_Init (N));
                New_Value : constant W_Expr_Id := Insert_Simple_Conversion
                  (Ada_Node => N,
                   Domain   => Domain,
-                  Expr     => Value,
+                  Expr     => Init_Val,
                   To       => To_Type);
 
             begin
@@ -8622,6 +8643,9 @@ package body Gnat2Why.Expr is
                Indices : W_Expr_Array (1 .. Positive (Dim));
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
+               To_Type : constant W_Type_Id := EW_Abstract
+                 (Component_Type (Pref_Ty),
+                  Relaxed_Init => Expr_Has_Relaxed_Init (N));
             begin
                while Present (Cursor) loop
                   Indices (Count) :=
@@ -8656,14 +8680,8 @@ package body Gnat2Why.Expr is
                        Insert_Simple_Conversion
                          (Ada_Node => N,
                           Domain   => Domain,
-                          Expr     => Value,
-                          To       =>
-                            EW_Abstract
-                              (Component_Type (Pref_Ty),
-                               Relaxed_Init =>
-                                 Is_Init_Wrapper_Type (Get_Type (Pref))
-                                 or else Has_Relaxed_Init
-                                   (Component_Type (Pref_Ty)))),
+                          Expr     => Init_Val,
+                          To       => To_Type),
                      Domain    => Domain));
             end;
 
@@ -8672,7 +8690,7 @@ package body Gnat2Why.Expr is
                Prefix_Name : constant W_Expr_Id :=
                  New_Temp_For_Expr (Pref, True);
                Value_Name  : constant W_Expr_Id :=
-                 New_Temp_For_Expr (Value, True);
+                 New_Temp_For_Expr (Init_Val, True);
                Dim     : constant Pos := Number_Dimensions (Pref_Ty);
                pragma Assert (Dim = 1);
                --  Slices are only for one-dimentional arrays (Ada RM 4.1.2)
@@ -8881,14 +8899,16 @@ package body Gnat2Why.Expr is
                  (Ada_Node => N,
                   Domain   => EW_Prog,
                   Expr     => Expr,
-                  To       => EW_Abstract (Typ, Expr_Has_Relaxed_Init (N)),
+                  To       => EW_Abstract
+                    (Typ, Is_Init_Wrapper_Type (Get_Type (Expr))),
                   Lvalue   => True);
             else
                Expr :=
                  +Insert_Simple_Conversion
                  (Domain => Domain,
                   Expr   => Expr,
-                  To     => EW_Abstract (Typ, Expr_Has_Relaxed_Init (N)));
+                  To     => EW_Abstract
+                    (Typ, Is_Init_Wrapper_Type (Get_Type (Expr))));
 
                if Domain = EW_Prog and then Has_Predicates (Typ) then
                   Expr := +Insert_Predicate_Check
@@ -12384,12 +12404,12 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         --  GNATprove handles Valid_Scalars as meaning that the value has been
+         --  The Initialized attribute is used to express that a value has been
          --  initialized. To remain as close as possible to the executable
          --  semantics of the attribute, proof does not assume that
-         --  'Valid_Scalars necessarily returns False on uninitialized data.
+         --  'Initialized necessarily returns False on uninitialized data.
 
-         when Attribute_Valid_Scalars =>
+         when Attribute_Initialized =>
             declare
                Expr : constant W_Expr_Id :=
                  Transform_Expr
@@ -18294,8 +18314,7 @@ package body Gnat2Why.Expr is
          return W_Expr_Id
       is
          Element_E   : constant Entity_Id :=
-           SPARK_Util.Types.Get_Iterable_Type_Primitive
-             (Over_Type, Name_Element);
+           Get_Iterable_Type_Primitive (Over_Type, Name_Element);
          Cont_Type   : constant Entity_Id :=
            Etype (First_Formal (Element_E));
          Cont_Expr   : constant W_Expr_Id :=
@@ -18367,7 +18386,7 @@ package body Gnat2Why.Expr is
          --  function of the Iterable aspect.
 
          if not Use_Contains then
-            Has_Element := SPARK_Util.Types.Get_Iterable_Type_Primitive
+            Has_Element := Get_Iterable_Type_Primitive
               (Over_Type, Name_Has_Element);
 
          --  A Contains Iterable_For_Proof annotation is specified for
@@ -18538,9 +18557,9 @@ package body Gnat2Why.Expr is
             --  temporary variable.
 
             else
-               Index_Type := Etype
-                 (SPARK_Util.Types.Get_Iterable_Type_Primitive
-                    (Over_Type, Name_Element));
+               Index_Type :=
+                 Etype (Get_Iterable_Type_Primitive (Over_Type, Name_Element));
+
                Need_Tmp_Var := False;
             end if;
          end if;
@@ -19482,7 +19501,7 @@ package body Gnat2Why.Expr is
                      Subp        : constant Entity_Id := Return_Applies_To
                        (Return_Statement_Entity (Stmt_Or_Decl));
                      Return_Type : constant W_Type_Id :=
-                       Type_Of_Node (Etype (Subp));
+                       Type_Of_Node (Subp);
                   begin
                      Result_Stmt :=
                        New_Assignment
@@ -19565,7 +19584,7 @@ package body Gnat2Why.Expr is
                Ret_Obj    : constant Entity_Id :=
                  Get_Return_Object (Stmt_Or_Decl);
                Ret_Type   : constant W_Type_Id :=
-                 Type_Of_Node (Etype (Current_Subp));
+                 Type_Of_Node (Current_Subp);
                Obj_Deref  : constant W_Prog_Id :=
                  +Insert_Simple_Conversion
                    (Domain => EW_Prog,

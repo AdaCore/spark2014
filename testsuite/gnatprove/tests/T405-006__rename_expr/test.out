@@ -1,2 +1,0 @@
-p.adb:6:22: medium: assertion might fail, cannot prove Y /= X [possible explanation: precondition of subprogram at line 2 should mention X]
-p.adb:10:04: info: precondition proved (Trivial: 1 VC)

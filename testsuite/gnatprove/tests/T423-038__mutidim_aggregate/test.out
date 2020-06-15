@@ -1,5 +1,0 @@
-test_aggr.adb:7:24: info: data dependencies proved
-test_aggr.adb:9:15: info: range check proved (CVC4: 2 VC)
-test_aggr.adb:11:15: info: range check proved (CVC4: 2 VC)
-test_aggr.adb:12:46: medium: range check might fail (e.g. when ZC'First (1) = 0 and ZC'First (2) = 0 and ZC'Last (1) = 0 and ZC'Last (2) = 0)
-test_aggr.adb:13:68: medium: range check might fail

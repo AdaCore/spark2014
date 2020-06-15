@@ -267,6 +267,23 @@ package SPARK_Atree.Entities is
      and then Present (Aspects.Find_Aspect
                        (Typ, A => Aspects.Aspect_Iterable));
 
+   function Get_Iterable_Type_Primitive
+     (Typ : Entity_Id;
+      Nam : Name_Id)
+      return Entity_Id
+   with Pre  => Is_Type (Typ)
+                  and then
+                Nam in Name_Element
+                     | Name_First
+                     | Name_Has_Element
+                     | Name_Last
+                     | Name_Next
+                     | Name_Previous,
+        Post => Ekind (Get_Iterable_Type_Primitive'Result) = E_Function
+                  and then
+                Get_Iterable_Type_Primitive'Result =
+                Sem_Aux.Ultimate_Alias (Get_Iterable_Type_Primitive'Result);
+
    function Get_User_Defined_Eq (Typ : Entity_Id) return Entity_Id with
      Pre => Is_Type (Typ);
    --  Same as Einfo.Get_User_Defined_Eq except that it goes through renamings

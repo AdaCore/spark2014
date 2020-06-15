@@ -1,6 +1,0 @@
-uc.ads:25:13: info: types in unchecked conversion have the same size
-uc.ads:25:62: info: type is suitable for unchecked conversion
-uc.ads:25:85: info: type is suitable for unchecked conversion
-uc.ads:26:13: info: types in unchecked conversion have the same size
-uc.ads:26:61: info: type is suitable for unchecked conversion
-uc.ads:26:75: info: type is suitable for unchecked conversion

@@ -1,2 +1,0 @@
-ren.adb:7:24: renamed slice cannot depend on variable input "V" (SPARK RM 4.4(2))
-gnatprove: error during flow analysis and proof

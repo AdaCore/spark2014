@@ -39,6 +39,7 @@ case $confirm in
     echo "
     installing package..."
     mkdir -p $prefix
+    rm -rf "$prefix/share/spark" "$prefix/libexec/spark"
     tar cf - bin include lib libexec share | (cd $prefix && tar xf -)
     echo "    installation completed.
     To use SPARK 2014, users must put $prefix/bin

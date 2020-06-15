@@ -1588,11 +1588,11 @@ package body Gnat2Why.Subprograms is
       Binder_Len    : constant Natural :=
         Ada_Param_Len + (if Within_Protected_Type (E) then 1 else 0);
       Result        : Item_Array (1 .. Binder_Len);
-      Param         : Node_Id;
+      Formal        : Entity_Id;
       Count         : Positive;
 
    begin
-      Param := First (Params);
+      Formal := First_Formal (E);
       Count := 1;
 
       if Within_Protected_Type (E) then
@@ -1607,12 +1607,12 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
-      while Present (Param) loop
+      while Present (Formal) loop
          Result (Count) := Mk_Item_Of_Entity
-           (E           => Defining_Identifier (Param),
+           (E           => Formal,
             Local       => True,
             In_Fun_Decl => True);
-         Next (Param);
+         Next_Formal (Formal);
          Count := Count + 1;
       end loop;
 
@@ -2193,7 +2193,7 @@ package body Gnat2Why.Subprograms is
          Result_Name :=
            New_Identifier
              (Name  => Name & "__result",
-              Typ   => Type_Of_Node (Etype (E)));
+              Typ   => Type_Of_Node (E));
       end if;
 
       --  Clear the list of translations for X'Old expressions
@@ -2459,7 +2459,7 @@ package body Gnat2Why.Subprograms is
                Name     => Result_Name,
                Labels   => Get_Counterexample_Labels (E),
                Location => No_Location,
-               Ref_Type => Type_Of_Node (Etype (E))));
+               Ref_Type => Type_Of_Node (E)));
       end if;
 
       Emit (File,
@@ -3773,14 +3773,14 @@ package body Gnat2Why.Subprograms is
          Result_Name :=
            New_Identifier
              (Name  => Name & "__result",
-              Typ   => Type_Of_Node (Etype (E)));
+              Typ   => Type_Of_Node (E));
          Result_Is_Mutable := True;
 
          Result_Var :=
            New_Deref
              (Ada_Node => Body_N,
               Right    => Result_Name,
-              Typ      => Type_Of_Node (Etype (E)));
+              Typ      => Type_Of_Node (E));
       else
          Result_Var := +Void;
       end if;
@@ -3861,7 +3861,7 @@ package body Gnat2Why.Subprograms is
                Name     => Result_Name,
                Labels   => Get_Counterexample_Labels (E),
                Location => No_Location,
-               Ref_Type => Type_Of_Node (Etype (E))));
+               Ref_Type => Type_Of_Node (E)));
 
          --  If E is a traversal function returning a borrower, declare a
          --  reference for the plege of its result.
@@ -4277,7 +4277,7 @@ package body Gnat2Why.Subprograms is
          Old_Policy  => Ignore);
 
       if Ekind (E) = E_Function then
-         Why_Type := Type_Of_Node (Etype (E));
+         Why_Type := Type_Of_Node (E);
       end if;
 
       --  Do not generate an axiom for the postcondition of:
@@ -4707,7 +4707,7 @@ package body Gnat2Why.Subprograms is
               To_Why_Id (E, Domain => EW_Term, Selector => Dispatch)
          else To_Local (E_Symb (E, WNE_Specific_Post)));
       Anc_Ty        : constant W_Type_Id :=
-        (if Ekind (E) = E_Function then Type_Of_Node (Etype (E))
+        (if Ekind (E) = E_Function then Type_Of_Node (E)
          else EW_Bool_Type);
 
    begin
@@ -4761,7 +4761,7 @@ package body Gnat2Why.Subprograms is
 
                declare
                   Desc_Ty      : constant W_Type_Id :=
-                    Type_Of_Node (Etype (Descendant_E));
+                    Type_Of_Node (Descendant_E);
                   Desc_Binders : constant Binder_Array :=
                     To_Binder_Array (Compute_Binders (Descendant_E, EW_Term));
                   Desc_Args    : W_Expr_Array (1 .. Desc_Binders'Length);
@@ -5082,7 +5082,7 @@ package body Gnat2Why.Subprograms is
          --  Store the result identifier in Result_Name
       begin
          if Use_Result_Name then
-            Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
+            Result_Name := New_Result_Ident (Type_Of_Node (E));
             Result_Is_Mutable := False;
          end if;
 
@@ -5225,7 +5225,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function then
 
-         Why_Type := Type_Of_Node (Etype (E));
+         Why_Type := Type_Of_Node (E);
 
          declare
             Logic_Func_Args     : constant W_Expr_Array :=
@@ -5361,7 +5361,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
                   Binders     => Tag_B & Func_Why_Binders,
-                  Return_Type => Type_Of_Node (Etype (E)),
+                  Return_Type => Type_Of_Node (E),
                   Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Effects     => Effects,
@@ -5776,7 +5776,7 @@ package body Gnat2Why.Subprograms is
          then WNE_Refined_Func_Guard
          else WNE_Func_Guard);
       Result_Id          : constant W_Identifier_Id :=
-         New_Result_Ident (Type_Of_Node (Etype (E)));
+         New_Result_Ident (Type_Of_Node (E));
       Pred_Binders       : constant Binder_Array :=
          Binder_Type'(Ada_Node  => Empty,
                       B_Name    => +Result_Id,
@@ -5815,7 +5815,7 @@ package body Gnat2Why.Subprograms is
 
       --  Store an appropriate value for the result identifier in Result_Name.
 
-      Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
+      Result_Name := New_Result_Ident (Type_Of_Node (E));
       Result_Is_Mutable := False;
 
       if Within_Protected_Type (E) then
@@ -5891,8 +5891,7 @@ package body Gnat2Why.Subprograms is
                         or else Use_Split_Form_For_Type (Etype (E)));
 
          declare
-            Ty_Ent  : constant Entity_Id := Etype (E);
-            Equ_Ty  : constant W_Type_Id := Type_Of_Node (Ty_Ent);
+            Equ_Ty  : constant W_Type_Id := Type_Of_Node (E);
             Guard   : constant W_Pred_Id :=
               +New_And_Then_Expr
               (Left   => +Compute_Guard_Formula
@@ -5998,7 +5997,7 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) = E_Function
         and then not Has_Pragma_Volatile_Function (E)
       then
-         Why_Type := Type_Of_Node (Etype (E));
+         Why_Type := Type_Of_Node (E);
 
          declare
             Logic_Why_Binders : constant Binder_Array :=

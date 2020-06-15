@@ -783,13 +783,13 @@ package body Why.Gen.Arrays is
               Retysp (Component_Type (From));
             To_Comp      : constant Entity_Id := Retysp (Component_Type (To));
             Relaxed_Init : constant Boolean :=
-              (From_Wrapper
-               or else Has_Relaxed_Init (From_Comp))
-              and then
               (To_Wrapper
                or else Has_Relaxed_Init (To_Comp));
-            --  Whether the conversion will be done on partially initialized
-            --  expressions.
+            --  We use partially initialized expressions if the target is
+            --  partially initialized. If the source only is partially
+            --  initialized, we ignore the init flags lest we might generate
+            --  an unsound axiom. Initialization checks will be inserted
+            --  independently.
 
             A_Comp       : W_Expr_Id := New_Call
               (Domain  => EW_Term,
@@ -809,29 +809,25 @@ package body Why.Gen.Arrays is
                   or else To_Wrapper));
 
          begin
-            --  If the conversion does not go through wrapper types, convert
-            --  the operands.
+            --  Possibly convert the first operand
 
-            if not Relaxed_Init then
-               if Has_Relaxed_Init (From_Comp) or else From_Wrapper then
-                  A_Comp := Insert_Simple_Conversion
-                    (Domain         => EW_Term,
-                     Expr           => A_Comp,
-                     To             => EW_Abstract (From_Comp),
-                     Force_No_Slide => True);
-               end if;
-               if Has_Relaxed_Init (To_Comp) or else To_Wrapper then
-                  B_Comp := Insert_Simple_Conversion
-                    (Domain         => EW_Term,
-                     Expr           => B_Comp,
-                     To             => EW_Abstract (To_Comp),
-                     Force_No_Slide => True);
-               end if;
+            if (Has_Relaxed_Init (From_Comp)
+                or else From_Wrapper) /= Relaxed_Init
+            then
+               A_Comp := Insert_Simple_Conversion
+                 (Domain         => EW_Term,
+                  Expr           => A_Comp,
+                  To             => EW_Abstract
+                    (From_Comp, Relaxed_Init => Relaxed_Init),
+                  Force_No_Slide => True);
+            end if;
 
-            --  If the conversion does go through wrapper types, and we are
-            --  converting scalars, assume preservation of the init flag.
+            --  If we are converting scalars, the equality will be stated on
+            --  the base type which does not include an init flag. If the
+            --  conversion should be done on wrappers, assume preservation of
+            --  the init flag separately.
 
-            elsif Is_Scalar_Type (From_Comp) then
+            if Relaxed_Init and then Is_Scalar_Type (From_Comp) then
                T_Comp := New_Comparison
                  (Symbol => Why_Eq,
                   Left   => Compute_Is_Initialized
