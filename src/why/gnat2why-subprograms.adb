@@ -58,9 +58,7 @@ with Why.Atree.Accessors;            use Why.Atree.Accessors;
 with Why.Atree.Builders;             use Why.Atree.Builders;
 with Why.Atree.Modules;              use Why.Atree.Modules;
 with Why.Atree.Mutators;             use Why.Atree.Mutators;
-with Why.Conversions;                use Why.Conversions;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
-with Why.Gen.Expr;                   use Why.Gen.Expr;
 with Why.Gen.Names;                  use Why.Gen.Names;
 with Why.Gen.Pointers;               use Why.Gen.Pointers;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
@@ -4488,8 +4486,12 @@ package body Gnat2Why.Subprograms is
       --  non-terminating function if it is a (non empty) static scalar type as
       --  their range property is always sound. For dynamic scalar types, we
       --  assume the bounds of their first static ancestor.
+      --  For subprogram wrappers or subprogram types, the axiom gives the
+      --  definition of a predicate symbol, it cannot be unsound.
 
-      elsif not Is_Function_Type (E) and then Is_Potentially_Nonreturning (E)
+      elsif not Is_Function_Type (E)
+        and then not Is_Access_Subp_Wrapper
+        and then Is_Potentially_Nonreturning (E)
       then
 
          --  Expression functions will have their own definition axiom which
@@ -4505,7 +4507,7 @@ package body Gnat2Why.Subprograms is
                         and then Use_Split_Form_For_Type (Etype (E)));
          declare
             Logic_Why_Binders   : constant Binder_Array :=
-              Spec_Binders & To_Binder_Array (Logic_Func_Binders);
+             Spec_Binders & To_Binder_Array (Logic_Func_Binders);
             Logic_Id            : constant W_Identifier_Id :=
               To_Why_Id (E, Domain => EW_Term, Local => False);
             Dynamic_Prop_Result : constant W_Pred_Id :=
@@ -4526,20 +4528,22 @@ package body Gnat2Why.Subprograms is
                Name     => +New_Result_Ident (Why_Type),
                Def      => Call,
                Context  => +Dynamic_Prop_Result);
+
          begin
+            pragma Assert (Is_True_Boolean (+Spec_Guard));
+            pragma Assert (Spec_Binders'Length = 0);
+
             Emit
               (File,
                New_Guarded_Axiom
                  (Name     => NID (Short_Name (E) & "__" & Post_Axiom),
+
                   Binders  => Logic_Why_Binders,
                   Triggers =>
                     New_Triggers
                       (Triggers =>
                            (1 => New_Trigger (Terms => (1 => Call)))),
-                  Def      => New_Connection
-                    (Left  => +Spec_Guard,
-                     Op    => EW_Equivalent,
-                     Right => +Def)));
+                  Def      => Def));
             return;
          end;
       end if;
@@ -4776,8 +4780,45 @@ package body Gnat2Why.Subprograms is
                Name     => +New_Result_Ident (Why_Type),
                Def      => Call,
                Context  => +Guarded_Post);
+
          begin
-            if not Is_True_Boolean (+Complete_Post) then
+            if Is_True_Boolean (+Complete_Post) then
+               return;
+
+            --  If we have a specific guard, generate:
+            --  forall spec_binders [spec_guard].
+            --    spec_guard <->
+            --      (forall binders [call]. Guard /\ Pre -> Def)
+
+            elsif not Is_True_Boolean (+Spec_Guard) then
+               Emit
+                 (File,
+                  New_Guarded_Axiom
+                    (Name     => NID (Short_Name (E) & "__" & Suffix),
+                     Binders  => Spec_Binders,
+                     Triggers => New_Triggers
+                       (Triggers =>
+                            (1 => New_Trigger (Terms => (1 => +Spec_Guard)))),
+                     Def      => New_Connection
+                       (Left  => +Spec_Guard,
+                        Op    => EW_Equivalent,
+                        Right => +New_Universal_Quantif
+                          (Binders  => Tag_Binder & Logic_Why_Binders,
+                           Triggers =>
+                             New_Triggers
+                               (Triggers =>
+                                    (1 => New_Trigger (Terms => (1 => Call)))),
+                           Pred     => New_Conditional
+                             (Condition =>
+                                  +New_And_Expr (Left   => +Guard,
+                                                 Right  => +Pre,
+                                                 Domain => EW_Pred),
+                              Then_Part => +Def)))));
+
+            --  Otherwise, generate:
+            --  forall binders [call]. Guard /\ Pre -> Def
+
+            else
                Emit
                  (File,
                   New_Guarded_Axiom
@@ -4791,10 +4832,7 @@ package body Gnat2Why.Subprograms is
                        +New_And_Expr (Left   => +Guard,
                                       Right  => +Pre,
                                       Domain => EW_Pred),
-                     Def      => New_Connection
-                       (Left  => +Spec_Guard,
-                        Op    => EW_Equivalent,
-                        Right => +Def)));
+                     Def      => +Def));
             end if;
          end Emit_Post_Axiom;
 

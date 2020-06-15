@@ -28,7 +28,9 @@ with Gnat2Why.Util;          use Gnat2Why.Util;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
 with Types;                  use Types;
+with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Binders;        use Why.Gen.Binders;
+with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Ids;                use Why.Ids;
 with Why.Sinfo;              use Why.Sinfo;
@@ -183,7 +185,10 @@ private
       E                      : Entity_Id;
       Spec_Binders           : Binder_Array := (1 .. 0 => <>);
       Spec_Guard             : W_Pred_Id := True_Pred;
-      Is_Access_Subp_Wrapper : Boolean := False);
+      Is_Access_Subp_Wrapper : Boolean := False)
+   with Pre => Is_Access_Subp_Wrapper
+     or else Ekind (E) = E_Subprogram_Type
+     or else (Is_True_Boolean (+Spec_Guard) and Spec_Binders'Length = 0);
    --  @param File section in which the expression should be translated
    --  @param E entry or subprogram or subprogram type entity
    --  @param Ent_For_Name entity to use to get the name of the logic Id for

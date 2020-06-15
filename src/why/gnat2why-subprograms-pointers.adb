@@ -365,7 +365,17 @@ package body Gnat2Why.Subprograms.Pointers is
                   Args    => Subp_Value & Get_Args_From_Binders
                     (To_Binder_Array (Formals), Params.Ref_Allowed),
                   Typ     => Get_Typ (Result_Name)),
-               Context  => +Checks,
+               Context  => +Sequence
+                 (Ada_Node => Ada_Node,
+                  Left     => New_Assume_Statement
+                    (Ada_Node => Ada_Node,
+                     Pred     => New_Call
+                       (Name => Get_Logic_Function_Guard (To_Profile),
+                        Args => (1 => +Result_Name, 2 => Subp_Value)
+                          & Get_Args_From_Binders
+                            (To_Binder_Array (Formals), Params.Ref_Allowed),
+                        Typ  => Get_Typ (Result_Name))),
+                  Right    => +Checks),
                Typ      => EW_Unit_Type);
 
             --  Restore the result name

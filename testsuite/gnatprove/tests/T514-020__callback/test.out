@@ -18,7 +18,7 @@ test_callback.adb:45:14: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:45:14: medium: precondition might fail, cannot prove X < 100 (e.g. when X = 100)
 test_callback.adb:48:29: warning: "F" is not modified, could be of access constant type
 test_callback.adb:48:29: warning: unused variable "F"
-test_callback.adb:50:14: medium: postcondition might fail, cannot prove Call_Incr_Bad2'Result >= X (e.g. when Call_Incr_Bad2'Result = 49 and X = 50)
+test_callback.adb:50:14: medium: postcondition might fail, cannot prove Call_Incr_Bad2'Result >= X (e.g. when Call_Incr_Bad2'Result = Integer'First and X = 0)
 test_callback.adb:53:14: medium: pointer dereference check might fail [possible explanation: precondition of subprogram at line 48 should mention F]
 test_callback.adb:53:14: medium: precondition might fail, cannot prove X < 50 (e.g. when X = 50)
 test_callback.adb:56:33: warning: "F" is not modified, could be of access constant type
@@ -66,7 +66,7 @@ test_callback.adb:113:56: medium: precondition of target might not be strong eno
 test_callback.adb:114:20: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
 test_callback.adb:114:20: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove 'Result >= x
 test_callback.adb:114:31: info: null exclusion check proved (Trivial: 1 VC)
-test_callback.adb:116:19: info: assertion proved (Z3: 1 VC)
+test_callback.adb:116:19: info: assertion proved (CVC4: 1 VC)
 test_callback.adb:116:31: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
 test_callback.adb:116:49: info: postcondition of source is strong enough to imply postcondition of target (CVC4: 1 VC)
 test_callback.adb:116:49: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
