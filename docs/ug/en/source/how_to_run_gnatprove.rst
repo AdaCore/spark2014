@@ -45,7 +45,7 @@ predefined ``GPR_TOOL`` variable for this purpose:
 
   project My_Project is
 
-    Mode := External ("GPR_TOOL");
+    Mode := External ("GPR_TOOL", "");
 
     package Compiler is
        case Mode is
