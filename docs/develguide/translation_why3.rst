@@ -1792,8 +1792,8 @@ simply a clone of the existing cloned type:
 Additionally, if the cloned type has a different name from the new
 type, a renaming is introduced for the record type.
 
-Access Types
-^^^^^^^^^^^^
+Access-To-Object Types
+^^^^^^^^^^^^^^^^^^^^^^
 Representative Modules
 """"""""""""""""""""""
 Access types with the same designated type share a single representative type,
@@ -1948,6 +1948,128 @@ The range predicate is used both for checking that a value is in the expected
 type, when translating conversions, qualifications, and allocators, and to
 translate explicit membership test in the user code.
 
+Access-To-Subprogram Types
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Built-in Theory for Subprogram Types
+""""""""""""""""""""""""""""""""""""""""
+
+A module ``Subprogram_Pointer_Rep`` for access_to-subprogram types is defined in
+``_gnatprove_standard.mlw``. It declares an abstract ``__subprogram`` type,
+which can be accessed through ``M_Subprogram_Access.Subprogram_Type``. A type
+``__rep`` for all access-to-subprogram types is then defined as a record with
+two fields, one for the value designated by the access, considered to have type
+``__subprogram``, and a flag to encode whether the access is ``null`` or not:
+
+.. code-block:: whyml
+
+  type __rep =
+    { __is_null_pointer : bool;
+      __pointer_value   : __subprogram }
+
+Note that we do not need an ``__address`` field like for access-to-object types.
+Two access-to-subprogram objects cannot designate the same value if they are not
+equal.
+
+Representative Theory for Profiles
+""""""""""""""""""""""""""""""""""
+
+A module is generated for every profile of suprograms designated by an access
+type, a profile being an ordered sequence of subtypes for parameters with their
+mode, as well as the return type for functions. It is shared between all
+access-to-subprogram types with the same profile. This module is named using the
+following schema (see ``Get_Profile_Theory_Name``)
+``Profile__((In|Out|InOut)__<Formal_Type_Full_Name>__)*Return__<Return_Type_Full_Name>``.
+
+In Gnat2why, its symbols are stored in the ``M_Subprogram_Profiles`` map.
+For procedures, the representative module is empty. For functions, it contains
+a ``__call`` function and an axiom guard ``pred_call``. Here is an example.
+Consider the access-to-function type ``F`` below:
+
+.. code-block:: ada
+
+   type F is access function (X1 : T1) return T;
+
+The representative module will have the following form:
+   
+.. code-block:: whyml
+
+  module Profile__In__T1__Return__T
+  
+    val function __call (subp : __subprogram) (x1 : t1) : t
+  
+    val predicate pred_call (result : t) (subp : __subprogram) (x1 : t1)
+  end
+
+Compared with the translation of regular functions, ``__call`` and
+``pred_call`` have an additionnal ``subp`` parameter which is the subprogram
+object which should be called.
+
+This representative module allows sharing the ``__call`` and ``pred_call``
+symbols between all access-to-function types. As the ``__call`` function is used
+for calls in the logic domain, this sharing provides for free that the result
+of the designated function is preserved through conversions.
+
+Range Predicates
+""""""""""""""""
+
+Access-to-function types can have a contract. When they do, we need a way to
+state that the ``__call`` function used in the logic domain respects this
+contract. However, we cannot generate an axiom like we do for normal functions
+as ``__call`` is shared between all access-to-function types with the same
+profile. Instead, for all access-to-subprogram types, we create a range
+predicate. For access to procedures, it is simply ``True``. For functions,
+we define it to be the content of the post axiom for the access type. This
+predicate can then be used to assume that a particular access-to-subprogram
+object has the contract of a particular access-to-subprogram type.
+
+The ``in_range`` predicate is declared in the definition module for the
+access-to-subprogram type, but, because of dependencies, its definition is
+supplied as an axiom in the completion module. As an example, let us consider
+the access-to-function type ``F`` below:
+
+.. code-block:: ada
+
+   type F is access function (X1 : T1; ...) return T with
+     Pre  => F_Pre (X1, ...),
+     Post => F_Post (F'Result, X1, ...);
+
+In the definition module for ``F`` a range predicate is declared:
+   
+.. code-block:: whyml
+  
+  val predicate __in_range (subp : __subprogram)
+
+Its definition is deferred to the completion module:
+   
+.. code-block:: whyml
+  
+   axiom post_axiom: forall subp : __subprogram.
+     __in_range subp <->
+       (forall x1 : t1 ... .
+         let result = __call subp x1 ... in
+	   pred_call result subp x1 ... ->
+	   f_pre x1 ... ->
+	     f_post result x1 ...
+
+Program Functions
+"""""""""""""""""
+
+The completion module of access-to-subprogram types also contains a program
+function ``__call_`` which can be used to call a subprogram in the
+program domain. Like for regular subprograms, this function will have the
+pre and postcondition of the access-to-subprogram type if any. For functions,
+the postcondition also states equality with the logic function ``__call``.
+As an example, here is the program function generated for the access-to-function
+type ``F`` above:
+   
+.. code-block:: whyml
+  
+  val __call_ (subp : __subprogram) (x1 : t1) ... : t
+    requires { f_pre x1 ... }
+    ensures  { result = __call sub x1 ... /\
+                pred_call result subp x1 ... /\
+                f_post result x1 ... }
 
 Type Completion
 ^^^^^^^^^^^^^^^
@@ -4036,6 +4158,40 @@ Expressions
 Aggregates
 ^^^^^^^^^^
 
+Access Attribute on Subprograms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the ``'Access`` attribute of a subprogram is used somewhere in the code,
+a defining module and a completion module are created for the object it
+designates (see
+Gnat2why.Subprograms.Pointers.Declare_Theory_For_Access_If_Needed).
+The defining module simply declares a symbol of the built-in type
+``__subprogram``. The completion module is empty for procedures. For functions,
+it contains two modules giving the precise values of the ``__call`` and
+``pred_call`` functions of the profile on the symbol introduced for the access.
+For example, let us consider the function ``F`` below:
+
+.. code-block:: ada
+
+  function F (X1 : T1; ...) return T;
+
+If ``F'Access`` is used somewhere, we will generate the following declaration
+and axioms:
+
+.. code-block:: whyml
+
+  val function attr__access : __subprogram
+  
+  axiom def_axiom:
+    forall x1 : t1 ... .
+      f x1 ... = __call attr__access x1 ...
+  
+  axiom def_axiom__function_guard:
+    forall temp___result: t, x1: t1 ... .
+      f__function_guard temp___result x1 ... <->
+        pred_call temp___result attr__access x1 ...
+
+
 Operators
 ^^^^^^^^^
 
@@ -4109,6 +4265,56 @@ borrow (see the description of local borrowers) are preserved:
 
 Conversions
 ^^^^^^^^^^^
+Access-To-Subprogram Conversions
+""""""""""""""""""""""""""""""""
+
+Access-to-subprogram types can be annotated with a contract. When converting
+between two access-to-subprogram types, checks are introduced in order to
+ensure that the Liskov Substitution Principle is respected (see
+``Gnat2why.Subprograms.Pointers.Checks_For_Subp_Conversion``). Unlike LSP
+checks introduced for tagged derivation, these checks are not located in
+a separate module (because they are linked to an expression, not a declaration).
+
+Let's assume that we want to convert an expression ``Expr``
+from the access-to-function type ``S`` to ``T`` below:
+
+.. code-block:: ada
+
+  type S is access function (X1 : S1, ...) return R with
+    Pre  => S_Pre (X1, ...),
+    Post => S_Post (S'Result, X1, ...);
+
+  type T is access function (Y1 : S1, ...) return R with
+    Pre  => T_Pre (Y1, ...),
+    Post => T_Post (T'Result, Y1, ...);
+
+The idea is to generate the following code:
+
+.. code-block:: whyml
+
+  let x1 = any s1 in
+  ...
+  assume { t_pre x1 ... };
+  (* Check that the precondition of T is strong enough to safely call S *)
+  assert { s_pre x1 ... };
+  (* Set result to the result of calling Expr on X1 ... *)
+  let result = __call expr x1 ... in
+  assume { pred_call result expr x1 ... };
+  (* Assume the post of S, this should be redundant *)
+  assume { s_post result x1 ... };
+  (* Check that the postcondition of T is implied by the postcondition of S *)
+  assert { t_post result x1 ... }
+
+For procedures, it is similar, except that we don't generate the let binding
+for the result identifier. Since procedures can modify their parameters, we
+generate an havoc statement between the checks for the precondition and the
+postcondition to simulate the execution of ``Expr``.
+
+In all cases, these checks are conditioned to the fact that ``Expr`` is not
+``null`` and wrapped in an ignore block so as to not impact the rest of the
+verification if these checks happen to fail. This is important as these
+Liskov checks are really mandated by SPARK and not Ada, so they do not
+correspond to a check at execution and users could chose to justify them.
 
 ***********************
 gnat2why Implementation
