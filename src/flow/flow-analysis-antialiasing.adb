@@ -185,7 +185,8 @@ package body Flow.Analysis.Antialiasing is
          N_Expanded_Name             => True,
          N_Defining_Identifier       => True,
 
-         --  Explicit dereference is not in SPARK
+         --  Explicit dereference is now in SPARK
+         N_Explicit_Dereference      => True,
 
          --  Indexed component and slices
          N_Indexed_Component         => True,
@@ -210,8 +211,6 @@ package body Flow.Analysis.Antialiasing is
          --  Generalized reference and indexing are suitably expanded
 
          --  Everything else must be an expression and is thus not interesting
-
-         N_Explicit_Dereference      => True,
 
          others                      => False);
 
@@ -415,9 +414,16 @@ package body Flow.Analysis.Antialiasing is
 
       --  We now know that the root nodes refer to the same entity
 
-      if Is_Synchronized (Entity (Ptr_A))
+      --  From the SPARK RM 6.4.2(1) an object is 'interfering' if it is
+      --  unsynchronised or it is synchronised only due to being constant after
+      --  elaboration.
+
+      if Is_Synchronized_Object (Entity (Ptr_A))
         and then not Is_Constant_After_Elaboration (Entity (Ptr_A))
       then
+         if Trace_Antialiasing then
+            Write_Line ("   -> non-interfering objects");
+         end if;
          return Impossible;
       end if;
 

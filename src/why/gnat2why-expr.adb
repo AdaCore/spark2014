@@ -25,6 +25,7 @@
 
 with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
+with Ada.Containers.Vectors;
 with Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Fixed;              use Ada.Strings.Fixed;
@@ -179,17 +180,50 @@ package body Gnat2Why.Expr is
    --          invariant and that the invariant holds for default values
    --          of type N.
 
+   type Ref_Type is record
+      Mutable : Boolean;
+      Name    : W_Identifier_Id;
+      Value   : W_Expr_Id;
+   end record;
+   --  Represent a mapping from an identifier Name to an expression Value.
+   --  If Mutable is True, the mapping should be a reference.
+
+   package Ref_Type_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Ref_Type);
+   subtype Ref_Context is Ref_Type_Vectors.Vector;
+
    function Compute_Call_Args
-     (Call       :     Node_Id;
-      Domain     :     EW_Domain;
-      Nb_Of_Refs : out Natural;
-      Nb_Of_Lets : out Natural;
-      Params     :     Transformation_Params) return W_Expr_Array;
+     (Call    : Node_Id;
+      Domain  : EW_Domain;
+      Context : in out Ref_Context;
+      Store   : W_Statement_Sequence_Unchecked_Id;
+      Params  : Transformation_Params) return W_Expr_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
-   --  Nb_Of_Refs is the number of ref arguments that could not be
-   --  translated "as is" (because of a type mismatch) and for which
-   --  Insert_Ref_Context must be called.
+   --  Sometimes, because of type mismatch, or because the actual is a
+   --  subcomponent of an object, (mutable) actual parameters of the
+   --  call cannot be used directly as parameters of the Why call. In this
+   --  case, Compute_Call_Args will also compute mappings for new parameters
+   --  as well as some post processing to store them back into the actual
+   --  parameters. The mappings are then stored in Context, and the post
+   --  processing is stored in Store.
+
+   procedure Compute_Store
+     (Pattern        : Item_Type;
+      Actual         : Node_Id;
+      Need_Store     : Boolean;
+      No_Pred_Checks : Boolean;
+      Pre_Expr       : W_Expr_Id;
+      Store          : W_Statement_Sequence_Unchecked_Id;
+      Params         : Transformation_Params);
+   --  Compute in Store the sequence of statements necessary to store back
+   --  local identifiers of Pattern inside Actual. If Need_Store is True, at
+   --  least one new identifier was used for the call. Note that
+   --  postprocessing may be needed even if Need_Store is False, to set the
+   --  init wrapper flag if any, or to perform predicate checks.
+   --  If No_Pred_Checks is True, do not check the predicate of the actual
+   --  after the call.
 
    function Compute_Tag_Check
      (Call   : Node_Id;
@@ -223,6 +257,48 @@ package body Gnat2Why.Expr is
    --  the same as EW_Abstract (Expected_Type_Of_Prefix (N)) on identifiers
    --  which are not in abstract form.
 
+   procedure Get_Item_From_Expr
+     (Pattern     : Item_Type;
+      Expr        : W_Expr_Id;
+      Constr_Expr : W_Expr_Id := Why_Empty;
+      Context     : in out Ref_Context;
+      Args        : out W_Expr_Array;
+      Need_Store  : out Boolean;
+      Reuse_Discr : Boolean := False)
+   with Pre => (if Pattern.Kind = DRecord and then Pattern.Constr.Present
+                then Constr_Expr /= Why_Empty)
+     and Args'Length >= To_Binder_Array ((1 => Pattern))'Length
+     and Pattern.Init.Present = False,
+     Post => Need_Store or Context.Length = Context.Length'Old;
+   --  Split a Why expression into parts that will be used to call a
+   --  subprogram. The parts are stored in Args. Pattern is an item
+   --  representing the expected form of the formal parameter. Its variable
+   --  parts are used for the names of the new references introduced for the
+   --  variable parts. Mappings for these variables are stored in Context.
+   --  Need_Store is set to True if at least one new reference is introduced.
+   --  If Reuse_Discr is True, the identifier for the discriminant in Pattern
+   --  is the one from the actual, no need to introduce a mapping for it.
+   --  This procedure does not handle the Init flag.
+
+   procedure Get_Item_From_Var
+     (Pattern     : in out Item_Type;
+      Var         : Item_Type;
+      Expr        : W_Expr_Id;
+      Constr_Expr : W_Expr_Id := Why_Empty;
+      Context     : in out Ref_Context;
+      Args        : out W_Expr_Array;
+      Need_Store  : out Boolean)
+   with Pre => Item_Is_Mutable (Pattern)
+     and (if Pattern.Kind = DRecord and then Pattern.Constr.Present
+            then Constr_Expr /= Why_Empty)
+     and Args'Length >= To_Binder_Array ((1 => Pattern))'Length
+     and Pattern.Init.Present = False,
+     Post => Need_Store or Context.Length = Context.Length'Old;
+   --  Try to reuse parts of the references of the actual Var for the formal.
+   --  If the types do not match, fall back to Get_Item_From_Expr. If
+   --  Need_Store is True, the Pattern should is updated to reference the
+   --  parts reused from Var if any.
+
    function Insert_Overflow_Check
      (Ada_Node : Node_Id;
       T        : W_Expr_Id;
@@ -233,44 +309,20 @@ package body Gnat2Why.Expr is
    --  bounds of the base type of In_Type. Use Ada_Node for the VC location.
 
    function Insert_Ref_Context
-     (Params     : Transformation_Params;
-      Ada_Call   : Node_Id;
-      Why_Call   : W_Prog_Id;
-      Nb_Of_Refs : Natural;
-      Nb_Of_Lets : Natural) return W_Prog_Id;
-   --  Considering a call to an Ada subprogram; Ada_Call being its node
-   --  in the Ada syntax tree, and Why_Call its corresponding call in the
-   --  Why syntax tree:
-   --
-   --  For all "out"/"in out" parameters that need a conversion, generate
-   --  the whole context around the call, using a temporary variable
-   --  which is named after the corresponding formal. e.g. something of the
-   --  form:
-   --
-   --   let formal := ref (to_formal_type_ (from_actual_type (!actual))) in
-   --    (<why_call> ;
-   --     actual := to_actual_type_ (from_formal_type (!formal))
-   --
-   --  For calls to volatile functions, this takes a different form to save
-   --  the result of the call and use it as the final value of the sequence:
-   --
-   --   let formal := ref (to_formal_type_ (from_actual_type (!actual))) in
-   --     let result = <why_call> in
-   --       (actual := to_actual_type_ (from_formal_type (!formal));
-   --        result)
-   --
-   --  Nb_Of_Refs should be set to the number of such parameters in Ada_Call.
+     (Ada_Call : Node_Id;
+      Why_Call : W_Prog_Id;
+      Context  : Ref_Context;
+      Store    : W_Statement_Sequence_Unchecked_Id) return W_Prog_Id;
+   --  Reconstruct the complete sequence needed to model the Ada call Ada_Call.
+   --  Why_Call is the actual call in Why3, Context holds the mappings for
+   --  the new identifiers used in the call (when actual parameters are
+   --  complex), and Store contains the postprocessing steps necessary to store
+   --  back the actuals after the call.
 
    function Is_Terminal_Node (N : Node_Id) return Boolean;
    --  Decide whether this is a node where we should put a pretty printing
    --  label, or if we should descend further. Basically, everything that's
    --  not a quantifier or conjunction is a terminal node.
-
-   function Needs_Temporary_Ref
-     (Actual     : Node_Id;
-      Formal     : Entity_Id;
-      Typ_Formal : W_Type_Id) return Boolean;
-   --  True if the parameter passing needs a temporary ref to be performed
 
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
@@ -2536,15 +2588,16 @@ package body Gnat2Why.Expr is
    -----------------------
 
    function Compute_Call_Args
-     (Call       :     Node_Id;
-      Domain     :     EW_Domain;
-      Nb_Of_Refs : out Natural;
-      Nb_Of_Lets : out Natural;
-      Params     :     Transformation_Params) return W_Expr_Array
+     (Call    : Node_Id;
+      Domain  : EW_Domain;
+      Context : in out Ref_Context;
+      Store   : W_Statement_Sequence_Unchecked_Id;
+      Params  : Transformation_Params) return W_Expr_Array
    is
       Subp     : constant Entity_Id := Get_Called_Entity (Call);
       Binders  : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, Domain);
+      Patterns : Item_Array := Binders;
       Aliasing : constant Boolean :=
         Nkind (Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
         and then Get_Aliasing_Status_For_Proof (Call) in
@@ -2554,8 +2607,7 @@ package body Gnat2Why.Expr is
       --  crashing inside Why3.
 
    begin
-      Nb_Of_Refs := 0;
-      Nb_Of_Lets := 0;
+      Localize_Variable_Parts (Patterns);
 
       if Binders'Length = 0 then
          return (1 => +Void);
@@ -2593,748 +2645,219 @@ package body Gnat2Why.Expr is
             --  not reading the parts with relaxed init of an out parameter in
             --  the precondition.
 
+            Pattern       : Item_Type := Patterns (Bind_Cnt);
+            Formal_T      : constant W_Type_Id :=
+              Get_Why_Type_From_Item (Binders (Bind_Cnt));
+            Is_Self       : constant Boolean :=
+              Binders (Bind_Cnt).Kind = Concurrent_Self;
+            Use_Var       : constant Boolean :=
+            --  True if we should use the item for the actual.
+
+              --  On external calls, we need to reconstruct the object if
+              --  it is mutable as protected types can be in split form.
+
+              (if Is_Self then not Is_External_Call (Call)
+
+               --  Otherwise, we go through the expression if the actual is not
+               --  an identifier, if aliasing can occur, or if the formal has
+               --  asynchronous writers.
+
+               else Simple_Actual
+                 and then not Aliasing
+                 and then not Has_Async_Writers (Direct_Mapping_Id (Formal)));
+            Fetch_Ty      : constant W_Type_Id :=
+              (if not Is_Self
+                 and then Has_Array_Type (Etype (Formal))
+                 and then Get_Type_Kind (Formal_T) = EW_Split
+               then EW_Abstract
+                 (Etype (Formal),
+                  Relaxed_Init => Is_Init_Wrapper_Type (Formal_T))
+               else Formal_T);
+            --  We use an abstract type for arrays so that bounds can be
+            --  retrieved.
+
+            Actual_Expr   : constant W_Expr_Id :=
+            --  Expression for the actual
+
+              (if Is_Self and then Is_External_Call (Call)
+               then Transform_Expr
+                 (Prefix (SPARK_Atree.Name (Call)),
+                  Formal_T,
+                  Domain,
+                  Params)
+               elsif Is_Self and Self_Is_Mutable
+               then New_Deref (Right => Self_Name,
+                               Typ   => Get_Typ (Self_Name))
+               elsif Is_Self then +Self_Name
+
+               --  Do not check initialization of out parameters. If the
+               --  parameter is a scalar, no checks are introduced.
+               --  ??? Should we check predicates if the type has a
+               --  Default_Value?
+
+               elsif Ekind (Formal) = E_Out_Parameter
+               then Insert_Checked_Conversion
+                 (Ada_Node => Actual,
+                  Domain   =>
+                    (if Is_Scalar_Type (Retysp (Etype (Formal)))
+                       and then Domain = EW_Prog
+                     then EW_Pterm else Domain),
+                  Expr     => Transform_Expr
+                    (Expr          => Actual,
+                     Domain        => Domain,
+                     Params        => Params),
+                  To       => Fetch_Ty,
+                  No_Init  => True)
+
+               --  Otherwise, directly use the expected type for the conversion
+
+               else Transform_Expr
+                 (Expr          => Actual,
+                  Domain        => Domain,
+                  Params        => Params,
+                  Expected_Type => Fetch_Ty));
+
+            Actual_Tmp    : W_Expr_Id;
+            --  Temporary identifier to store the actual expression
+
+            Constr_Expr   : constant W_Expr_Id :=
+              (if Pattern.Kind = DRecord
+               and then Pattern.Constr.Present
+               then New_Constrained_Attribute_Expr (Actual, Domain)
+               else Why_Empty);
+            --  Expression for the constrained attribute of split records
+
+            Need_Store  : Boolean;
+
          begin
-            if Binders (Bind_Cnt).Init.Present then
-               pragma Assert (Ekind (Formal) = E_Out_Parameter);
+            --  Store the converted actual into a temporary constant to avoid
+            --  computing it several times. It also ensures that checks are
+            --  emitted even if the expression happens to not be used.
+            --  If the formal is not mutable, we do not need a temporary for
+            --  the expression as it will be used exactly once.
+            --  We don't need a temporary for the self reference of protected
+            --  objects is the call is internal.
 
+            if Item_Is_Mutable (Pattern)
+              and then (not Is_Self or else Is_External_Call (Call))
+            then
                declare
-                  Needs_Init_Ref : Boolean := True;
+                  Tmp_Id : constant W_Identifier_Id :=
+                    New_Temp_Identifier
+                      (Ada_Node  => Get_Ada_Node (+Actual_Expr),
+                       Typ       => Get_Type (Actual_Expr),
+                       Base_Name => "compl");
                begin
-                  --  If the actual has an initialization bit, reuse it
-
-                  if Simple_Actual then
-                     declare
-                        Actual_Binder : constant Item_Type :=
-                          Ada_Ent_To_Why.Element
-                            (Symbol_Table, Entity (Actual));
-
-                     begin
-                        if Actual_Binder.Init.Present then
-                           Needs_Init_Ref := False;
-                           Why_Args (Arg_Cnt) := +Actual_Binder.Init.Id;
-
-                           if Needs_Havoc then
-                              Why_Args (Arg_Cnt) := +Sequence
-                                (Left  => New_Havoc_Call (+Why_Args (Arg_Cnt)),
-                                 Right => +Why_Args (Arg_Cnt));
-                           end if;
-                        end if;
-                     end;
-                  end if;
-
-                  --  Otherwise, create a new one
-
-                  if Needs_Init_Ref then
-                     Why_Args (Arg_Cnt) :=
-                       +New_Identifier
-                       (Ada_Node => Empty,
-                        Name     => Full_Name (Formal) & "__attr_init",
-                        Typ      => EW_Bool_Type);
-                     Nb_Of_Refs := Nb_Of_Refs + 1;
-                  end if;
+                  Actual_Tmp := +Tmp_Id;
+                  Context.Append
+                    (Ref_Type'(Mutable => False,
+                               Name    => Tmp_Id,
+                               Value   => Actual_Expr));
                end;
-
-               Arg_Cnt := Arg_Cnt + 1;
+            else
+               Actual_Tmp := Actual_Expr;
             end if;
 
-            case Binders (Bind_Cnt).Kind is
-               when Regular =>
-                  pragma Assert
-                    (not Has_Access_Type (Etype (Formal))
-                     or else Is_Access_Constant (Retysp (Etype (Formal)))
-                     or else Nkind (Call) = N_Function_Call);
-
-                  --  If a conversion or a component indexing is needed,
-                  --  it can only be done for a value. That is to say,
-                  --  something of this sort should be generated:
-                  --
-                  --  let formal = ref to_formal (!actual) in
-                  --   (subprogram_call (formal); actual := !formal)
-                  --
-                  --  The generation of the context is left to the
-                  --  caller; this function only signals the existence of
-                  --  such parameters by incrementing Nb_Of_Refs.
-
-                  --  If aliasing can occur and the parameter is mutable then
-                  --  we need a temporary reference.
-
-                  if (Aliasing and then Binders (Bind_Cnt).Main.Mutable)
-                    or else
-                      Needs_Temporary_Ref (Actual, Formal,
-                                           Get_Typ
-                                             (Binders (Bind_Cnt).Main.B_Name))
-                  then
-                     --  We should never use the Formal for the Ada_Node,
-                     --  because there is no real dependency here; We only
-                     --  use the Formal to get a sensible name.
-
-                     Why_Args (Arg_Cnt) :=
-                       +New_Identifier (Ada_Node => Empty,
-                                        Name     => Full_Name (Formal),
-                                        Typ      =>
-                                          Get_Typ
-                                            (Binders (Bind_Cnt).Main.B_Name));
-                     Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                  else
-                     if Ekind (Formal) in E_In_Out_Parameter
-                                        | E_Out_Parameter
-                     then
-                        pragma Assert (not Aliasing);
-
-                        --  Parameters that are "out" are refs;
-                        --  if the actual is a simple identifier and no
-                        --  conversion is needed, it can be translated "as is".
-
-                        declare
-                           Actual_Binder : constant Item_Type :=
-                             Ada_Ent_To_Why.Element
-                               (Symbol_Table, Entity (Actual));
-                        begin
-                           Why_Args (Arg_Cnt) := +Actual_Binder.Main.B_Name;
-                        end;
-
-                     else
-                        Why_Args (Arg_Cnt) :=
-                          Transform_Expr
-                            (Actual,
-                             Get_Typ (Binders (Bind_Cnt).Main.B_Name),
-                             Domain,
-                             Params);
-                     end if;
-                  end if;
-
-                  --  Havoc the reference if necessary
-
-                  if Needs_Havoc and then Binders (Bind_Cnt).Main.Mutable then
-                     Why_Args (Arg_Cnt) := +Sequence
-                       (Left  => New_Havoc_Call (+Why_Args (Arg_Cnt)),
-                        Right => +Why_Args (Arg_Cnt));
-                  end if;
-
-                  Arg_Cnt := Arg_Cnt + 1;
-
-               when Concurrent_Self =>
-                  declare
-                     Prot : constant W_Identifier_Id :=
-                       Binders (Bind_Cnt).Main.B_Name;
-                  begin
-                     --  External call, we need to reconstruct the object if
-                     --  it is mutable as protected types can be in split form.
-
-                     if Is_External_Call (Call) then
-                        if Binders (Bind_Cnt).Main.Mutable then
-                           Why_Args (Arg_Cnt) :=
-                             +New_Identifier
-                             (Ada_Node => Empty,
-                              Name     => "__self__compl",
-                              Typ      => Get_Typ (Prot));
-                           Nb_Of_Refs := Nb_Of_Refs + 1;
-                        else
-                           Why_Args (Arg_Cnt) :=
-                             Transform_Expr
-                               (Prefix (SPARK_Atree.Name (Call)),
-                                Get_Typ (Prot),
-                                Domain,
-                                Params);
-                        end if;
-
-                     --  Otherwise, it is an internal call
-
-                     else
-                        if not Binders (Bind_Cnt).Main.Mutable
-                          and then Self_Is_Mutable
-                        then
-                           Why_Args (Arg_Cnt) :=
-                             New_Deref (Right => Prot,
-                                        Typ   => Get_Typ (Prot));
-                        else
-                           Why_Args (Arg_Cnt) := +Prot;
-                        end if;
-                     end if;
-                  end;
-
-                  Arg_Cnt := Arg_Cnt + 1;
-
-               when DRecord =>
-                  pragma Assert
-                    (Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
-                     or else (Has_Volatile (Formal)
-                       and then Has_Volatile_Property
-                         (Formal, Pragma_Async_Writers)));
-
-                  declare
-                     Formal_Binder : constant Item_Type :=
-                       Binders (Bind_Cnt);
-                     Init_Cnt      : Positive := Arg_Cnt;
-                  begin
-
-                     --  The actual is in split form iff it is an identifier.
-                     --  If aliasing can occur, we cannot use the variables
-                     --  from the actual's split form. We need to introduce a
-                     --  temporary for it.
-
-                     if Simple_Actual and then not Aliasing then
-                        declare
-                           Actual_Binder : constant Item_Type :=
-                             Ada_Ent_To_Why.Element
-                               (Symbol_Table, Entity (Actual));
-                           Same_Type     : constant Boolean := Eq_Base
-                             (Get_Why_Type_From_Item (Binders (Bind_Cnt)),
-                              Get_Why_Type_From_Item (Actual_Binder));
-                        begin
-                           pragma Assert (Actual_Binder.Kind = DRecord);
-
-                           --  If the formal and the actual do not have exactly
-                           --  the same type, we need a temporary variable to
-                           --  hold the result of the conversion.
-
-                           if not Same_Type then
-                              Nb_Of_Lets := Nb_Of_Lets + 1;
-                           end if;
-
-                           if Formal_Binder.Fields.Present
-                             and then Actual_Binder.Fields.Present
-                             and then Same_Type
-                           then
-
-                              --  If the actual is in split form and as the
-                              --  same type as the formal, then the field
-                              --  reference can be used as is.
-
-                              Why_Args (Arg_Cnt) :=
-                                +Actual_Binder.Fields.Binder.B_Name;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           elsif Formal_Binder.Fields.Present then
-
-                              --  Otherwise, we need a new reference
-
-                              Why_Args (Arg_Cnt) :=
-                                +New_Identifier
-                                (Ada_Node => Empty,
-                                 Name     => Full_Name (Formal) & "__fields",
-                                 Typ      =>
-                                   Get_Typ
-                                     (Formal_Binder.Fields.Binder.B_Name));
-
-                              Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-
-                           if Formal_Binder.Discrs.Present
-                             and then Formal_Binder.Discrs.Binder.Mutable
-                             and then Actual_Binder.Discrs.Binder.Mutable
-                           then
-
-                              --  If the formal has mutable discriminants, the
-                              --  actual is in split form and has mutable
-                              --  discrimiants, the discriminant reference can
-                              --  be used as is.
-
-                              Why_Args (Arg_Cnt) :=
-                                +Actual_Binder.Discrs.Binder.B_Name;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           elsif Formal_Binder.Discrs.Present
-                             and then Formal_Binder.Discrs.Binder.Mutable
-                           then
-
-                              --  If the formal is mutable and not the actual,
-                              --  we need a new reference.
-
-                              Why_Args (Arg_Cnt) :=
-                                +New_Identifier
-                                (Ada_Node => Empty,
-                                 Name     => Full_Name (Formal) & "__discrs",
-                                 Typ      =>
-                                   Get_Typ
-                                     (Formal_Binder.Discrs.Binder.B_Name));
-
-                              Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-
-                           elsif Formal_Binder.Discrs.Present then
-                              pragma Assert (Actual_Binder.Discrs.Present);
-
-                              Why_Args (Arg_Cnt) :=
-                                (if Actual_Binder.Discrs.Binder.Mutable then
-                                    New_Deref
-                                   (Right =>
-                                        Actual_Binder.Discrs.Binder.B_Name,
-                                    Typ   => Get_Typ
-                                      (Actual_Binder.Discrs.Binder.B_Name))
-                                 else +Actual_Binder.Discrs.Binder.B_Name);
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-
-                           if Formal_Binder.Constr.Present then
-
-                              Why_Args (Arg_Cnt) :=
-                                (if Actual_Binder.Constr.Present then
-                                 +Actual_Binder.Constr.Id
-                                 else +True_Prog);
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-
-                           if Formal_Binder.Tag.Present then
-                              pragma Assert (Actual_Binder.Tag.Present);
-
-                              Why_Args (Arg_Cnt) := +Actual_Binder.Tag.Id;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-                        end;
-
-                     else
-                        --  We use a temporary variable to avoid recomputing
-                        --  the actual several times.
-
-                        Nb_Of_Lets := Nb_Of_Lets + 1;
-
-                        declare
-                           Tmp_Actual : constant W_Expr_Id :=
-                             +New_Identifier
-                             (Name   => Full_Name (Formal) & "__compl",
-                              Domain => EW_Term,
-                              Typ    => EW_Abstract
-                                (Formal_Binder.Typ,
-                                 Relaxed_Init =>
-                                   Obj_Has_Relaxed_Init (Formal)));
-                        begin
-
-                           if Formal_Binder.Fields.Present then
-
-                              --  We need a new reference.
-
-                              Why_Args (Arg_Cnt) :=
-                                +New_Identifier
-                                (Ada_Node => Empty,
-                                 Name     => Full_Name (Formal) & "__fields",
-                                 Typ      =>
-                                   Get_Typ
-                                     (Formal_Binder.Fields.Binder.B_Name));
-
-                              Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-
-                           if Formal_Binder.Discrs.Present
-                             and then Formal_Binder.Discrs.Binder.Mutable
-                           then
-
-                              --  If the formal is mutable, we need a new
-                              --  reference.
-
-                              Why_Args (Arg_Cnt) :=
-                                +New_Identifier
-                                (Ada_Node => Empty,
-                                 Name     => Full_Name (Formal) & "__discrs",
-                                 Typ      =>
-                                   Get_Typ
-                                     (Formal_Binder.Discrs.Binder.B_Name));
-
-                              Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-
-                           elsif Formal_Binder.Discrs.Present then
-
-                              Why_Args (Arg_Cnt) :=
-                                New_Discriminants_Access
-                                  (Ada_Node => Actual,
-                                   Domain   => EW_Prog,
-                                   Name     => Tmp_Actual,
-                                   Ty       => Formal_Binder.Typ);
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-
-                           if Formal_Binder.Constr.Present then
-                              Why_Args (Arg_Cnt) :=
-                                New_Constrained_Attribute_Expr
-                                  (Prefix => Actual,
-                                   Domain => EW_Prog);
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-
-                           if Formal_Binder.Tag.Present then
-                              Why_Args (Arg_Cnt) :=
-                                New_Tag_Access
-                                  (Ada_Node => Actual,
-                                   Domain   => EW_Prog,
-                                   Name     => Tmp_Actual,
-                                   Ty       => Formal_Binder.Typ);
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-                        end;
-                     end if;
-
-                     --  Havoc the references if necessary
-
-                     if Needs_Havoc then
-                        if Binders (Bind_Cnt).Fields.Present then
-                           Why_Args (Init_Cnt) := +Sequence
-                             (Left  => New_Havoc_Call (+Why_Args (Init_Cnt)),
-                              Right => +Why_Args (Init_Cnt));
-                           Init_Cnt := Init_Cnt + 1;
-                        end if;
-                        if Binders (Bind_Cnt).Discrs.Present
-                          and then Binders (Bind_Cnt).Discrs.Binder.Mutable
-                        then
-                           Why_Args (Init_Cnt) := +Sequence
-                             (Left  => New_Havoc_Call (+Why_Args (Init_Cnt)),
-                              Right => +Why_Args (Init_Cnt));
-                        end if;
-                     end if;
-                  end;
-
-               when UCArray =>
-                  pragma Assert
-                    (Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
-                     or else (Has_Volatile (Formal)
-                       and then Has_Volatile_Property
-                         (Formal, Pragma_Async_Writers)));
-
-                  --  If the actual is not in split form, we use a temporary
-                  --  variable for it to avoid computing it multiple times.
-                  --  If aliasing can occur, we need a temporary for the
-                  --  actual.
-
-                  declare
-                     Need_Check  : constant Boolean :=
-                       not Eq_Base
-                         (Type_Of_Node (Actual),
-                          Get_Typ (Binders (Bind_Cnt).Content.B_Name));
-                     --  Return True if a check may be required
-
-                     Actual_Type : constant W_Type_Id :=
-                       (if Aliasing
-                        then EW_Abstract
-                          (Get_Ada_Node (+Type_Of_Node (Actual)),
-                           Relaxed_Init => Expr_Has_Relaxed_Init (Actual))
-                        else Type_Of_Node (Actual));
-                     Array_Expr  : constant W_Expr_Id :=
-                       (if Aliasing
-                        or else Get_Type_Kind (Actual_Type) = EW_Abstract
-                        then
-                           +New_Identifier
-                          (Ada_Node => Empty,
-                           Name     => Full_Name (Formal) & "__compl",
-                           Typ      => Actual_Type)
-                        else Transform_Expr
-                          (Actual, Actual_Type, Domain, Params));
-                     Need_Ref    : constant Boolean :=
-                       Get_Type_Kind (Actual_Type) = EW_Abstract
-                       or else Aliasing
-                       or else not Simple_Actual;
-                  begin
-                     if Need_Ref then
-                        if Get_Type_Kind (Actual_Type) = EW_Abstract then
-
-                           --  The actual is not in split form or aliasing can
-                           --  occur. We need a temporary variable for the
-                           --  content of the array.
-
-                           Nb_Of_Lets := Nb_Of_Lets + 1;
-                        end if;
-
-                        Why_Args (Arg_Cnt) :=
-                          +New_Identifier
-                          (Ada_Node => Empty,
-                           Name     => Full_Name (Formal),
-                           Typ      =>
-                             Get_Typ (Binders (Bind_Cnt).Content.B_Name));
-                        Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                        --  Havoc the reference if necessary
-
-                        if Needs_Havoc
-                          and then Binders (Bind_Cnt).Content.Mutable
-                        then
-                           Why_Args (Arg_Cnt) := +Sequence
-                             (Left  => New_Havoc_Call (+Why_Args (Arg_Cnt)),
-                              Right => +Why_Args (Arg_Cnt));
-                        end if;
-
-                     --  If the actual is an entity in split form, it can be
-                     --  used as is.
-
-                     else
-                        declare
-                           A_Id : constant W_Identifier_Id :=
-                             Ada_Ent_To_Why.Element
-                               (Symbol_Table, Entity (Actual)).Content.B_Name;
-                        begin
-
-                           --  If a check is needed on the actual, insert it by
-                           --  calling Insert_Checked_Conversion. The result of
-                           --  the conversion is discarded and the actual is
-                           --  used as is.
-
-                           if Need_Check then
-                              Why_Args (Arg_Cnt) :=
-                                +Sequence
-                                (Actual,
-                                 New_Ignore
-                                   (Prog => +Insert_Checked_Conversion
-                                        (Ada_Node => Actual,
-                                         Domain   => EW_Prog,
-                                         Expr     => New_Deref
-                                           (Ada_Node => Actual,
-                                            Right    => A_Id,
-                                            Typ      => Get_Typ (A_Id)),
-                                         To       =>
-                                           Get_Typ
-                                             (Binders
-                                                (Bind_Cnt).Content.B_Name))),
-                                 +A_Id);
-
-                           else
-
-                              Why_Args (Arg_Cnt) :=
-                                +Ada_Ent_To_Why.Element
-                                (Symbol_Table, Entity (Actual)).Content.B_Name;
-                           end if;
-
-                           --  Havoc the reference if necessary
-
-                           if Needs_Havoc
-                             and then Binders (Bind_Cnt).Content.Mutable
-                           then
-                              Why_Args (Arg_Cnt) := +Sequence
-                                (Left  => New_Havoc_Call (A_Id),
-                                 Right => +Why_Args (Arg_Cnt));
-                           end if;
-                        end;
-                     end if;
-
-                     Arg_Cnt := Arg_Cnt + 1;
-
-                     --  If the binder is an unconstrained array in split form,
-                     --  we need to give arguments for its bounds.
-                     --  Since these bounds are integer constants, they don't
-                     --  need a temporary variable and are translated as is.
-
-                     for I in 1 .. Binders (Bind_Cnt).Dim loop
-                        Why_Args (Arg_Cnt) :=
-                          Insert_Simple_Conversion
-                            (Domain   => Domain,
-                             Expr     => Get_Array_Attr (Domain => Domain,
-                                             Expr   => Array_Expr,
-                                             Attr   => Attribute_First,
-                                             Dim    => I),
-                             To       =>
-                               Get_Typ (Binders (Bind_Cnt).Bounds (I).First));
-                        Why_Args (Arg_Cnt + 1) :=
-                          Insert_Simple_Conversion
-                            (Domain   => Domain,
-                             Expr     => Get_Array_Attr (Domain => Domain,
-                                             Expr   => Array_Expr,
-                                             Attr   => Attribute_Last,
-                                             Dim    => I),
-                             To       =>
-                               Get_Typ (Binders (Bind_Cnt).Bounds (I).Last));
-                        Arg_Cnt := Arg_Cnt + 2;
-                     end loop;
-                  end;
-
-               when Pointer =>
-
-                  declare
-                     Formal_Binder : constant Item_Type :=
-                       Binders (Bind_Cnt);
-                     Formal_Typ    : constant Entity_Id :=
-                       Etype (Binders (Bind_Cnt).Value.Ada_Node);
-                     W_Formal_Typ  : constant W_Type_Id :=
-                       EW_Abstract
-                         (Formal_Typ, Relaxed_Init =>
-                            Obj_Has_Relaxed_Init (Formal));
-                  begin
-
-                     --  The actual is in split form iff it is an identifier.
-                     --  If aliasing can occur, we cannot use the variables
-                     --  from the actual's split form. We need to introduce a
-                     --  temporary for it.
-
-                     if Simple_Actual and then not Aliasing then
-                        declare
-                           Actual_Binder : constant Item_Type :=
-                             Ada_Ent_To_Why.Element
-                               (Symbol_Table, Entity (Actual));
-                           Actual_Typ    : constant Entity_Id :=
-                             Etype (Actual_Binder.Value.Ada_Node);
-                        begin
-                           pragma Assert (Actual_Binder.Kind = Pointer);
-
-                           if Eq_Base
-                             (W_Formal_Typ,
-                              EW_Abstract
-                                (Actual_Typ,
-                                 Relaxed_Init =>
-                                   Expr_Has_Relaxed_Init (Actual)))
-                           then
-
-                              --  If the actual is in split form and has the
-                              --  same type as the formal, then the value
-                              --  reference can be used as is.
-
-                              Why_Args (Arg_Cnt) :=
-                                +Actual_Binder.Value.B_Name;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           else
-
-                              --  If the formal and the actual do not have
-                              --  exactly the same type, we need a temporary
-                              --  variable to hold the result of the
-                              --  conversion.
-
-                              Nb_Of_Lets := Nb_Of_Lets + 1;
-
-                              --  And we need a new reference for Value
-
-                              Why_Args (Arg_Cnt) :=
-                                +New_Identifier
-                                (Ada_Node => Empty,
-                                 Name     => Full_Name (Formal) & "__value",
-                                 Typ      =>
-                                   Get_Typ (Formal_Binder.Value.B_Name));
-
-                              Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-
-                           if Actual_Binder.Mutable
-                             and then not Formal_Binder.Mutable
-                           then
-
-                              --  If the actual is mutable and not the formal,
-                              --  we need to introduce a dereference.
-
-                              Why_Args (Arg_Cnt) :=
-                                New_Deref
-                                  (Right => Actual_Binder.Address,
-                                   Typ   => Get_Typ (Actual_Binder.Address));
-
-                              Arg_Cnt := Arg_Cnt + 1;
-
-                              Why_Args (Arg_Cnt) :=
-                                New_Deref
-                                  (Right => Actual_Binder.Is_Null,
-                                   Typ   => Get_Typ (Actual_Binder.Is_Null));
-
-                              Arg_Cnt := Arg_Cnt + 1;
-
-                           else
-                              pragma Assert
-                                (Actual_Binder.Mutable =
-                                   Formal_Binder.Mutable);
-
-                              --  Otherwise, the address and is_null can be
-                              --  used as is.
-
-                              Why_Args (Arg_Cnt) :=
-                                +Actual_Binder.Address;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-
-                              Why_Args (Arg_Cnt) :=
-                                +Actual_Binder.Is_Null;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-                        end;
-
-                     else
-                        --  We use a temporary variable to avoid recomputing
-                        --  the actual several times.
-
-                        Nb_Of_Lets := Nb_Of_Lets + 1;
-
-                        declare
-                           Tmp_Actual    : constant W_Expr_Id :=
-                             +New_Identifier
-                             (Name   => Full_Name (Formal) & "__compl",
-                              Domain => EW_Term,
-                              Typ    => W_Formal_Typ);
-                        begin
-
-                           --  We need a new reference for the value
-
-                           Why_Args (Arg_Cnt) :=
-                             +New_Identifier
-                             (Ada_Node => Empty,
-                              Name     => Full_Name (Formal) & "__value",
-                              Typ      =>
-                                Get_Typ
-                                  (Formal_Binder.Value.B_Name));
-
-                           Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                           Arg_Cnt := Arg_Cnt + 1;
-
-                           if Formal_Binder.Mutable then
-
-                              --  If the formal is mutable, we need new
-                              --  references for the address and is_null.
-
-                              Why_Args (Arg_Cnt) :=
-                                +New_Identifier
-                                (Ada_Node => Empty,
-                                 Name     => Full_Name (Formal) & "__addr",
-                                 Typ      =>
-                                   Get_Typ (Formal_Binder.Address));
-
-                              Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-
-                              Why_Args (Arg_Cnt) :=
-                                +New_Identifier
-                                (Ada_Node => Empty,
-                                 Name     => Full_Name (Formal) & "__is_null",
-                                 Typ      =>
-                                   Get_Typ (Formal_Binder.Is_Null));
-
-                              Nb_Of_Refs := Nb_Of_Refs + 1;
-
-                              Arg_Cnt := Arg_Cnt + 1;
-
-                           else
-
-                              --  Otherwise, address and is_null are constants,
-                              --  query the appropriate components.
-
-                              Why_Args (Arg_Cnt) :=
-                                New_Pointer_Address_Access
-                                  (E    => Formal_Typ,
-                                   Name => Tmp_Actual);
-
-                              Arg_Cnt := Arg_Cnt + 1;
-
-                              Why_Args (Arg_Cnt) :=
-                                New_Pointer_Is_Null_Access
-                                  (E    => Formal_Typ,
-                                   Name => Tmp_Actual);
-
-                              Arg_Cnt := Arg_Cnt + 1;
-                           end if;
-                        end;
-                     end if;
-                  end;
-
-               when Func    =>
-                  raise Program_Error;
-            end case;
+            --  Handle the initialization flag. This flag is only present for
+            --  out parameters. We initialize it to any boolean as the
+            --  initialization is not preserved on entry for out parameters.
+            --  We never try to reuse the reference for the initialization
+            --  flag of the actual. Indeed, as per Ada's rules, the top-level
+            --  init flag of an out parameter is always True on exit, so we
+            --  can assign it directly.
+
+            if Pattern.Init.Present then
+               Context.Append
+                 (Ref_Type'(Mutable => True,
+                            Name    => Pattern.Init.Id,
+                            Value   =>
+                              New_Any_Expr
+                                (Return_Type => EW_Bool_Type,
+                                 Labels      => Symbol_Sets.Empty_Set)));
+               Why_Args (Arg_Cnt) := +Pattern.Init.Id;
+               Arg_Cnt := Arg_Cnt + 1;
+
+               --  Remove the init flag on the pattern, as it was already
+               --  handled.
+
+               Pattern.Init := (Present => False);
+            end if;
+
+            --  For variable formals, we try to reuse parts of the actual for
+            --  the variable parts of the formal if we can.
+
+            if Use_Var and then Item_Is_Mutable (Pattern) then
+               declare
+                  Actual_Binder : constant Item_Type :=
+                    (if Binders (Bind_Cnt).Kind = Concurrent_Self
+                     then Item_Type'(Kind  => Concurrent_Self,
+                                     Init  => <>,
+                                     Local => True,
+                                     Main  =>
+                                       (B_Name  => Self_Name,
+                                        Mutable => Self_Is_Mutable,
+                                        others  => <>))
+                     else Ada_Ent_To_Why.Element
+                       (Symbol_Table, Entity (Actual)));
+               begin
+                  Get_Item_From_Var
+                    (Pattern     => Pattern,
+                     Var         => Actual_Binder,
+                     Expr        => Actual_Tmp,
+                     Context     => Context,
+                     Args        => Why_Args (Arg_Cnt .. Why_Args'Length),
+                     Constr_Expr => Constr_Expr,
+                     Need_Store  => Need_Store);
+               end;
+
+            --  Otherwise, we create new references and initialize them from
+            --  Actual_Tmp.
+
+            else
+               Get_Item_From_Expr
+                 (Pattern     => Pattern,
+                  Expr        => Actual_Tmp,
+                  Context     => Context,
+                  Args        => Why_Args (Arg_Cnt .. Why_Args'Length),
+                  Constr_Expr => Constr_Expr,
+                  Need_Store  => Need_Store);
+            end if;
+
+            --  If necessary, we havoc the references so that out parameters
+            --  are never considered to be initialized.
+
+            if Needs_Havoc then
+
+               --  For records, we only need to havoc the reference for Fields.
+               --  It is the first reference if there is one.
+
+               if Pattern.Kind /= DRecord or else Pattern.Fields.Present then
+                  Why_Args (Arg_Cnt) := +Sequence
+                    (Left  => New_Havoc_Call (+Why_Args (Arg_Cnt)),
+                     Right => +Why_Args (Arg_Cnt));
+               end if;
+            end if;
+
+            --  If the item is mutable, compute in Store the statements to
+            --  store the content of the temporaries back into the actual.
+
+            if Item_Is_Mutable (Pattern) then
+               Compute_Store
+                 (Pattern        => Pattern,
+                  Actual         =>
+                    (if Is_Self and then Is_External_Call (Call)
+                     then Prefix (SPARK_Atree.Name (Call))
+                     else Actual),
+                  Need_Store     => Need_Store,
+                  No_Pred_Checks =>
+                    Is_Self or else Eq_Base
+                      (Type_Of_Node (Actual), Type_Of_Node (Formal)),
+                  Pre_Expr       => Actual_Tmp,
+                  Store          => Store,
+                  Params         => Params);
+            end if;
+
+            Arg_Cnt := Arg_Cnt + Item_Array_Length ((1 => Pattern));
 
             Bind_Cnt := Bind_Cnt + 1;
          end Compute_Param;
@@ -3343,6 +2866,8 @@ package body Gnat2Why.Expr is
            Iterate_Call_Parameters (Compute_Param);
 
       begin
+         Statement_Sequence_Append_To_Statements (Store, +Void);
+
          --  In the case of protected subprograms, there is an invisible first
          --  parameter, the protected object itself. We call "Compute_Arg" with
          --  empty arguments to process this case.
@@ -3373,7 +2898,7 @@ package body Gnat2Why.Expr is
             Iterate_Call (Call);
          end if;
 
-         --  Get values for logical binders
+         --  Get values for global inputs of functions
 
          for B in Bind_Cnt .. Binders'Last loop
             Why_Args (Arg_Cnt .. Why_Args'Last) :=
@@ -5035,6 +4560,470 @@ package body Gnat2Why.Expr is
       return Res;
    end Compute_Dynamic_Predicate;
 
+   -------------------
+   -- Compute_Store --
+   -------------------
+
+   procedure Compute_Store
+     (Pattern        : Item_Type;
+      Actual         : Node_Id;
+      Need_Store     : Boolean;
+      No_Pred_Checks : Boolean;
+      Pre_Expr       : W_Expr_Id;
+      Store          : W_Statement_Sequence_Unchecked_Id;
+      Params         : Transformation_Params)
+   is
+      Simple_Actual : constant Boolean :=
+        Nkind (Actual) in N_Identifier | N_Expanded_Name
+        and then not
+          Is_Protected_Component_Or_Discr (Entity (Actual));
+   begin
+      --  Handle the initialization flag on the actual if any
+
+      if Simple_Actual then
+         declare
+            Actual_Binder : constant Item_Type :=
+              Ada_Ent_To_Why.Element
+                (Symbol_Table, Entity (Actual));
+
+         begin
+            if Actual_Binder.Init.Present then
+
+               --  Assign the initialization flag if any. The parameter has
+               --  been initialized.
+
+               Statement_Sequence_Append_To_Statements
+                 (Store,
+                  New_Assignment
+                    (Ada_Node => Actual,
+                     Name     => Actual_Binder.Init.Id,
+                     Value    => True_Prog,
+                     Typ      => EW_Bool_Type,
+                     Labels   => Symbol_Sets.Empty_Set));
+            end if;
+         end;
+      end if;
+
+      if Need_Store then
+         case Pattern.Kind is
+            when Concurrent_Self =>
+
+               --  Here, we are necessarily in an external call.
+               --  We need to reconstruct the object if it is mutable.
+
+               if Pattern.Main.Mutable then
+                  declare
+                     Deref       : constant W_Prog_Id :=
+                       New_Deref (Right => Pattern.Main.B_Name,
+                                  Typ   => Get_Typ (Pattern.Main.B_Name));
+                     Arg_Value   : constant W_Prog_Id :=
+                       +Insert_Checked_Conversion
+                       (Ada_Node => Actual,
+                        Domain   => EW_Prog,
+                        Expr     => +Deref,
+                        To       => Type_Of_Node (Actual));
+                     Store_Value : constant W_Prog_Id :=
+                       New_Assignment
+                         (Ada_Node => Actual,
+                          Lvalue   => Actual,
+                          Expr     => Arg_Value);
+                  begin
+                     Statement_Sequence_Append_To_Statements
+                       (Store, Store_Value);
+                  end;
+               end if;
+
+            when Regular =>
+               declare
+                  --  Types:
+
+                  Formal_T             : constant W_Type_Id :=
+                    Get_Typ (Pattern.Main.B_Name);
+                  Actual_T             : constant W_Type_Id :=
+                    Type_Of_Node (Actual);
+
+                  --  Variables:
+
+                  Deref                : constant W_Prog_Id :=
+                    (if Pattern.Init.Present
+                     then New_Label
+                       (Labels => Symbol_Sets.Empty_Set,
+                        Def    => New_Deref (Right => Pattern.Main.B_Name,
+                                             Typ   => Formal_T),
+                        Typ    => EW_Split (Get_Ada_Node (+Formal_T)))
+                     else New_Deref (Right => Pattern.Main.B_Name,
+                                     Typ   => Formal_T));
+                  --  The init flag is always true after the call. Go to the
+                  --  concrete type to avoid an unnecessary check.
+
+                  --  On store, checks are not inserted for composite
+                  --  parameters to avoid duplicate discriminant or length
+                  --  check. Predicate and initialization checks are introduced
+                  --  afterward.
+
+                  Need_Check_On_Store : constant Boolean :=
+                    Is_Scalar_Type (Retysp (Etype (Actual)));
+
+                  --  Generate an expression of the form:
+                  --
+                  --    to_actual_type_ (from_formal_type (!tmp_var))
+                  --
+                  --  ... with the appropriate checks if needed.
+                  --
+                  --  Since we are performing copy back of parameters,
+                  --  Lvalue should be set to True so that checks are done
+                  --  on the actual type and not on the formal type.
+
+                  Arg_Value           : constant W_Prog_Id :=
+                    (if Need_Check_On_Store
+                     then +Insert_Checked_Conversion
+                       (Ada_Node => Actual,
+                        Domain   => EW_Prog,
+                        Expr     => +Deref,
+                        Lvalue   => True,
+                        To       =>
+                          (if Is_Init_Wrapper_Type (Formal_T)
+                           then EW_Init_Wrapper (Actual_T)
+                           else Actual_T))
+                     else +Insert_Simple_Conversion
+                       (Ada_Node => Actual,
+                        Domain   => EW_Prog,
+                        Expr     => +Deref,
+                        To       =>
+                          (if Is_Init_Wrapper_Type (Formal_T)
+                           then EW_Init_Wrapper (Actual_T)
+                           else Actual_T)));
+
+                  --  ...then store it into the actual:
+
+                  Store_Value         : constant W_Prog_Id :=
+                    New_Assignment
+                      (Ada_Node => Actual,
+                       Lvalue   => Actual,
+                       Expr     => Arg_Value);
+               begin
+                  Statement_Sequence_Append_To_Statements
+                    (Store, Store_Value);
+               end;
+
+            when UCArray =>
+               declare
+                  --  Types:
+
+                  Formal_T           : constant W_Type_Id :=
+                    Get_Typ (Pattern.Content.B_Name);
+                  Actual_T           : constant W_Type_Id :=
+                    Type_Of_Node (Actual);
+                  Deref              : constant W_Prog_Id :=
+                    New_Deref (Right => Pattern.Content.B_Name,
+                               Typ   => Formal_T);
+
+                  --  If the argument is in split form, we
+                  --  need to reconstruct the argument using the actual's
+                  --  bounds before applying the conversion.
+
+                  Reconstructed_Arg : constant W_Prog_Id :=
+                    (if Is_Static_Array_Type (Etype (Pattern.Content.Ada_Node))
+                     then +Deref
+                     else +Array_Convert_From_Base
+                       (EW_Prog, Pre_Expr, +Deref));
+
+                  --  Generate an expression of the form:
+                  --
+                  --    to_actual_type_ (from_formal_type (!tmp_var))
+
+                  Arg_Value          : constant W_Prog_Id :=
+                    +Insert_Simple_Conversion
+                    (Ada_Node => Actual,
+                     Domain   => EW_Pterm,
+                     Expr     => +Reconstructed_Arg,
+                     To       =>
+                       (if Is_Init_Wrapper_Type (Formal_T)
+                        then EW_Init_Wrapper (Actual_T)
+                        else Actual_T));
+
+                  --  ...then store it into the actual:
+
+                  Store_Value        : constant W_Prog_Id :=
+                    New_Assignment
+                      (Ada_Node => Actual,
+                       Lvalue   => Actual,
+                       Expr     => Arg_Value);
+               begin
+
+                  Statement_Sequence_Append_To_Statements
+                    (Store, Store_Value);
+               end;
+
+            when DRecord =>
+               declare
+                  Formal_T : constant W_Type_Id :=
+                    Get_Why_Type_From_Item (Pattern);
+
+                  Reconstructed_Arg : W_Prog_Id;
+                  Assumption        : W_Expr_Id;
+                  --  If the actual has non mutable discriminants, we need
+                  --  to assume that its discriminants have not been
+                  --  modified.
+
+               begin
+                  --  We reconstruct the argument and convert it to the
+                  --  actual type (without checks). We store the result in
+                  --  Reconstructed_Arg.
+
+                  declare
+                     Arg_Array  : W_Expr_Array (1 .. 4);
+                     Index      : Positive := 1;
+                  begin
+                     --  For fields, use the temporary variable
+
+                     if Pattern.Fields.Present then
+                        Arg_Array (Index) :=
+                          New_Deref (Right => Pattern.Fields.Binder.B_Name,
+                                     Typ   =>
+                                       Get_Typ (Pattern.Fields.Binder.B_Name));
+                        Index := Index + 1;
+                     end if;
+
+                     --  If discriminants are mutable, we have introduced a
+                     --  temporary variable for them if we could not reuse the
+                     --  discriminants from the actual because they were not
+                     --  mutable. In this case, also assume preservation of the
+                     --  discriminants.
+
+                     if Pattern.Discrs.Present then
+                        if Pattern.Discrs.Binder.Mutable then
+                           declare
+                              Discr_Name : constant W_Identifier_Id :=
+                                Pattern.Discrs.Binder.B_Name;
+                           begin
+                              Arg_Array (Index) := New_Deref
+                                (Right => Discr_Name,
+                                 Typ   => Get_Typ (Discr_Name));
+
+                              --  If the formal has mutable discriminants,
+                              --  store in Assumption that its discriminants
+                              --  cannot have been modified if the actual is
+                              --  constrained.
+
+                              Assumption :=
+                                New_Call
+                                  (Domain => EW_Pred,
+                                   Typ    => EW_Bool_Type,
+                                   Name   => Why_Eq,
+                                   Args   =>
+                                     (1 => New_Deref
+                                        (Right => Discr_Name,
+                                         Typ   => Get_Typ (Discr_Name)),
+                                      2 => New_Discriminants_Access
+                                        (Domain => EW_Prog,
+                                         Name   => Pre_Expr,
+                                         Ty     => Pattern.Typ)));
+
+                              Assumption :=
+                                New_Conditional
+                                  (Domain      => EW_Pred,
+                                   Condition   =>
+                                     New_Constrained_Attribute_Expr
+                                       (Domain => EW_Term,
+                                        Prefix => Actual),
+                                   Then_Part   => Assumption);
+                           end;
+                        else
+                           Arg_Array (Index) :=
+                             New_Discriminants_Access
+                               (Domain => EW_Prog,
+                                Name   => Pre_Expr,
+                                Ty     => Pattern.Typ);
+                        end if;
+
+                        Index := Index + 1;
+                     end if;
+
+                     if Pattern.Tag.Present then
+                        Arg_Array (Index) :=
+                          New_Tag_Access
+                            (Domain => EW_Prog,
+                             Name   => Pre_Expr,
+                             Ty     => Pattern.Typ);
+
+                        Index := Index + 1;
+                     end if;
+
+                     Reconstructed_Arg :=
+                       +Record_From_Split_Form
+                       (A            => Arg_Array (1 .. Index - 1),
+                        Ty           => Pattern.Typ,
+                        Init_Wrapper => Is_Init_Wrapper_Type (Formal_T));
+
+                     Reconstructed_Arg :=
+                       +Insert_Simple_Conversion
+                       (Domain   => EW_Pterm,
+                        Expr     => +Reconstructed_Arg,
+                        To       => EW_Abstract
+                          (Etype (Actual),
+                           Relaxed_Init =>
+                             Is_Init_Wrapper_Type (Formal_T)));
+                  end;
+
+                  --  Store the assignment and the assumption
+
+                  Statement_Sequence_Append_To_Statements
+                    (Store, New_Assignment
+                       (Ada_Node => Actual,
+                        Lvalue   => Actual,
+                        Expr     => Reconstructed_Arg));
+
+                  if Pattern.Discrs.Present
+                    and then Pattern.Discrs.Binder.Mutable
+                  then
+                     Statement_Sequence_Append_To_Statements
+                       (Store, New_Assume_Statement (Pred => +Assumption));
+                  end if;
+               end;
+
+            when Pointer =>
+               declare
+                  Formal_Typ        : constant Entity_Id :=
+                    Etype (Pattern.Value.Ada_Node);
+
+                  Reconstructed_Arg : W_Prog_Id;
+
+               begin
+                  --  We reconstruct the argument and convert it to the
+                  --  actual type (without checks). We store the result
+                  --  in Reconstructed_Arg.
+
+                  declare
+                     Arg_Array : W_Expr_Array (1 .. 3);
+                  begin
+
+                     --  For value, use the temporary variable
+
+                     Arg_Array (1) :=
+                       New_Deref (Right => Pattern.Value.B_Name,
+                                  Typ   => Get_Typ (Pattern.Value.B_Name));
+
+                     if Pattern.Mutable then
+
+                        --  If we have introduced temporary references
+                        --  the address and is_null, use them.
+
+                        Arg_Array (2) :=
+                          New_Deref (Right => Pattern.Address,
+                                     Typ   => Get_Typ (Pattern.Address));
+                        Arg_Array (3) :=
+                          New_Deref (Right => Pattern.Is_Null,
+                                     Typ   => Get_Typ (Pattern.Is_Null));
+                     else
+
+                        --  The values from the actual have not been
+                        --  modified. Take them from Init_Expr.
+
+                        Arg_Array (2) := New_Pointer_Address_Access
+                          (Formal_Typ, Pre_Expr);
+                        Arg_Array (3) := New_Pointer_Is_Null_Access
+                          (Formal_Typ, Pre_Expr);
+                     end if;
+
+                     Reconstructed_Arg :=
+                       +Pointer_From_Split_Form
+                       (A  => Arg_Array,
+                        Ty => Formal_Typ);
+
+                     Reconstructed_Arg :=
+                       +Insert_Simple_Conversion
+                       (Domain   => EW_Pterm,
+                        Expr     => +Reconstructed_Arg,
+                        To       => EW_Abstract
+                          (Etype (Actual),
+                           Relaxed_Init =>
+                             Is_Init_Wrapper_Type
+                               (Get_Type (+Reconstructed_Arg))));
+                  end;
+
+                  --  Store the assignment
+
+                  Statement_Sequence_Append_To_Statements
+                    (Store, New_Assignment
+                       (Ada_Node => Actual,
+                        Lvalue   => Actual,
+                        Expr     => Reconstructed_Arg));
+               end;
+            when Func => raise Program_Error;
+         end case;
+      end if;
+
+      --  If needed, perform the check for a dynamic predicate and null
+      --  exclusion of access types on OUT and
+      --  IN OUT parameters on return from the call. This check is not done
+      --  as part of the conversion from formal to actual parameter, as
+      --  the check done in conversions also involves invariant properties
+      --  of the type (array bounds, record discriminants, etc.). Thus,
+      --  conversion is done with Insert_Simple_Conversion in domain
+      --  EW_Pterm, which does not introduce checks, and the required
+      --  check for dynamic predicate is introduced here.
+
+      --  The case of scalar types is different, as the conversion from
+      --  formal to actual on OUT and IN OUT parameters is performed with
+      --  checks, using Insert_Checked_Conversion in domain EW_Prog, so do
+      --  not repeat the check here.
+
+      declare
+         Need_Pred_Check_On_Store : constant Boolean :=
+            not No_Pred_Checks
+           and then not Is_Scalar_Type (Retysp (Etype (Actual)))
+           and then Item_Is_Mutable (Pattern);
+      begin
+         if Present (Actual)
+           and then Need_Pred_Check_On_Store
+         then
+            declare
+               Postfetch_Actual : constant W_Prog_Id :=
+                 +Transform_Expr (Actual, EW_Pterm, Params);
+
+            begin
+               --  Generate a predicate check if the actual has a predicate
+
+               if Has_Predicates (Retysp (Etype (Actual))) then
+                  Statement_Sequence_Append_To_Statements
+                    (Store, New_Predicate_Check (Actual, Etype (Actual),
+                     +Postfetch_Actual));
+               end if;
+
+               --  Generate a null exclusion check if the actual cannot be
+               --  null but the formal can.
+
+               if Is_Access_Type (Retysp (Etype (Actual)))
+                 and then Can_Never_Be_Null (Retysp (Etype (Actual)))
+                 and then not
+                   Can_Never_Be_Null (Get_Ada_Type_From_Item (Pattern))
+               then
+                  Statement_Sequence_Append_To_Statements
+                    (Store,
+                     New_Binding
+                       (Ada_Node => Actual,
+                        Name     => New_Identifier
+                          (Domain => EW_Prog,
+                           Name   => "_",
+                           Typ    => Get_Type (+Postfetch_Actual)),
+                        Def      => New_VC_Call
+                          (Ada_Node => Actual,
+                           Name     => To_Program_Space
+                             (E_Symb (Etype (Actual),
+                              WNE_Assign_Null_Check)),
+                           Progs    => (1 => +Postfetch_Actual),
+                           Domain   => EW_Prog,
+                           Reason   => VC_Null_Exclusion,
+                           Typ      => Get_Type (+Postfetch_Actual)),
+                        Context  => +Void,
+                        Typ      => EW_Unit_Type));
+               end if;
+            end;
+         end if;
+      end;
+   end Compute_Store;
+
    -----------------------
    -- Compute_Tag_Check --
    -----------------------
@@ -5498,6 +5487,497 @@ package body Gnat2Why.Expr is
       end case;
    end Expected_Type_Of_Prefix;
 
+   ------------------------
+   -- Get_Item_From_Expr --
+   ------------------------
+
+   procedure Get_Item_From_Expr
+     (Pattern     : Item_Type;
+      Expr        : W_Expr_Id;
+      Constr_Expr : W_Expr_Id := Why_Empty;
+      Context     : in out Ref_Context;
+      Args        : out W_Expr_Array;
+      Need_Store  : out Boolean;
+      Reuse_Discr : Boolean := False)
+   is
+      Count : Positive := Args'First;
+
+   begin
+      Need_Store := False;
+
+      case Pattern.Kind is
+         when Concurrent_Self | Regular =>
+
+            --  We need to create a new reference if the binder is mutable
+
+            if Pattern.Main.Mutable then
+               Context.Append
+                 (Ref_Type'(Mutable => True,
+                            Name    => Pattern.Main.B_Name,
+                            Value   => Expr));
+               Args (Count) := +Pattern.Main.B_Name;
+               Need_Store := True;
+
+            --  Otherwise the expression is used as is
+
+            else
+               Args (Count) := Expr;
+            end if;
+            Count := Count + 1;
+
+         when DRecord =>
+
+            --  If the pattern has a component for fields, it is necessarily
+            --  mutable so we need a reference for it.
+
+            if Pattern.Fields.Present then
+               pragma Assert (Pattern.Fields.Binder.Mutable);
+               Context.Append
+                 (Ref_Type'(Mutable => True,
+                            Name    => Pattern.Fields.Binder.B_Name,
+                            Value   =>
+                              New_Fields_Access (Domain => EW_Prog,
+                                                 Name   => Expr,
+                                                 Ty     => Pattern.Typ)));
+               Args (Count) := +Pattern.Fields.Binder.B_Name;
+               Need_Store := True;
+               Count := Count + 1;
+            end if;
+
+            --  We need a reference for discriminants if they are mutable. If
+            --  Reuse_Discr is set to true, then the identifier from pattern
+            --  can be used directly. Otherwise, we get the discriminant
+            --  values from Expr.
+
+            if Pattern.Discrs.Present
+              and then Pattern.Discrs.Binder.Mutable
+            then
+               if not Reuse_Discr then
+                  Context.Append
+                    (Ref_Type'(Mutable => True,
+                               Name    => Pattern.Discrs.Binder.B_Name,
+                               Value   =>
+                                 New_Discriminants_Access
+                                   (Domain => EW_Prog,
+                                    Name   => Expr,
+                                    Ty     => Pattern.Typ)));
+                  Need_Store := True;
+               end if;
+               Args (Count) := +Pattern.Discrs.Binder.B_Name;
+               Count := Count + 1;
+
+            elsif Pattern.Discrs.Present then
+               if Reuse_Discr then
+                  Args (Count) := +Pattern.Discrs.Binder.B_Name;
+               else
+                  Args (Count) := New_Discriminants_Access
+                    (Domain   => EW_Prog,
+                     Name     => Expr,
+                     Ty       => Pattern.Typ);
+               end if;
+               Count := Count + 1;
+            end if;
+
+            --  For the Constr component, use the value of the 'Constrained
+            --  attribute on the actual.
+
+            if Pattern.Constr.Present then
+               Args (Count) := Constr_Expr;
+               Count := Count + 1;
+            end if;
+
+            if Pattern.Tag.Present then
+               Args (Count) :=
+                 New_Tag_Access
+                   (Domain => EW_Prog,
+                    Name   => Expr,
+                    Ty     => Pattern.Typ);
+
+               Count := Count + 1;
+            end if;
+
+         when UCArray =>
+
+            --  The Content component of the pattern is necessarily mutable so
+            --  we need a reference for it.
+
+            pragma Assert (Pattern.Content.Mutable);
+
+            Context.Append
+              (Ref_Type'
+                 (Mutable => True,
+                  Name    => Pattern.Content.B_Name,
+                  Value   =>
+                    (if Has_Static_Array_Type (Get_Ada_Node (+Get_Type (Expr)))
+                     or else Get_Type_Kind (Get_Type (Expr)) = EW_Split
+                     then Expr
+                     else Array_Convert_To_Base (Domain => EW_Prog,
+                                                 Ar     => Expr))));
+            Args (Count) := +Pattern.Content.B_Name;
+            Need_Store := True;
+            Count := Count + 1;
+
+            --  We get the bounds from Expr
+
+            for I in 1 .. Pattern.Dim loop
+               Args (Count) :=
+                 Insert_Simple_Conversion
+                   (Domain   => EW_Prog,
+                    Expr     => Get_Array_Attr (Domain => EW_Prog,
+                                                Expr   => Expr,
+                                                Attr   => Attribute_First,
+                                                Dim    => I),
+                    To       =>
+                      Get_Typ (Pattern.Bounds (I).First));
+               Args (Count + 1) :=
+                 Insert_Simple_Conversion
+                   (Domain   => EW_Prog,
+                    Expr     => Get_Array_Attr (Domain => EW_Prog,
+                                                Expr   => Expr,
+                                                Attr   => Attribute_Last,
+                                                Dim    => I),
+                    To       =>
+                      Get_Typ (Pattern.Bounds (I).Last));
+               Count := Count + 2;
+            end loop;
+
+         when Pointer =>
+
+            --  The Value component of the pattern is necessarily mutable so
+            --  we need a reference for it.
+
+            pragma Assert (Pattern.Value.Mutable);
+
+            Context.Append
+              (Ref_Type'
+                 (Mutable => True,
+                  Name    => Pattern.Value.B_Name,
+                  Value   => New_Pointer_Value_Access
+                    (Ada_Node => Empty,
+                     Domain   => EW_Pterm,
+                     E        => Etype (Pattern.Value.Ada_Node),
+                     Name     => Expr)));
+            Args (Count) := +Pattern.Value.B_Name;
+            Need_Store := True;
+            Count := Count + 1;
+
+            --  If the address and is_null components are mutable, we also
+            --  introduce new references for them. The initial value is taken
+            --  from Expr.
+
+            if Pattern.Mutable then
+               Context.Append
+                 (Ref_Type'
+                    (Mutable => True,
+                     Name    => Pattern.Address,
+                     Value   => New_Pointer_Address_Access
+                       (E    => Etype (Pattern.Value.Ada_Node),
+                        Name => Expr)));
+               Args (Count) := +Pattern.Address;
+               Count := Count + 1;
+               Context.Append
+                 (Ref_Type'
+                    (Mutable => True,
+                     Name    => Pattern.Is_Null,
+                     Value   => New_Pointer_Is_Null_Access
+                       (E    => Etype (Pattern.Value.Ada_Node),
+                        Name => Expr)));
+               Args (Count) := +Pattern.Is_Null;
+               Count := Count + 1;
+            else
+               Args (Count) :=
+                 New_Pointer_Address_Access
+                   (E    => Etype (Pattern.Value.Ada_Node),
+                    Name => Expr);
+               Count := Count + 1;
+               Args (Count) :=
+                 New_Pointer_Is_Null_Access
+                   (E    => Etype (Pattern.Value.Ada_Node),
+                    Name => Expr);
+               Count := Count + 1;
+            end if;
+
+         when Func    =>
+            raise Program_Error;
+      end case;
+   end Get_Item_From_Expr;
+
+   -----------------------
+   -- Get_Item_From_Var --
+   -----------------------
+
+   procedure Get_Item_From_Var
+     (Pattern     : in out Item_Type;
+      Var         : Item_Type;
+      Expr        : W_Expr_Id;
+      Constr_Expr : W_Expr_Id := Why_Empty;
+      Context     : in out Ref_Context;
+      Args        : out W_Expr_Array;
+      Need_Store  : out Boolean)
+   is
+      Count : Positive := Args'First;
+
+   begin
+      Need_Store := False;
+
+      case Pattern.Kind is
+         when Concurrent_Self =>
+
+            --  We can always reuse the reference for concurrent self
+
+            Args (Count) := +Var.Main.B_Name;
+            Count := Count + 1;
+
+         when Regular =>
+
+            --  We can reuse the reference of the actual if Pattern and Var
+            --  have the same type.
+
+            if Pattern.Main.Mutable
+              and then Eq_Base (Get_Why_Type_From_Item (Pattern),
+                                Get_Why_Type_From_Item (Var))
+            then
+               pragma Assert (Var.Kind = Regular and then Var.Main.Mutable);
+               Args (Count) := +Var.Main.B_Name;
+
+            --  Otherwise, a new temporary is needed
+
+            else
+               Get_Item_From_Expr
+                 (Pattern     => Pattern,
+                  Expr        => Expr,
+                  Constr_Expr => Constr_Expr,
+                  Context     => Context,
+                  Args        => Args,
+                  Need_Store  => Need_Store);
+               return;
+            end if;
+
+         when DRecord =>
+            pragma Assert (Var.Kind = DRecord);
+
+            --  Try to reuse the Fields identifier from Var
+
+            if Pattern.Fields.Present then
+               pragma Assert (Pattern.Fields.Binder.Mutable);
+
+               --  We can reuse the Fields identifier from Var if both types
+               --  have the same fields and both are wrapper types or none.
+
+               if Oldest_Parent_With_Same_Fields (Pattern.Typ)
+                  = Oldest_Parent_With_Same_Fields (Var.Typ)
+                 and then Is_Init_Wrapper_Type (Get_Why_Type_From_Item (Var))
+                   = Is_Init_Wrapper_Type (Get_Why_Type_From_Item (Pattern))
+               then
+                  pragma Assert (Var.Fields.Present
+                                 and then Var.Fields.Binder.Mutable);
+                  Pattern.Fields := Var.Fields;
+                  Args (Count) := +Var.Fields.Binder.B_Name;
+                  Count := Count + 1;
+
+               --  Otherwise, we revert to creating the identifiers from Expr.
+               --  We can still reuse the variable for discriminants if both
+               --  are similarly mutable.
+
+               elsif Pattern.Discrs.Present
+                 and then Pattern.Discrs.Binder.Mutable
+                   = Var.Discrs.Binder.Mutable
+               then
+                  Pattern.Discrs := Var.Discrs;
+                  Get_Item_From_Expr
+                    (Pattern     => Pattern,
+                     Expr        => Expr,
+                     Context     => Context,
+                     Args        => Args,
+                     Constr_Expr => Constr_Expr,
+                     Reuse_Discr => True,
+                     Need_Store  => Need_Store);
+                  return;
+               else
+                  Get_Item_From_Expr
+                    (Pattern     => Pattern,
+                     Expr        => Expr,
+                     Context     => Context,
+                     Args        => Args,
+                     Constr_Expr => Constr_Expr,
+                     Need_Store  => Need_Store);
+                  return;
+               end if;
+            end if;
+
+            --  Try to reuse the Discrs identifier from Var
+
+            if Pattern.Discrs.Present then
+               pragma Assert (Var.Discrs.Present);
+
+               --  If both are similarly mutable, we can reuse the discriminant
+               --  identifier as all convertible record types share the
+               --  same discriminants.
+
+               if Var.Discrs.Binder.Mutable = Pattern.Discrs.Binder.Mutable
+               then
+                  Pattern.Discrs := Var.Discrs;
+                  Args (Count) := +Var.Discrs.Binder.B_Name;
+
+               --  If the formal has mutable discriminants and not the actual,
+               --  we need to create a new reference.
+
+               elsif Pattern.Discrs.Binder.Mutable then
+                  Context.Append
+                    (Ref_Type'(Mutable => True,
+                               Name    => Pattern.Discrs.Binder.B_Name,
+                               Value   => +Var.Discrs.Binder.B_Name));
+                  Need_Store := True;
+                  Args (Count) := +Pattern.Discrs.Binder.B_Name;
+
+               --  If the actual has mutable discriminants and not the formal,
+               --  we need a dereference.
+
+               else
+                  Args (Count) := New_Deref
+                    (Right => Var.Discrs.Binder.B_Name,
+                     Typ   => Get_Typ (Var.Discrs.Binder.B_Name));
+               end if;
+               Count := Count + 1;
+            end if;
+
+            --  Take the Constr field of Var if present
+
+            if Pattern.Constr.Present and Var.Constr.Present then
+               Args (Count) := +Var.Constr.Id;
+
+               Count := Count + 1;
+
+            --  Otherwise, use Constr_Expr
+
+            elsif Pattern.Constr.Present then
+               Args (Count) := Constr_Expr;
+
+               Count := Count + 1;
+            end if;
+
+            if Pattern.Tag.Present then
+               pragma Assert (Var.Tag.Present);
+               Args (Count) := +Var.Tag.Id;
+
+               Count := Count + 1;
+            end if;
+
+         when UCArray =>
+
+            --  We can reuse the content of Var if no sliding might occur as
+            --  part of the conversion between Pattern and Var.
+
+            if Eq_Base (Get_Why_Type_From_Item (Pattern),
+                        Get_Why_Type_From_Item (Var))
+              or else not Needs_Slide (Get_Ada_Type_From_Item (Pattern),
+                                       Get_Ada_Type_From_Item (Var))
+            then
+
+               --  The actual can be either an array in split form or a
+               --  statically constrained array.
+               --  If the actual is a split array, use elements from its
+               --  binder.
+
+               if Var.Kind = UCArray then
+                  Args (Count) := +Var.Content.B_Name;
+                  Count := Count + 1;
+
+                  for Dim_Index in 1 .. Var.Dim loop
+                     Args (Count) := +Var.Bounds (Dim_Index).First;
+                     Args (Count + 1) := +Var.Bounds (Dim_Index).Last;
+                     Count := Count + 2;
+                  end loop;
+
+               --  Otherwise, the actual is a static constrained array.
+               --  We can reuse its identifier for the content but we must
+               --  use its type to get the bounds.
+
+               else
+                  pragma Assert
+                    (Var.Kind = Regular and then Var.Main.Mutable
+                     and then Is_Static_Array_Type
+                       (Get_Ada_Type_From_Item (Var)));
+
+                  Args (Count) := +Var.Main.B_Name;
+                  Count := Count + 1;
+
+                  declare
+                     Arr_Ty : constant Entity_Id :=
+                       Get_Ada_Type_From_Item (Var);
+                  begin
+                     for Dim_Index in 1 .. Pattern.Dim loop
+                        Args (Count) :=
+                          Insert_Simple_Conversion
+                            (Domain   => EW_Prog,
+                             Expr     => Get_Array_Attr
+                               (Domain => EW_Prog,
+                                Ty     => Arr_Ty,
+                                Attr   => Attribute_First,
+                                Dim    => Dim_Index),
+                             To       =>
+                               Get_Typ (Pattern.Bounds (Dim_Index).First));
+                        Args (Count + 1) :=
+                          Insert_Simple_Conversion
+                            (Domain   => EW_Prog,
+                             Expr     => Get_Array_Attr
+                               (Domain => EW_Prog,
+                                Ty     => Arr_Ty,
+                                Attr   => Attribute_Last,
+                                Dim    => Dim_Index),
+                             To       =>
+                               Get_Typ (Pattern.Bounds (Dim_Index).Last));
+                        Count := Count + 2;
+                     end loop;
+                  end;
+               end if;
+
+            --  Otherwise, the identifiers of the actual cannot be used.
+            --  Use the expression instead.
+
+            else
+               Get_Item_From_Expr
+                 (Pattern     => Pattern,
+                  Expr        => Expr,
+                  Constr_Expr => Constr_Expr,
+                  Context     => Context,
+                  Args        => Args,
+                  Need_Store  => Need_Store);
+               return;
+            end if;
+
+         when Pointer =>
+
+            --  We can always reuse the reference for the value of split
+            --  pointers, since pointers designating the same type share a
+            --  single Why type.
+
+            pragma Assert (Var.Kind = Pointer);
+            Args (Count) := +Var.Value.B_Name;
+            Count := Count + 1;
+
+            if Pattern.Mutable = Var.Mutable then
+               Args (Count) := +Var.Address;
+               Count := Count + 1;
+               Args (Count) := +Var.Is_Null;
+               Count := Count + 1;
+            else
+               pragma Assert (not Pattern.Mutable);
+               Args (Count) := New_Deref
+                 (Right => Var.Address,
+                  Typ   => Get_Typ (Var.Address));
+               Count := Count + 1;
+               Args (Count) := New_Deref
+                 (Right => Var.Is_Null,
+                  Typ   => Get_Typ (Var.Is_Null));
+               Count := Count + 1;
+            end if;
+
+         when Func    =>
+            raise Program_Error;
+      end case;
+   end Get_Item_From_Var;
+
    -------------------------------------
    -- Get_Pure_Logic_Term_If_Possible --
    -------------------------------------
@@ -5757,1059 +6237,24 @@ package body Gnat2Why.Expr is
    ------------------------
 
    function Insert_Ref_Context
-     (Params     : Transformation_Params;
-      Ada_Call   : Node_Id;
-      Why_Call   : W_Prog_Id;
-      Nb_Of_Refs : Natural;
-      Nb_Of_Lets : Natural) return W_Prog_Id
+     (Ada_Call : Node_Id;
+      Why_Call : W_Prog_Id;
+      Context  : Ref_Context;
+      Store    : W_Statement_Sequence_Unchecked_Id) return W_Prog_Id
    is
-      --  This goes recursively through the out/"in out" parameters
-      --  to be converted; and collects, for each of them:
-      --
-      --  * the name of the corresponding tmp variable;
-      --  * the expression of the conversion from the actual to the tmp;
-      --  * a statement sequence for the conversions back to the actual.
-      --
-      --  The first two are set together after that. It cannot be done
-      --  during the recursive traversal, as we are building its
-      --  children during the traversal and that only root nodes can have
-      --  their children modified.
-
-      Aliasing     : constant Boolean :=
-        Nkind (Ada_Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
-        and then Get_Aliasing_Status_For_Proof (Ada_Call) in
-          Possible_Aliasing .. Unchecked;
-      --  If aliasing can occur for this subprogram call, we should introduce
-      --  intermediate variables for every parameters in order to avoid
-      --  crashing inside Why3.
-
-      Ref_Context  : W_Prog_Id;
-      Ref_Index    : Positive := 1;
-      Ref_Tmp_Vars : W_Identifier_Array (1 .. Nb_Of_Refs);
-      Ref_Fetch    : W_Prog_Array (1 .. Nb_Of_Refs);
-      Let_Index    : Positive := 1;
-      Let_Tmp_Vars : W_Identifier_Array (1 .. Nb_Of_Lets);
-      Let_Fetch    : W_Prog_Array (1 .. Nb_Of_Lets);
-      Store        : constant W_Statement_Sequence_Unchecked_Id :=
-        New_Unchecked_Statement_Sequence;
-      Subp         : constant Entity_Id := Get_Called_Entity (Ada_Call);
-      Binders      : constant Item_Array :=
-        Compute_Subprogram_Parameters (Subp, EW_Prog);
-      Bind_Cnt     : Positive := Binders'First;
-
-      procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
-      --  ???
-
-      -------------------
-      -- Process_Param --
-      -------------------
-
-      procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
-         Simple_Actual : constant Boolean :=
-           Nkind (Actual) in N_Identifier | N_Expanded_Name
-             and then not
-           Is_Protected_Component_Or_Discr (Entity (Actual));
-
-      begin
-         --  Handle the initialization flag
-
-         if Binders (Bind_Cnt).Init.Present then
-            pragma Assert (Ekind (Formal) = E_Out_Parameter);
-            declare
-               Needs_Init_Ref : Boolean := True;
-
-            begin
-               --  If the actual is split, assume initialization of the
-               --  parameter.
-
-               if Simple_Actual then
-                  declare
-                     Actual_Binder : constant Item_Type :=
-                       Ada_Ent_To_Why.Element
-                         (Symbol_Table, Entity (Actual));
-
-                  begin
-                     if Actual_Binder.Init.Present then
-
-                        --  No need for an additional reference
-
-                        Needs_Init_Ref := False;
-
-                        --  Parameter has been initialized, add assumption to
-                        --  store.
-
-                        Statement_Sequence_Append_To_Statements
-                          (Store,
-                           New_Assume_Statement
-                             (Ada_Node => Actual,
-                              Pred     => Pred_Of_Boolean_Term
-                                (New_Deref (Right => Actual_Binder.Init.Id,
-                                            Typ   => EW_Bool_Type))));
-                     end if;
-                  end;
-               end if;
-
-               --  Add reference for initialization flag if needed
-
-               if Needs_Init_Ref then
-                  Ref_Tmp_Vars (Ref_Index) := New_Identifier
-                    (Ada_Node => Empty,
-                     Name     => Full_Name (Formal) & "__attr_init",
-                     Typ      => EW_Bool_Type);
-                  Ref_Fetch (Ref_Index) := False_Prog;
-                  Ref_Index := Ref_Index + 1;
-               end if;
-            end;
-
-         --  There is no flag on the formal. We should handle the flag on the
-         --  actual if any.
-
-         elsif Present (Formal)
-           and then Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
-           and then Might_Contain_Relaxed_Init (Etype (Actual))
-         then
-
-            --  Only perform checks on simple actual. If the actual is not in
-            --  split form the checks will be performed at parameter
-            --  fetch and assumptions ensured by reconstruction.
-
-            if Simple_Actual then
-               declare
-                  Actual_Binder : constant Item_Type :=
-                    Ada_Ent_To_Why.Element
-                      (Symbol_Table, Entity (Actual));
-               begin
-                  if Actual_Binder.Init.Present then
-
-                     --  For out parameters, add assignment of initialization
-                     --  flag on store.
-
-                     if Ekind (Formal) = E_Out_Parameter then
-                        Statement_Sequence_Append_To_Statements
-                          (Store,
-                           New_Assignment
-                             (Ada_Node => Actual,
-                              Name     => Actual_Binder.Init.Id,
-                              Value    => True_Prog,
-                              Typ      => EW_Bool_Type,
-                              Labels   => Symbol_Sets.Empty_Set));
-
-                     --  For in out parameters, check that the flag is true on
-                     --  entry.
-
-                     else
-                        Statement_Sequence_Append_To_Statements
-                          (Store,
-                           New_Located_Assert
-                             (Ada_Node => Actual,
-                              Pred     => Pred_Of_Boolean_Term
-                                (New_Deref (Right => Actual_Binder.Init.Id,
-                                            Typ   => EW_Bool_Type)),
-                              Reason   => VC_Initialization_Check,
-                              Kind     => EW_Assert));
-                     end if;
-                  end if;
-               end;
-            end if;
-         end if;
-
-         case Binders (Bind_Cnt).Kind is
-            when Concurrent_Self =>
-               --  External call, we need to reconstruct the object if
-               --  it is mutable as protected types can be in split form.
-
-               if Is_External_Call (Ada_Call)
-                 and then Binders (Bind_Cnt).Main.Mutable
-               then
-                  declare
-                     Prefix_Node : constant Node_Id :=
-                       Prefix (SPARK_Atree.Name (Ada_Call));
-                     Formal_T    : constant W_Type_Id :=
-                       Get_Typ (Binders (Bind_Cnt).Main.B_Name);
-
-                     Tmp_Var       : constant W_Identifier_Id :=
-                       New_Identifier (Ada_Node => Empty,
-                                       Name     => "__self__compl",
-                                       Typ      => Formal_T);
-                     Tmp_Var_Deref : constant W_Prog_Id :=
-                       New_Deref (Right => Tmp_Var,
-                                  Typ   => Formal_T);
-                     Fetch_Actual  : constant W_Prog_Id :=
-                       +Transform_Expr
-                         (Prefix_Node,
-                          Formal_T,
-                          EW_Prog,
-                          Params);
-
-                     Arg_Value   : constant W_Prog_Id :=
-                       +Insert_Checked_Conversion
-                       (Ada_Node => Prefix_Node,
-                        Domain   => EW_Prog,
-                        Expr     => +Tmp_Var_Deref,
-                        To       => Type_Of_Node (Prefix_Node));
-
-                     Store_Value : constant W_Prog_Id :=
-                       New_Assignment
-                         (Ada_Node => Prefix_Node,
-                          Lvalue   => Prefix_Node,
-                          Expr     => Arg_Value);
-                  begin
-                     Statement_Sequence_Append_To_Statements
-                       (Store, Store_Value);
-
-                     Ref_Tmp_Vars (Ref_Index) := Tmp_Var;
-                     Ref_Fetch (Ref_Index) := Fetch_Actual;
-                     Ref_Index := Ref_Index + 1;
-                  end;
-               end if;
-
-            when Regular =>
-
-               --  If aliasing can occur and the parameter is mutable then we
-               --  need a temporary reference.
-
-               if (Aliasing and then Binders (Bind_Cnt).Main.Mutable)
-                 or else Needs_Temporary_Ref
-                   (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
-               then
-                  declare
-                     --  Types:
-
-                     Formal_T             : constant W_Type_Id :=
-                       Get_Typ (Binders (Bind_Cnt).Main.B_Name);
-                     Actual_T             : constant W_Type_Id :=
-                       Type_Of_Node (Actual);
-
-                     --  Variables:
-
-                     --  We should never use the Formal for the Ada_Node,
-                     --  because there is no real dependency here; We only
-                     --  use the Formal to get a sensible name.
-
-                     Tmp_Var             : constant W_Identifier_Id :=
-                       New_Identifier (Ada_Node => Empty,
-                                       Name     => Full_Name (Formal),
-                                       Typ      => Formal_T);
-                     Tmp_Var_Deref       : constant W_Prog_Id :=
-                       (if Binders (Bind_Cnt).Init.Present
-                        then New_Label
-                          (Labels => Symbol_Sets.Empty_Set,
-                           Def    => New_Deref (Right => Tmp_Var,
-                                                Typ   => Formal_T),
-                           Typ    => EW_Split (Get_Ada_Node (+Formal_T)))
-                        else New_Deref (Right => Tmp_Var,
-                                        Typ   => Formal_T));
-                     --  The init flag is always true after the call. Go to the
-                     --  concrete type to avoid an unnecessary check.
-
-                     --  1/ Before the call (saving into a temporary variable):
-                     ----------------------------------------------------------
-
-                     --  On fetch, checks are only needed when the formal is a
-                     --  scalar IN or IN OUT, and potentially always needed for
-                     --  composite parameters.
-
-                     Need_Check_On_Fetch : constant Boolean :=
-                       (if Is_Scalar_Type (Retysp (Etype (Formal))) then
-                             Ekind (Formal) /= E_Out_Parameter
-                        else
-                           True);
-
-                     --  Generate an expression of the form:
-                     --
-                     --    to_formal_type (from_actual_type (!actual))
-                     --
-                     --  ... with the appropriate checks if needed.
-
-                     Prefetch_Actual     : constant W_Prog_Id :=
-                       +Transform_Expr (Actual,
-                                        EW_Prog,
-                                        Params);
-
-                     Fetch_Actual         : constant W_Prog_Id :=
-                       (if Need_Check_On_Fetch then
-                           +Insert_Checked_Conversion
-                            (Ada_Node => Actual,
-                             Domain   => EW_Prog,
-                             Expr     =>
-                               +Prefetch_Actual,
-                             To       => Formal_T,
-                             No_Init  =>
-                               Ekind (Formal) = E_Out_Parameter)
-                        else
-                        +Insert_Simple_Conversion (Ada_Node => Actual,
-                                                   Domain   => EW_Prog,
-                                                   Expr     =>
-                                                     +Prefetch_Actual,
-                                                   To       => Formal_T));
-
-                     --  2/ After the call (storing the result):
-                     -------------------------------------------
-
-                     --  On store, checks are only needed when the formal is a
-                     --  scalar OUT or IN OUT, and never needed for composite
-                     --  parameters.
-
-                     Need_Check_On_Store : constant Boolean :=
-                       (if Is_Scalar_Type (Retysp (Etype (Formal))) then
-                           Ekind (Formal) /= E_In_Parameter
-                        else
-                           False);
-
-                     --  Generate an expression of the form:
-                     --
-                     --    to_actual_type_ (from_formal_type (!tmp_var))
-                     --
-                     --  ... with the appropriate checks if needed.
-                     --
-                     --  Since we are performing copy back of parameters,
-                     --  Lvalue should be set to True so that checks are done
-                     --  on the actual type and not on the formal type.
-
-                     Arg_Value           : constant W_Prog_Id :=
-                       (if Need_Check_On_Store then
-                           +Insert_Checked_Conversion
-                            (Ada_Node => Actual,
-                             Domain   => EW_Prog,
-                             Expr     => +Tmp_Var_Deref,
-                             Lvalue   => True,
-                             To       =>
-                               (if Obj_Has_Relaxed_Init (Formal)
-                                then EW_Init_Wrapper (Actual_T)
-                                else Actual_T))
-                        else
-                           +Insert_Simple_Conversion
-                             (Ada_Node => Actual,
-                              Domain   => EW_Prog,
-                              Expr     => +Tmp_Var_Deref,
-                              To       =>
-                                (if Obj_Has_Relaxed_Init (Formal)
-                                 then EW_Init_Wrapper (Actual_T)
-                                 else Actual_T)));
-
-                     --  ...then store it into the actual:
-
-                     Store_Value         : constant W_Prog_Id :=
-                       New_Assignment
-                         (Ada_Node => Actual,
-                          Lvalue   => Actual,
-                          Expr     => Arg_Value);
-                  begin
-                     Statement_Sequence_Append_To_Statements
-                       (Store, Store_Value);
-
-                     Ref_Tmp_Vars (Ref_Index) := Tmp_Var;
-                     Ref_Fetch (Ref_Index) := Fetch_Actual;
-                     Ref_Index := Ref_Index + 1;
-                  end;
-               end if;
-
-            when UCArray =>
-               if Aliasing
-                 or else Get_Type_Kind (Type_Of_Node (Actual)) = EW_Abstract
-                 or else not Simple_Actual
-               then
-                  declare
-                     --  Types:
-
-                     Formal_T : constant W_Type_Id :=
-                       Get_Typ (Binders (Bind_Cnt).Content.B_Name);
-                     Actual_T : constant W_Type_Id :=
-                       (if Aliasing
-                        then EW_Abstract
-                          (Get_Ada_Node (+Type_Of_Node (Actual)),
-                           Relaxed_Init => Expr_Has_Relaxed_Init (Actual))
-                        else Type_Of_Node (Actual));
-                     --  If aliasing can occur, we also need a temporary for
-                     --  the actual.
-
-                     --  Variables:
-
-                     --  We should never use the Formal for the Ada_Node,
-                     --  because there is no real dependency here; We only
-                     --  use the Formal to get a sensible name.
-
-                     Tmp_Var       : constant W_Identifier_Id :=
-                       New_Identifier (Ada_Node => Empty,
-                                       Name     => Full_Name (Formal),
-                                       Typ      => Formal_T);
-                     Tmp_Var_Deref : constant W_Prog_Id :=
-                       New_Deref (Right => Tmp_Var,
-                                  Typ   => Formal_T);
-
-                     --  If the argument is in split form and not the actual,
-                     --  we need to reconstruct the argument using the actual's
-                     --  bounds before applying the conversion. To only do the
-                     --  actual computation once, we introduce a temporary
-                     --  variable for it.
-
-                     Need_Reconstruction : constant Boolean :=
-                       Get_Type_Kind (Actual_T) = EW_Abstract;
-
-                  --  1/ Before the call (saving into a temporary variable):
-                  ----------------------------------------------------------
-
-                     --  On fetch, checks are potentially always needed for
-                     --  composite parameters.
-
-                     --  Generate an expression of the form:
-                     --
-                     --    to_formal_type (from_actual_type (!actual))
-                     --
-                     --  ... with the appropriate checks if needed.
-
-                     Prefetch_Actual : constant W_Prog_Id :=
-                       +Transform_Expr
-                          (Actual,
-                           Actual_T,
-                           EW_Prog,
-                           Params);
-
-                     Prefetch_Actual_Tmp : constant W_Identifier_Id :=
-                       New_Identifier (Name => Full_Name (Formal) & "__compl",
-                                       Typ  => Actual_T);
-
-                     Prefetch_Actual_Rec : constant W_Prog_Id :=
-                       (if Need_Reconstruction then +Prefetch_Actual_Tmp
-                        else Prefetch_Actual);
-
-                     Fetch_Actual  : constant W_Prog_Id :=
-                       +Insert_Checked_Conversion
-                       (Ada_Node => Actual,
-                        Domain   => EW_Prog,
-                        Expr     => +Prefetch_Actual_Rec,
-                        To       => Formal_T,
-                        No_Init  => Ekind (Formal) = E_Out_Parameter);
-
-                     --  2/ After the call (storing the result):
-                     -------------------------------------------
-
-                     --  If the argument is in split form, we
-                     --  need to reconstruct the argument using the actual's
-                     --  bounds before applying the conversion.
-
-                     Reconstructed_Temp : constant W_Prog_Id :=
-                       (if Get_Type_Kind (Formal_T) = EW_Split then
-                        +Array_Convert_From_Base
-                          (EW_Prog, +Prefetch_Actual_Rec, +Tmp_Var_Deref)
-                        else +Tmp_Var_Deref);
-
-                     --  Generate an expression of the form:
-                     --
-                     --    to_actual_type_ (from_formal_type (!tmp_var))
-
-                     Arg_Value     : constant W_Prog_Id :=
-                       +Insert_Simple_Conversion
-                       (Ada_Node => Actual,
-                        Domain   => EW_Pterm,
-                        Expr     => +Reconstructed_Temp,
-                        To       =>
-                          (if Obj_Has_Relaxed_Init (Formal)
-                           then EW_Init_Wrapper (Actual_T)
-                           else Actual_T));
-
-                     --  ...then store it into the actual:
-
-                     Store_Value   : constant W_Prog_Id :=
-                       New_Assignment
-                         (Ada_Node => Actual,
-                          Lvalue   => Actual,
-                          Expr     => Arg_Value);
-                  begin
-
-                     Statement_Sequence_Append_To_Statements
-                       (Store, Store_Value);
-
-                     Ref_Tmp_Vars (Ref_Index) := Tmp_Var;
-                     Ref_Fetch (Ref_Index) := Fetch_Actual;
-                     Ref_Index := Ref_Index + 1;
-
-                     if Need_Reconstruction then
-                        Let_Tmp_Vars (Let_Index) := Prefetch_Actual_Tmp;
-                        Let_Fetch (Let_Index) := Prefetch_Actual;
-                        Let_Index := Let_Index + 1;
-                     end if;
-                  end;
-               end if;
-
-            when DRecord =>
-
-               --  If aliasing can occur, we cannot use the variables from the
-               --  actual's split form. We need to introduce a temporary for
-               --  it.
-
-               if Aliasing
-                 or else not Simple_Actual
-                 or else not Eq_Base
-                   (Get_Why_Type_From_Item (Binders (Bind_Cnt)),
-                    Type_Of_Node (Actual))
-               then
-                  declare
-                     Formal_T : constant W_Type_Id :=
-                       Get_Why_Type_From_Item (Binders (Bind_Cnt));
-                     Actual_T : constant W_Type_Id :=
-                       Type_Of_Node (Actual);
-
-                     Actual_Is_Split         : constant Boolean :=
-                       Simple_Actual and then not Aliasing;
-                     --  The actual is split if and only if it is an
-                     --  identifier.
-
-                     --  1/ Before the call (saving into temporary variables):
-                     ----------------------------------------------------------
-
-                     Prefetch_Actual_Tmp     : constant W_Identifier_Id :=
-                       New_Identifier (Name => Full_Name (Formal) & "__compl",
-                                       Typ  => Formal_T);
-                     --  Temporary variable to hold the value of the converted
-                     --  actual if it cannot be used as is.
-
-                     Prefetch_Actual         : constant W_Prog_Id :=
-                       (if Ekind (Formal) = E_Out_Parameter
-                        then +Insert_Checked_Conversion
-                          (Ada_Node => Actual,
-                           Domain   => EW_Prog,
-                           Expr     => Transform_Expr
-                             (Actual,
-                              Actual_T,
-                              EW_Prog,
-                              Params),
-                           To       => Formal_T,
-                           No_Init  => True)
-                        --  Do the conversion explicitly to avoid predicate and
-                        --  initialization checks.
-
-                        else +Transform_Expr
-                          (Actual, Formal_T, EW_Prog, Params));
-
-                     Needs_Ref_For_Fields    : constant Boolean :=
-                       Binders (Bind_Cnt).Fields.Present;
-                     --  We need a new reference for the fields whenever there
-                     --  is at least one field.
-
-                     Tmp_Var_For_Fields      : W_Identifier_Id;
-                     --  Variable for the reference for fields
-
-                     Fetch_Actual_For_Fields : constant W_Prog_Id :=
-                       +New_Fields_Access (Domain => EW_Prog,
-                                           Name   => +Prefetch_Actual_Tmp,
-                                           Ty     => Binders (Bind_Cnt).Typ);
-
-                     Needs_Ref_For_Discrs    : Boolean := False;
-
-                     Tmp_Var_For_Discrs      : W_Identifier_Id;
-                     --  Variable for the reference for discriminants
-
-                     Fetch_Actual_For_Discrs : W_Prog_Id;
-
-                     --  2/ After the call (storing the result):
-                     -------------------------------------------
-
-                     Reconstructed_Arg       : W_Prog_Id;
-
-                     Assumption              : W_Expr_Id;
-                     --  If the actual has non mutable discriminants, we need
-                     --  to assume that its discriminants have not been
-                     --  modified.
-
-                  begin
-                     --  We initialize the remaining elements of the first
-                     --  phase.
-
-                     if Needs_Ref_For_Fields then
-                        Tmp_Var_For_Fields :=
-                          New_Identifier
-                            (Ada_Node => Empty,
-                             Name     => Full_Name (Formal) & "__fields",
-                             Typ      =>
-                               Get_Typ
-                                 (Binders (Bind_Cnt).Fields.Binder.B_Name));
-                     end if;
-
-                     if Binders (Bind_Cnt).Discrs.Present
-                       and then Binders (Bind_Cnt).Discrs.Binder.Mutable
-                     then
-                        --  We need a new reference for the discriminants
-                        --  whenever there is at least one discriminant, the
-                        --  formal has mutable discriminants and we cannot use
-                        --  the discriminant reference of the actual directly
-                        --  the actual is not split or it has constant (ie.
-                        --  discriminants).
-
-                        if Actual_Is_Split then
-                           declare
-                              Actual_Binder : constant Item_Type :=
-                                Ada_Ent_To_Why.Element
-                                  (Symbol_Table, Entity (Actual));
-                           begin
-
-                              Needs_Ref_For_Discrs :=
-                                not Actual_Binder.Discrs.Binder.Mutable;
-
-                              --  If the actual is in split form and its
-                              --  discriminants are not mutable, use them to
-                              --  initialize Tmp_Var_For_Discrs.
-
-                              Fetch_Actual_For_Discrs :=
-                                +Actual_Binder.Discrs.Binder.B_Name;
-                           end;
-                        else
-
-                           Needs_Ref_For_Discrs := True;
-
-                           --  If the actual is not in split form, use the
-                           --  constant introduced for the actual to avoid
-                           --  recomputing it.
-
-                           Fetch_Actual_For_Discrs :=
-                             +New_Discriminants_Access
-                             (Domain => EW_Prog,
-                              Name   => +Prefetch_Actual_Tmp,
-                              Ty     => Binders (Bind_Cnt).Typ);
-                        end if;
-
-                        Tmp_Var_For_Discrs :=
-                          New_Identifier
-                            (Ada_Node => Empty,
-                             Name     => Full_Name (Formal) & "__discrs",
-                             Typ      =>
-                               Get_Typ
-                                 (Binders (Bind_Cnt).Discrs.Binder.B_Name));
-                     end if;
-
-                     --  We reconstruct the argument and convert it to the
-                     --  actual type (without checks). We store the result in
-                     --  Reconstructed_Arg.
-
-                     --  We reconstruct the argument, convert it to the actual
-                     --  type (without checks), and assign it to the actual.
-
-                     --  ??? WHY repetition above?
-
-                     declare
-                        Arg_Array  : W_Expr_Array (1 .. 4);
-                        Index      : Positive := 1;
-                     begin
-
-                        --  For fields, use the temporary variable.
-
-                        if Binders (Bind_Cnt).Fields.Present then
-                           Arg_Array (Index) :=
-                             New_Deref (Right => Tmp_Var_For_Fields,
-                                        Typ   =>
-                                          Get_Typ (Tmp_Var_For_Fields));
-                           Index := Index + 1;
-                        end if;
-
-                        if Binders (Bind_Cnt).Discrs.Present then
-                           if Actual_Is_Split then
-
-                              --  If the actual is split, we can use its
-                              --  discriminants directly since we must have
-                              --  already updated them if they were mutable.
-
-                              declare
-                                 Actual_Binder : constant Item_Type :=
-                                   Ada_Ent_To_Why.Element
-                                     (Symbol_Table, Entity (Actual));
-                                 Discrs        : constant W_Identifier_Id :=
-                                   Actual_Binder.Discrs.Binder.B_Name;
-                              begin
-                                 if Actual_Binder.Discrs.Binder.Mutable then
-                                    Arg_Array (Index) :=
-                                      New_Deref (Right => Discrs,
-                                                 Typ   => Get_Typ (Discrs));
-                                 else
-                                    Arg_Array (Index) := +Discrs;
-                                 end if;
-                              end;
-                           elsif Binders (Bind_Cnt).Discrs.Binder.Mutable
-                           then
-                              Arg_Array (Index) :=
-                                New_Deref (Right => Tmp_Var_For_Discrs,
-                                           Typ   =>
-                                             Get_Typ (Tmp_Var_For_Discrs));
-                           else
-                              Arg_Array (Index) :=
-                                New_Discriminants_Access
-                                  (Domain => EW_Prog,
-                                   Name   => +Prefetch_Actual_Tmp,
-                                   Ty     => Binders (Bind_Cnt).Typ);
-                           end if;
-
-                           Index := Index + 1;
-                        end if;
-
-                        --  If the formal has mutable discriminants, store
-                        --  in Assumption that its discriminants cannot have
-                        --  been modified if the actual is constrained.
-
-                        if Needs_Ref_For_Discrs then
-                           Assumption :=
-                             New_Call
-                               (Domain => EW_Pred,
-                                Typ    => EW_Bool_Type,
-                                Name   => Why_Eq,
-                                Args =>
-                                  (1 => New_Deref (Right => Tmp_Var_For_Discrs,
-                                                   Typ   =>
-                                                     Get_Typ
-                                                       (Tmp_Var_For_Discrs)),
-                                   2 => +Fetch_Actual_For_Discrs));
-
-                           Assumption :=
-                             New_Conditional
-                               (Domain      => EW_Pred,
-                                Condition   =>
-                                  New_Constrained_Attribute_Expr
-                                    (Domain => EW_Term,
-                                     Prefix => Actual),
-                                Then_Part   => Assumption);
-                        end if;
-
-                        if Binders (Bind_Cnt).Tag.Present then
-                           Arg_Array (Index) :=
-                             New_Tag_Access
-                               (Domain => EW_Prog,
-                                Name   => +Prefetch_Actual_Tmp,
-                                Ty     => Binders (Bind_Cnt).Typ);
-
-                           Index := Index + 1;
-                        end if;
-
-                        Reconstructed_Arg :=
-                          +Record_From_Split_Form
-                          (A            => Arg_Array (1 .. Index - 1),
-                           Ty           => Binders (Bind_Cnt).Typ,
-                           Init_Wrapper => Obj_Has_Relaxed_Init (Formal));
-
-                        Reconstructed_Arg :=
-                          +Insert_Simple_Conversion
-                            (Domain   => EW_Pterm,
-                             Expr     => +Reconstructed_Arg,
-                             To       => EW_Abstract
-                               (Etype (Actual),
-                                Relaxed_Init =>
-                                  Obj_Has_Relaxed_Init (Formal)));
-                     end;
-
-                     --  Store the assignment, the assumption, and the required
-                     --  declarations.
-
-                     Statement_Sequence_Append_To_Statements
-                       (Store, New_Assignment
-                          (Ada_Node => Actual,
-                           Lvalue   => Actual,
-                           Expr     => Reconstructed_Arg));
-
-                     if Needs_Ref_For_Discrs then
-                        Statement_Sequence_Append_To_Statements
-                          (Store, New_Assume_Statement (Pred => +Assumption));
-                     end if;
-
-                     if Needs_Ref_For_Fields then
-                        Ref_Tmp_Vars (Ref_Index) := Tmp_Var_For_Fields;
-                        Ref_Fetch (Ref_Index) := Fetch_Actual_For_Fields;
-                        Ref_Index := Ref_Index + 1;
-                     end if;
-
-                     if Needs_Ref_For_Discrs then
-                        Ref_Tmp_Vars (Ref_Index) := Tmp_Var_For_Discrs;
-                        Ref_Fetch (Ref_Index) := Fetch_Actual_For_Discrs;
-                        Ref_Index := Ref_Index + 1;
-                     end if;
-
-                     Let_Tmp_Vars (Let_Index) := Prefetch_Actual_Tmp;
-                     Let_Fetch (Let_Index) := Prefetch_Actual;
-                     Let_Index := Let_Index + 1;
-                  end;
-               end if;
-
-            when Pointer =>
-               declare
-                  Formal_Typ : constant Entity_Id :=
-                    Etype (Binders (Bind_Cnt).Value.Ada_Node);
-               begin
-
-                  --  If aliasing can occur, we cannot use the variables from
-                  --  the actual's split form. We need to introduce a temporary
-                  --  for it.
-
-                  if Aliasing
-                    or else not Simple_Actual
-                    or else not Eq_Base
-                      (Get_Why_Type_From_Item (Binders (Bind_Cnt)),
-                       Type_Of_Node (Actual))
-                  then
-                     declare
-                        Formal_T                : constant W_Type_Id :=
-                          Get_Why_Type_From_Item (Binders (Bind_Cnt));
-
-                        Actual_Is_Split         : constant Boolean :=
-                          Simple_Actual and then not Aliasing;
-                        --  The actual is split if and only if it is an
-                        --  identifier.
-
-                        --  1/ Before the call (saving into temporary
-                        --     variables):
-                        -------------------------------------------------------
-
-                        Prefetch_Actual_Tmp     : constant W_Identifier_Id :=
-                          New_Identifier
-                            (Name => Full_Name (Formal) & "__compl",
-                             Typ  => Formal_T);
-                        --  Temporary variable to hold the value of the
-                        --  converted actual if it cannot be used as is.
-
-                        Prefetch_Actual          : constant W_Prog_Id :=
-                          +Transform_Expr (Actual, Formal_T, EW_Prog, Params);
-
-                        Tmp_Var_For_Value        : constant W_Identifier_Id :=
-                          New_Identifier
-                            (Ada_Node => Empty,
-                             Name     => Full_Name (Formal) & "__value",
-                             Typ      =>
-                               Get_Typ
-                                 (Binders (Bind_Cnt).Value.B_Name));
-                        --  Variable for the reference for value
-
-                        Fetch_Actual_For_Value   : constant W_Prog_Id :=
-                          +New_Pointer_Value_Access
-                          (Ada_Node => Empty,
-                           Domain   => EW_Pterm,
-                           Name     => +Prefetch_Actual_Tmp,
-                           E        => Formal_Typ);
-
-                        Needs_Ref_For_Others     : constant Boolean :=
-                          not Actual_Is_Split
-                          and then Binders (Bind_Cnt).Mutable;
-
-                        Tmp_Var_For_Addr         : constant W_Identifier_Id :=
-                          New_Identifier
-                            (Ada_Node => Empty,
-                             Name     => Full_Name (Formal) & "__addr",
-                             Typ      =>
-                               Get_Typ (Binders (Bind_Cnt).Address));
-                        --  Variable for the reference for the address
-
-                        Fetch_Actual_For_Addr    : constant W_Prog_Id :=
-                          +New_Pointer_Address_Access
-                          (Name => +Prefetch_Actual_Tmp,
-                           E    => Formal_Typ);
-
-                        Tmp_Var_For_Is_Null      : constant W_Identifier_Id :=
-                          New_Identifier
-                            (Ada_Node => Empty,
-                             Name     => Full_Name (Formal) & "__is_null",
-                             Typ      =>
-                               Get_Typ (Binders (Bind_Cnt).Is_Null));
-                        --  Variable for the reference for is_null
-
-                        Fetch_Actual_For_Is_Null : constant W_Prog_Id :=
-                          +New_Pointer_Is_Null_Access
-                          (Name => +Prefetch_Actual_Tmp,
-                           E    => Formal_Typ);
-
-                        --  2/ After the call (storing the result):
-                        -------------------------------------------
-
-                        Reconstructed_Arg       : W_Prog_Id;
-
-                     begin
-                        --  We reconstruct the argument and convert it to the
-                        --  actual type (without checks). We store the result
-                        --  in Reconstructed_Arg.
-
-                        declare
-                           Arg_Array : W_Expr_Array (1 .. 3);
-                        begin
-
-                           --  For value, use the temporary variable
-
-                           Arg_Array (1) :=
-                             New_Deref (Right => Tmp_Var_For_Value,
-                                        Typ   =>
-                                          Get_Typ (Tmp_Var_For_Value));
-
-                           if Needs_Ref_For_Others then
-
-                              --  If we have introduced temporary references
-                              --  the address and is_null, use them.
-
-                              Arg_Array (2) :=
-                                New_Deref (Right => Tmp_Var_For_Addr,
-                                           Typ   =>
-                                             Get_Typ (Tmp_Var_For_Addr));
-                              Arg_Array (3) :=
-                                New_Deref (Right => Tmp_Var_For_Is_Null,
-                                           Typ   =>
-                                             Get_Typ (Tmp_Var_For_Is_Null));
-
-                           elsif Binders (Bind_Cnt).Mutable then
-                              pragma Assert (Actual_Is_Split);
-
-                              --  The actual is split. Its components have been
-                              --  updated already, we can use them directly.
-
-                              declare
-                                 Actual_Binder : constant Item_Type :=
-                                   Ada_Ent_To_Why.Element
-                                     (Symbol_Table, Entity (Actual));
-                              begin
-
-                                 Arg_Array (2) :=
-                                   New_Deref
-                                     (Right => Actual_Binder.Address,
-                                      Typ   =>
-                                        Get_Typ (Actual_Binder.Address));
-                                 Arg_Array (3) :=
-                                   New_Deref
-                                     (Right => Actual_Binder.Is_Null,
-                                      Typ   =>
-                                        Get_Typ (Actual_Binder.Is_Null));
-                              end;
-                           else
-
-                              --  The values from the actual have not been
-                              --  modified. Take them from Prefetch_Actual_Tmp.
-
-                              Arg_Array (2) := +Fetch_Actual_For_Addr;
-                              Arg_Array (3) := +Fetch_Actual_For_Is_Null;
-                           end if;
-
-                           Reconstructed_Arg :=
-                             +Pointer_From_Split_Form
-                             (A  => Arg_Array,
-                              Ty => Formal_Typ);
-
-                           Reconstructed_Arg :=
-                             +Insert_Simple_Conversion
-                             (Domain   => EW_Pterm,
-                              Expr     => +Reconstructed_Arg,
-                              To       => EW_Abstract
-                               (Etype (Actual),
-                                Relaxed_Init =>
-                                  Obj_Has_Relaxed_Init (Formal)));
-                        end;
-
-                        --  Store the assignment and the required declarations
-
-                        Statement_Sequence_Append_To_Statements
-                          (Store, New_Assignment
-                             (Ada_Node => Actual,
-                              Lvalue   => Actual,
-                              Expr     => Reconstructed_Arg));
-
-                        Ref_Tmp_Vars (Ref_Index) := Tmp_Var_For_Value;
-                        Ref_Fetch (Ref_Index) := Fetch_Actual_For_Value;
-                        Ref_Index := Ref_Index + 1;
-
-                        if Needs_Ref_For_Others then
-                           Ref_Tmp_Vars (Ref_Index) := Tmp_Var_For_Addr;
-                           Ref_Fetch (Ref_Index) := Fetch_Actual_For_Addr;
-                           Ref_Index := Ref_Index + 1;
-
-                           Ref_Tmp_Vars (Ref_Index) := Tmp_Var_For_Is_Null;
-                           Ref_Fetch (Ref_Index) := Fetch_Actual_For_Is_Null;
-                           Ref_Index := Ref_Index + 1;
-                        end if;
-
-                        Let_Tmp_Vars (Let_Index) := Prefetch_Actual_Tmp;
-                        Let_Fetch (Let_Index) := Prefetch_Actual;
-                        Let_Index := Let_Index + 1;
-                     end;
-                  end if;
-               end;
-
-            when Func    => raise Program_Error;
-         end case;
-
-         --  If needed, perform the check for a dynamic predicate and null
-         --  exclusion of access types on OUT and
-         --  IN OUT parameters on return from the call. This check is not done
-         --  as part of the conversion from formal to actual parameter, as
-         --  the check done in conversions also involves invariant properties
-         --  of the type (array bounds, record discriminants, etc.). Thus,
-         --  conversion is done with Insert_Simple_Conversion in domain
-         --  EW_Pterm, which does not introduce checks, and the required
-         --  check for dynamic predicate is introduced here.
-
-         --  The case of scalar types is different, as the conversion from
-         --  formal to actual on OUT and IN OUT parameters is performed with
-         --  checks, using Insert_Checked_Conversion in domain EW_Prog, so do
-         --  not repeat the check here.
-
-         declare
-            Need_Pred_Check_On_Store : constant Boolean :=
-              Present (Formal)
-              and then not Is_Scalar_Type (Retysp (Etype (Formal)))
-              and then Ekind (Formal) /= E_In_Parameter
-              and then
-                not Eq_Base (Type_Of_Node (Formal), Type_Of_Node (Actual));
-         begin
-            if Present (Actual)
-              and then Need_Pred_Check_On_Store
-            then
-               declare
-                  Postfetch_Actual : constant W_Prog_Id :=
-                    +Transform_Expr (Actual, EW_Pterm, Params);
-
-               begin
-                  --  Generate a predicate check if the actual has a predicate
-
-                  if Has_Predicates (Retysp (Etype (Actual))) then
-                     Statement_Sequence_Append_To_Statements
-                       (Store, New_Predicate_Check (Actual, Etype (Actual),
-                        +Postfetch_Actual));
-                  end if;
-
-                  --  Generate a null exclusion check if the actual cannot be
-                  --  null but the formal can.
-
-                  if Is_Access_Type (Retysp (Etype (Actual)))
-                    and then Can_Never_Be_Null (Retysp (Etype (Actual)))
-                    and then not Can_Never_Be_Null (Retysp (Etype (Formal)))
-                  then
-                     Statement_Sequence_Append_To_Statements
-                       (Store,
-                        New_Binding
-                          (Ada_Node => Actual,
-                           Name     => New_Identifier
-                             (Domain => EW_Prog,
-                              Name   => "_",
-                              Typ    => Get_Type (+Postfetch_Actual)),
-                           Def      => New_VC_Call
-                             (Ada_Node => Actual,
-                              Name     => To_Program_Space
-                                (E_Symb (Etype (Actual),
-                                 WNE_Assign_Null_Check)),
-                              Progs    => (1 => +Postfetch_Actual),
-                              Domain   => EW_Prog,
-                              Reason   => VC_Null_Exclusion,
-                              Typ      => Get_Type (+Postfetch_Actual)),
-                           Context  => +Void,
-                           Typ      => EW_Unit_Type));
-                  end if;
-               end;
-            end if;
-         end;
-
-         Bind_Cnt := Bind_Cnt + 1;
-      end Process_Param;
-
-      procedure Iterate_Call is new
-        Iterate_Call_Parameters (Process_Param);
-
-   --  Start of processing for Insert_Ref_Context
+      Ref_Context : W_Prog_Id;
+      Subp        : constant Entity_Id := Get_Called_Entity (Ada_Call);
 
    begin
       --  In the case of a procedure or entry call, there is no value to return
-      --  as the final expression, so just append the call at the start of the
-      --  sequence (Store is empty at this point).
+      --  as the final expression, so just prepend the call at the start of the
+      --  sequence.
 
       if Nkind (Ada_Call) in N_Procedure_Call_Statement
                            | N_Entry_Call_Statement
       then
+         Statement_Sequence_Prepend_To_Statements (Store, Why_Call);
+
          --  We need to havoc the values of global variables of mode Output if
          --  they have parts with relaxed initialization so that their value
          --  before the call cannot leak into subsequently read values.
@@ -6869,24 +6314,13 @@ package body Gnat2Why.Expr is
                   end case;
                end if;
             end loop;
-            Statement_Sequence_Append_To_Statements
-              (Store, New_Havoc_Statement
-                 (Ada_Node => Ada_Call,
-                  Effects  => Effects));
+            Statement_Sequence_Prepend_To_Statements
+                (Store,
+                 New_Havoc_Statement
+                   (Ada_Node => Ada_Call,
+                    Effects  => Effects));
          end;
-
-         Statement_Sequence_Append_To_Statements (Store, Why_Call);
       end if;
-
-      --  In the case of protected subprograms, there is an invisible first
-      --  parameter, the protected object itself. We call "Compute_Arg" with
-      --  empty arguments to process this case.
-
-      if Within_Protected_Type (Subp) then
-         Process_Param (Empty, Empty);
-      end if;
-
-      Iterate_Call (Ada_Call);
 
       --  Set the pieces together
 
@@ -6913,22 +6347,22 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      for J in Ref_Fetch'Range loop
-         Ref_Context :=
-           New_Binding_Ref
-             (Name    => Ref_Tmp_Vars (J),
-              Def     => Ref_Fetch (J),
-              Context => Ref_Context,
-              Typ     => Get_Type (+Ref_Context));
-      end loop;
-
-      for J in Let_Fetch'Range loop
-         Ref_Context :=
+      for J of reverse Context loop
+         if J.Mutable then
+            Ref_Context :=
+              New_Binding_Ref
+                (Name    => J.Name,
+                 Def     => +J.Value,
+                 Context => Ref_Context,
+                 Typ     => Get_Type (+Ref_Context));
+         else
+            Ref_Context :=
               +New_Typed_Binding
-                (Domain   => EW_Prog,
-                 Name     => Let_Tmp_Vars (J),
-                 Def      => +Let_Fetch (J),
-                 Context  => +Ref_Context);
+              (Domain   => EW_Prog,
+               Name     => J.Name,
+               Def      => J.Value,
+               Context  => +Ref_Context);
+         end if;
       end loop;
 
       return Ref_Context;
@@ -7123,41 +6557,6 @@ package body Gnat2Why.Expr is
 
       return Old_Map (Position);
    end Name_For_Old;
-
-   -------------------------
-   -- Needs_Temporary_Ref --
-   -------------------------
-
-   function Needs_Temporary_Ref
-     (Actual     : Node_Id;
-      Formal     : Entity_Id;
-      Typ_Formal : W_Type_Id) return Boolean
-   is
-      Simple_Actual : constant Boolean :=
-        Nkind (Actual) in N_Identifier | N_Expanded_Name
-          and then not
-        Is_Protected_Component_Or_Discr (Entity (Actual));
-   begin
-      --  Temporary refs are needed for out or in out parameters that
-      --  need a conversion or who are not an identifier.
-      case Ekind (Formal) is
-         when E_In_Out_Parameter
-            | E_Out_Parameter
-         =>
-            return not Eq_Base (Type_Of_Node (Etype (Actual)), Typ_Formal)
-              or else not Simple_Actual;
-
-            --  We allow an in parameter or a constant of an owning access
-            --  type to provide read/write access to its designated object
-            --  in a procedure call (considered as borrowing).
-
-         when E_In_Parameter =>
-            return Has_Async_Writers (Direct_Mapping_Id (Formal));
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end Needs_Temporary_Ref;
 
    --------------------
    -- New_Assignment --
@@ -8017,17 +7416,18 @@ package body Gnat2Why.Expr is
          if Nkind (Path) = N_Function_Call then
 
             declare
-               Subp       : constant Entity_Id := Get_Called_Entity (Path);
-               Nb_Of_Refs : Integer;
-               Nb_Of_Lets : Integer;
-               Args       : constant W_Expr_Array :=
+               Subp     : constant Entity_Id := Get_Called_Entity (Path);
+               Context  : Ref_Context;
+               Store    : constant W_Statement_Sequence_Unchecked_Id :=
+                 New_Unchecked_Statement_Sequence;
+               Args     : constant W_Expr_Array :=
                  Compute_Call_Args
-                   (Call       => Path,
-                    Domain     => EW_Term,
-                    Nb_Of_Refs => Nb_Of_Refs,
-                    Nb_Of_Lets => Nb_Of_Lets,
-                    Params     => Body_Params);
-               pragma Assert (Nb_Of_Lets = 0 and then Nb_Of_Refs = 0);
+                   (Call    => Path,
+                    Domain  => EW_Term,
+                    Context => Context,
+                    Store   => Store,
+                    Params  => Body_Params);
+               pragma Assert (Context.Length = 0);
 
             begin
                --  If we have found a function call, the borrowed identifier
@@ -16031,12 +15431,13 @@ package body Gnat2Why.Expr is
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id
    is
-      Nb_Of_Refs : Natural;
-      Nb_Of_Lets : Natural;
-      T          : W_Expr_Id;
-      Subp       : constant Entity_Id := Get_Called_Entity (Expr);
+      Context  : Ref_Context;
+      Store    : constant W_Statement_Sequence_Unchecked_Id :=
+        New_Unchecked_Statement_Sequence;
+      T        : W_Expr_Id;
+      Subp     : constant Entity_Id := Get_Called_Entity (Expr);
 
-      Selector   : constant Selection_Kind :=
+      Selector : constant Selection_Kind :=
          --  When the call is dispatching, use the Dispatch variant of
          --  the program function, which has the appropriate contract.
 
@@ -16060,14 +15461,14 @@ package body Gnat2Why.Expr is
 
          else Why.Inter.Standard);
 
-      Tag_Expr   : constant W_Expr_Id :=
+      Tag_Expr : constant W_Expr_Id :=
         (if Selector = Dispatch then
             Transform_Expr
               (Expr   => Controlling_Argument (Expr),
                Domain => Term_Domain (Domain),
                Params => Params)
          else Why_Empty);
-      Tag_Arg    : constant W_Expr_Array :=
+      Tag_Arg  : constant W_Expr_Array :=
         (if Selector = Dispatch then
            (1 => New_Tag_Access
                 (Domain => Term_Domain (Domain),
@@ -16077,11 +15478,11 @@ package body Gnat2Why.Expr is
       --  Calls to dispatching function need the dispatching tag as an
       --  additional argument.
 
-      Args       : constant W_Expr_Array :=
+      Args     : constant W_Expr_Array :=
         Tag_Arg &
-        Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
+        Compute_Call_Args (Expr, Domain, Context, Store, Params);
 
-      Why_Name   : W_Identifier_Id;
+      Why_Name : W_Identifier_Id;
 
    begin
 
@@ -16256,11 +15657,10 @@ package body Gnat2Why.Expr is
       --  parameters of a volatile type. Insert these references here.
 
       if Has_Pragma_Volatile_Function (Subp) then
-         if Nb_Of_Refs = 0 then
+         if Context.Length = 0 then
             return T;
          else
-            return +Insert_Ref_Context
-              (Body_Params, Expr, +T, Nb_Of_Refs, Nb_Of_Lets);
+            return +Insert_Ref_Context (Expr, +T, Context, Store);
          end if;
 
       --  SPARK function cannot have side-effects. Except for volatile
@@ -16268,7 +15668,7 @@ package body Gnat2Why.Expr is
       --  introduced for the call.
 
       else
-         pragma Assert (Nb_Of_Refs = 0);
+         pragma Assert (Context.Length = 0);
       end if;
 
       return T;
@@ -19118,14 +18518,14 @@ package body Gnat2Why.Expr is
         renames Ada.Strings.Equal_Case_Insensitive;
 
       Subp        : constant Entity_Id := Entity (SPARK_Atree.Name (Expr));
-      Nb_Of_Refs  : Natural;
-      Nb_Of_Lets  : Natural;
+      Context     : Ref_Context;
+      Store       : constant W_Statement_Sequence_Unchecked_Id :=
+        New_Unchecked_Statement_Sequence;
 
       Args        : constant W_Expr_Array :=
-        Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
+        Compute_Call_Args (Expr, Domain, Context, Store, Params);
       pragma Assert (Args'Length = 2);
-      pragma Assert (Nb_Of_Refs = 0);
-      pragma Assert (Nb_Of_Lets = 0);
+      pragma Assert (Context.Length = 0);
 
       Modulus_Val : constant Uint := Modulus (Etype (Subp));
       Nb_Of_Bits  : constant Int := (if Modulus_Val = UI_Expon (2, 8) then
@@ -19184,7 +18584,7 @@ package body Gnat2Why.Expr is
          --  of size smaller than 32. Indeed, in this case the amount of
          --  the shift can be greater than 2**(Size of the underlying bv),
          --  resulting in a modulo on the amount of the shift Introduced by
-         --  the convertion at the why3 level.
+         --  the conversion at the why3 level.
          if Nb_Of_Bits < 32
            and then Name /= MF_BVs (Typ).Rotate_Left
            and then Name /= MF_BVs (Typ).Rotate_Right
@@ -19661,18 +19061,19 @@ package body Gnat2Why.Expr is
             | N_Entry_Call_Statement
          =>
             declare
-               Nb_Of_Refs     : Natural;
-               Nb_Of_Lets     : Natural;
-               Call           : W_Expr_Id;
-               Subp           : constant Entity_Id :=
+               Context  : Ref_Context;
+               Store    : constant W_Statement_Sequence_Unchecked_Id :=
+                 New_Unchecked_Statement_Sequence;
+               Call     : W_Expr_Id;
+               Subp     : constant Entity_Id :=
                  Get_Called_Entity (Stmt_Or_Decl);
 
-               Args           : constant W_Expr_Array :=
+               Args     : constant W_Expr_Array :=
                  Compute_Call_Args
-                   (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Nb_Of_Lets,
+                   (Stmt_Or_Decl, EW_Prog, Context, Store,
                     Params => Body_Params);
 
-               Selector       : constant Selection_Kind :=
+               Selector : constant Selection_Kind :=
                   --  When calling an error-signaling procedure from an
                   --  ordinary program unit, use the No_Return variant of the
                   --  program function, which has a precondition of False. This
@@ -19801,8 +19202,7 @@ package body Gnat2Why.Expr is
                --  Always call Insert_Ref_Context to get the checks on store
                --  for predicates.
 
-               return Insert_Ref_Context
-                 (Body_Params, Stmt_Or_Decl, +Call, Nb_Of_Refs, Nb_Of_Lets);
+               return Insert_Ref_Context (Stmt_Or_Decl, +Call, Context, Store);
             end;
 
          when N_If_Statement =>

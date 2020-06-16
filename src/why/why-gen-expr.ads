@@ -76,6 +76,9 @@ package Why.Gen.Expr is
    --  @param W a Why3 pred expression
    --  @return the equivalent Why3 term expression
 
+   function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean;
+   --  Check whether a conversion between those types might require sliding
+
    function New_And_Expr
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain) return W_Expr_Id;
@@ -233,7 +236,7 @@ package Why.Gen.Expr is
    --  @return an addition in either the representation type of Typ or
    --          the representation type of left if Typ is left empty; This
    --          type should either be ew_int_type or a bitvector; Will
-   --          do the appropriate convertion for left and right.
+   --          do the appropriate conversion for left and right.
    --  beware that there is no modulo operation inserted when dealing
    --  with modulars.
 
@@ -247,7 +250,7 @@ package Why.Gen.Expr is
    --  @return a substraction in either the representation type of Typ or
    --          the representation type of left if Typ is left empty; This
    --          type should either be ew_int_type or a bitvector; Will
-   --          do the appropriate convertion for left and right.
+   --          do the appropriate conversion for left and right.
    --  beware that there is no modulo operation inserted when dealing
    --  with modulars.
 

@@ -31,7 +31,6 @@ simple_unc_arrays.adb:30:82: medium: array index check might fail
 simple_unc_arrays.adb:32:54: info: index check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:32:75: medium: array index check might fail
 simple_unc_arrays.adb:34:10: medium: precondition might fail, cannot prove I in A'range
-simple_unc_arrays.adb:34:23: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 simple_unc_arrays.adb:34:32: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:35:22: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:36:23: info: range check proved (CVC4: 1 VC)
@@ -60,7 +59,6 @@ simple_unc_arrays.adb:120:25: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:120:25: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:120:39: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:121:16: info: precondition proved (CVC4: 4 VC)
-simple_unc_arrays.adb:121:31: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 simple_unc_arrays.adb:121:39: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:139:10: info: initialization of "Pivot_Index" proved
 simple_unc_arrays.adb:139:23: info: initialization of "Right" proved
@@ -75,7 +73,6 @@ simple_unc_arrays.adb:154:32: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:157:50: medium: array index check might fail [possible explanation: loop at line 147 should mention Right in a loop invariant]
 simple_unc_arrays.adb:158:34: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:163:16: info: precondition proved (CVC4: 4 VC)
-simple_unc_arrays.adb:163:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 simple_unc_arrays.adb:163:33: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:163:39: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:166:32: info: overflow check proved (CVC4: 1 VC)

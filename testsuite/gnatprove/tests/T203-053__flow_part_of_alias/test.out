@@ -1,0 +1,1 @@
+p.adb:13:16: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)

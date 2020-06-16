@@ -360,7 +360,7 @@ package Why.Gen.Names is
       WNE_Of_Float64,             --  for fixed-point
       WNE_Of_BitVector,
       WNE_Range_Check_Fun,
-      WNE_Range_Check_Fun_BV_Int, --  for convertion from int to bitvector
+      WNE_Range_Check_Fun_BV_Int, --  for conversion from int to bitvector
       WNE_Rec_Split_Discrs,
       WNE_Rec_Split_Fields,
       WNE_Range_Pred,

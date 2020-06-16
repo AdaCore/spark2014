@@ -25,9 +25,7 @@
 
 with Ada.Text_IO; -- debugging purpose
 with Aspects;
-with Einfo;
 with Nlists;             use Nlists;
-with Sem_Aux;
 with Sem_Ch12;
 with Sem_Disp;
 with SPARK_Util.Types;
@@ -213,12 +211,15 @@ package body SPARK_Atree is
    function Discrete_Subtype_Definition (N : Node_Id) return Node_Id renames
     Sinfo.Discrete_Subtype_Definition;
 
-   ----------------------------------
-   -- Do_Check_On_Scalar_Converion --
-   ----------------------------------
+   -----------------------------------
+   -- Do_Check_On_Scalar_Conversion --
+   -----------------------------------
 
-   function Do_Check_On_Scalar_Converion (N : Node_Id) return Boolean is
-     (Sinfo.Do_Range_Check (N)
+   function Do_Check_On_Scalar_Conversion (N : Node_Id) return Boolean is
+      use type Einfo.Entity_Kind;
+   begin
+      return
+      Sinfo.Do_Range_Check (N)
       or else
         (Atree.Nkind (Atree.Parent (N)) = N_Type_Conversion
          and then Sinfo.Do_Overflow_Check (Atree.Parent (N)))
@@ -244,7 +245,8 @@ package body SPARK_Atree is
             then Einfo.Full_View (Etype (Atree.Parent (N)))
             else Etype (Atree.Parent (N)))
          /= (if Nkind (N) = N_Qualified_Expression then Etype (N)
-             else Entity (N))));
+             else Entity (N)));
+   end Do_Check_On_Scalar_Conversion;
 
    -----------------------
    -- Do_Division_Check --
@@ -469,13 +471,9 @@ package body SPARK_Atree is
    -----------------------
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id is
-      E : constant Entity_Id :=
-        (if Nkind (N) in N_Op then Entity (N)
-         else Sem_Aux.Get_Called_Entity (N));
-   begin
-      return (if Einfo.Is_Intrinsic_Subprogram (E) then E
-              else Sem_Aux.Ultimate_Alias (E));
-   end Get_Called_Entity;
+     (if Nkind (N) in N_Op
+      then Entity (N)
+      else Sem_Aux.Get_Called_Entity (N));
 
    --------------------------
    -- Get_Enclosing_Object --

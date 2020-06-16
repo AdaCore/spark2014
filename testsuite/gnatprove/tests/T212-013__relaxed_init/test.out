@@ -134,12 +134,10 @@ test_init_by_proof_out_params.adb:207:07: medium: precondition might fail, canno
 test_init_by_proof_out_params.adb:209:07: info: precondition proved (CVC4: 1 VC)
 test_init_by_proof_out_params.adb:212:07: medium: precondition might fail, cannot prove X (1)'Initialized
 test_init_by_proof_out_params.adb:214:07: info: precondition proved (CVC4: 1 VC)
-test_init_by_proof_out_params.adb:217:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized
+test_init_by_proof_out_params.adb:217:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized (e.g. when A5 = (others => (X => 10, Y => ?, Z => True)))
 test_init_by_proof_out_params.adb:219:07: info: precondition proved (CVC4: 2 VC)
 test_init_by_proof_out_params.adb:222:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized (e.g. when H1 = (D => 10, C => ?))
-test_init_by_proof_out_params.adb:222:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 test_init_by_proof_out_params.adb:224:07: info: precondition proved (CVC4: 2 VC)
-test_init_by_proof_out_params.adb:224:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 test_init_by_proof_out_params.adb:227:07: medium: precondition might fail, cannot prove X.C (1).Y'Initialized (e.g. when H2 = (D => ?, C => (1 => (X => 10, Y => ?, Z => True), others => (X => 10, Y => ?, Z => True))) and H2.C'First = 1 and H2.C'Last = 10)
 test_init_by_proof_out_params.adb:229:07: info: precondition proved (CVC4: 2 VC)
 test_init_by_proof_out_params.adb:232:07: medium: precondition might fail, cannot prove X.C.Y'Initialized (e.g. when R3 = (C => (X => 10, Y => ?, Z => True)))

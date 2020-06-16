@@ -4101,7 +4101,15 @@ package body SPARK_Definition is
             and then
               Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = On;
 
-      procedure Mark_Subprogram_Entity (E : Entity_Id);
+      procedure Mark_Subprogram_Entity (E : Entity_Id)
+      with Pre => (if Is_Subprogram (E)
+                   then (Ekind (E) = E_Function
+                         and then Is_Intrinsic_Subprogram (E))
+                        or else E = Ultimate_Alias (E)
+                   else Is_Entry (E));
+      --  Mark subprogram or entry. Make sure that we don't mark aliases
+      --  (except for intrinsic functions).
+
       procedure Mark_Type_Entity       (E : Entity_Id);
 
       use type Node_Lists.Cursor;
@@ -4778,13 +4786,6 @@ package body SPARK_Definition is
                  and then
                    (Was_Expression_Function (My_Body)
                     or else Is_Predicate_Function (E))
-
-                 --  Protect against marking the same body twice. This can
-                 --  happen, when the frontend creates a new entity for the
-                 --  same syntactic subprogram, e.g. for primitive operations
-                 --  of derived types.
-
-                 and then E = Ultimate_Alias (E)
 
                  --  ??? Exclude functions from external axioms, that check
                  --  could certainly be moved higher up.
@@ -6366,31 +6367,32 @@ package body SPARK_Definition is
 
             end case;
          end if;
-      end if;
 
-      --  Mark predicate function, if any Predicate functions should be
-      --  marked after the subtype, that's why we need to do this here, after
-      --  inserting the subtype into the entity list.
+         --  Mark predicate function, if any Predicate functions should be
+         --  marked after the subtype, that's why we need to do this here,
+         --  after inserting the subtype into the entity list.
 
-      if Is_Type (E) and then Has_Predicates (E) then
-         declare
-            PF : constant Entity_Id := Predicate_Function (E);
-         begin
-            if Present (PF) then
-               Queue_For_Marking (PF);
-            end if;
-         end;
-      end if;
+         if Is_Type (E) and then Has_Predicates (E) then
+            declare
+               PF : constant Entity_Id := Predicate_Function (E);
+            begin
+               if Present (PF) then
+                  Queue_For_Marking (PF);
+               end if;
+            end;
+         end if;
 
-      --  Currently, proof looks at overriding operations for a given
-      --  subprogram operation on tagged types. To make this work, they should
-      --  be marked. Easiest is to mark all primitive operations of a tagged
-      --  type.
+         --  Currently, proof looks at overriding operations for a given
+         --  subprogram operation on tagged types. To make this work, they
+         --  should be marked. Easiest is to mark all primitive operations of
+         --  a tagged type.
 
-      if Is_Tagged_Type (E) then
-         for Prim of Iter (Direct_Primitive_Operations (E)) loop
-            Queue_For_Marking (Ultimate_Alias (Prim));
-         end loop;
+         if Is_Tagged_Type (E) then
+            for Prim of Iter (Direct_Primitive_Operations (E)) loop
+               Queue_For_Marking (Ultimate_Alias (Prim));
+            end loop;
+         end if;
+
       end if;
 
       --  Restore prestate
@@ -6586,13 +6588,8 @@ package body SPARK_Definition is
         Component_Associations (Expression (Iterable_Aspect));
       Iterable_Field           : Node_Id := First (Iterable_Component_Assoc);
    begin
-
-      --  Nodes in Iterable fields are not rewritten. The ultimate alias should
-      --  be considered.
-
       while Present (Iterable_Field) loop
-         Mark_Entity (Ultimate_Alias
-                      (Entity (Expression (Iterable_Field))));
+         Mark_Entity (Entity (Expression (Iterable_Field)));
          Next (Iterable_Field);
       end loop;
    end Mark_Iterable_Aspect;

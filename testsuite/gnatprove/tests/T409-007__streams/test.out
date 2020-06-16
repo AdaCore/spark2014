@@ -1,0 +1,41 @@
+main.adb:7:04: attribute "Write" is not allowed in SPARK
+main.adb:7:04: violation of aspect SPARK_Mode at line 5
+streamable_types.adb:14:48: info: range check proved (CVC4: 1 VC)
+streamable_types.adb:15:32: info: range check proved (CVC4: 1 VC)
+streamable_types.adb:15:38: info: range check proved (CVC4: 1 VC)
+streamable_types.adb:16:07: info: initialization of "Buffer" proved
+streamable_types.adb:16:07: info: range check proved (CVC4: 2 VC)
+streamable_types.adb:19:29: info: cannot unroll loop (too many loop iterations)
+streamable_types.adb:20:18: info: index check proved (CVC4: 2 VC)
+streamable_types.adb:20:65: info: index check proved (CVC4: 2 VC)
+streamable_types.adb:20:74: info: range check proved (CVC4: 1 VC)
+streamable_types.adb:23:07: info: pointer dereference check proved (CVC4: 1 VC)
+streamable_types.adb:34:07: info: initialization of "Buffer" proved
+streamable_types.adb:35:07: info: initialization of "Last" proved
+streamable_types.adb:45:13: info: pointer dereference check proved (CVC4: 1 VC)
+streamable_types.adb:50:30: info: initialization of "Len" proved
+streamable_types.adb:53:13: medium: exception might be raised
+streamable_types.adb:58:24: medium: overflow check might fail (e.g. when Len = -214748365) [possible explanation: loop at line 57 should mention Len in a loop invariant]
+streamable_types.adb:58:29: medium: overflow check might fail (e.g. when Buffer = (others => 47) and Len = 214748340) [possible explanation: loop at line 57 should mention Buffer and Len in a loop invariant]
+streamable_types.adb:59:13: info: pointer dereference check proved (CVC4: 1 VC)
+streamable_types.adb:65:29: info: initialization of "Item" proved
+streamable_types.adb:69:28: info: cannot unroll loop (too many loop iterations)
+streamable_types.adb:70:13: info: pointer dereference check proved (CVC4: 1 VC)
+streamable_types.adb:73:16: medium: exception might be raised
+streamable_types.adb:76:24: medium: overflow check might fail (e.g. when Item = -214748365) [possible explanation: loop at line 69 should mention Item in a loop invariant]
+streamable_types.adb:76:31: medium: overflow check might fail (e.g. when Buffer = (others => 57) and Item = 214748364) [possible explanation: call at line 70 should mention Item (for argument Buffer) in a postcondition]
+streamable_types.adb:80:07: warning: initialization of "Len" has no effect
+streamable_types.adb:82:07: info: precondition proved (Trivial: 1 VC)
+streamable_types.adb:82:07: warning: unused assignment to "Last"
+streamable_types.adb:84:07: info: precondition proved (Trivial: 1 VC)
+streamable_types.adb:87:10: medium: exception might be raised
+streamable_types.adb:90:07: info: precondition proved (Trivial: 1 VC)
+streamable_types.adb:90:07: warning: unused assignment to "Buffer"
+streamable_types.adb:90:07: warning: unused assignment to "Last"
+streamable_types.ads:12:21: info: initialization of "Item" proved
+streamable_types.ads:14:04: info: initialization of "V" proved
+streamable_types.ads:14:04: medium: null exclusion check might fail
+streamable_types.ads:14:04: warning: "S" is not modified, could be of access constant type
+streamable_types.ads:15:04: medium: null exclusion check might fail
+streamable_types.ads:15:04: warning: "S" is not modified, could be of access constant type
+gnatprove: error during flow analysis and proof

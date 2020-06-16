@@ -91,7 +91,7 @@ formal_vectors.adb:116:23: info: pointer dereference check proved (CVC4: 1 VC), 
 formal_vectors.adb:116:23: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:116:39: info: index check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:116:39: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:116:39: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when I = 1 and V = (Top => 0, Content => (all => (others => (all => (all => 2))))))
+formal_vectors.adb:116:39: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E = (Top => 0, Content => (all => (others => (all => (all => Integer'Last))))) and I = 1 and V = (Top => 0, Content => (all => (others => (all => (all => Integer'Last))))))
 formal_vectors.adb:116:54: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:116:54: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:116:64: info: index check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
@@ -209,7 +209,6 @@ formal_vectors.adb:182:35: info: pointer dereference check proved (CVC4: 1 VC), 
 formal_vectors.adb:182:35: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:182:47: info: index check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:182:47: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:182:47: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when J = 1 and V = (Top => 1, Content => (all => (others => (all => (all => 3))))))
 formal_vectors.adb:184:17: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:184:17: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:184:33: info: index check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
