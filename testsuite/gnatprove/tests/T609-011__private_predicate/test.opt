@@ -1,1 +1,1 @@
-ALL XFAIL crash on getting a predicated parent type (T609-011)
+assertions XFAIL crash on getting a predicated parent type (T609-011)
