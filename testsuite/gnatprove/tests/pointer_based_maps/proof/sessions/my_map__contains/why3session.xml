@@ -54,10 +54,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.12" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="369"/></proof>
+  <proof prover="0"><result status="valid" steps="662"/></proof>
   </goal>
   <goal name="def&#39;vc.13" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="358"/></proof>
+  <proof prover="0"><result status="valid" steps="651"/></proof>
   </goal>
   <goal name="def&#39;vc.14" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -68,10 +68,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.16" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="397"/></proof>
+  <proof prover="0"><result status="valid" steps="721"/></proof>
   </goal>
   <goal name="def&#39;vc.17" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="670"/></proof>
+  <proof prover="0"><result status="valid" steps="1147"/></proof>
   </goal>
  </transf>
  </goal>

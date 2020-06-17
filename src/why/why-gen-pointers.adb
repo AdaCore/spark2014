@@ -647,6 +647,10 @@ package body Why.Gen.Pointers is
                     3 => New_Pointer_Is_Null_Access
                       (E     => E,
                        Name  => +A_Ident,
+                       Local => True),
+                    4 => New_Pointer_Is_Moved_Access
+                      (E     => E,
+                       Name  => +A_Ident,
                        Local => True)),
                  Ty => Root);
             --  (value   = to_root a.value,
@@ -685,6 +689,9 @@ package body Why.Gen.Pointers is
                       (E     => Root,
                        Name  => +R_Ident),
                     3 => New_Pointer_Is_Null_Access
+                      (E     => Root,
+                       Name  => +R_Ident),
+                    4 => New_Pointer_Is_Moved_Access
                       (E     => Root,
                        Name  => +R_Ident)),
                  Ty    => E,
@@ -977,7 +984,7 @@ package body Why.Gen.Pointers is
       --------------------------
 
       procedure Declare_Pointer_Type is
-         Binders_F : Binder_Array (1 .. 3);
+         Binders_F : Binder_Array (1 .. 4);
          Ty_Name   : constant W_Name_Id := To_Name (WNE_Rec_Rep);
 
       begin
@@ -988,10 +995,14 @@ package body Why.Gen.Pointers is
             others => <>);
 
          Binders_F (2) :=
-           (B_Name => To_Local (E_Symb (E, WNE_Pointer_Address)),
+           (B_Name => To_Local (E_Symb (E, WNE_Is_Moved_Pointer)),
             others => <>);
 
          Binders_F (3) :=
+           (B_Name => To_Local (E_Symb (E, WNE_Pointer_Address)),
+            others => <>);
+
+         Binders_F (4) :=
            (B_Name => Value_Id,
             Labels => Get_Model_Trace_Label ("'" & All_Label),
             others => <>);
@@ -1171,6 +1182,120 @@ package body Why.Gen.Pointers is
               Typ      => Get_Type (+Expr));
       end if;
    end Insert_Pointer_Subtype_Check;
+
+   ---------------------
+   -- Move_Param_Item --
+   ---------------------
+
+   function Move_Param_Item
+     (Typ : Entity_Id) return Item_Type
+   is
+      Init_Wrapper : constant Boolean := Might_Contain_Relaxed_Init (Typ);
+      --  Use the init wrapper type for types which have one
+
+   begin
+      --  For a record, we call the __move function, which only takes the
+      --  fields part as a reference.
+      --
+      --  __move expr.fields_ref expr.discr expr.tag
+
+      if Is_Record_Type_In_Why (Typ) then
+         declare
+            P_Fields : constant Opt_Binder :=
+              (Present => True,
+               Binder  =>
+                 (B_Name   => New_Temp_Identifier
+                      (Base_Name => "fields",
+                       Typ       => Field_Type_For_Fields (Typ, Init_Wrapper)),
+                  Mutable  => True,
+                  others   => <>));
+            P_Discrs : constant Opt_Binder :=
+              (if Has_Discriminants (Typ) then
+                   (Present => True,
+                    Binder  =>
+                      (B_Name   => New_Temp_Identifier
+                         (Base_Name => "discrs",
+                          Typ       => Field_Type_For_Discriminants (Typ)),
+                       Mutable  => False,
+                       others   => <>))
+               else (Present => False));
+            P_Tag    : constant Opt_Id :=
+              (if Is_Tagged_Type (Typ) then
+                   (Present => True,
+                    Id      => New_Temp_Identifier (Base_Name => "tag",
+                                                    Typ       => EW_Int_Type))
+               else (Present => False));
+         begin
+            return
+              Item_Type'(Kind   => DRecord,
+                         Local  => True,
+                         Init   => (Present => False),
+                         Typ    => Typ,
+                         Fields => P_Fields,
+                         Discrs => P_Discrs,
+                         Constr => (Present => False),
+                         Tag    => P_Tag);
+         end;
+
+      --  For an array, the __move function takes the underlying map as a
+      --  reference, as well as the bounds for non-static arrays.
+      --
+      --  __move expr.content_ref expr.first1 expr.last1 ...
+
+      elsif Is_Static_Array_Type (Typ) then
+         declare
+            W_Typ : constant W_Type_Id :=
+              EW_Abstract (Typ, Relaxed_Init => Init_Wrapper);
+         begin
+            return
+              Item_Type'(Kind  => Regular,
+                         Local => True,
+                         Init  => (Present => False),
+                         Main  =>
+                           (B_Name   => New_Temp_Identifier
+                                (Base_Name => "array_content",
+                                 Typ       => W_Typ),
+                            Mutable  => True,
+                            others   => <>));
+         end;
+      else
+         pragma Assert (Is_Array_Type (Typ));
+         declare
+            W_Typ  : constant W_Type_Id :=
+              EW_Split (Typ, Relaxed_Init => Init_Wrapper);
+            Dim    : constant Positive :=
+              Positive (Number_Dimensions (Typ));
+            Bounds : Array_Bounds;
+            Index  : Node_Id := First_Index (Typ);
+         begin
+            for D in 1 .. Dim loop
+               declare
+                  Index_Typ : constant W_Type_Id :=
+                    EW_Abstract (Base_Type (Etype (Index)));
+               begin
+                  Bounds (D).First :=
+                    New_Temp_Identifier (Typ => Index_Typ);
+                  Bounds (D).Last :=
+                    New_Temp_Identifier (Typ => Index_Typ);
+                  Next_Index (Index);
+               end;
+            end loop;
+
+            return
+              Item_Type'(Kind    => UCArray,
+                         Local   => True,
+                         Init    => (Present => False),
+                         Content =>
+                           (B_Name   => New_Temp_Identifier
+                                (Base_Name => "array_content",
+                                 Typ       => W_Typ),
+                            Mutable  => True,
+                            others   => <>),
+                         Dim     => Dim,
+                         Bounds  => Bounds);
+         end;
+      end if;
+   end Move_Param_Item;
 
    ----------------------------
    -- New_Ada_Pointer_Update --
@@ -1407,6 +1532,54 @@ package body Why.Gen.Pointers is
                                 Typ   => EW_Bool_Type);
    end New_Pointer_Is_Null_Access;
 
+   ---------------------------------
+   -- New_Pointer_Is_Moved_Access --
+   ---------------------------------
+
+   function New_Pointer_Is_Moved_Access
+     (E     : Entity_Id;
+      Name  : W_Expr_Id;
+      Local : Boolean := False)
+      return W_Expr_Id
+   is
+      Field : constant W_Identifier_Id :=
+        (if Local
+         then To_Local (E_Symb (E, WNE_Is_Moved_Pointer))
+         else E_Symb (E, WNE_Is_Moved_Pointer));
+
+   begin
+      return New_Record_Access (Name  => +Name,
+                                Field => Field,
+                                Typ   => EW_Bool_Type);
+   end New_Pointer_Is_Moved_Access;
+
+   ---------------------------------
+   -- New_Pointer_Is_Moved_Update --
+   ---------------------------------
+
+   function New_Pointer_Is_Moved_Update
+     (E      : Entity_Id;
+      Name   : W_Expr_Id;
+      Value  : W_Expr_Id;
+      Domain : EW_Domain;
+      Local  : Boolean := False) return W_Expr_Id
+   is
+      Field : constant W_Identifier_Id :=
+        (if Local
+         then To_Local (E_Symb (E, WNE_Is_Moved_Pointer))
+         else E_Symb (E, WNE_Is_Moved_Pointer));
+   begin
+      return New_Record_Update
+        (Ada_Node => Empty,
+         Name     => Name,
+         Updates  =>
+           (1 => New_Field_Association
+                (Domain => Domain,
+                 Field  => Field,
+                 Value  => Value)),
+         Typ      => Get_Type (+Name));
+   end New_Pointer_Is_Moved_Update;
+
    ------------------------------
    -- New_Pointer_Value_Access --
    ------------------------------
@@ -1503,11 +1676,12 @@ package body Why.Gen.Pointers is
       Ref_Allowed : Boolean)
       return W_Expr_Id
    is
-      E       : constant Entity_Id := I.Value.Ada_Node;
-      Ty      : constant Entity_Id := Etype (E);
-      Value   : W_Expr_Id;
-      Addr    : W_Expr_Id;
-      Is_Null : W_Expr_Id;
+      E        : constant Entity_Id := I.Value.Ada_Node;
+      Ty       : constant Entity_Id := Etype (E);
+      Value    : W_Expr_Id;
+      Addr     : W_Expr_Id;
+      Is_Null  : W_Expr_Id;
+      Is_Moved : W_Expr_Id;
 
    begin
       if I.Value.Mutable and then Ref_Allowed then
@@ -1525,9 +1699,15 @@ package body Why.Gen.Pointers is
          Is_Null := +I.Is_Null;
       end if;
 
+      if Ref_Allowed then
+         Is_Moved := New_Deref (E, I.Is_Moved, Get_Typ (I.Is_Moved));
+      else
+         Is_Moved := +I.Is_Moved;
+      end if;
+
       return Pointer_From_Split_Form
         (Ada_Node => E,
-         A        => (1 => Value, 2 => Addr, 3 => Is_Null),
+         A        => (1 => Value, 2 => Addr, 3 => Is_Null, 4 => Is_Moved),
          Ty       => Ty);
    end Pointer_From_Split_Form;
 
@@ -1538,16 +1718,18 @@ package body Why.Gen.Pointers is
       Local    : Boolean := False)
       return W_Expr_Id
    is
-      Ty_Ext    : constant Entity_Id := Retysp (Ty);
-      Value     : W_Expr_Id := A (1);
-      Addr      : constant W_Expr_Id := A (2);
-      Is_Null   : constant W_Expr_Id := A (3);
-      S_Value   : W_Identifier_Id :=
+      Ty_Ext     : constant Entity_Id := Retysp (Ty);
+      Value      : W_Expr_Id := A (1);
+      Addr       : constant W_Expr_Id := A (2);
+      Is_Null    : constant W_Expr_Id := A (3);
+      Is_Moved   : constant W_Expr_Id := A (4);
+      S_Value    : W_Identifier_Id :=
         (if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
          then E_Symb (Ty_Ext, WNE_Pointer_Value_Abstr)
          else E_Symb (Ty_Ext, WNE_Pointer_Value));
-      S_Addr    : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Pointer_Address);
-      S_Is_Null : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Null_Pointer);
+      S_Addr     : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Pointer_Address);
+      S_Is_Null  : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Null_Pointer);
+      S_Is_Moved : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Moved_Pointer);
 
    begin
       --  If Local use local names for fields of Ty
@@ -1556,6 +1738,7 @@ package body Why.Gen.Pointers is
          S_Value := To_Local (S_Value);
          S_Addr := To_Local (S_Addr);
          S_Is_Null := To_Local (S_Is_Null);
+         S_Is_Moved := To_Local (S_Is_Moved);
       end if;
 
       --  If Ty designates an incomplete type, we need to reconstruct the
@@ -1584,7 +1767,11 @@ package body Why.Gen.Pointers is
             3 => New_Field_Association
                 (Domain => EW_Term,
                  Field  => S_Is_Null,
-                 Value  => Is_Null)),
+                 Value  => Is_Null),
+            4 => New_Field_Association
+                (Domain => EW_Term,
+                 Field  => S_Is_Moved,
+                 Value  => Is_Moved)),
          Typ          => EW_Abstract (Ty_Ext));
    end Pointer_From_Split_Form;
 

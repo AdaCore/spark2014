@@ -309,4 +309,23 @@ package Why.Gen.Records is
    --  /\ ..
    --  /\ (check_for_fn <Expr> -> Build_Predicate_For_Field <Expr>.rec__fn)
 
+   generic
+      with function Build_Predicate_For_Discr
+        (D_Expr1, D_Expr2 : W_Term_Id; D_Ty : Entity_Id; E : Entity_Id)
+         return W_Pred_Id;
+      with function Build_Predicate_For_Field
+        (F_Expr1, F_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+         return W_Pred_Id;
+   function Build_Binary_Predicate_For_Record
+     (Expr1, Expr2 : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
+   --  Construct a predicate:
+   --  Build_Predicate_For_Discr <Expr1>.rec__d1 <Expr2>.rec__d1 /\ ...
+   --  (check_for_f1 <Expr1> ->
+   --      Build_Predicate_For_Field <Expr1>.rec__f1 <Expr2>.rec__f1)
+   --  /\ ..
+   --  /\ (check_for_fn <Expr1> ->
+   --      Build_Predicate_For_Field <Expr1>.rec__fn <Expr2>.rec__fn)
+   --  As visible above, this only makes sense if the discriminants for
+   --  Expr1 and Expr2 are equal.
+
 end Why.Gen.Records;

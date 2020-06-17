@@ -234,18 +234,28 @@ package body SPARK_Atree is
       or else
         (Atree.Nkind (Atree.Parent (N)) = N_Range
          and then Sinfo.Do_Range_Check (Atree.Parent (N)))
-      or else
 
       --  Do_Range_Check flag is not set on allocators. Do the check if the
       --  designated subtype and the provided subtype do not match.
+      --  For uninitialized allocators, N is the allocator node itself.
 
+      or else
+        (Atree.Nkind (N) = N_Allocator
+         and then Einfo.Directly_Designated_Type
+           (if Present (Einfo.Full_View (Etype (N)))
+            then Einfo.Full_View (Etype (N))
+            else Etype (N)) /= Entity (Expression (N)))
+
+      --  On initialized allocators, it is the allocated expression, so the
+      --  allocator is its parent.
+
+      or else
         (Atree.Nkind (Atree.Parent (N)) = N_Allocator
          and then Einfo.Directly_Designated_Type
            (if Present (Einfo.Full_View (Etype (Atree.Parent (N))))
             then Einfo.Full_View (Etype (Atree.Parent (N)))
             else Etype (Atree.Parent (N)))
-         /= (if Nkind (N) = N_Qualified_Expression then Etype (N)
-             else Entity (N)));
+         /= Etype (N));
    end Do_Check_On_Scalar_Conversion;
 
    -----------------------
@@ -521,6 +531,13 @@ package body SPARK_Atree is
       Par : Node_Id := Atree.Parent (N);
 
    begin
+      --  For uninitialized allocators, N is not a scalar expression but
+      --  the allocator itself.
+
+      if Nkind (N) = N_Allocator then
+         Par := N;
+      end if;
+
       --  In proof, we use the original node for unchecked conversions
       --  coming from source.
 

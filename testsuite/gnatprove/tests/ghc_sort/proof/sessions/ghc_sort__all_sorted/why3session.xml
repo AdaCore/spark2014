@@ -2,7 +2,7 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="4450000" memlimit="0"/>
+<prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="ghc_sort__all_sorted.gnat-json"/>
@@ -14,32 +14,32 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3105"/></proof>
+  <proof prover="0"><result status="valid" steps="3109"/></proof>
   </goal>
   <goal name="def&#39;vc.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3171"/></proof>
+  <proof prover="0"><result status="valid" steps="3175"/></proof>
   </goal>
   <goal name="def&#39;vc.3" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="20942"/></proof>
+  <proof prover="0"><result status="valid" steps="20955"/></proof>
   </goal>
   <goal name="def&#39;vc.4" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="20401"/></proof>
+  <proof prover="0"><result status="valid" steps="20414"/></proof>
   </goal>
   <goal name="def&#39;vc.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3271"/></proof>
+  <proof prover="0"><result status="valid" steps="3275"/></proof>
   </goal>
   <goal name="def&#39;vc.6" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="12305"/></proof>
+  <proof prover="0"><result status="valid" steps="12309"/></proof>
   </goal>
   <goal name="def&#39;vc.7" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="21327"/></proof>
+  <proof prover="0"><result status="valid" steps="21340"/></proof>
   </goal>
   <goal name="def&#39;vc.8" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.9" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3363"/></proof>
+  <proof prover="0"><result status="valid" steps="3367"/></proof>
   </goal>
   <goal name="def&#39;vc.10" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >

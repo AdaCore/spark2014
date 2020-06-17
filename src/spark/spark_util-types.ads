@@ -305,7 +305,8 @@ package SPARK_Util.Types is
    --  Returns True if Typ has at least a subcomponent whose type is annotated
    --  with relaxed initialization, all its scalar subcomponents have this
    --  annotation and it contains no predicates.
-   --  ??? To keep flow analysis working, should be removed afterward.
+   --  These types are considered to have relaxed initialization even if they
+   --  don't have the aspect.
 
    function Might_Contain_Relaxed_Init (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);

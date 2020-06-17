@@ -194,13 +194,21 @@ package Why.Gen.Arrays is
 
    function Array_Convert_From_Base
      (Domain : EW_Domain;
-      Target : Entity_Id;
+      Ty     : Entity_Id;
       Ar     : W_Expr_Id;
       First  : W_Expr_Id;
       Last   : W_Expr_Id) return W_Expr_Id;
    --  This variant can be used when we need to build an unconstrained array,
    --  but "Ar" is not in split form. We need to provide the target type and
    --  first/last expressions explicitly.
+
+   function Array_Convert_From_Base
+     (Domain : EW_Domain;
+      Ty     : Entity_Id;
+      Ar     : W_Expr_Id;
+      Bounds : W_Expr_Array) return W_Expr_Id;
+   --  Variant of the convertion function used to build an unconstrained array
+   --  from its split form [Ar] and its [Bounds] expressions
 
    function Array_Convert_From_Base
      (Domain   : EW_Domain;
@@ -506,6 +514,15 @@ package Why.Gen.Arrays is
    --  Construct a predicate:
    --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
    --    Build_Predicate_For_Comp (get <Expr> i1 .. in)
+
+   generic
+      with function Build_Predicate_For_Comp
+        (C_Expr1, C_Expr2 : W_Term_Id; C_Ty : Entity_Id) return W_Pred_Id;
+   function Build_Binary_Predicate_For_Array
+     (Expr1, Expr2 : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
+   --  Construct a predicate:
+   --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
+   --    Build_Predicate_For_Comp (get <Expr1> i1 .. in, get <Expr2> i1 .. in)
 
    function Array_Type_Is_Clone (E : Entity_Id) return Boolean;
    --  Return True if we do not produce a new type declaration for E but rather

@@ -9,7 +9,7 @@ procedure Illegal_Assign with SPARK_Mode is
    function Pledge (Borrower : access constant List; Prop : Boolean) return Boolean is
      (Prop)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
    X : List_Acc := new List'(1, null);
    W : List_Acc;

@@ -470,6 +470,15 @@ package body SPARK_Atree.Entities is
    function Is_Entity_Name (N : Node_Id) return Boolean renames
      Einfo.Is_Entity_Name;
 
+   ------------------------------------------
+   -- Is_Expression_Function_Or_Completion --
+   ------------------------------------------
+
+   function Is_Expression_Function_Or_Completion
+     (Subp : Entity_Id)
+      return Boolean
+      renames Sem_Util.Is_Expression_Function_Or_Completion;
+
    ---------------------
    -- Is_Limited_View --
    ---------------------

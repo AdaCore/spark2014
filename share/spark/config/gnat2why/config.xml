@@ -7,7 +7,6 @@
   </compilers>
   <config>
    package Compiler is
-      for Driver ("Ada") use "gnat2why";
       for Object_File_Suffix ("Ada") use ".spark";
       for Dependency_Kind ("Ada") use "ALI_Closure";
       for Object_Path_Switches ("Ada") use ("-gnateO=");

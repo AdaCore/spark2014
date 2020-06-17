@@ -42,13 +42,13 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.8" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="51"/></proof>
+  <proof prover="0"><result status="valid" steps="122"/></proof>
   </goal>
   <goal name="def&#39;vc.9" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="47"/></proof>
+  <proof prover="0"><result status="valid" steps="190"/></proof>
   </goal>
   <goal name="def&#39;vc.10" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="47"/></proof>
+  <proof prover="0"><result status="valid" steps="156"/></proof>
   </goal>
   <goal name="def&#39;vc.11" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -83,13 +83,13 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.20" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="352"/></proof>
+  <proof prover="0"><result status="valid" steps="534"/></proof>
   </goal>
   <goal name="def&#39;vc.21" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="2458"/></proof>
+  <proof prover="0"><result status="valid" steps="3134"/></proof>
   </goal>
   <goal name="def&#39;vc.22" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="303"/></proof>
+  <proof prover="0"><result status="valid" steps="477"/></proof>
   </goal>
   <goal name="def&#39;vc.23" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -100,10 +100,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.25" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="180"/></proof>
+  <proof prover="0"><result status="valid" steps="241"/></proof>
   </goal>
   <goal name="def&#39;vc.26" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="4228"/></proof>
+  <proof prover="0"><result status="valid" steps="5349"/></proof>
   </goal>
  </transf>
  </goal>

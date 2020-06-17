@@ -48,7 +48,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.10" expl="check">
-  <proof prover="0"><result status="unknown" steps="127"/></proof>
+  <proof prover="0"><result status="unknown" steps="138"/></proof>
   </goal>
   <goal name="def&#39;vc.11" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

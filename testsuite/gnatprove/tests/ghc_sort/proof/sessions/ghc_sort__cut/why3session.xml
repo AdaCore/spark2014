@@ -2,7 +2,7 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="4450000" memlimit="0"/>
+<prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="ghc_sort__cut.gnat-json"/>
@@ -891,7 +891,7 @@
   <proof prover="0"><result status="valid" steps="56292"/></proof>
   </goal>
   <goal name="def&#39;vc.272" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="2957468"/></proof>
+  <proof prover="0"><result status="valid" steps="7390643"/></proof>
   </goal>
   <goal name="def&#39;vc.273" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -1212,19 +1212,19 @@
   <proof prover="0"><result status="valid" steps="53807"/></proof>
   </goal>
   <goal name="def&#39;vc.373" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="82191"/></proof>
+  <proof prover="0"><result status="valid" steps="92414"/></proof>
   </goal>
   <goal name="def&#39;vc.374" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="57216"/></proof>
+  <proof prover="0"><result status="valid" steps="57214"/></proof>
   </goal>
   <goal name="def&#39;vc.375" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="61849"/></proof>
+  <proof prover="0"><result status="valid" steps="61847"/></proof>
   </goal>
   <goal name="def&#39;vc.376" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="84776"/></proof>
+  <proof prover="0"><result status="valid" steps="81991"/></proof>
   </goal>
   <goal name="def&#39;vc.377" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1731094"/></proof>
+  <proof prover="0"><result status="valid" steps="604090"/></proof>
   </goal>
  </transf>
  </goal>

@@ -253,23 +253,7 @@ is
           then (os_task_mbx_rw (task_id).mbx_array (os_mbx_get_mbx_head (task_id) + os_mbx_count_t (index)).sender_id = OS_TASK_ID_NONE)
           else (os_task_mbx_rw (task_id).mbx_array (os_mbx_get_mbx_head (task_id) + os_mbx_count_t (index)).sender_id in os_task_id_param_t)))
    with
-      Ghost => true,
-      Post => os_ghost_task_mbx_are_well_formed'Result =
-         (for all index in os_mbx_index_t'Range =>
-            (if (os_mbx_is_empty (task_id))
-             then (os_task_mbx_rw (task_id).mbx_array (index).sender_id
-                     = OS_TASK_ID_NONE)
-             else (if (((os_mbx_get_mbx_tail (task_id)
-                            < os_mbx_get_mbx_head (task_id)) and
-                        ((index >= os_mbx_get_mbx_head (task_id)) or
-                         (index <= os_mbx_get_mbx_tail (task_id)))) or else
-                       (index in os_mbx_get_mbx_head (task_id) ..
-                                 os_mbx_get_mbx_tail (task_id)))
-                   then (os_task_mbx_rw (task_id).mbx_array (index).sender_id
-                           in os_task_id_param_t)
-                   else (os_task_mbx_rw (task_id).mbx_array (index).sender_id
-                           = OS_TASK_ID_NONE))));
-
+      Ghost => true;
       pragma Annotate (GNATprove, Inline_For_Proof,
                        os_ghost_task_mbx_are_well_formed);
 

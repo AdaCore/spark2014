@@ -175,8 +175,14 @@ spark02.adb:34:09: expression as "in out" parameter is not allowed in SPARK
 spark02.adb:34:09: violation of pragma SPARK_Mode at test.adc:3
 spark02.adb:35:09: expression as "in out" parameter is not allowed in SPARK
 spark02.adb:35:09: violation of pragma SPARK_Mode at test.adc:3
+spark03.adb:6:12: medium: memory leak might occur
+spark03.adb:7:18: info: absence of memory leak proved (CVC4: 1 VC)
+spark03.adb:12:18: info: absence of memory leak proved (CVC4: 1 VC)
+spark03.adb:13:11: info: absence of memory leak proved (CVC4: 1 VC)
 spark03.adb:19:09: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at spark03.ads:21 should mention Y in a precondition]
+spark03.adb:22:16: info: absence of memory leak proved (CVC4: 1 VC)
 spark03.adb:23:09: medium: pointer dereference check might fail (e.g. when Z = null)
+spark03.adb:24:16: info: absence of memory leak proved (CVC4: 1 VC)
 spark03.adb:25:09: medium: pointer dereference check might fail (e.g. when W = null)
 spark03.ads:8:07: medium: missing dependency "null => AA"
 spark03.ads:8:36: medium: incorrect dependency "AA => AA"

@@ -10,13 +10,13 @@ is
    function Pledge (X : access constant List_Cell; P : Boolean) return Boolean is
      (P)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
    function Length (X : access constant List_Cell) return Natural is
      (if X = null then 0
       elsif Length (X.Next) = Natural'Last then Natural'Last
       else Length (X.Next) + 1)
-   with Annotate => (GNATProve, Terminating);
+   with Annotate => (GNATprove, Terminating);
 
    procedure Wrong (X : in out List) with
      Pre => Length (X) = 3

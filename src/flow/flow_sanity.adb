@@ -165,8 +165,7 @@ package body Flow_Sanity is
          end if;
 
          if Is_Expression_Function (E)
-           or else (Ekind (E) = E_Function
-                    and then Present (Get_Expression_Function (E))
+           or else (Is_Expression_Function_Or_Completion (E)
                     and then Entity_Body_Compatible_With_SPARK (E))
          then
             for Var of Get_Vars (Expression (Get_Expression_Function (E))) loop

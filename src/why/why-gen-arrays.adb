@@ -394,7 +394,7 @@ package body Why.Gen.Arrays is
 
    function Array_Convert_From_Base
      (Domain : EW_Domain;
-      Target : Entity_Id;
+      Ty     : Entity_Id;
       Ar     : W_Expr_Id;
       First  : W_Expr_Id;
       Last   : W_Expr_Id) return W_Expr_Id
@@ -410,7 +410,30 @@ package body Why.Gen.Arrays is
         Array_Convert_From_Base
           (Domain       => Domain,
            Args         => (1 => Ar, 2 => First_Int, 3 => Last_Int),
-           Ty           => Target,
+           Ty           => Ty,
+           Init_Wrapper => Init_Wrapper);
+   end Array_Convert_From_Base;
+
+   function Array_Convert_From_Base
+     (Domain : EW_Domain;
+      Ty     : Entity_Id;
+      Ar     : W_Expr_Id;
+      Bounds : W_Expr_Array) return W_Expr_Id
+   is
+      Init_Wrapper     : constant Boolean :=
+        Is_Init_Wrapper_Type (Get_Type (Ar));
+      Converted_Bounds : W_Expr_Array (Bounds'Range);
+   begin
+      for J in Bounds'Range loop
+         Converted_Bounds (J) :=
+           Insert_Conversion_To_Rep_No_Bool (Domain, Expr => Bounds (J));
+      end loop;
+
+      return
+        Array_Convert_From_Base
+          (Domain       => Domain,
+           Args         => Ar & Converted_Bounds,
+           Ty           => Ty,
            Init_Wrapper => Init_Wrapper);
    end Array_Convert_From_Base;
 
@@ -480,6 +503,75 @@ package body Why.Gen.Arrays is
    function Array_Type_Is_Clone (E : Entity_Id) return Boolean is
      (not Is_Static_Array_Type (Retysp (E))
       and then Retysp (Etype (E)) /= Retysp (E));
+
+   --------------------------------------
+   -- Build_Binary_Predicate_For_Array --
+   --------------------------------------
+
+   function Build_Binary_Predicate_For_Array
+     (Expr1, Expr2 : W_Term_Id; Ty : Entity_Id) return W_Pred_Id
+   is
+      Ty_Ext     : constant Entity_Id := Retysp (Ty);
+      Dim        : constant Positive :=
+        Positive (Number_Dimensions (Ty_Ext));
+      Vars       : Binder_Array (1 .. Dim);
+      Indexes    : W_Expr_Array (1 .. Dim);
+      Range_Expr : W_Pred_Id := True_Pred;
+      Index      : Node_Id := First_Index (Ty_Ext);
+      I          : Positive := 1;
+      T_Comp     : W_Expr_Id;
+      Tmp        : W_Identifier_Id;
+      Q_Expr     : W_Pred_Id;
+      T          : W_Pred_Id := True_Pred;
+   begin
+      while Present (Index) loop
+         Tmp := New_Temp_Identifier
+           (Typ => Base_Why_Type_No_Bool (Index));
+         Vars (I) := Binder_Type'(Ada_Node => Empty,
+                                  B_Name   => Tmp,
+                                  B_Ent    => Null_Entity_Name,
+                                  Mutable  => False,
+                                  Labels   => <>);
+         Indexes (I) := +Tmp;
+         Range_Expr := +New_And_Expr
+           (Left   => +Range_Expr,
+            Right  => New_Array_Range_Expr (+Tmp, +Expr1, EW_Pred, I),
+            Domain => EW_Pred);
+         Next_Index (Index);
+         I := I + 1;
+      end loop;
+
+      pragma Assert (I = Indexes'Last + 1);
+
+      --  Call Build_Predicate_For_Comp on the array components.
+
+      T_Comp :=
+        +Build_Predicate_For_Comp
+        (C_Expr1 => +New_Array_Access (Empty, +Expr1, Indexes, EW_Term),
+         C_Expr2 => +New_Array_Access (Empty, +Expr2, Indexes, EW_Term),
+         C_Ty    => Component_Type (Ty_Ext));
+
+      if T_Comp /= +True_Pred then
+         T_Comp := New_Conditional
+           (Domain    => EW_Pred,
+            Condition => +Range_Expr,
+            Then_Part => T_Comp,
+            Typ       => EW_Bool_Type);
+
+         Q_Expr := New_Universal_Quantif
+           (Binders => Vars,
+            Pred    => +T_Comp);
+
+         if T = True_Pred then
+            T := Q_Expr;
+         else
+            T := +New_And_Then_Expr (Left   => +T,
+                                     Right  => +Q_Expr,
+                                     Domain => EW_Pred);
+         end if;
+      end if;
+      return T;
+   end Build_Binary_Predicate_For_Array;
 
    -----------------------
    -- Build_Length_Expr --
@@ -566,65 +658,15 @@ package body Why.Gen.Arrays is
    function Build_Predicate_For_Array
      (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id
    is
-      Ty_Ext     : constant Entity_Id := Retysp (Ty);
-      Dim        : constant Positive :=
-        Positive (Number_Dimensions (Ty_Ext));
-      Vars       : Binder_Array (1 .. Dim);
-      Indexes    : W_Expr_Array (1 .. Dim);
-      Range_Expr : W_Pred_Id := True_Pred;
-      Index      : Node_Id := First_Index (Ty_Ext);
-      I          : Positive := 1;
-      T_Comp     : W_Expr_Id;
-      Tmp        : W_Identifier_Id;
-      Q_Expr     : W_Pred_Id;
-      T          : W_Pred_Id := True_Pred;
+      function Build_Predicate_For_Comp
+        (C_Expr1, Dummy_Expr2 : W_Term_Id; C_Ty : Entity_Id) return W_Pred_Id
+      is (Build_Predicate_For_Comp (C_Expr1, C_Ty));
+
+      function Build_Predicate is new Build_Binary_Predicate_For_Array
+        (Build_Predicate_For_Comp);
+
    begin
-      while Present (Index) loop
-         Tmp := New_Temp_Identifier
-           (Typ => Base_Why_Type_No_Bool (Index));
-         Vars (I) := Binder_Type'(Ada_Node => Empty,
-                                  B_Name   => Tmp,
-                                  B_Ent    => Null_Entity_Name,
-                                  Mutable  => False,
-                                  Labels   => <>);
-         Indexes (I) := +Tmp;
-         Range_Expr := +New_And_Expr
-           (Left   => +Range_Expr,
-            Right  => New_Array_Range_Expr (+Tmp, +Expr, EW_Pred, I),
-            Domain => EW_Pred);
-         Next_Index (Index);
-         I := I + 1;
-      end loop;
-
-      pragma Assert (I = Indexes'Last + 1);
-
-      --  Call Build_Predicate_For_Comp on the array components.
-
-      T_Comp :=
-        +Build_Predicate_For_Comp
-        (C_Expr => +New_Array_Access (Empty, +Expr, Indexes, EW_Term),
-         C_Ty   => Component_Type (Ty_Ext));
-
-      if T_Comp /= +True_Pred then
-         T_Comp := New_Conditional
-           (Domain    => EW_Pred,
-            Condition => +Range_Expr,
-            Then_Part => T_Comp,
-            Typ       => EW_Bool_Type);
-
-         Q_Expr := New_Universal_Quantif
-           (Binders => Vars,
-            Pred    => +T_Comp);
-
-         if T = True_Pred then
-            T := Q_Expr;
-         else
-            T := +New_And_Then_Expr (Left   => +T,
-                                     Right  => +Q_Expr,
-                                     Domain => EW_Pred);
-         end if;
-      end if;
-      return T;
+      return Build_Predicate (Expr, Expr, Ty);
    end Build_Predicate_For_Array;
 
    ----------------------------------------------

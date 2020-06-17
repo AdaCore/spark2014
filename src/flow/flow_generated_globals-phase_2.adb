@@ -37,7 +37,7 @@ with Call;                       use Call;
 with Debug.Timing;               use Debug.Timing;
 with Gnat2Why_Args;
 with SPARK2014VSN;               use SPARK2014VSN;
-with SPARK_Annotate;             use SPARK_Annotate;
+with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Xrefs;                use SPARK_Xrefs;
 

@@ -1,2 +1,5 @@
+membership.adb:8:05: medium: memory leak might occur at end of scope
 membership.adb:8:17: info: range check proved (CVC4: 1 VC)
+membership.adb:9:05: medium: memory leak might occur at end of scope
+membership.adb:12:10: medium: memory leak might occur
 membership.adb:14:08: info: assertion proved (CVC4: 1 VC)

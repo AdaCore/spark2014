@@ -6,7 +6,7 @@ is
 
    -- Postcondition here is concise, but is not correct
    -- since the evaluation of X'Old + 1 might overflow.
-   -- GNATProve successfully detects and reports this problem.
+   -- GNATprove successfully detects and reports this problem.
    procedure Incr_Threshold1 (X : in out Integer) with
      Pre  => X >= 0,
      Post => X = Integer'Min (X'Old + 1, Threshold);

@@ -1,5 +1,12 @@
+n02.adb:16:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+n02.adb:17:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+n02.adb:18:04: medium: memory leak might occur at end of scope
+n02.adb:19:04: medium: memory leak might occur at end of scope
 n02.adb:19:25: info: pointer dereference check proved (CVC4: 1 VC)
 n02.adb:21:06: info: pointer dereference check proved (CVC4: 1 VC)
+n02.adb:23:07: info: absence of memory leak proved (CVC4: 1 VC)
+n02.adb:24:07: info: absence of memory leak proved (CVC4: 1 VC)
+n02.adb:25:06: medium: memory leak might occur
 n02.adb:28:26: info: range check proved (CVC4: 1 VC)
 n02.adb:28:44: info: pointer dereference check proved (CVC4: 1 VC)
 n02.adb:28:50: info: pointer dereference check proved (CVC4: 1 VC)

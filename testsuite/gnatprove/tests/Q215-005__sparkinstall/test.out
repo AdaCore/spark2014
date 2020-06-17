@@ -22,6 +22,7 @@ gprconfig
 gprls
 gprname
 gprslave
+scil_reader
 spark_codepeer_wrapper
 spark_memcached_wrapper
 spark_report

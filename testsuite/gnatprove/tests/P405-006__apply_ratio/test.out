@@ -20,7 +20,7 @@ math.adb:26:33: info: loop invariant preservation proved
 math.adb:27:33: info: loop invariant initialization proved
 math.adb:27:33: info: loop invariant preservation proved
 math.adb:29:13: info: loop invariant initialization proved
-math.adb:29:46: medium: loop invariant might fail after first iteration, cannot prove V(K) = V'Loop_Entry(K) * Num / Denom
+math.adb:29:46: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove V(K) = V'Loop_Entry(K) * Num / Denom
 math.adb:29:48: info: index check proved
 math.adb:29:66: info: index check proved
 math.adb:29:69: info: overflow check proved

@@ -217,35 +217,48 @@ package body Why.Gen.Records is
    --  @param Field component whose type we are interested in
    --  @param Rec record type we are currently defining if any
 
-   --------------------------------
-   -- Build_Predicate_For_Record --
-   --------------------------------
+   ---------------------------------------
+   -- Build_Binary_Predicate_For_Record --
+   ---------------------------------------
 
-   function Build_Predicate_For_Record
-     (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id is
+   function Build_Binary_Predicate_For_Record
+     (Expr1, Expr2 : W_Term_Id;
+      Ty           : Entity_Id)
+      return W_Pred_Id
+   is
+      pragma Assert (Is_Init_Wrapper_Type (Get_Type (+Expr1)) =
+                     Is_Init_Wrapper_Type (Get_Type (+Expr2)));
 
       C_Ty    : constant Entity_Id :=
         (if Is_Class_Wide_Type (Ty) then Get_Specific_Type_From_Classwide (Ty)
          else Ty);
       Ty_Ext  : constant Entity_Id := Retysp (C_Ty);
-      R_Expr  : constant W_Expr_Id :=
-        Insert_Simple_Conversion
-          (Domain   => EW_Term,
-           Expr     => +Expr,
-           To       => EW_Abstract
-             (Ty_Ext,
-              Relaxed_Init => Is_Init_Wrapper_Type (Get_Type (+Expr))));
+      To_Typ  : constant W_Type_Id :=
+        EW_Abstract
+          (Ty_Ext,
+           Relaxed_Init => Is_Init_Wrapper_Type (Get_Type (+Expr1)));
+      R_Expr1 : constant W_Expr_Id :=
+        Insert_Simple_Conversion (Domain => EW_Term,
+                                  Expr   => +Expr1,
+                                  To     => To_Typ);
+      R_Expr2 : constant W_Expr_Id :=
+        Insert_Simple_Conversion (Domain => EW_Term,
+                                  Expr   => +Expr2,
+                                  To     => To_Typ);
       Discrs  : constant Natural := Count_Discriminants (Ty_Ext);
       Discr   : Node_Id := (if Has_Discriminants (Ty_Ext)
                             then First_Discriminant (Ty_Ext)
                             else Empty);
       T_Comp  : W_Pred_Id;
       T_Guard : W_Pred_Id;
-      R_Acc   : W_Expr_Id;
+      R_Acc1  : W_Expr_Id;
+      R_Acc2  : W_Expr_Id;
       Tmps    : W_Identifier_Array (1 .. Discrs);
       Binds   : W_Expr_Array (1 .. Discrs);
       I       : Positive := 1;
       T       : W_Pred_Id := True_Pred;
+
+   --  Start of processing for Build_Binary_Predicate_For_Record
 
    begin
       --  As discriminants may occur in bounds of types of other fields,
@@ -254,14 +267,16 @@ package body Why.Gen.Records is
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
       while Present (Discr) loop
-            R_Acc := New_Ada_Record_Access
-              (Empty, EW_Term, R_Expr, Discr, Ty_Ext);
+            R_Acc1 := New_Ada_Record_Access
+              (Empty, EW_Term, R_Expr1, Discr, Ty_Ext);
+            R_Acc2 := New_Ada_Record_Access
+              (Empty, EW_Term, R_Expr2, Discr, Ty_Ext);
 
             Tmps (I) := New_Temp_Identifier
               (Discr, EW_Abstract (Etype (Discr)));
-            Binds (I) := R_Acc;
+            Binds (I) := R_Acc1;
 
-            --  We need entities of discrimiants
+            --  We need entities of discriminants
 
             Insert_Entity (Discr, Tmps (I));
 
@@ -269,9 +284,10 @@ package body Why.Gen.Records is
 
             T_Comp :=
               Build_Predicate_For_Discr
-                (D_Expr => +R_Acc,
-                 D_Ty   => Etype (Discr),
-                 E      => Discr);
+                (D_Expr1 => +R_Acc1,
+                 D_Expr2 => +R_Acc2,
+                 D_Ty    => Etype (Discr),
+                 E       => Discr);
 
             T := +New_And_Then_Expr (Left   => +T,
                                      Right  => +T_Comp,
@@ -293,20 +309,23 @@ package body Why.Gen.Records is
             if not Is_Type (Field) then
                pragma Assert (Ekind (Field) /= E_Discriminant);
 
-               R_Acc := New_Ada_Record_Access
-                 (Empty, EW_Term, R_Expr, Field, Ty_Ext);
+               R_Acc1 := New_Ada_Record_Access
+                 (Empty, EW_Term, R_Expr1, Field, Ty_Ext);
+               R_Acc2 := New_Ada_Record_Access
+                 (Empty, EW_Term, R_Expr2, Field, Ty_Ext);
 
                --  Call Build_Predicate_For_Field on fields
 
                T_Comp :=
                  Build_Predicate_For_Field
-                   (F_Expr => +R_Acc,
-                    F_Ty   => Etype (Field),
-                    E      => Field);
+                   (F_Expr1 => +R_Acc1,
+                    F_Expr2 => +R_Acc2,
+                    F_Ty    => Etype (Field),
+                    E       => Field);
 
                if T_Comp /= True_Pred then
                   T_Guard := +New_Ada_Record_Check_For_Field
-                    (Empty, EW_Pred, R_Expr, Field, Ty_Ext);
+                    (Empty, EW_Pred, R_Expr1, Field, Ty_Ext);
 
                   Count := Count + 1;
                   Conjuncts (Count) := New_Conditional (Domain    => EW_Pred,
@@ -337,6 +356,30 @@ package body Why.Gen.Records is
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
       return T;
+   end Build_Binary_Predicate_For_Record;
+
+   --------------------------------
+   -- Build_Predicate_For_Record --
+   --------------------------------
+
+   function Build_Predicate_For_Record
+     (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id
+   is
+      function Build_Predicate_For_Discr
+        (D_Expr1, Dummy_Expr2 : W_Term_Id; D_Ty : Entity_Id; E : Entity_Id)
+         return W_Pred_Id
+      is (Build_Predicate_For_Discr (D_Expr1, D_Ty, E));
+
+      function Build_Predicate_For_Field
+        (F_Expr1, Dummy_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+         return W_Pred_Id
+      is (Build_Predicate_For_Field (F_Expr1, F_Ty, E));
+
+      function Build_Predicate is new Build_Binary_Predicate_For_Record
+        (Build_Predicate_For_Discr, Build_Predicate_For_Field);
+
+   begin
+      return Build_Predicate (Expr, Expr, Ty);
    end Build_Predicate_For_Record;
 
    ------------------------------
@@ -1348,7 +1391,9 @@ package body Why.Gen.Records is
                                    (Name  => A_Field_Access,
                                     Field => To_Local (Field_Id),
                                     Typ   => W_Type_Of_Component
-                                      (Field, E, Init_Wrapper => True)),
+                                      (Field, E, Init_Wrapper =>
+                                         Might_Contain_Relaxed_Init
+                                            (Etype (Field)))),
                                Force_No_Slide => True));
                      To_Wrapper_Field (Field_Index) :=
                        New_Field_Association
@@ -1358,7 +1403,9 @@ package body Why.Gen.Records is
                             Insert_Simple_Conversion
                               (Domain         => EW_Term,
                                To             => W_Type_Of_Component
-                                 (Field, E, Init_Wrapper => True),
+                                 (Field, E, Init_Wrapper =>
+                                    Might_Contain_Relaxed_Init
+                                       (Etype (Field))),
                                Expr           =>
                                  New_Record_Access
                                    (Name  => X_Field_Access,
@@ -3502,12 +3549,17 @@ package body Why.Gen.Records is
       Ref_Allowed : Boolean)
       return W_Expr_Id
    is
-      E      : constant Entity_Id :=
+      E            : constant Entity_Id :=
         (if I.Fields.Present then I.Fields.Binder.Ada_Node
          else I.Discrs.Binder.Ada_Node);
-      Ty     : constant Entity_Id := I.Typ;
-      Values : W_Expr_Array (1 .. Count_Why_Top_Level_Fields (Ty));
-      Index  : Positive := 1;
+      Relaxed_Init : constant Boolean :=
+        (if I.Fields.Present and Might_Contain_Relaxed_Init (I.Typ)
+         then Get_Module (Get_Name (Get_Typ (I.Fields.Binder.B_Name)))
+         = E_Init_Module (I.Typ)
+         else False);
+      Ty           : constant Entity_Id := I.Typ;
+      Values       : W_Expr_Array (1 .. Count_Why_Top_Level_Fields (Ty));
+      Index        : Positive := 1;
 
    begin
       --  Store association for the top-level field for fields
@@ -3543,7 +3595,7 @@ package body Why.Gen.Records is
 
       pragma Assert (Index = Values'Last + 1);
 
-      return Record_From_Split_Form (E, Values, Ty, Obj_Has_Relaxed_Init (E));
+      return Record_From_Split_Form (E, Values, Ty, Relaxed_Init);
    end Record_From_Split_Form;
 
    --------------------------------

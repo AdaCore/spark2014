@@ -300,6 +300,7 @@ def is_rte_tag(tag):
                    "DISCRIMINANT_CHECK",
                    "TAG_CHECK",
                    "NULL_EXCLUSION",
+                   "MEMORY_LEAK",
                    "DEREFERENCE_CHECK")
 
 
@@ -440,6 +441,8 @@ def check_marks(strlist):
             return 'INIT_BY_PROOF'
         elif 'null exclusion check' in text:
             return 'NULL_EXCLUSION'
+        elif 'memory leak' in text:
+            return 'MEMORY_LEAK'
         elif 'dereference check' in text:
             return 'DEREFERENCE_CHECK'
         elif 'default initial condition' in text:
@@ -476,7 +479,7 @@ def check_marks(strlist):
         elif 'loop invariant' in text:
             if 'initialization' in text or 'in first iteration' in text:
                 return 'LOOP_INVARIANT_INIT'
-            elif 'preservation' in text or 'after first iteration' in text:
+            elif 'preservation' in text or 'by an arbitrary iteration' in text:
                 return 'LOOP_INVARIANT_PRESERV'
             else:
                 return 'LOOP_INVARIANT'

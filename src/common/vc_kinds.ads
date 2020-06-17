@@ -63,6 +63,8 @@ package VC_Kinds is
       --  field of the why record corresponding to the pointer type.
 
       VC_Null_Exclusion,
+      VC_Memory_Leak,
+      VC_Memory_Leak_At_End_Of_Scope,
 
       VC_Length_Check,
       VC_Discriminant_Check,

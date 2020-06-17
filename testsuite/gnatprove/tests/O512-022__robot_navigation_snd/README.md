@@ -76,12 +76,12 @@ Verification
 ============
 
 To statically verify the "algorithm" code for run-time safety you need
-a GNATProve with the support for formal containers and formal numerics
+a GNATprove with the support for formal containers and formal numerics
 libraries. For details of the installation process see the formal
 numerics package [README](http://github.com/ptroja/formal-numerics/)
 file.
 
-By default, GNATProve uses its own version of the
+By default, GNATprove uses its own version of the
 [Alt-Ergo](http://alt-ergo.lri.fr/) SMT solver. An alternative SMT
 solver that also gives good results is [Z3](http://z3.codeplex.com/).
 

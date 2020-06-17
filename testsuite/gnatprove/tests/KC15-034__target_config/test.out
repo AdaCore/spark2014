@@ -1,4 +1,4 @@
-testtarg.adb:5:19: info: assertion proved
-testtarg.adb:6:19: info: assertion proved
-testtarg.adb:7:19: info: assertion proved
-testtarg.adb:8:19: info: assertion proved
+testtarg.adb:5:19: info: assertion proved (Trivial)
+testtarg.adb:6:19: info: assertion proved (Trivial)
+testtarg.adb:7:19: info: assertion proved (Trivial)
+testtarg.adb:8:19: info: assertion proved (Trivial)

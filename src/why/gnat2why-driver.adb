@@ -73,7 +73,7 @@ with Sem_Aux;                         use Sem_Aux;
 with Sem_Util;                        use Sem_Util;
 with Sinfo;                           use Sinfo;
 with Sinput;                          use Sinput;
-with SPARK_Annotate;                  use SPARK_Annotate;
+with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Register;                  use SPARK_Register;
 with SPARK_Rewrite;                   use SPARK_Rewrite;
@@ -265,8 +265,7 @@ package body Gnat2Why.Driver is
                   File : constant W_Section_Id :=
                     Dispatch_Entity_Completion (E);
                begin
-                  if Ekind (E) = E_Function
-                    and then Present (Get_Expression_Function (E))
+                  if Is_Expression_Function_Or_Completion (E)
                     and then Entity_Body_Compatible_With_SPARK (E)
                   then
                      Translate_Expression_Function_Body (File, E);

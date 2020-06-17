@@ -875,7 +875,7 @@ is
          --  XXX Actually, if the queue has a null size, this
          --  function is never called, hence we can exit
          --  immediatly. This should be captured with a proper
-         --  pre-condition. We need this trap to avoid GNATProve
+         --  pre-condition. We need this trap to avoid GNATprove
          --  attempting to prove the code below in this particular
          --  case.
          return;

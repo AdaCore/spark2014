@@ -48,7 +48,7 @@ package Why.Gen.Hardcoded is
       Args     : W_Expr_Array;
       Domain   : EW_Domain;
       Ada_Node : Node_Id)
-      return     W_Expr_Id
+      return W_Expr_Id
    with
      Pre => Is_Subprogram (Subp) and then Is_Hardcoded_Entity (Subp);
    --  Transform a hardcoded function call

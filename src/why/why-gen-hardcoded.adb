@@ -80,7 +80,7 @@ package body Why.Gen.Hardcoded is
       Args     : W_Expr_Array;
       Domain   : EW_Domain;
       Ada_Node : Node_Id)
-      return     W_Expr_Id
+      return W_Expr_Id
    is
       T           : W_Expr_Id := Why_Empty;
       Name_String : constant String :=

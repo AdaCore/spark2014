@@ -4,7 +4,7 @@ procedure Test_Pledge with SPARK_Mode is
    function Pledge (Borrower : access constant Integer; Prop : Boolean) return Boolean is
      (Prop)
    with Ghost,
-     Annotate => (GNATProve, Pledge);
+     Annotate => (GNATprove, Pledge);
 
    function Id_OK (X : Int_Acc) return access Integer is (X) with
      Post => Pledge (Id_OK'Result, True),

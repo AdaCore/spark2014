@@ -1,4 +1,4 @@
-main.adb:4:19: info: assertion proved
+main.adb:4:19: info: assertion proved (Trivial)
 main.adb:10:45: info: range check proved (CVC4: 1 VC)
 main.adb:10:55: info: range check proved (CVC4: 1 VC)
 main.adb:11:46: info: range check proved (CVC4: 1 VC)

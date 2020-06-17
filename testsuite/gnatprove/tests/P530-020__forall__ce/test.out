@@ -1,7 +1,7 @@
 counterex_forall.adb:11:41: info: range check proved (CVC4: 4 VC)
 counterex_forall.adb:12:43: medium: "R" might not be initialized
-counterex_forall.adb:12:43: medium: loop invariant might fail after first iteration, cannot prove R (I) = (I = C + 1) (e.g. when C = 100 and I = 100)
 counterex_forall.adb:12:43: medium: loop invariant might fail in first iteration, cannot prove R (I) = (I = C + 1) (e.g. when C = 1 and I = 1)
+counterex_forall.adb:12:43: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove R (I) = (I = C + 1) (e.g. when C = 100 and I = 100)
 counterex_forall.adb:12:58: medium: overflow check might fail (e.g. when C = Integer'Last) [possible explanation: subprogram at counterex_forall.ads:10 should mention C in a precondition]
 counterex_forall.adb:14:14: medium: "R" might not be initialized
 counterex_forall.adb:19:25: info: cannot unroll loop (too many loop iterations)

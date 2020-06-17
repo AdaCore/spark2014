@@ -76,8 +76,6 @@ test_loops.adb:118:28: info: discriminant check proved (CVC4: 1 VC)
 test_loops_2.adb:11:07: info: range check proved (CVC4: 2 VC)
 test_loops_2.adb:17:14: info: postcondition proved (CVC4: 5 VC)
 test_loops_2.adb:30:14: info: postcondition proved (CVC4: 3 VC; Trivial: 3 VC)
-test_loops_2.adb:38:23: high: "X.F2" is not initialized in "Init_F1"
-test_loops_2.adb:38:23: high: "X.F3" is not initialized in "Init_F1"
 test_loops_2.adb:40:14: info: postcondition proved (CVC4: 1 VC)
 test_loops_2.adb:51:14: info: postcondition proved (CVC4: 7 VC; Trivial: 1 VC)
 test_loops_2.adb:51:17: info: index check proved (CVC4: 2 VC)
@@ -88,9 +86,7 @@ test_loops_2.adb:55:49: info: index check proved (CVC4: 2 VC)
 test_loops_2.adb:56:30: info: index check proved (CVC4: 2 VC)
 test_loops_2.adb:56:57: info: index check proved (CVC4: 2 VC)
 test_loops_2.adb:61:10: info: index check proved (CVC4: 2 VC)
-test_loops_2.adb:64:26: medium: "X" might not be initialized in "Init_First"
 test_loops_2.adb:67:14: info: postcondition proved (CVC4: 1 VC)
-test_loops_2.adb:67:14: medium: "X" might not be initialized
 test_loops_2.adb:67:17: info: index check proved (CVC4: 2 VC)
 test_loops_2.adb:71:19: info: index check proved (CVC4: 2 VC)
 test_loops_2.adb:78:17: medium: initialization check might fail
@@ -112,7 +108,6 @@ test_loops_2.adb:93:10: info: precondition proved (CVC4: 2 VC)
 test_loops_2.adb:93:20: info: initialization check proved (CVC4: 3 VC; Trivial: 3 VC)
 test_loops_2.adb:93:25: info: index check proved (CVC4: 2 VC)
 test_loops_2.adb:98:24: info: initialization of "X" proved
-test_loops_2.adb:101:25: info: initialization of "X" proved
 test_loops_2.adb:104:17: info: postcondition proved (CVC4: 6 VC; Trivial: 9 VC)
 test_loops_2.adb:110:10: info: precondition proved (CVC4: 2 VC)
 test_loops_2.adb:112:10: info: precondition proved (CVC4: 2 VC)

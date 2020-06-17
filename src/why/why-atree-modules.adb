@@ -2430,6 +2430,31 @@ package body Why.Atree.Modules is
                   Typ    => EW_Bool_Type));
          end if;
 
+         if Is_Deep (E)
+           and then not Has_Access_Type (E)
+         then
+            Insert_Symbol
+              (E, WNE_Is_Moved,
+               New_Identifier
+                 (Symb   => NID (To_String (WNE_Is_Moved)),
+                  Module => AM,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+            Insert_Symbol
+              (E, WNE_Move,
+               New_Identifier
+                 (Symb   => NID (To_String (WNE_Move)),
+                  Module => AM,
+                  Domain => EW_Prog));
+            Insert_Symbol
+              (E, WNE_Moved_Relation,
+               New_Identifier
+                 (Symb   => NID (To_String (WNE_Moved_Relation)),
+                  Module => AM,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+         end if;
+
          --  Symbols for scalar types
 
          if Is_Scalar_Type (E) then
@@ -2947,6 +2972,15 @@ package body Why.Atree.Modules is
                   New_Identifier
                     (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
                              Full_Name_Node & "__is_null_pointer"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+
+               Insert_Symbol
+                 (E, WNE_Is_Moved_Pointer,
+                  New_Identifier
+                    (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
+                       Full_Name_Node & To_String (WNE_Is_Moved_Pointer)),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));

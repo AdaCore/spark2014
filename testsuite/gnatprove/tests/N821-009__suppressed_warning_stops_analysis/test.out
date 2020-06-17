@@ -1,4 +1,4 @@
 water_high.adb:19:07: info: initialization of "Raw_Value" proved
-water_high.adb:29:22: info: assertion proved
+water_high.adb:29:22: info: assertion proved (Trivial)
 water_high.ads:5:25: info: initialization of "Active" proved
 water_high.ads:6:11: info: data dependencies proved

@@ -2,7 +2,7 @@ greatest_common_divisor.adb:6:07: info: initialization of "C" proved
 greatest_common_divisor.adb:6:10: info: initialization of "D" proved
 greatest_common_divisor.adb:6:13: info: initialization of "R" proved
 greatest_common_divisor.adb:10:33: info: loop invariant initialization proved (CVC4: 1 VC)
-greatest_common_divisor.adb:10:33: medium: loop invariant might fail after first iteration, cannot prove Gcd (C, D) = Gcd (M, N)
+greatest_common_divisor.adb:10:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Gcd (C, D) = Gcd (M, N)
 greatest_common_divisor.adb:15:17: info: division check proved (CVC4: 1 VC)
 greatest_common_divisor.adb:15:17: info: range check proved (CVC4: 1 VC)
 greatest_common_divisor.ads:7:40: info: initialization of "G" proved
@@ -10,7 +10,7 @@ greatest_common_divisor.ads:9:06: info: flow dependencies proved
 greatest_common_divisor.ads:10:14: medium: postcondition might fail, cannot prove G = Gcd (M, N)
 =======================================
 greatest_common_divisor.adb:10:33: info: loop invariant initialization proved (CVC4: 1 VC)
-greatest_common_divisor.adb:10:33: medium: loop invariant might fail after first iteration, cannot prove Gcd (C, D) = Gcd (M, N), vc file: gnatprove/../proof/sessions/greatest_common_divisor__g_c_d/../../Coq/Greatest_common_divisor__g_c_d__L_1_loop__pragargs__cmp.v
+greatest_common_divisor.adb:10:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Gcd (C, D) = Gcd (M, N), vc file: gnatprove/../proof/sessions/greatest_common_divisor__g_c_d/../../Coq/Greatest_common_divisor__g_c_d__L_1_loop__pragargs__cmp.v
 =======================================
 =======================================
 greatest_common_divisor.adb:6:07: info: initialization of "C" proved
