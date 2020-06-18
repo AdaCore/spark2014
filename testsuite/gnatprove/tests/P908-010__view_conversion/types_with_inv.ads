@@ -1,5 +1,5 @@
 package Types_With_Inv with SPARK_Mode is
-   type T1 is new Integer;
+   type T1 is new Integer with Default_Value => 1;
 
    procedure Set_To_Zero (X : out T1);
 
