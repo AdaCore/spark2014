@@ -435,8 +435,7 @@ package body Gnat2Why.Error_Messages is
      (Node       : Node_Id;
       Kind       : VC_Kind;
       Proved     : Boolean;
-      E          : Entity_Id;
-      How_Proved : Prover_Category)
+      E          : Entity_Id)
    is
       Id : constant VC_Id :=
         Register_VC (Node, Kind, E, Present_In_Why3 => False);
@@ -448,7 +447,7 @@ package body Gnat2Why.Error_Messages is
          Proved,
          E,
          No_Session_Dir,
-         How_Proved);
+         PC_Trivial);
    end Emit_Static_Proof_Result;
 
    ------------------------
@@ -713,11 +712,28 @@ package body Gnat2Why.Error_Messages is
          when VC_Inline_Check              =>
             return "Inline_For_Proof annotation might be incorrect";
          when VC_UC_No_Holes               =>
-            return "type with constraints on bit representation is " &
-              "unsuitable for unchecked conversion";
+            declare
+               Common : constant String :=
+                 " with constraints on bit representation is unsuitable for ";
+            begin
+               if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
+               then
+                  return "object" & Common &
+                    "aliasing via address clause";
+               else
+                  return "type" & Common & "unchecked conversion";
+               end if;
+            end;
+
          when VC_UC_Same_Size              =>
-            return "types used for unchecked conversion do not have the " &
-              "same size";
+            declare
+               Prefix : constant String :=
+                 (if Nkind (Node) = N_Attribute_Reference then
+                       "types of aliased objects"
+                  else "types used for unchecked conversion");
+            begin
+               return Prefix & " do not have the same size";
+            end;
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
@@ -1048,9 +1064,24 @@ package body Gnat2Why.Error_Messages is
          when VC_Inline_Check              =>
             return "Inline_For_Proof annotation proved";
          when VC_UC_No_Holes               =>
-            return "type is suitable for unchecked conversion";
+            declare
+               Common : constant String := " is suitable for ";
+            begin
+               if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
+               then
+                  return "object" & Common &
+                    "aliasing via address clause";
+               else
+                  return "type" & Common & "unchecked conversion";
+               end if;
+            end;
+
          when VC_UC_Same_Size              =>
-            return "types in unchecked conversion have the same size";
+            if Nkind (Node) = N_Attribute_Reference then
+               return "types of aliased objects have the same size";
+            else
+               return "types in unchecked conversion have the same size";
+            end if;
          when VC_Weaker_Pre                =>
             return "precondition is weaker than class-wide precondition";
          when VC_Trivial_Weaker_Pre        =>

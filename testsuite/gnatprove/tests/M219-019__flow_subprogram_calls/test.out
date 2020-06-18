@@ -12,7 +12,6 @@ test.adb:40:07: info: initialization of "I" proved
 test.adb:53:29: warning: unused initial value of "A"
 test.adb:70:07: info: initialization of "Tmp" proved
 test.adb:79:07: info: initialization of "Tmp" proved
-test.adb:119:19: info: range check proved (CVC4: 1 VC)
 test.adb:119:19: medium: overflow check might fail [possible explanation: subprogram at line 114 should mention N in a precondition]
 test.adb:119:34: info: range check proved (CVC4: 1 VC)
 test.adb:123:04: warning: analyzing unreferenced procedure "Calling_Function_01"

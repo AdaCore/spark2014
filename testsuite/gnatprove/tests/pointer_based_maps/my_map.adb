@@ -1,5 +1,10 @@
+with Ada.Unchecked_Deallocation;
+
 package body My_Map with SPARK_Mode is
    pragma Unevaluated_Use_Of_Old (Allow);
+
+   procedure Free is new Ada.Unchecked_Deallocation(Integer, Nullable_Int_Acc);
+   procedure Free is new Ada.Unchecked_Deallocation(Map, Map_Acc);
 
    function Deep_Copy (M : access constant Map) return Map_Acc with SPARK_Mode => Off is
    begin
@@ -17,6 +22,30 @@ package body My_Map with SPARK_Mode is
          end;
       end if;
    end Deep_Copy;
+
+   procedure Deep_Free (M : in out Map_Acc) is
+   begin
+      if M = null then
+         return;
+      else
+         declare
+            C : Map_Acc := M;
+         begin
+            M := null;
+            while C /= null loop
+               declare
+                  N : Map_Acc := C;
+                  I : Nullable_Int_Acc := N.Value;
+               begin
+                  C := N.Next;
+                  N.Next := null;
+                  Free (I);
+                  Free (N);
+               end;
+            end loop;
+         end;
+      end if;
+   end Deep_Free;
 
    function Contains (M : access constant Map; K : Positive) return Boolean is
       C : access constant Map := M;
@@ -56,20 +85,26 @@ package body My_Map with SPARK_Mode is
         Pre  => X /= null,
         Post => Model_Contains (R, X.Key)
         and then
-          (if Deep_Copy (R)'Old /= null
-           then (for all K in Deep_Copy (R)'Old.all => Model_Contains (R, K)
-             and then Model_Value (R, K) = Model_Value (Deep_Copy (R)'Old, K)))
-        and then (for all K in R.all => Model_Contains (Deep_Copy (R)'Old, K)
-                    or K = X.Key)
-        and then (if not Model_Contains (Deep_Copy (R)'Old, X.Key) then
-                    Model_Value (R, X.Key) = X.Value.all)
+          (declare
+             Old_R : constant Map_Acc := Deep_Copy (R)'Old;
+           begin
+             (if Old_R /= null
+                  then (for all K in Old_R.all => Model_Contains (R, K)
+                        and then Model_Value (R, K) = Model_Value (Old_R, K)))
+           and then (for all K in R.all => Model_Contains (Old_R, K)
+                     or K = X.Key)
+           and then (if not Model_Contains (Old_R, X.Key) then
+                       Model_Value (R, X.Key) = X.Value.all))
       is
-         C : constant Int_Acc := new Integer'(X.Value.all) with Ghost;
       begin
          if not Model_Contains (R, X.Key) then
-            R := new Map'(Key   => X.Key,
-                          Value => C,
-                          Next  => R);
+            declare
+               C : constant Int_Acc := new Integer'(X.Value.all) with Ghost;
+            begin
+               R := new Map'(Key   => X.Key,
+                             Value => C,
+                             Next  => R);
+            end;
          end if;
       end Update_R;
 

@@ -23,6 +23,8 @@ Generated contracts for a
    Initializes =>
       A.Ext_State
       A.State
+a.adb:9:04: info: object is suitable for aliasing via address clause (Trivial)
+a.adb:14:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
 Generated contracts for p_read_state
    Global =>
       Input =>

@@ -1,6 +1,7 @@
 main.adb:8:04: info: data dependencies proved
 main.adb:8:37: info: initialization of "The_Sink" proved
 main.adb:9:04: info: flow dependencies proved
+sink.ads:6:09: info: object is suitable for aliasing via address clause (Trivial)
 skp-subjects.adb:400:09: info: assertion proved (Z3: 1 VC)
 skp-subjects.adb:413:23: info: refined post proved (Z3: 1 VC)
 skp-subjects.adb:413:48: info: division check proved (Z3: 1 VC)

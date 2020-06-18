@@ -40,9 +40,13 @@ package My_Map with SPARK_Mode is
    procedure Replace_Element_Ext (M : access Map; K : Positive; V : Integer) with
      Pre  => Model_Contains (M, K),
      Post => Model_Contains (M, K) and then Model_Value (M, K) = V
-         and then (for all K in Map_Acc'(Deep_Copy (M)'Old).all => Model_Contains (M, K))
-     and then (for all L in M.all => Model_Contains (Deep_Copy (M)'Old, L)
-               and then (if L /= K then Model_Value (M, L) = Model_Value (Deep_Copy (M)'Old, L)));
+         and then
+          (declare
+             Old_M : constant Map_Acc := Deep_Copy (M)'Old;
+           begin
+             (for all K in Map_Acc'(Old_M).all => Model_Contains (M, K))
+               and then (for all L in M.all => Model_Contains (Old_M, L)
+                         and then (if L /= K then Model_Value (M, L) = Model_Value (Old_M, L))));
 
    function Constant_Access (M : access constant Map; K : Positive) return not null access constant Integer with
      Pre  => Model_Contains (M, K),
@@ -82,8 +86,12 @@ package My_Map with SPARK_Mode is
           (for all K in Deep_Copy'Result.all => Model_Contains (M, K)
            and then Model_Value (M, K) = Model_Value (Deep_Copy'Result, K)));
 
+   procedure Deep_Free (M : in out Map_Acc) with
+     Post => M = null;
+
 private
-   type Int_Acc is not null access Integer;
+   type Nullable_Int_Acc is access Integer;
+   subtype Int_Acc is not null Nullable_Int_Acc;
    type Map is record
       Key   : Positive;
       Value : Int_Acc;

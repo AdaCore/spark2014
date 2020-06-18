@@ -1,6 +1,6 @@
 conversions_of_records.adb:20:13: high: types used for unchecked conversion do not have the same size
-conversions_of_records.adb:20:65: high: type with constraints on bit representation is unsuitable for unchecked conversion
-conversions_of_records.adb:21:65: high: type with constraints on bit representation is unsuitable for unchecked conversion
+conversions_of_records.adb:20:65: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type should have an Object_Size representation clause or aspect]
+conversions_of_records.adb:21:65: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type should have an Object_Size representation clause or aspect]
 conversions_of_records.adb:25:26: info: initialization of "Y1" proved
 conversions_of_records.adb:26:26: info: initialization of "Y2" proved
 conversions_of_records.adb:27:09: info: flow dependencies proved

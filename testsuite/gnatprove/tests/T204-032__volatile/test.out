@@ -1,4 +1,4 @@
 gnatbug.adb:8:16: high: types used for unchecked conversion do not have the same size
-gnatbug.adb:9:20: high: type with constraints on bit representation is unsuitable for unchecked conversion
+gnatbug.adb:9:20: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type should have an Object_Size representation clause or aspect]
 gnatbug.adb:9:33: info: type is suitable for unchecked conversion (Trivial)
 gnatbug.ads:7:29: info: data dependencies proved

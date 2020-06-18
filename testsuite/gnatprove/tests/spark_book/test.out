@@ -68,13 +68,11 @@ bounded_queue.adb:20:32: medium: array index check might fail, in instantiation 
 bounded_queue.adb:25:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:38:32: info: division check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:38:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:38:51: info: range check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:39:25: info: index check proved (CVC4: 2 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:40:34: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:47:33: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:48:34: info: division check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:48:53: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:48:53: info: range check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:49:34: medium: range check might fail, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue), in instantiation at bounded_queue_example.adb:7
@@ -116,13 +114,11 @@ bounded_queue_v1.adb:20:32: medium: array index check might fail
 bounded_queue_v1.adb:25:32: medium: array index check might fail
 bounded_queue_v1.adb:38:32: info: division check proved (CVC4: 1 VC)
 bounded_queue_v1.adb:38:51: info: overflow check proved (CVC4: 1 VC)
-bounded_queue_v1.adb:38:51: info: range check proved (CVC4: 1 VC)
 bounded_queue_v1.adb:39:25: info: index check proved (CVC4: 2 VC)
 bounded_queue_v1.adb:40:34: medium: overflow check might fail
 bounded_queue_v1.adb:47:33: medium: array index check might fail
 bounded_queue_v1.adb:48:34: info: division check proved (CVC4: 1 VC)
 bounded_queue_v1.adb:48:53: info: overflow check proved (CVC4: 1 VC)
-bounded_queue_v1.adb:48:53: info: range check proved (CVC4: 1 VC)
 bounded_queue_v1.adb:49:34: medium: range check might fail
 bounded_queue_v1.ads:12:09: info: range check proved (CVC4: 2 VC)
 bounded_queue_v1.ads:31:18: medium: postcondition might fail, cannot prove Empty (Queue)
@@ -136,13 +132,11 @@ bounded_queue_v2.adb:20:32: medium: array index check might fail
 bounded_queue_v2.adb:25:32: medium: array index check might fail
 bounded_queue_v2.adb:38:32: info: division check proved (CVC4: 1 VC)
 bounded_queue_v2.adb:38:51: info: overflow check proved (CVC4: 1 VC)
-bounded_queue_v2.adb:38:51: info: range check proved (CVC4: 1 VC)
 bounded_queue_v2.adb:39:25: info: index check proved (CVC4: 2 VC)
 bounded_queue_v2.adb:40:34: medium: overflow check might fail
 bounded_queue_v2.adb:47:33: medium: array index check might fail
 bounded_queue_v2.adb:48:34: info: division check proved (CVC4: 1 VC)
 bounded_queue_v2.adb:48:53: info: overflow check proved (CVC4: 1 VC)
-bounded_queue_v2.adb:48:53: info: range check proved (CVC4: 1 VC)
 bounded_queue_v2.adb:49:34: medium: range check might fail
 bounded_queue_v2.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue)
 bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue)
@@ -470,12 +464,15 @@ dates.ads:35:06: info: flow dependencies proved
 dates.ads:62:76: info: initialization of "Valid" proved
 dates.ads:64:06: info: flow dependencies proved
 dates.ads:78:14: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+density_altitude-humidity_unit.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-humidity_unit.ads:10:11: info: data dependencies proved
 density_altitude-humidity_unit.ads:11:11: info: flow dependencies proved
+density_altitude-pressure_unit.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-pressure_unit.ads:10:11: info: data dependencies proved
 density_altitude-pressure_unit.ads:11:11: info: flow dependencies proved
+density_altitude-temperature_unit.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-temperature_unit.ads:10:11: info: data dependencies proved
 density_altitude-temperature_unit.ads:11:11: info: flow dependencies proved
@@ -529,6 +526,7 @@ example.adb:14:27: info: overflow check proved (CVC4: 1 VC), in call inlined at 
 example.adb:21:04: info: initialization of "Value" proved
 example.adb:22:04: info: initialization of "Modified" proved
 example.adb:27:04: info: analyzing call to "Bounded_Increment" in context
+external_test.adb:6:04: info: object is suitable for aliasing via address clause (Trivial)
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
 generic_examples.adb:6:64: info: data dependencies proved
@@ -595,8 +593,6 @@ good_types.adb:22:25: medium: range check might fail [possible explanation: post
 good_types.adb:22:31: info: float overflow check proved (Trivial)
 good_types.adb:22:33: info: analyzing call to "To_Feet" in context
 hierarchical_state_demo-a_pack.adb:12:31: info: overflow check proved (CVC4: 1 VC)
-hierarchical_state_demo-a_pack.adb:13:19: info: overflow check proved (CVC4: 1 VC)
-hierarchical_state_demo-a_pack.adb:13:19: info: range check proved (CVC4: 1 VC)
 hierarchical_state_demo-a_pack.adb:13:30: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo-a_pack.adb:15:25: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo-a_pack.ads:4:09: info: flow dependencies proved
@@ -620,8 +616,6 @@ hierarchical_state_demo_nested.adb:9:12: info: flow dependencies proved
 hierarchical_state_demo_nested.adb:12:15: info: data dependencies proved
 hierarchical_state_demo_nested.adb:13:15: info: flow dependencies proved
 hierarchical_state_demo_nested.adb:27:34: info: overflow check proved (CVC4: 1 VC)
-hierarchical_state_demo_nested.adb:28:22: info: overflow check proved (CVC4: 1 VC)
-hierarchical_state_demo_nested.adb:28:22: info: range check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:28:33: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:30:28: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:45:22: info: division check proved (CVC4: 1 VC)
@@ -659,6 +653,7 @@ interval_tree_wrapper.ads:20:20: info: implicit function contract not available 
 interval_tree_wrapper.ads:20:57: info: implicit function contract not available for proof ("Size" might not return)
 interval_tree_wrapper.ads:20:71: info: implicit function contract not available for proof ("Size" might not return)
 interval_tree_wrapper.ads:30:18: info: implicit function contract not available for proof ("Size" might not return)
+led_display.adb:8:04: info: object is suitable for aliasing via address clause (Trivial)
 led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
 led_display.ads:11:09: info: data dependencies proved
 lights.adb:5:07: info: initialization of "Result" proved
@@ -684,6 +679,7 @@ no_overflow.adb:7:14: info: range check proved (CVC4: 1 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC4: 1 VC)
 no_overflow.adb:7:24: info: division check proved (CVC4: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
+numeric_display.ads:7:04: info: object is suitable for aliasing via address clause (Trivial)
 operator_overload.adb:10:13: info: add a contract to analyze it separately from calling contexts
 operator_overload.adb:10:13: info: local subprogram "<=" only analyzed in the context of calls
 operator_overload.adb:13:07: info: initialization of "Left_Squared" proved
@@ -742,13 +738,8 @@ prime_search.adb:21:77: info: index check proved (CVC4: 2 VC)
 prime_search.adb:22:04: info: precondition proved (CVC4: 1 VC)
 raster_graphics.adb:12:11: info: data dependencies proved
 raster_graphics.adb:13:32: info: initialization of "Status" proved
-raster_graphics.adb:15:39: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:15:39: medium: range check might fail
-raster_graphics.adb:16:39: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:16:39: medium: range check might fail
-raster_graphics.adb:18:20: info: overflow check proved (CVC4: 1 VC)
-raster_graphics.adb:18:24: info: overflow check proved (CVC4: 1 VC)
-raster_graphics.adb:18:33: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:31:41: medium: overflow check might fail [possible explanation: subprogram at raster_graphics.ads:18 should mention Line_Count in a precondition]
 raster_graphics.ads:20:08: info: data dependencies proved
 raster_graphics.ads:21:29: info: initialization of "Status" proved
@@ -868,26 +859,8 @@ serial_numbers2.ads:3:24: info: initialization of "Number" proved
 serial_port.ads:6:07: info: flow dependencies proved
 shapes.adb:9:07: info: initialization of "Delta_X" proved
 shapes.adb:10:07: info: initialization of "Delta_Y" proved
-shapes.adb:12:34: info: overflow check proved (CVC4: 1 VC)
-shapes.adb:12:34: info: range check proved (CVC4: 1 VC)
-shapes.adb:13:34: info: overflow check proved (CVC4: 1 VC)
-shapes.adb:13:34: info: range check proved (CVC4: 1 VC)
-shapes.adb:14:21: info: overflow check proved (CVC4: 1 VC)
-shapes.adb:14:30: info: overflow check proved (CVC4: 1 VC)
-shapes.adb:14:39: info: overflow check proved (CVC4: 1 VC)
-shapes.adb:14:75: info: overflow check proved (CVC4: 1 VC)
-shapes.adb:14:75: info: range check proved (CVC4: 1 VC)
 shapes2.adb:9:07: info: initialization of "Delta_X" proved
 shapes2.adb:10:07: info: initialization of "Delta_Y" proved
-shapes2.adb:12:34: info: overflow check proved (CVC4: 1 VC)
-shapes2.adb:12:34: info: range check proved (CVC4: 1 VC)
-shapes2.adb:13:34: info: overflow check proved (CVC4: 1 VC)
-shapes2.adb:13:34: info: range check proved (CVC4: 1 VC)
-shapes2.adb:14:21: info: overflow check proved (CVC4: 1 VC)
-shapes2.adb:14:30: info: overflow check proved (CVC4: 1 VC)
-shapes2.adb:14:39: info: overflow check proved (CVC4: 1 VC)
-shapes2.adb:14:75: info: overflow check proved (CVC4: 1 VC)
-shapes2.adb:14:75: info: range check proved (CVC4: 1 VC)
 shapes3.adb:7:08: info: refined post proved (CVC4: 4 VC)
 shapes3.adb:19:36: info: range check proved (CVC4: 1 VC)
 shapes3.adb:22:17: info: range check proved (CVC4: 1 VC)
@@ -895,15 +868,6 @@ shapes3.adb:25:36: info: range check proved (CVC4: 1 VC)
 shapes3.adb:28:17: info: range check proved (CVC4: 1 VC)
 shapes3.adb:38:07: info: initialization of "Delta_X" proved
 shapes3.adb:39:07: info: initialization of "Delta_Y" proved
-shapes3.adb:41:34: info: overflow check proved (CVC4: 1 VC)
-shapes3.adb:41:34: info: range check proved (CVC4: 1 VC)
-shapes3.adb:42:34: info: overflow check proved (CVC4: 1 VC)
-shapes3.adb:42:34: info: range check proved (CVC4: 1 VC)
-shapes3.adb:43:21: info: overflow check proved (CVC4: 1 VC)
-shapes3.adb:43:30: info: overflow check proved (CVC4: 1 VC)
-shapes3.adb:43:39: info: overflow check proved (CVC4: 1 VC)
-shapes3.adb:43:75: info: overflow check proved (CVC4: 1 VC)
-shapes3.adb:43:75: info: range check proved (CVC4: 1 VC)
 shapes3.ads:11:18: info: postcondition proved (CVC4: 1 VC)
 shapes4.adb:10:72: info: range check proved (CVC4: 1 VC)
 shapes4.adb:11:53: info: range check proved (CVC4: 1 VC)
@@ -911,15 +875,6 @@ shapes4.adb:12:72: info: range check proved (CVC4: 1 VC)
 shapes4.adb:13:53: info: range check proved (CVC4: 1 VC)
 shapes4.adb:22:07: info: initialization of "Delta_X" proved
 shapes4.adb:23:07: info: initialization of "Delta_Y" proved
-shapes4.adb:25:34: info: overflow check proved (CVC4: 1 VC)
-shapes4.adb:25:34: info: range check proved (CVC4: 1 VC)
-shapes4.adb:26:34: info: overflow check proved (CVC4: 1 VC)
-shapes4.adb:26:34: info: range check proved (CVC4: 1 VC)
-shapes4.adb:27:21: info: overflow check proved (CVC4: 1 VC)
-shapes4.adb:27:30: info: overflow check proved (CVC4: 1 VC)
-shapes4.adb:27:39: info: overflow check proved (CVC4: 1 VC)
-shapes4.adb:27:75: info: overflow check proved (CVC4: 1 VC)
-shapes4.adb:27:75: info: range check proved (CVC4: 1 VC)
 shapes4.ads:8:13: info: invariant check proved (CVC4: 1 VC)
 shapes4.ads:16:09: info: invariant check proved on default value (CVC4: 1 VC)
 shapes5.adb:8:08: info: refined post proved (CVC4: 4 VC)
@@ -929,15 +884,6 @@ shapes5.adb:26:36: info: range check proved (CVC4: 1 VC)
 shapes5.adb:29:17: info: range check proved (CVC4: 1 VC)
 shapes5.adb:39:07: info: initialization of "Delta_X" proved
 shapes5.adb:40:07: info: initialization of "Delta_Y" proved
-shapes5.adb:42:34: info: overflow check proved (CVC4: 1 VC)
-shapes5.adb:42:34: info: range check proved (CVC4: 1 VC)
-shapes5.adb:43:34: info: overflow check proved (CVC4: 1 VC)
-shapes5.adb:43:34: info: range check proved (CVC4: 1 VC)
-shapes5.adb:44:21: info: overflow check proved (CVC4: 1 VC)
-shapes5.adb:44:30: info: overflow check proved (CVC4: 1 VC)
-shapes5.adb:44:39: info: overflow check proved (CVC4: 1 VC)
-shapes5.adb:44:75: info: overflow check proved (CVC4: 1 VC)
-shapes5.adb:44:75: info: range check proved (CVC4: 1 VC)
 shapes5.ads:4:08: info: flow dependencies proved
 shapes5.ads:14:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result)
 shapes5.ads:25:11: info: data dependencies proved
@@ -948,7 +894,6 @@ silly.adb:12:22: info: division check proved (CVC4: 1 VC)
 simple_math.adb:6:07: info: initialization of "Q" proved
 simple_math.adb:7:07: info: initialization of "R" proved
 simple_math.adb:12:19: medium: divide by zero might fail [possible explanation: loop at line 11 should mention Q in a loop invariant]
-simple_math.adb:12:19: medium: range check might fail [possible explanation: loop at line 11 should mention Q in a loop invariant]
 simple_math.adb:14:25: info: division check proved (CVC4: 1 VC)
 simple_math.adb:17:14: info: range check proved (CVC4: 1 VC)
 sorted_arrays2.ads:13:21: info: function contract not available for proof ("Is_Sorted" might not return)
@@ -1205,8 +1150,6 @@ various.adb:20:26: info: division check proved (CVC4: 1 VC)
 various.adb:21:13: info: division check proved (CVC4: 1 VC)
 very_longs-divide.adb:15:12: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:19:12: info: range check proved (CVC4: 2 VC)
-very_longs-divide.adb:20:48: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:20:64: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:26:04: info: initialization of "N" proved
 very_longs-divide.adb:27:04: info: initialization of "M" proved
 very_longs-divide.adb:28:04: info: initialization of "Shift_Distance" proved
@@ -1480,7 +1423,6 @@ very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
 very_longs.ads:20:10: info: flow dependencies proved
 very_longs.ads:21:23: info: range check proved (CVC4: 1 VC)
-very_longs.ads:21:34: info: overflow check proved (CVC4: 1 VC)
 very_longs.ads:46:18: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:52:18: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:58:18: info: postcondition proved (CVC4: 1 VC)
@@ -1488,7 +1430,6 @@ very_longs.ads:62:19: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:67:22: info: initialization of "Quotient" proved
 very_longs.ads:68:22: info: initialization of "Remainder" proved
 very_longs.ads:70:10: info: flow dependencies proved
-very_longs.ads:75:37: info: overflow check proved (CVC4: 1 VC)
 very_longs.ads:86:10: info: range check proved (CVC4: 2 VC)
 very_longs.ads:90:68: info: index check proved (CVC4: 2 VC)
 workspaces.adb:5:07: info: range check proved (CVC4: 2 VC)

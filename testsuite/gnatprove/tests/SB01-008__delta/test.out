@@ -1,2 +1,2 @@
-test.adb:19:26: delta expression is not yet supported
+test.adb:19:26: delta aggregate on a record type is not yet supported
 gnatprove: error during flow analysis and proof

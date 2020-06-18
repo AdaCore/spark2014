@@ -632,6 +632,15 @@ package body SPARK_Util is
       end case;
    end Char_To_String_Representation;
 
+   -----------------------------
+   -- Comes_From_Declare_Expr --
+   -----------------------------
+
+   function Comes_From_Declare_Expr (E : Entity_Id) return Boolean is
+     (Is_Object (E)
+      and then Nkind (Parent (Enclosing_Declaration (E))) =
+          N_Expression_With_Actions);
+
    -----------------------------------
    -- Component_Is_Visible_In_SPARK --
    -----------------------------------
@@ -924,7 +933,9 @@ package body SPARK_Util is
    is
 
       function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean
-      with Pre => Nkind (Aggr) = N_Aggregate;
+      with Pre => Nkind (Aggr) in N_Aggregate
+                                | N_Delta_Aggregate
+                                | N_Extension_Aggregate;
       --  Check the expressions of an aggregate for relaxed initialization
 
       ---------------------------
@@ -932,7 +943,9 @@ package body SPARK_Util is
       ---------------------------
 
       function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean is
-         Exprs  : constant List_Id := Expressions (Aggr);
+         Exprs  : constant List_Id :=
+           (if Nkind (Aggr) = N_Delta_Aggregate then No_List
+            else Expressions (Aggr));
          Assocs : constant List_Id := Component_Associations (Aggr);
          Expr   : Node_Id :=
            (if Present (Exprs) then Nlists.First (Exprs)
@@ -977,6 +990,11 @@ package body SPARK_Util is
          when N_Extension_Aggregate =>
             return Expr_Has_Relaxed_Init
               (Ancestor_Part (Expr), No_Eval => False)
+              or else Aggr_Has_Relaxed_Init (Expr);
+
+         when N_Delta_Aggregate =>
+            return Expr_Has_Relaxed_Init
+              (Expression (Expr), No_Eval => False)
               or else Aggr_Has_Relaxed_Init (Expr);
 
          when N_Slice =>
@@ -1638,6 +1656,11 @@ package body SPARK_Util is
          =>
             return GRO (Expression (Expr));
 
+         when N_Attribute_Reference =>
+            pragma Assert
+              (Attribute_Name (Expr) in Name_Loop_Entry | Name_Old);
+            return Empty;
+
          when others =>
             raise Program_Error;
       end case;
@@ -1837,7 +1860,8 @@ package body SPARK_Util is
    begin
       return Ekind (E) in E_Constant | E_In_Parameter
             and then (not Is_Access_Type (Ty)
-              or else Is_Access_Constant (Ty));
+              or else Is_Access_Constant (Ty)
+              or else Comes_From_Declare_Expr (E));
    end Is_Constant_In_SPARK;
 
    ------------------------------------------
@@ -2353,6 +2377,11 @@ package body SPARK_Util is
             | N_Function_Call
          =>
             return True;
+
+         --  Old and Loop_Entry attributes can only be called on new objects
+
+         when N_Attribute_Reference =>
+            return Attribute_Name (Expr) in Name_Loop_Entry | Name_Old;
 
          when N_Qualified_Expression
             | N_Type_Conversion

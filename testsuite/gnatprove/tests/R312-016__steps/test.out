@@ -77,9 +77,6 @@ types.adb:29:55: info: index check proved (CVC4: 8 VC), in instantiation at ethe
 types.adb:29:55: info: overflow check proved (CVC4: 2 VC), in instantiation at ethernet_dissector.adb:5
 types.adb:29:55: info: overflow check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:6
 types.adb:29:55: info: overflow check proved (CVC4: 6 VC), in instantiation at ethernet_dissector.adb:7
-types.adb:29:71: info: overflow check proved (CVC4: 2 VC), in instantiation at ethernet_dissector.adb:5
-types.adb:29:71: info: overflow check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:6
-types.adb:29:71: info: overflow check proved (CVC4: 6 VC), in instantiation at ethernet_dissector.adb:7
 types.adb:29:71: info: range check proved (CVC4: 2 VC), in instantiation at ethernet_dissector.adb:5
 types.adb:29:71: info: range check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:6
 types.adb:29:71: info: range check proved (CVC4: 6 VC), in instantiation at ethernet_dissector.adb:7
@@ -165,9 +162,6 @@ types.adb:29:55: info: index check proved (CVC4: 8 VC), in instantiation at ethe
 types.adb:29:55: info: overflow check proved (CVC4: 2 VC), in instantiation at ethernet_dissector.adb:5
 types.adb:29:55: info: overflow check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:6
 types.adb:29:55: info: overflow check proved (CVC4: 6 VC), in instantiation at ethernet_dissector.adb:7
-types.adb:29:71: info: overflow check proved (CVC4: 2 VC), in instantiation at ethernet_dissector.adb:5
-types.adb:29:71: info: overflow check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:6
-types.adb:29:71: info: overflow check proved (CVC4: 6 VC), in instantiation at ethernet_dissector.adb:7
 types.adb:29:71: info: range check proved (CVC4: 2 VC), in instantiation at ethernet_dissector.adb:5
 types.adb:29:71: info: range check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:6
 types.adb:29:71: info: range check proved (CVC4: 6 VC), in instantiation at ethernet_dissector.adb:7

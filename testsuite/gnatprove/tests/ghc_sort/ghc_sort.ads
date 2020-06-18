@@ -49,11 +49,9 @@ package GHC_Sort with SPARK_Mode is
      and then (for all L in S'Range => S_Reverse'Result (L) = S (S'Length - L + 1));
    --  Reverse a sequence
 
-   function Sort (S : Int_Array) return Int_Array with
-     Pre  => S'Length < Integer'Last - 1,
-     Post => Sort'Result'Last = S'Last
-     and then (for all L in 2 .. Sort'Result'Last => Sort'Result (L - 1) <= Sort'Result (L)),
-     Volatile_Function;
+   procedure Sort (S : Int_Array; Result : out Int_Array) with
+     Pre  => S'Length < Integer'Last - 1 and Result'First = 1 and Result'Last = S'Last,
+     Post => (for all L in 2 .. Result'Last => Result (L - 1) <= Result (L));
    --  Sort a sequence using GHC sort. Sort it specified only partially, we are
    --  missing the fact that the result of Sort is a permuation of S.
 

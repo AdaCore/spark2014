@@ -104,7 +104,6 @@ sorting.adb:126:19: medium: overflow check might fail
 sorting.adb:127:14: medium: loop invariant might fail in first iteration, cannot prove Sorted (A, A_First + J * L, Natural'min)
 sorting.adb:127:14: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sorted (A, A_First + J * L, Natural'min)
 sorting.adb:127:33: info: overflow check proved (CVC4: 2 VC)
-sorting.adb:127:33: info: range check proved (CVC4: 2 VC)
 sorting.adb:127:37: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:49: info: range check proved (CVC4: 2 VC)
 sorting.adb:127:65: info: overflow check proved (CVC4: 2 VC)
@@ -116,7 +115,6 @@ sorting.adb:135:42: medium: overflow check might fail
 sorting.adb:137:22: medium: overflow check might fail
 sorting.adb:137:26: medium: overflow check might fail
 sorting.adb:138:36: info: overflow check proved (CVC4: 2 VC)
-sorting.adb:138:36: info: range check proved (CVC4: 2 VC)
 sorting.adb:138:40: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:138:44: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:138:56: info: range check proved (CVC4: 2 VC)
@@ -128,7 +126,6 @@ sorting.adb:140:22: medium: overflow check might fail
 sorting.adb:140:35: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:141:36: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:141:40: info: overflow check proved (CVC4: 2 VC)
-sorting.adb:141:40: info: range check proved (CVC4: 2 VC)
 sorting.adb:141:44: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:141:56: info: range check proved (CVC4: 2 VC)
 sorting.adb:141:72: info: overflow check proved (CVC4: 2 VC)
@@ -146,7 +143,6 @@ sorting.adb:154:19: medium: overflow check might fail
 sorting.adb:154:23: medium: overflow check might fail
 sorting.adb:155:14: medium: assertion might fail, cannot prove Sorted (A, A_First + J * L * 2, Natural'min)
 sorting.adb:155:33: info: overflow check proved (CVC4: 1 VC)
-sorting.adb:155:33: info: range check proved (CVC4: 1 VC)
 sorting.adb:155:37: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:155:41: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:155:53: info: range check proved (CVC4: 1 VC)
@@ -156,7 +152,6 @@ sorting.adb:155:77: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:155:81: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:158:24: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:159:14: info: overflow check proved (CVC4: 1 VC)
-sorting.adb:159:14: info: range check proved (CVC4: 1 VC)
 sorting.ads:22:11: info: flow dependencies proved
 sorting.ads:23:54: medium: overflow check might fail
 sorting.ads:23:73: medium: overflow check might fail

@@ -24,29 +24,33 @@ is
    package body M is
 
       function Is_Valid return Boolean is
-        (Length (Model.Available) <= Capacity and then
-         Length (Model.Allocated) <= Capacity and then
-         Length (Model.Available) + Length (Model.Allocated) = Capacity and then
-         (if First_Available /= No_Resource then
-            Length (Model.Available) > 0 and then Get (Model.Available, 1) = First_Available
-          else
-            Length (Model.Available) = 0)
-            and then
-         (for all J in 1 .. Integer (Length (Model.Available)) =>
-            Get (Model.Available, J) in Valid_Resource
-              and then
-            Data (Get (Model.Available, J)).Next =
-              (if J < Integer (Length (Model.Available)) then Get (Model.Available, J + 1) else No_Resource)
-              and then
-            (for all K in 1 .. J - 1 =>
-               Get (Model.Available, J) /= Get (Model.Available, K)))
-            and then
-         (for all E of Model.Allocated => E in Valid_Resource)
-            and then
-         (for all R in Valid_Resource =>
-            (case Data (R).Stat is
-               when Available => Contains (Model.Available, R) and not Contains (Model.Allocated, R),
-               when Allocated => not Contains (Model.Available, R) and Contains (Model.Allocated, R))));
+       (declare
+          Avail : constant Sequence := Model.Available;
+          Alloc : constant S2.Set := Model.Allocated;
+        begin
+          Length (Avail) <= Capacity and then
+          Length (Alloc) <= Capacity and then
+          Length (Avail) + Length (Alloc) = Capacity and then
+          (if First_Available /= No_Resource then
+             Length (Avail) > 0 and then Get (Avail, 1) = First_Available
+           else
+             Length (Avail) = 0)
+             and then
+          (for all J in 1 .. Integer (Length (Avail)) =>
+             Get (Avail, J) in Valid_Resource
+               and then
+             Data (Get (Avail, J)).Next =
+               (if J < Integer (Length (Avail)) then Get (Avail, J + 1) else No_Resource)
+               and then
+             (for all K in 1 .. J - 1 =>
+                Get (Avail, J) /= Get (Avail, K)))
+             and then
+          (for all E of Alloc => E in Valid_Resource)
+             and then
+          (for all R in Valid_Resource =>
+             (case Data (R).Stat is
+                when Available => Contains (Avail, R) and not Contains (Alloc, R),
+                when Allocated => not Contains (Avail, R) and Contains (Alloc, R))));
 
    begin
       pragma Assert (Length (Model.Available) = 0);

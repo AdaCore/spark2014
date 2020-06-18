@@ -82,6 +82,8 @@ package SPARK_Atree is
      Sinfo.N_Defining_Identifier;
    N_Defining_Operator_Symbol       : Node_Kind renames
      Sinfo.N_Defining_Operator_Symbol;
+   N_Delta_Aggregate                : Node_Kind renames
+     Sinfo.N_Delta_Aggregate;
    N_Derived_Type_Definition        : Node_Kind renames
      Sinfo.N_Derived_Type_Definition;
    N_Elsif_Part                     : Node_Kind renames Sinfo.N_Elsif_Part;

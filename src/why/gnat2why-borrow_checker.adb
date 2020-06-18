@@ -579,6 +579,17 @@ package body Gnat2Why.Borrow_Checker is
       --  set to Write_Only, while the permission of its extensions is set to
       --  No_Access.
 
+      Free,
+      --  Used for the actual parameter of a call to an instance of
+      --  Unchecked_Deallocation. If the designated type of the pointer given
+      --  in argument is deep, it checks that the path corresponding to the
+      --  pointed-to object has Write_Perm permission, as this allows moving
+      --  the pointed-to objects but not moving the argument pointer (otherwise
+      --  the pointed-to object would have No_Access permission). Otherwise
+      --  (the designated type is not deep), it checks that the path
+      --  corresponding to the argument has permission Read_Write (same as
+      --  for Move).
+
       Assign,
       --  Used for the target of an assignment, or an actual parameter with
       --  mode OUT. Checks that paths have Write_Perm permission. After
@@ -739,6 +750,10 @@ package body Gnat2Why.Borrow_Checker is
    --  This function gets a node and looks recursively to find the appropriate
    --  subtree for that node. If the tree is folded, then it unrolls the tree
    --  up to the appropriate level.
+
+   function Get_Pointed_To_Perm (N : Expr_Or_Ent) return Perm_Kind;
+   --  The function that takes a path as input and returns a permission
+   --  associated with the dereference from that path.
 
    generic
       with procedure Handle_Parameter_Or_Global
@@ -1562,6 +1577,46 @@ package body Gnat2Why.Borrow_Checker is
          procedure Read_Param (Formal : Entity_Id; Actual : Node_Id);
          --  Call Read_Expression on the actual
 
+         procedure Move_Associations (Assocs : List_Id);
+         --  Move all associations of an aggregate
+
+         -----------------------
+         -- Move_Associations --
+         -----------------------
+
+         procedure Move_Associations (Assocs : List_Id) is
+            CL     : List_Id;
+            Assoc  : Node_Id := Nlists.First (Assocs);
+            Choice : Node_Id;
+
+         begin
+            while Present (Assoc) loop
+               CL := Choices (Assoc);
+
+               --  For an array aggregate, we should also check that the
+               --  expressions used in choices are readable.
+
+               if Is_Array_Type (Etype (Expr)) then
+                  Choice := Nlists.First (CL);
+                  while Present (Choice) loop
+                     if Nkind (Choice) /= N_Others_Choice then
+                        Read_Expression (Choice);
+                     end if;
+                     Next (Choice);
+                  end loop;
+               end if;
+
+               --  The subexpressions of an aggregate are moved as part
+               --  of the implicit assignments.
+
+               if not Box_Present (Assoc) then
+                  Move_Expression (Expression (Assoc));
+               end if;
+
+               Next (Assoc);
+            end loop;
+         end Move_Associations;
+
          ----------------
          -- Read_Param --
          ----------------
@@ -1624,47 +1679,16 @@ package body Gnat2Why.Borrow_Checker is
                Read_Indexes (Expression (Expr));
 
             when N_Aggregate =>
-               declare
-                  Assocs : constant List_Id := Component_Associations (Expr);
-                  CL     : List_Id;
-                  Assoc  : Node_Id := Nlists.First (Assocs);
-                  Choice : Node_Id;
 
-               begin
-                  --  The subexpressions of an aggregate are moved as part
-                  --  of the implicit assignments. Handle the positional
-                  --  components first.
+               --  The subexpressions of an aggregate are moved as part
+               --  of the implicit assignments. Handle the positional
+               --  components first.
 
-                  Move_Expression_List (Expressions (Expr));
+               Move_Expression_List (Expressions (Expr));
 
-                  --  Handle the named components next
+               --  Handle the named components next
 
-                  while Present (Assoc) loop
-                     CL := Choices (Assoc);
-
-                     --  For an array aggregate, we should also check that the
-                     --  expressions used in choices are readable.
-
-                     if Is_Array_Type (Etype (Expr)) then
-                        Choice := Nlists.First (CL);
-                        while Present (Choice) loop
-                           if Nkind (Choice) /= N_Others_Choice then
-                              Read_Expression (Choice);
-                           end if;
-                           Next (Choice);
-                        end loop;
-                     end if;
-
-                     --  The subexpressions of an aggregate are moved as part
-                     --  of the implicit assignments.
-
-                     if not Box_Present (Assoc) then
-                        Move_Expression (Expression (Assoc));
-                     end if;
-
-                     Next (Assoc);
-                  end loop;
-               end;
+               Move_Associations (Component_Associations (Expr));
 
             when N_Extension_Aggregate =>
                declare
@@ -1726,6 +1750,10 @@ package body Gnat2Why.Borrow_Checker is
                      Next (Cur_Case);
                   end loop;
                end;
+
+            when N_Delta_Aggregate =>
+               Read_Expression (Expression (Expr));
+               Move_Associations (Component_Associations (Expr));
 
             when N_Attribute_Reference =>
                pragma Assert
@@ -2051,6 +2079,15 @@ package body Gnat2Why.Borrow_Checker is
             Check_Expression (Prefix (Expr), Mode);
             Read_Expression (Discrete_Range (Expr));
 
+         when N_Expression_With_Actions =>
+
+            --  Go over the objects declared in a declare expressions and fill
+            --  the map for them. No need to handle local borrowers or
+            --  observers which are not allowed.
+
+            Check_List (Actions (Expr));
+            Check_Expression (Expression (Expr), Mode);
+
          --  Procedure calls are handled in Check_Node
 
          when N_Procedure_Call_Statement =>
@@ -2070,8 +2107,7 @@ package body Gnat2Why.Borrow_Checker is
 
          --  The following nodes are never generated in GNATprove mode
 
-         when N_Expression_With_Actions
-            | N_Reference
+         when N_Reference
             | N_Unchecked_Expression
          =>
             raise Program_Error;
@@ -2938,7 +2974,11 @@ package body Gnat2Why.Borrow_Checker is
             Mode := Assign;
 
          when E_In_Out_Parameter =>
-            Mode := Move;
+            if Is_Unchecked_Deallocation_Instance (Subp) then
+               Mode := Free;
+            else
+               Mode := Move;
+            end if;
       end case;
 
       if Mode = Assign then
@@ -3601,6 +3641,25 @@ package body Gnat2Why.Borrow_Checker is
    begin
       return Set_Perm_Prefixes (N, None, Empty);
    end Get_Perm_Tree;
+
+   -------------------------
+   -- Get_Pointed_To_Perm --
+   -------------------------
+
+   function Get_Pointed_To_Perm (N : Expr_Or_Ent) return Perm_Kind is
+      Tree : constant Perm_Tree_Access := Get_Perm_Tree (N);
+   begin
+      case Kind (Tree) is
+         when Entire_Object =>
+            return Children_Permission (Tree);
+
+         when Reference =>
+            return Permission (Get_All (Tree));
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Pointed_To_Perm;
 
    ---------
    -- Glb --
@@ -4328,6 +4387,27 @@ package body Gnat2Why.Borrow_Checker is
                return;
             end if;
 
+         when Free =>
+            --  For a deep designated type, check W permission on the
+            --  pointed-to path. Still issue an error message wrt permission
+            --  of the full path and RW permission, as it is likely less
+            --  confusing.
+
+            if Is_Deep (Designated_Type (Expr_Type)) then
+               if Get_Pointed_To_Perm (Expr) not in Write_Perm then
+                  Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
+                  return;
+               end if;
+
+            --  Otherwise, check RW permission
+
+            else
+               if Perm /= Read_Write then
+                  Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
+                  return;
+               end if;
+            end if;
+
          when Assign =>
             --  For assignment, check W permission
 
@@ -4378,7 +4458,7 @@ package body Gnat2Why.Borrow_Checker is
       case Mode is
          when Read | Observe =>
             null;
-         when Assign | Move | Borrow =>
+         when Assign | Move | Free | Borrow =>
             Check_Not_Observed (Expr, Root);
       end case;
 
@@ -4393,6 +4473,13 @@ package body Gnat2Why.Borrow_Checker is
       case Mode is
 
          when Read =>
+            null;
+
+         --  Actual parameter of call to instance of Unchecked_Deallocation
+         --  needs no permission update, this is taken care of automatically
+         --  when returning from the call as it is an IN OUT parameter.
+
+         when Free =>
             null;
 
          when Move =>

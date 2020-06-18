@@ -13,7 +13,6 @@ alpha_launch_examples.adb:63:11: info: flow dependencies proved
 alpha_launch_examples.adb:65:22: info: postcondition proved (CVC4: 2 VC)
 alpha_launch_examples.adb:76:30: medium: divide by zero might fail
 alpha_launch_examples.adb:80:36: medium: divide by zero might fail
-alpha_launch_examples.adb:80:36: medium: range check might fail
 alpha_launch_examples.adb:84:19: medium: postcondition might fail, cannot prove 73 rem Example_7'Result /= 42
 alpha_launch_examples.adb:84:22: medium: divide by zero might fail
 alpha_launch_examples.adb:86:07: info: initialization of "R" proved

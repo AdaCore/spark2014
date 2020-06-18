@@ -447,7 +447,8 @@ be *compatible with respect to volatility* with E2 if
 
    * the [right-hand side] expression of an assignment statement; or
 
-   * the expression of an initialization expression of an object declaration; or
+   * the expression of an initialization expression of an object declaration
+     which does not occur inside a declare expression; or
 
    * the ``object_name`` of an ``object_renaming_declaration``; or
 
@@ -2408,7 +2409,8 @@ Default_Initial_Condition Aspects
    which is checked (at run time) after any object of the given type (or of
    any descendant of the given type for which the specified aspect is
    inherited and not overridden), is "initialized by
-   default" (see Ada RM 3.3.1).
+   default" (see Ada RM 3.3.1). [Note that an imported object is not
+   "initialized by default" (see Ada RM B.3).]
 
    The *Boolean_*\ ``expression``, if any, causes freezing in the
    same way as the ``default_expression`` of a ``component_declaration``.

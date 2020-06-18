@@ -27,10 +27,7 @@
   <goal name="def&#39;vc.4" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="16"/></proof>
   </goal>
-  <goal name="def&#39;vc.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="756"/></proof>
-  </goal>
-  <goal name="def&#39;vc.6" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.5" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>

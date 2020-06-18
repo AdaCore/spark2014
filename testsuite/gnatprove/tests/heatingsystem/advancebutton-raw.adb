@@ -9,6 +9,7 @@ is
      with Volatile,
           Async_Writers,
           Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
+   pragma Annotate(Gnatprove, Intentional, "constraints on bit representation","");
 
    procedure Read (Pressed : out Boolean)
      with Refined_Global  => Input_Ext,

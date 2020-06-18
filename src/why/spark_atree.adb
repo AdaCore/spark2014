@@ -645,16 +645,20 @@ package body SPARK_Atree is
                --  3) an expression of a regular record aggregate, and
                --  needs a range check towards the expected type.
 
-               if Nkind (Atree.Parent (Par)) = N_Aggregate
-                 and then
+               if (Nkind (Atree.Parent (Par)) = N_Aggregate
+                   and then
                    Nkind (Atree.Parent (Atree.Parent (Par))) =
                      N_Attribute_Reference
-                 and then
+                   and then
                    Sem_Util.Is_Attribute_Update
-                     (Atree.Parent (Atree.Parent (Par)))
+                     (Atree.Parent (Atree.Parent (Par))))
+                 or else Nkind (Atree.Parent (Par)) = N_Delta_Aggregate
                then
-
-                  Pref := Prefix (Atree.Parent (Atree.Parent (Par)));
+                  if Nkind (Atree.Parent (Par)) = N_Delta_Aggregate then
+                     Pref := Expression (Atree.Parent (Par));
+                  else
+                     Pref := Prefix (Atree.Parent (Atree.Parent (Par)));
+                  end if;
 
                   --  When present, the Actual_Subtype of the entity should be
                   --  used instead of the Etype of the prefix.
@@ -671,13 +675,16 @@ package body SPARK_Atree is
 
                      Check_Type := Etype (Nlists.First (Choices (Par)));
 
-                     --  it's an array type, determine whether the check is for
-                     --  the component or the index
+                  --  it's an array type, determine whether the check is for
+                  --  the component or the index
 
                   elsif Expression (Par) = N then
                      Check_Type :=
                        Einfo.Component_Type
                          (Sem_Util.Unique_Entity (Prefix_Type));
+
+                  --  ??? This is not working for unconstrained array types
+
                   else
                      Check_Type :=
                        Etype (Einfo.First_Index
@@ -701,9 +708,17 @@ package body SPARK_Atree is
 
                begin
                   pragma Assert
-                    (Nkind (Atree.Parent (Atree.Parent (Par))) = N_Aggregate);
-                  Pref :=
-                    Prefix (Atree.Parent (Atree.Parent (Atree.Parent (Par))));
+                    (Nkind (Atree.Parent (Atree.Parent (Par))) in
+                         N_Aggregate | N_Delta_Aggregate);
+
+                  if Nkind (Atree.Parent (Atree.Parent (Par))) =
+                    N_Delta_Aggregate
+                  then
+                     Pref := Expression (Atree.Parent (Atree.Parent (Par)));
+                  else
+                     Pref := Prefix
+                       (Atree.Parent (Atree.Parent (Atree.Parent (Par))));
+                  end if;
 
                   if Einfo.Is_Entity_Name (Pref)
                     and then Present (Einfo.Actual_Subtype (Entity (Pref)))
@@ -712,6 +727,8 @@ package body SPARK_Atree is
                   else
                      Prefix_Type := Etype (Pref);
                   end if;
+
+                  --  ??? This is not working for unconstrained array types
 
                   Check_Type :=
                     Etype (Einfo.First_Index
@@ -944,7 +961,7 @@ package body SPARK_Atree is
    function Is_Choice_Of_Unconstrained_Array_Update
      (N : Node_Id) return Boolean
    is
-      Possibly_Choice_Node, Attribute_Node : Node_Id;
+      Possibly_Choice_Node, Prefix_Node : Node_Id;
    begin
       if Nkind (Atree.Parent (N)) = N_Component_Association then
          Possibly_Choice_Node := N;
@@ -960,17 +977,30 @@ package body SPARK_Atree is
       if Nkind
         (Atree.Parent (Atree.Parent (Possibly_Choice_Node))) = N_Aggregate
       then
-         Attribute_Node :=
-           Atree.Parent
-             (Atree.Parent (Atree.Parent (Possibly_Choice_Node)));
+         declare
+            Attribute_Node : constant Node_Id :=
+              Atree.Parent
+                (Atree.Parent (Atree.Parent (Possibly_Choice_Node)));
+         begin
+            if Nkind (Attribute_Node) = N_Attribute_Reference
+              and then Sem_Util.Is_Attribute_Update (Attribute_Node)
+            then
+               Prefix_Node := Prefix (Attribute_Node);
+            else
+               return False;
+            end if;
+         end;
+      elsif Nkind (Atree.Parent (Atree.Parent (Possibly_Choice_Node))) =
+        N_Delta_Aggregate
+      then
+         Prefix_Node := Expression
+           (Atree.Parent (Atree.Parent (Possibly_Choice_Node)));
       else
          return False;
       end if;
 
-      if Nkind (Attribute_Node) = N_Attribute_Reference
-        and then Sem_Util.Is_Attribute_Update (Attribute_Node)
-        and then Einfo.Is_Array_Type (Etype (Prefix (Attribute_Node)))
-        and then not Einfo.Is_Constrained (Etype (Prefix (Attribute_Node)))
+      if Einfo.Is_Array_Type (Etype (Prefix_Node))
+        and then not Einfo.Is_Constrained (Etype (Prefix_Node))
         and then Is_List_Member (Possibly_Choice_Node)
         and then Present (Choices (Atree.Parent (Possibly_Choice_Node)))
         and then List_Containing (Possibly_Choice_Node)

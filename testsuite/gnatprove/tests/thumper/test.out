@@ -42,7 +42,6 @@ hermes-der-decode.adb:135:103: medium: overflow check might fail
 hermes-der-decode.adb:135:108: info: range check proved (CVC4: 2 VC)
 hermes-der-decode.adb:137:31: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:137:38: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:137:38: info: range check proved (CVC4: 1 VC)
 hermes-der-decode.adb:137:65: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:137:65: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:144:18: info: index check proved (CVC4: 2 VC)
@@ -118,7 +117,6 @@ hermes-der-decode.adb:334:29: medium: overflow check might fail [possible explan
 hermes-der-decode.adb:334:37: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:334:67: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:334:67: medium: array index check might fail
-hermes-der-decode.adb:341:25: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:341:34: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:352:11: info: data dependencies proved
 hermes-der-decode.adb:352:52: info: initialization of "Stop" proved
@@ -248,8 +246,6 @@ hermes-oid.adb:101:07: info: initialization of "Temp" proved
 hermes-oid.adb:103:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 hermes-oid.adb:107:32: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:109:17: info: index check proved (CVC4: 2 VC)
-hermes-oid.adb:110:45: info: overflow check proved (CVC4: 1 VC)
-hermes-oid.adb:110:51: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:110:51: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:111:14: info: range check proved (CVC4: 2 VC)
 hermes-oid.adb:112:35: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -313,8 +309,6 @@ network-addresses.adb:90:07: info: initialization of "Digit_1" proved
 network-addresses.adb:91:07: info: initialization of "Digit_0" proved
 network-addresses.adb:98:32: info: loop invariant initialization proved (CVC4: 2 VC)
 network-addresses.adb:98:32: info: loop invariant preservation proved (CVC4: 2 VC)
-network-addresses.adb:98:42: info: overflow check proved (CVC4: 2 VC)
-network-addresses.adb:98:63: info: overflow check proved (CVC4: 2 VC)
 network-addresses.adb:101:30: info: overflow check proved (CVC4: 1 VC)
 network-addresses.adb:101:30: info: range check proved (CVC4: 1 VC)
 network-addresses.adb:105:46: info: division check proved (CVC4: 1 VC)

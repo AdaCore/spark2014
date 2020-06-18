@@ -7,8 +7,6 @@ ap-altitude-pitch-rate.adb:19:07: info: initialization of "Average" proved, in c
 ap-altitude-pitch-rate.adb:22:21: info: overflow check proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:24:13: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:24:13: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
-ap-altitude-pitch-rate.adb:24:23: info: overflow check proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
-ap-altitude-pitch-rate.adb:25:29: info: overflow check proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:29:45: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:29:45: info: overflow check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:29:45: info: range check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch-rate.adb:58
@@ -18,10 +16,8 @@ ap-altitude-pitch-rate.adb:40:24: info: index check proved (CVC4: 20 VC)
 ap-altitude-pitch-rate.adb:54:07: info: initialization of "Average" proved
 ap-altitude-pitch-rate.adb:55:07: info: initialization of "Early_Pitch" proved
 ap-altitude-pitch-rate.adb:58:18: info: analyzing call to "History_Average" in context
-ap-altitude-pitch-rate.adb:63:43: info: overflow check proved (CVC4: 1 VC)
 ap-altitude-pitch-rate.adb:64:14: info: division check proved (CVC4: 1 VC)
 ap-altitude-pitch-rate.adb:64:14: info: range check proved (CVC4: 1 VC)
-ap-altitude-pitch-rate.adb:68:43: info: overflow check proved (CVC4: 1 VC)
 ap-altitude-pitch-rate.adb:70:14: info: division check proved (CVC4: 1 VC)
 ap-altitude-pitch-rate.adb:70:14: info: range check proved (CVC4: 1 VC)
 ap-altitude-pitch-rate.adb:75:55: info: division check proved (CVC4: 1 VC)

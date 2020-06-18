@@ -41,8 +41,6 @@ deceleration_curve.adb:89:29: medium: float overflow check might fail [possible 
 deceleration_curve.adb:90:13: medium: float overflow check might fail [possible explanation: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:46: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
-deceleration_curve.adb:95:36: info: overflow check proved (CVC4: 1 VC)
-deceleration_curve.adb:95:36: info: range check proved (CVC4: 1 VC)
 deceleration_curve.adb:105:09: medium: precondition might fail, cannot prove d <= Braking_Curve_Maximum_End_Point [possible explanation: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items

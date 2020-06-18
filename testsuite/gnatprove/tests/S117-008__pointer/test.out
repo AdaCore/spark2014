@@ -7,7 +7,6 @@ a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:9:14: info: postcondition proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:16:20: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:16:20: info: range check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:21:22: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:21:25: info: range check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:34:38: medium: postcondition might fail, cannot prove Size (V) > V.Top, in instantiation at use_formal_vectors.ads:10 (e.g. when Min_Size = 0 and V = (Top => 0, Content => (all => (others => (all => (all => 0))))) and V'Old = (Top => 0, Content => null))
