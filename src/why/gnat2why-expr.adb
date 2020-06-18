@@ -14535,7 +14535,7 @@ package body Gnat2Why.Expr is
                        | N_Subprogram_Declaration
       then
          declare
-            Expr : Node_Id := Get_Address_Rep_Item (Decl);
+            Expr : Node_Id := Get_Address_Expr (Decl);
          begin
             if Present (Expr) then
 

@@ -1344,7 +1344,7 @@ package body Flow_Error_Messages is
          declare
             Obj    : constant Entity_Id := Defining_Identifier (N);
             Expr   : constant Node_Id :=
-              SPARK_Atree.Get_Address_Rep_Item (N);
+              SPARK_Atree.Get_Address_Expr (N);
             Common : constant String :=
               "should have an Alignment representation clause";
          begin

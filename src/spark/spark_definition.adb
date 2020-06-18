@@ -2840,8 +2840,8 @@ package body SPARK_Definition is
                   & """ outside an attribute definition clause", N);
             end if;
 
-          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
-          --  types.
+         --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
+         --  types.
 
          when Attribute_Loop_Entry
             | Attribute_Old
