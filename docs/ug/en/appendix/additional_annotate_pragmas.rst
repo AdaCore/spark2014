@@ -107,6 +107,14 @@ binary arithmetic operations + - * are checked for possible overflows. Division
 cannot lead to overflow. Unary negation is checked for possible non-nullity
 of its argument, which leads to overflow.
 
+.. note::
+
+   Currently the exponentiation operation **, the predecessor attribute
+   ``'Pred`` and successor attribute ``'Succ`` are never checked for possible
+   overflows on a modular type, even when annotated with
+   ``No_Wrap_Around``. Instead wrap-around semantics is used for these
+   operations.
+
 Customize Quantification over Types with the Iterable Aspect
 ------------------------------------------------------------
 
