@@ -1,0 +1,1 @@
+problem_types.ads:8:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
