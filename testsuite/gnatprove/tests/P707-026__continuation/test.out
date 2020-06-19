@@ -13,9 +13,9 @@ Data Dependencies                 .          .          .              .        
 Flow Dependencies                 2          2          .              .           .          .
 Initialization                    4          .          .              .           3          1
 Non-Aliasing                      .          .          .              .           .          .
-Run-time Checks                   .          .          .              .           .          .
+Run-time Checks                   2          .          .    2 (Trivial)           .          .
 Assertions                        .          .          .              .           .          .
-Functional Contracts              2          .          .    2 (Trivial)           .          .
+Functional Contracts              .          .          .              .           .          .
 LSP Verification                  .          .          .              .           .          .
 Termination                       .          .          .              .           .          .
 Concurrency                       .          .          .              .           .          .

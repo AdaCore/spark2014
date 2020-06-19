@@ -4159,12 +4159,15 @@ package body Flow.Control_Flow_Graph is
             end if;
          end loop;
 
-         --  If this type has a Default_Initial_Condition then we need to
+         --  If this type has a Default_Initial_Condition (DIC) then we need to
          --  create a vertex to check for uninitialized variables within
-         --  the Default_Initial_Condition's expression.
+         --  the Default_Initial_Condition's expression. For imported objects
+         --  the DIC expression is not evaluated.
          --  ??? what about DIC evaluated for individual components?
 
-         if Has_DIC (Typ) then
+         if not Is_Imported (E)
+           and then Has_DIC (Typ)
+         then
             declare
                DIC_Proc : constant Entity_Id :=
                  Get_Initial_DIC_Procedure (Typ);

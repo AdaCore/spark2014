@@ -18,6 +18,7 @@ test.adb:286:07: info: data dependencies proved
 test.adb:288:15: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 test.adb:288:131: info: range check proved (CVC4: 1 VC)
 test.adb:288:197: info: range check proved (CVC4: 1 VC)
+test.adb:288:314: info: index check proved (CVC4: 2 VC)
 test.adb:288:314: info: range check proved (CVC4: 1 VC)
 test.adb:300:07: info: precondition proved (CVC4: 1 VC)
 test.adb:328:36: info: loop invariant initialization proved (CVC4: 2 VC)

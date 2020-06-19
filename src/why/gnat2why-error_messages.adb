@@ -258,6 +258,7 @@ package body Gnat2Why.Error_Messages is
                | VC_Initialization_Check
                | VC_UC_No_Holes
                | VC_UC_Same_Size
+               | VC_UC_Alignment
                | VC_Memory_Leak
                | VC_Memory_Leak_At_End_Of_Scope
             =>
@@ -735,6 +736,10 @@ package body Gnat2Why.Error_Messages is
                return Prefix & " do not have the same size";
             end;
 
+         when VC_UC_Alignment =>
+            return "alignment of overlaying object might not be an integral " &
+              "multiple of alignment of overlaid object";
+
          --  VC_LSP_Kind - Liskov Substitution Principle
 
          when VC_Weaker_Pre                =>
@@ -1082,6 +1087,10 @@ package body Gnat2Why.Error_Messages is
             else
                return "types in unchecked conversion have the same size";
             end if;
+
+         when VC_UC_Alignment =>
+            return "alignment of overlaid objects is compatible";
+
          when VC_Weaker_Pre                =>
             return "precondition is weaker than class-wide precondition";
          when VC_Trivial_Weaker_Pre        =>

@@ -535,8 +535,25 @@ small 1 / 512 like My_Fixed above:
 
   end
 
-Note that, in the Why generated code, the type system is not used to ensure that
-we always use the correct operation for fixed point types.
+Note that, in the Why generated code, the type system is not used to ensure
+that we always use the correct operation for fixed point types.
+
+A subtlety of operations on fixed-point types is that multiplication and
+division involving fixed-point arguments are defined in Ada standard over a
+`universal` fixed-point type. The precise semantics for such operations is
+defined in Annex G.2.3 of the Ada standard. It differentiates between
+operations that are `precise` and those that are not, where being precise means
+that the result is one of two values that correspond to the rounded fixed-point
+values of the mathematical result.
+
+GNATprove only supports operations that are precise in this sense, and the
+uncertainty concerning the direction of rounding is conveyed in predicate
+``pos_div_relation``. Operations that are not precise are rejected during
+marking. Note that conversions between fixed-points and integers follow the
+same pattern, with a slight difference: conversion from fixed-point to integer
+always rounds to nearest with ties resolved in the direction away-from-zero
+(Ada RM 4.6(33)). This is conveyed in predicate
+``pos_div_relation_round_away``.
 
 Dynamic scalar types
 """"""""""""""""""""

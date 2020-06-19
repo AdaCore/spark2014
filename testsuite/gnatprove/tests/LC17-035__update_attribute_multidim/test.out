@@ -2,66 +2,120 @@ update.ads:22:30: medium: postcondition might fail, cannot prove A(J, K, L) = A'
 update.ads:31:19: info: postcondition proved (CVC4: 1 VC; Trivial: 3 VC)
 update.ads:38:19: medium: postcondition might fail (e.g. when I = 6 and New_Val = 0)
 update_checks.adb:10:04: warning: analyzing unreferenced procedure "Test1"
+update_checks.adb:17:23: info: index check proved (CVC4: 2 VC)
+update_checks.adb:17:26: info: index check proved (CVC4: 2 VC)
+update_checks.adb:17:29: info: index check proved (CVC4: 2 VC)
 update_checks.adb:22:04: warning: analyzing unreferenced procedure "Test2"
+update_checks.adb:29:25: medium: array index check might fail (e.g. when X = 1) [possible explanation: subprogram at line 22 should mention X in a precondition]
 update_checks.adb:29:25: medium: range check might fail (e.g. when New_Val = 0 and X = 1) [possible explanation: subprogram at line 22 should mention X in a precondition]
+update_checks.adb:29:32: medium: array index check might fail (e.g. when Y = 1) [possible explanation: subprogram at line 22 should mention Y in a precondition]
 update_checks.adb:29:32: medium: range check might fail (e.g. when New_Val = 0 and Y = 1) [possible explanation: subprogram at line 22 should mention Y in a precondition]
+update_checks.adb:29:39: medium: array index check might fail (e.g. when Z = 10) [possible explanation: subprogram at line 22 should mention Z in a precondition]
 update_checks.adb:29:39: medium: range check might fail (e.g. when New_Val = 0 and Z = 10) [possible explanation: subprogram at line 22 should mention Z in a precondition]
 update_checks.adb:29:55: medium: range check might fail (e.g. when New_Val = ET1'Last) [possible explanation: subprogram at line 22 should mention New_Val in a precondition]
 update_checks.adb:34:04: warning: analyzing unreferenced procedure "Test3"
+update_checks.adb:43:28: info: index check proved (CVC4: 2 VC)
 update_checks.adb:43:28: info: range check proved (CVC4: 1 VC)
+update_checks.adb:43:35: info: index check proved (CVC4: 2 VC)
 update_checks.adb:43:35: info: range check proved (CVC4: 1 VC)
+update_checks.adb:43:42: info: index check proved (CVC4: 2 VC)
 update_checks.adb:43:42: info: range check proved (CVC4: 1 VC)
 update_checks.adb:43:58: info: range check proved (CVC4: 1 VC)
 update_checks.adb:49:04: warning: analyzing unreferenced procedure "Test4"
+update_checks.adb:56:23: info: index check proved (CVC4: 2 VC)
+update_checks.adb:56:27: info: index check proved (CVC4: 2 VC)
+update_checks.adb:56:31: info: index check proved (CVC4: 2 VC)
+update_checks.adb:56:38: info: index check proved (CVC4: 2 VC)
+update_checks.adb:56:42: info: index check proved (CVC4: 2 VC)
+update_checks.adb:56:46: info: index check proved (CVC4: 2 VC)
 update_checks.adb:61:04: warning: analyzing unreferenced procedure "Test5"
+update_checks.adb:68:26: medium: array index check might fail (e.g. when X1 = 1) [possible explanation: subprogram at line 61 should mention X1 in a precondition]
 update_checks.adb:68:26: medium: range check might fail (e.g. when X1 = 1 and Z1 = 2) [possible explanation: subprogram at line 61 should mention X1 in a precondition]
+update_checks.adb:68:34: medium: array index check might fail (e.g. when Y1 = 1) [possible explanation: subprogram at line 61 should mention Y1 in a precondition]
 update_checks.adb:68:34: medium: range check might fail (e.g. when Y1 = 1 and Z1 = 2) [possible explanation: subprogram at line 61 should mention Y1 in a precondition]
+update_checks.adb:68:42: medium: array index check might fail (e.g. when Z1 = 1) [possible explanation: subprogram at line 61 should mention Z1 in a precondition]
 update_checks.adb:68:42: medium: range check might fail (e.g. when Z1 = 1) [possible explanation: subprogram at line 61 should mention Z1 in a precondition]
+update_checks.adb:69:28: medium: array index check might fail (e.g. when X2 = 3) [possible explanation: subprogram at line 61 should mention X2 in a precondition]
 update_checks.adb:69:28: medium: range check might fail (e.g. when New_Val = 0 and X2 = 3) [possible explanation: subprogram at line 61 should mention X2 in a precondition]
+update_checks.adb:69:36: medium: array index check might fail (e.g. when Y2 = 5) [possible explanation: subprogram at line 61 should mention Y2 in a precondition]
 update_checks.adb:69:36: medium: range check might fail (e.g. when New_Val = 0 and Y2 = 5) [possible explanation: subprogram at line 61 should mention Y2 in a precondition]
+update_checks.adb:69:44: medium: array index check might fail (e.g. when Z2 = 10) [possible explanation: subprogram at line 61 should mention Z2 in a precondition]
 update_checks.adb:69:44: medium: range check might fail (e.g. when New_Val = 0 and Z2 = 10) [possible explanation: subprogram at line 61 should mention Z2 in a precondition]
 update_checks.adb:69:60: medium: range check might fail (e.g. when New_Val = ET1'Last) [possible explanation: subprogram at line 61 should mention New_Val in a precondition]
 update_checks.adb:74:04: warning: analyzing unreferenced procedure "Test6"
+update_checks.adb:84:29: info: index check proved (CVC4: 2 VC)
 update_checks.adb:84:29: info: range check proved (CVC4: 1 VC)
+update_checks.adb:84:37: info: index check proved (CVC4: 2 VC)
 update_checks.adb:84:37: info: range check proved (CVC4: 1 VC)
+update_checks.adb:84:45: info: index check proved (CVC4: 2 VC)
 update_checks.adb:84:45: info: range check proved (CVC4: 1 VC)
+update_checks.adb:85:31: info: index check proved (CVC4: 2 VC)
 update_checks.adb:85:31: info: range check proved (CVC4: 1 VC)
+update_checks.adb:85:39: info: index check proved (CVC4: 2 VC)
 update_checks.adb:85:39: info: range check proved (CVC4: 1 VC)
+update_checks.adb:85:47: info: index check proved (CVC4: 2 VC)
 update_checks.adb:85:47: info: range check proved (CVC4: 1 VC)
 update_checks.adb:85:63: info: range check proved (CVC4: 1 VC)
 update_checks.adb:91:04: warning: analyzing unreferenced procedure "Test7"
+update_checks.adb:99:26: medium: array index check might fail (e.g. when X1 = 1) [possible explanation: subprogram at line 91 should mention X1 in a precondition]
 update_checks.adb:99:26: medium: range check might fail (e.g. when X1 = 1 and Z1 = 2) [possible explanation: subprogram at line 91 should mention X1 in a precondition]
+update_checks.adb:99:34: medium: array index check might fail (e.g. when Y1 = 1) [possible explanation: subprogram at line 91 should mention Y1 in a precondition]
 update_checks.adb:99:34: medium: range check might fail (e.g. when Y1 = 1 and Z1 = 2) [possible explanation: subprogram at line 91 should mention Y1 in a precondition]
+update_checks.adb:99:42: medium: array index check might fail (e.g. when Z1 = 1) [possible explanation: subprogram at line 91 should mention Z1 in a precondition]
 update_checks.adb:99:42: medium: range check might fail (e.g. when Z1 = 1) [possible explanation: subprogram at line 91 should mention Z1 in a precondition]
+update_checks.adb:100:28: medium: array index check might fail (e.g. when X2 = 3) [possible explanation: subprogram at line 91 should mention X2 in a precondition]
 update_checks.adb:100:28: medium: range check might fail (e.g. when New_Val_1 = 0 and X2 = 3) [possible explanation: subprogram at line 91 should mention X2 in a precondition]
+update_checks.adb:100:36: medium: array index check might fail (e.g. when Y2 = 5) [possible explanation: subprogram at line 91 should mention Y2 in a precondition]
 update_checks.adb:100:36: medium: range check might fail (e.g. when New_Val_1 = 0 and Y2 = 5) [possible explanation: subprogram at line 91 should mention Y2 in a precondition]
+update_checks.adb:100:44: medium: array index check might fail (e.g. when Z2 = 10) [possible explanation: subprogram at line 91 should mention Z2 in a precondition]
 update_checks.adb:100:44: medium: range check might fail (e.g. when New_Val_1 = 0 and Z2 = 10) [possible explanation: subprogram at line 91 should mention Z2 in a precondition]
 update_checks.adb:100:62: medium: range check might fail (e.g. when New_Val_1 = ET1'Last) [possible explanation: subprogram at line 91 should mention New_Val_1 in a precondition]
+update_checks.adb:101:26: medium: array index check might fail (e.g. when X3 = 3) [possible explanation: subprogram at line 91 should mention X3 in a precondition]
 update_checks.adb:101:26: medium: range check might fail (e.g. when New_Val_2 = 1 and X3 = 3) [possible explanation: subprogram at line 91 should mention X3 in a precondition]
+update_checks.adb:101:34: medium: array index check might fail (e.g. when Y3 = 5) [possible explanation: subprogram at line 91 should mention Y3 in a precondition]
 update_checks.adb:101:34: medium: range check might fail (e.g. when New_Val_2 = 1 and Y3 = 5) [possible explanation: subprogram at line 91 should mention Y3 in a precondition]
+update_checks.adb:101:42: medium: array index check might fail (e.g. when Z3 = 10) [possible explanation: subprogram at line 91 should mention Z3 in a precondition]
 update_checks.adb:101:42: medium: range check might fail (e.g. when New_Val_2 = 1 and Z3 = 10) [possible explanation: subprogram at line 91 should mention Z3 in a precondition]
 update_checks.adb:101:62: medium: range check might fail (e.g. when New_Val_2 = 0) [possible explanation: subprogram at line 91 should mention New_Val_2 in a precondition]
 update_checks.adb:106:04: warning: analyzing unreferenced procedure "Test8"
+update_checks.adb:118:29: info: index check proved (CVC4: 2 VC)
 update_checks.adb:118:29: info: range check proved (CVC4: 1 VC)
+update_checks.adb:118:37: info: index check proved (CVC4: 2 VC)
 update_checks.adb:118:37: info: range check proved (CVC4: 1 VC)
+update_checks.adb:118:45: info: index check proved (CVC4: 2 VC)
 update_checks.adb:118:45: info: range check proved (CVC4: 1 VC)
+update_checks.adb:119:31: info: index check proved (CVC4: 2 VC)
 update_checks.adb:119:31: info: range check proved (CVC4: 1 VC)
+update_checks.adb:119:39: info: index check proved (CVC4: 2 VC)
 update_checks.adb:119:39: info: range check proved (CVC4: 1 VC)
+update_checks.adb:119:47: info: index check proved (CVC4: 2 VC)
 update_checks.adb:119:47: info: range check proved (CVC4: 1 VC)
 update_checks.adb:119:65: info: range check proved (CVC4: 1 VC)
+update_checks.adb:120:29: info: index check proved (CVC4: 2 VC)
 update_checks.adb:120:29: info: range check proved (CVC4: 1 VC)
+update_checks.adb:120:37: info: index check proved (CVC4: 2 VC)
 update_checks.adb:120:37: info: range check proved (CVC4: 1 VC)
+update_checks.adb:120:45: info: index check proved (CVC4: 2 VC)
 update_checks.adb:120:45: info: range check proved (CVC4: 1 VC)
 update_checks.adb:120:65: info: range check proved (CVC4: 1 VC)
+update_checks.adb:134:26: info: index check proved (CVC4: 2 VC)
 update_checks.adb:134:26: info: range check proved (CVC4: 1 VC)
+update_checks.adb:134:34: info: index check proved (CVC4: 2 VC)
 update_checks.adb:134:34: info: range check proved (CVC4: 1 VC)
+update_checks.adb:134:42: info: index check proved (CVC4: 2 VC)
 update_checks.adb:134:42: info: range check proved (CVC4: 1 VC)
+update_checks.adb:135:28: info: index check proved (CVC4: 2 VC)
 update_checks.adb:135:28: info: range check proved (CVC4: 1 VC)
+update_checks.adb:135:36: info: index check proved (CVC4: 2 VC)
 update_checks.adb:135:36: info: range check proved (CVC4: 1 VC)
+update_checks.adb:135:44: info: index check proved (CVC4: 2 VC)
 update_checks.adb:135:44: info: range check proved (CVC4: 1 VC)
 update_checks.adb:135:62: info: range check proved (CVC4: 1 VC)
+update_checks.adb:136:26: info: index check proved (CVC4: 2 VC)
 update_checks.adb:136:26: info: range check proved (CVC4: 1 VC)
+update_checks.adb:136:34: info: index check proved (CVC4: 2 VC)
 update_checks.adb:136:34: info: range check proved (CVC4: 1 VC)
+update_checks.adb:136:42: info: index check proved (CVC4: 2 VC)
 update_checks.adb:136:42: info: range check proved (CVC4: 1 VC)
 update_checks.adb:136:62: info: range check proved (CVC4: 1 VC)
 update_checks.ads:26:06: info: postcondition proved (CVC4: 1 VC; Trivial: 3 VC)
@@ -76,21 +130,49 @@ update_checks.ads:28:28: info: range check proved (CVC4: 1 VC)
 update_checks.ads:28:36: info: range check proved (CVC4: 1 VC)
 update_checks.ads:28:44: info: range check proved (CVC4: 1 VC)
 update_checks.ads:28:64: info: range check proved (CVC4: 1 VC)
+update_logic_fn.adb:12:29: info: index check proved (CVC4: 2 VC)
+update_logic_fn.adb:12:32: info: index check proved (CVC4: 2 VC)
+update_logic_fn.adb:12:43: info: index check proved (CVC4: 2 VC)
+update_logic_fn.adb:12:46: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:23:18: info: initialization of "A" proved
 update_logic_fn.ads:28:11: info: flow dependencies proved
 update_logic_fn.ads:29:14: info: postcondition proved (CVC4: 1 VC)
+update_logic_fn.ads:29:37: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:29:40: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:29:51: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:29:54: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:33:18: info: initialization of "A" proved
 update_logic_fn.ads:38:11: info: flow dependencies proved
 update_logic_fn.ads:39:14: info: postcondition proved (CVC4: 1 VC)
+update_logic_fn.ads:39:37: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:39:40: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:39:51: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:39:54: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:43:24: info: initialization of "A" proved
 update_logic_fn.ads:48:11: info: flow dependencies proved
 update_logic_fn.ads:49:14: medium: postcondition might fail, cannot prove A = A_2D_Arr'update (e.g. when V1 = 101 and V2 = Integer'First and X = 4 and Y = 0)
+update_logic_fn.ads:49:37: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:49:40: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:49:51: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:49:54: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:55:18: info: initialization of "A" proved
 update_logic_fn.ads:61:11: info: flow dependencies proved
 update_logic_fn.ads:62:14: info: postcondition proved (CVC4: 1 VC)
+update_logic_fn.ads:63:27: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:63:30: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:63:33: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:64:27: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:64:30: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:64:33: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:68:24: info: initialization of "A" proved
 update_logic_fn.ads:74:11: info: flow dependencies proved
 update_logic_fn.ads:75:14: medium: postcondition might fail, cannot prove A = A3'(others => (others => (others => 1000 ))) 'update (e.g. when V1 = Integer'First and V2 = 1001 and X = 5 and Y = 7)
+update_logic_fn.ads:76:27: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:76:30: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:76:33: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:77:27: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:77:30: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:77:33: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:83:18: info: initialization of "A" proved
 update_logic_fn.ads:88:11: info: flow dependencies proved
 update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000)) (e.g. when V2 = 99 and X = 5)
@@ -100,7 +182,29 @@ update_logic_fn.ads:103:14: info: postcondition proved (CVC4: 7 VC; Trivial: 4 V
 update_logic_fn.ads:111:18: info: initialization of "A" proved
 update_logic_fn.ads:115:11: info: flow dependencies proved
 update_logic_fn.ads:116:14: info: postcondition proved (CVC4: 1 VC)
+update_logic_fn.ads:116:37: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:116:40: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:116:46: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:116:49: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:121:18: info: initialization of "A" proved
 update_logic_fn.ads:127:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+update_logic_fn.ads:128:28: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:128:31: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:128:34: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:128:43: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:128:47: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:128:51: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:129:28: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:129:32: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:129:36: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:133:24: info: initialization of "A" proved
 update_logic_fn.ads:140:06: medium: postcondition might fail, cannot prove A = A_3D_Arr'update (e.g. when V1 = 1001 and V2 = Integer'First and X1 = 1 and X2 = 2 and Y1 = 3 and Y2 = 2 and Z1 = Blue and Z2 = Blue)
+update_logic_fn.ads:140:28: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:140:31: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:140:34: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:140:43: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:140:47: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:140:51: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:141:28: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:141:32: info: index check proved (CVC4: 2 VC)
+update_logic_fn.ads:141:36: info: index check proved (CVC4: 2 VC)

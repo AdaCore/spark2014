@@ -1,0 +1,9 @@
+INLINING ENABLED:
+update.adb:6:14: info: add a contract to analyze it separately from calling contexts
+update.adb:6:14: info: local subprogram "Test" only analyzed in the context of calls
+update.adb:6:14: warning: subprogram "Test" has no effect
+
+INLINING DISABLED:
+update.adb:6:14: warning: subprogram "Test" has no effect
+update.adb:8:33: info: range check proved (CVC4: 1 VC)
+update.adb:8:33: medium: range check might fail (e.g. when V = 0) [possible explanation: subprogram at line 6 should mention V in a precondition]

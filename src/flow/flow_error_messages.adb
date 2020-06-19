@@ -1314,7 +1314,7 @@ package body Flow_Error_Messages is
 
    begin
 
-      if Tag in VC_UC_No_Holes then
+      if Tag = VC_UC_No_Holes then
          pragma Assert
            (Nkind (N) in N_Identifier
                        | N_Expanded_Name
@@ -1339,6 +1339,30 @@ package body Flow_Error_Messages is
             end if;
          end;
          return "";
+      elsif Tag = VC_UC_Alignment then
+         pragma Assert (Nkind (N) = N_Object_Declaration);
+         declare
+            Obj    : constant Entity_Id := Defining_Identifier (N);
+            Expr   : constant Node_Id :=
+              SPARK_Atree.Get_Address_Rep_Item (N);
+            Common : constant String :=
+              "should have an Alignment representation clause";
+         begin
+            --  Alignment VC is only issued with overlays
+            pragma Assert
+              (Present (Expr)
+               and then Nkind (Expr) = N_Attribute_Reference
+               and then Get_Attribute_Id (Attribute_Name (Expr))
+                 = Attribute_Address);
+            if not Known_Alignment (Obj) then
+               return "overlaying object " & Common;
+            elsif Nkind (Prefix (Expr)) not in N_Has_Entity
+              or else not Known_Alignment (Entity (Prefix (Expr)))
+            then
+               return "overlayed object " & Common;
+            end if;
+            return "";
+         end;
       end if;
 
       --  Adjust the enclosing subprogram entity

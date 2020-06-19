@@ -2,8 +2,15 @@ gcc -c -gnata main.adb
 gcc -c -gnata update_legal.adb
 gnatbind -x main.ali
 gnatlink main.ali
+update_legal.adb:6:28: info: index check proved (CVC4: 2 VC)
+update_legal.adb:7:28: info: index check proved (CVC4: 2 VC)
+update_legal.adb:8:28: info: index check proved (CVC4: 2 VC)
+update_legal.adb:9:28: info: index check proved (CVC4: 2 VC)
+update_legal.adb:10:26: info: index check proved (CVC4: 2 VC)
 update_legal.adb:13:22: info: assertion proved (CVC4: 5 VC)
+update_uninitialized.adb:15:26: info: index check proved (CVC4: 2 VC)
 update_uninitialized.adb:15:26: medium: "Element" might not be initialized
+update_uninitialized.adb:30:26: info: index check proved (CVC4: 2 VC)
 update_uninitialized.adb:30:31: info: range check proved (CVC4: 1 VC)
 update_uninitialized.adb:30:40: medium: "Element" might not be initialized
 update_uninitialized_2.adb:16:11: info: data dependencies proved

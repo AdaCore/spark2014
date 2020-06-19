@@ -1,10 +1,6 @@
 Representation Issues
 =====================
 
-.. todo:: Provide full detail on Representation Issues.
-          To be completed in a post-Release 1 version of this document.
-
-
 Operational and Representation Aspects
 ---------------------------------------
 
@@ -83,53 +79,87 @@ No restrictions or additions.
 The Package System
 ------------------
 
-.. centered:: **Legality Rules**
+Direct manipulation of addresses is restricted in |SPARK|. In particular, the
+use of address clauses or aspects to define the address of an object in memory
+is restricted in |SPARK|. If the address of an object ``X`` is specified to be
+the address of another object ``Y``, then ``X`` is said to overlay ``Y``. Both
+``X`` and ``Y`` are said to be overlaid objects. The verification rules below
+impose restrictions on overlaid objects in |SPARK|. Other address clauses and
+aspects are not restricted; the onus is on the user to ensure that this is
+correct with respect to the program semantics of |SPARK|.
 
+.. centered:: **Legality Rules**
 
 1. The use of the operators defined for type Address are not permitted
    in |SPARK| except for use within representation clauses.
 
+.. centered:: **Verification Rules**
+
+2. If an object ``X`` overlays an object ``Y``, then the sizes of ``X`` and
+   ``Y`` shall be known at compile-time and shall be equal.
+
+3. If an object ``X`` overlays an object ``Y``, then the alignment of ``X``
+   shall be an integral multiple of the alignment of ``Y``.
+
+4. The type of an overlaid object shall be suitable for unchecked conversion
+   (see :ref:`Unchecked Type Conversions`);
 
 Machine Code Insertions
 -----------------------
 
 .. centered:: **Legality Rules**
 
-
 1. Machine code insertions are not in |SPARK|.
 
+
+.. _Unchecked Type Conversions:
 
 Unchecked Type Conversions
 --------------------------
 
-The validity of unchecked type conversions is not currently checked by
-|SPARK| the onus is on the user to ensure that the value read from an
-unchecked type conversion is valid (see :ref:`data_validity`).
+A subtype ``S`` is said to be `suitable for unchecked conversion` if:
 
-.. todo::
-   Provide a detailed semantics for Refined_Pre and Refined_Post aspects on
-   Unchecked_Conversion. To be completed in a post-Release 1 version of this document.
+- ``S`` has a contiguous representation. No part of ``S`` is of a tagged type,
+  of an access type, of a subtype that is subject to a predicate, of a type
+  that is subject to a type_invariant, of an immutably limited type, or of a
+  private type whose completion fails to meet these requirements.
+
+- Given the size N of ``S`` in bits, there exist exactly 2**N distinct values
+  that belong to ``S`` and contain no invalid scalar parts.  [In other words,
+  every possible assignment of values to the bits representing an object of
+  subtype ``S`` represents a distinct value of ``S``.]
+
+Unchecked type conversions are in |SPARK|, with some restrictions described
+below. Although it is not mandated by Ada standard, the compiler should ensure
+that it does not return the result of unchecked conversion by reference if it
+could be misaligned (as GNAT ensures).
+
+.. centered:: **Verification Rules**
+
+1. The source and target subtypes of an instance of ``Unchecked_Conversion``
+   shall have the same size.
+
+2. The source and target subtypes shall be suitable for unchecked conversion.
 
 .. _data_validity:
 
 Data Validity
 ~~~~~~~~~~~~~
 
-Currently |SPARK| does not check for data validity.
-It is therefore up to users to ensure that data read from
-external sources and values from unchecked type conversions are valid.
+|SPARK| rules ensure the only possible cases of invalid data in a |SPARK|
+program come from interfacing with the external world, either through the
+hardware-software or Operating Systems integration, or through interactions
+with non-|SPARK| code in the same program. In particular, it is up to users to
+ensure that data read from external sources are valid.
 
-Validity can be ensured by using a type for the target of the data
-read from an external source or an unchecked type conversion which is
-sufficient to encompass all possible values of the source.
-Alternatively the X'Valid (or X'Valid_Scalars for composite types) may
-be used to determine the validity of an object.
+Validity can be ensured by using a type for the target of the data read from an
+external source (or an unchecked type conversion when used to read data from
+external source) which is sufficient to encompass all possible values of the
+source.  Alternatively the X'Valid (or X'Valid_Scalars for composite types) may
+be used to help determine the validity of an object.
 
 The use of invalid values in a program (other than in a Valid, or Valid_Scalars
 attribute) may invalidate any proofs performed on the program.
-
-.. todo:: Introduce checks for data validity into the proof model as necessary.
-          To be completed in a post-Release 1 version of this document.
 
 Unchecked Access Value Creation
 -------------------------------

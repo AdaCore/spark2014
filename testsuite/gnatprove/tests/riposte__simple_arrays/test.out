@@ -19,50 +19,104 @@ simple_arrays.adb:66:11: info: flow dependencies proved
 simple_arrays.adb:68:22: medium: postcondition might fail, cannot prove A /= B
 simple_arrays.adb:79:11: info: flow dependencies proved
 simple_arrays.adb:81:13: info: postcondition proved (CVC4: 2 VC; Trivial: 5 VC; Z3: 1 VC)
+simple_arrays.adb:85:54: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:86:50: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:89:22: medium: assertion might fail, cannot prove (A with delta 1 => 5,  N => 6) = ... (e.g. when A = (others => 5) and N = 0) [possible explanation: subprogram at line 77 should mention A and N in a precondition]
+simple_arrays.adb:89:36: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:90:32: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:90:56: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:91:52: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:98:11: info: flow dependencies proved
+simple_arrays.adb:100:36: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:101:22: info: postcondition proved (CVC4: 1 VC)
 simple_arrays.adb:110:11: info: flow dependencies proved
+simple_arrays.adb:112:40: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:113:46: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:114:42: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:116:22: info: postcondition proved (CVC4: 1 VC)
 simple_arrays.adb:125:11: info: flow dependencies proved
 simple_arrays.adb:127:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 simple_arrays.adb:140:11: info: flow dependencies proved
 simple_arrays.adb:142:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 simple_arrays.adb:152:22: info: assertion proved (Z3: 1 VC)
+simple_arrays.adb:152:40: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:153:36: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:154:36: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:154:64: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:155:60: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:156:60: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:157:22: info: assertion proved (Z3: 1 VC)
+simple_arrays.adb:157:40: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:158:36: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:159:36: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:159:64: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:160:60: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:161:60: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:162:22: info: assertion proved (Z3: 1 VC)
+simple_arrays.adb:162:40: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:163:36: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:164:36: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:164:64: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:165:60: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:166:60: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:173:11: info: flow dependencies proved
+simple_arrays.adb:176:40: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:177:46: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:179:22: info: postcondition proved (CVC4: 1 VC)
 simple_arrays.adb:189:11: info: flow dependencies proved
 simple_arrays.adb:192:22: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:192:41: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:201:11: info: flow dependencies proved
 simple_arrays.adb:204:22: info: assertion proved (CVC4: 2 VC)
+simple_arrays.adb:204:41: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:205:57: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:213:11: info: flow dependencies proved
 simple_arrays.adb:216:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+simple_arrays.adb:216:55: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:217:57: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:225:11: info: flow dependencies proved
 simple_arrays.adb:229:10: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+simple_arrays.adb:229:55: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:230:72: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:238:11: info: flow dependencies proved
 simple_arrays.adb:241:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+simple_arrays.adb:243:50: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:244:70: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:252:11: info: flow dependencies proved
 simple_arrays.adb:255:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+simple_arrays.adb:257:50: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:259:70: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:267:11: info: flow dependencies proved
 simple_arrays.adb:270:22: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+simple_arrays.adb:272:50: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:275:70: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:283:11: info: flow dependencies proved
 simple_arrays.adb:286:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
+simple_arrays.adb:288:50: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:291:50: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:300:11: info: flow dependencies proved
 simple_arrays.adb:303:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
+simple_arrays.adb:305:50: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:308:50: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:318:11: info: flow dependencies proved
 simple_arrays.adb:321:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
+simple_arrays.adb:323:50: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:326:50: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:337:11: info: flow dependencies proved
 simple_arrays.adb:340:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
+simple_arrays.adb:342:50: info: index check proved (CVC4: 2 VC)
+simple_arrays.adb:345:50: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:358:11: info: flow dependencies proved
 simple_arrays.adb:360:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 simple_arrays.adb:373:11: info: flow dependencies proved
 simple_arrays.adb:376:22: info: assertion proved (CVC4: 1 VC)
+simple_arrays.adb:376:46: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:382:11: info: flow dependencies proved
 simple_arrays.adb:385:22: info: assertion proved (CVC4: 1 VC)
+simple_arrays.adb:385:46: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:391:11: info: flow dependencies proved
 simple_arrays.adb:393:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+simple_arrays.adb:394:48: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:402:09: info: flow dependencies proved
 simple_arrays.adb:405:22: medium: assertion might fail, cannot prove A(Elem_0) = Elem_0 (e.g. when A = (others => Elem_1)) [possible explanation: subprogram at line 401 should mention A in a precondition]
 simple_arrays.adb:409:11: info: flow dependencies proved

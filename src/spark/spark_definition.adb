@@ -2274,20 +2274,13 @@ package body SPARK_Definition is
             end if;
 
          when N_Delta_Aggregate =>
-            Mark (Expression (N));
 
-            if not Retysp_In_SPARK (Etype (N)) then
-               Mark_Violation (N, Etype (N));
+            if Retysp_In_SPARK (Etype (N)) then
+               Mark (Expression (N));
+               Mark_List (Component_Associations (N));
+               Check_No_Deep_Duplicates_In_Assoc (N);
             else
-               --  Currently, the frontend does not associate an entity to the
-               --  choices in the component association.
-
-               if Is_Record_Type (Retysp (Etype (N))) then
-                  Mark_Unsupported ("delta aggregate on a record type", N);
-               else
-                  Mark_List (Component_Associations (N));
-                  Check_No_Deep_Duplicates_In_Assoc (N);
-               end if;
+               Mark_Violation (N, Etype (N));
             end if;
 
          --  Object renamings are rewritten by expansion, but they are kept in
@@ -7225,6 +7218,13 @@ package body SPARK_Definition is
            and then Ekind (Scope (E)) = E_Package
            and then In_Visible_Declarations
              (Parent (Subprogram_Specification (E))))
+
+        --  We still mark predicate functions declared in the specification
+        --  of internal units.
+
+        and then not
+          (Ekind (E) = E_Function
+           and then Is_Predicate_Function (E))
       then
          return;
 

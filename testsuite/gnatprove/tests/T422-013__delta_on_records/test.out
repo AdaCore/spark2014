@@ -1,0 +1,7 @@
+test_delta_record.adb:15:14: warning: subprogram "Test_Simple" has no effect
+test_delta_record.adb:19:22: info: assertion proved (CVC4: 1 VC)
+test_delta_record.adb:22:14: warning: subprogram "Test_Discr" has no effect
+test_delta_record.adb:23:23: info: range check proved (CVC4: 1 VC)
+test_delta_record.adb:23:32: info: discriminant check proved (CVC4: 1 VC)
+test_delta_record.adb:25:26: info: discriminant check proved (CVC4: 1 VC)
+test_delta_record.adb:26:22: info: assertion proved (CVC4: 1 VC)

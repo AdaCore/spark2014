@@ -10,7 +10,8 @@ procedure DIC is
       function Is_Zero (Arg : T) return Boolean is (Arg = 0);
    end;
 
-   Y : P.T := P.Zero;  --  DIC is *not* evaluated here
+   Y : P.T := P.Zero;   --  DIC is *not* evaluated here
+   Z : P.T with Import; --  DIC is *not* evaluated here
 begin
    pragma Assert (P.Is_Zero (Y));
 end;
