@@ -1,2 +1,2 @@
 foo.adb:10:12: medium: divide by zero might fail, in instantiation at foo.adb:19 [possible explanation: subprogram at line 5 should mention A and B in a precondition]
-foo.adb:10:12: medium: overflow check might fail, in instantiation at foo.adb:19 (e.g. when A = -1 and B = 0) [possible explanation: subprogram at line 5 should mention A and B in a precondition]
+foo.adb:10:12: medium: overflow check might fail, in instantiation at foo.adb:19 (e.g. when A = -1 and B = 0) [reason for check: result of division must fit in a 32-bits machine integer] [possible explanation: subprogram at line 5 should mention A and B in a precondition]

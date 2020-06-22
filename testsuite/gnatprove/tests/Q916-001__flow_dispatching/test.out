@@ -1,5 +1,5 @@
 ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
-ints.adb:18:19: low: range check might fail [possible explanation: subprogram at ints.ads:13 should mention Msg in a precondition]
+ints.adb:18:19: low: range check might fail [reason for check: input value must fit in parameter type] [possible explanation: subprogram at ints.ads:13 should mention Msg in a precondition]
 ints.adb:20:34: info: range check proved (CVC4: 1 VC)
 ints.adb:20:59: info: range check proved (CVC4: 1 VC)
 ints.adb:21:29: info: range check proved (CVC4: 1 VC)
@@ -7,11 +7,11 @@ ints.adb:21:54: info: range check proved (CVC4: 1 VC)
 ints.adb:22:31: info: range check proved (CVC4: 1 VC)
 ints.adb:22:58: info: range check proved (CVC4: 1 VC)
 ints.adb:27:10: info: precondition proved (CVC4: 1 VC)
-ints.adb:31:08: medium: overflow check might fail [possible explanation: subprogram at ints.ads:25 should mention Arg1 and Arg2 in a precondition]
-ints.adb:31:24: medium: overflow check might fail [possible explanation: subprogram at ints.ads:25 should mention Arg1 and Arg2 in a precondition]
-ints.adb:31:56: medium: overflow check might fail [possible explanation: subprogram at ints.ads:25 should mention Arg1 and Arg2 in a precondition]
+ints.adb:31:08: medium: overflow check might fail [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible explanation: subprogram at ints.ads:25 should mention Arg1 and Arg2 in a precondition]
+ints.adb:31:24: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at ints.ads:25 should mention Arg1 and Arg2 in a precondition]
+ints.adb:31:56: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at ints.ads:25 should mention Arg1 and Arg2 in a precondition]
 ints.adb:35:30: info: overflow check proved (CVC4: 1 VC)
-ints.adb:41:19: low: range check might fail [possible explanation: subprogram at ints.ads:28 should mention Msg in a precondition]
+ints.adb:41:19: low: range check might fail [reason for check: input value must fit in parameter type] [possible explanation: subprogram at ints.ads:28 should mention Msg in a precondition]
 ints.adb:43:34: info: range check proved (CVC4: 1 VC)
 ints.adb:43:59: info: range check proved (CVC4: 1 VC)
 ints.adb:44:29: info: range check proved (CVC4: 1 VC)
@@ -20,10 +20,10 @@ ints.adb:45:31: info: range check proved (CVC4: 1 VC)
 ints.adb:45:58: info: range check proved (CVC4: 1 VC)
 ints.adb:46:35: info: range check proved (CVC4: 1 VC)
 ints.adb:46:66: info: range check proved (CVC4: 1 VC)
-ints.adb:51:38: medium: overflow check might fail [possible explanation: subprogram at ints.ads:30 should mention Arg in a precondition]
-ints.ads:11:40: medium: overflow check might fail
+ints.adb:51:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at ints.ads:30 should mention Arg in a precondition]
+ints.ads:11:40: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
 ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
-ints.ads:16:34: medium: overflow check might fail
+ints.ads:16:34: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
 ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 ints.ads:26:25: info: postcondition proved (CVC4: 1 VC)
 test_ints.adb:12:04: info: precondition proved (CVC4: 1 VC)

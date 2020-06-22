@@ -1,4 +1,4 @@
-test_pack.adb:7:32: medium: float overflow check might fail (e.g. when Measured = 3.3245912E+35 and Pid = (Desired => -3.3994990E+38, Error => -3.3994990E+38))
+test_pack.adb:7:32: medium: float overflow check might fail (e.g. when Measured = 3.3245912E+35 and Pid = (Desired => -3.3994990E+38, Error => -3.3994990E+38)) [reason for check: result of floating-point subtraction must be bounded]
 test_pack.ads:10:06: info: flow dependencies proved
 test_pack.ads:12:43: info: float overflow check proved (CVC4: 1 VC)
 test_pack.ads:14:42: info: float overflow check proved (CVC4: 1 VC)

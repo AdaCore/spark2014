@@ -1,11 +1,11 @@
 foo.adb:28:04: warning: analyzing unreferenced procedure "Test_01"
 foo.adb:28:23: info: initialization of "N" proved
-foo.adb:33:17: medium: overflow check might fail
+foo.adb:33:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:34:33: info: loop invariant initialization proved (CVC4: 1 VC)
 foo.adb:34:33: info: loop invariant preservation proved (CVC4: 1 VC)
 foo.adb:38:04: warning: analyzing unreferenced procedure "Test_02"
 foo.adb:38:14: warning: subprogram "Test_02" has no effect
-foo.adb:45:25: medium: overflow check might fail
+foo.adb:45:25: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:46:33: info: loop invariant initialization proved (CVC4: 1 VC)
 foo.adb:46:33: info: loop invariant preservation proved (CVC4: 1 VC)
 foo.adb:54:23: info: initialization of "O" proved
@@ -14,7 +14,7 @@ foo.adb:57:07: info: initialization of "Tmp" proved
 foo.adb:65:23: info: initialization of "O" proved
 foo.adb:66:09: info: flow dependencies proved
 foo.adb:68:07: info: initialization of "Tmp" proved
-foo.adb:72:39: medium: overflow check might fail [possible explanation: subprogram at line 63 should mention A in a precondition]
+foo.adb:72:39: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 63 should mention A in a precondition]
 foo.adb:77:23: info: initialization of "O" proved
 foo.adb:78:09: info: flow dependencies proved
 foo.adb:80:07: info: initialization of "Tmp" proved

@@ -1,9 +1,9 @@
 main.adb:5:14: warning: subprogram "Test" has no effect
-main.adb:6:30: medium: array index check might fail
+main.adb:6:30: medium: array index check might fail [reason for check: value must be a valid index into the array]
 main.adb:11:14: warning: subprogram "Test2" has no effect
-main.adb:15:30: medium: array index check might fail
+main.adb:15:30: medium: array index check might fail [reason for check: value must be a valid index into the array]
 main.adb:20:14: warning: subprogram "Test3" has no effect
-main.adb:24:29: medium: array index check might fail (e.g. when X = 1)
+main.adb:24:29: medium: array index check might fail (e.g. when X = 1) [reason for check: value must be a valid index into the array]
 main.adb:24:29: medium: initialization check might fail (e.g. when X = 1)
-main.adb:24:31: medium: array index check might fail
+main.adb:24:31: medium: array index check might fail [reason for check: value must be a valid index into the array]
 main.adb:30:04: info: precondition proved (Trivial: 1 VC)

@@ -23,7 +23,7 @@ local_borrow_array.adb:29:37: medium: pointer dereference check might fail
 local_borrow_array.adb:29:37: medium: precondition might fail, cannot prove X /= null
 local_borrow_array.adb:29:48: info: precondition proved (CVC4: 1 VC)
 local_borrow_array.adb:29:48: medium: pointer dereference check might fail
-local_borrow_array.adb:29:63: medium: array index check might fail
-local_borrow_array.adb:29:68: medium: array index check might fail
-local_borrow_array.adb:29:73: medium: array index check might fail
+local_borrow_array.adb:29:63: medium: array index check might fail [reason for check: value must be a valid index into the array]
+local_borrow_array.adb:29:68: medium: array index check might fail [reason for check: value must be a valid index into the array]
+local_borrow_array.adb:29:73: medium: array index check might fail [reason for check: value must be a valid index into the array]
 local_borrow_array.adb:31:08: medium: pointer dereference check might fail

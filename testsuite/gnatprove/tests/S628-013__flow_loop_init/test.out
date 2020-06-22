@@ -1,3 +1,3 @@
 show_composite_types_shortcoming.adb:5:24: info: cannot unroll loop (too many loop iterations)
-show_composite_types_shortcoming.adb:9:16: medium: array index check might fail
+show_composite_types_shortcoming.adb:9:16: medium: array index check might fail [reason for check: value must be a valid index into the array]
 show_composite_types_shortcoming.ads:5:25: medium: "A" might not be initialized in "Init_Loop"

@@ -1,4 +1,4 @@
-pack-double_b.adb:5:11: medium: overflow check might fail [possible explanation: subprogram at line 2 should mention B in a precondition]
+pack-double_b.adb:5:11: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 2 should mention B in a precondition]
 pack-inner.adb:5:04: info: initialization of "Inner_Body_Var" constituent of "Inner_State" proved
 pack-inner.adb:8:42: info: initialization of "Inner_Body_Var" constituent of "Inner_State" proved
 pack-inner.adb:8:58: info: initialization of "Inner.Inner_Var" constituent of "Pack.State2" proved

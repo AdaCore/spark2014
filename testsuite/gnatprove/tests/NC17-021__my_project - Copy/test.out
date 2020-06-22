@@ -1,6 +1,6 @@
-pre_post_exercise.adb:16:38: medium: range check might fail (e.g. when Stack_Pointer = Pointer_Range'Last) [possible explanation: subprogram at pre_post_exercise.ads:23 should mention Stack_Pointer in a precondition]
+pre_post_exercise.adb:16:38: medium: range check might fail (e.g. when Stack_Pointer = Pointer_Range'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at pre_post_exercise.ads:23 should mention Stack_Pointer in a precondition]
 pre_post_exercise.adb:17:14: info: index check proved (CVC4: 2 VC)
-pre_post_exercise.adb:22:19: medium: array index check might fail [possible explanation: subprogram at pre_post_exercise.ads:28 should mention Stack_Pointer in a precondition]
+pre_post_exercise.adb:22:19: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at pre_post_exercise.ads:28 should mention Stack_Pointer in a precondition]
 pre_post_exercise.adb:23:38: info: range check proved (CVC4: 1 VC)
 pre_post_exercise.ads:11:11: info: data dependencies proved
 pre_post_exercise.ads:19:11: info: data dependencies proved

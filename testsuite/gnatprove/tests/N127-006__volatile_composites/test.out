@@ -1,7 +1,7 @@
 legal.adb:47:16: info: types in unchecked conversion have the same size (Trivial)
 legal.adb:47:51: info: type is suitable for unchecked conversion (Trivial)
 legal.adb:47:60: info: type is suitable for unchecked conversion (Trivial)
-legal.adb:50:21: medium: range check might fail (e.g. when Tmp = Target'Last)
+legal.adb:50:21: medium: range check might fail (e.g. when Tmp = Target'Last) [reason for check: value must be convertible to the target type of the conversion]
 legal.ads:91:19: info: initialization of "X" proved
 legal.ads:92:11: info: data dependencies proved
 legal.ads:95:11: info: data dependencies proved

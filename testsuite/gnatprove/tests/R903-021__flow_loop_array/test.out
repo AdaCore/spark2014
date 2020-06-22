@@ -9,7 +9,7 @@ dynamic_2d.adb:1:11: warning: subprogram "Dynamic_2D" has no effect
 dynamic_2d.adb:4:14: info: add a contract to analyze it separately from calling contexts
 dynamic_2d.adb:4:14: info: local subprogram "Flush" only analyzed in the context of calls
 dynamic_2d.adb:4:21: medium: "S" might not be initialized in "Flush"
-dynamic_2d.adb:13:26: medium: length check might fail
+dynamic_2d.adb:13:26: medium: length check might fail [reason for check: array must be of the appropriate length]
 dynamic_2d.adb:16:04: info: cannot unroll loop (too many loop iterations)
 dynamic_2d.adb:16:04: info: cannot unroll loop (too many loop iterations)
 dynamic_2d.adb:16:04: info: in inlined body at line 6

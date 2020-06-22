@@ -1,18 +1,18 @@
 test.adb:7:04: warning: analyzing unreferenced function "Uninitialized_1"
 test.adb:8:07: info: initialization of "X" proved
 test.adb:16:14: medium: "Y" might not be initialized
-test.adb:16:16: medium: overflow check might fail
+test.adb:16:16: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
 test.adb:31:07: medium: exception might be raised
 test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3"
 test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3"
 test.adb:40:23: info: cannot unroll loop (too many loop iterations)
-test.adb:41:20: medium: overflow check might fail [possible explanation: subprogram at line 38 should mention A and B in a precondition]
+test.adb:41:20: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 38 should mention A and B in a precondition]
 test.adb:41:25: info: division check proved (CVC4: 1 VC)
 test.adb:45:27: info: overflow check proved (CVC4: 1 VC)
 test.adb:45:32: info: division check proved (CVC4: 1 VC)
 test.adb:56:04: warning: analyzing unreferenced procedure "Uninitialized_4"
 test.adb:56:31: medium: "Export" might not be initialized in "Uninitialized_4"
-test.adb:62:20: medium: overflow check might fail [possible explanation: loop at line 61 should mention A in a loop invariant]
+test.adb:62:20: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 61 should mention A in a loop invariant]
 test.adb:66:26: info: overflow check proved (CVC4: 1 VC)
 test.adb:76:04: warning: analyzing unreferenced procedure "Uninitialized_5"
 test.adb:76:31: medium: "A" might not be initialized in "Uninitialized_5"
@@ -20,11 +20,11 @@ test.adb:79:21: high: "C" is not initialized
 test.adb:79:23: info: cannot unroll loop (too many loop iterations)
 test.adb:80:15: high: "A" is not initialized
 test.adb:80:17: info: range check proved (CVC4: 1 VC)
-test.adb:80:17: medium: overflow check might fail [possible explanation: loop at line 79 should mention A in a loop invariant]
+test.adb:80:17: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: loop at line 79 should mention A in a loop invariant]
 test.adb:88:04: warning: analyzing unreferenced procedure "Ineffective_Statements_1"
 test.adb:90:11: info: range check proved (CVC4: 2 VC)
 test.adb:90:37: info: cannot unroll loop (too many loop iterations)
-test.adb:91:17: medium: overflow check might fail [possible explanation: loop at line 90 should mention A in a loop invariant]
+test.adb:91:17: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: loop at line 90 should mention A in a loop invariant]
 test.adb:92:12: warning: unused assignment
 test.adb:94:14: info: division check proved (CVC4: 1 VC)
 test.adb:101:04: warning: analyzing unreferenced procedure "Ineffective_Statements_2"
@@ -44,7 +44,7 @@ test.adb:129:15: info: flow dependencies proved
 test.adb:135:07: warning: "Temp" is set by "Initialize_Temp" but not used after the call
 test.adb:135:07: warning: statement has no effect
 test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
-test.adb:150:24: medium: overflow check might fail [possible explanation: subprogram at line 147 should mention Val in a precondition]
+test.adb:150:24: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 147 should mention Val in a precondition]
 test.adb:150:41: info: range check proved (CVC4: 1 VC)
 test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect
 test.adb:167:10: info: initialization of "Unused" proved, in instantiation at test.adb:176
@@ -55,8 +55,8 @@ test.adb:187:10: info: initialization of "Y" proved
 test.adb:187:13: warning: unused variable "Z"
 test.adb:190:15: info: data dependencies proved
 test.adb:190:29: low: unused global "Y"
-test.adb:199:23: medium: overflow check might fail [possible explanation: subprogram at line 185 should mention Par1 in a precondition]
-test.adb:199:30: medium: overflow check might fail [possible explanation: subprogram at line 185 should mention Par1 in a precondition]
+test.adb:199:23: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 185 should mention Par1 in a precondition]
+test.adb:199:30: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at line 185 should mention Par1 in a precondition]
 test.adb:208:14: warning: subprogram "Unreachable_Code_1" has no effect
 test.adb:213:12: warning: this statement is never reached
 test.adb:217:15: warning: this statement is never reached

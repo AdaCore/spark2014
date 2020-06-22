@@ -1,4 +1,4 @@
-tab_init.adb:5:19: medium: overflow check might fail (e.g. when A = -195225787 and I = 3 and T = (others => -195225787)) [possible explanation: subprogram at tab_init.ads:5 should mention A in a precondition]
+tab_init.adb:5:19: medium: overflow check might fail (e.g. when A = -195225787 and I = 3 and T = (others => -195225787)) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at tab_init.ads:5 should mention A in a precondition]
 tab_init.adb:6:33: info: loop invariant proved (CodePeer)
 tab_init.adb:6:64: medium: "T" might not be initialized
 tab_init.adb:6:66: info: index check proved (CVC4: 4 VC)

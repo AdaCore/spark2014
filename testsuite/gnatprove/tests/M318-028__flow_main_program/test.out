@@ -7,12 +7,12 @@ main2.adb:4:09: info: data dependencies proved
 main2.adb:4:48: low: unused global "Some_Package.State"
 main2.adb:8:30: medium: "X" might not be initialized after elaboration of main program "Main2"
 main2.adb:8:33: info: cannot unroll loop (too many loop iterations)
-main2.adb:9:20: medium: overflow check might fail [possible explanation: loop at line 8 should mention Temp in a loop invariant]
+main2.adb:9:20: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 8 should mention Temp in a loop invariant]
 not_main.adb:7:12: info: data dependencies proved
-not_main.adb:10:16: medium: overflow check might fail [possible explanation: subprogram at line 6 should mention X and Y in a precondition]
+not_main.adb:10:16: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 6 should mention X and Y in a precondition]
 not_main.adb:14:12: info: data dependencies proved
-not_main.adb:17:14: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention X in a precondition]
-not_main.adb:18:14: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention Y in a precondition]
+not_main.adb:17:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 13 should mention X in a precondition]
+not_main.adb:18:14: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 13 should mention Y in a precondition]
 not_main.adb:23:12: info: data dependencies proved
 not_main.ads:5:17: warning: subprogram "Do_Nothing" has no effect
 not_main2.ads:5:14: warning: subprogram "Not_Main_Generic_Instantiation" has no effect

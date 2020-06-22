@@ -1,2 +1,2 @@
 outer.ads:4:22: warning: no procedure exists that can initialize abstract state "Outer.Out_State"
-outer.ads:13:25: medium: range check might fail
+outer.ads:13:25: medium: range check might fail [reason for check: default component value must fit in the type]

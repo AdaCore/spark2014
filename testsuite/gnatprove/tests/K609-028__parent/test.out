@@ -1,4 +1,4 @@
-ext_pack.adb:9:14: medium: overflow check might fail (e.g. when C = -1 and Step = Integer'First) [possible explanation: subprogram at ext_pack.ads:8 should mention C and Step in a precondition]
-ext_pack.adb:10:20: medium: overflow check might fail (e.g. when Step = Integer'Last) [possible explanation: subprogram at ext_pack.ads:8 should mention Step in a precondition]
+ext_pack.adb:9:14: medium: overflow check might fail (e.g. when C = -1 and Step = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at ext_pack.ads:8 should mention C and Step in a precondition]
+ext_pack.adb:10:20: medium: overflow check might fail (e.g. when Step = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at ext_pack.ads:8 should mention Step in a precondition]
 ext_pack.ads:3:08: info: flow dependencies proved
 pack.ads:4:03: info: flow dependencies proved

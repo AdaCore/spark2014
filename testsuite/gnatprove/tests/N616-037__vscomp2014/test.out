@@ -1,2 +1,2 @@
 old_val.adb:6:14: warning: subprogram "Local" has no effect
-old_val.adb:7:25: medium: range check might fail (e.g. when X = 1 and Y = 2) [possible explanation: subprogram at line 6 should mention X and Y in a precondition]
+old_val.adb:7:25: medium: range check might fail (e.g. when X = 1 and Y = 2) [reason for check: result of subtraction must fit in the type of the qualification] [possible explanation: subprogram at line 6 should mention X and Y in a precondition]

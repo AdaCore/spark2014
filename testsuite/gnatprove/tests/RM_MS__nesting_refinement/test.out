@@ -3,7 +3,7 @@ nesting_refinement_14.adb:6:07: info: initialization of "Y" constituent of "Stat
 nesting_refinement_14.adb:10:40: info: initialization of "Y" constituent of "State" proved
 nesting_refinement_14.adb:12:07: info: initialization of "Z" proved
 nesting_refinement_14.adb:15:14: info: data dependencies proved
-nesting_refinement_14.adb:19:17: medium: overflow check might fail (e.g. when X = -1 and Z = Integer'First) [possible explanation: subprogram at line 14 should mention Z and X in a precondition]
+nesting_refinement_14.adb:19:17: medium: overflow check might fail (e.g. when X = -1 and Z = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 14 should mention Z and X in a precondition]
 nesting_refinement_14.adb:23:14: info: data dependencies proved
 nesting_refinement_14.adb:23:35: info: initialization of "Y" constituent of "State" proved
 nesting_refinement_14.ads:4:08: info: flow dependencies proved

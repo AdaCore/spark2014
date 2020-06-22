@@ -4,4 +4,4 @@ p.adb:7:04: info: initialization of "Buffer" proved
 p.adb:12:26: medium: precondition might fail, cannot prove Right'Length <= Natural'Last - Length (Left) (e.g. when Buffer = (others => 'NUL')) [possible explanation: loop at line 10 should mention Unb_Str in a loop invariant]
 p.adb:12:28: info: range check proved (CVC4: 4 VC)
 p.adb:18:13: medium: precondition might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 0)
-p.adb:18:13: medium: range check might fail
+p.adb:18:13: medium: range check might fail [reason for check: value must fit in the target type of the assignment]

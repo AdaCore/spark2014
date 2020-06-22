@@ -1,2 +1,2 @@
 q.adb:3:06: info: initialization of "Tmp" proved
-q.adb:6:14: medium: range check might fail [possible explanation: subprogram at q.ads:3 should mention Y in a precondition]
+q.adb:6:14: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible explanation: subprogram at q.ads:3 should mention Y in a precondition]

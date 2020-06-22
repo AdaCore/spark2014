@@ -14,9 +14,9 @@ info_flow_tests.adb:24:23: medium: incorrect dependency "B => A"
 info_flow_tests.adb:28:12: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:29:12: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:35:24: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
-info_flow_tests.adb:35:26: medium: range check might fail
+info_flow_tests.adb:35:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 info_flow_tests.adb:36:24: high: constant with variable input "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
-info_flow_tests.adb:36:26: medium: range check might fail
+info_flow_tests.adb:36:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 info_flow_tests.adb:44:09: info: data dependencies proved
 info_flow_tests.adb:45:09: info: flow dependencies proved
 info_flow_tests.adb:50:12: info: range check proved (CVC4: 2 VC)
@@ -28,7 +28,7 @@ info_flow_tests.adb:56:12: info: flow dependencies proved
 info_flow_tests.adb:60:26: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:61:26: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:69:11: info: data dependencies proved
-info_flow_tests.adb:72:54: medium: overflow check might fail [possible explanation: subprogram at line 72 should mention A and X in a precondition]
+info_flow_tests.adb:72:54: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 72 should mention A and X in a precondition]
 info_flow_tests.adb:74:14: info: data dependencies proved
 info_flow_tests.adb:76:14: info: flow dependencies proved
 info_flow_tests.adb:79:22: info: postcondition proved (CVC4: 1 VC)
@@ -42,13 +42,13 @@ info_flow_tests.adb:90:29: medium: constant without variable input "C2" cannot a
 info_flow_tests.adb:90:37: medium: constant without variable input "C4" cannot appear in Globals
 info_flow_tests.adb:90:45: medium: constant without variable input "C6" cannot appear in Globals
 info_flow_tests.adb:93:18: info: overflow check proved (CVC4: 1 VC)
-info_flow_tests.adb:93:23: medium: overflow check might fail
-info_flow_tests.adb:93:28: medium: overflow check might fail
-info_flow_tests.adb:93:33: medium: overflow check might fail
-info_flow_tests.adb:93:38: medium: overflow check might fail
-info_flow_tests.adb:93:43: medium: overflow check might fail
+info_flow_tests.adb:93:23: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+info_flow_tests.adb:93:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+info_flow_tests.adb:93:33: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+info_flow_tests.adb:93:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+info_flow_tests.adb:93:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:100:09: info: data dependencies proved
-info_flow_tests.adb:103:54: medium: overflow check might fail [possible explanation: subprogram at line 103 should mention A and X in a precondition]
+info_flow_tests.adb:103:54: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 103 should mention A and X in a precondition]
 info_flow_tests.adb:105:14: info: data dependencies proved
 info_flow_tests.adb:107:14: info: flow dependencies proved
 info_flow_tests.adb:110:22: info: postcondition proved (CVC4: 1 VC)
@@ -58,16 +58,16 @@ info_flow_tests.adb:118:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:120:25: info: initialization of "X" proved
 info_flow_tests.adb:121:12: info: data dependencies proved
 info_flow_tests.adb:124:18: info: overflow check proved (CVC4: 1 VC)
-info_flow_tests.adb:124:23: medium: overflow check might fail
-info_flow_tests.adb:124:28: medium: overflow check might fail
-info_flow_tests.adb:124:33: medium: overflow check might fail
-info_flow_tests.adb:124:38: medium: overflow check might fail
-info_flow_tests.adb:124:43: medium: overflow check might fail
+info_flow_tests.adb:124:23: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+info_flow_tests.adb:124:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+info_flow_tests.adb:124:33: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+info_flow_tests.adb:124:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+info_flow_tests.adb:124:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:132:23: info: initialization of "C" proved
 info_flow_tests.adb:137:25: info: initialization of "X" proved
 info_flow_tests.adb:138:12: info: data dependencies proved
 info_flow_tests.adb:140:18: medium: range check might fail
-info_flow_tests.adb:141:19: medium: range check might fail
+info_flow_tests.adb:141:19: medium: range check might fail [reason for check: default component value must fit in the type]
 info_flow_tests.adb:153:23: info: initialization of "C" proved
 info_flow_tests.adb:161:18: medium: range check might fail
 info_flow_tests.adb:164:19: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
@@ -101,5 +101,5 @@ info_flow_tests.adb:241:12: info: flow dependencies proved
 info_flow_tests.adb:249:12: medium: constant without variable input "C3" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 info_flow_tests.adb:257:28: medium: constant without variable input "C5" cannot appear in Initializes
 info_flow_tests.adb:257:34: medium: constant without variable input "C1" cannot appear in Initializes
-info_flow_tests.adb:265:14: medium: overflow check might fail [possible explanation: subprogram at line 234 should mention A in a precondition]
-info_flow_tests.adb:266:17: medium: overflow check might fail
+info_flow_tests.adb:265:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 234 should mention A in a precondition]
+info_flow_tests.adb:266:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]

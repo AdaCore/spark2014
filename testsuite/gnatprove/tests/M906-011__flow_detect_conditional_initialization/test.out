@@ -20,7 +20,7 @@ uninitialized.adb:68:21: high: "Arr" constituent of "State" is not an input in t
 uninitialized.adb:68:21: high: "Arr" constituent of "State" is not initialized
 uninitialized.adb:68:21: high: either make "Arr" constituent of "State" an input in the Global contract or initialize it before use
 uninitialized.adb:68:28: info: division check proved (CVC4: 10 VC)
-uninitialized.adb:68:28: medium: array index check might fail
+uninitialized.adb:68:28: medium: array index check might fail [reason for check: result of division must be a valid index into the array]
 uninitialized.adb:74:11: info: data dependencies proved
 uninitialized.adb:80:22: medium: "Rec.Boo" constituent of "State" might not be initialized
 uninitialized.adb:82:24: info: unrolling loop
@@ -29,7 +29,7 @@ uninitialized.adb:90:24: high: "A_Rec.Boo" is not initialized
 uninitialized.adb:92:24: info: unrolling loop
 uninitialized.adb:93:27: high: "A_Rec.Arr" is not initialized
 uninitialized.adb:93:40: info: division check proved (CVC4: 10 VC)
-uninitialized.adb:93:40: medium: array index check might fail
+uninitialized.adb:93:40: medium: array index check might fail [reason for check: result of division must be a valid index into the array]
 uninitialized.adb:98:04: warning: analyzing unreferenced procedure "Init_Record_Error_2"
 uninitialized.adb:98:35: info: initialization of "A_Rec" proved
 uninitialized.adb:103:16: high: "Another_Rec.Arr" is not initialized
@@ -41,7 +41,7 @@ uninitialized.adb:115:45: medium: "An_Arr" might not be initialized in "Init_Arr
 uninitialized.adb:117:24: info: unrolling loop
 uninitialized.adb:118:15: medium: "An_Arr" might not be initialized
 uninitialized.adb:118:25: info: division check proved (CVC4: 10 VC)
-uninitialized.adb:118:25: medium: array index check might fail
+uninitialized.adb:118:25: medium: array index check might fail [reason for check: result of division must be a valid index into the array]
 uninitialized.adb:123:04: warning: analyzing unreferenced procedure "Tab"
 uninitialized.adb:123:14: warning: subprogram "Tab" has no effect
 uninitialized.adb:125:07: info: initialization of "Tmp" proved
@@ -53,5 +53,5 @@ uninitialized.adb:137:07: warning: statement has no effect
 uninitialized.adb:138:12: warning: unused assignment
 uninitialized.adb:140:09: warning: unused assignment
 uninitialized.adb:140:12: medium: "X" might not be initialized
-uninitialized.adb:140:14: medium: overflow check might fail
+uninitialized.adb:140:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 uninitialized.ads:3:26: warning: no procedure exists that can initialize abstract state "Uninitialized.State"

@@ -1,8 +1,8 @@
 p1.adb:10:14: info: flow dependencies proved
-p1.adb:15:14: medium: overflow check might fail [possible explanation: subprogram at p1.ads:14 should mention X in a precondition]
+p1.adb:15:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p1.ads:14 should mention X in a precondition]
 p1.adb:24:14: info: flow dependencies proved
-p1.adb:29:14: medium: overflow check might fail [possible explanation: subprogram at p1.ads:18 should mention X in a precondition]
-p1.adb:30:14: medium: overflow check might fail [possible explanation: subprogram at p1.ads:18 should mention X in a precondition]
+p1.adb:29:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p1.ads:18 should mention X in a precondition]
+p1.adb:30:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p1.ads:18 should mention X in a precondition]
 p1.adb:41:17: info: flow dependencies proved
 p1.adb:58:17: info: flow dependencies proved
 p1.adb:60:28: high: "X" is not initialized

@@ -3,9 +3,9 @@ search.adb:19:41: info: cannot unroll loop (too many loop iterations)
 search.adb:20:24: medium: assertion might fail, cannot prove (Found = 0 and not Found1 and not Found2) or else (Found = 1 and (Found1 or Found2)) or else (Found = 2 and Found1 and Found2) (e.g. when Found = 2 and Found1 = False and Found2 = False) [possible explanation: loop at line 19 should mention Found and Found1 and Found2 in a loop invariant]
 search.adb:23:24: medium: assertion might fail, cannot prove Found1 = False or else Found2 = false (e.g. when Found1 = True and Found2 = True) [possible explanation: loop at line 19 should mention Found1 and Found2 in a loop invariant]
 search.adb:24:24: medium: assertion might fail, cannot prove not Found1 or else Table(Index1) = Value1 (e.g. when Found1 = True and Index1 = 0 and Table = (others => 1) and Table'First = 0 and Table'Last = 0 and Value1 = 0) [possible explanation: loop at line 19 should mention Found1 and Index1 in a loop invariant]
-search.adb:24:49: medium: array index check might fail (e.g. when Found1 = True and Index1 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0) [possible explanation: loop at line 19 should mention Index1 in a loop invariant]
+search.adb:24:49: medium: array index check might fail (e.g. when Found1 = True and Index1 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0) [reason for check: value must be a valid index into the array] [possible explanation: loop at line 19 should mention Index1 in a loop invariant]
 search.adb:25:24: medium: assertion might fail, cannot prove not Found2 or else Table(Index2) = Value2 (e.g. when Found2 = True and Index2 = 0 and Table = (others => 1) and Table'First = 0 and Table'Last = 0 and Value2 = 0) [possible explanation: loop at line 19 should mention Found2 and Index2 in a loop invariant]
-search.adb:25:49: medium: array index check might fail (e.g. when Found2 = True and Index2 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0) [possible explanation: loop at line 19 should mention Index2 in a loop invariant]
+search.adb:25:49: medium: array index check might fail (e.g. when Found2 = True and Index2 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0) [reason for check: value must be a valid index into the array] [possible explanation: loop at line 19 should mention Index2 in a loop invariant]
 search.adb:26:24: info: assertion proved (CodePeer)
 search.adb:30:27: info: overflow check proved (CodePeer)
 search.adb:31:27: info: assertion proved (CodePeer)
@@ -20,8 +20,8 @@ search.ads:10:06: info: initialization of "Found2" proved
 search.ads:11:06: info: initialization of "Index1" proved
 search.ads:12:06: info: initialization of "Index2" proved
 search.ads:13:25: info: postcondition proved (CVC4: 2 VC)
-search.ads:13:50: medium: array index check might fail (e.g. when Index1 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0)
-search.ads:14:50: medium: array index check might fail (e.g. when Index2 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0) [possible explanation: loop at search.adb:19 should mention Index2 in a loop invariant]
+search.ads:13:50: medium: array index check might fail (e.g. when Index1 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0) [reason for check: value must be a valid index into the array]
+search.ads:14:50: medium: array index check might fail (e.g. when Index2 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0) [reason for check: value must be a valid index into the array] [possible explanation: loop at search.adb:19 should mention Index2 in a loop invariant]
 search.ads:24:25: info: postcondition proved (CVC4: 3 VC)
 search.ads:24:53: info: index check proved (CVC4: 2 VC)
 search.ads:25:55: info: index check proved (CVC4: 2 VC)

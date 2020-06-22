@@ -100,7 +100,7 @@ tests.adb:411:09: info: data dependencies proved
 tests.adb:413:21: medium: missing dependency "M => B"
 tests.adb:414:21: medium: missing dependency "O => A"
 tests.adb:420:43: info: tag check proved (CVC4: 1 VC)
-tests.adb:423:13: medium: range check might fail
+tests.adb:423:13: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
 tests.adb:428:23: info: initialization of "N" proved
 tests.adb:429:09: info: data dependencies proved
 tests.adb:430:09: info: flow dependencies proved
@@ -152,5 +152,5 @@ tests.adb:632:30: medium: tag check might fail
 untangle.adb:35:09: info: data dependencies proved
 untangle.adb:40:09: info: data dependencies proved
 untangle.adb:43:08: medium: discriminant check might fail [possible explanation: subprogram at line 38 should mention X in a precondition]
-untangle.adb:43:14: medium: array index check might fail [possible explanation: subprogram at line 38 should mention G and N in a precondition]
+untangle.adb:43:14: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 38 should mention G and N in a precondition]
 untangle.adb:43:14: medium: precondition might fail, cannot prove G [possible explanation: subprogram at line 38 should mention G in a precondition]

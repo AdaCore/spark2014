@@ -3,14 +3,14 @@ foo.adb:15:09: info: flow dependencies proved
 foo.adb:18:13: info: range check proved (CVC4: 1 VC)
 foo.adb:22:26: info: initialization of "B" proved
 foo.adb:23:09: info: flow dependencies proved
-foo.adb:25:25: low: range check might fail [possible explanation: subprogram at line 21 should mention A in a precondition]
+foo.adb:25:25: low: range check might fail [reason for check: default component value must fit in the type] [possible explanation: subprogram at line 21 should mention A in a precondition]
 foo.adb:27:20: info: initialization of "X" proved
 foo.adb:28:12: info: data dependencies proved
 foo.adb:29:12: info: flow dependencies proved
 foo.adb:32:18: info: range check proved (CVC4: 1 VC)
 foo.adb:40:26: info: initialization of "B" proved
 foo.adb:41:09: info: flow dependencies proved
-foo.adb:44:11: medium: array index check might fail
+foo.adb:44:11: medium: array index check might fail [reason for check: value must be a valid index into the array]
 foo.adb:45:13: info: range check proved (CVC4: 1 VC)
 foo.adb:48:26: info: initialization of "A" proved
 foo.adb:49:26: info: initialization of "B" proved
@@ -20,7 +20,7 @@ foo.adb:55:13: info: range check proved (CVC4: 1 VC)
 foo.adb:58:26: info: initialization of "A" proved
 foo.adb:59:09: info: flow dependencies proved
 foo.adb:62:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-foo.adb:63:11: medium: array index check might fail
+foo.adb:63:11: medium: array index check might fail [reason for check: value must be a valid index into the array]
 foo.adb:66:26: info: initialization of "A" proved
 foo.adb:67:09: info: flow dependencies proved
 foo.adb:73:26: info: initialization of "A" proved
@@ -33,7 +33,7 @@ foo.adb:91:14: info: add a contract to analyze it separately from calling contex
 foo.adb:91:14: info: local subprogram "Test_09_Ok" only analyzed in the context of calls
 foo.adb:91:26: info: initialization of "A" proved
 foo.adb:94:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at foo.adb:102
-foo.adb:95:11: medium: array index check might fail, in call inlined at foo.adb:102
+foo.adb:95:11: medium: array index check might fail, in call inlined at foo.adb:102 [reason for check: value must be a valid index into the array]
 foo.adb:98:26: info: initialization of "A" proved
 foo.adb:99:09: info: flow dependencies proved
 foo.adb:105:14: info: add a contract to analyze it separately from calling contexts
@@ -52,9 +52,9 @@ foo.adb:136:14: medium: range check might fail
 foo.adb:137:29: info: range check proved (CVC4: 1 VC)
 foo.adb:140:11: info: range check proved (CVC4: 2 VC)
 foo.adb:140:47: info: cannot unroll loop (too many loop iterations)
-foo.adb:141:26: medium: overflow check might fail
+foo.adb:141:26: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:141:30: info: index check proved (CVC4: 2 VC)
 foo.adb:141:30: info: overflow check proved (CVC4: 1 VC)
-foo.adb:141:68: medium: overflow check might fail
+foo.adb:141:68: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:141:72: info: index check proved (CVC4: 2 VC)
 foo.adb:141:72: info: overflow check proved (CVC4: 1 VC)

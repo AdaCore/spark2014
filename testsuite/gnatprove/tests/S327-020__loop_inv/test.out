@@ -10,23 +10,23 @@ lp.adb:38:33: info: loop invariant initialization proved (CVC4: 2 VC)
 lp.adb:38:33: info: loop invariant preservation proved (CVC4: 2 VC)
 lp.adb:38:38: info: index check proved (CVC4: 4 VC)
 lp.adb:39:37: info: range check proved (CVC4: 1 VC)
-lp.adb:39:37: medium: overflow check might fail
+lp.adb:39:37: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer]
 lp.adb:39:40: info: index check proved (CVC4: 2 VC)
 lp.adb:40:22: info: index check proved (CVC4: 2 VC)
 lp.adb:54:22: info: assertion proved (CVC4: 2 VC)
 lp.adb:54:51: info: range check proved (CVC4: 1 VC)
-lp.adb:54:51: medium: overflow check might fail
+lp.adb:54:51: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer]
 lp.adb:55:11: info: index check proved (CVC4: 4 VC)
 lp.adb:56:33: info: loop invariant initialization proved (CVC4: 2 VC)
 lp.adb:56:33: info: loop invariant preservation proved (CVC4: 2 VC)
 lp.adb:56:62: info: range check proved (CVC4: 2 VC)
-lp.adb:56:62: medium: overflow check might fail
+lp.adb:56:62: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer]
 lp.adb:57:33: info: loop invariant initialization proved (CVC4: 2 VC)
 lp.adb:57:33: info: loop invariant preservation proved (CVC4: 2 VC)
 lp.adb:57:39: info: range check proved (CVC4: 2 VC)
-lp.adb:57:39: medium: overflow check might fail
+lp.adb:57:39: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer]
 lp.adb:57:42: info: index check proved (CVC4: 4 VC)
 lp.adb:58:37: info: range check proved (CVC4: 1 VC)
-lp.adb:58:37: medium: overflow check might fail
+lp.adb:58:37: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer]
 lp.adb:58:40: info: index check proved (CVC4: 2 VC)
 lp.adb:59:22: info: index check proved (CVC4: 2 VC)

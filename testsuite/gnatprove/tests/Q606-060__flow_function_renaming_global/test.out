@@ -1,4 +1,4 @@
-pack.adb:5:18: medium: overflow check might fail [possible explanation: subprogram at pack.ads:4 should mention X in a precondition]
+pack.adb:5:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at pack.ads:4 should mention X in a precondition]
 pack.adb:16:17: high: renaming of a function call "Int_Ren" must be listed in the Global aspect of "Proc1" (SPARK RM 6.1.4(14))
 pack.adb:21:17: high: "X" must be listed in the Global aspect of "Proc2" (SPARK RM 6.1.4(14))
 pack.adb:26:17: high: "X" must be listed in the Global aspect of "Proc3" (SPARK RM 6.1.4(14))

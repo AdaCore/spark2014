@@ -3,7 +3,7 @@ p.adb:14:10: high: as a result "P.State2" must be listed in the Global of "Proc1
 p.adb:25:12: high: "B" constituent of "State2" must be listed in the Refined_Depends aspect of "Proc2" (SPARK RM 6.1.4(14))
 p.adb:25:12: high: as a result "P.State2" must be listed in the Depends of "Proc2" (SPARK RM 6.1.4(14))
 p.adb:32:24: high: "E" constituent of "State3" must be listed in the Refined_Global aspect of "Proc3" (SPARK RM 6.1.4(14))
-p.adb:41:14: medium: overflow check might fail [possible explanation: subprogram at p.ads:11 should mention D in a precondition]
+p.adb:41:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p.ads:11 should mention D in a precondition]
 p.adb:41:16: high: "E" constituent of "State3" must be listed in the Refined_Depends aspect of "Proc4" (SPARK RM 6.1.4(14))
 p.adb:49:07: high: "B" constituent of "State2" must be listed in the Refined_Depends aspect of "Proc5" (SPARK RM 6.1.4(14))
 p.adb:49:07: high: as a result "P.State2" must be listed in the Global and Depends of "Proc5" (SPARK RM 6.1.4(14))

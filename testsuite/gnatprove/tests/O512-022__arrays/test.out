@@ -1,8 +1,8 @@
 arrays.adb:5:24: info: cannot unroll loop (too many loop iterations)
-arrays.adb:6:17: medium: overflow check might fail (e.g. when J = 1 and S = 1 and X = (others => Positive'Last) and X'First = 1 and X'Last = 1) [possible explanation: loop at line 5 should mention S in a loop invariant]
+arrays.adb:6:17: medium: overflow check might fail (e.g. when J = 1 and S = 1 and X = (others => Positive'Last) and X'First = 1 and X'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 5 should mention S in a loop invariant]
 arrays.adb:14:24: info: cannot unroll loop (too many loop iterations)
 arrays.adb:15:19: info: division check proved (CVC4: 1 VC)
-arrays.adb:16:20: medium: overflow check might fail (e.g. when C = Natural'Last) [possible explanation: loop at line 14 should mention C in a loop invariant]
+arrays.adb:16:20: medium: overflow check might fail (e.g. when C = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 14 should mention C in a loop invariant]
 arrays.adb:23:09: info: range check proved (CVC4: 1 VC)
 arrays.adb:23:17: info: overflow check proved (CVC4: 1 VC)
 arrays.adb:23:17: info: range check proved (CVC4: 1 VC)

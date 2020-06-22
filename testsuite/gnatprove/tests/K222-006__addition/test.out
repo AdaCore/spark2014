@@ -1,5 +1,5 @@
 add.adb:5:16: info: overflow check proved (CodePeer)
-add.ads:3:47: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First)
+add.ads:3:47: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer]
 add.ads:3:62: info: overflow check proved (CodePeer)
 add.ads:4:29: info: postcondition proved (CVC4: 1 VC)
 add.ads:4:47: info: overflow check proved (CVC4: 1 VC)

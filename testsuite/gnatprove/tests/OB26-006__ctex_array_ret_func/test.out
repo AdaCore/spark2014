@@ -1,3 +1,3 @@
-p.adb:9:35: medium: range check might fail (e.g. when Int1 = 0) [possible explanation: subprogram at p.ads:3 should mention TC_Items in a precondition]
-p.adb:9:57: medium: array index check might fail
+p.adb:9:35: medium: range check might fail (e.g. when Int1 = 0) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at p.ads:3 should mention TC_Items in a precondition]
+p.adb:9:57: medium: array index check might fail [reason for check: value must be a valid index into the array]
 p.ads:3:15: warning: subprogram "Proc" has no effect

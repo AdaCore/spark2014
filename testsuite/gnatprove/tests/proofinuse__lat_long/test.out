@@ -8,7 +8,7 @@ lat_long.adb:9:54: info: float overflow check proved (Trivial)
 lat_long.adb:9:58: info: division check proved (CVC4: 1 VC)
 lat_long.adb:9:58: info: float overflow check proved (CVC4: 1 VC)
 lat_long.adb:10:29: info: float overflow check proved (CVC4: 1 VC)
-lat_long.adb:10:41: medium: float overflow check might fail (e.g. when Delta_Lat = 0.0)
+lat_long.adb:10:41: medium: float overflow check might fail (e.g. when Delta_Lat = 0.0) [reason for check: result of floating-point addition must be bounded]
 lat_long.adb:10:54: info: float overflow check proved (CVC4: 1 VC)
 lat_long.ads:8:34: info: float overflow check proved (CVC4: 1 VC)
 lat_long.ads:15:40: medium: postcondition might fail, cannot prove Cos'Result >= 0.1 (e.g. when Cos'Result = -1.0 and X = 1.1718751E+0)

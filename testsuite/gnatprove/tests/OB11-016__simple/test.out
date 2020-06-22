@@ -1,5 +1,5 @@
 div_zero.adb:6:11: medium: divide by zero might fail
-div_zero.adb:6:11: medium: overflow check might fail
+div_zero.adb:6:11: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer]
 gene.adb:8:19: info: division check proved (CVC4: 1 VC), in instantiation at main.adb:4
 div_zero.adb:6:11: warning: "Constraint_Error" will be raised at run time
 div_zero.adb:6:11: warning: division by zero

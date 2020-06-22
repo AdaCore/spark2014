@@ -1,11 +1,11 @@
 p.ads:3:14: warning: subprogram "Not_Guarded" has no effect
 p.ads:4:15: medium: divide by zero might fail
-p.ads:4:15: medium: overflow check might fail (e.g. when X = -1 and Y = 0)
+p.ads:4:15: medium: overflow check might fail (e.g. when X = -1 and Y = 0) [reason for check: result of division must fit in a 32-bits machine integer]
 p.ads:6:14: warning: subprogram "Guarded_And_Then" has no effect
 p.ads:7:31: info: division check proved (CVC4: 1 VC)
-p.ads:7:31: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1)
+p.ads:7:31: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1) [reason for check: result of division must fit in a 32-bits machine integer]
 p.ads:9:14: warning: subprogram "Guarded_If_Then" has no effect
 p.ads:10:31: info: division check proved (CVC4: 1 VC)
-p.ads:10:31: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1)
+p.ads:10:31: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1) [reason for check: result of division must fit in a 32-bits machine integer]
 p.ads:12:14: warning: subprogram "No_Need_For_Guard" has no effect
 p.ads:13:15: info: division check proved (CVC4: 1 VC)

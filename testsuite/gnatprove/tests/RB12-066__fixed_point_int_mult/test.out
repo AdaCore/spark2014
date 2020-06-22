@@ -3,13 +3,13 @@ types.ads:6:12: info: range check proved (CVC4: 1 VC)
 types.ads:6:12: info: range check proved (Z3: 1 VC)
 types.ads:10:12: info: overflow check proved (CVC4: 1 VC)
 types.ads:10:12: info: range check proved (CVC4: 1 VC)
-types.ads:10:12: medium: range check might fail
+types.ads:10:12: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion]
 types.ads:16:13: info: overflow check proved (CVC4: 1 VC)
 types.ads:16:13: info: range check proved (CVC4: 1 VC)
-types.ads:16:13: medium: range check might fail
+types.ads:16:13: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion]
 types.ads:22:13: info: overflow check proved (CVC4: 1 VC)
 types.ads:22:13: info: range check proved (CVC4: 1 VC)
-types.ads:22:13: medium: range check might fail
+types.ads:22:13: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion]
 types.ads:28:12: info: overflow check proved (CVC4: 1 VC)
 types.ads:28:12: info: range check proved (CVC4: 1 VC)
 types.ads:28:12: info: range check proved (Z3: 1 VC)

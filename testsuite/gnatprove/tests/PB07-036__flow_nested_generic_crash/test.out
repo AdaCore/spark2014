@@ -1,3 +1,3 @@
-foo.adb:12:26: medium: overflow check might fail, in instantiation at foo.adb:21 [possible explanation: subprogram at line 4 should mention ip1 in a precondition]
-foo.adb:13:21: medium: overflow check might fail, in instantiation at foo.adb:21 [possible explanation: call at line 12 should mention ip2 (for argument ip2) in a postcondition]
+foo.adb:12:26: medium: overflow check might fail, in instantiation at foo.adb:21 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at line 4 should mention ip1 in a precondition]
+foo.adb:13:21: medium: overflow check might fail, in instantiation at foo.adb:21 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: call at line 12 should mention ip2 (for argument ip2) in a postcondition]
 foo.adb:17:11: warning: this statement is never reached, in instantiation at foo.adb:21

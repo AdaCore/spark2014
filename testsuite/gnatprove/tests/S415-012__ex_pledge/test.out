@@ -32,5 +32,5 @@ pledge_constraints.adb:26:50: info: pointer dereference check proved (CVC4: 1 VC
 pledge_constraints.adb:26:58: info: pointer dereference check proved (CVC4: 1 VC)
 pledge_constraints.adb:27:22: medium: assertion might fail
 pledge_constraints.adb:27:38: medium: pointer dereference check might fail
-pledge_constraints.adb:27:43: medium: array index check might fail
+pledge_constraints.adb:27:43: medium: array index check might fail [reason for check: value must be a valid index into the array]
 gnatprove: error during flow analysis and proof

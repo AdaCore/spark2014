@@ -3,7 +3,7 @@ ghc_sort.adb:17:28: info: pointer dereference check proved (CVC4: 1 VC)
 ghc_sort.adb:21:13: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 ghc_sort.adb:23:19: info: pointer dereference check proved (CVC4: 1 VC)
 ghc_sort.adb:23:22: info: overflow check proved (CVC4: 1 VC)
-ghc_sort.adb:23:22: medium: overflow check might fail (e.g. when L.all.Value'First = 1 and L.all.Value'Last = 0) [possible explanation: subprogram at line 15 should mention L in a precondition]
+ghc_sort.adb:23:22: medium: overflow check might fail (e.g. when L.all.Value'First = 1 and L.all.Value'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 15 should mention L in a precondition]
 ghc_sort.adb:23:25: info: pointer dereference check proved (CVC4: 1 VC)
 ghc_sort.adb:23:30: info: pointer dereference check proved (CVC4: 1 VC)
 ghc_sort.adb:23:35: info: pointer dereference check proved (CVC4: 1 VC)

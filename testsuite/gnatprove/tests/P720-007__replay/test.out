@@ -11,9 +11,9 @@ harness.adb:16:19: medium: assertion might fail, cannot prove H = Y [possible ex
 harness.adb:17:04: medium: precondition might fail, cannot prove not Is_Empty (R)
 harness.adb:18:19: medium: assertion might fail, cannot prove H = Z [possible explanation: subprogram at line 3 should mention Z in a precondition]
 ring_buf.adb:15:36: medium: divide by zero might fail
-ring_buf.adb:16:28: medium: range check might fail
+ring_buf.adb:16:28: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment]
 ring_buf.adb:23:32: medium: divide by zero might fail
-ring_buf.adb:24:28: medium: range check might fail
+ring_buf.adb:24:28: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
 ring_buf.ads:39:21: info: initialization of "R" proved
 ring_buf.ads:40:19: medium: postcondition might fail, cannot prove Is_Empty (R)
 ring_buf.ads:47:19: medium: postcondition might fail, cannot prove R.Length = R.Length'Old + 1

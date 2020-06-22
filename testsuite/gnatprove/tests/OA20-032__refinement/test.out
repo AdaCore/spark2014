@@ -28,15 +28,15 @@ patris.adb:108:54: info: index check proved (CVC4: 2 VC)
 patris.adb:116:24: medium: assertion might fail, cannot prove Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX) (e.g. when Cur_Board = (others => (others => Empty)) and Cur_Piece = (S => I, D => North, X => 0, Y => PY_Coord'First+1) and XX = 0 and YY = 1)
 patris.adb:118:30: info: unrolling loop
 patris.adb:119:33: info: unrolling loop
-patris.adb:121:45: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => 1, Y => PY_Coord'First+1) and Y = 0)
-patris.adb:121:63: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => -1, Y => PY_Coord'First+1) and X = 1 and Y = 0)
+patris.adb:121:45: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => 1, Y => PY_Coord'First+1) and Y = 0) [reason for check: result of addition must be a valid index into the array]
+patris.adb:121:63: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => -1, Y => PY_Coord'First+1) and X = 1 and Y = 0) [reason for check: result of addition must be a valid index into the array]
 patris.adb:131:57: info: index check proved (CVC4: 2 VC)
 patris.adb:132:24: medium: assertion might fail, cannot prove Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX) (e.g. when Cur_Board = (others => (others => Empty)) and Cur_Piece = (S => J, D => North, X => 0, Y => PY_Coord'First+1) and XX = 0 and YY = 0)
 patris.adb:134:34: info: unrolling loop
 patris.adb:135:37: info: unrolling loop
 patris.adb:136:54: info: index check proved (CVC4: 18 VC)
-patris.adb:137:45: medium: array index check might fail (e.g. when Cur_Piece = (S => J, D => North, X => 1, Y => PY_Coord'First+1) and Y = 0)
-patris.adb:137:63: medium: array index check might fail (e.g. when Cur_Piece = (S => J, D => North, X => 0, Y => PY_Coord'First+1) and X = 0)
+patris.adb:137:45: medium: array index check might fail (e.g. when Cur_Piece = (S => J, D => North, X => 1, Y => PY_Coord'First+1) and Y = 0) [reason for check: result of addition must be a valid index into the array]
+patris.adb:137:63: medium: array index check might fail (e.g. when Cur_Piece = (S => J, D => North, X => 0, Y => PY_Coord'First+1) and X = 0) [reason for check: result of addition must be a valid index into the array]
 patris.adb:166:28: info: assertion proved (CVC4: 2 VC)
 patris.adb:169:13: info: loop invariant initialization proved (CVC4: 1 VC)
 patris.adb:169:13: info: loop invariant preservation proved (CVC4: 1 VC)

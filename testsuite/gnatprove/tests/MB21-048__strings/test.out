@@ -1,2 +1,2 @@
 lines.adb:6:07: info: initialization of "Pos" proved
-lines.adb:9:14: medium: range check might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 0) [possible explanation: subprogram at lines.ads:3 should mention S in a precondition]
+lines.adb:9:14: medium: range check might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 0) [reason for check: returned value must fit in the result type of the function] [possible explanation: subprogram at lines.ads:3 should mention S in a precondition]

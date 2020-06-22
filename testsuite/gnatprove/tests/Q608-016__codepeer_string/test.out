@@ -1,3 +1,3 @@
 bad.adb:4:14: warning: subprogram "P" has no effect
-bad.adb:5:25: medium: range check might fail (e.g. when X = (others => 'NUL') and X'First = 0 and X'Last = -1)
+bad.adb:5:25: medium: range check might fail (e.g. when X = (others => 'NUL') and X'First = 0 and X'Last = -1) [reason for check: default component value must fit in the type]
 bad.adb:12:04: info: precondition proved (Trivial: 1 VC)

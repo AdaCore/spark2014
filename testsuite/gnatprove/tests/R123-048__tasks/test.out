@@ -7,9 +7,9 @@ psu_monitoring.adb:98:75: info: division check proved (CVC4: 1 VC)
 psu_monitoring.adb:98:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:98:75: info: range check proved (Trivial)
 psu_monitoring.adb:100:75: info: float overflow check proved (Trivial)
-psu_monitoring.adb:100:75: medium: range check might fail [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
+psu_monitoring.adb:100:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
 psu_monitoring.adb:104:75: info: float overflow check proved (Trivial)
-psu_monitoring.adb:104:75: medium: range check might fail [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
+psu_monitoring.adb:104:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
 psu_monitoring.adb:106:75: info: division check proved (CVC4: 1 VC)
 psu_monitoring.adb:106:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:106:75: info: range check proved (Trivial)

@@ -1,34 +1,34 @@
-adt_stack-child.adb:18:30: medium: array index check might fail [possible explanation: call at line 17 should mention S (for argument S) in a postcondition]
-adt_stack-child.adb:19:36: medium: overflow check might fail (e.g. when S = (STack_Vector => (others => Integer'Last), STack_Top => 1, Child_Stack_Vector => (others => Integer'Last), Next_Value => Integer'Last)) [possible explanation: call at line 17 should mention S (for argument S) in a postcondition]
+adt_stack-child.adb:18:30: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: call at line 17 should mention S (for argument S) in a postcondition]
+adt_stack-child.adb:19:36: medium: overflow check might fail (e.g. when S = (STack_Vector => (others => Integer'Last), STack_Top => 1, Child_Stack_Vector => (others => Integer'Last), Next_Value => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: call at line 17 should mention S (for argument S) in a postcondition]
 adt_stack-child.adb:24:07: info: initialization of "Result" proved
-adt_stack-child.adb:29:52: medium: array index check might fail [possible explanation: subprogram at adt_stack-child.ads:10 should mention S in a precondition]
+adt_stack-child.adb:29:52: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at adt_stack-child.ads:10 should mention S in a precondition]
 adt_stack-child.ads:7:20: info: initialization of "S" proved
 adt_stack.adb:28:10: medium: exception might be raised
-adt_stack.adb:30:33: medium: range check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => Stack_Range'Last)) [possible explanation: subprogram at adt_stack.ads:15 should mention S in a precondition]
+adt_stack.adb:30:33: medium: range check might fail (e.g. when S = (STack_Vector => (others => 0), STack_Top => Stack_Range'Last)) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at adt_stack.ads:15 should mention S in a precondition]
 adt_stack.adb:31:23: info: index check proved (CVC4: 2 VC)
 adt_stack.adb:38:10: medium: exception might be raised
-adt_stack.adb:40:28: medium: array index check might fail [possible explanation: subprogram at adt_stack.ads:20 should mention S in a precondition]
+adt_stack.adb:40:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at adt_stack.ads:20 should mention S in a precondition]
 adt_stack.adb:41:33: info: range check proved (CVC4: 1 VC)
 adt_stack.adb:48:10: info: range check proved (CVC4: 4 VC)
 adt_stack.adb:48:45: info: range check proved (CVC4: 4 VC)
 adt_stack.ads:13:20: info: initialization of "S" proved
 adt_stack.ads:20:36: info: initialization of "X" proved
 asm_stack.adb:37:10: medium: exception might be raised
-asm_stack.adb:39:29: medium: range check might fail (e.g. when Stack_Top = Stack_Range'Last) [possible explanation: subprogram at asm_stack.ads:10 should mention Stack_Top in a precondition]
+asm_stack.adb:39:29: medium: range check might fail (e.g. when Stack_Top = Stack_Range'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at asm_stack.ads:10 should mention Stack_Top in a precondition]
 asm_stack.adb:40:20: info: index check proved (CVC4: 2 VC)
 generic_stack.adb:16:10: medium: exception might be raised, in instantiation at use_stacks.adb:47
 generic_stack.adb:18:22: info: overflow check proved (CVC4: 1 VC), in instantiation at use_stacks.adb:47
 generic_stack.adb:19:20: info: index check proved (CVC4: 2 VC), in instantiation at use_stacks.adb:47
 generic_stack.adb:25:10: medium: exception might be raised, in instantiation at use_stacks.adb:47
-generic_stack.adb:27:25: medium: array index check might fail, in instantiation at use_stacks.adb:47 (e.g. when Index = 101) [possible explanation: subprogram at generic_stack.ads:8 should mention Index in a precondition]
+generic_stack.adb:27:25: medium: array index check might fail, in instantiation at use_stacks.adb:47 (e.g. when Index = 101) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at generic_stack.ads:8 should mention Index in a precondition]
 generic_stack.adb:28:22: info: range check proved (CVC4: 1 VC), in instantiation at use_stacks.adb:47
 generic_stack.ads:8:19: info: initialization of "E" proved, in instantiation at use_stacks.adb:47
 main.adb:9:04: info: initialization of "A" proved
 main.adb:11:14: warning: "random_numbers.state" is set by "Fill_ADT_Stack" but not used after the call
-main.adb:14:14: medium: overflow check might fail (e.g. when X = -1) [possible explanation: loop at line 13 should mention X in a loop invariant]
+main.adb:14:14: medium: overflow check might fail (e.g. when X = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 13 should mention X in a loop invariant]
 main.adb:14:25: side effects of function "Pop" are not modeled in SPARK
 main.adb:15:21: medium: "My_Stack" might not be initialized
-main.adb:16:14: medium: overflow check might fail (e.g. when A = Integer'First and Y = -1) [possible explanation: call at line 15 should mention X (for argument A) in a postcondition]
+main.adb:16:14: medium: overflow check might fail (e.g. when A = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: call at line 15 should mention X (for argument A) in a postcondition]
 random_numbers.adb:6:04: info: initialization of "Seed" constituent of "State" proved
 random_numbers.adb:13:21: high: "My_Stack" is not initialized
 random_numbers.adb:13:21: warning: "My_Stack" is set by "Pop" but not used after the call

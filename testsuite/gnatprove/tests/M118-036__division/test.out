@@ -6,7 +6,7 @@ t3q3.adb:7:17: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:12:12: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:16:34: info: initialization of "K" proved
 t3q3.adb:17:08: info: flow dependencies proved
-t3q3.adb:18:13: medium: overflow check might fail (e.g. when I = 2 and J = 2)
+t3q3.adb:18:13: medium: overflow check might fail (e.g. when I = 2 and J = 2) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 t3q3.adb:19:11: info: postcondition proved (CVC4: 1 VC)
 t3q3.adb:19:17: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:23:12: info: overflow check proved (CVC4: 1 VC)

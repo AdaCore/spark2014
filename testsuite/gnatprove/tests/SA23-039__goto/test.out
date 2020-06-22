@@ -4,7 +4,7 @@ simple_flow.adb:2:43: info: data dependencies proved
 simple_flow.adb:14:28: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 simple_flow.adb:20:06: warning: this statement is never reached
 test_goto.adb:16:35: info: cannot unroll loop (too many loop iterations)
-test_goto.adb:17:29: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: loop at line 16 should mention X in a loop invariant]
+test_goto.adb:17:29: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 16 should mention X in a loop invariant]
 test_goto.adb:82:30: info: loop invariant initialization proved (Trivial: 1 VC)
 test_goto.adb:82:30: info: loop invariant preservation proved (Trivial: 1 VC)
 test_goto.adb:90:19: medium: assertion might fail, cannot prove B (X) (e.g. when X = 5) [possible explanation: loop invariant at line 82 should mention X]

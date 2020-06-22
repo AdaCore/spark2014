@@ -1,4 +1,4 @@
 foo.adb:5:14: warning: subprogram "P" has no effect
-foo.adb:6:20: medium: float overflow check might fail (e.g. when A = 1.7976931347E+308 and B = 2.0948759015E+298)
-foo.adb:6:25: medium: float overflow check might fail (e.g. when A = 0.0 and B = 0.0 and C = 0.0)
+foo.adb:6:20: medium: float overflow check might fail (e.g. when A = 1.7976931347E+308 and B = 2.0948759015E+298) [reason for check: result of floating-point addition must be bounded]
+foo.adb:6:25: medium: float overflow check might fail (e.g. when A = 0.0 and B = 0.0 and C = 0.0) [reason for check: result of floating-point addition must be bounded]
 foo.adb:12:04: medium: precondition might fail, cannot prove (A + B) + C <= Long_Float'last

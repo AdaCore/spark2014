@@ -1,5 +1,19 @@
-add.adb:5:16: medium: overflow check might fail
-add.ads:3:47: medium: overflow check might fail
-add.ads:3:62: medium: overflow check might fail
+add.adb:5:16: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+add.ads:3:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+add.ads:3:62: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 add.ads:4:29: medium: postcondition might fail, cannot prove AddTwo'Result = X + Y
-add.ads:4:47: medium: overflow check might fail
+add.ads:4:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+
+
+
+
+
+
+
+
+
+
+
+
+
+

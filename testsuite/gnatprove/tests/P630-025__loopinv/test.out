@@ -7,7 +7,7 @@ decadriver.adb:75:45: info: range check proved (CVC4: 4 VC)
 decadriver.adb:78:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 decadriver.adb:78:49: info: range check proved (CVC4: 4 VC)
 decadriver.adb:78:67: info: range check proved (CVC4: 1 VC)
-decadriver.adb:84:34: medium: range check might fail
+decadriver.adb:84:34: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
 decadriver.adb:99:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Enable_Rx"
 decadriver.adb:105:10: info: initialization of "RX_FINFO_Reg" proved
 decadriver.adb:107:10: info: initialization of "Frame_Length" proved

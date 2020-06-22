@@ -1,2 +1,2 @@
-prot.ads:7:49: medium: overflow check might fail (e.g. when X = -1073741825)
-prot.ads:8:49: medium: overflow check might fail
+prot.ads:7:49: medium: overflow check might fail (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+prot.ads:8:49: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]

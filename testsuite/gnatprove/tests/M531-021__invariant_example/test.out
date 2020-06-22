@@ -6,4 +6,4 @@ p2.adb:19:13: info: loop invariant preservation proved (CVC4: 2 VC)
 p2.adb:25:37: info: division check proved (CVC4: 1 VC)
 p2.ads:4:19: info: assertion proved (Trivial)
 p2.ads:11:19: info: postcondition proved (CVC4: 2 VC)
-p2.ads:12:37: medium: overflow check might fail (e.g. when Sqrt'Result = Sqrt_Range'Last-1)
+p2.ads:12:37: medium: overflow check might fail (e.g. when Sqrt'Result = Sqrt_Range'Last-1) [reason for check: result of multiplication must fit in a 32-bits machine integer]

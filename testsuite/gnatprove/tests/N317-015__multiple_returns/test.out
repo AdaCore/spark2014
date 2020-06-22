@@ -1,6 +1,6 @@
 flight_manager.adb:10:07: info: no contextual analysis of "My_Abs" (multiple returns)
-flight_manager.adb:13:20: medium: overflow check might fail (e.g. when I = Integer'First) [possible explanation: subprogram at line 9 should mention I in a precondition]
+flight_manager.adb:13:20: medium: overflow check might fail (e.g. when I = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention I in a precondition]
 flight_manager.adb:19:07: info: initialization of "Max" proved
-flight_manager.adb:21:33: medium: overflow check might fail (e.g. when Position_X = -2 and Target_X = Integer'Last) [possible explanation: subprogram at flight_manager.ads:5 should mention Position_X and Target_X in a precondition]
+flight_manager.adb:21:33: medium: overflow check might fail (e.g. when Position_X = -2 and Target_X = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at flight_manager.ads:5 should mention Position_X and Target_X in a precondition]
 flight_manager.ads:6:19: warning: unused variable "Position_Y"
 flight_manager.ads:6:51: warning: unused variable "Target_Y"

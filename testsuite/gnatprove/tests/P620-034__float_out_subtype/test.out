@@ -3,17 +3,17 @@ get_out_subtype.adb:5:07: info: initialization of "Roll_Rate_Desired" proved
 get_out_subtype.adb:6:07: info: initialization of "Pitch_Rate_Desired" proved
 get_out_subtype.adb:7:07: info: initialization of "Yaw_Rate_Desired" proved
 get_out_subtype.adb:8:09: info: data dependencies proved
-get_out_subtype.adb:27:33: medium: range check might fail (e.g. when Pitch_Rate_Desired = 0.0)
+get_out_subtype.adb:27:33: medium: range check might fail (e.g. when Pitch_Rate_Desired = 0.0) [reason for check: output value must fit in argument type]
 get_out_subtype.adb:27:58: info: range check proved (CVC4: 1 VC)
-get_out_subtype.adb:27:58: medium: range check might fail (e.g. when Pitch_Rate_Desired = 0.0)
-get_out_subtype.adb:28:33: medium: range check might fail
+get_out_subtype.adb:27:58: medium: range check might fail (e.g. when Pitch_Rate_Desired = 0.0) [reason for check: value must be convertible to the target type of the conversion]
+get_out_subtype.adb:28:33: medium: range check might fail [reason for check: output value must fit in argument type]
 get_out_subtype_int.adb:2:11: warning: subprogram "Get_Out_Subtype_Int" has no effect
 get_out_subtype_int.adb:5:07: info: initialization of "Roll_Rate_Desired" proved
 get_out_subtype_int.adb:6:07: info: initialization of "Pitch_Rate_Desired" proved
 get_out_subtype_int.adb:7:07: info: initialization of "Yaw_Rate_Desired" proved
 get_out_subtype_int.adb:8:09: info: data dependencies proved
-get_out_subtype_int.adb:27:33: medium: range check might fail
+get_out_subtype_int.adb:27:33: medium: range check might fail [reason for check: output value must fit in argument type]
 get_out_subtype_int.adb:27:52: info: range check proved (CVC4: 1 VC)
 get_out_subtype_int.adb:27:60: info: range check proved (CVC4: 1 VC)
-get_out_subtype_int.adb:27:60: medium: range check might fail
-get_out_subtype_int.adb:28:33: medium: range check might fail
+get_out_subtype_int.adb:27:60: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+get_out_subtype_int.adb:28:33: medium: range check might fail [reason for check: output value must fit in argument type]

@@ -2,17 +2,17 @@ flight_manager.adb:12:11: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 flight_manager.adb:13:24: info: float overflow check proved (CVC4: 1 VC)
 flight_manager.adb:13:46: info: division check proved (CVC4: 1 VC)
 flight_manager.adb:13:46: info: float overflow check proved (Trivial)
-flight_manager.adb:19:21: medium: float overflow check might fail (e.g. when Distance_To_Target = -3.3752146E+38 and F = 1.9359426E+0) [possible explanation: subprogram at line 9 should mention Distance_To_Target and F in a precondition]
+flight_manager.adb:19:21: medium: float overflow check might fail (e.g. when Distance_To_Target = -3.3752146E+38 and F = 1.9359426E+0) [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at line 9 should mention Distance_To_Target and F in a precondition]
 flight_manager.adb:19:43: info: division check proved (CVC4: 1 VC)
 flight_manager.adb:19:43: info: float overflow check proved (Trivial)
 flight_manager.adb:36:21: medium: "Result.X_Speed" might not be initialized
-flight_manager.adb:36:53: medium: float overflow check might fail (e.g. when Position_X = -3.4028235E+38 and Target_X = 2.0282408E+31) [possible explanation: subprogram at flight_manager.ads:7 should mention Position_X and Target_X in a precondition]
+flight_manager.adb:36:53: medium: float overflow check might fail (e.g. when Position_X = -3.4028235E+38 and Target_X = 2.0282408E+31) [reason for check: result of floating-point subtraction must be bounded] [possible explanation: subprogram at flight_manager.ads:7 should mention Position_X and Target_X in a precondition]
 flight_manager.adb:37:21: medium: "Result.Y_Speed" might not be initialized
-flight_manager.adb:37:53: medium: float overflow check might fail (e.g. when Position_Y = -3.4028235E+38 and Target_Y = 2.0282406E+31) [possible explanation: subprogram at flight_manager.ads:7 should mention Position_Y and Target_Y in a precondition]
+flight_manager.adb:37:53: medium: float overflow check might fail (e.g. when Position_Y = -3.4028235E+38 and Target_Y = 2.0282406E+31) [reason for check: result of floating-point subtraction must be bounded] [possible explanation: subprogram at flight_manager.ads:7 should mention Position_Y and Target_Y in a precondition]
 flight_manager.ads:10:17: medium: postcondition might fail, cannot prove ((Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed) (e.g. when Position_X = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.1249998E+0, Y_Speed => 1.1249998E+0) and Target_X = 0.0)
 flight_manager.ads:10:30: info: float overflow check proved (CVC4: 1 VC)
-flight_manager.ads:10:65: medium: float overflow check might fail (e.g. when Position_X = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.4999999E+0, Y_Speed => 1.4999999E+0) and Target_X = 0.0)
-flight_manager.ads:11:18: medium: float overflow check might fail (e.g. when Position_X = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.0468748E+0, Y_Speed => 1.0468748E+0))
+flight_manager.ads:10:65: medium: float overflow check might fail (e.g. when Position_X = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.4999999E+0, Y_Speed => 1.4999999E+0) and Target_X = 0.0) [reason for check: result of floating-point subtraction must be bounded]
+flight_manager.ads:11:18: medium: float overflow check might fail (e.g. when Position_X = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.0468748E+0, Y_Speed => 1.0468748E+0)) [reason for check: result of floating-point addition must be bounded]
 flight_manager.ads:12:23: info: float overflow check proved (CVC4: 1 VC)
-flight_manager.ads:12:58: medium: float overflow check might fail (e.g. when Position_Y = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.4999999E+0, Y_Speed => 1.4999999E+0) and Target_Y = 0.0)
-flight_manager.ads:13:18: medium: float overflow check might fail (e.g. when Position_Y = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.0468748E+0, Y_Speed => 1.0468748E+0))
+flight_manager.ads:12:58: medium: float overflow check might fail (e.g. when Position_Y = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.4999999E+0, Y_Speed => 1.4999999E+0) and Target_Y = 0.0) [reason for check: result of floating-point subtraction must be bounded]
+flight_manager.ads:13:18: medium: float overflow check might fail (e.g. when Position_Y = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.0468748E+0, Y_Speed => 1.0468748E+0)) [reason for check: result of floating-point addition must be bounded]

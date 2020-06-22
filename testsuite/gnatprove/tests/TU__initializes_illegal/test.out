@@ -15,13 +15,13 @@ initializes_illegal_3_helper.ads:5:35: indicator Part_Of cannot appear in this c
 initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:19:07: info: initialization of "Body_Var" constituent of "State" proved
 initializes_illegal_4.adb:22:17: warning: unused assignment
-initializes_illegal_4.adb:30:35: medium: overflow check might fail (e.g. when G_Var = Integer'First and G_Var2 = 1)
+initializes_illegal_4.adb:30:35: medium: overflow check might fail (e.g. when G_Var = Integer'First and G_Var2 = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 initializes_illegal_4.ads:17:29: warning: no procedure exists that can initialize abstract state "Pac1.State"
 initializes_illegal_4.ads:20:07: low: initialization of "X" must be mentioned in the Initializes contract of "Pac1" (SPARK RM 7.1.5(9))
 initializes_illegal_4.ads:33:37: warning: no procedure exists that can initialize abstract state "Pac2.State2"
 initializes_illegal_4.ads:36:12: low: initialization of "Var2" must be mentioned in the Initializes contract of "Pac2" (SPARK RM 7.1.5(9))
 initializes_illegal_4.ads:50:11: info: flow dependencies proved
-initializes_illegal_4.ads:53:30: medium: overflow check might fail (e.g. when G_Var = 0 and G_Var2 = -2147483649)
+initializes_illegal_4.ads:53:30: medium: overflow check might fail (e.g. when G_Var = 0 and G_Var2 = -2147483649) [reason for check: result of addition must fit in a 32-bits machine integer]
 initializes_illegal_4.ads:53:32: high: "G_Var2" must be mentioned as an input of the Initializes aspect of "Pac3" (SPARK RM 7.1.5(11))
 initializes_illegal_4.ads:63:11: info: flow dependencies proved
 initializes_illegal_4.ads:65:22: high: "G_Var" must be mentioned as an input of the Initializes aspect of "Pac4" (SPARK RM 7.1.5(11))

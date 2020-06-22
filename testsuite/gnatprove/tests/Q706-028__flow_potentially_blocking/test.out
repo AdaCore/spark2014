@@ -1,2 +1,2 @@
-prot.adb:8:25: medium: overflow check might fail
+prot.adb:8:25: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 prot.adb:9:13: high: call to potentially blocking subprogram "Proc" in protected operation "Read"

@@ -18,8 +18,8 @@ refined_post_illegal.ads:11:11: incorrect placement of aspect "Refined_Post"
 refined_post_illegal_2.adb:5:27: info: refined post proved (CVC4: 1 VC)
 refined_post_illegal_2.adb:20:22: medium: assertion might fail, cannot prove not Temp (e.g. when Temp = True)
 refined_post_illegal_2.adb:26:27: info: refined post proved (CVC4: 1 VC)
-refined_post_illegal_2.adb:33:23: medium: overflow check might fail (e.g. when Par1 = 11 and Par2 = 12) [possible explanation: precondition of subprogram at refined_post_illegal_2.ads:19 should mention Par2]
-refined_post_illegal_2.adb:35:23: medium: overflow check might fail (e.g. when Par1 = 11)
+refined_post_illegal_2.adb:33:23: medium: overflow check might fail (e.g. when Par1 = 11 and Par2 = 12) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: precondition of subprogram at refined_post_illegal_2.ads:19 should mention Par2]
+refined_post_illegal_2.adb:35:23: medium: overflow check might fail (e.g. when Par1 = 11) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 refined_post_illegal_2.ads:4:18: info: initialization of "Par" proved
 refined_post_illegal_2.ads:13:19: medium: postcondition might fail, cannot prove Par >= 10 (e.g. when Par = 1)
 refined_post_illegal_2.ads:17:14: warning: subprogram "Calls_F1" has no effect

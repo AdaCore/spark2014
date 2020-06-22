@@ -1,12 +1,12 @@
 foo.adb:11:23: info: initialization of "B" proved
 foo.adb:16:13: medium: range check might fail [possible explanation: subprogram at line 11 should mention New_Str in a precondition]
-foo.adb:17:21: medium: overflow check might fail
+foo.adb:17:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:22:23: info: initialization of "B" proved
 foo.adb:27:12: info: range check proved (CVC4: 4 VC)
 foo.adb:30:23: info: initialization of "B" proved
 foo.adb:35:11: info: range check proved (CVC4: 2 VC)
 foo.adb:35:39: info: cannot unroll loop (too many loop iterations)
-foo.adb:36:21: medium: overflow check might fail [possible explanation: loop at line 35 should mention Pos in a loop invariant]
+foo.adb:36:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 35 should mention Pos in a loop invariant]
 foo.adb:41:23: info: initialization of "B" proved
 foo.adb:49:21: info: range check proved (CVC4: 4 VC)
 foo.adb:50:21: info: overflow check proved (CVC4: 1 VC)
@@ -17,8 +17,8 @@ foo.adb:67:16: info: range check proved (CVC4: 4 VC)
 foo.adb:68:18: info: range check proved (CVC4: 4 VC)
 foo.adb:69:18: info: range check proved (CVC4: 4 VC)
 foo.adb:73:23: info: initialization of "B" proved
-foo.adb:80:18: medium: range check might fail [possible explanation: subprogram at line 72 should mention New_Str and N in a precondition]
-foo.adb:80:38: medium: array index check might fail
+foo.adb:80:18: medium: range check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 72 should mention New_Str and N in a precondition]
+foo.adb:80:38: medium: array index check might fail [reason for check: value must be a valid index into the array]
 foo.adb:81:28: info: range check proved (CVC4: 4 VC)
 foo.adb:82:28: info: range check proved (CVC4: 4 VC)
 foo.adb:86:23: info: initialization of "B" proved
@@ -27,6 +27,6 @@ foo.adb:91:33: info: initialization of "B" proved
 foo.adb:98:16: medium: range check might fail [possible explanation: subprogram at line 85 should mention New_Str in a precondition]
 foo.adb:105:23: info: initialization of "B" proved
 foo.adb:111:18: medium: range check might fail [possible explanation: subprogram at line 104 should mention New_Str in a precondition]
-foo.adb:111:33: medium: overflow check might fail
+foo.adb:111:33: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:111:49: high: "Y" is not initialized
 foo.adb:113:17: info: overflow check proved (CVC4: 1 VC)

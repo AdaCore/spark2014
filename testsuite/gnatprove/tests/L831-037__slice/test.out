@@ -1,5 +1,5 @@
 lcp.adb:6:04: info: initialization of "L" proved
-lcp.adb:9:12: medium: overflow check might fail (e.g. when L = Natural'Last and X = 1)
+lcp.adb:9:12: medium: overflow check might fail (e.g. when L = Natural'Last and X = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 lcp.adb:10:17: info: overflow check proved (CVC4: 2 VC)
 lcp.adb:11:20: info: index check proved (CVC4: 4 VC)
 lcp.adb:11:20: info: overflow check proved (CVC4: 2 VC)
@@ -14,13 +14,13 @@ lcp.adb:13:51: info: range check proved (CVC4: 8 VC)
 lcp.adb:13:61: info: overflow check proved (CVC4: 2 VC)
 lcp.adb:13:65: info: overflow check proved (CVC4: 2 VC)
 lcp.adb:14:28: info: loop variant proved (CVC4: 1 VC)
-lcp.adb:16:14: medium: overflow check might fail (e.g. when L = Natural'Last)
+lcp.adb:16:14: medium: overflow check might fail (e.g. when L = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 lcp.ads:7:06: medium: postcondition might fail, cannot prove A (X .. X + LCP'Result - 1) = A (Y..Y + LCP'Result - 1) (e.g. when A = (1 => -1, 2 => 0, others => 1) and A'First = 1 and A'Last = 2 and LCP'Result = 0 and X = 1 and Y = 2)
 lcp.ads:7:06: medium: range check might fail (e.g. when A = (1 => 0, 2 => 0, others => 1) and A'First = 1 and A'Last = 2 and LCP'Result = 2 and X = 2)
 lcp.ads:7:16: info: overflow check proved (CVC4: 1 VC)
 lcp.ads:7:29: info: overflow check proved (CVC4: 1 VC)
 lcp.ads:7:36: medium: range check might fail (e.g. when A = (1 => 0, others => 1) and A'First = 1 and A'Last = 1 and LCP'Result = 2 and Y = 1)
-lcp.ads:7:46: medium: overflow check might fail (e.g. when LCP'Result = Natural'Last-1 and Y = 2)
+lcp.ads:7:46: medium: overflow check might fail (e.g. when LCP'Result = Natural'Last-1 and Y = 2) [reason for check: result of addition must fit in a 32-bits machine integer]
 lcp.ads:7:59: info: overflow check proved (CVC4: 1 VC)
 lcp.ads:8:18: info: overflow check proved (CVC4: 1 VC)
 lcp.ads:8:40: info: overflow check proved (CVC4: 1 VC)

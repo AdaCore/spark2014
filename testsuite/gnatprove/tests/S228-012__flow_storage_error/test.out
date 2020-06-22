@@ -1,4 +1,4 @@
-foo.adb:11:14: medium: overflow check might fail [possible explanation: subprogram at foo.ads:4 should mention N in a precondition]
+foo.adb:11:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at foo.ads:4 should mention N in a precondition]
 test.adb:8:21: high: "Success" is not initialized in "Check"
 test.adb:8:21: warning: unused variable "Success"
 test.adb:12:26: warning: unused variable "T"

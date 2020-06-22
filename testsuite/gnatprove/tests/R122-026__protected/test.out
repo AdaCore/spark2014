@@ -1,6 +1,6 @@
-pack.adb:16:26: medium: overflow check might fail (e.g. when Arg = -1 and Const = Integer'First) [possible explanation: subprogram at pack.ads:11 should mention Arg in a precondition]
+pack.adb:16:26: medium: overflow check might fail (e.g. when Arg = -1 and Const = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at pack.ads:11 should mention Arg in a precondition]
 pack.ads:11:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
-rack.adb:16:26: medium: overflow check might fail (e.g. when Arg = -1 and Const = Integer'First) [possible explanation: subprogram at rack.ads:11 should mention Arg in a precondition]
+rack.adb:16:26: medium: overflow check might fail (e.g. when Arg = -1 and Const = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at rack.ads:11 should mention Arg in a precondition]
 rack.ads:5:16: warning: volatile function "State" has no volatile effects
 rack.ads:11:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
 rack.ads:12:16: warning: volatile function "State" has no volatile effects

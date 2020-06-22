@@ -1,5 +1,5 @@
-fp_test.adb:6:17: medium: overflow check might fail (e.g. when A = 32767/400 and B = 1/400)
-fp_test.ads:13:23: medium: overflow check might fail (e.g. when A = -1/400 and B = -32768/400)
+fp_test.adb:6:17: medium: overflow check might fail (e.g. when A = 32767/400 and B = 1/400) [reason for check: result of fixed-point addition must fit in the underlying 16-bits machine integer]
+fp_test.ads:13:23: medium: overflow check might fail (e.g. when A = -1/400 and B = -32768/400) [reason for check: result of fixed-point addition must fit in the underlying 16-bits machine integer]
 fp_test_div.adb:6:14: info: division check proved (CVC4: 1 VC)
 fp_test_div.adb:6:14: info: overflow check proved (CVC4: 1 VC)
 fp_test_div.adb:6:14: info: range check proved (CVC4: 1 VC)
@@ -31,9 +31,9 @@ fp_test_div.ads:17:14: info: overflow check proved (CVC4: 1 VC)
 fp_test_div.ads:17:14: medium: postcondition might fail, cannot prove abs U <= 4.0 (e.g. when U = 61/15)
 fp_test_div.ads:17:31: info: overflow check proved (CVC4: 1 VC)
 fp_test_mult.adb:6:14: info: overflow check proved (Z3: 1 VC)
-fp_test_mult.adb:6:14: medium: range check might fail [possible explanation: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
+fp_test_mult.adb:6:14: medium: range check might fail [reason for check: result of fixed-point multiplication must fit in the target type of the assignment] [possible explanation: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
 fp_test_mult.adb:7:14: info: overflow check proved (Z3: 1 VC)
-fp_test_mult.adb:7:14: medium: range check might fail [possible explanation: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
+fp_test_mult.adb:7:14: medium: range check might fail [reason for check: result of fixed-point multiplication must fit in the target type of the assignment] [possible explanation: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
 fp_test_mult.adb:12:14: info: overflow check proved (altergo: 1 VC)
 fp_test_mult.adb:12:14: info: range check proved (altergo: 1 VC)
 fp_test_mult.adb:13:14: info: overflow check proved (altergo: 1 VC)

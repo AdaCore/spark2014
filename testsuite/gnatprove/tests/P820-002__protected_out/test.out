@@ -21,7 +21,7 @@ polyorb_hi-messages.adb:81:07: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.adb:81:44: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:81:62: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-messages.adb:81:65: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-polyorb_hi-messages.adb:92:51: medium: array index check might fail
+polyorb_hi-messages.adb:92:51: medium: array index check might fail [reason for check: value must be a valid index into the array]
 polyorb_hi-messages.adb:105:32: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:105:42: medium: range check might fail
 polyorb_hi-messages.adb:105:51: info: precondition proved (CVC4: 1 VC)

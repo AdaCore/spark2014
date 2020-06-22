@@ -20,7 +20,7 @@ mul_div_2.adb:41:30: info: overflow check proved (CVC4: 1 VC)
 mul_div_2.adb:45:28: info: overflow check proved (CVC4: 1 VC)
 mul_div_2.adb:45:40: info: overflow check proved (CVC4: 1 VC)
 mul_div_2.adb:45:51: info: division check proved (CVC4: 1 VC)
-mul_div_2.adb:49:24: medium: overflow check might fail
+mul_div_2.adb:49:24: medium: overflow check might fail [reason for check: result of addition must fit in a 64-bits machine integer]
 mul_div_2.ads:9:42: info: division check proved (CVC4: 1 VC)
 mul_div_2.ads:9:47: info: division check proved (CVC4: 1 VC)
 mul_div_2.ads:10:47: info: division check proved (CVC4: 1 VC)

@@ -3,10 +3,10 @@ real_world.adb:26:07: info: initialization of "R" proved
 real_world.adb:44:22: info: assertion proved (CVC4: 1 VC)
 real_world.adb:45:21: info: range check proved (CVC4: 1 VC)
 real_world.adb:54:11: info: flow dependencies proved
-real_world.adb:56:24: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First)
-real_world.adb:56:51: medium: overflow check might fail (e.g. when C2 = Integer'First and Y = -1)
+real_world.adb:56:24: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer]
+real_world.adb:56:51: medium: overflow check might fail (e.g. when C2 = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer]
 real_world.adb:57:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 real_world.adb:69:11: info: flow dependencies proved
-real_world.adb:71:21: medium: overflow check might fail (e.g. when X = -2 and Y = Integer'Last)
-real_world.adb:71:48: medium: overflow check might fail (e.g. when C2 = Integer'First and Y = 1)
+real_world.adb:71:21: medium: overflow check might fail (e.g. when X = -2 and Y = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+real_world.adb:71:48: medium: overflow check might fail (e.g. when C2 = Integer'First and Y = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 real_world.adb:72:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)

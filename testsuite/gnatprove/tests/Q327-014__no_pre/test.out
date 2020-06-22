@@ -1,5 +1,5 @@
 dispatch.adb:5:24: info: overflow check proved (CVC4: 1 VC)
-dispatch.adb:10:24: medium: overflow check might fail (e.g. when X = (F => Integer'Last)) [possible explanation: precondition of subprogram at dispatch.ads:10 should mention X]
+dispatch.adb:10:24: medium: overflow check might fail (e.g. when X = (F => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: precondition of subprogram at dispatch.ads:10 should mention X]
 dispatch.adb:16:27: info: overflow check proved (CVC4: 1 VC)
 dispatch.adb:18:10: warning: unreachable code (CVC4: 1 VC)
 dispatch.adb:24:24: info: overflow check proved (CVC4: 1 VC)
@@ -10,15 +10,15 @@ dispatch.ads:8:19: info: postcondition proved (CVC4: 1 VC)
 dispatch.ads:8:39: info: overflow check proved (CVC4: 1 VC)
 dispatch.ads:13:19: info: postcondition proved (CVC4: 1 VC)
 dispatch.ads:13:40: info: overflow check proved (CVC4: 1 VC)
-dispatch.ads:18:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last))
+dispatch.ads:18:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dispatch.ads:19:20: info: postcondition is stronger than class-wide postcondition (CVC4: 1 VC)
 dispatch.ads:19:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 dispatch.ads:19:73: info: overflow check proved (CVC4: 1 VC)
 dispatch.ads:23:20: info: postcondition proved (CVC4: 1 VC)
-dispatch.ads:23:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last))
+dispatch.ads:23:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dispatch.ads:27:20: info: postcondition proved (Trivial: 1 VC)
 dispatch.ads:27:20: medium: postcondition might be weaker than class-wide postcondition, cannot prove Incr5'Result.F = X.F + 1
-dispatch.ads:28:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last))
+dispatch.ads:28:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dispatch.ads:33:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 dispatch.ads:33:73: info: overflow check proved (CVC4: 1 VC)
 dispatch.ads:35:10: info: postcondition is stronger than class-wide postcondition (CVC4: 1 VC; Trivial: 1 VC)

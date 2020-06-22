@@ -1,4 +1,4 @@
-buf-no_data.adb:14:30: medium: overflow check might fail (e.g. when Free_List = Integer'Last) [possible explanation: call at line 13 should mention Free_List in a postcondition]
+buf-no_data.adb:14:30: medium: overflow check might fail (e.g. when Free_List = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: call at line 13 should mention Free_List in a postcondition]
 buf-no_data.ads:5:21: warning: no procedure exists that can initialize abstract state "No_Data.State"
 buf-no_data.ads:8:06: info: data dependencies proved
 buf.ads:9:14: warning: subprogram "P" has no effect

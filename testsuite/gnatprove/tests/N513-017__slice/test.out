@@ -2,7 +2,7 @@ repr.adb:6:31: warning: unused variable "Unsorted"
 repr.adb:10:30: warning: "Values" is not modified, could be IN
 repr.adb:12:07: info: data dependencies proved
 repr.adb:16:16: warning: unused assignment
-repr.adb:16:37: medium: range check might fail (e.g. when Values'First = 6 and Values'Last = 5) [possible explanation: subprogram at line 10 should mention Values in a precondition]
+repr.adb:16:37: medium: range check might fail (e.g. when Values'First = 6 and Values'Last = 5) [reason for check: input value must fit in parameter type] [possible explanation: subprogram at line 10 should mention Values in a precondition]
 sorters.adb:9:08: info: flow dependencies proved
 sorters.adb:15:12: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 sorters.adb:15:20: info: index check proved (CVC4: 2 VC)

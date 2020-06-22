@@ -3,7 +3,7 @@ contract_cases_legal.adb:12:17: info: overflow check proved (CVC4: 1 VC)
 contract_cases_legal.adb:19:17: info: overflow check proved (CVC4: 1 VC)
 contract_cases_legal.adb:26:17: info: overflow check proved (CVC4: 1 VC)
 contract_cases_legal.ads:15:19: medium: postcondition might fail, cannot prove X = Integer'min (e.g. when Threshold = -1 and X = 0 and X'Old = 0)
-contract_cases_legal.ads:15:42: medium: overflow check might fail (e.g. when X = Integer'Last)
+contract_cases_legal.ads:15:42: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 contract_cases_legal.ads:18:11: info: complete contract cases proved (CVC4: 1 VC)
 contract_cases_legal.ads:18:11: info: disjoint contract cases proved (CVC4: 1 VC)
 contract_cases_legal.ads:18:45: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)

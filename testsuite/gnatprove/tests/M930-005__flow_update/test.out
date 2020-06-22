@@ -17,7 +17,7 @@ update_uninitialized_2.adb:16:32: medium: "Z" might not be initialized
 update_uninitialized_2.adb:19:25: high: "Z" is not an input in the Global contract of subprogram "P" at line 15
 update_uninitialized_2.adb:19:25: high: "Z" is not initialized
 update_uninitialized_2.adb:19:25: high: either make "Z" an input in the Global contract or initialize it before use
-update_uninitialized_2.adb:21:21: medium: overflow check might fail [possible explanation: subprogram at line 15 should mention R in a precondition]
+update_uninitialized_2.adb:21:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 15 should mention R in a precondition]
 update_uninitialized_2.adb:28:04: warning: analyzing unreferenced procedure "P2"
 update_uninitialized_3.adb:9:04: info: initialization of "Rec" constituent of "State" proved
 update_uninitialized_3.adb:16:08: warning: unused assignment

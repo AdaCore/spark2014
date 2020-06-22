@@ -15,7 +15,7 @@ container.adb:26:14: info: local subprogram "Test3" only analyzed in the context
 container.adb:26:14: warning: subprogram "Test3" might not terminate
 container.adb:30:11: info: precondition proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
-container.adb:33:20: medium: range check might fail, in call inlined at container.adb:45 [possible explanation: loop at line 32 should mention Int in a loop invariant]
+container.adb:33:20: medium: range check might fail, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: loop at line 32 should mention Int in a loop invariant]
 container.adb:34:34: info: loop variant proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:54:17: info: range check proved (CVC4: 1 VC)
 container.adb:59:17: warning: unreachable code (CVC4: 1 VC)

@@ -20,7 +20,7 @@ array_algorithms.ads:31:13: info: postcondition proved (CVC4: 5 VC)
 array_algorithms.ads:32:37: info: index check proved (CVC4: 2 VC)
 array_algorithms.ads:32:53: info: index check proved (CVC4: 2 VC)
 array_algorithms.ads:33:43: info: range check proved (CVC4: 2 VC)
-array_algorithms.ads:34:59: medium: overflow check might fail (e.g. when Location = Index_Type'First)
+array_algorithms.ads:34:59: medium: overflow check might fail (e.g. when Location = Index_Type'First) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 array_algorithms.ads:34:69: info: index check proved (CVC4: 2 VC)
 array_algorithms.ads:34:77: info: index check proved (CVC4: 2 VC)
 array_algorithms.ads:35:28: info: range check proved (CVC4: 2 VC)

@@ -1,6 +1,6 @@
-opers.adb:5:16: medium: overflow check might fail, in instantiation at opers.adb:10 (e.g. when X = -1073741825) [possible explanation: subprogram at opers.ads:12 should mention X in a precondition]
-opers.adb:5:16: medium: overflow check might fail, in instantiation at opers.adb:8 (e.g. when X = -1073741825) [possible explanation: subprogram at opers.ads:12 should mention X in a precondition]
-opers.adb:46:35: medium: range check might fail [possible explanation: subprogram at opers.ads:24 should mention A in a precondition]
+opers.adb:5:16: medium: overflow check might fail, in instantiation at opers.adb:10 (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at opers.ads:12 should mention X in a precondition]
+opers.adb:5:16: medium: overflow check might fail, in instantiation at opers.adb:8 (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at opers.ads:12 should mention X in a precondition]
+opers.adb:46:35: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:47:35: info: range check proved (CVC4: 1 VC)
 opers.adb:48:22: medium: assertion might fail, cannot prove not False1 (A) (e.g. when A = 1) [possible explanation: subprogram at opers.ads:24 should mention A in a precondition]
 opers.adb:49:22: medium: assertion might fail, cannot prove not False2 (A) (e.g. when A = 1) [possible explanation: subprogram at opers.ads:24 should mention A in a precondition]

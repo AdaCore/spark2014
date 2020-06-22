@@ -28,7 +28,7 @@ enums.adb:176:71: info: range check proved (CVC4: 1 VC)
 enums.adb:180:07: info: initialization of "R" proved
 enums.adb:191:19: info: postcondition proved (CVC4: 1 VC)
 enums.adb:191:50: info: range check proved (CVC4: 1 VC)
-enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8) [possible explanation: subprogram at line 190 should mention A in a precondition]
+enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8) [reason for check: value cannot be maximum value of the type] [possible explanation: subprogram at line 190 should mention A in a precondition]
 enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
 enums.adb:203:07: info: initialization of "Tmp" proved
 counterexample expected for check at enums.adb:19

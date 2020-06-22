@@ -1,5 +1,5 @@
 main.adb:8:14: info: add a contract to analyze it separately from calling contexts
 main.adb:8:14: info: local subprogram "Copy_To_Buffer" only analyzed in the context of calls
-main.adb:12:07: medium: range check might fail, in call inlined at main.adb:18
+main.adb:12:07: medium: range check might fail, in call inlined at main.adb:18 [reason for check: value must fit in the target type of the assignment]
 main.adb:12:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at main.adb:18
 main.adb:12:40: info: length check proved (CVC4: 2 VC; Trivial: 2 VC), in call inlined at main.adb:18

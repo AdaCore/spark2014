@@ -1,2 +1,2 @@
 arraydef.adb:5:24: info: unrolling loop
-arraydef.adb:6:24: medium: overflow check might fail (e.g. when I = 1 and X = (others => Integer'Last)) [possible explanation: subprogram at arraydef.ads:5 should mention X in a precondition]
+arraydef.adb:6:24: medium: overflow check might fail (e.g. when I = 1 and X = (others => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at arraydef.ads:5 should mention X in a precondition]

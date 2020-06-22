@@ -1,7 +1,7 @@
 twodim.adb:8:16: medium: divide by zero might fail (e.g. when I = 1 and K = 1)
-twodim.adb:8:25: medium: array index check might fail (e.g. when K = One_Twenty'Last)
-twodim.adb:8:29: medium: overflow check might fail (e.g. when I = 1 and K = 1)
+twodim.adb:8:25: medium: array index check might fail (e.g. when K = One_Twenty'Last) [reason for check: result of addition must be a valid index into the array]
+twodim.adb:8:29: medium: overflow check might fail (e.g. when I = 1 and K = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 twodim.adb:11:04: warning: analyzing unreferenced function "G"
 twodim.adb:13:15: medium: range check might fail (e.g. when M'First(1) = 0 and M'First(2) = 0 and M'Last(1) = 2147483647 and M'Last(2) = 0)
-twodim.adb:13:27: medium: overflow check might fail (e.g. when M'First(1) = 0 and M'First(2) = 0 and M'Last(1) = 0 and M'Last(2) = 2147483646)
+twodim.adb:13:27: medium: overflow check might fail (e.g. when M'First(1) = 0 and M'First(2) = 0 and M'Last(1) = 0 and M'Last(2) = 2147483646) [reason for check: result of addition must fit in a 32-bits machine integer]
 twodim.adb:13:30: medium: range check might fail (e.g. when M'First(1) = 1 and M'First(2) = 0 and M'Last(1) = 0 and M'Last(2) = 2147483647)

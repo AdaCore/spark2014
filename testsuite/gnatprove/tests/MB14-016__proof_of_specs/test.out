@@ -1,3 +1,3 @@
 f.ads:3:08: info: flow dependencies proved
 p.ads:5:08: info: flow dependencies proved
-p.ads:10:14: medium: range check might fail
+p.ads:10:14: medium: range check might fail [reason for check: default component value must fit in the type]

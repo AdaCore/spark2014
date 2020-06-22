@@ -1,21 +1,21 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:4:04: info: initialization of "J" proved
 p.adb:4:07: info: initialization of "K" proved
-p.adb:10:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => 0) and Tab'First = 0)
-p.adb:11:14: medium: overflow check might fail (e.g. when J = Integer'Last)
+p.adb:10:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => 0) and Tab'First = 0) [reason for check: value must be a valid index into the array]
+p.adb:11:14: medium: overflow check might fail (e.g. when J = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 p.adb:12:28: info: loop variant proved (CVC4: 1 VC)
-p.adb:19:12: medium: overflow check might fail (e.g. when J = Integer'First and K = -1)
+p.adb:19:12: medium: overflow check might fail (e.g. when J = Integer'First and K = -1) [reason for check: result of addition must fit in a 32-bits machine integer]
 p.adb:20:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:20:14: medium: array index check might fail (e.g. when J = 0 and K = 0 and Tab = (1 => 0, others => 1) and Tab'First = 1)
+p.adb:20:14: medium: array index check might fail (e.g. when J = 0 and K = 0 and Tab = (1 => 0, others => 1) and Tab'First = 1) [reason for check: result of addition must be a valid index into the array]
 p.adb:22:17: info: overflow check proved (CVC4: 2 VC)
 p.adb:24:17: info: overflow check proved (CVC4: 2 VC)
 p.adb:26:28: info: loop variant proved (CVC4: 1 VC)
-p.adb:35:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
+p.adb:35:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100) [reason for check: value must be a valid index into the array]
 p.adb:36:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:37:14: medium: overflow check might fail (e.g. when K = Integer'Last) [possible explanation: loop at line 34 should mention K in a loop invariant]
+p.adb:37:14: medium: overflow check might fail (e.g. when K = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 34 should mention K in a loop invariant]
 p.adb:38:28: info: loop variant proved (CVC4: 1 VC)
 p.adb:39:28: info: loop variant proved (CVC4: 1 VC)
-p.adb:46:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
+p.adb:46:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100) [reason for check: value must be a valid index into the array]
 p.adb:47:14: info: overflow check proved (CVC4: 2 VC)
 p.adb:48:28: info: loop variant proved (CVC4: 1 VC)
 p.adb:49:30: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -23,7 +23,7 @@ p.adb:49:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:49:50: info: overflow check proved (CVC4: 2 VC)
 p.adb:49:57: medium: "Tab" might not be initialized
 p.adb:49:62: info: index check proved (CVC4: 4 VC)
-p.adb:56:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
+p.adb:56:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100) [reason for check: value must be a valid index into the array]
 p.adb:57:14: info: overflow check proved (CVC4: 2 VC)
 p.adb:58:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:58:30: info: loop invariant preservation proved (CVC4: 1 VC)
@@ -31,9 +31,9 @@ p.adb:58:50: info: overflow check proved (CVC4: 2 VC)
 p.adb:58:57: medium: "Tab" might not be initialized
 p.adb:58:62: info: index check proved (CVC4: 4 VC)
 p.adb:59:28: info: loop variant proved (CVC4: 1 VC)
-p.adb:67:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
+p.adb:67:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100) [reason for check: value must be a valid index into the array]
 p.adb:68:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:69:14: medium: overflow check might fail (e.g. when K = Integer'Last)
+p.adb:69:14: medium: overflow check might fail (e.g. when K = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 p.adb:70:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:70:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:70:36: info: overflow check proved (CVC4: 2 VC)
@@ -50,7 +50,7 @@ p.adb:74:50: info: overflow check proved (CVC4: 2 VC)
 p.adb:74:54: info: overflow check proved (CVC4: 2 VC)
 p.adb:74:61: medium: "Tab" might not be initialized
 p.adb:74:66: info: index check proved (CVC4: 4 VC)
-p.adb:80:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
+p.adb:80:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100) [reason for check: value must be a valid index into the array]
 p.adb:81:14: info: overflow check proved (CVC4: 2 VC)
 p.adb:82:14: info: overflow check proved (CVC4: 2 VC)
 p.adb:83:30: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -69,7 +69,7 @@ p.adb:87:50: info: overflow check proved (CVC4: 2 VC)
 p.adb:87:54: info: overflow check proved (CVC4: 2 VC)
 p.adb:87:61: medium: "Tab" might not be initialized
 p.adb:87:66: info: index check proved (CVC4: 4 VC)
-p.adb:93:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
+p.adb:93:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100) [reason for check: value must be a valid index into the array]
 p.adb:94:14: info: overflow check proved (CVC4: 2 VC)
 p.adb:95:14: info: overflow check proved (CVC4: 2 VC)
 p.adb:96:28: info: loop variant proved (CVC4: 1 VC)

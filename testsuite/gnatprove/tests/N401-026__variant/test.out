@@ -9,7 +9,7 @@ loop_tutorial.adb:13:19: info: initialization of "Middle" proved
 loop_tutorial.adb:21:20: info: overflow check proved (CVC4: 1 VC)
 loop_tutorial.adb:27:33: info: loop invariant initialization proved (CVC4: 5 VC)
 loop_tutorial.adb:27:33: info: loop invariant preservation proved (CVC4: 5 VC)
-loop_tutorial.adb:30:43: medium: overflow check might fail (e.g. when Upper = 46341)
+loop_tutorial.adb:30:43: medium: overflow check might fail (e.g. when Upper = 46341) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 loop_tutorial.adb:31:43: info: overflow check proved (CVC4: 2 VC)
 loop_tutorial.adb:33:31: info: loop variant proved (CVC4: 1 VC)
 loop_tutorial.adb:37:25: info: overflow check proved (CVC4: 1 VC)

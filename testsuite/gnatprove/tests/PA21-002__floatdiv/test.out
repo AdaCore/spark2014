@@ -1,6 +1,6 @@
 basic_contracts.adb:4:62: info: overflow check proved (CodePeer)
-basic_contracts.adb:10:51: medium: range check might fail
-basic_contracts.adb:11:43: medium: range check might fail
+basic_contracts.adb:10:51: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+basic_contracts.adb:11:43: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 basic_contracts.adb:13:13: info: division check proved (CodePeer)
 basic_contracts.adb:13:13: info: float overflow check proved (CodePeer)
 basic_contracts.adb:19:07: info: initialization of "Res" proved

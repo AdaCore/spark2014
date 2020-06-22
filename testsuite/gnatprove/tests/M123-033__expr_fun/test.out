@@ -28,7 +28,7 @@ p.adb:45:28: medium: assertion might fail, cannot prove G3 = 1
 p.adb:47:28: medium: assertion might fail, cannot prove G4 = 1
 p.ads:4:38: info: overflow check proved (CVC4: 1 VC)
 p.ads:4:43: info: overflow check proved (CVC4: 1 VC)
-p.ads:6:38: medium: overflow check might fail
+p.ads:6:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 p.ads:6:43: info: overflow check proved (CVC4: 1 VC)
 private_main.adb:8:25: info: assertion proved (CVC4: 1 VC)
 private_main.adb:10:25: info: assertion proved (CVC4: 1 VC)
@@ -58,7 +58,7 @@ private_p.adb:39:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:41:28: medium: assertion might fail, cannot prove G2 = 1
 private_p.adb:43:28: medium: assertion might fail, cannot prove G3 = 1
 private_p.adb:45:28: medium: assertion might fail, cannot prove G4 = 1
-private_p.ads:8:38: medium: overflow check might fail
+private_p.ads:8:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 private_p.ads:8:43: info: overflow check proved (CVC4: 1 VC)
 private_p.ads:9:38: info: overflow check proved (CVC4: 1 VC)
 private_p.ads:9:43: info: overflow check proved (CVC4: 1 VC)
@@ -140,7 +140,7 @@ reorder_p.adb:43:28: medium: assertion might fail, cannot prove G3 = 1
 reorder_p.adb:45:28: medium: assertion might fail, cannot prove G4 = 1
 reorder_p.ads:4:38: info: overflow check proved (CVC4: 1 VC)
 reorder_p.ads:4:43: info: overflow check proved (CVC4: 1 VC)
-reorder_p.ads:6:38: medium: overflow check might fail
+reorder_p.ads:6:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 reorder_p.ads:6:43: info: overflow check proved (CVC4: 1 VC)
 reorder_q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 reorder_q.adb:4:14: warning: subprogram "Q1" has no effect

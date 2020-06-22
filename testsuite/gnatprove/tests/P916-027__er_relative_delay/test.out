@@ -1,2 +1,2 @@
 main.adb:5:14: medium: divide by zero might fail
-main.adb:5:14: medium: overflow check might fail (e.g. when One = 1)
+main.adb:5:14: medium: overflow check might fail (e.g. when One = 1) [reason for check: result of fixed-point division must fit in the underlying 64-bits machine integer]

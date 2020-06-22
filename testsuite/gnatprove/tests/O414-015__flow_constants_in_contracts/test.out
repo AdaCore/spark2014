@@ -1,9 +1,9 @@
-const.adb:3:10: medium: overflow check might fail
-const.adb:3:14: medium: overflow check might fail
-const.adb:3:18: medium: overflow check might fail
-const.adb:3:22: medium: overflow check might fail
+const.adb:3:10: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+const.adb:3:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+const.adb:3:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+const.adb:3:22: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 const.adb:3:26: info: overflow check proved (CVC4: 1 VC)
-const.adb:3:30: medium: overflow check might fail
+const.adb:3:30: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 const.adb:3:34: info: overflow check proved (CVC4: 1 VC)
 const.adb:3:38: info: overflow check proved (CVC4: 1 VC)
 const.ads:10:33: info: precondition proved (Trivial: 1 VC)
@@ -29,7 +29,7 @@ const3.adb:22:22: info: initialization of "R" proved
 const3.adb:23:11: info: data dependencies proved
 const3.adb:24:11: info: flow dependencies proved
 const3.adb:30:25: info: cannot unroll loop (too many loop iterations)
-const3.adb:31:17: medium: overflow check might fail [possible explanation: loop at line 30 should mention R in a loop invariant]
+const3.adb:31:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 30 should mention R in a loop invariant]
 const4.adb:2:08: medium: constant without variable input "C2" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 const4.ads:6:27: medium: constant without variable input "C" cannot appear in Initializes
 const4.ads:7:32: medium: constant without variable input "S" cannot appear in Initializes
@@ -39,7 +39,7 @@ const4.ads:15:14: medium: constant without variable input "C" cannot appear in G
 const4.ads:15:17: info: initialization of "X" proved
 const4.ads:16:28: medium: constant without variable input "C" cannot appear in Depends
 const4.ads:19:11: info: flow dependencies proved
-other.adb:4:49: medium: overflow check might fail [possible explanation: precondition of subprogram at other.ads:13 should mention V]
+other.adb:4:49: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: precondition of subprogram at other.ads:13 should mention V]
 other.ads:2:08: info: flow dependencies proved
 other.ads:20:11: info: data dependencies proved
 other.ads:21:21: info: postcondition proved (CVC4: 1 VC)

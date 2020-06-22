@@ -1,7 +1,7 @@
-active_prio.adb:15:17: medium: overflow check might fail
-active_prio.adb:27:17: medium: overflow check might fail
-active_prio.adb:32:17: medium: overflow check might fail
-active_prio.adb:37:17: medium: overflow check might fail
+active_prio.adb:15:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+active_prio.adb:27:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+active_prio.adb:32:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+active_prio.adb:37:17: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
 active_prio.ads:3:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 active_prio.ads:3:14: medium: the task might terminate, which is not allowed in SPARK
 active_prio.ads:4:23: info: range check proved (CVC4: 2 VC)

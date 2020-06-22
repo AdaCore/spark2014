@@ -9,12 +9,12 @@ refined_depends_illegal.adb:71:14: constituent "Z" is missing in output list
 refined_depends_illegal.adb:71:14: output state "State2" must be replaced by all its constituents in dependence refinement
 refined_depends_illegal.adb:81:48: duplicate use of item "W"
 refined_depends_illegal.adb:89:48: cannot mix null and non-null dependency items
-refined_depends_illegal_2.adb:11:16: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649) [possible explanation: subprogram at refined_depends_illegal_2.ads:6 should mention X in a precondition]
+refined_depends_illegal_2.adb:11:16: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at refined_depends_illegal_2.ads:6 should mention X in a precondition]
 refined_depends_illegal_2.adb:11:18: high: "Y" constituent of "State" must be listed in the Refined_Depends aspect of "P1" (SPARK RM 6.1.4(14))
 refined_depends_illegal_2.adb:16:42: info: initialization of "X" constituent of "State" proved
 refined_depends_illegal_2.adb:16:45: info: initialization of "Y" constituent of "State" proved
 refined_depends_illegal_2.adb:18:31: medium: missing dependency "Y constituent of State => Par"
-refined_depends_illegal_2.adb:22:14: medium: overflow check might fail (e.g. when Par = Integer'Last) [possible explanation: subprogram at refined_depends_illegal_2.ads:12 should mention Par in a precondition]
+refined_depends_illegal_2.adb:22:14: medium: overflow check might fail (e.g. when Par = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at refined_depends_illegal_2.ads:12 should mention Par in a precondition]
 refined_depends_illegal_2.ads:4:08: info: flow dependencies proved
 refined_depends_illegal_2.ads:9:11: info: flow dependencies proved
 refined_depends_illegal_2.ads:15:11: info: data dependencies proved

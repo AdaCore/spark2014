@@ -5,7 +5,7 @@ foo.adb:9:07: info: initialization of "Item" proved
 foo.adb:14:11: info: range check proved (CVC4: 2 VC)
 foo.adb:14:43: info: cannot unroll loop (too many loop iterations)
 foo.adb:15:21: info: index check proved (CVC4: 2 VC)
-foo.adb:16:25: medium: overflow check might fail (e.g. when Item = Integer'First and Total = -1) [possible explanation: loop at line 14 should mention Item and Total in a loop invariant]
+foo.adb:16:25: medium: overflow check might fail (e.g. when Item = Integer'First and Total = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 14 should mention Item and Total in a loop invariant]
 foo.ads:19:35: info: initialization of "S" proved
 foo.ads:20:11: info: data dependencies proved
 foo.ads:21:21: medium: postcondition might fail, cannot prove S <= 100 (e.g. when S = 101)

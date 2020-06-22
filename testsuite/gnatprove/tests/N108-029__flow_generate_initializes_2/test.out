@@ -1,5 +1,5 @@
 generate_initializes2.ads:4:09: high: Other2.State must be initialized at elaboration
 main.adb:3:17: info: initialization of "X" proved
-main.adb:5:11: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention A and Visible_Var in a precondition]
-main.adb:5:32: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention A and Visible_Var in a precondition]
+main.adb:5:11: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 3 should mention A and Visible_Var in a precondition]
+main.adb:5:32: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 3 should mention A and Visible_Var in a precondition]
 other2.ads:2:26: warning: no procedure exists that can initialize abstract state "Other2.State"

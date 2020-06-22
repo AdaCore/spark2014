@@ -8,7 +8,7 @@ power_14.adb:15:13: info: data dependencies proved
 power_14.adb:16:13: info: flow dependencies proved
 power_14.adb:33:06: info: initialization of "Level_A" proved
 power_14.adb:34:06: info: initialization of "Level_B" proved
-power_14.adb:38:23: medium: overflow check might fail (e.g. when Level_A = -1 and Level_B = Integer'First) [possible explanation: call at line 37 should mention Level (for argument Level_B) in a postcondition]
+power_14.adb:38:23: medium: overflow check might fail (e.g. when Level_A = -1 and Level_B = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: call at line 37 should mention Level (for argument Level_B) in a postcondition]
 power_14.ads:5:08: info: flow dependencies proved
 power_14.ads:7:25: info: initialization of "Level" proved
 power_14.ads:8:11: info: data dependencies proved
