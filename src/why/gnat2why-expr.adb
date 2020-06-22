@@ -189,6 +189,19 @@ package body Gnat2Why.Expr is
    --  @param Modulus the modulus of the type in which the operation is done
    --  @return the Why3 check expression
 
+   function Check_Subprogram_Variants
+     (Call   : Node_Id;
+      Args   : W_Expr_Array;
+      Params : Transformation_Params) return W_Prog_Id
+   with Pre => Nkind (Call) in N_Subprogram_Call
+                             | N_Entry_Call_Statement
+                             | N_Op
+     and then Call_Needs_Variant_Check (Call, Current_Subp);
+   --  Introduce a check to make sure that the variants progress on a recursive
+   --  call Call. This check might be statically False if we do not support
+   --  precise variant checks on Call (see Is_Valid_Recursive_Call). Args
+   --  is the Why3 translation of the actual parameters of Call.
+
    function Check_Type_With_Invariants
      (Params : Transformation_Params;
       N      : Entity_Id) return W_Prog_Id;
@@ -2622,6 +2635,54 @@ package body Gnat2Why.Expr is
          end;
       end if;
    end Check_Scalar_Range;
+
+   -------------------------------
+   -- Check_Subprogram_Variants --
+   -------------------------------
+
+   function Check_Subprogram_Variants
+     (Call   : Node_Id;
+      Args   : W_Expr_Array;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      Result      : Boolean;
+      Explanation : Unbounded_String;
+   begin
+      Is_Valid_Recursive_Call (Call, Current_Subp, Result, Explanation);
+
+      if Result then
+         declare
+            Enclosing_Variants : constant W_Expr_Array :=
+              (if Is_Subprogram_Or_Entry (Current_Subp)
+               then Get_Variants_Ids (Current_Subp)
+               else Get_Variants_Exprs
+                 (E      => Directly_Enclosing_Subprogram_Or_Entry
+                      (Current_Subp),
+                  Domain => EW_Pterm,
+                  Params => Params));
+            --  If the enclosing entity is a subprogram or entry, then we have
+            --  introduced constants for the values of its variants at the
+            --  beginning of the subprogram.
+            --  Otherwise, we are in a package nested directly in a subprogram.
+            --  In this case, we can use the expression of the variants, as
+            --  it cannot have changed since the beginning of the subprogram.
+         begin
+            return +New_VC_Call
+              (Ada_Node => Call,
+               Name     => E_Symb
+                 (Get_Called_Entity (Call), WNE_Check_Subprogram_Variants),
+               Progs    => Enclosing_Variants & Args,
+               Reason   => VC_Subprogram_Variant,
+               Domain   => EW_Prog,
+               Typ      => EW_Unit_Type);
+         end;
+      else
+         Emit_Static_Proof_Result
+           (Call, VC_Subprogram_Variant, False, Current_Subp,
+            Explanation => To_String (Explanation));
+         return +Void;
+      end if;
+   end Check_Subprogram_Variants;
 
    ------------------------------
    -- Check_Subtype_Indication --
@@ -6209,6 +6270,68 @@ package body Gnat2Why.Expr is
       end if;
    end Get_Pure_Logic_Term_If_Possible;
 
+   ------------------------
+   -- Get_Variants_Exprs --
+   ------------------------
+
+   function Get_Variants_Exprs
+     (E      : Entity_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Array
+   is
+      Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
+      Exprs    : W_Expr_Array (1 .. Number_Of_Variants (E));
+   begin
+      if Present (Variants) then
+         declare
+            Aggr    : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Variants)));
+            Variant : Node_Id := First (Component_Associations (Aggr));
+            Count   : Positive := 1;
+         begin
+            while Present (Variant) loop
+               Exprs (Count) := Transform_Expr
+                 (Expr          => Expression (Variant),
+                  Domain        => Domain,
+                  Params        => Params,
+                  Expected_Type =>
+                    Base_Why_Type (Etype (Expression (Variant))));
+               Count := Count + 1;
+               Next (Variant);
+            end loop;
+         end;
+      end if;
+      return Exprs;
+   end Get_Variants_Exprs;
+
+   ----------------------
+   -- Get_Variants_Ids --
+   ----------------------
+
+   function Get_Variants_Ids (E : Entity_Id) return W_Expr_Array is
+      Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
+      Exprs    : W_Expr_Array (1 .. Number_Of_Variants (E));
+   begin
+      if Present (Variants) then
+         declare
+            Aggr    : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Variants)));
+            Variant : Node_Id := First (Component_Associations (Aggr));
+            Count   : Positive := 1;
+         begin
+            while Present (Variant) loop
+               Exprs (Count) := +Variant_Append
+                 (Base  => Full_Name (E),
+                  Count => Count,
+                  Typ   => Base_Why_Type (Etype (Expression (Variant))));
+               Count := Count + 1;
+               Next (Variant);
+            end loop;
+         end;
+      end if;
+      return Exprs;
+   end Get_Variants_Ids;
+
    -------------------------------
    -- Has_Visibility_On_Refined --
    -------------------------------
@@ -8420,6 +8543,22 @@ package body Gnat2Why.Expr is
             Assert_Kind => EW_Assert);
       end if;
    end New_Invariant_Check;
+
+   ------------------------
+   -- Number_Of_Variants --
+   ------------------------
+
+   function Number_Of_Variants (E : Entity_Id) return Natural is
+      Variants : constant Node_Id := Get_Pragma (E, Pragma_Subprogram_Variant);
+   begin
+      if Present (Variants) then
+         return Natural
+           (List_Length (Component_Associations
+            (Expression (First (Pragma_Argument_Associations (Variants))))));
+      else
+         return 0;
+      end if;
+   end Number_Of_Variants;
 
    ----------------------
    -- One_Level_Access --
@@ -16859,12 +16998,13 @@ package body Gnat2Why.Expr is
       --  additional argument.
 
       Use_Tmps : constant Boolean := Domain = EW_Prog
-        and then Subp_Needs_Invariant_Checks (Subp);
-      --  If we need to introduce an invariant check on call, arguments of
-      --  the call will be used twice (once for the actual code and once for
-      --  the call to Check_Invariants_On_Call). In this case, we want to
-      --  introduce let bindings for parameters so that we do not duplicate
-      --  checks.
+        and then (Subp_Needs_Invariant_Checks (Subp)
+                  or else Call_Needs_Variant_Check (Expr, Current_Subp));
+      --  If we need to introduce an invariant or variant check on call,
+      --  arguments of the call will be used twice (once for the actual code
+      --  and once for the call to the checking procedure). In this case, we
+      --  want to introduce let bindings for parameters so that we do not
+      --  duplicate checks.
 
       Args     : constant W_Expr_Array :=
         Tag_Arg &
@@ -16987,6 +17127,16 @@ package body Gnat2Why.Expr is
 
          if Selector = Dispatch and then not Is_Rewritten_Op_Eq (Expr) then
             T := +Sequence (Compute_Tag_Check (Expr, Params),
+                            +T);
+         end if;
+
+         --  Insert variant check
+
+         if Call_Needs_Variant_Check (Expr, Current_Subp) then
+            T := +Sequence (Check_Subprogram_Variants
+                            (Call   => Expr,
+                             Args   => Args,
+                             Params => Params),
                             +T);
          end if;
 
@@ -20376,9 +20526,7 @@ package body Gnat2Why.Expr is
                           Name     => Result_Name,
                           Labels   => Symbol_Sets.Empty_Set,
                           Value    => +Result_Stmt,
-                          Typ      => Type_Of_Node
-                            (Return_Applies_To
-                               (Return_Statement_Entity (Stmt_Or_Decl))));
+                          Typ      => Type_Of_Node (Subp));
 
                      --  Update the pledge of the result
 
@@ -20448,8 +20596,10 @@ package body Gnat2Why.Expr is
                    (Return_Object_Declarations (Stmt_Or_Decl));
                Ret_Obj    : constant Entity_Id :=
                  Get_Return_Object (Stmt_Or_Decl);
+               Subp       : constant Entity_Id := Return_Applies_To
+                 (Return_Statement_Entity (Stmt_Or_Decl));
                Ret_Type   : constant W_Type_Id :=
-                 Type_Of_Node (Current_Subp);
+                 Type_Of_Node (Subp);
                Obj_Deref  : constant W_Prog_Id :=
                  +Insert_Simple_Conversion
                    (Domain => EW_Prog,
@@ -20536,11 +20686,13 @@ package body Gnat2Why.Expr is
                Args     : constant W_Expr_Array :=
                  Compute_Call_Args
                    (Stmt_Or_Decl, EW_Prog, Context, Store, Body_Params,
-                    Use_Tmps => Subp_Needs_Invariant_Checks (Subp));
-               --  If we need to perform invariant checks for this call, Args
-               --  will be reused for the call to Check_Invariants_On_Call.
-               --  Force the use of temporary identifiers to avaoid duplicating
-               --  checks.
+                    Use_Tmps => Subp_Needs_Invariant_Checks (Subp)
+                      or else Call_Needs_Variant_Check
+                      (Stmt_Or_Decl, Current_Subp));
+               --  If we need to perform invariant or variant checks for this
+               --  call, Args will be reused for the call to the checking.
+               --  procedure. Force the use of temporary identifiers to avoid
+               --  duplicating checks.
 
                Selector : constant Selection_Kind :=
                   --  When calling an error-signaling procedure from an
@@ -20644,6 +20796,16 @@ package body Gnat2Why.Expr is
                Call :=
                  +Sequence (Compute_Tag_Check (Stmt_Or_Decl, Body_Params),
                             +Call);
+
+               --  Insert variant check if needed
+
+               if Call_Needs_Variant_Check (Stmt_Or_Decl, Current_Subp) then
+                  Call := +Sequence (Check_Subprogram_Variants
+                                     (Call   => Stmt_Or_Decl,
+                                      Args   => Args,
+                                      Params => Body_Params),
+                                     +Call);
+               end if;
 
                --  Check that the call does not cause a memory leak. Every
                --  output of the call which is not also an input should be

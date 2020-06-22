@@ -1,0 +1,77 @@
+fibo_variant.adb:3:44: medium: overflow check might fail (e.g. when Z = -2147483650) [reason for check: result of addition must fit in a 32-bits machine integer]
+fibo_variant.adb:11:17: info: subprogram variant proved (CVC4: 1 VC)
+fibo_variant.adb:11:25: info: range check proved (CVC4: 1 VC)
+fibo_variant.adb:12:12: medium: overflow check might fail (e.g. when N = 3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention N in a precondition]
+fibo_variant.adb:12:14: info: subprogram variant proved (CVC4: 1 VC)
+fibo_variant.adb:12:22: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:6:27: medium: precondition might fail, cannot prove X = 0 or else Bad_1 (X - 1) (e.g. when X = 2)
+test_bad_variant.adb:6:27: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a precondition]
+test_bad_variant.adb:6:36: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:12:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+test_bad_variant.adb:18:19: info: function contract not available for proof ("Bad_2" might not return)
+test_bad_variant.adb:40:37: medium: subprogram variant might fail [possible explanation: mutually recursive call should be located directly inside a subprogram] [possible fix: subprogram at line 29 should mention X in a precondition]
+test_bad_variant.adb:40:46: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at line 29 should mention X in a precondition]
+test_bad_variant.adb:52:59: info: subprogram variant proved (CVC4: 1 VC)
+test_bad_variant.adb:52:65: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:72:17: info: subprogram variant proved (CVC4: 1 VC)
+test_bad_variant.adb:72:24: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:81:17: info: subprogram variant proved (CVC4: 1 VC)
+test_bad_variant.adb:81:25: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:96:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants] [possible fix: subprogram at line 85 should mention X in a precondition]
+test_bad_variant.adb:96:28: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:105:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants] [possible fix: subprogram at line 88 should mention X in a precondition]
+test_bad_variant.adb:105:29: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:120:17: info: subprogram variant proved (CVC4: 1 VC)
+test_bad_variant.adb:120:30: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:129:17: medium: subprogram variant might fail (e.g. when X = 1) [possible fix: subprogram at line 112 should mention X in a precondition]
+test_bad_variant.adb:129:31: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:144:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants] [possible fix: subprogram at line 133 should mention X in a precondition]
+test_bad_variant.adb:144:30: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:153:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants] [possible fix: subprogram at line 136 should mention X in a precondition]
+test_bad_variant.adb:153:31: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:158:06: medium: subprogram variant might fail (e.g. when X = -1)
+test_bad_variant.adb:158:07: info: expression function body not available for proof ("Infinite" might not return)
+test_bad_variant.adb:158:07: info: precondition proved (CVC4: 1 VC)
+test_bad_variant.adb:158:17: info: overflow check proved (CVC4: 1 VC)
+test_bad_variant.adb:160:58: info: overflow check proved (CVC4: 1 VC)
+test_bad_variant.adb:163:17: info: expression function body not available for proof ("Bad_4" might not return)
+test_bad_variant.adb:163:17: medium: subprogram variant might fail (e.g. when B = True and X = 0 and Y = 0) [possible fix: subprogram at line 162 should mention B and X and Y in a precondition]
+test_bad_variant.adb:163:26: medium: overflow check might fail (e.g. when B = True and X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 162 should mention X in a precondition]
+test_bad_variant.adb:163:33: medium: overflow check might fail (e.g. when B = True and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 162 should mention Y in a precondition]
+test_bad_variant.adb:164:12: info: expression function body not available for proof ("Bad_4" might not return)
+test_bad_variant.adb:164:12: info: subprogram variant proved (CVC4: 1 VC)
+test_bad_variant.adb:164:24: medium: overflow check might fail (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 162 should mention Y in a precondition]
+test_bad_variant.adb:168:17: info: expression function body not available for proof ("OK_2" might not return)
+test_bad_variant.adb:168:17: info: subprogram variant proved (CVC4: 1 VC)
+test_bad_variant.adb:168:25: medium: overflow check might fail (e.g. when B = True and X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 167 should mention X in a precondition]
+test_bad_variant.adb:168:32: medium: overflow check might fail (e.g. when B = True and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 167 should mention Y in a precondition]
+test_bad_variant.adb:169:12: info: expression function body not available for proof ("OK_2" might not return)
+test_bad_variant.adb:169:12: info: subprogram variant proved (CVC4: 1 VC)
+test_bad_variant.adb:169:23: medium: overflow check might fail (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 167 should mention Y in a precondition]
+test_bad_variant.adb:173:17: info: expression function body not available for proof ("OK_2" might not return)
+test_bad_variant.adb:173:25: medium: overflow check might fail (e.g. when B = True and X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 172 should mention X in a precondition]
+test_bad_variant.adb:173:32: medium: overflow check might fail (e.g. when B = True and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 172 should mention Y in a precondition]
+test_bad_variant.adb:174:12: info: expression function body not available for proof ("OK_3" might not return)
+test_bad_variant.adb:174:12: info: subprogram variant proved (CVC4: 1 VC)
+test_bad_variant.adb:174:23: medium: overflow check might fail (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 172 should mention Y in a precondition]
+test_bad_variant.adb:177:19: warning: unused variable "X"
+test_bad_variant.adb:179:11: warning: no recursive call visible
+test_variant.adb:9:43: info: index check proved (CVC4: 2 VC)
+test_variant.adb:9:62: info: index check proved (CVC4: 2 VC)
+test_variant.adb:14:23: info: index check proved (CVC4: 2 VC)
+test_variant.adb:14:32: info: index check proved (CVC4: 2 VC)
+test_variant.adb:15:17: info: postcondition proved (CVC4: 5 VC)
+test_variant.adb:16:30: info: index check proved (CVC4: 2 VC)
+test_variant.adb:17:42: info: index check proved (CVC4: 2 VC)
+test_variant.adb:17:56: info: index check proved (CVC4: 2 VC)
+test_variant.adb:24:16: info: index check proved (CVC4: 2 VC)
+test_variant.adb:26:16: info: index check proved (CVC4: 2 VC)
+test_variant.adb:32:40: info: overflow check proved (CVC4: 1 VC)
+test_variant.adb:32:40: info: range check proved (CVC4: 1 VC)
+test_variant.adb:32:50: info: division check proved (CVC4: 1 VC)
+test_variant.adb:34:19: info: index check proved (CVC4: 2 VC)
+test_variant.adb:37:22: info: index check proved (CVC4: 2 VC)
+test_variant.adb:39:16: info: precondition proved (CVC4: 6 VC)
+test_variant.adb:39:16: info: subprogram variant proved (CVC4: 1 VC)
+test_variant.adb:42:16: info: precondition proved (CVC4: 6 VC)
+test_variant.adb:42:16: info: subprogram variant proved (CVC4: 1 VC)

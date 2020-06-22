@@ -301,6 +301,9 @@ package Why.Gen.Names is
       --  calls.
       WNE_Check_Invariants_On_Call,
 
+      --  Name of the program function for variant checks on subprogram calls
+      WNE_Check_Subprogram_Variants,
+
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,
 
@@ -470,6 +473,13 @@ package Why.Gen.Names is
    function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id;
 
    function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
+
+   function Variant_Append
+     (Base     : String;
+      Count    : Positive;
+      Typ      : W_Type_Id;
+      Module   : W_Module_Id := Why.Types.Why_Empty;
+      Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
    function To_String (W : Why_Name_Enum) return String;
 

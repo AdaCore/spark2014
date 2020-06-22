@@ -283,6 +283,13 @@ package body Gnat2Why.Subprograms is
    --  in the current unit, it is OK, as local subprograms are already not part
    --  of the dynamic invariant).
 
+   function Insert_Bindings_For_Variants
+     (E      : Entity_Id;
+      Prog   : W_Prog_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Prog_Id;
+   --  Add binding for the initial value of variants
+
    function Number_Of_Func_Args (E : Entity_Id) return Natural is
      (Number_Formals (E)
        + (if Within_Protected_Type (E) then 1 else 0));
@@ -2593,6 +2600,16 @@ package body Gnat2Why.Subprograms is
 
       Why_Body := Sequence (Why_Body, Classwide_Post_RTE);
 
+      --  Insert bindings for variants, they may be needed to check recursive
+      --  calls in the classwide post. We use EW_Pterm as a domain here as RTE
+      --  has already been checked while verifying E.
+
+      Why_Body := Insert_Bindings_For_Variants
+        (E      => E,
+         Prog   => Why_Body,
+         Domain => EW_Pterm,
+         Params => Params);
+
       --  Assume dynamic property of inputs before the checks
 
       Why_Body := Sequence
@@ -4190,6 +4207,7 @@ package body Gnat2Why.Subprograms is
          Prog := Sequence ((CC_Check, Warn_Post, Why_Body));
          Prog := Declare_Old_Variables (Prog);
          Prog := Wrap_Decls_For_CC_Guards (Prog);
+         Prog := Insert_Bindings_For_Variants (E, Prog, EW_Prog, Body_Params);
 
          Prog := Sequence
            ((Assume_For_Input,
@@ -4235,6 +4253,16 @@ package body Gnat2Why.Subprograms is
       Close_Theory (File,
                     Kind => VC_Generation_Theory,
                     Defined_Entity => E);
+
+      --  If the subprogram is annotated with a variant but flow analysis
+      --  does not see that it is recursive, raise a warning.
+
+      if Present (Get_Pragma (E, Pragma_Subprogram_Variant))
+        and then not Is_Recursive (E)
+      then
+         Error_Msg_F ("?no recursive call visible",
+                      Get_Pragma (E, Pragma_Subprogram_Variant));
+      end if;
 
       --  This code emits static VCs (determined by static computations inside
       --  gnat2why), so we can put this code anywhere.
@@ -5893,6 +5921,97 @@ package body Gnat2Why.Subprograms is
          end if;
       end;
 
+      --  Generate a check_subprogram_variants function. It has the same
+      --  parameters as E as well as previous variant values. Its
+      --  precondition checks that E's variants progress.
+      --
+      --  For a subprogram:
+      --
+      --    Y : Unsigned_8;
+      --    procedure Proc (X : in out Integer) with
+      --      Variant => (Decreases => X + 1, Increases => Y - 1);
+      --
+      --  we generate:
+      --
+      --    val proc__check_subprogram_variants
+      --        (x : int ref) (variant_1 : int) (variant_2 : bv_8) : unit
+      --      requires { x + 1 < variant_1 \/
+      --                 x + 1 = variant_1 /\ y - 1 > variant_2 }
+
+      if Present (Get_Pragma (E, Pragma_Subprogram_Variant)) then
+         declare
+            Variants_Ids   : constant W_Expr_Array := Get_Variants_Ids (E);
+            Variants_Exprs : constant W_Expr_Array (Variants_Ids'Range) :=
+              Get_Variants_Exprs (E, Domain => EW_Term, Params => Params);
+            Binders        : Binder_Array :=
+              Binder_Array'(Variants_Ids'Range => <>)
+              & Spec_Binders & Func_Why_Binders;
+            Variants       : constant Node_Id :=
+              Get_Pragma (E, Pragma_Subprogram_Variant);
+            Aggr           : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Variants)));
+            Variant        : Node_Id :=
+              Last (Component_Associations (Aggr));
+            Checks         : W_Pred_Id := False_Pred;
+
+         begin
+            --  Iterate through the list of variants to complete Binders and
+            --  generate Checks.
+
+            for Count in reverse Variants_Ids'Range loop
+               declare
+                  WTyp : constant W_Type_Id :=
+                    Get_Typ (W_Identifier_Id'(+Variants_Ids (Count)));
+                  Cmp  : constant W_Identifier_Id :=
+                    (if Chars (First (Choices (Variant))) = Name_Decreases
+                     then (if Why_Type_Is_BitVector (WTyp)
+                       then MF_BVs (WTyp).Ult
+                       else Int_Infix_Lt)
+                     else (if Why_Type_Is_BitVector (WTyp)
+                       then MF_BVs (WTyp).Ugt
+                       else Int_Infix_Gt));
+               begin
+                  Binders (Count) :=
+                    Binder_Type'(B_Ent  => Why_Empty,
+                                 B_Name => +Variants_Ids (Count),
+                                 others => <>);
+
+                  --  <expression> (</>) variant__i or else
+                  --    <expression> = variant__i and then Checks
+
+                  Checks := +New_Or_Else_Expr
+                    (Left   => New_Comparison
+                       (Symbol => Cmp,
+                        Left   => Variants_Exprs (Count),
+                        Right  => Variants_Ids (Count),
+                        Domain => EW_Pred),
+                     Right  => New_And_Then_Expr
+                       (Left   => New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   => Variants_Exprs (Count),
+                             Right  => Variants_Ids (Count),
+                             Domain => EW_Pred),
+                        Right  => +Checks,
+                        Domain => EW_Pred),
+                     Domain => EW_Pred);
+               end;
+               Prev (Variant);
+            end loop;
+
+            Emit
+              (File,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        =>
+                    To_Local (E_Symb (E, WNE_Check_Subprogram_Variants)),
+                  Binders     => Binders,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Return_Type => EW_Unit_Type,
+                  Pre         => Checks));
+         end;
+      end if;
+
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
    end Generate_Subprogram_Program_Fun;
 
@@ -5912,6 +6031,32 @@ package body Gnat2Why.Subprograms is
    begin
       return Get_Args_From_Binders (Logic_Binders, Ref_Allowed);
    end Get_Logic_Args;
+
+   ----------------------------------
+   -- Insert_Bindings_For_Variants --
+   ----------------------------------
+
+   function Insert_Bindings_For_Variants
+     (E      : Entity_Id;
+      Prog   : W_Prog_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      Variants_Ids   : constant W_Expr_Array := Get_Variants_Ids (E);
+      Variants_Exprs : constant W_Expr_Array (Variants_Ids'Range) :=
+        Get_Variants_Exprs (E, Domain, Params);
+      W_Ty           : constant W_Type_Id := Get_Type (+Prog);
+      T              : W_Prog_Id := Prog;
+   begin
+      for Count in Variants_Ids'Range loop
+         T := New_Binding
+           (Name    => +Variants_Ids (Count),
+            Def     => Variants_Exprs (Count),
+            Context => +T,
+            Typ     => W_Ty);
+      end loop;
+      return T;
+   end Insert_Bindings_For_Variants;
 
    ----------------------
    -- Insert_Exception --

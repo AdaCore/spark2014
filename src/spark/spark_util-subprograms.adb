@@ -86,6 +86,107 @@ package body SPARK_Util.Subprograms is
       end if;
    end Analysis_Requested;
 
+   ------------------------------
+   -- Call_Needs_Variant_Check --
+   ------------------------------
+
+   function Call_Needs_Variant_Check
+     (Call : Node_Id; Enclosing_Ent : Entity_Id) return Boolean
+   is
+      Called         : constant Entity_Id := Get_Called_Entity (Call);
+      Enclosing_Subp : Entity_Id := Enclosing_Ent;
+
+   begin
+      if not Is_Subprogram_Or_Entry (Called)
+        or else not Flow_Generated_Globals.Phase_2.Is_Recursive (Called)
+      then
+         return False;
+
+      --  Go up the scope to search for a subprogram or entry. Theoretically,
+      --  we could stop as soon as we encounter something which is not a
+      --  package, as indirect recursive calls inside types are not allowed.
+      --  Still, since this is not enforced currently, it seems better to
+      --  continue climbing the scope chain.
+
+      else
+         while Present (Enclosing_Subp) loop
+
+            --  We have found a subprogram, check whether it is mutually
+            --  recursive with Called.  If it is, return True if either
+            --  Enclosing_Subp or Called has a variant.
+            --  If one has a variant and not the other, we will emit a
+            --  statically False check.
+
+            if Is_Subprogram_Or_Entry (Enclosing_Subp) then
+               return Flow_Generated_Globals.Phase_2.Mutually_Recursive
+                 (Enclosing_Subp, Called)
+                 and then
+                   (Present
+                      (Get_Pragma (Enclosing_Subp, Pragma_Subprogram_Variant))
+                    or else
+                     Present (Get_Pragma (Called, Pragma_Subprogram_Variant)));
+
+            --  Concurrent types should be declared at library level
+
+            elsif Is_Concurrent_Type (Enclosing_Subp) then
+               return False;
+            else
+               Enclosing_Subp := Scope (Enclosing_Subp);
+            end if;
+         end loop;
+
+         return False;
+      end if;
+   end Call_Needs_Variant_Check;
+
+   -------------------------
+   -- Compatible_Variants --
+   -------------------------
+
+   function Compatible_Variants (E1, E2 : Entity_Id) return Boolean is
+      Variants1 : constant Node_Id :=
+        Get_Pragma (E1, Pragma_Subprogram_Variant);
+      Variants2 : constant Node_Id :=
+        Get_Pragma (E2, Pragma_Subprogram_Variant);
+
+   begin
+      --  Return True if both E1 and E2 have variants supplied, and all their
+      --  variants have the same mode and the same base type.
+      --  ??? In the RFC, we discussed allowing either E1 or E2 to have less
+      --  variants than the other. This is not implemented yet.
+
+      if No (Variants1) or else No (Variants2) then
+         return False;
+      elsif E1 = E2 then
+         return True;
+      else
+         declare
+            Aggr1 : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Variants1)));
+            Variant1 : Node_Id := First (Component_Associations (Aggr1));
+            Aggr2    : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Variants2)));
+            Variant2 : Node_Id := First (Component_Associations (Aggr2));
+         begin
+            while Present (Variant1) loop
+               if No (Variant2)
+                 or else Chars (First (Choices (Variant1))) /=
+                   Chars (First (Choices (Variant2)))
+                 or else
+                   Unique_Entity (Base_Type (Etype (Expression (Variant1)))) /=
+                   Unique_Entity (Base_Type (Etype (Expression (Variant2))))
+               then
+                  return False;
+               end if;
+               Next (Variant1);
+               Next (Variant2);
+            end loop;
+
+            return No (Variant2);
+         end;
+      end if;
+   end Compatible_Variants;
+
    -------------------------------
    -- Containing_Protected_Type --
    -------------------------------
@@ -1208,6 +1309,66 @@ package body SPARK_Util.Subprograms is
         and then Chars (Generic_Parent (Parent (E)))
                          = Name_Unchecked_Deallocation;
    end Is_Unchecked_Deallocation_Instance;
+
+   -----------------------------
+   -- Is_Valid_Recursive_Call --
+   -----------------------------
+
+   procedure Is_Valid_Recursive_Call
+     (Call          : Node_Id;
+      Analyzed_Unit : Entity_Id;
+      Result        : out Boolean;
+      Explanation   : out Unbounded_String)
+   is
+      Called_Entity  : constant Entity_Id := Get_Called_Entity (Call);
+      Recursive_Subp : constant Node_Id :=
+        (if Is_Subprogram_Or_Entry (Analyzed_Unit)
+         then Analyzed_Unit
+         elsif Ekind (Analyzed_Unit) = E_Package
+         then Directly_Enclosing_Subprogram_Or_Entry (Analyzed_Unit)
+         else Empty);
+      --  We only support recursive calls directly in a subprogram or
+      --  in a package if the package itself is declared directly inside a
+      --  subprogram.
+
+      Mutually       : constant String :=
+        (if Called_Entity = Recursive_Subp then "" else "mutually ");
+      Prag           : Node_Id;
+
+   begin
+      --  We do not support recursive calls inside preconditions, as initial
+      --  values of variants are evaluated after the precondition. Search
+      --  for the first enclosing precondition.
+
+      Prag := Parent (Call);
+      while Present (Prag) loop
+         exit when Nkind (Prag) = N_Pragma;
+         Prag := Parent (Prag);
+      end loop;
+
+      if Present (Prag)
+        and then Get_Pragma_Id (Pragma_Name (Prag)) in
+          Pragma_Precondition | Pragma_Pre | Pragma_Pre_Class
+      then
+         Result := False;
+         Explanation := To_Unbounded_String
+           (Mutually & "recursive call should not appear in a "
+            & "precondition");
+      elsif No (Recursive_Subp) then
+         Result := False;
+         Explanation := To_Unbounded_String
+           (Mutually & "recursive call should be located directly"
+            & " inside a subprogram");
+      elsif not Compatible_Variants (Called_Entity, Recursive_Subp) then
+         Result := False;
+         Explanation := To_Unbounded_String
+           ("mutually recursive subprograms should have"
+            & " compatible variants");
+      else
+         Explanation := To_Unbounded_String ("");
+         Result := True;
+      end if;
+   end Is_Valid_Recursive_Call;
 
    ------------------------------------
    -- Is_Volatile_For_Internal_Calls --

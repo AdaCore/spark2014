@@ -1657,7 +1657,7 @@ package body SPARK_Definition is
                   while Present (Prag) loop
                      exit when Nkind (Prag) = N_Pragma_Argument_Association
                        and then Get_Pragma_Id (Pragma_Name (Parent (Prag))) in
-                       Pragma_Precondition | Pragma_Pre;
+                       Pragma_Precondition | Pragma_Pre | Pragma_Pre_Class;
                      Prag := Parent (Prag);
                   end loop;
 
@@ -4412,6 +4412,24 @@ package body SPARK_Definition is
                   end loop;
                end;
             end if;
+
+            Prag := Get_Pragma (E, Pragma_Subprogram_Variant);
+            if Present (Prag) then
+               declare
+                  Aggr : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (Prag)));
+                  pragma Assert (Nkind (Aggr) = N_Aggregate);
+
+                  Variant : Node_Id :=
+                    First (Component_Associations (Aggr));
+               begin
+                  while Present (Variant) loop
+                     pragma Assert (Nkind (Variant) = N_Component_Association);
+                     Mark (Expression (Variant));
+                     Next (Variant);
+                  end loop;
+               end;
+            end if;
          end Mark_Subprogram_Contracts;
 
          -----------------------------------
@@ -6985,6 +7003,7 @@ package body SPARK_Definition is
             | Pragma_Restriction_Warnings
             | Pragma_Secondary_Stack_Size
             | Pragma_Style_Checks
+            | Pragma_Subprogram_Variant
             | Pragma_Test_Case
             | Pragma_Type_Invariant
             | Pragma_Type_Invariant_Class

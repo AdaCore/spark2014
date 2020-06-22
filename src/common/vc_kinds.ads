@@ -99,6 +99,7 @@ package VC_Kinds is
       VC_Loop_Invariant_Init,
       VC_Loop_Invariant_Preserv,
       VC_Loop_Variant,
+      VC_Subprogram_Variant,
       VC_Assert,
       VC_Raise,
       VC_Inline_Check,               --  Check that the Inline_For_Proof

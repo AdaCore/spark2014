@@ -99,6 +99,22 @@ package SPARK_Util.Subprograms is
    is (Analysis_Requested (E, With_Inlined) = Analyzed);
    --  Variant of Analysis_Requested that ignores the reason for no analysis
 
+   function Call_Needs_Variant_Check
+     (Call : Node_Id; Enclosing_Ent : Entity_Id) return Boolean
+   with
+     Pre => Nkind (Call) in N_Subprogram_Call
+                          | N_Entry_Call_Statement
+                          | N_Op;
+   --  Return True if we need to check that variants progress on Call.
+   --  Enclosing_Ent should be set as the entity enclosing Call.
+
+   function Compatible_Variants (E1, E2 : Entity_Id) return Boolean with
+     Pre => Is_Subprogram_Or_Entry (E1)
+     and then Is_Subprogram_Or_Entry (E2);
+   --  Return True if E1 and E2 have compatible variants. For now, this means
+   --  that they have the same number of variants, which matching subtypes and
+   --  modes.
+
    function Containing_Protected_Type (E : Entity_Id) return Entity_Id
    with Pre => (case Ekind (E) is
                    when E_Component    |
@@ -410,6 +426,17 @@ package SPARK_Util.Subprograms is
    with Pre => Is_Subprogram_Or_Entry (E)
      or else Ekind (E) in E_Task_Type | E_Subprogram_Type;
    --  Return True iff E is an instance of Ada.Unchecked_Deallocation
+
+   procedure Is_Valid_Recursive_Call
+     (Call          : Node_Id;
+      Analyzed_Unit : Entity_Id;
+      Result        : out Boolean;
+      Explanation   : out Unbounded_String)
+   with Pre => Nkind (Call) in N_Subprogram_Call
+                             | N_Entry_Call_Statement
+                             | N_Op;
+   --  Return True if we are in a case where we support checking progress on
+   --  the variants of the called entity.
 
    function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
    with Pre => Is_Subprogram (E);

@@ -999,6 +999,7 @@ package body Why.Gen.Names is
             | WNE_Check_Invariants_On_Call
             | WNE_Check_Not_First
             | WNE_Check_Not_Last
+            | WNE_Check_Subprogram_Variants
             | WNE_Default_Init
             | WNE_Dispatch_Eq
             | WNE_Dispatch_Func_Guard
@@ -1206,9 +1207,9 @@ package body Why.Gen.Names is
          Module => Get_Module (Get_Name (Name)));
    end To_Program_Space;
 
-   ----------------------
+   ------------------
    -- Value_Append --
-   ----------------------
+   ------------------
 
    function Value_Append (Base : W_Identifier_Id;
                           Typ  : W_Type_Id) return W_Identifier_Id
@@ -1224,6 +1225,27 @@ package body Why.Gen.Names is
            Module   => Get_Module (Name),
            Ada_Node => Get_Ada_Node (+Name));
    end Value_Append;
+
+   --------------------
+   -- Variant_Append --
+   --------------------
+
+   function Variant_Append
+     (Base     : String;
+      Count    : Positive;
+      Typ      : W_Type_Id;
+      Module   : W_Module_Id := Why.Types.Why_Empty;
+      Ada_Node : Node_Id := Empty) return W_Identifier_Id
+   is
+   begin
+      return
+        Append_Num
+          (S        => Base & "__variant",
+           Count    => Count,
+           Typ      => Typ,
+           Module   => Module,
+           Ada_Node => Ada_Node);
+   end Variant_Append;
 
    -------------------------------
    -- WNE_Array_Base_Range_Pred --

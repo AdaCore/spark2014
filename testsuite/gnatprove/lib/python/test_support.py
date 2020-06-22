@@ -307,7 +307,8 @@ def is_spark_assertion_tag(tag):
                    "LOOP_INVARIANT_PRESERV",
                    "LOOP_INVARIANT",
                    "LOOP_VARIANT",
-                   "REFINED_POST")
+                   "REFINED_POST",
+                   "SUBPROGRAM_VARIANT")
 
 
 def is_other_proof_tag(tag):
@@ -471,6 +472,8 @@ def check_marks(strlist):
                 return 'LOOP_INVARIANT'
         elif 'loop variant' in text:
             return 'LOOP_VARIANT'
+        elif 'subprogram variant' in text:
+            return 'SUBPROGRAM_VARIANT'
         elif 'assertion' in text:
             return 'ASSERT'
         elif 'raise statement' in text or 'exception' in text:
