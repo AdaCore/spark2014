@@ -794,7 +794,8 @@ package body SPARK_Util.Types is
 
             --  Access to subprograms are not subjected to ownership rules
 
-            return not Is_Access_Subprogram_Type (Base_Type (Rep_Typ));
+            return Ekind (Directly_Designated_Type (Rep_Typ)) /=
+              E_Subprogram_Type;
 
          when E_Array_Type
             | E_Array_Subtype
@@ -1137,7 +1138,8 @@ package body SPARK_Util.Types is
          elsif Is_Array_Type (Rep_Ty) then
             return Might_Contain_Relaxed (Component_Type (Rep_Ty));
          elsif Is_Access_Type (Rep_Ty)
-           and then not Is_Access_Subprogram_Type (Base_Type (Rep_Ty))
+           and then Ekind (Directly_Designated_Type (Rep_Ty)) /=
+             E_Subprogram_Type
          then
             declare
                Des_Ty   : constant Entity_Id :=

@@ -3039,7 +3039,7 @@ package body Why.Atree.Modules is
 
          --  Symbols for access-to-subprogram types
 
-         elsif Is_Access_Subprogram_Type (Base_Type (Retysp (E))) then
+         elsif Is_Access_Subprogram_Type (Retysp (E)) then
             Insert_Symbol
               (E, WNE_Null_Pointer,
                New_Identifier

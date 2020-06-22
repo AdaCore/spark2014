@@ -2868,7 +2868,9 @@ package body SPARK_Definition is
             end if;
 
          when Attribute_Access =>
-            if not Is_Access_Subprogram_Type (Base_Type (Etype (N))) then
+            if Ekind
+              (Directly_Designated_Type (Etype (N))) /= E_Subprogram_Type
+            then
                Mark_Violation
                  ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
                   & """ on object", N);
@@ -3704,8 +3706,9 @@ package body SPARK_Definition is
                            pragma Assert
                              (Is_Access_Type (Node_Maps.Element (Pos))
                               and then
-                                not Is_Access_Subprogram_Type
-                                  (Node_Maps.Element (Pos))
+                                Ekind (Directly_Designated_Type
+                                  (Node_Maps.Element (Pos))) /=
+                                E_Subprogram_Type
                               and then
                                 (Is_Incomplete_Type
                                      (Directly_Designated_Type
@@ -5631,10 +5634,10 @@ package body SPARK_Definition is
 
             --  For access-to-subprogram types, mark the designated profile
 
-            if Is_Access_Subprogram_Type (Base_Type (E)) then
+            if Ekind (Directly_Designated_Type (E)) = E_Subprogram_Type then
                declare
                   Profile : constant Entity_Id :=
-                    Directly_Designated_Type  (Base_Type (E));
+                    Directly_Designated_Type  (E);
                   Wrapper : constant Entity_Id :=
                     Access_Subprogram_Wrapper (Profile);
 
