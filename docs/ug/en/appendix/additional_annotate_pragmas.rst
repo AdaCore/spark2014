@@ -109,7 +109,7 @@ of its argument, which leads to overflow.
 
 .. note::
 
-   Currently the exponentiation operation **, the predecessor attribute
+   Currently the exponentiation operation \*\*, the predecessor attribute
    ``'Pred`` and successor attribute ``'Succ`` are never checked for possible
    overflows on a modular type, even when annotated with
    ``No_Wrap_Around``. Instead wrap-around semantics is used for these
