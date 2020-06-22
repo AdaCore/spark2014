@@ -2868,8 +2868,17 @@ package body SPARK_Definition is
             end if;
 
          when Attribute_Access =>
-            if Ekind
-              (Directly_Designated_Type (Etype (N))) /= E_Subprogram_Type
+
+            --  If Etype (N) is not visibly an access type, raise a violation
+
+            if not Has_Access_Type (Etype (N)) then
+               Mark_Violation (N, From => Etype (N));
+
+            --  We do not support 'Access on objects
+
+            elsif Ekind
+              (Directly_Designated_Type (Retysp (Etype (N))))
+                /= E_Subprogram_Type
             then
                Mark_Violation
                  ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
