@@ -395,6 +395,9 @@ package body Flow.Analysis.Sanity is
             when N_Constrained_Array_Definition =>
                Check_Constrained_Array_Definition (N);
 
+            when N_Unconstrained_Array_Definition =>
+               null;
+
             when others =>
                raise Program_Error;
          end case;
@@ -670,6 +673,9 @@ package body Flow.Analysis.Sanity is
 
       procedure Traverse_Declaration_Or_Statement (N : Node_Id) is
       begin
+         --  Emit precise error location in case of a crash
+         Current_Error_Node := N;
+
          --  Check type declarations affected by SPARK RM 4.4(2)
 
          if Nkind (N) in N_Full_Type_Declaration
@@ -811,10 +817,7 @@ package body Flow.Analysis.Sanity is
                              (Subtype_Indication
                                 (Component_Definition (Typ_Def)));
 
-                           if Nkind (Typ_Def) = N_Constrained_Array_Definition
-                           then
-                              Check_Constrained_Array_Definition (Typ_Def);
-                           end if;
+                           Check_Subtype_Indication (Typ_Def);
 
                         --  The following are either enumeration literals,
                         --  static expressions, or access to subprogram
