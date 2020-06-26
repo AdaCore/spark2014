@@ -304,7 +304,7 @@ package body Why.Gen.Records is
 
       if Is_Simple_Private_Type (Ty_Ext) then
          if not Ignore_Private_State then
-            T :=  Build_Predicate_For_Field
+            T := Build_Predicate_For_Field
                 (F_Expr1 => +R_Expr1,
                  F_Expr2 => +R_Expr2,
                  F_Ty    => Ty_Ext,
@@ -1406,9 +1406,16 @@ package body Why.Gen.Records is
                           (Name => Get_Name (E_Symb (E, WNE_Private_Type)))
                         else W_Type_Of_Component
                           (Field, E, Init_Wrapper => False));
+                     --  Normal type for the field. If Field stands for the
+                     --  private part of E (Field = E) then we cannot use
+                     --  W_Type_Of_Component to get this type, as it always
+                     --  returns a local name for this private part, and here
+                     --  the private part is not local.
+
                      Field_Wrapper : constant W_Type_Id := W_Type_Of_Component
                        (Field, E, Init_Wrapper =>
                           Might_Contain_Relaxed_Init (Etype (Field)));
+                     --  Wrapper type for the field
 
                   begin
                      Field_Index := Field_Index + 1;
@@ -1439,7 +1446,7 @@ package body Why.Gen.Records is
                               Force_No_Slide => True));
                         --  If the field stand for the private part of a type,
                         --  call the corresponding Private_Of_Wrapper function.
-                        --  Otherwise, inroduce a conversion.
+                        --  Otherwise, introduce a conversion.
 
                      begin
                         From_Wrapper_Field (Field_Index) :=
@@ -1475,7 +1482,7 @@ package body Why.Gen.Records is
                               Force_No_Slide => True));
                         --  If the field stand for the private part of a type,
                         --  call the corresponding Private_To_Wrapper function.
-                        --  Otherwise, inroduce a conversion.
+                        --  Otherwise, introduce a conversion.
 
                      begin
                         To_Wrapper_Field (Field_Index) :=
@@ -1559,7 +1566,7 @@ package body Why.Gen.Records is
          end;
          return;
 
-      --  If E is an empty record , the wrapper is a copy of its underlying
+      --  If E is an empty record, the wrapper is a copy of its underlying
       --  type. We re-export the corresponding module and then return.
 
       elsif Count_Why_Top_Level_Fields (E) = 0 then
@@ -1875,7 +1882,7 @@ package body Why.Gen.Records is
             Params       => Logic_Params);
       end Transform_Discrete_Choices;
 
-      --  Start of processing for Declare_Protected_Access_Functions
+   --  Start of processing for Declare_Protected_Access_Functions
 
    begin
       if Is_Simple_Private_Type (E) then

@@ -2395,11 +2395,11 @@ package body Why.Atree.Modules is
 
       begin
          --  Insert symbols for the initialization wrapper if any. We need
-         --  extra fields to create the wrapper type for scalars, and
-         --  conversion functions to and from the wrapper types for scalars
-         --  and records. For array, conversion goes through the base array
-         --  type, so conversion functions are rather stored with other
-         --  array conversion theories.
+         --  extra fields to create the wrapper type for scalars and simple
+         --  private types, and conversion functions to and from the wrapper
+         --  types for scalars, private types, and records. For array,
+         --  conversion goes through the base array type, so conversion
+         --  functions are rather stored with other array conversion theories.
 
          if Might_Contain_Relaxed_Init (E)
            and then (Is_Scalar_Type (E) or else Is_Record_Type_In_Why (E))
