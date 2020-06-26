@@ -1,7 +1,7 @@
 test.adb:7:13: info: types in unchecked conversion have the same size (Trivial)
-test.adb:7:53: high: type with constraints on bit representation is unsuitable for unchecked conversion
-test.adb:7:56: high: type with constraints on bit representation is unsuitable for unchecked conversion
+test.adb:7:53: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type A has 21 values but has bit size 32]
+test.adb:7:56: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type B has 21 values but has bit size 32]
 test.adb:9:14: warning: subprogram "Test" has no effect
 test.adb:10:16: info: types in unchecked conversion have the same size (Trivial)
-test.adb:10:56: high: type with constraints on bit representation is unsuitable for unchecked conversion
-test.adb:10:59: high: type with constraints on bit representation is unsuitable for unchecked conversion
+test.adb:10:56: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type B has 21 values but has bit size 32]
+test.adb:10:59: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type A has 21 values but has bit size 32]

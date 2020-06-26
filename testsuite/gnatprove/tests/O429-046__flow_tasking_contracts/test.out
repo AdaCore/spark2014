@@ -1,4 +1,4 @@
-alarm.adb:16:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
+alarm.adb:16:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has bit size 8]
 alarm.adb:23:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 alarm.adb:23:09: info: nontermination of task proved (CVC4: 1 VC)
 alarm.ads:8:10: info: data dependencies proved

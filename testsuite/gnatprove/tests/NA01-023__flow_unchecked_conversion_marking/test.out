@@ -1,3 +1,3 @@
 unchecked_conversion_issue.adb:13:13: high: types used for unchecked conversion do not have the same size
 unchecked_conversion_issue.adb:13:46: info: type is suitable for unchecked conversion (Trivial)
-unchecked_conversion_issue.adb:14:46: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type should have an Object_Size representation clause or aspect]
+unchecked_conversion_issue.adb:14:46: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Record_T doesn't have an Object_Size representation clause or aspect]

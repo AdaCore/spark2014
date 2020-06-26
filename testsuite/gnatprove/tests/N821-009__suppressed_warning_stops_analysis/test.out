@@ -1,4 +1,4 @@
-water_high.adb:11:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
+water_high.adb:11:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Sensor_Values has 201 values but has bit size 16]
 water_high.adb:19:07: info: initialization of "Raw_Value" proved
 water_high.adb:29:22: info: assertion proved (Trivial)
 water_high.ads:5:25: info: initialization of "Active" proved

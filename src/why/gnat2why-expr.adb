@@ -29,6 +29,7 @@ with Ada.Containers.Vectors;
 with Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Fixed;              use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                         use Checks;
 with Debug;
@@ -14552,12 +14553,17 @@ package body Gnat2Why.Expr is
                --  address clauses.
 
                if Nkind (Decl) = N_Object_Declaration then
-                  Emit_Static_Proof_Result
-                    (Decl,
-                     VC_UC_No_Holes,
+                  declare
+                     Valid       : Boolean;
+                     Explanation : Unbounded_String;
+                  begin
                      Is_Valid_Bitpattern_No_Holes
-                       (Retysp (Etype (Defining_Identifier (Decl)))),
-                     Current_Subp);
+                       (Retysp (Etype (Defining_Identifier (Decl))),
+                        Valid, Explanation);
+                     Emit_Static_Proof_Result
+                       (Decl, VC_UC_No_Holes, Valid, Current_Subp,
+                        Explanation => To_String (Explanation));
+                  end;
                end if;
 
                --  Attribute Address is only allowed at the top level of an
@@ -14569,12 +14575,16 @@ package body Gnat2Why.Expr is
                    = Attribute_Address
                then
                   if Nkind (Decl) = N_Object_Declaration then
-                     Emit_Static_Proof_Result
-                       (Expr,
-                        VC_UC_No_Holes,
+                     declare
+                        Valid       : Boolean;
+                        Explanation : Unbounded_String;
+                     begin
                         Is_Valid_Bitpattern_No_Holes
-                          (Retysp (Etype (Prefix (Expr)))),
-                        Current_Subp);
+                          (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
+                        Emit_Static_Proof_Result
+                          (Expr, VC_UC_No_Holes, Valid, Current_Subp,
+                           Explanation => To_String (Explanation));
+                     end;
                      Emit_Static_Proof_Result
                        (Expr,
                         VC_UC_Same_Size,

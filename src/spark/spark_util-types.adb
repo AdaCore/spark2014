@@ -883,8 +883,10 @@ package body SPARK_Util.Types is
    -- Is_Valid_Bitpattern_No_Holes --
    ----------------------------------
 
-   function Is_Valid_Bitpattern_No_Holes (Typ : Entity_Id) return Boolean is
-
+   procedure Is_Valid_Bitpattern_No_Holes (Typ         : Entity_Id;
+                                           Result      : out Boolean;
+                                           Explanation : out Unbounded_String)
+   is
       --  The property Is_Valid_Bitpattern_No_Holes is *not* compositional.
       --  For example, an object of type U7:
       --
@@ -903,9 +905,11 @@ package body SPARK_Util.Types is
       --  and not the Object_Size of the type to carry out the checks in this
       --  function.
 
-      function Is_Valid_Bitpattern_No_Holes_Internal
+      procedure Is_Valid_Bitpattern_No_Holes_Internal
         (Typ         : Entity_Id;
-         Use_RM_Size : Boolean) return Boolean;
+         Use_RM_Size : Boolean;
+         Result      : out Boolean;
+         Explanation : out Unbounded_String);
       --  The internal version of the function. If Use_RM_Size is set to True,
       --  the RM_Size is used for size computations, otherwise the
       --  Object_Size/Esize is used.
@@ -914,36 +918,85 @@ package body SPARK_Util.Types is
       -- Is_Valid_Bitpattern_No_Holes_Internal --
       -------------------------------------------
 
-      function Is_Valid_Bitpattern_No_Holes_Internal
+      procedure Is_Valid_Bitpattern_No_Holes_Internal
         (Typ         : Entity_Id;
-         Use_RM_Size : Boolean) return Boolean
+         Use_RM_Size : Boolean;
+         Result      : out Boolean;
+         Explanation : out Unbounded_String)
       is
          Typ_Size : Uint;
       begin
          --  Some valid IEEE 754 values are not allowed in SPARK, such as NaN
 
          if Is_Floating_Point_Type (Typ) then
-            return False;
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("floating-point types have invalid bit "
+                                   & "patterns for SPARK");
+            return;
          end if;
 
-         if (Use_RM_Size and then not Known_RM_Size (Typ))
-           or else
-             (not Use_RM_Size and then not Known_Esize (Typ))
+         if Use_RM_Size and then not Known_RM_Size (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("type " & Source_Name (Typ) & " doesn't "
+                                   & "have a Size representation clause or "
+                                   & "aspect");
+            return;
+         end if;
+         if not Use_RM_Size and then not Known_Esize (Typ)
          then
-            return False;
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("type " & Source_Name (Typ) & " doesn't "
+                                   & "have an Object_Size representation "
+                                   & "clause or aspect");
+            return;
          end if;
 
          --  We always exclude invariants and predicates, as well as types with
          --  discriminants and tags, private types and concurrent types.
 
          if Invariant_Check_Needed (Typ)
-           or else Has_Discriminants (Typ)
            or else Has_Predicates (Typ)
-           or else Is_Tagged_Type (Typ)
-           or else Is_Private_Type (Typ)
-           or else Is_Concurrent_Type (Typ)
          then
-            return False;
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("type " & Source_Name (Typ) & " has "
+                                   & "invariants or predicates");
+            return;
+         end if;
+
+         if Has_Discriminants (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("type " & Source_Name (Typ) & " has " &
+                                     "discriminants");
+            return;
+         end if;
+
+         if Is_Tagged_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("type " & Source_Name (Typ) & " is a " &
+                                     "tagged type");
+            return;
+         end if;
+
+         if Is_Private_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("type " & Source_Name (Typ) & " is a " &
+                                     "private type");
+            return;
+         end if;
+
+         if Is_Concurrent_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("type " & Source_Name (Typ) & " is a " &
+                                     "concurrent type");
+            return;
          end if;
 
          if Use_RM_Size then
@@ -960,19 +1013,33 @@ package body SPARK_Util.Types is
                pragma Assert (Compile_Time_Known_Value (Low_Bound (R)));
                pragma Assert (Compile_Time_Known_Value (High_Bound (R)));
                declare
-                  Low : constant Uint := Expr_Value (Low_Bound (R));
-                  High : constant Uint := Expr_Value (High_Bound (R));
+                  Low        : constant Uint := Expr_Value (Low_Bound (R));
+                  High       : constant Uint := Expr_Value (High_Bound (R));
+                  Num_Values : constant Uint := UI_Add (UI_Sub (High, Low), 1);
                begin
-                  return UI_Eq
-                    (UI_Expon (Uint_2, Typ_Size),
-                     UI_Add (UI_Sub (High, Low), 1));
+                  if UI_Eq (UI_Expon (Uint_2, Typ_Size), Num_Values) then
+                     Result := True;
+                     Explanation := To_Unbounded_String ("");
+                  else
+                     Result := False;
+                     Explanation :=
+                       To_Unbounded_String
+                         ("type " & Source_Name (Typ) & " has "
+                          & UI_Image (Num_Values) & " values but has bit size "
+                          & UI_Image (Typ_Size));
+                  end if;
+                  return;
                end;
             end;
          end if;
 
          if Is_Array_Type (Typ) then
             if not Is_Static_Array_Type (Typ) then
-               return False;
+               Result := False;
+               Explanation :=
+                 To_Unbounded_String ("size of non-static array type cannot "
+                                      & "be determined");
+               return;
             end if;
 
             declare
@@ -981,9 +1048,10 @@ package body SPARK_Util.Types is
                Mult_Size : Uint := Uint_1;
                Index : Entity_Id;
             begin
-               if not Is_Valid_Bitpattern_No_Holes_Internal (Comp_Typ, True)
-               then
-                  return False;
+               Is_Valid_Bitpattern_No_Holes_Internal
+                 (Comp_Typ, True, Result, Explanation);
+               if not Result then
+                  return;
                end if;
 
                pragma Assert (Known_RM_Size (Comp_Typ));
@@ -1004,7 +1072,12 @@ package body SPARK_Util.Types is
                   end;
                end loop;
                if not UI_Eq (Typ_Size, Mult_Size) then
-                  return False;
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String
+                      ("array type has size " & UI_Image (Typ_Size) & " but "
+                       & "components add up to size " & UI_Image (Mult_Size));
+                  return;
                end if;
             end;
 
@@ -1019,12 +1092,12 @@ package body SPARK_Util.Types is
                   declare
                      Comp_Ty  : constant Entity_Id := Retysp (Etype (Comp));
                   begin
-                     if Ekind (Comp) = E_Component
-                       and then
-                         not Is_Valid_Bitpattern_No_Holes_Internal (Comp_Ty,
-                                                                    True)
-                     then
-                        return False;
+                     if Ekind (Comp) = E_Component then
+                        Is_Valid_Bitpattern_No_Holes_Internal
+                          (Comp_Ty, True, Result, Explanation);
+                        if not Result then
+                           return;
+                        end if;
                      end if;
                      pragma Assert (Known_RM_Size (Comp_Ty));
                      Sum_Size := UI_Add (Sum_Size, RM_Size (Comp_Ty));
@@ -1032,15 +1105,22 @@ package body SPARK_Util.Types is
                   end;
                end loop;
                if not UI_Eq (Typ_Size, Sum_Size) then
-                  return False;
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String
+                      ("record type has size " & UI_Image (Typ_Size) & " but "
+                       & "components add up to size " & UI_Image (Sum_Size));
+                  return;
                end if;
             end;
          end if;
-         return True;
+         Result := True;
+         Explanation := To_Unbounded_String ("");
+         return;
       end Is_Valid_Bitpattern_No_Holes_Internal;
 
    begin
-      return Is_Valid_Bitpattern_No_Holes_Internal (Typ, False);
+      Is_Valid_Bitpattern_No_Holes_Internal (Typ, False, Result, Explanation);
    end Is_Valid_Bitpattern_No_Holes;
 
    ---------------------------

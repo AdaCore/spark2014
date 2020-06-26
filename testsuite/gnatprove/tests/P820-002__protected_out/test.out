@@ -4,11 +4,11 @@ polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
 polyorb_hi-epoch.ads:44:11: info: data dependencies proved
 polyorb_hi-epoch.ads:48:11: info: data dependencies proved
 polyorb_hi-messages.adb:51:13: high: types used for unchecked conversion do not have the same size
-polyorb_hi-messages.adb:52:07: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type should have an Object_Size representation clause or aspect]
+polyorb_hi-messages.adb:52:07: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Message_Size_Buffer doesn't have an Object_Size representation clause or aspect]
 polyorb_hi-messages.adb:52:28: info: type is suitable for unchecked conversion (Trivial)
 polyorb_hi-messages.adb:53:13: high: types used for unchecked conversion do not have the same size
 polyorb_hi-messages.adb:54:07: info: type is suitable for unchecked conversion (Trivial)
-polyorb_hi-messages.adb:54:16: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type should have an Object_Size representation clause or aspect]
+polyorb_hi-messages.adb:54:16: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Message_Size_Buffer doesn't have an Object_Size representation clause or aspect]
 polyorb_hi-messages.adb:72:57: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:73:07: info: range check proved (CVC4: 2 VC)
 polyorb_hi-messages.adb:73:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
@@ -104,26 +104,26 @@ polyorb_hi-utils.adb:59:59: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:89:20: info: division check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:89:32: info: division check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:98:16: info: types in unchecked conversion have the same size (Trivial)
-polyorb_hi-utils.adb:99:10: high: type with constraints on bit representation is unsuitable for unchecked conversion
+polyorb_hi-utils.adb:99:10: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Port_Type has 4 values but has bit size 16]
 polyorb_hi-utils.adb:99:21: info: type is suitable for unchecked conversion (Trivial)
 polyorb_hi-utils.adb:109:16: info: types in unchecked conversion have the same size (Trivial)
 polyorb_hi-utils.adb:110:10: info: type is suitable for unchecked conversion (Trivial)
-polyorb_hi-utils.adb:110:23: high: type with constraints on bit representation is unsuitable for unchecked conversion
+polyorb_hi-utils.adb:110:23: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Port_Type has 4 values but has bit size 16]
 polyorb_hi-utils.adb:124:32: info: cannot unroll loop (too many loop iterations)
 polyorb_hi-utils.adb:125:16: info: index check proved (CVC4: 2 VC)
 polyorb_hi-utils.adb:126:23: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-utils.ads:62:13: info: types in unchecked conversion have the same size (Trivial)
-polyorb_hi-utils.ads:63:07: high: type with constraints on bit representation is unsuitable for unchecked conversion
+polyorb_hi-utils.ads:63:07: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Entity_Type has 4 values but has bit size 8]
 polyorb_hi-utils.ads:63:20: info: type is suitable for unchecked conversion (Trivial)
 polyorb_hi-utils.ads:64:13: info: types in unchecked conversion have the same size (Trivial)
 polyorb_hi-utils.ads:65:07: info: type is suitable for unchecked conversion (Trivial)
-polyorb_hi-utils.ads:65:19: high: type with constraints on bit representation is unsuitable for unchecked conversion
+polyorb_hi-utils.ads:65:19: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Entity_Type has 4 values but has bit size 8]
 polyorb_hi-utils.ads:67:13: info: types in unchecked conversion have the same size (Trivial)
-polyorb_hi-utils.ads:68:07: high: type with constraints on bit representation is unsuitable for unchecked conversion
+polyorb_hi-utils.ads:68:07: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Node_Type has 2 values but has bit size 8]
 polyorb_hi-utils.ads:68:18: info: type is suitable for unchecked conversion (Trivial)
 polyorb_hi-utils.ads:69:13: info: types in unchecked conversion have the same size (Trivial)
 polyorb_hi-utils.ads:70:07: info: type is suitable for unchecked conversion (Trivial)
-polyorb_hi-utils.ads:70:19: high: type with constraints on bit representation is unsuitable for unchecked conversion
+polyorb_hi-utils.ads:70:19: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Node_Type has 2 values but has bit size 8]
 polyorb_hi-utils.ads:89:19: info: postcondition proved (CVC4: 1 VC)
 polyorb_hi-utils.ads:138:09: info: range check proved (CVC4: 4 VC)
 polyorb_hi_generated-activity.adb:98:03: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
