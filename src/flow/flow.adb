@@ -62,9 +62,9 @@ with Sprint;                           use Sprint;
 with VC_Kinds;                         use VC_Kinds;
 with Why;
 
-use type Ada.Containers.Count_Type;
-
 package body Flow is
+
+   use type Ada.Containers.Count_Type;
 
    --  These debug options control which graphs to output.
 
