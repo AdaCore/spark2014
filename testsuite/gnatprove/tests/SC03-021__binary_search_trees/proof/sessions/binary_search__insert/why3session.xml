@@ -808,7 +808,7 @@
   </goal>
   <goal name="def&#39;vc.214" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="3010118"/></proof>
+  <proof prover="1"><result status="valid" steps="4386733"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.215" expl="loop invariant preservation" proved="true">
@@ -868,17 +868,17 @@
   </goal>
   <goal name="def&#39;vc.229" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="279192"/></proof>
+  <proof prover="1"><result status="valid" steps="279397"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.230" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="759302"/></proof>
+  <proof prover="1"><result status="valid" steps="1586243"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.231" expl="postcondition" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="2158282"/></proof>
+  <proof prover="1"><result status="valid" steps="660468"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>

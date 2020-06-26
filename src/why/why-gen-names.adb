@@ -1029,6 +1029,8 @@ package body Why.Gen.Names is
             | WNE_Of_Rep
             | WNE_Of_Wrapper
             | WNE_Private_Eq
+            | WNE_Private_Of_Wrapper
+            | WNE_Private_To_Wrapper
             | WNE_Private_Type
             | WNE_Pointer_Call
             | WNE_Pointer_Close

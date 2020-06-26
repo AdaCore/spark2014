@@ -225,7 +225,8 @@ package Why.Inter is
 
    function New_Abstract_Base_Type (E : Entity_Id) return W_Type_Id;
    function New_Named_Type (S : String) return W_Type_Id;
-   function New_Named_Type (Name : W_Name_Id) return W_Type_Id;
+   function New_Named_Type
+     (Name : W_Name_Id; Relaxed_Init : Boolean := False) return W_Type_Id;
    function New_Ref_Type (Ty : W_Type_Id) return W_Type_Id;
 
    function Type_Of_Node (N : Node_Id) return W_Type_Id;

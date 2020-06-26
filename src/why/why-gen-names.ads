@@ -425,7 +425,9 @@ package Why.Gen.Names is
       WNE_Init_Wrapper_Suffix,    --  "__init_wrapper"
       WNE_Attr_Init,              --  "attr__init"
       WNE_To_Wrapper,             --  "to_wrapper"
-      WNE_Of_Wrapper              --  "of_wrapper"
+      WNE_Of_Wrapper,             --  "of_wrapper"
+      WNE_Private_To_Wrapper,     --  "__main_to_wrapper"
+      WNE_Private_Of_Wrapper      --  "__main_of_wrapper"
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;

@@ -12,10 +12,12 @@ package body P is pragma SPARK_Mode (On);
    procedure Nearly_Identity (L : in out Set; Cu : in out Cursor) is
       E : Element_Type := Element (L, Cu);
       I : Boolean;
+      Old_K : constant Formal_Model.E.Sequence := Elements (L) with Ghost;
    begin
       Delete (L, Cu);
       Insert (L, E, Cu, I);
       pragma Assert (I);
+      pragma Assert (Elements (L) = Old_K);
    end Nearly_Identity;
 
    procedure My_Include (L : in out Set; E : Element_Type) is

@@ -203,7 +203,9 @@ package body Why.Gen.Records is
              (Name => Get_Name (To_Local (E_Symb (Rec, WNE_Private_Type))))
        elsif Is_Type (Field) then
            New_Named_Type
-             (Name => Get_Name (E_Symb (Field, WNE_Private_Type)))
+             (Name => Get_Name
+                (E_Symb
+                     (Field, WNE_Private_Type, Relaxed_Init => Init_Wrapper)))
        else EW_Abstract
          (Etype (Field),
           Relaxed_Init => Ekind (Field) = E_Component
@@ -297,51 +299,68 @@ package body Why.Gen.Records is
          I := I + 1;
       end loop;
 
-      declare
-         Fields    : Node_Sets.Set renames Get_Component_Set (Ty_Ext);
-         Conjuncts : W_Expr_Array (1 .. Natural (Fields.Length));
-         Count     : Natural := 0;
-      begin
-         for Field of Fields loop
+      --  For simple private types, we have only a single private component,
+      --  the object itself.
 
-            --  Only consider components and part of variables
-
-            if not Is_Type (Field) then
-               pragma Assert (Ekind (Field) /= E_Discriminant);
-
-               R_Acc1 := New_Ada_Record_Access
-                 (Empty, EW_Term, R_Expr1, Field, Ty_Ext);
-               R_Acc2 := New_Ada_Record_Access
-                 (Empty, EW_Term, R_Expr2, Field, Ty_Ext);
-
-               --  Call Build_Predicate_For_Field on fields
-
-               T_Comp :=
-                 Build_Predicate_For_Field
-                   (F_Expr1 => +R_Acc1,
-                    F_Expr2 => +R_Acc2,
-                    F_Ty    => Etype (Field),
-                    E       => Field);
-
-               if T_Comp /= True_Pred then
-                  T_Guard := +New_Ada_Record_Check_For_Field
-                    (Empty, EW_Pred, R_Expr1, Field, Ty_Ext);
-
-                  Count := Count + 1;
-                  Conjuncts (Count) := New_Conditional (Domain    => EW_Pred,
-                                                        Condition => +T_Guard,
-                                                        Then_Part => +T_Comp);
-               end if;
-            end if;
-         end loop;
-
-         if Count > 0 then
-            T := +New_And_Then_Expr
-              (+T,
-               New_And_Expr (Conjuncts (1 .. Count), EW_Pred),
-               EW_Pred);
+      if Is_Simple_Private_Type (Ty_Ext) then
+         if not Ignore_Private_State then
+            T :=  Build_Predicate_For_Field
+                (F_Expr1 => +R_Expr1,
+                 F_Expr2 => +R_Expr2,
+                 F_Ty    => Ty_Ext,
+                 E       => Ty_Ext);
+         else
+            T := True_Pred;
          end if;
-      end;
+      else
+         declare
+            Fields    : Node_Sets.Set renames Get_Component_Set (Ty_Ext);
+            Conjuncts : W_Expr_Array (1 .. Natural (Fields.Length));
+            Count     : Natural := 0;
+         begin
+            for Field of Fields loop
+
+               --  Only consider components visible in SPARK and Part_Of
+               --  objects unless Ignore_Private_State is False.
+
+               if not Is_Type (Field) or else not Ignore_Private_State then
+                  pragma Assert (Ekind (Field) /= E_Discriminant);
+
+                  R_Acc1 := New_Ada_Record_Access
+                    (Empty, EW_Term, R_Expr1, Field, Ty_Ext);
+                  R_Acc2 := New_Ada_Record_Access
+                    (Empty, EW_Term, R_Expr2, Field, Ty_Ext);
+
+                  --  Call Build_Predicate_For_Field on fields
+
+                  T_Comp :=
+                    Build_Predicate_For_Field
+                      (F_Expr1 => +R_Acc1,
+                       F_Expr2 => +R_Acc2,
+                       F_Ty    => Etype (Field),
+                       E       => Field);
+
+                  if T_Comp /= True_Pred then
+                     T_Guard := +New_Ada_Record_Check_For_Field
+                       (Empty, EW_Pred, R_Expr1, Field, Ty_Ext);
+
+                     Count := Count + 1;
+                     Conjuncts (Count) := New_Conditional
+                       (Domain    => EW_Pred,
+                        Condition => +T_Guard,
+                        Then_Part => +T_Comp);
+                  end if;
+               end if;
+            end loop;
+
+            if Count > 0 then
+               T := +New_And_Then_Expr
+                 (+T,
+                  New_And_Expr (Conjuncts (1 .. Count), EW_Pred),
+                  EW_Pred);
+            end if;
+         end;
+      end if;
 
       if T /= True_Pred then
          for I in 1 .. Discrs loop
@@ -376,7 +395,9 @@ package body Why.Gen.Records is
       is (Build_Predicate_For_Field (F_Expr1, F_Ty, E));
 
       function Build_Predicate is new Build_Binary_Predicate_For_Record
-        (Build_Predicate_For_Discr, Build_Predicate_For_Field);
+        (Build_Predicate_For_Discr,
+         Build_Predicate_For_Field,
+         Ignore_Private_State);
 
    begin
       return Build_Predicate (Expr, Expr, Ty);
@@ -1327,6 +1348,9 @@ package body Why.Gen.Records is
            (1 => (B_Name => X_Ident,
                   others => <>));
       begin
+         --  We do not need conversions for discriminants, as we never use
+         --  wrapper types for them.
+
          if Num_Discrs > 0 then
             declare
                Discrs_Comp    : constant W_Identifier_Id :=
@@ -1353,6 +1377,8 @@ package body Why.Gen.Records is
             end;
          end if;
 
+         --  For fields, we convert each component to and from the wrapper type
+
          if Num_Fields > 0 then
             declare
                To_Wrapper_Field   :
@@ -1372,66 +1398,109 @@ package body Why.Gen.Records is
             begin
                for Field of Get_Component_Set (E) loop
                   declare
-                     Field_Id : constant W_Identifier_Id :=
+                     Field_Id      : constant W_Identifier_Id :=
                        To_Why_Id (Field, Rec => E);
+                     Field_Ty      : constant W_Type_Id :=
+                       (if Field = E
+                        then New_Named_Type
+                          (Name => Get_Name (E_Symb (E, WNE_Private_Type)))
+                        else W_Type_Of_Component
+                          (Field, E, Init_Wrapper => False));
+                     Field_Wrapper : constant W_Type_Id := W_Type_Of_Component
+                       (Field, E, Init_Wrapper =>
+                          Might_Contain_Relaxed_Init (Etype (Field)));
 
                   begin
                      Field_Index := Field_Index + 1;
-                     From_Wrapper_Field (Field_Index) :=
-                       New_Field_Association
-                         (Domain => EW_Term,
-                          Field  => Field_Id,
-                          Value  =>
-                            Insert_Simple_Conversion
-                              (Domain         => EW_Term,
-                               To             => W_Type_Of_Component
-                                 (Field, E, Init_Wrapper => False),
-                               Expr           =>
-                                 New_Record_Access
-                                   (Name  => A_Field_Access,
-                                    Field => To_Local (Field_Id),
-                                    Typ   => W_Type_Of_Component
-                                      (Field, E, Init_Wrapper =>
-                                         Might_Contain_Relaxed_Init
-                                            (Etype (Field)))),
-                               Force_No_Slide => True));
-                     To_Wrapper_Field (Field_Index) :=
-                       New_Field_Association
-                         (Domain => EW_Term,
-                          Field  => To_Local (Field_Id),
-                          Value  =>
-                            Insert_Simple_Conversion
-                              (Domain         => EW_Term,
-                               To             => W_Type_Of_Component
-                                 (Field, E, Init_Wrapper =>
-                                    Might_Contain_Relaxed_Init
-                                       (Etype (Field))),
-                               Expr           =>
-                                 New_Record_Access
-                                   (Name  => X_Field_Access,
-                                    Field => Field_Id,
-                                    Typ   => W_Type_Of_Component
-                                      (Field, E, Init_Wrapper => False)),
-                               Force_No_Slide => True));
+
+                     --  Add of_wrapper a.field to From_Wrapper_Field
+
+                     declare
+                        A_Access      : constant W_Expr_Id :=
+                          New_Record_Access
+                            (Name  => A_Field_Access,
+                             Field => To_Local (Field_Id),
+                             Typ   => Field_Wrapper);
+                        Conv_A_Access : constant W_Expr_Id :=
+                          (if Is_Type (Field)
+                           then New_Call
+                             (Domain => EW_Term,
+                              Name   =>
+                                (if Field = E
+                                 then To_Local
+                                   (E_Symb (Field, WNE_Private_Of_Wrapper))
+                                 else E_Symb (Field, WNE_Private_Of_Wrapper)),
+                              Args   => (1 => A_Access),
+                              Typ    => Field_Ty)
+                           else Insert_Simple_Conversion
+                             (Domain         => EW_Term,
+                              To             => Field_Ty,
+                              Expr           => A_Access,
+                              Force_No_Slide => True));
+                        --  If the field stand for the private part of a type,
+                        --  call the corresponding Private_Of_Wrapper function.
+                        --  Otherwise, inroduce a conversion.
+
+                     begin
+                        From_Wrapper_Field (Field_Index) :=
+                          New_Field_Association
+                            (Domain => EW_Term,
+                             Field  => Field_Id,
+                             Value  => Conv_A_Access);
+                     end;
+
+                     --  Add to_wrapper a.field to To_Wrapper_Field
+
+                     declare
+                        X_Access      : constant W_Expr_Id :=
+                          New_Record_Access
+                            (Name  => X_Field_Access,
+                             Field => Field_Id,
+                             Typ   => Field_Ty);
+                        Conv_X_Access : constant W_Expr_Id :=
+                          (if Is_Type (Field)
+                           then New_Call
+                             (Domain => EW_Term,
+                              Name   =>
+                                (if Field = E
+                                 then To_Local
+                                   (E_Symb (Field, WNE_Private_To_Wrapper))
+                                 else E_Symb (Field, WNE_Private_To_Wrapper)),
+                              Args   => (1 => X_Access),
+                              Typ    => Field_Wrapper)
+                           else Insert_Simple_Conversion
+                             (Domain         => EW_Term,
+                              To             => Field_Wrapper,
+                              Expr           => X_Access,
+                              Force_No_Slide => True));
+                        --  If the field stand for the private part of a type,
+                        --  call the corresponding Private_To_Wrapper function.
+                        --  Otherwise, inroduce a conversion.
+
+                     begin
+                        To_Wrapper_Field (Field_Index) :=
+                          New_Field_Association
+                            (Domain => EW_Term,
+                             Field  => To_Local (Field_Id),
+                             Value  => Conv_X_Access);
+                     end;
                   end;
                end loop;
 
-               if Num_Fields > 0 then
-                  pragma Assert (Field_Index = Num_Fields);
-                  Index := Index + 1;
-                  From_Wrapper_Aggr (Index) :=
-                    New_Field_Association
-                      (Domain => EW_Term,
-                       Field  => Fields_Comp,
-                       Value  => New_Record_Aggregate
-                         (Associations => From_Wrapper_Field));
-                  To_Wrapper_Aggr (Index) :=
-                    New_Field_Association
-                      (Domain => EW_Term,
-                       Field  => To_Ident (WNE_Rec_Split_Fields),
-                       Value  => New_Record_Aggregate
-                         (Associations => To_Wrapper_Field));
-               end if;
+               pragma Assert (Field_Index = Num_Fields);
+               Index := Index + 1;
+               From_Wrapper_Aggr (Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => Fields_Comp,
+                    Value  => New_Record_Aggregate
+                      (Associations => From_Wrapper_Field));
+               To_Wrapper_Aggr (Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => To_Ident (WNE_Rec_Split_Fields),
+                    Value  => New_Record_Aggregate
+                      (Associations => To_Wrapper_Field));
             end;
          end if;
          pragma Assert (Index = Num_All);
@@ -1490,13 +1559,10 @@ package body Why.Gen.Records is
          end;
          return;
 
-      --  If E is an empty record or a simple private type, the wrapper is
-      --  simply a copy of its underlying type. We re-export the corresponding
-      --  module and then return.
+      --  If E is an empty record , the wrapper is a copy of its underlying
+      --  type. We re-export the corresponding module and then return.
 
-      elsif Count_Why_Top_Level_Fields (E) = 0
-        or else Is_Simple_Private_Type (E)
-      then
+      elsif Count_Why_Top_Level_Fields (E) = 0 then
 
          Add_With_Clause (P, E_Module (E), EW_Export);
 
@@ -1531,23 +1597,31 @@ package body Why.Gen.Records is
                Return_Type => Abstr_Ty,
                Def         => +A_Ident));
          return;
+
+      --  Simple private types are translated as an abstract type. Introduce
+      --  an init flag for it.
+
+      elsif Is_Simple_Private_Type (E) then
+         Declare_Simple_Wrapper_Type
+           (P          => P,
+            W_Nam      => To_Why_Type
+              (E, Local => True, Relaxed_Init => True),
+            Init_Val   => To_Local (E_Symb (E, WNE_Init_Value)),
+            Attr_Init  => To_Local (E_Symb (E, WNE_Attr_Init)),
+            Of_Wrapper => To_Local (E_Symb (E, WNE_Of_Wrapper)),
+            To_Wrapper => To_Local (E_Symb (E, WNE_To_Wrapper)));
       end if;
 
-      --  For the private part of E, we use the same type as the concrete
-      --  version.
+      --  Introduce a wrapper for the private part of E if there is one
 
-      if Has_Private_Part (E) then
-         declare
-            Priv_Name : constant W_Name_Id :=
-              To_Local (E_Symb (E, WNE_Private_Type));
-
-         begin
-            Emit (P,
-                  New_Type_Decl
-                    (Name  => Priv_Name,
-                     Alias => New_Named_Type
-                       (Name => Get_Name (E_Symb (E, WNE_Private_Type)))));
-         end;
+      if Has_Private_Part (E) and then not Is_Simple_Private_Type (E) then
+         Declare_Simple_Wrapper_Type
+           (P          => P,
+            W_Nam      => To_Local (E_Symb (E, WNE_Private_Type)),
+            Init_Val   => To_Local (E_Symb (E, WNE_Init_Value)),
+            Attr_Init  => To_Local (E_Symb (E, WNE_Attr_Init)),
+            Of_Wrapper => To_Local (E_Symb (E, WNE_Private_Of_Wrapper)),
+            To_Wrapper => To_Local (E_Symb (E, WNE_Private_To_Wrapper)));
       end if;
 
       Declare_Record_Type
@@ -1605,7 +1679,12 @@ package body Why.Gen.Records is
                Def         => +A_Ident));
       end if;
 
-      Declare_Wrapper_Conversions;
+      --  For simple private types, wrapper conversion functions have already
+      --  been defined. Otherwise, define them now.
+
+      if not Is_Simple_Private_Type (E) then
+         Declare_Wrapper_Conversions;
+      end if;
    end Declare_Init_Wrapper_For_Record;
 
    ----------------------------------------
@@ -1799,6 +1878,10 @@ package body Why.Gen.Records is
       --  Start of processing for Declare_Protected_Access_Functions
 
    begin
+      if Is_Simple_Private_Type (E) then
+         return;
+      end if;
+
       --  Generate program access functions for discriminants
       --  ??? enrich the postcondition of access to discriminant, whenever
       --  we statically know its value (in case of E_Record_Subtype)
@@ -2251,55 +2334,57 @@ package body Why.Gen.Records is
 
                --  Compare Fields
 
-               declare
-                  Comp_Set : Node_Sets.Set renames Get_Component_Set (E);
-               begin
-                  if not Comp_Set.Is_Empty then
-                     declare
-                        Conjuncts : W_Expr_Array
-                          (1 .. Positive (Comp_Set.Length));
-                        I : Positive := 1;
-                     begin
-                        for Comp of Comp_Set loop
-                           declare
-                              Fields_Id      : constant W_Identifier_Id :=
-                                To_Ident (WNE_Rec_Split_Fields);
-                              Field_Id       : constant W_Identifier_Id :=
-                                To_Why_Id (Comp, Local => True, Rec => E);
-                              Comparison     : constant W_Pred_Id :=
-                                New_Field_Equality
-                                  (Is_Discr     => False,
-                                   Field_Id     => Field_Id,
-                                   Enclosing_Id => Fields_Id,
-                                   Is_Private   => Is_Type (Comp),
-                                   Field_Type   =>
-                                     (if Is_Type (Comp) then
-                                           Comp
-                                      else Retysp (Etype (Comp))));
-                              Always_Present : constant Boolean :=
-                                not Has_Discriminants (E)
-                                or else Ekind (Comp) /= E_Component;
-                           begin
-                              Conjuncts (I) :=
-                                (if Always_Present then +Comparison
-                                 else
-                                    New_Connection
-                                   (Domain => EW_Pred,
-                                    Op     => EW_Imply,
-                                    Left   =>
-                                      +Discriminant_Check_Pred_Call
-                                      (E, Comp, A_Ident),
-                                    Right  => +Comparison));
-                              I := I + 1;
-                           end;
-                        end loop;
-                        Condition :=
-                          +New_And_Expr (+Condition,
-                                         New_And_Expr (Conjuncts, EW_Pred),
-                                         EW_Pred);
-                     end;
-                  end if;
-               end;
+               if not Is_Simple_Private_Type (E) then
+                  declare
+                     Comp_Set : Node_Sets.Set renames Get_Component_Set (E);
+                  begin
+                     if not Comp_Set.Is_Empty then
+                        declare
+                           Conjuncts : W_Expr_Array
+                             (1 .. Positive (Comp_Set.Length));
+                           I         : Positive := 1;
+                        begin
+                           for Comp of Comp_Set loop
+                              declare
+                                 Fields_Id      : constant W_Identifier_Id :=
+                                   To_Ident (WNE_Rec_Split_Fields);
+                                 Field_Id       : constant W_Identifier_Id :=
+                                   To_Why_Id (Comp, Local => True, Rec => E);
+                                 Comparison     : constant W_Pred_Id :=
+                                   New_Field_Equality
+                                     (Is_Discr     => False,
+                                      Field_Id     => Field_Id,
+                                      Enclosing_Id => Fields_Id,
+                                      Is_Private   => Is_Type (Comp),
+                                      Field_Type   =>
+                                        (if Is_Type (Comp) then
+                                              Comp
+                                         else Retysp (Etype (Comp))));
+                                 Always_Present : constant Boolean :=
+                                   not Has_Discriminants (E)
+                                   or else Ekind (Comp) /= E_Component;
+                              begin
+                                 Conjuncts (I) :=
+                                   (if Always_Present then +Comparison
+                                    else
+                                       New_Connection
+                                      (Domain => EW_Pred,
+                                       Op     => EW_Imply,
+                                       Left   =>
+                                         +Discriminant_Check_Pred_Call
+                                         (E, Comp, A_Ident),
+                                       Right  => +Comparison));
+                                 I := I + 1;
+                              end;
+                           end loop;
+                           Condition :=
+                             +New_And_Expr (+Condition,
+                                            New_And_Expr (Conjuncts, EW_Pred),
+                                            EW_Pred);
+                        end;
+                     end if;
+                  end;
+               end if;
 
                --  For simple private types, equality is an uninterpreted
                --  function. For now, it is as good as using equality on
@@ -2502,7 +2587,7 @@ package body Why.Gen.Records is
       --  for the private part as well as a new uninterpreted equality
       --  function.
 
-      if Has_Private_Part (E) then
+      if not Is_Simple_Private_Type (E) and then Has_Private_Part (E) then
          declare
             Priv_Name : constant W_Name_Id    :=
               To_Local (E_Symb (E, WNE_Private_Type));
@@ -2893,11 +2978,18 @@ package body Why.Gen.Records is
         To_Why_Id
           (Field,
            Rec          => Rec,
-           Relaxed_Init => Init_Wrapper and then Ekind (Field) = E_Component);
+           Relaxed_Init => Init_Wrapper
+           and then Ekind (Field) /= E_Discriminant);
 
       Ret_Ty       : constant W_Type_Id :=
         (if Is_Part_Of_Protected_Object (Field) then
               EW_Abstract (Etype (Field))
+         elsif Is_Type (Field) then
+              New_Named_Type (Name         => Get_Name
+                              (E_Symb (E            => Field,
+                                       S            => WNE_Private_Type,
+                                       Relaxed_Init => Init_Wrapper)),
+                              Relaxed_Init => Init_Wrapper)
          else W_Type_Of_Component
            (Search_Component_In_Type (Ty, Field), Empty,
             Init_Wrapper => Init_Wrapper));

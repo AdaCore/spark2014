@@ -89,9 +89,18 @@ package body Why.Gen.Init is
         (C_Expr : W_Term_Id; C_Ty : Entity_Id; E : Entity_Id)
          return W_Pred_Id
       is
-         pragma Unreferenced (E);
       begin
-         if Exclude_Always_Relaxed and then Has_Relaxed_Init (C_Ty) then
+         --  E may be a type standing for the private part of a type whose
+         --  fullview is not in SPARK.
+
+         if Is_Type (E) then
+            if Get_Relaxed_Init (Get_Type (+C_Expr)) then
+               return +Pred_Of_Boolean_Term
+                 (+New_Init_Attribute_Access (E, +C_Expr, Ref_Allowed));
+            else
+               return True_Pred;
+            end if;
+         elsif Exclude_Always_Relaxed and then Has_Relaxed_Init (C_Ty) then
             return True_Pred;
          else
             return +Compute_Is_Initialized
@@ -107,7 +116,8 @@ package body Why.Gen.Init is
         (Is_Initialized_For_Comp);
 
       function Is_Initialized_For_Record is new Build_Predicate_For_Record
-        (Is_Initialized_For_Comp, Is_Initialized_For_Comp);
+        (Is_Initialized_For_Comp, Is_Initialized_For_Comp,
+         Ignore_Private_State => False);
 
       P    : W_Expr_Id;
       Tmp  : constant W_Expr_Id := New_Temp_For_Expr (+Name);
@@ -139,7 +149,7 @@ package body Why.Gen.Init is
 
          elsif Has_Array_Type (E) then
             P := +Is_Initialized_For_Array (+Tmp, Retysp (E));
-         elsif Has_Record_Type (E) then
+         elsif Is_Record_Type_In_Why (Retysp (E)) then
             P := +Is_Initialized_For_Record (+Tmp, Retysp (E));
          else
             raise Program_Error;
@@ -160,90 +170,99 @@ package body Why.Gen.Init is
    --------------------------
 
    procedure Declare_Init_Wrapper (P : W_Section_Id; E : Entity_Id) is
-      Init_Ty : constant W_Type_Id := EW_Abstract (E);
-
    begin
       if Is_Scalar_Type (E) then
-
-         declare
-            W_Nam     : constant W_Name_Id :=
-              To_Why_Type
-                (E, Local => True, Relaxed_Init => True);
-            W_Ty      : constant W_Type_Id := New_Named_Type (W_Nam);
-            Init_Val  : constant W_Identifier_Id :=
-              To_Local (E_Symb (E, WNE_Init_Value));
-            Attr_Init : constant W_Identifier_Id :=
-              To_Local (E_Symb (E, WNE_Attr_Init));
-            A_Ident   : constant W_Identifier_Id :=
-              New_Identifier (Name => "a", Typ => W_Ty);
-            A_Binder  : constant Binder_Array :=
-              (1 => (B_Name => A_Ident,
-                     others => <>));
-            X_Ident   : constant W_Identifier_Id :=
-              New_Identifier (Name => "x", Typ => Init_Ty);
-            X_Binder  : constant Binder_Array :=
-              (1 => (B_Name => X_Ident,
-                     others => <>));
-
-         begin
-            --  Wrappers have two fields, a value field and an initialization
-            --  flag.
-
-            Emit_Record_Declaration
-              (Section      => P,
-               Name         => W_Nam,
-               Binders      =>
-                 (1 =>
-                    (B_Name => Init_Val,
-                     others => <>),
-                  2 =>
-                    (B_Name => Attr_Init,
-                     others => <>)));
-
-            --  Declare conversion functions to and from the wrapper type
-
-            Emit
-              (P,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => To_Local (E_Symb (E, WNE_Of_Wrapper)),
-                  Binders     => A_Binder,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Return_Type => Init_Ty,
-                  Def         => New_Record_Access (Name  => +A_Ident,
-                                                    Field => Init_Val,
-                                                    Typ   => Init_Ty)));
-            Emit
-              (P,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => To_Local (E_Symb (E, WNE_To_Wrapper)),
-                  Binders     => X_Binder,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Return_Type => W_Ty,
-                  Def         =>
-                    New_Record_Aggregate
-                      (Associations =>
-                           (1 => New_Field_Association
-                              (Domain => EW_Term,
-                               Field  => Init_Val,
-                               Value  => +X_Ident),
-                            2 => New_Field_Association
-                              (Domain => EW_Term,
-                               Field  => Attr_Init,
-                               Value  => +True_Term)))));
-         end;
-      elsif Is_Record_Type (E) then
+         Declare_Simple_Wrapper_Type
+           (P          => P,
+            W_Nam      => To_Why_Type
+              (E, Local => True, Relaxed_Init => True),
+            Init_Val   => To_Local (E_Symb (E, WNE_Init_Value)),
+            Attr_Init  => To_Local (E_Symb (E, WNE_Attr_Init)),
+            Of_Wrapper => To_Local (E_Symb (E, WNE_Of_Wrapper)),
+            To_Wrapper => To_Local (E_Symb (E, WNE_To_Wrapper)));
+      elsif Is_Record_Type_In_Why (E) then
          Declare_Init_Wrapper_For_Record (P, E);
       elsif Is_Array_Type (E) then
          Declare_Init_Wrapper_For_Array (P, E);
       else
-         raise Why.Not_Implemented;
+         raise Program_Error;
       end if;
-
    end Declare_Init_Wrapper;
+
+   ---------------------------------
+   -- Declare_Simple_Wrapper_Type --
+   ---------------------------------
+
+   procedure Declare_Simple_Wrapper_Type
+     (P          : W_Section_Id;
+      W_Nam      : W_Name_Id;
+      Init_Val   : W_Identifier_Id;
+      Attr_Init  : W_Identifier_Id;
+      Of_Wrapper : W_Identifier_Id;
+      To_Wrapper : W_Identifier_Id)
+   is
+      W_Ty      : constant W_Type_Id := New_Named_Type (W_Nam);
+      A_Ident   : constant W_Identifier_Id :=
+        New_Identifier (Name => "a", Typ => W_Ty);
+      A_Binder  : constant Binder_Array :=
+        (1 => (B_Name => A_Ident,
+               others => <>));
+      X_Ident   : constant W_Identifier_Id :=
+        New_Identifier (Name => "x", Typ => Get_Typ (Init_Val));
+      X_Binder  : constant Binder_Array :=
+        (1 => (B_Name => X_Ident,
+               others => <>));
+
+   begin
+      --  Wrappers have two fields, a value field and an initialization
+      --  flag.
+
+      Emit_Record_Declaration
+        (Section      => P,
+         Name         => W_Nam,
+         Binders      =>
+           (1 =>
+                (B_Name => Init_Val,
+                 others => <>),
+            2 =>
+              (B_Name => Attr_Init,
+               others => <>)));
+
+      --  Declare conversion functions to and from the wrapper type
+
+      Emit
+        (P,
+         New_Function_Decl
+           (Domain      => EW_Pterm,
+            Name        => Of_Wrapper,
+            Binders     => A_Binder,
+            Location    => No_Location,
+            Labels      => Symbol_Sets.Empty_Set,
+            Return_Type => Get_Typ (Init_Val),
+            Def         => New_Record_Access (Name  => +A_Ident,
+                                              Field => Init_Val,
+                                              Typ   => Get_Typ (Init_Val))));
+      Emit
+        (P,
+         New_Function_Decl
+           (Domain      => EW_Pterm,
+            Name        => To_Wrapper,
+            Binders     => X_Binder,
+            Location    => No_Location,
+            Labels      => Symbol_Sets.Empty_Set,
+            Return_Type => W_Ty,
+            Def         =>
+              New_Record_Aggregate
+                (Associations =>
+                     (1 => New_Field_Association
+                        (Domain => EW_Term,
+                         Field  => Init_Val,
+                         Value  => +X_Ident),
+                      2 => New_Field_Association
+                        (Domain => EW_Term,
+                         Field  => Attr_Init,
+                         Value  => +True_Term)))));
+   end Declare_Simple_Wrapper_Type;
 
    ---------------------
    -- EW_Init_Wrapper --
