@@ -105,6 +105,9 @@ package body Gnat2Why_Opts.Reading is
          Limit_Line   := Get_Opt (V, Limit_Line_Name);
          Limit_Region := Get_Opt (V, Limit_Region_Name);
 
+         Output_Mode :=
+           Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));
+
          Report_Mode :=
            Report_Mode_Type'Value (Get (Get (V, Report_Mode_Name)));
 

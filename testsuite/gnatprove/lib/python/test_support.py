@@ -783,7 +783,7 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
        no_fail, subdue_flow and filter_output are passed directly to
        gnatprove().
     """
-    fullopt = ["--warnings=continue"]
+    fullopt  = ["--warnings=continue", "--output=oneline"]
     fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]

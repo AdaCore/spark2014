@@ -109,6 +109,7 @@ package Configuration is
       No_Loop_Unrolling    : aliased Boolean;
       No_Global_Generation : aliased Boolean;
       No_Subprojects       : aliased Boolean;
+      Output               : aliased GNAT.Strings.String_Access;
       Output_Header        : aliased Boolean;
       Output_Msg_Only      : aliased Boolean;
       P                    : aliased GNAT.Strings.String_Access;
@@ -185,6 +186,7 @@ package Configuration is
    Mode           : GP_Mode;
    Use_Semaphores : Boolean;
    Only_Given     : Boolean;
+   Output         : Output_Mode_Type;
    Parallel       : Integer;
    Report         : Report_Mode_Type;
    Warning_Mode   : Gnat2Why_Opts.SPARK_Warning_Mode_Type;

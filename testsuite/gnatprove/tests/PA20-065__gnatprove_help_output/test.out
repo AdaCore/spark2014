@@ -81,6 +81,7 @@ gnatprove advanced switches:
  --no-inlining        Do not inline calls to local subprograms for proof
  --no-loop-unrolling  Do not unroll loops with static bounds and no
                       (in)variant for proof
+ --output=o           Set the output mode of GNATprove (o=oneline, pretty*)
  --output-header      Add a header with extra information in the generated
                       output file
  --pedantic           Use a strict interpretation of the Ada standard
@@ -95,6 +96,10 @@ gnatprove advanced switches:
  --timeout=nnn        Set the prover timeout in seconds. Use value 0 for
                       no timeout (default when no level set)
  --why3-conf=f        Specify a configuration file for why3
+
+ * Output mode values
+   . oneline       - Output each check message on a single line
+   . pretty        - Pretty-print check messages for command-line use (default)
 
  * Proof mode values for generation
    . per_check     - Generate one formula per check (default when no level set)

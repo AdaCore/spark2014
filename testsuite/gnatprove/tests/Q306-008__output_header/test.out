@@ -1,4 +1,4 @@
 warning: attribute "Switches" of package "Prove" of your project file is deprecated
 warning: use "Proof_Switches ("Ada")" instead
-command line       : gnatprove -k --info --warnings=continue --report=provers --assumptions -P test.gpr --quiet --steps=200 --timeout=120 --mode=all -j1 --prover=cvc4,altergo,z3
+command line       : gnatprove -k --info --warnings=continue --output=oneline --report=provers --assumptions -P test.gpr --quiet --steps=200 --timeout=120 --mode=all -j1 --prover=cvc4,altergo,z3
 Switches attribute: --prover=cvc4
