@@ -297,20 +297,21 @@ package body Gnat2Why.Error_Messages is
    -----------------------
 
    procedure Emit_Proof_Result
-     (Node       : Node_Id;
-      Id         : VC_Id;
-      Kind       : VC_Kind;
-      Proved     : Boolean;
-      E          : Entity_Id;
-      SD_Id      : Session_Dir_Base_ID;
-      How_Proved : Prover_Category;
-      Extra_Msg  : String := "";
-      Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      Check_Tree : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      VC_File    : String := "";
-      VC_Loc     : Node_Id := Empty;
-      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd : String := "")
+     (Node        : Node_Id;
+      Id          : VC_Id;
+      Kind        : VC_Kind;
+      Proved      : Boolean;
+      E           : Entity_Id;
+      SD_Id       : Session_Dir_Base_ID;
+      How_Proved  : Prover_Category;
+      Extra_Msg   : String := "";
+      Explanation : String := "";
+      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Check_Tree  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      VC_File     : String := "";
+      VC_Loc      : Node_Id := Empty;
+      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd  : String := "")
    is
       function Stat_Message return String;
       --  Prepare a message for statistics of proof results
@@ -423,6 +424,7 @@ package body Gnat2Why.Error_Messages is
             VC_File     => VC_File,
             VC_Loc      => VC_Loc,
             Editor_Cmd  => Editor_Cmd,
+            Explanation => Explanation,
             Stats       => Stats,
             How_Proved  => How_Proved,
             SD_Id       => SD_Id,
@@ -435,10 +437,11 @@ package body Gnat2Why.Error_Messages is
    ------------------------------
 
    procedure Emit_Static_Proof_Result
-     (Node       : Node_Id;
-      Kind       : VC_Kind;
-      Proved     : Boolean;
-      E          : Entity_Id)
+     (Node        : Node_Id;
+      Kind        : VC_Kind;
+      Proved      : Boolean;
+      E           : Entity_Id;
+      Explanation : String := "")
    is
       Id : constant VC_Id :=
         Register_VC (Node, Kind, E, Present_In_Why3 => False);
@@ -450,7 +453,8 @@ package body Gnat2Why.Error_Messages is
          Proved,
          E,
          No_Session_Dir,
-         PC_Trivial);
+         PC_Trivial,
+         Explanation => Explanation);
    end Emit_Static_Proof_Result;
 
    ------------------------

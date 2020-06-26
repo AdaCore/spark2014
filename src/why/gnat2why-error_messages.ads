@@ -82,20 +82,21 @@ package Gnat2Why.Error_Messages is
    procedure Parse_Why3_Results (Fn : String; Timing : in out Time_Token);
 
    procedure Emit_Proof_Result
-     (Node       : Node_Id;
-      Id         : VC_Id;
-      Kind       : VC_Kind;
-      Proved     : Boolean;
-      E          : Entity_Id;
-      SD_Id      : Session_Dir_Base_ID;
-      How_Proved : Prover_Category;
-      Extra_Msg  : String := "";
-      Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      Check_Tree : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      VC_File    : String := "";
-      VC_Loc     : Node_Id := Empty;
-      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd : String := "");
+     (Node        : Node_Id;
+      Id          : VC_Id;
+      Kind        : VC_Kind;
+      Proved      : Boolean;
+      E           : Entity_Id;
+      SD_Id       : Session_Dir_Base_ID;
+      How_Proved  : Prover_Category;
+      Extra_Msg   : String := "";
+      Explanation : String := "";
+      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Check_Tree  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      VC_File     : String := "";
+      VC_Loc      : Node_Id := Empty;
+      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd  : String := "");
    --  Register the VC identified by node and kind as proved. This will emit
    --  a message if needed and register the result in JSON output. @parameter
    --  How_Proved identifies the prover type (possible values currently are
@@ -106,10 +107,11 @@ package Gnat2Why.Error_Messages is
    --  of a VC (raised as location for messages).
 
    procedure Emit_Static_Proof_Result
-     (Node       : Node_Id;
-      Kind       : VC_Kind;
-      Proved     : Boolean;
-      E          : Entity_Id);
+     (Node        : Node_Id;
+      Kind        : VC_Kind;
+      Proved      : Boolean;
+      E           : Entity_Id;
+      Explanation : String := "");
    --  Register a new VC and save it as proved (or not proved depending on
    --  Proved argument). This function is similar to calling Register_VC, then
    --  Emit_Proof_Result.
