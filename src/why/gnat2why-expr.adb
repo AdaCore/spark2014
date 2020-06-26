@@ -18645,7 +18645,6 @@ package body Gnat2Why.Expr is
             | Pragma_Overriding_Renamings
             | Pragma_Passive
             | Pragma_Persistent_BSS
-            | Pragma_Polling
             | Pragma_Prefix_Exception_Messages
             | Pragma_Priority_Specific_Dispatching
             | Pragma_Profile_Warnings
