@@ -56,7 +56,7 @@ are in |SPARK|.
    * a variable which is "constant after elaboration" (see section
      :ref:`object-declarations`); or
 
-   * a constant.
+   * a constant not of access-to-variable type.
 
   [Synchronized objects may be referenced by multiple tasks without causing
   erroneous execution. The declaration of a synchronized stand-alone
@@ -355,4 +355,3 @@ are in |SPARK|.
 20. All procedures declared in the visible part of Ada.Synchronous_Task_Control
     have a dependency "(S => null)" despite the fact that S has mode **in
     out**.
-
