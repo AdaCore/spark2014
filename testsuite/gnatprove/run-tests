@@ -55,7 +55,7 @@ class SPARKTestFinder(TestFinder):
         """
         parent_name = os.path.dirname(dirpath)
         testname = os.path.basename(dirpath)
-        # If the dir is a direct subdir of <root_dir/tests>, skip it
+        # If the dir is not a direct subdir of <root_dir/tests>, skip it
         if (os.path.basename(parent_name) != "tests" or
                 os.path.dirname(parent_name) != self.root_dir):
             return None
