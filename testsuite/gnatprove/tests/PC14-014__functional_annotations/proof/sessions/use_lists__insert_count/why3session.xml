@@ -257,7 +257,7 @@
   <proof prover="2"><result status="valid" steps="62"/></proof>
   </goal>
   <goal name="def&#39;vc.71" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="642465"/></proof>
+  <proof prover="2"><result status="valid" steps="642502"/></proof>
   </goal>
   <goal name="def&#39;vc.72" expl="postcondition">
   <proof prover="0"><result status="timeout"/></proof>
@@ -269,10 +269,10 @@
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.74" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="157643"/></proof>
+  <proof prover="2"><result status="valid" steps="157637"/></proof>
   </goal>
   <goal name="def&#39;vc.75" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" steps="367196"/></proof>
+  <proof prover="2"><result status="valid" steps="367202"/></proof>
   </goal>
  </transf>
  </goal>
