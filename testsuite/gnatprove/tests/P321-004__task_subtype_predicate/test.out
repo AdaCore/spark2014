@@ -1,4 +1,5 @@
-p.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
-p.ads:9:04: medium: predicate check might fail on default value
+p.ads:7:12: subtype predicate on effectively volatile type for reading is not allowed in SPARK (SPARK RM 3.2.4(3))
+p.ads:7:12: violation of pragma SPARK_Mode at test.adc:1
 task_param.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 task_param.ads:5:14: warning: subprogram "P" has no effect
+gnatprove: error during flow analysis and proof
