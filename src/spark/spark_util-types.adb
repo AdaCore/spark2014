@@ -1460,10 +1460,36 @@ package body SPARK_Util.Types is
    -- Types_Have_Same_Known_Esize --
    ---------------------------------
 
-   function Types_Have_Same_Known_Esize (A, B : Entity_Id) return Boolean is
+   procedure Types_Have_Same_Known_Esize (A, B        : Entity_Id;
+                                          Result      : out Boolean;
+                                          Explanation : out Unbounded_String)
+   is
    begin
-      return Known_Esize (A) and then Known_Esize (B)
-        and then UI_Eq (Esize (A), Esize (B));
+      if not Known_Esize (A) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String ("type " & Source_Name (A) & " doesn't "
+                                & "have an Object_Size representation "
+                                & "clause or aspect");
+         return;
+      end if;
+      if not Known_Esize (B) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String ("type " & Source_Name (B) & " doesn't "
+                                & "have an Object_Size representation "
+                                & "clause or aspect");
+         return;
+      end if;
+      if not UI_Eq (Esize (A), Esize (B)) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String ("Object_Sizes of type " & Source_Name (A) &
+                                " and " & Source_Name (B) & " differ");
+         return;
+      end if;
+      Result := True;
+      Explanation := Null_Unbounded_String;
    end Types_Have_Same_Known_Esize;
 
    -------------------------

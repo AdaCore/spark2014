@@ -14584,23 +14584,30 @@ package body Gnat2Why.Expr is
                         Emit_Static_Proof_Result
                           (Expr, VC_UC_No_Holes, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
-                     end;
-                     Emit_Static_Proof_Result
-                       (Expr,
-                        VC_UC_Same_Size,
+
                         Types_Have_Same_Known_Esize
                           (Retysp (Etype (Defining_Identifier (Decl))),
-                           Retysp (Etype (Prefix (Expr)))),
-                        Current_Subp);
-                     Emit_Static_Proof_Result
-                       (Decl,
-                        VC_UC_Alignment,
-                        Nkind (Prefix (Expr)) in N_Has_Entity
-                            and then
-                          Objects_Have_Compatible_Alignments
-                            (Defining_Identifier (Decl),
-                             Entity (Prefix (Expr))),
-                        Current_Subp);
+                           Retysp (Etype (Prefix (Expr))),
+                           Valid, Explanation);
+                        Emit_Static_Proof_Result
+                          (Expr, VC_UC_Same_Size, Valid, Current_Subp,
+                           Explanation => To_String (Explanation));
+
+                        if Nkind (Prefix (Expr)) in N_Has_Entity then
+                           Objects_Have_Compatible_Alignments
+                             (Defining_Identifier (Decl),
+                              Entity (Prefix (Expr)),
+                              Valid, Explanation);
+                        else
+                           Valid := False;
+                           Explanation :=
+                             To_Unbounded_String
+                               ("unknown alignment for object");
+                        end if;
+                        Emit_Static_Proof_Result
+                          (Decl, VC_UC_Alignment, Valid, Current_Subp,
+                           Explanation => To_String (Explanation));
+                     end;
                   end if;
                   Expr := Prefix (Expr);
                end if;

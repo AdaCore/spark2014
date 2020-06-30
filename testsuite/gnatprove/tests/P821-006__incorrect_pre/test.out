@@ -1,4 +1,4 @@
-foo.ads:12:13: high: types used for unchecked conversion do not have the same size
+foo.ads:12:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Byte_Array_4 doesn't have an Object_Size representation clause or aspect]
 foo.ads:13:42: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Byte_Array_4 doesn't have an Object_Size representation clause or aspect]
 foo.ads:14:42: info: type is suitable for unchecked conversion (Trivial)
 foo.ads:17:53: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

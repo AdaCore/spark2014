@@ -1,5 +1,5 @@
 logging.adb:15:15: info: range check proved (CVC4: 2 VC)
 logging.adb:16:30: info: range check proved (CVC4: 1 VC)
-logging.adb:20:16: high: types used for unchecked conversion do not have the same size
+logging.adb:20:16: high: types used for unchecked conversion do not have the same size [possible explanation: type Byte_Array doesn't have an Object_Size representation clause or aspect]
 logging.adb:21:20: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Byte_Array doesn't have an Object_Size representation clause or aspect]
 logging.adb:22:20: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Payload_As_String_T doesn't have an Object_Size representation clause or aspect]

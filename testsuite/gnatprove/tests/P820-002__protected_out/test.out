@@ -3,10 +3,10 @@ polyorb_hi-epoch.ads:43:14: warning: "Epoch_Data" constituent of "Elaborated_Var
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
 polyorb_hi-epoch.ads:44:11: info: data dependencies proved
 polyorb_hi-epoch.ads:48:11: info: data dependencies proved
-polyorb_hi-messages.adb:51:13: high: types used for unchecked conversion do not have the same size
+polyorb_hi-messages.adb:51:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Message_Size_Buffer doesn't have an Object_Size representation clause or aspect]
 polyorb_hi-messages.adb:52:07: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Message_Size_Buffer doesn't have an Object_Size representation clause or aspect]
 polyorb_hi-messages.adb:52:28: info: type is suitable for unchecked conversion (Trivial)
-polyorb_hi-messages.adb:53:13: high: types used for unchecked conversion do not have the same size
+polyorb_hi-messages.adb:53:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Message_Size_Buffer doesn't have an Object_Size representation clause or aspect]
 polyorb_hi-messages.adb:54:07: info: type is suitable for unchecked conversion (Trivial)
 polyorb_hi-messages.adb:54:16: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Message_Size_Buffer doesn't have an Object_Size representation clause or aspect]
 polyorb_hi-messages.adb:72:57: info: range check proved (CVC4: 1 VC)

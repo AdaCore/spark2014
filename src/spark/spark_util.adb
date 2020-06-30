@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Common_Iterators;       use Common_Iterators;
 with Csets;                  use Csets;
 with Errout;                 use Errout;
@@ -2844,12 +2843,37 @@ package body SPARK_Util is
    -- Objects_Have_Compatible_Alignments --
    ----------------------------------------
 
-   function Objects_Have_Compatible_Alignments (X, Y : Entity_Id) return
-     Boolean
-   is
+   procedure Objects_Have_Compatible_Alignments
+     (X, Y        : Entity_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String) is
    begin
-      return Known_Alignment (X) and then Known_Alignment (Y) and then
-        Alignment (X) mod Alignment (Y) = Uint_0;
+      if not Known_Alignment (X) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String (Source_Name (X) & " doesn't have an "
+                                & "Alignment representation clause or aspect");
+         return;
+      end if;
+      if not Known_Alignment (Y) then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String (Source_Name (Y) & " doesn't have an "
+                                & "Alignment representation clause or aspect");
+         return;
+      end if;
+      if Alignment (X) mod Alignment (Y) /= Uint_0 then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String ("alignment of " & Source_Name (X) & " (which "
+                                & "is " & UI_Image (Alignment (X)) & ") must "
+                                & "be a multipe of the alignment of "
+                                & Source_Name (Y) & "(which is "
+                                & UI_Image (Alignment (Y)) & ")");
+         return;
+      end if;
+      Result := True;
+      Explanation := Null_Unbounded_String;
    end Objects_Have_Compatible_Alignments;
 
    ----------------

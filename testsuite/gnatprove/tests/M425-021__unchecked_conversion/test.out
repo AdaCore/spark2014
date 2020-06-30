@@ -1,4 +1,4 @@
-test.adb:16:13: high: types used for unchecked conversion do not have the same size
+test.adb:16:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Record_A doesn't have an Object_Size representation clause or aspect]
 test.adb:16:62: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Record_A doesn't have an Object_Size representation clause or aspect]
 test.adb:17:62: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Record_A2 doesn't have an Object_Size representation clause or aspect]
 test.adb:30:09: info: data dependencies proved

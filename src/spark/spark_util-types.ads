@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Sem_Type;
 with Stand;     use Stand;
 
@@ -288,7 +287,9 @@ package SPARK_Util.Types is
    --  right size is a valid value, and the type has no holes. See comments in
    --  the function for more details.
 
-   function Types_Have_Same_Known_Esize (A, B : Entity_Id) return Boolean
+   procedure Types_Have_Same_Known_Esize (A, B        : Entity_Id;
+                                          Result      : out Boolean;
+                                          Explanation : out Unbounded_String)
      with Pre => Is_Type (A) and then Is_Type (B);
    --  Returns True if the two types in argument have the same Esize
 

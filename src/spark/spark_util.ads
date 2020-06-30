@@ -23,23 +23,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Assumption_Types;  use Assumption_Types;
-with Atree;             use Atree;
-with Checked_Types;     use Checked_Types;
-with Common_Containers; use Common_Containers;
-with Einfo;             use Einfo;
-with Lib;               use Lib;
-with Namet;             use Namet;
-with Nlists;            use Nlists;
-with Sem_Aux;           use Sem_Aux;
-with Sem_Util;          use Sem_Util;
-with Sinfo;             use Sinfo;
-with Sinput;            use Sinput;
-with Snames;            use Snames;
-with Types;             use Types;
-with Uintp;             use Uintp;
-with Urealp;            use Urealp;
-with Why.Atree.Tables;  use Why.Atree.Tables;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Assumption_Types;      use Assumption_Types;
+with Atree;                 use Atree;
+with Checked_Types;         use Checked_Types;
+with Common_Containers;     use Common_Containers;
+with Einfo;                 use Einfo;
+with Lib;                   use Lib;
+with Namet;                 use Namet;
+with Nlists;                use Nlists;
+with Sem_Aux;               use Sem_Aux;
+with Sem_Util;              use Sem_Util;
+with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
+with Snames;                use Snames;
+with Types;                 use Types;
+with Uintp;                 use Uintp;
+with Urealp;                use Urealp;
+with Why.Atree.Tables;      use Why.Atree.Tables;
 
 package SPARK_Util is
 
@@ -473,9 +474,11 @@ package SPARK_Util is
    --  A trivial wrapper to be used in assertions when converting from the
    --  frontend to flow representation of discriminants and components.
 
-   function Objects_Have_Compatible_Alignments (X, Y : Entity_Id) return
-     Boolean
-   with Pre => Is_Object (X) and then Is_Object (Y);
+   procedure Objects_Have_Compatible_Alignments
+     (X, Y        : Entity_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
+     with Pre => Is_Object (X) and then Is_Object (Y);
    --  @param X  object that overlays the other (object with Address clause)
    --  @param Y  object that is overlaid (object whose 'Address is used in
    --            the Address clause of X)
