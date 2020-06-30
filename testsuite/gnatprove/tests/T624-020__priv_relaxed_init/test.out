@@ -1,7 +1,6 @@
 init_wrapper_simple.adb:1:11: warning: subprogram "Init_Wrapper_Simple" has no effect
 init_wrapper_simple.adb:19:18: info: range check proved (CVC4: 1 VC)
 init_wrapper_simple.adb:25:15: info: range check proved (CVC4: 1 VC)
-init_wrapper_simple.adb:29:22: high: private part of "X.G" is not initialized
 init_wrapper_simple.adb:29:22: medium: assertion might fail
 init_wrapper_simple.adb:30:22: medium: assertion might fail, cannot prove Y'Initialized
 init_wrapper_simple.adb:31:22: medium: assertion might fail

@@ -2655,8 +2655,7 @@ package body Flow.Analysis is
                --  If the Flow_Id represents the 'Hidden part of a record then
                --  we do not consider it as initialized by proof.
 
-               if Is_Private_Part (F)
-                 or else Is_Extension (F)
+               if Is_Extension (F)
                  or else Is_Record_Tag (F)
                then
                   return False;
