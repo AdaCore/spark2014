@@ -593,8 +593,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-   with Pre => Nkind (N) in N_Delay_Until_Statement    |
-                            N_Delay_Relative_Statement;
+   with Pre => Nkind (N) in N_Delay_Statement;
    --  Deal with delay until X statements. We make a vertex where we use all
    --  variables from the expression and we also implicitly use
    --  Ada.Real_Time.Clock_Time.
