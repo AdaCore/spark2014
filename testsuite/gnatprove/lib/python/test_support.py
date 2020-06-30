@@ -377,11 +377,18 @@ def check_marks(strlist):
         """Returns the tag for a given message text, or None if no tag is
         recognized."""
 
+        # ??? simple string matching doesn't quite work when the message
+        # contains several tags at once (e.g. 'global "xxx" is aliased')
+        # or when the tag appears in an object name
+        # (e.g. '"aliased" is missing from the Global contract')
+
         # flow analysis tags
 
         # When adding a tag in this section, you need also to update the
         # function is_flow_tag below.
-        if 'dependency' in text:
+        if 'aliased' in text:
+            return 'ALIASING'
+        elif 'dependency' in text:
             return 'DEPENDS'
         elif 'global' in text:
             return 'GLOBAL'
@@ -389,8 +396,6 @@ def check_marks(strlist):
             return 'INITIALIZED'
         elif 'initializes' in text:
             return 'INITIALIZES'
-        elif 'aliased' in text:
-            return 'ALIASING'
 
         # proof tags
 
