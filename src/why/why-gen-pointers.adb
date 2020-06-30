@@ -1659,11 +1659,11 @@ package body Why.Gen.Pointers is
             return Args;
          end;
 
-      --  Use Prepare_Args_For_Subtype_Check on designated type for records
+      --  Get the discriminants of the designated type
 
       else
          pragma Assert (Has_Discriminants (Des_Ty));
-         return Prepare_Args_For_Subtype_Check (Des_Ty, Expr);
+         return Get_Discriminants_Of_Subtype (Des_Ty) & Expr;
       end if;
    end Prepare_Args_For_Access_Subtype_Check;
 

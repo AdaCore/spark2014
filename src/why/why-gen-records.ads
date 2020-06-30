@@ -338,4 +338,10 @@ package Why.Gen.Records is
    --  Part_Of objects. Otherwise, Build_Predicate_For_Field is also called
    --  on type entities of ancestors of Ty which have private components.
 
+   function Get_Discriminants_Of_Subtype (Ty : Entity_Id) return W_Expr_Array
+   with
+     Pre  => Count_Discriminants (Ty) > 0 and Is_Constrained (Ty),
+     Post => Get_Discriminants_Of_Subtype'Result'Length =
+       Count_Discriminants (Ty);
+
 end Why.Gen.Records;

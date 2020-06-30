@@ -2851,6 +2851,34 @@ package body Why.Gen.Records is
       pragma Assert (Index = Field_Assocs'Last);
    end Generate_Associations_From_Ancestor;
 
+   ----------------------------------
+   -- Get_Discriminants_Of_Subtype --
+   ----------------------------------
+
+   function Get_Discriminants_Of_Subtype (Ty : Entity_Id) return W_Expr_Array
+   is
+      Num_Discr : constant Natural := Count_Discriminants (Ty);
+      Args      : W_Expr_Array (1 .. Num_Discr);
+      Count     : Natural := 1;
+      Discr     : Entity_Id := First_Discriminant (Ty);
+      Elmt      : Elmt_Id := First_Elmt (Discriminant_Constraint (Ty));
+
+   begin
+      while Present (Discr) loop
+         Args (Count) :=
+           Transform_Expr
+             (Domain        => EW_Term,
+              Params        => Logic_Params,
+              Expr          => Node (Elmt),
+              Expected_Type => Base_Why_Type (Etype (Discr)));
+         Count := Count + 1;
+         Next_Elmt (Elmt);
+         Next_Discriminant (Discr);
+      end loop;
+
+      return Args;
+   end Get_Discriminants_Of_Subtype;
+
    ---------------------------
    -- Get_Rep_Record_Module --
    ---------------------------
@@ -3563,32 +3591,11 @@ package body Why.Gen.Records is
       Expr     : W_Expr_Id)
       return W_Expr_Array
    is
-      Num_Discr : constant Natural := Count_Discriminants (Check_Ty);
-      Args      : W_Expr_Array (1 .. Num_Discr + 1);
-      Count     : Natural := 1;
-      Discr     : Entity_Id := First_Discriminant (Check_Ty);
-      Elmt      : Elmt_Id := First_Elmt (Discriminant_Constraint (Check_Ty));
-
-   begin
-      Args (Num_Discr + 1) := New_Discriminants_Access
+     (Get_Discriminants_Of_Subtype (Check_Ty)
+      & New_Discriminants_Access
         (Domain => EW_Term,
          Name   => Expr,
-         Ty     => Get_Ada_Node (+Get_Type (Expr)));
-
-      while Present (Discr) loop
-         Args (Count) :=
-           Transform_Expr
-             (Domain        => EW_Term,
-              Params        => Logic_Params,
-              Expr          => Node (Elmt),
-              Expected_Type => Base_Why_Type (Etype (Discr)));
-         Count := Count + 1;
-         Next_Elmt (Elmt);
-         Next_Discriminant (Discr);
-      end loop;
-
-      return Args;
-   end Prepare_Args_For_Subtype_Check;
+         Ty     => Get_Ada_Node (+Get_Type (Expr))));
 
    ----------------------------
    -- Record_From_Split_Form --
