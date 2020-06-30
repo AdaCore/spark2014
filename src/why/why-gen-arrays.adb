@@ -522,7 +522,6 @@ package body Why.Gen.Arrays is
       T_Comp     : W_Expr_Id;
       Tmp        : W_Identifier_Id;
       Q_Expr     : W_Pred_Id;
-      T          : W_Pred_Id := True_Pred;
    begin
       while Present (Index) loop
          Tmp := New_Temp_Identifier
@@ -562,15 +561,10 @@ package body Why.Gen.Arrays is
            (Binders => Vars,
             Pred    => +T_Comp);
 
-         if T = True_Pred then
-            T := Q_Expr;
-         else
-            T := +New_And_Then_Expr (Left   => +T,
-                                     Right  => +Q_Expr,
-                                     Domain => EW_Pred);
-         end if;
+         return Q_Expr;
+      else
+         return True_Pred;
       end if;
-      return T;
    end Build_Binary_Predicate_For_Array;
 
    -----------------------

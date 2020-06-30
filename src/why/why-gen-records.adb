@@ -2902,55 +2902,25 @@ package body Why.Gen.Records is
       Expr     : W_Prog_Id)
       return W_Prog_Id
    is
-      Root : constant Entity_Id := Root_Retysp (Check_Ty);
+      Root     : constant Entity_Id := Root_Retysp (Check_Ty);
+      Tmp_Expr : constant W_Expr_Id := New_Temp_For_Expr (+Expr);
    begin
-      --  We make a last verification here to see whether a discriminant check
-      --  is actually necessary.
-
-      --  If the type does not have any discriminants, no check is needed
-      --  obviously.
-
-      if not Has_Discriminants (Check_Ty) then
-         return Expr;
-      end if;
-
-      --  If the check type is a "root type", we cannot generate a check, as
-      --  we do not have the appropriate predicate in Why3. However, the
-      --  frontend always generates appropriate subtypes for discriminant
-      --  records. As a consequence, we can only end up with the "root" type
-      --  as a check type if we are in the case of a record type with default
-      --  discriminants. But this case does not require checks.
-
-      if Root = Check_Ty then
-         return Expr;
-      end if;
-
-      --  The check type is not constrained, we don't have checks.
-
-      if not Is_Constrained (Check_Ty) then
-         return Expr;
-      end if;
-
-      declare
-         Tmp_Expr : constant W_Expr_Id := New_Temp_For_Expr (+Expr);
-      begin
-         return
-           +Binding_For_Temp
-             (Ada_Node => Ada_Node,
-              Domain   => EW_Prog,
-              Tmp      => Tmp_Expr,
-              Context  => +Sequence
-                (Ada_Node => Ada_Node,
-                 Left     => +New_VC_Call
-                   (Ada_Node => Ada_Node,
-                    Name     => Range_Check_Name (Root, RCK_Range),
-                    Progs    => Prepare_Args_For_Subtype_Check
-                      (Check_Ty, Tmp_Expr),
-                    Domain   => EW_Prog,
-                    Reason   => VC_Discriminant_Check,
-                    Typ      => Get_Type (+Expr)),
-                 Right    => +Tmp_Expr));
-      end;
+      return
+        +Binding_For_Temp
+        (Ada_Node => Ada_Node,
+         Domain   => EW_Prog,
+         Tmp      => Tmp_Expr,
+         Context  => +Sequence
+           (Ada_Node => Ada_Node,
+            Left     => +New_VC_Call
+              (Ada_Node => Ada_Node,
+               Name     => Range_Check_Name (Root, RCK_Range),
+               Progs    => Prepare_Args_For_Subtype_Check
+                 (Check_Ty, Tmp_Expr),
+               Domain   => EW_Prog,
+               Reason   => VC_Discriminant_Check,
+               Typ      => Get_Type (+Expr)),
+            Right    => +Tmp_Expr));
    end Insert_Subtype_Discriminant_Check;
 
    ----------------------
@@ -3345,28 +3315,6 @@ package body Why.Gen.Records is
          Field    => E_Symb (Ty, WNE_Rec_Split_Discrs, Init_Wrapper),
          Name     => Name);
    end New_Discriminants_Access;
-
-   ------------------------------
-   -- New_Discriminants_Update --
-   ------------------------------
-
-   function New_Discriminants_Update
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : W_Expr_Id;
-      Value    : W_Expr_Id;
-      Ty       : Entity_Id)
-      return W_Expr_Id
-   is
-     (New_Record_Update
-        (Ada_Node => Ada_Node,
-         Name     => Name,
-         Updates  =>
-           (1 => New_Field_Association
-                (Domain => Domain,
-                 Field  => E_Symb (Ty, WNE_Rec_Split_Discrs),
-                 Value  => Value)),
-         Typ      => EW_Abstract (Ty)));
 
    ----------------------------------
    -- New_Extension_Component_Expr --
