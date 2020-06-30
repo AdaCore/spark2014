@@ -848,7 +848,15 @@ package body Flow_Error_Messages is
 
       begin
          if Nkind (Par) = N_Parameter_Association then
-            Param := Selector_Name (N);
+            if Nkind (Atree.Parent (Par)) in N_Function_Call
+                                           | N_Procedure_Call_Statement
+                                           | N_Entry_Call_Statement
+            then
+               return Get_Corresponding_Parameter (Atree.Parent (Par), Par);
+
+            else
+               Param := Entity (Selector_Name (Par));
+            end if;
          else
             Iterate_Call (Par);
          end if;
