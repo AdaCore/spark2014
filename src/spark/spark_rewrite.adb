@@ -177,6 +177,7 @@ package body SPARK_Rewrite is
    ------------------
 
    procedure Rewrite_Call (N : Node_Id) is
+      Nam : constant Node_Id := Name (N);
    begin
       --  If the subprogram is actually an unchecked type conversion we
       --  rewrite the tree to use an N_Unchecked_Type_Conversion node
@@ -187,14 +188,13 @@ package body SPARK_Rewrite is
       --  it can be distinguished from compiler-generated unchecked type
       --  conversion nodes, which are translated differently into Why.
 
-      if Nkind (Name (N)) in N_Has_Entity
-        and then Present (Entity (Name (N)))
-        and then Is_Unchecked_Conversion_Instance (Entity (Name (N)))
+      if Is_Entity_Name (Nam)
+        and then Is_Unchecked_Conversion_Instance (Entity (Nam))
       then
          --  Rewrite the subprogram name as it will be used in the translation
          --  to Why3.
 
-         Rewrite_Subprogram_Reference (Name (N));
+         Rewrite_Subprogram_Reference (Nam);
 
          Rewrite (Old_Node => N,
                   New_Node => Unchecked_Convert_To
@@ -456,7 +456,7 @@ package body SPARK_Rewrite is
             --  N_Unchecked_Type_Conversion, which are marked as coming
             --  from source.
 
-            when N_Subprogram_Call =>
+            when N_Function_Call =>
                Rewrite_Call (N);
 
             --  Replace renamings and inherited subprograms by the subprogram
