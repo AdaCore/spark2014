@@ -1,5 +1,5 @@
-c910003_pack.adb:6:11: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
-c910003_pack.adb:9:11: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
+c910003_pack.adb:6:11: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
+c910003_pack.adb:9:11: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
 c910003_pack.adb:14:68: medium: array index check might fail [reason for check: value must be a valid index into the array]
 c910003_pack.adb:15:68: medium: array index check might fail [reason for check: value must be a valid index into the array]
 c910003_pack.ads:9:36: warning: unused variable "X"

@@ -21,9 +21,9 @@ longest_common_prefix.ads:11:40: info: contract case proved (CVC4: 1 VC; Trivial
 longest_common_prefix.ads:12:31: medium: contract case might fail
 longest_common_prefix.ads:13:32: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 longest_common_prefix.ads:15:14: info: postcondition proved (CVC4: 2 VC)
-longest_common_prefix.ads:15:15: medium: range check might fail
+longest_common_prefix.ads:15:15: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
 longest_common_prefix.ads:15:25: info: overflow check proved (CVC4: 1 VC)
-longest_common_prefix.ads:15:45: medium: range check might fail
+longest_common_prefix.ads:15:45: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
 longest_common_prefix.ads:15:55: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 longest_common_prefix.ads:17:29: info: overflow check proved (CVC4: 1 VC)
 longest_common_prefix.ads:18:37: info: overflow check proved (CVC4: 1 VC)

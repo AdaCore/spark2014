@@ -961,6 +961,15 @@ package body Flow_Error_Messages is
 
          when VC_Range_Check =>
 
+            --  Range check is put on the node itself for slices
+
+            if Nkind (N) = N_Slice then
+               return "slice bounds must fit in the underlying array";
+            end if;
+
+            --  In the remaining cases, look for the parent node as interesting
+            --  node.
+
             case Nkind (Par) is
 
             when N_Assignment_Statement =>

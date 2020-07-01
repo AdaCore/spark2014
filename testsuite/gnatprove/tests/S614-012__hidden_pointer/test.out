@@ -1,4 +1,4 @@
 bar.adb:3:11: warning: subprogram "Bar" has no effect
 bar.adb:6:07: medium: assertion might fail, cannot prove String'(To_String (A) & To_String (B)) (1 .. Length (A)) = To_String (A) [possible explanation: subprogram at line 3 should mention A and B in a precondition]
-bar.adb:6:13: medium: range check might fail [possible explanation: subprogram at line 3 should mention A and B in a precondition]
+bar.adb:6:13: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible explanation: subprogram at line 3 should mention A and B in a precondition]
 bar.adb:6:29: low: range check might fail [reason for check: result of concatenation must fit in the type of the qualification] [possible explanation: subprogram at line 3 should mention A and B in a precondition]

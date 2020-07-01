@@ -14,7 +14,7 @@ fb20a00.adb:35:18: medium: length check might fail [reason for check: array must
 fb20a00.adb:37:34: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
 fb20a00.adb:37:42: info: range check proved (CodePeer)
 fb20a00.adb:37:49: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
-fb20a00.adb:39:11: medium: range check might fail
+fb20a00.adb:39:11: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
 fb20a00.adb:39:31: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 fb20a00.adb:39:39: info: range check proved (CodePeer)
 fb20a00.adb:39:46: info: overflow check proved (CodePeer)

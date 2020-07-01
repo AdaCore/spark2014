@@ -23,7 +23,7 @@ do_checks.adb:94:51: medium: overflow check might fail (e.g. when Zero = Integer
 do_checks.adb:103:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:109:16: info: range check proved (CVC4: 2 VC)
 do_checks.adb:109:65: medium: overflow check might fail (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: precondition of subprogram at line 5 should mention Zero]
-do_checks.adb:118:30: medium: range check might fail (e.g. when B'First = 0 and B'Last = 0 and Zero = 0) [reason for check: default component value must fit in the type] [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:118:30: medium: range check might fail (e.g. when B'First = 0 and B'Last = 0 and Zero = 0) [reason for check: slice bounds must fit in the underlying array] [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:118:52: medium: range check might fail (e.g. when B'First = 0 and B'Last = 0 and Zero = 0) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:125:30: info: range check proved (CVC4: 4 VC)
 do_checks.adb:125:52: info: range check proved (CVC4: 2 VC)
