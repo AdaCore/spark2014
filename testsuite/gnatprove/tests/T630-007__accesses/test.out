@@ -1,0 +1,11 @@
+access_types.adb:8:26: info: pointer dereference check proved (CVC4: 1 VC)
+access_types.adb:8:38: info: pointer dereference check proved (CVC4: 1 VC)
+access_types.adb:10:04: medium: memory leak might occur at end of scope
+access_types.adb:10:04: warning: initialization of "X" has no effect
+access_types.adb:10:19: info: predicate check proved (CVC4: 1 VC)
+access_types.adb:11:33: info: pointer dereference check proved (CVC4: 1 VC)
+access_types.adb:12:33: info: pointer dereference check proved (CVC4: 1 VC)
+access_types.adb:15:09: info: absence of memory leak proved (CVC4: 1 VC)
+access_types.adb:15:09: warning: unused assignment
+access_types.adb:15:12: medium: predicate check might fail [possible fix: subprogram at line 2 should mention Spark.Heap.Dynamic_Memory in a precondition]
+access_types.adb:17:22: medium: assertion might fail, cannot prove Y = Z (e.g. when Y = 0 and Z = 1)

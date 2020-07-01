@@ -1,0 +1,12 @@
+mutable_discrs.adb:7:25: info: range check proved (CVC4: 1 VC)
+mutable_discrs.adb:14:04: info: range check proved (CVC4: 2 VC)
+mutable_discrs.adb:21:13: info: discriminant check proved (CVC4: 1 VC)
+mutable_discrs.adb:22:04: warning: initialization of "A" has no effect
+mutable_discrs.adb:26:18: info: discriminant check proved (CVC4: 1 VC)
+mutable_discrs.adb:27:19: info: assertion proved (CVC4: 1 VC)
+mutable_discrs.adb:29:19: info: assertion proved (CVC4: 1 VC)
+mutable_discrs.adb:30:04: warning: statement has no effect
+mutable_discrs.adb:30:20: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+mutable_discrs.adb:30:20: warning: "A" is set by "Do_Something_3" but not used after the call
+mutable_discrs.adb:31:19: medium: assertion might fail, cannot prove Ext.Nested.Same_Discrs (V1, V2) (e.g. when V1 = (D => ?, F => 1) and V2 = (D => ?, F => 1))
+tagged_type.adb:20:19: medium: assertion might fail, cannot prove R /= C (e.g. when C = (F => 1, G => 2) and R = (F => 1, G => 2))
