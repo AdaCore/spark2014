@@ -95,6 +95,9 @@ class SPARKTestsuite(Testsuite):
             "--inverse-prover", action="store_true",
             help="run testsuite in inverse-prover mode")
         parser.add_argument(
+            "--no-gaia-output", action="store_true",
+            help="The opposite of --gaia-output (which is on by default).")
+        parser.add_argument(
             "--pattern", type=str,
             help="Argument is a python regex. Run only tests whose \
                   .adb/ads files match the regex.")
@@ -123,6 +126,8 @@ class SPARKTestsuite(Testsuite):
         super(SPARKTestsuite, self).set_up()
         if self.main.args.diffs:
             self.main.args.show_error_output = True
+        if not self.main.args.no_gaia_output:
+            self.main.args.gaia_output = True
         self.env.discs = self.env.discriminants
         if self.main.args.disc:
             self.env.discs += self.main.args.disc.split(',')
