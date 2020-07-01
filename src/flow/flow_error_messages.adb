@@ -817,55 +817,6 @@ package body Flow_Error_Messages is
 
    function Get_Details (N : Node_Id; Tag : VC_Kind) return String is
 
-      function Get_Corresponding_Parameter (Par, N : Node_Id) return Entity_Id
-        with Pre => Nkind (Par) in N_Parameter_Association
-                                 | N_Function_Call
-                                 | N_Procedure_Call_Statement
-                                 | N_Entry_Call_Statement;
-      --  Given a call actual parameter, return the corresponding formal
-      --  parameter.
-
-      ---------------------------------
-      -- Get_Corresponding_Parameter --
-      ---------------------------------
-
-      function Get_Corresponding_Parameter (Par, N : Node_Id) return Entity_Id
-      is
-         Param : Entity_Id := Empty;
-
-         procedure Do_Param (Formal : Entity_Id; Actual : Node_Id);
-         --  Locate parameter corresponding to N and store it in Param
-
-         procedure Do_Param (Formal : Entity_Id; Actual : Node_Id) is
-         begin
-            if N = Actual then
-               Param := Formal;
-            end if;
-         end Do_Param;
-
-         procedure Iterate_Call is new
-           Iterate_Call_Parameters (Do_Param);
-
-      begin
-         if Nkind (Par) = N_Parameter_Association then
-            if Nkind (Atree.Parent (Par)) in N_Function_Call
-                                           | N_Procedure_Call_Statement
-                                           | N_Entry_Call_Statement
-            then
-               return Get_Corresponding_Parameter (Atree.Parent (Par), Par);
-
-            else
-               Param := Entity (Selector_Name (Par));
-            end if;
-         else
-            Iterate_Call (Par);
-         end if;
-
-         return Param;
-      end Get_Corresponding_Parameter;
-
-      --  Local variables
-
       Par : Node_Id := Atree.Parent (N);
       --  Enclosing expression to inform on contect for the check
 
@@ -964,25 +915,8 @@ package body Flow_Error_Messages is
                | N_Procedure_Call_Statement
                | N_Entry_Call_Statement
             =>
-               declare
-                  Param : constant Entity_Id :=
-                    Get_Corresponding_Parameter (Par, N);
-               begin
-                  if Present (Param) then
-                     case Ekind (Param) is
-                        when E_Component =>
-                           return Value & " must have the same length as"
-                             & " the component array type";
-                        when Formal_Kind =>
-                           return "argument array must have the same length as"
-                             & " the parameter array type";
-                        when others =>
-                           null;
-                     end case;
-                  end if;
-
-                  return "array must be of the appropriate length";
-               end;
+               return "argument array must have the same length"
+                 & " as the parameter array type";
 
             when others =>
                return "array must be of the appropriate length";
@@ -1059,28 +993,17 @@ package body Flow_Error_Messages is
                | N_Entry_Call_Statement
             =>
                declare
-                  Param : constant Entity_Id :=
-                    Get_Corresponding_Parameter (Par, N);
+                  Param : constant Entity_Id := Get_Formal_From_Actual (N);
                begin
-                  if Present (Param) then
-                     case Ekind (Param) is
-                        when E_Component =>
-                           return Value & " must fit in component type";
-                        when E_Discriminant =>
-                           return Value & " must fit in discriminant type";
-                        when E_In_Parameter =>
-                           return "input value must fit in parameter type";
-                        when E_Out_Parameter =>
-                           return "output value must fit in argument type";
-                        when E_In_Out_Parameter =>
-                           return "input value must fit in parameter type and "
-                             & "output value must fit in argument type";
-                        when others =>
-                           return "";
-                     end case;
-                  else
-                     return "";
-                  end if;
+                  case Formal_Kind'(Ekind (Param)) is
+                     when E_In_Parameter =>
+                        return "input value must fit in parameter type";
+                     when E_Out_Parameter =>
+                        return "output value must fit in argument type";
+                     when E_In_Out_Parameter =>
+                        return "input value must fit in parameter type and "
+                          & "output value must fit in argument type";
+                  end case;
                end;
 
             when N_Attribute_Reference =>

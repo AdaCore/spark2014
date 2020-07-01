@@ -1444,48 +1444,39 @@ package body SPARK_Util is
    ----------------------------
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
-      Formal : Entity_Id := Empty;
-
-      procedure Check_Call_Param
-        (Some_Formal : Entity_Id;
-         Some_Actual : Node_Id);
-      --  If Some_Actual is the desired actual parameter, set Formal_Type to
-      --  the type of the corresponding formal parameter.
-
-      ----------------------
-      -- Check_Call_Param --
-      ----------------------
-
-      procedure Check_Call_Param
-        (Some_Formal : Entity_Id;
-         Some_Actual : Node_Id) is
-      begin
-         if Some_Actual = Actual then
-            Formal := Some_Formal;
-         end if;
-      end Check_Call_Param;
-
-      procedure Find_Expr_In_Call_Params is new
-        Iterate_Call_Parameters (Check_Call_Param);
-
-      Act_Par      : constant Node_Id := Parent (Actual);
-      Real_Act_Par : constant Node_Id :=
-        (if Nkind (Act_Par) = N_Unchecked_Type_Conversion
-           and then Comes_From_Source (Act_Par)
-         then Original_Node (Act_Par) else Act_Par);
-      --  N_Unchecked_Type_Conversion coming from source are handled using
-      --  their original node.
-
-   --  Start of processing for Get_Formal_From_Actual
-
+      Formal : Entity_Id;
+      Call   : Node_Id;
+      Par    : Node_Id;
    begin
-      Find_Expr_In_Call_Params
-        (if Nkind (Real_Act_Par) = N_Parameter_Association
-         then Parent (Real_Act_Par)
-         else Real_Act_Par);
+      --  Detect actual of a call to instance of Ada.Unchecked_Conversion,
+      --  which are rewritten into N_Unchecked_Type_Conversion.
 
-      pragma Assert (Present (Formal));
-      return Formal;
+      Par := Parent (Actual);
+
+      if Nkind (Par) = N_Parameter_Association then
+         Par := Parent (Par);
+      end if;
+
+      if Nkind (Par) = N_Unchecked_Type_Conversion then
+         declare
+            Conversion_Call : constant Node_Id := Original_Node (Par);
+            --  Original call to instance of Ada.Unchecked_Conversion
+
+            pragma Assert
+              (Nkind (Conversion_Call) = N_Function_Call
+                 and then
+               Is_Unchecked_Conversion_Instance
+                 (Entity (Name (Conversion_Call))));
+         begin
+            return First_Formal (Entity (Name (Conversion_Call)));
+         end;
+
+      --  Otherwise it is an ordinary actual of a subprogram call
+
+      else
+         Find_Actual (Actual, Formal, Call);
+         return Formal;
+      end if;
    end Get_Formal_From_Actual;
 
    ----------------------------

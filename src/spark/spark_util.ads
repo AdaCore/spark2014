@@ -641,12 +641,16 @@ package SPARK_Util is
    --  @return actual subprogram parameters of E
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
-     with Pre  => Nkind (Parent (Actual)) in N_Subprogram_Call          |
-                                             N_Entry_Call_Statement     |
-                                             N_Parameter_Association    |
-                                             N_Unchecked_Type_Conversion,
+     with Pre  => Nkind (Actual) in N_Subexpr
+                    and then
+                  Nkind (Parent (Actual)) in N_Subprogram_Call
+                                           | N_Entry_Call_Statement
+                                           | N_Parameter_Association
+                                           | N_Unchecked_Type_Conversion,
           Post => Is_Formal (Get_Formal_From_Actual'Result);
-   --  @param Actual actual parameter of a call
+   --  @param Actual actual parameter of a call (or expression of an unchecked
+   --    conversion which comes from a rewritten call to instance of
+   --    Ada.Unchecked_Conversion)
    --  @return the corresponding formal parameter
 
    function Get_Range (N : Node_Id) return Node_Id
