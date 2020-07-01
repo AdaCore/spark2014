@@ -34,15 +34,15 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.6" expl="precondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
+  <proof prover="0"><result status="valid" steps="37"/></proof>
   </goal>
   <goal name="def&#39;vc.7" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.8" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="37"/></proof>
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="def&#39;vc.9" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

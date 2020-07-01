@@ -189,7 +189,9 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.51" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="74378"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="777356"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.52" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >

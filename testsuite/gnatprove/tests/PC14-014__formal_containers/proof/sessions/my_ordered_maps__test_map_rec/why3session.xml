@@ -3,7 +3,7 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="1000"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
@@ -65,7 +65,7 @@
   </goal>
   <goal name="def&#39;vc.15" expl="assertion" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1" timelimit="5"><result status="valid" steps="731322"/></proof>
+  <proof prover="1"><result status="valid" steps="731322"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.16" expl="postcondition" proved="true">
@@ -124,7 +124,9 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.32" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="72234"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="166308"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.33" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" steps="907"/></proof>
@@ -193,7 +195,7 @@
   </goal>
   <goal name="def&#39;vc.51" expl="unreachable point">
   <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="1" memlimit="2000"><result status="timeout"/></proof>
+  <proof prover="1" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="2" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
   </goal>
  </transf>
