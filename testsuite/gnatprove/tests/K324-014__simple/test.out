@@ -1,1 +1,1 @@
-qack.ads:6:19: medium: postcondition might fail, cannot prove X = X'old (e.g. when X = False) [possible explanation: call at qack.adb:11 should mention X in a postcondition]
+qack.ads:6:19: medium: postcondition might fail, cannot prove X = X'old (e.g. when X = False) [possible fix: call at qack.adb:11 should mention X in a postcondition]

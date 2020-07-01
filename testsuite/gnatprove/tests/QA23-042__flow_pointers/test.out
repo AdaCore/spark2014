@@ -1,7 +1,7 @@
 spark05.adb:16:28: warning: "X" is not modified, could be of access constant type
 spark05.adb:16:35: warning: "Y" is not modified, could be of access constant type
-spark05.adb:21:16: medium: pointer dereference check might fail (e.g. when X = null) [possible explanation: subprogram at line 16 should mention X in a precondition]
-spark05.adb:21:26: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at line 16 should mention Y in a precondition]
+spark05.adb:21:16: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at line 16 should mention X in a precondition]
+spark05.adb:21:26: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: subprogram at line 16 should mention Y in a precondition]
 spark05.adb:28:04: medium: memory leak might occur at end of scope
 spark05.adb:29:04: medium: memory leak might occur at end of scope
 spark05.adb:30:04: info: initialization of "P" proved

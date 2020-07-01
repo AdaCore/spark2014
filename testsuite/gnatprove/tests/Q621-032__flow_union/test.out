@@ -1,2 +1,2 @@
-union_init.adb:9:12: medium: discriminant check might fail [possible explanation: subprogram at union_init.ads:23 should mention test'Constrained or test.discr in a precondition]
+union_init.adb:9:12: medium: discriminant check might fail [possible fix: subprogram at union_init.ads:23 should mention test'Constrained or test.discr in a precondition]
 union_init.ads:23:26: info: initialization of "test" proved

@@ -16,7 +16,7 @@ shapes5.adb:26:36: info: float overflow check proved (Trivial)
 shapes5.adb:26:36: info: range check proved (CVC4: 1 VC)
 shapes5.adb:28:17: info: float overflow check proved (Trivial)
 shapes5.adb:29:17: info: float overflow check proved (Trivial)
-shapes5.adb:29:17: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: subprogram at shapes5.ads:10 should mention Y in a precondition]
+shapes5.adb:29:17: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at shapes5.ads:10 should mention Y in a precondition]
 shapes5.adb:39:07: info: initialization of "Delta_X" proved
 shapes5.adb:40:07: info: initialization of "Delta_Y" proved
 shapes5.adb:42:34: info: range check proved (CVC4: 1 VC)

@@ -3,9 +3,9 @@ foo.adb:8:14: info: local subprogram "Gen_1" only analyzed in the context of cal
 foo.adb:11:07: high: "A" must be listed in the Global aspect of "Liar" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:64
 foo.adb:11:07: high: "A" must be listed in the Global aspect of "Verify_Gen_1_2" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:28
 foo.adb:11:07: high: "A" must be listed in the Global aspect of "Verify_Gen_2_2" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:37, in call inlined at foo.adb:54
-foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:20 [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 15 should mention A in a precondition]
+foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:20 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 15 should mention A in a precondition]
 foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:28 [reason for check: result of addition must fit in a 32-bits machine integer]
-foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:37, in call inlined at foo.adb:46 [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 41 should mention A in a precondition]
+foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:37, in call inlined at foo.adb:46 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 41 should mention A in a precondition]
 foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:37, in call inlined at foo.adb:54 [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:64 [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:16:09: info: data dependencies proved

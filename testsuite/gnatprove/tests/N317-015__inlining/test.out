@@ -24,8 +24,8 @@ array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at
 array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:41
 array_arith.adb:47:17: info: add a contract to analyze it separately from calling contexts
 array_arith.adb:47:17: info: local subprogram "Local" only analyzed in the context of calls
-array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 46 should mention Y and One in a precondition]
-array_arith.adb:63:19: medium: range check might fail (e.g. when One = -1 and Y = 0) [reason for check: returned value must fit in the result type of the function] [possible explanation: subprogram at line 46 should mention Y and One in a precondition]
+array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
+array_arith.adb:63:19: medium: range check might fail (e.g. when One = -1 and Y = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:70:17: info: add a contract to analyze it separately from calling contexts
 array_arith.adb:70:17: info: local subprogram "Put_A_Zero" only analyzed in the context of calls
 array_arith.adb:70:29: info: initialization of "Y" proved
@@ -51,16 +51,16 @@ ident.adb:44:07: info: initialization of "Res" proved
 ident.adb:50:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 11 and X = 10)
 ident.adb:52:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 11 and X = 10)
 ident.adb:54:22: info: assertion proved (CVC4: 1 VC)
-ident.adb:57:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible explanation: call at line 56 should mention Y (for argument Y) in a postcondition]
-ident.adb:59:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible explanation: call at line 58 should mention Y (for argument Y) in a postcondition]
+ident.adb:57:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible fix: call at line 56 should mention Y (for argument Y) in a postcondition]
+ident.adb:59:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible fix: call at line 58 should mention Y (for argument Y) in a postcondition]
 ident.adb:61:22: info: assertion proved (CVC4: 1 VC)
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
 ident.ads:9:45: info: initialization of "Y" proved
-incr_expr_fun.adb:4:62: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at incr_expr_fun.ads:11 should mention X in a precondition]
-incr_expr_fun.adb:6:63: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at incr_expr_fun.ads:22 should mention X in a precondition]
-incr_expr_fun.adb:8:58: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 8 should mention X in a precondition]
-incr_expr_fun.adb:11:63: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 10 should mention X in a precondition]
+incr_expr_fun.adb:4:62: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at incr_expr_fun.ads:11 should mention X in a precondition]
+incr_expr_fun.adb:6:63: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at incr_expr_fun.ads:22 should mention X in a precondition]
+incr_expr_fun.adb:8:58: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 8 should mention X in a precondition]
+incr_expr_fun.adb:11:63: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 10 should mention X in a precondition]
 incr_expr_fun.adb:16:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:16:39: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:17:22: info: assertion proved (CVC4: 1 VC)
@@ -79,9 +79,9 @@ incr_expr_fun.adb:23:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:23:40: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:24:22: info: assertion proved (CVC4: 1 VC)
 incr_expr_fun.adb:24:45: info: overflow check proved (CVC4: 1 VC)
-incr_expr_fun.ads:4:57: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 4 should mention X in a precondition]
-incr_expr_fun.ads:7:61: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 6 should mention X in a precondition]
+incr_expr_fun.ads:4:57: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention X in a precondition]
+incr_expr_fun.ads:7:61: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 6 should mention X in a precondition]
 incr_expr_fun.ads:13:14: warning: subprogram "Test" has no effect
-incr_expr_fun.ads:15:62: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention X in a precondition]
-incr_expr_fun.ads:17:58: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 17 should mention X in a precondition]
-incr_expr_fun.ads:20:63: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 19 should mention X in a precondition]
+incr_expr_fun.ads:15:62: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention X in a precondition]
+incr_expr_fun.ads:17:58: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 17 should mention X in a precondition]
+incr_expr_fun.ads:20:63: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 19 should mention X in a precondition]

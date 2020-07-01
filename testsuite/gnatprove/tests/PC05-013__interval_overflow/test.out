@@ -2,11 +2,11 @@ mult.adb:6:14: warning: subprogram "Mars" has no effect
 mult.adb:10:22: info: assertion proved (CodePeer)
 mult.adb:10:24: info: overflow check proved (CVC4: 1 VC)
 mult.adb:10:29: info: overflow check proved (CVC4: 1 VC)
-mult.adb:10:42: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible explanation: precondition of subprogram at line 6 should mention N]
-mult.adb:11:22: medium: assertion might fail, cannot prove Float(N * 65 + 1) <= Float((N+1) * 65) [possible explanation: precondition of subprogram at line 6 should mention N]
+mult.adb:10:42: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: precondition of subprogram at line 6 should mention N]
+mult.adb:11:22: medium: assertion might fail, cannot prove Float(N * 65 + 1) <= Float((N+1) * 65) [possible fix: precondition of subprogram at line 6 should mention N]
 mult.adb:11:30: info: overflow check proved (CodePeer)
 mult.adb:11:35: info: overflow check proved (CVC4: 1 VC)
 mult.adb:11:35: info: range check proved (Trivial)
 mult.adb:11:55: info: range check proved (Trivial)
-mult.adb:11:55: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible explanation: precondition of subprogram at line 6 should mention N]
+mult.adb:11:55: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: precondition of subprogram at line 6 should mention N]
 mult.adb:14:04: info: precondition proved (Trivial: 1 VC)

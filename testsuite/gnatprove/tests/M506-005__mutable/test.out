@@ -5,7 +5,7 @@ const.ads:9:07: info: range check proved (CVC4: 2 VC)
 const.ads:12:13: warning: subprogram "Simple" has no effect
 mutable.adb:6:19: info: index check proved (CVC4: 2 VC)
 mutable.adb:10:21: warning: unused initial value of "X"
-mutable.adb:12:09: medium: discriminant check might fail (e.g. when X = (K => 1, others => ?)) [possible explanation: subprogram at line 10 should mention X in a precondition]
+mutable.adb:12:09: medium: discriminant check might fail (e.g. when X = (K => 1, others => ?)) [possible fix: subprogram at line 10 should mention X in a precondition]
 mutable.adb:23:07: warning: unused assignment
 mutable.adb:23:17: info: index check proved (CVC4: 2 VC)
 mutable.ads:9:07: info: range check proved (CVC4: 2 VC)

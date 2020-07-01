@@ -1,6 +1,6 @@
-stacks_14-monitored_14.adb:19:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: call at line 18 should mention S (for argument S) in a postcondition]
-stacks_14-monitored_14.adb:20:54: medium: overflow check might fail (e.g. when S = (Stack_Vector => (others => Integer'Last), Stack_Pointer => 1, Monitor_Vector => (others => Integer'Last), Next_Identity_Value => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: call at line 18 should mention S (for argument S) in a postcondition]
-stacks_14-monitored_14.adb:25:30: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at stacks_14-monitored_14.ads:15 should mention S in a precondition]
+stacks_14-monitored_14.adb:19:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: call at line 18 should mention S (for argument S) in a postcondition]
+stacks_14-monitored_14.adb:20:54: medium: overflow check might fail (e.g. when S = (Stack_Vector => (others => Integer'Last), Stack_Pointer => 1, Monitor_Vector => (others => Integer'Last), Next_Identity_Value => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 18 should mention S (for argument S) in a postcondition]
+stacks_14-monitored_14.adb:25:30: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks_14-monitored_14.ads:15 should mention S in a precondition]
 stacks_14-monitored_14.ads:7:20: info: initialization of "S" proved
 stacks_14-monitored_14.ads:9:31: medium: incorrect dependency "null => S"
 stacks_14-monitored_14.ads:13:11: info: flow dependencies proved

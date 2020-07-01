@@ -4,7 +4,7 @@ aco-math-very_longs.adb:23:08: info: flow dependencies proved
 aco-math-very_longs.adb:39:52: info: initialization of "Result" proved
 aco-math-very_longs.adb:39:76: info: initialization of "Carry" proved
 aco-math-very_longs.adb:41:08: info: flow dependencies proved
-aco-math-very_longs.adb:43:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible explanation: loop at line 51 should mention Result in a loop invariant]
+aco-math-very_longs.adb:43:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible fix: loop at line 51 should mention Result in a loop invariant]
 aco-math-very_longs.adb:45:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:46:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:47:07: info: initialization of "Sum" proved
@@ -17,7 +17,7 @@ aco-math-very_longs.adb:56:29: medium: array index check might fail (e.g. when I
 aco-math-very_longs.adb:62:58: info: initialization of "Result" proved
 aco-math-very_longs.adb:62:82: info: initialization of "Borrow" proved
 aco-math-very_longs.adb:64:08: info: flow dependencies proved
-aco-math-very_longs.adb:66:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible explanation: loop at line 74 should mention Result in a loop invariant]
+aco-math-very_longs.adb:66:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible fix: loop at line 74 should mention Result in a loop invariant]
 aco-math-very_longs.adb:68:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:69:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:70:07: info: initialization of "Difference" proved
@@ -112,7 +112,7 @@ aco-math-very_longs.adb:261:41: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:271:07: info: initialization of "Result" proved
 aco-math-very_longs.adb:271:42: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:271:42: info: range check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:271:42: medium: overflow check might fail (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and R = (Octet_Length => Digit_Index_Type'Last, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at aco-math-very_longs.ads:70 should mention L and R in a precondition]
+aco-math-very_longs.adb:271:42: medium: overflow check might fail (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and R = (Octet_Length => Digit_Index_Type'Last, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at aco-math-very_longs.ads:70 should mention L and R in a precondition]
 aco-math-very_longs.adb:272:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:273:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:274:07: info: initialization of "T_Digit" proved
@@ -198,16 +198,16 @@ aco-math-very_longs.adb:418:11: info: flow dependencies proved
 aco-math-very_longs.adb:420:10: info: initialization of "Temporary_Digit" proved
 aco-math-very_longs.adb:421:10: info: initialization of "R_Hat" proved
 aco-math-very_longs.adb:423:68: info: overflow check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:423:72: medium: array index check might fail (e.g. when J = 4 and N = 1 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 415 should mention J and N in a precondition]
-aco-math-very_longs.adb:423:114: medium: overflow check might fail (e.g. when J = Digit_Index_Type'Last and N = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 415 should mention J and N in a precondition]
-aco-math-very_longs.adb:423:119: medium: array index check might fail (e.g. when J = 1 and N = 1 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 415 should mention J and N in a precondition]
-aco-math-very_longs.adb:424:35: medium: divide by zero might fail (e.g. when N = 2 and V = (Octet_Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible explanation: subprogram at line 415 should mention N and V in a precondition]
-aco-math-very_longs.adb:424:70: medium: array index check might fail (e.g. when N = 1 and V = (Octet_Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 415 should mention N in a precondition]
-aco-math-very_longs.adb:425:35: medium: divide by zero might fail (e.g. when N = 2 and V = (Octet_Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible explanation: subprogram at line 415 should mention N and V in a precondition]
+aco-math-very_longs.adb:423:72: medium: array index check might fail (e.g. when J = 4 and N = 1 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention J and N in a precondition]
+aco-math-very_longs.adb:423:114: medium: overflow check might fail (e.g. when J = Digit_Index_Type'Last and N = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 415 should mention J and N in a precondition]
+aco-math-very_longs.adb:423:119: medium: array index check might fail (e.g. when J = 1 and N = 1 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention J and N in a precondition]
+aco-math-very_longs.adb:424:35: medium: divide by zero might fail (e.g. when N = 2 and V = (Octet_Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: subprogram at line 415 should mention N and V in a precondition]
+aco-math-very_longs.adb:424:70: medium: array index check might fail (e.g. when N = 1 and V = (Octet_Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention N in a precondition]
+aco-math-very_longs.adb:425:35: medium: divide by zero might fail (e.g. when N = 2 and V = (Octet_Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [possible fix: subprogram at line 415 should mention N and V in a precondition]
 aco-math-very_longs.adb:425:72: info: index check proved (CVC4: 2 VC)
-aco-math-very_longs.adb:431:69: medium: array index check might fail (e.g. when N = 2 and V = (Octet_Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 415 should mention N in a precondition]
+aco-math-very_longs.adb:431:69: medium: array index check might fail (e.g. when N = 2 and V = (Octet_Length => ?, Long_Digits => (others => 0)) and V.Long_Digits'First = 1 and V.Long_Digits'Last = 2) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention N in a precondition]
 aco-math-very_longs.adb:431:125: info: overflow check proved (CVC4: 1 VC)
-aco-math-very_longs.adb:431:130: medium: array index check might fail (e.g. when J = 1 and N = 2 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 5) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 415 should mention J and N in a precondition]
+aco-math-very_longs.adb:431:130: medium: array index check might fail (e.g. when J = 1 and N = 2 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 5) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 415 should mention J and N in a precondition]
 aco-math-very_longs.adb:433:63: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:437:72: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:437:128: info: overflow check proved (CVC4: 1 VC)
@@ -222,8 +222,8 @@ aco-math-very_longs.adb:452:10: info: initialization of "Future_Borrow" proved
 aco-math-very_longs.adb:456:14: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:456:61: info: cannot unroll loop (dynamic loop bounds)
 aco-math-very_longs.adb:457:63: info: index check proved (CVC4: 2 VC)
-aco-math-very_longs.adb:461:49: medium: overflow check might fail (e.g. when Divisor_Index = 1 and J = Digit_Index_Type'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 444 should mention J in a precondition]
-aco-math-very_longs.adb:461:65: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 4 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 444 should mention J in a precondition]
+aco-math-very_longs.adb:461:49: medium: overflow check might fail (e.g. when Divisor_Index = 1 and J = Digit_Index_Type'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 444 should mention J in a precondition]
+aco-math-very_longs.adb:461:65: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 4 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 444 should mention J in a precondition]
 aco-math-very_longs.adb:466:29: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:466:45: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:467:60: info: overflow check proved (CVC4: 1 VC)
@@ -240,14 +240,14 @@ aco-math-very_longs.adb:483:11: info: data dependencies proved
 aco-math-very_longs.adb:484:11: info: flow dependencies proved
 aco-math-very_longs.adb:486:10: info: initialization of "Carry" proved
 aco-math-very_longs.adb:487:10: info: initialization of "Sum" proved
-aco-math-very_longs.adb:489:31: medium: array index check might fail (e.g. when J = 2 and Q_Hat = 0 and Quotient = (Octet_Length => ?, Long_Digits => (others => 0)) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 481 should mention J in a precondition]
-aco-math-very_longs.adb:489:47: medium: range check might fail (e.g. when Q_Hat = 256) [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at line 481 should mention Q_Hat in a precondition]
+aco-math-very_longs.adb:489:31: medium: array index check might fail (e.g. when J = 2 and Q_Hat = 0 and Quotient = (Octet_Length => ?, Long_Digits => (others => 0)) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 481 should mention J in a precondition]
+aco-math-very_longs.adb:489:47: medium: range check might fail (e.g. when Q_Hat = 256) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 481 should mention Q_Hat in a precondition]
 aco-math-very_longs.adb:493:34: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:493:61: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:495:17: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:495:64: info: cannot unroll loop (dynamic loop bounds)
-aco-math-very_longs.adb:496:56: medium: overflow check might fail (e.g. when Divisor_Index = 1 and J = Digit_Index_Type'Last and V = (Octet_Length => ?, Long_Digits => (others => 0))) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 481 should mention J in a precondition]
-aco-math-very_longs.adb:496:72: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 4 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3 and V = (Octet_Length => ?, Long_Digits => (others => 0))) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 481 should mention J in a precondition]
+aco-math-very_longs.adb:496:56: medium: overflow check might fail (e.g. when Divisor_Index = 1 and J = Digit_Index_Type'Last and V = (Octet_Length => ?, Long_Digits => (others => 0))) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 481 should mention J in a precondition]
+aco-math-very_longs.adb:496:72: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 4 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3 and V = (Octet_Length => ?, Long_Digits => (others => 0))) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 481 should mention J in a precondition]
 aco-math-very_longs.adb:496:111: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:497:32: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:497:48: info: index check proved (CVC4: 2 VC)

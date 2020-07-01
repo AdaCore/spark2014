@@ -31,9 +31,9 @@ fp_test_div.ads:17:14: info: overflow check proved (CVC4: 1 VC)
 fp_test_div.ads:17:14: medium: postcondition might fail, cannot prove abs U <= 4.0 (e.g. when U = 61/15)
 fp_test_div.ads:17:31: info: overflow check proved (CVC4: 1 VC)
 fp_test_mult.adb:6:14: info: overflow check proved (Z3: 1 VC)
-fp_test_mult.adb:6:14: medium: range check might fail [reason for check: result of fixed-point multiplication must fit in the target type of the assignment] [possible explanation: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
+fp_test_mult.adb:6:14: medium: range check might fail [reason for check: result of fixed-point multiplication must fit in the target type of the assignment] [possible fix: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
 fp_test_mult.adb:7:14: info: overflow check proved (Z3: 1 VC)
-fp_test_mult.adb:7:14: medium: range check might fail [reason for check: result of fixed-point multiplication must fit in the target type of the assignment] [possible explanation: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
+fp_test_mult.adb:7:14: medium: range check might fail [reason for check: result of fixed-point multiplication must fit in the target type of the assignment] [possible fix: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
 fp_test_mult.adb:12:14: info: overflow check proved (altergo: 1 VC)
 fp_test_mult.adb:12:14: info: range check proved (altergo: 1 VC)
 fp_test_mult.adb:13:14: info: overflow check proved (altergo: 1 VC)

@@ -1,7 +1,7 @@
 pack.adb:6:25: info: overflow check proved (CVC4: 1 VC)
 pack.adb:6:25: info: range check proved (CVC4: 1 VC)
 pack.adb:7:27: info: overflow check proved (CVC4: 1 VC)
-pack.adb:7:27: medium: range check might fail (e.g. when Pocket = 1000000000 and S = 1/100) [reason for check: result of fixed-point addition must fit in the target type of the assignment] [possible explanation: precondition of subprogram at pack.ads:17 should mention Pocket]
+pack.adb:7:27: medium: range check might fail (e.g. when Pocket = 1000000000 and S = 1/100) [reason for check: result of fixed-point addition must fit in the target type of the assignment] [possible fix: precondition of subprogram at pack.ads:17 should mention Pocket]
 pack.ads:19:19: info: postcondition proved (CVC4: 1 VC)
 pack.ads:19:26: info: overflow check proved (CVC4: 1 VC)
 pack.ads:19:47: info: overflow check proved (CVC4: 1 VC)

@@ -1,2 +1,2 @@
-regpat.adb:22:22: medium: assertion might fail, cannot prove Short_Program (1) /= BRANCH [possible explanation: subprogram at regpat.ads:9 should mention Self in a precondition]
+regpat.adb:22:22: medium: assertion might fail, cannot prove Short_Program (1) /= BRANCH [possible fix: subprogram at regpat.ads:9 should mention Self in a precondition]
 regpat.ads:9:14: warning: subprogram "Match" has no effect

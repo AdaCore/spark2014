@@ -1,5 +1,5 @@
 over.adb:4:07: info: initialization of "Res" proved
-over.adb:7:20: medium: overflow check might fail (e.g. when X = T'Last and Y = 28) [reason for check: result of addition must fit in a 8-bits machine integer] [possible explanation: subprogram at over.ads:4 should mention X and Y in a precondition]
+over.adb:7:20: medium: overflow check might fail (e.g. when X = T'Last and Y = 28) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: subprogram at over.ads:4 should mention X and Y in a precondition]
 over.adb:7:25: info: range check proved (CVC4: 1 VC)
 over.adb:9:19: info: overflow check proved (CVC4: 1 VC)
 over.adb:9:19: info: range check proved (CVC4: 1 VC)

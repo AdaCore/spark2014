@@ -3,7 +3,7 @@ test.adb:18:17: info: add a contract to analyze it separately from calling conte
 test.adb:18:17: info: local subprogram "HRB_Add" only analyzed in the context of calls
 test.adb:19:26: warning: "B" is not modified, could be IN
 test.adb:22:17: info: overflow check proved (CVC4: 1 VC), in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
-test.adb:22:17: medium: overflow check might fail, in call inlined at test.adb:36, in call inlined at test.adb:45 [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 44 should mention Sum in a loop invariant]
+test.adb:22:17: medium: overflow check might fail, in call inlined at test.adb:36, in call inlined at test.adb:45 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 44 should mention Sum in a loop invariant]
 test.adb:25:17: info: add a contract to analyze it separately from calling contexts
 test.adb:25:17: info: local subprogram "HRB_Increment" only analyzed in the context of calls
 test.adb:32:17: info: add a contract to analyze it separately from calling contexts
@@ -12,17 +12,17 @@ test.adb:40:07: info: initialization of "I" proved
 test.adb:53:29: warning: unused initial value of "A"
 test.adb:70:07: info: initialization of "Tmp" proved
 test.adb:79:07: info: initialization of "Tmp" proved
-test.adb:119:19: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 114 should mention N in a precondition]
+test.adb:119:19: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 114 should mention N in a precondition]
 test.adb:119:34: info: range check proved (CVC4: 1 VC)
 test.adb:123:04: warning: analyzing unreferenced procedure "Calling_Function_01"
-test.adb:130:26: medium: range check might fail [reason for check: input value must fit in parameter type] [possible explanation: subprogram at line 123 should mention N in a precondition]
+test.adb:130:26: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at line 123 should mention N in a precondition]
 test.adb:138:30: info: initialization of "N" proved
 test.adb:143:12: info: data dependencies proved
 test.adb:144:12: info: flow dependencies proved
 test.adb:148:12: info: data dependencies proved
 test.adb:148:33: medium: "Counter" might not be initialized
-test.adb:153:23: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 142 should mention X in a precondition]
-test.adb:154:29: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 142 should mention Counter in a precondition]
+test.adb:153:23: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 142 should mention X in a precondition]
+test.adb:154:29: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 142 should mention Counter in a precondition]
 test.adb:167:07: high: "Counter" is not initialized
 test.adb:167:07: warning: "Counter" is set by "Do_Stuff_A" but not used after the call
 test.adb:168:07: warning: "Counter" is set by "Do_Stuff_B" but not used after the call

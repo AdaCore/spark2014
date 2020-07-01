@@ -1,8 +1,8 @@
 float_expon.adb:6:28: warning: unused initial value of "Y"
 float_expon.adb:7:06: info: data dependencies proved
-float_expon.adb:10:15: medium: float overflow check might fail (e.g. when X = 1.5000000E+0) [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at line 6 should mention X in a precondition]
+float_expon.adb:10:15: medium: float overflow check might fail (e.g. when X = 1.5000000E+0) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 6 should mention X in a precondition]
 float_expon.adb:10:17: info: division check proved (CVC4: 1 VC; Trivial: 1 VC)
-float_expon.adb:10:17: medium: float overflow check might fail (e.g. when X = 1.5000000E+0) [reason for check: result of floating-point exponentiation must be bounded] [possible explanation: subprogram at line 6 should mention X in a precondition]
+float_expon.adb:10:17: medium: float overflow check might fail (e.g. when X = 1.5000000E+0) [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 6 should mention X in a precondition]
 float_expon.adb:10:21: info: float overflow check proved (CVC4: 1 VC)
 float_expon.adb:10:26: info: float overflow check proved (CVC4: 1 VC)
 float_expon.adb:10:28: info: float overflow check proved (CVC4: 1 VC)

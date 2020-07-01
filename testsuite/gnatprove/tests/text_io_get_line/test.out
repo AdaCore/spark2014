@@ -104,10 +104,10 @@ textio.adb:174:10: info: range check proved (CVC4: 2 VC)
 textio.adb:174:51: info: range check proved (CVC4: 1 VC)
 textio.adb:175:10: info: initialization of "Last" proved
 textio.adb:178:10: info: precondition proved (CVC4: 1 VC)
-textio.adb:181:38: low: range check might fail [reason for check: default component value must fit in the type] [possible explanation: call at line 178 should mention Item (for argument Buffer) in a postcondition]
+textio.adb:181:38: low: range check might fail [reason for check: default component value must fit in the type] [possible fix: call at line 178 should mention Item (for argument Buffer) in a postcondition]
 textio.adb:181:40: info: range check proved (CVC4: 4 VC)
 textio.adb:183:28: medium: assertion might fail, cannot prove R'First = S'first
-textio.adb:184:28: medium: assertion might fail, cannot prove R'Last = S'Last + Last [possible explanation: call at line 178 should mention Last (for argument Last) in a postcondition]
+textio.adb:184:28: medium: assertion might fail, cannot prove R'Last = S'Last + Last [possible fix: call at line 178 should mention Last (for argument Last) in a postcondition]
 textio.adb:186:27: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:37: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:41: info: overflow check proved (CVC4: 1 VC)
@@ -119,7 +119,7 @@ textio.adb:192:31: info: assertion proved (CVC4: 1 VC)
 textio.adb:199:19: info: range check proved (CVC4: 4 VC)
 textio.adb:199:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 textio.adb:199:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-textio.adb:202:19: medium: precondition might fail, cannot prove S (Idx) = The_File (Idx - S'First + Cur_Position_At_Start) [possible explanation: call at line 178 should mention Cur_Position and File (for argument File) in a postcondition]
+textio.adb:202:19: medium: precondition might fail, cannot prove S (Idx) = The_File (Idx - S'First + Cur_Position_At_Start) [possible fix: call at line 178 should mention Cur_Position and File (for argument File) in a postcondition]
 textio.adb:211:07: info: precondition proved (CVC4: 5 VC)
 textio.ads:6:21: warning: no procedure exists that can initialize abstract state "TextIO.Current_Input_File"
 textio.ads:12:07: warning: "File" is not modified, could be IN

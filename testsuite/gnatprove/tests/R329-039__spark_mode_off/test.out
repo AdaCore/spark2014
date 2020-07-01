@@ -1,3 +1,3 @@
 inst.adb:6:19: medium: assertion might fail, cannot prove G.Get = 4
 inst.adb:6:20: info: implicit function contract not available for proof ("Get" might not return)
-p.adb:17:11: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: call at line 16 should mention X (for argument X) in a postcondition]
+p.adb:17:11: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 16 should mention X (for argument X) in a postcondition]

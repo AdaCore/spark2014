@@ -6,13 +6,13 @@ update_checks.adb:17:23: info: index check proved (CVC4: 2 VC)
 update_checks.adb:17:26: info: index check proved (CVC4: 2 VC)
 update_checks.adb:17:29: info: index check proved (CVC4: 2 VC)
 update_checks.adb:22:04: warning: analyzing unreferenced procedure "Test2"
-update_checks.adb:29:25: medium: array index check might fail (e.g. when X = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 22 should mention X in a precondition]
-update_checks.adb:29:25: medium: range check might fail (e.g. when New_Val = 0 and X = 1) [possible explanation: subprogram at line 22 should mention X in a precondition]
-update_checks.adb:29:32: medium: array index check might fail (e.g. when Y = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 22 should mention Y in a precondition]
-update_checks.adb:29:32: medium: range check might fail (e.g. when New_Val = 0 and Y = 1) [possible explanation: subprogram at line 22 should mention Y in a precondition]
-update_checks.adb:29:39: medium: array index check might fail (e.g. when Z = 10) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 22 should mention Z in a precondition]
-update_checks.adb:29:39: medium: range check might fail (e.g. when New_Val = 0 and Z = 10) [possible explanation: subprogram at line 22 should mention Z in a precondition]
-update_checks.adb:29:55: medium: range check might fail (e.g. when New_Val = ET1'Last) [reason for check: result of addition must fit in component type] [possible explanation: subprogram at line 22 should mention New_Val in a precondition]
+update_checks.adb:29:25: medium: array index check might fail (e.g. when X = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 22 should mention X in a precondition]
+update_checks.adb:29:25: medium: range check might fail (e.g. when New_Val = 0 and X = 1) [possible fix: subprogram at line 22 should mention X in a precondition]
+update_checks.adb:29:32: medium: array index check might fail (e.g. when Y = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 22 should mention Y in a precondition]
+update_checks.adb:29:32: medium: range check might fail (e.g. when New_Val = 0 and Y = 1) [possible fix: subprogram at line 22 should mention Y in a precondition]
+update_checks.adb:29:39: medium: array index check might fail (e.g. when Z = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 22 should mention Z in a precondition]
+update_checks.adb:29:39: medium: range check might fail (e.g. when New_Val = 0 and Z = 10) [possible fix: subprogram at line 22 should mention Z in a precondition]
+update_checks.adb:29:55: medium: range check might fail (e.g. when New_Val = ET1'Last) [reason for check: result of addition must fit in component type] [possible fix: subprogram at line 22 should mention New_Val in a precondition]
 update_checks.adb:34:04: warning: analyzing unreferenced procedure "Test3"
 update_checks.adb:43:28: info: index check proved (CVC4: 2 VC)
 update_checks.adb:43:28: info: range check proved (CVC4: 1 VC)
@@ -29,19 +29,19 @@ update_checks.adb:56:38: info: index check proved (CVC4: 2 VC)
 update_checks.adb:56:42: info: index check proved (CVC4: 2 VC)
 update_checks.adb:56:46: info: index check proved (CVC4: 2 VC)
 update_checks.adb:61:04: warning: analyzing unreferenced procedure "Test5"
-update_checks.adb:68:26: medium: array index check might fail (e.g. when X1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 61 should mention X1 in a precondition]
-update_checks.adb:68:26: medium: range check might fail (e.g. when X1 = 1 and Z1 = 2) [possible explanation: subprogram at line 61 should mention X1 in a precondition]
-update_checks.adb:68:34: medium: array index check might fail (e.g. when Y1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 61 should mention Y1 in a precondition]
-update_checks.adb:68:34: medium: range check might fail (e.g. when Y1 = 1 and Z1 = 2) [possible explanation: subprogram at line 61 should mention Y1 in a precondition]
-update_checks.adb:68:42: medium: array index check might fail (e.g. when Z1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 61 should mention Z1 in a precondition]
-update_checks.adb:68:42: medium: range check might fail (e.g. when Z1 = 1) [possible explanation: subprogram at line 61 should mention Z1 in a precondition]
-update_checks.adb:69:28: medium: array index check might fail (e.g. when X2 = 3) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 61 should mention X2 in a precondition]
-update_checks.adb:69:28: medium: range check might fail (e.g. when New_Val = 0 and X2 = 3) [possible explanation: subprogram at line 61 should mention X2 in a precondition]
-update_checks.adb:69:36: medium: array index check might fail (e.g. when Y2 = 5) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 61 should mention Y2 in a precondition]
-update_checks.adb:69:36: medium: range check might fail (e.g. when New_Val = 0 and Y2 = 5) [possible explanation: subprogram at line 61 should mention Y2 in a precondition]
-update_checks.adb:69:44: medium: array index check might fail (e.g. when Z2 = 10) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 61 should mention Z2 in a precondition]
-update_checks.adb:69:44: medium: range check might fail (e.g. when New_Val = 0 and Z2 = 10) [possible explanation: subprogram at line 61 should mention Z2 in a precondition]
-update_checks.adb:69:60: medium: range check might fail (e.g. when New_Val = ET1'Last) [reason for check: result of addition must fit in component type] [possible explanation: subprogram at line 61 should mention New_Val in a precondition]
+update_checks.adb:68:26: medium: array index check might fail (e.g. when X1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 61 should mention X1 in a precondition]
+update_checks.adb:68:26: medium: range check might fail (e.g. when X1 = 1 and Z1 = 2) [possible fix: subprogram at line 61 should mention X1 in a precondition]
+update_checks.adb:68:34: medium: array index check might fail (e.g. when Y1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 61 should mention Y1 in a precondition]
+update_checks.adb:68:34: medium: range check might fail (e.g. when Y1 = 1 and Z1 = 2) [possible fix: subprogram at line 61 should mention Y1 in a precondition]
+update_checks.adb:68:42: medium: array index check might fail (e.g. when Z1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 61 should mention Z1 in a precondition]
+update_checks.adb:68:42: medium: range check might fail (e.g. when Z1 = 1) [possible fix: subprogram at line 61 should mention Z1 in a precondition]
+update_checks.adb:69:28: medium: array index check might fail (e.g. when X2 = 3) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 61 should mention X2 in a precondition]
+update_checks.adb:69:28: medium: range check might fail (e.g. when New_Val = 0 and X2 = 3) [possible fix: subprogram at line 61 should mention X2 in a precondition]
+update_checks.adb:69:36: medium: array index check might fail (e.g. when Y2 = 5) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 61 should mention Y2 in a precondition]
+update_checks.adb:69:36: medium: range check might fail (e.g. when New_Val = 0 and Y2 = 5) [possible fix: subprogram at line 61 should mention Y2 in a precondition]
+update_checks.adb:69:44: medium: array index check might fail (e.g. when Z2 = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 61 should mention Z2 in a precondition]
+update_checks.adb:69:44: medium: range check might fail (e.g. when New_Val = 0 and Z2 = 10) [possible fix: subprogram at line 61 should mention Z2 in a precondition]
+update_checks.adb:69:60: medium: range check might fail (e.g. when New_Val = ET1'Last) [reason for check: result of addition must fit in component type] [possible fix: subprogram at line 61 should mention New_Val in a precondition]
 update_checks.adb:74:04: warning: analyzing unreferenced procedure "Test6"
 update_checks.adb:84:29: info: index check proved (CVC4: 2 VC)
 update_checks.adb:84:29: info: range check proved (CVC4: 1 VC)
@@ -57,26 +57,26 @@ update_checks.adb:85:47: info: index check proved (CVC4: 2 VC)
 update_checks.adb:85:47: info: range check proved (CVC4: 1 VC)
 update_checks.adb:85:63: info: range check proved (CVC4: 1 VC)
 update_checks.adb:91:04: warning: analyzing unreferenced procedure "Test7"
-update_checks.adb:99:26: medium: array index check might fail (e.g. when X1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 91 should mention X1 in a precondition]
-update_checks.adb:99:26: medium: range check might fail (e.g. when X1 = 1 and Z1 = 2) [possible explanation: subprogram at line 91 should mention X1 in a precondition]
-update_checks.adb:99:34: medium: array index check might fail (e.g. when Y1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 91 should mention Y1 in a precondition]
-update_checks.adb:99:34: medium: range check might fail (e.g. when Y1 = 1 and Z1 = 2) [possible explanation: subprogram at line 91 should mention Y1 in a precondition]
-update_checks.adb:99:42: medium: array index check might fail (e.g. when Z1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 91 should mention Z1 in a precondition]
-update_checks.adb:99:42: medium: range check might fail (e.g. when Z1 = 1) [possible explanation: subprogram at line 91 should mention Z1 in a precondition]
-update_checks.adb:100:28: medium: array index check might fail (e.g. when X2 = 3) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 91 should mention X2 in a precondition]
-update_checks.adb:100:28: medium: range check might fail (e.g. when New_Val_1 = 0 and X2 = 3) [possible explanation: subprogram at line 91 should mention X2 in a precondition]
-update_checks.adb:100:36: medium: array index check might fail (e.g. when Y2 = 5) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 91 should mention Y2 in a precondition]
-update_checks.adb:100:36: medium: range check might fail (e.g. when New_Val_1 = 0 and Y2 = 5) [possible explanation: subprogram at line 91 should mention Y2 in a precondition]
-update_checks.adb:100:44: medium: array index check might fail (e.g. when Z2 = 10) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 91 should mention Z2 in a precondition]
-update_checks.adb:100:44: medium: range check might fail (e.g. when New_Val_1 = 0 and Z2 = 10) [possible explanation: subprogram at line 91 should mention Z2 in a precondition]
-update_checks.adb:100:62: medium: range check might fail (e.g. when New_Val_1 = ET1'Last) [reason for check: result of addition must fit in component type] [possible explanation: subprogram at line 91 should mention New_Val_1 in a precondition]
-update_checks.adb:101:26: medium: array index check might fail (e.g. when X3 = 3) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 91 should mention X3 in a precondition]
-update_checks.adb:101:26: medium: range check might fail (e.g. when New_Val_2 = 1 and X3 = 3) [possible explanation: subprogram at line 91 should mention X3 in a precondition]
-update_checks.adb:101:34: medium: array index check might fail (e.g. when Y3 = 5) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 91 should mention Y3 in a precondition]
-update_checks.adb:101:34: medium: range check might fail (e.g. when New_Val_2 = 1 and Y3 = 5) [possible explanation: subprogram at line 91 should mention Y3 in a precondition]
-update_checks.adb:101:42: medium: array index check might fail (e.g. when Z3 = 10) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 91 should mention Z3 in a precondition]
-update_checks.adb:101:42: medium: range check might fail (e.g. when New_Val_2 = 1 and Z3 = 10) [possible explanation: subprogram at line 91 should mention Z3 in a precondition]
-update_checks.adb:101:62: medium: range check might fail (e.g. when New_Val_2 = 0) [reason for check: result of subtraction must fit in component type] [possible explanation: subprogram at line 91 should mention New_Val_2 in a precondition]
+update_checks.adb:99:26: medium: array index check might fail (e.g. when X1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 91 should mention X1 in a precondition]
+update_checks.adb:99:26: medium: range check might fail (e.g. when X1 = 1 and Z1 = 2) [possible fix: subprogram at line 91 should mention X1 in a precondition]
+update_checks.adb:99:34: medium: array index check might fail (e.g. when Y1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 91 should mention Y1 in a precondition]
+update_checks.adb:99:34: medium: range check might fail (e.g. when Y1 = 1 and Z1 = 2) [possible fix: subprogram at line 91 should mention Y1 in a precondition]
+update_checks.adb:99:42: medium: array index check might fail (e.g. when Z1 = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 91 should mention Z1 in a precondition]
+update_checks.adb:99:42: medium: range check might fail (e.g. when Z1 = 1) [possible fix: subprogram at line 91 should mention Z1 in a precondition]
+update_checks.adb:100:28: medium: array index check might fail (e.g. when X2 = 3) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 91 should mention X2 in a precondition]
+update_checks.adb:100:28: medium: range check might fail (e.g. when New_Val_1 = 0 and X2 = 3) [possible fix: subprogram at line 91 should mention X2 in a precondition]
+update_checks.adb:100:36: medium: array index check might fail (e.g. when Y2 = 5) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 91 should mention Y2 in a precondition]
+update_checks.adb:100:36: medium: range check might fail (e.g. when New_Val_1 = 0 and Y2 = 5) [possible fix: subprogram at line 91 should mention Y2 in a precondition]
+update_checks.adb:100:44: medium: array index check might fail (e.g. when Z2 = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 91 should mention Z2 in a precondition]
+update_checks.adb:100:44: medium: range check might fail (e.g. when New_Val_1 = 0 and Z2 = 10) [possible fix: subprogram at line 91 should mention Z2 in a precondition]
+update_checks.adb:100:62: medium: range check might fail (e.g. when New_Val_1 = ET1'Last) [reason for check: result of addition must fit in component type] [possible fix: subprogram at line 91 should mention New_Val_1 in a precondition]
+update_checks.adb:101:26: medium: array index check might fail (e.g. when X3 = 3) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 91 should mention X3 in a precondition]
+update_checks.adb:101:26: medium: range check might fail (e.g. when New_Val_2 = 1 and X3 = 3) [possible fix: subprogram at line 91 should mention X3 in a precondition]
+update_checks.adb:101:34: medium: array index check might fail (e.g. when Y3 = 5) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 91 should mention Y3 in a precondition]
+update_checks.adb:101:34: medium: range check might fail (e.g. when New_Val_2 = 1 and Y3 = 5) [possible fix: subprogram at line 91 should mention Y3 in a precondition]
+update_checks.adb:101:42: medium: array index check might fail (e.g. when Z3 = 10) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 91 should mention Z3 in a precondition]
+update_checks.adb:101:42: medium: range check might fail (e.g. when New_Val_2 = 1 and Z3 = 10) [possible fix: subprogram at line 91 should mention Z3 in a precondition]
+update_checks.adb:101:62: medium: range check might fail (e.g. when New_Val_2 = 0) [reason for check: result of subtraction must fit in component type] [possible fix: subprogram at line 91 should mention New_Val_2 in a precondition]
 update_checks.adb:106:04: warning: analyzing unreferenced procedure "Test8"
 update_checks.adb:118:29: info: index check proved (CVC4: 2 VC)
 update_checks.adb:118:29: info: range check proved (CVC4: 1 VC)

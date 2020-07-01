@@ -1,5 +1,5 @@
 lcp.adb:6:21: info: cannot unroll loop (too many loop iterations)
-lcp.adb:7:12: medium: overflow check might fail (e.g. when L = Natural'Last and X = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 6 should mention L in a loop invariant]
+lcp.adb:7:12: medium: overflow check might fail (e.g. when L = Natural'Last and X = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 6 should mention L in a loop invariant]
 lcp.adb:8:19: info: overflow check proved (CVC4: 1 VC)
 lcp.adb:13:15: info: index check proved (CVC4: 2 VC)
 lcp.adb:13:15: info: overflow check proved (CVC4: 1 VC)

@@ -31,6 +31,6 @@ sccs.adb:15:14: info: add a contract to analyze it separately from calling conte
 sccs.adb:15:14: info: local subprogram "I5" only analyzed in the context of calls
 sccs.adb:16:14: info: add a contract to analyze it separately from calling contexts
 sccs.adb:16:14: info: local subprogram "J5" only analyzed in the context of calls
-sccs.adb:21:19: medium: assertion might fail, cannot prove B [possible explanation: subprogram at line 1 should mention B in a precondition]
-sccs.adb:23:19: medium: assertion might fail, cannot prove B (e.g. when B = False) [possible explanation: call at line 22 should mention B in a postcondition]
-sccs.adb:25:19: medium: assertion might fail, cannot prove B (e.g. when B = False) [possible explanation: call at line 24 should mention B in a postcondition]
+sccs.adb:21:19: medium: assertion might fail, cannot prove B [possible fix: subprogram at line 1 should mention B in a precondition]
+sccs.adb:23:19: medium: assertion might fail, cannot prove B (e.g. when B = False) [possible fix: call at line 22 should mention B in a postcondition]
+sccs.adb:25:19: medium: assertion might fail, cannot prove B (e.g. when B = False) [possible fix: call at line 24 should mention B in a postcondition]

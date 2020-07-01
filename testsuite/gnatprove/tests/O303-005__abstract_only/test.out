@@ -1,4 +1,4 @@
-only_abstract_dependencies.adb:9:14: medium: overflow check might fail (e.g. when V = Integer'First and X = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at only_abstract_dependencies.ads:5 should mention X and V in a precondition]
+only_abstract_dependencies.adb:9:14: medium: overflow check might fail (e.g. when V = Integer'First and X = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at only_abstract_dependencies.ads:5 should mention X and V in a precondition]
 only_abstract_dependencies.ads:3:21: warning: no procedure exists that can initialize abstract state "Only_Abstract_Dependencies.Value"
 only_abstract_dependencies.ads:6:06: info: flow dependencies proved
 only_abstract_dependencies.ads:9:06: info: flow dependencies proved

@@ -1,6 +1,6 @@
 list.adb:40:31: info: cannot unroll loop (too many loop iterations)
 list.adb:42:26: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
-list.adb:47:35: medium: overflow check might fail (e.g. when Used_Items = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at list.ads:7 should mention Used_Items in a precondition]
+list.adb:47:35: medium: overflow check might fail (e.g. when Used_Items = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at list.ads:7 should mention Used_Items in a precondition]
 list.ads:4:03: info: flow dependencies proved
 list.ads:9:07: info: initialization of "Success" proved
 list.ads:11:08: info: data dependencies proved

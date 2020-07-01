@@ -8,4 +8,4 @@ async_globals.adb:18:22: info: initialization of "Y" proved
 async_globals.adb:24:22: medium: assertion might fail, cannot prove X = Y (e.g. when X = 0 and Y = 1)
 async_globals.adb:27:22: info: initialization of "X" proved
 async_globals.adb:28:22: info: initialization of "Y" proved
-async_globals.adb:34:22: medium: assertion might fail, cannot prove X = Y (e.g. when X = 0 and Y = 1) [possible explanation: call at line 33 should mention X (for argument Y) in a postcondition]
+async_globals.adb:34:22: medium: assertion might fail, cannot prove X = Y (e.g. when X = 0 and Y = 1) [possible fix: call at line 33 should mention X (for argument Y) in a postcondition]

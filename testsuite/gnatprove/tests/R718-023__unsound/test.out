@@ -1,2 +1,2 @@
-e.adb:5:22: medium: assertion might fail, cannot prove K /= 0 [possible explanation: subprogram at e.ads:5 should mention K in a precondition]
+e.adb:5:22: medium: assertion might fail, cannot prove K /= 0 [possible fix: subprogram at e.ads:5 should mention K in a precondition]
 e.adb:6:15: info: division check proved (CVC4: 1 VC)

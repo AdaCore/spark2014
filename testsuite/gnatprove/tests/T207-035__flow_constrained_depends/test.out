@@ -21,8 +21,8 @@ min.adb:5:12: info: range check proved (CVC4: 2 VC)
 p.adb:3:14: info: initialization of "Result" proved
 p.adb:4:08: info: flow dependencies proved
 p.adb:6:12: info: range check proved (CVC4: 2 VC)
-p.adb:8:17: medium: range check might fail [reason for check: value must fit in the type of the qualification] [possible explanation: subprogram at line 1 should mention Data in a precondition]
+p.adb:8:17: medium: range check might fail [reason for check: value must fit in the type of the qualification] [possible fix: subprogram at line 1 should mention Data in a precondition]
 q.adb:3:14: info: initialization of "Result" proved
 q.adb:4:08: info: flow dependencies proved
 q.adb:6:12: info: range check proved (CVC4: 2 VC)
-q.adb:8:17: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at line 1 should mention Data in a precondition]
+q.adb:8:17: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 1 should mention Data in a precondition]

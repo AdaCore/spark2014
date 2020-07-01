@@ -5,11 +5,11 @@ kmp.adb:11:23: info: overflow check proved (CVC4: 1 VC)
 kmp.adb:12:39: info: overflow check proved (CVC4: 2 VC)
 kmp.adb:14:17: info: loop invariant initialization proved (CVC4: 3 VC)
 kmp.adb:14:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J in P'range
-kmp.adb:16:17: medium: loop invariant might fail in first iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
-kmp.adb:16:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
-kmp.adb:16:17: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
+kmp.adb:16:17: medium: loop invariant might fail in first iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible fix: precondition of subprogram at kmp.ads:7 should mention P]
+kmp.adb:16:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove P (I - J .. J) = P (0..J - 1) [possible fix: precondition of subprogram at kmp.ads:7 should mention P]
+kmp.adb:16:17: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at kmp.ads:7 should mention P]
 kmp.adb:16:22: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
-kmp.adb:16:34: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible explanation: precondition of subprogram at kmp.ads:7 should mention P]
+kmp.adb:16:34: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at kmp.ads:7 should mention P]
 kmp.adb:16:44: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
 kmp.adb:17:19: medium: array index check might fail [reason for check: value must be a valid index into the array]
 kmp.adb:17:27: info: index check proved (CVC4: 2 VC)

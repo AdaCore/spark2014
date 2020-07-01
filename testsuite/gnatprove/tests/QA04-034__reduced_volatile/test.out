@@ -1,7 +1,7 @@
 vol.adb:10:19: medium: assertion might fail, cannot prove H1 = H2 (e.g. when H1 = 0 and H2 = 1)
 vol.ads:9:04: info: initialization of "H1" proved
 vol.ads:9:08: info: initialization of "H2" proved
-vol2.adb:9:19: medium: assertion might fail, cannot prove H1 = H2 (e.g. when H1 = 0 and H2 = 1) [possible explanation: call at line 8 should mention Result (for argument H2) in a postcondition]
+vol2.adb:9:19: medium: assertion might fail, cannot prove H1 = H2 (e.g. when H1 = 0 and H2 = 1) [possible fix: call at line 8 should mention Result (for argument H2) in a postcondition]
 vol2.ads:9:04: info: initialization of "H1" proved
 vol2.ads:9:08: info: initialization of "H2" proved
 vol2.ads:10:28: info: initialization of "Result" proved

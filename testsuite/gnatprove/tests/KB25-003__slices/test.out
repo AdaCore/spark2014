@@ -11,7 +11,7 @@ pack.adb:27:39: info: range check proved (CVC4: 4 VC)
 pack.adb:28:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:28:29: info: range check proved (CVC4: 4 VC)
 pack.adb:29:22: info: range check proved (CVC4: 4 VC)
-pack.adb:29:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible explanation: subprogram at pack.ads:5 should mention Glob in a precondition]
+pack.adb:29:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible fix: subprogram at pack.ads:5 should mention Glob in a precondition]
 pack.adb:29:40: info: range check proved (CVC4: 4 VC)
 pack.adb:33:04: warning: analyzing unreferenced procedure "AN21"
 pack.adb:33:14: warning: subprogram "AN21" has no effect
@@ -21,7 +21,7 @@ pack.adb:38:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:38:22: info: range check proved (CVC4: 4 VC)
 pack.adb:38:39: info: range check proved (CVC4: 4 VC)
 pack.adb:39:22: info: range check proved (CVC4: 4 VC)
-pack.adb:39:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible explanation: subprogram at line 33 should mention Glob in a precondition]
+pack.adb:39:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible fix: subprogram at line 33 should mention Glob in a precondition]
 pack.adb:39:40: info: range check proved (CVC4: 4 VC)
 pack.adb:43:04: warning: analyzing unreferenced procedure "AN22"
 pack.adb:43:14: warning: subprogram "AN22" has no effect
@@ -31,7 +31,7 @@ pack.adb:48:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:48:22: info: range check proved (CVC4: 4 VC)
 pack.adb:48:39: info: range check proved (CVC4: 4 VC)
 pack.adb:49:22: info: range check proved (CVC4: 4 VC)
-pack.adb:49:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible explanation: subprogram at line 43 should mention Glob in a precondition]
+pack.adb:49:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible fix: subprogram at line 43 should mention Glob in a precondition]
 pack.adb:49:40: info: range check proved (CVC4: 4 VC)
 pack.adb:53:04: warning: analyzing unreferenced procedure "A3"
 pack.adb:53:14: warning: subprogram "A3" has no effect
@@ -39,7 +39,7 @@ pack.adb:54:34: info: range check proved (CVC4: 4 VC)
 pack.adb:59:04: warning: analyzing unreferenced procedure "A4"
 pack.adb:59:14: warning: subprogram "A4" has no effect
 pack.adb:64:22: info: assertion proved (CVC4: 1 VC)
-pack.adb:65:22: medium: assertion might fail, cannot prove My_S4 (2) /= G (2) [possible explanation: subprogram at line 59 should mention G in a precondition]
+pack.adb:65:22: medium: assertion might fail, cannot prove My_S4 (2) /= G (2) [possible fix: subprogram at line 59 should mention G in a precondition]
 pack.adb:66:25: info: range check proved (CVC4: 4 VC)
 pack.adb:69:04: warning: analyzing unreferenced procedure "A11"
 pack.adb:69:14: warning: subprogram "A11" has no effect

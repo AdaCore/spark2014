@@ -1,5 +1,5 @@
 test.adb:3:04: warning: analyzing unreferenced procedure "Basic_Loop"
-test.adb:7:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 6 should mention X in a loop invariant]
+test.adb:7:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 6 should mention X in a loop invariant]
 test.adb:8:17: info: division check proved (CVC4: 1 VC)
 test.adb:13:24: info: initialization of "P" proved
 test.adb:16:11: info: range check proved (CVC4: 2 VC)
@@ -26,12 +26,12 @@ test.adb:52:16: info: initialization of "R" proved
 test.adb:52:19: info: initialization of "W" proved
 test.adb:52:22: info: initialization of "X" proved
 test.adb:52:25: info: initialization of "Y" proved
-test.adb:57:17: medium: divide by zero might fail [possible explanation: loop at line 56 should mention C in a loop invariant]
-test.adb:57:17: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible explanation: loop at line 56 should mention C in a loop invariant]
-test.adb:57:29: medium: divide by zero might fail [possible explanation: loop at line 56 should mention C in a loop invariant]
-test.adb:58:17: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: loop at line 56 should mention Q and X and Y in a loop invariant]
-test.adb:58:21: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: loop at line 56 should mention Q and Y in a loop invariant]
-test.adb:63:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 56 should mention Y in a loop invariant]
+test.adb:57:17: medium: divide by zero might fail [possible fix: loop at line 56 should mention C in a loop invariant]
+test.adb:57:17: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention C in a loop invariant]
+test.adb:57:29: medium: divide by zero might fail [possible fix: loop at line 56 should mention C in a loop invariant]
+test.adb:58:17: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Q and X and Y in a loop invariant]
+test.adb:58:21: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Q and Y in a loop invariant]
+test.adb:63:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Y in a loop invariant]
 test.adb:68:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Incorrect"
 test.adb:70:07: info: initialization of "C" proved
 test.adb:70:10: info: initialization of "D" proved
@@ -39,12 +39,12 @@ test.adb:70:13: info: initialization of "Q" proved
 test.adb:70:19: info: initialization of "W" proved
 test.adb:70:22: info: initialization of "X" proved
 test.adb:70:25: info: initialization of "Y" proved
-test.adb:75:17: medium: divide by zero might fail [possible explanation: loop at line 74 should mention C in a loop invariant]
-test.adb:75:17: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible explanation: loop at line 74 should mention C in a loop invariant]
-test.adb:76:17: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: loop at line 74 should mention Q and X and Y in a loop invariant]
-test.adb:76:21: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: loop at line 74 should mention Q and Y in a loop invariant]
+test.adb:75:17: medium: divide by zero might fail [possible fix: loop at line 74 should mention C in a loop invariant]
+test.adb:75:17: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention C in a loop invariant]
+test.adb:76:17: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Q and X and Y in a loop invariant]
+test.adb:76:21: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Q and Y in a loop invariant]
 test.adb:77:23: high: "R" is not initialized
-test.adb:81:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 74 should mention Y in a loop invariant]
+test.adb:81:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Y in a loop invariant]
 test.adb:86:04: warning: analyzing unreferenced procedure "Stable_Test_01"
 test.adb:86:30: info: initialization of "X" proved
 test.adb:89:39: info: cannot unroll loop (too many loop iterations)
@@ -63,8 +63,8 @@ test.adb:113:12: warning: unreachable code (CVC4: 1 VC)
 test.adb:117:04: warning: analyzing unreferenced procedure "For_Test_02"
 test.adb:117:27: info: initialization of "X" proved
 test.adb:120:38: info: unrolling loop
-test.adb:130:17: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: loop at line 129 should mention X in a loop invariant]
-test.adb:134:17: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: loop at line 129 should mention X in a loop invariant]
+test.adb:130:17: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 129 should mention X in a loop invariant]
+test.adb:134:17: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 129 should mention X in a loop invariant]
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"
 test.adb:141:07: info: initialization of "A" proved
 test.adb:147:14: warning: unreachable code (CVC4: 1 VC)

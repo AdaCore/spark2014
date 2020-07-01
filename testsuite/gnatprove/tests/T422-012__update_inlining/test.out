@@ -5,4 +5,4 @@ gnatprove: error during generation of Global contracts
 INLINING DISABLED:
 update.adb:6:14: warning: subprogram "Test" has no effect
 update.adb:8:33: info: range check proved (CVC4: 1 VC)
-update.adb:8:33: medium: range check might fail (e.g. when V = 0) [reason for check: value must fit in component type] [possible explanation: subprogram at line 6 should mention V in a precondition]
+update.adb:8:33: medium: range check might fail (e.g. when V = 0) [reason for check: value must fit in component type] [possible fix: subprogram at line 6 should mention V in a precondition]

@@ -1,10 +1,10 @@
 p.adb:13:07: info: initialization of "L" proved
-p.adb:15:62: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p.ads:4 should mention X and Y in a precondition]
-p.adb:15:62: medium: range check might fail (e.g. when X = 0 and Y = -1) [reason for check: result of addition must be convertible to the target type of the conversion] [possible explanation: subprogram at p.ads:4 should mention X and Y in a precondition]
+p.adb:15:62: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:4 should mention X and Y in a precondition]
+p.adb:15:62: medium: range check might fail (e.g. when X = 0 and Y = -1) [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: subprogram at p.ads:4 should mention X and Y in a precondition]
 p.adb:16:30: info: range check proved (CVC4: 1 VC)
 p.adb:20:07: info: initialization of "L" proved
-p.adb:22:38: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p.ads:7 should mention X and Y in a precondition]
-p.adb:22:38: medium: range check might fail (e.g. when X = 0 and Y = -1) [reason for check: result of addition must be convertible to the target type of the conversion] [possible explanation: subprogram at p.ads:7 should mention X and Y in a precondition]
+p.adb:22:38: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:7 should mention X and Y in a precondition]
+p.adb:22:38: medium: range check might fail (e.g. when X = 0 and Y = -1) [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: subprogram at p.ads:7 should mention X and Y in a precondition]
 p.adb:23:30: info: range check proved (CVC4: 1 VC)
 p.ads:4:38: info: initialization of "Z" proved
 p.ads:5:11: info: flow dependencies proved

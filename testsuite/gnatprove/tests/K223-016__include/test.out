@@ -1,1 +1,1 @@
-callee.adb:4:14: medium: overflow check might fail (e.g. when A = Integer'First and B = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at callee.ads:2 should mention A and B in a precondition]
+callee.adb:4:14: medium: overflow check might fail (e.g. when A = Integer'First and B = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at callee.ads:2 should mention A and B in a precondition]

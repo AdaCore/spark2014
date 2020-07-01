@@ -1,10 +1,10 @@
-foo.adb:20:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 16 should mention X in a precondition]
+foo.adb:20:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 16 should mention X in a precondition]
 foo.adb:20:16: high: "Y" must be listed in the Global aspect of "Test_SRM_6_1_4_Rule_12" (SPARK RM 6.1.4(14))
 foo.adb:24:38: info: initialization of "N" proved
 foo.adb:25:09: info: data dependencies proved
 foo.adb:25:23: low: unused global "Y"
 foo.adb:40:09: high: "X" must be a global output of "Test_SRM_6_1_4_Rule_15_A" (SPARK RM 6.1.4(17))
-foo.adb:40:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 36 should mention X in a precondition]
+foo.adb:40:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 36 should mention X in a precondition]
 foo.adb:41:09: high: "Y" must be a global output of "Test_SRM_6_1_4_Rule_15_A" (SPARK RM 6.1.4(17))
 foo.adb:46:40: info: initialization of "N" proved
 foo.adb:47:40: info: initialization of "M" proved
@@ -29,7 +29,7 @@ foo.adb:72:38: info: initialization of "N" proved
 foo.adb:73:38: info: initialization of "M" proved
 foo.adb:74:29: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 foo.adb:77:07: info: initialization of "Tmp1" proved
-foo.adb:80:22: medium: assertion might fail, cannot prove X = 12 [possible explanation: subprogram at line 72 should mention X in a precondition]
+foo.adb:80:22: medium: assertion might fail, cannot prove X = 12 [possible fix: subprogram at line 72 should mention X in a precondition]
 foo.adb:81:15: medium: Proof_In global "Y" can only be used in assertions (SPARK RM 6.1.4(18))
 foo.adb:82:15: medium: Proof_In global "Y" can only be used in assertions (SPARK RM 6.1.4(18))
 foo.adb:83:12: warning: unused assignment

@@ -1,4 +1,4 @@
 q.adb:2:21: info: range check proved (CVC4: 1 VC)
 q.adb:5:04: warning: analyzing unreferenced function "Foo"
-q.adb:7:17: medium: discriminant check might fail [possible explanation: subprogram at line 5 should mention A in a precondition]
+q.adb:7:17: medium: discriminant check might fail [possible fix: subprogram at line 5 should mention A in a precondition]
 q.ads:3:14: warning: subprogram "Dummy" has no effect

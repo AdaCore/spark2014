@@ -58,8 +58,8 @@ with_default.adb:201:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:26: info: range check proved (CVC4: 1 VC)
 with_default.adb:202:34: info: discriminant check proved (CVC4: 1 VC)
-with_default.adb:206:39: medium: range check might fail [reason for check: default component value must fit in the type] [possible explanation: subprogram at with_default.ads:22 should mention C in a precondition]
-with_default.adb:219:39: medium: range check might fail [reason for check: default component value must fit in the type] [possible explanation: subprogram at with_default.ads:24 should mention C in a precondition]
+with_default.adb:206:39: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at with_default.ads:22 should mention C in a precondition]
+with_default.adb:219:39: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at with_default.ads:24 should mention C in a precondition]
 with_default.adb:233:40: info: range check proved (CVC4: 1 VC)
 with_default.ads:3:14: warning: subprogram "Bad_Scalar" has no effect
 with_default.ads:5:14: warning: subprogram "OK_Scalar" has no effect

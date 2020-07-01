@@ -1,5 +1,5 @@
 alias.adb:4:24: info: division check proved (CVC4: 1 VC)
 alias.adb:4:24: info: range check proved (CVC4: 1 VC)
-alias.adb:9:14: medium: precondition might fail, cannot prove R.Modulus > 0 [possible explanation: subprogram at alias.ads:13 should mention R in a precondition]
+alias.adb:9:14: medium: precondition might fail, cannot prove R.Modulus > 0 [possible fix: subprogram at alias.ads:13 should mention R in a precondition]
 alias.ads:14:14: info: postcondition proved (CVC4: 1 VC)
 alias.ads:14:27: medium: precondition might fail, cannot prove R.Modulus > 0

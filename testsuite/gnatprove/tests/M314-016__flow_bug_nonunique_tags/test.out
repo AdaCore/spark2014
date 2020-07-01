@@ -18,8 +18,8 @@ segway.adb:19:19: high: either make "Speed" an input in the Global contract or i
 segway.adb:21:10: medium: "Speed" might not be initialized
 segway.adb:23:13: medium: "Speed" might not be initialized
 segway.adb:25:13: medium: "Speed" might not be initialized
-segway.adb:40:13: medium: precondition might fail, cannot prove (Speed_Is_Valid) [possible explanation: loop at line 37 should mention Speed in a loop invariant]
-segway.adb:42:13: medium: precondition might fail, cannot prove (Speed_Is_Valid) [possible explanation: loop at line 37 should mention Speed in a loop invariant]
+segway.adb:40:13: medium: precondition might fail, cannot prove (Speed_Is_Valid) [possible fix: loop at line 37 should mention Speed in a loop invariant]
+segway.adb:42:13: medium: precondition might fail, cannot prove (Speed_Is_Valid) [possible fix: loop at line 37 should mention Speed in a loop invariant]
 segway.ads:23:16: high: "Speed" is not an input in the Global contract of subprogram "State_Update" at line 22
 segway.ads:23:16: high: "Speed" is not initialized
 segway.ads:23:16: high: "State" is not an input in the Global contract of subprogram "State_Update" at line 22

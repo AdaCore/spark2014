@@ -1,27 +1,27 @@
-tetris_flow.adb:41:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
-tetris_flow.adb:41:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
+tetris_flow.adb:41:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
+tetris_flow.adb:41:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
 tetris_flow.adb:42:36: info: index check proved (CVC4: 2 VC)
 tetris_flow.adb:42:51: info: index check proved (CVC4: 2 VC)
 tetris_flow.adb:43:33: info: index check proved (CVC4: 2 VC)
 tetris_flow.adb:43:50: info: index check proved (CVC4: 2 VC)
 tetris_flow.adb:44:36: info: index check proved (CVC4: 2 VC)
 tetris_flow.adb:44:54: info: index check proved (CVC4: 2 VC)
-tetris_flow.adb:50:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
-tetris_flow.adb:50:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
+tetris_flow.adb:50:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
+tetris_flow.adb:50:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
 tetris_flow.adb:58:54: info: index check proved (CVC4: 2 VC)
-tetris_flow.adb:59:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
-tetris_flow.adb:59:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
-tetris_flow.adb:96:35: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: loop at line 92 should mention To_Line in a loop invariant]
-tetris_flow.adb:97:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 92 should mention Num_Deleted in a loop invariant]
+tetris_flow.adb:59:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
+tetris_flow.adb:59:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at tetris_flow.ads:181 should mention Cur_Piece in a precondition]
+tetris_flow.adb:96:35: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 92 should mention To_Line in a loop invariant]
+tetris_flow.adb:97:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 92 should mention Num_Deleted in a loop invariant]
 tetris_flow.adb:108:07: info: initialization of "Candidate" proved
 tetris_flow.ads:133:54: info: index check proved (CVC4: 2 VC)
 tetris_flow.ads:133:57: info: index check proved (CVC4: 2 VC)
 tetris_flow.ads:155:46: info: index check proved (CVC4: 2 VC)
 tetris_flow.ads:167:77: info: range check proved (CVC4: 1 VC)
 tetris_flow.ads:169:77: info: range check proved (CVC4: 1 VC)
-tetris_flow.ads:173:49: medium: range check might fail [reason for check: result of subtraction must fit in component type] [possible explanation: subprogram at line 171 should mention P in a precondition]
-tetris_flow.ads:174:49: medium: range check might fail [reason for check: result of addition must fit in component type] [possible explanation: subprogram at line 171 should mention P in a precondition]
-tetris_flow.ads:175:49: medium: range check might fail [reason for check: result of addition must fit in component type] [possible explanation: subprogram at line 171 should mention P in a precondition]
+tetris_flow.ads:173:49: medium: range check might fail [reason for check: result of subtraction must fit in component type] [possible fix: subprogram at line 171 should mention P in a precondition]
+tetris_flow.ads:174:49: medium: range check might fail [reason for check: result of addition must fit in component type] [possible fix: subprogram at line 171 should mention P in a precondition]
+tetris_flow.ads:175:49: medium: range check might fail [reason for check: result of addition must fit in component type] [possible fix: subprogram at line 171 should mention P in a precondition]
 tetris_flow.ads:176:66: info: range check proved (CVC4: 1 VC)
 tetris_flow.ads:178:37: info: initialization of "Success" proved
 tetris_flow.ads:179:06: info: data dependencies proved
@@ -74,30 +74,30 @@ tetris_functional.ads:215:16: info: postcondition proved (CVC4: 2 VC)
 tetris_functional.ads:220:37: info: initialization of "Num_Deleted" proved
 tetris_functional.ads:221:06: info: data dependencies proved
 tetris_functional.ads:224:16: info: postcondition proved (CVC4: 2 VC)
-tetris_initial.adb:41:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
-tetris_initial.adb:41:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
+tetris_initial.adb:41:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
+tetris_initial.adb:41:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
 tetris_initial.adb:42:36: info: index check proved (CVC4: 2 VC)
 tetris_initial.adb:42:51: info: index check proved (CVC4: 2 VC)
 tetris_initial.adb:43:33: info: index check proved (CVC4: 2 VC)
 tetris_initial.adb:43:50: info: index check proved (CVC4: 2 VC)
 tetris_initial.adb:44:36: info: index check proved (CVC4: 2 VC)
 tetris_initial.adb:44:54: info: index check proved (CVC4: 2 VC)
-tetris_initial.adb:50:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
-tetris_initial.adb:50:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
+tetris_initial.adb:50:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
+tetris_initial.adb:50:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
 tetris_initial.adb:58:54: info: index check proved (CVC4: 2 VC)
-tetris_initial.adb:59:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
-tetris_initial.adb:59:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
-tetris_initial.adb:96:35: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: loop at line 92 should mention To_Line in a loop invariant]
-tetris_initial.adb:97:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 92 should mention Num_Deleted in a loop invariant]
+tetris_initial.adb:59:45: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
+tetris_initial.adb:59:63: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at tetris_initial.ads:177 should mention Cur_Piece in a precondition]
+tetris_initial.adb:96:35: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 92 should mention To_Line in a loop invariant]
+tetris_initial.adb:97:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 92 should mention Num_Deleted in a loop invariant]
 tetris_initial.adb:108:07: info: initialization of "Candidate" proved
 tetris_initial.ads:133:54: info: index check proved (CVC4: 2 VC)
 tetris_initial.ads:133:57: info: index check proved (CVC4: 2 VC)
 tetris_initial.ads:152:46: info: index check proved (CVC4: 2 VC)
 tetris_initial.ads:164:77: info: range check proved (CVC4: 1 VC)
 tetris_initial.ads:166:77: info: range check proved (CVC4: 1 VC)
-tetris_initial.ads:170:49: medium: range check might fail [reason for check: result of subtraction must fit in component type] [possible explanation: subprogram at line 168 should mention P in a precondition]
-tetris_initial.ads:171:49: medium: range check might fail [reason for check: result of addition must fit in component type] [possible explanation: subprogram at line 168 should mention P in a precondition]
-tetris_initial.ads:172:49: medium: range check might fail [reason for check: result of addition must fit in component type] [possible explanation: subprogram at line 168 should mention P in a precondition]
+tetris_initial.ads:170:49: medium: range check might fail [reason for check: result of subtraction must fit in component type] [possible fix: subprogram at line 168 should mention P in a precondition]
+tetris_initial.ads:171:49: medium: range check might fail [reason for check: result of addition must fit in component type] [possible fix: subprogram at line 168 should mention P in a precondition]
+tetris_initial.ads:172:49: medium: range check might fail [reason for check: result of addition must fit in component type] [possible fix: subprogram at line 168 should mention P in a precondition]
 tetris_initial.ads:173:66: info: range check proved (CVC4: 1 VC)
 tetris_initial.ads:175:37: info: initialization of "Success" proved
 tetris_initial.ads:181:37: info: initialization of "Num_Deleted" proved

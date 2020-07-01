@@ -1,3 +1,3 @@
 p.adb:4:14: warning: subprogram "Proc" has no effect
-p.adb:6:22: medium: assertion might fail, cannot prove X [possible explanation: subprogram at line 4 should mention X in a precondition]
+p.adb:6:22: medium: assertion might fail, cannot prove X [possible fix: subprogram at line 4 should mention X in a precondition]
 p.ads:6:14: warning: subprogram "Test" has no effect

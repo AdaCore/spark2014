@@ -1,5 +1,5 @@
 gp_exp.adb:1:11: warning: subprogram "Gp_Exp" has no effect
-gp_exp.adb:5:11: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
-gp_exp.adb:5:14: medium: range check might fail [reason for check: exponent value must fit in type Natural] [possible explanation: subprogram at line 1 should mention X in a precondition]
-gp_exp.adb:6:11: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
-gp_exp.adb:7:11: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible explanation: subprogram at line 1 should mention Y in a precondition]
+gp_exp.adb:5:11: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
+gp_exp.adb:5:14: medium: range check might fail [reason for check: exponent value must fit in type Natural] [possible fix: subprogram at line 1 should mention X in a precondition]
+gp_exp.adb:6:11: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
+gp_exp.adb:7:11: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 1 should mention Y in a precondition]

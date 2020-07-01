@@ -135,7 +135,7 @@ sorting.adb:145:36: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:147:22: info: range check proved (CVC4: 1 VC)
 sorting.adb:147:39: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:147:44: info: overflow check proved (CVC4: 1 VC)
-sorting.adb:148:10: medium: precondition might fail, cannot prove Sorted (A, A_First + Length1, Length2) [possible explanation: loop invariant at line 133 should mention K]
+sorting.adb:148:10: medium: precondition might fail, cannot prove Sorted (A, A_First + Length1, Length2) [possible fix: loop invariant at line 133 should mention K]
 sorting.adb:148:31: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:149:17: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:149:22: info: overflow check proved (CVC4: 1 VC)

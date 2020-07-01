@@ -1,9 +1,9 @@
 arrays_multidim.adb:18:11: info: flow dependencies proved
-arrays_multidim.adb:21:22: medium: assertion might fail, cannot prove X (5, 5) > 1 [possible explanation: subprogram at line 17 should mention X in a precondition]
+arrays_multidim.adb:21:22: medium: assertion might fail, cannot prove X (5, 5) > 1 [possible fix: subprogram at line 17 should mention X in a precondition]
 arrays_multidim.adb:26:11: info: flow dependencies proved
 arrays_multidim.adb:30:22: info: assertion proved (CVC4: 1 VC)
 arrays_multidim.adb:34:11: info: flow dependencies proved
-arrays_multidim.adb:38:22: medium: assertion might fail, cannot prove X (5, 5) = 11 [possible explanation: subprogram at line 33 should mention X in a precondition]
+arrays_multidim.adb:38:22: medium: assertion might fail, cannot prove X (5, 5) = 11 [possible fix: subprogram at line 33 should mention X in a precondition]
 arrays_multidim.adb:42:11: info: flow dependencies proved
 arrays_multidim.adb:46:22: medium: assertion might fail, cannot prove X (5, 5) = 11
 arrays_multidim.adb:51:11: info: flow dependencies proved

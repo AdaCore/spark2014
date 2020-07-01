@@ -1,6 +1,6 @@
 test.adb:12:07: warning: unused assignment
 test.adb:13:05: info: precondition proved (CVC4: 1 VC)
-test.adb:14:20: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1) [possible explanation: call at line 13 should mention X in a postcondition]
+test.adb:14:20: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1) [possible fix: call at line 13 should mention X in a postcondition]
 test.adb:12:07: warning: unused assignment
 test.adb:13:05: info: precondition proved (CVC4: 1 VC)
-test.adb:14:20: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1) [possible explanation: call at line 13 should mention X in a postcondition]
+test.adb:14:20: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1) [possible fix: call at line 13 should mention X in a postcondition]

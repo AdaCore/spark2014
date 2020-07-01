@@ -420,7 +420,7 @@ sort.adb:28:57: info: range check proved (CVC4: 1 VC)
 sort.adb:30:15: info: index check proved (CVC4: 2 VC)
 sort.adb:30:21: info: range check proved (CVC4: 1 VC)
 sort.adb:31:22: info: precondition proved (CVC4: 3 VC)
-sort.adb:31:22: medium: assertion might fail, cannot prove Remove (Interm, Y) = Remove (Values, Y) [possible explanation: precondition of subprogram at line 6 should mention Values]
+sort.adb:31:22: medium: assertion might fail, cannot prove Remove (Interm, Y) = Remove (Values, Y) [possible fix: precondition of subprogram at line 6 should mention Values]
 sort.adb:31:38: info: range check proved (CVC4: 1 VC)
 sort.adb:31:43: info: precondition proved (CVC4: 3 VC)
 sort.adb:31:59: info: range check proved (CVC4: 1 VC)

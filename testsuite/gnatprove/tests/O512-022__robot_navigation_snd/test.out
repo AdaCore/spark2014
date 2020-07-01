@@ -29,12 +29,12 @@ algorithm.adb:106:22: info: initialization of "d" proved
 algorithm.adb:108:44: medium: precondition might fail, cannot prove X /= 0.0 or Y /= 0.0
 algorithm.adb:108:64: info: division check proved (CVC4: 1 VC)
 algorithm.adb:108:64: info: float overflow check proved (Trivial)
-algorithm.adb:109:49: medium: divide by zero might fail [possible explanation: loop at line 84 should mention deltaAngle in a loop invariant]
-algorithm.adb:109:49: medium: float overflow check might fail [possible explanation: loop at line 84 should mention deltaAngle in a loop invariant]
+algorithm.adb:109:49: medium: divide by zero might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
+algorithm.adb:109:49: medium: float overflow check might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
 algorithm.adb:111:42: info: division check proved (CVC4: 1 VC)
 algorithm.adb:111:42: info: float overflow check proved (Trivial)
-algorithm.adb:111:49: medium: divide by zero might fail [possible explanation: loop at line 84 should mention deltaAngle in a loop invariant]
-algorithm.adb:111:49: medium: float overflow check might fail [possible explanation: loop at line 84 should mention deltaAngle in a loop invariant]
+algorithm.adb:111:49: medium: divide by zero might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
+algorithm.adb:111:49: medium: float overflow check might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
 algorithm.adb:143:46: info: function contract not available for proof ("Create" might not return)
 algorithm.adb:147:10: info: cannot unroll loop (too many loop iterations)
 algorithm.adb:150:63: info: range check proved (Trivial)
@@ -59,12 +59,12 @@ algorithm.adb:207:33: info: loop invariant preservation proved (CVC4: 2 VC)
 algorithm.adb:213:49: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:217:16: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:219:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:231:47: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayR]
-algorithm.adb:231:61: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayL and rayR]
-algorithm.adb:231:75: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayL]
-algorithm.adb:231:89: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayL and rayR]
-algorithm.adb:231:95: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayR]
-algorithm.adb:231:108: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayL and rayR]
+algorithm.adb:231:47: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayR]
+algorithm.adb:231:61: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayL and rayR]
+algorithm.adb:231:75: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayL]
+algorithm.adb:231:89: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayL and rayR]
+algorithm.adb:231:95: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayR]
+algorithm.adb:231:108: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayL and rayR]
 algorithm.adb:231:121: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:231:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
 algorithm.adb:235:13: info: precondition proved (CVC4: 1 VC)
@@ -118,7 +118,7 @@ algorithm.adb:356:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:58: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:361:27: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:381:15: info: range check proved (CVC4: 2 VC)
-algorithm.adb:381:71: medium: range check might fail [possible explanation: precondition of subprogram at algorithm.ads:91 should mention This]
+algorithm.adb:381:71: medium: range check might fail [possible fix: precondition of subprogram at algorithm.ads:91 should mention This]
 algorithm.adb:395:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:398:33: info: loop invariant initialization proved (CVC4: 2 VC)
 algorithm.adb:398:33: info: loop invariant preservation proved (CVC4: 2 VC)
@@ -151,7 +151,7 @@ algorithm.adb:473:114: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:477:35: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:477:77: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:477:96: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:478:36: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible explanation: loop invariant at line 398 should mention Best_Valley_IDS]
+algorithm.adb:478:36: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
 algorithm.adb:478:73: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:478:92: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:484:38: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
@@ -159,21 +159,21 @@ algorithm.adb:499:35: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC
 algorithm.adb:504:10: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:510:30: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:510:67: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:514:20: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible explanation: loop invariant at line 398 should mention Best_Valley_IDS]
+algorithm.adb:514:20: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
 algorithm.adb:514:57: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:515:20: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible explanation: loop invariant at line 398 should mention Best_Valley_IDS]
+algorithm.adb:515:20: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: loop invariant at line 398 should mention Best_Valley_IDS]
 algorithm.adb:515:57: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:530:07: info: initialization of "deltaMag" proved
 algorithm.adb:531:07: info: initialization of "deltaAngle" proved
 algorithm.adb:537:33: info: loop invariant initialization proved (CVC4: 1 VC)
 algorithm.adb:537:33: info: loop invariant preservation proved (CVC4: 1 VC)
-algorithm.adb:538:52: medium: float overflow check might fail [possible explanation: precondition of subprogram at algorithm.ads:98 should mention This]
+algorithm.adb:538:52: medium: float overflow check might fail [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
 algorithm.adb:539:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:539:25: info: range check proved (CVC4: 1 VC)
 algorithm.adb:539:44: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:539:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:539:98: info: division check proved (CVC4: 1 VC)
-algorithm.adb:539:98: medium: float overflow check might fail [possible explanation: precondition of subprogram at algorithm.ads:98 should mention This]
+algorithm.adb:539:98: medium: float overflow check might fail [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
 algorithm.adb:542:42: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:542:42: info: range check proved (Trivial)
 algorithm.adb:542:53: info: float overflow check proved (Trivial)
@@ -182,7 +182,7 @@ algorithm.adb:544:65: info: float overflow check proved (Trivial)
 algorithm.adb:544:76: info: float overflow check proved (Trivial)
 algorithm.adb:544:87: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:549:54: info: division check proved (CVC4: 1 VC)
-algorithm.adb:549:54: medium: float overflow check might fail [possible explanation: loop invariant at line 537 should mention deltaAreaSum and obstacleAvoidDelta]
+algorithm.adb:549:54: medium: float overflow check might fail [possible fix: loop invariant at line 537 should mention deltaAreaSum and obstacleAvoidDelta]
 algorithm.adb:558:07: info: initialization of "driveSpeed" proved
 algorithm.adb:559:07: info: initialization of "driveTurnRate" proved
 algorithm.adb:560:07: info: initialization of "relGoal" proved
@@ -198,7 +198,7 @@ algorithm.adb:581:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:589:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:601:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:603:37: info: cannot unroll loop (too many loop iterations)
-algorithm.adb:605:67: medium: float overflow check might fail [possible explanation: loop at line 603 should mention This in a loop invariant]
+algorithm.adb:605:67: medium: float overflow check might fail [possible fix: loop at line 603 should mention This in a loop invariant]
 algorithm.adb:605:101: info: range check proved (Trivial)
 algorithm.adb:605:111: info: division check proved (CVC4: 1 VC)
 algorithm.adb:608:31: info: assertion proved (Trivial: 1 VC)
@@ -213,7 +213,7 @@ algorithm.adb:636:114: info: division check proved (CVC4: 1 VC)
 algorithm.adb:636:114: info: float overflow check proved (Trivial)
 algorithm.adb:645:51: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:647:22: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:648:22: medium: assertion might fail, cannot prove This.robot.robot_radius < This.robot.max_Range [possible explanation: loop at line 603 should mention This in a loop invariant]
+algorithm.adb:648:22: medium: assertion might fail, cannot prove This.robot.robot_radius < This.robot.max_Range [possible fix: loop at line 603 should mention This in a loop invariant]
 algorithm.adb:655:31: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:658:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:661:33: info: loop invariant initialization proved (CVC4: 2 VC)

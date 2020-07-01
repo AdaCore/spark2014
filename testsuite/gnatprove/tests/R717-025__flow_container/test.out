@@ -30,6 +30,6 @@ a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 p.adb:7:09: info: data dependencies proved
 p.adb:13:04: info: initialization of "Set" constituent of "S" proved
 p.adb:13:32: info: range check proved (CVC4: 1 VC)
-p.adb:18:11: medium: precondition might fail, cannot prove Length (Container) < Container.Capacity or Contains (Container, New_Item) [possible explanation: subprogram at p.ads:5 should mention X and Set in a precondition]
+p.adb:18:11: medium: precondition might fail, cannot prove Length (Container) < Container.Capacity or Contains (Container, New_Item) [possible fix: subprogram at p.ads:5 should mention X and Set in a precondition]
 p.ads:1:34: warning: no procedure exists that can initialize abstract state "P.S"
 p.ads:5:34: info: data dependencies proved

@@ -3,12 +3,12 @@ global_access_in.adb:5:04: medium: memory leak might occur at end of scope
 global_access_in.adb:8:04: medium: memory leak might occur at end of scope
 global_access_in.adb:11:04: medium: memory leak might occur at end of scope
 global_access_in.adb:19:11: info: data dependencies proved
-global_access_in.adb:22:17: medium: pointer dereference check might fail [possible explanation: subprogram at line 18 should mention My_Global in a precondition]
+global_access_in.adb:22:17: medium: pointer dereference check might fail [possible fix: subprogram at line 18 should mention My_Global in a precondition]
 global_access_in.adb:26:11: info: data dependencies proved
-global_access_in.adb:30:17: medium: pointer dereference check might fail [possible explanation: subprogram at line 25 should mention My_Global in a precondition]
+global_access_in.adb:30:17: medium: pointer dereference check might fail [possible fix: subprogram at line 25 should mention My_Global in a precondition]
 global_access_in.adb:30:37: info: pointer dereference check proved (CVC4: 1 VC)
 global_access_in.adb:35:11: info: data dependencies proved
-global_access_in.adb:37:17: medium: pointer dereference check might fail [possible explanation: precondition of subprogram at line 33 should mention My_Global]
+global_access_in.adb:37:17: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 33 should mention My_Global]
 global_access_in.adb:37:26: info: pointer dereference check proved (CVC4: 1 VC)
 global_access_in.adb:41:11: info: data dependencies proved
 global_access_in.adb:43:20: info: pointer dereference check proved (CVC4: 1 VC)

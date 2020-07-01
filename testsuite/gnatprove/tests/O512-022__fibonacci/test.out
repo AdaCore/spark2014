@@ -37,7 +37,7 @@ fib.adb:48:17: info: overflow check proved (CVC4: 1 VC)
 fib.adb:63:07: info: initialization of "p" proved
 fib.adb:66:11: info: range check proved (CVC4: 2 VC)
 fib.adb:66:35: info: cannot unroll loop (too many loop iterations)
-fib.adb:67:17: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: loop at line 66 should mention p in a loop invariant]
+fib.adb:67:17: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 66 should mention p in a loop invariant]
 fib.adb:75:11: info: range check proved (CVC4: 2 VC)
 fib.adb:76:33: medium: loop invariant might fail in first iteration, cannot prove p1 = Factorial(i - 1)
 fib.adb:76:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove p1 = Factorial(i - 1)
@@ -130,7 +130,7 @@ fib.ads:41:58: info: index check proved (CVC4: 2 VC)
 fib.ads:42:55: info: index check proved (CVC4: 2 VC)
 fib.ads:42:68: info: index check proved (CVC4: 2 VC)
 fib.ads:43:49: medium: "A1" might not be initialized
-fib.ads:43:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) [possible explanation: loop at fib.adb:139 should mention A2 in a loop invariant]
+fib.ads:43:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) [possible fix: loop at fib.adb:139 should mention A2 in a loop invariant]
 fib.ads:43:57: medium: "A2" might not be initialized
 fib.ads:47:43: medium: "A1" might not be initialized in "ArrayPartitionedTransferSIFL"
 fib.ads:47:47: medium: "A2" might not be initialized in "ArrayPartitionedTransferSIFL"
@@ -139,5 +139,5 @@ fib.ads:51:57: info: index check proved (CVC4: 2 VC)
 fib.ads:52:54: info: index check proved (CVC4: 2 VC)
 fib.ads:52:66: info: index check proved (CVC4: 2 VC)
 fib.ads:53:49: medium: "A1" might not be initialized
-fib.ads:53:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) [possible explanation: loop at fib.adb:157 should mention A2 in a loop invariant]
+fib.ads:53:49: medium: postcondition might fail, cannot prove A1(I) = A2(I) [possible fix: loop at fib.adb:157 should mention A2 in a loop invariant]
 fib.ads:53:57: medium: "A2" might not be initialized

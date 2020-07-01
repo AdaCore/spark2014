@@ -9,9 +9,9 @@ refined_global_illegal.adb:76:14: global refinement of state "State" must includ
 refined_global_illegal.adb:84:14: global refinement of state "State" redefines the mode of its constituents
 refined_global_illegal.adb:92:14: "Output" state "State2" must be replaced by all its constituents in global refinement
 refined_global_illegal.adb:92:14: constituent "Z" is missing in output list
-refined_global_illegal_2.adb:12:16: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at refined_global_illegal_2.ads:6 should mention X in a precondition]
+refined_global_illegal_2.adb:12:16: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at refined_global_illegal_2.ads:6 should mention X in a precondition]
 refined_global_illegal_2.adb:12:18: high: "Y" constituent of "State" must be listed in the Refined_Global aspect of "P1" (SPARK RM 6.1.4(14))
-refined_global_illegal_2.adb:20:16: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at refined_global_illegal_2.ads:12 should mention X in a precondition]
+refined_global_illegal_2.adb:20:16: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at refined_global_illegal_2.ads:12 should mention X in a precondition]
 refined_global_illegal_2.adb:20:18: high: "Y" constituent of "State" must be listed in the Refined_Global aspect of "P2" (SPARK RM 6.1.4(14))
-refined_global_illegal_2.adb:21:16: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at refined_global_illegal_2.ads:12 should mention X in a precondition]
+refined_global_illegal_2.adb:21:16: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at refined_global_illegal_2.ads:12 should mention X in a precondition]
 refined_global_illegal_2.ads:4:08: info: flow dependencies proved

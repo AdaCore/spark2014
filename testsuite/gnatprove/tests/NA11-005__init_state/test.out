@@ -1,4 +1,4 @@
-p.adb:16:14: medium: overflow check might fail (e.g. when S = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p.ads:9 should mention S in a precondition]
+p.adb:16:14: medium: overflow check might fail (e.g. when S = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:9 should mention S in a precondition]
 p.adb:20:35: info: initialization of "S3" constituent of "State3" proved
 p.ads:3:22: warning: no procedure exists that can initialize abstract state "P.State"
 p.ads:7:03: info: flow dependencies proved

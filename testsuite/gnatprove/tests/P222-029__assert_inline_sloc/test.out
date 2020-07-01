@@ -4,5 +4,5 @@ main1.adb:3:14: warning: subprogram "Dummy" has no effect
 main1.adb:6:22: medium: assertion might fail, cannot prove X /= 0, in call inlined at main1.adb:12
 main2.adb:3:04: warning: analyzing unreferenced procedure "Dummy"
 main2.adb:3:14: warning: subprogram "Dummy" has no effect
-main2.adb:6:22: medium: assertion might fail, cannot prove X /= 0 [possible explanation: subprogram at line 3 should mention X in a precondition]
+main2.adb:6:22: medium: assertion might fail, cannot prove X /= 0 [possible fix: subprogram at line 3 should mention X in a precondition]
 main2.adb:12:19: medium: assertion might fail, cannot prove G /= 0

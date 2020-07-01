@@ -1,4 +1,4 @@
-body_contract.adb:4:28: medium: assertion might fail, cannot prove X > 0 [possible explanation: subprogram at body_contract.ads:3 should mention X in a precondition]
+body_contract.adb:4:28: medium: assertion might fail, cannot prove X > 0 [possible fix: subprogram at body_contract.ads:3 should mention X in a precondition]
 body_contract.adb:5:29: info: assertion proved (CVC4: 1 VC)
 body_contract.adb:5:39: info: overflow check proved (CVC4: 1 VC)
 body_contract.adb:7:14: info: overflow check proved (CodePeer)

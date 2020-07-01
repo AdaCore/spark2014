@@ -20,4 +20,4 @@ days.adb:20:12: info: predicate check proved (CVC4: 1 VC)
 main.adb:5:07: medium: predicate check might fail
 main.adb:6:07: medium: predicate check might fail
 main.adb:7:26: info: range check proved (CVC4: 1 VC)
-messages.adb:6:12: medium: predicate check might fail (e.g. when M = (Sent => (10 => 'SOH', others => 'NUL'), Received => (10 => 'NUL', others => 'SOH'))) [possible explanation: subprogram at messages.ads:12 should mention M in a precondition]
+messages.adb:6:12: medium: predicate check might fail (e.g. when M = (Sent => (10 => 'SOH', others => 'NUL'), Received => (10 => 'NUL', others => 'SOH'))) [possible fix: subprogram at messages.ads:12 should mention M in a precondition]

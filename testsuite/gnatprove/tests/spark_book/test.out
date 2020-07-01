@@ -98,17 +98,17 @@ bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
 bounded_queue_example_v1.adb:11:40: info: cannot unroll loop (too many loop iterations)
-bounded_queue_example_v1.adb:12:07: medium: precondition might fail, cannot prove not Full (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
+bounded_queue_example_v1.adb:12:07: medium: precondition might fail, cannot prove not Full (Queue) [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v1.adb:14:38: info: unrolling loop
-bounded_queue_example_v1.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
+bounded_queue_example_v1.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v1.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:6:04: info: initialization of "My_Queue" proved
 bounded_queue_example_v2.adb:6:56: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:7:04: info: initialization of "Value" proved
 bounded_queue_example_v2.adb:11:40: info: cannot unroll loop (too many loop iterations)
-bounded_queue_example_v2.adb:12:07: medium: precondition might fail, cannot prove not Full (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
+bounded_queue_example_v2.adb:12:07: medium: precondition might fail, cannot prove not Full (Queue) [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v2.adb:14:38: info: unrolling loop
-bounded_queue_example_v2.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
+bounded_queue_example_v2.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible fix: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v2.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_v1.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
 bounded_queue_v1.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
@@ -893,7 +893,7 @@ silly.adb:6:26: info: division check proved (CVC4: 1 VC)
 silly.adb:12:22: info: division check proved (CVC4: 1 VC)
 simple_math.adb:6:07: info: initialization of "Q" proved
 simple_math.adb:7:07: info: initialization of "R" proved
-simple_math.adb:12:19: medium: divide by zero might fail [possible explanation: loop at line 11 should mention Q in a loop invariant]
+simple_math.adb:12:19: medium: divide by zero might fail [possible fix: loop at line 11 should mention Q in a loop invariant]
 simple_math.adb:14:25: info: division check proved (CVC4: 1 VC)
 simple_math.adb:17:14: info: range check proved (CVC4: 1 VC)
 sorted_arrays2.ads:13:21: info: function contract not available for proof ("Is_Sorted" might not return)
@@ -1201,9 +1201,9 @@ very_longs-divide.adb:119:44: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:119:44: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:119:81: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:119:85: info: index check proved (CVC4: 2 VC)
-very_longs-divide.adb:120:32: medium: divide by zero might fail [possible explanation: precondition of subprogram at line 109 should mention V]
+very_longs-divide.adb:120:32: medium: divide by zero might fail [possible fix: precondition of subprogram at line 109 should mention V]
 very_longs-divide.adb:120:61: info: index check proved (CVC4: 2 VC)
-very_longs-divide.adb:123:32: medium: divide by zero might fail [possible explanation: precondition of subprogram at line 109 should mention V]
+very_longs-divide.adb:123:32: medium: divide by zero might fail [possible fix: precondition of subprogram at line 109 should mention V]
 very_longs-divide.adb:123:63: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:127:47: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:128:56: info: overflow check proved (CVC4: 1 VC)
@@ -1400,7 +1400,7 @@ very_longs.adb:300:65: info: index check proved (CVC4: 2 VC)
 very_longs.adb:302:37: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:302:41: info: index check proved (CVC4: 2 VC)
 very_longs.adb:312:07: info: initialization of "Result" proved
-very_longs.adb:312:36: medium: range check might fail [possible explanation: subprogram at very_longs.ads:61 should mention L and R in a precondition]
+very_longs.adb:312:36: medium: range check might fail [possible fix: subprogram at very_longs.ads:61 should mention L and R in a precondition]
 very_longs.adb:313:07: info: initialization of "L_Digit" proved
 very_longs.adb:314:07: info: initialization of "R_Digit" proved
 very_longs.adb:315:07: info: initialization of "T_Digit" proved

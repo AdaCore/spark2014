@@ -47,7 +47,7 @@ simple_unc_arrays.adb:66:73: info: index check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:68:24: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:69:25: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:83:28: info: cannot unroll loop (too many loop iterations)
-simple_unc_arrays.adb:84:20: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 83 should mention Sum in a loop invariant]
+simple_unc_arrays.adb:84:20: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 83 should mention Sum in a loop invariant]
 simple_unc_arrays.adb:84:27: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:87:18: info: division check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:98:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -68,9 +68,9 @@ simple_unc_arrays.adb:143:35: medium: overflow check might fail [reason for chec
 simple_unc_arrays.adb:143:42: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 simple_unc_arrays.adb:143:47: info: division check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:144:33: medium: array index check might fail [reason for check: value must be a valid index into the array]
-simple_unc_arrays.adb:153:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: loop at line 147 should mention Left in a loop invariant]
+simple_unc_arrays.adb:153:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Left in a loop invariant]
 simple_unc_arrays.adb:154:32: info: overflow check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:157:50: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: loop at line 147 should mention Right in a loop invariant]
+simple_unc_arrays.adb:157:50: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Right in a loop invariant]
 simple_unc_arrays.adb:158:34: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:163:16: info: precondition proved (CVC4: 4 VC)
 simple_unc_arrays.adb:163:33: info: range check proved (CVC4: 1 VC)
@@ -118,7 +118,7 @@ simple_unc_arrays.ads:85:67: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:85:67: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.ads:88:26: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:88:53: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.ads:96:51: medium: postcondition might fail, cannot prove A.V (J) <= A.V (J+1) [possible explanation: call at simple_unc_arrays.adb:184 should mention A in a postcondition]
+simple_unc_arrays.ads:96:51: medium: postcondition might fail, cannot prove A.V (J) <= A.V (J+1) [possible fix: call at simple_unc_arrays.adb:184 should mention A in a postcondition]
 simple_unc_arrays.ads:96:56: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:96:68: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:96:68: info: overflow check proved (CVC4: 1 VC)

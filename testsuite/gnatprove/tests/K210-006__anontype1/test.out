@@ -4,7 +4,7 @@ anon_type.adb:26:07: warning: initialization of "Ten_Characters" has no effect
 anon_type.adb:29:07: warning: unused variable "My_Array1"
 anon_type.adb:30:07: warning: unused variable "My_Array2"
 anon_type.adb:32:13: warning: unused assignment
-anon_type.adb:33:25: medium: overflow check might fail (e.g. when Var_In = Integer'Last and Var_Out = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at anon_type.ads:6 should mention Var_In in a precondition]
-anon_type.adb:33:25: medium: range check might fail (e.g. when Var_In = -2 and Var_Out = 0) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at anon_type.ads:6 should mention Var_In in a precondition]
+anon_type.adb:33:25: medium: overflow check might fail (e.g. when Var_In = Integer'Last and Var_Out = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at anon_type.ads:6 should mention Var_In in a precondition]
+anon_type.adb:33:25: medium: range check might fail (e.g. when Var_In = -2 and Var_Out = 0) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at anon_type.ads:6 should mention Var_In in a precondition]
 anon_type.ads:7:19: info: postcondition proved (CVC4: 1 VC)
 anon_type.ads:7:45: info: overflow check proved (CVC4: 1 VC)

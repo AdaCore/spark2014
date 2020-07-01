@@ -16,9 +16,9 @@ ident.adb:44:22: medium: assertion might fail, cannot prove Res = X (e.g. when R
 ident.adb:46:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 11 and X = 10)
 ident.adb:48:22: info: assertion proved (CVC4: 1 VC)
 ident.adb:50:20: info: range check proved (CVC4: 1 VC)
-ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible explanation: call at line 50 should mention Y (for argument Y) in a postcondition]
+ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible fix: call at line 50 should mention Y (for argument Y) in a postcondition]
 ident.adb:52:21: info: range check proved (CVC4: 1 VC)
-ident.adb:53:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible explanation: call at line 52 should mention Y (for argument Y) in a postcondition]
+ident.adb:53:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible fix: call at line 52 should mention Y (for argument Y) in a postcondition]
 ident.adb:54:18: info: range check proved (CVC4: 1 VC)
 ident.adb:55:22: info: assertion proved (CVC4: 1 VC)
 ident.ads:5:44: info: initialization of "Y" proved

@@ -74,10 +74,10 @@ package body Flow_Error_Messages is
    --  detailed message explaining why this check is issued (typically in the
    --  case of a length/range/overflow/index check), or the empty string.
 
-   function Get_Explanation (N : Node_Id; Tag : VC_Kind) return String;
+   function Get_Fix (N : Node_Id; Tag : VC_Kind) return String;
    --  @param N node associated to an unproved check
    --  @param Tag associated unproved check
-   --  @result message part explaining why the check was not proved
+   --  @result message part suggesting a fix to make the unproved check proved
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
    --  Transform the msg kind into a string, for the JSON output
@@ -718,9 +718,7 @@ package body Flow_Error_Messages is
             else
                declare
                   Details : constant String := Get_Details (N, Tag);
-                  Expl    : constant String :=
-                    (if Explanation = "" then Get_Explanation (N, Tag)
-                     else Explanation);
+                  Fix     : constant String := Get_Fix (N, Tag);
                begin
                   --  Only display message details when outputting on one line,
                   --  either as part of automatic testing or inside an IDE, to
@@ -733,9 +731,13 @@ package body Flow_Error_Messages is
                        Message & " [reason for check: " & Details & "]";
                   end if;
 
-                  if Expl /= "" then
-                     Message :=
-                       Message & " [possible explanation: " & Expl & "]";
+                  if Explanation /= "" then
+                     Message := Message
+                       & " [possible explanation: " & Explanation & "]";
+                  end if;
+
+                  if Fix /= "" then
+                     Message := Message & " [possible fix: " & Fix & "]";
                   end if;
 
                   Msg_Id :=
@@ -1085,11 +1087,11 @@ package body Flow_Error_Messages is
       end case;
    end Get_Details;
 
-   ---------------------
-   -- Get_Explanation --
-   ---------------------
+   -------------
+   -- Get_Fix --
+   -------------
 
-   function Get_Explanation (N : Node_Id; Tag : VC_Kind) return String is
+   function Get_Fix (N : Node_Id; Tag : VC_Kind) return String is
 
       -----------------------
       -- Local subprograms --
@@ -1614,7 +1616,7 @@ package body Flow_Error_Messages is
       --  It is fine to use this function here even if not always correct, as
       --  it's only used for adding or not an explanation.
 
-   --  Start of processing for Get_Explanation
+   --  Start of processing for Get_Fix
 
    begin
 
@@ -1642,6 +1644,14 @@ package body Flow_Error_Messages is
             end if;
             return "";
          end;
+
+      --  Do not try to generate a fix message for static checks on validity of
+      --  Unchecked_Conversion, as these already have a sufficient explanation
+      --  and Flow_Utility.Get_Variables_For_Proof cannot be called on such
+      --  nodes.
+
+      elsif Tag in VC_UC_No_Holes | VC_UC_Same_Size then
+         return "";
       end if;
 
       --  Adjust the enclosing subprogram entity
@@ -2225,7 +2235,7 @@ package body Flow_Error_Messages is
             return "";
          end;
       end if;
-   end Get_Explanation;
+   end Get_Fix;
 
    -------------------
    -- Get_Flow_JSON --

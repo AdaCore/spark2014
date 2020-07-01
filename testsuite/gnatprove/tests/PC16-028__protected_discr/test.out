@@ -1,1 +1,1 @@
-prot.adb:10:24: medium: overflow check might fail (e.g. when X = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at prot.ads:7 should mention X in a precondition]
+prot.adb:10:24: medium: overflow check might fail (e.g. when X = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:7 should mention X in a precondition]

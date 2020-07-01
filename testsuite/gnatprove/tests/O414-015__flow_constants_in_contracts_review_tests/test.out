@@ -28,7 +28,7 @@ info_flow_tests.adb:56:12: info: flow dependencies proved
 info_flow_tests.adb:60:26: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:61:26: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:69:11: info: data dependencies proved
-info_flow_tests.adb:72:54: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 72 should mention A and X in a precondition]
+info_flow_tests.adb:72:54: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 72 should mention A and X in a precondition]
 info_flow_tests.adb:74:14: info: data dependencies proved
 info_flow_tests.adb:76:14: info: flow dependencies proved
 info_flow_tests.adb:79:22: info: postcondition proved (CVC4: 1 VC)
@@ -48,7 +48,7 @@ info_flow_tests.adb:93:33: medium: overflow check might fail [reason for check: 
 info_flow_tests.adb:93:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:93:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 info_flow_tests.adb:100:09: info: data dependencies proved
-info_flow_tests.adb:103:54: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 103 should mention A and X in a precondition]
+info_flow_tests.adb:103:54: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 103 should mention A and X in a precondition]
 info_flow_tests.adb:105:14: info: data dependencies proved
 info_flow_tests.adb:107:14: info: flow dependencies proved
 info_flow_tests.adb:110:22: info: postcondition proved (CVC4: 1 VC)
@@ -101,5 +101,5 @@ info_flow_tests.adb:241:12: info: flow dependencies proved
 info_flow_tests.adb:249:12: medium: constant without variable input "C3" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 info_flow_tests.adb:257:28: medium: constant without variable input "C5" cannot appear in Initializes
 info_flow_tests.adb:257:34: medium: constant without variable input "C1" cannot appear in Initializes
-info_flow_tests.adb:265:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 234 should mention A in a precondition]
+info_flow_tests.adb:265:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 234 should mention A in a precondition]
 info_flow_tests.adb:266:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]

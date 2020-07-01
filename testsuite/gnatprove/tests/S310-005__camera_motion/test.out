@@ -27,8 +27,8 @@ camera_motion.adb:38:10: info: initialization of "y" proved
 camera_motion.adb:38:10: info: initialization of "y" proved, in call inlined at camera_motion.adb:184
 camera_motion.adb:41:26: medium: overflow check might fail, in call inlined at camera_motion.adb:184
 camera_motion.adb:48:29: medium: overflow check might fail, in call inlined at camera_motion.adb:184
-camera_motion.adb:54:24: medium: overflow check might fail, in call inlined at camera_motion.adb:184 [possible explanation: subprogram at line 174 should mention Filter and Image in a precondition]
-camera_motion.adb:54:58: medium: overflow check might fail, in call inlined at camera_motion.adb:184 [possible explanation: subprogram at line 174 should mention Filter and Image in a precondition]
+camera_motion.adb:54:24: medium: overflow check might fail, in call inlined at camera_motion.adb:184 [possible fix: subprogram at line 174 should mention Filter and Image in a precondition]
+camera_motion.adb:54:58: medium: overflow check might fail, in call inlined at camera_motion.adb:184 [possible fix: subprogram at line 174 should mention Filter and Image in a precondition]
 camera_motion.adb:54:76: info: index check proved (CVC4: 2 VC), in call inlined at camera_motion.adb:184
 camera_motion.adb:54:79: info: index check proved (CVC4: 2 VC), in call inlined at camera_motion.adb:184
 camera_motion.adb:76:27: info: range check proved (CVC4: 1 VC), in instantiation at camera_motion.adb:80
@@ -109,9 +109,9 @@ camera_motion.adb:228:07: warning: initialization of "Weighted_Stddev_X" has no 
 camera_motion.adb:229:07: warning: initialization of "Weighted_Stddev_Y" has no effect
 camera_motion.adb:230:07: info: initialization of "Stats" proved
 camera_motion.adb:233:16: info: length check proved (CVC4: 6 VC; Trivial: 1 VC)
-camera_motion.adb:233:19: medium: length check might fail [possible explanation: subprogram at camera_motion.ads:15 should mention Ref_Image in a precondition]
+camera_motion.adb:233:19: medium: length check might fail [possible fix: subprogram at camera_motion.ads:15 should mention Ref_Image in a precondition]
 camera_motion.adb:234:16: info: length check proved (CVC4: 6 VC; Trivial: 1 VC)
-camera_motion.adb:234:19: medium: length check might fail [possible explanation: subprogram at camera_motion.ads:15 should mention New_Image in a precondition]
+camera_motion.adb:234:19: medium: length check might fail [possible fix: subprogram at camera_motion.ads:15 should mention New_Image in a precondition]
 camera_motion.adb:237:18: info: length check proved (CVC4: 6 VC; Trivial: 1 VC)
 camera_motion.adb:237:21: medium: length check might fail
 camera_motion.adb:240:16: info: cannot unroll loop (too many loop iterations)
@@ -132,48 +132,48 @@ camera_motion.adb:246:37: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:247:46: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:248:44: medium: array index check might fail
 camera_motion.adb:248:49: medium: array index check might fail
-camera_motion.adb:249:34: medium: overflow check might fail [possible explanation: loop at line 247 should mention Diff and Diff_Sum in a loop invariant]
-camera_motion.adb:251:40: medium: overflow check might fail [possible explanation: loop at line 247 should mention Diff and Sum_Weights in a loop invariant]
-camera_motion.adb:252:46: medium: overflow check might fail [possible explanation: loop at line 247 should mention Diff and Weighted_Sum_X in a loop invariant]
-camera_motion.adb:252:63: medium: overflow check might fail [possible explanation: loop at line 247 should mention Diff in a loop invariant]
-camera_motion.adb:253:46: medium: overflow check might fail [possible explanation: loop at line 247 should mention Diff and Weighted_Sum_Y in a loop invariant]
-camera_motion.adb:253:63: medium: overflow check might fail [possible explanation: loop at line 247 should mention Diff in a loop invariant]
+camera_motion.adb:249:34: medium: overflow check might fail [possible fix: loop at line 247 should mention Diff and Diff_Sum in a loop invariant]
+camera_motion.adb:251:40: medium: overflow check might fail [possible fix: loop at line 247 should mention Diff and Sum_Weights in a loop invariant]
+camera_motion.adb:252:46: medium: overflow check might fail [possible fix: loop at line 247 should mention Diff and Weighted_Sum_X in a loop invariant]
+camera_motion.adb:252:63: medium: overflow check might fail [possible fix: loop at line 247 should mention Diff in a loop invariant]
+camera_motion.adb:253:46: medium: overflow check might fail [possible fix: loop at line 247 should mention Diff and Weighted_Sum_Y in a loop invariant]
+camera_motion.adb:253:63: medium: overflow check might fail [possible fix: loop at line 247 should mention Diff in a loop invariant]
 camera_motion.adb:258:59: medium: overflow check might fail
 camera_motion.adb:258:92: info: division check proved (CVC4: 1 VC)
 camera_motion.adb:259:59: medium: overflow check might fail
 camera_motion.adb:259:92: info: division check proved (CVC4: 1 VC)
 camera_motion.adb:261:44: info: division check proved (CVC4: 1 VC)
-camera_motion.adb:261:44: medium: overflow check might fail [possible explanation: loop at line 246 should mention Sum_Weights and Weighted_Sum_X in a loop invariant]
+camera_motion.adb:261:44: medium: overflow check might fail [possible fix: loop at line 246 should mention Sum_Weights and Weighted_Sum_X in a loop invariant]
 camera_motion.adb:262:44: info: division check proved (CVC4: 1 VC)
-camera_motion.adb:262:44: medium: overflow check might fail [possible explanation: loop at line 246 should mention Sum_Weights and Weighted_Sum_Y in a loop invariant]
+camera_motion.adb:262:44: medium: overflow check might fail [possible fix: loop at line 246 should mention Sum_Weights and Weighted_Sum_Y in a loop invariant]
 camera_motion.adb:266:37: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:267:46: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:268:19: info: overflow check proved (CVC4: 1 VC)
 camera_motion.adb:268:38: medium: overflow check might fail
 camera_motion.adb:269:19: info: overflow check proved (CVC4: 1 VC)
 camera_motion.adb:269:38: medium: overflow check might fail
-camera_motion.adb:271:46: medium: overflow check might fail [possible explanation: loop at line 267 should mention vx and Weighted_Var_X in a loop invariant]
-camera_motion.adb:272:30: medium: overflow check might fail [possible explanation: loop at line 267 should mention vx in a loop invariant]
+camera_motion.adb:271:46: medium: overflow check might fail [possible fix: loop at line 267 should mention vx and Weighted_Var_X in a loop invariant]
+camera_motion.adb:272:30: medium: overflow check might fail [possible fix: loop at line 267 should mention vx in a loop invariant]
 camera_motion.adb:272:35: info: range check proved (CVC4: 1 VC)
-camera_motion.adb:272:35: medium: overflow check might fail [possible explanation: loop at line 267 should mention vx in a loop invariant]
+camera_motion.adb:272:35: medium: overflow check might fail [possible fix: loop at line 267 should mention vx in a loop invariant]
 camera_motion.adb:272:60: medium: array index check might fail
 camera_motion.adb:272:65: medium: array index check might fail
-camera_motion.adb:273:46: medium: overflow check might fail [possible explanation: loop at line 267 should mention vy and Weighted_Var_Y in a loop invariant]
-camera_motion.adb:274:30: medium: overflow check might fail [possible explanation: loop at line 267 should mention vy in a loop invariant]
+camera_motion.adb:273:46: medium: overflow check might fail [possible fix: loop at line 267 should mention vy and Weighted_Var_Y in a loop invariant]
+camera_motion.adb:274:30: medium: overflow check might fail [possible fix: loop at line 267 should mention vy in a loop invariant]
 camera_motion.adb:274:35: info: range check proved (CVC4: 1 VC)
-camera_motion.adb:274:35: medium: overflow check might fail [possible explanation: loop at line 267 should mention vy in a loop invariant]
+camera_motion.adb:274:35: medium: overflow check might fail [possible fix: loop at line 267 should mention vy in a loop invariant]
 camera_motion.adb:274:60: info: index check proved (CVC4: 2 VC)
 camera_motion.adb:274:65: info: index check proved (CVC4: 2 VC)
 camera_motion.adb:282:43: info: division check proved (CVC4: 1 VC)
-camera_motion.adb:282:57: medium: range check might fail [possible explanation: loop at line 246 should mention Sum_Weights in a loop invariant]
+camera_motion.adb:282:57: medium: range check might fail [possible fix: loop at line 246 should mention Sum_Weights in a loop invariant]
 camera_motion.adb:283:43: info: division check proved (CVC4: 1 VC)
 camera_motion.adb:283:57: info: range check proved (CVC4: 1 VC)
 camera_motion.adb:287:28: info: in inlined body at line 24
 camera_motion.adb:287:28: info: unrolling loop
-camera_motion.adb:287:43: medium: range check might fail [possible explanation: loop at line 266 should mention Weighted_Var_X in a loop invariant]
+camera_motion.adb:287:43: medium: range check might fail [possible fix: loop at line 266 should mention Weighted_Var_X in a loop invariant]
 camera_motion.adb:288:28: info: in inlined body at line 24
 camera_motion.adb:288:28: info: unrolling loop
-camera_motion.adb:288:43: medium: range check might fail [possible explanation: loop at line 266 should mention Weighted_Var_Y in a loop invariant]
+camera_motion.adb:288:43: medium: range check might fail [possible fix: loop at line 266 should mention Weighted_Var_Y in a loop invariant]
 camera_motion.adb:291:14: info: initialization of "Motion" proved
 camera_motion.adb:293:31: medium: range check might fail
 camera_motion.adb:294:31: medium: range check might fail

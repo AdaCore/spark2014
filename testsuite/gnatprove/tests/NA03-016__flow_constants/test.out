@@ -2,6 +2,6 @@ raster_graphics.adb:10:14: info: data dependencies proved
 raster_graphics.adb:11:35: info: initialization of "Status" proved
 raster_graphics.adb:13:39: medium: range check might fail [reason for check: default component value must fit in the type]
 raster_graphics.adb:14:39: medium: range check might fail [reason for check: default component value must fit in the type]
-raster_graphics.adb:29:41: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at raster_graphics.ads:16 should mention Line_Count in a precondition]
+raster_graphics.adb:29:41: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at raster_graphics.ads:16 should mention Line_Count in a precondition]
 raster_graphics.ads:17:11: info: data dependencies proved
 raster_graphics.ads:18:32: info: initialization of "Status" proved

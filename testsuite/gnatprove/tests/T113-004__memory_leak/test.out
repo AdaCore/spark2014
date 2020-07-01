@@ -115,12 +115,12 @@ dealloc.adb:118:18: info: pointer dereference check proved (CVC4: 1 VC)
 dealloc.adb:118:22: info: pointer dereference check proved (CVC4: 1 VC)
 dealloc.adb:119:07: medium: memory leak might occur
 glob.adb:5:09: info: absence of memory leak proved (CVC4: 1 VC)
-glob.adb:6:09: medium: memory leak might occur [possible explanation: subprogram at glob.ads:9 should mention Z in a precondition]
+glob.adb:6:09: medium: memory leak might occur [possible fix: subprogram at glob.ads:9 should mention Z in a precondition]
 glob.adb:12:07: medium: memory leak might occur
 glob.adb:17:07: medium: memory leak might occur
 glob.adb:22:09: info: absence of memory leak proved (CVC4: 1 VC)
-glob.adb:23:12: medium: pointer dereference check might fail (e.g. when X = null) [possible explanation: subprogram at glob.ads:14 should mention X in a precondition]
-glob.adb:24:12: medium: memory leak might occur [possible explanation: subprogram at glob.ads:14 should mention Z in a precondition]
+glob.adb:23:12: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at glob.ads:14 should mention X in a precondition]
+glob.adb:24:12: medium: memory leak might occur [possible fix: subprogram at glob.ads:14 should mention Z in a precondition]
 glob.adb:30:09: info: initial condition proved (CVC4: 3 VC)
 glob.adb:32:10: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 glob.adb:32:10: info: initialization of "X" proved
@@ -165,7 +165,7 @@ pointers.adb:35:07: info: absence of memory leak at end of scope proved (CVC4: 1
 pointers.adb:35:07: info: initialization of "Loc" proved
 pointers.adb:35:07: info: range check proved (CVC4: 2 VC)
 pointers.adb:37:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-pointers.adb:37:09: medium: memory leak might occur [possible explanation: subprogram at line 32 should mention X in a precondition]
+pointers.adb:37:09: medium: memory leak might occur [possible fix: subprogram at line 32 should mention X in a precondition]
 pointers.adb:41:06: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:43:06: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:43:06: warning: unused assignment

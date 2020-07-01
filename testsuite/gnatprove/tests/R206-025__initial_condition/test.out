@@ -1,2 +1,2 @@
-p.adb:5:19: medium: assertion might fail, cannot prove Q.x [possible explanation: subprogram at line 3 should mention X in a precondition]
+p.adb:5:19: medium: assertion might fail, cannot prove Q.x [possible fix: subprogram at line 3 should mention X in a precondition]
 q.ads:1:16: info: initial condition proved (CVC4: 1 VC)

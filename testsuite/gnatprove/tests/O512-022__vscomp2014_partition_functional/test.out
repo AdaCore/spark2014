@@ -143,10 +143,10 @@ partition_refinement.adb:135:07: info: initialization of "P_Elem" proved
 partition_refinement.adb:135:15: info: initialization of "P_Prime" proved
 partition_refinement.adb:136:07: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:143:59: info: cannot unroll loop (too many loop iterations)
-partition_refinement.adb:149:20: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) [possible explanation: loop at line 143 should mention P in a loop invariant]
+partition_refinement.adb:149:20: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) [possible fix: loop at line 143 should mention P in a loop invariant]
 partition_refinement.adb:151:56: info: range check proved (CVC4: 1 VC)
 partition_refinement.adb:154:56: info: range check proved (CVC4: 1 VC)
-partition_refinement.adb:157:13: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) [possible explanation: loop at line 143 should mention P in a loop invariant]
+partition_refinement.adb:157:13: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) [possible fix: loop at line 143 should mention P in a loop invariant]
 partition_refinement.adb:162:50: medium: range check might fail
 partition_refinement.adb:163:16: medium: precondition might fail, cannot prove Length (Container) < Capacity (Container)
 partition_refinement.adb:164:31: info: assertion proved (CVC4: 1 VC)
@@ -233,9 +233,9 @@ partition_refinement.adb:201:156: info: range check proved (CVC4: 1 VC)
 partition_refinement.adb:201:167: medium: assertion might fail, cannot prove F(L) = K
 partition_refinement.adb:201:169: info: index check proved (CVC4: 2 VC)
 partition_refinement.adb:208:25: info: assertion proved (CVC4: 1 VC)
-partition_refinement.adb:209:25: medium: assertion might fail [possible explanation: loop at line 143 should mention P in a loop invariant]
-partition_refinement.adb:211:25: medium: assertion might fail [possible explanation: loop at line 143 should mention F and P in a loop invariant]
-partition_refinement.adb:212:47: medium: assertion might fail, cannot prove K in Element (P, F(K)).First .. Element (P, F(K)).Last [possible explanation: loop at line 143 should mention F and P in a loop invariant]
+partition_refinement.adb:209:25: medium: assertion might fail [possible fix: loop at line 143 should mention P in a loop invariant]
+partition_refinement.adb:211:25: medium: assertion might fail [possible fix: loop at line 143 should mention F and P in a loop invariant]
+partition_refinement.adb:212:47: medium: assertion might fail, cannot prove K in Element (P, F(K)).First .. Element (P, F(K)).Last [possible fix: loop at line 143 should mention F and P in a loop invariant]
 partition_refinement.adb:212:52: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:212:79: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:213:93: info: range check proved (CVC4: 2 VC)
@@ -243,7 +243,7 @@ partition_refinement.adb:213:110: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:213:122: info: range check proved (CVC4: 1 VC)
 partition_refinement.adb:213:134: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:213:146: info: range check proved (CVC4: 1 VC)
-partition_refinement.adb:213:157: medium: assertion might fail, cannot prove F(L) = K [possible explanation: loop at line 143 should mention F in a loop invariant]
+partition_refinement.adb:213:157: medium: assertion might fail, cannot prove F(L) = K [possible fix: loop at line 143 should mention F in a loop invariant]
 partition_refinement.adb:213:159: info: index check proved (CVC4: 2 VC)
 partition_refinement.adb:244:25: info: assertion proved (CVC4: 2 VC)
 partition_refinement.adb:244:55: info: precondition proved (CVC4: 2 VC)

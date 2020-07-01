@@ -2,4 +2,4 @@ p.adb:7:12: warning: subprogram "P" has no effect
 p.adb:10:28: info: analyzing call to "P" in context
 p.adb:10:28: info: no contextual analysis of call to recursive subprogram
 p.adb:10:31: info: range check proved (CVC4: 1 VC)
-p.adb:11:31: medium: range check might fail (e.g. when V = 25) [reason for check: input value must fit in parameter type] [possible explanation: subprogram at line 7 should mention V in a precondition]
+p.adb:11:31: medium: range check might fail (e.g. when V = 25) [reason for check: input value must fit in parameter type] [possible fix: subprogram at line 7 should mention V in a precondition]

@@ -1,12 +1,12 @@
 outer.adb:4:32: info: initialization of "Nested.State" proved
 outer.adb:5:14: info: flow dependencies proved
-outer.adb:18:51: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention Nested_Var and Nested_Var2 in a precondition]
-outer.adb:18:65: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention Nested_Var and Nested_Var2 and Used in a precondition]
+outer.adb:18:51: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention Nested_Var and Nested_Var2 in a precondition]
+outer.adb:18:65: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention Nested_Var and Nested_Var2 and Used in a precondition]
 outer.adb:30:10: low: initialization of "Unused" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
 outer.adb:36:10: low: initialization of "Nested_Var" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
 outer.adb:37:10: low: initialization of "Nested_Var2" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
-outer.adb:39:51: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 32 should mention Nested_Var and Nested_Var2 in a precondition]
-outer.adb:39:65: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 32 should mention Nested_Var and Nested_Var2 and Used in a precondition]
+outer.adb:39:51: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 32 should mention Nested_Var and Nested_Var2 in a precondition]
+outer.adb:39:65: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 32 should mention Nested_Var and Nested_Var2 and Used in a precondition]
 outer.adb:41:22: warning: unused assignment
 outer.adb:45:18: high: "Nested_Var2" is not initialized
 outer.adb:51:10: info: initialization of "Unused" proved, in instantiation at outer.adb:60
@@ -14,8 +14,8 @@ outer.adb:57:25: info: assertion proved (CVC4: 1 VC), in instantiation at outer.
 outer.adb:69:10: info: initialization of "Used" proved
 outer.adb:75:10: low: initialization of "Nested_Var" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
 outer.adb:76:10: low: initialization of "Nested_Var2" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
-outer.adb:78:51: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 71 should mention Nested_Var and Nested_Var2 in a precondition]
-outer.adb:78:65: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 71 should mention Nested_Var and Nested_Var2 and Used in a precondition]
+outer.adb:78:51: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 71 should mention Nested_Var and Nested_Var2 in a precondition]
+outer.adb:78:65: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 71 should mention Nested_Var and Nested_Var2 and Used in a precondition]
 outer.ads:2:17: info: initialization of "X" proved
 outer.ads:4:18: info: initialization of "X" proved
 outer.ads:6:14: warning: subprogram "P3" has no effect

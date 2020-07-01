@@ -6,4 +6,4 @@ foo.adb:27:04: warning: analyzing unreferenced procedure "Test_01_Ok"
 foo.adb:30:10: info: discriminant check proved (CVC4: 1 VC)
 foo.adb:30:28: info: discriminant check proved (CVC4: 1 VC)
 foo.adb:36:08: info: range check proved (CVC4: 1 VC)
-foo.adb:36:10: medium: discriminant check might fail [possible explanation: subprogram at line 33 should mention V in a precondition]
+foo.adb:36:10: medium: discriminant check might fail [possible fix: subprogram at line 33 should mention V in a precondition]

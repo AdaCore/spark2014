@@ -12,7 +12,7 @@ p.adb:24:17: info: overflow check proved (CVC4: 2 VC)
 p.adb:26:28: info: loop variant proved (CVC4: 1 VC)
 p.adb:35:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100) [reason for check: value must be a valid index into the array]
 p.adb:36:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:37:14: medium: overflow check might fail (e.g. when K = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 34 should mention K in a loop invariant]
+p.adb:37:14: medium: overflow check might fail (e.g. when K = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 34 should mention K in a loop invariant]
 p.adb:38:28: info: loop variant proved (CVC4: 1 VC)
 p.adb:39:28: info: loop variant proved (CVC4: 1 VC)
 p.adb:46:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100) [reason for check: value must be a valid index into the array]

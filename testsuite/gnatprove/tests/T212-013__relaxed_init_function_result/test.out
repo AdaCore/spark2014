@@ -11,7 +11,7 @@ test_default.adb:48:21: info: index check proved (CVC4: 2 VC)
 test_default.adb:57:33: info: loop invariant initialization proved (CVC4: 1 VC)
 test_default.adb:57:33: info: loop invariant preservation proved (CVC4: 1 VC)
 test_default.adb:57:65: info: index check proved (CVC4: 4 VC)
-test_default.adb:59:14: medium: initialization check might fail [possible explanation: loop invariant at line 57 should mention R]
+test_default.adb:59:14: medium: initialization check might fail [possible fix: loop invariant at line 57 should mention R]
 test_default.adb:62:57: info: data dependencies proved
 test_default.adb:66:25: medium: assertion might fail (e.g. when A = (others => 1) and A'First = 1 and A'Last = 0)
 test_default.adb:66:26: medium: initialization check might fail

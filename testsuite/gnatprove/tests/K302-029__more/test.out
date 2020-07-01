@@ -1,5 +1,5 @@
 pack.adb:4:17: warning: subprogram "P3" has no effect
-pack.adb:6:15: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at line 4 should mention Y in a precondition]
+pack.adb:6:15: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: subprogram at line 4 should mention Y in a precondition]
 pack.adb:10:07: warning: analyzing unreferenced procedure "P0_Ok"
 pack.adb:10:17: warning: subprogram "P0_Ok" has no effect
 pack.adb:19:07: warning: analyzing unreferenced procedure "P4"

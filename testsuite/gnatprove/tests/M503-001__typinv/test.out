@@ -40,7 +40,7 @@ inside_out.adb:5:14: info: add a contract to analyze it separately from calling 
 inside_out.adb:5:14: info: local subprogram "Body_Update" only analyzed in the context of calls
 inside_out.adb:16:07: medium: invariant check might fail, in call inlined at inside_out.adb:58 (e.g. when X = 0)
 inside_out.adb:20:08: info: implicit function contract not available for proof ("Get" might not return)
-inside_out.adb:20:08: medium: invariant check might fail [possible explanation: subprogram at line 7 should mention X and Mode in a precondition]
+inside_out.adb:20:08: medium: invariant check might fail [possible fix: subprogram at line 7 should mention X and Mode in a precondition]
 inside_out.adb:30:15: info: overflow check proved (CVC4: 1 VC)
 inside_out.adb:45:13: info: analyzing call to "Body_Create" in context
 inside_out.adb:56:13: medium: invariant check might fail (e.g. when X = 0)

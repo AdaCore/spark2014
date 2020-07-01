@@ -4,11 +4,11 @@ put.adb:11:33: info: overflow check proved (CVC4: 1 VC)
 put.adb:16:18: info: division check proved (CVC4: 1 VC)
 put.adb:17:19: info: overflow check proved (CVC4: 1 VC)
 put.adb:17:26: info: division check proved (CVC4: 1 VC)
-put.adb:18:22: medium: range check might fail (e.g. when First = 0) [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: loop at line 13 should mention First in a loop invariant]
-put.adb:19:10: medium: array index check might fail (e.g. when First = 0 and Val = 0) [reason for check: value must be a valid index into the array] [possible explanation: loop at line 13 should mention First in a loop invariant]
+put.adb:18:22: medium: range check might fail (e.g. when First = 0) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 13 should mention First in a loop invariant]
+put.adb:19:10: medium: array index check might fail (e.g. when First = 0 and Val = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 13 should mention First in a loop invariant]
 put.adb:19:55: info: overflow check proved (CVC4: 1 VC)
 put.adb:19:55: info: range check proved (CVC4: 1 VC)
 put.adb:24:22: info: range check proved (CVC4: 1 VC)
-put.adb:25:10: medium: array index check might fail (e.g. when First = 0) [reason for check: value must be a valid index into the array] [possible explanation: loop at line 13 should mention First in a loop invariant]
+put.adb:25:10: medium: array index check might fail (e.g. when First = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 13 should mention First in a loop invariant]
 put.adb:28:09: info: range check proved (CVC4: 4 VC)
 put.adb:28:09: medium: "S" might not be initialized

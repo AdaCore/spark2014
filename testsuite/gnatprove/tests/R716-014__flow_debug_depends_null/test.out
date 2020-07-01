@@ -1,4 +1,4 @@
-p.adb:20:31: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at p.ads:2 should mention Register in a precondition]
+p.adb:20:31: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at p.ads:2 should mention Register in a precondition]
 p.ads:3:20: info: initialization of "Value" proved
 p.ads:6:07: info: data dependencies proved
 p.ads:7:07: info: flow dependencies proved

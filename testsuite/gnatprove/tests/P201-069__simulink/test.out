@@ -8,15 +8,15 @@ abs_controller_oem_with_property.adb:56:43: info: division check proved (CodePee
 abs_controller_oem_with_property.adb:56:43: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 abs_controller_oem_with_property.adb:64:32: info: float overflow check proved (CodePeer)
 abs_controller_oem_with_property.adb:74:71: info: float overflow check proved (CodePeer)
-abs_controller_oem_with_property.adb:88:22: medium: assertion might fail, cannot prove (not ((Vehicle_Speed) = (0.0E+00))) or else ((Sum_out1) = (1.0)) [possible explanation: precondition of subprogram at abs_controller_oem_with_property.ads:17 should mention Vehicle_Speed]
+abs_controller_oem_with_property.adb:88:22: medium: assertion might fail, cannot prove (not ((Vehicle_Speed) = (0.0E+00))) or else ((Sum_out1) = (1.0)) [possible fix: precondition of subprogram at abs_controller_oem_with_property.ads:17 should mention Vehicle_Speed]
 abs_controller_oem_with_property.ads:20:08: info: initialization of "Apply_Brakes" proved
 abs_controller_supplier_with_property.adb:27:07: info: initialization of "Sum_out1" proved
 abs_controller_supplier_with_property.adb:28:07: info: initialization of "Sum_1_out1" proved
 abs_controller_supplier_with_property.adb:29:07: info: initialization of "At_Rest_Switch_out1" proved
 abs_controller_supplier_with_property.adb:30:07: info: initialization of "Sum_1_out1_sat" proved
-abs_controller_supplier_with_property.adb:49:40: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible explanation: subprogram at abs_controller_supplier_with_property.ads:19 should mention Wheel_Speed in a precondition]
+abs_controller_supplier_with_property.adb:49:40: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: subprogram at abs_controller_supplier_with_property.ads:19 should mention Wheel_Speed in a precondition]
 abs_controller_supplier_with_property.adb:49:58: info: overflow check proved (CodePeer)
-abs_controller_supplier_with_property.adb:49:77: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible explanation: subprogram at abs_controller_supplier_with_property.ads:19 should mention Vehicle_Speed in a precondition]
+abs_controller_supplier_with_property.adb:49:77: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: subprogram at abs_controller_supplier_with_property.ads:19 should mention Vehicle_Speed in a precondition]
 abs_controller_supplier_with_property.adb:53:82: medium: overflow check might fail [reason for check: result of subtraction must fit in a 8-bits machine integer]
 abs_controller_supplier_with_property.adb:62:41: info: range check proved (CodePeer)
 abs_controller_supplier_with_property.adb:93:22: info: assertion proved (CVC4: 1 VC)
@@ -26,7 +26,7 @@ assertionproperties.adb:36:22: info: assertion proved (CVC4: 1 VC)
 assertionproperties.adb:43:22: medium: assertion might fail, cannot prove (Sqrt_out1) /= (4.0)
 assertionproperties.ads:18:46: info: initialization of "y" proved
 biaseddivide.adb:24:16: info: division check proved (CodePeer)
-biaseddivide.adb:24:16: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible explanation: precondition of subprogram at biaseddivide.ads:16 should mention y]
+biaseddivide.adb:24:16: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at biaseddivide.ads:16 should mention y]
 biaseddivide.adb:24:23: info: float overflow check proved (CodePeer)
 biaseddivide.ads:16:52: info: initialization of "r" proved
 biaseddivide.ads:19:14: info: postcondition proved (CVC4: 1 VC)
@@ -82,151 +82,151 @@ simulink_functions.adb:53:67: info: type is suitable for unchecked conversion (T
 simulink_functions.adb:54:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Unsigned_32 and Integer_8 differ]
 simulink_functions.adb:54:66: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:55:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:189:47: medium: precondition might fail, cannot prove X > 0.0 [possible explanation: subprogram at simulink_functions.ads:58 should mention F in a precondition]
-simulink_functions.adb:199:14: medium: precondition might fail, cannot prove X > 0.0 [possible explanation: subprogram at simulink_functions.ads:59 should mention F in a precondition]
-simulink_functions.adb:208:47: medium: precondition might fail, cannot prove X > 0.0 [possible explanation: subprogram at simulink_functions.ads:61 should mention F in a precondition]
-simulink_functions.adb:219:14: medium: precondition might fail, cannot prove X > 0.0 [possible explanation: subprogram at simulink_functions.ads:62 should mention F in a precondition]
-simulink_functions.adb:234:40: medium: overflow check might fail [reason for check: result of absolute value must fit in a 8-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:64 should mention Left in a precondition]
+simulink_functions.adb:189:47: medium: precondition might fail, cannot prove X > 0.0 [possible fix: subprogram at simulink_functions.ads:58 should mention F in a precondition]
+simulink_functions.adb:199:14: medium: precondition might fail, cannot prove X > 0.0 [possible fix: subprogram at simulink_functions.ads:59 should mention F in a precondition]
+simulink_functions.adb:208:47: medium: precondition might fail, cannot prove X > 0.0 [possible fix: subprogram at simulink_functions.ads:61 should mention F in a precondition]
+simulink_functions.adb:219:14: medium: precondition might fail, cannot prove X > 0.0 [possible fix: subprogram at simulink_functions.ads:62 should mention F in a precondition]
+simulink_functions.adb:234:40: medium: overflow check might fail [reason for check: result of absolute value must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:64 should mention Left in a precondition]
 simulink_functions.adb:234:51: info: division check proved (CodePeer)
 simulink_functions.adb:234:51: info: range check proved (CVC4: 1 VC)
-simulink_functions.adb:234:53: medium: overflow check might fail [reason for check: result of absolute value must fit in a 8-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:64 should mention Right in a precondition]
+simulink_functions.adb:234:53: medium: overflow check might fail [reason for check: result of absolute value must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:64 should mention Right in a precondition]
 simulink_functions.adb:236:28: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:236:36: info: overflow check proved (CodePeer)
 simulink_functions.adb:236:47: info: overflow check proved (CodePeer)
-simulink_functions.adb:236:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:64 should mention Right in a precondition]
+simulink_functions.adb:236:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:64 should mention Right in a precondition]
 simulink_functions.adb:239:25: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:239:33: info: division check proved (CodePeer)
-simulink_functions.adb:239:33: medium: overflow check might fail [reason for check: result of division must fit in a 8-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:64 should mention Left and Right in a precondition]
+simulink_functions.adb:239:33: medium: overflow check might fail [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:64 should mention Left and Right in a precondition]
 simulink_functions.adb:239:42: info: overflow check proved (CVC4: 1 VC)
-simulink_functions.adb:255:41: medium: overflow check might fail [reason for check: result of absolute value must fit in a 16-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:65 should mention Left in a precondition]
+simulink_functions.adb:255:41: medium: overflow check might fail [reason for check: result of absolute value must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:65 should mention Left in a precondition]
 simulink_functions.adb:255:52: info: division check proved (CodePeer)
 simulink_functions.adb:255:52: info: range check proved (CVC4: 1 VC)
-simulink_functions.adb:255:54: medium: overflow check might fail [reason for check: result of absolute value must fit in a 16-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:65 should mention Right in a precondition]
+simulink_functions.adb:255:54: medium: overflow check might fail [reason for check: result of absolute value must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:65 should mention Right in a precondition]
 simulink_functions.adb:257:28: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:257:36: info: overflow check proved (CodePeer)
 simulink_functions.adb:257:47: info: overflow check proved (CodePeer)
-simulink_functions.adb:257:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:65 should mention Right in a precondition]
+simulink_functions.adb:257:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:65 should mention Right in a precondition]
 simulink_functions.adb:261:20: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:261:28: info: division check proved (CodePeer)
-simulink_functions.adb:261:28: medium: overflow check might fail [reason for check: result of division must fit in a 16-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:65 should mention Left and Right in a precondition]
+simulink_functions.adb:261:28: medium: overflow check might fail [reason for check: result of division must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:65 should mention Left and Right in a precondition]
 simulink_functions.adb:261:37: info: overflow check proved (CVC4: 1 VC)
-simulink_functions.adb:277:41: medium: overflow check might fail [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:66 should mention Left in a precondition]
+simulink_functions.adb:277:41: medium: overflow check might fail [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:66 should mention Left in a precondition]
 simulink_functions.adb:277:52: info: division check proved (CodePeer)
 simulink_functions.adb:277:52: info: range check proved (CVC4: 1 VC)
-simulink_functions.adb:277:54: medium: overflow check might fail [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:66 should mention Right in a precondition]
+simulink_functions.adb:277:54: medium: overflow check might fail [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:66 should mention Right in a precondition]
 simulink_functions.adb:279:28: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:279:36: info: overflow check proved (CodePeer)
 simulink_functions.adb:279:47: info: overflow check proved (CodePeer)
-simulink_functions.adb:279:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:66 should mention Right in a precondition]
+simulink_functions.adb:279:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:66 should mention Right in a precondition]
 simulink_functions.adb:283:20: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:283:28: info: division check proved (CodePeer)
-simulink_functions.adb:283:28: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:66 should mention Left and Right in a precondition]
+simulink_functions.adb:283:28: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:66 should mention Left and Right in a precondition]
 simulink_functions.adb:283:37: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:297:30: info: division check proved (CodePeer)
 simulink_functions.adb:310:30: info: division check proved (CodePeer)
 simulink_functions.adb:323:30: info: division check proved (CodePeer)
 simulink_functions.adb:336:22: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:336:42: info: division check proved (CodePeer)
-simulink_functions.adb:336:42: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
-simulink_functions.adb:336:51: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
+simulink_functions.adb:336:42: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
+simulink_functions.adb:336:51: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
 simulink_functions.adb:349:22: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:349:47: info: division check proved (CodePeer)
-simulink_functions.adb:349:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
-simulink_functions.adb:349:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
-simulink_functions.adb:362:22: medium: overflow check might fail [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
-simulink_functions.adb:363:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
+simulink_functions.adb:349:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
+simulink_functions.adb:349:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
+simulink_functions.adb:362:22: medium: overflow check might fail [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
+simulink_functions.adb:363:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
 simulink_functions.adb:363:44: info: range check proved (Trivial)
 simulink_functions.adb:363:50: info: division check proved (CodePeer)
 simulink_functions.adb:363:50: info: float overflow check proved (CodePeer)
 simulink_functions.adb:363:59: info: range check proved (Trivial)
-simulink_functions.adb:363:68: medium: overflow check might fail [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
-simulink_functions.adb:376:22: medium: overflow check might fail [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
-simulink_functions.adb:377:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
+simulink_functions.adb:363:68: medium: overflow check might fail [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
+simulink_functions.adb:376:22: medium: overflow check might fail [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
+simulink_functions.adb:377:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
 simulink_functions.adb:377:45: info: range check proved (Trivial)
 simulink_functions.adb:377:51: info: division check proved (CodePeer)
 simulink_functions.adb:377:51: info: float overflow check proved (CodePeer)
 simulink_functions.adb:377:60: info: range check proved (Trivial)
-simulink_functions.adb:377:69: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
-simulink_functions.adb:390:22: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
-simulink_functions.adb:391:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
+simulink_functions.adb:377:69: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
+simulink_functions.adb:390:22: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
+simulink_functions.adb:391:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
 simulink_functions.adb:391:45: info: range check proved (Trivial)
 simulink_functions.adb:391:51: info: division check proved (CodePeer)
 simulink_functions.adb:391:51: info: float overflow check proved (CodePeer)
 simulink_functions.adb:391:60: info: range check proved (Trivial)
-simulink_functions.adb:391:69: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
+simulink_functions.adb:391:69: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
 simulink_functions.adb:404:30: info: division check proved (CodePeer)
 simulink_functions.adb:417:30: info: division check proved (CodePeer)
 simulink_functions.adb:430:30: info: division check proved (CodePeer)
-simulink_functions.adb:443:22: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
-simulink_functions.adb:444:27: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
+simulink_functions.adb:443:22: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
+simulink_functions.adb:444:27: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
 simulink_functions.adb:444:42: info: range check proved (Trivial)
 simulink_functions.adb:444:48: info: division check proved (CodePeer)
 simulink_functions.adb:444:48: info: float overflow check proved (CodePeer)
 simulink_functions.adb:444:57: info: range check proved (Trivial)
-simulink_functions.adb:444:66: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
+simulink_functions.adb:444:66: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
 simulink_functions.adb:457:22: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:457:42: info: division check proved (CodePeer)
-simulink_functions.adb:457:42: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
-simulink_functions.adb:457:51: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
+simulink_functions.adb:457:42: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
+simulink_functions.adb:457:51: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
 simulink_functions.adb:470:22: info: float overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:470:47: info: division check proved (CodePeer)
-simulink_functions.adb:470:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
-simulink_functions.adb:470:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
+simulink_functions.adb:470:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
+simulink_functions.adb:470:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
 simulink_functions.adb:483:22: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:483:30: info: division check proved (CodePeer)
-simulink_functions.adb:483:30: medium: overflow check might fail [reason for check: result of division must fit in a 8-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:87 should mention Left and Right in a precondition]
+simulink_functions.adb:483:30: medium: overflow check might fail [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:87 should mention Left and Right in a precondition]
 simulink_functions.adb:483:39: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:496:22: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:496:30: info: division check proved (CodePeer)
-simulink_functions.adb:496:30: medium: overflow check might fail [reason for check: result of division must fit in a 16-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:88 should mention Left and Right in a precondition]
+simulink_functions.adb:496:30: medium: overflow check might fail [reason for check: result of division must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:88 should mention Left and Right in a precondition]
 simulink_functions.adb:496:39: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:509:22: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:509:30: info: division check proved (CodePeer)
-simulink_functions.adb:509:30: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:89 should mention Left and Right in a precondition]
+simulink_functions.adb:509:30: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:89 should mention Left and Right in a precondition]
 simulink_functions.adb:509:39: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:522:30: info: division check proved (CodePeer)
 simulink_functions.adb:535:30: info: division check proved (CodePeer)
 simulink_functions.adb:548:30: info: division check proved (CodePeer)
 simulink_functions.adb:558:19: info: float overflow check proved (CVC4: 1 VC)
-simulink_functions.adb:558:44: medium: divide by zero might fail [possible explanation: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
-simulink_functions.adb:558:44: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
-simulink_functions.adb:558:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
+simulink_functions.adb:558:44: medium: divide by zero might fail [possible fix: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
+simulink_functions.adb:558:44: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
+simulink_functions.adb:558:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
 simulink_functions.adb:567:19: info: float overflow check proved (CVC4: 1 VC)
-simulink_functions.adb:567:49: medium: divide by zero might fail [possible explanation: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
-simulink_functions.adb:567:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
-simulink_functions.adb:567:58: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
+simulink_functions.adb:567:49: medium: divide by zero might fail [possible fix: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
+simulink_functions.adb:567:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
+simulink_functions.adb:567:58: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
 simulink_functions.adb:577:26: info: precondition proved (CVC4: 1 VC)
-simulink_functions.adb:577:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:98 should mention I in a precondition]
+simulink_functions.adb:577:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:98 should mention I in a precondition]
 simulink_functions.adb:577:39: info: range check proved (Trivial)
 simulink_functions.adb:587:27: info: precondition proved (CVC4: 1 VC)
-simulink_functions.adb:587:27: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:99 should mention I in a precondition]
+simulink_functions.adb:587:27: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:99 should mention I in a precondition]
 simulink_functions.adb:587:40: info: range check proved (Trivial)
 simulink_functions.adb:597:27: info: precondition proved (CVC4: 1 VC)
-simulink_functions.adb:597:27: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:100 should mention I in a precondition]
+simulink_functions.adb:597:27: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:100 should mention I in a precondition]
 simulink_functions.adb:597:40: info: range check proved (Trivial)
-simulink_functions.adb:607:25: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:102 should mention I in a precondition]
-simulink_functions.adb:607:25: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:102 should mention I in a precondition]
+simulink_functions.adb:607:25: medium: precondition might fail, cannot prove X >= 0.0 [possible fix: subprogram at simulink_functions.ads:102 should mention I in a precondition]
+simulink_functions.adb:607:25: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:102 should mention I in a precondition]
 simulink_functions.adb:607:38: info: range check proved (Trivial)
-simulink_functions.adb:617:26: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:103 should mention I in a precondition]
-simulink_functions.adb:617:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:103 should mention I in a precondition]
+simulink_functions.adb:617:26: medium: precondition might fail, cannot prove X >= 0.0 [possible fix: subprogram at simulink_functions.ads:103 should mention I in a precondition]
+simulink_functions.adb:617:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:103 should mention I in a precondition]
 simulink_functions.adb:617:39: info: range check proved (Trivial)
-simulink_functions.adb:627:26: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:104 should mention I in a precondition]
-simulink_functions.adb:627:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:104 should mention I in a precondition]
+simulink_functions.adb:627:26: medium: precondition might fail, cannot prove X >= 0.0 [possible fix: subprogram at simulink_functions.ads:104 should mention I in a precondition]
+simulink_functions.adb:627:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:104 should mention I in a precondition]
 simulink_functions.adb:627:39: info: range check proved (Trivial)
-simulink_functions.adb:637:21: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:106 should mention F in a precondition]
-simulink_functions.adb:637:21: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:106 should mention F in a precondition]
-simulink_functions.adb:647:14: medium: precondition might fail, cannot prove X >= 0.0 [possible explanation: subprogram at simulink_functions.ads:107 should mention F in a precondition]
-simulink_functions.adb:1032:47: medium: precondition might fail, cannot prove abs X <= 1.0 [possible explanation: subprogram at simulink_functions.ads:151 should mention F in a precondition]
-simulink_functions.adb:1041:52: medium: precondition might fail, cannot prove abs X <= 1.0 [possible explanation: subprogram at simulink_functions.ads:152 should mention LF in a precondition]
-simulink_functions.adb:1050:47: medium: precondition might fail, cannot prove abs X <= 1.0 [possible explanation: subprogram at simulink_functions.ads:154 should mention F in a precondition]
-simulink_functions.adb:1059:52: medium: precondition might fail, cannot prove abs X <= 1.0 [possible explanation: subprogram at simulink_functions.ads:155 should mention LF in a precondition]
+simulink_functions.adb:637:21: medium: precondition might fail, cannot prove X >= 0.0 [possible fix: subprogram at simulink_functions.ads:106 should mention F in a precondition]
+simulink_functions.adb:637:21: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:106 should mention F in a precondition]
+simulink_functions.adb:647:14: medium: precondition might fail, cannot prove X >= 0.0 [possible fix: subprogram at simulink_functions.ads:107 should mention F in a precondition]
+simulink_functions.adb:1032:47: medium: precondition might fail, cannot prove abs X <= 1.0 [possible fix: subprogram at simulink_functions.ads:151 should mention F in a precondition]
+simulink_functions.adb:1041:52: medium: precondition might fail, cannot prove abs X <= 1.0 [possible fix: subprogram at simulink_functions.ads:152 should mention LF in a precondition]
+simulink_functions.adb:1050:47: medium: precondition might fail, cannot prove abs X <= 1.0 [possible fix: subprogram at simulink_functions.ads:154 should mention F in a precondition]
+simulink_functions.adb:1059:52: medium: precondition might fail, cannot prove abs X <= 1.0 [possible fix: subprogram at simulink_functions.ads:155 should mention LF in a precondition]
 simulink_functions.adb:1068:47: info: precondition proved (CVC4: 1 VC)
 simulink_functions.adb:1077:52: info: precondition proved (CVC4: 1 VC)
-simulink_functions.adb:1158:47: medium: precondition might fail, cannot prove X >= 1.0 [possible explanation: subprogram at simulink_functions.ads:172 should mention F in a precondition]
-simulink_functions.adb:1167:52: medium: precondition might fail, cannot prove X >= 1.0 [possible explanation: subprogram at simulink_functions.ads:173 should mention LF in a precondition]
-simulink_functions.adb:1176:47: medium: precondition might fail, cannot prove abs X < 1.0 [possible explanation: subprogram at simulink_functions.ads:175 should mention F in a precondition]
-simulink_functions.adb:1185:52: medium: precondition might fail, cannot prove abs X < 1.0 [possible explanation: subprogram at simulink_functions.ads:176 should mention LF in a precondition]
-simulink_functions.adb:1194:21: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:178 should mention Left and Right in a precondition]
+simulink_functions.adb:1158:47: medium: precondition might fail, cannot prove X >= 1.0 [possible fix: subprogram at simulink_functions.ads:172 should mention F in a precondition]
+simulink_functions.adb:1167:52: medium: precondition might fail, cannot prove X >= 1.0 [possible fix: subprogram at simulink_functions.ads:173 should mention LF in a precondition]
+simulink_functions.adb:1176:47: medium: precondition might fail, cannot prove abs X < 1.0 [possible fix: subprogram at simulink_functions.ads:175 should mention F in a precondition]
+simulink_functions.adb:1185:52: medium: precondition might fail, cannot prove abs X < 1.0 [possible fix: subprogram at simulink_functions.ads:176 should mention LF in a precondition]
+simulink_functions.adb:1194:21: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:178 should mention Left and Right in a precondition]
 simulink_functions.adb:1202:07: info: initialization of "Result" proved
 simulink_functions.adb:1209:31: info: division check proved (CVC4: 1 VC)
 simulink_functions.adb:1209:31: info: float overflow check proved (CVC4: 1 VC)
@@ -245,29 +245,29 @@ simulink_functions.adb:1407:07: info: initialization of "Res" proved
 simulink_functions.adb:1423:07: info: initialization of "Res" proved
 simulink_functions.adb:1439:07: info: initialization of "Res" proved
 simulink_functions.adb:1455:07: info: initialization of "Res" proved
-simulink_functions.adb:1473:19: medium: precondition might fail, cannot prove Right > 0.0 [possible explanation: subprogram at simulink_functions.ads:205 should mention Left and Right in a precondition]
-simulink_functions.adb:1484:19: medium: precondition might fail, cannot prove Right > 0.0 [possible explanation: subprogram at simulink_functions.ads:206 should mention Left and Right in a precondition]
-simulink_functions.adb:1494:19: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 8-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:207 should mention Left and Right in a precondition]
-simulink_functions.adb:1494:31: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:207 should mention Right in a precondition]
-simulink_functions.adb:1504:19: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:208 should mention Left and Right in a precondition]
-simulink_functions.adb:1504:31: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:208 should mention Right in a precondition]
-simulink_functions.adb:1514:19: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible explanation: subprogram at simulink_functions.ads:209 should mention Left and Right in a precondition]
-simulink_functions.adb:1514:31: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:209 should mention Right in a precondition]
-simulink_functions.adb:1523:41: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:211 should mention Right in a precondition]
+simulink_functions.adb:1473:19: medium: precondition might fail, cannot prove Right > 0.0 [possible fix: subprogram at simulink_functions.ads:205 should mention Left and Right in a precondition]
+simulink_functions.adb:1484:19: medium: precondition might fail, cannot prove Right > 0.0 [possible fix: subprogram at simulink_functions.ads:206 should mention Left and Right in a precondition]
+simulink_functions.adb:1494:19: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:207 should mention Left and Right in a precondition]
+simulink_functions.adb:1494:31: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:207 should mention Right in a precondition]
+simulink_functions.adb:1504:19: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:208 should mention Left and Right in a precondition]
+simulink_functions.adb:1504:31: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:208 should mention Right in a precondition]
+simulink_functions.adb:1514:19: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:209 should mention Left and Right in a precondition]
+simulink_functions.adb:1514:31: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:209 should mention Right in a precondition]
+simulink_functions.adb:1523:41: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:211 should mention Right in a precondition]
 simulink_functions.adb:1523:48: info: division check proved (CodePeer)
-simulink_functions.adb:1532:51: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:212 should mention Right in a precondition]
+simulink_functions.adb:1532:51: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:212 should mention Right in a precondition]
 simulink_functions.adb:1532:58: info: division check proved (CodePeer)
-simulink_functions.adb:1541:50: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:213 should mention Right in a precondition]
+simulink_functions.adb:1541:50: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:213 should mention Right in a precondition]
 simulink_functions.adb:1541:57: info: division check proved (CodePeer)
-simulink_functions.adb:1550:53: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:214 should mention Right in a precondition]
+simulink_functions.adb:1550:53: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:214 should mention Right in a precondition]
 simulink_functions.adb:1550:60: info: division check proved (CodePeer)
-simulink_functions.adb:1559:53: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:215 should mention Right in a precondition]
+simulink_functions.adb:1559:53: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:215 should mention Right in a precondition]
 simulink_functions.adb:1559:60: info: division check proved (CodePeer)
-simulink_functions.adb:1568:52: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:216 should mention Right in a precondition]
+simulink_functions.adb:1568:52: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:216 should mention Right in a precondition]
 simulink_functions.adb:1568:59: info: division check proved (CodePeer)
 simulink_functions.adb:1577:49: info: division check proved (CodePeer)
 simulink_functions.adb:1586:49: info: division check proved (CodePeer)
-simulink_functions.adb:1595:42: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at simulink_functions.ads:220 should mention Right in a precondition]
+simulink_functions.adb:1595:42: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:220 should mention Right in a precondition]
 simulink_functions.adb:1595:49: info: division check proved (CodePeer)
 smoothing.adb:24:07: info: initialization of "Abs_Delta_out1" proved
 smoothing.adb:25:07: info: initialization of "Compare_To_Zero_out1" proved

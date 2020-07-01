@@ -32,21 +32,21 @@ big_integers_test.adb:50:36: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:54:04: warning: analyzing unreferenced procedure "Divide_Division_Check_Fail"
 big_integers_test.adb:54:14: warning: subprogram "Divide_Division_Check_Fail" has no effect
 big_integers_test.adb:57:12: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:57:20: medium: divide by zero might fail [possible explanation: subprogram at line 54 should mention Big_Int in a precondition]
+big_integers_test.adb:57:20: medium: divide by zero might fail [possible fix: subprogram at line 54 should mention Big_Int in a precondition]
 big_integers_test.adb:57:22: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:60:04: warning: analyzing unreferenced procedure "Mod_Division_Check_Fail"
 big_integers_test.adb:60:14: warning: subprogram "Mod_Division_Check_Fail" has no effect
 big_integers_test.adb:63:12: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:63:20: medium: divide by zero might fail [possible explanation: subprogram at line 60 should mention Big_Int in a precondition]
+big_integers_test.adb:63:20: medium: divide by zero might fail [possible fix: subprogram at line 60 should mention Big_Int in a precondition]
 big_integers_test.adb:63:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:66:04: warning: analyzing unreferenced procedure "Rem_Division_Check_Fail"
 big_integers_test.adb:66:14: warning: subprogram "Rem_Division_Check_Fail" has no effect
 big_integers_test.adb:69:12: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:69:20: medium: divide by zero might fail [possible explanation: subprogram at line 66 should mention Big_Int in a precondition]
+big_integers_test.adb:69:20: medium: divide by zero might fail [possible fix: subprogram at line 66 should mention Big_Int in a precondition]
 big_integers_test.adb:69:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:72:04: warning: analyzing unreferenced procedure "Gcd_Precondition_Fail"
 big_integers_test.adb:72:14: warning: subprogram "Gcd_Precondition_Fail" has no effect
-big_integers_test.adb:75:12: medium: precondition might fail [possible explanation: subprogram at line 72 should mention Big_Int in a precondition]
+big_integers_test.adb:75:12: medium: precondition might fail [possible fix: subprogram at line 72 should mention Big_Int in a precondition]
 big_integers_test.adb:75:37: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:75:46: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:80:26: info: predicate check proved (CVC4: 1 VC)

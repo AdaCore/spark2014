@@ -1,4 +1,4 @@
-c3900050.adb:18:76: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at c3900050.ads:74 should mention A and Display_Count_For in a precondition]
+c3900050.adb:18:76: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at c3900050.ads:74 should mention A and Display_Count_For in a precondition]
 c3900050.ads:55:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
 c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
@@ -15,7 +15,7 @@ c3900053.adb:163:10: info: initialization of "Medium_Alarm" proved
 c3900053.adb:167:19: medium: precondition might fail, cannot prove false
 c3900053.adb:173:19: medium: precondition might fail, cannot prove false
 c3900053.adb:185:13: medium: precondition might fail, cannot prove false
-c3900060.adb:18:76: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at c3900060.ads:76 should mention A and Display_Count_For in a precondition]
+c3900060.adb:18:76: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at c3900060.ads:76 should mention A and Display_Count_For in a precondition]
 c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
@@ -68,11 +68,11 @@ c392008.adb:69:04: info: no contextual analysis of "Annual_Interest" (possible c
 c392008.adb:78:13: medium: precondition might fail, cannot prove false
 c392008.adb:82:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on input parameters)
 c392008.adb:92:13: medium: precondition might fail, cannot prove false
-c392008_0.adb:11:46: medium: overflow check might fail [reason for check: result of addition must fit in a 16-bits machine integer] [possible explanation: subprogram at c392008_0.ads:152 should mention A and X in a precondition]
-c392008_0.adb:11:46: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at c392008_0.ads:152 should mention A and X in a precondition]
-c392008_0.adb:17:46: medium: overflow check might fail [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible explanation: subprogram at c392008_0.ads:154 should mention A and X in a precondition]
-c392008_0.adb:17:46: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: subprogram at c392008_0.ads:154 should mention A and X in a precondition]
-c392008_0.adb:27:46: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: subprogram at c392008_0.ads:157 should mention A in a precondition]
+c392008_0.adb:11:46: medium: overflow check might fail [reason for check: result of addition must fit in a 16-bits machine integer] [possible fix: subprogram at c392008_0.ads:152 should mention A and X in a precondition]
+c392008_0.adb:11:46: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at c392008_0.ads:152 should mention A and X in a precondition]
+c392008_0.adb:17:46: medium: overflow check might fail [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible fix: subprogram at c392008_0.ads:154 should mention A and X in a precondition]
+c392008_0.adb:17:46: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at c392008_0.ads:154 should mention A and X in a precondition]
+c392008_0.adb:27:46: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at c392008_0.ads:157 should mention A in a precondition]
 c392008_0.adb:33:46: info: overflow check proved (CVC4: 1 VC)
 c392008_0.adb:33:46: info: range check proved (CVC4: 1 VC)
 c392008_0.ads:159:30: warning: unused initial value of "A"

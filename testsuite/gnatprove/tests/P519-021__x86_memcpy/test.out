@@ -23,13 +23,13 @@ memcpy.adb:30:36: info: range check proved (CVC4: 1 VC)
 memcpy.adb:88:26: warning: unused assignment
 memcpy.adb:89:27: warning: unused assignment
 memcpy.adb:90:30: warning: unused assignment
-memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:110:16: warning: "RAX" is set by "ZSTLoopProc_400605" but not used after the call
-memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:131:16: warning: "RAX" is set by "ZSTLoopProc_40064f" but not used after the call
 memcpy.adb:151:21: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:152:21: medium: assertion might fail, cannot prove X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr)
-memcpy.adb:160:21: medium: assertion might fail, cannot prove X86.RBP = saved_rbp [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:160:21: medium: assertion might fail, cannot prove X86.RBP = saved_rbp [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:164:12: medium: assertion might fail, cannot prove X86.Memory(i) = SaveMem(i)
 memcpy.adb:171:39: info: range check proved (CVC4: 1 VC)
 memcpy.adb:172:39: info: range check proved (CVC4: 1 VC)
@@ -62,14 +62,14 @@ memcpy.adb:280:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:281:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:283:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:283:51: info: division check proved (CVC4: 1 VC)
-memcpy.adb:285:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:286:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+1, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:287:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+2, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:288:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+3, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:289:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+4, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:290:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+5, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:291:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+6, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:292:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+7, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
+memcpy.adb:285:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_rbp_16, saved_rbp_72) [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:286:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+1, saved_rbp_16, saved_rbp_72) [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:287:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+2, saved_rbp_16, saved_rbp_72) [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:288:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+3, saved_rbp_16, saved_rbp_72) [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:289:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+4, saved_rbp_16, saved_rbp_72) [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:290:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+5, saved_rbp_16, saved_rbp_72) [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:291:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+6, saved_rbp_16, saved_rbp_72) [possible fix: loop invariant at line 207 should mention RDX]
+memcpy.adb:292:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+7, saved_rbp_16, saved_rbp_72) [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:309:21: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:314:21: medium: assertion might fail, cannot prove saved_rbp_16 = X86.ReadMem64(X86.RBP - 16)
 memcpy.adb:315:21: medium: assertion might fail, cannot prove saved_rbp_72 = X86.ReadMem64(X86.RBP - 72)
@@ -105,7 +105,7 @@ memcpy.adb:414:24: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:420:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:421:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:423:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:426:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_32, saved_72) [possible explanation: loop invariant at line 353 should mention RDX]
+memcpy.adb:426:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_32, saved_72) [possible fix: loop invariant at line 353 should mention RDX]
 memcpy.adb:444:21: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:449:21: medium: assertion might fail, cannot prove saved_32 = X86.ReadMem64(X86.RBP - 32)
 memcpy.adb:450:21: medium: assertion might fail, cannot prove saved_72 = X86.ReadMem64(X86.RBP - 72)

@@ -1,1 +1,1 @@
-skein.adb:17:14: medium: overflow check might fail (e.g. when F = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at skein.ads:9 should mention F in a precondition]
+skein.adb:17:14: medium: overflow check might fail (e.g. when F = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at skein.ads:9 should mention F in a precondition]

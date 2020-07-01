@@ -1,15 +1,15 @@
 foo.adb:4:04: warning: analyzing unreferenced procedure "Floats_And_Double"
 foo.adb:4:14: warning: subprogram "Floats_And_Double" has no effect
-foo.adb:7:22: medium: assertion might fail, cannot prove (Float (Y) = X) = (Long_Float (X) = Y) [possible explanation: subprogram at line 4 should mention X and Y in a precondition]
-foo.adb:7:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at line 4 should mention Y in a precondition]
+foo.adb:7:22: medium: assertion might fail, cannot prove (Float (Y) = X) = (Long_Float (X) = Y) [possible fix: subprogram at line 4 should mention X and Y in a precondition]
+foo.adb:7:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 4 should mention Y in a precondition]
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:22:22: medium: assertion might fail, cannot prove Magic (A) = Magic (B), in instantiation at foo.ads:10
 generic_float_tests.adb:22:22: medium: assertion might fail, cannot prove Magic (A) = Magic (B), in instantiation at foo.ads:15
 generic_float_tests.adb:25:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:25:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:35:22: medium: assertion might fail, cannot prove Magic (FT'Min (A, B)) = Magic (FT'min), in instantiation at foo.ads:10 [possible explanation: subprogram at line 25 should mention A and B in a precondition]
-generic_float_tests.adb:35:22: medium: assertion might fail, cannot prove Magic (FT'Min (A, B)) = Magic (FT'min), in instantiation at foo.ads:15 [possible explanation: subprogram at line 25 should mention A and B in a precondition]
+generic_float_tests.adb:35:22: medium: assertion might fail, cannot prove Magic (FT'Min (A, B)) = Magic (FT'min), in instantiation at foo.ads:10 [possible fix: subprogram at line 25 should mention A and B in a precondition]
+generic_float_tests.adb:35:22: medium: assertion might fail, cannot prove Magic (FT'Min (A, B)) = Magic (FT'min), in instantiation at foo.ads:15 [possible fix: subprogram at line 25 should mention A and B in a precondition]
 generic_float_tests.adb:44:14: warning: subprogram "Add_Monotonic" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:44:14: warning: subprogram "Add_Monotonic" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:48:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
@@ -66,10 +66,10 @@ generic_float_tests.adb:122:19: medium: postcondition might fail, cannot prove B
 generic_float_tests.adb:122:19: medium: postcondition might fail, cannot prove Bad_Optimisation_1'Result = A / B, in instantiation at foo.ads:15
 generic_float_tests.adb:122:49: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:122:49: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:122:49: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded] [possible explanation: precondition of subprogram at line 120 should mention A]
-generic_float_tests.adb:122:49: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded] [possible explanation: precondition of subprogram at line 120 should mention A]
-generic_float_tests.adb:125:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: precondition of subprogram at line 120 should mention A]
-generic_float_tests.adb:125:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: precondition of subprogram at line 120 should mention A]
+generic_float_tests.adb:122:49: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at line 120 should mention A]
+generic_float_tests.adb:122:49: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at line 120 should mention A]
+generic_float_tests.adb:125:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 120 should mention A]
+generic_float_tests.adb:125:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 120 should mention A]
 generic_float_tests.adb:125:23: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:125:23: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:125:23: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
@@ -80,8 +80,8 @@ generic_float_tests.adb:131:22: info: assertion proved (CVC4: 1 VC), in instanti
 generic_float_tests.adb:131:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:131:24: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:131:24: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:131:32: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point subtraction must be bounded] [possible explanation: subprogram at line 128 should mention X in a precondition]
-generic_float_tests.adb:131:32: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point subtraction must be bounded] [possible explanation: subprogram at line 128 should mention X in a precondition]
+generic_float_tests.adb:131:32: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 128 should mention X in a precondition]
+generic_float_tests.adb:131:32: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 128 should mention X in a precondition]
 generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:138:23: info: assertion proved (CVC4: 2 VC), in instantiation at foo.ads:10
@@ -114,38 +114,38 @@ generic_float_tests.adb:159:26: medium: float overflow check might fail, in inst
 generic_float_tests.adb:159:26: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:162:14: warning: subprogram "Not_So_Associative" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:162:14: warning: subprogram "Not_So_Associative" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:165:23: medium: assertion might fail, cannot prove (A + B) + C = A + (B + C), in instantiation at foo.ads:10 [possible explanation: subprogram at line 162 should mention A and B and C in a precondition]
-generic_float_tests.adb:165:23: medium: assertion might fail, cannot prove (A + B) + C = A + (B + C), in instantiation at foo.ads:15 [possible explanation: subprogram at line 162 should mention A and B and C in a precondition]
-generic_float_tests.adb:165:25: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 162 should mention A and B in a precondition]
-generic_float_tests.adb:165:25: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 162 should mention A and B in a precondition]
-generic_float_tests.adb:165:30: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 162 should mention A and B and C in a precondition]
-generic_float_tests.adb:165:30: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 162 should mention A and B and C in a precondition]
-generic_float_tests.adb:165:38: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 162 should mention A and B and C in a precondition]
-generic_float_tests.adb:165:38: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 162 should mention A and B and C in a precondition]
-generic_float_tests.adb:165:43: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 162 should mention B and C in a precondition]
-generic_float_tests.adb:165:43: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 162 should mention B and C in a precondition]
+generic_float_tests.adb:165:23: medium: assertion might fail, cannot prove (A + B) + C = A + (B + C), in instantiation at foo.ads:10 [possible fix: subprogram at line 162 should mention A and B and C in a precondition]
+generic_float_tests.adb:165:23: medium: assertion might fail, cannot prove (A + B) + C = A + (B + C), in instantiation at foo.ads:15 [possible fix: subprogram at line 162 should mention A and B and C in a precondition]
+generic_float_tests.adb:165:25: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 162 should mention A and B in a precondition]
+generic_float_tests.adb:165:25: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 162 should mention A and B in a precondition]
+generic_float_tests.adb:165:30: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 162 should mention A and B and C in a precondition]
+generic_float_tests.adb:165:30: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 162 should mention A and B and C in a precondition]
+generic_float_tests.adb:165:38: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 162 should mention A and B and C in a precondition]
+generic_float_tests.adb:165:38: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 162 should mention A and B and C in a precondition]
+generic_float_tests.adb:165:43: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 162 should mention B and C in a precondition]
+generic_float_tests.adb:165:43: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 162 should mention B and C in a precondition]
 generic_float_tests.adb:168:14: warning: subprogram "I_Like_To_Commute_To_Work" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:168:14: warning: subprogram "I_Like_To_Commute_To_Work" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:171:23: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:171:23: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:171:25: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:171:25: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:171:35: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 168 should mention A and B in a precondition]
-generic_float_tests.adb:171:35: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 168 should mention A and B in a precondition]
+generic_float_tests.adb:171:35: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 168 should mention A and B in a precondition]
+generic_float_tests.adb:171:35: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 168 should mention A and B in a precondition]
 generic_float_tests.adb:174:14: warning: subprogram "Distributed_Fun" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:174:14: warning: subprogram "Distributed_Fun" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:177:22: medium: assertion might fail, cannot prove A * (B + C) = (A * B) + (A * C), in instantiation at foo.ads:10 [possible explanation: subprogram at line 174 should mention A and B and C in a precondition]
-generic_float_tests.adb:177:22: medium: assertion might fail, cannot prove A * (B + C) = (A * B) + (A * C), in instantiation at foo.ads:15 [possible explanation: subprogram at line 174 should mention A and B and C in a precondition]
-generic_float_tests.adb:177:24: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at line 174 should mention A and B and C in a precondition]
-generic_float_tests.adb:177:24: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at line 174 should mention A and B and C in a precondition]
-generic_float_tests.adb:177:29: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 174 should mention B and C in a precondition]
-generic_float_tests.adb:177:29: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 174 should mention B and C in a precondition]
-generic_float_tests.adb:177:39: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at line 174 should mention A and B in a precondition]
-generic_float_tests.adb:177:39: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at line 174 should mention A and B in a precondition]
-generic_float_tests.adb:177:44: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 174 should mention A and B and C in a precondition]
-generic_float_tests.adb:177:44: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible explanation: subprogram at line 174 should mention A and B and C in a precondition]
-generic_float_tests.adb:177:49: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at line 174 should mention A and C in a precondition]
-generic_float_tests.adb:177:49: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at line 174 should mention A and C in a precondition]
+generic_float_tests.adb:177:22: medium: assertion might fail, cannot prove A * (B + C) = (A * B) + (A * C), in instantiation at foo.ads:10 [possible fix: subprogram at line 174 should mention A and B and C in a precondition]
+generic_float_tests.adb:177:22: medium: assertion might fail, cannot prove A * (B + C) = (A * B) + (A * C), in instantiation at foo.ads:15 [possible fix: subprogram at line 174 should mention A and B and C in a precondition]
+generic_float_tests.adb:177:24: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 174 should mention A and B and C in a precondition]
+generic_float_tests.adb:177:24: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 174 should mention A and B and C in a precondition]
+generic_float_tests.adb:177:29: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 174 should mention B and C in a precondition]
+generic_float_tests.adb:177:29: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 174 should mention B and C in a precondition]
+generic_float_tests.adb:177:39: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 174 should mention A and B in a precondition]
+generic_float_tests.adb:177:39: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 174 should mention A and B in a precondition]
+generic_float_tests.adb:177:44: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 174 should mention A and B and C in a precondition]
+generic_float_tests.adb:177:44: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 174 should mention A and B and C in a precondition]
+generic_float_tests.adb:177:49: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 174 should mention A and C in a precondition]
+generic_float_tests.adb:177:49: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 174 should mention A and C in a precondition]
 generic_float_tests.adb:187:14: warning: subprogram "Equality" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:187:14: warning: subprogram "Equality" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:190:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
@@ -204,10 +204,10 @@ generic_float_tests.adb:268:40: info: initialization of "B" proved, in instantia
 generic_float_tests.adb:268:40: info: initialization of "B" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:268:43: info: initialization of "C" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:268:43: info: initialization of "C" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:271:16: medium: divide by zero might fail, in instantiation at foo.ads:10 [possible explanation: subprogram at line 267 should mention X in a precondition]
-generic_float_tests.adb:271:16: medium: divide by zero might fail, in instantiation at foo.ads:15 [possible explanation: subprogram at line 267 should mention X in a precondition]
-generic_float_tests.adb:271:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at line 267 should mention X in a precondition]
-generic_float_tests.adb:271:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at line 267 should mention X in a precondition]
+generic_float_tests.adb:271:16: medium: divide by zero might fail, in instantiation at foo.ads:10 [possible fix: subprogram at line 267 should mention X in a precondition]
+generic_float_tests.adb:271:16: medium: divide by zero might fail, in instantiation at foo.ads:15 [possible fix: subprogram at line 267 should mention X in a precondition]
+generic_float_tests.adb:271:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 267 should mention X in a precondition]
+generic_float_tests.adb:271:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 267 should mention X in a precondition]
 generic_float_tests.adb:272:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:272:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:272:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
@@ -224,10 +224,10 @@ generic_float_tests.adb:278:40: info: initialization of "B" proved, in instantia
 generic_float_tests.adb:278:40: info: initialization of "B" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:278:43: info: initialization of "C" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:278:43: info: initialization of "C" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:281:16: medium: divide by zero might fail, in instantiation at foo.ads:10 [possible explanation: subprogram at line 277 should mention X in a precondition]
-generic_float_tests.adb:281:16: medium: divide by zero might fail, in instantiation at foo.ads:15 [possible explanation: subprogram at line 277 should mention X in a precondition]
-generic_float_tests.adb:281:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at line 277 should mention X in a precondition]
-generic_float_tests.adb:281:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at line 277 should mention X in a precondition]
+generic_float_tests.adb:281:16: medium: divide by zero might fail, in instantiation at foo.ads:10 [possible fix: subprogram at line 277 should mention X in a precondition]
+generic_float_tests.adb:281:16: medium: divide by zero might fail, in instantiation at foo.ads:15 [possible fix: subprogram at line 277 should mention X in a precondition]
+generic_float_tests.adb:281:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 277 should mention X in a precondition]
+generic_float_tests.adb:281:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 277 should mention X in a precondition]
 generic_float_tests.adb:282:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:282:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:282:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
@@ -236,8 +236,8 @@ generic_float_tests.adb:283:16: info: division check proved (CVC4: 1 VC), in ins
 generic_float_tests.adb:283:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:283:16: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:283:16: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:284:22: medium: assertion might fail, cannot prove X = B, in instantiation at foo.ads:10 [possible explanation: subprogram at line 277 should mention X in a precondition]
-generic_float_tests.adb:284:22: medium: assertion might fail, cannot prove X = B, in instantiation at foo.ads:15 [possible explanation: subprogram at line 277 should mention X in a precondition]
+generic_float_tests.adb:284:22: medium: assertion might fail, cannot prove X = B, in instantiation at foo.ads:10 [possible fix: subprogram at line 277 should mention X in a precondition]
+generic_float_tests.adb:284:22: medium: assertion might fail, cannot prove X = B, in instantiation at foo.ads:15 [possible fix: subprogram at line 277 should mention X in a precondition]
 generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:296:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
@@ -400,14 +400,14 @@ generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, i
 generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:50:19: medium: postcondition might fail, cannot prove X * Y >= X, in instantiation at bar.ads:12
 generic_interval_tests.adb:50:19: medium: postcondition might fail, cannot prove X * Y >= X, in instantiation at bar.ads:8
-generic_interval_tests.adb:50:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: precondition of subprogram at line 48 should mention X]
-generic_interval_tests.adb:50:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: precondition of subprogram at line 48 should mention X]
+generic_interval_tests.adb:50:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 48 should mention X]
+generic_interval_tests.adb:50:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 48 should mention X]
 generic_interval_tests.adb:56:14: warning: subprogram "Test_07" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:56:14: warning: subprogram "Test_07" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:58:19: medium: postcondition might fail, cannot prove X * Y > X, in instantiation at bar.ads:12
 generic_interval_tests.adb:58:19: medium: postcondition might fail, cannot prove X * Y > X, in instantiation at bar.ads:8
-generic_interval_tests.adb:58:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: precondition of subprogram at line 56 should mention X]
-generic_interval_tests.adb:58:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded] [possible explanation: precondition of subprogram at line 56 should mention X]
+generic_interval_tests.adb:58:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 56 should mention X]
+generic_interval_tests.adb:58:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 56 should mention X]
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:66:19: medium: postcondition might fail, cannot prove X / Y <= abs X, in instantiation at bar.ads:12

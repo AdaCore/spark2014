@@ -1,1 +1,1 @@
-glob.ads:6:14: medium: postcondition might fail, cannot prove not G (e.g. when G = True) [possible explanation: call at glob.adb:9 should mention G in a postcondition]
+glob.ads:6:14: medium: postcondition might fail, cannot prove not G (e.g. when G = True) [possible fix: call at glob.adb:9 should mention G in a postcondition]

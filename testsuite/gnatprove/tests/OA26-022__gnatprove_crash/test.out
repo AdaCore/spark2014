@@ -1,2 +1,2 @@
 eg.adb:3:04: warning: analyzing unreferenced function "Foo"
-eg.adb:5:16: medium: float overflow check might fail (e.g. when A = 3.3752146E+38 and B = 1.9359426E+0) [reason for check: result of floating-point multiplication must be bounded] [possible explanation: subprogram at line 3 should mention A and B in a precondition]
+eg.adb:5:16: medium: float overflow check might fail (e.g. when A = 3.3752146E+38 and B = 1.9359426E+0) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 3 should mention A and B in a precondition]

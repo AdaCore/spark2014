@@ -7,16 +7,16 @@ psu_monitoring.adb:98:75: info: division check proved (CVC4: 1 VC)
 psu_monitoring.adb:98:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:98:75: info: range check proved (Trivial)
 psu_monitoring.adb:100:75: info: float overflow check proved (Trivial)
-psu_monitoring.adb:100:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
+psu_monitoring.adb:100:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
 psu_monitoring.adb:104:75: info: float overflow check proved (Trivial)
-psu_monitoring.adb:104:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
+psu_monitoring.adb:104:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
 psu_monitoring.adb:106:75: info: division check proved (CVC4: 1 VC)
 psu_monitoring.adb:106:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:106:75: info: range check proved (Trivial)
 psu_monitoring.adb:122:22: medium: assertion might fail, cannot prove all_config_is_set (e.g. when all_config_is_set = False)
-psu_monitoring.adb:135:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible explanation: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
-psu_monitoring.adb:158:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible explanation: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
-psu_monitoring.adb:166:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible explanation: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:135:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:158:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:166:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
 psu_monitoring.adb:197:22: medium: assertion might fail, cannot prove U_C1 in Float_Signed1000 (e.g. when U_C1 = -1.8446746E+19)
 psu_monitoring.adb:198:22: medium: assertion might fail, cannot prove I_L1 in Float_Signed1000 (e.g. when I_L1 = -1.8446746E+19)
 psu_monitoring.adb:199:22: medium: assertion might fail, cannot prove U_C2 in Float_Signed1000 (e.g. when U_C2 = -1.8446746E+19)
