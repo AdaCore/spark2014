@@ -1,2 +1,4 @@
-p.adb:24:17: info: precondition proved (Trivial: 1 VC)
-p.adb:24:39: info: precondition proved (Trivial: 1 VC)
+p.adb:6:30: info: data dependencies proved
+p.adb:13:30: info: data dependencies proved
+p.adb:22:17: info: precondition proved (Trivial: 1 VC)
+p.adb:22:39: info: precondition proved (Trivial: 1 VC)

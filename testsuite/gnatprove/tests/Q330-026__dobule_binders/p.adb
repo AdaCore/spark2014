@@ -3,16 +3,14 @@ package body P is
    protected body PT is
       function Prot return Boolean is
          function Identity1 (X : Boolean) return Boolean
-           with Pre => True
+           with Pre => True, Global => null
          is
          begin
             return X;
          end;
 
          function Identity2 (X : Boolean) return Boolean
-           with Pre => True--, Global => PT
-                           --  This global is rejected by the frontend;
-                           --  probably a bug.
+           with Pre => True, Global => PT
          is
          begin
             return X and Dummy;
