@@ -50,22 +50,9 @@ is_msg = re.compile(r"([\w-]*\.ad.?):(\d*):\d*:" +
 is_mark = re.compile(r"@(\w*):(\w*)")
 
 
-def debug_mode():
-    return "debug" in os.environ and os.environ["debug"] == "true"
-
-
-def verbose_mode():
-    return "verbose" in os.environ and os.environ["verbose"] == "true"
-
-
 def inverse_prover():
     return "inverse_prover" in os.environ and\
         os.environ["inverse_prover"] == "true"
-
-
-def z3_counterexample():
-    return "z3_counterexample" in os.environ and\
-        os.environ["z3_counterexample"] == "true"
 
 
 def benchmark_mode():
@@ -85,17 +72,6 @@ def get_default_timeout():
         return int(os.environ["vc_timeout"])
     else:
         return default_vc_timeout
-
-
-def xfail_test():
-    if os.path.exists("test.opt"):
-        p = re.compile("XFAIL")
-        with open("test.opt", 'r') as f:
-            for line in f:
-                m = re.search(p, line)
-                if m:
-                    return True
-    return False
 
 
 def print_sorted(strlist):
