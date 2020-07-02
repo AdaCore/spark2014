@@ -304,20 +304,12 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-k");
       end if;
 
-      declare
-         Cnf_DB : constant String :=
-           (if CL_Switches.Coverage then
-               SPARK_Install.Gpr_Frames_Cov_DB
-            else
-               SPARK_Install.Gpr_Frames_DB);
-      begin
-         Call_Gprbuild (Project_File,
-                        Proj,
-                        Cnf_DB,
-                        Translation_Phase => False,
-                        Args              => Args,
-                        Status            => Status);
-      end;
+      Call_Gprbuild (Project_File,
+                     Proj,
+                     SPARK_Install.Gpr_Frames_DB,
+                     Translation_Phase => False,
+                     Args              => Args,
+                     Status            => Status);
    end Compute_ALI_Information;
 
    --------------------
@@ -475,20 +467,13 @@ procedure Gnatprove with SPARK_Mode is
             Id := Spawn_VC_Server (Proj.Root_Project);
          end if;
 
-         declare
-            Cnf_DB : constant String :=
-              (if CL_Switches.Coverage then
-                  SPARK_Install.Gpr_Gnat2why_Cov_DB
-               else
-                  SPARK_Install.Gpr_Translation_DB);
-         begin
-            Call_Gprbuild (Project_File,
-                           Proj,
-                           Cnf_DB,
-                           Translation_Phase => True,
-                           Args              => Args,
-                           Status            => Status);
-         end;
+         Call_Gprbuild (Project_File,
+                        Proj,
+                        SPARK_Install.Gpr_Translation_DB,
+                        Translation_Phase => True,
+                        Args              => Args,
+                        Status            => Status);
+
          if Configuration.Mode in GPM_All | GPM_Prove then
             Close (Id);
             GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);

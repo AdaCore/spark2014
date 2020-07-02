@@ -620,10 +620,6 @@ package body Configuration is
             Long_Switch => "--codepeer=");
          Define_Switch
            (Config,
-            CL_Switches.Coverage'Access,
-            Long_Switch => "--coverage");
-         Define_Switch
-           (Config,
             CL_Switches.CWE'Access,
             Long_Switch => "--cwe");
          Define_Switch
