@@ -120,7 +120,7 @@ class SPARKTestsuite(Testsuite):
             os.environ["cache"] = "true"
         if self.main.args.inverse_prover:
             os.environ["inverse_prover"] = "true"
-        return os.environ
+        return dict(os.environ)
 
     def set_up(self):
         super(SPARKTestsuite, self).set_up()
