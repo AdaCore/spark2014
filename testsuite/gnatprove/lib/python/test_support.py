@@ -687,15 +687,9 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     cmd += ["--info"]
     if benchmark_mode():
         cmd += ["--benchmark"]
-    if debug_mode():
-        cmd += ["--debug"]
-    if verbose_mode():
-        cmd += ["--verbose"]
     if cache_allowed and cache_mode():
         cmd += ["--memcached-server=localhost:11211"]
     cmd += to_list(opt)
-    if verbose_mode():
-        print(' '.join(cmd))
     process = Run(cmd)
     # Replace line above by the one below for testing the scripts without
     # running the tool:
@@ -797,8 +791,6 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
         fullopt += ["--benchmark"]
     if not counterexample:
         fullopt += ["--no-counterexample"]
-    if z3_counterexample():
-        fullopt += ["--z3-counterexample"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
