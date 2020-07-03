@@ -1449,13 +1449,11 @@ package body Gnat2Why.Expr.Loops is
    -- Transform_Loop_Variant --
    ----------------------------
 
-   function Transform_Loop_Variant (Stmt : Node_Id) return W_Variants_Id
-   is
+   function Transform_Loop_Variant (Stmt : Node_Id) return W_Variants_Id is
       Variant : Node_Id;
-      Count   : Integer := 0;
+      Count   : Natural := 0;
    begin
-
-      --  count Variant items in the Loop_Variant pragma
+      --  Count Variant items in the Loop_Variant pragma
 
       Variant := First (Pragma_Argument_Associations (Stmt));
 
@@ -1498,6 +1496,7 @@ package body Gnat2Why.Expr.Loops is
             end;
             Next (Variant);
          end loop;
+
          return New_Variants (Variants => Variants);
       end;
    end Transform_Loop_Variant;
