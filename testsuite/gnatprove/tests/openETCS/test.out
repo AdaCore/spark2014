@@ -28,17 +28,17 @@ deceleration_curve.adb:50:48: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:51:12: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:57:15: medium: assertion might fail, cannot prove delta_speed < 0.0 [possible fix: loop invariant at line 39 should mention delta_speed]
 deceleration_curve.adb:59:25: info: float overflow check proved (CVC4: 1 VC)
-deceleration_curve.adb:61:31: medium: overflow check might fail [possible fix: loop invariant at line 39 should mention distance]
+deceleration_curve.adb:61:31: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 39 should mention distance]
 deceleration_curve.adb:70:36: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:70:36: info: range check proved (CVC4: 1 VC)
 deceleration_curve.adb:80:09: info: precondition proved (CVC4: 1 VC)
 deceleration_curve.adb:86:67: info: cannot unroll loop (too many loop iterations)
 deceleration_curve.adb:88:19: info: float overflow check proved (CVC4: 1 VC)
 deceleration_curve.adb:88:21: info: precondition proved (CVC4: 1 VC)
-deceleration_curve.adb:88:32: medium: float overflow check might fail [possible fix: loop at line 86 should mention speed in a loop invariant]
-deceleration_curve.adb:89:13: medium: float overflow check might fail [possible fix: loop at line 86 should mention location and speed in a loop invariant]
-deceleration_curve.adb:89:29: medium: float overflow check might fail [possible fix: loop at line 86 should mention location and speed in a loop invariant]
-deceleration_curve.adb:90:13: medium: float overflow check might fail [possible fix: loop at line 86 should mention location and speed in a loop invariant]
+deceleration_curve.adb:88:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention speed in a loop invariant]
+deceleration_curve.adb:89:13: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
+deceleration_curve.adb:89:29: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
+deceleration_curve.adb:90:13: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:46: info: division check proved (CVC4: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
 deceleration_curve.adb:105:09: medium: precondition might fail, cannot prove d <= Braking_Curve_Maximum_End_Point [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
@@ -65,9 +65,9 @@ example.adb:4:13: info: overflow check proved (CVC4: 1 VC)
 example.adb:5:20: info: overflow check proved (CVC4: 1 VC)
 example.ads:5:14: info: postcondition proved (CVC4: 2 VC)
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved (CVC4: 1 VC)
-sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:180 should mention V]
+sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:180 should mention V]
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved (CVC4: 1 VC)
-sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:196 should mention V]
+sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:196 should mention V]
 sec_3_13_2_monitoring_inputs.ads:184:08: info: postcondition proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:185:24: info: precondition proved (CVC4: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:186:58: info: range check proved (CVC4: 1 VC)
@@ -86,14 +86,14 @@ sec_3_13_6_deceleration.ads:40:37: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:40:37: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:41:71: info: range check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:45:23: info: precondition proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail [possible fix: subprogram at line 44 should mention V in a precondition]
+sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:38: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Trivial)
 sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:47:22: info: range check proved (CVC4: 1 VC)
-sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [possible fix: subprogram at line 44 should mention d and V in a precondition]
+sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention d and V in a precondition]
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Is_Valid_Speed(V) [possible fix: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
