@@ -1,3 +1,3 @@
 use_geometry.adb:8:05: info: precondition proved
 use_geometry.adb:11:05: info: precondition proved
-use_geometry.adb:14:05: medium: precondition might fail, cannot prove Valid (S) [possible explanation: call at line 13 should mention S (for argument S) in a postcondition]
+use_geometry.adb:14:05: medium: precondition might fail, cannot prove Valid (S) [possible fix: call at line 13 should mention S (for argument S) in a postcondition]

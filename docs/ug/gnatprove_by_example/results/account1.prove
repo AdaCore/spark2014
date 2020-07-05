@@ -1,2 +1,2 @@
-account1.adb:15:39: medium: overflow check might fail (e.g. when Num_Accounts = Natural'Last) [possible explanation: loop at line 13 should mention Num_Accounts in a loop invariant]
+account1.adb:15:39: medium: overflow check might fail (e.g. when Num_Accounts = Natural'Last) [possible fix: loop at line 13 should mention Num_Accounts in a loop invariant]
 account1.ads:6:14: info: nontermination of task proved

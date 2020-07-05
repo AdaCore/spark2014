@@ -1,5 +1,5 @@
 logging_in_abstract.adb:5:04: warning: variable "Log_In" is read but never assigned
-logging_in_abstract.adb:16:28: medium: overflow check might fail (e.g. when Log_Size = Natural'Last) [possible explanation: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition]
-logging_in_abstract.adb:17:12: medium: array index check might fail (e.g. when Log_In = 0 and Log_Size = 101) [possible explanation: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition]
+logging_in_abstract.adb:16:28: medium: overflow check might fail (e.g. when Log_Size = Natural'Last) [possible fix: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition]
+logging_in_abstract.adb:17:12: medium: array index check might fail (e.g. when Log_In = 0 and Log_Size = 101) [possible fix: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition]
 logging_in_abstract.ads:6:06: info: data dependencies proved
 logging_in_abstract.ads:7:06: info: flow dependencies proved

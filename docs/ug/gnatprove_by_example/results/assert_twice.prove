@@ -1,2 +1,2 @@
-assert_twice.adb:5:19: medium: assertion might fail, cannot prove X > 0 [possible explanation: subprogram at line 1 should mention X in a precondition]
+assert_twice.adb:5:19: medium: assertion might fail, cannot prove X > 0 [possible fix: subprogram at line 1 should mention X in a precondition]
 assert_twice.adb:6:19: info: assertion proved
