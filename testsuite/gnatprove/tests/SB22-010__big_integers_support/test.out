@@ -13,21 +13,21 @@ big_integers_test.adb:30:36: info: initialization of "Big_Int" proved
 big_integers_test.adb:30:63: info: initialization of "Int" proved
 big_integers_test.adb:33:18: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:34:11: warning: unused assignment
-big_integers_test.adb:34:14: medium: range check might fail
+big_integers_test.adb:34:14: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
 big_integers_test.adb:34:26: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:38:04: warning: analyzing unreferenced procedure "MSC_Range_Check_Fail"
 big_integers_test.adb:38:37: info: initialization of "Big_Int" proved
 big_integers_test.adb:38:64: info: initialization of "LL_Int" proved
 big_integers_test.adb:41:18: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:42:14: warning: unused assignment
-big_integers_test.adb:42:20: medium: range check might fail
+big_integers_test.adb:42:20: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
 big_integers_test.adb:42:39: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:46:04: warning: analyzing unreferenced procedure "MUC_Range_Check_Fail"
 big_integers_test.adb:46:36: info: initialization of "Big_Int" proved
 big_integers_test.adb:46:63: info: initialization of "Uns" proved
 big_integers_test.adb:49:18: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:50:11: warning: unused assignment
-big_integers_test.adb:50:17: medium: range check might fail
+big_integers_test.adb:50:17: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
 big_integers_test.adb:50:36: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:54:04: warning: analyzing unreferenced procedure "Divide_Division_Check_Fail"
 big_integers_test.adb:54:14: warning: subprogram "Divide_Division_Check_Fail" has no effect
@@ -227,3 +227,5 @@ curve25519.ads:19:26: info: predicate check proved (CVC4: 1 VC)
 curve25519.ads:20:29: info: predicate check proved (CVC4: 1 VC)
 curve25519.ads:20:50: info: predicate check proved (CVC4: 1 VC)
 types.ads:19:08: info: predicate check proved (CVC4: 1 VC)
+
+

@@ -535,7 +535,7 @@ parser_utilities.ads:122:09: info: flow dependencies proved
 parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 parser_utilities.ads:134:09: info: flow dependencies proved
 parser_utilities.ads:142:09: info: flow dependencies proved
-process_dns_request.ads:130:50: medium: range check might fail
+process_dns_request.ads:130:50: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 process_dns_request.ads:223:50: info: range check proved (CVC4: 1 VC)
 process_first_line_of_record.adb:64:07: info: initialization of "CurrentIPV4" proved
 process_first_line_of_record.adb:65:07: info: initialization of "CurrentIPV6" proved
@@ -585,7 +585,7 @@ rr_type.adb:100:25: info: range check proved (CVC4: 1 VC)
 rr_type.adb:111:11: info: range check proved (CVC4: 2 VC)
 rr_type.adb:111:36: info: range check proved (CVC4: 1 VC)
 rr_type.adb:112:25: info: index check proved (CVC4: 2 VC)
-rr_type.adb:112:34: medium: array index check might fail
+rr_type.adb:112:34: medium: array index check might fail [reason for check: value must be a valid index into the array]
 rr_type.adb:126:07: info: initialization of "LengthOfDomainName" proved
 rr_type.adb:127:07: info: initialization of "WireVersion" proved
 rr_type.adb:134:10: info: initialization of "Result" proved
@@ -609,7 +609,7 @@ rr_type.ads:81:06: info: postcondition proved (CVC4: 1 VC)
 rr_type.ads:83:18: info: range check proved (CVC4: 2 VC)
 rr_type.ads:85:18: info: index check proved (CVC4: 2 VC)
 rr_type.ads:91:06: info: postcondition proved (CVC4: 1 VC)
-rr_type.ads:93:37: medium: array index check might fail
+rr_type.ads:93:37: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 rr_type.ads:94:18: info: range check proved (CVC4: 2 VC)
 rr_type.ads:96:18: info: index check proved (CVC4: 2 VC)
 rr_type.ads:102:06: info: postcondition proved (CVC4: 2 VC)
@@ -1291,7 +1291,7 @@ zone_file_parser.adb:698:07: info: initialization of "BlockIndex" proved
 zone_file_parser.adb:699:07: info: initialization of "ByteNumber" proved
 zone_file_parser.adb:700:07: info: initialization of "BitNumber" proved
 zone_file_parser.adb:702:16: info: types in unchecked conversion have the same size (Trivial)
-zone_file_parser.adb:703:10: high: type with constraints on bit representation is unsuitable for unchecked conversion
+zone_file_parser.adb:703:10: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Query_Type has 19 values but has bit size 16]
 zone_file_parser.adb:703:32: info: type is suitable for unchecked conversion (Trivial)
 zone_file_parser.adb:713:23: info: precondition proved (CVC4: 1 VC)
 zone_file_parser.adb:723:40: info: precondition proved (CVC4: 1 VC)
