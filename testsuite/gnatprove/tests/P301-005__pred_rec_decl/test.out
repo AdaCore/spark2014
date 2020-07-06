@@ -8,7 +8,7 @@ preds.adb:16:07: info: predicate check proved on default value (CVC4: 1 VC)
 preds.adb:22:07: info: initialization of "Tmp" proved
 preds.adb:22:07: medium: predicate check might fail on default value
 preds.adb:28:07: info: initialization of "Tmp" proved
-preds.adb:28:07: info: predicate check proved on default value (CVC4: 1 VC)
+preds.adb:28:07: info: predicate check proved on default value (CVC4: 2 VC)
 preds.adb:34:07: info: initialization of "Tmp" proved
 preds.adb:34:07: medium: predicate check might fail on default value
 preds.adb:40:07: info: initialization of "Tmp" proved

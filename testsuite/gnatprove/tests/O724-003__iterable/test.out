@@ -8,7 +8,6 @@ with_iterable.ads:22:07: info: discriminant check proved (CVC4: 1 VC)
 with_iterable.ads:22:07: info: predicate check proved (CVC4: 1 VC)
 with_iterable.ads:24:09: info: predicate check proved (CVC4: 1 VC)
 with_iterable.ads:24:27: info: overflow check proved (CVC4: 1 VC)
-with_iterable.ads:24:27: info: range check proved (CVC4: 1 VC)
 with_iterable.ads:26:26: warning: unused variable "A"
 with_iterable.ads:30:07: info: precondition proved (Trivial: 1 VC)
 with_iterable.ads:30:27: info: precondition proved (CVC4: 2 VC)

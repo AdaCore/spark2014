@@ -4756,10 +4756,17 @@ package body Gnat2Why.Expr is
          --  the search.
 
          declare
-            Decl    : constant Node_Id := Enclosing_Declaration (Rep_Ty);
+            Decl    : constant Node_Id := Original_Node
+              (Enclosing_Declaration (Rep_Ty));
+            --  Derived type definitions are sometimes rewritten into record
+            --  definitions by the frontend.
             Sub_Ty  : constant Node_Id :=
               (if Nkind (Decl) = N_Subtype_Declaration
                then Subtype_Indication (Decl)
+               elsif Nkind (Decl) = N_Full_Type_Declaration
+                 and then Nkind (Type_Definition (Decl)) =
+                   N_Derived_Type_Definition
+               then Subtype_Indication (Type_Definition (Decl))
                else Empty);
             --  If Rep_Ty is a subtype, we need to use its declaration to find
             --  the next subtype in the derivation tree. Indeed, Etype on
@@ -16105,21 +16112,25 @@ package body Gnat2Why.Expr is
                           Full_Default_Initialization |
                           No_Possible_Initialization);
 
-                     Value_Id   : constant W_Identifier_Id :=
+                     Need_Bound_Check : constant Boolean :=
+                       Is_Array_Type (Des_Ty)
+                       and then Is_Constrained (Des_Ty)
+                       and then Des_Ty /= Retysp (Entity (New_Expr));
+                     Value_Id         : constant W_Identifier_Id :=
                        New_Temp_Identifier
                          (Base_Name => "value",
                           Typ       => EW_Abstract
                             (Des_Ty,
                              Relaxed_Init => Has_Relaxed_Init (Des_Ty)));
-                     Alloc_Id   : constant W_Identifier_Id :=
+                     Alloc_Id         : constant W_Identifier_Id :=
                        New_Temp_Identifier
                          (Base_Name => "alloc",
                           Typ       => Call_Ty);
-                     Res_Id     : constant W_Identifier_Id :=
+                     Res_Id           : constant W_Identifier_Id :=
                        +New_Result_Ident
                        (Typ => EW_Abstract
                           (Constr_Ty, Has_Relaxed_Init (Constr_Ty)));
-                     Pred       : constant W_Pred_Id :=
+                     Pred             : constant W_Pred_Id :=
                        +New_And_Expr
                        (Left   => +Compute_Default_Init
                           (Expr   => +Res_Id,
@@ -16135,16 +16146,47 @@ package body Gnat2Why.Expr is
                            --  Also assume bounds / discriminants
                            Only_Var         => False_Term),
                         Domain => EW_Pred);
-                     Value_Expr : constant W_Expr_Id :=
-                       New_Any_Expr
-                         (Post        => Pred,
-                          Labels      => Symbol_Sets.Empty_Set,
-                          Return_Type => Get_Typ (Res_Id));
+                     Tmp_Value        : constant W_Expr_Id :=
+                       New_Temp_For_Expr
+                         (E         => New_Any_Expr
+                            (Post        => Pred,
+                             Labels      => Symbol_Sets.Empty_Set,
+                             Return_Type => Get_Typ (Res_Id)),
+                          Need_Temp => Need_Bound_Check);
+                     Value_Expr       : W_Expr_Id := Insert_Checked_Conversion
+                       (Ada_Node => Expr,
+                        Domain   => Domain,
+                        Expr     => Tmp_Value,
+                        To       => Get_Typ (Value_Id));
+
                   begin
                      pragma Assert
                        (if Is_Composite_Type (Constr_Ty)
                         then Is_Constrained (Constr_Ty)
                         or else Has_Defaulted_Discriminants (Constr_Ty));
+
+                     --  Allocators do not slide the allocated value. If the
+                     --  designated type is constrained, introduce a check to
+                     --  ensure that the bounds of the allocated value match
+                     --  those of the designated type.
+
+                     if Need_Bound_Check then
+                        Value_Expr := +Sequence
+                          (Ada_Node => Expr,
+                           Left     => New_Located_Assert
+                             (Ada_Node => Expr,
+                              Pred     => +New_Bounds_Equality
+                                (Tmp_Value, Des_Ty, EW_Pred),
+                              Reason   => VC_Range_Check,
+                              Kind     => EW_Assert),
+                           Right    => +Value_Expr);
+
+                        Value_Expr := Binding_For_Temp
+                          (Ada_Node => Expr,
+                           Domain   => Domain,
+                           Tmp      => Tmp_Value,
+                           Context  => Value_Expr);
+                     end if;
 
                      Call := New_Binding
                        (Name    => New_Identifier (Name => "_"),
@@ -16161,11 +16203,7 @@ package body Gnat2Why.Expr is
                            Context => New_Binding
                              (Name    => Value_Id,
                               Domain  => Domain,
-                              Def     => Insert_Checked_Conversion
-                                (Ada_Node => Expr,
-                                 Domain   => Domain,
-                                 Expr     => Value_Expr,
-                                 To       => Get_Typ (Value_Id)),
+                              Def     => Value_Expr,
                               Context => +Sequence
                                 (Left  => New_Assume_Statement
                                      (Pred => +New_Comparison
@@ -16194,13 +16232,40 @@ package body Gnat2Why.Expr is
                     E_Symb (Etype (Expr), WNE_Init_Allocator);
 
                   declare
-                     Value_Expr : W_Expr_Id := Transform_Expr
-                       (Expr          => New_Expr,
-                        Expected_Type => Type_Of_Node (Des_Ty),
-                        Domain        => Domain,
-                        Params        => Local_Params);
+                     Need_Bound_Check : constant Boolean :=
+                       Is_Array_Type (Des_Ty)
+                       and then Is_Constrained (Des_Ty)
+                       and then Des_Ty /= Etype (New_Expr);
+                     Tmp_Value        : constant W_Expr_Id := New_Temp_For_Expr
+                       (E         => Transform_Expr
+                          (Expr   => New_Expr,
+                           Domain => Domain,
+                           Params => Local_Params),
+                        Need_Temp => Need_Bound_Check);
+                     Value_Expr       : W_Expr_Id := Insert_Checked_Conversion
+                       (Ada_Node => New_Expr,
+                        Domain   => Domain,
+                        Expr     => Tmp_Value,
+                        To       => Type_Of_Node (Des_Ty));
 
                   begin
+                     --  Allocators do not slide the allocated value. If the
+                     --  designated type is constrained, introduce a check to
+                     --  ensure that the bounds of the allocated value match
+                     --  those of the designated type.
+
+                     if Need_Bound_Check then
+                        Value_Expr := +Sequence
+                          (Ada_Node => New_Expr,
+                           Left     => New_Located_Assert
+                             (Ada_Node => New_Expr,
+                              Pred     => +New_Bounds_Equality
+                                (Tmp_Value, Des_Ty, EW_Pred),
+                              Reason   => VC_Range_Check,
+                              Kind     => EW_Assert),
+                           Right    => +Value_Expr);
+                     end if;
+
                      --  Update the tag attribute if Des_Ty is a specific type
 
                      if Is_Tagged_Type (Des_Ty) then
@@ -16209,6 +16274,12 @@ package body Gnat2Why.Expr is
                            Name   => Value_Expr,
                            Ty     => Des_Ty);
                      end if;
+
+                     Value_Expr := Binding_For_Temp
+                       (Ada_Node => New_Expr,
+                        Domain   => Domain,
+                        Tmp      => Tmp_Value,
+                        Context  => Value_Expr);
 
                      Call := New_Call
                        (Name     => +Func_New_Initialized_Name,

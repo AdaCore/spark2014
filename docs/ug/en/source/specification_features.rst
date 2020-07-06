@@ -355,25 +355,25 @@ and the use of attribute ``Old`` :ref:`In a Potentially Unevaluated
 Expression`. The same solutions apply here, in particular the use of |GNAT Pro|
 pragma ``Unevaluated_Use_Of_Old``.
 
-.. _Attribute Update:
+.. _Delta Aggregates:
 
-Attribute ``Update``
---------------------
+Delta Aggregates
+----------------
 
-[|SPARK|]
+[Ada 202X]
 
 It is quite common in :ref:`Postconditions` to relate the input and output
 values of parameters. While this can be as easy as ``X = X'Old + 1`` in the
 case of scalar parameters, it is more complex to express for array and record
-parameters. Attribute ``Update`` is useful in that case, to denote the updated
+parameters. Delta aggregates are useful in that case, to denote the updated
 value of a composite variable. For example, we can express more clearly that
 procedure ``Zero_Range`` zeroes out the elements of its array parameter ``X``
-between ``From`` and ``To`` by using attribute ``Update``:
+between ``From`` and ``To`` by using a delta aggregate:
 
 .. code-block:: ada
 
    procedure Zero_Range (X : in out Integer_Array; From, To : Positive) with
-     Post => X = X'Old'Update(From .. To => 0);
+     Post => X = (X'Old with delta From .. To => 0);
 
 than with an equivalent postcondition using :ref:`Quantified Expressions` and
 :ref:`Conditional Expressions`:
@@ -384,7 +384,7 @@ than with an equivalent postcondition using :ref:`Quantified Expressions` and
      Post => (for all J in X'Range =>
                 (if J in From .. To then X(J) = 0 else X(J) = X'Old(J)));
 
-Attribute ``Update`` takes in argument a list of associations between indexes
+Delta aggregates allow to specify a list of associations between indexes
 (for arrays) or components (for records) and values. Components can only be
 mentioned once, with the semantics that all values are evaluated before any
 update. Array indexes may be mentioned more than once, with the semantics that
@@ -395,7 +395,7 @@ array ``X`` have been swapped:
 .. code-block:: ada
 
    procedure Swap (X : in out Integer_Array; J, K : Positive) with
-     Post => X = X'Old'Update(J => X'Old(K), K => X'Old(J));
+     Post => X = (X'Old with delta J => X'Old(K), K => X'Old(J));
 
 and the postcondition of procedure ``Rotate_Clockwize_Z`` expresses that the
 point ``P`` given in parameter has been rotated 90 degrees clockwise around the
@@ -405,10 +405,10 @@ modified):
 .. code-block:: ada
 
    procedure Rotate_Clockwize_Z (P : in out Point_3D) with
-     Post => P = P'Old'Update(X => P.Y'Old, Y => - P.X'Old);
+     Post => P = (P'Old with delta X => P.Y'Old, Y => - P.X'Old);
 
-Similarly to its use in combination with attribute ``Old`` in postconditions,
-attribute ``Update`` is useful in combination with :ref:`Attribute Loop_Entry`
+Similarly to their use in combination with attribute ``Old`` in postconditions,
+delta aggregates are useful in combination with :ref:`Attribute Loop_Entry`
 inside :ref:`Loop Invariants`. For example, we can express the property that,
 after iteration ``J`` in the main loop in procedure ``Zero_Range``, the value
 of parameter array ``X`` at all indexes already seen is equal to zero:
@@ -419,11 +419,11 @@ of parameter array ``X`` at all indexes already seen is equal to zero:
    begin
       for J in From .. To loop
          X(J) := 0;
-         pragma Loop_Invariant (X = X'Loop_Entry'Update(From .. J => 0));
+         pragma Loop_Invariant (X = (X'Loop_Entry with delta From .. J => 0));
       end loop;
    end Zero_Range;
 
-Attribute ``Update`` can also be used outside of assertions. It is particularly
+Delta aggregates can also be used outside of assertions. They are particularly
 useful in expression functions. For example, the functionality in procedure
 ``Rotate_Clockwize_Z`` could be expressed equivalently as an expression
 function:
@@ -431,10 +431,15 @@ function:
 .. code-block:: ada
 
    function Rotate_Clockwize_Z (P : Point_3D) return Point_3D is
-     (P'Update(X => P.Y, Y => - P.X));
+     (P with delta X => P.Y, Y => - P.X);
 
 Because it requires copying the value of ``P``, the type of ``P`` cannot be
 limited.
+
+.. note::
+
+   In |SPARK| versions up to |SPARK| 21, delta aggregates are not supported
+   and an equivalent attribute named ``Update`` can be used instead.
 
 .. _Conditional Expressions:
 
@@ -587,6 +592,77 @@ the entire range ``I in 1 .. 10`` (including ``I = 3``) so it issues a check
 message for a possible division by zero in this case.
 
 Quantified expressions should always be parenthesized.
+
+.. _Declare Expressions:
+
+Declare Expressions
+-------------------
+
+[Ada 202X]
+
+Declare expressions are used to factorize parts of an expression. They allow to
+declare constants and renamings which are local to the expression. A
+declare expression is made of two parts:
+
+* A list of declarations of local constants and renamings
+* An expression using the names introduced in these declarations.
+
+To match the syntax of declare blocks, the first part is introduced by
+``declare`` and the second by ``begin``. The scope is delimited by enclosing
+parentheses, without ``end`` to close the scope.
+
+As an example, we introduce a ``Find_First_Zero`` function which finds the index
+of the first occurrence of ``0`` in an array of integers and a procedure
+``Set_Range_To_Zero`` which zeros out all elements located between the first
+and second occurrence of ``0`` in the array:
+
+.. code-block:: ada
+
+   function Has_Zero (A : My_Array) return Boolean is
+     (for some E of A => E = 0);
+
+   function Has_Two_Zeros (A : My_Array) return Boolean is
+     (for some I in A'Range => A (I) = 0 and
+        (for some J in A'Range => A (J) = 0 and I /= J));
+
+   function Find_First_Zero (A : My_Array) return Natural with
+     Pre  => Has_Zero (A),
+     Post => Find_First_Zero'Result in A'Range
+       and A (Find_First_Zero'Result) = 0
+       and not Has_Zero (A (A'First .. Find_First_Zero'Result - 1));
+
+   procedure Set_Range_To_Zero (A : in out My_Array) with
+     Pre  => Has_Two_Zeros (A),
+     Post =>
+        A = (A'Old with delta
+               Find_First_Zero (A'Old) ..
+                 Find_First_Zero
+	           (A'Old (Find_First_Zero (A'Old) + 1 .. A'Last)) => 0);
+
+In the contract of ``Set_Range_To_Zero``, we use :ref:`Delta Aggregates` to
+state that elements of ``A`` located in the range between the first and the
+second occurrence of ``0`` in ``A`` have been set to ``0`` by the procedure.
+The second occurrence is found by calling ``Find_First_Zero``
+on the slice of ``A`` starting just after the first occurrence of ``0``.
+
+To make the contract of ``Set_Range_To_Zero`` more readable, we can use a
+declare expression to introduce constants for the first and second occurrence
+of ``0`` in the array. The explicit names make it easier to understand what the
+bounds of the updated slice are supposed to be. It also avoids repeating the
+call to ``Find_First_Zero`` on ``A`` in the computation of
+the second bound:
+
+.. code-block:: ada
+
+   procedure Set_Range_To_Zero (A : in out My_Array) with
+     Pre  => Has_Two_Zeros (A),
+     Post =>
+       (declare
+          Fst_Zero : constant Positive := Find_First_Zero (A'Old);
+          Snd_Zero : constant Positive := Find_First_Zero
+	     (A'Old (Fst_Zero + 1 .. A'Last));
+        begin
+          A = (A'Old with delta Fst_Zero .. Snd_Zero => 0));
 
 .. _Expression Functions:
 
@@ -870,7 +946,7 @@ procedure ``Add_To_Total``, as in :ref:`State Abstraction`:
    Log_Size : Natural with Ghost;
 
    procedure Add_To_Total (Incr : in Integer) with
-     Post => Log_Size = Log_Size'Old + 1 and Log = Log'Old'Update (Log_Size => Incr);
+     Post => Log_Size = Log_Size'Old + 1 and Log = (Log'Old with delta Log_Size => Incr);
 
    procedure Add_To_Total (Incr : in Integer) is
    begin
@@ -882,7 +958,7 @@ procedure ``Add_To_Total``, as in :ref:`State Abstraction`:
 The postcondition of ``Add_To_Total`` above expresses that ``Log_Size`` is
 incremented by one at each call, and that the current value of parameter
 ``Incr`` is appended to ``Log`` at each call (using :ref:`Attribute Old` and
-:ref:`Attribute Update`).
+:ref:`Delta Aggregates`).
 
 Case 4: Expressing Existentially Quantified Properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -969,7 +1045,7 @@ append a value to the log as seen previously.
 
    procedure Append_To_Log (Incr : in Integer) with
      Ghost,
-     Post => Log_Size = Log_Size'Old + 1 and Log = Log'Old'Update (Log_Size => Incr);
+     Post => Log_Size = Log_Size'Old + 1 and Log = (Log'Old with delta Log_Size => Incr);
 
    procedure Append_To_Log (Incr : in Integer) is
    begin
@@ -1005,7 +1081,7 @@ specific kind of ghost code. For example, we can define a ghost package
       Log_Size : Natural;
 
       procedure Append_To_Log (Incr : in Integer) with
-        Post => Log_Size = Log_Size'Old + 1 and Log = Log'Old'Update (Log_Size => Incr);
+        Post => Log_Size = Log_Size'Old + 1 and Log = (Log'Old with delta Log_Size => Incr);
 
       ...
 
