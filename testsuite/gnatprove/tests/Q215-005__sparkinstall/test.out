@@ -28,6 +28,7 @@ spark_memcached_wrapper
 spark_report
 spark_semaphore_wrapper
 target.atp
+why3
 why3config
 why3cpulimit
 why3realize
