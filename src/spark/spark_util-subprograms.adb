@@ -1078,15 +1078,18 @@ package body SPARK_Util.Subprograms is
       if Debug.Debug_Flag_M then
          return False;
 
-      --  A subprogram always inlined should have Body_To_Inline set and
-      --  flag Is_Inlined_Always set to True. However, subprograms with
-      --  renaming-as-body satisfy these conditions and are not always inlined.
+      --  A subprogram always inlined should have Body_To_Inline set and flag
+      --  Is_Inlined_Always set to True. We check in addition that the address
+      --  of the subprogram is not taken, as calls through callbacks cannot
+      --  be analyzed in context. However, subprograms with renaming-as-body
+      --  satisfy these conditions and are not always inlined.
 
       --  Also, subprograms of protected objects are never inlined
 
       else
          if Is_Subprogram (E)
            and then Is_Inlined_Always (E)
+           and then not Address_Taken (E)
          then
             declare
                Spec : constant Node_Id := Subprogram_Spec (E);
