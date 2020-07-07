@@ -8,7 +8,7 @@ sum.adb:17:37: info: precondition proved (CVC4: 2 VC)
 sum.adb:17:48: info: range check proved (CVC4: 2 VC)
 sum.adb:18:17: info: overflow check proved (CVC4: 1 VC)
 sum.ads:11:13: info: function contract might not be available on recursive calls
-sum.ads:11:13: medium: subprogram "Sum" might not terminate, terminating annotation could be incorrect
+sum.ads:12:08: medium: "Sum" is recursive, terminating annotation could be incorrect
 sum.ads:15:17: info: overflow check proved (CVC4: 1 VC)
 sum.ads:15:19: info: precondition proved (CVC4: 1 VC)
 sum.ads:15:29: info: range check proved (CVC4: 1 VC)

@@ -1,6 +1,6 @@
 traversal_funcs.adb:11:22: warning: unused variable "X"
 traversal_funcs.adb:15:13: info: implicit function contract might not be available on recursive calls
-traversal_funcs.adb:15:13: medium: subprogram "Length" might not terminate, terminating annotation could be incorrect
+traversal_funcs.adb:16:07: medium: "Length" is recursive, terminating annotation could be incorrect
 traversal_funcs.adb:17:52: info: pointer dereference check proved (CVC4: 1 VC)
 traversal_funcs.adb:17:57: info: overflow check proved (CVC4: 1 VC)
 traversal_funcs.adb:24:18: info: contract case proved (CVC4: 2 VC; Trivial: 2 VC)

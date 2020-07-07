@@ -13,7 +13,7 @@ package Perm with SPARK_Mode, Ghost is
       else Occ_Def (Remove_Last (A), E))
    with Post => Occ_Def'Result <= A'Length;
    pragma Annotate (GNATprove, Terminating, Occ_Def);
-   pragma Annotate (GNATprove, False_Positive, "terminate", "Occ_Def is called recursively on a strictly smaller array");
+   pragma Annotate (GNATprove, False_Positive, "recursive", "Occ_Def is called recursively on a strictly smaller array");
 
    function Occ (A : Nat_Array; E : Natural) return Nb_Occ is (Occ_Def (A, E))
    with

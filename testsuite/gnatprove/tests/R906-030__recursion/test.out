@@ -1,5 +1,5 @@
 test_rec.adb:7:13: info: function contract might not be available on recursive calls
-test_rec.adb:7:13: medium: subprogram "Sum" might not terminate, terminating annotation could be incorrect
+test_rec.adb:8:07: medium: "Sum" is recursive, terminating annotation could be incorrect
 test_rec.adb:9:17: info: range check proved (CVC4: 4 VC)
 test_rec.adb:9:38: info: overflow check proved (CVC4: 1 VC)
 test_rec.adb:9:44: info: overflow check proved (CVC4: 1 VC)

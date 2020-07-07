@@ -145,9 +145,7 @@ my_map.adb:183:21: info: null exclusion check proved (CVC4: 1 VC)
 my_map.adb:183:21: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:185:16: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:187:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
-my_map.ads:12:13: medium: subprogram "Model_Contains" might not terminate, terminating annotation could be incorrect
 my_map.ads:17:13: info: implicit function contract might not be available on recursive calls
-my_map.ads:17:13: medium: subprogram "Model_Value" might not terminate, terminating annotation could be incorrect
 my_map.ads:23:21: warning: unused variable "Borrower"
 my_map.ads:28:21: warning: unused variable "Borrower"
 my_map.ads:34:14: info: postcondition proved (CVC4: 2 VC)
@@ -175,18 +173,20 @@ my_map.ads:57:52: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.ads:59:18: info: precondition proved (CVC4: 1 VC)
 my_map.ads:59:56: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.ads:63:13: info: subprogram "First" will terminate, terminating annotation has been proved
-my_map.ads:66:13: medium: subprogram "Has_Element" might not terminate, terminating annotation could be incorrect
 my_map.ads:69:13: info: implicit function contract might not be available on recursive calls
-my_map.ads:69:13: medium: subprogram "Next" might not terminate, terminating annotation could be incorrect
 my_map.ads:73:13: info: subprogram "Element" will terminate, terminating annotation has been proved
 my_map.ads:90:14: info: postcondition proved (CVC4: 1 VC)
+my_map.ads:102:17: medium: "Model_Contains" and "Has_Element" are mutually recursive, terminating annotation on "Model_Contains" could be incorrect
 my_map.ads:102:41: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:105:07: medium: "Model_Value" is recursive, terminating annotation could be incorrect
 my_map.ads:105:11: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.ads:105:26: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.ads:105:33: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.ads:105:42: info: precondition proved (CVC4: 1 VC)
 my_map.ads:105:56: info: pointer dereference check proved (CVC4: 1 VC)
+my_map.ads:110:14: medium: "Has_Element" and "Model_Contains" are mutually recursive, terminating annotation on "Has_Element" could be incorrect
 my_map.ads:111:52: info: range check proved (CVC4: 1 VC)
+my_map.ads:113:07: medium: "Next" is recursive, terminating annotation could be incorrect
 my_map.ads:113:26: info: precondition proved (CVC4: 1 VC)
 my_map.ads:113:39: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.ads:115:18: info: pointer dereference check proved (CVC4: 1 VC)

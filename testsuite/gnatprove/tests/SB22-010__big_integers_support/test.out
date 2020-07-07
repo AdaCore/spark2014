@@ -161,7 +161,7 @@ big_integers_test.adb:142:19: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:142:44: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:142:47: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:144:11: info: precondition proved (CVC4: 4 VC)
-conversion.ads:10:13: medium: subprogram "Partial_Conversion_Rec" might not terminate, terminating annotation could be incorrect
+conversion.ads:15:07: medium: "Partial_Conversion_Rec" is recursive, terminating annotation could be incorrect
 conversion.ads:15:26: info: index check proved (CVC4: 2 VC)
 conversion.ads:15:32: info: predicate check proved (CVC4: 1 VC)
 conversion.ads:17:10: info: precondition proved (CVC4: 4 VC)

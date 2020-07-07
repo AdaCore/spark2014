@@ -3,4 +3,4 @@ bad.adb:6:34: info: expression function body not available for proof ("A" might 
 bad.adb:9:43: info: expression function body not available for proof ("A" might not return)
 bad.adb:12:13: info: add a contract to analyze it separately from calling contexts
 bad.adb:12:13: info: local subprogram "In_T" only analyzed in the context of calls
-bad.adb:12:13: medium: subprogram "In_T" might not terminate, terminating annotation could be incorrect
+bad.adb:18:07: medium: call to "A" might be nonterminating, terminating annotation on "In_T" could be incorrect

@@ -262,9 +262,12 @@ package Flow_Generated_Globals.Phase_2 is
    --  i.e. is a recursive subprogram.
 
    function Mutually_Recursive (E1, E2 : Entity_Id) return Boolean
-   with Pre => GG_Has_Been_Generated and then
-               Ekind (E1) in E_Entry | E_Procedure | E_Function and then
-               Ekind (E2) in E_Entry | E_Procedure | E_Function;
+     with Pre =>
+       GG_Has_Been_Generated
+         and then
+       Ekind (E1) in E_Entry | E_Procedure | E_Function | E_Package
+         and then
+       Ekind (E2) in E_Entry | E_Procedure | E_Function | E_Package;
    --  Returns True iff subprogram E1 calls (directly or indirectly) E2, and
    --  conversly, i.e. they are mutually recursive subprograms.
 
@@ -284,9 +287,7 @@ package Flow_Generated_Globals.Phase_2 is
                                                   return Boolean
    with Pre => GG_Has_Been_Generated and then
                Entity_In_SPARK (E) and then
-               Ekind (E) in E_Entry     |
-                            E_Procedure |
-                            E_Function;
+               Ekind (E) in E_Entry | E_Function | E_Package | E_Procedure;
    --  Returns True iff subprogram E is potentially nonreturning, i.e.
    --  * is a procedure annotated with pragma No_Return
    --  * contains possibly nonterminating loops
@@ -327,9 +328,7 @@ package Flow_Generated_Globals.Phase_2 is
    function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then
                Entity_In_SPARK (E) and then
-               Ekind (E) in E_Entry     |
-                            E_Procedure |
-                            E_Function;
+               Ekind (E) in E_Entry | E_Function | E_Procedure | E_Package;
    --  Returns True iff E is not annotated as terminating and is indeed
    --  (potentially) nonreturning for some reason.
    --

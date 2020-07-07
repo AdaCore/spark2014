@@ -7,9 +7,9 @@ p.adb:23:14: info: subprogram "Bad" will terminate, terminating annotation has b
 p.adb:27:05: info: initialization of "X" proved
 p.adb:27:08: info: initialization of "Y" proved
 p.adb:29:20: medium: assertion might fail, cannot prove Bad (X, Y)
-q.adb:7:14: medium: subprogram overriding operator "=" might not terminate, terminating annotation could be incorrect
 q.adb:7:19: warning: unused variable "X"
 q.adb:7:22: warning: unused variable "Y"
+q.adb:11:08: medium: loop might be nonterminating, terminating annotation on overriding operator "=" could be incorrect
 q.adb:22:14: info: subprogram "Bad" will terminate, terminating annotation has been proved
 q.adb:26:05: info: initialization of "X" proved
 q.adb:26:08: info: initialization of "Y" proved

@@ -1,0 +1,14 @@
+mutually_recursive_nested_package.adb:1:10: info: implicit function contract might not be available on recursive calls
+mutually_recursive_nested_package.adb:3:17: medium: "P" and "Mutually_Recursive_Nested_Package" are mutually recursive, terminating annotation on "Mutually_Recursive_Nested_Package" could be incorrect
+mutually_recursive_nested_package.adb:3:17: warning: initialization of "X" has no effect
+nonterminating.adb:1:11: warning: subprogram "Nonterminating" has no effect
+nonterminating.adb:4:14: info: add a contract to analyze it separately from calling contexts
+nonterminating.adb:4:14: info: local subprogram "Infinite_Loop" only analyzed in the context of calls
+nonterminating.adb:4:14: warning: subprogram "Infinite_Loop" has no effect
+nonterminating.adb:7:20: medium: loop might be nonterminating, terminating annotation on "Nonterminating" could be incorrect, in call inlined at nonterminating.adb:21
+nonterminating.adb:8:15: medium: overflow check might fail, in call inlined at nonterminating.adb:21 (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer]
+nonterminating.adb:12:33: warning: unused variable "I"
+nonterminating.adb:18:33: medium: call to "Infinite_Recursion" might be nonterminating, terminating annotation on "Nonterminating" could be incorrect
+nonterminating.adb:18:33: medium: loop might be nonterminating, terminating annotation on "Nonterminating" could be incorrect
+nonterminating.adb:25:07: medium: "Nonterminating" is recursive, terminating annotation could be incorrect
+nonterminating.adb:25:25: info: range check proved (CVC4: 1 VC)

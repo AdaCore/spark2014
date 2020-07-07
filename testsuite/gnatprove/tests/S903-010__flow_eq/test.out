@@ -1,45 +1,45 @@
-x.adb:6:13: medium: subprogram overriding operator "abs" might not terminate, terminating annotation could be incorrect
-x.adb:9:13: medium: subprogram overriding operator "and" might not terminate, terminating annotation could be incorrect
-x.adb:12:13: medium: subprogram overriding operator "mod" might not terminate, terminating annotation could be incorrect
-x.adb:15:13: medium: subprogram overriding operator "not" might not terminate, terminating annotation could be incorrect
-x.adb:18:13: medium: subprogram overriding operator "or" might not terminate, terminating annotation could be incorrect
-x.adb:21:13: medium: subprogram overriding operator "rem" might not terminate, terminating annotation could be incorrect
-x.adb:24:13: medium: subprogram overriding operator "xor" might not terminate, terminating annotation could be incorrect
-x.adb:27:13: medium: subprogram overriding operator "=" might not terminate, terminating annotation could be incorrect
-x.adb:30:13: medium: subprogram overriding operator "<" might not terminate, terminating annotation could be incorrect
-x.adb:33:13: medium: subprogram overriding operator "<=" might not terminate, terminating annotation could be incorrect
-x.adb:36:13: medium: subprogram overriding operator ">" might not terminate, terminating annotation could be incorrect
-x.adb:39:13: medium: subprogram overriding operator ">=" might not terminate, terminating annotation could be incorrect
-x.adb:42:13: medium: subprogram overriding operator "+" might not terminate, terminating annotation could be incorrect
-x.adb:45:13: medium: subprogram overriding operator "-" might not terminate, terminating annotation could be incorrect
-x.adb:48:13: medium: subprogram overriding operator "&" might not terminate, terminating annotation could be incorrect
-x.adb:51:13: medium: subprogram overriding operator "*" might not terminate, terminating annotation could be incorrect
-x.adb:54:13: medium: subprogram overriding operator "/" might not terminate, terminating annotation could be incorrect
-x.adb:57:13: medium: subprogram overriding operator "**" might not terminate, terminating annotation could be incorrect
+x.adb:62:18: medium: loop might be nonterminating, terminating annotation on overriding operator "=" could be incorrect
 x.adb:62:18: warning: statement has no effect
+x.adb:70:19: medium: loop might be nonterminating, terminating annotation on overriding operator "<" could be incorrect
 x.adb:70:19: warning: statement has no effect
+x.adb:78:19: medium: loop might be nonterminating, terminating annotation on overriding operator "<=" could be incorrect
 x.adb:78:19: warning: statement has no effect
+x.adb:86:19: medium: loop might be nonterminating, terminating annotation on overriding operator ">" could be incorrect
 x.adb:86:19: warning: statement has no effect
+x.adb:94:19: medium: loop might be nonterminating, terminating annotation on overriding operator ">=" could be incorrect
 x.adb:94:19: warning: statement has no effect
+x.adb:102:19: medium: loop might be nonterminating, terminating annotation on overriding operator "abs" could be incorrect
 x.adb:102:19: warning: statement has no effect
+x.adb:110:19: medium: loop might be nonterminating, terminating annotation on overriding operator "and" could be incorrect
 x.adb:110:19: warning: statement has no effect
+x.adb:118:19: medium: loop might be nonterminating, terminating annotation on overriding operator "mod" could be incorrect
 x.adb:118:19: warning: statement has no effect
 x.adb:121:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:126:19: medium: loop might be nonterminating, terminating annotation on overriding operator "not" could be incorrect
 x.adb:126:19: warning: statement has no effect
+x.adb:134:19: medium: loop might be nonterminating, terminating annotation on overriding operator "or" could be incorrect
 x.adb:134:19: warning: statement has no effect
+x.adb:142:19: medium: loop might be nonterminating, terminating annotation on overriding operator "rem" could be incorrect
 x.adb:142:19: warning: statement has no effect
 x.adb:145:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:150:19: medium: loop might be nonterminating, terminating annotation on overriding operator "xor" could be incorrect
 x.adb:150:19: warning: statement has no effect
+x.adb:158:19: medium: loop might be nonterminating, terminating annotation on overriding operator "+" could be incorrect
 x.adb:158:19: warning: statement has no effect
 x.adb:161:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:166:19: medium: loop might be nonterminating, terminating annotation on overriding operator "-" could be incorrect
 x.adb:166:19: warning: statement has no effect
 x.adb:169:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:174:19: medium: loop might be nonterminating, terminating annotation on overriding operator "&" could be incorrect
 x.adb:174:19: warning: statement has no effect
 x.adb:177:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:182:19: medium: loop might be nonterminating, terminating annotation on overriding operator "*" could be incorrect
 x.adb:182:19: warning: statement has no effect
 x.adb:185:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:190:19: medium: loop might be nonterminating, terminating annotation on overriding operator "/" could be incorrect
 x.adb:190:19: warning: statement has no effect
 x.adb:193:29: info: overflow check proved (CVC4: 1 VC)
+x.adb:198:19: medium: loop might be nonterminating, terminating annotation on overriding operator "**" could be incorrect
 x.adb:198:19: warning: statement has no effect
 x.adb:201:29: info: overflow check proved (CVC4: 1 VC)
 x.adb:207:19: medium: assertion might fail, cannot prove A = B

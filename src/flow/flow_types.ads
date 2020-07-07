@@ -648,6 +648,10 @@ package Flow_Types is
       --  True if this vertex models an implicit formal parameter of a
       --  subprogram.
 
+      Is_Neverending               : Boolean;
+      --  True if this vertex models a loop that is detected as potentially
+      --  nonreturning.
+
       Execution                    : Execution_Kind_T;
       --  Determines how we should treat edges from this vertex. Most nodes
       --  will have Normal_Execution set here.
@@ -730,6 +734,7 @@ package Flow_Types is
                    Is_Discr_Or_Bounds_Parameter    => False,
                    Is_Global_Parameter             => False,
                    Is_Implicit_Parameter           => False,
+                   Is_Neverending                  => False,
                    Execution                       => Normal_Execution,
                    Perform_IPFA                    => False,
                    Call_Vertex                     => Null_Flow_Id,
