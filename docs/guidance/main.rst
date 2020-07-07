@@ -30,10 +30,12 @@ description of three key aspects of adopting SPARK at that level:
 * `Costs and Limitations` - What are the main costs and limitations for
   adopting SPARK?
 
-Each section then goes on to describe how to progressively adopt SPARK at that
-level in an Ada project. Section :ref:`Example` shows an example of an
-application at each level. These sections are particularly relevant
-to software developers who need to use SPARK at a given level.
+Each section then goes on to describe how to progressively adopt SPARK
+at that level in an Ada project. Finally, the :ref:`Example` section
+shows the concrete application of this adoption approach to an existing,
+production-ready bounded stack abstraction. These sections are
+particularly relevant to software developers who need to use SPARK at a
+given level.
 
 Although this document focuses on adopting SPARK for use on existing Ada
 code, the same guidelines can be used for adopting SPARK at the beginning
@@ -132,7 +134,7 @@ thanks to the use of more powerful techniques. AdaCore develops and
 distributes both a bug finder (CodePeer) and a verifier (SPARK).
 
 SPARK is a verifier co-developed by AdaCore and Altran and distributed by
-AdaCore. The main webpage for the SPARK Pro product is
+AdaCore. The main web page for the SPARK Pro product is
 http://www.adacore.com/sparkpro/. SPARK analysis can give strong guarantees
 that a program:
 
@@ -1887,7 +1889,7 @@ behavior of a subprogram call when its parameters are aliased depends on how
 parameters are passed (by copy or by reference) and on the order in which
 the by-copy parameters, if any, are copied back. Since these are not
 specified by the Ada language, it may introduce either compiler or platform
-dependences in the behavior of the program.
+dependencies in the behavior of the program.
 
 In some situations GNATprove's analysis is not precise enough and the tool
 issues an unproved check message even when there is no
@@ -2944,7 +2946,7 @@ program, you can perform analyses at higher proof
 levels 1 and 2 to get more run-time checks proved automatically.
 
 Proving AoRTE requires interacting with GNATprove inside GNAT Studio. Thus, we
-suggest that you select a unit (preferably one with few dependences over
+suggest that you select a unit (preferably one with few dependencies over
 other unproved units, ideally a leaf unit not depending on other unproved
 units) with some unproved checks. Open GNAT Studio on your project, display this
 unit inside GNAT Studio, and place the focus on this unit. Inside this unit, select a
@@ -3663,7 +3665,7 @@ analyzed:
    :alt: Popup window from GNAT Studio for "prove" mode
 
 Proving properties requires interacting with GNATprove inside GNAT Studio. Thus, we
-suggest you select a unit (preferably one with few dependences over other
+suggest you select a unit (preferably one with few dependencies over other
 unproved units, ideally a leaf unit not depending on other unproved units)
 with some unproved checks. Open GNAT Studio on your project, display this unit
 inside GNAT Studio, and place the focus on this unit. Inside this unit, select a
@@ -3743,296 +3745,1501 @@ For each unproved property in this subprogram, you should follow the following s
 Example
 =======
 
-As an example, we applied the guidelines in this document to the top-level
-program in the GNATprove tool itself, called ``gnatprove``, which handles the
-configuration switches, calls other executables to perform the analysis and
-reports messages. We started by manually adding a pragma ``SPARK_Mode (On)`` to
-every file of the project.  Since ``gnatprove`` is small (26 units for a total
-of 4,500 sloc), we didn't need any automation for this step. We then ran
-GNATprove in check mode. It appeared that no unit of the project was valid
-SPARK, mostly because of string access types in configuration phase and
-because of uses of standard container packages for reporting, both of which
-are not in SPARK.
+This section describes the transformation of a bounded stack abstract
+data type (ADT), implemented in Ada, into a SPARK implementation at the
+highest adoption level. The result will be a production-ready stack ADT
+for which we can prove that there are no reads of unassigned variables,
+no array indexing errors, no range errors, no numeric overflow errors,
+no attempts to push onto a full stack, no attempts to pop from an empty
+stack, that subprogram bodies implement their functional requirements,
+and so on.
 
-We chose to concentrate on the ``print_table`` package, which displays the
-results of a run of GNATprove as a table. It stores the results inside a
-two dimensional array and then prints them in the ``gnatprove.out`` file. It's
-relatively small, but exhibits possible run-time errors, for example when
-indexing the array or when computing the size required for the table.
+Familiarity with the previous sections is required, especially those
+describing the different adoption levels and specific tool invocations
+at those levels. In this section we focus on the messages generated by
+those invocations, as well as the resulting changes required.
+
+Initial Ada Version
+-------------------
+
+.. index:: Initial Ada Version
+
+As for any good abstract data type, the implementation and any
+implementation-dependent operations must be hidden from client code. In
+Ada and SPARK this compile-time visibility control is first achieved
+by declaring the type's representation to be "private" like so:
+
+.. code-block:: ada
+
+   type Stack (Capacity : Positive) is private;
+
+Clients have visibility to the name ``Stack`` so they can use the type much
+like any other. Client code can also reference the ``Capacity`` component
+but the rest of the representation is not visible. In addition, basic
+operations such as assignment and predefined equality are available to
+clients, but none based on the actual representation of the type are
+visible. This compiler-enforced control of compile-time visibility is a
+core part of applying abstraction and information hiding in Ada and
+SPARK.
+
+The initial implementation provides the bounded form of stack, i.e., the
+representation is backed by an array. Array objects are always
+constrained in Ada and SPARK so the ``Capacity`` component allows (requires)
+clients to set the upper bound of the backing array. For example, client
+code could declare a variable of type ``Stack`` with the ability to contain
+at most 100 values of some type:
+
+.. code-block:: ada
+
+   S1 : Stack (Capacity => 100);
+
+A different context might require another ``Stack`` object with a
+different physical capacity:
+
+.. code-block:: ada
+
+   S2 : Stack (Capacity => 1024);
+
+In effect, the discriminant allows the type to be "parameterized" so
+that clients can specify a context-specific capacity per object, rather
+than the implementation hard-coding a size that would then be imposed on
+all objects of the type. (This is somewhat like a parameter to a
+user-defined constructor in C++.)
+
+Stacks and similar "container" data structures are known as such because
+objects of those types contain values of other given types. One might
+need to have stacks containing integers, or enumerals, or access values,
+or values of some other abstract data type, and so on. In all cases, the
+definition of the container type is largely independent of the contained
+type so we would like to "factor out" the contained type. In Ada,
+"generic" units allow this factoring. Specifically, generic units allow
+us to parameterize compilation units, especially packages.
+
+Therefore, the package declaring and implementing the ``Stack`` type is a
+generic package, with one generic formal parameter that specifies the
+type for the values contained by ``Stack`` objects. The generic formal
+parameter is declared at the beginning of the generic package
+declaration, like so:
+
+.. code-block:: ada
+   :linenos:
+
+   generic
+      type Element is private;
+   package Sequential_Bounded_Stacks is
+
+Within the generic package, ``Element`` will be used to represent the type
+contained by ``Stack`` objects. By saying that the type ``Element`` is private,
+we allow considerable flexibility for clients in terms of the types of
+values to be contained. The details need not be considered here.
+
+The name of the generic package reflects the characteristics and nature
+of the ADT declared within. Thus, the name "Sequential_Bounded_Stacks"
+indicates a package that defines a ``Stack`` ADT in which:
+
+ * objects of the type are not thread-safe
+ * objects of the type are able to contain at most a certain number of elements
+
+Generic units are not concrete usable units until the parameters are
+supplied. That happens in an explicit "instantiation" step.
+Instantiation creates a unit that can be used like any other non-generic
+package or subprogram. In our case, each instantiation must specify a
+single type for ``Element``, and as a result, the corresponding concrete
+``Stack`` type provided by the instantiation can contain values of that
+specified type.
+
+In our example, for type ``Element`` we specify type ``Character`` in the
+instantiation (line six below), so the package provides a ``Stack`` type
+that can contain ``Character`` values:
+
+.. code-block:: ada
+   :linenos:
+
+   pragma Spark_Mode (On);
+
+   with Sequential_Bounded_Stacks;
+
+   package Character_Stacks is new Sequential_Bounded_Stacks
+      (Element => Character);
+
+Our example's instantiation is named "Character_Stacks" to reflect the
+contained type. Other instantiations could specify other types for
+``Element``, resulting in ``Stack`` types able to contain values of those other
+types. (The Ada compiler will ensure we only use the right contained
+type with any given ``Stack`` object.)
+
+Given that instantiation, client code can now use the package
+``Character_Stacks`` like any other package. We use it in the main
+procedure.
+
+There are in fact two main procedures used for the transformations to
+the various adoption levels. One main procedure is for the lower levels,
+and one for the upper levels. They exist only to act as clients so that
+we can prove certain properties about the ``Stack`` type. Therefore,
+they declare objects of type ``Character_Stacks.Stack`` and make a
+series of assertions and calls to ``Stack`` operations. They have no
+functional purpose whatsoever. Here is the first main, used for all
+adoption levels up to and including Silver:
+
+.. code-block:: ada
+   :linenos:
+
+   with Ada.Text_IO;       use Ada.Text_IO;
+   with Character_Stacks;  use Character_Stacks;
+
+   procedure Demo_AoRTE with SPARK_Mode is
+
+      S1, S2 : Stack (Capacity => 10);  -- arbitrary
+
+      X, Y : Character;
+
+   begin
+      pragma Assert (Empty (S1) and Empty (S2));
+      pragma Assert (S1 = S2);
+      Push (S1, 'a');
+      Push (S1, 'b');
+      Put_Line ("Top of S1 is '" & Top_Element (S1) & "'");
+
+      Pop (S1, X);
+      Put_Line ("Top of S1 is '" & Top_Element (S1) & "'");
+      Pop (S1, Y);
+      pragma Assert (Empty (S1) and Empty (S2));
+      Put_Line (X & Y);
+
+      Reset (S1);
+      Put_Line ("Extent of S1 is" & Extent (S1)'Image);
+
+      Put_Line ("Done");
+   end Demo_AoRTE;
+
+We when arrive at the higher levels we will add more assertions to
+highlight more issues, as will be seen in the other main procedure.
+
+The full generic package declaration for the initial Ada version is as
+follows:
+
+.. code-block:: ada
+   :linenos:
+
+   generic
+      type Element is private;
+   package Sequential_Bounded_Stacks is
+
+      type Stack (Capacity : Positive) is private;
+
+      procedure Push (This : in out Stack; Item : in Element) with
+        Pre => not Full (This) or else raise Overflow;
+
+      procedure Pop (This : in out Stack; Item : out Element) with
+        Pre => not Empty (This) or else raise Underflow;
+
+      function Top_Element (This : Stack) return Element with
+        Pre => not Empty (This) or else raise Underflow;
+      --  Returns the value of the Element at the "top" of This
+      --  stack, i.e., the most recent Element pushed. Does not
+      --  remove that Element or alter the state of This stack
+      --  in any way.
+
+      overriding function "=" (Left, Right : Stack) return Boolean;
+
+      procedure Copy (Destination : out Stack; Source : Stack) with
+        Pre => Destination.Capacity >= Extent (Source)
+                 or else raise Overflow;
+      --  An alternative to predefined assignment that does not
+      --  copy all the values unless necessary. It only copies
+      --  the part "logically" contained, so is more efficient
+      --  when Source is not full.
+
+      function Extent (This : Stack) return Natural;
+      --  Returns the number of Element values currently
+      --  contained within This stack.
+
+      function Empty (This : Stack) return Boolean;
+
+      function Full (This : Stack) return Boolean;
+
+      procedure Reset (This : out Stack);
+
+      Overflow  : exception;
+      Underflow : exception;
+
+   private
+
+      type Content is array (Positive range <>) of Element;
+
+      type Stack (Capacity : Positive) is record
+         Values : Content (1 .. Capacity);
+         Top    : Natural := 0;
+      end record;
+
+   end Sequential_Bounded_Stacks;
+
+Some routines have "defensive" preconditions to ensure correct
+functionality. They raise exceptions, declared within the package, when
+the preconditions do not hold (lines 8, 11, 14, and 24).
+
+The private part of the generic package declaration (line 43 onward)
+contains the full representation for type ``Stack`` but clients have no
+compile-time visibility to this part of the package. Note how the
+``Capacity`` discriminant is used as the upper bound for the backing
+array (line 48).
+
+The generic package body is shown below.
+
+.. code-block:: ada
+   :linenos:
+
+
+   package body Sequential_Bounded_Stacks is
+
+      procedure Reset (This : out Stack) is
+      begin
+         This.Top := 0;
+      end Reset;
+
+      function Extent (This : Stack) return Natural is
+         (This.Top);
+
+      function Empty (This : Stack) return Boolean is
+        (This.Top = 0);
+
+      function Full (This : Stack) return Boolean is
+        (This.Top = This.Capacity);
+
+      procedure Push (This : in out Stack; Item : in Element) is
+      begin
+         This.Top := This.Top + 1;
+         This.Values (This.Top) := Item;
+      end Push;
+
+      procedure Pop (This : in out Stack; Item : out Element) is
+      begin
+         Item := This.Values (This.Top);
+         This.Top := This.Top - 1;
+      end Pop;
+
+      function Top_Element (This : Stack) return Element is
+        (This.Values (This.Top));
+
+      function "=" (Left, Right : Stack) return Boolean is
+         (Left.Top = Right.Top and then
+          Left.Values (1 .. Left.Top) = Right.Values (1 .. Right.Top));
+
+      procedure Copy (Destination : out Stack; Source : Stack) is
+         subtype Contained is Integer range 1 .. Source.Top;
+      begin
+         Destination.Top := Source.Top;
+         Destination.Values (Contained) := Source.Values (Contained);
+      end Copy;
+
+   end Sequential_Bounded_Stacks;
+
+Note that both procedure ``Copy`` and function ``"="`` are defined for the sake
+of increased efficiency when the objects in question are not full. The
+procedure only copies the slice of ``Source.Values`` that represents the
+``Element`` values logically contained at the time of the call. The
+language-defined assignment operation, in contrast, would copy the
+entire contents. Similarly, the overridden equality operator only
+compares the array slices, rather than the entire arrays, after first
+ensuring the stacks are the same logical size.
+
+However, in addition to efficiency, overriding the ``"="`` function is
+required for proper semantics. Comparison of stack objects must not
+compare array elements that are not currently contained in the two
+stacks. The predefined equality would do so and must, therefore, be
+replaced.
+
+The changes to the body made for the sake of SPARK will amount to moving
+certain bodies to the package declaration so we will not show the
+package body again. The full Platinum implementation is provided at the
+end of this section.
 
 Stone Level
 -----------
 
 .. index:: Stone level (of SPARK use)
 
-We first ran GNATprove in check mode on the unit. We found a
-nonconformance due to the initializing function for the table having
-global outputs. Indeed, the unit was designed to construct a unique table,
-by storing elements line by line from right to left. The current position
-in the table was stored as a global variable in the package body. As the
-table array itself was of an unconstrained type (we do not know the number
-of lines and columns required a priori) it was not stored as a global
-variable, but carried explicitly as a parameter of the storage
-procedure. The initialization function both returned a new array, and
-initialized the value of the current position, thus having global outputs:
+The Ada version of the package has "raise expressions" in the
+defensive preconditions for some routines. They have the benefit of
+raising a more meaningful exception than Assertion_Error when the
+associated precondition does not hold at run-time.
+
+Those expressions are legal in SPARK as well. If they cannot be proven
+never to raise their exception, that is not an illegality. Rather, it is
+a failure to successfully prove the associated precondition. (Note that
+not all adoption levels involve proof.) As such, the Ada version is also
+a valid Stone version.
+
+However, our goal is to get to the highest adoption levels, requiring
+GNATprove to verify statically that the preconditions will hold at each
+client call site. Either that verification will succeed or we will know
+that we must change the client calling code accordingly. Therefore, the
+"raise expressions" are not needed for our example, although it would be
+acceptable to retain them in case assertions are enabled at run-time.
+
+Here, then, are the updated declarations for ``Push`` and ``Pop``, for
+example:
 
 .. code-block:: ada
+   :linenos:
 
-   function Create_Table (Lines, Cols : Natural) return Table is
-      T : constant Table (1 .. Lines, 1 .. Cols) :=
-        (others => (others => Cell'(Content => Null_Unbounded_String,
-                                    Align   => Right_Align)));
-   begin
-      Cur_Line := 1;
-      Cur_Col := 1;
-      return T;
-   end Create_Table;
+   procedure Push (This : in out Stack; Item : in Element) with
+     Pre => not Full (This);
 
-To deal with a function with output globals, the guidelines advise either
-hiding the function body for analysis if the effect does not matter for
-proof or turning it into a procedure with an 'out' parameter. None of
-these solutions was adequate here as the effects of this function do matter
-and the array cannot be given as an 'out' parameter since it's
-unconstrained. In fact, the non-conformance here comes from a bad
-implementation choice, which separated the table from its cursors, allowing
-for unexpected behaviors if two tables were to be initialized. We therefore
-chose to redesign the code and introduced a record with discriminants to
-hold both the array and the current position. As this record is of an
-unconstrained type, it's not stored in a global variable but rather passed
-explicitly as a parameter as the array used to be.
+   procedure Pop (This : in out Stack; Item : out Element) with
+     Pre => not Empty (This);
 
-.. code-block:: ada
+The exception declarations themselves, although also within the subset,
+are also removed because they are no longer referenced.
 
-   type Table (L, C : Natural) is record
-      Content  : Table_Content (1 .. L, 1 .. C);
-      Cur_Line : Positive;
-      Cur_Col  : Positive;
-   end record;
+The remaining code is also within the SPARK subset. We have reached
+the Stone level.
 
-   function Create_Table (Lines, Cols : Natural) return Table;
-
-In addition to this nonconformance, GNATprove issued a dozen warnings about
-assuming no effect of functions from the ``Ada.Strings.Unbounded`` and
-``Ada.Text_IO`` libraries. This is fine: these functions indeed should have no
-effects on variables visible to GNATprove. It simply means that issues that
-may arise when using these libraries are outside of the scope of GNATprove
-and should be verified in a different way.
-
-We ran GNATprove in check mode on the unit without further errors. We therefore
-reached the Stone level on this unit.
 
 Bronze Level
 ------------
 
 .. index:: Bronze level (of SPARK use)
 
-Next, we ran GNATprove in flow analysis mode on the unit. No check
-messages were emitted: we only got a new warning stating that the
-procedure ``Dump_Table``, which writes the value of the table to the
-``gnatprove.out`` file, had no effect. This is expected: functions from the
-``Ada.Text_IO`` library are assumed to have no effect.
+The Bronze level is about initialization and data flow. When we apply
+GNATprove to the Stone version in flow analysis mode, GNATprove issues
+messages on the declarations of procedures ``Copy`` and ``Reset`` in the generic
+package declaration:
 
-As no global variables are accessed by the unit subprograms after the
-modification outlined earlier, we added global contracts on every
-subprogram enforcing this:
+.. code-block:: none
+
+   medium: "Destination.Values" might not be initialized in "Copy"
+
+   high: "This.Values" is not initialized in "Reset"
+
+The procedure declarations are repeated below for reference:
 
 .. code-block:: ada
+   :linenos:
 
-   function Create_Table (Lines, Cols : Natural) return Table with
+   procedure Copy (Destination : out Stack; Source : Stack) with
+     Pre => Destination.Capacity >= Extent (Source);
+
+   procedure Reset (This : out Stack);
+
+Both messages result from the fact that the updated formal stack
+parameters have mode ``out`` specified. That mode, in SPARK, means
+more than it does in Ada. It indicates that the actual parameters are
+fully assigned by the procedures, but these two procedure bodies do not
+do so. Procedure ``Reset`` simply sets the ``Top`` to zero because that is all
+that a stack requires, at run-time, to be fully reset. It does nothing
+at all to the ``Values`` array component. Likewise, procedure ``Copy`` may only
+assign part of the array, i.e., just those array components that are
+logically part of the ``Source`` object. (Of course, if ``Source`` is full, the
+entire array is copied.) In both subprograms our notion of being fully
+assigned is less than SPARK requires. Therefore, we have two choices.
+Either we assign values to all components of the record, or we change
+the modes to "in out." These two procedures exist for the sake of
+efficiency, i.e., not writing any more data than logically necessary.
+Having ``Reset`` assign anything to the array component would defeat the
+purpose. For the same reason, having ``Copy`` assign more than the partial
+slice (when the stack is not full) is clearly inappropriate. Therefore,
+we change the mode to ``in out`` for these two subprograms. In other
+cases we might change the implementations to fully assign the objects.
+
+The other change required for initialization concerns the type ``Stack``
+itself. In the main subprogram, GNATprove complains that the two objects
+of type ``Stack`` have not been initialized:
+
+.. code-block:: none
+
+   warning: "S1" may be referenced before it has a value
+
+   high: private part of "S1" is not initialized
+
+   warning: "S2" may be referenced before it has a value
+
+   high: private part of "S2" is not initialized
+
+   high: private part of "S1" is not initialized
+
+Our full definition of the ``Stack`` type in the private part is such that
+default initialization (i.e., elaboration of object declarations without
+an explicit initial value) will assign the record components so that a
+stack will behave as if initially empty. Specifically, default
+initialization assigns zero to ``Top`` (line 5 below), and since function
+``Empty`` examines only the ``Top`` component, such objects are initially empty.
+
+
+.. code-block:: ada
+   :linenos:
+
+   type Content is array (Positive range <>) of Element;
+
+   type Stack (Capacity : Positive) is record
+      Values : Content (1 .. Capacity);
+      Top    : Natural := 0;
+   end record;
+
+Proper run-time functionality of the ``Stack`` ADT does not require the
+``Values`` array component to be assigned by default initialization. But
+just as with ``Reset`` and ``Copy``, although this approach is sufficient at
+run-time, the resulting objects will not be fully initialized in SPARK,
+which analyzes the code prior to run-time. As a result, we need to
+assign an array aggregate to the ``Values`` component as well. Expressing
+the array aggregate is problematic because the array component type is
+the generic formal private type ``Element``, with a private view within the
+package. Inside the generic package we don’t know how to construct a
+value of type ``Element`` so we cannot construct an aggregate containing
+such values. Therefore, we add the ``Default_Value`` generic formal object
+parameter and use it to initialize the array components.
+
+This new generic formal parameter, shown below on line 5, is added from
+the Bronze version onward:
+
+.. code-block:: ada
+   :linenos:
+
+   generic
+      type Element is private;
+      --  The type of values contained by objects of type Stack
+
+      Default_Value : Element;
+      --  The default value used for stack contents. Never
+      --  acquired as a value from the API, but required for
+      --  initialization in SPARK.
+   package Sequential_Bounded_Stacks is
+
+The full definition for type ``Stack`` then uses that parameter to
+initialize ``Values`` (line 2):
+
+.. code-block:: ada
+   :linenos:
+
+   type Stack (Capacity : Positive) is record
+      Values : Content (1 .. Capacity) := (others => Default_Value);
+      Top    : Natural := 0;
+   end record;
+
+With those changes in place flow analysis completes without further
+complaint. The implementation has reached the Bronze level.
+
+The need for that additional generic formal parameter is unfortunate
+because it becomes part of the user’s interface without any functional
+use. None of the API routines ever return it as a value as such, and the
+actual value chosen is immaterial.
+
+Note that SPARK will not allow the aggregate to contain default
+components (line 2):
+
+
+.. code-block:: ada
+   :linenos:
+
+   type Stack (Capacity : Positive) is record
+      Values : Content (1 .. Capacity) := (others => <>);
+      Top    : Natural := 0;
+   end record;
+
+Alternatively, we could omit this generic formal object parameter if we
+use an aspect to promise that the objects are initially empty, and then
+manually justify any resulting messages. We will in fact add that aspect
+for other reasons, but we prefer to have proof as automated as possible,
+both for convenience and to avoid human error. (Note that a more general
+approach to this issue will be available in the future.)
+
+Finally, although the data dependency contracts, i.e., the "Global"
+aspects, would be generated automatically, we add them explicitly,
+indicating that there are no intended accesses to any global objects.
+For example, on line 3 in the following:
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Push (This : in out Stack;  Item : Element) with
+     Pre    => not Full (This),
      Global => null;
 
-These contracts are all verified by GNATprove. We thus reached Bronze level
-on this unit.
+We do so because mismatches between reality and the generated contracts
+are not reported by GNATprove, but we prefer positive confirmation for
+our understanding of the dependencies.
+
+The flow dependency contracts (the "Depends" aspects) also can be
+generated automatically. Unlike the data dependency contracts, however,
+usually these can be omitted from the code even though mismatches with
+the corresponding bodies are not reported. That lack of notification is
+not a problem because the generated contracts are safe: they express at
+least the dependencies that the code actually exhibits. Therefore, all
+actual dependencies are covered. For example, a generated flow
+dependency will state that all outputs depend on all inputs, which is
+possible but not necessarily the case.
+
+However, overly conservative contracts can lead to otherwise-avoidable
+issues with proof, leading the developer to add precise contracts
+explicitly when necessary. The other reason to express them explicitly
+is when we want to prove data flow dependencies as part of the abstract
+properties, for example data flowing only between units at appropriate
+security levels. We are not doing so in this case.
+
 
 Silver Level
 ------------
 
 .. index:: Silver level (of SPARK use)
 
-We then ran GNATprove in prove mode on the unit. 13 check messages were
-emitted:
+If we try to prove the Bronze level version of the generic package,
+GNATprove will complain about various run-time checks that cannot be
+proved in the generic package body. The Silver level requires these
+checks to be proven not to fail, i.e., not to raise exceptions.
 
-* 3 array index checks when accessing at the current position in the table,
-* 1 assertion used as defensive coding,
-* 2 range checks on Natural, and
-* 7 overflow checks when computing the maximal size of the array.
-
-To prove the array index checks, we needed to state that the position is
-valid in the array when storing a new element. To do this, we added
-preconditions to the storing procedure:
+The check messages are as follows, preceded by the code fragments they
+reference, with some message content elided in order to emphasize parts
+that lead us to the solution:
 
 .. code-block:: ada
+   :lineno-start: 37
 
-   procedure Put_Cell
-     (T     : in out Table;
-      S     : String;
-      Align : Alignment_Type := Right_Align)
-   with
-     Global => null,
-     Pre    => T.Cur_Line <= T.L and then T.Cur_Col <= T.C;
+   procedure Push (This : in out Stack; Item : in Element) is
+   begin
+      This.Top := This.Top + 1;
+      This.Values (This.Top) := Item;
+   end Push;
 
-With this precondition, GNATprove could successfully verify the index
-checks as well as two overflow checks located at the increment of the
-position cursors.
+.. code-block:: none
 
-The assertion states that the procedure ``New_Line``, which moves the current
-position to the beginning of the next line, can only be called if we're at
-the end of the current line. We transformed it into a precondition:
+   bounded_stacks_silver.adb:39:28: medium: overflow check might fail, …
+   (e.g. when This = (…, Top => Natural'Last) …
 
-.. code-block:: ada
+   bounded_stacks_silver.adb:40:24: medium: array index check might fail, …
+   (e.g. when This = (…, Top => 2) and This.Values'First = 1 and This.Values'Last = 1)
 
-   procedure New_Line (T : in out Table)
-   with
-     Global => null,
-     Pre    => T.Cur_Col = T.C + 1 and then T.Cur_Line <= T.L;
-
-Avoiding run-time errors in the computation of the maximum size of the
-table was more complicated. It required bounding both the maximum number of
-elements in the table and the size of each element. To bound the maximal
-number of elements in the table, we introduced a constrained subtype of
-``Natural`` for the size of the table, as described in the guidelines:
 
 .. code-block:: ada
+   :lineno-start: 47
 
-   subtype Less_Than_Max_Size is Natural range 0 .. Max_Size;
+   procedure Pop (This : in out Stack; Item : out Element) is
+   begin
+      Item := This.Values (This.Top);
+      This.Top := This.Top - 1;
+   end Pop;
 
-   type Table (L, C : Less_Than_Max_Size) is record
-      Content  : Table_Content (1 .. L, 1 .. C);
-      Cur_Line : Positive;
-      Cur_Col  : Positive;
+.. code-block:: none
+
+   bounded_stacks_silver.adb:49:32: medium: array index check might fail, …
+   (e.g. when This = (…, Top => 2) and This.Values'First = 1 and This.Values'Last = 1)
+
+
+.. code-block:: ada
+   :lineno-start: 57
+
+   function Top_Element (This : Stack) return Element is
+     (This.Values (This.Top));
+
+.. code-block:: none
+
+   bounded_stacks_silver.adb:58:24: medium: array index check might fail, …
+   (e.g. when This = (…, Top => 2) and This.Values'First = 1 and This.Values'Last = 1)
+
+
+.. code-block:: ada
+   :lineno-start: 64
+
+   function "=" (Left, Right : Stack) return Boolean is
+      (Left.Top = Right.Top and then
+       Left.Values (1 .. Left.Top) = Right.Values (1 .. Right.Top));
+
+.. code-block:: none
+
+   bounded_stacks_silver.adb:66:12: medium: range check might fail, …
+   (e.g. when Left = (Capacity => 1, …, Top => 2) …
+
+   bounded_stacks_silver.adb:66:43: medium: range check might fail, …
+   (e.g. when Right = (Capacity => 1, …, Top => 2) …
+
+.. code-block:: ada
+   :lineno-start: 72
+
+   procedure Copy (Destination : in out Stack; Source : Stack) is
+      subtype Contained is Integer range 1 .. Source.Top;
+   begin
+      Destination.Top := Source.Top;
+      Destination.Values (Contained) := Source.Values (Contained);
+   end Copy;
+
+.. code-block:: none
+
+   bounded_stacks_silver.adb:76:47: medium: range check might fail, …
+   (e.g. when Destination = (Capacity => 1, …) and Source = (Capacity => 1, …), Top => 2)
+
+
+All of these messages indicate that the provers do not know that the ``Top``
+component is always in the range ``0 .. Capacity``. The code has not said
+so, and indeed, there is no way to use a discriminant in a scalar record
+component declaration to constrain the component’s range. This is what
+we would write for the record type implementing type ``Stack`` in the full
+view, if we could (line 3):
+
+.. code-block:: ada
+   :linenos:
+
+   type Stack (Capacity : Positive) is record
+      Values : Content (1 .. Capacity) := (others => Default_Value);
+      Top    : Natural range 0 .. Capacity := 0;
    end record;
 
-We couldn't introduce a range for the size of the elements stored in the table,
-as they aren't scalars but instead unbounded strings. We thus resorted to a
-predicate to express the constraint:
+but that range constraint on ``Top`` is not legal. The reason it is illegal
+is that the application can change the value of a discriminant at
+run-time, under controlled circumstances, but there is no way at
+run-time to change the range checks in the object code generated by the
+compiler. With Ada and SPARK there is now a way to express the
+constraint on ``Top``, and the provers will recognize the meaning during
+analysis. Specifically, we apply a "predicate" to the record type
+declaration (line 5):
 
 .. code-block:: ada
+   :linenos:
 
-   type Cell is record
-      Content : Unbounded_String;
-      Align   : Alignment_Type;
+   type Stack (Capacity : Positive) is record
+      Values : Content (1 .. Capacity) := (others => Default_Value);
+      Top    : Natural := 0;
    end record with
-     Predicate => Length (Content) <= Max_Size;
+     Predicate => Top in 0 .. Capacity;
 
-Next, we needed to add an additional precondition to ``Put_Cell`` to
-appropriately constrain the strings that can be stored in the table. With
-these constraints, as well as some loop invariants to propagate the bound
-throughout the computation of the maximum size of the table, every check
-message was discharged except for three, which needed additional
-information on the subprograms from the unbounded strings library. We
-introduced an assumption for why the checks could not fail and justified it
-by quoting the Ada Reference Manual as it is easier to review a single
-assumption than try to understand what can cause a more complex check to
-fail.
+This aspect informs the provers that the ``Top`` component for any object of
+type ``Stack`` is always in the range ``0 .. Capacity``. That addition
+successfully addresses all the messages about the generic package body.
+Note that the provers will verify the predicate too.
+
+However, GNATprove also complains about the main program. Consider that
+the first two assertions in the main procedure are not verified:
 
 .. code-block:: ada
+   :lineno-start: 10
 
-   pragma Assume (Length (Null_Unbounded_String) = 0,
-                  "Null_Unbounded_String represents the null String.");
-   T.Content (T.Cur_Line, T.Cur_Col) :=
-     Cell'(Content => To_Unbounded_String (S),
-           Align   => Align);
+   begin
+      pragma Assert (Empty (S1) and Empty (S2));
+      pragma Assert (S1 = S2);
 
-There were no more unproved check messages when running GNATprove in prove
-mode on ``print_table``. We thus reached Silver level on this unit.
+GNATprove emits:
+
+.. code-block:: none
+
+   11:19: medium: assertion might fail, cannot prove Empty (S1)
+
+   12:19: medium: assertion might fail, cannot prove S1 = S2
+
+We can address the issue for function ``Empty``, partly, by adding another
+aspect to the declaration of type ``Stack``, this time to the visible
+declaration:
+
+.. code-block:: ada
+   :linenos:
+
+   type Stack (Capacity : Positive) is private
+      with Default_Initial_Condition => Empty (Stack);
+
+The new aspect indicates that default initialization results in stack
+objects that are empty, making explicit, and especially, verifiable, the
+intended initial object state. We will be notified if GNATprove
+determines that the aspect does not hold.
+
+That new aspect will handle the first assertion in the main program on
+line 11 but GNATprove complains throughout the main procedure that the
+preconditions involving ``Empty`` and ``Full`` cannot be proven. For example:
+
+.. code-block:: ada
+   :lineno-start: 13
+
+   Push (S1, 'a');
+   Push (S1, 'b');
+   Put_Line ("Top of S1 is '" & Top_Element (S1) & "'");
+
+GNATprove emits:
+
+.. code-block:: none
+
+   13:06: medium: precondition might fail, cannot prove not Full (This)
+
+   14:06: medium: precondition might fail, cannot prove not Full (This)
+   [possible fix: call at line 13 should mention This (for argument S1) in a postcondition]
+
+   15:35: medium: precondition might fail, cannot prove not Empty (This)
+   [possible fix: call at line 14 should mention This (for argument S1) in a postcondition]
+
+Note the "possible fixes" that GNATprove gives us. These are
+clear indications that we are not specifying sufficient postconditions.
+Remember that when analyzing code that includes a call to some
+procedure, the provers’ knowledge of the call’s effect is provided
+entirely by the procedure’s postcondition. That postcondition might be
+insufficient, especially if it is absent.
+
+Therefore, we must tell the provers about the effects of calling ``Push``
+and ``Pop``, as well as the other routines that change state. We add a new
+postcondition on ``Push`` (line 3):
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Push (This : in out Stack;  Item : Element) with
+     Pre    => not Full (This),
+     Post   => Extent (This) = Extent (This)'Old + 1,
+     Global => null;
+
+The new postcondition expresses the fact that the ``Stack`` object
+passed to ``This`` contains one more Element value after the call. That
+is sufficient because the provers know that function ``Extent`` is simply
+the value of ``Top``:
+
+.. code-block:: ada
+   :linenos:
+
+   function Extent (This : Stack) return Natural is
+      (This.Top);
+
+Hence the provers know that ``Top`` is incremented by ``Push``.
+The same approach addresses the messages for ``Pop`` (line 3):
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Pop (This : in out Stack; Item : out Element) with
+     Pre    => not Empty (This),
+     Post   => Extent (This) = Extent (This)'Old - 1,
+     Global => null;
+
+In the above we say that the provers know what the function ``Extent``
+means. For that to be the case when verifying client calls, we must move
+the function completion from the generic package body to the generic
+package declaration. In addition, the function must be implemented as an
+"expression function," which ``Extent`` already is (see above). As
+expression functions in the package spec, the provers will know the
+semantics of those functions automatically, as if each is given a
+postcondition restating the corresponding expression explicitly. We also
+need functions ``Full`` and ``Empty`` to be known in this manner.
+Therefore, we move the ``Extent``, ``Empty``, and ``Full`` function
+completions, already expression functions, from the generic package body
+to the package declaration. We put them in the private part because
+these implementation details should not be exported to clients.
+
+However, we have a potential overflow in the postcondition for ``Push``,
+i.e., the increment of the number of elements contained after ``Push``
+returns (line 3 below). The postcondition for procedure ``Pop``, of course,
+does not have that problem.
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Push (This : in out Stack;  Item : Element) with
+     Pre    => not Full (This),
+     Post   => Extent (This) = Extent (This)'Old + 1,
+     Global => null;
+
+The increment might overflow because ``Extent`` returns a value of
+subtype Natural, which could be the value Integer'Last. Hence the
+increment could raise Constraint_Error and the check cannot be verified.
+We must either apply the "-gnato13" switch so that assertions can never
+overflow, or alternatively, change our code. One possible change would
+be to use the ``Ada.Numerics.Big_Numbers.Big_Integers`` package and its
+facilities explicitly. Those facilities incur some run-time overhead but
+that is immaterial if assertions are not enabled at run-time. Another
+possible change is to declare a safe subrange so that the result of the
+addition cannot be greater than Integer'Last.
+
+Our choice is to change the code because the effects are explicit, as
+opposed to an external switch that invokes hidden code. Of the possible
+changes, we choose to create the safe subrange because:
+
+   1) the functional impact is minimal (only Integer'Last need be excluded),
+   2) it has little run-time cost in case assertions are enabled at run-time,
+   3) it doesn't require changes to the preconditions or postconditions, and
+   4) the expressions using ``Big_Numbers`` would be more complex.
+
+Therefore, here are the added subtype declarations:
+
+.. code-block:: ada
+   :linenos:
+
+   subtype Element_Count is
+      Integer range 0 .. Integer'Last - 1;
+   --  The number of Element values currently contained
+   --  within any given stack. The lower bound is zero
+   --  because a stack can be empty. We limit the upper
+   --  bound (minimally) to preclude overflow issues.
+
+   subtype Physical_Capacity is
+      Element_Count range 1 .. Element_Count'Last;
+   --  The range of values that any given stack object can
+   --  specify (via the discriminant) for the number of
+   --  Element values the object can physically contain.
+   --  Must be at least one.
+
+We use the second subtype for the discriminant in the partial view for
+``Stack`` (line 1):
+
+.. code-block:: ada
+   :linenos:
+
+   type Stack (Capacity : Physical_Capacity) is private
+      with Default_Initial_Condition => Empty (Stack);
+
+and both subtypes in the full declaration in the private part (lines 1,
+3, and 5):
+
+.. code-block:: ada
+   :linenos:
+
+   type Content is array (Physical_Capacity range <>) of Element;
+
+   type Stack (Capacity : Physical_Capacity) is record
+      Values : Content (1 .. Capacity) := (others => Default_Value);
+      Top    : Element_Count := 0;
+   end record with
+     Predicate => Top in 0 .. Capacity;
+
+The function ``Extent`` is changed to return a value of the subtype
+``Element_Count`` so adding one in the postcondition cannot go past
+Integer’Last. Overflow is precluded but note that there will now be
+range checks for GNATprove to verify.
+
+.. code-block:: ada
+   :linenos:
+
+   function Extent (This : Stack) return Element_Count with
+     Global => null;
+
+With these changes in place we have achieved the Silver level. There are
+no run-time check verification failures and the defensive preconditions
+are proven at their call sites.
+
 
 Gold Level
 ----------
 
 .. index:: Gold level (of SPARK use)
 
-The subprograms defined in ``Print_Table`` are annotated with precise comments
-describing their effects on the table. As an example, here is the comment
-associated with ``Put_Cell``:
+We will now address the remaining changes needed to reach the Gold
+level. The process involves iteratively attempting to prove the main
+program that calls the stack routines and makes assertions about the
+conditions that follow. This process will result in changes to the
+generic package, especially postconditions, so it will require
+verification along with the main procedure. Those additional
+postconditions may require additional preconditions as well.
+
+In general, a good way to identify postcondition candidates is to ask
+ourselves what conditions we, as the developers, know to be true after a
+call to the routine in question. Then we can add assertions after the
+calls to see if the provers can verify those conditions. If not, we
+extend the postcondition on the routine.
+
+For example, we can say that after a call to ``Push`` the corresponding
+stack cannot be empty. Likewise, after a call to ``Pop``, the stack cannot
+be full. These additions are not required for the sake of assertions or
+other preconditions because the ``Extent`` function already tells the
+provers what they need to know in this regard. However, they are good
+documentation and may be required to prove additional conditions added
+later. (That is the case, in fact, as will be shown.)
+
+To see what other postconditions are required, we now switch to the
+other main procedure, in the "demo_gold.adb" file. This version of
+the demo program includes a number of additional assertions:
+
+.. code-block:: ada
+   :linenos:
+
+   with Ada.Text_IO;       use Ada.Text_IO;
+   with Character_Stacks;  use Character_Stacks;
+
+   procedure Demo_Gold with SPARK_Mode is
+
+      S1, S2 : Stack (Capacity => 10);  -- arbitrary
+
+      X, Y : Character;
+
+   begin
+      pragma Assert (Empty (S1) and Empty (S2));
+      pragma Assert (S1 = S2);
+      Push (S1, 'a');
+      pragma Assert (not Empty (S1));
+      pragma Assert (Top_Element (S1) = 'a');
+      Push (S1, 'b');
+      pragma Assert (S1 /= S2);
+
+      Put_Line ("Top of S1 is '" & Top_Element (S1) & "'");
+
+      Pop (S1, X);
+      Put_Line ("Top of S1 is '" & Top_Element (S1) & "'");
+      Pop (S1, Y);
+      pragma Assert (X = 'b');
+      pragma Assert (Y = 'a');
+      pragma Assert (S1 = S2);
+      Put_Line (X & Y);
+
+      Push (S1, 'a');
+      Copy (Source => S1, Destination => S2);
+      pragma Assert (S1 = S2);
+      pragma Assert (Top_Element (S1) = Top_Element (S2));
+      pragma Assert (Extent (S1) = Extent (S2));
+
+      Reset (S1);
+      pragma Assert (Empty (S1));
+      pragma Assert (S1 /= S2);
+
+      Put_Line ("Done");
+   end Demo_Gold;
+
+For example, we have added assertions after the calls to ``Reset`` and ``Copy``,
+on lines 31 through 33 and 36 through 37, respectively. GNATprove now
+emits the following (elided) messages for those assertions:
+
+.. code-block:: none
+
+   demo_gold.adb:31:19: medium: assertion might fail, cannot prove S1 = S2
+   (e.g. when S1 = (…, Top => 0) and S2 = (…, Top => 0))
+   [possible fix: call at line 30 should mention Destination (for argument S2)
+   in a postcondition]
+
+   demo_gold.adb:36:19: medium: assertion might fail, cannot prove Empty (S1) …
+   [possible fix: call at line 35 should mention This (for argument S1)
+   in a postcondition]
+
+Note again the "possible fix" hints. For the first message
+we need to add a postcondition on ``Copy`` specifying that the value of the
+argument passed to Destination will be equal to that of the Source
+parameter (line 3):
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Copy (Destination : in out Stack; Source : Stack) with
+     Pre    => Destination.Capacity >= Extent (Source),
+     Post   => Destination = Source,
+     Global => null;
+
+We must move the ``"="`` function implementation to the package spec so
+that the provers will know the meaning. The function was already
+completed as an expression function so moving it to the spec is all that
+is required.
+
+For the second message, regarding the failure to prove that a stack is
+``Empty`` after ``Reset``, we add a postcondition to that effect (line 2):
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Reset (This : in out Stack) with
+     Post   => Empty (This),
+     Global => null;
+
+The completion for function ``Empty`` was already moved to the package spec,
+earlier.
+
+The implementations of procedure ``Copy`` and function ``"="`` might have
+required explicit loops, likely requiring loop invariants, but using
+array slicing we can express the loop implicitly. Here is function
+``"="`` again, for example:
+
+.. code-block:: ada
+   :linenos:
+
+   function "=" (Left, Right : Stack) return Boolean is
+     (Left.Top = Right.Top and then
+      Left.Values (1 .. Left.Top) = Right.Values (1 .. Right.Top));
+
+The slice comparison on line 3 expresses an implicit loop for us, as
+does the slice assignment in procedure ``Copy``.
+
+The function could have been implemented as follows, with an explicit
+loop:
+
+.. code-block:: ada
+   :linenos:
+
+   function "=" (Left, Right : Stack) return Boolean is
+   begin
+      if Left.Top /= Right.Top then
+         --  They hold a different number of element values so
+         --  cannot be equal.
+         return False;
+      end if;
+      --  The two Top values are the same, and the arrays
+      --  are 1-based, so the bounds are the same. Hence the
+      --  choice of Left.Top or Right.Top is arbitrary and
+      --  there is no need for index offsets.
+      for K in 1 .. Left.Top loop
+         if Left.Values (K) /= Right.Values (K) then
+            return False;
+         end if;
+         pragma Loop_Invariant
+                  (Left.Values (1 .. K) = Right.Values (1 .. K));
+      end loop;
+      --  We didn't find a difference
+      return True;
+   end "=";
+
+Note the loop invariant on lines 16 and 17. In some circumstances
+GNATprove will handle the invariants for us but often it cannot. In
+practice, writing sufficient loop invariants is one of the more
+difficult facets of SPARK development so the chance to avoid them is
+welcome.
+
+Continuing, we know that after the body of ``Push`` executes, the top
+element contained in the stack will be the value passed to ``Push`` as an
+argument. But the provers cannot verify an assertion to that effect
+(line 15 below):
+
+.. code-block:: ada
+   :lineno-start: 13
+
+      Push (S1, 'a');
+      pragma Assert (not Empty (S1));
+      pragma Assert (Top_Element (S1) = 'a');
+
+GNATprove emits this message:
+
+.. code-block:: none
+
+   demo_gold.adb:15:19: medium: assertion might fail,
+   cannot prove Top_Element (S1) = 'a'
+
+We must extend the postcondition for ``Push`` to state that ``Top_Element``
+would return the value just pushed, as shown on line 4 below:
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Push (This : in out Stack;  Item : Element) with
+     Pre    => not Full (This),
+     Post   => not Empty (This)
+               and then Top_Element (This) = Item
+               and then Extent (This) = Extent (This)'Old + 1,
+     Global => null;
+
+Now the assertion on line 15 of the main procedure will be verified
+successfully.
+
+Recall that the precondition for function ``Top_Element`` is that the stack
+is not empty. We already have that assertion in the postcondition (line
+3) so the precondition for ``Top_Element`` is satisfied. We must use the
+short circuit form for the conjunction, though, to control the order of
+evaluation so that ``not Empty`` is verified before ``Top_Element``.
+
+The short-circuit form on line 4 necessitates the same form on line 5,
+per Ada rules. That triggers a subtle issue flagged by GNATprove. The
+short-circuit form, by definition, means that the evaluation of line 5
+might not occur. If it is not evaluated, we’ve told the compiler to
+call ``Extent`` and make a copy of the result (via ‘Old, on the right-hand
+side of "=") that will not be needed. Moreover, the execution of ``Extent``
+could raise an exception, generally speaking. Therefore, the language
+disallows applying ‘Old in any potentially unevaluated expression that
+might raise exceptions. As a consequence, in line 5 we cannot apply
+‘Old to the result of calling ``Extent``. GNATprove issues this error
+message:
+
+.. code-block:: none
+
+   prefix of attribute "Old" that is potentially unevaluated must denote an entity
+
+We could address the error by changing line 5 to use ``Extent(This'Old)``
+instead, but there is a potential performance difference between
+``Extent(This)'Old`` and ``Extent(This'Old)``. With the former, only the result
+of the function call is copied, whereas with the latter, the value of
+the parameter is copied. Copying the parameter could take significant
+time and space if ``This`` is a large object. Of course, if the function
+returns a large value the copy will be large too, but in this case
+``Extent`` only returns an integer.
+
+In SPARK, unlike Ada, preconditions, postconditions, and assertions in
+general are verified statically, prior to execution, so there is no
+performance issue. Ultimately, though, the application will be executed.
+Having statically proven the preconditions and postconditions
+successfully, we can safely deploy the final executable without them
+enabled, but not all projects follow that approach (at least, not on
+that basis). Therefore, for the sake of emphasizing the idiom with
+typically better performance, we prefer applying ‘Old to the function
+in our implementation.
+
+We can tell GNATprove that this is a benign case, using a pragma in the
+package spec:
 
 .. code-block:: ada
 
-   procedure Put_Cell
-     (T     : in out Table;
-      S     : String;
-      Align : Alignment_Type := Right_Align);
-   --  Print a string into the current cell of the table, and move to the next
-   --  cell. Note that this does not move to the next line,  you need to call
-   --  New_Line below after printing to the last cell of a line.
+   pragma Unevaluated_Use_of_Old (Allow);
 
-We used these comments to derive postconditions on the procedures used to
-create the table. So that the postcondition of ``Put_Cell`` is easier to read,
-we decided to introduce a ghost expression function ``Is_Set`` that relates the
-values of the contents of the table before and after the update:
+GNATprove will then allow use of ‘Old on the call to function ``Extent``
+and will ensure that no exceptions will be raised by the function.
+
+As with procedure ``Push``, we can also use ``Top_Element`` to strengthen the
+postcondition for procedure ``Pop`` (line 4 below):
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Pop (This : in out Stack;  Item : out Element) with
+     Pre    => not Empty (This),
+     Post   => not Full (This)
+               and Item = Top_Element (This)'Old
+               and Extent (This) = Extent (This)'Old – 1,
+     Global => null;
+
+Line 4 states that the Item returned in the parameter to ``Pop`` is the
+value that would have been returned by ``Top_Element`` prior to the call to
+``Pop``.
+
+One last significant enhancement now remains to be made. Consider the
+assertions in the main procedure about the effects of ``Pop`` on lines 24
+and 25, repeated below:
+
+.. code-block:: ada
+   :lineno-start: 21
+
+      Pop (S1, X);
+      ...
+      Pop (S1, Y);
+      pragma Assert (X = 'b');
+      pragma Assert (Y = 'a');
+
+Previous lines had pushed ‘a’ and then ‘b’ in that order onto S1.
+GNATprove emits this one message:
+
+.. code-block:: none
+
+   25:19: medium: assertion might fail, cannot prove Y = 'a' (e.g. when Y = 'b')
+
+The message is about the assertion on line 25, alone. The assertion on
+line 24 was verified. Also, the message indicates that Y could be some
+arbitrary character. We can conclude that the provers do not know enough
+about the state of the stack after a call to ``Pop``. The postcondition
+requires strengthening.
+
+The necessary postcondition extension reflects an issue for both ``Push``
+and ``Pop``. If one considers that postconditions correspond to the
+low-level unit functional requirements (if not more), one can see why
+the postconditions must be complete. Identifying and expressing complete
+functional requirements is difficult in itself, and indeed the need for
+this additional postcondition content is not obvious at first.
+
+The unit-level requirement for both operations is that the prior array
+components within the stack are not altered, other than the one added or
+removed. We need to state that ``Push`` and ``Pop`` have not reordered them, for
+example, nor changed their values. Specifically, for ``Push`` we need to say
+that the new stack state has exactly the same prior array slice
+contents, ignoring the newly pushed value. For ``Pop``, we need to say that
+the new state has exactly the prior array slice contents without the old
+value at the top.
+
+A new function can be used to express these requirements for both ``Push``
+and ``Pop``:
 
 .. code-block:: ada
 
-   function Is_Set
-     (T    : Table_Content;
-      L, C : Less_Than_Max_Size;
-      S    : String;
-      A    : Alignment_Type;
-      R    : Table_Content) return Boolean
-   --  Return True if R is S updated at position (L, C) with Cell (S, A)
-   is
-      --  T and R range over the same ranges
+   function Unchanged (Invariant_Part, Within : Stack) return Boolean;
 
-     (T'First (1) = R'First (1) and then T'Last (1) = R'Last (1)
-      and then T'First (2) = R'First (2) and then T'Last (2) = R'Last (2)
-
-      --  They contain the same values except at position L, C where R
-      --  contains S and A.
-
-      and then L in T'Range (1) and then C in T'Range (2)
-      and then To_String (R (L, C).Content) = S
-      and then R (L, C).Align = A
-      and then (for all I in T'Range (1) =>
-                  (for all J in T'Range (2) =>
-                     (if I /= L and J /= C then R (I, J) = T (I, J)))))
-   with Ghost;
-
-Using this function, we can rephrase the comment of ``Put_Cell`` as a simple
-postcondition:
+The Within parameter is a stack whose internal state will be compared
+against that of the Invariant_Part parameter. The name "Invariant_Part"
+is chosen to indicate the stack state that has not changed. The name
+"Within" is chosen for readability in named parameter associations on
+the calls. For example:
 
 .. code-block:: ada
 
-   procedure Put_Cell
-     (T     : in out Table;
-      S     : String;
-      Align : Alignment_Type := Right_Align)
-   with
-     Global => null,
-     Pre    => T.Cur_Line <= T.L and then T.Cur_Col <= T.C
-               and then S'Length <= Max_Size,
+   Unchanged (X, Within => Y)
 
-     --  S has been printed inside the current cell with alignment Align
+means that the ``Element`` values of X should be equal to precisely the
+corresponding values within Y.
 
-     Post   => Is_Set (T => T.Content'Old,
-                       L => T.Cur_Line'Old,
-                       C => T.Cur_Col'Old,
-                       S => S,
-                       A => Align,
-                       R => T.Content)
-
-     --  We have moved to the next cell, but not moved to the next line,
-     --  even if needed.
-
-               and T.Cur_Line = T.Cur_Line'Old
-               and T.Cur_Col = T.Cur_Col'Old + 1;
-
-
-For GNATprove to verify this postcondition, we had to introduce yet another
-assumption relating the result of ``To_String`` on an instance of
-``To_Unbounded_String`` to its input:
+However, this function is not one that users would call directly. We
+only need it for proof. Therefore, we mark the ``Unchanged`` function as a
+"ghost" function so that the compiler will neither generate code for it
+nor allow the application code to call it. The function is declared with
+that aspect (on line 2) as follows:
 
 .. code-block:: ada
+   :linenos:
 
-   pragma Assume (To_String (To_Unbounded_String (S)) = S,
-                  String'("If S is a String, then "
-                          & "To_String(To_Unbounded_String(S)) = S."));
+   function Unchanged (Invariant_Part, Within : Stack) return Boolean
+     with Ghost;
 
-In the same way, we translated the comments provided on every subprogram
-dealing with the creation of the table. We didn't supply any contract for
-the subprogram responsible for dumping the table into a file because it's
-modeled in SPARK as having no effect.
+Key to the usage is the fact that by passing ``This’Old`` and ``This`` to the
+two parameters we can compare the before/after states of a single
+object. Viewing the function's implementation will help understand its
+use in the postconditions:
 
-These contracts are all verified by GNATprove. We thus reached Gold level
-on this unit.
+.. code-block:: ada
+   :linenos:
+
+   function Unchanged (Invariant_Part, Within : Stack) return Boolean is
+     (Invariant_Part.Top <= Within.Top and then
+      (for all K in 1 .. Invariant_Part.Top =>
+          Within.Values (K) = Invariant_Part.Values (K)));
+
+This approach is based directly on a very clever one by Rod Chapman, as
+seen in some similar code.
+
+The function states that the array components logically contained in
+Invariant_Part must have the same values as those corresponding array
+components in Within (lines 3 and 4 above). Note how we allow
+Invariant_Part to contain fewer values than the other stack (line 2).
+That is necessary because we use this function in the postconditions for
+both the ``Push`` and ``Pop`` operations, in which one more or one less ``Element``
+value will be present, respectively.
+
+For ``Push``, we add a call to the function in the postcondition as line 6,
+below:
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Push (This : in out Stack;  Item : Element) with
+     Pre    => not Full (This),
+     Post   => not Empty (This)
+               and then Top_Element (This) = Item
+               and then Extent (This) = Extent (This)'Old + 1
+               and then Unchanged (This'Old, Within => This),
+     Global => null;
+
+``This'Old`` provides the value of the stack prior to the call of ``Push``,
+without the new value included, whereas ``This`` represents the stack state
+after ``Push`` returns, with the new value in place. Thus, the prior values
+are compared to the corresponding values in the new state, with the
+newly included value ignored.
+
+Likewise, we add the function call to the postcondition for ``Pop``, also
+line 6, below:
+
+.. code-block:: ada
+   :linenos:
+
+   procedure Pop (This : in out Stack;  Item : out Element) with
+     Pre    => not Empty (This),
+     Post   => not Full (This)
+               and Item = Top_Element (This)'Old
+               and Extent (This) = Extent (This)'Old - 1
+               and Unchanged (This, Within => This'Old),
+     Global => null;
+
+In contrast with procedure ``Push``, on line 6 ``This`` and ``This'Old`` are passed
+to the opposite parameters. In this case the new state of the stack,
+with one less array component logically present, is used as the
+invariant to compare against. Line 6 expresses the requirement that the
+new state's content is the same as the old state's content except for
+the one array component no longer present. Because the function only
+compares the number of array components within the ``Invariant_Part``, the
+additional top element value within ``This'Old`` is ignored.
+
+Note that we must apply ``'Old`` to ``This`` in the calls to ``Unchanged`` in both
+procedures, rather than to some function result. That is unavoidable
+because we must refer to the prior state of the one stack object being
+compared.
+
+With those additions to the postconditions we get no further messages
+from GNATprove from the main procedure, including assertions about the
+states resulting from a series of calls. We have achieved the Gold
+level.
+
+Some additional postconditions are possible, however, for completeness.
+We can also use function ``Unchanged`` in a new postcondition for the ``"="``
+function:
+
+.. code-block:: ada
+   :linenos:
+
+   function "=" (Left, Right : Stack) return Boolean with
+      Post => "="'Result = (Extent (Left) = Extent (Right)
+                            and then Unchanged (Left, Right));
+
+This postcondition expresses an implication: whenever the ``"="`` function
+comparing the two stacks returns True, the ``Extent`` (i.e., ``Top``) values
+will be the same and ``Unchanged`` will hold. In other words, they will have
+the same logical size and content. Whenever ``"="`` returns False, the
+conjunction will not hold. Note that on line 3, neither argument
+to function ``Unchanged`` has ‘Old applied because we are comparing two
+distinct stack objects, rather than different states for one object. The
+sizes will be the same (from line 2) so ``Unchanged`` will compare the
+entire slices logically contained by Left and Right.
+
+We can use the same implication approach in a new postcondition for
+function ``Empty``:
+
+.. code-block:: ada
+   :linenos:
+
+     function Empty (This : Stack) return Boolean with
+       Post => Empty'Result = (Extent (This) = 0);
+
+Whenever ``Empty`` returns True, ``Top`` (i.e., ``Extent``) will be zero, otherwise
+``Top`` will not be zero.
+
+
+Platinum Level
+--------------
+
+.. index:: Platinum level (of SPARK use)
+
+Our Gold level implementation also achieved the Platinum level because
+our postconditions fully covered the functional requirements and there
+were no abstract properties to be proven. Achieving the Platinum level
+is rare in itself, all the more so using the Gold level implementation.
+Doing so is possible in no small part because stacks are simple
+abstractions.
+
+The source code and full GNAT project for this example are available here: https://github.com/AdaCore/Platinum_Reusable_Stack
+
+This is the complete, final version of the generic package:
+
+.. code-block:: ada
+   :linenos:
+
+   generic
+      type Element is private;
+      --  The type of values contained by objects of type Stack
+
+      Default_Value : Element;
+      --  The default value used for stack contents. Never
+      --  acquired as a value from the API, but required for
+      --  initialization in SPARK.
+   package Sequential_Bounded_Stacks is
+
+      pragma Unevaluated_Use_of_Old (Allow);
+
+      subtype Element_Count is Integer range 0 .. Integer'Last - 1;
+      --  The number of Element values currently contained
+      --  within any given stack. The lower bound is zero
+      --  because a stack can be empty. We limit the upper
+      --  bound (minimally) to preclude overflow issues.
+
+      subtype Physical_Capacity is Element_Count range 1 .. Element_Count'Last;
+      --  The range of values that any given stack object can
+      --  specify (via the discriminant) for the number of
+      --  Element values the object can physically contain.
+      --  Must be at least one.
+
+      type Stack (Capacity : Physical_Capacity) is private
+         with Default_Initial_Condition => Empty (Stack);
+
+      procedure Push (This : in out Stack;  Item : Element) with
+        Pre    => not Full (This),
+        Post   => not Empty (This)
+                  and then Top_Element (This) = Item
+                  and then Extent (This) = Extent (This)'Old + 1
+                  and then Unchanged (This'Old, Within => This),
+        Global => null;
+
+      procedure Pop (This : in out Stack;  Item : out Element) with
+        Pre    => not Empty (This),
+        Post   => not Full (This)
+                  and Item = Top_Element (This)'Old
+                  and Extent (This) = Extent (This)'Old - 1
+                  and Unchanged (This, Within => This'Old),
+        Global => null;
+
+      function Top_Element (This : Stack) return Element with
+        Pre    => not Empty (This),
+        Global => null;
+      --  Returns the value of the Element at the "top" of This
+      --  stack, i.e., the most recent Element pushed. Does not
+      --  remove that Element or alter the state of This stack
+      --  in any way.
+
+      overriding function "=" (Left, Right : Stack) return Boolean with
+        Post   => "="'Result = (Extent (Left) = Extent (Right)
+                                and then Unchanged (Left, Right)),
+        Global => null;
+
+      procedure Copy (Destination : in out Stack; Source : Stack) with
+        Pre    => Destination.Capacity >= Extent (Source),
+        Post   => Destination = Source,
+        Global => null;
+      --  An alternative to predefined assignment that does not
+      --  copy all the values unless necessary. It only copies
+      --  the part "logically" contained, so is more efficient
+      --  when Source is not full.
+
+      function Extent (This : Stack) return Element_Count with
+        Global => null;
+      --  Returns the number of Element values currently
+      --  contained within This stack.
+
+      function Empty (This : Stack) return Boolean with
+        Post   => Empty'Result = (Extent (This) = 0),
+        Global => null;
+
+      function Full (This : Stack) return Boolean with
+        Post   => Full'Result = (Extent (This) = This.Capacity),
+        Global => null;
+
+      procedure Reset (This : in out Stack) with
+        Post   => Empty (This),
+        Global => null;
+
+      function Unchanged (Invariant_Part, Within : Stack) return Boolean
+        with Ghost;
+      --  Returns whether the Element values of Invariant_Part
+      --  are unchanged in the stack Within, e.g., that inserting
+      --  or removing an Element value does not change the other
+      --  Element values held.
+
+   private
+
+      type Content is array (Physical_Capacity range <>) of Element;
+
+      type Stack (Capacity : Physical_Capacity) is record
+         Values : Content (1 .. Capacity) := (others => Default_Value);
+         Top    : Element_Count := 0;
+      end record with
+        Predicate => Top in 0 .. Capacity;
+
+      function Extent (This : Stack) return Element_Count is
+        (This.Top);
+
+      function Empty (This : Stack) return Boolean is
+        (This.Top = 0);
+
+      function Full (This : Stack) return Boolean is
+        (This.Top = This.Capacity);
+
+      function Top_Element (This : Stack) return Element is
+        (This.Values (This.Top));
+
+      function "=" (Left, Right : Stack) return Boolean is
+        (Left.Top = Right.Top and then
+         Left.Values (1 .. Left.Top) = Right.Values (1 .. Right.Top));
+
+      function Unchanged (Invariant_Part, Within : Stack) return Boolean is
+        (Invariant_Part.Top <= Within.Top and then
+           (for all K in 1 .. Invariant_Part.Top =>
+               Within.Values (K) = Invariant_Part.Values (K)));
+
+   end Sequential_Bounded_Stacks;
+
+And the package body:
+
+.. code-block:: ada
+   :linenos:
+
+   package body Sequential_Bounded_Stacks is
+
+      procedure Reset (This : in out Stack) is
+      begin
+         This.Top := 0;
+      end Reset;
+
+      procedure Push (This : in out Stack; Item : in Element) is
+      begin
+         This.Top := This.Top + 1;
+         This.Values (This.Top) := Item;
+      end Push;
+
+      procedure Pop (This : in out Stack; Item : out Element) is
+      begin
+         Item := This.Values (This.Top);
+         This.Top := This.Top - 1;
+      end Pop;
+
+      procedure Copy (Destination : in out Stack; Source : Stack) is
+         subtype Contained is Element_Count range 1 .. Source.Top;
+      begin
+         Destination.Top := Source.Top;
+         Destination.Values (Contained) := Source.Values (Contained);
+      end Copy;
+
+   end Sequential_Bounded_Stacks;
+
+
 
 .. _References:
 
