@@ -5989,13 +5989,14 @@ package body Gnat2Why.Expr is
                      Need_Store  => Need_Store);
                   return;
                else
-                  pragma Assert (Var.Constr.Present);
                   Get_Item_From_Expr
                     (Pattern     => Pattern,
                      Expr        => Expr,
                      Context     => Context,
                      Args        => Args,
-                     Constr_Expr => +Var.Constr.Id,
+                     Constr_Expr =>
+                       (if Var.Constr.Present then +Var.Constr.Id
+                        else Why_Empty),
                      Need_Store  => Need_Store);
                   return;
                end if;
@@ -6908,13 +6909,11 @@ package body Gnat2Why.Expr is
             --  Otherwise, compute new references from Tmp directly
 
             else
-               pragma Assert (not Pattern.Constr.Present);
                Get_Item_From_Expr
                  (Pattern     => Pattern,
                   Expr        => +Tmp,
                   Context     => Context,
                   Args        => Args,
-                  Constr_Expr => Why_Empty,
                   Need_Store  => Need_Store);
             end if;
 
