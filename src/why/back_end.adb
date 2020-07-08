@@ -136,6 +136,7 @@ package body Back_End is
       pragma Import (C, save_argc, "save_argc");
 
       use type System.Address;
+      use type Gnat2Why_Opts.Output_Mode_Type;
 
    begin
       --  If save_argv is non null, it means we are part of gnat1+gnat2why
@@ -182,16 +183,23 @@ package body Back_End is
          Opt.Warning_Mode := Opt.Suppress;
 
       else
-
          --  An ALI file should be generated only when generating globals.
          --  Otherwise, when translating the program to Why, ALI file
          --  generation should be disabled.
 
          Opt.Disable_ALI_File := True;
+
+         --  For the pretty output mode, we set -gnatdF to force alternative
+         --  display of messages in Errout.
+
+         if Gnat2Why_Args.Output_Mode = Gnat2Why_Opts.GPO_Pretty then
+            Debug_Flag_FF := True;
+         end if;
       end if;
 
       Debug_Flag_M := Gnat2Why_Args.No_Inlining;
       Debug_Flag_Underscore_F := Gnat2Why_Args.Info_Messages;
+
    end Scan_Compiler_Arguments;
 
    -------------------------------
