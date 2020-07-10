@@ -7040,11 +7040,11 @@ package body Gnat2Why.Expr is
 
             else
                Get_Item_From_Expr
-                 (Pattern     => Pattern,
-                  Expr        => +Tmp,
-                  Context     => Context,
-                  Args        => Args,
-                  Need_Store  => Need_Store);
+                 (Pattern    => Pattern,
+                  Expr       => +Tmp,
+                  Context    => Context,
+                  Args       => Args,
+                  Need_Store => Need_Store);
             end if;
 
             --  Call the appropriate __move function

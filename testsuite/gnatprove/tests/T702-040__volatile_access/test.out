@@ -1,0 +1,17 @@
+test_deep_volatile.adb:4:22: move of a volatile object is not allowed in SPARK
+test_deep_volatile.adb:4:22: violation of aspect SPARK_Mode at line 1
+test_deep_volatile.adb:10:29: borrow or observe of a volatile object is not allowed in SPARK
+test_deep_volatile.adb:10:29: violation of aspect SPARK_Mode at line 1
+test_deep_volatile.adb:12:07: "Y" is not allowed in SPARK (due to borrow or observe of a volatile object)
+test_deep_volatile.adb:12:07: violation of aspect SPARK_Mode at line 1
+test_deep_volatile.adb:16:38: borrow or observe of a volatile object is not allowed in SPARK
+test_deep_volatile.adb:16:38: violation of aspect SPARK_Mode at line 1
+test_deep_volatile.adb:18:22: "Y" is not allowed in SPARK (due to borrow or observe of a volatile object)
+test_deep_volatile.adb:18:22: violation of aspect SPARK_Mode at line 1
+test_deep_volatile.adb:24:12: move of a volatile object is not allowed in SPARK
+test_deep_volatile.adb:24:12: violation of aspect SPARK_Mode at line 1
+test_deep_volatile.adb:30:14: move of a volatile object is not allowed in SPARK
+test_deep_volatile.adb:30:14: violation of aspect SPARK_Mode at line 1
+test_deep_volatile.adb:35:10: move of a volatile object is not allowed in SPARK
+test_deep_volatile.adb:35:10: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

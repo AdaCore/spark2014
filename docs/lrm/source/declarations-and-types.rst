@@ -870,6 +870,12 @@ be an owning type).]
     in the private part of a package then its completion shall also occur
     in that private part.]
 
+15. The name of an effectively volatile managed object shall not be moved,
+    borrowed, or observed. [This rule is meant to avoid introducing aliases
+    between volatile variables used by another task or thread. Borrowers can
+    also break the invariant on the borrowed object for the time of the
+    borrow.]
+
 .. centered:: **Verification Rules**
 
 
