@@ -16,59 +16,59 @@ test_trigo.adb:29:09: warning: unused assignment
 test_trigo.adb:29:24: info: overflow check proved (CVC4: 1 VC)
 test_trigo.adb:36:22: medium: assertion might fail, cannot prove abs (Trigo.Tan (F) - Trigo.Sin (F) / Trigo.Cos (F)) < 1.0E-3
 test_trigo.adb:36:32: medium: precondition might fail, cannot prove X in -0.5 .. 0.5
-test_trigo.adb:36:41: medium: float overflow check might fail
+test_trigo.adb:36:41: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 test_trigo.adb:36:48: medium: precondition might fail, cannot prove X in -1.0 .. 1.0
 test_trigo.adb:36:57: medium: divide by zero might fail
-test_trigo.adb:36:57: medium: float overflow check might fail
+test_trigo.adb:36:57: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 test_trigo.adb:36:64: medium: precondition might fail, cannot prove X in -1.0 .. 1.0
 test_trigo.adb:37:24: info: overflow check proved (CVC4: 1 VC)
-trigo.ads:4:49: medium: float overflow check might fail [possible fix: subprogram at line 4 should mention X in a precondition]
-trigo.ads:5:49: medium: float overflow check might fail [possible fix: subprogram at line 5 should mention X in a precondition]
-trigo.ads:5:53: medium: float overflow check might fail [possible fix: subprogram at line 5 should mention X in a precondition]
-trigo.ads:6:49: medium: float overflow check might fail [possible fix: subprogram at line 6 should mention X in a precondition]
-trigo.ads:6:53: medium: float overflow check might fail [possible fix: subprogram at line 6 should mention X in a precondition]
-trigo.ads:6:57: medium: float overflow check might fail [possible fix: subprogram at line 6 should mention X in a precondition]
-trigo.ads:7:49: medium: float overflow check might fail [possible fix: subprogram at line 7 should mention X in a precondition]
-trigo.ads:7:53: medium: float overflow check might fail [possible fix: subprogram at line 7 should mention X in a precondition]
-trigo.ads:7:57: medium: float overflow check might fail [possible fix: subprogram at line 7 should mention X in a precondition]
-trigo.ads:7:61: medium: float overflow check might fail [possible fix: subprogram at line 7 should mention X in a precondition]
-trigo.ads:8:49: medium: float overflow check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
-trigo.ads:8:53: medium: float overflow check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
-trigo.ads:8:57: medium: float overflow check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
-trigo.ads:8:61: medium: float overflow check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
-trigo.ads:8:65: medium: float overflow check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
-trigo.ads:9:49: medium: float overflow check might fail [possible fix: subprogram at line 9 should mention X in a precondition]
-trigo.ads:9:53: medium: float overflow check might fail [possible fix: subprogram at line 9 should mention X in a precondition]
-trigo.ads:9:57: medium: float overflow check might fail [possible fix: subprogram at line 9 should mention X in a precondition]
-trigo.ads:9:61: medium: float overflow check might fail [possible fix: subprogram at line 9 should mention X in a precondition]
-trigo.ads:9:65: medium: float overflow check might fail [possible fix: subprogram at line 9 should mention X in a precondition]
-trigo.ads:9:69: medium: float overflow check might fail [possible fix: subprogram at line 9 should mention X in a precondition]
-trigo.ads:10:49: medium: float overflow check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
-trigo.ads:10:53: medium: float overflow check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
-trigo.ads:10:57: medium: float overflow check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
-trigo.ads:10:61: medium: float overflow check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
-trigo.ads:10:65: medium: float overflow check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
-trigo.ads:10:69: medium: float overflow check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
-trigo.ads:10:73: medium: float overflow check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
-trigo.ads:11:49: medium: float overflow check might fail [possible fix: subprogram at line 11 should mention X in a precondition]
-trigo.ads:11:53: medium: float overflow check might fail [possible fix: subprogram at line 11 should mention X in a precondition]
-trigo.ads:11:57: medium: float overflow check might fail [possible fix: subprogram at line 11 should mention X in a precondition]
-trigo.ads:11:61: medium: float overflow check might fail [possible fix: subprogram at line 11 should mention X in a precondition]
-trigo.ads:11:65: medium: float overflow check might fail [possible fix: subprogram at line 11 should mention X in a precondition]
-trigo.ads:11:69: medium: float overflow check might fail [possible fix: subprogram at line 11 should mention X in a precondition]
-trigo.ads:11:73: medium: float overflow check might fail [possible fix: subprogram at line 11 should mention X in a precondition]
-trigo.ads:11:77: medium: float overflow check might fail [possible fix: subprogram at line 11 should mention X in a precondition]
+trigo.ads:4:49: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 4 should mention X in a precondition]
+trigo.ads:5:49: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 5 should mention X in a precondition]
+trigo.ads:5:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 5 should mention X in a precondition]
+trigo.ads:6:49: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 6 should mention X in a precondition]
+trigo.ads:6:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 6 should mention X in a precondition]
+trigo.ads:6:57: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 6 should mention X in a precondition]
+trigo.ads:7:49: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 7 should mention X in a precondition]
+trigo.ads:7:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 7 should mention X in a precondition]
+trigo.ads:7:57: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 7 should mention X in a precondition]
+trigo.ads:7:61: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 7 should mention X in a precondition]
+trigo.ads:8:49: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 8 should mention X in a precondition]
+trigo.ads:8:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 8 should mention X in a precondition]
+trigo.ads:8:57: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 8 should mention X in a precondition]
+trigo.ads:8:61: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 8 should mention X in a precondition]
+trigo.ads:8:65: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 8 should mention X in a precondition]
+trigo.ads:9:49: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 9 should mention X in a precondition]
+trigo.ads:9:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 9 should mention X in a precondition]
+trigo.ads:9:57: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 9 should mention X in a precondition]
+trigo.ads:9:61: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 9 should mention X in a precondition]
+trigo.ads:9:65: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 9 should mention X in a precondition]
+trigo.ads:9:69: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 9 should mention X in a precondition]
+trigo.ads:10:49: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 10 should mention X in a precondition]
+trigo.ads:10:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 10 should mention X in a precondition]
+trigo.ads:10:57: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 10 should mention X in a precondition]
+trigo.ads:10:61: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 10 should mention X in a precondition]
+trigo.ads:10:65: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 10 should mention X in a precondition]
+trigo.ads:10:69: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 10 should mention X in a precondition]
+trigo.ads:10:73: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 10 should mention X in a precondition]
+trigo.ads:11:49: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 11 should mention X in a precondition]
+trigo.ads:11:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 11 should mention X in a precondition]
+trigo.ads:11:57: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 11 should mention X in a precondition]
+trigo.ads:11:61: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 11 should mention X in a precondition]
+trigo.ads:11:65: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 11 should mention X in a precondition]
+trigo.ads:11:69: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 11 should mention X in a precondition]
+trigo.ads:11:73: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 11 should mention X in a precondition]
+trigo.ads:11:77: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 11 should mention X in a precondition]
 trigo.ads:14:10: info: float overflow check proved (CVC4: 1 VC)
 trigo.ads:14:21: info: division check proved (CVC4: 1 VC)
 trigo.ads:14:21: info: float overflow check proved (Trivial)
-trigo.ads:14:27: medium: float overflow check might fail [possible fix: subprogram at line 13 should mention X in a precondition]
+trigo.ads:14:27: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 13 should mention X in a precondition]
 trigo.ads:14:38: info: division check proved (CVC4: 1 VC)
 trigo.ads:14:38: info: float overflow check proved (Trivial)
-trigo.ads:14:46: medium: float overflow check might fail [possible fix: subprogram at line 13 should mention X in a precondition]
+trigo.ads:14:46: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 13 should mention X in a precondition]
 trigo.ads:14:57: info: division check proved (CVC4: 1 VC)
 trigo.ads:14:57: info: float overflow check proved (Trivial)
 trigo.ads:18:14: medium: postcondition might fail, cannot prove abs (Sin'Result - Approx_Sin (X)) < 3.0E-6
-trigo.ads:18:30: medium: float overflow check might fail
+trigo.ads:18:30: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 trigo.ads:21:12: info: float overflow check proved (Trivial)
 trigo.ads:21:23: info: division check proved (CVC4: 1 VC)
 trigo.ads:21:23: info: float overflow check proved (Trivial)
@@ -82,21 +82,21 @@ trigo.ads:21:66: info: float overflow check proved (Trivial)
 trigo.ads:21:77: info: division check proved (CVC4: 1 VC)
 trigo.ads:21:77: info: float overflow check proved (Trivial)
 trigo.ads:25:14: medium: postcondition might fail, cannot prove abs (Cos'Result - Approx_Cos (X)) < 3.0E-6
-trigo.ads:25:30: medium: float overflow check might fail
-trigo.ads:28:10: medium: float overflow check might fail [possible fix: subprogram at line 27 should mention X in a precondition]
+trigo.ads:25:30: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+trigo.ads:28:10: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:21: info: division check proved (CVC4: 1 VC)
 trigo.ads:28:21: info: float overflow check proved (Trivial)
-trigo.ads:28:27: medium: float overflow check might fail [possible fix: subprogram at line 27 should mention X in a precondition]
-trigo.ads:28:33: medium: float overflow check might fail [possible fix: subprogram at line 27 should mention X in a precondition]
+trigo.ads:28:27: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 27 should mention X in a precondition]
+trigo.ads:28:33: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:44: info: division check proved (CVC4: 1 VC)
 trigo.ads:28:44: info: float overflow check proved (Trivial)
-trigo.ads:28:51: medium: float overflow check might fail [possible fix: subprogram at line 27 should mention X in a precondition]
-trigo.ads:28:58: medium: float overflow check might fail [possible fix: subprogram at line 27 should mention X in a precondition]
+trigo.ads:28:51: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 27 should mention X in a precondition]
+trigo.ads:28:58: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:69: info: division check proved (CVC4: 1 VC)
 trigo.ads:28:69: info: float overflow check proved (Trivial)
-trigo.ads:28:77: medium: float overflow check might fail [possible fix: subprogram at line 27 should mention X in a precondition]
-trigo.ads:28:84: medium: float overflow check might fail [possible fix: subprogram at line 27 should mention X in a precondition]
+trigo.ads:28:77: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 27 should mention X in a precondition]
+trigo.ads:28:84: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:95: info: division check proved (CVC4: 1 VC)
 trigo.ads:28:95: info: float overflow check proved (Trivial)
 trigo.ads:32:14: medium: postcondition might fail, cannot prove abs (Tan'Result - Approx_Tan (X)) < 1.0E-4
-trigo.ads:32:30: medium: float overflow check might fail
+trigo.ads:32:30: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]

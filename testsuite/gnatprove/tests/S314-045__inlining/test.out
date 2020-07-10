@@ -1,7 +1,7 @@
 compiler.adb:27:40: info: data dependencies proved
 compiler.adb:46:10: info: data dependencies proved
 compiler.adb:49:24: info: cannot unroll loop (too many loop iterations)
-compiler.adb:50:18: medium: range check might fail
+compiler.adb:50:18: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 compiler.adb:103:10: info: add a contract to analyze it separately from calling contexts
 compiler.adb:103:10: info: local subprogram "To_String80" only analyzed in the context of calls
 compiler.adb:109:14: info: index check proved (CVC4: 10 VC), in call inlined at compiler.adb:1037, in call inlined at compiler.adb:1163
@@ -47,11 +47,11 @@ compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at c
 compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:925, in call inlined at compiler.adb:1159
 compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:952, in call inlined at compiler.adb:1161
 compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:995, in call inlined at compiler.adb:1161
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:312
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
+compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163 [reason for check: value must be a valid index into the array]
+compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163 [reason for check: value must be a valid index into the array]
+compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:312 [reason for check: value must be a valid index into the array]
+compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161 [reason for check: value must be a valid index into the array]
+compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161 [reason for check: value must be a valid index into the array]
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
@@ -119,8 +119,8 @@ compiler.adb:302:03: info: data dependencies proved
 compiler.adb:312:22: info: cannot unroll loop (too many loop iterations)
 compiler.adb:312:22: info: in inlined body at line 108
 compiler.adb:313:29: medium: range check might fail
-compiler.adb:323:21: medium: array index check might fail [possible fix: subprogram at line 300 should mention char_pos in a precondition]
-compiler.adb:324:26: medium: range check might fail [possible fix: subprogram at line 300 should mention char_pos in a precondition]
+compiler.adb:323:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 300 should mention char_pos in a precondition]
+compiler.adb:324:26: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at line 300 should mention char_pos in a precondition]
 compiler.adb:334:10: info: add a contract to analyze it separately from calling contexts
 compiler.adb:334:10: info: local subprogram "Ordinal" only analyzed in the context of calls
 compiler.adb:335:03: info: initialization of "result" proved
@@ -128,7 +128,7 @@ compiler.adb:335:03: info: initialization of "result" proved, in call inlined at
 compiler.adb:338:50: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:452
 compiler.adb:346:10: info: add a contract to analyze it separately from calling contexts
 compiler.adb:346:10: info: local subprogram "Identify_Symbol" only analyzed in the context of calls
-compiler.adb:348:27: medium: array index check might fail, in call inlined at compiler.adb:443
+compiler.adb:348:27: medium: array index check might fail, in call inlined at compiler.adb:443 [reason for check: value must be a valid index into the array]
 compiler.adb:387:10: info: add a contract to analyze it separately from calling contexts
 compiler.adb:387:10: info: local subprogram "Identify_Punctuation" only analyzed in the context of calls
 compiler.adb:389:20: info: range check proved (CVC4: 60 VC), in call inlined at compiler.adb:479
@@ -158,38 +158,38 @@ compiler.adb:420:03: info: initialization of "ch_type" proved
 compiler.adb:421:03: info: initialization of "start_Index" proved
 compiler.adb:421:16: info: initialization of "stop_index" proved
 compiler.adb:422:03: info: initialization of "i" proved
-compiler.adb:438:12: medium: array index check might fail [possible fix: loop at line 435 should mention i in a loop invariant]
+compiler.adb:438:12: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 435 should mention i in a loop invariant]
 compiler.adb:439:14: info: overflow check proved (CVC4: 1 VC)
-compiler.adb:441:12: medium: range check might fail [possible fix: loop at line 435 should mention i in a loop invariant]
-compiler.adb:442:43: medium: range check might fail [possible fix: loop at line 435 should mention char_pos in a loop invariant]
-compiler.adb:443:37: medium: range check might fail [possible fix: loop at line 435 should mention line in a loop invariant]
+compiler.adb:441:12: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 435 should mention i in a loop invariant]
+compiler.adb:442:43: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 435 should mention char_pos in a loop invariant]
+compiler.adb:443:37: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: loop at line 435 should mention line in a loop invariant]
 compiler.adb:445:18: info: overflow check proved (CVC4: 1 VC)
 compiler.adb:445:35: info: cannot unroll loop (too many loop iterations)
-compiler.adb:452:20: medium: overflow check might fail [possible fix: loop at line 451 should mention number in a loop invariant]
-compiler.adb:452:29: medium: overflow check might fail [possible fix: loop at line 451 should mention number in a loop invariant]
-compiler.adb:456:43: medium: range check might fail [possible fix: loop at line 451 should mention char_pos in a loop invariant]
+compiler.adb:452:20: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 451 should mention number in a loop invariant]
+compiler.adb:452:29: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 451 should mention number in a loop invariant]
+compiler.adb:456:43: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 451 should mention char_pos in a loop invariant]
 compiler.adb:466:35: info: overflow check proved (CVC4: 1 VC)
-compiler.adb:468:47: medium: range check might fail [possible fix: call at line 464 should mention char_pos in a postcondition]
-compiler.adb:473:35: medium: array index check might fail
+compiler.adb:468:47: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: call at line 464 should mention char_pos in a postcondition]
+compiler.adb:473:35: medium: array index check might fail [reason for check: value must be a valid index into the array]
 compiler.adb:477:41: info: index check proved (CVC4: 2 VC)
 compiler.adb:479:12: info: range check proved (CVC4: 4 VC)
 compiler.adb:479:63: info: overflow check proved (CVC4: 1 VC)
 compiler.adb:479:76: info: overflow check proved (CVC4: 1 VC)
 compiler.adb:506:11: info: add a contract to analyze it separately from calling contexts
 compiler.adb:506:11: info: local subprogram "Enter" only analyzed in the context of calls
-compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1197 [possible fix: loop at line 1193 should mention table_index in a loop invariant]
-compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1200 [possible fix: loop at line 1198 should mention table_index in a loop invariant]
-compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1207 [possible fix: loop at line 1193 should mention table_index in a loop invariant]
-compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1210 [possible fix: loop at line 1208 should mention table_index in a loop invariant]
-compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1219 [possible fix: loop at line 1215 should mention table_index in a loop invariant]
-compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1237 [possible fix: loop at line 1227 should mention table_index in a loop invariant]
+compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1197 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1193 should mention table_index in a loop invariant]
+compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1200 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1198 should mention table_index in a loop invariant]
+compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1207 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1193 should mention table_index in a loop invariant]
+compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1210 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1208 should mention table_index in a loop invariant]
+compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1219 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1215 should mention table_index in a loop invariant]
+compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1237 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1227 should mention table_index in a loop invariant]
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1197
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1200
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1219
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1237
-compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1207 [possible fix: loop at line 1193 should mention varcount in a loop invariant]
-compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1210 [possible fix: loop at line 1208 should mention varcount in a loop invariant]
-compiler.adb:536:26: medium: range check might fail, in call inlined at compiler.adb:1237 [possible fix: loop at line 1227 should mention varcount in a loop invariant]
+compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1207 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1193 should mention varcount in a loop invariant]
+compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1210 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1208 should mention varcount in a loop invariant]
+compiler.adb:536:26: medium: range check might fail, in call inlined at compiler.adb:1237 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1227 should mention varcount in a loop invariant]
 compiler.adb:540:14: warning: "sym" is set by "Get_Symbol" but not used after the call, in call inlined at compiler.adb:1219
 compiler.adb:549:10: info: add a contract to analyze it separately from calling contexts
 compiler.adb:549:10: info: local subprogram "Position" only analyzed in the context of calls
@@ -199,7 +199,7 @@ compiler.adb:554:12: info: range check proved (CVC4: 1 VC), in call inlined at c
 compiler.adb:554:12: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:880, in call inlined at compiler.adb:1159
 compiler.adb:554:12: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:964, in call inlined at compiler.adb:1161
 compiler.adb:577:21: medium: postcondition might fail, cannot prove Code(Code_Index).Instruction = instruction
-compiler.adb:590:28: medium: range check might fail [possible fix: subprogram at line 569 should mention code_index in a precondition]
+compiler.adb:590:28: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at line 569 should mention code_index in a precondition]
 compiler.adb:626:11: info: add a contract to analyze it separately from calling contexts
 compiler.adb:626:11: info: local subprogram "General_Expression" only analyzed in the context of calls
 compiler.adb:632:03: info: initialization of "saved_sym" proved
@@ -230,8 +230,8 @@ compiler.adb:698:28: info: in inlined body at line 108
 compiler.adb:698:28: info: unrolling loop
 compiler.adb:699:28: info: in inlined body at line 108
 compiler.adb:699:28: info: unrolling loop
-compiler.adb:718:19: medium: overflow check might fail [possible fix: subprogram at line 666 should mention level and symbol_table in a precondition]
-compiler.adb:733:19: medium: overflow check might fail [possible fix: subprogram at line 666 should mention level and symbol_table in a precondition]
+compiler.adb:718:19: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 666 should mention level and symbol_table in a precondition]
+compiler.adb:733:19: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 666 should mention level and symbol_table in a precondition]
 compiler.adb:755:11: info: add a contract to analyze it separately from calling contexts
 compiler.adb:755:11: info: local subprogram "Term" only analyzed in the context of calls
 compiler.adb:761:03: info: initialization of "prev_sym" proved
@@ -297,7 +297,7 @@ compiler.adb:874:08: info: initialization of "cx2" proved
 compiler.adb:874:08: info: initialization of "cx2" proved, in call inlined at compiler.adb:1159
 compiler.adb:875:03: info: initialization of "upwards" proved
 compiler.adb:875:03: info: initialization of "upwards" proved, in call inlined at compiler.adb:1159
-compiler.adb:889:13: medium: overflow check might fail, in call inlined at compiler.adb:1159 [possible fix: subprogram at line 602 should mention symbol_table in a precondition]
+compiler.adb:889:13: medium: overflow check might fail, in call inlined at compiler.adb:1159 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 602 should mention symbol_table in a precondition]
 compiler.adb:903:13: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1159
 compiler.adb:921:13: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1159
 compiler.adb:929:13: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1159
@@ -317,15 +317,15 @@ compiler.adb:1004:11: info: local subprogram "Process_Cobegin" only analyzed in 
 compiler.adb:1006:03: info: initialization of "sym" proved
 compiler.adb:1011:03: info: initialization of "cx1" proved
 compiler.adb:1011:03: info: initialization of "cx1" proved, in call inlined at compiler.adb:1163
-compiler.adb:1016:34: medium: overflow check might fail, in call inlined at compiler.adb:1163
+compiler.adb:1016:34: medium: overflow check might fail, in call inlined at compiler.adb:1163 [reason for check: result of addition must fit in a 32-bits machine integer]
 compiler.adb:1023:09: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1163
 compiler.adb:1031:09: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1163
 compiler.adb:1047:03: info: initialization of "i" proved
 compiler.adb:1048:03: info: initialization of "cx1" proved
 compiler.adb:1048:08: info: initialization of "cx2" proved
-compiler.adb:1069:21: medium: overflow check might fail [possible fix: subprogram at line 602 should mention level and symbol_table in a precondition]
-compiler.adb:1088:21: medium: overflow check might fail [possible fix: subprogram at line 602 should mention level and symbol_table in a precondition]
-compiler.adb:1108:17: medium: overflow check might fail [possible fix: subprogram at line 602 should mention level and symbol_table in a precondition]
+compiler.adb:1069:21: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 602 should mention level and symbol_table in a precondition]
+compiler.adb:1088:21: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 602 should mention level and symbol_table in a precondition]
+compiler.adb:1108:17: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 602 should mention level and symbol_table in a precondition]
 compiler.adb:1126:28: info: in inlined body at line 108
 compiler.adb:1126:28: info: unrolling loop
 compiler.adb:1129:07: info: in inlined body at line 108
@@ -416,8 +416,8 @@ compiler.adb:1200:22: high: formal parameter "name" and global "line" are aliase
 compiler.adb:1207:18: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
 compiler.adb:1210:20: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
 compiler.adb:1219:19: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
-compiler.adb:1221:30: medium: overflow check might fail [possible fix: subprogram at line 1176 should mention level in a precondition]
-compiler.adb:1234:29: medium: range check might fail [possible fix: call at line 1232 should mention number in a postcondition]
+compiler.adb:1221:30: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1176 should mention level in a precondition]
+compiler.adb:1234:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: call at line 1232 should mention number in a postcondition]
 compiler.adb:1237:20: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
 compiler.adb:1248:31: info: in inlined body at line 108
 compiler.adb:1248:31: info: unrolling loop
@@ -428,9 +428,9 @@ compiler.adb:1263:03: warning: initialization of "sym" has no effect
 compiler.adb:1268:15: warning: "sym" is set by "Block" but not used after the call
 compiler.adb:1315:21: info: initialization of "new_thread" proved
 compiler.adb:1339:46: info: unrolling loop
-compiler.adb:1351:19: medium: range check might fail
-compiler.adb:1352:50: medium: range check might fail
-compiler.adb:1358:50: medium: range check might fail
+compiler.adb:1351:19: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
+compiler.adb:1352:50: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment]
+compiler.adb:1358:50: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
 compiler.adb:1385:15: info: ceiling priority protocol is respected (CVC4: 1 VC)
 compiler.adb:1386:27: info: initialization of "Success" proved
 compiler.adb:1418:13: info: ceiling priority protocol is respected (CVC4: 1 VC)
@@ -443,9 +443,9 @@ compiler.adb:1440:27: info: index check proved (CVC4: 2 VC)
 compiler.adb:1442:21: info: range check proved (CVC4: 1 VC)
 compiler.adb:1470:19: info: range check proved (CVC4: 1 VC)
 compiler.adb:1470:30: info: overflow check proved (CVC4: 1 VC)
-compiler.adb:1470:30: medium: array index check might fail
+compiler.adb:1470:30: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
 compiler.adb:1470:35: info: range check proved (CVC4: 1 VC)
-compiler.adb:1470:40: medium: array index check might fail
+compiler.adb:1470:40: medium: array index check might fail [reason for check: value must be a valid index into the array]
 compiler.adb:1470:47: info: range check proved (CVC4: 1 VC)
 compiler.adb:1470:52: info: range check proved (CVC4: 1 VC)
 compiler.adb:1484:11: info: add a contract to analyze it separately from calling contexts
@@ -458,36 +458,36 @@ compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined
 compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1804
 compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1815
 compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1853
-compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1781
-compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1788
-compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1796
-compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1804
-compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1815
-compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1853
-compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1781 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1788 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1796 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1804 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1815 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1853 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1781 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1788 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1796 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1804 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1815 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1853 [possible fix: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1781
-compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1788
-compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1796
-compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1804
-compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1815
-compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1853
-compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1781
-compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1788
-compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1796
-compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1804
-compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1815
-compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1853
+compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1781 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1788 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1796 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1804 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1815 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1853 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1781 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1788 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1796 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1804 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1815 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1853 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1781 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1788 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1796 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1804 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1815 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1853 [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1498 should mention Processors in a loop invariant]
+compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1781 [reason for check: result of addition must be convertible to the target type of the conversion]
+compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1788 [reason for check: result of addition must be convertible to the target type of the conversion]
+compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1796 [reason for check: result of addition must be convertible to the target type of the conversion]
+compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1804 [reason for check: result of addition must be convertible to the target type of the conversion]
+compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1815 [reason for check: result of addition must be convertible to the target type of the conversion]
+compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1853 [reason for check: result of addition must be convertible to the target type of the conversion]
+compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1781 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1788 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1796 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1804 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1815 [reason for check: result of addition must fit in a 32-bits machine integer]
+compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1853 [reason for check: result of addition must fit in a 32-bits machine integer]
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1781
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1788
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1796
@@ -496,88 +496,88 @@ compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined 
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1853
 compiler.adb:1521:11: info: add a contract to analyze it separately from calling contexts
 compiler.adb:1521:11: info: local subprogram "Dispatch" only analyzed in the context of calls
-compiler.adb:1567:44: medium: range check might fail
-compiler.adb:1583:14: medium: range check might fail [possible fix: subprogram at line 1382 should mention Data in a precondition]
-compiler.adb:1584:18: medium: range check might fail [possible fix: subprogram at line 1382 should mention Data in a precondition]
-compiler.adb:1585:18: medium: range check might fail [possible fix: subprogram at line 1382 should mention Data in a precondition]
-compiler.adb:1601:46: medium: range check might fail
+compiler.adb:1567:44: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment]
+compiler.adb:1583:14: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 1382 should mention Data in a precondition]
+compiler.adb:1584:18: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 1382 should mention Data in a precondition]
+compiler.adb:1585:18: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 1382 should mention Data in a precondition]
+compiler.adb:1601:46: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
 compiler.adb:1618:05: info: initialization of "Spawn_Data" proved
 compiler.adb:1619:05: info: initialization of "Code" proved
 compiler.adb:1624:05: info: initialization of "Caller" proved
 compiler.adb:1625:05: info: initialization of "New_Thread" proved
 compiler.adb:1626:05: info: initialization of "Tmp_Data" proved
 compiler.adb:1627:05: info: initialization of "Ready" proved
-compiler.adb:1637:26: medium: range check might fail [possible fix: loop at line 1633 should mention Progreg in a loop invariant]
-compiler.adb:1644:22: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1637:26: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Progreg in a loop invariant]
+compiler.adb:1644:22: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1653:66: info: range check proved (CVC4: 1 VC)
-compiler.adb:1654:65: medium: range check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1654:81: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1655:30: medium: range check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1655:65: medium: range check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1655:81: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1659:35: medium: overflow check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1663:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1666:24: medium: overflow check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1654:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1654:81: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1655:30: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1655:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1655:81: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1659:35: medium: overflow check might fail [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1663:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1666:24: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1666:65: info: range check proved (CVC4: 1 VC)
-compiler.adb:1670:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1674:30: medium: overflow check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1670:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1674:30: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1674:71: info: range check proved (CVC4: 1 VC)
-compiler.adb:1678:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1681:30: medium: overflow check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1678:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1681:30: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1681:71: info: range check proved (CVC4: 1 VC)
-compiler.adb:1685:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1685:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1689:30: medium: divide by zero might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1689:30: medium: overflow check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1689:30: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1689:71: info: range check proved (CVC4: 1 VC)
 compiler.adb:1694:75: info: division check proved (CVC4: 1 VC)
-compiler.adb:1698:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1698:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1704:76: info: range check proved (CVC4: 1 VC)
-compiler.adb:1710:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1710:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1716:77: info: range check proved (CVC4: 1 VC)
-compiler.adb:1722:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1722:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1728:76: info: range check proved (CVC4: 1 VC)
-compiler.adb:1734:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1734:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1740:72: info: range check proved (CVC4: 1 VC)
-compiler.adb:1746:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1746:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1751:72: info: range check proved (CVC4: 1 VC)
-compiler.adb:1757:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1757:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1762:73: info: range check proved (CVC4: 1 VC)
-compiler.adb:1770:24: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1780:22: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1770:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1780:22: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1781:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1783:43: medium: range check might fail [possible fix: loop at line 1633 should mention Caller and Code in a loop invariant]
-compiler.adb:1783:61: medium: range check might fail [possible fix: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1783:43: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Caller and Code in a loop invariant]
+compiler.adb:1783:61: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
 compiler.adb:1788:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1790:61: medium: range check might fail [possible fix: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1791:27: medium: range check might fail [possible fix: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
-compiler.adb:1791:64: medium: range check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1790:61: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1791:27: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
+compiler.adb:1791:64: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1796:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1799:44: medium: range check might fail [possible fix: loop at line 1633 should mention Caller and Code in a loop invariant]
-compiler.adb:1799:62: medium: range check might fail [possible fix: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1800:22: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1799:44: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Caller and Code in a loop invariant]
+compiler.adb:1799:62: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1800:22: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1804:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1807:62: medium: range check might fail [possible fix: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1808:28: medium: range check might fail [possible fix: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
-compiler.adb:1808:65: medium: range check might fail [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1808:81: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1811:22: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1807:62: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1808:28: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
+compiler.adb:1808:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1808:81: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1811:22: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1815:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1816:51: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1817:51: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1818:51: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1819:51: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1820:51: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1816:51: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1817:51: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1818:51: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1819:51: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1820:51: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1821:26: info: range check proved (CVC4: 1 VC)
-compiler.adb:1822:38: medium: range check might fail [possible fix: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1826:43: medium: overflow check might fail [possible fix: loop at line 1633 should mention Code and Top in a loop invariant]
-compiler.adb:1826:43: medium: range check might fail [possible fix: loop at line 1633 should mention Code and Top in a loop invariant]
-compiler.adb:1830:38: medium: range check might fail [possible fix: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1836:40: medium: range check might fail [possible fix: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1838:22: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1844:22: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1822:38: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1826:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 1633 should mention Code and Top in a loop invariant]
+compiler.adb:1826:43: medium: range check might fail [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code and Top in a loop invariant]
+compiler.adb:1830:38: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1836:40: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1838:22: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1844:22: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1845:62: info: range check proved (CVC4: 1 VC)
 compiler.adb:1853:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1859:26: medium: range check might fail [possible fix: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1869:45: medium: array index check might fail [possible fix: loop at line 1633 should mention Processors in a loop invariant]
-compiler.adb:1892:22: medium: range check might fail [possible fix: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1859:26: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1869:45: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 1633 should mention Processors in a loop invariant]
+compiler.adb:1892:22: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1906:05: info: initialization of "Spawn_Data" proved

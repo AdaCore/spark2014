@@ -30,11 +30,11 @@ algorithm.adb:108:44: medium: precondition might fail, cannot prove X /= 0.0 or 
 algorithm.adb:108:64: info: division check proved (CVC4: 1 VC)
 algorithm.adb:108:64: info: float overflow check proved (Trivial)
 algorithm.adb:109:49: medium: divide by zero might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
-algorithm.adb:109:49: medium: float overflow check might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
+algorithm.adb:109:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
 algorithm.adb:111:42: info: division check proved (CVC4: 1 VC)
 algorithm.adb:111:42: info: float overflow check proved (Trivial)
 algorithm.adb:111:49: medium: divide by zero might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
-algorithm.adb:111:49: medium: float overflow check might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
+algorithm.adb:111:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
 algorithm.adb:143:46: info: function contract not available for proof ("Create" might not return)
 algorithm.adb:147:10: info: cannot unroll loop (too many loop iterations)
 algorithm.adb:150:63: info: range check proved (Trivial)
@@ -44,12 +44,12 @@ algorithm.adb:154:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:182:07: info: initialization of "rayR" proved
 algorithm.adb:182:13: info: initialization of "rayL" proved
 algorithm.adb:184:22: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:195:47: medium: float overflow check might fail
-algorithm.adb:195:61: medium: float overflow check might fail
-algorithm.adb:195:75: medium: float overflow check might fail
-algorithm.adb:195:89: medium: float overflow check might fail
-algorithm.adb:195:95: medium: float overflow check might fail
-algorithm.adb:195:108: medium: float overflow check might fail
+algorithm.adb:195:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:195:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+algorithm.adb:195:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:195:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+algorithm.adb:195:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:195:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:195:121: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:195:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
 algorithm.adb:198:13: info: precondition proved (CVC4: 1 VC)
@@ -59,12 +59,12 @@ algorithm.adb:207:33: info: loop invariant preservation proved (CVC4: 2 VC)
 algorithm.adb:213:49: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:217:16: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:219:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:231:47: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayR]
-algorithm.adb:231:61: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayL and rayR]
-algorithm.adb:231:75: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayL]
-algorithm.adb:231:89: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayL and rayR]
-algorithm.adb:231:95: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayR]
-algorithm.adb:231:108: medium: float overflow check might fail [possible fix: loop invariant at line 207 should mention rayL and rayR]
+algorithm.adb:231:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 207 should mention rayR]
+algorithm.adb:231:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop invariant at line 207 should mention rayL and rayR]
+algorithm.adb:231:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 207 should mention rayL]
+algorithm.adb:231:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: loop invariant at line 207 should mention rayL and rayR]
+algorithm.adb:231:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 207 should mention rayR]
+algorithm.adb:231:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 207 should mention rayL and rayR]
 algorithm.adb:231:121: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:231:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
 algorithm.adb:235:13: info: precondition proved (CVC4: 1 VC)
@@ -78,7 +78,7 @@ algorithm.adb:261:35: info: loop invariant preservation proved (CVC4: 4 VC)
 algorithm.adb:263:43: info: precondition proved (CVC4: 2 VC)
 algorithm.adb:267:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:267:63: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:267:107: medium: float overflow check might fail
+algorithm.adb:267:107: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:268:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:268:62: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:272:36: info: precondition proved (CVC4: 1 VC)
@@ -102,7 +102,7 @@ algorithm.adb:324:35: info: loop invariant preservation proved (CVC4: 4 VC)
 algorithm.adb:326:44: info: precondition proved (CVC4: 2 VC)
 algorithm.adb:330:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:330:64: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:330:109: medium: float overflow check might fail
+algorithm.adb:330:109: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:331:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:331:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:36: info: precondition proved (CVC4: 1 VC)
@@ -118,7 +118,7 @@ algorithm.adb:356:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:58: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:361:27: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:381:15: info: range check proved (CVC4: 2 VC)
-algorithm.adb:381:71: medium: range check might fail [possible fix: precondition of subprogram at algorithm.ads:91 should mention This]
+algorithm.adb:381:71: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at algorithm.ads:91 should mention This]
 algorithm.adb:395:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:398:33: info: loop invariant initialization proved (CVC4: 2 VC)
 algorithm.adb:398:33: info: loop invariant preservation proved (CVC4: 2 VC)
@@ -167,13 +167,13 @@ algorithm.adb:530:07: info: initialization of "deltaMag" proved
 algorithm.adb:531:07: info: initialization of "deltaAngle" proved
 algorithm.adb:537:33: info: loop invariant initialization proved (CVC4: 1 VC)
 algorithm.adb:537:33: info: loop invariant preservation proved (CVC4: 1 VC)
-algorithm.adb:538:52: medium: float overflow check might fail [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
+algorithm.adb:538:52: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
 algorithm.adb:539:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:539:25: info: range check proved (CVC4: 1 VC)
 algorithm.adb:539:44: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:539:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:539:98: info: division check proved (CVC4: 1 VC)
-algorithm.adb:539:98: medium: float overflow check might fail [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
+algorithm.adb:539:98: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
 algorithm.adb:542:42: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:542:42: info: range check proved (Trivial)
 algorithm.adb:542:53: info: float overflow check proved (Trivial)
@@ -182,7 +182,7 @@ algorithm.adb:544:65: info: float overflow check proved (Trivial)
 algorithm.adb:544:76: info: float overflow check proved (Trivial)
 algorithm.adb:544:87: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:549:54: info: division check proved (CVC4: 1 VC)
-algorithm.adb:549:54: medium: float overflow check might fail [possible fix: loop invariant at line 537 should mention deltaAreaSum and obstacleAvoidDelta]
+algorithm.adb:549:54: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: loop invariant at line 537 should mention deltaAreaSum and obstacleAvoidDelta]
 algorithm.adb:558:07: info: initialization of "driveSpeed" proved
 algorithm.adb:559:07: info: initialization of "driveTurnRate" proved
 algorithm.adb:560:07: info: initialization of "relGoal" proved
@@ -198,7 +198,7 @@ algorithm.adb:581:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:589:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:601:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:603:37: info: cannot unroll loop (too many loop iterations)
-algorithm.adb:605:67: medium: float overflow check might fail [possible fix: loop at line 603 should mention This in a loop invariant]
+algorithm.adb:605:67: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 603 should mention This in a loop invariant]
 algorithm.adb:605:101: info: range check proved (Trivial)
 algorithm.adb:605:111: info: division check proved (CVC4: 1 VC)
 algorithm.adb:608:31: info: assertion proved (Trivial: 1 VC)
@@ -219,7 +219,7 @@ algorithm.adb:658:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:661:33: info: loop invariant initialization proved (CVC4: 2 VC)
 algorithm.adb:661:33: info: loop invariant preservation proved (CVC4: 2 VC)
 algorithm.adb:671:25: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:673:72: medium: float overflow check might fail
+algorithm.adb:673:72: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 algorithm.adb:674:43: info: range check proved (CVC4: 1 VC)
 algorithm.adb:679:31: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:680:22: medium: assertion might fail, cannot prove This.robot.robot_radius / 10.0 <= This.robot.obstacle_avoid_dist
@@ -227,7 +227,7 @@ algorithm.adb:680:46: info: division check proved (CVC4: 1 VC)
 algorithm.adb:680:46: info: float overflow check proved (Trivial)
 algorithm.adb:681:21: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:681:21: info: range check proved (CVC4: 1 VC)
-algorithm.adb:681:32: medium: float overflow check might fail
+algorithm.adb:681:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:681:57: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:681:109: info: division check proved (CVC4: 1 VC)
 algorithm.adb:681:109: info: float overflow check proved (Trivial)
@@ -243,7 +243,7 @@ algorithm.adb:730:44: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:737:52: info: division check proved (CVC4: 1 VC)
 algorithm.adb:737:52: info: float overflow check proved (Trivial)
 algorithm.adb:744:58: medium: precondition might fail, cannot prove X /= 0.0 or Y /= 0.0
-algorithm.adb:745:88: medium: float overflow check might fail
+algorithm.adb:745:88: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 algorithm.adb:746:104: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:757:44: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:763:37: info: assertion proved (CVC4: 2 VC)
@@ -283,17 +283,17 @@ algorithm.adb:862:99: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:863:22: medium: assertion might fail, cannot prove (distToClosestObstacle - This.robot.robot_radius) / This.robot.obstacle_avoid_dist > 0.0
 algorithm.adb:863:45: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:863:72: info: division check proved (CVC4: 1 VC)
-algorithm.adb:863:72: medium: float overflow check might fail
+algorithm.adb:863:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 algorithm.adb:864:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:864:45: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:864:72: info: division check proved (CVC4: 1 VC)
-algorithm.adb:864:72: medium: float overflow check might fail
+algorithm.adb:864:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 algorithm.adb:865:38: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:865:40: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:865:47: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:865:76: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:865:103: info: division check proved (CVC4: 1 VC)
-algorithm.adb:865:103: medium: float overflow check might fail
+algorithm.adb:865:103: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 algorithm.adb:867:16: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:870:32: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:870:34: info: precondition proved (CVC4: 1 VC)

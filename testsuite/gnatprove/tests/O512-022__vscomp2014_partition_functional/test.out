@@ -65,7 +65,7 @@ partition_refinement.adb:30:75: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:30:89: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:31:36: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:31:50: info: precondition proved (CVC4: 1 VC)
-partition_refinement.adb:31:78: medium: range check might fail
+partition_refinement.adb:31:78: medium: range check might fail [reason for check: result of addition must fit in the type of the qualification]
 partition_refinement.adb:31:80: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:31:94: info: precondition proved (CVC4: 1 VC)
 partition_refinement.adb:32:23: info: precondition proved (CVC4: 1 VC)
@@ -147,12 +147,12 @@ partition_refinement.adb:149:20: medium: precondition might fail, cannot prove I
 partition_refinement.adb:151:56: info: range check proved (CVC4: 1 VC)
 partition_refinement.adb:154:56: info: range check proved (CVC4: 1 VC)
 partition_refinement.adb:157:13: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) [possible fix: loop at line 143 should mention P in a loop invariant]
-partition_refinement.adb:162:50: medium: range check might fail
+partition_refinement.adb:162:50: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 partition_refinement.adb:163:16: medium: precondition might fail, cannot prove Length (Container) < Capacity (Container)
 partition_refinement.adb:164:31: info: assertion proved (CVC4: 1 VC)
 partition_refinement.adb:164:56: info: overflow check proved (CVC4: 1 VC)
 partition_refinement.adb:165:31: info: assertion proved (CVC4: 1 VC)
-partition_refinement.adb:165:64: medium: range check might fail
+partition_refinement.adb:165:64: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 partition_refinement.adb:167:31: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:176:42: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:176:42: info: loop invariant preservation proved (CVC4: 1 VC)
