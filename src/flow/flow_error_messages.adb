@@ -60,6 +60,11 @@ with Uintp;                     use Uintp;
 
 package body Flow_Error_Messages is
 
+   At_Line_Placeholder : constant String := "###AT_LINE_PLACEHOLDER###";
+   --  Placeholder for the line insertion character # for Errout. It is used so
+   --  that other occurrences of character # are properly escaped in function
+   --  Escape, while the placeholder is turned into # at the same time.
+
    Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
 
@@ -181,8 +186,9 @@ package body Flow_Error_Messages is
 
    function Escape (S : String) return String;
    --  Escape any special characters used in the error message (for example
-   --  transforms "=>" into "='>" as > is a special insertion character. We
-   --  also escape capital letters.
+   --  transforms "=>" into "='>" as > is a special insertion character.
+   --  We also escape capital letters. Also turn the placeholder for line
+   --  insertion character # into the character itself.
 
    function Substitute
      (S    : Unbounded_String;
@@ -720,9 +726,7 @@ package body Flow_Error_Messages is
                   Details : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
                      else Get_Details (N, Tag));
-                  Fix     : constant String :=
-                    (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
-                     else Get_Fix (N, Tag));
+
                begin
                   --  Only display message details when outputting on one line,
                   --  either as part of automatic testing or inside an IDE, to
@@ -754,9 +758,13 @@ package body Flow_Error_Messages is
                           & " [possible explanation: " & Explanation & "]";
                      end if;
 
-                     if Fix /= "" then
-                        Message := Message & " [possible fix: " & Fix & "]";
-                     end if;
+                     declare
+                        Fix : constant String := Get_Fix (N, Tag);
+                     begin
+                        if Fix /= "" then
+                           Message := Message & " [possible fix: " & Fix & "]";
+                        end if;
+                     end;
 
                      Msg_Id :=
                        Print_Regular_Msg (To_String (Message), Slc, Severity);
@@ -791,11 +799,15 @@ package body Flow_Error_Messages is
                            Slc, Severity, Continuation => True);
                      end if;
 
-                     if Fix /= "" then
-                        Ignore_Id := Print_Regular_Msg
-                          ("possible fix: " & Fix,
-                           Slc, Severity, Continuation => True);
-                     end if;
+                     declare
+                        Fix : constant String := Get_Fix (N, Tag);
+                     begin
+                        if Fix /= "" then
+                           Ignore_Id := Print_Regular_Msg
+                             ("possible fix: " & Fix,
+                              Slc, Severity, Continuation => True);
+                        end if;
+                     end;
                   end case;
                end;
             end if;
@@ -839,15 +851,30 @@ package body Flow_Error_Messages is
 
    function Escape (S : String) return String is
       R : Unbounded_String := Null_Unbounded_String;
+      J : Integer := S'First;
+      C : Character;
    begin
-      for C of S loop
-         if C in '%' | '$' | '{' | '*' | '&' | '#' |
-                 '}' | '@' | '^' | '>' | '!' | '?' |
-                 '<' | '`' | ''' | '\' | '|' | '[' |
-                 ']'
-           or else Is_Upper (C)
+      while J <= S'Last loop
+         C := S (J);
+
+         if C = '#'
+           and then S'Length - J + 1 >= At_Line_Placeholder'Length
+           and then S (J .. J + At_Line_Placeholder'Length - 1) =
+                    At_Line_Placeholder
          then
-            Append (R, "'");
+            J := J + At_Line_Placeholder'Length;
+
+         else
+            if C in '%' | '$' | '{' | '*' | '&' | '#'
+                  | '}' | '@' | '^' | '>' | '!' | '?'
+                  | '<' | '`' | ''' | '\' | '|' | '['
+                  | ']'
+              or else Is_Upper (C)
+            then
+               Append (R, "'");
+            end if;
+
+            J := J + 1;
          end if;
 
          Append (R, C);
@@ -1350,13 +1377,17 @@ package body Flow_Error_Messages is
            String_Utils.Trimi (Get_Physical_Line_Number (Flag)'Img, ' ');
 
       begin
+         if Gnat2Why_Args.Output_Mode = GPO_Pretty then
+            Error_Msg_Sloc := Flag;
+            return At_Line_Placeholder;
+
          --  Use "at file-name:line-num" if reference is to other than the
          --  source file in which the unproved check message is placed.
          --  Note that we check full file names, rather than just the source
          --  indexes, to deal with generic instantiations from the current
          --  file.
 
-         if Full_File_Name (Sindex_Loc) /= Full_File_Name (Sindex_Flag) then
+         elsif Full_File_Name (Sindex_Loc) /= Full_File_Name (Sindex_Flag) then
             Fname := Reference_Name (Get_Source_File_Index (Flag));
             return "at " & Get_Name_String (Fname) & ":" & Line;
 
