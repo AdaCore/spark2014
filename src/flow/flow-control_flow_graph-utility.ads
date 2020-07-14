@@ -31,13 +31,14 @@ with SPARK_Util;                  use SPARK_Util;
 package Flow.Control_Flow_Graph.Utility is
 
    function Make_Basic_Attributes
-     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Sub_Called : Node_Sets.Set       := Node_Sets.Empty_Set;
-      Loops      : Node_Sets.Set       := Node_Sets.Empty_Set;
-      E_Loc      : Node_Or_Entity_Id   := Empty;
-      Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
+     (Var_Def       : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Ex_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Im_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Sub_Called    : Node_Sets.Set       := Node_Sets.Empty_Set;
+      Loops         : Node_Sets.Set       := Node_Sets.Empty_Set;
+      In_Nested_Pkg : Boolean;
+      E_Loc         : Node_Or_Entity_Id   := Empty;
+      Print_Hint    : Pretty_Print_Kind_T := Pretty_Print_Null)
       return V_Attributes
       with Post => not Make_Basic_Attributes'Result.Is_Null_Node and
                    Make_Basic_Attributes'Result.Is_Program_Node;
@@ -67,6 +68,7 @@ package Flow.Control_Flow_Graph.Utility is
       Is_Loop_Entry : Boolean           := False;
       Is_Fold_Check : Boolean           := False;
       Is_Type_Decl  : Boolean           := False;
+      In_Nested_Pkg : Boolean;
       E_Loc         : Node_Or_Entity_Id := Empty;
       Execution     : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
@@ -103,10 +105,11 @@ package Flow.Control_Flow_Graph.Utility is
    --  Returns a copy of Leaf, but with blank def/use sets.
 
    function Make_Call_Attributes
-     (Callsite   : Node_Id;
-      Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc      : Node_Or_Entity_Id := Empty)
+     (Callsite      : Node_Id;
+      Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Loops         : Node_Sets.Set     := Node_Sets.Empty_Set;
+      In_Nested_Pkg : Boolean;
+      E_Loc         : Node_Or_Entity_Id := Empty)
       return V_Attributes
    with Pre  => Nkind (Callsite) in N_Procedure_Call_Statement
                                   | N_Entry_Call_Statement,
@@ -127,6 +130,7 @@ package Flow.Control_Flow_Graph.Utility is
       Discriminants_Or_Bounds_Only : Boolean;
       Sub_Called                   : Node_Sets.Set := Node_Sets.Empty_Set;
       Loops                        : Node_Sets.Set;
+      In_Nested_Pkg                : Boolean;
       E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
    with Pre  => (if In_Vertex
@@ -156,6 +160,7 @@ package Flow.Control_Flow_Graph.Utility is
       Scope                        : Flow_Scope;
       Discriminants_Or_Bounds_Only : Boolean;
       Loops                        : Node_Sets.Set;
+      In_Nested_Pkg                : Boolean;
       Is_Assertion                 : Boolean := False;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -170,13 +175,14 @@ package Flow.Control_Flow_Graph.Utility is
    --  used are calculated automatically.
 
    function Make_Implicit_Parameter_Attributes
-     (FA          : Flow_Analysis_Graphs;
-      Call_Vertex : Node_Id;
-      In_Vertex   : Boolean;
-      Scope       : Flow_Scope;
-      Sub_Called  : Node_Sets.Set := Node_Sets.Empty_Set;
-      Loops       : Node_Sets.Set;
-      E_Loc       : Node_Or_Entity_Id)
+     (FA            : Flow_Analysis_Graphs;
+      Call_Vertex   : Node_Id;
+      In_Vertex     : Boolean;
+      Scope         : Flow_Scope;
+      Sub_Called    : Node_Sets.Set := Node_Sets.Empty_Set;
+      Loops         : Node_Sets.Set;
+      In_Nested_Pkg : Boolean;
+      E_Loc         : Node_Or_Entity_Id)
       return V_Attributes
    with Post =>
      not Make_Implicit_Parameter_Attributes'Result.Is_Null_Node and
@@ -238,10 +244,11 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Variables_Defined or Variables_Used
 
    function Make_Default_Initialization_Attributes
-     (FA    : Flow_Analysis_Graphs;
-      Scope : Flow_Scope;
-      F     : Flow_Id;
-      Loops : Node_Sets.Set := Node_Sets.Empty_Set)
+     (FA            : Flow_Analysis_Graphs;
+      Scope         : Flow_Scope;
+      F             : Flow_Id;
+      Loops         : Node_Sets.Set := Node_Sets.Empty_Set;
+      In_Nested_Pkg : Boolean)
       return V_Attributes
    with Pre  => Is_Default_Initialized (F),
         Post =>

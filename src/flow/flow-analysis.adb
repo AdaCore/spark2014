@@ -5854,7 +5854,7 @@ package body Flow.Analysis is
             begin
                --  Ignore vertices coming from elaboration of nested packages
 
-               if not (for some P of Atr.Loops => Ekind (P) = E_Package) then
+               if not Atr.In_Nested_Package then
                   if Atr.Is_Neverending then
                      Proved := False;
                      Error_Msg_Flow
