@@ -4774,10 +4774,16 @@ package body Gnat2Why.Expr is
       Rep_Ty : Entity_Id := Retysp (Ty);
       Res    : W_Pred_Id := True_Pred;
 
+      Save_Current_Error_Node : constant Node_Id := Current_Error_Node;
+      --  Predicate handling in GNAT is complicated, so if we crash, then at
+      --  least try to precisely show where the problematic type is located.
+
    begin
       --  Go through the ancestors of Ty to collect all applicable predicates
 
       while Has_Predicates (Rep_Ty) loop
+         Current_Error_Node := Rep_Ty;
+
          declare
             Pred_Fun : constant Entity_Id := Predicate_Function (Rep_Ty);
 
@@ -4850,6 +4856,9 @@ package body Gnat2Why.Expr is
             Rep_Ty := Next_Ty;
          end;
       end loop;
+
+      Current_Error_Node := Save_Current_Error_Node;
+
       return Res;
    end Compute_Dynamic_Predicate;
 
