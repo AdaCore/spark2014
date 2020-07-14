@@ -185,16 +185,6 @@ package SPARK_Util.Types is
    --  @return If the type declaration requires a check, return the "parent"
    --    type mentionend in the type declaration. Return empty otherwise.
 
-   function Get_Type_With_Predicate_Function (E : Entity_Id) return Entity_Id
-   with
-     Pre  => Is_Type (E) and then Has_Predicates (E),
-     Post => Is_Type (Get_Type_With_Predicate_Function'Result)
-     and then Present (Predicate_Function
-                       (Get_Type_With_Predicate_Function'Result));
-   --  @params E a type with predicates
-   --  @returns A type entity on which the appropriate predicate function is
-   --     attached.
-
    function Has_Invariants_In_SPARK (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);
    --  @params E any type

@@ -4779,21 +4779,19 @@ package body Gnat2Why.Expr is
 
       while Has_Predicates (Rep_Ty) loop
          declare
-            Pred_Type : constant Entity_Id :=
-              Get_Type_With_Predicate_Function (Rep_Ty);
-            Pred_Fun  : constant Entity_Id := Predicate_Function (Pred_Type);
+            Pred_Fun : constant Entity_Id := Predicate_Function (Rep_Ty);
 
          begin
             --  If Use_Pred is true, then we already have generated a predicate
-            --  for the dynamic predicate of elements of type Pred_Type. We
-            --  also avoid using the predicate for objects in split form as it
-            --  would introduce an unnecessary conversion harmful to provers.
+            --  for the dynamic predicate of elements of type Rep_Ty. We also
+            --  avoid using the predicate for objects in split form as it would
+            --  introduce an unnecessary conversion harmful to provers.
 
             if Use_Pred
-              and then Eq_Base (Type_Of_Node (Pred_Type), Get_Type (+Expr))
+              and then Eq_Base (Type_Of_Node (Rep_Ty), Get_Type (+Expr))
             then
                return +New_And_Then_Expr
-                 (Left   => +New_Predicate_Call (Pred_Type, Expr, Params),
+                 (Left   => +New_Predicate_Call (Rep_Ty, Expr, Params),
                   Right  => +Res,
                   Domain => EW_Pred);
             elsif Entity_In_SPARK (Pred_Fun) then
@@ -21385,21 +21383,17 @@ package body Gnat2Why.Expr is
       Rep_Type : Entity_Id := Retysp (Ty);
    begin
       while Has_Predicates (Rep_Type) loop
-
          declare
-            Pred_Typ : constant Entity_Id :=
-              Get_Type_With_Predicate_Function (Rep_Type);
-            --  Type entity with predicate function attached
-            Pred_Fun : constant Entity_Id := Predicate_Function (Pred_Typ);
+            Pred_Fun : constant Entity_Id := Predicate_Function (Rep_Type);
          begin
             if Entity_In_SPARK (Pred_Fun) then
                Variables.Union
                  (Get_Variables_For_Proof
-                    (Get_Expr_From_Return_Only_Func (Pred_Fun), Pred_Typ));
+                    (Get_Expr_From_Return_Only_Func (Pred_Fun), Rep_Type));
             end if;
 
             Rep_Type := Retysp
-              (Etype (First_Formal (Predicate_Function (Pred_Typ))));
+              (Etype (First_Formal (Predicate_Function (Rep_Type))));
          end;
 
          declare

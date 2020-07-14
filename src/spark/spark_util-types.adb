@@ -670,16 +670,6 @@ package body SPARK_Util.Types is
       return Node (Elmt);
    end Get_Constraint_For_Discr;
 
-   --------------------------------------
-   -- Get_Type_With_Predicate_Function --
-   --------------------------------------
-
-   function Get_Type_With_Predicate_Function (E : Entity_Id) return Entity_Id
-   is
-     (if Present (Predicate_Function (E)) then E
-      elsif Is_Itype (E) then Predicated_Parent (E)
-      else Partial_View (E));
-
    -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
