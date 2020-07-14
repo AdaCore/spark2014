@@ -51,6 +51,7 @@ with Namet;                            use Namet;
 with Opt;                              use Opt;
 with Osint;                            use Osint;
 with Output;                           use Output;
+with Sem_Aux;                          use Sem_Aux;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
 with Sinfo;                            use Sinfo;
@@ -1468,14 +1469,12 @@ package body Flow is
 
          --  Check for potentially blocking operations in protected actions and
          --  for calls to Current_Task from entry body.
-         if FA.Kind = Kind_Subprogram
-           and then Convention (FA.Spec_Entity) in Convention_Entry
-                                                 | Convention_Protected
-         then
+         if Is_Protected_Operation (FA.Spec_Entity) then
             Flow.Analysis.Check_Potentially_Blocking (FA);
 
-            --  We issue a high error message in case the Current_Task function
-            --  is called from an entry body.
+            --  Detect calls to Current_Task from entry bodies and interrupt
+            --  handlers.
+
             if Ekind (FA.Spec_Entity) = E_Entry
               and then Calls_Current_Task (FA.Spec_Entity)
             then
@@ -1489,8 +1488,6 @@ package body Flow is
                   Severity => High_Check_Kind);
             end if;
 
-            --  We issue a high error message in case the Current_Task function
-            --  is called from an interrupt handler.
             if Ekind (FA.Spec_Entity) = E_Procedure
               and then Is_Interrupt_Handler (FA.Spec_Entity)
               and then Calls_Current_Task (FA.Spec_Entity)
