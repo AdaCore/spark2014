@@ -1,0 +1,16 @@
+a-ngelfu.ads:117:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:387
+a-ngelfu.ads:117:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:388
+a-ngelfu.ads:117:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:387
+a-ngelfu.ads:117:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:388
+a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:387
+a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:388
+a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:387
+a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:388
+a-ngelfu.ads:127:64: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:387
+a-ngelfu.ads:127:64: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:388
+dimensions.ads:385:07: info: float overflow check proved (CVC4: 1 VC)
+dimensions.ads:385:11: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+dimensions.ads:385:14: info: float overflow check proved (CVC4: 1 VC)
+gnatprove: Could not locate exec arm-linux-gnueabihf-gnatls
+warning: attribute "Target" of your project file is only used to determine runtime library
+warning: to specify target properties, specify option "-gnateT" using "Builder.Global_Compilation_Switches"

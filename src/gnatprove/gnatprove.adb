@@ -1156,12 +1156,14 @@ begin
    end if;
 
    declare
-      Object_Dir : constant String :=
-        Tree.Root_Project.Artifacts_Dir.Display_Full_Name;
+      Obj_Path : constant File_Array :=
+        Object_Path (Tree.Root_Project, Recursive => True);
    begin
-      if not Exists (Object_Dir) then
-         Create_Directory (Object_Dir);
-      end if;
+      for Dir of Obj_Path loop
+         if not Exists (Dir.Display_Full_Name) then
+            Create_Directory (Dir.Display_Full_Name);
+         end if;
+      end loop;
    end;
 
    declare

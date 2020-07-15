@@ -1,0 +1,112 @@
+abstract project Roadrunner_Flags is
+
+   type Build_Target_Type is
+      ("native", "rr-debian9", "rr-debian10");
+   Build_Target : Build_Target_Type := external ("Build_target", "rr-debian10");
+
+   type Modes is ("Compile", "Analyze", "Unit_Test");
+   Mode : Modes := External ("MODE", "Compile");
+
+   type robotlibs is
+     ("robotcontrol");
+   Robot_Lib := "-lrobotcontrol";
+   Robot_Src := "robotcontrol";
+
+   type maps is
+     ("DTU2018", "DTU2019", "B18");
+   Map : Maps := External ("MAP", "DTU2019");
+   Map_Src := "DTU2019";
+
+   case Build_Target is
+
+      when "native" =>
+         for Object_Dir  use "obj-native";
+         Robot_Src := "";
+         Robot_Lib := "";
+
+      when "rr-debian9" =>
+         for Object_Dir  use "obj-rr-debian9";
+         Robot_Src := "robotcontrol";
+         Robot_Lib := "-lrobotcontrol";
+
+      when "rr-debian10" =>
+         for Object_Dir  use "obj-rr-debian10";
+         Robot_Src := "robotcontrol";
+         Robot_Lib := "-lrobotcontrol";
+   end case;
+
+   case Map is
+      when "DTU2018" =>
+         Map_Src := "DTU2018";
+      when "DTU2019" =>
+         Map_Src := "DTU2019";
+      when "B18" =>
+         Map_Src := "B18";
+   end case;
+
+   package Builder is
+      for Default_Switches ("ada") use ("-m", "-s", "-g"); --  Recompile if compiler switches have changed
+
+      case Mode is
+         when "Compile" =>
+            for Global_Configuration_Pragmas use "spark.adc";
+         when "Analyze" =>
+            for Global_Configuration_Pragmas use "spark.adc";
+         when "Unit_Test" =>
+      end case;
+   end Builder;
+
+   Default_Compiler_Switches := ("-fstack-check",
+-- Disable                                 "-gnata",   -- Enable Assertions
+                                 "-gnato13", -- No overflow on pre and post conditions
+                                 "-gnatwa", "-gnatVa", "-gnatyabcefhiklnptr", "-gnat2012",
+                                 "-O2",      -- Optimize
+                                 "-funroll-loops", "-gnatn",
+                                 "-g"); --  Include debug information
+
+   Compile_Mode_Compiler_Switches := ("-gnatwe");
+
+   package Compiler is
+      for Default_Switches ("ada") use Default_Compiler_Switches;
+      case Mode is
+         when "Compile" =>
+            for Default_Switches ("ada") use Default_Compiler_Switches & Compile_Mode_Compiler_Switches;
+         when "Analyze" =>
+            for Default_Switches ("ada") use Default_Compiler_Switches;
+         when "Unit_Test" =>
+            for Default_Switches ("ada") use Default_Compiler_Switches & ("-fprofile-arcs", "-ftest-coverage");
+      end case;
+
+
+   end Compiler;
+
+   package Ide is
+      for Vcs_Kind use "Git";
+
+      case Build_Target is
+
+         when "native" =>
+            for Debugger_Command use "gdb";
+            for Gnatlist use "gnatls";
+            for Gnat use "gnat";
+
+         when "rr-debian9" =>
+            for Debugger_Command use "arm-linux-gnueabihf-gdb";
+            for Gnatlist use "arm-linux-gnueabihf-gnatls";
+            for Gnat use "arm-linux-gnueabihf-gnat";
+         when "rr-debian10" =>
+            for Debugger_Command use "arm-linux-gnueabihf-gdb";
+            for Gnatlist use "arm-linux-gnueabihf-gnatls";
+            for Gnat use "arm-linux-gnueabihf-gnat";
+
+      end case;
+   end Ide;
+
+   --  This section defines source files which needs prover level 3+4 for proof
+   package Prove is
+      for Proof_Switches ("dimensions.ads") use ("--timeout=20");
+   end Prove;
+
+
+end Roadrunner_Flags;
+

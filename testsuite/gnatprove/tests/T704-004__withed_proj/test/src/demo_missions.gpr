@@ -1,0 +1,40 @@
+with "../../src/roadrunner_flags.gpr";
+
+project Demo_Missions is
+
+   for Source_Dirs use (".",
+                        "../../src/control");
+   for Object_Dir  use Roadrunner_Flags'Object_Dir;
+   for Exec_Dir    use "bin";
+   for Languages   use ("Ada");
+
+   package Builder  renames Roadrunner_Flags.Builder;
+   package Compiler renames Roadrunner_Flags.Compiler;
+   package IDE      renames Roadrunner_Flags.IDE;
+   package Prove    renames Roadrunner_Flags.Prove;
+
+   package Binder is
+      for Default_Switches ("Ada") use ("-E");
+   end Binder;
+
+   package Naming is
+      for Casing use "lowercase";
+   end Naming;
+
+   package Linker is
+      case Roadrunner_Flags.Mode is
+         when "Analyze" =>
+         when "Compile" =>
+            case Roadrunner_Flags.Build_Target is
+               when "native" =>
+                  for Default_Switches ("ada") use ("-Wl,--gc-sections");
+               when "rr-debian9" | "rr-debian10" =>
+                  for Default_Switches ("Ada") use ("-Wl,--gc-sections," & Roadrunner_Flags.Robot_lib & "," & "-lpixyusb," & "-ludev,-lusb-1.0," & "-lboost_thread,-lboost_system,-lboost_chrono");
+            end case;
+         when "Unit_Test" =>
+            for Default_Switches ("ada") use ("-Wl,--gc-sections", "-fprofile-arcs");
+      end case;
+
+   end Linker;
+
+end Demo_Missions;
