@@ -23,6 +23,7 @@
 
 --  This package looks at the produced graphs and emits error messages
 
+with Sem_Util;         use Sem_Util;
 with Sinfo;            use Sinfo;
 with SPARK_Definition; use SPARK_Definition;
 
@@ -150,7 +151,8 @@ package Flow.Analysis is
    --  inputs and if so emits a check. This enforces SPARK RM 7.2.2(16).
 
    procedure Check_Potentially_Blocking (FA : in out Flow_Analysis_Graphs)
-   with Pre => Ekind (Scope (FA.Spec_Entity)) = E_Protected_Type;
+   with Pre => (if Ekind (FA.Spec_Entity) = E_Package
+                then not Is_Library_Level_Entity (FA.Spec_Entity));
    --  Check for potentially blocking operations in protected actions
    --
    --  The current implementation emits a message for each statement that

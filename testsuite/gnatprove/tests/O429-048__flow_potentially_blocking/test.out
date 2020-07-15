@@ -25,7 +25,7 @@ library_level_procedure.adb:4:09: info: data dependencies proved
 nested_pb_call.adb:7:10: info: data dependencies proved
 nested_pb_call.adb:7:33: warning: unused initial value of "Real_Time.Clock_Time"
 nested_pb_call.adb:11:24: warning: statement has no effect
-nested_pb_call.adb:12:10: high: call to potentially blocking subprogram "P" in protected operation "Dummy"
+nested_pb_call.adb:19:13: high: potentially blocking delay statement in protected operation "Dummy"
 nested_pb_call.adb:19:13: warning: potentially blocking operation in protected operation
 p-po_stub_1.adb:3:38: warning: statement has no effect
 p-po_stub_2.adb:5:07: high: potentially blocking delay statement in protected operation "Directly_Blocking_Stub_Entry"

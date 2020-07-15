@@ -1440,6 +1440,7 @@ package body Flow is
                      end if;
                      Analysis.Check_Aliasing (FA);
                      if not Is_Library_Level_Entity (FA.Spec_Entity) then
+                        Analysis.Check_Potentially_Blocking (FA);
                         Analysis.Check_Terminating_Annotation (FA);
                      end if;
                      Analysis.Find_Non_Elaborated_State_Abstractions (FA);

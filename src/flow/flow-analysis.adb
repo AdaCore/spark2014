@@ -30,7 +30,6 @@ with Restrict;                    use Restrict;
 with Rident;                      use Rident;
 with Sem_Aux;                     use Sem_Aux;
 with Sem_Type;                    use Sem_Type;
-with Sem_Util;                    use Sem_Util;
 with Sem_Warn;                    use Sem_Warn;
 with Snames;                      use Snames;
 with Stand;                       use Stand;
@@ -83,6 +82,21 @@ package body Flow.Analysis is
    --  Finds the shortest path in the PDG graph connecting any initial vertex
    --  for Inputs with any vertex that defines a variable from Outputs. Returns
    --  the vertices in this path (Inputs and Outputs excluded).
+
+   function Enclosing_Subprogram (E : Entity_Id) return Entity_Id
+   with Pre  => Ekind (E) in E_Entry
+                           | E_Function
+                           | E_Package
+                           | E_Procedure
+                           | E_Task_Type,
+        Post => Ekind (Enclosing_Subprogram'Result) in E_Entry
+                                                     | E_Function
+                                                     | E_Procedure
+                                                     | E_Task_Type;
+   --  Returns the first enclosing subprogram or task of entity E. In
+   --  particular, if given a nested (non-library-level) package, it
+   --  returns its enclosing subprogram where a property like Terminating
+   --  or Nonblocking would be attached.
 
    function Find_Global
      (S : Entity_Id;
@@ -239,6 +253,19 @@ package body Flow.Analysis is
 
       return Vertex_Sets.Empty_Set;
    end Dependency_Path;
+
+   --------------------------
+   -- Enclosing_Subprogram --
+   --------------------------
+
+   function Enclosing_Subprogram (E : Entity_Id) return Entity_Id is
+      Context : Entity_Id := E;
+   begin
+      while Ekind (Context) in E_Package | E_Block loop
+         Context := Scope (Context);
+      end loop;
+      return Context;
+   end Enclosing_Subprogram;
 
    -----------------
    -- Find_Global --
@@ -4715,11 +4742,22 @@ package body Flow.Analysis is
 
       --  Local variables
 
-      Context : constant Entity_Id := Scope (FA.Spec_Entity);
+      Protected_Subp : constant Entity_Id :=
+        Enclosing_Subprogram (FA.Spec_Entity);
+
+      Protected_Type : Entity_Id;
+      --  For detecting external calls to the same object
 
    --  Start of processing for Check_Potentially_Blocking
 
    begin
+      if Is_Protected_Operation (Protected_Subp) then
+         Protected_Type := Scope (Protected_Subp);
+         pragma Assert (Ekind (Protected_Type) = E_Protected_Type);
+      else
+         return;
+      end if;
+
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Atr : V_Attributes renames FA.Atr (V);
@@ -4730,7 +4768,14 @@ package body Flow.Analysis is
             --  blocking due to indirect calls to other subprograms.
 
          begin
-            if Atr.Is_Program_Node
+            --  Ignore vertices coming from nested packages
+
+            if Atr.In_Nested_Package then
+               null;
+
+            --  Detect delay statements
+
+            elsif Atr.Is_Program_Node
               and then Is_Delay_Statement (FA.CFG.Get_Key (V))
             then
                Error_Msg_Flow
@@ -4739,24 +4784,34 @@ package body Flow.Analysis is
                     "potentially blocking delay statement " &
                     "in protected operation &",
                   N        => Atr.Error_Location,
-                  F1       => Direct_Mapping_Id (FA.Spec_Entity),
+                  F1       => Direct_Mapping_Id (Protected_Subp),
                   Tag      => Potentially_Blocking_In_Protected,
-                  Severity => High_Check_Kind);
+                  Severity => High_Check_Kind,
+                  Vertex   => V);
+
+            --  Detect violations coming from subprogram calls
+
             else
                for E of Atr.Subprograms_Called loop
 
+                  --  Ignore elaboration of nested packages
+
+                  if Ekind (E) = E_Package then
+                     null;
+
                   --  Calls to entries are trivially potentially blocking
 
-                  if Is_Entry (E) then
+                  elsif Is_Entry (E) then
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      =>
                           "potentially blocking entry call " &
                           "in protected operation &",
                         N        => Atr.Error_Location,
-                        F1       => Direct_Mapping_Id (FA.Spec_Entity),
+                        F1       => Direct_Mapping_Id (Protected_Subp),
                         Tag      => Potentially_Blocking_In_Protected,
-                        Severity => High_Check_Kind);
+                        Severity => High_Check_Kind,
+                        Vertex   => V);
 
                   --  Predefined potentially blocking routines are identified
                   --  individually, because they are not analyzed in phase 1.
@@ -4771,9 +4826,10 @@ package body Flow.Analysis is
                              "in protected operation &",
                            N        => Atr.Error_Location,
                            F1       => Direct_Mapping_Id (E),
-                           F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                           F2       => Direct_Mapping_Id (Protected_Subp),
                            Tag      => Potentially_Blocking_In_Protected,
-                           Severity => High_Check_Kind);
+                           Severity => High_Check_Kind,
+                           Vertex   => V);
                      end if;
 
                   --  Direct calls to potentially blocking subprograms
@@ -4786,9 +4842,10 @@ package body Flow.Analysis is
                           "in protected operation &",
                         N        => Atr.Error_Location,
                         F1       => Direct_Mapping_Id (E),
-                        F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                        F2       => Direct_Mapping_Id (Protected_Subp),
                         Tag      => Potentially_Blocking_In_Protected,
-                        Severity => High_Check_Kind);
+                        Severity => High_Check_Kind,
+                        Vertex   => V);
 
                   --  ??? For indirect calls we would prefer to emit a detailed
                   --  trace of calls that leads to a potentially blocking
@@ -4811,16 +4868,18 @@ package body Flow.Analysis is
                              "in protected operation &",
                            N        => Atr.Error_Location,
                            F1       => Magic_String_Id (Blocking_Callee),
-                           F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                           F2       => Direct_Mapping_Id (Protected_Subp),
                            Tag      => Potentially_Blocking_In_Protected,
-                           Severity => High_Check_Kind);
+                           Severity => High_Check_Kind,
+                           Vertex   => V);
 
                      --  An external call on a protected subprogram with the
                      --  same target object as that of the protected action.
 
                      else
                         Call_With_Same_Target :=
-                          Potentially_Blocking_External_Call (E, Context);
+                          Potentially_Blocking_External_Call
+                            (E, Protected_Type);
 
                         if Present (Call_With_Same_Target.Protected_Subprogram)
                         then
@@ -4839,10 +4898,11 @@ package body Flow.Analysis is
                                   (Call_With_Same_Target.External_Callee),
 
                               F3       =>
-                                Direct_Mapping_Id (FA.Spec_Entity),
+                                Direct_Mapping_Id (Protected_Subp),
 
                               Tag      => Potentially_Blocking_In_Protected,
-                              Severity => High_Check_Kind);
+                              Severity => High_Check_Kind,
+                              Vertex   => V);
                         end if;
                      end if;
                   end if;
@@ -5819,27 +5879,6 @@ package body Flow.Analysis is
    ----------------------------------
 
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
-
-      function Enclosing_Subprogram (E : Entity_Id) return Entity_Id;
-      --  This function returns the first enclosing subprogram of entity E, in
-      --  the case where E represents a nested package.
-
-      --------------------------
-      -- Enclosing_Subprogram --
-      --------------------------
-
-      function Enclosing_Subprogram (E : Entity_Id) return Entity_Id is
-         Context : Entity_Id := E;
-      begin
-         while Ekind (Context) in E_Package | E_Block loop
-            Context := Scope (Context);
-         end loop;
-         pragma Assert (Ekind (Context) in E_Entry
-                                         | E_Function
-                                         | E_Procedure
-                                         | E_Task_Type);
-         return Context;
-      end Enclosing_Subprogram;
 
       Spec_Entity_Id : constant Flow_Id :=
         Direct_Mapping_Id (Enclosing_Subprogram (FA.Spec_Entity));
