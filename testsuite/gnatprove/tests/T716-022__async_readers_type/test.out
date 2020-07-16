@@ -1,0 +1,3 @@
+repro.adb:8:22: medium: assertion might fail, cannot prove I = Value.I (e.g. when I = 0 and Value = (I => 1, J => 1)) [possible fix: subprogram at repro.ads:12 should mention Value in a precondition]
+repro.ads:13:19: info: initialization of "I" proved
+repro.ads:17:15: medium: postcondition might fail, cannot prove Value.J = Value'Old.J (e.g. when Value = (I => 1, J => 1) and Value'Old = (I => 1, J => 0))
