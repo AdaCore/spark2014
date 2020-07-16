@@ -1,3 +1,9 @@
+inline.adb:12:14: warning: subprogram "A" has no effect
+inline.adb:14:14: info: add a contract to analyze it separately from calling contexts
+inline.adb:14:14: info: local subprogram "B" only analyzed in the context of calls
+inline.adb:14:14: info: subprogram "B" will terminate, terminating annotation has been proved
+inline.adb:14:14: warning: subprogram "B" has no effect
+inline.adb:16:20: medium: "A" is recursive, terminating annotation could be incorrect, in call inlined at inline.adb:21
 mutually_recursive_nested_package.adb:1:10: info: implicit function contract might not be available on recursive calls
 mutually_recursive_nested_package.adb:3:17: medium: "P" and "Mutually_Recursive_Nested_Package" are mutually recursive, terminating annotation on "Mutually_Recursive_Nested_Package" could be incorrect
 mutually_recursive_nested_package.adb:3:17: warning: initialization of "X" has no effect
