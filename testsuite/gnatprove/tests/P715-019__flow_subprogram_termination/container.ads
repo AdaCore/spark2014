@@ -1,5 +1,5 @@
 package Container
-  with Elaborate_Body
+  with Elaborate_Body, Annotate => (GNATprove, Terminating)
 is
    subtype My_Integer is Integer range 1 .. 200;
    subtype Small_Int is My_Integer range 1 .. 10;

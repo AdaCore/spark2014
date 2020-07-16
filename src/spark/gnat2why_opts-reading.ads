@@ -88,11 +88,6 @@ package Gnat2Why_Opts.Reading is
 
    Flow_Generate_Contracts : Boolean;
 
-   --  This will show termination status (as far as flow is concerned) for each
-   --  subprogram with a warning or info message.
-
-   Flow_Termination_Proof : Boolean;
-
    --  This debug flag will show all generated contracts in a human-readable
    --  form. The main use are a few tests where we want to observe that GG is
    --  working correctly.

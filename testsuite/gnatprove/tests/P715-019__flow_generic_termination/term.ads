@@ -1,6 +1,6 @@
 with Ada.Containers.Formal_Hashed_Sets;
 
-package Term is
+package Term with Annotate => (GNATprove, Terminating) is
 
    type T is new Integer;
 

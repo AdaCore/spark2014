@@ -1402,12 +1402,6 @@ package body Flow is
                   Analysis.Check_Function_For_Volatile_Effects (FA);
                   Analysis.Check_Output_Constant_After_Elaboration (FA);
 
-                  if FA.Kind = Kind_Subprogram
-                    and then Gnat2Why_Args.Flow_Termination_Proof
-                  then
-                     Analysis.Check_Termination (FA);
-                  end if;
-
                   --  If no errors or warnings were found during flow
                   --  analysis of the subprogram then emit the
                   --  relevant claim.

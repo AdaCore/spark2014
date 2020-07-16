@@ -15,8 +15,6 @@ is
       Obj := Obj;
    end;
 
-
-
 begin
    Proc2 (TO2);
 end;

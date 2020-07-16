@@ -4,17 +4,18 @@ a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
 call_proc_no_body.adb:4:07: medium: precondition might fail, cannot prove Nonreturning_Precondition (4, 4)
 call_proc_no_body.adb:9:07: info: precondition proved (CVC4: 1 VC)
-call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate
+call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate, terminating annotation has been proved
 call_proc_no_body.ads:4:14: warning: subprogram "Returning" has no effect
+call_proc_no_body.ads:6:14: info: subprogram "Nonreturning" will terminate, terminating annotation has been proved
 call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" has no effect
-call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" might not terminate
 container.adb:19:67: info: overflow check proved (CVC4: 1 VC)
 container.adb:23:14: info: index check proved (CVC4: 2 VC)
 container.adb:26:14: info: add a contract to analyze it separately from calling contexts
 container.adb:26:14: info: local subprogram "Test3" only analyzed in the context of calls
-container.adb:26:14: warning: subprogram "Test3" might not terminate
 container.adb:30:11: info: precondition proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
+container.adb:30:16: medium: loop might be nonterminating, terminating annotation on "Test3" could be incorrect
+container.adb:30:16: medium: loop might be nonterminating, terminating annotation on "Test4" could be incorrect, in call inlined at container.adb:45
 container.adb:33:20: medium: range check might fail, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
 container.adb:34:34: info: loop variant proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:54:17: info: range check proved (CVC4: 1 VC)
@@ -54,13 +55,12 @@ container.adb:104:10: warning: unreachable code (CVC4: 1 VC)
 container.adb:104:17: info: range check proved (CVC4: 2 VC)
 container.adb:105:31: info: loop variant proved (CVC4: 1 VC)
 container.adb:106:31: info: loop variant proved (CVC4: 1 VC)
-container.ads:16:13: info: subprogram "First" will terminate
+container.ads:16:13: info: subprogram "First" will terminate, terminating annotation has been proved
 container.ads:16:20: warning: unused variable "C"
-container.ads:18:13: info: subprogram "Has_Element" will terminate
+container.ads:18:13: info: subprogram "Has_Element" will terminate, terminating annotation has been proved
 container.ads:18:26: warning: unused variable "C"
-container.ads:20:13: info: subprogram "Next" will terminate
-container.ads:23:13: info: subprogram "Element" will terminate
-container.ads:27:14: warning: subprogram "Test4" might not terminate
+container.ads:20:13: info: subprogram "Next" will terminate, terminating annotation has been proved
+container.ads:23:13: info: subprogram "Element" will terminate, terminating annotation has been proved
 container.ads:33:04: info: initialization of "B" proved
 file_io.ads:50:33: info: implicit function contract not available for proof ("Size" might not return)
 file_io.ads:55:17: info: function contract not available for proof ("Index" might not return)
@@ -74,8 +74,9 @@ file_io.ads:64:42: info: function contract not available for proof ("Index" migh
 file_io.ads:64:54: info: function contract not available for proof ("Index" might not return)
 formal_cont.adb:11:14: warning: unreachable code (CVC4: 1 VC)
 formal_cont.adb:15:07: info: initialization of "L" proved
+formal_cont.adb:15:07: medium: call to "Is_Empty" might be nonterminating, terminating annotation on "Test_01" could be incorrect
+formal_cont.adb:17:07: medium: call to "Is_Empty" might be nonterminating, terminating annotation on "Test_01" could be incorrect
 formal_cont.adb:26:07: info: initialization of "L" proved
-formal_cont.ads:9:13: warning: subprogram "My_Equal_01" might not terminate
 formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
@@ -159,47 +160,40 @@ formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:250
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:50
 formal_cont.ads:12:04: info: in instantiation at a-cofuse.ads:94
 formal_cont.ads:18:14: warning: subprogram "Test_01" has no effect
-formal_cont.ads:18:14: warning: subprogram "Test_01" might not terminate
-formal_cont.ads:23:13: info: subprogram "My_Equal_02" will terminate
-formal_cont.ads:32:14: info: subprogram "Test_02" will terminate
+formal_cont.ads:32:14: info: subprogram "Test_02" will terminate, terminating annotation has been proved
 formal_cont.ads:32:14: warning: subprogram "Test_02" has no effect
+functions.adb:8:18: medium: loop might be nonterminating, terminating annotation on "Non_Ter_Func" could be incorrect
 functions.adb:11:07: warning: unreachable code (CVC4: 1 VC)
 functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate normally
 functions.adb:14:14: info: add a contract to analyze it separately from calling contexts
 functions.adb:14:14: info: local subprogram "G" only analyzed in the context of calls
 functions.adb:14:14: warning: subprogram "G" has no effect
-functions.adb:14:14: warning: subprogram "G" might not terminate
 functions.adb:16:07: medium: call to nonreturning subprogram might be executed, in call inlined at functions.adb:29
 functions.adb:22:10: medium: call to nonreturning subprogram might be executed
-functions.ads:3:13: warning: subprogram "Non_Ter_Func" might not terminate
 functions.ads:4:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-functions.ads:6:13: warning: subprogram "Expr_Func" might not terminate
-functions.ads:6:42: info: function contract not available for proof ("Non_Ter_Func" might not return)
+functions.ads:6:13: info: subprogram "Expr_Func" will terminate, terminating annotation has been proved
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
-functions.ads:9:17: warning: subprogram "Nested_Proc" might not terminate
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
 imported.adb:5:07: warning: no Global contract available for "P_01"
 imported.adb:10:07: medium: precondition might fail, cannot prove Nonreturning_Precondition (3, 3)
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Global contract available for "P_02"
-imported.ads:9:14: info: subprogram "Q_01" will terminate
+imported.ads:9:14: info: subprogram "Q_01" will terminate, terminating annotation has been proved
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
+imported.ads:16:14: info: subprogram "Q_02" will terminate, terminating annotation has been proved
 imported.ads:16:14: warning: subprogram "Q_02" has no effect
-imported.ads:16:14: warning: subprogram "Q_02" might not terminate
 modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
-modular_analysis.adb:5:14: warning: subprogram "Test_01" might not terminate
 modular_analysis.adb:5:23: info: initialization of "F" proved
-nest_in_proc.adb:5:17: info: subprogram "Nothing" will terminate
+modular_analysis.adb:8:14: medium: call to "Open_Read" might be nonterminating, terminating annotation on "Test_01" could be incorrect
 nest_in_proc.adb:5:17: info: subprogram "Nothing" will terminate, terminating annotation has been proved
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
-nest_in_proc.adb:7:20: info: subprogram "Nothing2" will terminate
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
 nest_in_proc.adb:20:21: medium: loop might be nonterminating, terminating annotation on "Nest_In_Proc" could be incorrect
 nest_in_proc.adb:20:21: warning: statement has no effect
 nested_blocks.adb:10:37: warning: statement has no effect
 nested_loops.adb:3:04: warning: analyzing unreferenced procedure "Proc"
-nested_loops.adb:3:14: info: subprogram "Proc" will terminate
+nested_loops.adb:3:14: info: subprogram "Proc" will terminate, terminating annotation has been proved
 nested_loops.adb:3:14: warning: subprogram "Proc" has no effect
 nested_loops.adb:5:07: info: initialization of "X" proved
 nested_loops.adb:8:17: info: overflow check proved (CVC4: 2 VC)
@@ -208,65 +202,58 @@ nested_loops.adb:11:34: info: loop variant proved (CVC4: 1 VC)
 nested_loops.adb:14:37: medium: loop variant might fail
 nested_loops.adb:22:04: warning: analyzing unreferenced procedure "Proc2"
 nested_loops.adb:22:14: warning: subprogram "Proc2" has no effect
-nested_loops.adb:22:14: warning: subprogram "Proc2" might not terminate
 nested_loops.adb:26:17: info: overflow check proved (CVC4: 2 VC)
 nested_loops.adb:27:31: info: loop variant proved (CVC4: 1 VC)
 nested_loops.adb:29:34: info: loop variant proved (CVC4: 1 VC)
+nested_loops.adb:30:24: medium: loop might be nonterminating, terminating annotation on "Proc2" could be incorrect
 nested_loops.adb:38:04: warning: analyzing unreferenced procedure "Proc3"
 nested_loops.adb:38:14: warning: subprogram "Proc3" has no effect
-nested_loops.adb:38:14: warning: subprogram "Proc3" might not terminate
+nested_loops.adb:41:19: medium: loop might be nonterminating, terminating annotation on "Proc3" could be incorrect
 nested_loops.adb:42:17: info: overflow check proved (CVC4: 1 VC)
 nested_loops.adb:43:26: info: unrolling loop
-nested_packages.adb:7:20: info: subprogram "Null_Pck" will terminate
+nested_loops.adb:44:24: medium: loop might be nonterminating, terminating annotation on "Proc3" could be incorrect
 nested_packages.adb:7:20: warning: subprogram "Null_Pck" has no effect
-nested_packages.adb:10:23: info: subprogram "Null_Pck2" will terminate
 nested_packages.adb:10:23: warning: subprogram "Null_Pck2" has no effect
+nested_packages.adb:26:24: medium: loop might be nonterminating, terminating annotation on "Contains_Packages" could be incorrect
 nested_packages.adb:26:24: warning: statement has no effect
 nested_packages.adb:55:21: warning: statement has no effect
 nested_packages.adb:61:18: warning: statement has no effect
 nested_packages.ads:3:14: warning: subprogram "Contains_Packages" has no effect
-nested_packages.ads:3:14: warning: subprogram "Contains_Packages" might not terminate
-nested_packages.ads:6:17: info: subprogram "Do_Nothing" will terminate
+nested_packages.ads:6:17: info: subprogram "Do_Nothing" will terminate, terminating annotation has been proved
 nested_packages.ads:6:17: warning: subprogram "Do_Nothing" has no effect
-nested_packages.ads:8:20: info: subprogram "Do_Nothing2" will terminate
+nested_packages.ads:8:20: info: subprogram "Do_Nothing2" will terminate, terminating annotation has been proved
 nested_packages.ads:8:20: warning: subprogram "Do_Nothing2" has no effect
 p.adb:6:14: warning: subprogram "Proc2" has no effect
-p.adb:6:14: warning: subprogram "Proc2" might not terminate
 p.adb:7:14: warning: subprogram "Proc3" has no effect
-p.adb:7:14: warning: subprogram "Proc3" might not terminate
 p.adb:9:14: info: add a contract to analyze it separately from calling contexts
 p.adb:9:14: info: local subprogram "Proc" only analyzed in the context of calls
 p.adb:9:14: warning: subprogram "Proc" has no effect
-p.adb:9:14: warning: subprogram "Proc" might not terminate
+p.adb:11:07: medium: call to "Proc2" might be nonterminating, terminating annotation on "Proc" could be incorrect
 p.adb:26:04: warning: analyzing unreferenced procedure "Proc4"
 p.adb:26:14: warning: subprogram "Proc4" has no effect
-p.adb:26:14: warning: subprogram "Proc4" might not terminate
+p.adb:29:14: medium: call to "Proc3" might be nonterminating, terminating annotation on "Proc4" could be incorrect
 p.adb:32:14: warning: subprogram "Proc5" has no effect
-p.adb:32:14: warning: subprogram "Proc5" might not terminate
+p.adb:35:10: medium: "Proc5" is recursive, terminating annotation could be incorrect
 p.adb:39:14: warning: subprogram "Proc7" has no effect
-p.adb:39:14: warning: subprogram "Proc7" might not terminate
 p.adb:41:14: info: add a contract to analyze it separately from calling contexts
 p.adb:41:14: info: local subprogram "Proc6" only analyzed in the context of calls
+p.adb:41:14: info: subprogram "Proc6" will terminate, terminating annotation has been proved
 p.adb:41:14: warning: subprogram "Proc6" has no effect
-p.adb:41:14: warning: subprogram "Proc6" might not terminate
+p.adb:44:10: medium: "Proc7" is recursive, terminating annotation could be incorrect, in call inlined at p.adb:51
 p.adb:55:04: info: initialization of "B" proved
+preconditions.adb:6:18: medium: loop might be nonterminating, terminating annotation on "Nonreturning_Precondition" could be incorrect
 preconditions.adb:9:14: warning: unreachable code (CVC4: 1 VC)
-preconditions.ads:2:14: info: subprogram "Returning_Precondition" will terminate
-preconditions.ads:6:13: warning: subprogram "Nonreturning_Precondition" might not terminate
-r.adb:7:13: warning: subprogram "E" might not terminate
-r.adb:8:17: warning: subprogram "P" might not terminate
+preconditions.ads:2:13: info: subprogram "Returning_Precondition" will terminate, terminating annotation has been proved
 r.adb:17:36: info: unrolling loop
 r.adb:18:13: high: potentially blocking entry call in protected operation "E"
 r.adb:25:21: warning: statement has no effect
 r.adb:31:14: warning: subprogram "Proc1" has no effect
-r.adb:31:14: warning: subprogram "Proc1" might not terminate
 r.adb:40:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:40:07: warning: no Global contract available for "OS_Exit"
 r.adb:48:07: warning: unreachable code (CVC4: 1 VC)
 r.adb:51:04: warning: analyzing unreferenced procedure "Proc4"
 r.adb:51:14: high: all paths in "Proc4" raise exceptions or do not terminate normally
 r.adb:51:14: warning: subprogram "Proc4" has no effect
-r.adb:51:14: warning: subprogram "Proc4" might not terminate
 r.adb:53:07: medium: call to nonreturning subprogram might be executed
 r.adb:53:07: warning: assuming "OS_Exit" has no effect on global items
 r.adb:53:07: warning: no Global contract available for "OS_Exit"
@@ -275,6 +262,3 @@ r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:59:04: info: call to nonreturning procedure never executed (CVC4: 1 VC)
 r.adb:59:04: warning: this statement is never reached
-r.ads:6:14: warning: subprogram "Proc2" might not terminate
-r.ads:7:13: warning: subprogram "Proc3" might not terminate
-spark_mode_off_user.ads:1:11: warning: subprogram "Spark_Mode_Off_User" might not terminate

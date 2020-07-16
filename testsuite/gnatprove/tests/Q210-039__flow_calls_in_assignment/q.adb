@@ -1,5 +1,5 @@
 with P;
-procedure Q is
+procedure Q with Annotate => (GNATprove, Terminating) is
    type T is array (Integer) of Positive;
 
    A : T := (others => 1);

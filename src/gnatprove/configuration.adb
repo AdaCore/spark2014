@@ -648,10 +648,6 @@ package body Configuration is
             Long_Switch => "--flow-debug");
          Define_Switch
            (Config,
-            CL_Switches.Flow_Termination'Access,
-            Long_Switch => "--flow-termination");
-         Define_Switch
-           (Config,
             CL_Switches.Flow_Show_GG'Access,
             Long_Switch => "--flow-show-gg");
          Define_Switch

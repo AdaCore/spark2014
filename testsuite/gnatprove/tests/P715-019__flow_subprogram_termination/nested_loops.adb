@@ -1,6 +1,6 @@
 package body Nested_Loops is
    -- termination proved
-   procedure Proc is
+   procedure Proc with Annotate => (GNATprove, Terminating) is
       J : Integer := 2;
       X : Integer;
    begin
@@ -19,7 +19,7 @@ package body Nested_Loops is
    end Proc;
 
    -- termination not proved
-   procedure Proc2 is
+   procedure Proc2 with Annotate => (GNATprove, Terminating) is
       J : Integer := 2;
    begin
       while J < 5 loop
@@ -35,7 +35,7 @@ package body Nested_Loops is
    end Proc2;
 
    -- termination not proved
-   procedure Proc3 is
+   procedure Proc3 with Annotate => (GNATprove, Terminating) is
       J : Integer := 2;
    begin
       while J < 5 loop

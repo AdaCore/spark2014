@@ -237,14 +237,6 @@ package Flow.Analysis is
    --  Checks if the terminating annotation is consistent with the results from
    --  flow analysis, emits a message if not.
 
-   procedure Check_Termination (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind = Kind_Subprogram;
-   --  This is currently only used by the hidden debug flag --flow-termination
-   --
-   --  It puts a warning or info message on the analyzed subprogram based on
-   --  Is_Potentially_Nonreturning, so that it can be tested separately (as the
-   --  impact it has on proof is not necessarily obvious or easy to trigger).
-
    procedure Check_State_Volatility_Escalation
      (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind = Kind_Package;
