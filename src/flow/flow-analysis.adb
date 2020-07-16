@@ -5887,6 +5887,16 @@ package body Flow.Analysis is
 
    begin
       if Has_Terminate_Annotation (Enclosing_Subprogram (FA.Spec_Entity)) then
+
+         --  If all paths in subprogram raise exceptions or, more importantly,
+         --  call procedures with No_Return, then the CFG will be pruned. We
+         --  already emit a check about this, but still we must suppress the
+         --  positive message about terminating contract being correct.
+
+         if FA.Has_Only_Exceptional_Paths then
+            Proved := False;
+         end if;
+
          for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
             declare
                Atr : V_Attributes renames FA.Atr (V);
