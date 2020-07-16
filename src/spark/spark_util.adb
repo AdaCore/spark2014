@@ -1783,7 +1783,12 @@ package body SPARK_Util is
       --  silent side effects, so...
 
       case Ekind (E) is
-         when E_Abstract_State | E_Variable | E_Component | Type_Kind =>
+         when E_Abstract_State
+            | E_Variable
+            | E_Component
+            | Type_Kind
+            | E_In_Out_Parameter
+         =>
             return
               (case P is
                when Pragma_Async_Readers    => Async_Readers_Enabled (E),
@@ -1791,23 +1796,25 @@ package body SPARK_Util is
                when Pragma_Effective_Reads  => Effective_Reads_Enabled (E),
                when Pragma_Effective_Writes => Effective_Writes_Enabled (E));
 
+         --  All volatile in parameters have only async_writers set. In
+         --  particular reads cannot be effective and the absence of AR
+         --  is irrelevant since we are not allowed to write to it anyway.
+
          when E_In_Parameter  =>
-            --  All volatile in parameters have only async_writers set. In
-            --  particular reads cannot be effective and the absence of AR is
-            --  irrelevant since we are not allowed to write to it anyway.
-            return P = Pragma_Async_Writers;
+            return P = Pragma_Async_Writers
+              and then Async_Writers_Enabled (E);
+
+         --  Out parameters we assume that writes are effective (worst case).
+         --  We do not assume reads are effective because (a - it may be
+         --  illegal to read anyway, b - we ban passing a fully volatile
+         --  object as an argument to an out parameter).
 
          when E_Out_Parameter =>
-            --  Out parameters we assume that writes are effective (worst
-            --  case). We do not assume reads are effective because (a - it may
-            --  be illegal to read anyway, b - we ban passing a fully volatile
-            --  object as an argument to an out parameter).
-            return P in Pragma_Async_Readers | Pragma_Effective_Writes;
-
-         when E_In_Out_Parameter =>
-            --  For in out we just assume the absolute worst case (fully
-            --  volatile).
-            return True;
+            return
+              (case P is
+                  when Pragma_Async_Readers    => Async_Readers_Enabled (E),
+                  when Pragma_Effective_Writes => Effective_Writes_Enabled (E),
+                  when others                  => False);
 
          when others =>
             raise Program_Error;
