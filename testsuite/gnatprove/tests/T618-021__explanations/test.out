@@ -12,3 +12,6 @@ nonterminating.adb:18:33: medium: call to "Infinite_Recursion" might be nontermi
 nonterminating.adb:18:33: medium: loop might be nonterminating, terminating annotation on "Nonterminating" could be incorrect
 nonterminating.adb:25:07: medium: "Nonterminating" is recursive, terminating annotation could be incorrect
 nonterminating.adb:25:25: info: range check proved (CVC4: 1 VC)
+p.adb:3:11: high: all paths in "P" raise exceptions or do not terminate normally
+p.adb:3:11: info: subprogram "P" will terminate, terminating annotation has been proved
+p.adb:5:04: medium: call to nonreturning subprogram might be executed
