@@ -1213,6 +1213,106 @@ Extensions_Visible Aspects
    can safely assume that any components of the actual parameter which are not
    components of T will be neither read nor written by the call.]
 
+Subprogram_Variant Aspect
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The aspect Subprogram_Variant is defined for subprograms. It is intended for
+use in ensuring termination of recursive subprograms.
+
+.. centered:: **Syntax**
+
+::
+
+  subprogram_variant_list ::= subprogram_variant_item {, subprogram_variant_item}
+  subprogram_variant_item ::= change_direction => discrete_expression
+  change_direction        ::= Increases | Decreases
+
+where ``discrete_expression`` is an ``expression`` of a discrete type.
+
+Two aspects Subprogram_Variant are said to be `compatible`, if the length of
+their subprogram_variant_item_list is the same, and, for each
+subprogram_variant_item,
+both sequences agree on the change_direction and the base type of the
+discrete_expression.
+
+Two subprograms are said to be `statically mutually recursive`, if they are
+mutually recursive ignoring indirect calls (dispatching calls and calls
+through access-to-subprogram values). In the following, a direct recursive call
+is considered as a special case of a statically mutually recursive call. 
+
+The variant of a (mutually) recursive call to a subprogram which
+has an aspect
+Subprogram_Variant compatible with the aspect of its caller is said to
+`progress` if it passes the following check.
+One or more of the ``discrete_expressions`` of the callee are each compared
+to the result of the evaluation of the ``discrete_expression`` of the
+corresponding ``subprogram_variant_item`` at the beginning of the caller as
+follows: comparisons are performed in textual order either until unequal
+values are found or until values for all expressions have been compared.
+In either case, the last pair of values to be compared is then checked as
+follows: if the ``change_direction`` for the associated
+``subprogram_variant_item`` is Increases (respectively, Decreases) then the
+expression value obtained for the call is greater (respectively, less) than
+the value obtained at the beginning of the caller.
+
+.. centered:: **Static Semantics**
+
+1. Aspect Subprogram_Variant is used to demonstrate that a (set of statically
+   mutually) recursive subprogram(s)
+   will terminate by specifying expressions that will increase or decrease at
+   each (mutually) recursive call.
+
+.. centered:: **Legality Rules**
+
+2. Subprogram_Variant is an assertion and has an expected actual parameter
+   which is a specialization of an Ada expression. Otherwise, it has
+   the same name resolution and legality rules as aspect Precondition.
+
+3. The expression of a ``subprogram_variant_item`` shall be of any
+   discrete type.
+
+.. centered:: **Dynamic Semantics**
+
+4. At the beginning of a subprogram, the ``discrete_expressions`` are evaluated
+   in textual order.
+
+5. On direct recursive calls, the ``discrete_expressions`` of the
+   subprogram_variant_list of the callee are evaluated in textual order.
+   A check is made that the variant of the call progresses. If it fails,
+   Assertion_Error is raised. [No runtime exception is raised in the case of
+   mutually recursive calls or indirect calls.] Aspect Subprogram_Variant is an
+   assertion (as defined in Ada RM 11.4.2(1.1/3)) and is governed by the
+   Subprogram_Variant assertion aspect [and may be used in an Assertion_Policy
+   pragma].
+
+.. centered:: **Verification Rules**
+
+6.  Statically mutually recursive subprograms shall have compatible variants.
+
+7.  A statically mutually recursive call to a subprogram annotated with aspect
+    Subprogram_Variant shall not occur inside a precondition or inside a
+    Subprogram_Variant aspect.
+
+8.  A statically mutually recursive call to a subprogram annotated with aspect
+    Subprogram_Variant shall not occur inside a type invariant or subtype
+    predicate, or as part of the default initialization of an object.
+
+9.  A statically mutually recursive call to a subprogram annotated with aspect
+    Subprogram_Variant shall not occur inside the elaboration of a
+    package, unless this package is located in the sequence of declarations of
+    a subprogram.
+
+10. On a statically  mutually recursive call to a subprogram annotated with
+    aspect Subprogram_Variant, a verification condition is introduced to
+    make sure that the evaluation of the ``discrete_expressions`` of the
+    subprogram_variant_list of the callee does not a raise any exception.
+    Additionally, a verification condition is generated to ensure that the
+    variant of the call progresses. This verification condition is already
+    implicitly generated in the case where the caller and the callee are the
+    same (direct recursive call) as a consequence of the runtime check taking
+    place in that case. We state it explicitly for the case of mutually
+    recursive calls, for which no checks are introduced at runtime due to
+    compiler implementation constraints.
 
 Formal Parameter Modes
 ----------------------
