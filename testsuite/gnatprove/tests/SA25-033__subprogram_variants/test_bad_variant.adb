@@ -177,6 +177,20 @@ procedure Test_Bad_Variant with SPARK_Mode is
    function Warn (X : Natural) return Boolean is
      (True)
      with Subprogram_Variant => (Decreases => X);
+
+   type List;
+   type List_Acc is access List;
+   type List is record
+      V : Integer;
+      N : List_Acc;
+   end record;
+
+   function Length (L : access constant List) return Natural with
+     Subprogram_Variant => (Decreases => (if L = null then 0 else Length (L.N))), --@SUBPROGRAM_VARIANT:FAIL
+     Annotate => (GNATprove, Terminating);
+
+   function Length (L : access constant List) return Natural is
+     (if L = null then 0 elsif Length (L.N) = Integer'Last then Integer'Last else Length (L.N) + 1);
 begin
    null;
 end Test_Bad_Variant;

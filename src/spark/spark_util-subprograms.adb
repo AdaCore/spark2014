@@ -1356,6 +1356,14 @@ package body SPARK_Util.Subprograms is
          Explanation := To_Unbounded_String
            (Mutually & "recursive call should not appear in a "
             & "precondition");
+      elsif Present (Prag)
+        and then Get_Pragma_Id (Pragma_Name (Prag)) in
+          Pragma_Subprogram_Variant
+      then
+         Result := False;
+         Explanation := To_Unbounded_String
+           (Mutually & "recursive call should not appear in a "
+            & "subprogram variant");
       elsif No (Recursive_Subp) then
          Result := False;
          Explanation := To_Unbounded_String

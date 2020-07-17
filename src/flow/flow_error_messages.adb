@@ -79,9 +79,12 @@ package body Flow_Error_Messages is
    --  detailed message explaining why this check is issued (typically in the
    --  case of a length/range/overflow/index check), or the empty string.
 
-   function Get_Fix (N : Node_Id; Tag : VC_Kind) return String;
+   function Get_Fix (N          : Node_Id;
+                     Tag        : VC_Kind;
+                     How_Proved : Prover_Category) return String;
    --  @param N node associated to an unproved check
    --  @param Tag associated unproved check
+   --  @param How_Proved should be PC_Trivial if the check is static
    --  @result message part suggesting a fix to make the unproved check proved
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
@@ -759,7 +762,7 @@ package body Flow_Error_Messages is
                      end if;
 
                      declare
-                        Fix : constant String := Get_Fix (N, Tag);
+                        Fix : constant String := Get_Fix (N, Tag, How_Proved);
                      begin
                         if Fix /= "" then
                            Message := Message & " [possible fix: " & Fix & "]";
@@ -800,7 +803,7 @@ package body Flow_Error_Messages is
                      end if;
 
                      declare
-                        Fix : constant String := Get_Fix (N, Tag);
+                        Fix : constant String := Get_Fix (N, Tag, How_Proved);
                      begin
                         if Fix /= "" then
                            Ignore_Id := Print_Regular_Msg
@@ -1173,7 +1176,11 @@ package body Flow_Error_Messages is
    -- Get_Fix --
    -------------
 
-   function Get_Fix (N : Node_Id; Tag : VC_Kind) return String is
+   function Get_Fix
+     (N          : Node_Id;
+      Tag        : VC_Kind;
+      How_Proved : Prover_Category) return String
+   is
 
       -----------------------
       -- Local subprograms --
@@ -1737,6 +1744,12 @@ package body Flow_Error_Messages is
       --  nodes.
 
       elsif Tag in VC_UC_No_Holes | VC_UC_Same_Size then
+         return "";
+
+      --  Do not try to generate a fix message for static checks on subprogram
+      --  variants.
+
+      elsif Tag = VC_Subprogram_Variant and then How_Proved = PC_Trivial then
          return "";
       end if;
 
