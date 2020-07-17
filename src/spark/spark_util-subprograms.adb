@@ -93,7 +93,9 @@ package body SPARK_Util.Subprograms is
    function Call_Needs_Variant_Check
      (Call : Node_Id; Enclosing_Ent : Entity_Id) return Boolean
    is
-      Called         : constant Entity_Id := Get_Called_Entity (Call);
+      Called         : constant Entity_Id :=
+        (if Nkind (Call) in N_Op then Entity (Call)
+         else Get_Called_Entity (Call));
       Enclosing_Subp : Entity_Id := Enclosing_Ent;
 
    begin
