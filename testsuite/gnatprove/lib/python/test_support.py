@@ -653,6 +653,8 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
 
     PARAMETERS
     opt: options to give to gnatprove
+    no_output: do not display gnatprove output, only of interest for testing
+               exit status
     filter_output: regex used to remove output from gnatprove
     no_fail: if set, then we make sure no unproved checks are in the output
     subdue_flow: if set, then we silence a bunch of flow warnings and the
@@ -693,6 +695,9 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     if cache_allowed and cache_mode():
         cmd += ["--memcached-server=localhost:11211"]
     cmd += to_list(opt)
+    # When not interested in output, force --output=brief to get simpler diffs
+    if no_output:
+        cmd += ["--output=brief"]
     process = Run(cmd)
     # Replace line above by the one below for testing the scripts without
     # running the tool:
