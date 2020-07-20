@@ -1,0 +1,5 @@
+recursive_subprograms.ads:4:23: info: overflow check proved
+recursive_subprograms.ads:9:12: info: subprogram variant proved
+recursive_subprograms.ads:9:25: info: range check proved
+recursive_subprograms.ads:9:32: info: subprogram variant proved
+recursive_subprograms.ads:9:45: info: range check proved

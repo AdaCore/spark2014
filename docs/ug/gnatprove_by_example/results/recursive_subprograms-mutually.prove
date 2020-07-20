@@ -1,0 +1,4 @@
+recursive_subprograms-mutually.ads:8:36: info: subprogram variant proved
+recursive_subprograms-mutually.ads:8:47: info: range check proved
+recursive_subprograms-mutually.ads:10:35: info: subprogram variant proved
+recursive_subprograms-mutually.ads:10:45: info: range check proved

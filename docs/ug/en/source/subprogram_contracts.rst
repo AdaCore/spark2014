@@ -19,6 +19,8 @@ is made up of various optional parts:
   data read and written by the subprogram.
 * The `flow dependencies` introduced by aspect ``Depends`` specify how
   subprogram outputs depend on subprogram inputs.
+* The `subprogram variant` introduced by aspect ``Subprogram_Variant`` is
+  used to ensure termination of recursive subprograms.
 
 Which contracts to write for a given verification objective, and how
 |GNATprove| generates default contracts, is detailed in :ref:`How to Write
@@ -642,3 +644,72 @@ postcondition of ``True`` is used implicitly on the subprogram declaration.
 ``Add_To_Total`` when analyzing calls outside package ``Account`` and the more
 precise refined contract (precondition and refined postcondition) of
 ``Add_To_Total`` when analyzing calls inside package ``Account``.
+
+.. _Subprogram Variant:
+
+Subprogram Variant
+------------------
+
+[|SPARK|]
+
+To ensure termination of recursive subprograms, it is possible to annotate them
+using the aspect ``Subprogram_Variant``. This aspect provides a scalar
+value along with a direction (``Increases`` or ``Decreases``). On every
+recursive call, a check is generated to ensure that the scalar value progresses
+(decreases or increases) with respect to its value at the beginning of the
+subprogram. Since a scalar value is necessarily bounded by its Ada type, it
+is enough to ensure that there will be no infinite chain of recursive calls.
+In the following example, we can verify that the ``Fibonacci`` function
+terminates stating that its parameter ``N`` decreases at each recursive call:
+
+.. literalinclude:: /gnatprove_by_example/examples/recursive_subprograms.ads
+   :language: ada
+   :linenos:
+
+|GNATprove| generates one verification condition per recursive call to make sure
+that the value given for ``N`` is smaller than the
+value of ``N`` on entry of ``Fibonacci``:
+
+.. literalinclude:: /gnatprove_by_example/results/recursive_subprograms.prove
+   :language: none
+
+It is possible to give more than one scalar value in a subprogram variant. In
+this case, values are checked in the order in which they appear. If a
+value progresses (increases or decreases as specified) then it is enough to
+ensure the progression of the whole variant and the subsequent values are not
+considered. In the same way, if a value annotated with ``Increases`` actually
+decreases strictly (or the other way around) then the evaluation terminates and
+the verification of the variant fails. It is only if the values of all the
+preceding scalar expressions have been found to be preserved that the subsequent
+value is considered. The function ``Max`` computes the index of the maximal
+value in a slice of an array. At each recursive call, it shifts the bound
+containing the smallest value:
+
+.. literalinclude:: /gnatprove_by_example/examples/recursive_subprograms-multiple.ads
+   :language: ada
+   :linenos:
+
+The variant specifies that, for each recursive call, either ``F`` increases, or
+``F`` stays the same and ``L`` decreases. The order is not important here, as
+``L`` and ``F`` are never modified at the same time. This variant can
+be verified by |GNATprove|.
+
+.. literalinclude:: /gnatprove_by_example/results/recursive_subprograms-multiple.prove
+   :language: none
+
+To verify the termination of mutually recursive subprograms, all subprograms
+should be annotated with `compatible` variants. We say that two variants are
+compatible if they have the same number of scalar expressions, and matching
+values in the list have the same direction and the same base type. For example,
+the variants of ``Is_Even`` and ``Is_Odd`` are compatible,
+because both are of type ``Integer`` and both decrease.
+
+.. literalinclude:: /gnatprove_by_example/examples/recursive_subprograms-mutually.ads
+   :language: ada
+   :linenos:
+
+|GNATprove| introduces a check to make sure that the variant progresses at each
+mutually recursive call.
+
+.. literalinclude:: /gnatprove_by_example/results/recursive_subprograms-mutually.prove
+   :language: none
