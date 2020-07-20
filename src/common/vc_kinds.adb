@@ -537,7 +537,7 @@ package body VC_Kinds is
          return CEE_Result;
       elsif S = "other" then
          return CEE_Other;
-      elsif S'Length > 1 and then S (0) = '@' then
+      elsif S'Length > 1 and then S (S'First) = '@' then
          return CEE_Other; -- CEE_At
       end if;
       raise Program_Error;
