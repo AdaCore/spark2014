@@ -1,4 +1,4 @@
 !large SKIP part of large testsuite
 inverse-prover SKIP too slow for inverse-prover
 NT SKIP diffs in session
-ALL RLIMIT 1500
+ALL RLIMIT 2000
