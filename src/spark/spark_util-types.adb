@@ -388,7 +388,7 @@ package body SPARK_Util.Types is
             return False;
          else
             declare
-               Comp : Node_Id := First_Component (Rep_Ty);
+               Comp : Entity_Id := First_Component (Rep_Ty);
             begin
                while Present (Comp) loop
                   if Component_Is_Visible_In_SPARK (Comp)
