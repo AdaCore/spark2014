@@ -1,0 +1,8 @@
+project Test is
+
+   package Compiler is
+      for Switches ("ada") use ("-gnatwj");
+   end Compiler;
+
+end Test;
+

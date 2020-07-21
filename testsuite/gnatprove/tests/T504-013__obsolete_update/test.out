@@ -1,0 +1,2 @@
+test_warn.adb:6:23: warning: attribute Update is an obsolescent feature
+test_warn.adb:6:23: warning: use a delta aggregate instead
