@@ -68,6 +68,14 @@ package body Flow_Utility.Initialization is
          if Comes_From_Source (ORC)
            or else Chars (ORC) = Name_uParent
          then
+            --  When the component has a default expression, then it is default
+            --  initialized no matter of its type.
+
+            if Present (Expression (Parent (ORC))) then
+               FDI := True;
+               return;
+            end if;
+
             --  If a component is not visible in SPARK, we assume it to be not
             --  initialized.
 
@@ -77,33 +85,32 @@ package body Flow_Utility.Initialization is
                                             Ignore_DIC)
                else No_Default_Initialization);
 
-            --  A component with mixed initialization renders the whole
-            --  record/protected type mixed.
+            --  Default initialization of the record depends then on the
+            --  default initialization of the component type.
 
-            if Init = Mixed_Initialization then
-               FDI := True;
-               NDI := True;
+            case Init is
+               --  Mixed initialization renders the entire record mixed
 
-            --  The component is fully default initialized when its type
-            --  is fully default initialized or when the component has an
-            --  initialization expression. Note that this has precedence
-            --  given that the component type may lack initialization.
+               when Mixed_Initialization =>
+                  FDI := True;
+                  NDI := True;
 
-            elsif Init = Full_Default_Initialization
-              or else Present (Expression (Parent (ORC)))
-            then
-               FDI := True;
+               --  The component is fully default initialized when its type is
+               --  fully default initialized.
 
-            --  Components with no possible initialization are ignored
+               when Full_Default_Initialization =>
+                  FDI := True;
 
-            elsif Init = No_Possible_Initialization then
-               null;
+               --  Components with no possible initialization are ignored
 
-            --  The component has no full default initialization
+               when No_Possible_Initialization =>
+                  null;
 
-            else
-               NDI := True;
-            end if;
+               --  The component has no full default initialization
+
+               when No_Default_Initialization =>
+                  NDI := True;
+            end case;
          end if;
       end Process_Component;
 
