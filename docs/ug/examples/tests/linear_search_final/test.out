@@ -1,0 +1,37 @@
+warning: attribute "Switches" of package "Prove" of your project file is deprecated
+warning: use "Proof_Switches ("Ada")" instead
+
+linear_search.adb:9:20: info: range check proved
+  |
+9 |            return Pos;
+  |                   ^ here
+
+linear_search.adb:12:33: info: loop invariant preservation proved
+   |
+12 |         pragma Loop_Invariant (for all K in A'First .. Pos => A (K) /= I);
+   |                                ^ here
+
+linear_search.adb:12:33: info: loop invariant initialization proved
+   |
+12 |         pragma Loop_Invariant (for all K in A'First .. Pos => A (K) /= I);
+   |                                ^ here
+
+linear_search.adb:12:67: info: index check proved
+   |
+12 |         pragma Loop_Invariant (for all K in A'First .. Pos => A (K) /= I);
+   |                                                                  ^ here
+
+linear_search.ads:13:14: info: postcondition proved
+   |
+13 |     Post => (if Search'Result in A'Range then A (Search'Result) = I
+   |             ^ here
+
+linear_search.ads:13:57: info: index check proved
+   |
+13 |     Post => (if Search'Result in A'Range then A (Search'Result) = I
+   |                                                        ^ here
+
+linear_search.ads:14:48: info: index check proved
+   |
+14 |              else (for all K in A'Range => A (K) /= I));
+   |                                               ^ here

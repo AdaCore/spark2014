@@ -69,20 +69,19 @@ setup:	$(GENERATED_RST_FILES)
 
 clean:
 	(cd gnatprove_by_example; make -f Makefile.examples clean)
-	(cd examples; make -f Makefile.examples clean)
 	-rm -rf $(BUILDDIR)/*
 	gprclean -P table_generator/table_generator
 	rm -f $(GENERATED_RST_FILES)
 
 generate:
 	@echo "Generating GNATprove results..."
-	(cd gnatprove_by_example; make -f Makefile.examples gnatprove results)
-	(cd examples; make -f Makefile.examples gnatprove)
+	#(cd gnatprove_by_example; make -f Makefile.examples gnatprove results)
+	(cd examples; ./run_examples.py)
 
 generate-nightly:
 	@echo "Generating GNATprove results..."
-	(cd gnatprove_by_example; make -f Makefile.examples clean gnatprove results clean)
-	(cd examples; make -f Makefile.examples clean gnatprove clean)
+	#(cd gnatprove_by_example; make -f Makefile.examples clean gnatprove results clean)
+	(cd examples; ./run_examples.py)
 
 html: setup
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html

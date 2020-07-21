@@ -1,2 +1,0 @@
-binary_search.adb:26:16: medium: array index check might fail [possible fix: loop at line 23 should mention Med in a loop invariant]
-binary_search.ads:21:49: medium: postcondition might fail, cannot prove A (Index) /= I
