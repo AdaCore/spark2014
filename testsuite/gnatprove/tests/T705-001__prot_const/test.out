@@ -1,0 +1,4 @@
+current_position.adb:13:61: info: division check proved (CVC4: 1 VC)
+current_position.adb:13:61: info: float overflow check proved (Trivial)
+current_position.adb:14:61: info: division check proved (CVC4: 1 VC)
+current_position.adb:14:61: info: float overflow check proved (Trivial)

@@ -2735,6 +2735,25 @@ as an assignment at the location of the object declaration:
 
  P__b.b.bool__content <- True;
 
+In fact, even for constants code might be generated at the location of the
+object declaration to specify the value of the constant. This can have several
+reasons:
+
+ * No axiom can be generated for the constant, or the axiom might be
+   incomplete. For example, we can't currently generate axioms for non-static
+   constants in protected objects, and axioms for constants that are defined
+   using a recursive call might be incomplete.
+ * Repeating the value of the constant in a different form might help provers.
+
+The relevant subprograms for the handling of constant values are:
+
+ * Gnat2why.Decls.Translate_Constant_Value for the generation of the axiom for
+   the constant, if possible.
+ * Gnat2why.Expr.Assignment_Of_Obj_Decl for the insertion of assumptions in
+   some cases
+ * Gnat2why.Expr.Assume_Value_Of_Constants for the insertion of assumptions for
+   constants
+
 Scalar Objects
 ^^^^^^^^^^^^^^
 For some Ada types, expressions, and in particular objects, can be either in a
