@@ -531,16 +531,16 @@ def check_marks(strlist):
     def not_found(f, line, tag, result):
         """Print an error that the requested mark has not been found"""
         if is_negative_result(result):
-            print("SOUNDNESS BUG", end='')
+            print("SOUNDNESS BUG ", end='')
         else:
             assert is_proof_tag(tag)
-            print("PROOF REGRESSION", end='')
+            print("PROOF REGRESSION ", end='')
         print("at " + f + ":" + str(line) +
               ": mark @" + tag + ":" + result + " not found")
 
     def bad_found(f, line, tag, result):
         """Print an error that the mark has been unexpectedly found"""
-        print("SPURIOUS MESSAGE", end='')
+        print("SPURIOUS MESSAGE ", end='')
         print("at " + f + ":" + str(line) +
               ": message @" + tag + ":" + result + " found")
 
