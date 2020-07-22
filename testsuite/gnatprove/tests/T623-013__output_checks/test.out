@@ -2,16 +2,13 @@ default command-line output
 ---------------------------
 
 incr.adb:3:11: medium: overflow check might fail
-  |
-3 |   X := X + 1;
-  |          ^ here
+    3 |   X := X + 1;
+      |          ^ here
   e.g. when X = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at line 1 should mention X in a precondition
-  |
-1 |procedure Incr (X : in out Integer) is
-  |^ here
-gnatprove: error during flow analysis and proof
+    1 |procedure Incr (X : in out Integer) is
+      |^ here
 
 brief output
 ------------
@@ -21,16 +18,13 @@ pretty output
 -------------
 
 incr.adb:3:11: medium: overflow check might fail
-  |
-3 |   X := X + 1;
-  |          ^ here
+    3 |   X := X + 1;
+      |          ^ here
   e.g. when X = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at line 1 should mention X in a precondition
-  |
-1 |procedure Incr (X : in out Integer) is
-  |^ here
-gnatprove: error during flow analysis and proof
+    1 |procedure Incr (X : in out Integer) is
+      |^ here
 
 one-line output
 ---------------

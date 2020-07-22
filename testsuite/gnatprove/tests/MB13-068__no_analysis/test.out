@@ -2,9 +2,8 @@ Phase 1 of 2: generation of Global contracts ...
 Phase 2 of 2: flow analysis and proof ...
 
 client.adb:2:11: warning: SPARK_Mode not applied to this compilation unit
-  |
-2 |procedure Client is
-  |          ^ here
+    2 |procedure Client is
+      |          ^ here
   only enclosed declarations with SPARK_Mode will be analyzed
 warning: no bodies have been analyzed by GNATprove
 enable analysis of a non-generic body using SPARK_Mode
