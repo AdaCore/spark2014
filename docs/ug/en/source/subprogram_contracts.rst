@@ -653,11 +653,11 @@ Subprogram Variant
 [|SPARK|]
 
 To ensure termination of recursive subprograms, it is possible to annotate them
-using the aspect ``Subprogram_Variant``. This aspect provides a scalar
+using the aspect ``Subprogram_Variant``. This aspect provides a discrete
 value along with a direction (``Increases`` or ``Decreases``). On every
-recursive call, a check is generated to ensure that the scalar value progresses
+recursive call, a check is generated to ensure that the discrete value progresses
 (decreases or increases) with respect to its value at the beginning of the
-subprogram. Since a scalar value is necessarily bounded by its Ada type, it
+subprogram. Since a discrete value is necessarily bounded by its Ada type, it
 is enough to ensure that there will be no infinite chain of recursive calls.
 In the following example, we can verify that the ``Fibonacci`` function
 terminates stating that its parameter ``N`` decreases at each recursive call:
@@ -673,14 +673,14 @@ value of ``N`` on entry of ``Fibonacci``:
 .. literalinclude:: /gnatprove_by_example/results/recursive_subprograms.prove
    :language: none
 
-It is possible to give more than one scalar value in a subprogram variant. In
+It is possible to give more than one discrete value in a subprogram variant. In
 this case, values are checked in the order in which they appear. If a
 value progresses (increases or decreases as specified) then it is enough to
 ensure the progression of the whole variant and the subsequent values are not
 considered. In the same way, if a value annotated with ``Increases`` actually
 decreases strictly (or the other way around) then the evaluation terminates and
 the verification of the variant fails. It is only if the values of all the
-preceding scalar expressions have been found to be preserved that the subsequent
+preceding discrete expressions have been found to be preserved that the subsequent
 value is considered. The function ``Max`` computes the index of the maximal
 value in a slice of an array. At each recursive call, it shifts the bound
 containing the smallest value:
@@ -699,7 +699,7 @@ be verified by |GNATprove|.
 
 To verify the termination of mutually recursive subprograms, all subprograms
 should be annotated with `compatible` variants. We say that two variants are
-compatible if they have the same number of scalar expressions, and matching
+compatible if they have the same number of discrete expressions, and matching
 values in the list have the same direction and the same base type. For example,
 the variants of ``Is_Even`` and ``Is_Odd`` are compatible,
 because both are of type ``Integer`` and both decrease.
