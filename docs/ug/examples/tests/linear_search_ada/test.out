@@ -1,10 +1,8 @@
 
 linear_search.ads:10:13: function with "out" parameter is not allowed in SPARK
-   |
-10 |   function Search
-   |            ^ here
+   10 |   function Search
+      |            ^ here
   violation of aspect SPARK_Mode at line 2
-  |
-2 |  with SPARK_Mode
-  |       ^ here
+    2 |  with SPARK_Mode
+      |       ^ here
 gnatprove: error during flow analysis and proof

@@ -1,11 +1,9 @@
 
 binary_search.ads:21:49: medium: postcondition might fail, cannot prove A (Index) /= I
-   |
-21 |              else (for all Index in A'Range => A (Index) /= I));
-   |                                                ^ here
+   21 |              else (for all Index in A'Range => A (Index) /= I));
+      |                                                ^ here
   e.g. when A = (1 => 0, 3 => 0, 4 => 0, others => -1)
         and A'First = 2
         and A'Last = 4
         and I = 0
         and Index = 3
-gnatprove: error during flow analysis and proof

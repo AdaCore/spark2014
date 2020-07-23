@@ -1,5 +1,4 @@
 
 linear_search.adb:23:14: high: "Res.At_Index" is not initialized
-   |
-23 |      return Res;
-   |             ^ here
+   23 |      return Res;
+      |             ^ here

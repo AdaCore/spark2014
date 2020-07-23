@@ -1,5 +1,5 @@
 project Search is
    package Prove is
-      for Switches use ("--report=all");
+      for Proof_Switches ("Ada") use ("--report=all");
    end Prove;
 end Search;

@@ -1,15 +1,12 @@
 
 binary_search.adb:36:50: medium: assertion might fail, cannot prove A (Index) /= I
-   |
-36 |      pragma Assert (for all Index in A'Range => A (Index) /= I);
-   |                                                 ^ here
+   36 |      pragma Assert (for all Index in A'Range => A (Index) /= I);
+      |                                                 ^ here
   e.g. when A = (1 => -1, others => 0)
         and A'First = 1
         and A'Last = 2
         and I = 0
         and Index = 2
   possible fix: precondition of subprogram at binary_search.ads:18 should mention I
-   |
-18 |   function Search (A : Ar; I : Integer) return Opt_Index with
-   |   ^ here
-gnatprove: error during flow analysis and proof
+   18 |   function Search (A : Ar; I : Integer) return Opt_Index with
+      |   ^ here
