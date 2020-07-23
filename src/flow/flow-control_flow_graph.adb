@@ -5295,37 +5295,49 @@ package body Flow.Control_Flow_Graph is
          Add_Dummy_Vertex (N, FA, CM);
       end if;
 
-      --  If the type has a Default_Initial_Condition then we:
-      --    * check if the full type is as the aspect suggested and issue a
-      --      warning if not.
+      --  In phase 2 check DIC on type definitions that come from source
 
-      if Has_Own_DIC (Typ)
-        or else (Is_Tagged_Type (Typ)
-                 and then Has_Inherited_DIC (Typ))
+      --  ??? As a rule, we shouldn't emit any messages while building the CFG.
+      --  This check should be done as a dedicated analysis.
+
+      if not FA.Generating_Globals
+        and then Comes_From_Source (Typ)
+        and then No (Full_View (Typ))
       then
-         --  Issue a warning if the declared type promised to be default
-         --  initialized but is not.
-         --
-         --  We do not issue this warning:
-         --    * during the global generation phase,
-         --    * when dealing with an internal type (this is fine since we will
-         --      get a warning on the type that comes from source anyway).
+         declare
+            DIC_Promised : constant Boolean :=
+              (Has_Own_DIC (Typ)
+               and then Has_Fully_Default_Initializing_DIC_Pragma (Typ))
+                or else
+              (Is_Tagged_Type (Typ)
+               and then Has_Inherited_DIC (Typ));
+            --  Check both when there is a non-null DIC contract and when the
+            --  DIC is inherited by the tagged type from its ancestor.
 
-         if not FA.Generating_Globals
-           and then Comes_From_Source (Typ)
-           and then No (Full_View (Typ))
-           and then Is_Default_Initialized (Direct_Mapping_Id (Typ))
-           and then not Is_Default_Initialized (Direct_Mapping_Id (Typ),
-                                                Ignore_DIC => True)
-         then
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => "type & is not fully initialized",
-               N        => N,
-               F1       => Direct_Mapping_Id (Typ),
-               Tag      => Default_Initialization_Mismatch,
-               Severity => Medium_Check_Kind);
-         end if;
+            pragma Assert
+              (if DIC_Promised
+               then Is_Default_Initialized (Direct_Mapping_Id (Typ),
+                                            Ignore_DIC => False));
+            --  Sanity check: the type whose DIC we will examine should be
+            --  recognized as default initialized from the outside (at least
+            --  because of the DIC itself).
+
+         begin
+            if DIC_Promised
+              and then not Is_Default_Initialized (Direct_Mapping_Id (Typ),
+                                                   Ignore_DIC => True)
+            then
+               --  ??? For composite types we should pinpoint the exact
+               --  component that renders the type not initialized by default.
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "type & is not fully initialized",
+                  N        => N,
+                  F1       => Direct_Mapping_Id (Typ),
+                  Tag      => Default_Initialization_Mismatch,
+                  Severity => Medium_Check_Kind);
+            end if;
+         end;
       end if;
    end Do_Type_Declaration;
 
