@@ -25,7 +25,7 @@ project GNATprove is
                  "spark_semaphore_wrapper.adb",
                  "spark_codepeer_wrapper.adb");
 
-   Common_Switches := ("-gnatyg", "-g");
+   Common_Switches := ("-gnatyg", "-g", "-gnat2020");
 
    package Builder is
       for Executable ("gnatprove.adb") use "gnatprove";

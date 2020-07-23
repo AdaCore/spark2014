@@ -623,7 +623,7 @@ package body Flow_Types is
          when Null_Value =>
             raise Program_Error;
          when others =>
-            return F'Update (Variant => Variant);
+            return (F with delta Variant => Variant);
       end case;
    end Change_Variant;
 
@@ -662,7 +662,7 @@ package body Flow_Types is
             end return;
          end if;
       else
-         return F'Update (Facet => Normal_Part);
+         return (F with delta Facet => Normal_Part);
       end if;
    end Parent_Record;
 

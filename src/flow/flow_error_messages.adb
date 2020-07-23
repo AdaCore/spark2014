@@ -2621,17 +2621,17 @@ package body Flow_Error_Messages is
                      Append (R, "private part of ");
                      Append_Quote;
                      Append (R, Flow_Id_To_String
-                               (F'Update (Facet => Normal_Part)));
+                               ((F with delta Facet => Normal_Part)));
                   elsif Is_Extension (F) then
                      Append (R, "extension of ");
                      Append_Quote;
                      Append (R, Flow_Id_To_String
-                               (F'Update (Facet => Normal_Part)));
+                               ((F with delta Facet => Normal_Part)));
                   elsif Is_Bound (F) then
                      Append (R, "bounds of ");
                      Append_Quote;
                      Append (R, Flow_Id_To_String
-                               (F'Update (Facet => Normal_Part)));
+                               ((F with delta Facet => Normal_Part)));
                   elsif Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
                     and then Ekind (Get_Direct_Mapping_Id (F)) = E_Constant
                     and then not Is_Access_Type

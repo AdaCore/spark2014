@@ -28,13 +28,13 @@ project GNAT2Why is
       case Build is
          when "Debug" | "Devel" =>
             for Switches ("Ada") use
-               Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa");
+               Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa", "-gnat2020");
          when "Coverage" =>
             for Switches ("Ada") use
-               Common_Switches & ("-O0");
+               Common_Switches & ("-O0", "-gnat2020");
          when "Production" =>
             for Switches ("Ada") use
-               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatwn");
+               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatwn", "-gnat2020");
       end case;
    end Compiler;
 

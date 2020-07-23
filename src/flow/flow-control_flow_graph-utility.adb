@@ -311,7 +311,8 @@ package body Flow.Control_Flow_Graph.Utility is
                   A.Variables_Used.Include (F);
                end if;
                if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                  A.Variables_Used.Include (F'Update (Facet => The_Bounds));
+                  A.Variables_Used.Include
+                    ((F with delta Facet => The_Bounds));
                end if;
             end loop;
 
@@ -350,7 +351,7 @@ package body Flow.Control_Flow_Graph.Utility is
               and then Extensions_Visible (Map_Root, Scope)
             then
                A.Variables_Defined.Include
-                 (Map_Root'Update (Facet => Extension_Part));
+                 ((Map_Root with delta Facet => Extension_Part));
             end if;
 
             A.Variables_Used := A.Variables_Explicitly_Used;
@@ -399,8 +400,8 @@ package body Flow.Control_Flow_Graph.Utility is
          when In_View =>
             Tmp := Flatten_Variable (G, Scope);
             if Extensions_Visible (G, Scope) then
-               --  Tmp.Include (G'Update (Facet => The_Tag));
-               Tmp.Include (G'Update (Facet => Extension_Part));
+               --  Tmp.Include ((G with delta Facet => The_Tag));
+               Tmp.Include ((G with delta Facet => Extension_Part));
             end if;
 
             for F of Tmp loop
@@ -411,7 +412,8 @@ package body Flow.Control_Flow_Graph.Utility is
                end if;
 
                if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                  A.Variables_Used.Include (F'Update (Facet => The_Bounds));
+                  A.Variables_Used.Include
+                    ((F with delta Facet => The_Bounds));
                end if;
             end loop;
 
@@ -423,7 +425,7 @@ package body Flow.Control_Flow_Graph.Utility is
             Tmp := Flatten_Variable (G, Scope);
             if Extensions_Visible (G, Scope) then
                --  We can't actually modify the tag, so this is not an omission
-               Tmp.Include (G'Update (Facet => Extension_Part));
+               Tmp.Include ((G with delta Facet => Extension_Part));
             end if;
             A.Variables_Defined := Tmp;
 
@@ -491,7 +493,8 @@ package body Flow.Control_Flow_Graph.Utility is
                A.Variables_Used := Used;
                for F of Used loop
                   if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                     A.Variables_Used.Include (F'Update (Facet => The_Bounds));
+                     A.Variables_Used.Include
+                       ((F with delta Facet => The_Bounds));
                   end if;
                end loop;
 

@@ -759,8 +759,8 @@ package Flow_Types is
                    Pretty_Print_Kind               => Pretty_Print_Null);
 
    Null_Node_Attributes : constant V_Attributes :=
-     Null_Attributes'Update (Is_Null_Node    => True,
-                             Is_Program_Node => True);
+     (Null_Attributes with delta Is_Null_Node    => True,
+                                 Is_Program_Node => True);
 
    type Reference_Kind is (Inputs, Proof_Ins, Null_Deps);
    --  Modes for queries about variables referenced in a given expression. For

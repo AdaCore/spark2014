@@ -1427,7 +1427,7 @@ package body Flow.Control_Flow_Graph is
       for Comp of Flatten_Variable (E, FA.B_Scope) loop
          Process (Comp);
          if Has_Bounds (Comp, FA.B_Scope) then
-            Process (Comp'Update (Facet => The_Bounds));
+            Process ((Comp with delta Facet => The_Bounds));
          end if;
       end loop;
 
@@ -1499,12 +1499,12 @@ package body Flow.Control_Flow_Graph is
       for Comp of Flatten_Variable (F, FA.B_Scope) loop
          Process (Comp);
          if Has_Bounds (Comp, FA.B_Scope) then
-            Process (Comp'Update (Facet => The_Bounds));
+            Process ((Comp with delta Facet => The_Bounds));
          end if;
       end loop;
 
       if Extensions_Visible (F, FA.B_Scope) then
-         Process (F'Update (Facet => Extension_Part));
+         Process ((F with delta Facet => Extension_Part));
       end if;
    end Create_Initial_And_Final_Vertices;
 
@@ -1584,7 +1584,7 @@ package body Flow.Control_Flow_Graph is
             if Is_Class_Wide_Type (LHS_Type)
               and then LHS_Root.Kind = Direct_Mapping
             then
-               Missing.Insert (LHS_Root'Update (Facet => Extension_Part));
+               Missing.Insert ((LHS_Root with delta Facet => Extension_Part));
             end if;
 
             --  Split out the assignment over a number of vertices
@@ -3492,13 +3492,13 @@ package body Flow.Control_Flow_Graph is
          begin
             Add_Vertex
               (FA,
-               Make_Basic_Attributes
-                 (Var_Def       => Fully_Initialized,
-                  Loops         => Ctx.Current_Loops,
-                  In_Nested_Pkg => Ctx.In_Nested_Package,
-                  E_Loc         => Loop_Id,
-                  Print_Hint    => Pretty_Print_Loop_Init)'
-                 Update (Is_Program_Node => False),
+               (Make_Basic_Attributes
+                  (Var_Def       => Fully_Initialized,
+                   Loops         => Ctx.Current_Loops,
+                   In_Nested_Pkg => Ctx.In_Nested_Package,
+                   E_Loc         => Loop_Id,
+                   Print_Hint    => Pretty_Print_Loop_Init)
+                with delta Is_Program_Node => False),
                V);
 
             Linkup (FA, V, CM (Union_Id (N)).Standard_Entry);
@@ -3864,7 +3864,7 @@ package body Flow.Control_Flow_Graph is
             for Comp of DIC_Param_Components loop
                if Has_Bounds (Comp, FA.B_Scope) then
                   Bounds_Of_Param_Components.Insert
-                    (Comp'Update (Facet => The_Bounds));
+                    ((Comp with delta Facet => The_Bounds));
                end if;
             end loop;
 
@@ -4022,7 +4022,7 @@ package body Flow.Control_Flow_Graph is
 
             for F of FS loop
                if Has_Bounds (F, FA.B_Scope) then
-                  Var_Def.Insert (F'Update (Facet => The_Bounds));
+                  Var_Def.Insert ((F with delta Facet => The_Bounds));
                end if;
             end loop;
 
@@ -6143,7 +6143,7 @@ package body Flow.Control_Flow_Graph is
          begin
             if Atr.Is_Exceptional_Path then
                FA.CFG.Clear_Vertex (V);
-               Atr := Null_Attributes'Update (Is_Null_Node => True);
+               Atr := (Null_Attributes with delta Is_Null_Node => True);
             end if;
          end;
       end loop;
@@ -6281,7 +6281,7 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Clear_Vertex (V);
 
             --  Clear the node
-            FA.Atr (V) := Null_Attributes'Update (Is_Null_Node => True);
+            FA.Atr (V) := (Null_Attributes with delta Is_Null_Node => True);
          end if;
       end loop;
    end Simplify_CFG;
@@ -6667,7 +6667,7 @@ package body Flow.Control_Flow_Graph is
       --  The start vertex has the entity's location, because it is
       --  convenient place to put error messages that apply to the
       --  whole subprogram/package/body.
-      Add_Vertex (FA, Null_Attributes'Update (Error_Location => Body_N),
+      Add_Vertex (FA, (Null_Attributes with delta Error_Location => Body_N),
                   FA.Start_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.Helper_End_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.End_Vertex);

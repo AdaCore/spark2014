@@ -540,7 +540,7 @@ package body Flow_Utility is
                               Contains_Non_Visible := True;
                            end if;
                         end loop;
-                        Results.Insert (F'Update (Facet => Private_Part));
+                        Results.Insert ((F with delta Facet => Private_Part));
                      else
                         Results := Flow_Id_Sets.To_Set (F);
                      end if;
@@ -636,13 +636,15 @@ package body Flow_Utility is
                         if Results.Is_Empty then
                            Results := Flow_Id_Sets.To_Set (F);
                         else
-                           Results.Insert (F'Update (Facet => Private_Part));
+                           Results.Insert
+                             ((F with delta Facet => Private_Part));
                         end if;
                      end if;
 
                      if Classwide then
-                        --  Ids.Insert (F'Update (Facet => The_Tag)); ???
-                        Results.Insert (F'Update (Facet => Extension_Part));
+                        --  Ids.Insert ((F with delta Facet => The_Tag)); ???
+                        Results.Insert
+                          ((F with delta Facet => Extension_Part));
                      end if;
 
                   when Access_Kind
@@ -2226,8 +2228,8 @@ package body Flow_Utility is
                         V.Union
                           (Get_Variables_Internal
                              (Actual,
-                              Ctx'Update
-                                (Fold_Functions      => Inputs,
+                              (Ctx with delta
+                                 Fold_Functions      => Inputs,
                                  Consider_Extensions => May_Use_Extensions)));
                      else
                         V.Union (Recurse (Actual, May_Use_Extensions));
@@ -2339,7 +2341,8 @@ package body Flow_Utility is
                               V.Union
                                 (Get_Variables_Internal
                                    (Prefix (Name (Callsite)),
-                                    Ctx'Update (Fold_Functions => Inputs)));
+                                    (Ctx with delta
+                                         Fold_Functions => Inputs)));
                            else
                               V.Union (Recurse (Prefix (Name (Callsite))));
                            end if;
@@ -2720,7 +2723,7 @@ package body Flow_Utility is
                      --  This is not a bound variable, but it requires
                      --  bounds tracking. We make it a bound variable.
                      Variables.Include
-                       (F'Update (Facet => The_Bounds));
+                       ((F with delta Facet => The_Bounds));
 
                   elsif Is_Discriminant (F) then
                      Variables.Include (F);
@@ -2776,7 +2779,7 @@ package body Flow_Utility is
                            --  but not "Func (Obj)'Length").
 
                            Variables.Include
-                             (F'Update (Facet => The_Bounds));
+                             ((F with delta Facet => The_Bounds));
 
                         else
                            --  This is something else, we just copy it
@@ -5042,7 +5045,7 @@ package body Flow_Utility is
                  Flatten_Variable (Map_Root, Scope);
 
                LHS_Ext : constant Flow_Id :=
-                 Map_Root'Update (Facet => Extension_Part);
+                 (Map_Root with delta Facet => Extension_Part);
 
                RHS : Flow_Id_Sets.Set :=
                  (if Is_Concurrent_Component_Or_Discr (E) then
@@ -5138,10 +5141,10 @@ package body Flow_Utility is
                Valid_To_Fields : Flow_Id_Sets.Set;
 
                The_Ext : constant Flow_Id :=
-                 Map_Root'Update (Facet => Extension_Part);
+                 (Map_Root with delta Facet => Extension_Part);
 
                The_Tg : constant Flow_Id :=
-                 Map_Root'Update (Facet => The_Tag);
+                 (Map_Root with delta Facet => The_Tag);
 
             begin
                if Debug_Trace_Untangle_Record then
@@ -5500,7 +5503,7 @@ package body Flow_Utility is
         and then Is_Class_Wide_Type (Etype (N))
         and then Extensions_Visible (Base_Node, Scope)
       then
-         Vars_Defined.Include (Base_Node'Update (Facet => Extension_Part));
+         Vars_Defined.Include ((Base_Node with delta Facet => Extension_Part));
       end if;
 
       if Debug_Trace_Untangle then
