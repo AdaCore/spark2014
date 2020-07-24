@@ -2,19 +2,19 @@
 	path = why3
 	url = ../why3.git
 	ignore = dirty
-        branch = master
+        branch = a2c2-2020
 [submodule "alt-ergo"]
 	path = alt-ergo
 	url = ../alt-ergo.git
 	ignore = dirty
-        branch = master
+        branch = a2c2-2020
 [submodule "cvc4"]
 	path = cvc4
 	url = ../cvc4.git
 	ignore = dirty
-        branch = master
+        branch = a2c2-2020
 [submodule "z3"]
 	path = z3
 	url = ../z3.git
 	ignore = dirty
-        branch = master
+        branch = a2c2-2020
