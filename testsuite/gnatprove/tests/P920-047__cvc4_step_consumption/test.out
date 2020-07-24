@@ -1,4 +1,39 @@
+memcpy.adb:8:07: warning: initialization of "RDX_400586" has no effect
 memcpy.adb:8:37: info: range check proved (cvc4_cbqi: 1 VC)
+memcpy.adb:9:07: warning: initialization of "RDI_400586" has no effect
 memcpy.adb:9:37: info: range check proved (cvc4_cbqi: 1 VC)
 memcpy.ads:16:06: info: data dependencies proved
-memcpy.ads:27:08: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC; cvc4_cbqi: 10 VC)
+memcpy.ads:16:43: low: unused global "Exit_Called"
+memcpy.ads:16:43: warning: "Exit_Called" is not modified, could be INPUT
+memcpy.ads:16:60: warning: unused initial value of "CarryFlag"
+memcpy.ads:17:31: warning: unused initial value of "OverflowFlag"
+memcpy.ads:17:49: warning: unused initial value of "SignFlag"
+memcpy.ads:17:63: warning: unused initial value of "ZeroFlag"
+memcpy.ads:18:31: warning: unused initial value of "RAX"
+memcpy.ads:18:41: low: unused global "RCX"
+memcpy.ads:18:41: warning: "RCX" is not modified, could be INPUT
+memcpy.ads:18:51: warning: "RDX" is not modified, could be INPUT
+memcpy.ads:18:61: low: unused global "RBX"
+memcpy.ads:18:61: warning: "RBX" is not modified, could be INPUT
+memcpy.ads:19:51: warning: "RSI" is not modified, could be INPUT
+memcpy.ads:19:61: warning: "RDI" is not modified, could be INPUT
+memcpy.ads:20:31: low: unused global "R8"
+memcpy.ads:20:31: warning: "R8" is not modified, could be INPUT
+memcpy.ads:20:40: low: unused global "R9"
+memcpy.ads:20:40: warning: "R9" is not modified, could be INPUT
+memcpy.ads:20:49: low: unused global "R10"
+memcpy.ads:20:49: warning: "R10" is not modified, could be INPUT
+memcpy.ads:20:59: low: unused global "R11"
+memcpy.ads:20:59: warning: "R11" is not modified, could be INPUT
+memcpy.ads:21:31: low: unused global "R12"
+memcpy.ads:21:31: warning: "R12" is not modified, could be INPUT
+memcpy.ads:21:41: low: unused global "R13"
+memcpy.ads:21:41: warning: "R13" is not modified, could be INPUT
+memcpy.ads:21:51: low: unused global "R14"
+memcpy.ads:21:51: warning: "R14" is not modified, could be INPUT
+memcpy.ads:21:61: low: unused global "R15"
+memcpy.ads:21:61: warning: "R15" is not modified, could be INPUT
+memcpy.ads:22:30: low: unused global "StackAddressSize"
+memcpy.ads:22:52: low: unused global "FS"
+memcpy.ads:22:60: low: unused global "GS"
+memcpy.ads:27:08: info: postcondition proved (Trivial: 1 VC; cvc4_cbqi: 11 VC)

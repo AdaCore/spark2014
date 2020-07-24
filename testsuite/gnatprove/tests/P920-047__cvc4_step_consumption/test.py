@@ -5,5 +5,4 @@ from test_support import *
 prove_all(steps=100000,
           prover=["cvc4_cbqi,z3,altergo"],
           opt=["--why3-conf=why3.conf"],
-          counterexample=False,
-          subdue_flow=True)
+          counterexample=False)
