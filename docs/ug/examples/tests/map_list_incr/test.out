@@ -1,0 +1,24 @@
+map_list_incr.adb:6:12: info: precondition proved
+map_list_incr.adb:7:11: info: postcondition proved
+map_list_incr.adb:9:18: info: precondition proved
+map_list_incr.adb:9:43: info: precondition proved
+map_list_incr.adb:9:70: info: overflow check proved
+map_list_incr.adb:14:30: info: loop invariant initialization proved
+map_list_incr.adb:14:30: info: loop invariant preservation proved
+map_list_incr.adb:16:10: info: loop invariant initialization proved
+map_list_incr.adb:16:10: info: loop invariant preservation proved
+map_list_incr.adb:16:29: info: precondition proved
+map_list_incr.adb:17:12: info: precondition proved
+map_list_incr.adb:17:37: info: precondition proved
+map_list_incr.adb:17:71: info: overflow check proved
+map_list_incr.adb:19:10: info: loop invariant preservation proved
+map_list_incr.adb:19:10: info: loop invariant initialization proved
+map_list_incr.adb:19:24: info: precondition proved
+map_list_incr.adb:20:12: info: precondition proved
+map_list_incr.adb:20:32: info: range check proved
+map_list_incr.adb:20:37: info: precondition proved
+map_list_incr.adb:20:68: info: range check proved
+map_list_incr.adb:21:07: info: precondition proved
+map_list_incr.adb:21:31: info: precondition proved
+map_list_incr.adb:21:47: info: overflow check proved
+map_list_incr.adb:22:07: info: precondition proved

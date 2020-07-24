@@ -190,9 +190,8 @@ install-examples:
 	done
 	find $(EXAMPLESDIR) -name test.py -exec rm -f {} \;
 	find $(EXAMPLESDIR) -name test.out -exec rm -f {} \;
-	# install examples in GNATprove-by-Example section of User's Guide
-	# a special example
-	$(CP) docs/ug/gnatprove_by_example/examples \
+	# install examples in SPARK User's Guide specially
+	$(CP) docs/ug/examples/tests \
 	  $(EXAMPLESDIR)/gnatprove_by_example
 
 clean:

@@ -1,4 +1,0 @@
-swap_bad_depends.adb:1:29: warning: unused initial value of "X"
-swap_bad_depends.adb:3:03: medium: missing dependency "null => X"
-swap_bad_depends.adb:3:23: medium: missing self-dependency "Y => Y"
-swap_bad_depends.adb:3:28: medium: incorrect dependency "Y => X"

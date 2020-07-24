@@ -1,0 +1,10 @@
+
+diff.adb:6:11: medium: range check might fail
+    6 |   Z := X - Y;
+      |          ^ here
+  e.g. when X = 0
+        and Y = 1
+  reason for check: result of subtraction must fit in the target type of the assignment
+  possible fix: subprogram at line 1 should mention X and Y in a precondition
+    1 |procedure Diff (X, Y : in Natural; Z : out Natural) with
+      |^ here

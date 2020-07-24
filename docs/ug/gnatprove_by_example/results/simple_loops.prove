@@ -1,9 +1,0 @@
-simple_loops.adb:4:04: info: initialization of "Prop" proved
-simple_loops.adb:8:30: info: loop invariant preservation proved
-simple_loops.adb:8:30: medium: loop invariant might fail in first iteration, cannot prove Prop (e.g. when Prop = False)
-simple_loops.adb:14:30: info: loop invariant initialization proved
-simple_loops.adb:14:30: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Prop (e.g. when Prop = False)
-simple_loops.adb:20:30: info: loop invariant initialization proved
-simple_loops.adb:20:30: info: loop invariant preservation proved
-simple_loops.adb:26:30: info: loop invariant initialization proved
-simple_loops.adb:26:44: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Prop (e.g. when Prop = False)

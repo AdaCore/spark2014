@@ -707,18 +707,18 @@ with.
 The user interacts with the system mainly using the manual proof console. Three
 types of commands can be entered:
 
- * Some helper commands such as ``help``, ``list-provers`` and
-   ``list-transforms`` are available.
- * When a prover name (type ``list-provers`` to see a list of the available
-   provers) is entered, the corresponding prover is run on the verification
-   condition that is selected in the proof tree.
- * A transformation (see ``list-transforms`` and the below table for the
-   available transformations) can modify the proof tree. A transformation
-   applies to a verification condition or goal and may produce several new
-   subgoals. For example, the transformation ``assert`` allows the user to
-   assert an auxiliary fact. This transformation will create two subgoals, one
-   to prove the assertion, and the other to prove that the assertion implies
-   the previous goal.
+* Some helper commands such as ``help``, ``list-provers`` and
+  ``list-transforms`` are available.
+* When a prover name (type ``list-provers`` to see a list of the available
+  provers) is entered, the corresponding prover is run on the verification
+  condition that is selected in the proof tree.
+* A transformation (see ``list-transforms`` and the below table for the
+  available transformations) can modify the proof tree. A transformation
+  applies to a verification condition or goal and may produce several new
+  subgoals. For example, the transformation ``assert`` allows the user to
+  assert an auxiliary fact. This transformation will create two subgoals, one
+  to prove the assertion, and the other to prove that the assertion implies the
+  previous goal.
 
 The Manual proof system can be quit by selecting :menuselection:`SPARK --> Exit
 Manual Proof` in the menu. A pop-up window asks if the user wants to save the
@@ -879,7 +879,7 @@ These settings will speed up |GNATprove|:
   very useful to understand the reason for a failed proof attempt. You can
   disable this feature if you are not working on a failed proof attempt.
 
-* Use the ``--level`` switch to use a lower level and faster presets.
+* Use the ``--level`` switch to use a lower level and faster preset.
   Generally, a lower level is faster than higher levels. See also :ref:`Running
   GNATprove from the Command Line`.
 

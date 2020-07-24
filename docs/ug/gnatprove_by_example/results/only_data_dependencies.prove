@@ -1,7 +1,0 @@
-only_data_dependencies.adb:6:14: medium: overflow check might fail (e.g. when V = Integer'First and X = -1) [possible fix: subprogram at only_data_dependencies.ads:6 should mention X and V in a precondition]
-only_data_dependencies.ads:7:06: info: data dependencies proved
-only_data_dependencies.ads:10:06: info: data dependencies proved
-only_data_dependencies.ads:13:06: info: data dependencies proved
-only_data_dependencies.ads:14:06: info: flow dependencies proved
-only_data_dependencies.ads:17:06: info: data dependencies proved
-only_data_dependencies.ads:18:06: info: flow dependencies proved

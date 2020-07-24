@@ -1,4 +1,0 @@
-logging_in_abstract.adb:5:04: warning: variable "Log_In" is read but never assigned
-logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log constituent of State"
-logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log_Size constituent of State"
-logging_in_abstract.ads:6:06: info: data dependencies proved

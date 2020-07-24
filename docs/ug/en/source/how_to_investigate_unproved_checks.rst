@@ -55,11 +55,11 @@ the usual message of the form::
 
    file:line:col: severity: check might fail
 
-with a part in square brackets such as::
+with a text such as::
 
-   [possible fix: subprogram at line xxx should mention Var in a precondition]
-   [possible fix: loop at line xxx should mention Var in a loop invariant]
-   [possible fix: call at line xxx should mention Var in a postcondition]
+   possible fix: subprogram at line xxx should mention Var in a precondition
+   possible fix: loop at line xxx should mention Var in a loop invariant
+   possible fix: call at line xxx should mention Var in a postcondition
 
 A focused manual review of the code and assertions can
 efficiently diagnose many cases of missing annotations. Even when an

@@ -21,11 +21,11 @@ allowed. Then, it is possible to use regular preconditions and postconditions
 as contracts, provided ``Log_Type`` is publicly declared as an untagged private
 type in both units:
 
-.. literalinclude:: /gnatprove_by_example/examples/logging_no_dispatch.ads
+.. literalinclude:: /examples/tests/logging_no_dispatch/logging_no_dispatch.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/range_logging_no_dispatch.ads
+.. literalinclude:: /examples/tests/range_logging_no_dispatch/range_logging_no_dispatch.ads
    :language: ada
    :linenos:
 
@@ -53,7 +53,7 @@ Subprogram Contracts`.
 
 Let's consider the various cases that may occur when overridding a subprogram:
 
-.. literalinclude:: /gnatprove_by_example/examples/geometry.ads
+.. literalinclude:: /examples/tests/geometry/geometry.ads
    :language: ada
    :linenos:
 
@@ -103,18 +103,18 @@ the default postcondition of ``Shape.Set_Default_No_Post``.
 
 Hence the results of |GNATprove|'s analysis on this program:
 
-.. literalinclude:: /gnatprove_by_example/results/geometry.prove
+.. literalinclude:: /examples/tests/geometry/test.out
    :language: none
 
 Let's consider now calls to these subprograms in procedure ``Use_Geometry``:
 
-.. literalinclude:: /gnatprove_by_example/examples/use_geometry.adb
+.. literalinclude:: /examples/tests/use_geometry/use_geometry.adb
    :language: ada
    :linenos:
 
 Here are the results of |GNATprove|'s analysis on this program:
 
-.. literalinclude:: /gnatprove_by_example/results/use_geometry.prove
+.. literalinclude:: /examples/tests/use_geometry/test.out
    :language: none
 
 Parameter ``S`` is of class-wide type ``Shape'Class``, so it can be dynamically
@@ -148,7 +148,7 @@ dispatching though, like in the code. For example, consider procedure
 ``Shape'Class``, which can all be dynamically of both types ``Shape`` or
 ``Rectangle``:
 
-.. literalinclude:: /gnatprove_by_example/examples/more_use_geometry.adb
+.. literalinclude:: /examples/tests/more_use_geometry/more_use_geometry.adb
    :language: ada
    :linenos:
 
@@ -171,5 +171,5 @@ precondition or test or call ensures that the precondition to the call to
 ``S4.Operate`` on line 17 is satisfied. Hence the results of |GNATprove|'s
 analysis on this program:
 
-.. literalinclude:: /gnatprove_by_example/results/more_use_geometry.prove
+.. literalinclude:: /examples/tests/more_use_geometry/test.out
    :language: none

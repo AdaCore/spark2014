@@ -422,7 +422,7 @@ If only a few selected subprograms are in |SPARK|, then it makes sense to set no
 default for ``SPARK_Mode``, and instead set ``SPARK_Mode => On`` directly on
 the subprograms of interest. For example:
 
-.. literalinclude:: /gnatprove_by_example/examples/selected_subprograms.ads
+.. literalinclude:: /examples/tests/selected_subprograms/selected_subprograms.ads
    :language: ada
    :linenos:
 
@@ -432,7 +432,7 @@ the body of procedure ``Critical_Action``, even without specifying ``SPARK_Mode
 => On`` on the spec of ``Sub_Action``. Indeed, |GNATprove| checks in that case
 that the spec of ``Sub_Action`` is in |SPARK|.
 
-.. literalinclude:: /gnatprove_by_example/examples/selected_subprograms.adb
+.. literalinclude:: /examples/tests/selected_subprograms/selected_subprograms.adb
    :language: ada
    :linenos:
 
@@ -445,7 +445,7 @@ If only a few selected units are in |SPARK|, then it makes sense to set no
 default for ``SPARK_Mode``, and instead set ``SPARK_Mode => On`` directly on
 the units of interest. For example:
 
-.. literalinclude:: /gnatprove_by_example/examples/selected_units.ads
+.. literalinclude:: /examples/tests/selected_units/selected_units.ads
    :language: ada
    :linenos:
 
@@ -454,7 +454,7 @@ its spec is in |SPARK|, even though its body is marked ``SPARK_Mode =>
 Off``. On the contrary, procedure ``Non_Critical_Action`` whose spec is marked
 ``SPARK_Mode => Off`` cannot be called inside |SPARK| code.
 
-.. literalinclude:: /gnatprove_by_example/examples/selected_units.adb
+.. literalinclude:: /examples/tests/selected_units/selected_units.adb
    :language: ada
    :linenos:
 
@@ -468,7 +468,7 @@ marked with ``SPARK_Mode => On`` and the body with ``SPARK_Mode => Off``. This
 allows client code in |SPARK| to use this unit. If ``SPARK_Mode`` is On by
 default, then it need not be repeated on the unit spec.
 
-.. literalinclude:: /gnatprove_by_example/examples/exclude_unit_body.ads
+.. literalinclude:: /examples/tests/exclude_unit_body/exclude_unit_body.ads
    :language: ada
    :linenos:
 
@@ -476,7 +476,7 @@ Note that the private part of the spec (which is physically in the spec file,
 but is logically part of the implementation) can be excluded as well, by using
 a pragma ``SPARK_Mode (Off)`` at the start of the private part.
 
-.. literalinclude:: /gnatprove_by_example/examples/exclude_unit_body.adb
+.. literalinclude:: /examples/tests/exclude_unit_body/exclude_unit_body.adb
    :language: ada
    :linenos:
 
@@ -485,19 +485,19 @@ code where ``SPARK_Mode`` is On, in which case only the body of the
 instantiated generic is excluded, or in code where ``SPARK_Mode`` is Off, in
 which case both the spec and the body of the instantiated generic are excluded.
 
-.. literalinclude:: /gnatprove_by_example/examples/exclude_generic_unit_body.ads
+.. literalinclude:: /examples/tests/use_generic/exclude_generic_unit_body.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/exclude_generic_unit_body.adb
+.. literalinclude:: /examples/tests/use_generic/exclude_generic_unit_body.adb
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/use_generic.ads
+.. literalinclude:: /examples/tests/use_generic/use_generic.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/use_generic.adb
+.. literalinclude:: /examples/tests/use_generic/use_generic.adb
    :language: ada
    :linenos:
 
@@ -511,7 +511,7 @@ makes sense to set the default to ``SPARK_Mode (On)``, and set ``SPARK_Mode =>
 Off`` on non-|SPARK| declarations. We assume here that a value of ``SPARK_Mode
 => On`` is specified as a configuration pragma.
 
-.. literalinclude:: /gnatprove_by_example/examples/exclude_selected_parts.ads
+.. literalinclude:: /examples/tests/exclude_selected_parts/exclude_selected_parts.ads
    :language: ada
    :linenos:
 
@@ -525,6 +525,6 @@ Off``. It may be convenient to define such a local package to gather
 non-|SPARK| declarations, which allows to mark globally the unit
 ``Exclude_Selected_Parts`` with ``SPARK_Mode => On``.
 
-.. literalinclude:: /gnatprove_by_example/examples/exclude_selected_parts.adb
+.. literalinclude:: /examples/tests/exclude_selected_parts/exclude_selected_parts.adb
    :language: ada
    :linenos:

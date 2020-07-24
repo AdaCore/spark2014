@@ -24,7 +24,8 @@ which reads the value of ``X``, is illegal in |SPARK|, leading to an error
 message from |GNATprove|:
 
 .. code-block:: ada
-
+  :linenos:
+     
   procedure Test is
     type Int_Ptr is access Integer;
     X : Int_Ptr := new Integer'(10);
@@ -80,7 +81,8 @@ the actual owner of the moved value (here ``Tmp``). However, writing in
 variant is rejected:
 
 .. code-block:: ada
-
+  :linenos:
+     
   declare
     Tmp : Int_Ptr := X; --  ownership of X is moved to Tmp
                         --  X cannot be accessed.
@@ -177,7 +179,8 @@ be returned when the subprogram terminates. In particular, this disallows
 procedures that move some of their parameters away, as in the following example:
 
 .. code-block:: ada
-
+   :linenos:
+      
    type Int_Ptr_Holder is record
       Content : Int_Ptr;
    end record;
@@ -190,7 +193,7 @@ procedures that move some of their parameters away, as in the following example:
 .. code-block:: none
 
    insufficient permission for "Y" when returning from "Move"
-   object was moved at line 3
+   object was moved at line 7
 
 Note that borrowing does not occur on subprogram calls for in out parameters
 of a named access type. Indeed, |SPARK| RM has a special wording for these

@@ -1,3 +1,0 @@
-bank1.ads:5:04: high: possible data race when accessing variable "account1.num_accounts"
-bank1.ads:5:04: high: with task "bank1.all_accounts"
-bank1.ads:5:04: high: with task "bank1.special_accounts"

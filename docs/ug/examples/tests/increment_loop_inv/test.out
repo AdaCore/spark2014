@@ -1,0 +1,7 @@
+increment_loop_inv.adb:3:29: info: overflow check proved
+increment_loop_inv.adb:4:11: info: postcondition proved
+increment_loop_inv.adb:4:21: info: overflow check proved
+increment_loop_inv.adb:8:14: info: overflow check proved
+increment_loop_inv.adb:9:30: info: loop invariant preservation proved
+increment_loop_inv.adb:9:30: info: loop invariant initialization proved
+increment_loop_inv.adb:9:47: info: overflow check proved

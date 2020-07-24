@@ -1,0 +1,25 @@
+preserved_components.adb:7:04: info: initialization of "M" proved
+preserved_components.adb:13:10: info: assertion proved
+preserved_components.adb:21:07: info: range check proved
+preserved_components.adb:21:31: info: length check proved
+preserved_components.adb:21:34: info: length check proved
+
+preserved_components.adb:27:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3)
+   27 |                             M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3)))));
+      |                             ^ here
+  e.g. when K1 = 4
+        and K2 = 1
+        and K3 = 1
+  possible fix: loop at line 20 should mention M in a loop invariant
+   20 |   L2: for I in 1 .. 99 loop
+      |                        ^ here
+
+preserved_components.adb:33:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3)
+   33 |                             M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3)))));
+      |                             ^ here
+  e.g. when K1 = 1
+        and K2 = 2
+        and K3 = 1
+  possible fix: loop at line 20 should mention M in a loop invariant
+   20 |   L2: for I in 1 .. 99 loop
+      |                        ^ here

@@ -1,4 +1,0 @@
-increment_loop.adb:3:29: info: overflow check proved
-increment_loop.adb:4:11: medium: postcondition might fail, cannot prove X = X'Old + N (e.g. when N = 1 and X = 2 and X'Old = 0) [possible fix: loop at line 7 should mention X in a loop invariant]
-increment_loop.adb:4:21: info: overflow check proved
-increment_loop.adb:8:14: medium: overflow check might fail (e.g. when X = Integer'Last) [possible fix: loop at line 7 should mention X in a loop invariant]

@@ -1360,7 +1360,7 @@ does not output anything::
 The same can be done to check that a ghost compilation unit called ``my_unit``
 (whatever the capitalization) is not included at all (entities in that unit
 would have been detected by the previous check) in the object code or
-executable. For example on Unix-like platforms:
+executable. For example on Unix-like platforms::
 
   nm <object files or executable> | grep my_unit
 
@@ -1454,10 +1454,11 @@ possible to give several objects to the aspect using an aggregate notation:
 
 .. note::
 
-   The ``Relaxed_Initialization`` aspect has no effects when applied to
-   subprogram parameters or function results of a scalar type. Indeed, the Ada
-   semantics mandates a copy of scalars on entry and return of subprograms,
-   which is considered to be an error if the object was not initialized.
+   The ``Relaxed_Initialization`` aspect has no effect on subprogram parameters
+   or function results of a scalar type with relaxed initialization. Indeed,
+   the Ada semantics mandates a copy of scalars on entry and return of
+   subprograms, which is considered to be an error if the object was not
+   initialized.
 
 Finally, if we want to exempt all objects of a type from the data
 initialization policy of |SPARK|, it is possible to specify the

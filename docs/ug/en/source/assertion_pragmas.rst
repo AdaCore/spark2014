@@ -23,7 +23,7 @@ property asserted holds, and uses the information that it holds for analyzing
 code that follows. For example, consider two assertions of the same property
 ``X > 0`` in procedure ``Assert_Twice``:
 
-.. literalinclude:: /gnatprove_by_example/examples/assert_twice.adb
+.. literalinclude:: /examples/tests/assert_twice/assert_twice.adb
    :language: ada
    :linenos:
 
@@ -31,7 +31,7 @@ As expected, the first assertion on line 5 is not provable in absence of a
 suitable precondition for ``Assert_Twice``, but |GNATprove| proves that it
 holds the second time the property is asserted on line 6:
 
-.. literalinclude:: /gnatprove_by_example/results/assert_twice.prove
+.. literalinclude:: /examples/tests/assert_twice/test.out
    :language: none
 
 |GNATprove| considers that an execution of ``Assert_Twice`` with ``X <= 0``
@@ -67,14 +67,14 @@ effect on |GNATprove|. |GNATprove| takes all assertions into account, whatever
 the assertion policy in effect at the point of the assertion. For example,
 consider a code with some assertions enabled and some ignored:
 
-.. literalinclude:: /gnatprove_by_example/examples/assert_enabled.adb
+.. literalinclude:: /examples/tests/assert_enabled/assert_enabled.adb
    :language: ada
    :linenos:
 
 Although the postcondition and the second assertion are not executed at run
 time, |GNATprove| analyzes them and issues corresponding messages:
 
-.. literalinclude:: /gnatprove_by_example/results/assert_enabled.prove
+.. literalinclude:: /examples/tests/assert_enabled/test.out
    :language: none
 
 On the contrary, when used with the GNAT-specific policy ``Disable``, pragma
@@ -82,14 +82,14 @@ On the contrary, when used with the GNAT-specific policy ``Disable``, pragma
 during execution and analysis with |GNATprove|. For example, consider the same
 code as above where policy ``Ignore`` is replaced with policy ``Disable``:
 
-.. literalinclude:: /gnatprove_by_example/examples/assert_disabled.adb
+.. literalinclude:: /examples/tests/assert_disabled/assert_disabled.adb
    :language: ada
    :linenos:
 
 On this program, |GNATprove| does not analyze the postcondition and the second
 assertion, and it does not issue corresponding messages:
 
-.. literalinclude:: /gnatprove_by_example/results/assert_disabled.prove
+.. literalinclude:: /examples/tests/assert_disabled/test.out
    :language: none
 
 The policy of ``Disable`` should thus be reserved for assertions that are not
@@ -117,44 +117,44 @@ Each of these properties can be independently true or false. For example, in
 the following loop, the loop invariant is false during the first iteration and
 true in all remaining iterations:
 
-.. literalinclude:: /gnatprove_by_example/examples/simple_loops.adb
+.. literalinclude:: /examples/tests/simple_loops/simple_loops.adb
    :language: ada
    :lines: 6-10
    :lineno-match:
 
 Thus, |GNATprove| checks that property 2 holds but not property 1:
 
-.. literalinclude:: /gnatprove_by_example/results/simple_loops.prove
+.. literalinclude:: /examples/tests/simple_loops/test.out
    :language: none
-   :lines: 2,3
+   :lines: 3-7
 
 Conversely, in the following loop, the loop invariant is true during the first
 iteration and false in all remaining iterations:
 
-.. literalinclude:: /gnatprove_by_example/examples/simple_loops.adb
+.. literalinclude:: /examples/tests/simple_loops/simple_loops.adb
    :language: ada
    :lines: 12-16
    :lineno-match:
 
 Thus, |GNATprove| checks that property 1 holds but not property 2:
 
-.. literalinclude:: /gnatprove_by_example/results/simple_loops.prove
+.. literalinclude:: /examples/tests/simple_loops/test.out
    :language: none
-   :lines: 4,5
+   :lines: 8-13
 
 The following loop shows a case where the loop invariant holds both during the
 first iteration and all remaining iterations:
 
-.. literalinclude:: /gnatprove_by_example/examples/simple_loops.adb
+.. literalinclude:: /examples/tests/simple_loops/simple_loops.adb
    :language: ada
    :lines: 18-22
    :lineno-match:
 
 |GNATprove| checks here that both properties 1 and 2 hold:
 
-.. literalinclude:: /gnatprove_by_example/results/simple_loops.prove
+.. literalinclude:: /examples/tests/simple_loops/test.out
    :language: none
-   :lines: 6,7
+   :lines: 14,15
 
 In general, it is not sufficient that a loop invariant is true for |GNATprove|
 to prove it. The loop invariant should also be `inductive`: it should be
@@ -163,31 +163,31 @@ assuming `only` that the loop invariant held during the last iteration. For
 example, the following loop is the same as the previous one, except the loop
 invariant is true but not inductive:
 
-.. literalinclude:: /gnatprove_by_example/examples/simple_loops.adb
+.. literalinclude:: /examples/tests/simple_loops/simple_loops.adb
    :language: ada
    :lines: 24-28
    :lineno-match:
 
 |GNATprove| cannot check property 2 on that loop:
 
-.. literalinclude:: /gnatprove_by_example/results/simple_loops.prove
+.. literalinclude:: /examples/tests/simple_loops/test.out
    :language: none
-   :lines: 8,9
+   :lines: 16-21
 
 Note that using |CodePeer| static analysis allows here to fully prove the
 loop invariant, which is possible because |CodePeer| generates its own sound
 approximation of loop invariants (see :ref:`Using CodePeer Static Analysis` for
 details):
 
-.. literalinclude:: /gnatprove_by_example/results/simple_loops_cdp.prove
+.. literalinclude:: /examples/tests/simple_loops_cdp/test.out
    :language: none
-   :lines: 7
+   :lines: 15
 
 Note also that not using an assertion (:ref:`Pragma Assert`) instead of a loop
 invariant also allows here to fully prove the corresponding property, by
 relying on :ref:`Automatic Unrolling of Simple For-Loops`:
 
-.. literalinclude:: /gnatprove_by_example/results/simple_loops_unroll.prove
+.. literalinclude:: /examples/tests/simple_loops_unroll/test.out
    :language: none
    :lines: 3
 
@@ -251,14 +251,14 @@ always terminate in Ada) and the absence of run-time errors.
 For example, the while-loops in procedure ``Terminating_Loops`` compute the
 value of ``X - X mod 3`` (or equivalently ``X / 3 * 3``) in variable ``Y``:
 
-.. literalinclude:: /gnatprove_by_example/examples/terminating_loops.adb
+.. literalinclude:: /examples/tests/terminating_loops/terminating_loops.adb
    :language: ada
    :linenos:
 
 |GNATprove| is able to prove both loop variants, as well as absence of run-time
 errors in the subprogram, hence that loops terminate:
 
-.. literalinclude:: /gnatprove_by_example/results/terminating_loops.prove
+.. literalinclude:: /examples/tests/terminating_loops/test.out
    :language: none
 
 Pragma ``Loop_Variant`` may appear anywhere a loop invariant appears. It is
@@ -284,14 +284,14 @@ assumed property holds for analyzing code that follows. For example, consider
 an assumption of the property ``X > 0`` in procedure ``Assume_Then_Assert``,
 followed by an assertion of the same property:
 
-.. literalinclude:: /gnatprove_by_example/examples/assume_then_assert.adb
+.. literalinclude:: /examples/tests/assume_then_assert/assume_then_assert.adb
    :language: ada
    :linenos:
 
 As expected, |GNATprove| does not check the property on line 5, but used it to
 prove that the assertion holds on line 6:
 
-.. literalinclude:: /gnatprove_by_example/results/assume_then_assert.prove
+.. literalinclude:: /examples/tests/assume_then_assert/test.out
    :language: none
 
 |GNATprove| considers that an execution of ``Assume_Then_Assert`` with ``X <=
@@ -318,14 +318,14 @@ code that follows. For example, consider two assertions of the same property
 ``X = 1`` in procedure ``Forgetful_Assert``, separated by a pragma
 ``Assert_And_Cut``:
 
-.. literalinclude:: /gnatprove_by_example/examples/forgetful_assert.adb
+.. literalinclude:: /examples/tests/forgetful_assert/forgetful_assert.adb
    :language: ada
    :linenos:
 
 |GNATprove| proves that the assertion on line 7 holds, but it cannot prove that
 the same assertion on line 12 holds:
 
-.. literalinclude:: /gnatprove_by_example/results/forgetful_assert.prove
+.. literalinclude:: /examples/tests/forgetful_assert/test.out
    :language: none
 
 |GNATprove| *forgets* the exact value of ``X`` after line 9. All it knows is

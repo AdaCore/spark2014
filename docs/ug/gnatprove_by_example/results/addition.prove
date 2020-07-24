@@ -1,5 +1,0 @@
-addition.adb:3:03: info: flow dependencies proved
-addition.adb:4:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First)
-addition.adb:5:14: info: postcondition proved
-addition.adb:5:34: info: overflow check proved
-addition.adb:8:13: info: overflow check proved

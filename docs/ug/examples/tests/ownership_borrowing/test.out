@@ -1,0 +1,17 @@
+
+ownership_borrowing.adb:12:09: object was borrowed at line 9
+   12 |      X.all := X.all + 1;  --  illegal
+      |        ^ here
+
+ownership_borrowing.adb:12:18: object was borrowed at line 9
+   12 |      X.all := X.all + 1;  --  illegal
+      |                 ^ here
+
+ownership_borrowing.adb:13:09: object was borrowed at line 9
+   13 |      X.all := 1;          --  illegal
+      |        ^ here
+
+ownership_borrowing.adb:14:18: object was borrowed at line 9
+   14 |      Tmp   := X.all;      --  illegal
+      |                 ^ here
+gnatprove: error during flow analysis and proof

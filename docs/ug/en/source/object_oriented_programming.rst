@@ -39,7 +39,7 @@ For example, suppose that the ``Logging`` unit introduced in :ref:`Ghost
 Packages` defines a tagged type ``Log_Type`` for logs, with corresponding
 operations:
 
-.. literalinclude:: /gnatprove_by_example/examples/logging.ads
+.. literalinclude:: /examples/tests/logging/logging.ads
    :language: ada
    :linenos:
 
@@ -47,7 +47,7 @@ and that this type is derived in ``Range_Logging.Log_Type`` which additionally
 keeps track of the minimum and maximum values in the log, so that they can be
 accessed in constant time:
 
-.. literalinclude:: /gnatprove_by_example/examples/range_logging.ads
+.. literalinclude:: /examples/tests/range_logging/range_logging.ads
    :language: ada
    :linenos:
 
@@ -55,7 +55,7 @@ accessed in constant time:
 overriding ``Range_Logging.Append_To_Log`` respect the Liskov Substitution
 Principle:
 
-.. literalinclude:: /gnatprove_by_example/results/range_logging.prove
+.. literalinclude:: /examples/tests/range_logging/test.out
    :language: none
 
 Units ``Logging`` and ``Range_Logging`` need not be implemented, or available,
@@ -195,7 +195,7 @@ tagged type. For example, it detects no issues during flow analysis on
 procedure ``Use_Logging`` which initializes parameter ``Log`` and then updates
 it:
 
-.. literalinclude:: /gnatprove_by_example/examples/use_logging.adb
+.. literalinclude:: /examples/tests/use_logging/use_logging.adb
    :language: ada
    :linenos:
 
@@ -208,14 +208,15 @@ those components of ``Log`` that come from the parent type
 then there is no read of uninitialized data. This is in contrast with what
 occurs in procedure ``Use_Logging_Classwide``:
 
-.. literalinclude:: /gnatprove_by_example/examples/use_logging_classwide.adb
+.. literalinclude:: /examples/tests/use_logging_classwide/use_logging_classwide.adb
    :language: ada
    :linenos:
 
-on which |GNATprove| issues an error during flow analysis:
+on which |GNATprove| issues a check message during flow analysis:
 
-.. literalinclude:: /gnatprove_by_example/results/use_logging_classwide.flow
+.. literalinclude:: /examples/tests/use_logging_classwide/test.out
    :language: none
+   :lines: 2-4
 
 Indeed, the call to ``Init_Log`` (a non-dispatching call to
 ``Logging.Init_Log`` due to the conversion on its parameter) only initializes

@@ -1,0 +1,19 @@
+
+increment_loop.adb:4:11: medium: postcondition might fail, cannot prove X = X'Old + N
+    4 |  Post => X = X'Old + N
+      |          ^ here
+  e.g. when N = 1
+        and X = 2
+        and X'Old = 0
+  possible fix: loop at line 7 should mention X in a loop invariant
+    7 |   for I in 1 .. N loop
+      |                   ^ here
+
+increment_loop.adb:8:14: medium: overflow check might fail
+    8 |      X := X + 1;
+      |             ^ here
+  e.g. when X = Integer'Last
+  reason for check: result of addition must fit in a 32-bits machine integer
+  possible fix: loop at line 7 should mention X in a loop invariant
+    7 |   for I in 1 .. N loop
+      |                   ^ here

@@ -1,7 +1,0 @@
-functional_imported.adb:42:10: info: precondition proved
-functional_imported.adb:43:10: info: precondition proved
-functional_imported.adb:45:10: info: precondition proved
-functional_imported.ads:6:03: info: flow dependencies proved
-functional_imported.ads:15:06: info: complete contract cases proved
-functional_imported.ads:15:06: info: disjoint contract cases proved
-functional_imported.ads:34:14: info: postcondition proved

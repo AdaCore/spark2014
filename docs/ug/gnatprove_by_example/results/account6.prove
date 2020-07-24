@@ -1,5 +1,0 @@
-account6.adb:7:31: medium: overflow check might fail
-account6.ads:15:14: info: ceiling priority protocol is respected
-account6.ads:15:14: info: nontermination of task proved
-account6.ads:16:06: info: data dependencies proved
-account6.ads:17:06: info: flow dependencies proved

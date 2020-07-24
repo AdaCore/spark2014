@@ -1,2 +1,0 @@
-check_param_aliasing.adb:8:45: writable actual for "Out_1" overlaps with actual for "Out_2"
-check_param_aliasing.adb:11:45: writable actual for "Out_1" overlaps with actual for "Out_2"

@@ -1,0 +1,10 @@
+
+integrity.adb:26:10: medium: precondition might fail, cannot prove (Invariant)
+   26 |         Update (X);
+      |         ^ here
+  e.g. when Max1 = 0
+        and Max2 = 1
+        and X = 2
+  possible fix: precondition of subprogram at integrity.ads:6 should mention Max1 and Max2
+    6 |   procedure Seen_One (X : Integer) with
+      |   ^ here

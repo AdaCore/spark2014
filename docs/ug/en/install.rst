@@ -60,8 +60,8 @@ on `gnatstudio-<version>-i686-pc-mingw32.exe` and follow the instructions.
 
 .. note::
 
-  If you're using GNAT GPL instead of GNAT Pro, you should run instead
-  the GNAT GPL installer, which installs GNAT Studio.
+  If you're using GNAT Commnunity instead of GNAT Pro, you should run instead
+  the GNAT Commnunity installer, which installs GNAT Studio and SPARK.
 
 Then similarly run the |GNATprove| installer, by e.g. double clicking on
 `spark-<version>-x86-windows-bin.exe`. If you intend to install |GNATprove| in
@@ -86,8 +86,8 @@ Then follow the instructions displayed.
 
 .. note::
 
-  If you're using GNAT GPL instead of GNAT Pro, you should install instead
-  the GNAT GPL package, which installs GNAT Studio.
+  If you're using GNAT Commnunity instead of GNAT Pro, you should install
+  instead the GNAT Commnunity package, which installs GNAT Studio and SPARK.
 
 Then do the same with the SPARK tarball, e.g.::
 

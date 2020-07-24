@@ -1,0 +1,4 @@
+
+swap_bad.adb:1:21: warning: unused initial value of "X"
+    1 |procedure Swap_Bad (X, Y : in out Integer) with
+      |                    ^ here

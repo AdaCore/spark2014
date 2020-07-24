@@ -1,0 +1,28 @@
+predicates.ads:17:31: info: division check proved
+predicates.ads:20:32: info: division check proved
+predicates.ads:23:58: info: division check proved
+predicates.ads:23:71: info: division check proved
+
+predicates.ads:32:19: medium: overflow check might fail
+   32 |         Get_GCD (abs (X), abs (Y))
+      |                  ^ here
+  e.g. when X = Integer'First
+        and Y = 0
+  reason for check: result of absolute value must fit in a 32-bits machine integer
+  possible fix: subprogram at line 30 should mention X in a precondition
+   30 |   function Get_GCD (X, Y : Integer) return Natural is
+      |   ^ here
+
+predicates.ads:32:28: medium: overflow check might fail
+   32 |         Get_GCD (abs (X), abs (Y))
+      |                           ^ here
+  e.g. when Y = Integer'First
+  reason for check: result of absolute value must fit in a 32-bits machine integer
+  possible fix: subprogram at line 30 should mention Y in a precondition
+   30 |   function Get_GCD (X, Y : Integer) return Natural is
+      |   ^ here
+predicates.ads:34:17: info: range check proved
+predicates.ads:36:24: info: overflow check proved
+predicates.ads:38:24: info: overflow check proved
+predicates.ads:50:07: info: range check proved
+predicates.ads:58:89: info: index check proved

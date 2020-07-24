@@ -1,0 +1,32 @@
+
+logging_in_abstract.adb:5:04: warning: variable "Log_In" is read but never assigned
+    5 |   Log_In : Integer with Volatile, Async_Writers, Effective_Reads;
+      |   ^ here
+
+logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log constituent of State"
+   13 |     Refined_Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In))
+      |                                    ^ here
+
+logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log_Size constituent of State"
+   13 |     Refined_Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In))
+      |                                    ^ here
+
+logging_in_abstract.adb:16:28: medium: overflow check might fail
+   16 |      Log_Size := Log_Size + 1;
+      |                           ^ here
+  e.g. when Log_Size = Natural'Last
+  reason for check: result of addition must fit in a 32-bits machine integer
+  possible fix: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition
+    5 |   procedure Get with
+      |   ^ here
+
+logging_in_abstract.adb:17:12: medium: array index check might fail
+   17 |      Log (Log_Size) := Log_In;
+      |           ^ here
+  e.g. when Log_In = 0
+        and Log_Size = 101
+  reason for check: value must be a valid index into the array
+  possible fix: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition
+    5 |   procedure Get with
+      |   ^ here
+logging_in_abstract.ads:6:06: info: data dependencies proved

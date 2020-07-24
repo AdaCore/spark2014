@@ -1,0 +1,2 @@
+bank4.ads:1:06: file "account4.ads" not found
+gnatprove: error during generation of Global contracts

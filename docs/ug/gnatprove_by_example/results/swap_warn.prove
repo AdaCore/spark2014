@@ -1,3 +1,0 @@
-swap_warn.adb:4:04: info: initialization of "Tmp_X" proved
-swap_warn.adb:8:09: high: "Tmp_Y" is not initialized
-swap_warn.adb:8:09: warning: "Tmp_Y" may be referenced before it has a value

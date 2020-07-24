@@ -25,13 +25,13 @@ aspects/pragmas/attributes. It includes in particular:
 * object oriented features (tagged types, dispatching)
 * concurrency features (tasks, protected objects)
 
-In the rest of this chapter, the marker [Ada 2005] (resp. [Ada 2012]) is used
-to denote that a feature defined in Ada 2005 (resp. Ada 2012) is supported in
-|SPARK|, and the marker [Ravenscar] is used to denote that a concurrency
-feature from Ada which belongs to the Ravenscar profile is supported in
-|SPARK|.  The marker [|SPARK|] is used to denote that a feature is specific to
-|SPARK|. Both the |GNAT Pro| compiler and |GNATprove| analyzer support all
-features listed here.
+In the rest of this chapter, the marker [Ada 2005] (resp. [Ada 2012] or [Ada
+202X]) is used to denote that a feature defined in Ada 2005 (resp. Ada 2012 or
+Ada 202X) is supported in |SPARK|, and the marker [Ravenscar/Jorvik] is used to
+denote that a concurrency feature from Ada which belongs to the Ravenscar or
+Jorvik profiles is supported in |SPARK|.  The marker [|SPARK|] is used to
+denote that a feature is specific to |SPARK|. Both the |GNAT Pro| compiler and
+|GNATprove| analyzer support all features listed here.
 
 Some code snippets presented in this section are available in the example
 called ``gnatprove_by_example`` distributed with the |SPARK| toolset. It can be

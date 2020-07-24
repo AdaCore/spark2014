@@ -1,0 +1,8 @@
+count_arr_zero.adb:3:38: info: initialization of "Counter" proved
+count_arr_zero.adb:5:11: info: postcondition proved
+count_arr_zero.adb:13:29: info: overflow check proved
+count_arr_zero.adb:15:30: info: loop invariant initialization proved
+count_arr_zero.adb:15:30: info: loop invariant preservation proved
+count_arr_zero.adb:16:30: info: loop invariant preservation proved
+count_arr_zero.adb:16:30: info: loop invariant initialization proved
+count_arr_zero.adb:16:78: info: index check proved

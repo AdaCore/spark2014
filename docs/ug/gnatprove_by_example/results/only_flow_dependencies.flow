@@ -1,6 +1,0 @@
-only_flow_dependencies.ads:7:06: info: flow dependencies proved
-only_flow_dependencies.ads:10:06: info: flow dependencies proved
-only_flow_dependencies.ads:13:06: info: data dependencies proved
-only_flow_dependencies.ads:14:06: info: flow dependencies proved
-only_flow_dependencies.ads:17:06: info: data dependencies proved
-only_flow_dependencies.ads:18:06: info: flow dependencies proved

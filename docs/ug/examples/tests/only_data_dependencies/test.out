@@ -1,0 +1,34 @@
+
+only_data_dependencies.adb:6:14: medium: overflow check might fail
+    6 |      V := V + X;
+      |             ^ here
+  e.g. when V = Integer'First
+        and X = -1
+  reason for check: result of addition must fit in a 32-bits machine integer
+  possible fix: subprogram at only_data_dependencies.ads:6 should mention X and V in a precondition
+    6 |   procedure Add (X : Integer) with
+      |   ^ here
+
+only_data_dependencies.ads:18:18: medium: missing dependency "X => V"
+   18 |     Depends => (X => Y, Y => X, V => V);
+      |                 ^ here
+
+only_data_dependencies.ads:18:18: medium: missing self-dependency "X => X"
+   18 |     Depends => (X => Y, Y => X, V => V);
+      |                 ^ here
+
+only_data_dependencies.ads:18:26: medium: missing dependency "Y => V"
+   18 |     Depends => (X => Y, Y => X, V => V);
+      |                         ^ here
+
+only_data_dependencies.ads:18:26: medium: missing self-dependency "Y => Y"
+   18 |     Depends => (X => Y, Y => X, V => V);
+      |                         ^ here
+
+only_data_dependencies.ads:18:34: medium: missing dependency "V => X"
+   18 |     Depends => (X => Y, Y => X, V => V);
+      |                                 ^ here
+
+only_data_dependencies.ads:18:34: medium: missing dependency "V => Y"
+   18 |     Depends => (X => Y, Y => X, V => V);
+      |                                 ^ here

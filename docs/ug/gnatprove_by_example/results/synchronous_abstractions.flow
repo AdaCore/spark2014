@@ -1,2 +1,0 @@
-synchronous_abstractions.adb:27:07: warning: initialization of "VV" has no effect
-synchronous_abstractions.ads:9:06: info: data dependencies proved

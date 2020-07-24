@@ -1,3 +1,0 @@
-synchronous_abstractions.adb:6:09: info: ceiling priority protocol is respected
-synchronous_abstractions.adb:6:09: info: nontermination of task proved
-synchronous_abstractions.ads:9:06: info: data dependencies proved

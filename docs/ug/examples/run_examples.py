@@ -40,10 +40,13 @@ class ExamplesTestDriver(DiffTestDriver):
         pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
         gprfiles = glob.glob(pattern)
         assert(len(gprfiles) == 1)
-        self.shell(["gnatprove",
-                    "-f", "-q", "-j0", "-P", gprfiles[0],
-                    "--warnings=on", "--timeout=60"],
-                   catch_error=False)
+        cmd = ["gnatprove",
+               "-P", gprfiles[0],
+               "-f", "-q", "-j0",
+               "--level=2",
+               "--steps=100",
+               "--timeout=60"]
+        self.shell(cmd, catch_error=False)
 
 
 class ExamplesTestsuite(Testsuite):

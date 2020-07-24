@@ -1,0 +1,12 @@
+
+diff.adb:1:20: warning: unused variable "Y"
+    1 |procedure Diff (X, Y : in Natural; Z : out Natural) with
+      |                   ^ here
+
+diff.adb:3:03: medium: missing dependency "null => Y"
+    3 |  Depends => (Z => (X, Y))
+      |  ^ here
+
+diff.adb:3:24: medium: incorrect dependency "Z => Y"
+    3 |  Depends => (Z => (X, Y))
+      |                       ^ here

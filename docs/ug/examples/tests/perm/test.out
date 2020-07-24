@@ -1,0 +1,40 @@
+perm.ads:7:07: info: range check proved
+perm.ads:7:28: info: overflow check proved
+
+perm.ads:11:07: medium: "Occ_Def" is recursive, terminating annotation could be incorrect
+   11 |     (if A'Length = 0 then 0
+      |      ^ here
+perm.ads:12:17: info: index check proved
+perm.ads:12:33: info: subprogram variant proved
+perm.ads:12:42: info: precondition proved
+perm.ads:12:62: info: range check proved
+perm.ads:13:12: info: subprogram variant proved
+perm.ads:13:21: info: precondition proved
+perm.ads:15:14: info: postcondition proved
+perm.ads:15:33: info: range check proved
+perm.ads:21:14: info: postcondition proved
+perm.ads:21:29: info: range check proved
+perm-lemma_subprograms.adb:5:14: info: postcondition proved
+perm-lemma_subprograms.adb:13:14: info: index check proved
+perm-lemma_subprograms.adb:14:25: info: assertion proved
+perm-lemma_subprograms.adb:14:29: info: index check proved
+perm-lemma_subprograms.adb:16:25: info: assertion proved
+perm-lemma_subprograms.adb:16:29: info: index check proved
+perm-lemma_subprograms.adb:19:07: info: precondition proved
+perm-lemma_subprograms.adb:19:15: info: precondition proved
+perm-lemma_subprograms.adb:19:32: info: precondition proved
+perm-lemma_subprograms.adb:25:23: info: precondition proved
+perm-lemma_subprograms.adb:32:10: info: precondition proved
+perm-lemma_subprograms.adb:32:21: info: precondition proved
+perm-lemma_subprograms.adb:34:13: info: index check proved
+perm-lemma_subprograms.adb:35:10: info: precondition proved
+perm-lemma_subprograms.adb:35:18: info: precondition proved
+perm-lemma_subprograms.adb:36:10: info: precondition proved
+perm-lemma_subprograms.adb:36:19: info: precondition proved
+perm-lemma_subprograms.ads:6:20: info: index check proved
+perm-lemma_subprograms.ads:8:39: info: index check proved
+perm-lemma_subprograms.ads:8:47: info: index check proved
+perm-lemma_subprograms.ads:13:39: info: precondition proved
+perm-lemma_subprograms.ads:15:08: info: postcondition proved
+perm-lemma_subprograms.ads:15:19: info: index check proved
+perm-lemma_subprograms.ads:17:18: info: index check proved

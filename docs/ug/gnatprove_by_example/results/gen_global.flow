@@ -1,6 +1,0 @@
-gen_global.adb:18:07: warning: "V" is set by "Set_Global" but not used after the call
-gen_global.adb:18:07: warning: statement has no effect
-gen_global.adb:23:06: info: data dependencies proved
-gen_global.adb:23:28: info: initialization of "V" proved
-gen_global.adb:24:06: info: flow dependencies proved
-gen_global.ads:6:14: warning: subprogram "Do_Nothing" has no effect

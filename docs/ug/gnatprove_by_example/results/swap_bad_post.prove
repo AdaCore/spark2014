@@ -1,1 +1,0 @@
-swap_bad_post.adb:3:25: medium: postcondition might fail, cannot prove Y = X'old (e.g. when X'Old = 0 and Y = 1)

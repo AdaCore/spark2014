@@ -1,6 +1,0 @@
---  list of files with illegal constructs, which cause an error to be raised
-account2.ads
-account2.adb
-bank2.ads
-check_param_aliasing.adb
-possibly_nonreturning.adb

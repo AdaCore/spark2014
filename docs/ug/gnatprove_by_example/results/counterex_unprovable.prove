@@ -1,6 +1,0 @@
-counterex_unprovable.adb:7:16: info: range check proved
-counterex_unprovable.adb:12:12: info: precondition proved
-counterex_unprovable.adb:19:27: info: range check proved
-counterex_unprovable.ads:9:14: info: postcondition proved
-counterex_unprovable.ads:13:14: medium: postcondition might fail, cannot prove X = 2 * X'old (e.g. when X = -1 and X'Old = 0)
-counterex_unprovable.ads:17:14: info: postcondition proved
