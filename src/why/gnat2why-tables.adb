@@ -186,7 +186,7 @@ package body Gnat2Why.Tables is
                     else Find_Rec_Node_For_Variant (Etype (Ty)));
 
          when others =>
-            return Empty;
+            return Types.Empty;
       end case;
    end Find_Rec_Node_For_Variant;
 
@@ -359,12 +359,12 @@ package body Gnat2Why.Tables is
       Def_Node  : constant Node_Id :=
         (if Nkind (Decl_Node) = N_Full_Type_Declaration
          then Type_Definition (Decl_Node)
-         else Empty);
+         else Types.Empty);
 
       Discr : Node_Id :=
         (if Nkind (Decl_Node) in N_Full_Type_Declaration
          then First (Discriminant_Specifications (Decl_Node))
-         else Empty);
+         else Types.Empty);
 
       Components : constant Node_Id :=
         (if Present (Def_Node) then
@@ -374,10 +374,10 @@ package body Gnat2Why.Tables is
                  when N_Derived_Type_Definition =>
                    (if Present (Record_Extension_Part (Def_Node)) then
                       Component_List (Record_Extension_Part (Def_Node))
-                    else Empty),
+                    else Types.Empty),
                  when others =>
                     raise Program_Error)
-         else Empty);
+         else Types.Empty);
 
       Ancestor_Type : constant Entity_Id := Retysp (Etype (E));
 
@@ -388,13 +388,13 @@ package body Gnat2Why.Tables is
          Info.Variant_Info.Insert
            (Defining_Identifier (Discr),
             Component_Info'
-              (Parent_Variant  => Empty,
-               Parent_Var_Part => Empty));
+              (Parent_Variant  => Types.Empty,
+               Parent_Var_Part => Types.Empty));
          Next (Discr);
       end loop;
 
       if Present (Components) then
-         Mark_Component_List (Components, Empty, Empty);
+         Mark_Component_List (Components, Types.Empty, Types.Empty);
       end if;
 
       --  We only store in Components the first version of a field that we
@@ -505,7 +505,7 @@ package body Gnat2Why.Tables is
                while Present (Field) loop
                   Comp_Info (Position).Variant_Info.Insert
                     (Field,
-                     Component_Info'(others => Empty));
+                     Component_Info'(others => Types.Empty));
                   Next_Discriminant (Field);
                end loop;
             end if;
@@ -520,7 +520,7 @@ package body Gnat2Why.Tables is
                   pragma Assert (Component_Is_Visible_In_SPARK (Field));
                   Comp_Info (Position).Variant_Info.Insert
                     (Field,
-                     Component_Info'(others => Empty));
+                     Component_Info'(others => Types.Empty));
                   Comp_Info (Position).Components.Insert (Field);
                   Comp_Info (Position).Visibility.Insert (Field, Regular);
                   Next_Component (Field);
@@ -569,7 +569,7 @@ package body Gnat2Why.Tables is
             Visibility : Component_Visibility renames
               Component_Visibility_Maps.Element (C);
             E_Field    : constant Entity_Id :=
-              (if Is_Type (Field) then Empty
+              (if Is_Type (Field) then Types.Empty
                else Search_Component_By_Name (E, Field));
          begin
 
@@ -636,7 +636,7 @@ package body Gnat2Why.Tables is
             end if;
          end if;
       end loop;
-      return Empty;
+      return Types.Empty;
    end Search_Component_In_Info;
 
    ------------------------------

@@ -159,7 +159,7 @@ package body SPARK_Frame_Conditions is
    begin
       return (if Has_Element (C)
               then Element (C)
-              else Empty);
+              else Types.Empty);
    end Find_Entity;
 
    ------------------------

@@ -1790,7 +1790,7 @@ package body Why.Gen.Pointers is
       if Has_Element (C) then
          return Pointer_Typ_To_Root (C);
       else
-         return Empty;
+         return Standard.Types.Empty;
       end if;
    end Repr_Pointer_Type;
 

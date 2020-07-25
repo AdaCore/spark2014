@@ -1121,7 +1121,7 @@ package body Gnat2Why.Counter_Examples is
                           Get_Entity_Id (True, Comp_Name);
 
                      begin
-                        if Comp /= Empty then
+                        if Comp /= Types.Empty then
                            declare
                               Comp_Ty  : constant Entity_Id :=
                                 Retysp (Etype (Comp));
@@ -1653,7 +1653,7 @@ package body Gnat2Why.Counter_Examples is
       for File_C in Remapped_Cntexmp.Iterate loop
          declare
             Is_Previous         : Boolean;
-            LI_Node             : Node_Id := Empty;
+            LI_Node             : Node_Id := Types.Empty;
             Filename            : constant String :=
               Compute_Filename_Previous (Key (File_C), Is_Previous, LI_Node);
             Pretty_File_Cntexmp : Cntexample_Lines :=

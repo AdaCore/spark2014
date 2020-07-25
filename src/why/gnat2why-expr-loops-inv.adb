@@ -628,13 +628,13 @@ package body Gnat2Why.Expr.Loops.Inv is
          F_Expr_Ty  : constant Entity_Id :=
            Retysp (Etype (Component));
          F_Expr     : constant W_Expr_Id :=
-           New_Ada_Record_Access (Ada_Node => Empty,
+           New_Ada_Record_Access (Ada_Node => Types.Empty,
                                   Name     => Expr,
                                   Domain   => EW_Term,
                                   Field    => Component,
                                   Ty       => Expr_Ty);
          F_At_Entry : constant W_Expr_Id :=
-           New_Ada_Record_Access (Ada_Node => Empty,
+           New_Ada_Record_Access (Ada_Node => Types.Empty,
                                   Name     => At_Entry,
                                   Domain   => EW_Term,
                                   Field    => Component,
@@ -701,7 +701,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                Discrs : constant Natural := Count_Discriminants (Expr_Ty);
                Discr  : Node_Id :=
                  (if Discrs > 0 then First_Discriminant (Expr_Ty)
-                  else Empty);
+                  else Types.Empty);
                Tmps   : W_Identifier_Array (1 .. Discrs);
                Binds  : W_Expr_Array (1 .. Discrs);
                I      : Positive := 1;
@@ -711,7 +711,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Tmps (I) := New_Temp_Identifier
                     (Discr, EW_Abstract (Etype (Discr)));
                   Binds (I) := New_Ada_Record_Access
-                    (Empty, EW_Term, Expr, Discr, Expr_Ty);
+                    (Types.Empty, EW_Term, Expr, Discr, Expr_Ty);
 
                   Insert_Entity (Discr, Tmps (I));
 
@@ -774,7 +774,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                while Present (Index) loop
                   Tmp := New_Temp_Identifier
                     (Typ => Base_Why_Type_No_Bool (Index));
-                  Vars (I) := Binder_Type'(Ada_Node => Empty,
+                  Vars (I) := Binder_Type'(Ada_Node => Types.Empty,
                                            B_Name   => Tmp,
                                            B_Ent    => Null_Entity_Name,
                                            Mutable  => False,
@@ -795,9 +795,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                   E_Expr_Ty        : constant Entity_Id :=
                     Retysp (Component_Type (Expr_Ty));
                   E_Expr           : constant W_Expr_Id :=
-                    New_Array_Access (Empty, Expr, Indices, EW_Term);
+                    New_Array_Access (Types.Empty, Expr, Indices, EW_Term);
                   E_At_Entry       : constant W_Expr_Id :=
-                    New_Array_Access (Empty, At_Entry, Indices, EW_Term);
+                    New_Array_Access (Types.Empty, At_Entry, Indices, EW_Term);
                   Constraints      : constant W_Pred_Id :=
                     Build_Array_Constraints
                       (Status.Write_Constraints, Indices);
@@ -861,10 +861,11 @@ package body Gnat2Why.Expr.Loops.Inv is
                E_Is_Null    : constant W_Expr_Id :=
                  New_Pointer_Is_Null_Access (Expr_Ty, Expr);
                E_Expr       : constant W_Expr_Id :=
-                 New_Pointer_Value_Access (Empty, Expr_Ty, Expr, EW_Term);
+                 New_Pointer_Value_Access
+                   (Types.Empty, Expr_Ty, Expr, EW_Term);
                E_At_Entry   : constant W_Expr_Id :=
                  New_Pointer_Value_Access
-                   (Empty, Expr_Ty, At_Entry, EW_Term);
+                   (Types.Empty, Expr_Ty, At_Entry, EW_Term);
                Value_Status : W_Pred_Id :=
                  Equality_Of_Preserved_Components
                    (Loop_Idx  => Loop_Idx,
@@ -956,10 +957,10 @@ package body Gnat2Why.Expr.Loops.Inv is
       Param_Spec    : constant Node_Id :=
         (if Present (Iteration_Scheme (Loop_Stmt))
          then Loop_Parameter_Specification (Iteration_Scheme (Loop_Stmt))
-         else Empty);
+         else Types.Empty);
       Loop_Index    : constant Entity_Id :=
         (if Present (Param_Spec) then Defining_Identifier (Param_Spec)
-         else Empty);
+         else Types.Empty);
       Is_Reverse    : constant Boolean :=
         Present (Param_Spec)
         and then Reverse_Present (Param_Spec);
@@ -1754,7 +1755,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                         --  This type should never be used.
 
-                        Expected_Type := Empty;
+                        Expected_Type := Types.Empty;
                      end;
 
                   --  Otherwise update Expected_Component in Component_Status

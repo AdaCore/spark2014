@@ -104,10 +104,10 @@ package body Graphs is
       V  : Vertex_Key;
       Id : out Vertex_Id) is
    begin
-      G.Vertices.Append ((Key            => V,
-                          In_Neighbours  => VIS.Empty_Set,
-                          Out_Neighbours => EAM.Empty_Map,
-                          Cluster        => Null_Cluster));
+      G.Vertices.Append (Vertex'(Key            => V,
+                                 In_Neighbours  => VIS.Empty_Set,
+                                 Out_Neighbours => EAM.Empty_Map,
+                                 Cluster        => Null_Cluster));
       Id := G.Vertices.Last_Index;
       G.Key_To_Id.Insert (V, Id);
    end Add_Vertex;
@@ -116,10 +116,10 @@ package body Graphs is
      (G  : in out Graph;
       Id : out Vertex_Id) is
    begin
-      G.Vertices.Append ((Key            => Null_Key,
-                          In_Neighbours  => VIS.Empty_Set,
-                          Out_Neighbours => EAM.Empty_Map,
-                          Cluster        => Null_Cluster));
+      G.Vertices.Append (Vertex'(Key            => Null_Key,
+                                 In_Neighbours  => VIS.Empty_Set,
+                                 Out_Neighbours => EAM.Empty_Map,
+                                 Cluster        => Null_Cluster));
       Id := G.Vertices.Last_Index;
    end Add_Vertex;
 
@@ -127,10 +127,10 @@ package body Graphs is
      (G : in out Graph;
       V : Vertex_Key) is
    begin
-      G.Vertices.Append ((Key            => V,
-                          In_Neighbours  => VIS.Empty_Set,
-                          Out_Neighbours => EAM.Empty_Map,
-                          Cluster        => Null_Cluster));
+      G.Vertices.Append (Vertex'(Key            => V,
+                                 In_Neighbours  => VIS.Empty_Set,
+                                 Out_Neighbours => EAM.Empty_Map,
+                                 Cluster        => Null_Cluster));
       G.Key_To_Id.Insert (V, G.Vertices.Last_Index);
    end Add_Vertex;
 
@@ -629,12 +629,12 @@ package body Graphs is
       R : Graph := Create (G.Default_Colour);
    begin
       for V of G.Vertices loop
-         R.Vertices.Append ((Key            => V.Key,
-                             In_Neighbours  => VIS.Empty_Set,
-                             Out_Neighbours => EAM.Empty_Map,
-                             Cluster        => (if Copy_Clusters
-                                                then V.Cluster
-                                                else Null_Cluster)));
+         R.Vertices.Append (Vertex'(Key            => V.Key,
+                                    In_Neighbours  => VIS.Empty_Set,
+                                    Out_Neighbours => EAM.Empty_Map,
+                                    Cluster        => (if Copy_Clusters
+                                                       then V.Cluster
+                                                       else Null_Cluster)));
       end loop;
       R.Key_To_Id := G.Key_To_Id;
 
@@ -1238,10 +1238,10 @@ package body Graphs is
                           Inserted => Inserted);
 
       if Inserted then
-         G.Vertices.Append ((Key            => V,
-                             In_Neighbours  => VIS.Empty_Set,
-                             Out_Neighbours => EAM.Empty_Map,
-                             Cluster        => Null_Cluster));
+         G.Vertices.Append (Vertex'(Key            => V,
+                                    In_Neighbours  => VIS.Empty_Set,
+                                    Out_Neighbours => EAM.Empty_Map,
+                                    Cluster        => Null_Cluster));
       end if;
    end Include_Vertex;
 

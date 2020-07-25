@@ -78,7 +78,7 @@ package body SPARK_Util is
    begin
       return (if Has_Element (C)
               then Element (C)
-              else Empty);
+              else Standard.Types.Empty);
    end Partial_View;
 
    ------------------
@@ -146,7 +146,7 @@ package body SPARK_Util is
    begin
       return (if Has_Element (Primitive)
               then Element (Primitive)
-              else Empty);
+              else Standard.Types.Empty);
    end Dispatching_Contract;
 
    --------------------------------

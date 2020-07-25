@@ -7156,7 +7156,7 @@ package body Gnat2Why.Expr is
                Nd  := Entity (Expr);
             else
                Typ := Type_Of_Node (Expr);
-               Nd  := Empty;
+               Nd  := Types.Empty;
             end if;
 
             if Model_Trace /= "" then
@@ -7236,7 +7236,7 @@ package body Gnat2Why.Expr is
                Nd  := Entity (N);
             else
                Typ := Type_Of_Node (Etype (N));
-               Nd  := Empty;
+               Nd  := Types.Empty;
             end if;
 
             if Present (Enclosing_Contract_Case (N)) and then
@@ -9857,7 +9857,7 @@ package body Gnat2Why.Expr is
                Typ    : constant Node_Id := First_Index
                  (Retysp (Etype (Etype (Expr))));
                W_Typ  : constant W_Type_Id :=
-                 (if Typ = Empty then EW_Int_Type else
+                 (if Typ = Standard.Types.Empty then EW_Int_Type else
                      Base_Why_Type_No_Bool (Typ));
             begin
                A1 :=
@@ -10054,7 +10054,7 @@ package body Gnat2Why.Expr is
                        then EW_Abstract (Element (Typ), Relaxed_Init => True)
                        else Type_Of_Node (Element (Typ))));
                B        : constant Binder_Type :=
-                 (Ada_Node => Empty,
+                 (Ada_Node => Standard.Types.Empty,
                   B_Name   => Ident,
                   B_Ent    => Null_Entity_Name,
                   Mutable  => False,
@@ -10128,14 +10128,14 @@ package body Gnat2Why.Expr is
                   if Needs_Bounds then
                      Bnd_Args (2 * Dim - 1) := F_Expr;
                      Bnd_Params (2 * Dim - 1) :=
-                       (Ada_Node => Empty,
+                       (Ada_Node => Standard.Types.Empty,
                         B_Name   => +F_Expr,
                         B_Ent    => Null_Entity_Name,
                         Mutable  => False,
                         Labels   => <>);
                      Bnd_Args (2 * Dim) := L_Expr;
                      Bnd_Params (2 * Dim) :=
-                       (Ada_Node => Empty,
+                       (Ada_Node => Standard.Types.Empty,
                         B_Name   => +L_Expr,
                         B_Ent    => Null_Entity_Name,
                         Mutable  => False,

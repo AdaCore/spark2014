@@ -393,7 +393,7 @@ package body Flow.Control_Flow_Graph is
 
    No_Context : constant Context :=
      Context'(Current_Loops          => Node_Sets.Empty_Set,
-              Active_Loop            => Empty,
+              Active_Loop            => Types.Empty,
               In_Nested_Package      => False,
               Termination_Proved     => False,
               Entry_References       => Node_Graphs.Empty_Map,
@@ -2889,7 +2889,7 @@ package body Flow.Control_Flow_Graph is
 
          Null_Target : constant Target := (Valid => False);
 
-         Current_Loop : Node_Id       := Empty;
+         Current_Loop : Node_Id       := Types.Empty;
          Active_Loops : Node_Sets.Set := Node_Sets.Empty_Set;
 
          Lc : constant Graph_Connections :=
@@ -4522,7 +4522,7 @@ package body Flow.Control_Flow_Graph is
                      Init_Item : constant Entity_Id :=
                        (if Present (The_Out)
                         then Get_Direct_Mapping_Id (The_Out)
-                        else Empty);
+                        else Types.Empty);
 
                      V : Flow_Graphs.Vertex_Id;
 
