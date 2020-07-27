@@ -68,19 +68,16 @@ setup:	$(GENERATED_RST_FILES)
 	echo "version = '$(VERSION)'" > ../sphinx_support/confvars.py
 
 clean:
-	(cd gnatprove_by_example; make -f Makefile.examples clean)
 	-rm -rf $(BUILDDIR)/*
 	gprclean -P table_generator/table_generator
 	rm -f $(GENERATED_RST_FILES)
 
 generate:
 	@echo "Generating GNATprove results..."
-	#(cd gnatprove_by_example; make -f Makefile.examples gnatprove results)
 	(cd examples; ./run_examples.py)
 
 generate-nightly:
 	@echo "Generating GNATprove results..."
-	#(cd gnatprove_by_example; make -f Makefile.examples clean gnatprove results clean)
 	(cd examples; ./run_examples.py)
 
 html: setup
