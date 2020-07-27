@@ -19,7 +19,7 @@ update_lists.adb:30:13: info: precondition proved (Trivial: 1 VC)
 update_lists.adb:30:26: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists.adb:31:13: info: precondition proved (Trivial: 1 VC)
 update_lists.adb:34:13: info: precondition proved (Trivial: 1 VC)
-update_lists.adb:34:28: warning: unused assignment to "Next_Rover"
+update_lists.adb:34:28: warning: "Next_Rover" is set by "Assign" but not used after the call
 update_lists.adb:37:10: info: precondition proved (Trivial: 1 VC)
 update_lists.adb:38:10: info: precondition proved (Trivial: 1 VC)
 update_lists.adb:38:29: medium: pointer dereference check might fail (e.g. when Prev = null) [possible explanation: call at line 37 should mention Target (for argument Prev) in a postcondition]

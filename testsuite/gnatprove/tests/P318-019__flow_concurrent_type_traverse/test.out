@@ -1,6 +1,6 @@
 p.adb:15:07: info: precondition proved (Trivial: 1 VC)
+p.adb:15:07: warning: "Y" is set by "Proc" but not used after the call
 p.adb:15:07: warning: statement has no effect
-p.adb:15:07: warning: unused assignment to "Y"
 p.adb:37:07: info: precondition proved (Trivial: 1 VC)
 p.ads:3:14: medium: the task might terminate, which is not allowed in SPARK
 p.ads:11:14: warning: subprogram "PP" has no effect

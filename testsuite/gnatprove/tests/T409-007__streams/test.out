@@ -26,12 +26,12 @@ streamable_types.adb:76:24: medium: overflow check might fail (e.g. when Item = 
 streamable_types.adb:76:31: medium: overflow check might fail (e.g. when Buffer = (others => 57) and Item = 214748364) [possible explanation: call at line 70 should mention Item (for argument Buffer) in a postcondition]
 streamable_types.adb:80:07: warning: initialization of "Len" has no effect
 streamable_types.adb:82:07: info: precondition proved (Trivial: 1 VC)
-streamable_types.adb:82:07: warning: unused assignment to "Last"
+streamable_types.adb:82:07: warning: "Last" is set by "Skip_Spaces" but not used after the call
 streamable_types.adb:84:07: info: precondition proved (Trivial: 1 VC)
 streamable_types.adb:87:10: medium: exception might be raised
 streamable_types.adb:90:07: info: precondition proved (Trivial: 1 VC)
-streamable_types.adb:90:07: warning: unused assignment to "Buffer"
-streamable_types.adb:90:07: warning: unused assignment to "Last"
+streamable_types.adb:90:07: warning: "Buffer" is set by "Read_Value" but not used after the call
+streamable_types.adb:90:07: warning: "Last" is set by "Read_Value" but not used after the call
 streamable_types.ads:12:21: info: initialization of "Item" proved
 streamable_types.ads:14:04: info: initialization of "V" proved
 streamable_types.ads:14:04: medium: null exclusion check might fail

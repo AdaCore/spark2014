@@ -11,42 +11,34 @@
 <theory name="Foo__double_tests__not_so_associative__subprogram_def">
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.1" expl="precondition">
+  <goal name="def&#39;vc.0" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="411773"/></proof>
   <proof prover="2"><result status="unknown" steps="10924"/></proof>
   </goal>
-  <goal name="def&#39;vc.2" expl="precondition">
+  <goal name="def&#39;vc.1" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="728101"/></proof>
   <proof prover="2"><result status="unknown" steps="17257"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="precondition">
+  <goal name="def&#39;vc.2" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="1018335"/></proof>
   <proof prover="2"><result status="unknown" steps="250520"/></proof>
   </goal>
-  <goal name="def&#39;vc.4" expl="precondition">
+  <goal name="def&#39;vc.3" expl="precondition">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450211"/></proof>
   <proof prover="2"><result status="unknown" steps="365002"/></proof>
   </goal>
-  <goal name="def&#39;vc.5" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.4" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.6" expl="assertion">
+  <goal name="def&#39;vc.5" expl="assertion">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="1292896"/></proof>
   <proof prover="2"><result status="unknown" steps="32482"/></proof>
-  </goal>
-  <goal name="def&#39;vc.7" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
   </goal>
  </transf>
  </goal>

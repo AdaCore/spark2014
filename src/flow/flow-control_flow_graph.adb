@@ -4090,7 +4090,7 @@ package body Flow.Control_Flow_Graph is
                --  of an access type and thus in flow they are represented as
                --  single "blobs".
 
-               if Is_Anonymous_Access_Type (Get_Type (E, FA.B_Scope))
+               if Is_Anonymous_Access_Object_Type (Get_Type (E, FA.B_Scope))
                  and then not Is_Access_Constant (Get_Type (E, FA.B_Scope))
                then
                   Ctx.Borrowers.Append (N);
@@ -5586,7 +5586,25 @@ package body Flow.Control_Flow_Graph is
 
          when N_Entry_Call_Statement     |
               N_Procedure_Call_Statement =>
-            Do_Call_Statement (N, FA, CM, Ctx);
+
+            --  ??? currently we do ignore calls through access to subprograms
+
+            if Nkind (Name (N)) = N_Explicit_Dereference then
+               declare
+                  V : Flow_Graphs.Vertex_Id;
+               begin
+                  Add_Vertex
+                    (FA,
+                     Direct_Mapping_Id (N),
+                     Make_Aux_Vertex_Attributes
+                       (E_Loc     => N,
+                        Execution => Normal_Execution),
+                     V);
+                  CM.Insert (Union_Id (N), Trivial_Connection (V));
+               end;
+            else
+               Do_Call_Statement (N, FA, CM, Ctx);
+            end if;
 
          when N_Exception_Declaration          |
               N_Exception_Renaming_Declaration =>
@@ -6318,6 +6336,7 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Max_Queue_Length
             | Pragma_No_Elaboration_Code_All
             | Pragma_No_Heap_Finalization
+            | Pragma_No_Inline
             | Pragma_No_Tagged_Streams
             | Pragma_Overflow_Mode
             | Pragma_Post
@@ -6428,7 +6447,6 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Main_Storage
             | Pragma_Memory_Size
             | Pragma_No_Body
-            | Pragma_No_Inline
             | Pragma_No_Run_Time
             | Pragma_No_Strict_Aliasing
             | Pragma_Obsolescent

@@ -1,5 +1,5 @@
+gen_refined_global.adb:14:07: warning: "V" constituent of "State" is set by "Set_Global" but not used after the call
 gen_refined_global.adb:14:07: warning: statement has no effect
-gen_refined_global.adb:14:07: warning: unused assignment to "V" constituent of "State"
 gen_refined_global.ads:5:14: info: initialization of "V" constituent of "State" proved
 gen_refined_global.ads:6:06: info: data dependencies proved
 gen_refined_global.ads:8:14: info: initialization of "V" constituent of "State" proved

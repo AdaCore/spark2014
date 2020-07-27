@@ -11,7 +11,7 @@ my_package.adb:56:26: info: initialization of "X" proved
 my_package.adb:61:04: warning: analyzing unreferenced procedure "Initialize_X"
 my_package.adb:61:28: info: initialization of "X" proved
 my_package.adb:64:07: warning: statement has no effect
-my_package.adb:64:19: warning: unused assignment to "Y"
+my_package.adb:64:19: warning: "Y" is set by "Set_To_One" but not used after the call
 my_package.adb:68:04: warning: analyzing unreferenced procedure "Initialize_X2"
 my_package.adb:68:29: warning: unused initial value of "X"
 my_package.adb:73:04: warning: analyzing unreferenced procedure "Do_Nothing"
@@ -37,10 +37,10 @@ my_package.adb:202:07: warning: initialization of "A" has no effect
 my_package.adb:205:20: high: formal parameter "X" and global "Y" are aliased (SPARK RM 6.4.2)
 my_package.adb:207:07: warning: statement has no effect
 my_package.adb:207:20: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
-my_package.adb:207:23: warning: unused assignment to "Z"
+my_package.adb:207:23: warning: "Z" is set by "Move_X_To_Y" but not used after the call
 my_package.adb:210:21: high: formal parameter "Y" and global "XX" are aliased (SPARK RM 6.4.2)
 my_package.adb:211:21: high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
 my_package.adb:228:07: warning: statement has no effect
-my_package.adb:228:13: warning: unused assignment to "A"
-my_package.adb:228:20: warning: unused assignment to "A"
+my_package.adb:228:13: warning: "A" is set by "Swap" but not used after the call
+my_package.adb:228:20: warning: "A" is set by "Swap" but not used after the call
 my_package.ads:8:22: info: initialization of "Found" proved

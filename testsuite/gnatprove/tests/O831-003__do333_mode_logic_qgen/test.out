@@ -604,8 +604,8 @@ no_higher_event_1.adb:148:07: info: initialization of "No_Higher_No_Higher_Below
 no_higher_event_1.adb:149:07: info: initialization of "No_Higher_Event_Than_ALTSEL_Track_Cond_Met" proved
 no_higher_event_1.adb:150:07: info: initialization of "No_Higher_No_Higher_Below_15" proved
 no_higher_event_1.adb:151:07: info: initialization of "No_Higher_Event_Than_ALTSEL_Capture_Cond_Met" proved
-no_higher_event_1.adb:309:72: warning: unused assignment to "No_Higher_No_Higher"
-no_higher_event_1.adb:317:73: warning: unused assignment to "No_Higher_No_Higher_1"
+no_higher_event_1.adb:309:72: warning: "No_Higher_No_Higher" is set by "comp" but not used after the call
+no_higher_event_1.adb:317:73: warning: "No_Higher_No_Higher_1" is set by "comp" but not used after the call
 no_higher_event_1.adb:378:26: info: unrolling loop
 no_higher_event_1.adb:379:21: medium: "Bus_Creator_out1" might not be initialized
 no_higher_event_1.ads:19:43: info: initialization of "O" proved

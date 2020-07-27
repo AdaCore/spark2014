@@ -1,4 +1,4 @@
-angles-hall.adb:14:15: warning: unused assignment to "Position"
+angles-hall.adb:14:15: warning: "Position" is set by "Update" but not used after the call
 angles-hall.ads:3:14: warning: "X" constituent of "State" is not modified, could be INPUT
 angles-hall.ads:3:22: high: "Position" is not initialized in "Update"
 angles-hall.ads:3:22: warning: unused variable "Position"

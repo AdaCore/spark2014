@@ -1,5 +1,5 @@
-package Pupils with SPARK_Mode
-is
+package Pupils with SPARK_Mode is
+  pragma Unevaluated_Use_Of_Old(Allow);
   MaxPupils: constant Natural := 250;
 
   subtype Percentage is Natural range 0..100;

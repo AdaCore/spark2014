@@ -13,13 +13,9 @@ minmax.adb:47:22: info: assertion proved (CVC4: 1 VC)
 minmax.adb:51:06: info: data dependencies proved
 minmax.adb:51:28: info: initialization of "MinT" proved
 minmax.adb:51:34: info: initialization of "MaxT" proved
-minmax.adb:56:16: info: range check proved (CVC4: 1 VC)
-minmax.adb:57:16: info: range check proved (CVC4: 1 VC)
 minmax.adb:58:22: info: assertion proved (CVC4: 1 VC)
 minmax.adb:59:22: info: assertion proved (CVC4: 1 VC)
-minmax.adb:64:16: info: range check proved (CVC4: 1 VC)
 minmax.adb:64:27: medium: overflow check might fail (e.g. when X = 1 and Y = T'Last)
-minmax.adb:65:16: info: range check proved (CVC4: 1 VC)
 minmax.adb:65:24: info: overflow check proved (CVC4: 1 VC)
 minmax.adb:66:22: info: assertion proved (CVC4: 1 VC)
 minmax.adb:67:22: info: assertion proved (CVC4: 1 VC)

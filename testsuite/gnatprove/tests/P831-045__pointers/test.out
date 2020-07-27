@@ -36,26 +36,26 @@ pointers.ads:54:09: "Int_Cst_Ptr" is not allowed in SPARK (due to general access
 pointers.ads:54:09: violation of aspect SPARK_Mode at line 2
 pointers.ads:70:09: general access type is not allowed in SPARK
 pointers.ads:70:09: violation of aspect SPARK_Mode at line 2
-pointers2.adb:31:16: insufficient permission for "Y"
+pointers2.adb:31:16: "Y" is not readable
 pointers2.adb:31:16: object was moved at line 30
 pointers2.adb:36:09: warning: unused assignment
-pointers2.adb:37:12: insufficient permission for "Y"
+pointers2.adb:37:12: "Y" is not readable
 pointers2.adb:37:12: object was moved at line 36
-pointers2.ads:6:14: insufficient permission for "Y" when returning from "Bad_Swap"
 pointers2.ads:6:14: object was moved at pointers2.adb:6
+pointers2.ads:6:14: return from "Bad_Swap" with moved value for "Y"
 pointers2.ads:6:24: warning: unused initial value of "X"
 pointers2.ads:6:27: warning: "Y" is not modified, could be IN
-pointers2.ads:12:14: insufficient permission for "Y" when returning from "Bad_Swap_Global"
 pointers2.ads:12:14: object was moved at pointers2.adb:18
+pointers2.ads:12:14: return from "Bad_Swap_Global" with moved value for "Y"
 pointers2.ads:13:06: info: data dependencies proved
 pointers2.ads:13:28: warning: unused initial value of "X"
 pointers2.ads:13:31: warning: "Y" is not modified, could be INPUT
 pointers2.ads:16:06: info: data dependencies proved
-pointers2.ads:18:14: insufficient permission for "Y" when returning from "Bad_Borrow"
 pointers2.ads:18:14: object was moved at pointers2.adb:30
+pointers2.ads:18:14: return from "Bad_Borrow" with moved value for "Y"
 pointers2.ads:18:26: warning: unused initial value of "X"
-pointers2.ads:20:14: insufficient permission for "Y" when returning from "Bad_Move"
 pointers2.ads:20:14: object was moved at pointers2.adb:36
+pointers2.ads:20:14: return from "Bad_Move" with moved value for "Y"
 pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
 simple.adb:6:09: general access type is not allowed in SPARK
@@ -79,12 +79,14 @@ test.adb:11:09: violation of aspect SPARK_Mode at line 7
 test.adb:13:04: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
 test.adb:13:04: violation of aspect SPARK_Mode at line 7
 test.adb:20:12: warning: variable "varPtr2" is read but never assigned
+test.adb:24:30: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+test.adb:24:30: violation of aspect SPARK_Mode at line 7
 test.adb:28:08: general access type is not allowed in SPARK
 test.adb:28:08: violation of aspect SPARK_Mode at line 7
 test.adb:64:09: warning: variable "X" is read but never assigned
 test.adb:78:03: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:78:03: violation of aspect SPARK_Mode at line 7
-test.adb:78:08: attribute "Access" is not allowed in SPARK
+test.adb:78:08: attribute "Access" on object is not allowed in SPARK
 test.adb:78:08: violation of aspect SPARK_Mode at line 7
 test.adb:84:08: warning: "B" may be null
 test.adb:86:11: warning: "x0" may be referenced before it has a value

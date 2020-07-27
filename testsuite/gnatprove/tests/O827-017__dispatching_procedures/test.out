@@ -2,20 +2,20 @@ call_dispatch.adb:4:04: warning: initialization of "X2" has no effect
 call_dispatch.adb:7:04: warning: initialization of "V2" has no effect
 call_dispatch.adb:19:04: info: precondition proved (CVC4: 1 VC)
 call_dispatch.adb:19:04: info: tag check proved (CVC4: 2 VC)
-call_dispatch.adb:19:04: warning: unused assignment to "A2"
-call_dispatch.adb:19:04: warning: unused assignment to "C2"
-call_dispatch.adb:19:23: warning: unused assignment to "Y2"
-call_dispatch.adb:19:35: warning: unused assignment to "Z2"
+call_dispatch.adb:19:04: warning: "A2" is set by "P" but not used after the call
+call_dispatch.adb:19:04: warning: "C2" is set by "P" but not used after the call
+call_dispatch.adb:19:23: warning: "Y2" is set by "P" but not used after the call
+call_dispatch.adb:19:35: warning: "Z2" is set by "P" but not used after the call
 call_dispatch.adb:20:19: info: assertion proved (CVC4: 1 VC)
 call_dispatch.adb:21:19: info: assertion proved (CVC4: 1 VC)
 call_dispatch.adb:22:04: info: precondition proved (CVC4: 1 VC)
 call_dispatch.adb:22:04: info: tag check proved (CVC4: 2 VC)
-call_dispatch.adb:22:23: warning: unused assignment to "Y2"
-call_dispatch.adb:22:27: warning: unused assignment to "Y3"
-call_dispatch.adb:22:35: warning: unused assignment to "Z2"
-call_dispatch.adb:22:39: warning: unused assignment to "Z3"
-call_dispatch.adb:22:47: warning: unused assignment to "W2"
-call_dispatch.adb:22:51: warning: unused assignment to "W3"
+call_dispatch.adb:22:23: warning: "Y2" is set by "P" but not used after the call
+call_dispatch.adb:22:27: warning: "Y3" is set by "P" but not used after the call
+call_dispatch.adb:22:35: warning: "Z2" is set by "P" but not used after the call
+call_dispatch.adb:22:39: warning: "Z3" is set by "P" but not used after the call
+call_dispatch.adb:22:47: warning: "W2" is set by "P" but not used after the call
+call_dispatch.adb:22:51: warning: "W3" is set by "P" but not used after the call
 call_dispatch.adb:23:19: info: assertion proved (CVC4: 1 VC)
 call_dispatch.adb:24:19: info: assertion proved (CVC4: 1 VC)
 call_dispatch.adb:25:19: info: assertion proved (CVC4: 1 VC)

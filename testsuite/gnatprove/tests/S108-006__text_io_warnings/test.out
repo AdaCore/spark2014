@@ -84,6 +84,6 @@ text_io_warnings.adb:131:04: info: precondition proved (CVC4: 2 VC)
 text_io_warnings.adb:131:22: info: range check proved (CVC4: 4 VC)
 text_io_warnings.adb:133:14: info: range check proved (CVC4: 4 VC)
 text_io_warnings.adb:135:04: info: precondition proved (CVC4: 1 VC)
-text_io_warnings.adb:135:12: warning: unused assignment to "Source"
+text_io_warnings.adb:135:12: warning: "Source" is set by "Delete" but not used after the call
 text_io_warnings.adb:136:04: info: precondition proved (CVC4: 1 VC)
-text_io_warnings.adb:136:11: warning: unused assignment to "Target"
+text_io_warnings.adb:136:11: warning: "Target" is set by "close" but not used after the call

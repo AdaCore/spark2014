@@ -1,4 +1,4 @@
-p.adb:7:10: insufficient permission on dereference from "C"
-p.adb:7:10: object was declared as not writeable at line 5
+p.adb:7:10: object was declared as not writable at line 5
+p.adb:7:10: part of dereference from "C" is not writable
 p.ads:10:31: warning: "X" is not modified, could be of access constant type
 gnatprove: error during flow analysis and proof

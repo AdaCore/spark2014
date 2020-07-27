@@ -18,4 +18,4 @@ cascade.adb:20:07: warning: unused assignment
 cascade.adb:20:12: medium: overflow check might fail (e.g. when T3 = 1073741824)
 cascade.adb:21:07: warning: unused assignment
 cascade.adb:23:04: warning: statement has no effect
-cascade.adb:23:24: warning: unused assignment to "Err"
+cascade.adb:23:24: warning: "Err" is set by "Link_Output" but not used after the call

@@ -770,11 +770,11 @@ is
 
          --  Remove packet from the Send_Queue and bump SND_NXT
 
-         pragma Warnings (Off, "unused assignment to ""Seg""");
+         pragma Warnings (Off, """Seg"" is set by ""Remove_Packet"" but not used after the call");
          --  Value discarded
          Buffers.Remove_Packet
            (Buffers.Transport, TPCBs (PCB).Send_Queue, Seg);
-         pragma Warnings (On, "unused assignment to ""Seg""");
+         pragma Warnings (On, """Seg"" is set by ""Remove_Packet"" but not used after the call");
 
          TPCBs (PCB).SND_NXT := TPCBs (PCB).SND_NXT + Seg_Len;
 
@@ -1137,13 +1137,13 @@ is
          TCPH.Set_TCPH_Seq_Num (Thdr, Seq_Num);
 
          Buffers.Set_Packet_Info (Buf, Thdr);
-         pragma Warnings (Off, "unused assignment to ""TPCB""");
+         pragma Warnings (Off, """TPCB"" is set by ""TCP_Send_Segment"" but not used after the call");
          --  Transient control block
          TCP_Send_Segment
            (Tbuf       => Buf,
             IPCB       => IPCB,
             TPCB       => TPCB);
-         pragma Warnings (On, "unused assignment to ""TPCB""");
+         pragma Warnings (On, """TPCB"" is set by ""TCP_Send_Segment"" but not used after the call");
          Buffers.Buffer_Blind_Free (Buf);
          Err := AIP.NOERR;
       end if;
@@ -2915,7 +2915,7 @@ is
                   Ack := False;
                end if;
 
-               pragma Warnings (Off, "unused assignment to ""Err""");
+               pragma Warnings (Off, """Err"" is set by ""TCP_Send_Rst"" but not used after the call");
                --  Ignore error from output routine
                TCP_Send_Rst
                  (Src_IP   => IPH.IPH_Dst_Address (Seg.Ihdr),
@@ -2926,16 +2926,16 @@ is
                   Seq_Num  => Seq_Num,
                   Ack_Num  => Ack_Num,
                   Err      => Err);
-               pragma Warnings (On, "unused assignment to ""Err""");
+               pragma Warnings (On, """Err"" is set by ""TCP_Send_Rst"" but not used after the call");
             end if;
 
          else
             --  Over to actual TCP FSM
 
-            pragma Warnings (Off, "unused assignment to ""Err""");
+            pragma Warnings (Off, """Err"" is set by ""TCP_Receive"" but not used after the call");
             --  Ignore error from upper layer
             TCP_Receive (PCB, Seg, Err);
-            pragma Warnings (On, "unused assignment to ""Err""");
+            pragma Warnings (On, """Err"" is set by ""TCP_Receive"" but not used after the call");
          end if;
       end if;
    end TCP_Input;

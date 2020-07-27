@@ -26,16 +26,16 @@ def edit_file():
 
 
 # first call cvc4 to get rid of "easy" VCs. This call is removed.
-print "======================================="
+print("=======================================")
 # first call to Coq, to produce a VC for the unproved postcondition
 prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
-# "edit" the proof, in this case the proof is simply "admit"
+# "edit" the proof, in this case the proof is simply "admit")
 edit_proof()
-print "======================================="
+print("=======================================")
 # rerun gnatprove with Coq again, to check the proof; the coq proof should be
 # proved now.
 prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
-print "======================================="
+print("=======================================")
 # now edit the source file, we want to know if gnatprove can still associate
 # the VC with the proof. In fact here the file modification makes the VC
 # unprovable in principle, but our "admit" proof above will still prove it. As
@@ -46,6 +46,6 @@ edit_file()
 sleep_on_windows(4)
 # run gnatprove with Coq again to check proof
 prove_all(opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
-print "======================================="
+print("=======================================")
 # run gnatprove again with cvc4 to see full results
 prove_all(counterexample=False)

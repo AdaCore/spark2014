@@ -25,17 +25,17 @@
 
 with Ada.Characters.Handling;    use Ada.Characters.Handling;
 with Ada.Containers;             use Ada.Containers;
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Common_Containers;          use Common_Containers;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
-with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
-with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Stand;                      use Stand;
+with String_Utils;               use String_Utils;
 with VC_Kinds;                   use VC_Kinds;
 with Why.Atree.Accessors;        use Why.Atree.Accessors;
 with Why.Atree.Builders;         use Why.Atree.Builders;
@@ -68,6 +68,7 @@ package body Why.Atree.Modules is
    procedure Init_Real_From_Int_Module;
    procedure Init_Real_Minmax_Module;
    procedure Init_Real_Power_Module;
+   procedure Init_Subprogram_Access_Module;
 
    procedure Insert_Why_Symbols (E : Entity_Id);
    --  For the type entity E, add all the Why symbols which can be used for
@@ -299,6 +300,26 @@ package body Why.Atree.Modules is
       end if;
    end E_Rep_Module;
 
+   ------------------------
+   -- Get_Logic_Function --
+   ------------------------
+
+   function Get_Logic_Function (E : Entity_Id) return W_Identifier_Id is
+      Name : constant Symbol := Get_Profile_Theory_Name (E);
+   begin
+      return M_Subprogram_Profiles (Name).Call_Id;
+   end Get_Logic_Function;
+
+   ------------------------------
+   -- Get_Logic_Function_Guard --
+   ------------------------------
+
+   function Get_Logic_Function_Guard (E : Entity_Id) return W_Identifier_Id is
+      Name : constant Symbol := Get_Profile_Theory_Name (E);
+   begin
+      return M_Subprogram_Profiles (Name).Pred_Id;
+   end Get_Logic_Function_Guard;
+
    ---------------------
    -- Get_Module_Name --
    ---------------------
@@ -307,6 +328,44 @@ package body Why.Atree.Modules is
    begin
       return Img (Module_Get_Name (+M));
    end Get_Module_Name;
+
+   -----------------------------
+   -- Get_Profile_Theory_Name --
+   -----------------------------
+
+   function Get_Profile_Theory_Name (E : Entity_Id) return Symbol is
+      Name      : Unbounded_String :=
+        To_Unbounded_String ("profile");
+      Type_Name : Unbounded_String;
+      Mode_Name : Unbounded_String;
+      Param     : Entity_Id := First_Formal (E);
+   begin
+      while Present (Param) loop
+         Mode_Name := To_Unbounded_String
+           (case Formal_Kind (Ekind (Param)) is
+               when E_In_Parameter     => "__In",
+               when E_Out_Parameter    => "__Out",
+               when E_In_Out_Parameter => "__InOut");
+         Type_Name := To_Unbounded_String
+           ("__" &
+              Capitalize_First
+              (Full_Name (Retysp (Etype (Param)))));
+
+         Name := Name & Mode_Name & Type_Name;
+
+         Next_Formal (Param);
+      end loop;
+
+      if Ekind (E) = E_Function or else Is_Function_Type (E) then
+         Type_Name := (To_Unbounded_String
+                       ("__Return__" &
+                            Capitalize_First
+                            (Full_Name (Retysp (Etype (E))))));
+         Name := Name & Type_Name;
+      end if;
+
+      return NID (To_String (Name));
+   end Get_Profile_Theory_Name;
 
    ----------------
    -- Initialize --
@@ -373,6 +432,7 @@ package body Why.Atree.Modules is
       Init_Real_Power_Module;
       Init_Real_Abs_Module;
       Init_Real_Minmax_Module;
+      Init_Subprogram_Access_Module;
       Init_Labels;
       --  modules of "ada__model" file
 
@@ -2125,6 +2185,40 @@ package body Why.Atree.Modules is
                         Typ    => EW_Real_Type);
    end Init_Real_Power_Module;
 
+   -----------------------------------
+   -- Init_Subprogram_Access_Module --
+   -----------------------------------
+
+   procedure Init_Subprogram_Access_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Subprogram_Pointer_Rep");
+   begin
+      M_Subprogram_Access.Module := M;
+      M_Subprogram_Access.Subprogram_Type :=
+        New_Type (Type_Kind  => EW_Builtin,
+                  Name       =>
+                    New_Name (Symb => NID ("__subprogram"), Module => M),
+                  Is_Mutable => False);
+      M_Subprogram_Access.Access_Rep_Type :=
+        New_Name (Symb => NID ("__rep"), Module => M);
+      M_Subprogram_Access.Rec_Is_Null :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("__is_null_pointer"),
+                        Typ    => EW_Bool_Type);
+      M_Subprogram_Access.Rec_Value :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("__pointer_value"),
+                        Typ    => M_Subprogram_Access.Subprogram_Type);
+      M_Subprogram_Access.Rec_Value_Prog :=
+        New_Identifier (Module => M,
+                        Domain => EW_Prog,
+                        Symb   => NID ("__pointer_value_"),
+                        Typ    => M_Subprogram_Access.Subprogram_Type);
+   end Init_Subprogram_Access_Module;
+
    -------------------------
    -- Insert_Extra_Module --
    -------------------------
@@ -2943,7 +3037,44 @@ package body Why.Atree.Modules is
                end loop;
             end;
 
-         --  Symbols for access types
+         --  Symbols for access-to-subprogram types
+
+         elsif Is_Access_Subprogram_Type (Base_Type (Retysp (E))) then
+            Insert_Symbol
+              (E, WNE_Null_Pointer,
+               New_Identifier
+                 (Symb   => NID ("__null_pointer"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Ty));
+            Insert_Symbol
+              (E, WNE_Range_Pred,
+               New_Identifier
+                 (Module => M,
+                  Domain => EW_Pred,
+                  Symb   => NID ("__in_range"),
+                  Typ    => EW_Bool_Type));
+            Insert_Symbol
+              (E, WNE_Pointer_Call,
+               New_Identifier
+                 (Module => AM,
+                  Domain => EW_Prog,
+                  Symb   => NID ("__call_"),
+                  Typ    =>
+                    (if Is_Function_Type
+                         (Directly_Designated_Type (Retysp (E)))
+                     then Type_Of_Node
+                       (Etype (Directly_Designated_Type (Retysp (E))))
+                     else EW_Unit_Type)));
+            Insert_Symbol
+              (E, WNE_Assign_Null_Check,
+               New_Identifier
+                 (Symb   => NID ("assign_null_check"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Ty));
+
+         --  Symbols for other access types
 
          elsif Has_Access_Type (E) then
             declare

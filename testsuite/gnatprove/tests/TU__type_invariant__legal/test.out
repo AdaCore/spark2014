@@ -225,24 +225,24 @@ type_invariant_legal_6.adb:17:14: medium: invariant check might fail [possible e
 type_invariant_legal_6.adb:22:07: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_6.adb:27:07: medium: invariant check might fail
 type_invariant_legal_6.adb:32:07: warning: statement has no effect
-type_invariant_legal_6.adb:32:14: warning: unused assignment to "X"
+type_invariant_legal_6.adb:32:14: warning: "X" is set by "Write" but not used after the call
 type_invariant_legal_6.adb:33:07: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_6.adb:33:07: warning: statement has no effect
-type_invariant_legal_6.adb:33:19: warning: unused assignment to "X"
+type_invariant_legal_6.adb:33:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:35:07: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal_6.adb:40:07: warning: statement has no effect
-type_invariant_legal_6.adb:40:14: warning: unused assignment to "X"
+type_invariant_legal_6.adb:40:14: warning: "X" is set by "Write" but not used after the call
 type_invariant_legal_6.adb:41:07: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_6.adb:41:07: warning: statement has no effect
-type_invariant_legal_6.adb:41:19: warning: unused assignment to "X"
+type_invariant_legal_6.adb:41:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:43:07: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal_6.adb:48:07: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_6.adb:48:07: warning: statement has no effect
-type_invariant_legal_6.adb:48:19: warning: unused assignment to "X"
+type_invariant_legal_6.adb:48:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:50:07: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal_6.adb:55:07: medium: invariant check might fail
 type_invariant_legal_6.adb:55:07: warning: statement has no effect
-type_invariant_legal_6.adb:55:19: warning: unused assignment to "X"
+type_invariant_legal_6.adb:55:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:57:07: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal_6.ads:11:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal_6.ads:12:14: info: invariant check proved (CVC4: 1 VC)

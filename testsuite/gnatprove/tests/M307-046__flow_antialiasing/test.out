@@ -23,7 +23,7 @@ test.adb:142:19: high: formal parameters "Y" and "Z" are aliased (SPARK RM 6.4.2
 test.adb:145:04: warning: analyzing unreferenced procedure "Test_06"
 test.adb:148:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:151:04: warning: analyzing unreferenced procedure "Test_07"
-test.adb:155:17: warning: unused assignment to "Y"
+test.adb:155:17: warning: "Y" is set by "Op_R3" but not used after the call
 test.adb:158:04: warning: analyzing unreferenced procedure "Test_08"
 test.adb:162:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:165:04: warning: analyzing unreferenced procedure "Test_09"
@@ -54,7 +54,7 @@ test.adb:247:04: warning: analyzing unreferenced procedure "Slice_07"
 test.adb:251:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:252:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:253:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
-test.adb:254:36: warning: unused assignment to "Tmp"
+test.adb:254:36: warning: "Tmp" is set by "Op_String_Char" but not used after the call
 test.adb:256:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:259:04: warning: analyzing unreferenced procedure "Slice_08"
 test.adb:263:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)

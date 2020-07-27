@@ -397,7 +397,7 @@ server_timestamp_maker.adb:70:67: info: range check proved (CVC4: 1 VC), in call
 server_timestamp_maker.adb:74:28: medium: overflow check might fail, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:79:30: medium: precondition might fail, cannot prove Start in Message'range, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:80:55: info: range check proved (CVC4: 1 VC), in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:80:55: warning: unused assignment to "Version_Stop"
+server_timestamp_maker.adb:80:55: warning: "Version_Stop" is set by "Get_Integer_Value" but not used after the call
 server_timestamp_maker.adb:89:16: info: analyzing call to "Get_Message_Imprint" in context
 server_timestamp_maker.adb:91:51: medium: range check might fail, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized

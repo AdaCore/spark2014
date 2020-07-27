@@ -1,1 +1,6 @@
+p-priv-pub.ads:4:04: medium: constant with variable input "C" needs to be a constituent of some state abstraction
 p.ads:2:25: info: data dependencies proved
+q-priv-pub.ads:4:05: info: flow dependencies proved
+q-priv-pub.ads:13:25: info: data dependencies proved
+q.ads:1:34: warning: no procedure exists that can initialize abstract state "Q.State"
+q.ads:2:25: info: data dependencies proved

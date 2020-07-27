@@ -1,0 +1,18 @@
+a-cofove.ads:295:51: info: overflow check proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:337:73: info: overflow check proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:370:51: info: overflow check proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:405:59: info: overflow check proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:451:59: info: overflow check proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:475:51: info: overflow check proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:516:59: info: overflow check proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:581:28: info: overflow check proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:581:57: info: range check proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:709:23: info: precondition proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofove.ads:745:14: info: precondition proved (CVC4: 1 VC), in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:87, in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at t.adb:6, in instantiation at m.adb:7
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at t.adb:6, in instantiation at m.adb:7

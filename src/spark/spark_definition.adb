@@ -29,7 +29,6 @@ with Ada.Text_IO;
 with Aspects;                         use Aspects;
 with Assumption_Types;                use Assumption_Types;
 with Common_Iterators;                use Common_Iterators;
-with Debug;                           use Debug;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
@@ -796,7 +795,7 @@ package body SPARK_Definition is
                         --  access type.
 
                         if Is_Deep (Typ)
-                          and then not Is_Anonymous_Access_Type (Typ)
+                          and then not Is_Anonymous_Access_Object_Type (Typ)
                         then
                            return Cur_Decl;
                         end if;
@@ -1256,48 +1255,43 @@ package body SPARK_Definition is
             end if;
 
          when N_Allocator =>
-            --  Disallow allocators in the revert mode -gnatdF
-            if not Debug_Flag_FF then
-               if Is_OK_Volatile_Context (Context => Parent (N), Obj_Ref => N)
+            if Is_OK_Volatile_Context (Context => Parent (N), Obj_Ref => N)
+            then
+               --  Check that the type of the allocator is visibly an access
+               --  type.
+
+               if Retysp_In_SPARK (Etype (N))
+                 and then Is_Access_Type (Retysp (Etype (N)))
                then
-                  --  Check that the type of the allocator is visibly an access
-                  --  type.
+                  --  If the expression is a qualified expression, then we
+                  --  have an initialized allocator.
 
-                  if Retysp_In_SPARK (Etype (N))
-                    and then Is_Access_Type (Retysp (Etype (N)))
-                  then
-                     --  If the expression is a qualified expression, then we
-                     --  have an initialized allocator.
+                  if Nkind (Expression (N)) = N_Qualified_Expression then
+                     Mark (Expression (N));
 
-                     if Nkind (Expression (N)) = N_Qualified_Expression then
-                        Mark (Expression (N));
+                  --  Otherwise the expression is a subtype indicator and we
+                  --  have an uninitialized allocator.
 
-                     --  Otherwise the expression is a subtype indicator and we
-                     --  have an uninitialized allocator.
-
-                     else
-                        --  In non-interfering contexts the subtype indicator
-                        --  is always a subtype name, because frontend creates
-                        --  an itype for each constrained subtype indicator.
-
-                        pragma Assert (Is_Entity_Name (Expression (N)));
-
-                        if Default_Initialization (Entity (Expression (N)))
-                          not in Full_Default_Initialization
-                               | No_Possible_Initialization
-                        then
-                           Mark_Violation ("uninitialized allocator without"
-                                           & " default initialization", N);
-                        end if;
-                     end if;
                   else
-                     Mark_Violation (N, Etype (N));
+                     --  In non-interfering contexts the subtype indicator
+                     --  is always a subtype name, because frontend creates
+                     --  an itype for each constrained subtype indicator.
+
+                     pragma Assert (Is_Entity_Name (Expression (N)));
+
+                     if Default_Initialization (Entity (Expression (N)))
+                       not in Full_Default_Initialization
+                            | No_Possible_Initialization
+                     then
+                        Mark_Violation ("uninitialized allocator without"
+                                        & " default initialization", N);
+                     end if;
                   end if;
                else
-                  Mark_Violation ("allocators in interfering context", N);
+                  Mark_Violation (N, Etype (N));
                end if;
             else
-               Mark_Violation ("allocator", N);
+               Mark_Violation ("allocators in interfering context", N);
             end if;
 
          when N_Assignment_Statement =>
@@ -1335,7 +1329,7 @@ package body SPARK_Definition is
                --  (those rooted at the first parameter of borrowing traversal
                --  functions), we should keep the rules of borrowers.
 
-               elsif Is_Anonymous_Access_Type (Etype (Var)) then
+               elsif Is_Anonymous_Access_Object_Type (Etype (Var)) then
 
                   Check_Source_Of_Borrow_Or_Observe (Expr);
 
@@ -1416,12 +1410,7 @@ package body SPARK_Definition is
             Mark_Identifier_Or_Expanded_Name (N);
 
          when N_Explicit_Dereference =>
-            --  Disallow explicit dereference in the revert mode -gnatdF
-            if not Debug_Flag_FF then
-               Mark (Prefix (N));
-            else
-               Mark_Violation ("explicit dereference", N);
-            end if;
+            Mark (Prefix (N));
 
          when N_Extended_Return_Statement =>
             Mark_Extended_Return_Statement (N);
@@ -1473,6 +1462,10 @@ package body SPARK_Definition is
                Mark (Prefix (N));
                Mark_List (Expressions (N));
             end if;
+
+         when N_Iterated_Element_Association =>
+
+            Mark_Unsupported ("iterated element association", N);
 
          when N_Iterator_Specification =>
 
@@ -1557,21 +1550,13 @@ package body SPARK_Definition is
                Mark (Right_Opnd (N));
             end if;
 
+         --  Check that the type of null is visibly an access type
+
          when N_Null =>
-
-            --  Disallow Null objects of access type in the revert mode -gnatdF
-
-            if not Debug_Flag_FF then
-
-               --  Check that the type of null is visibly an access type
-
-               if not Retysp_In_SPARK (Etype (N))
-                 or else not Is_Access_Type (Retysp (Etype (N)))
-               then
-                  Mark_Violation (N, Etype (N));
-               end if;
-            else
-               Mark_Violation ("null", N);
+            if not Retysp_In_SPARK (Etype (N))
+              or else not Is_Access_Type (Retysp (Etype (N)))
+            then
+               Mark_Violation (N, Etype (N));
             end if;
 
          when N_Number_Declaration =>
@@ -1777,12 +1762,7 @@ package body SPARK_Definition is
                  Unique_Entity (Etype (Name));
 
             begin
-               if Is_Access_Type (Prefix_Type)
-                 and then Debug_Flag_FF
-               then
-                  Mark_Violation ("implicit dereference", N);
-
-               elsif No (Search_Component_By_Name (Prefix_Type, Selector)) then
+               if No (Search_Component_By_Name (Prefix_Type, Selector)) then
                   if SPARK_Pragma_Is (Opt.On) then
                      Apply_Compile_Time_Constraint_Error
                        (N, "component not present in }",
@@ -2274,20 +2254,16 @@ package body SPARK_Definition is
             end if;
 
          when N_Delta_Aggregate =>
+            Mark (Expression (N));
+            Mark_List (Component_Associations (N));
+            Check_No_Deep_Duplicates_In_Assoc (N);
 
-            if Retysp_In_SPARK (Etype (N)) then
-               Mark (Expression (N));
-               Mark_List (Component_Associations (N));
-               Check_No_Deep_Duplicates_In_Assoc (N);
-            else
-               Mark_Violation (N, Etype (N));
-            end if;
-
-         --  Object renamings are rewritten by expansion, but they are kept in
-         --  the tree, so just ignore them.
+         --  Uses of object renamings are rewritten by expansion, but the name
+         --  is still being evaluated at the location of the renaming, even if
+         --  there are no uses of the renaming.
 
          when N_Object_Renaming_Declaration =>
-            null;
+            Mark (Name (N));
 
          --  N_Expression_With_Actions is only generated from declare
          --  expressions in GNATprove mode.
@@ -2295,12 +2271,7 @@ package body SPARK_Definition is
          when N_Expression_With_Actions =>
             pragma Assert (Comes_From_Source (N));
             Mark_Actions (N, Actions (N));
-
-            if not Retysp_In_SPARK (Etype (N)) then
-               Mark_Violation (N, From => Etype (N));
-            else
-               Mark (Expression (N));
-            end if;
+            Mark (Expression (N));
 
          --  The following nodes are rewritten by semantic analysis
 
@@ -2316,6 +2287,16 @@ package body SPARK_Definition is
             | N_Unchecked_Expression
          =>
             raise Program_Error;
+
+         --  For now, we don't support the use of target_name inside an
+         --  assignment which is a move or reborrow.
+
+         when N_Target_Name =>
+            if Is_Anonymous_Access_Object_Type (Retysp (Etype (N))) then
+               Mark_Unsupported ("'@ inside a reborrow", N);
+            elsif Is_Deep (Etype (N)) then
+               Mark_Unsupported ("'@ inside a move assignment", N);
+            end if;
 
          --  Mark should not be called on other kinds
 
@@ -2386,7 +2367,6 @@ package body SPARK_Definition is
             | N_SCIL_Membership_Test
             | N_Signed_Integer_Type_Definition
             | N_Subunit
-            | N_Target_Name
             | N_Task_Definition
             | N_Terminate_Alternative
             | N_Triggering_Alternative
@@ -2397,6 +2377,126 @@ package body SPARK_Definition is
          =>
             raise Program_Error;
       end case;
+
+      --  SPARK RM 3.10(6): If a prefix of a name is of an owning type, then
+      --  the prefix shall denote neither a non-traversal function call, an
+      --  aggregate, an allocator, nor any other expression whose associated
+      --  object is (or, as in the case of a conditional expression, might be)
+      --  the same as that of such a forbidden expression (e.g., a qualified
+      --  expression or type conversion whose operand would be forbidden as a
+      --  prefix by this rule).
+
+      if Nkind (N) in N_Attribute_Reference
+                    | N_Explicit_Dereference
+                    | N_Indexed_Component
+                    | N_Selected_Component
+                    | N_Slice
+      then
+         declare
+            procedure Validate_Owning_Prefix (Expr : Node_Id) with
+              Pre => Is_Deep (Etype (Expr));
+            --  Check that Expr is a valid owning prefix
+
+            ----------------------------
+            -- Validate_Owning_Prefix --
+            ----------------------------
+
+            procedure Validate_Owning_Prefix (Expr : Node_Id) is
+            begin
+               case Nkind (Expr) is
+                  when N_Qualified_Expression
+                     | N_Type_Conversion
+                     | N_Unchecked_Type_Conversion
+                  =>
+                     Validate_Owning_Prefix (Expression (Expr));
+
+                  when N_Allocator =>
+                     Mark_Violation
+                       ("allocator as the prefix of an expression",
+                        Expr,
+                        SRM_Reference => "SPARK RM 3.10(6)");
+
+                  when N_Aggregate
+                     | N_Delta_Aggregate
+                     | N_Extension_Aggregate
+                  =>
+                     Mark_Violation
+                       ("aggregate of owning type as the prefix of"
+                        & " an expression",
+                        Expr,
+                        SRM_Reference => "SPARK RM 3.10(6)");
+
+                  when N_Attribute_Reference =>
+                     if not Is_Attribute_Result (Expr) then
+                        Mark_Violation
+                          ("attribute reference of owning type as the prefix"
+                           & " of an expression",
+                           Expr,
+                           SRM_Reference => "SPARK RM 3.10(6)");
+                     end if;
+
+                  when N_Function_Call =>
+                     if not Is_Traversal_Function_Call (Expr) then
+                        Mark_Violation
+                          ("non-traversal function call of owning type as"
+                           & " the prefix of an expression",
+                           Expr,
+                           SRM_Reference => "SPARK RM 3.10(6)");
+                     end if;
+
+                  when N_If_Expression =>
+                     declare
+                        Condition : constant Node_Id :=
+                          First (Expressions (Expr));
+                        Then_Expr : constant Node_Id := Next (Condition);
+                        Else_Expr : constant Node_Id := Next (Then_Expr);
+                     begin
+                        Validate_Owning_Prefix (Then_Expr);
+                        Validate_Owning_Prefix (Else_Expr);
+                     end;
+
+                  when N_Case_Expression =>
+                     declare
+                        Cases    : constant List_Id := Alternatives (Expr);
+                        Cur_Case : Node_Id := First (Cases);
+                     begin
+                        while Present (Cur_Case) loop
+                           Validate_Owning_Prefix (Expression (Cur_Case));
+                           Next (Cur_Case);
+                        end loop;
+                     end;
+
+                  when others =>
+                     null;
+               end case;
+            end Validate_Owning_Prefix;
+
+            --  Local variables
+
+            Pref : constant Node_Id := Prefix (N);
+
+         begin
+            --  Check whether type is deep only if it has previously been
+            --  marked in SPARK. Otherwise there was already a violation, and
+            --  we should not call Is_Deep on a type possibly not marked.
+
+            if Etype (Pref) /= Standard_Void_Type
+              and then Entity_In_SPARK (Etype (Pref))
+              and then Is_Deep (Etype (Pref))
+
+              --  Special case for attributes 'Old and 'Loop_Entry which should
+              --  be applicable to a call to a volatile function of owning type
+              --  in order to be able to compare a modified variable of owning
+              --  type with a previous value of the same variable. ??? This
+              --  should be expressed as a rule in SPARK RM.
+
+              and then not Is_Attribute_Old (N)
+              and then not Is_Attribute_Loop_Entry (N)
+            then
+               Validate_Owning_Prefix (Pref);
+            end if;
+         end;
+      end if;
    end Mark;
 
    ------------------
@@ -2444,7 +2544,7 @@ package body SPARK_Definition is
 
                      --  We don't support local borrowers/observers in actions
 
-                     if Is_Anonymous_Access_Type
+                     if Is_Anonymous_Access_Object_Type
                        (Etype (Defining_Identifier (N)))
                      then
                         if In_Declare_Expr then
@@ -2478,7 +2578,12 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               when N_Ignored_In_SPARK =>
+               --  Object renamings are not ignored, but simply checked for
+               --  absence of RTE in their name.
+
+               when N_Ignored_In_SPARK
+                  | N_Object_Renaming_Declaration
+               =>
                   null;
 
                when N_Pragma =>
@@ -2762,6 +2867,60 @@ package body SPARK_Definition is
                end;
             end if;
 
+         when Attribute_Access =>
+            if not Is_Access_Subprogram_Type (Base_Type (Etype (N))) then
+               Mark_Violation
+                 ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
+                  & """ on object", N);
+
+            --  We only support 'Access if it is directly called on a
+            --  subprogram name. Otherwise, we return early to avoid trying
+            --  to mark the prefix.
+
+            elsif Nkind (P) not in N_Identifier | N_Expanded_Name then
+               Mark_Unsupported
+                 ("Access attribute on a complex expression", N);
+               return;
+            else
+               pragma Assert (Nkind (P) in N_Identifier | N_Expanded_Name);
+               declare
+                  Subp : constant Entity_Id := Entity (P);
+               begin
+                  if not In_SPARK (Subp) then
+                     Mark_Violation (N, From => P);
+
+                  --  Dispatching operations need a specialised version that is
+                  --  called on classwide types. We do not support them
+                  --  currently.
+
+                  elsif Is_Dispatching_Operation (Subp) then
+                     Mark_Unsupported ("access to dispatching operation", N);
+
+                  --  Volatile functions and subprograms declared within a
+                  --  protected object have an implicit global parameter. We do
+                  --  not support taking their access.
+
+                  elsif Ekind (Subp) = E_Function
+                    and then Is_Volatile_Function (Subp)
+                  then
+                     Mark_Violation ("access to volatile function", N);
+
+                  elsif Within_Protected_Type (Subp) then
+                     Mark_Violation
+                       ("access to subprogram declared within a protected"
+                        & " object", N);
+
+                  --  Subprograms annotated with relaxed initialization need
+                  --  a special handling at call.
+
+                  elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization) then
+                     Mark_Unsupported
+                       ("access to subprogram annotated with"
+                        & " Relaxed_Initialization", N);
+                  end if;
+               end;
+            end if;
+
          when others =>
             Mark_Violation
               ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
@@ -3031,7 +3190,7 @@ package body SPARK_Definition is
          --  This will also recursively check borrows occuring as part of calls
          --  of traversal functions in these parameters.
 
-         if Is_Anonymous_Access_Type (Etype (Formal))
+         if Is_Anonymous_Access_Object_Type (Etype (Formal))
            and then Ekind (E) /= E_Function
          then
             Check_Source_Of_Borrow_Or_Observe (Actual);
@@ -3064,15 +3223,8 @@ package body SPARK_Definition is
 
    begin
       if Nkind (Name (N)) = N_Explicit_Dereference then
-         --  Indirect calls are not in SPARK
-         Mark_Violation
-           ("call through access to " &
-            (case Nkind (N) is
-                  when N_Procedure_Call_Statement => "procedure",
-                  when N_Function_Call            => "function",
-                  when others                     => raise Program_Error),
-            N);
-
+         Mark (Prefix (Name (N)));
+         Mark_Actuals (N);
          return;
 
       else
@@ -3552,6 +3704,9 @@ package body SPARK_Definition is
                            pragma Assert
                              (Is_Access_Type (Node_Maps.Element (Pos))
                               and then
+                                not Is_Access_Subprogram_Type
+                                  (Node_Maps.Element (Pos))
+                              and then
                                 (Is_Incomplete_Type
                                      (Directly_Designated_Type
                                           (Node_Maps.Element (Pos)))
@@ -3744,7 +3899,7 @@ package body SPARK_Definition is
                    then (Ekind (E) = E_Function
                          and then Is_Intrinsic_Subprogram (E))
                         or else E = Ultimate_Alias (E)
-                   else Is_Entry (E));
+                   else Ekind (E) in Entry_Kind | E_Subprogram_Type);
       --  Mark subprogram or entry. Make sure that we don't mark aliases
       --  (except for intrinsic functions).
 
@@ -3840,7 +3995,7 @@ package body SPARK_Definition is
          --  block statement (SPARK RM 3.10(4)).
 
          if Nkind (N) = N_Object_Declaration
-           and then Is_Anonymous_Access_Type (T)
+           and then Is_Anonymous_Access_Object_Type (T)
          then
             declare
                Scop : constant Entity_Id := Scope (E);
@@ -3875,7 +4030,7 @@ package body SPARK_Definition is
             --  the rules.
 
             if Nkind (N) = N_Object_Declaration
-              and then Is_Anonymous_Access_Type (T)
+              and then Is_Anonymous_Access_Object_Type (T)
             then
                Check_Source_Of_Borrow_Or_Observe (Expr);
 
@@ -4066,13 +4221,13 @@ package body SPARK_Definition is
 
       procedure Mark_Subprogram_Entity (E : Entity_Id) is
 
-         procedure Mark_Function_Specification (N : Node_Id);
+         procedure Mark_Function_Specification (Id : Entity_Id);
          --  Mark violations related to impure functions
 
          procedure Mark_Subprogram_Contracts;
          --  Mark pre-post contracts
 
-         procedure Mark_Subprogram_Specification (N : Node_Id);
+         procedure Mark_Subprogram_Specification (Id : Entity_Id);
          --  Mark violations related to parameters, result and contract
 
          procedure Process_Class_Wide_Condition
@@ -4086,9 +4241,10 @@ package body SPARK_Definition is
          -- Mark_Function_Specification --
          ---------------------------------
 
-         procedure Mark_Function_Specification (N : Node_Id) is
-            Id               : constant Entity_Id := Defining_Entity (N);
-            Is_Volatile_Func : constant Boolean   := Is_Volatile_Function (Id);
+         procedure Mark_Function_Specification (Id : Entity_Id) is
+            Is_Volatile_Func : constant Boolean :=
+              (if Ekind (Id) = E_Function then Is_Volatile_Function (Id)
+               else Has_Effectively_Volatile_Profile (Id));
             Formal           : Entity_Id := First_Formal (Id);
 
          begin
@@ -4107,7 +4263,7 @@ package body SPARK_Definition is
             --  Is_Traversal_Function to avoid calling Retysp on an unmarked
             --  type.
 
-            if Is_Anonymous_Access_Type (Etype (Id))
+            if Is_Anonymous_Access_Object_Type (Etype (Id))
               and then
                 (No (First_Formal (Id))
                  or else Retysp_In_SPARK (Etype (First_Formal (Id))))
@@ -4127,7 +4283,8 @@ package body SPARK_Definition is
                --  expression itself for a better error message.
 
                if not Is_Volatile_Func
-                 and then not Is_Predicate_Function (Id)
+                 and then (Ekind (Id) /= E_Function
+                           or else not Is_Predicate_Function (Id))
                  and then Is_Effectively_Volatile (Etype (Formal))
                then
                   Mark_Violation
@@ -4161,6 +4318,21 @@ package body SPARK_Definition is
 
             if not Retysp_In_SPARK (Etype (Id)) then
                Mark_Violation (Id, From => Etype (Id));
+
+            --  For now we disallow access designating subprograms returning
+            --  a type with invariants that may need to be checked (ie,
+            --  from the current compilation unit), as the contract may
+            --  depend on where the designated subprogram is declared. If the
+            --  type is not in the current compilation unit, it should be fine,
+            --  as all visible subprograms ensure that the invariant holds at
+            --  boundaries.
+
+            elsif Ekind (Id) in E_Subprogram_Type
+              and then Invariant_Check_Needed (Etype (Id))
+            then
+               Mark_Unsupported
+                 ("access-to-subprogram returning a type with invariants",
+                  Id);
             end if;
          end Mark_Function_Specification;
 
@@ -4232,10 +4404,8 @@ package body SPARK_Definition is
          -- Mark_Subprogram_Specification --
          -----------------------------------
 
-         procedure Mark_Subprogram_Specification (N : Node_Id) is
-            Id     : constant Entity_Id := Defining_Entity (N);
-            Formal : Entity_Id := First_Formal (Id);
-
+         procedure Mark_Subprogram_Specification (Id : Entity_Id) is
+            Formal      : Entity_Id := First_Formal (Id);
             Contract    : Node_Id;
             Raw_Globals : Raw_Global_Nodes;
 
@@ -4262,11 +4432,16 @@ package body SPARK_Definition is
 
          begin
             case Ekind (Id) is
+               when E_Subprogram_Type =>
+                  if Is_Function_Type (Id) then
+                     Mark_Function_Specification (Id);
+                  end if;
+
                when E_Function =>
-                  Mark_Function_Specification (N);
+                  Mark_Function_Specification (Id);
 
                when E_Entry_Family =>
-                  Mark_Violation ("entry family", N);
+                  Mark_Violation ("entry family", Id);
 
                when others =>
                   null;
@@ -4275,7 +4450,20 @@ package body SPARK_Definition is
             while Present (Formal) loop
                if not In_SPARK (Formal) then
                   Mark_Violation (Formal, From => Etype (Formal));
+
+               --  For now, we disallow access designating subprograms with
+               --  formals with invariants that may need to be checked (ie,
+               --  from the current compilation unit), as the contract may
+               --  depend on where the designated subprogram is declared.
+
+               elsif Ekind (Id) in E_Subprogram_Type
+                 and then Invariant_Check_Needed (Etype (Formal))
+               then
+                  Mark_Unsupported
+                    ("formal with type invariants in access-to-subprogram",
+                     Formal);
                end if;
+
                Next_Formal (Formal);
             end loop;
 
@@ -4402,9 +4590,7 @@ package body SPARK_Definition is
             Mark_Violation_In_Tasking (E);
          end if;
 
-         Mark_Subprogram_Specification (if Is_Entry (E)
-                                        then Parent (E)
-                                        else Subprogram_Specification (E));
+         Mark_Subprogram_Specification (E);
 
          --  We mark bodies of predicate functions, and of expression functions
          --  when they are referenced (including those from other compilation
@@ -4931,7 +5117,11 @@ package body SPARK_Definition is
                  ("type invariant on private_type_declaration or"
                   & " private_type_extension", E, "SPARK RM 7.3.2(2)");
 
-            elsif Is_Effectively_Volatile (E) then
+            elsif Is_Effectively_Volatile (E)
+              and then (Async_Writers_Enabled (E)
+                          or else
+                        Effective_Reads_Enabled (E))
+            then
                Mark_Violation
                  ("type invariant on effectively volatile type",
                   E, "SPARK RM 7.3.2(4)");
@@ -5015,12 +5205,16 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  An effectively volatile type cannot have a predicate. Here, we do
-         --  not try to distinguish the case where the predicate is inherited
-         --  from a parent whose full view is not in SPARK.
+         --  An effectively volatile type with Async_Writers or Effective_Reads
+         --  cannot have a predicate. Here, we do not try to distinguish the
+         --  case where the predicate is inherited from a parent whose full
+         --  view is not in SPARK.
 
          if Has_Predicates (E)
-            and then Is_Effectively_Volatile (E)
+           and then Is_Effectively_Volatile (E)
+           and then (Async_Writers_Enabled (E)
+                       or else
+                     Effective_Reads_Enabled (E))
          then
             Mark_Violation
               ("subtype predicate on effectively volatile type",
@@ -5364,7 +5558,8 @@ package body SPARK_Definition is
                            --  Check that the component is not of an anonymous
                            --  access type.
 
-                           if Is_Anonymous_Access_Type (Retysp (Comp_Type))
+                           if Is_Anonymous_Access_Object_Type
+                             (Retysp (Comp_Type))
                            then
                               Mark_Violation
                                 ("component of anonymous access type", Comp);
@@ -5434,15 +5629,52 @@ package body SPARK_Definition is
 
          elsif Is_Access_Type (E) then
 
-            --  Disallow access types in the revert mode -gnatdF
+            --  For access-to-subprogram types, mark the designated profile
 
-            if Debug_Flag_FF then
-               Mark_Violation ("access type", E);
+            if Is_Access_Subprogram_Type (Base_Type (E)) then
+               declare
+                  Profile : constant Entity_Id :=
+                    Directly_Designated_Type  (Base_Type (E));
+                  Wrapper : constant Entity_Id :=
+                    Access_Subprogram_Wrapper (Profile);
 
-            --  Reject access to subprogram types
+               begin
+                  --  We do not support access to protected subprograms yet
 
-            elsif Is_Access_Subprogram_Type (Base_Type (E)) then
-               Mark_Violation ("access to subprogram type", E);
+                  if Ekind (Base_Type (E)) in
+                      E_Access_Protected_Subprogram_Type
+                    | E_Anonymous_Access_Protected_Subprogram_Type
+                  then
+                     Mark_Unsupported ("access to protected subprogram", E);
+
+                  --  Borrowing traversal functions need a pledge, we do not
+                  --  support storing them into an access for now.
+
+                  elsif Is_Function_Type (Profile)
+                    and then Is_Anonymous_Access_Object_Type (Etype (Profile))
+                    and then not Is_Access_Constant (Etype (Profile))
+                  then
+                     Mark_Unsupported
+                       ("access to borrowing traversal function", E);
+
+                  --  If the profile has a contract, it is located on a wrapper
+                  --  subprogram. We need to mark it to mark the contracts.
+                  --  ??? Messages on formal parameters of the wrapper seem to
+                  --  be incorrectly located on the access-to-subprogram type
+                  --  instead of on the corresponding formal of the profile.
+
+                  elsif Present (Wrapper) and then not In_SPARK (Wrapper) then
+                     Mark_Violation (E, From => Wrapper);
+
+                  --  Mark the profile type. If a wrapper subprogram exists,
+                  --  this should not lead to new violation, but we still need
+                  --  to mark the formals of the profile which are different
+                  --  entities than those of the wrapper.
+
+                  else
+                     Mark_Subprogram_Entity (Profile);
+                  end if;
+               end;
 
             elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
                Mark_Violation ("access attribute", E);
@@ -5457,6 +5689,22 @@ package body SPARK_Definition is
               E_General_Access_Type
             then
                Mark_Violation ("general access type", E);
+
+            --  Storage_Pool is not in SPARK
+
+            elsif Is_Access_Type (Underlying_Type (Root_Type (E)))
+              and then Present (Associated_Storage_Pool
+                (Underlying_Type (Root_Type (E))))
+            then
+               Mark_Violation ("access type with Storage_Pool", E);
+
+            --  Storage_Size is not in SPARK
+
+            elsif Is_Access_Type (Underlying_Type (Root_Type (E)))
+              and then Has_Storage_Size_Clause
+                (Underlying_Type (Root_Type (E)))
+            then
+               Mark_Violation ("access type with Storage_Size", E);
 
             --  Store the type in the Incomplete_Type map to be marked later.
 
@@ -5561,7 +5809,7 @@ package body SPARK_Definition is
                               --  Check that the component is not of an
                               --  anonymous access type.
 
-                              if Is_Anonymous_Access_Type
+                              if Is_Anonymous_Access_Object_Type
                                 (Retysp (Etype (Comp)))
                               then
                                  Mark_Violation
@@ -5616,7 +5864,7 @@ package body SPARK_Definition is
 
                               if Is_Object (Part)
                                 and then Retysp_In_SPARK (Etype (Part))
-                                and then Is_Anonymous_Access_Type
+                                and then Is_Anonymous_Access_Object_Type
                                   (Retysp (Etype (Part)))
                               then
                                  Mark_Violation
@@ -6165,7 +6413,6 @@ package body SPARK_Definition is
             | E_Block
             | E_Operator
             | E_Package_Body
-            | E_Protected_Object
             | E_Protected_Body
             | E_Subprogram_Body
             | E_Task_Body
@@ -6715,6 +6962,7 @@ package body SPARK_Definition is
             --  Pragma_Max_Queue_Length is handled specially above
             | Pragma_No_Elaboration_Code_All
             | Pragma_No_Heap_Finalization
+            | Pragma_No_Inline
             | Pragma_No_Tagged_Streams
             --  Pragma_Overflow_Mode is handled specially above
             | Pragma_Post
@@ -6827,7 +7075,6 @@ package body SPARK_Definition is
             | Pragma_Main_Storage
             | Pragma_Memory_Size
             | Pragma_No_Body
-            | Pragma_No_Inline
             | Pragma_No_Run_Time
             | Pragma_No_Strict_Aliasing
             | Pragma_Obsolescent
@@ -7019,7 +7266,7 @@ package body SPARK_Definition is
          begin
             Mark (Expr);
 
-            if Is_Anonymous_Access_Type (Return_Typ) then
+            if Is_Anonymous_Access_Object_Type (Return_Typ) then
 
                --  If we are returning from a traversal function, we have a
                --  borrow/observe.
@@ -7832,7 +8079,6 @@ package body SPARK_Definition is
    --  Start of processing for SPARK_Pragma_Of_Entity
 
    begin
-
       --  Get correct type for predicate functions.
       --  Similar code is not needed for Invariants and DIC because we do not
       --  mark the corresponding procedure, just the expression.
@@ -7920,7 +8166,7 @@ package body SPARK_Definition is
             --    type L_Ptr is access L;
             --    type SL_Ptr3 is new L_Ptr(7);
 
-            if not Debug_Flag_FF and then Is_Nouveau_Type (E) then
+            if Is_Nouveau_Type (E) then
                case Nkind (Decl) is
                   when N_Object_Declaration =>
                      return SPARK_Pragma (Defining_Identifier (Decl));

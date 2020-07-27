@@ -1,5 +1,5 @@
 call.adb:3:17: info: initialization of "X" proved
 call1.adb:3:18: info: initialization of "X" proved
 call1.adb:5:05: warning: statement has no effect
-call1.adb:5:13: warning: unused assignment to "X"
+call1.adb:5:13: warning: "X" is set by "Proc1" but not used after the call
 p.ads:7:26: info: range check proved (CVC4: 1 VC)

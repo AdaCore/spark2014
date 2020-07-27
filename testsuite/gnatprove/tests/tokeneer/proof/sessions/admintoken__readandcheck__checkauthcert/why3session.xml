@@ -9,29 +9,29 @@
 <theory name="Admintoken__readandcheck__checkauthcert__subprogram_def">
  <goal name="def&#39;vc" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.0" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.1" expl="precondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.2" expl="check">
+  <goal name="def&#39;vc.1" expl="check">
   <proof prover="0"><result status="unknown" steps="14"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.4" expl="precondition" proved="true">
+  <goal name="def&#39;vc.3" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.5" expl="check">
+  <goal name="def&#39;vc.4" expl="check">
   <proof prover="0"><result status="unknown" steps="14"/></proof>
   </goal>
-  <goal name="def&#39;vc.6" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.5" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.6" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
@@ -59,50 +59,42 @@
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.13" expl="precondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.14" expl="check">
+  <goal name="def&#39;vc.13" expl="check">
   <proof prover="0"><result status="unknown" steps="20"/></proof>
   </goal>
-  <goal name="def&#39;vc.15" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.14" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.16" expl="check">
+  <goal name="def&#39;vc.15" expl="check">
   <proof prover="0"><result status="unknown" steps="20"/></proof>
   </goal>
-  <goal name="def&#39;vc.17" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.16" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.18" expl="precondition" proved="true">
+  <goal name="def&#39;vc.17" expl="precondition" proved="true">
   <proof prover="0" timelimit="20"><result status="valid" steps="31"/></proof>
   </goal>
-  <goal name="def&#39;vc.19" expl="check">
+  <goal name="def&#39;vc.18" expl="check">
   <proof prover="0"><result status="unknown" steps="101"/></proof>
   </goal>
-  <goal name="def&#39;vc.20" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.19" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.21" expl="precondition" proved="true">
+  <goal name="def&#39;vc.20" expl="precondition" proved="true">
   <proof prover="0" timelimit="20"><result status="valid" steps="68"/></proof>
   </goal>
-  <goal name="def&#39;vc.22" expl="check">
+  <goal name="def&#39;vc.21" expl="check">
   <proof prover="0"><result status="unknown" steps="101"/></proof>
   </goal>
-  <goal name="def&#39;vc.23" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.22" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.24" expl="precondition" proved="true">
+  <goal name="def&#39;vc.23" expl="precondition" proved="true">
   <proof prover="0" timelimit="20"><result status="valid" steps="68"/></proof>
-  </goal>
-  <goal name="def&#39;vc.25" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
   </goal>
  </transf>
  </goal>

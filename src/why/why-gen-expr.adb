@@ -23,40 +23,41 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;             use Ada.Strings;
-with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
+with Ada.Strings;                   use Ada.Strings;
+with Ada.Strings.Unbounded;         use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
-with Checks;                  use Checks;
-with Common_Containers;       use Common_Containers;
-with Errout;                  use Errout;
+with Checks;                        use Checks;
+with Common_Containers;             use Common_Containers;
+with Errout;                        use Errout;
 with Eval_Fat;
-with Flow_Error_Messages;     use Flow_Error_Messages;
-with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;           use Gnat2Why.Expr;
-with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
+with Flow_Error_Messages;           use Flow_Error_Messages;
+with Gnat2Why.Error_Messages;       use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;                 use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;          use Gnat2Why.Subprograms;
+with Gnat2Why.Subprograms.Pointers; use Gnat2Why.Subprograms.Pointers;
 with Gnat2Why_Args;
-with GNATCOLL.Utils;          use GNATCOLL.Utils;
-with Sinput;                  use Sinput;
-with SPARK_Definition;        use SPARK_Definition;
-with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
-with SPARK_Util.Types;        use SPARK_Util.Types;
-with Stand;                   use Stand;
-with Urealp;                  use Urealp;
-with Why.Atree.Accessors;     use Why.Atree.Accessors;
-with Why.Atree.Modules;       use Why.Atree.Modules;
-with Why.Atree.Tables;        use Why.Atree.Tables;
-with Why.Conversions;         use Why.Conversions;
-with Why.Gen.Arrays;          use Why.Gen.Arrays;
-with Why.Gen.Binders;         use Why.Gen.Binders;
-with Why.Gen.Names;           use Why.Gen.Names;
-with Why.Gen.Init;            use Why.Gen.Init;
-with Why.Gen.Pointers;        use Why.Gen.Pointers;
-with Why.Gen.Preds;           use Why.Gen.Preds;
-with Why.Gen.Progs;           use Why.Gen.Progs;
-with Why.Gen.Records;         use Why.Gen.Records;
-with Why.Gen.Scalars;         use Why.Gen.Scalars;
-with Why.Gen.Terms;           use Why.Gen.Terms;
-with Why.Images;              use Why.Images;
+with GNATCOLL.Utils;                use GNATCOLL.Utils;
+with Sinput;                        use Sinput;
+with SPARK_Definition;              use SPARK_Definition;
+with SPARK_Util.Subprograms;        use SPARK_Util.Subprograms;
+with SPARK_Util.Types;              use SPARK_Util.Types;
+with Stand;                         use Stand;
+with Urealp;                        use Urealp;
+with Why.Atree.Accessors;           use Why.Atree.Accessors;
+with Why.Atree.Modules;             use Why.Atree.Modules;
+with Why.Atree.Tables;              use Why.Atree.Tables;
+with Why.Conversions;               use Why.Conversions;
+with Why.Gen.Arrays;                use Why.Gen.Arrays;
+with Why.Gen.Binders;               use Why.Gen.Binders;
+with Why.Gen.Names;                 use Why.Gen.Names;
+with Why.Gen.Init;                  use Why.Gen.Init;
+with Why.Gen.Pointers;              use Why.Gen.Pointers;
+with Why.Gen.Preds;                 use Why.Gen.Preds;
+with Why.Gen.Progs;                 use Why.Gen.Progs;
+with Why.Gen.Records;               use Why.Gen.Records;
+with Why.Gen.Scalars;               use Why.Gen.Scalars;
+with Why.Gen.Terms;                 use Why.Gen.Terms;
+with Why.Images;                    use Why.Images;
 
 package body Why.Gen.Expr is
 
@@ -295,7 +296,7 @@ package body Why.Gen.Expr is
          when W_Literal =>
             return EW_Bool_Type;
 
-         when W_While_Loop
+         when W_Loop
             | W_Assignment
             | W_Assert
          =>
@@ -908,6 +909,14 @@ package body Why.Gen.Expr is
                                        Need_Check => Check_Needed,
                                        No_Init    => No_Init);
 
+      elsif Is_Subp_Pointer_Conversion (From, To) then
+         T := Insert_Subp_Pointer_Conversion (Domain     => Domain,
+                                              Ada_Node   => Ada_Node,
+                                              Expr       => T,
+                                              To         => To,
+                                              Need_Check => Check_Needed,
+                                              No_Init    => No_Init);
+
       elsif Is_Pointer_Conversion (From, To) then
 
          T := Insert_Pointer_Conversion (Domain     => Domain,
@@ -1075,6 +1084,12 @@ package body Why.Gen.Expr is
                                                Check_Entity,
                                                +Result);
          end if;
+      else
+         Result := New_Label
+           (Domain   => Domain,
+            Labels   => Symbol_Sets.Empty_Set,
+            Def      => Result,
+            Typ      => EW_Abstract (R, Is_Init_Wrapper_Type (Base)));
       end if;
 
       --  If From has relaxed initialization and not Base, introduce a
@@ -1130,7 +1145,12 @@ package body Why.Gen.Expr is
       --  When neither checks nor conversions need to be inserted, return
 
       if not Need_Check and then not Need_Conv then
-         return Expr;
+         return New_Label
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Labels   => Symbol_Sets.Empty_Set,
+            Def      => Result,
+            Typ      => To);
       end if;
 
       --  Conversion goes through the root type
@@ -1164,6 +1184,13 @@ package body Why.Gen.Expr is
                Args     => (1 => Result),
                Typ      => To);
          end;
+      else
+         Result := New_Label
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Labels   => Symbol_Sets.Empty_Set,
+            Def      => Result,
+            Typ      => To);
       end if;
 
       --  Predicate checks and null exclusion checks are performed after the
@@ -1185,7 +1212,7 @@ package body Why.Gen.Expr is
                Progs    => (1 => +Result),
                Domain   => EW_Prog,
                Reason   => VC_Null_Exclusion,
-               Typ      => Get_Type (+Expr));
+               Typ      => Get_Type (Result));
          end if;
 
       end if;
@@ -2092,6 +2119,12 @@ package body Why.Gen.Expr is
                                          To             => To,
                                          Force_No_Slide => Force_No_Slide);
 
+      elsif Is_Subp_Pointer_Conversion (From, To) then
+         return Insert_Subp_Pointer_Conversion (Domain   => Domain,
+                                                Ada_Node => Ada_Node,
+                                                Expr     => Expr,
+                                                To       => To);
+
       elsif Is_Pointer_Conversion (To, From) then
          return Insert_Pointer_Conversion (Domain   => Domain,
                                            Ada_Node => Ada_Node,
@@ -2176,6 +2209,108 @@ package body Why.Gen.Expr is
                   Args     => (1 => +Expr),
                   Typ      => To);
    end Insert_Single_Conversion;
+
+   ------------------------------------
+   -- Insert_Subp_Pointer_Conversion --
+   ------------------------------------
+
+   function Insert_Subp_Pointer_Conversion
+     (Ada_Node   : Node_Id;
+      Domain     : EW_Domain;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      Need_Check : Boolean := False;
+      No_Init    : Boolean := False) return W_Expr_Id
+   is
+      From   : constant W_Type_Id := Get_Type (Expr);
+      --  Current result expression
+      Result : W_Expr_Id := Expr;
+
+      L : constant Node_Id := Get_Ada_Node (+From);
+      R : constant Node_Id := Get_Ada_Node (+To);
+
+      Need_Conv           : constant Boolean := not Eq_Base (From, To);
+
+      Need_LSP_Checks     : constant Boolean :=
+        Directly_Designated_Type (L) /= Directly_Designated_Type (R);
+
+      Need_Not_Null_Check : constant Boolean := Can_Never_Be_Null (R);
+
+      --  Do not generate a predicate check for an internal call to a parent
+      --  predicate function inside the definition of a predicate function.
+
+      Need_Pred_Check     : constant Boolean :=
+        not No_Init and then Has_Predicates (R)
+        and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
+
+   begin
+      --  When neither checks nor conversions need to be inserted, return
+
+      if not Need_Check and then not Need_Conv then
+         return Expr;
+      end if;
+
+      --  LSP checks are done before the conversion
+
+      if Need_Check and then Need_LSP_Checks and then Domain = EW_Prog then
+         declare
+            E_Tmp : constant W_Expr_Id := New_Temp_For_Expr (Expr);
+         begin
+            Result := +Sequence
+              (Ada_Node => Ada_Node,
+               Left     => Checks_For_Subp_Conversion
+                 (Ada_Node => Ada_Node,
+                  Expr     => E_Tmp,
+                  From     => L,
+                  To       => R,
+                  Params   => Body_Params),
+               Right    => +E_Tmp);
+            Result := Binding_For_Temp
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Tmp      => E_Tmp,
+               Context  => Result);
+         end;
+      end if;
+
+      --  No real conversions are needed, we only need to change the type of
+      --  the expression for gnat2why. We use an empty label for that.
+
+      if Need_Conv then
+         Result := New_Label
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Labels   => Symbol_Sets.Empty_Set,
+            Def      => Result,
+            Typ      => To);
+      end if;
+
+      --  Predicate checks and null exclusion checks are performed after the
+      --  conversion.
+
+      if Need_Check and then Domain = EW_Prog then
+
+         if Need_Pred_Check then
+            Result := +Insert_Predicate_Check (Ada_Node,
+                                               R,
+                                               +Result);
+         end if;
+
+         if Need_Not_Null_Check then
+            Result :=
+              +New_VC_Call
+              (Ada_Node => Ada_Node,
+               Name     => To_Program_Space
+                 (E_Symb (R, WNE_Assign_Null_Check)),
+               Progs    => (1 => +Result),
+               Domain   => EW_Prog,
+               Reason   => VC_Null_Exclusion,
+               Typ      => Get_Type (Result));
+         end if;
+      end if;
+
+      return Result;
+   end Insert_Subp_Pointer_Conversion;
 
    -------------
    -- Is_Void --
@@ -3358,13 +3493,8 @@ package body Why.Gen.Expr is
 
          declare
             Result_Id : constant W_Identifier_Id :=
-                          New_Temp_Identifier
-                            (Base_Name => "result", Typ => Typ);
-            Pred_Enum : constant Why_Name_Enum :=
-                          (case Selector is
-                              when Dispatch => WNE_Dispatch_Func_Guard,
-                              when Refine   => WNE_Refined_Func_Guard,
-                              when others   => WNE_Func_Guard);
+              New_Temp_Identifier
+                (Base_Name => "result", Typ => Typ);
          begin
             return New_Epsilon
               (Name   => Result_Id,
@@ -3377,7 +3507,7 @@ package body Why.Gen.Expr is
                                   Left   => +Result_Id,
                                   Right  => Call),
                   New_Call
-                    (Name     => E_Symb (Subp, Pred_Enum),
+                    (Name     => Guard_Predicate_Name (Subp, Selector),
                      Args     => +Result_Id & Args,
                      Ada_Node => Ada_Node,
                      Domain   => EW_Pred,

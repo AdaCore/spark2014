@@ -25,42 +25,43 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
-with Common_Containers;       use Common_Containers;
-with Flow_Types;              use Flow_Types;
+with Common_Containers;             use Common_Containers;
+with Flow_Types;                    use Flow_Types;
 with GNAT.Source_Info;
-with GNATCOLL.Symbols;        use GNATCOLL.Symbols;
-with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;           use Gnat2Why.Expr;
-with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
-with Namet;                   use Namet;
-with Sinput;                  use Sinput;
-with SPARK_Atree;             use SPARK_Atree;
-with SPARK_Definition;        use SPARK_Definition;
-with SPARK_Util;              use SPARK_Util;
-with SPARK_Util.Hardcoded;    use SPARK_Util.Hardcoded;
-with SPARK_Util.Types;        use SPARK_Util.Types;
-with Stand;                   use Stand;
-with Why;                     use Why;
-with Why.Atree.Accessors;     use Why.Atree.Accessors;
-with Why.Atree.Builders;      use Why.Atree.Builders;
-with Why.Atree.Modules;       use Why.Atree.Modules;
-with Why.Atree.Mutators;      use Why.Atree.Mutators;
-with Why.Conversions;         use Why.Conversions;
-with Why.Gen.Arrays;          use Why.Gen.Arrays;
-with Why.Gen.Binders;         use Why.Gen.Binders;
-with Why.Gen.Decl;            use Why.Gen.Decl;
-with Why.Gen.Expr;            use Why.Gen.Expr;
-with Why.Gen.Hardcoded;       use Why.Gen.Hardcoded;
-with Why.Gen.Init;            use Why.Gen.Init;
-with Why.Gen.Names;           use Why.Gen.Names;
-with Why.Gen.Pointers;        use Why.Gen.Pointers;
-with Why.Gen.Progs;           use Why.Gen.Progs;
-with Why.Gen.Records;         use Why.Gen.Records;
-with Why.Gen.Scalars;         use Why.Gen.Scalars;
-with Why.Inter;               use Why.Inter;
-with Why.Sinfo;               use Why.Sinfo;
-with Why.Types;               use Why.Types;
-with Why.Gen.Terms; use Why.Gen.Terms;
+with GNATCOLL.Symbols;              use GNATCOLL.Symbols;
+with Gnat2Why.Error_Messages;       use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;                 use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;          use Gnat2Why.Subprograms;
+with Gnat2Why.Subprograms.Pointers; use Gnat2Why.Subprograms.Pointers;
+with Namet;                         use Namet;
+with Sinput;                        use Sinput;
+with SPARK_Atree;                   use SPARK_Atree;
+with SPARK_Definition;              use SPARK_Definition;
+with SPARK_Util;                    use SPARK_Util;
+with SPARK_Util.Hardcoded;          use SPARK_Util.Hardcoded;
+with SPARK_Util.Types;              use SPARK_Util.Types;
+with Stand;                         use Stand;
+with Why;                           use Why;
+with Why.Atree.Accessors;           use Why.Atree.Accessors;
+with Why.Atree.Builders;            use Why.Atree.Builders;
+with Why.Atree.Modules;             use Why.Atree.Modules;
+with Why.Atree.Mutators;            use Why.Atree.Mutators;
+with Why.Conversions;               use Why.Conversions;
+with Why.Gen.Arrays;                use Why.Gen.Arrays;
+with Why.Gen.Binders;               use Why.Gen.Binders;
+with Why.Gen.Decl;                  use Why.Gen.Decl;
+with Why.Gen.Expr;                  use Why.Gen.Expr;
+with Why.Gen.Hardcoded;             use Why.Gen.Hardcoded;
+with Why.Gen.Init;                  use Why.Gen.Init;
+with Why.Gen.Names;                 use Why.Gen.Names;
+with Why.Gen.Pointers;              use Why.Gen.Pointers;
+with Why.Gen.Progs;                 use Why.Gen.Progs;
+with Why.Gen.Records;               use Why.Gen.Records;
+with Why.Gen.Scalars;               use Why.Gen.Scalars;
+with Why.Gen.Terms;                 use Why.Gen.Terms;
+with Why.Inter;                     use Why.Inter;
+with Why.Sinfo;                     use Why.Sinfo;
+with Why.Types;                     use Why.Types;
 
 package body Gnat2Why.Types is
 
@@ -697,7 +698,13 @@ package body Gnat2Why.Types is
            else "")
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      if Is_Access_Type (E) then
+      if Is_Access_Subprogram_Type (E) then
+
+         --  Generate program function for E
+
+         Complete_Access_To_Subprogram_Type (File, E);
+
+      elsif Is_Access_Type (E) then
          declare
             Ancestor   : constant Entity_Id := Repr_Pointer_Type (E);
             Name       : constant String :=
@@ -1014,7 +1021,11 @@ package body Gnat2Why.Types is
                Declare_Ada_Record (File, E);
 
             when Access_Kind =>
-               Declare_Ada_Pointer (File, E);
+               if Is_Access_Subprogram_Type (E) then
+                  Declare_Access_To_Subprogram_Type (File, E);
+               else
+                  Declare_Ada_Pointer (File, E);
+               end if;
 
             when others =>
                Ada.Text_IO.Put_Line ("[Translate_Underlying_Type] ekind ="
@@ -1036,6 +1047,12 @@ package body Gnat2Why.Types is
            Private_Kind | E_Record_Type | E_Record_Subtype | Concurrent_Kind
          then
             Create_Rep_Record_Theory_If_Needed (File, Retysp (E));
+         elsif Is_Access_Subprogram_Type (Retysp (E)) then
+
+            --  Declare __call function for the designated profile if
+            --  needed.
+
+            Create_Theory_For_Profile_If_Needed (File, Retysp (E));
          elsif Has_Access_Type (E) then
             Create_Rep_Pointer_Theory_If_Needed (File, Retysp (E));
          end if;

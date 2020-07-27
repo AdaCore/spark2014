@@ -112,15 +112,15 @@ list_transforms.append("cvc4")
 for sub in ideal_transf_list:
     if len(sub) == 1:
         if sub[0] not in list_transforms:
-            print sub[0]
+            print(sub[0])
             # Remove the non-existing transformation from the list
             exit(1)
     else:
         for e in sub[1:]:
             if e not in list_transforms:
-                print e
+                print(e)
                 # Remove the non-existing transformation from the list
                 exit(1)
 
 sys.stdout = out_file
-print json.dumps(ideal_transf_list)
+print(json.dumps(ideal_transf_list))

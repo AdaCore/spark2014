@@ -1,5 +1,3 @@
-calls.adb:18:07: call through access to procedure is not allowed in SPARK
-calls.adb:18:07: violation of pragma SPARK_Mode at line 1
-calls.ads:7:07: access to subprogram type is not allowed in SPARK
-calls.ads:7:07: violation of pragma SPARK_Mode at line 1
-gnatprove: error during flow analysis and proof
+calls.adb:18:17: medium: pointer dereference check might fail
+calls.ads:6:17: warning: subprogram "C1" has no effect
+calls.ads:14:17: warning: subprogram "C4" has no effect

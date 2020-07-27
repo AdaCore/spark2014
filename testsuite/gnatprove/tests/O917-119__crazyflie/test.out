@@ -1,6 +1,6 @@
 crtp_pack.adb:15:07: info: initialization of "Packet" proved
 crtp_pack.adb:28:07: info: initialization of "Packet" proved
-crtp_pack.adb:37:61: warning: unused assignment to "Has_Succeed"
+crtp_pack.adb:37:61: warning: "Has_Succeed" is set by "Enqueue_Item" but not used after the call
 crtp_pack.adb:46:07: info: initialization of "Handler" proved
 crtp_pack.adb:53:25: high: "Packet.Data_1" is not initialized
 crtp_pack.adb:53:25: high: "Packet.Data_2" is not initialized

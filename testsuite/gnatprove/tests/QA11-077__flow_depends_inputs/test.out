@@ -1,6 +1,6 @@
 call.adb:4:03: info: data dependencies proved
 call.adb:4:24: info: initialization of "R" proved
+call.adb:7:04: warning: "R" is set by "Proc" but not used after the call
 call.adb:7:04: warning: statement has no effect
-call.adb:7:04: warning: unused assignment to "R"
 p.ads:2:03: info: flow dependencies proved
 p.ads:8:17: info: range check proved (CVC4: 1 VC)

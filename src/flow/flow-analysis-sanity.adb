@@ -378,7 +378,10 @@ package body Flow.Analysis.Sanity is
       begin
          case Nkind (N) is
             when N_Access_Definition =>
-               pragma Assert (Is_Type (Entity (Subtype_Mark (N))));
+               pragma Assert
+                 (if Present (Subtype_Mark (N))
+                  then Is_Type (Entity (Subtype_Mark (N)))
+                  else Present (Access_To_Subprogram_Definition (N)));
 
             when N_Attribute_Reference =>
                pragma Assert (Is_Type_Attribute_Name (Attribute_Name (N)));
@@ -813,10 +816,13 @@ package body Flow.Analysis.Sanity is
                               Check_Constrained_Array_Definition (Typ_Def);
                            end if;
 
-                        --  The following are either enumeration literals or
-                        --  static expressions.
+                        --  The following are either enumeration literals,
+                        --  static expressions, or access to subprogram
+                        --  definitions.
 
-                        when N_Decimal_Fixed_Point_Definition
+                        when N_Access_Function_Definition
+                           | N_Access_Procedure_Definition
+                           | N_Decimal_Fixed_Point_Definition
                            | N_Enumeration_Type_Definition
                            | N_Floating_Point_Definition
                            | N_Modular_Type_Definition
@@ -984,7 +990,7 @@ package body Flow.Analysis.Sanity is
                      Root   : Node_Id;
 
                   begin
-                     if Is_Anonymous_Access_Type (Typ)
+                     if Is_Anonymous_Access_Object_Type (Typ)
                        and then not Is_Access_Constant (Typ)
                        and then not Is_Constant_Borrower (Target)
                      then

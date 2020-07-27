@@ -38,7 +38,6 @@ with Nlists;                     use Nlists;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Definition.Annotate;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
-with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with String_Utils;               use String_Utils;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Atree.Modules;          use Why.Atree.Modules;
@@ -1229,6 +1228,11 @@ package body Gnat2Why.Util is
            or else (not Top_Level
                      and then Count_Discriminants (Ty_Ext) > 0
                      and then Has_Defaulted_Discriminants (Ty_Ext))
+
+           --  For access-to-subprogram types, we know that they abide by
+           --  their contracts.
+
+           or else Is_Access_Subprogram_Type (Ty_Ext)
 
            --  For access types with null exclusion, we know that they are not
            --  null.

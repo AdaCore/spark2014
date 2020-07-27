@@ -1,8 +1,8 @@
 from test_support import *
 
-print "INLINING ENABLED:"
+print("INLINING ENABLED:")
 do_flow()
-print
+print()
 
-print "INLINING DISABLED:"
+print("INLINING DISABLED:")
 do_flow(opt=["--no-inlining"])

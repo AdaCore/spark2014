@@ -1,14 +1,14 @@
+main.adb:5:05: warning: "p.x" is set by "Write" but not used after the call
 main.adb:5:05: warning: statement has no effect
-main.adb:5:05: warning: unused assignment to "p.x"
+main.adb:8:05: warning: "p.y" is set by "Read_Write" but not used after the call
 main.adb:8:05: warning: statement has no effect
-main.adb:8:05: warning: unused assignment to "p.y"
+main2.adb:6:05: warning: "X" is set by "Write" but not used after the call
 main2.adb:6:05: warning: statement has no effect
-main2.adb:6:05: warning: unused assignment to "X"
+main2.adb:9:05: warning: "Y" is set by "Read_Write" but not used after the call
 main2.adb:9:05: warning: statement has no effect
-main2.adb:9:05: warning: unused assignment to "Y"
 p.adb:10:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:13:11: info: range check proved (CVC4: 1 VC)
 p.adb:17:12: info: discriminant check proved (CVC4: 1 VC)
+p.adb:25:08: warning: "Y" is set by "Read_Write" but not used after the call
 p.adb:25:08: warning: statement has no effect
-p.adb:25:08: warning: unused assignment to "Y"
 p.ads:7:33: info: data dependencies proved, in instantiation at main2.adb:4

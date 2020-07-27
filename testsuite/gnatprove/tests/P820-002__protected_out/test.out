@@ -160,7 +160,7 @@ polyorb_hi_generated-transport.adb:35:05: info: initialization of "Msg" proved
 polyorb_hi_generated-transport.adb:36:05: info: initialization of "Value" proved
 polyorb_hi_generated-transport.adb:37:05: info: initialization of "Port" proved
 polyorb_hi_generated-transport.adb:54:07: info: no contextual analysis of "Producer_Consumer_Result_Consumer_Deliver" (body not seen yet)
-polyorb_hi_generated-transport.adb:58:09: warning: unused assignment to "Msg"
+polyorb_hi_generated-transport.adb:58:09: warning: "Msg" is set by "Producer_Consumer_Result_Consumer_Deliver" but not used after the call
 polyorb_hi_generated-transport.adb:62:12: function with output global "polyorb_hi.epoch.elaborated_variables" is not allowed in SPARK
 polyorb_hi_generated-transport.adb:62:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
 polyorb_hi_generated-transport.adb:87:14: info: no contextual analysis of "Producer_Consumer_Producer_Send" (body not seen yet)

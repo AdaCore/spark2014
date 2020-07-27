@@ -62,11 +62,11 @@ sources of SPARK. There are two options.
 ## 6.1 Building SPARK with GNAT Community
 
 To build SPARK with GNAT Community compiler, you need to use the corresponding
-branch of this repository. For example, to build with GNAT Community 2018, use
-the branch gpl-2018, as follows:
+branch of this repository. For example, to build with GNAT Community 2020, use
+the branch gpl-2020, as follows:
 
 ```
-git checkout gpl-2018
+git checkout gpl-2020
 ```
 
 SPARK repository uses submodules to keep in sync with corresponding versions

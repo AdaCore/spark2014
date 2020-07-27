@@ -1,0 +1,4 @@
+repr.adb:4:14: warning: subprogram "Insert" has no effect
+repr.adb:7:48: medium: range check might fail (e.g. when LSE_Value = 255 and Val = 9223372036854775807)
+repr.adb:7:59: info: division check proved (CVC4: 1 VC)
+repr.adb:13:04: info: precondition proved (CVC4: 1 VC)

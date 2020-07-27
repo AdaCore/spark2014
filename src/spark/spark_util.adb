@@ -150,6 +150,65 @@ package body SPARK_Util is
               else Empty);
    end Dispatching_Contract;
 
+   --------------------------------
+   -- Aggregate_Is_In_Assignment --
+   --------------------------------
+
+   function Aggregate_Is_In_Assignment (Expr : Node_Id) return Boolean is
+      P    : Node_Id := Parent (Expr);
+      Prev : Node_Id := Expr;
+
+   begin
+      while Present (P) loop
+         --  Check if we reached an assignment from its expression
+
+         if Nkind (P) = N_Assignment_Statement
+           and then Prev = Expression (P)
+         then
+            return True;
+         end if;
+
+         --  Check if we reached outside of the expression without encountering
+         --  an assignment.
+
+         if Nkind (P) not in N_Subexpr then
+            return False;
+         end if;
+
+         case Nkind (P) is
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               null;
+
+            --  Reach past an enclosing aggregate
+
+            when N_Aggregate
+               | N_Delta_Aggregate
+               | N_Extension_Aggregate
+            =>
+               null;
+
+            when N_Attribute_Reference =>
+               if Attribute_Name (P) /= Name_Update then
+                  return False;
+               end if;
+
+            --  In other cases, the aggregate is not directly on the rhs of
+            --  an assignment.
+
+            when others =>
+               return False;
+         end case;
+
+         Prev := P;
+         P := Parent (P);
+      end loop;
+
+      return False;
+   end Aggregate_Is_In_Assignment;
+
    ---------------------------
    -- Append_Multiple_Index --
    ---------------------------
@@ -852,6 +911,11 @@ package body SPARK_Util is
          if No (S) then
             return Empty;
          elsif Is_Generic_Instance (S) then
+            if Is_Subprogram (S) then
+               S := Scope (S);
+               pragma Assert (Is_Wrapper_Package (S));
+            end if;
+
             return S;
          else
             S := Scope (S);
@@ -1632,6 +1696,7 @@ package body SPARK_Util is
 
          when N_Aggregate
             | N_Allocator
+            | N_Delta_Aggregate
             | N_Extension_Aggregate
             | N_Null
          =>
@@ -1658,7 +1723,9 @@ package body SPARK_Util is
 
          when N_Attribute_Reference =>
             pragma Assert
-              (Attribute_Name (Expr) in Name_Loop_Entry | Name_Old);
+              (Attribute_Name (Expr) in Name_Loop_Entry
+                                      | Name_Old
+                                      | Name_Update);
             return Empty;
 
          when others =>
@@ -1678,6 +1745,7 @@ package body SPARK_Util is
          case Nkind (N) is
             when N_Explicit_Dereference =>
                return True;
+
             when N_Indexed_Component
                | N_Selected_Component
                | N_Slice
@@ -1701,10 +1769,9 @@ package body SPARK_Util is
      (case Ekind (E) is
          when E_Abstract_State =>
             Is_External_State (E),
-         when Object_Kind =>
-            Is_Effectively_Volatile (E),
-         when E_Protected_Type | E_Task_Type =>
-            False,
+         when Object_Kind | Type_Kind =>
+            not Is_Concurrent_Type (E)
+              and then Is_Effectively_Volatile (E),
          when others =>
             raise Program_Error);
 
@@ -1712,9 +1779,10 @@ package body SPARK_Util is
    -- Has_Volatile_Property --
    ---------------------------
 
-   function Has_Volatile_Property (E : Checked_Entity_Id;
-                                   P : Volatile_Pragma_Id)
-                                   return Boolean
+   function Has_Volatile_Property
+     (E : Checked_Entity_Id;
+      P : Volatile_Pragma_Id)
+      return Boolean
    is
    begin
       --  Q: Why restrict the property of volatility for IN and OUT parameters?
@@ -1725,7 +1793,7 @@ package body SPARK_Util is
       --  silent side effects, so...
 
       case Ekind (E) is
-         when E_Abstract_State | E_Variable | E_Component =>
+         when E_Abstract_State | E_Variable | E_Component | Type_Kind =>
             return
               (case P is
                when Pragma_Async_Readers    => Async_Readers_Enabled (E),
@@ -1755,6 +1823,17 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Has_Volatile_Property;
+
+   ------------------------------------------------
+   -- Is_Additional_Param_Of_Access_Subp_Wrapper --
+   ------------------------------------------------
+
+   function Is_Additional_Param_Of_Access_Subp_Wrapper
+     (E : Entity_Id) return Boolean
+   is (Ekind (E) = E_In_Parameter
+       and then Is_Access_Subprogram_Type (Etype (E))
+       and then Scope (E) = Access_Subprogram_Wrapper
+       (Directly_Designated_Type (Etype (E))));
 
    ---------------
    -- Is_Action --
@@ -1861,6 +1940,7 @@ package body SPARK_Util is
       return Ekind (E) in E_Constant | E_In_Parameter
             and then (not Is_Access_Type (Ty)
               or else Is_Access_Constant (Ty)
+              or else Is_Access_Subprogram_Type (Base_Type (Ty))
               or else Comes_From_Declare_Expr (E));
    end Is_Constant_In_SPARK;
 
@@ -2255,7 +2335,7 @@ package body SPARK_Util is
       T : constant Entity_Id := Retysp (Etype (E));
    begin
       return Ekind (E) in E_Variable | E_Constant
-        and then Is_Anonymous_Access_Type (T)
+        and then Is_Anonymous_Access_Object_Type (T)
         and then not Is_Access_Constant (T);
    end Is_Local_Borrower;
 
@@ -2373,15 +2453,19 @@ package body SPARK_Util is
 
          when N_Aggregate
             | N_Allocator
+            | N_Delta_Aggregate
             | N_Extension_Aggregate
             | N_Function_Call
          =>
             return True;
 
-         --  Old and Loop_Entry attributes can only be called on new objects
+         --  Old and Loop_Entry attributes can only be called on new objects.
+         --  Update attribute is similar to delta aggregates.
 
          when N_Attribute_Reference =>
-            return Attribute_Name (Expr) in Name_Loop_Entry | Name_Old;
+            return Attribute_Name (Expr) in Name_Loop_Entry
+                                          | Name_Old
+                                          | Name_Update;
 
          when N_Qualified_Expression
             | N_Type_Conversion
@@ -2540,10 +2624,11 @@ package body SPARK_Util is
       Choice : constant Node_Id := First (Choices);
    begin
       return List_Length (Choices) = 1
-        and then Nkind (Choice) /= N_Others_Choice
-        and then not Nkind_In (Choice, N_Subtype_Indication, N_Range)
+        and then
+          Nkind (Choice)
+            not in N_Others_Choice | N_Subtype_Indication | N_Range
         and then not
-          (Nkind_In (Choice, N_Identifier, N_Expanded_Name)
+          (Nkind (Choice) in N_Identifier | N_Expanded_Name
            and then Is_Type (Entity (Choice)));
    end Is_Singleton_Choice;
 

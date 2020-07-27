@@ -16,12 +16,12 @@ package Old_Loop_Entry is
    procedure Proc (X : in out T; Y : in out P) with
      Post => X.all = X.all'Old
        and then Y.A.all = Y.A.all'Old
-       and then Y.A.all = Copy(Y)'Old.A.all,
+       and then (declare YY : constant P := Copy(Y)'Old; begin Y.A.all = YY.A.all),
      Contract_Cases =>
        (X = null  => X.all = X.all'Old,
         X /= null => Y.A.all = Y.A.all'Old,
         others    => Y.A.all = Y.A.all'Old
-                       and then Y.A.all = Copy(Y)'Old.A.all);
+                       and then (declare YY : constant P := Copy(Y)'Old; begin Y.A.all = YY.A.all));
 
    procedure Bad (X : in out T; Y : in out P) with
      Post => X.all = X'Old.all
@@ -35,4 +35,3 @@ package Old_Loop_Entry is
         others    => Y.A.all = Y'Old.A.all);
 
 end Old_Loop_Entry;
-

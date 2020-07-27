@@ -1,6 +1,6 @@
 math_utils.adb:12:22: info: assertion proved (CVC4: 1 VC)
 math_utils.adb:19:25: info: assertion proved (CVC4: 4 VC)
-math_utils.adb:20:10: info: loop variant proved (CVC4: 1 VC)
+math_utils.adb:20:31: info: loop variant proved (CVC4: 1 VC)
 math_utils.adb:22:13: info: loop invariant initialization proved (CVC4: 1 VC)
 math_utils.adb:22:13: info: loop invariant preservation proved (CVC4: 1 VC)
 math_utils.adb:22:55: info: index check proved (CVC4: 4 VC)

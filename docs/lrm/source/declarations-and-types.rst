@@ -98,11 +98,8 @@ Static predicates and dynamic predicates are both in
 
 .. centered:: **Legality Rules**
 
-
 1. [A Dynamic_Predicate expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
-
-
 
 2. If a Dynamic_Predicate applies to the subtype of a composite object,
    then a verification condition is generated to ensure that the object
@@ -128,15 +125,11 @@ Static predicates and dynamic predicates are both in
   :ref:`update-expressions`).
   These are assignment operations but not assignment statements.]
 
-
-
 3. A Static_Predicate or Dynamic_Predicate shall not apply to an effectively
-   volatile type.
-
-
+   volatile type with the properties Async_Writers or Effective_Reads set to
+   True.
 
 .. centered:: **Verification Rules**
-
 
 4. A Dynamic_Predicate expression shall always terminate.
 
@@ -347,7 +340,7 @@ Access Types
 In order to reduce the complexity associated with the specification
 and verification of a program's behavior in the face of pointer-related
 aliasing, |SPARK| supports only "owning" access-to-object types (described
-below); other access types (including access-to-subprogram types and
+below) and access-to-subprogram types; other access types (including
 access discriminants) are not in |SPARK|.
 
 Restrictions are imposed on the use of "owning" access objects in order
@@ -429,17 +422,20 @@ Only the following (named or anonymous) access types are in |SPARK|:
 - the anonymous type of a stand-alone object (including a generic formal **in**
   mode object) which is not Part_Of a protected object,
 
-- the anonymous type of an object renaming declaration, or
+- the anonymous type of an object renaming declaration,
 
 - an anonymous type occurring as a parameter type, or as a function result type
-  of a traversal function (defined below).
+  of a traversal function (defined below), or
+
+- an access-to-subprogram type associated with the "Ada" calling convention.
 
 [Redundant: For example, named general access types, access discriminants,
-and access-to-subprogram types are not in |SPARK|.]
+and access-to-subprogram types with the "protected" calling convention are not
+in |SPARK|.]
 
-Such a type is said to be an *owning* access type when it is an
-access-to-variable type, and an *observing* access type when it is an
-access-to-constant type.
+An access-to-object type abiding by these rules is said to be an *owning*
+access type when it is an access-to-variable type, and an *observing* access
+type when it is an access-to-constant type.
 
 User-defined storage pools are not in |SPARK|; more specifically, the package
 System.Storage_Pools, Storage_Pool aspect specifications, and the Storage_Pool
@@ -892,6 +888,56 @@ be an owning type).]
     the Ada RM 13.11.2 rule "Free(X), ... first performs finalization of
     the object designated by X".]
 
+16. When converting from a [named or anonymous] access-to-subprogram type
+    to another, if the converted expression is not null,
+    a verification condition is introduced to ensure that the
+    precondition of the source of the conversion is implied by the
+    precondition of the target of the conversion. Similarly, a verification
+    condition is introduced to ensure that the postcondition of the target
+    is implied by the postcondition of the converted access-to-subprogram
+    expression.
+
+Incomplete Type Declarations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+No extensions or restrictions.
+
+Operations of Access Types
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As general access types are not allowed in |SPARK|, the prefix of a reference to
+the Access attribute is necessarily a subprogram.
+
+.. centered:: **Legality Rules**
+
+1. The prefix of the attribute Access shall be the name of a subprogram.
+
+2. A subprogram used as the prefix of a reference to the attribute Access:
+
+   - shall not be declared within a protected type or object;
+
+   - shall not be a dispatching operation of a tagged type; and
+
+   - shall not be a declared in the scope of a type with an invariant
+     if this type is mentioned in the subprogram's profile unless it is
+     a boundary subprogram (see section 7.3.2 for the definition of a
+     boundary subprogram).
+
+3. The Volatile_Function aspect of a subprogram used as the prefix of a
+   reference to the attribute Access, if specified, shall not be True
+   (see section 7.1.2 for the definition of Volatile_Function).
+
+.. centered:: **Verification Rules**
+
+4. The prefix of the Access attribute shall have no global inputs and outputs
+   (see section 6.1 for inputs and outputs of subprograms).
+
+5. On a reference to the Access attribute, a verification condition is
+   introduced to ensure that the precondition of the prefix of the attribute
+   is implied by the precondition of its expected type. Similarly,
+   a verification condition is introduced to ensure that the postcondition of
+   the expected type is implied by the postcondition of the prefix of the
+   attribute.
 
 Declarative Parts
 -----------------

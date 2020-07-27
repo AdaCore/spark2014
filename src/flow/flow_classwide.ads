@@ -38,11 +38,10 @@ package Flow_Classwide is
    --
    --  ??? O429-046 can entry calls be dispatching? I guess not...
 
-   procedure Check_Classwide_Contracts (E     : Entity_Id;
-                                        Valid : out Boolean)
+   procedure Check_Classwide_Contracts (E : Entity_Id)
    with Pre => Nkind (E) in N_Entity and then
                Ekind (E) in E_Function | E_Procedure;
-   --  Checks the classwide contracts of the given subprogram. If not Valid
+   --  Checks the classwide contracts of the given subprogram and if not valid
    --  then some error messages will have been issued. If the subprogram does
    --  not have a controlling parameter nor a result, this check procedure does
    --  nothing.

@@ -20,10 +20,6 @@
   <goal name="def&#39;vc.2" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="766"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
  </transf>
  </goal>
 </theory>

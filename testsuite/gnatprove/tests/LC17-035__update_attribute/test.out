@@ -39,7 +39,6 @@ arrays.ads:69:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:69:43: info: index check proved (CVC4: 2 VC)
 arrays.ads:70:43: info: index check proved (CVC4: 2 VC)
 arrays.ads:75:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-arrays.ads:75:37: info: range check proved (CVC4: 1 VC)
 records.adb:21:27: medium: range check might fail (e.g. when New_Data = -1 and New_Data_2 = 1) [possible explanation: subprogram at records.ads:20 should mention New_Data in a precondition]
 records.adb:33:20: medium: overflow check might fail (e.g. when R = (S1 => Integer'Last, S2 => 0, S3 => ?, S4 => Integer'Last)) [possible explanation: subprogram at records.ads:28 should mention R in a precondition]
 records.adb:34:20: medium: range check might fail (e.g. when R = (S1 => 1, S2 => 0, S3 => 1, S4 => 0)) [possible explanation: subprogram at records.ads:28 should mention R in a precondition]

@@ -181,7 +181,7 @@ is
       --  unreachable if none could be found.
 
       if AIP.No (Err) then
-         pragma Warnings (Off, "unused assignment to ""Wildcard""");
+         pragma Warnings (Off, """Wildcard"" is set by ""Find_PCB_In_List"" but not used after the call");
          PCBs.Find_PCB_In_List
            (Local_IP    => IPH.IPH_Dst_Address (Ihdr),
             Local_Port  => UDPH.UDPH_Dst_Port  (Uhdr),
@@ -191,7 +191,7 @@ is
             PCB_Pool    => IPCBs,
             PCB         => PCB,
             Wildcard    => Wildcard);
-         pragma Warnings (On, "unused assignment to ""Wildcard""");
+         pragma Warnings (On, """Wildcard"" is set by ""Find_PCB_In_List"" but not used after the call");
 
          if PCB = PCBs.NOPCB then
             --  Recover IP header and send ICMP destination unreachable

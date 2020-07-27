@@ -6,6 +6,9 @@ procedure Main is
    type Ptr is access T with Storage_Size => Zero;
    --  An access type with whose Storage_Size is non-static but zero
 
+   type Ptr2 is access T with Storage_Pool => Ptr'Storage_Pool;
+   --  An access type with Storage_Pool
+
    function Dummy return T with Pre => True is
       D : T;
    begin

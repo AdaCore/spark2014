@@ -4,10 +4,10 @@ sccs.adb:9:14: info: add a contract to analyze it separately from calling contex
 sccs.adb:9:14: info: local subprogram "G2" only analyzed in the context of calls
 sccs.adb:9:26: warning: statement has no effect
 sccs.adb:9:26: warning: statement has no effect, in call inlined at sccs.adb:10
+sccs.adb:9:36: warning: "B" is set by "F2" but not used after the call
+sccs.adb:9:36: warning: "B" is set by "F2" but not used after the call, in call inlined at sccs.adb:10
 sccs.adb:9:36: warning: statement has no effect
 sccs.adb:9:36: warning: statement has no effect, in call inlined at sccs.adb:10
-sccs.adb:9:36: warning: unused assignment to "B"
-sccs.adb:9:36: warning: unused assignment to "B", in call inlined at sccs.adb:10
 sccs.adb:13:14: info: add a contract to analyze it separately from calling contexts
 sccs.adb:13:14: info: local subprogram "G5" only analyzed in the context of calls
 sccs.adb:13:26: warning: statement has no effect
@@ -15,16 +15,16 @@ sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
+sccs.adb:13:36: warning: "B" is set by "F5" but not used after the call
+sccs.adb:13:36: warning: "B" is set by "F5" but not used after the call, in call inlined at sccs.adb:14
+sccs.adb:13:36: warning: "B" is set by "F5" but not used after the call, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
+sccs.adb:13:36: warning: "B" is set by "F5" but not used after the call, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16
+sccs.adb:13:36: warning: "B" is set by "F5" but not used after the call, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
 sccs.adb:13:36: warning: statement has no effect
 sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14
 sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
 sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16
 sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
-sccs.adb:13:36: warning: unused assignment to "B"
-sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14
-sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
-sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16
-sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
 sccs.adb:14:14: info: add a contract to analyze it separately from calling contexts
 sccs.adb:14:14: info: local subprogram "H5" only analyzed in the context of calls
 sccs.adb:15:14: info: add a contract to analyze it separately from calling contexts

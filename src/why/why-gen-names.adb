@@ -34,7 +34,6 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
 with Why.Images;          use Why.Images;
-with Why.Inter;           use Why.Inter;
 with Why.Gen.Arrays;      use Why.Gen.Arrays;
 with Why.Gen.Init;        use Why.Gen.Init;
 with Why.Gen.Scalars;     use Why.Gen.Scalars;
@@ -528,6 +527,24 @@ package body Why.Gen.Names is
       end if;
    end Get_Modular_Converter_Range_Check;
 
+   --------------------------
+   -- Guard_Predicate_Name --
+   --------------------------
+
+   function Guard_Predicate_Name
+     (E                      : Entity_Id;
+      Selector_Name          : Selection_Kind := Why.Inter.Standard;
+      Is_Access_Subp_Wrapper : Boolean := False)
+      return W_Identifier_Id
+   is
+     (if Ekind (E) = E_Function and then not Is_Access_Subp_Wrapper
+      then E_Symb (E, (case Selector_Name is
+                          when Why.Inter.Standard => WNE_Func_Guard,
+                          when Dispatch           => WNE_Dispatch_Func_Guard,
+                          when Refine             => WNE_Refined_Func_Guard,
+                          when others             => raise Program_Error))
+      else Get_Logic_Function_Guard (E));
+
    ------------------
    -- Havoc_Append --
    ------------------
@@ -605,6 +622,21 @@ package body Why.Gen.Names is
            Module   => Get_Module (Name),
            Ada_Node => Get_Ada_Node (+Name));
    end Is_Null_Append;
+
+   -------------------------
+   -- Logic_Function_Name --
+   -------------------------
+
+   function Logic_Function_Name
+     (E                      : Entity_Id;
+      Selector_Name          : Selection_Kind := Why.Inter.Standard;
+      Is_Access_Subp_Wrapper : Boolean := False)
+      return W_Identifier_Id
+   is
+     (if Ekind (E) = E_Function and then not Is_Access_Subp_Wrapper
+      then To_Why_Id
+        (E, Domain => EW_Term, Local => False, Selector => Selector_Name)
+      else Get_Logic_Function (E));
 
    -------------
    -- New_Abs --
@@ -897,6 +929,7 @@ package body Why.Gen.Names is
          when WNE_Array_Logical_Op_Suffix    => "__Bool_Op",
          when WNE_Array_Prefix               => "Array_",
 
+         when WNE_Attr_Access                => "attr__access",
          when WNE_Attr_Constrained           => "attr__constrained",
          when WNE_Attr_First                 => "first",
          when WNE_Attr_Last                  => "last",
@@ -997,6 +1030,7 @@ package body Why.Gen.Names is
             | WNE_Of_Wrapper
             | WNE_Private_Eq
             | WNE_Private_Type
+            | WNE_Pointer_Call
             | WNE_Pointer_Close
             | WNE_Pointer_Open
             | WNE_Pointer_Value_Abstr

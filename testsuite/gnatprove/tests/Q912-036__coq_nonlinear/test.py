@@ -32,10 +32,10 @@ def edit_proof():
     with open(proof_file, 'w') as file:
         file.write(content)
 
-print "======================================="
+print("=======================================")
 prove_all(opt=["--prover=coq", "--limit-line=nonlinear.adb:4:11:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
 edit_proof()
-print "======================================="
+print("=======================================")
 prove_all(opt=["--prover=coq", "--limit-line=nonlinear.adb:4:11:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
-print "======================================="
+print("=======================================")
 prove_all(prover=["altergo"], counterexample=False)

@@ -25,21 +25,22 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
-with Common_Containers;     use Common_Containers;
-with Gnat2Why.Tables;       use Gnat2Why.Tables;
-with Snames;                use Snames;
-with SPARK_Atree;           use SPARK_Atree;
-with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
-with SPARK_Util;            use SPARK_Util;
-with SPARK_Util.Types;      use SPARK_Util.Types;
-with Types;                 use Types;
-with Uintp;                 use Uintp;
-with VC_Kinds;              use VC_Kinds;
-with Why.Atree.Accessors;   use Why.Atree.Accessors;
-with Why.Atree.Tables;      use Why.Atree.Tables;
-with Why.Gen.Binders;       use Why.Gen.Binders;
-with Why.Ids;               use Why.Ids;
-with Why.Sinfo;             use Why.Sinfo;
+with Common_Containers;           use Common_Containers;
+with Gnat2Why.Tables;             use Gnat2Why.Tables;
+with Snames;                      use Snames;
+with SPARK_Atree;                 use SPARK_Atree;
+with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
+with SPARK_Util;                  use SPARK_Util;
+with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with SPARK_Util.Types;            use SPARK_Util.Types;
+with Types;                       use Types;
+with Uintp;                       use Uintp;
+with VC_Kinds;                    use VC_Kinds;
+with Why.Atree.Accessors;         use Why.Atree.Accessors;
+with Why.Atree.Tables;            use Why.Atree.Tables;
+with Why.Gen.Binders;             use Why.Gen.Binders;
+with Why.Ids;                     use Why.Ids;
+with Why.Sinfo;                   use Why.Sinfo;
 
 package Gnat2Why.Util is
 
@@ -488,7 +489,7 @@ package Gnat2Why.Util is
    --  as a range type. This is currently done for static signed integer types.
 
    function Use_Guard_For_Function (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) = E_Function;
+     Pre => Ekind (E) = E_Function or else Is_Function_Type (E);
    --  Decide wether we need a guard for the axiom specifying the contract of
    --  a function E.
 

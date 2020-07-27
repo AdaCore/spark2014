@@ -16,13 +16,13 @@ def edit_proof():
 
 
 prove_all(counterexample=False)
-print "======================================="
+print("=======================================")
 prove_all(opt=["--prover=Coq", "--limit-line=greatest_common_divisor.adb:10"], steps=None, counterexample=False, filter_output=".*Grammar extension")
-print "======================================="
+print("=======================================")
 edit_proof()
 # workaround for caching problem
 touch("greatest_common_divisor.adb")
 sleep_on_windows(2)
 prove_all(opt=["--prover=Coq", "--limit-line=greatest_common_divisor.adb:10"], steps=None, counterexample=False, filter_output=".*Grammar extension" )
-print "======================================="
+print("=======================================")
 prove_all(counterexample=False)

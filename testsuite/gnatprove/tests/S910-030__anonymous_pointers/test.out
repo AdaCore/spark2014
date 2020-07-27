@@ -8,6 +8,5 @@ anonymous_access.ads:10:13: medium: subprogram "Length" might not terminate, ter
 anonymous_access.ads:10:21: warning: "L" is not modified, could be of access constant type
 anonymous_access.ads:12:52: info: pointer dereference check proved (CVC4: 1 VC)
 anonymous_access.ads:12:57: info: overflow check proved (CVC4: 1 VC)
-anonymous_access.ads:12:57: info: range check proved (CVC4: 1 VC)
 anonymous_access.ads:16:19: warning: "X" is not modified, could be of access constant type
 anonymous_access.ads:18:14: info: postcondition proved (CVC4: 1 VC)

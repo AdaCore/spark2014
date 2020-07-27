@@ -13,7 +13,7 @@ p1.adb:18:07: info: initialization of "I" proved
 p1.adb:19:07: info: initialization of "J" proved
 p1.adb:25:13: info: range check proved (CVC4: 1 VC)
 p1.adb:26:13: info: range check proved (CVC4: 1 VC)
-p1.adb:28:10: info: loop variant proved (CVC4: 1 VC)
+p1.adb:28:31: info: loop variant proved (CVC4: 1 VC)
 p1.adb:30:13: info: loop invariant initialization proved (CVC4: 6 VC)
 p1.adb:30:13: info: loop invariant preservation proved (CVC4: 6 VC)
 p1.adb:32:62: info: index check proved (CVC4: 4 VC)

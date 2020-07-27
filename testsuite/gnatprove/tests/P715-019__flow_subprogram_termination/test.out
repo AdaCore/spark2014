@@ -16,13 +16,13 @@ container.adb:26:14: warning: subprogram "Test3" might not terminate
 container.adb:30:11: info: precondition proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
 container.adb:33:20: medium: range check might fail, in call inlined at container.adb:45 [possible explanation: loop at line 32 should mention Int in a loop invariant]
-container.adb:34:13: info: loop variant proved (CVC4: 1 VC), in call inlined at container.adb:45
+container.adb:34:34: info: loop variant proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:54:17: info: range check proved (CVC4: 1 VC)
 container.adb:59:17: warning: unreachable code (CVC4: 1 VC)
 container.adb:60:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:60:30: info: loop invariant initialization proved (CVC4: 1 VC)
 container.adb:60:30: info: loop invariant preservation proved (CVC4: 1 VC)
-container.adb:61:07: info: loop variant proved (CVC4: 1 VC)
+container.adb:61:28: info: loop variant proved (CVC4: 1 VC)
 container.adb:63:14: info: range check proved (CVC4: 1 VC)
 container.adb:64:14: info: range check proved (CVC4: 1 VC)
 container.adb:68:04: warning: unreachable code (CVC4: 1 VC)
@@ -31,7 +31,7 @@ container.adb:69:14: info: range check proved (CVC4: 1 VC)
 container.adb:74:04: warning: unreachable code (CVC4: 1 VC)
 container.adb:75:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:75:14: info: range check proved (CVC4: 2 VC)
-container.adb:76:07: info: loop variant proved (CVC4: 1 VC)
+container.adb:76:28: info: loop variant proved (CVC4: 1 VC)
 container.adb:81:08: info: precondition proved (CVC4: 1 VC)
 container.adb:81:08: info: precondition proved (Trivial: 1 VC)
 container.adb:81:26: warning: unreachable code (CVC4: 1 VC)
@@ -41,7 +41,7 @@ container.adb:86:08: info: precondition proved (Trivial: 1 VC)
 container.adb:88:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:89:10: warning: unreachable code (CVC4: 1 VC)
 container.adb:89:17: info: range check proved (CVC4: 2 VC)
-container.adb:90:10: info: loop variant proved (CVC4: 1 VC)
+container.adb:90:31: info: loop variant proved (CVC4: 1 VC)
 container.adb:93:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:97:08: info: precondition proved (CVC4: 1 VC)
 container.adb:97:08: info: precondition proved (Trivial: 1 VC)
@@ -49,11 +49,11 @@ container.adb:98:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:99:14: info: range check proved (CVC4: 2 VC)
 container.adb:100:30: info: loop invariant initialization proved (CVC4: 1 VC)
 container.adb:100:30: info: loop invariant preservation proved (CVC4: 1 VC)
-container.adb:101:07: info: loop variant proved (CVC4: 1 VC)
+container.adb:101:28: info: loop variant proved (CVC4: 1 VC)
 container.adb:104:10: warning: unreachable code (CVC4: 1 VC)
 container.adb:104:17: info: range check proved (CVC4: 2 VC)
-container.adb:105:10: info: loop variant proved (CVC4: 1 VC)
-container.adb:106:10: info: loop variant proved (CVC4: 1 VC)
+container.adb:105:31: info: loop variant proved (CVC4: 1 VC)
+container.adb:106:31: info: loop variant proved (CVC4: 1 VC)
 container.ads:16:13: info: subprogram "First" will terminate
 container.ads:16:20: warning: unused variable "C"
 container.ads:18:13: info: subprogram "Has_Element" will terminate
@@ -203,15 +203,15 @@ nested_loops.adb:3:14: info: subprogram "Proc" will terminate
 nested_loops.adb:3:14: warning: subprogram "Proc" has no effect
 nested_loops.adb:5:07: info: initialization of "X" proved
 nested_loops.adb:8:17: info: overflow check proved (CVC4: 2 VC)
-nested_loops.adb:9:10: info: loop variant proved (CVC4: 1 VC)
-nested_loops.adb:11:13: info: loop variant proved (CVC4: 1 VC)
-nested_loops.adb:14:16: medium: loop variant might fail
+nested_loops.adb:9:31: info: loop variant proved (CVC4: 1 VC)
+nested_loops.adb:11:34: info: loop variant proved (CVC4: 1 VC)
+nested_loops.adb:14:37: medium: loop variant might fail
 nested_loops.adb:22:04: warning: analyzing unreferenced procedure "Proc2"
 nested_loops.adb:22:14: warning: subprogram "Proc2" has no effect
 nested_loops.adb:22:14: warning: subprogram "Proc2" might not terminate
 nested_loops.adb:26:17: info: overflow check proved (CVC4: 2 VC)
-nested_loops.adb:27:10: info: loop variant proved (CVC4: 1 VC)
-nested_loops.adb:29:13: info: loop variant proved (CVC4: 1 VC)
+nested_loops.adb:27:31: info: loop variant proved (CVC4: 1 VC)
+nested_loops.adb:29:34: info: loop variant proved (CVC4: 1 VC)
 nested_loops.adb:38:04: warning: analyzing unreferenced procedure "Proc3"
 nested_loops.adb:38:14: warning: subprogram "Proc3" has no effect
 nested_loops.adb:38:14: warning: subprogram "Proc3" might not terminate

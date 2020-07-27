@@ -1,5 +1,5 @@
 from test_support import *
-from gnatpython.env import Env
+from e3.env import Env
 
 # Set MODE environment variable so that thumper.gpr project file is set for
 # analysis instead of compilation.

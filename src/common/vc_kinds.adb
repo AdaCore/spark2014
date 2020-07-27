@@ -137,6 +137,8 @@ package body VC_Kinds is
             | VC_Stronger_Post
             | VC_Weaker_Classwide_Pre
             | VC_Stronger_Classwide_Post
+            | VC_Weaker_Pre_Access
+            | VC_Stronger_Post_Access
             | VC_Warning_Kind
             | VC_Null_Exclusion
             | VC_UC_Alignment
@@ -363,6 +365,14 @@ package body VC_Kinds is
             return "Check that the class-wide postcondition aspect of the " &
               "subprogram is stronger than its overridden class-wide " &
               "postcondition.";
+         when VC_Weaker_Pre_Access                =>
+            return "Check that the precondition aspect of the"
+              & " access-to-subprogram type used as the target of a conversion"
+              & " implies the precondition of the source.";
+         when VC_Stronger_Post_Access             =>
+            return "Check that the postcondition aspect of the"
+              & " access-to-subprogram type used as the target of a conversion"
+              & " is implied by the postcondition of the source.";
          when VC_Inconsistent_Pre                 =>
             return "Warn if precondition is found to be always False";
          when VC_Inconsistent_Post                =>
@@ -892,6 +902,12 @@ package body VC_Kinds is
                "class-wide precondition weaker than overridden one",
              when VC_Stronger_Classwide_Post =>
                "class-wide postcondition stronger than overridden one",
+             when VC_Weaker_Pre_Access =>
+               "precondition of the source weaker than precondition of the"
+               & " target",
+             when VC_Stronger_Post_Access =>
+               "postcondition of the source stronger than postcondition of the"
+               & " target",
              when VC_Inconsistent_Pre =>
                "precondition always False",
              when VC_Inconsistent_Post =>

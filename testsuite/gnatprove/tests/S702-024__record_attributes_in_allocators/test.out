@@ -1,7 +1,9 @@
 test_constr.adb:22:04: warning: analyzing unreferenced procedure "Test1"
 test_constr.adb:22:14: warning: subprogram "Test1" has no effect
-test_constr.adb:24:22: medium: assertion might fail, cannot prove (Create).C.all.C'Constrained
-test_constr.adb:24:30: info: pointer dereference check proved (CVC4: 1 VC)
+test_constr.adb:24:22: medium: assertion might fail, cannot prove V.C.all.C'Constrained
+test_constr.adb:24:30: medium: memory leak might occur at end of scope
+test_constr.adb:24:48: info: function contract not available for proof ("Create" might not return)
+test_constr.adb:24:65: info: pointer dereference check proved (CVC4: 1 VC)
 test_constr.adb:27:04: warning: analyzing unreferenced procedure "Test2"
 test_constr.adb:27:14: warning: subprogram "Test2" has no effect
 test_constr.adb:29:22: medium: assertion might fail, cannot prove not H'(Create).C'constrained
@@ -9,8 +11,10 @@ test_constr.adb:32:14: warning: subprogram "Test3" has no effect
 test_constr.adb:34:22: medium: assertion might fail, cannot prove not R'(Create)'constrained
 test_constr.adb:37:04: warning: analyzing unreferenced procedure "Test4"
 test_constr.adb:37:14: warning: subprogram "Test4" has no effect
-test_constr.adb:39:22: medium: assertion might fail, cannot prove not R'(Create.C.C)'constrained
-test_constr.adb:39:37: info: pointer dereference check proved (CVC4: 1 VC)
+test_constr.adb:39:22: medium: assertion might fail, cannot prove not (R'(V.C.all.C)'Constrained)
+test_constr.adb:39:30: medium: memory leak might occur at end of scope
+test_constr.adb:39:48: info: function contract not available for proof ("Create" might not return)
+test_constr.adb:39:72: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:5:22: info: range check proved (CVC4: 1 VC)
 test_constrained.adb:12:04: warning: analyzing unreferenced procedure "Test_1"
 test_constrained.adb:12:14: warning: subprogram "Test_1" has no effect

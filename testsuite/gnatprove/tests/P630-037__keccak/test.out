@@ -70,7 +70,7 @@ keccak-keccak_1600.ads:55:04: info: unrolling loop
 keccak-keccakf-byte_lanes.adb:42:46: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:42:51: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:42:51: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:47:10: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:47:30: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:49:33: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:49:33: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:49:40: info: division check proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:55
@@ -93,7 +93,7 @@ keccak-keccakf-byte_lanes.adb:80:86: info: overflow check proved (CVC4: 1 VC), i
 keccak-keccakf-byte_lanes.adb:98:40: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:101:07: info: initialization of "Lane" proved, in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:103:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:109:10: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:109:30: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:111:32: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:111:32: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:111:39: info: division check proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:55
@@ -105,7 +105,7 @@ keccak-keccakf-byte_lanes.adb:117:38: info: overflow check proved (CVC4: 8 VC), 
 keccak-keccakf-byte_lanes.adb:118:59: info: range check proved (CVC4: 16 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:126:45: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:127:36: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.adb:139:16: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
+keccak-keccakf-byte_lanes.adb:139:36: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:142:38: info: loop invariant initialization proved (CVC4: 3 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:142:38: info: loop invariant preservation proved (CVC4: 3 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:142:45: info: overflow check proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:55
@@ -204,7 +204,7 @@ keccak-sponge.adb:102:34: info: overflow check proved (CVC4: 1 VC), in instantia
 keccak-sponge.adb:103:27: info: assertion proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:103:61: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:103:66: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:107:16: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.adb:107:36: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:110:38: info: loop invariant initialization proved (CVC4: 5 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:110:38: info: loop invariant preservation proved (CVC4: 5 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:110:45: info: overflow check proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:57
@@ -337,7 +337,7 @@ keccak-sponge.adb:383:21: info: assertion proved (CVC4: 1 VC), in instantiation 
 keccak-sponge.adb:383:28: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:383:48: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:384:21: info: assertion proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:388:10: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.adb:388:30: info: loop variant proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:390:33: info: loop invariant initialization proved (CVC4: 3 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:390:33: info: loop invariant preservation proved (CVC4: 3 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:390:40: info: overflow check proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:57

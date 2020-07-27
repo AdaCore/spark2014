@@ -431,6 +431,18 @@ package Why.Gen.Expr is
    --  No_Init is set if we are converting a potentially uninitialized
    --  value (ie if want to skip predicate checks during the conversion).
 
+   function Insert_Subp_Pointer_Conversion
+     (Ada_Node   : Node_Id;
+      Domain     : EW_Domain;
+      Expr       : W_Expr_Id;
+      To         : W_Type_Id;
+      Need_Check : Boolean := False;
+      No_Init    : Boolean := False) return W_Expr_Id;
+   --  If Need_Check is True, insert LSP, null exclusion and predicate
+   --  checks.
+   --  No_Init is set if we are converting a potentially uninitialized
+   --  value (ie if want to skip predicate checks during the conversion).
+
    function Insert_Cnt_Loc_Label
      (Ada_Node     : Node_Id;
       E            : W_Expr_Id;

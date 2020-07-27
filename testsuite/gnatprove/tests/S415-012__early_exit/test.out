@@ -7,6 +7,7 @@ early_exits.adb:10:64: info: pointer dereference check proved (CVC4: 1 VC)
 early_exits.adb:10:74: info: pointer dereference check proved (CVC4: 1 VC)
 early_exits.adb:14:10: info: null exclusion check proved (CVC4: 1 VC)
 early_exits.adb:16:31: info: cannot unroll loop (local non-scalar declaration at line 18)
+early_exits.adb:18:16: info: null exclusion check proved (CVC4: 1 VC)
 early_exits.adb:18:16: info: null exclusion check proved (CVC4: 15 VC)
 early_exits.adb:20:33: info: unrolling loop
 early_exits.adb:21:24: info: pointer dereference check proved (CVC4: 15 VC)

@@ -62,10 +62,14 @@ package SPARK_Util is
          | N_Number_Declaration
 
          --  Renamings are replaced by the renamed object in the frontend, but
-         --  the renaming objects are not removed from the tree. We can safely
-         --  ignore them.
+         --  the renaming declarations are not removed from the tree. We can
+         --  safely ignore them, except for renaming object declarations, which
+         --  need to be analyzed for possible RTE.
 
-         | N_Renaming_Declaration
+         | N_Exception_Renaming_Declaration
+         | N_Package_Renaming_Declaration
+         | N_Subprogram_Renaming_Declaration
+         | N_Generic_Renaming_Declaration
 
          --  Generic instantiations are expanded into the corresponding
          --  declarations in the frontend. The instantiations themselves can be
@@ -338,21 +342,24 @@ package SPARK_Util is
    with Pre  => Ekind (E) in E_Abstract_State
                            | E_Protected_Type
                            | E_Task_Type
-                           | Object_Kind,
+                           | Object_Kind
+                           | Type_Kind,
         Post => (if Ekind (E) in E_Protected_Type | E_Task_Type
                  then not Has_Volatile'Result);
-   --  @param E an abstract state or object (including concurrent types, which
-   --     might be implicit parameters and globals)
-   --  @return True iff E is an external state or a volatile object
+   --  @param E an abstract state, object (including concurrent types, which
+   --     might be implicit parameters and globals) or type
+   --  @return True iff E is an external state or a volatile object or type
 
-   function Has_Volatile_Property (E : Checked_Entity_Id;
-                                   P : Volatile_Pragma_Id)
-                                 return Boolean
+   function Has_Volatile_Property
+     (E : Checked_Entity_Id;
+      P : Volatile_Pragma_Id)
+      return Boolean
    with Pre => Has_Volatile (E)
      and then Ekind (E) /= E_Constant;
-   --  @param E an external state, a volatile object, or a protected component
+   --  @param E an external state, a volatile object or type, or a protected
+   --     component
    --  @return True iff E has the specified property P of volatility, either
-   --     directly or through its type.
+   --     directly or through its (base) type.
 
    function Is_Constant_After_Elaboration (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_Variable;
@@ -470,7 +477,7 @@ package SPARK_Util is
      Boolean
    with Pre => Is_Object (X) and then Is_Object (Y);
    --  @param X  object that overlays the other (object with Address clause)
-   --  @param Y  object that is overlayed (object whose 'Address is used in
+   --  @param Y  object that is overlaid (object whose 'Address is used in
    --            the Address clause of X)
    --  @return True iff X'Alignment and Y'Alignment are known and X'Alignment
    --          is an integral multiple of Y
@@ -576,6 +583,15 @@ package SPARK_Util is
    -- Queries for particular nodes --
    ----------------------------------
 
+   function Aggregate_Is_In_Assignment (Expr : Node_Id) return Boolean with
+     Pre => Nkind (Expr) in N_Aggregate
+                          | N_Delta_Aggregate
+                          | N_Extension_Aggregate
+       or else Is_Attribute_Update (Expr);
+   --  Returns whether Expr is on the rhs of an assignment, either directly or
+   --  through other enclosing aggregates, with possible type conversions and
+   --  qualifications.
+
    type Unrolling_Type is
      (No_Unrolling,
       Simple_Unrolling,
@@ -614,10 +630,11 @@ package SPARK_Util is
    --  @return a name that uniquely identifies the prefix
 
    function Generic_Actual_Subprograms (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Is_Generic_Instance (E),
+   with Pre  => Ekind (E) = E_Package and then Is_Generic_Instance (E),
         Post => (for all S of Generic_Actual_Subprograms'Result =>
                     Is_Subprogram (S));
-   --  @param E instance of a generic unit
+   --  @param E instance of a generic package (or a wrapper package for
+   --    instances of generic subprograms)
    --  @return actual subprogram parameters of E
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
@@ -683,6 +700,13 @@ package SPARK_Util is
      with Pre => Nkind (N) = N_Object_Declaration;
    --  @param N is an object declaration
    --  @return if the given node N is an action
+
+   function Is_Additional_Param_Of_Access_Subp_Wrapper
+     (E : Entity_Id) return Boolean
+   with Pre => Is_Formal (E);
+   --  Return True if E is the in parameter introduced for the
+   --  access-to-subprogram object in a wrapper generated for an
+   --  access-to-subprogram type with a contract.
 
    function Is_Converted_Actual_Output_Parameter (N : Node_Id) return Boolean
      with Pre => Nkind (N) in N_Subexpr;

@@ -1,9 +1,9 @@
-missing_check.adb:5:15: insufficient permission for "X" when returning from "Bad"
 missing_check.adb:5:15: object was moved at line 9
+missing_check.adb:5:15: return from "Bad" with moved value for "X"
 missing_check.adb:5:20: warning: "X" is not modified, could be of access constant type
 missing_check.adb:5:29: info: initialization of "Y" proved
-move_constant.adb:6:15: insufficient permission for "X" when returning from "Bad"
 move_constant.adb:6:15: object was moved at line 10
+move_constant.adb:6:15: return from "Bad" with moved value for "X"
 move_constant.adb:6:20: warning: "X" is not modified, could be of access constant type
 move_constant.adb:6:29: info: initialization of "Y" proved
 gnatprove: error during flow analysis and proof

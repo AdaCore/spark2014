@@ -133,7 +133,7 @@ list_mod_allocator.adb:102:26: info: precondition proved (CVC4: 2 VC)
 list_mod_allocator.adb:110:26: info: precondition proved (CVC4: 2 VC)
 list_mod_allocator.adb:111:25: info: precondition proved (CVC4: 4 VC)
 list_mod_allocator.adb:112:27: info: index check proved (CVC4: 4 VC)
-list_mod_allocator.adb:114:16: info: loop variant proved (CVC4: 1 VC)
+list_mod_allocator.adb:114:37: info: loop variant proved (CVC4: 1 VC)
 list_mod_allocator.adb:115:39: info: loop invariant initialization proved (CVC4: 1 VC)
 list_mod_allocator.adb:115:39: info: loop invariant preservation proved (CVC4: 1 VC)
 list_mod_allocator.adb:116:39: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -217,12 +217,10 @@ list_mod_allocator.adb:193:30: info: index check proved (CVC4: 2 VC)
 list_mod_allocator.adb:194:16: info: index check proved (CVC4: 2 VC)
 list_mod_allocator.adb:198:13: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 list_mod_allocator.adb:200:35: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:201:10: info: analyzing call to "Prove_Is_Preprend" in context
 list_mod_allocator.adb:201:29: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:208:33: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:210:44: info: index check proved (CVC4: 2 VC)
 list_mod_allocator.adb:211:16: info: index check proved (CVC4: 2 VC)
-list_mod_allocator.adb:214:10: info: analyzing call to "Prove_Is_Preprend" in context
 list_mod_allocator.adb:214:33: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:218:14: info: add a contract to analyze it separately from calling contexts
 list_mod_allocator.adb:218:14: info: local subprogram "Prove_Init" only analyzed in the context of calls
@@ -239,7 +237,6 @@ list_mod_allocator.adb:236:30: info: loop invariant initialization proved (CVC4:
 list_mod_allocator.adb:236:30: info: loop invariant preservation proved (CVC4: 1 VC)
 list_mod_allocator.adb:237:30: info: loop invariant initialization proved (CVC4: 1 VC)
 list_mod_allocator.adb:237:30: info: loop invariant preservation proved (CVC4: 1 VC)
-list_mod_allocator.adb:240:04: info: analyzing call to "Prove_Init" in context
 list_mod_allocator.adb:240:16: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:242:07: info: assertion proved (CVC4: 1 VC)
 list_mod_allocator.adb:242:13: info: index check proved (CVC4: 2 VC)

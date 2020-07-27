@@ -1,4 +1,4 @@
 p-tt.adb:14:04: info: precondition proved (Trivial: 1 VC)
+p-tt.adb:14:04: warning: "Y" is set by "Proc" but not used after the call
 p-tt.adb:14:04: warning: statement has no effect
-p-tt.adb:14:04: warning: unused assignment to "Y"
 p.adb:3:14: medium: the task might terminate, which is not allowed in SPARK

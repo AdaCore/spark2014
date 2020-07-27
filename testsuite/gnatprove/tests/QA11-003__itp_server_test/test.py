@@ -57,7 +57,7 @@ def launch_server(limit_line, input_file):
         with open (input_file, "r") as in_file:
             for l in in_file:
                 print(l)
-                os.write(write, l)
+                os.write(write, l.encode('utf-8'))
                 sleep(1)
         # Give the gnat_server time to end by itself. Thats why we send the
         # exit request

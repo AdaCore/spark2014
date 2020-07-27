@@ -653,6 +653,10 @@ package Gnat2Why.Expr is
    procedure Reset_Map_For_Old;
    --  Empty the map of identifiers to use for Old attribute references
 
+   procedure Restore_Map_For_Old (Saved_Map : Ada_To_Why_Ident.Map) with
+     Pre => Map_For_Old.Is_Empty;
+   --  Restore previously saved value of the map for old
+
    function Name_For_Old (N : Node_Id) return W_Identifier_Id;
    --  During the generation of code for detecting run-time errors in the
    --  postcondition, return the name to use for occurrences of N'Old.
@@ -681,5 +685,12 @@ private
 
    Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
    --  Map storing predicates for invariants of access to incomplete types
+
+   Target_Name : W_Identifier_Id := Why_Empty;
+   Target_Used : Boolean := False;
+   --  Name to use for occurrences of target names @ in assignments. It should
+   --  be equal to Why_Empty when we are not translating an assignment.
+   --  Target_Used is set to True if the Target_Name is used somewhere and
+   --  should be bound.
 
 end Gnat2Why.Expr;

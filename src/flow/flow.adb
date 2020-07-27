@@ -92,11 +92,14 @@ package body Flow is
    procedure Build_Graphs_For_Analysis (FA_Graphs : out Analysis_Maps.Map);
    --  Build flow graphs for the current compilation unit; phase 2
 
-   procedure Check_Classwide_Contracts;
-   --  Check that classwide contracts conform to the legality rules laid out
-   --  in SRM 6.1.6. We do this for requested subprograms from the current unit
-   --  whose spec has SPARK_Mode => On, regardless of the SPARK_Mode on their
-   --  bodies.
+   procedure Check_Specification_Contracts;
+   --  Perform initial checks on contracts:
+   --  * classwide contracts conform to the legality rules laid out in SRM
+   --  6.1.6.
+   --  * global contracts do not use constants without variable input as per
+   --  SRM 6.1.4(15)
+   --  We do this for requested subprograms from the current unit whose spec
+   --  has SPARK_Mode => On, regardless of the SPARK_Mode on their bodies.
 
    -------------------------------------
    -- Debug_Print_Generated_Contracts --
@@ -1285,11 +1288,11 @@ package body Flow is
       end if;
    end Build_Graphs_For_Analysis;
 
-   -------------------------------
-   -- Check_Classwide_Contracts --
-   -------------------------------
+   -----------------------------------
+   -- Check_Specification_Contracts --
+   -----------------------------------
 
-   procedure Check_Classwide_Contracts is
+   procedure Check_Specification_Contracts is
       procedure Check_Contracts (E : Entity_Id);
       --  Check contracts for a given program unit and its nested units
 
@@ -1298,29 +1301,36 @@ package body Flow is
       ---------------------
 
       procedure Check_Contracts (E : Entity_Id) is
-         Unused : Boolean;
-
       begin
          for Child of Scope_Map (E) loop
             Check_Contracts (Child);
          end loop;
 
-         if Is_Subprogram (E)
+         if Ekind (E) in Entry_Kind | E_Function | E_Procedure | E_Task_Type
            and then SPARK_Util.Subprograms.Analysis_Requested
              (E, With_Inlined => True)
            and then Entity_Spec_In_SPARK (E)
          then
-            Check_Classwide_Contracts (E, Valid => Unused);
+            --  We emit similar check messages if we analyse a body, so to
+            --  avoid duplication don't emit them here.
+            --  ??? ideally we should emit all messages from one place
+            if not Entity_Body_In_SPARK (E) then
+               Analysis.Check_Constant_Global_Contracts (E);
+            end if;
+
+            if Is_Subprogram (E) then
+               Check_Classwide_Contracts (E);
+            end if;
          end if;
       end Check_Contracts;
 
-   --  Start of processing for Check_Classwide_Contracts
+   --  Start of processing for Check_Specification_Contracts
 
    begin
       if Present (Root_Entity) then
          Check_Contracts (Root_Entity);
       end if;
-   end Check_Classwide_Contracts;
+   end Check_Specification_Contracts;
 
    ------------------------
    -- Flow_Analyse_CUnit --
@@ -1334,7 +1344,7 @@ package body Flow is
       Success : Boolean;
 
    begin
-      Check_Classwide_Contracts;
+      Check_Specification_Contracts;
 
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Analysis (FA_Graphs => FA_Graphs);

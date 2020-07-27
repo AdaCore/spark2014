@@ -1,9 +1,9 @@
+p.adb:6:04: warning: "B1" is set by "Test_If" but not used after the call
+p.adb:6:04: warning: "B2" is set by "Test_If" but not used after the call
 p.adb:6:04: warning: statement has no effect
-p.adb:6:04: warning: unused assignment to "B1"
-p.adb:6:04: warning: unused assignment to "B2"
 p.adb:8:04: info: precondition proved (CVC4: 1 VC)
 pack.ads:2:08: info: flow dependencies proved
 test.adb:5:35: info: unrolling loop
-test.adb:6:10: warning: unused assignment to "B1"
+test.adb:6:10: warning: "B1" is set by "Do_Nothing" but not used after the call
 test.adb:9:35: info: unrolling loop
 test.adb:56:13: warning: unused assignment

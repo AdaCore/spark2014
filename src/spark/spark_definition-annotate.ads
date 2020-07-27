@@ -207,7 +207,8 @@ package SPARK_Definition.Annotate is
                           | E_Function
                           | E_Package
                           | E_Procedure
-                          | E_Task_Type,
+                          | E_Task_Type
+                          | E_Subprogram_Type,
         Post => (if Has_Might_Not_Return_Annotation'Result
                  then Ekind (E) = E_Procedure);
    --  Return True if a pragma Annotate Might_Not_Return applies to entity E

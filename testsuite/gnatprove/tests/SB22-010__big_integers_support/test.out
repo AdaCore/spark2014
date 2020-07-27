@@ -2,345 +2,172 @@ big_integers_test.adb:18:04: warning: analyzing unreferenced procedure "Nat_Pred
 big_integers_test.adb:18:40: info: initialization of "Nat" proved
 big_integers_test.adb:20:11: warning: unused assignment
 big_integers_test.adb:20:16: medium: predicate check might fail
-big_integers_test.adb:20:16: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:20:16: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:21:16: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:21:16: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:21:16: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:24:04: warning: analyzing unreferenced procedure "Pos_Predicate_Check_Fail"
 big_integers_test.adb:24:40: info: initialization of "Pos" proved
 big_integers_test.adb:26:11: warning: unused assignment
 big_integers_test.adb:26:16: medium: predicate check might fail
-big_integers_test.adb:26:16: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:26:16: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:27:16: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:27:16: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:27:16: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:30:04: warning: analyzing unreferenced procedure "BI_Range_Check_Fail"
 big_integers_test.adb:30:36: info: initialization of "Big_Int" proved
 big_integers_test.adb:30:63: info: initialization of "Int" proved
-big_integers_test.adb:32:20: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:32:20: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:33:18: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:33:26: warning: assuming "+" has no effect on global items
-big_integers_test.adb:33:26: warning: no Global contract available for "+"
-big_integers_test.adb:33:30: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:33:30: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:34:11: warning: unused assignment
 big_integers_test.adb:34:14: medium: range check might fail
-big_integers_test.adb:34:14: warning: assuming "To_Integer" has no effect on global items
-big_integers_test.adb:34:14: warning: no Global contract available for "To_Integer"
+big_integers_test.adb:34:26: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:38:04: warning: analyzing unreferenced procedure "MSC_Range_Check_Fail"
 big_integers_test.adb:38:37: info: initialization of "Big_Int" proved
 big_integers_test.adb:38:64: info: initialization of "LL_Int" proved
-big_integers_test.adb:40:21: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:40:21: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:41:18: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:41:26: warning: assuming "+" has no effect on global items
-big_integers_test.adb:41:26: warning: no Global contract available for "+"
-big_integers_test.adb:41:30: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:41:30: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:42:14: warning: unused assignment
 big_integers_test.adb:42:20: medium: range check might fail
-big_integers_test.adb:42:20: warning: assuming "From_Big_Integer" has no effect on global items
-big_integers_test.adb:42:20: warning: no Global contract available for "From_Big_Integer"
+big_integers_test.adb:42:39: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:46:04: warning: analyzing unreferenced procedure "MUC_Range_Check_Fail"
 big_integers_test.adb:46:36: info: initialization of "Big_Int" proved
 big_integers_test.adb:46:63: info: initialization of "Uns" proved
-big_integers_test.adb:48:21: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:48:21: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:49:18: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:49:26: warning: assuming "+" has no effect on global items
-big_integers_test.adb:49:26: warning: no Global contract available for "+"
-big_integers_test.adb:49:30: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:49:30: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:50:11: warning: unused assignment
 big_integers_test.adb:50:17: medium: range check might fail
-big_integers_test.adb:50:17: warning: assuming "From_Big_Integer" has no effect on global items
-big_integers_test.adb:50:17: warning: no Global contract available for "From_Big_Integer"
+big_integers_test.adb:50:36: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:54:04: warning: analyzing unreferenced procedure "Divide_Division_Check_Fail"
 big_integers_test.adb:54:14: warning: subprogram "Divide_Division_Check_Fail" has no effect
-big_integers_test.adb:55:28: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:55:28: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:57:12: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:57:20: medium: divide by zero might fail [possible explanation: subprogram at line 54 should mention Big_Int in a precondition]
-big_integers_test.adb:57:20: warning: assuming "/" has no effect on global items
-big_integers_test.adb:57:20: warning: no Global contract available for "/"
 big_integers_test.adb:57:22: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:60:04: warning: analyzing unreferenced procedure "Mod_Division_Check_Fail"
 big_integers_test.adb:60:14: warning: subprogram "Mod_Division_Check_Fail" has no effect
-big_integers_test.adb:61:28: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:61:28: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:63:12: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:63:20: medium: divide by zero might fail [possible explanation: subprogram at line 60 should mention Big_Int in a precondition]
-big_integers_test.adb:63:20: warning: assuming "mod" has no effect on global items
-big_integers_test.adb:63:20: warning: no Global contract available for "mod"
 big_integers_test.adb:63:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:66:04: warning: analyzing unreferenced procedure "Rem_Division_Check_Fail"
 big_integers_test.adb:66:14: warning: subprogram "Rem_Division_Check_Fail" has no effect
-big_integers_test.adb:67:28: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:67:28: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:69:12: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:69:20: medium: divide by zero might fail [possible explanation: subprogram at line 66 should mention Big_Int in a precondition]
-big_integers_test.adb:69:20: warning: assuming "rem" has no effect on global items
-big_integers_test.adb:69:20: warning: no Global contract available for "rem"
 big_integers_test.adb:69:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:72:04: warning: analyzing unreferenced procedure "Gcd_Precondition_Fail"
 big_integers_test.adb:72:14: warning: subprogram "Gcd_Precondition_Fail" has no effect
-big_integers_test.adb:73:28: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:73:28: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:75:12: medium: precondition might fail [possible explanation: subprogram at line 72 should mention Big_Int in a precondition]
-big_integers_test.adb:75:12: warning: assuming "Greatest_Common_Divisor" has no effect on global items
-big_integers_test.adb:75:12: warning: no Global contract available for "Greatest_Common_Divisor"
 big_integers_test.adb:75:37: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:75:46: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:78:34: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:78:34: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:80:26: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:81:25: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:89:11: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:89:11: warning: no Global contract available for "To_Big_Integer"
-big_integers_test.adb:90:11: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:90:11: warning: no Global contract available for "To_Big_Integer"
-big_integers_test.adb:91:11: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:91:11: warning: no Global contract available for "To_Big_Integer"
-big_integers_test.adb:92:11: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:92:11: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:94:11: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:95:11: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:98:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:98:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:98:21: warning: assuming "=" has no effect on global items
-big_integers_test.adb:98:21: warning: no Global contract available for "="
 big_integers_test.adb:98:23: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:99:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:99:24: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:99:26: warning: assuming "=" has no effect on global items
-big_integers_test.adb:99:26: warning: no Global contract available for "="
 big_integers_test.adb:99:28: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:100:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:100:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:100:21: warning: assuming "<" has no effect on global items
-big_integers_test.adb:100:21: warning: no Global contract available for "<"
 big_integers_test.adb:100:23: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:101:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:101:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:101:21: warning: assuming "<" has no effect on global items
-big_integers_test.adb:101:21: warning: no Global contract available for "<"
 big_integers_test.adb:101:23: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:102:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:102:24: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:102:26: warning: assuming "<" has no effect on global items
-big_integers_test.adb:102:26: warning: no Global contract available for "<"
 big_integers_test.adb:102:28: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:103:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:103:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:103:21: warning: assuming "<=" has no effect on global items
-big_integers_test.adb:103:21: warning: no Global contract available for "<="
 big_integers_test.adb:103:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:104:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:104:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:104:21: warning: assuming "<=" has no effect on global items
-big_integers_test.adb:104:21: warning: no Global contract available for "<="
 big_integers_test.adb:104:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:105:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:105:24: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:105:26: warning: assuming "<=" has no effect on global items
-big_integers_test.adb:105:26: warning: no Global contract available for "<="
 big_integers_test.adb:105:29: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:106:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:106:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:106:21: warning: assuming ">" has no effect on global items
-big_integers_test.adb:106:21: warning: no Global contract available for ">"
 big_integers_test.adb:106:23: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:107:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:107:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:107:21: warning: assuming ">" has no effect on global items
-big_integers_test.adb:107:21: warning: no Global contract available for ">"
 big_integers_test.adb:107:23: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:108:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:108:24: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:108:26: warning: assuming ">" has no effect on global items
-big_integers_test.adb:108:26: warning: no Global contract available for ">"
 big_integers_test.adb:108:28: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:109:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:109:24: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:109:26: warning: assuming ">" has no effect on global items
-big_integers_test.adb:109:26: warning: no Global contract available for ">"
 big_integers_test.adb:109:28: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:110:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:110:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:110:21: warning: assuming ">=" has no effect on global items
-big_integers_test.adb:110:21: warning: no Global contract available for ">="
 big_integers_test.adb:110:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:111:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:111:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:111:21: warning: assuming ">=" has no effect on global items
-big_integers_test.adb:111:21: warning: no Global contract available for ">="
 big_integers_test.adb:111:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:112:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:112:24: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:112:26: warning: assuming ">" has no effect on global items
-big_integers_test.adb:112:26: warning: no Global contract available for ">"
 big_integers_test.adb:112:28: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:113:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:113:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:113:21: warning: assuming ">=" has no effect on global items
-big_integers_test.adb:113:21: warning: no Global contract available for ">="
 big_integers_test.adb:113:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:114:19: info: assertion proved (CVC4: 1 VC)
-big_integers_test.adb:114:19: warning: assuming "In_Range" has no effect on global items
-big_integers_test.adb:114:19: warning: no Global contract available for "In_Range"
-big_integers_test.adb:116:07: warning: assuming "Is_Valid" has no effect on global items
+big_integers_test.adb:114:29: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:116:07: warning: function Is_Valid is assumed to return True
-big_integers_test.adb:116:07: warning: no Global contract available for "Is_Valid"
 big_integers_test.adb:121:09: info: range check proved (CVC4: 1 VC)
-big_integers_test.adb:121:09: warning: assuming "To_Integer" has no effect on global items
-big_integers_test.adb:121:09: warning: no Global contract available for "To_Integer"
+big_integers_test.adb:121:21: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:122:14: info: range check proved (CVC4: 1 VC)
-big_integers_test.adb:122:14: warning: assuming "From_Big_Integer" has no effect on global items
-big_integers_test.adb:122:14: warning: no Global contract available for "From_Big_Integer"
+big_integers_test.adb:122:33: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:123:12: info: range check proved (CVC4: 1 VC)
-big_integers_test.adb:123:12: warning: assuming "From_Big_Integer" has no effect on global items
-big_integers_test.adb:123:12: warning: no Global contract available for "From_Big_Integer"
-big_integers_test.adb:126:11: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:126:11: warning: no Global contract available for "To_Big_Integer"
-big_integers_test.adb:127:11: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:127:11: warning: no Global contract available for "To_Big_Integer"
+big_integers_test.adb:123:31: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:128:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:128:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:128:21: warning: assuming "+" has no effect on global items
-big_integers_test.adb:128:21: warning: no Global contract available for "+"
 big_integers_test.adb:128:23: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:128:25: warning: assuming "=" has no effect on global items
-big_integers_test.adb:128:25: warning: no Global contract available for "="
 big_integers_test.adb:128:27: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:129:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:129:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:129:21: warning: assuming "-" has no effect on global items
-big_integers_test.adb:129:21: warning: no Global contract available for "-"
 big_integers_test.adb:129:23: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:129:25: warning: assuming "=" has no effect on global items
-big_integers_test.adb:129:25: warning: no Global contract available for "="
 big_integers_test.adb:129:27: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:130:19: info: assertion proved (CVC4: 1 VC)
-big_integers_test.adb:130:19: warning: assuming "+" has no effect on global items
-big_integers_test.adb:130:19: warning: no Global contract available for "+"
 big_integers_test.adb:130:20: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:130:22: warning: assuming "=" has no effect on global items
-big_integers_test.adb:130:22: warning: no Global contract available for "="
 big_integers_test.adb:130:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:131:19: info: assertion proved (CVC4: 1 VC)
-big_integers_test.adb:131:19: warning: assuming "-" has no effect on global items
-big_integers_test.adb:131:19: warning: no Global contract available for "-"
 big_integers_test.adb:131:20: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:131:22: warning: assuming "=" has no effect on global items
-big_integers_test.adb:131:22: warning: no Global contract available for "="
 big_integers_test.adb:131:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:132:19: info: assertion proved (CVC4: 1 VC)
-big_integers_test.adb:132:19: warning: assuming "abs" has no effect on global items
-big_integers_test.adb:132:19: warning: no Global contract available for "abs"
 big_integers_test.adb:132:23: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:132:25: warning: assuming "=" has no effect on global items
-big_integers_test.adb:132:25: warning: no Global contract available for "="
 big_integers_test.adb:132:27: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:133:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:133:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:133:21: warning: assuming "*" has no effect on global items
-big_integers_test.adb:133:21: warning: no Global contract available for "*"
 big_integers_test.adb:133:23: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:133:25: warning: assuming "=" has no effect on global items
-big_integers_test.adb:133:25: warning: no Global contract available for "="
-big_integers_test.adb:133:27: warning: assuming "-" has no effect on global items
-big_integers_test.adb:133:27: warning: no Global contract available for "-"
 big_integers_test.adb:133:28: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:133:30: warning: assuming "*" has no effect on global items
-big_integers_test.adb:133:30: warning: no Global contract available for "*"
 big_integers_test.adb:133:32: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:134:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:134:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:134:21: warning: assuming "**" has no effect on global items
-big_integers_test.adb:134:21: warning: no Global contract available for "**"
-big_integers_test.adb:134:26: warning: assuming "=" has no effect on global items
-big_integers_test.adb:134:26: warning: no Global contract available for "="
 big_integers_test.adb:134:28: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:134:30: warning: assuming "**" has no effect on global items
-big_integers_test.adb:134:30: warning: no Global contract available for "**"
 big_integers_test.adb:135:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:135:19: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:135:21: info: division check proved (CVC4: 1 VC)
-big_integers_test.adb:135:21: warning: assuming "/" has no effect on global items
-big_integers_test.adb:135:21: warning: no Global contract available for "/"
 big_integers_test.adb:135:23: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:135:25: warning: assuming "=" has no effect on global items
-big_integers_test.adb:135:25: warning: no Global contract available for "="
-big_integers_test.adb:135:29: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:135:29: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:136:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:136:19: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:136:21: info: division check proved (CVC4: 1 VC)
-big_integers_test.adb:136:21: warning: assuming "mod" has no effect on global items
-big_integers_test.adb:136:21: warning: no Global contract available for "mod"
 big_integers_test.adb:136:25: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:136:27: warning: assuming "=" has no effect on global items
-big_integers_test.adb:136:27: warning: no Global contract available for "="
-big_integers_test.adb:136:31: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:136:31: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:137:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:137:19: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:137:21: info: division check proved (CVC4: 1 VC)
-big_integers_test.adb:137:21: warning: assuming "rem" has no effect on global items
-big_integers_test.adb:137:21: warning: no Global contract available for "rem"
 big_integers_test.adb:137:25: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:137:27: warning: assuming "=" has no effect on global items
-big_integers_test.adb:137:27: warning: no Global contract available for "="
-big_integers_test.adb:137:31: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:137:31: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:140:19: info: assertion proved (CVC4: 1 VC)
-big_integers_test.adb:140:19: warning: assuming "Min" has no effect on global items
-big_integers_test.adb:140:19: warning: no Global contract available for "Min"
 big_integers_test.adb:140:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:140:27: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:140:30: warning: assuming "=" has no effect on global items
-big_integers_test.adb:140:30: warning: no Global contract available for "="
 big_integers_test.adb:140:32: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:141:19: info: assertion proved (CVC4: 1 VC)
-big_integers_test.adb:141:19: warning: assuming "Max" has no effect on global items
-big_integers_test.adb:141:19: warning: no Global contract available for "Max"
 big_integers_test.adb:141:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:141:27: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:141:30: warning: assuming "=" has no effect on global items
-big_integers_test.adb:141:30: warning: no Global contract available for "="
 big_integers_test.adb:141:32: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:142:19: info: assertion proved (CVC4: 1 VC)
 big_integers_test.adb:142:19: info: precondition proved (CVC4: 2 VC)
 big_integers_test.adb:142:19: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:142:19: warning: assuming "Greatest_Common_Divisor" has no effect on global items
-big_integers_test.adb:142:19: warning: no Global contract available for "Greatest_Common_Divisor"
 big_integers_test.adb:142:44: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:142:47: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:142:50: warning: assuming "=" has no effect on global items
-big_integers_test.adb:142:50: warning: no Global contract available for "="
-big_integers_test.adb:142:54: warning: assuming "To_Big_Integer" has no effect on global items
-big_integers_test.adb:142:54: warning: no Global contract available for "To_Big_Integer"
 big_integers_test.adb:144:11: info: precondition proved (CVC4: 4 VC)
 conversion.ads:10:13: medium: subprogram "Partial_Conversion_Rec" might not terminate, terminating annotation could be incorrect
-conversion.ads:15:22: warning: assuming "To_Big_Integer" has no effect on global items
-conversion.ads:15:22: warning: no Global contract available for "To_Big_Integer"
 conversion.ads:15:26: info: index check proved (CVC4: 2 VC)
-conversion.ads:15:30: warning: assuming "*" has no effect on global items
-conversion.ads:15:30: warning: no Global contract available for "*"
 conversion.ads:15:32: info: predicate check proved (CVC4: 1 VC)
 conversion.ads:17:10: info: precondition proved (CVC4: 4 VC)
 conversion.ads:17:10: info: predicate check proved (CVC4: 1 VC)
 conversion.ads:17:39: info: range check proved (CVC4: 1 VC)
-conversion.ads:17:44: warning: assuming "+" has no effect on global items
-conversion.ads:17:44: warning: no Global contract available for "+"
-conversion.ads:17:47: warning: assuming "To_Big_Integer" has no effect on global items
-conversion.ads:17:47: warning: no Global contract available for "To_Big_Integer"
 conversion.ads:17:51: info: index check proved (CVC4: 2 VC)
-conversion.ads:17:55: warning: assuming "*" has no effect on global items
-conversion.ads:17:55: warning: no Global contract available for "*"
 conversion.ads:17:57: info: predicate check proved (CVC4: 1 VC)
 conversion.ads:17:75: info: index check proved (CVC4: 2 VC)
 conversion.ads:21:13: info: subprogram "Partial_Conversion" will terminate, terminating annotation has been proved
@@ -355,114 +182,48 @@ curve25519.adb:42:48: info: index check proved (CVC4: 4 VC)
 curve25519.adb:42:51: info: overflow check proved (CVC4: 2 VC)
 curve25519.adb:42:56: info: index check proved (CVC4: 4 VC)
 curve25519.adb:48:19: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:48:25: warning: assuming "+" has no effect on global items
-curve25519.adb:48:25: warning: no Global contract available for "+"
-curve25519.adb:48:28: warning: assuming "To_Big_Integer" has no effect on global items
-curve25519.adb:48:28: warning: no Global contract available for "To_Big_Integer"
-curve25519.adb:48:36: warning: assuming "*" has no effect on global items
-curve25519.adb:48:36: warning: no Global contract available for "*"
 curve25519.adb:48:38: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:49:19: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:49:25: warning: assuming "+" has no effect on global items
-curve25519.adb:49:25: warning: no Global contract available for "+"
-curve25519.adb:49:28: warning: assuming "To_Big_Integer" has no effect on global items
-curve25519.adb:49:28: warning: no Global contract available for "To_Big_Integer"
-curve25519.adb:49:36: warning: assuming "*" has no effect on global items
-curve25519.adb:49:36: warning: no Global contract available for "*"
 curve25519.adb:49:38: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:50:21: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:50:29: warning: assuming "+" has no effect on global items
-curve25519.adb:50:29: warning: no Global contract available for "+"
-curve25519.adb:50:32: warning: assuming "To_Big_Integer" has no effect on global items
-curve25519.adb:50:32: warning: no Global contract available for "To_Big_Integer"
-curve25519.adb:50:42: warning: assuming "*" has no effect on global items
-curve25519.adb:50:42: warning: no Global contract available for "*"
 curve25519.adb:50:44: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:52:25: info: assertion proved (CVC4: 2 VC)
-curve25519.adb:52:26: warning: assuming "To_Big_Integer" has no effect on global items
-curve25519.adb:52:26: warning: no Global contract available for "To_Big_Integer"
-curve25519.adb:52:34: warning: assuming "*" has no effect on global items
-curve25519.adb:52:34: warning: no Global contract available for "*"
 curve25519.adb:52:36: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:52:57: warning: assuming "+" has no effect on global items
-curve25519.adb:52:57: warning: no Global contract available for "+"
-curve25519.adb:53:28: warning: assuming "To_Big_Integer" has no effect on global items
-curve25519.adb:53:28: warning: no Global contract available for "To_Big_Integer"
-curve25519.adb:53:36: warning: assuming "*" has no effect on global items
-curve25519.adb:53:36: warning: no Global contract available for "*"
 curve25519.adb:53:38: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:53:59: warning: assuming "=" has no effect on global items
-curve25519.adb:53:59: warning: no Global contract available for "="
-curve25519.adb:54:26: warning: assuming "To_Big_Integer" has no effect on global items
-curve25519.adb:54:26: warning: no Global contract available for "To_Big_Integer"
 curve25519.adb:54:35: info: overflow check proved (CVC4: 2 VC)
-curve25519.adb:54:45: warning: assuming "*" has no effect on global items
-curve25519.adb:54:45: warning: no Global contract available for "*"
 curve25519.adb:54:47: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:55:25: info: assertion proved (CVC4: 2 VC)
 curve25519.adb:55:31: info: overflow check proved (CVC4: 2 VC)
 curve25519.adb:56:25: info: assertion proved (altergo: 2 VC)
-curve25519.adb:56:26: warning: assuming "To_Big_Integer" has no effect on global items
-curve25519.adb:56:26: warning: no Global contract available for "To_Big_Integer"
 curve25519.adb:56:35: info: overflow check proved (CVC4: 2 VC)
-curve25519.adb:56:45: warning: assuming "*" has no effect on global items
-curve25519.adb:56:45: warning: no Global contract available for "*"
 curve25519.adb:56:47: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:57:25: warning: assuming "=" has no effect on global items
-curve25519.adb:57:25: warning: no Global contract available for "="
-curve25519.adb:57:28: warning: assuming "To_Big_Integer" has no effect on global items
-curve25519.adb:57:28: warning: no Global contract available for "To_Big_Integer"
-curve25519.adb:57:38: warning: assuming "*" has no effect on global items
-curve25519.adb:57:38: warning: no Global contract available for "*"
 curve25519.adb:57:40: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:59:33: info: loop invariant initialization proved (CVC4: 1 VC)
 curve25519.adb:59:33: info: loop invariant preservation proved (CVC4: 1 VC)
 curve25519.adb:59:33: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:59:39: warning: assuming "=" has no effect on global items
-curve25519.adb:59:39: warning: no Global contract available for "="
 curve25519.adb:59:41: info: precondition proved (CVC4: 6 VC)
 curve25519.adb:59:41: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:60:33: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:60:33: medium: loop invariant might fail in first iteration, cannot prove Y_256 = Partial_Conversion (Y, J) (e.g. when J = 0 and Y = (0 => 0, others => 0))
 curve25519.adb:60:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Y_256 = Partial_Conversion (Y, J) (e.g. when J = 1 and Y = (0 => 0, 1 => 0, others => 0))
-curve25519.adb:60:39: warning: assuming "=" has no effect on global items
-curve25519.adb:60:39: warning: no Global contract available for "="
 curve25519.adb:60:41: info: precondition proved (CVC4: 6 VC)
 curve25519.adb:60:41: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:61:33: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:61:33: medium: loop invariant might fail in first iteration, cannot prove Sum_256 = Partial_Conversion (Sum, J) (e.g. when J = 0 and Sum = (0 => -2, others => 0))
 curve25519.adb:61:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sum_256 = Partial_Conversion (Sum, J) (e.g. when J = 1 and Sum = (0 => 0, 1 => -2, others => 0))
-curve25519.adb:61:41: warning: assuming "=" has no effect on global items
-curve25519.adb:61:41: warning: no Global contract available for "="
 curve25519.adb:61:43: info: precondition proved (CVC4: 6 VC)
 curve25519.adb:61:43: info: predicate check proved (CVC4: 2 VC)
 curve25519.adb:62:33: info: loop invariant initialization proved (CVC4: 1 VC)
 curve25519.adb:62:33: info: loop invariant preservation proved (CVC4: 1 VC)
 curve25519.adb:62:33: info: precondition proved (CVC4: 6 VC)
 curve25519.adb:62:33: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:62:61: warning: assuming "=" has no effect on global items
-curve25519.adb:62:61: warning: no Global contract available for "="
 curve25519.adb:63:35: info: precondition proved (CVC4: 6 VC)
 curve25519.adb:63:35: info: predicate check proved (CVC4: 2 VC)
-curve25519.adb:63:61: warning: assuming "+" has no effect on global items
-curve25519.adb:63:61: warning: no Global contract available for "+"
 curve25519.adb:64:35: info: precondition proved (CVC4: 6 VC)
 curve25519.adb:64:35: info: predicate check proved (CVC4: 2 VC)
 curve25519.ads:17:14: info: postcondition proved (CVC4: 2 VC)
 curve25519.ads:18:40: info: overflow check proved (CVC4: 1 VC)
 curve25519.ads:19:26: info: predicate check proved (CVC4: 1 VC)
-curve25519.ads:19:54: warning: assuming "=" has no effect on global items
-curve25519.ads:19:54: warning: no Global contract available for "="
 curve25519.ads:20:29: info: predicate check proved (CVC4: 1 VC)
-curve25519.ads:20:48: warning: assuming "+" has no effect on global items
-curve25519.ads:20:48: warning: no Global contract available for "+"
 curve25519.ads:20:50: info: predicate check proved (CVC4: 1 VC)
-types.ads:8:35: warning: assuming "To_Big_Integer" has no effect on global items
-types.ads:8:35: warning: no Global contract available for "To_Big_Integer"
 types.ads:19:08: info: predicate check proved (CVC4: 1 VC)
-types.ads:19:08: warning: assuming "From_String" has no effect on global items
-types.ads:19:08: warning: no Global contract available for "From_String"
-types.ads:19:10: warning: assuming "**" has no effect on global items
-types.ads:19:10: warning: no Global contract available for "**"
-
-

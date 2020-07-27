@@ -16,6 +16,8 @@ linted-controls.adb:40:07: info: initialization of "X" proved, in call inlined a
 linted-controls.adb:41:07: info: initialization of "Y" proved
 linted-controls.adb:41:07: info: initialization of "Y" proved, in call inlined at linted-controls.adb:54
 linted-controls.adb:41:07: info: initialization of "Y" proved, in call inlined at linted-controls.adb:55
+linted-controls.adb:43:24: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:54
+linted-controls.adb:43:24: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:55
 linted-controls.adb:45:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:54
 linted-controls.adb:45:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:55
 linted-controls.adb:47:21: info: range check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:54
@@ -167,6 +169,12 @@ linted-update.adb:56:07: info: initialization of "Y" proved, in call inlined at 
 linted-update.adb:56:07: info: initialization of "Y" proved, in call inlined at linted-update.adb:83
 linted-update.adb:56:07: info: initialization of "Y" proved, in call inlined at linted-update.adb:84
 linted-update.adb:56:07: info: initialization of "Y" proved, in call inlined at linted-update.adb:85
+linted-update.adb:58:24: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:80
+linted-update.adb:58:24: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:81
+linted-update.adb:58:24: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:82
+linted-update.adb:58:24: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:83
+linted-update.adb:58:24: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:84
+linted-update.adb:58:24: info: range check proved (CVC4: 4 VC), in call inlined at linted-update.adb:85
 linted-update.adb:60:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:80
 linted-update.adb:60:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:81
 linted-update.adb:60:20: info: range check proved (CVC4: 1 VC), in call inlined at linted-update.adb:82

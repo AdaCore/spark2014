@@ -28,6 +28,7 @@ with Flow_Generated_Globals.Phase_2;
 with Flow_Utility;
 with Flow_Types;                 use Flow_Types;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
+with Namet;                      use Namet;
 with Snames;                     use Snames;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
@@ -69,9 +70,10 @@ package body Why.Inter is
    -----------------------
 
    subtype N_Has_Theory is Node_Kind with
-     Static_Predicate => N_Has_Theory in N_String_Literal |
-                                         N_Aggregate |
-                                         N_Delta_Aggregate;
+     Static_Predicate => N_Has_Theory in N_String_Literal
+                                       | N_Aggregate
+                                       | N_Delta_Aggregate
+                                       | N_Attribute_Reference;
    --  Subtype of nodes (instead of entities) which have an associated theory,
    --  and should be treated specially.
 
@@ -405,7 +407,9 @@ package body Why.Inter is
               and then not Is_Base_Type (Typ)
             then
                Typ := Etype (Typ);
-            elsif Is_Access_Type (Typ) then
+            elsif Is_Access_Type (Typ)
+              and then not Is_Access_Subprogram_Type (Typ)
+            then
                return EW_Abstract (Root_Pointer_Type (Typ));
             else
                return EW_Abstract (Typ);
@@ -478,8 +482,11 @@ package body Why.Inter is
                            and then
                              (if Ekind (N) = E_Loop_Parameter
                               then not Is_Quantified_Loop_Param (N))
-                         else Nkind (N) in N_Aggregate | N_Delta_Aggregate
-                           and then Is_Array_Type (Etype (N))));
+                         else (Nkind (N) in N_Aggregate | N_Delta_Aggregate
+                           and then Is_Array_Type (Etype (N)))
+                         or else (Nkind (N) = N_Attribute_Reference
+                           and then Attribute_Name (N) = Name_Access
+                           and then Is_Access_Subprogram_Type (Etype (N)))));
       --  Returns True if N is relevant for theory imports
       --
       --  We need to consider entities and some non-entities such as string
@@ -1020,7 +1027,8 @@ package body Why.Inter is
    is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
        Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Has_Access_Type (Get_Ada_Node (+Left)) and then
-       Has_Access_Type (Get_Ada_Node (+Right)));
+       Has_Access_Type (Get_Ada_Node (+Right)) and then
+       not Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Left))));
 
    ---------------------------
    -- Is_Private_Conversion --
@@ -1041,6 +1049,16 @@ package body Why.Inter is
        Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
        Has_Record_Type (Get_Ada_Node (+Left)) and then
        Has_Record_Type (Get_Ada_Node (+Right)));
+
+   --------------------------------
+   -- Is_Subp_Pointer_Conversion --
+   --------------------------------
+
+   function Is_Subp_Pointer_Conversion (Left, Right : W_Type_Id) return Boolean
+   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
+       Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
+       Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Left))) and then
+       Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Right))));
 
    ---------------------
    -- Need_Conversion --

@@ -33,6 +33,7 @@ with Sem_Type;                    use Sem_Type;
 with Sem_Util;                    use Sem_Util;
 with Sem_Warn;                    use Sem_Warn;
 with Snames;                      use Snames;
+with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
@@ -2007,13 +2008,21 @@ package body Flow.Analysis is
 
                               pragma Assert (Is_Easily_Printable (Target));
 
+                              Callee : constant Flow_Id :=
+                                Direct_Mapping_Id
+                                  (Get_Called_Entity
+                                     (Get_Direct_Mapping_Id
+                                        (Atr.Call_Vertex)));
+
                            begin
                               Error_Msg_Flow
                                 (FA       => FA,
                                  Path     => Mask,
-                                 Msg      => "unused assignment to &",
+                                 Msg      => "& is set by &" &
+                                             " but not used after the call",
                                  N        => N,
                                  F1       => Target,
+                                 F2       => Callee,
                                  Tag      => Ineffective,
                                  Severity => Warning_Kind,
                                  Vertex   => V);
@@ -3462,31 +3471,54 @@ package body Flow.Analysis is
       if Is_Child_Unit (FA.Spec_Entity)
         and then Is_Private_Descendant (FA.Spec_Entity)
       then
-         --  For a private child we enforce SPARK RM 7.2.6(3) and therefore we
-         --  traverse its visible declarations setting the flag Part_Of to
-         --  True. Note that if the private child has or has not an abstract
-         --  state does not have any influence on this because the Part_Of
-         --  indicator could also denote a state abstraction declared by the
-         --  parent unit of the or by a public descendant of that parent unit.
+         --  For a private child (or public descendant thereof) we enforce
+         --  SPARK RM 7.2.6(3) and therefore we traverse its visible
+         --  declarations setting the flag Part_Of to True. Note that whether
+         --  or not the child itself has abstract state does not influence
+         --  this because the Part_Of indicator could also denote a state
+         --  abstraction declared by a parent unit of the private unit or by
+         --  a public descendant of that parent unit.
 
+         --  Traverse locally-visibly-declared abstract state
          Traverse_Declarations (Visible_Declarations (Pkg_Spec),
                                 Part_Of => True);
 
-         --  If the private child does not have an abstract state but the
-         --  parent does, then we need to check if it contains any hidden state
-         --  for the parent abstract state and we therefore traverse the
-         --  private and body part.
+         --  If the child unit does not declare an abstract state but any
+         --  ancestor of that child does, then we need to check if the child
+         --  contains any hidden state which is effectively part of the
+         --  ancestor's abstract state.
 
-         if No (Abstract_States (FA.Spec_Entity))
-           and then Present (Abstract_States (Scope (FA.Spec_Entity)))
-         then
-            Traverse_Declarations (Private_Declarations (Pkg_Spec));
+         if No (Abstract_States (FA.Spec_Entity)) then
 
-            if Entity_Body_In_SPARK (FA.Spec_Entity) then
-               Traverse_Declarations (Declarations (Pkg_Body));
-            end if;
+            --  Search upwards through the Spec_Entity's scope and the scope of
+            --  its ancestors, until we find a declaration of abstract state or
+            --  run out of ancestry i.e. hitting "Standard_Standard".
+
+            declare
+               Ancestor_Id : Entity_Id := FA.Spec_Entity;
+            begin
+               loop
+                  Ancestor_Id := Scope (Ancestor_Id);
+
+                  if Ancestor_Id = Standard_Standard then
+                     exit;
+
+                  elsif Present (Abstract_States (Ancestor_Id)) then
+
+                     --  We must traverse the private and body part of the
+                     --  child to check state declared therein.
+
+                     Traverse_Declarations (Private_Declarations (Pkg_Spec));
+
+                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                        Traverse_Declarations (Declarations (Pkg_Body));
+                     end if;
+
+                     exit;
+                  end if;
+               end loop;
+            end;
          end if;
-
       else
 
          if Present (Abstract_States (FA.Spec_Entity)) then
@@ -5895,5 +5927,66 @@ package body Flow.Analysis is
          end loop;
       end if;
    end Check_State_Volatility_Escalation;
+
+   ----------------------------------------
+   -- Check_Constant_Global_Contracts --
+   ----------------------------------------
+
+   procedure Check_Constant_Global_Contracts (E : Entity_Id) is
+      procedure Check_Constant_Global (G : Entity_Id);
+      --  Check whether a single entity G is allowed to appear as a Global
+      --  or Depends input.
+
+      ---------------------------
+      -- Check_Constant_Global --
+      ---------------------------
+
+      procedure Check_Constant_Global (G : Entity_Id) is
+      begin
+         if Ekind (G) = E_Constant
+           and then (Is_Access_Type (Etype (G))
+                     or else not Has_Variable_Input (G))
+         then
+            declare
+               The_Global_In : constant Flow_Id := Direct_Mapping_Id (G);
+               Unused        : Boolean;
+            begin
+               Error_Msg_Flow
+                 (E          => E,
+                  Msg        => "& not allowed as input to &",
+                  N          => Find_Global (S => E, F => The_Global_In),
+                  Suppressed => Unused,
+                  F1         => The_Global_In,
+                  F2         => Direct_Mapping_Id (E),
+                  SRM_Ref    => "6.1.4(15)",
+                  Tag        => Global_Wrong,
+                  Severity   => Medium_Check_Kind);
+            end;
+         end if;
+      end Check_Constant_Global;
+
+      --  Local variables
+
+      Spec_Globals : Raw_Global_Nodes;
+
+   begin
+      --  Only apply this check to entities with user supplied Global/Depends
+
+      if Has_User_Supplied_Globals (E) then
+         Spec_Globals := Contract_Globals (E);
+
+         --  Constants can only appear as Inputs and Proof_Ins (which are
+         --  disjoint so we iterate over them separately); frontend already
+         --  rejects them if they appear as Outputs.
+
+         for G of Spec_Globals.Proof_Ins loop
+            Check_Constant_Global (G);
+         end loop;
+
+         for G of Spec_Globals.Inputs loop
+            Check_Constant_Global (G);
+         end loop;
+      end if;
+   end Check_Constant_Global_Contracts;
 
 end Flow.Analysis;

@@ -3,4 +3,4 @@ fake_socket_package.ads:5:14: info: flow dependencies proved
 fake_socket_package.ads:8:14: medium: missing dependency "null => Fake_Socket"
 fake_socket_package.ads:8:42: medium: incorrect dependency "Fake_Socket => Fake_Socket"
 main.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
-main.adb:7:61: warning: unused assignment to "X"
+main.adb:7:61: warning: "X" is set by "Receive_Socket" but not used after the call

@@ -447,7 +447,7 @@ issues, this annotation can sometimes lead to a crash in GNATprove. It is the
 case for example when the definition of the function uses quantification over a
 container using the ``Iterable`` aspect.
 
-.. _Pledge_Of_Borrow:
+.. _Supplying a Pledge for a Borrower:
 
 Supplying a `Pledge` for a Borrower
 -----------------------------------

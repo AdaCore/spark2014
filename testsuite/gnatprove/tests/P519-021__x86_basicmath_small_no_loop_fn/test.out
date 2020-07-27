@@ -3,10 +3,10 @@ basicmath_small.adb:28:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:29:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:38:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:49:10: info: precondition proved (CVC4: 1 VC)
-basicmath_small.adb:49:10: warning: unused assignment to "CarryFlag"
-basicmath_small.adb:49:10: warning: unused assignment to "OverflowFlag"
-basicmath_small.adb:49:10: warning: unused assignment to "SignFlag"
-basicmath_small.adb:49:10: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:49:10: warning: "CarryFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:49:10: warning: "OverflowFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:49:10: warning: "SignFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:49:10: warning: "ZeroFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:89:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:89:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:90:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
@@ -45,8 +45,8 @@ basicmath_small.adb:208:07: warning: initialization of "SaveR14" has no effect
 basicmath_small.adb:208:34: info: range check proved (CVC4: 1 VC)
 basicmath_small.adb:209:07: warning: initialization of "SaveR15" has no effect
 basicmath_small.adb:209:34: info: range check proved (CVC4: 1 VC)
+basicmath_small.adb:223:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:223:10: warning: statement has no effect
-basicmath_small.adb:223:10: warning: unused assignment to "RDI"
 basicmath_small.adb:253:15: warning: unused assignment
 basicmath_small.adb:259:15: warning: unused assignment
 basicmath_small.adb:262:16: warning: unused assignment
@@ -57,30 +57,30 @@ basicmath_small.adb:296:21: warning: unused assignment
 basicmath_small.adb:302:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:302:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:305:19: warning: unused assignment
+basicmath_small.adb:308:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:308:13: warning: statement has no effect
-basicmath_small.adb:308:13: warning: unused assignment to "RDI"
 basicmath_small.adb:317:18: warning: unused assignment
 basicmath_small.adb:327:24: warning: unused assignment
+basicmath_small.adb:338:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:338:10: warning: statement has no effect
-basicmath_small.adb:338:10: warning: unused assignment to "RDI"
 basicmath_small.adb:344:15: warning: unused assignment
 basicmath_small.adb:355:15: warning: unused assignment
 basicmath_small.adb:358:16: warning: unused assignment
 basicmath_small.adb:361:16: warning: unused assignment
 basicmath_small.adb:364:16: warning: unused assignment
 basicmath_small.adb:367:16: warning: unused assignment
+basicmath_small.adb:378:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:378:10: warning: statement has no effect
-basicmath_small.adb:378:10: warning: unused assignment to "RDI"
 basicmath_small.adb:391:21: warning: unused assignment
 basicmath_small.adb:397:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:397:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:400:19: warning: unused assignment
+basicmath_small.adb:403:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:403:13: warning: statement has no effect
-basicmath_small.adb:403:13: warning: unused assignment to "RDI"
 basicmath_small.adb:412:18: warning: unused assignment
 basicmath_small.adb:422:24: warning: unused assignment
+basicmath_small.adb:433:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:433:10: warning: statement has no effect
-basicmath_small.adb:433:10: warning: unused assignment to "RDI"
 basicmath_small.adb:439:15: warning: unused assignment
 basicmath_small.adb:447:15: warning: unused assignment
 basicmath_small.adb:450:15: warning: unused assignment
@@ -88,18 +88,18 @@ basicmath_small.adb:453:16: warning: unused assignment
 basicmath_small.adb:456:16: warning: unused assignment
 basicmath_small.adb:459:16: warning: unused assignment
 basicmath_small.adb:462:16: warning: unused assignment
+basicmath_small.adb:473:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:473:10: warning: statement has no effect
-basicmath_small.adb:473:10: warning: unused assignment to "RDI"
 basicmath_small.adb:486:21: warning: unused assignment
 basicmath_small.adb:492:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:492:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:495:19: warning: unused assignment
+basicmath_small.adb:498:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:498:13: warning: statement has no effect
-basicmath_small.adb:498:13: warning: unused assignment to "RDI"
 basicmath_small.adb:507:18: warning: unused assignment
 basicmath_small.adb:517:24: warning: unused assignment
+basicmath_small.adb:528:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:528:10: warning: statement has no effect
-basicmath_small.adb:528:10: warning: unused assignment to "RDI"
 basicmath_small.adb:534:15: warning: unused assignment
 basicmath_small.adb:542:16: warning: unused assignment
 basicmath_small.adb:545:15: warning: unused assignment
@@ -107,18 +107,18 @@ basicmath_small.adb:548:15: warning: unused assignment
 basicmath_small.adb:551:16: warning: unused assignment
 basicmath_small.adb:554:16: warning: unused assignment
 basicmath_small.adb:557:16: warning: unused assignment
+basicmath_small.adb:568:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:568:10: warning: statement has no effect
-basicmath_small.adb:568:10: warning: unused assignment to "RDI"
 basicmath_small.adb:581:21: warning: unused assignment
 basicmath_small.adb:587:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:587:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:591:19: warning: unused assignment
+basicmath_small.adb:594:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:594:13: warning: statement has no effect
-basicmath_small.adb:594:13: warning: unused assignment to "RDI"
 basicmath_small.adb:603:18: warning: unused assignment
 basicmath_small.adb:613:24: warning: unused assignment
+basicmath_small.adb:624:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:624:10: warning: statement has no effect
-basicmath_small.adb:624:10: warning: unused assignment to "RDI"
 basicmath_small.adb:642:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:642:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:643:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
@@ -143,18 +143,18 @@ basicmath_small.adb:779:44: info: loop invariant initialization proved (CVC4: 1 
 basicmath_small.adb:779:44: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:782:31: warning: unused assignment
 basicmath_small.adb:804:36: warning: unused assignment
-basicmath_small.adb:904:07: warning: unused assignment to "CarryFlag"
-basicmath_small.adb:904:07: warning: unused assignment to "OverflowFlag"
-basicmath_small.adb:904:07: warning: unused assignment to "RSI"
-basicmath_small.adb:904:07: warning: unused assignment to "SignFlag"
-basicmath_small.adb:904:07: warning: unused assignment to "ZeroFlag"
+basicmath_small.adb:904:07: warning: "CarryFlag" is set by "loop_6" but not used after the call
+basicmath_small.adb:904:07: warning: "OverflowFlag" is set by "loop_6" but not used after the call
+basicmath_small.adb:904:07: warning: "RSI" is set by "loop_6" but not used after the call
+basicmath_small.adb:904:07: warning: "SignFlag" is set by "loop_6" but not used after the call
+basicmath_small.adb:904:07: warning: "ZeroFlag" is set by "loop_6" but not used after the call
 basicmath_small.adb:918:07: medium: precondition might fail, cannot prove not X86.InRange64(X86.RSI,X86.RSP-7,15) [possible explanation: postcondition of call at line 904 should mention RSI]
-basicmath_small.adb:918:07: warning: unused assignment to "ZeroFlag"
-basicmath_small.adb:948:07: warning: unused assignment to "XMM0"
-basicmath_small.adb:948:07: warning: unused assignment to "XMM1"
-basicmath_small.adb:948:07: warning: unused assignment to "ZeroFlag"
-basicmath_small.adb:964:07: warning: unused assignment to "RBP"
-basicmath_small.adb:964:07: warning: unused assignment to "RBX"
+basicmath_small.adb:918:07: warning: "ZeroFlag" is set by "usqrt" but not used after the call
+basicmath_small.adb:948:07: warning: "XMM0" is set by "loop_7" but not used after the call
+basicmath_small.adb:948:07: warning: "XMM1" is set by "loop_7" but not used after the call
+basicmath_small.adb:948:07: warning: "ZeroFlag" is set by "loop_7" but not used after the call
+basicmath_small.adb:964:07: warning: "RBP" is set by "loop_8" but not used after the call
+basicmath_small.adb:964:07: warning: "RBX" is set by "loop_8" but not used after the call
 basicmath_small.adb:1042:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:1042:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:1094:07: warning: initialization of "SaveStackPtr" has no effect

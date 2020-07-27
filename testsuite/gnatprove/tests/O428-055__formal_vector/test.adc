@@ -1,0 +1,3 @@
+pragma Unevaluated_Use_Of_Old (Allow);
+--  Required for 'Old in postcondition of update_list_zero.adb.
+--  For this routine it can be only specified as a configuration pragma.

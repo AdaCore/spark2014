@@ -3944,7 +3944,86 @@ of local borrowers like for traversal function calls:
 Loops
 ^^^^^
 
-Loop invariants behave differently in Ada and Why. To preserve the Ada semantics, loops are cut in parts and reassembled to follow the Ada semantics. Some parts of the loop are duplicated, leading to duplication of checks.
+Loop invariants behave differently in Ada and Why. To preserve the Ada
+semantics, loops are cut in parts and reassembled to follow the Ada
+semantics. Some parts of the loop are duplicated, leading to internal
+duplication of checks, whose results are combined to generate a unique check
+result for a given location and check kind.
+
+The entry point for loop translation is :code:`Transform_Loop_Statement` in
+:file:`gnat2why-expr-loops.adb`. Depending on the kind of loop and the presence
+of a loop (in)variant, among other criteria, the loop may be unrolled, in which
+case its body is simply repeated up to 20 times (the current internal limit for
+unrolling) in Why3. If the loop is not unrolled, it is translated into a
+suitable loop node in the shared AST.
+
+The shared AST is described in :file:`gnat_ast.ml`. The loop node variant
+:code:`Loop` differs from the Why3 loop in that:
+
+- its invariant and variants are located inside the loop (like in SPARK) with
+  preceding and following statements;
+
+- it has no condition (an infinite loop similar to the plain :code:`loop` in
+  SPARK).
+
+Thus, the translation of a loop in SPARK is done in two steps, from a SPARK
+loop to a loop in the shared AST, and from this representation to a Why3
+loop. Function :code:`Wrap_Loop` does the bulk of the translation from SPARK to
+the shared AST, by taking in argument the pieces that correspond to an
+equivalent :code:`while` loop in SPARK. Its caller
+:code:`Transform_Loop_Statement` takes care of computing these pieces for each
+of the different kinds of loops. In particular, :code:`Wrap_Loop` does the
+following:
+
+- it wraps the loop in a conditional, in order to test whether the loop
+  condition holds before executing the loop. This is because the loop invariant
+  in SPARK needs not hold if the loop is not entered, while Why3 uses the
+  traditional Hoare loop invariant which should hold when reaching the loop.
+
+- it wraps the loop in a try-catch block, in order to translate loop exit
+  statements as raising and catching an exception in Why3.
+
+- it adds checks for RTE in invariants and variants.
+
+- it extracts exit paths, that is, sequences of statements leading to a return
+  or exit statement, so that they can be hoisted outside of the Why3 loop. This
+  allows to get more precise computed frame conditions for the loop in Why3,
+  which do not contain variables only modified on the exit paths. This
+  extraction uses a nested try-catch block.
+
+The translation from the shared AST to Why3 occurs as part of the general
+translation from one representation to the other in :code:`mk_of_expr` in
+:file:`gnat_ast_to_ptree.ml`. In particular, it does the following:
+
+- it extracts the part of the loop before the loop (in)variants and repeats it
+  before the loop proper, whose body executes the part of the loop after and
+  then before the loop (in)variants.
+
+- it expands the loop variant checking as a suitable assertion of the correct
+  kind.
+
+In order for the above reordering of statements to work, while the loop
+(in)variants in SPARK may be located in more nested declare blocks, all declare
+blocks are first `flattened` to obtain a flat list of instructions
+(declarations and statements) that form the body of the loop. Block statements
+are nonetheless preserved in this flattening, as markers of the end of block,
+so that treatments that should occur at the end of a block can be applied. This
+is the case for havocking borrowed objects and checking for memory leaks, see
+:code:`Transform_Loop_Body_Statements`.
+
+Part of the loop invariant is automatically generated in
+:code:`Generate_Frame_Condition` in :file:`gnat2why-expr-loops-inv.adb`, and
+added as assumption in :code:`Transform_Loop_Statement`:
+
+- the dynamic invariant of variables modified in the loop;
+
+- the value of constants declared before the loop (in)variant;
+
+- the preservation of the value of record components not modified in the loop;
+
+- the preservation up to the current iteration of the value of parts of arrays
+  that have not been modified yet in the loop.
+
 
 Procedure Calls
 ^^^^^^^^^^^^^^^

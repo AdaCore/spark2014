@@ -12,7 +12,6 @@ test_goto_borrow.adb:9:12: info: implicit function contract might not be availab
 test_goto_borrow.adb:9:12: medium: subprogram "Length" might not terminate, terminating annotation could be incorrect
 test_goto_borrow.adb:11:50: info: pointer dereference check proved (CVC4: 1 VC)
 test_goto_borrow.adb:11:58: info: overflow check proved (CVC4: 1 VC)
-test_goto_borrow.adb:11:58: info: range check proved (CVC4: 1 VC)
 test_goto_borrow.adb:14:12: info: implicit function contract might not be available on recursive calls
 test_goto_borrow.adb:14:12: medium: subprogram "Nth" might not terminate, terminating annotation could be incorrect
 test_goto_borrow.adb:15:20: info: pointer dereference check proved (CVC4: 1 VC)

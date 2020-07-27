@@ -60,5 +60,6 @@ GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu item.
       source/assertion_pragmas
       source/overflow_modes
       source/object_oriented_programming
+      source/access
       source/concurrency
       source/spark_libraries

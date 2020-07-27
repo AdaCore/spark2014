@@ -57,18 +57,18 @@ heatingsystem_dfa.adb:52:07: info: initialization of "ChangeToFastMode" proved, 
 heatingsystem_dfa.adb:52:07: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:52:07: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:110
 heatingsystem_dfa.adb:52:07: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:57:26: warning: unused assignment to "advancebutton.advpressed"
-heatingsystem_dfa.adb:57:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:105
-heatingsystem_dfa.adb:57:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:57:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:57:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:57:26: warning: "advancebutton.advpressed" is set by "JustPressed" but not used after the call
+heatingsystem_dfa.adb:57:26: warning: "advancebutton.advpressed" is set by "JustPressed" but not used after the call, in call inlined at heatingsystem_dfa.adb:105
+heatingsystem_dfa.adb:57:26: warning: "advancebutton.advpressed" is set by "JustPressed" but not used after the call, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:57:26: warning: "advancebutton.advpressed" is set by "JustPressed" but not used after the call, in call inlined at heatingsystem_dfa.adb:110
+heatingsystem_dfa.adb:57:26: warning: "advancebutton.advpressed" is set by "JustPressed" but not used after the call, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:59:49: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:59:49: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:68:26: warning: unused assignment to "advancebutton.advpressed"
-heatingsystem_dfa.adb:68:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:105
-heatingsystem_dfa.adb:68:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:68:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:68:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:68:26: warning: "advancebutton.advpressed" is set by "PressedFor" but not used after the call
+heatingsystem_dfa.adb:68:26: warning: "advancebutton.advpressed" is set by "PressedFor" but not used after the call, in call inlined at heatingsystem_dfa.adb:105
+heatingsystem_dfa.adb:68:26: warning: "advancebutton.advpressed" is set by "PressedFor" but not used after the call, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:68:26: warning: "advancebutton.advpressed" is set by "PressedFor" but not used after the call, in call inlined at heatingsystem_dfa.adb:110
+heatingsystem_dfa.adb:68:26: warning: "advancebutton.advpressed" is set by "PressedFor" but not used after the call, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:70:54: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:70:54: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:83:14: info: add a contract to analyze it separately from calling contexts

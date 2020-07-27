@@ -572,7 +572,7 @@ package body SPARK_Atree is
 
          when N_Type_Conversion
             | N_Unchecked_Type_Conversion
-            =>
+         =>
             Check_Type :=
               (if In_Left_Hand_Side then Etype (N) else Etype (Par));
 
@@ -583,13 +583,13 @@ package body SPARK_Atree is
             Check_Type :=
               Etype (Einfo.Return_Applies_To (Return_Statement_Entity (Par)));
 
-            --  For a call, retrieve the type for the corresponding argument
+         --  For a call, retrieve the type for the corresponding argument
 
          when N_Function_Call
             | N_Procedure_Call_Statement
             | N_Entry_Call_Statement
             | N_Parameter_Association
-            =>
+         =>
             --  If In_Left_Hand_Side is True, we are checking actual parameters
             --  on stores. In this case, the Check_Type is the type of the
             --  expression. Otherwise, the Check_Type is the expected formal
@@ -607,9 +607,10 @@ package body SPARK_Atree is
                Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
             begin
                case Attr_Id is
-                  when Attribute_Pred |
-                       Attribute_Succ |
-                       Attribute_Val  =>
+                  when Attribute_Pred
+                     | Attribute_Succ
+                     | Attribute_Val
+                  =>
                      Check_Type := Einfo.Base_Type (Entity (Prefix (Par)));
 
                   when others =>
@@ -622,7 +623,7 @@ package body SPARK_Atree is
          when N_Op_Expon =>
 
             --  A range check on exponentiation is only possible on the right
-            --  operand, and in this case the check range is "Natural"
+            --  operand, and in this case the check range is "Natural".
 
             Check_Type := Standard_Natural;
 
@@ -680,7 +681,7 @@ package body SPARK_Atree is
                               (Sem_Util.Unique_Entity (Prefix_Type)));
                   end if;
 
-                  --  must be a regular record aggregate
+               --  must be a regular record aggregate
 
                else
                   pragma Assert (Expression (Par) = N);
@@ -696,7 +697,7 @@ package body SPARK_Atree is
 
             --  This parent is a special choice, the LHS of an association
             --  of a 'Update of a multi-dimensional array, for example:
-            --  (I, J, K) of 'Update((I, J, K) => New_Val)
+            --  (I, J, K) of 'Update((I, J, K) => New_Val).
 
             pragma Assert
               (Nkind (Atree.Parent (Par)) = N_Component_Association);
@@ -738,7 +739,7 @@ package body SPARK_Atree is
                   Array_Type := Etype (Pref);
                end if;
 
-               --  Find the index type for this expression's dimension.
+               --  Find the index type for this expression's dimension
 
                Dim_Expr      := Nlists.First (Multi_Exprs);
                Current_Index :=
@@ -761,7 +762,7 @@ package body SPARK_Atree is
 
          when N_Aspect_Specification =>
 
-            --  We only expect range checks on aspects for default values.
+            --  We only expect range checks on aspects for default values
 
             case Aspects.Get_Aspect_Id (Par) is
             when Aspects.Aspect_Default_Component_Value =>
@@ -816,8 +817,8 @@ package body SPARK_Atree is
 
       --  If the target type is a constrained array, we have a length check.
 
-      if Einfo.Is_Array_Type (Check_Type) and then
-        Einfo.Is_Constrained (Check_Type)
+      if Einfo.Is_Array_Type (Check_Type)
+        and then Einfo.Is_Constrained (Check_Type)
       then
          Check_Kind := SPARK_Util.RCK_Length;
 
@@ -826,8 +827,8 @@ package body SPARK_Atree is
          --  values of Check_Kind to account for the different range checked in
          --  these cases.
 
-      elsif Nkind (Par) = N_Attribute_Reference and then
-        Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred
+      elsif Nkind (Par) = N_Attribute_Reference
+        and then Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred
       then
          if Einfo.Is_Enumeration_Type (Check_Type) then
             Check_Kind := SPARK_Util.RCK_Range_Not_First;
@@ -835,8 +836,8 @@ package body SPARK_Atree is
             Check_Kind := SPARK_Util.RCK_Overflow_Not_First;
          end if;
 
-      elsif Nkind (Par) = N_Attribute_Reference and then
-        Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ
+      elsif Nkind (Par) = N_Attribute_Reference
+        and then Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ
       then
          if Einfo.Is_Enumeration_Type (Check_Type) then
             Check_Kind := SPARK_Util.RCK_Range_Not_Last;
@@ -844,7 +845,7 @@ package body SPARK_Atree is
             Check_Kind := SPARK_Util.RCK_Overflow_Not_Last;
          end if;
 
-         --  Otherwise, this is a range check
+      --  Otherwise, this is a range check
 
       else
          Check_Kind := SPARK_Util.RCK_Range;
@@ -1292,6 +1293,13 @@ package body SPARK_Atree is
 
    function Type_Definition (N : Node_Id) return Node_Id renames
      Sinfo.Type_Definition;
+
+   -----------------
+   -- Unqual_Conv --
+   -----------------
+
+   function Unqual_Conv (N : Node_Id) return Node_Id renames
+      Sem_Util.Unqual_Conv;
 
    ----------
    -- Unit --

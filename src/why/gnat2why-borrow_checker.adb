@@ -257,20 +257,6 @@ package body Gnat2Why.Borrow_Checker is
       procedure Free_Tree (PT : in out Perm_Tree_Access);
       --  Procedure to free a permission tree
 
-      --------------------
-      -- Error Messages --
-      --------------------
-
-      procedure Perm_Mismatch
-        (N              : Node_Id;
-         Exp_Perm       : Perm_Kind;
-         Act_Perm       : Perm_Kind;
-         Expl           : Node_Id;
-         Forbidden_Perm : Boolean := False);
-      --  Issues a continuation error message about a mismatch between a
-      --  desired permission Exp_Perm and a permission obtained Act_Perm. N
-      --  is the node on which the error is reported.
-
    end Permissions;
 
    package body Permissions is
@@ -513,45 +499,6 @@ package body Gnat2Why.Borrow_Checker is
          return T.all.Tree.Permission;
       end Permission;
 
-      -------------------
-      -- Perm_Mismatch --
-      -------------------
-
-      procedure Perm_Mismatch
-        (N              : Node_Id;
-         Exp_Perm       : Perm_Kind;
-         Act_Perm       : Perm_Kind;
-         Expl           : Node_Id;
-         Forbidden_Perm : Boolean := False)
-      is
-      begin
-         Error_Msg_Sloc := Sloc (Expl);
-
-         if Forbidden_Perm then
-            if Exp_Perm = No_Access then
-               Error_Msg_N ("\object was moved #", N);
-            else
-               raise Program_Error;
-            end if;
-         else
-            case Exp_Perm is
-               when Write_Perm =>
-                  if Act_Perm = Read_Only then
-                     Error_Msg_N
-                       ("\object was declared as not writeable #", N);
-                  else
-                     Error_Msg_N ("\object was moved #", N);
-                  end if;
-
-               when Read_Only =>
-                  Error_Msg_N ("\object was moved #", N);
-
-               when No_Access =>
-                  raise Program_Error;
-            end case;
-         end if;
-      end Perm_Mismatch;
-
    end Permissions;
 
    use Permissions;
@@ -647,7 +594,7 @@ package body Gnat2Why.Borrow_Checker is
    function "+" (X : Node_Id) return Expr_Or_Ent is
       ((Is_Ent => False, Expr => X));
 
-   function "<=" (P1, P2 : Perm_Kind) return Boolean;
+   function "<" (P1, P2 : Perm_Kind) return Boolean;
    function ">=" (P1, P2 : Perm_Kind) return Boolean;
    function Glb  (P1, P2 : Perm_Kind) return Perm_Kind;
    function Lub  (P1, P2 : Perm_Kind) return Perm_Kind;
@@ -663,13 +610,14 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Declaration (Decl : Node_Id);
 
-   procedure Check_Expression (Expr : Node_Id; Mode : Extended_Checking_Mode);
-   pragma Precondition (Nkind_In (Expr, N_Index_Or_Discriminant_Constraint,
-                                        N_Range_Constraint,
-                                        N_Subtype_Indication,
-                                        N_Digits_Constraint,
-                                        N_Delta_Constraint)
-                        or else Nkind (Expr) in N_Subexpr);
+   procedure Check_Expression (Expr : Node_Id; Mode : Extended_Checking_Mode)
+     with Pre =>
+       Nkind (Expr) in N_Index_Or_Discriminant_Constraint
+                     | N_Range_Constraint
+                     | N_Subtype_Indication
+                     | N_Digits_Constraint
+                     | N_Delta_Constraint
+                     | N_Subexpr;
 
    procedure Check_Expr_Or_Ent
      (Expr : Expr_Or_Ent;
@@ -706,6 +654,12 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Not_Observed (Expr : Expr_Or_Ent; Root : Entity_Id);
    --  Check expression Expr originating in Root was not observed
+
+   function Check_On_Borrowed (Expr : Expr_Or_Ent) return Node_Id;
+   --  Return a previously borrowed expression in conflict with Expr if any
+
+   function Check_On_Observed (Expr : Expr_Or_Ent) return Node_Id;
+   --  Return a previously observed expression in conflict with Expr if any
 
    procedure Check_Package_Spec (Id : Entity_Id);
    --  Check the package visible and private declarations in the current
@@ -816,6 +770,16 @@ package body Gnat2Why.Borrow_Checker is
    --  called with the node, the node of the returning function, and the
    --  permission that was expected, and adds an error message with the
    --  appropriate values.
+
+   procedure Perm_Mismatch
+     (N              : Expr_Or_Ent;
+      Exp_Perm       : Perm_Kind;
+      Act_Perm       : Perm_Kind;
+      Expl           : Node_Id;
+      Forbidden_Perm : Boolean := False);
+   --  Issues a continuation error message about a mismatch between a
+   --  desired permission Exp_Perm and a permission obtained Act_Perm. N
+   --  is the node on which the error is reported.
 
    procedure Process_Path (Expr : Expr_Or_Ent; Mode : Checking_Mode);
    pragma Precondition (Expr.Is_Ent or else Is_Path_Expression (Expr.Expr));
@@ -982,14 +946,14 @@ package body Gnat2Why.Borrow_Checker is
       Process_All (Subp);
    end Handle_Globals;
 
-   ----------
-   -- "<=" --
-   ----------
+   ---------
+   -- "<" --
+   ---------
 
-   function "<=" (P1, P2 : Perm_Kind) return Boolean is
+   function "<" (P1, P2 : Perm_Kind) return Boolean is
    begin
-      return P2 >= P1;
-   end "<=";
+      return P1 /= P2 and then P2 >= P1;
+   end "<";
 
    ----------
    -- ">=" --
@@ -1069,7 +1033,7 @@ package body Gnat2Why.Borrow_Checker is
    --  Start of processing for Check_Assignment
 
    begin
-      if Is_Anonymous_Access_Type (Target_Typ) then
+      if Is_Anonymous_Access_Object_Type (Target_Typ) then
          if Is_Decl then
             Target_Root := Target;
          else
@@ -1226,11 +1190,7 @@ package body Gnat2Why.Borrow_Checker is
    begin
       Inside_Procedure_Call := True;
       Check_Params (Call);
-      if Ekind (Get_Called_Entity (Call)) = E_Subprogram_Type then
-         raise Program_Error;
-      else
-         Check_Globals (Get_Called_Entity (Call), Call);
-      end if;
+      Check_Globals (Get_Called_Entity (Call), Call);
 
       Inside_Procedure_Call := False;
       Update_Params (Call);
@@ -1281,7 +1241,7 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Check the read-write permissions of borrowed parameters/globals
 
-      if Ekind_In (Id, E_Procedure, E_Entry)
+      if Ekind (Id) in E_Procedure | E_Entry
         and then not No_Return (Id)
       then
          Return_Parameters (Id);
@@ -1482,15 +1442,18 @@ package body Gnat2Why.Borrow_Checker is
    is
       --  Local subprograms
 
+      procedure Check_Anonymous_Object
+        (Expr : Node_Id;
+         Mode : Checking_Mode);
+      --  Read or move an anonymous object
+
+      procedure Check_Expression_List
+        (L    : List_Id;
+         Mode : Extended_Checking_Mode);
+      --  Read or move expressions in L
+
       function Is_Type_Name (Expr : Node_Id) return Boolean;
       --  Detect when a path expression is in fact a type name
-
-      procedure Move_Expression (Expr : Node_Id);
-      --  Some subexpressions are only analyzed in Move mode. This is a
-      --  specialized version of Check_Expression for that case.
-
-      procedure Move_Expression_List (L : List_Id);
-      --  Call Move_Expression on every expression in the list L
 
       procedure Read_Expression (Expr : Node_Id);
       --  Most subexpressions are only analyzed in Read mode. This is a
@@ -1503,45 +1466,32 @@ package body Gnat2Why.Borrow_Checker is
       --  When processing a path, the index expressions and function call
       --  arguments occurring on the path should be analyzed in Read mode.
 
+      ---------------------------
+      -- Check_Expression_List --
+      ---------------------------
+
+      procedure Check_Expression_List
+        (L    : List_Id;
+         Mode : Extended_Checking_Mode)
+      is
+         N : Node_Id;
+      begin
+         N := First (L);
+         while Present (N) loop
+            Check_Expression (N, Mode);
+            Next (N);
+         end loop;
+      end Check_Expression_List;
+
       ------------------
       -- Is_Type_Name --
       ------------------
 
       function Is_Type_Name (Expr : Node_Id) return Boolean is
       begin
-         return Nkind_In (Expr, N_Expanded_Name, N_Identifier)
+         return Nkind (Expr) in N_Expanded_Name | N_Identifier
            and then Is_Type (Entity (Expr));
       end Is_Type_Name;
-
-      ---------------------
-      -- Move_Expression --
-      ---------------------
-
-      --  Distinguish the case where the argument is a path expression that
-      --  needs explicit moving.
-
-      procedure Move_Expression (Expr : Node_Id) is
-      begin
-         if Is_Path_Expression (Expr) then
-            Check_Expression (Expr, Move);
-         else
-            Read_Expression (Expr);
-         end if;
-      end Move_Expression;
-
-      --------------------------
-      -- Move_Expression_List --
-      --------------------------
-
-      procedure Move_Expression_List (L : List_Id) is
-         N : Node_Id;
-      begin
-         N := First (L);
-         while Present (N) loop
-            Move_Expression (N);
-            Next (N);
-         end loop;
-      end Move_Expression_List;
 
       ---------------------
       -- Read_Expression --
@@ -1557,34 +1507,35 @@ package body Gnat2Why.Borrow_Checker is
       --------------------------
 
       procedure Read_Expression_List (L : List_Id) is
-         N : Node_Id;
       begin
-         N := First (L);
-         while Present (N) loop
-            Read_Expression (N);
-            Next (N);
-         end loop;
+         Check_Expression_List (L, Read);
       end Read_Expression_List;
 
-      ------------------
-      -- Read_Indexes --
-      ------------------
+      ----------------------------
+      -- Check_Anonymous_Object --
+      ----------------------------
 
-      procedure Read_Indexes (Expr : Node_Id) is
-
+      procedure Check_Anonymous_Object
+        (Expr : Node_Id;
+         Mode : Checking_Mode)
+      is
          --  Local subprograms
 
-         procedure Read_Param (Formal : Entity_Id; Actual : Node_Id);
-         --  Call Read_Expression on the actual
+         procedure Check_Associations (Assocs : List_Id);
+         --  Check all associations of an aggregate
 
-         procedure Move_Associations (Assocs : List_Id);
-         --  Move all associations of an aggregate
+         procedure Check_Expressions (Expressions : List_Id);
+         --  Check all expressions of an aggregate
 
-         -----------------------
-         -- Move_Associations --
-         -----------------------
+         procedure Check_Subobject (Expr : Node_Id);
+         --  Check a subobject, passing on the toplevel Mode if it is an object
+         --  or forcing Read mode otherwise.
 
-         procedure Move_Associations (Assocs : List_Id) is
+         ------------------------
+         -- Check_Associations --
+         ------------------------
+
+         procedure Check_Associations (Assocs : List_Id) is
             CL     : List_Id;
             Assoc  : Node_Id := Nlists.First (Assocs);
             Choice : Node_Id;
@@ -1606,16 +1557,101 @@ package body Gnat2Why.Borrow_Checker is
                   end loop;
                end if;
 
-               --  The subexpressions of an aggregate are moved as part
+               --  The subexpressions of an aggregate are read or moved as part
                --  of the implicit assignments.
 
                if not Box_Present (Assoc) then
-                  Move_Expression (Expression (Assoc));
+                  Check_Subobject (Expression (Assoc));
                end if;
 
                Next (Assoc);
             end loop;
-         end Move_Associations;
+         end Check_Associations;
+
+         -----------------------
+         -- Check_Expressions --
+         -----------------------
+
+         procedure Check_Expressions (Expressions : List_Id) is
+            N : Node_Id;
+         begin
+            N := First (Expressions);
+            while Present (N) loop
+               Check_Subobject (N);
+               Next (N);
+            end loop;
+         end Check_Expressions;
+
+         ---------------------
+         -- Check_Subobject --
+         ---------------------
+
+         procedure Check_Subobject (Expr : Node_Id) is
+            Sub_Mode : constant Checking_Mode :=
+              (if Is_Path_Expression (Expr) then Mode else Read);
+         begin
+            Check_Expression (Expr, Sub_Mode);
+         end Check_Subobject;
+
+      --  Start of processing for Check_Anonymous_Object
+
+      begin
+         pragma Assert (Is_Path_Expression (Expr));
+
+         --  The cases considered below should correspond to those in
+         --  Collect_Moved_Objects in gnat2why-expr.adb
+
+         case N_Subexpr'(Nkind (Expr)) is
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               Check_Anonymous_Object (Expression (Expr), Mode);
+
+            --  The argument of an allocator is read or moved as part of the
+            --  implicit assignment.
+
+            when N_Allocator =>
+               Check_Subobject (Expression (Expr));
+
+            when N_Aggregate =>
+               Check_Expressions (Expressions (Expr));
+               Check_Associations (Component_Associations (Expr));
+
+            when N_Delta_Aggregate =>
+               Check_Subobject (Expression (Expr));
+               Check_Associations (Component_Associations (Expr));
+
+            when N_Extension_Aggregate =>
+               Check_Subobject (Ancestor_Part (Expr));
+               Check_Expressions (Expressions (Expr));
+               Check_Associations (Component_Associations (Expr));
+
+            --  Handle 'Update like delta aggregate
+
+            when N_Attribute_Reference =>
+               if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
+               then
+                  Check_Subobject (Prefix (Expr));
+                  Check_Expressions (Expressions (Expr));
+               end if;
+
+            when others =>
+               null;
+         end case;
+      end Check_Anonymous_Object;
+
+      ------------------
+      -- Read_Indexes --
+      ------------------
+
+      procedure Read_Indexes (Expr : Node_Id) is
+
+         --  Local subprograms
+
+         procedure Read_Param (Formal : Entity_Id; Actual : Node_Id);
+         --  Call Read_Expression on the actual
 
          ----------------
          -- Read_Param --
@@ -1641,6 +1677,13 @@ package body Gnat2Why.Borrow_Checker is
             =>
                null;
 
+            when N_Allocator
+               | N_Aggregate
+               | N_Delta_Aggregate
+               | N_Extension_Aggregate
+            =>
+               Check_Anonymous_Object (Expr, Read);
+
             when N_Explicit_Dereference
                | N_Selected_Component
             =>
@@ -1654,19 +1697,9 @@ package body Gnat2Why.Borrow_Checker is
                Read_Indexes (Prefix (Expr));
                Read_Expression (Discrete_Range (Expr));
 
-            --  The argument of an allocator is moved as part of the implicit
-            --  assignment.
-
-            when N_Allocator =>
-               Move_Expression (Expression (Expr));
-
             when N_Function_Call =>
                Read_Params (Expr);
-               if Ekind (Get_Called_Entity (Expr)) = E_Subprogram_Type then
-                  raise Program_Error;
-               else
-                  Check_Globals (Get_Called_Entity (Expr), Expr);
-               end if;
+               Check_Globals (Get_Called_Entity (Expr), Expr);
 
             when N_Op_Concat =>
                Read_Expression (Left_Opnd (Expr));
@@ -1677,54 +1710,6 @@ package body Gnat2Why.Borrow_Checker is
                | N_Unchecked_Type_Conversion
             =>
                Read_Indexes (Expression (Expr));
-
-            when N_Aggregate =>
-
-               --  The subexpressions of an aggregate are moved as part
-               --  of the implicit assignments. Handle the positional
-               --  components first.
-
-               Move_Expression_List (Expressions (Expr));
-
-               --  Handle the named components next
-
-               Move_Associations (Component_Associations (Expr));
-
-            when N_Extension_Aggregate =>
-               declare
-                  Exprs  : constant List_Id := Expressions (Expr);
-                  Assocs : constant List_Id := Component_Associations (Expr);
-                  CL     : List_Id;
-                  Assoc  : Node_Id := Nlists.First (Assocs);
-
-               begin
-                  Move_Expression (Ancestor_Part (Expr));
-
-                  --  No positional components allowed at this stage
-
-                  if Present (Exprs) then
-                     raise Program_Error;
-                  end if;
-
-                  while Present (Assoc) loop
-                     CL := Choices (Assoc);
-
-                     --  Only singleton components allowed at this stage
-
-                     if not Is_Singleton_Choice (CL) then
-                        raise Program_Error;
-                     end if;
-
-                     --  The subexpressions of an aggregate are moved as part
-                     --  of the implicit assignments.
-
-                     if not Box_Present (Assoc) then
-                        Move_Expression (Expression (Assoc));
-                     end if;
-
-                     Next (Assoc);
-                  end loop;
-               end;
 
             when N_If_Expression =>
                declare
@@ -1750,10 +1735,6 @@ package body Gnat2Why.Borrow_Checker is
                      Next (Cur_Case);
                   end loop;
                end;
-
-            when N_Delta_Aggregate =>
-               Read_Expression (Expression (Expr));
-               Move_Associations (Component_Associations (Expr));
 
             when N_Attribute_Reference =>
                pragma Assert
@@ -1793,7 +1774,14 @@ package body Gnat2Why.Borrow_Checker is
          end if;
 
          if Mode /= Read_Subexpr then
-            Process_Path (+Expr, Mode);
+            --  As Process_Path only deals with named paths, deal here with
+            --  anonymous objects created by allocators and aggregates.
+
+            if No (Get_Root_Object (Expr)) then
+               Check_Anonymous_Object (Expr, Mode);
+            else
+               Process_Path (+Expr, Mode);
+            end if;
          end if;
 
          return;
@@ -2151,7 +2139,7 @@ package body Gnat2Why.Borrow_Checker is
 
       procedure Perm_Error_Loop_Exit
         (E          : Entity_Id;
-         Loop_Id    : Node_Id;
+         Loop_Stmt  : Node_Id;
          Perm       : Perm_Kind;
          Found_Perm : Perm_Kind;
          Expl       : Node_Id);
@@ -2202,15 +2190,15 @@ package body Gnat2Why.Borrow_Checker is
            (Tree : Perm_Tree_Access;
             Perm : Perm_Kind;
             E    : Entity_Id);
-         --  Auxiliary procedure to check that the tree N is less restrictive
-         --  than the given permission P.
+         --  Auxiliary procedure to check that Tree is less restrictive than
+         --  the given permission Perm.
 
          procedure Check_Is_More_Restrictive_Tree_Than
            (Tree : Perm_Tree_Access;
             Perm : Perm_Kind;
             E    : Entity_Id);
-         --  Auxiliary procedure to check that the tree N is more restrictive
-         --  than the given permission P.
+         --  Auxiliary procedure to check that Tree is more restrictive than
+         --  the given permission Perm.
 
          -----------------------------------------
          -- Check_Is_Less_Restrictive_Tree_Than --
@@ -2222,18 +2210,17 @@ package body Gnat2Why.Borrow_Checker is
             E    : Entity_Id)
          is
          begin
-            if not (Permission (Tree) >= Perm) then
+            if Permission (Tree) < Perm then
                Perm_Error_Loop_Exit
                  (E, Stmt, Permission (Tree), Perm, Explanation (Tree));
             end if;
 
             case Kind (Tree) is
                when Entire_Object =>
-                  if not (Children_Permission (Tree) >= Perm) then
+                  if Children_Permission (Tree) < Perm then
                      Perm_Error_Loop_Exit
                        (E, Stmt, Children_Permission (Tree), Perm,
                         Explanation (Tree));
-
                   end if;
 
                when Reference =>
@@ -2268,14 +2255,14 @@ package body Gnat2Why.Borrow_Checker is
             E    : Entity_Id)
          is
          begin
-            if not (Perm >= Permission (Tree)) then
+            if Perm < Permission (Tree) then
                Perm_Error_Loop_Exit
                  (E, Stmt, Permission (Tree), Perm, Explanation (Tree));
             end if;
 
             case Kind (Tree) is
                when Entire_Object =>
-                  if not (Perm >= Children_Permission (Tree)) then
+                  if Perm < Children_Permission (Tree) then
                      Perm_Error_Loop_Exit
                        (E, Stmt, Children_Permission (Tree), Perm,
                         Explanation (Tree));
@@ -2306,10 +2293,10 @@ package body Gnat2Why.Borrow_Checker is
       --  Start of processing for Check_Is_Less_Restrictive_Tree
 
       begin
-         if not (Permission (New_Tree) <= Permission (Orig_Tree)) then
+         if Permission (New_Tree) < Permission (Orig_Tree) then
             Perm_Error_Loop_Exit
               (E          => E,
-               Loop_Id    => Stmt,
+               Loop_Stmt  => Stmt,
                Perm       => Permission (New_Tree),
                Found_Perm => Permission (Orig_Tree),
                Expl       => Explanation (New_Tree));
@@ -2326,8 +2313,8 @@ package body Gnat2Why.Borrow_Checker is
             when Entire_Object =>
                case Kind (Orig_Tree) is
                when Entire_Object =>
-                  if not (Children_Permission (New_Tree) <=
-                          Children_Permission (Orig_Tree))
+                  if Children_Permission (New_Tree) <
+                     Children_Permission (Orig_Tree)
                   then
                      Perm_Error_Loop_Exit
                        (E, Stmt,
@@ -2393,6 +2380,7 @@ package body Gnat2Why.Borrow_Checker is
                begin
                   CompN :=
                     Perm_Tree_Maps.Get_First (Component (New_Tree));
+
                   case Kind (Orig_Tree) is
                   when Entire_Object =>
                      while CompN /= null loop
@@ -2405,7 +2393,6 @@ package body Gnat2Why.Borrow_Checker is
 
                   when Record_Component =>
                      declare
-
                         KeyO : Perm_Tree_Maps.Key_Option;
                         CompO : Perm_Tree_Access;
                      begin
@@ -2438,18 +2425,19 @@ package body Gnat2Why.Borrow_Checker is
 
       procedure Perm_Error_Loop_Exit
         (E          : Entity_Id;
-         Loop_Id    : Node_Id;
+         Loop_Stmt  : Node_Id;
          Perm       : Perm_Kind;
          Found_Perm : Perm_Kind;
          Expl       : Node_Id)
       is
+         Ent : constant Expr_Or_Ent :=
+           (Is_Ent => True, Ent => E, Loc => Loop_Stmt);
       begin
-         Error_Msg_Node_2 := Loop_Id;
-         Error_Msg_N
-           ("insufficient permission for & when exiting loop &", E);
+         Error_Msg_NE ("loop iteration terminates with moved value for &",
+                       Loop_Stmt, E);
          Perm_Mismatch (Exp_Perm => Perm,
                         Act_Perm => Found_Perm,
-                        N        => Loop_Id,
+                        N        => Ent,
                         Expl     => Expl);
          Permission_Error := True;
       end Perm_Error_Loop_Exit;
@@ -2711,75 +2699,17 @@ package body Gnat2Why.Borrow_Checker is
       --  expressions.
 
       declare
-         Key      : Variable_Maps.Key_Option :=
-           Get_First_Key (Current_Borrowers);
-         Var      : Entity_Id;
-         Borrowed : Node_Id;
-         B_Pledge : Entity_Id := Empty;
-
+         Borrowed : constant Node_Id := Check_On_Borrowed (Expr);
       begin
-         if not Expr.Is_Ent then
-
-            --  Search for a call to a pledge function in the parents of
-            --  Expr.
-
-            declare
-               Call : Node_Id := Expr.Expr;
-            begin
-               while Present (Call)
-                 and then
-                   (Nkind (Call) /= N_Function_Call
-                    or else
-                      not Has_Pledge_Annotation (Get_Called_Entity (Call)))
-               loop
-                  --  If the entity is under an Old or 'Loop_Entry attribute,
-                  --  it will not be quantified in the pledge expression, so
-                  --  reading it is not allowed.
-
-                  if Nkind (Call) = N_Attribute_Reference
-                    and then Get_Attribute_Id (Attribute_Name (Call)) in
-                      Attribute_Loop_Entry | Attribute_Old
-                  then
-                     Call := Empty;
-                  else
-                     Call := Parent (Call);
-                  end if;
-               end loop;
-
-               if Present (Call)
-                 and then Nkind (First_Actual (Call)) in N_Has_Entity
-               then
-                  B_Pledge := Entity (First_Actual (Call));
-               end if;
-            end;
-         end if;
-
-         --  For every borrowed object, check that:
-         --    * the borrowed expression is not a prefix of Expr
-         --    * Expr is not a prefix of the borrowed expression.
-
-         while Key.Present loop
-            Var := Key.K;
-            Borrowed := Get (Current_Borrowers, Var);
-
-            if (Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
-                or else
-                  (if Expr.Is_Ent then Get_Root_Object (Borrowed) = Expr.Ent
-                   else Is_Prefix_Or_Almost
-                     (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Borrowed)))
-              and then Var /= B_Pledge
-            then
-               Error_Msg_Sloc := Sloc (Borrowed);
-               if Expr.Is_Ent then
-                  Error_Msg_NE ("& was borrowed #", Expr.Loc, Expr.Ent);
-               else
-                  Error_Msg_N ("object was borrowed #", Expr.Expr);
-               end if;
-               Permission_Error := True;
+         if Present (Borrowed) then
+            Error_Msg_Sloc := Sloc (Borrowed);
+            if Expr.Is_Ent then
+               Error_Msg_NE ("& was borrowed #", Expr.Loc, Expr.Ent);
+            else
+               Error_Msg_N ("object was borrowed #", Expr.Expr);
             end if;
-
-            Key := Get_Next_Key (Current_Borrowers);
-         end loop;
+            Permission_Error := True;
+         end if;
       end;
    end Check_Not_Borrowed;
 
@@ -2799,39 +2729,123 @@ package body Gnat2Why.Borrow_Checker is
       --  expressions.
 
       declare
-         Key      : Variable_Maps.Key_Option :=
-           Get_First_Key (Current_Observers);
-         Var      : Entity_Id;
-         Observed : Node_Id;
-
+         Observed : constant Node_Id := Check_On_Observed (Expr);
       begin
-         --  For every observed object, check that:
-         --    * the observed expression is not a prefix of Expr
-         --    * Expr is not a prefix of the observed expression.
-
-         while Key.Present loop
-            Var := Key.K;
-            Observed := Get (Current_Observers, Var);
-
-            if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr)
-              or else
-                (if Expr.Is_Ent then Get_Root_Object (Observed) = Expr.Ent
-                 else Is_Prefix_Or_Almost
-                   (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Observed))
-            then
-               Error_Msg_Sloc := Sloc (Observed);
-               if Expr.Is_Ent then
-                  Error_Msg_NE ("& was observed #", Expr.Loc, Expr.Ent);
-               else
-                  Error_Msg_N ("object was observed #", Expr.Expr);
-               end if;
-               Permission_Error := True;
+         if Present (Observed) then
+            Error_Msg_Sloc := Sloc (Observed);
+            if Expr.Is_Ent then
+               Error_Msg_NE ("& was observed #", Expr.Loc, Expr.Ent);
+            else
+               Error_Msg_N ("object was observed #", Expr.Expr);
             end if;
-
-            Key := Get_Next_Key (Current_Observers);
-         end loop;
+            Permission_Error := True;
+         end if;
       end;
    end Check_Not_Observed;
+
+   -----------------------
+   -- Check_On_Borrowed --
+   -----------------------
+
+   function Check_On_Borrowed (Expr : Expr_Or_Ent) return Node_Id is
+      Key      : Variable_Maps.Key_Option := Get_First_Key (Current_Borrowers);
+      Var      : Entity_Id;
+      Borrowed : Node_Id;
+      B_Pledge : Entity_Id := Empty;
+
+   begin
+      if not Expr.Is_Ent then
+
+         --  Search for a call to a pledge function in the parents of
+         --  Expr.
+
+         declare
+            Call : Node_Id := Expr.Expr;
+         begin
+            while Present (Call)
+              and then
+                (Nkind (Call) /= N_Function_Call
+                 or else
+                   not Has_Pledge_Annotation (Get_Called_Entity (Call)))
+            loop
+               --  If the entity is under an Old or 'Loop_Entry attribute,
+               --  it will not be quantified in the pledge expression, so
+               --  reading it is not allowed.
+
+               if Nkind (Call) = N_Attribute_Reference
+                 and then Get_Attribute_Id (Attribute_Name (Call)) in
+                   Attribute_Loop_Entry | Attribute_Old
+               then
+                  Call := Empty;
+               else
+                  Call := Parent (Call);
+               end if;
+            end loop;
+
+            if Present (Call)
+              and then Nkind (First_Actual (Call)) in N_Has_Entity
+            then
+               B_Pledge := Entity (First_Actual (Call));
+            end if;
+         end;
+      end if;
+
+      --  For every borrowed object, check that:
+      --    * the borrowed expression is not a prefix of Expr
+      --    * Expr is not a prefix of the borrowed expression.
+
+      while Key.Present loop
+         Var := Key.K;
+         Borrowed := Get (Current_Borrowers, Var);
+
+         if (Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
+             or else
+               (if Expr.Is_Ent then Get_Root_Object (Borrowed) = Expr.Ent
+                else Is_Prefix_Or_Almost
+                  (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Borrowed)))
+           and then Var /= B_Pledge
+         then
+            return Borrowed;
+         end if;
+
+         Key := Get_Next_Key (Current_Borrowers);
+      end loop;
+
+      return Empty;
+   end Check_On_Borrowed;
+
+   -----------------------
+   -- Check_On_Observed --
+   -----------------------
+
+   function Check_On_Observed (Expr : Expr_Or_Ent) return Node_Id is
+      Key      : Variable_Maps.Key_Option := Get_First_Key (Current_Observers);
+      Var      : Entity_Id;
+      Observed : Node_Id;
+
+   begin
+      --  For every observed object, check that:
+      --    * the observed expression is not a prefix of Expr
+      --    * Expr is not a prefix of the observed expression.
+
+      while Key.Present loop
+         Var := Key.K;
+         Observed := Get (Current_Observers, Var);
+
+         if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr)
+           or else
+             (if Expr.Is_Ent then Get_Root_Object (Observed) = Expr.Ent
+              else Is_Prefix_Or_Almost
+                (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Observed))
+         then
+            return Observed;
+         end if;
+
+         Key := Get_Next_Key (Current_Observers);
+      end loop;
+
+      return Empty;
+   end Check_On_Observed;
 
    ------------------------
    -- Check_Package_Body --
@@ -2949,14 +2963,16 @@ package body Gnat2Why.Borrow_Checker is
 
             --  Anonymous access to constant is an observe
 
-            elsif Is_Anonymous_Access_Type (Typ)
+            elsif Is_Anonymous_Access_Object_Type (Typ)
               and then Is_Access_Constant (Typ)
             then
                Mode := Observe;
 
             --  Other access types are a borrow
 
-            elsif Is_Access_Type (Typ) then
+            elsif Is_Access_Type (Typ)
+              and then not Is_Access_Subprogram_Type (Typ)
+            then
                Mode := Borrow;
 
             --  Deep types other than access types define an observe
@@ -3096,7 +3112,7 @@ package body Gnat2Why.Borrow_Checker is
                --  well as observers of access-to-variable type inside
                --  traversal functions.
 
-               if Is_Anonymous_Access_Type (Etype (Target)) then
+               if Is_Anonymous_Access_Object_Type (Etype (Target)) then
                   declare
                      Root : constant Entity_Id := Get_Root_Object (Target);
                   begin
@@ -3211,7 +3227,7 @@ package body Gnat2Why.Borrow_Checker is
                      --  ??? Should we move that to marking? Do we need this
                      --  check for flow analysis?
 
-                     if Is_Anonymous_Access_Type (Return_Typ) then
+                     if Is_Anonymous_Access_Object_Type (Return_Typ) then
                         if Nkind (Expr) /= N_Null then
                            declare
                               Param : constant Entity_Id :=
@@ -3249,7 +3265,7 @@ package body Gnat2Why.Borrow_Checker is
                         Check_Expression (Expr, Read);
                      end if;
 
-                     if Ekind_In (Subp, E_Procedure, E_Entry)
+                     if Ekind (Subp) in E_Procedure | E_Entry
                        and then not No_Return (Subp)
                      then
                         Return_Parameters (Subp);
@@ -3282,13 +3298,17 @@ package body Gnat2Why.Borrow_Checker is
                      Perm := Get_Perm (E_Obj);
 
                      if Perm /= Read_Write then
-                        Perm_Error (E_Obj, Read_Write, Perm,
-                                    Expl => Get_Expl (E_Obj));
+                        Perm_Error_Subprogram_End
+                          (E          => Obj,
+                           Subp       => Subp,
+                           Perm       => Read_Write,
+                           Found_Perm => Perm,
+                           Expl       => Get_Expl (E_Obj));
                      end if;
                   end;
                end if;
 
-               if Ekind_In (Subp, E_Procedure, E_Entry)
+               if Ekind (Subp) in E_Procedure | E_Entry
                  and then not No_Return (Subp)
                then
                   Return_Parameters (Subp);
@@ -3844,7 +3864,7 @@ package body Gnat2Why.Borrow_Checker is
                when N_Indexed_Component
                   | N_Slice
                =>
-                  if not Nkind_In (Expr_Elt, N_Indexed_Component, N_Slice) then
+                  if Nkind (Expr_Elt) not in N_Indexed_Component | N_Slice then
                      return False;
                   end if;
 
@@ -4205,9 +4225,10 @@ package body Gnat2Why.Borrow_Checker is
       procedure Set_Root_Object
         (Path  : Node_Id;
          Obj   : out Entity_Id;
+         Part  : out Boolean;
          Deref : out Boolean);
-      --  Set the root object Obj, and whether the path contains a dereference,
-      --  from a path Path.
+      --  Set the root object Obj, and whether the path contains a part and a
+      --  dereference, from a path Path.
 
       ---------------------
       -- Set_Root_Object --
@@ -4216,6 +4237,7 @@ package body Gnat2Why.Borrow_Checker is
       procedure Set_Root_Object
         (Path  : Node_Id;
          Obj   : out Entity_Id;
+         Part  : out Boolean;
          Deref : out Boolean)
       is
       begin
@@ -4224,55 +4246,60 @@ package body Gnat2Why.Borrow_Checker is
                | N_Expanded_Name
             =>
                Obj := Entity (Path);
+               Part := False;
                Deref := False;
 
             when N_Type_Conversion
                | N_Unchecked_Type_Conversion
                | N_Qualified_Expression
             =>
-               Set_Root_Object (Expression (Path), Obj, Deref);
+               Set_Root_Object (Expression (Path), Obj, Part, Deref);
 
             when N_Indexed_Component
                | N_Selected_Component
                | N_Slice
             =>
-               Set_Root_Object (Prefix (Path), Obj, Deref);
+               Set_Root_Object (Prefix (Path), Obj, Part, Deref);
+               Part := True;
 
             when N_Explicit_Dereference =>
-               Set_Root_Object (Prefix (Path), Obj, Deref);
+               Set_Root_Object (Prefix (Path), Obj, Part, Deref);
                Deref := True;
 
             when others =>
                raise Program_Error;
          end case;
       end Set_Root_Object;
+
       --  Local variables
 
-      Root     : Entity_Id;
-      Loc      : constant Node_Id :=
-        (if N.Is_Ent then N.Loc else N.Expr);
-      Is_Deref : Boolean;
+      Root           : Entity_Id;
+      Part, Is_Deref : Boolean;
+
+      Loc : constant Node_Id := (if N.Is_Ent then N.Loc else N.Expr);
 
    --  Start of processing for Perm_Error
 
    begin
       if N.Is_Ent then
+         Part := False;
          Is_Deref := False;
          Root := N.Ent;
       else
-         Set_Root_Object (N.Expr, Root, Is_Deref);
+         Set_Root_Object (N.Expr, Root, Part, Is_Deref);
       end if;
 
-      if Is_Deref then
-         Error_Msg_NE
-           ("insufficient permission on dereference from &", Loc, Root);
-      else
-         Error_Msg_NE ("insufficient permission for &", Loc, Root);
-      end if;
+      Error_Msg_NE
+        ((if Part then "part of " else "")
+         & (if Is_Deref then "dereference from " else "")
+         & "& is not "
+         & (if Perm in Read_Perm and then Found_Perm not in Read_Perm then
+              "readable"
+           else
+              "writable"), Loc, Root);
 
       Permission_Error := True;
-
-      Perm_Mismatch (Loc, Perm, Found_Perm, Expl, Forbidden_Perm);
+      Perm_Mismatch (N, Perm, Found_Perm, Expl, Forbidden_Perm);
    end Perm_Error;
 
    -------------------------------
@@ -4286,13 +4313,60 @@ package body Gnat2Why.Borrow_Checker is
       Found_Perm : Perm_Kind;
       Expl       : Node_Id)
    is
+      Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => Subp);
    begin
-      Error_Msg_Node_2 := Subp;
-      Error_Msg_NE ("insufficient permission for & when returning from &",
-                    Subp, E);
+      Error_Msg_Node_2 := E;
+      Error_Msg_NE ("return from & with moved value for &", Subp, Subp);
       Permission_Error := True;
-      Perm_Mismatch (Subp, Perm, Found_Perm, Expl);
+      Perm_Mismatch (Ent, Perm, Found_Perm, Expl);
    end Perm_Error_Subprogram_End;
+
+   -------------------
+   -- Perm_Mismatch --
+   -------------------
+
+   procedure Perm_Mismatch
+     (N              : Expr_Or_Ent;
+      Exp_Perm       : Perm_Kind;
+      Act_Perm       : Perm_Kind;
+      Expl           : Node_Id;
+      Forbidden_Perm : Boolean := False)
+   is
+      Loc      : constant Node_Id := (if N.Is_Ent then N.Loc else N.Expr);
+      Borrowed : constant Node_Id := Check_On_Borrowed (N);
+      Observed : constant Node_Id := Check_On_Observed (N);
+      Reason   : constant String :=
+        (if Present (Observed) then "observed"
+         elsif Present (Borrowed) then "borrowed"
+         else "moved");
+
+   begin
+      Error_Msg_Sloc := Sloc (Expl);
+
+      if Forbidden_Perm then
+         if Exp_Perm = No_Access then
+            Error_Msg_N ("\object was " & Reason & " #", Loc);
+         else
+            raise Program_Error;
+         end if;
+      else
+         case Exp_Perm is
+            when Write_Perm =>
+               if Act_Perm = Read_Only then
+                  Error_Msg_N
+                    ("\object was declared as not writable #", Loc);
+               else
+                  Error_Msg_N ("\object was " & Reason & " #", Loc);
+               end if;
+
+            when Read_Only =>
+               Error_Msg_N ("\object was " & Reason & " #", Loc);
+
+            when No_Access =>
+               raise Program_Error;
+         end case;
+      end if;
+   end Perm_Mismatch;
 
    ------------------
    -- Process_Path --
@@ -4605,7 +4679,7 @@ package body Gnat2Why.Borrow_Checker is
 
          --  Anonymous access to constant is an observe
 
-         elsif Is_Anonymous_Access_Type (Typ)
+         elsif Is_Anonymous_Access_Object_Type (Typ)
            and then Is_Access_Constant (Typ)
          then
             return;
@@ -5316,7 +5390,7 @@ package body Gnat2Why.Borrow_Checker is
 
             --  Anonymous access to constant is an observe
 
-            elsif Is_Anonymous_Access_Type (Typ)
+            elsif Is_Anonymous_Access_Object_Type (Typ)
               and then Is_Access_Constant (Typ)
             then
                Perm := Read_Only;

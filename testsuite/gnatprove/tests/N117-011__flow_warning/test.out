@@ -4,6 +4,7 @@ device.adb:33:11: info: flow dependencies proved
 device.adb:43:07: info: initialization of "RawValue" proved
 device.adb:62:41: medium: "Register" constituent of "State" might not be written
 device.adb:69:07: info: initialization of "OK" proved
+device.adb:76:22: warning: "OK" is set by "ReadAck" but not used after the call
 device.adb:82:04: warning: no check message justified by this pragma
 device.ads:5:08: info: flow dependencies proved
 device.ads:8:11: info: data dependencies proved

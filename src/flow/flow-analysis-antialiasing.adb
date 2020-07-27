@@ -65,10 +65,17 @@ package body Flow.Analysis.Antialiasing is
                and then (No (Formal_B) or else Is_Formal (Formal_B));
    --  Returns if A and B alias
 
-   function Cannot_Alias (F : Entity_Id) return Boolean
+   function Is_Immutable (F : Entity_Id) return Boolean
    with Pre => Is_Formal (F);
-   --  Check if the given formal parameter cannot possibly alias with others:
-   --  it is a scalar in parameter.
+   --  Check if the given formal parameter is immutable, as per the rules
+   --  of the SPARK RM section 6.4.2(2).
+
+   function Is_By_Copy_Not_Access (F : Entity_Id) return Boolean
+   with Pre => Is_Formal (F) and then Is_Immutable (F);
+   --  Check if the given formal immutable parameter cannot possibly alias with
+   --  others: it is of a by-copy type that is not an access type.
+   --  This implements commmon conditionality from the SPARK RM section 6.4.2
+   --  paragraphs (3) and (4).
 
    procedure Check_Node_Against_Node
      (FA       : in out Flow_Analysis_Graphs;
@@ -360,17 +367,38 @@ package body Flow.Analysis.Antialiasing is
          return Impossible;
       end if;
 
-      if Cannot_Alias (Formal_A) then
-         if Trace_Antialiasing then
-            Write_Line ("   -> A does not require aa checking");
+      --  Now check the cases involving immutable formal parameters from the
+      --  SPARK RM 6.4.2(3).
+      declare
+         A_Is_Immutable : constant Boolean := Is_Immutable (Formal_A);
+         B_Present_And_Immutable : constant Boolean := Present (Formal_B)
+           and then Is_Immutable (Formal_B);
+      begin
+         if A_Is_Immutable and then B_Present_And_Immutable then
+            if Trace_Antialiasing then
+               Write_Line
+                 ("   -> A and B are both immutable formal parameters");
+            end if;
+            return Impossible;
+
+         --  Determine if at least one of the corresponding formal
+         --  parameters is immutable and a by-copy type that is not
+         --  an access type
+
+         elsif A_Is_Immutable and then Is_By_Copy_Not_Access (Formal_A) then
+            if Trace_Antialiasing then
+               Write_Line ("   -> A does not require aa checking");
+            end if;
+            return Impossible;
+         elsif B_Present_And_Immutable
+           and then Is_By_Copy_Not_Access (Formal_B)
+         then
+            if Trace_Antialiasing then
+               Write_Line ("   -> B does not require aa checking");
+            end if;
+            return Impossible;
          end if;
-         return Impossible;
-      elsif Present (Formal_B) and then Cannot_Alias (Formal_B) then
-         if Trace_Antialiasing then
-            Write_Line ("   -> B does not require aa checking");
-         end if;
-         return Impossible;
-      end if;
+      end;
 
       --  Ok, so both nodes might potentially alias. We now need to work out
       --  the root nodes of each expression.
@@ -419,7 +447,8 @@ package body Flow.Analysis.Antialiasing is
       --  elaboration.
 
       if Is_Synchronized_Object (Entity (Ptr_A))
-        and then not Is_Constant_After_Elaboration (Entity (Ptr_A))
+        and then (Ekind (Entity (Ptr_A)) /= E_Variable
+                  or else not Is_Constant_After_Elaboration (Entity (Ptr_A)))
       then
          if Trace_Antialiasing then
             Write_Line ("   -> non-interfering objects");
@@ -459,7 +488,7 @@ package body Flow.Analysis.Antialiasing is
          pragma Assert (not Is_Root (Nkind (Ptr_A)));
          pragma Assert (not Is_Root (Nkind (Ptr_B)));
 
-         --  Check if we are dealing with an type conversion *now*. If so, we
+         --  Check if we are dealing with any type conversion *now*. If so, we
          --  have aliasing.
 
          if Is_Conversion (Nkind (Ptr_A)) or else
@@ -609,33 +638,42 @@ package body Flow.Analysis.Antialiasing is
    end Aliasing;
 
    ------------------
-   -- Cannot_Alias --
+   -- Is_Immutable --
    ------------------
 
-   function Cannot_Alias (F : Entity_Id) return Boolean is
+   function Is_Immutable (F : Entity_Id) return Boolean is
    begin
-      case Ekind (F) is
-         when E_In_Parameter =>
+      return
+        --  It is of mode 'in' and not of an access type
+        (Ekind (F) = E_In_Parameter
+         and then not Is_Access_Type (Etype (F)))
+        or else
 
-            --  According to SPARK and Ada RMs here we should test for by-copy
-            --  type (e.g. using Is_By_Copy_Type). However, it seems better
-            --  to treat private types as really private and check if by-copy
-            --  property can be deduced from the public declaration only. If
-            --  not then we are conservative and assume the worst case, i.e.
-            --  that the type is by-reference. See O916-007.
+      --  ??? The SPARK RM 6.4.2(2) states that anonymous access-to-constant
+      --  parameters are immutable. The best we can check for here
+      --  appears to be the intersection of 'anonymous access' and
+      --  'access constant'.
+        (Ekind (F) = E_Anonymous_Access_Type
+         and then Is_Access_Constant (Etype (F)));
 
-            return Is_Elementary_Type (Etype (F))
-              and then not Is_Access_Type (Etype (F));
+   end Is_Immutable;
 
-         when E_In_Out_Parameter
-            | E_Out_Parameter
-         =>
-            return False;
+   ---------------------------
+   -- Is_By_Copy_Not_Access --
+   ---------------------------
 
-         when others =>
-            raise Program_Error;
-      end case;
-   end Cannot_Alias;
+   function Is_By_Copy_Not_Access (F : Entity_Id) return Boolean is
+   begin
+      --  According to SPARK and Ada RMs here we should test for by-copy type
+      --  (e.g. using Is_By_Copy_Type). However, it seems better to treat
+      --  private types as really private and check if by-copy property can
+      --  be deduced from the public declaration only. If not then we are
+      --  conservative and assume the worst case, i.e. that the type is
+      --  by-reference. See O916-007.
+
+      return Is_Elementary_Type (Etype (F))
+        and then not Is_Access_Type (Etype (F));
+   end Is_By_Copy_Not_Access;
 
    -----------------------------
    -- Check_Node_Against_Node --
@@ -716,7 +754,7 @@ package body Flow.Analysis.Antialiasing is
       N  : Node_Id)
    is
       procedure Check_Parameter (Formal : Entity_Id; Actual : Node_Id);
-      --  Check out and in out parameter against other parameters and globals
+      --  Check parameters against other parameters and globals.
 
       procedure Check_Aliasing_In_Call is new
         Iterate_Call_Parameters (Check_Parameter);
@@ -745,12 +783,14 @@ package body Flow.Analysis.Antialiasing is
       --  in a user-written contract.
 
       Writes_Or_Reads : Node_Sets.Set;
-      --  Global outputs and in_outs (which for aliasing behave as OUT and
-      --  IN_OUT formal parameters, respectively).
+      --  Global outputs and in_outs. For aliasing these behave as OUT and
+      --  IN_OUT formal parameters, respectively.
 
       Reads_Only      : Node_Sets.Set;
-      --  Global inputs and proof_ins (which for aliasing behave as IN formal
-      --  parameters).
+      --  Global inputs and proof_ins (which for aliasing behave as immutable
+      --  IN formal parameters). Note that global access types are never
+      --  regarded as purely mode "in" (unlike the similar case for formal
+      --  parameters) so are never members of this set.
 
       Current_Status : Computed_Aliasing_Result;
       Status         : Computed_Aliasing_Result := Impossible;
@@ -760,8 +800,7 @@ package body Flow.Analysis.Antialiasing is
       ---------------------
 
       procedure Check_Parameter (Formal : Entity_Id; Actual : Node_Id) is
-         Param_Is_Out : constant Boolean :=
-           Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter;
+         Formal_Is_Immutable : constant Boolean := Is_Immutable (Formal);
 
          Other_Formal : Entity_Id := Next_Formal (Formal);
          Other_Actual : Node_Id   := Next_Actual (Actual);
@@ -772,23 +811,15 @@ package body Flow.Analysis.Antialiasing is
          while Present (Other_Formal) loop
             pragma Assert (Present (Other_Actual));
 
-            --  Only check for aliasing if at least one of the parameters is an
-            --  out paramter.
+            Check_Node_Against_Node
+              (FA       => FA,
+               A        => Actual,
+               B        => Other_Actual,
+               A_Formal => Formal,
+               B_Formal => Other_Formal,
+               Status   => Current_Status);
 
-            if Param_Is_Out
-              or else Ekind (Other_Formal) in E_Out_Parameter
-                                            | E_In_Out_Parameter
-            then
-               Check_Node_Against_Node
-                 (FA       => FA,
-                  A        => Actual,
-                  B        => Other_Actual,
-                  A_Formal => Formal,
-                  B_Formal => Other_Formal,
-                  Status   => Current_Status);
-
-               Update_Status (Status, Current_Status);
-            end if;
+            Update_Status (Status, Current_Status);
 
             Next_Formal (Other_Formal);
             Next_Actual (Other_Actual);
@@ -796,7 +827,15 @@ package body Flow.Analysis.Antialiasing is
 
          pragma Assert (No (Other_Actual));
 
-         if Param_Is_Out then
+         --  The rules of SPARK RM 6.4.2(4) are such that:
+         --  * If the formal parameter is immutable, there cannot be aliasing
+         --    between it and any read-only global.
+         if Formal_Is_Immutable then
+            if Trace_Antialiasing and then not Reads_Only.Is_Empty then
+               Write_Line ("   -> A does not require aa checking against " &
+                             "read-only globals");
+            end if;
+         else
             for G of Reads_Only loop
                Check_Node_Against_Node
                  (FA       => FA,
@@ -810,17 +849,27 @@ package body Flow.Analysis.Antialiasing is
             end loop;
          end if;
 
-         for G of Writes_Or_Reads loop
-            Check_Node_Against_Node
-              (FA       => FA,
-               A        => Actual,
-               B        => G,
-               A_Formal => Formal,
-               B_Formal => Empty,
-               Status   => Current_Status);
+         --  * If the formal parameter is an immutable by-copy type that is not
+         --  an access type, then there cannot be aliasing between it and any
+         --  output or in-out global.
+         if Formal_Is_Immutable and then Is_By_Copy_Not_Access (Formal) then
+            if Trace_Antialiasing and then not Writes_Or_Reads.Is_Empty then
+               Write_Line ("   -> A does not require aa checking against " &
+                             "OUT or IN_OUT globals");
+            end if;
+         else
+            for G of Writes_Or_Reads loop
+               Check_Node_Against_Node
+                 (FA       => FA,
+                  A        => Actual,
+                  B        => G,
+                  A_Formal => Formal,
+                  B_Formal => Empty,
+                  Status   => Current_Status);
 
-            Update_Status (Status, Current_Status);
-         end loop;
+               Update_Status (Status, Current_Status);
+            end loop;
+         end if;
       end Check_Parameter;
 
       ---------------------
@@ -869,7 +918,7 @@ package body Flow.Analysis.Antialiasing is
         (Visible_Globals (Globals.Inputs) - Writes_Or_Reads) or
           Visible_Globals (Globals.Proof_Ins);
 
-      --  Check out and in out parameters against other parameters and globals
+      --  Check formal parameters against other parameters and globals
 
       Check_Aliasing_In_Call (N);
 

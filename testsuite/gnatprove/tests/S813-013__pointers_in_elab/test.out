@@ -1,7 +1,7 @@
 invalid_read_in_elab.adb:8:17: warning: subprogram "P" has no effect
-invalid_read_in_elab.adb:16:25: insufficient permission on dereference from "X"
+invalid_read_in_elab.adb:16:25: dereference from "X" is not readable
 invalid_read_in_elab.adb:16:25: object was moved at line 11
-invalid_read_in_elab.adb:20:25: insufficient permission on dereference from "X"
+invalid_read_in_elab.adb:20:25: dereference from "X" is not readable
 invalid_read_in_elab.adb:20:25: object was moved at line 11
 invalid_read_in_elab.adb:27:17: warning: subprogram "P" has no effect
 invalid_read_in_elab.adb:35:25: object was borrowed at line 30

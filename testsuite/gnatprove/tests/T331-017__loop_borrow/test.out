@@ -1,0 +1,7 @@
+loop_borrow.adb:3:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+loop_borrow.adb:6:30: info: loop invariant initialization proved (CVC4: 2 VC)
+loop_borrow.adb:6:30: info: loop invariant preservation proved (CVC4: 2 VC)
+loop_borrow.adb:6:51: info: pointer dereference check proved (CVC4: 2 VC)
+loop_borrow.adb:10:12: info: pointer dereference check proved (CVC4: 1 VC)
+loop_borrow.adb:12:22: medium: assertion might fail, cannot prove X.all = 1 (e.g. when X.all = 2)
+loop_borrow.adb:12:24: info: pointer dereference check proved (CVC4: 1 VC)

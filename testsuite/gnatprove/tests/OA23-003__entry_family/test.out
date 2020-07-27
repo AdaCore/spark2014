@@ -1,7 +1,7 @@
-one.ads:6:07: entry family is not allowed in SPARK
-one.ads:6:07: violation of pragma SPARK_Mode at test.adc:1
-var.ads:8:07: entry family is not allowed in SPARK
-var.ads:8:07: violation of pragma SPARK_Mode at test.adc:1
-zero.ads:6:07: entry family is not allowed in SPARK
-zero.ads:6:07: violation of pragma SPARK_Mode at test.adc:1
+one.ads:6:13: entry family is not allowed in SPARK
+one.ads:6:13: violation of pragma SPARK_Mode at test.adc:1
+var.ads:8:13: entry family is not allowed in SPARK
+var.ads:8:13: violation of pragma SPARK_Mode at test.adc:1
+zero.ads:6:13: entry family is not allowed in SPARK
+zero.ads:6:13: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

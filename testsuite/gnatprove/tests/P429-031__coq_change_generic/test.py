@@ -18,15 +18,15 @@ def edit_proof(num):
     with open(proof_file, 'w') as file:
         file.write(content)
 
-print "======================================="
+print("=======================================")
 prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:17:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
 edit_proof(1)
-print "======================================="
+print("=======================================")
 prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:17:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
-print "======================================="
+print("=======================================")
 prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:26:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
 edit_proof(2)
-print "======================================="
+print("=======================================")
 prove_all(opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:26:14:VC_POSTCONDITION"], steps=None, counterexample=False, filter_output=".*Grammar extension")
-print "======================================="
+print("=======================================")
 prove_all(counterexample=False)

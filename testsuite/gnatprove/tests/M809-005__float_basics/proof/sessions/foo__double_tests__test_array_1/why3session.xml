@@ -14,10 +14,6 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.1" expl="postcondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
-  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="1803"/></proof>
   </goal>
  </transf>

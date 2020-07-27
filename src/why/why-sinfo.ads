@@ -212,6 +212,25 @@ package Why.Sinfo is
    --
    --  Used for record aggregates and updates: associates a field to a value.
    --
+   --  ---------------
+   --  -- W_Variant --
+   --  ---------------
+   --  Cmp_Op    W_Identifier_Id
+   --  Labels    Symbol_Set
+   --  Expr      W_Term
+   --
+   --  A single loop variant item. The Cmp_Op contains the comparison operator
+   --  to be used in an expression of the form "new cmp old" to determine
+   --  progress of the loop variant. The Labels node contains the info for
+   --  the VC.
+   --
+   --  ----------------
+   --  -- W_Variants --
+   --  ----------------
+   --  Variants  W_Variant_List
+   --
+   --  A list of loop variant items.
+   --
    --  -------------------------
    --  -- W_Universal_Quantif --
    --  -------------------------
@@ -464,15 +483,16 @@ package Why.Sinfo is
    --  Same as W_Binding, but the new introduced variable is a mutable
    --  variable. Why3 syntax "let x = { typ__content = def } in context".
    --
-   --  ------------------
-   --  -- W_While_Loop --
-   --  ------------------
-   --  Condition    W_Prog_Id
+   --  ------------
+   --  -- W_Loop --
+   --  ------------
+   --  Code_Before  W_Prog_Id
    --  Invariants   W_Pred_List
-   --  Loop_Content W_Prog_Id
+   --  Variants     Variants_List
+   --  Code_After   W_Prog_Id
    --
-   --  A loop, with loop annotations and body. The type of the expression is
-   --  always "unit".
+   --  An infinite loop (without loop condition), with a block of loop
+   --  invariant and variants that can appear anywhere in the loop.
    --
    --  --------------------------
    --  -- W_Statement_Sequence --
@@ -702,10 +722,10 @@ package Why.Sinfo is
       -- Prog structure --
       --------------------
 
-      W_Postcondition,
-      W_Exn_Condition,
       W_Handler,
       W_Field_Association,
+      W_Variant,
+      W_Variants,
 
       -----------------
       -- Preds, Expr --
@@ -759,7 +779,7 @@ package Why.Sinfo is
       W_Any_Expr,
       W_Assignment,
       W_Binding_Ref,
-      W_While_Loop,
+      W_Loop,
       W_Statement_Sequence,
       W_Abstract_Expr,
       W_Assert,

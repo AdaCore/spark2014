@@ -176,26 +176,6 @@ package body Xtree_Sinfo is
                  "Terms", "W_Expr", Id_Some);
       Set_Domain (W_Trigger, EW_Term);
 
-      ---------------------
-      -- W_Postcondition --
-      ---------------------
-
-      New_Field (W_Postcondition,
-                 "Pred", "W_Pred", Id_One);
-      New_Field (W_Postcondition,
-                 "Handlers", "W_Exn_Condition", Id_Set);
-      Set_Domain (W_Postcondition, EW_Pred);
-
-      ---------------------
-      -- W_Exn_Condition --
-      ---------------------
-
-      New_Field (W_Exn_Condition,
-                 "Exn_Case", "W_Identifier", Id_One);
-      New_Field (W_Exn_Condition,
-                 "Pred", "W_Pred", Id_One);
-      Set_Domain (W_Exn_Condition, EW_Pred);
-
       ---------------
       -- W_Handler --
       ---------------
@@ -502,16 +482,34 @@ package body Xtree_Sinfo is
       New_Field (W_Binding_Ref,
                  "Typ", "W_Type", Id_One);
 
-      ------------------
-      -- W_While_Loop --
-      ------------------
+      ------------
+      -- W_Loop --
+      ------------
 
-      New_Field (W_While_Loop,
-                 "Condition", "W_Prog", Id_One);
-      New_Field (W_While_Loop,
+      New_Field (W_Loop,
+                 "Code_Before", "W_Prog", Id_One);
+      New_Field (W_Loop,
                  "Invariants", "W_Pred", Id_Set);
-      New_Field (W_While_Loop,
-                 "Loop_Content", "W_Prog", Id_One);
+      New_Field (W_Loop,
+                 "Variants", "W_Variants", Id_Set);
+      New_Field (W_Loop,
+                 "Code_After", "W_Prog", Id_One);
+
+      ---------------
+      -- W_Variant --
+      ---------------
+
+      New_Field (W_Variant, "Cmp_Op", "W_Identifier", Id_One);
+      New_Field (W_Variant, "Labels", "Symbol_Set");
+      New_Field (W_Variant, "Expr", "W_Term", Id_One);
+      Set_Domain (W_Variant, EW_Prog);
+
+      ----------------
+      -- W_Variants --
+      ----------------
+
+      New_Field (W_Variants, "Variants", "W_Variant", Id_Some);
+      Set_Domain (W_Variants, EW_Prog);
 
       --------------------------
       -- W_Statement_Sequence --

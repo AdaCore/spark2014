@@ -5,7 +5,7 @@ binary_search.adb:26:13: info: loop invariant initialization proved (altergo: 2 
 binary_search.adb:26:13: info: loop invariant preservation proved (altergo: 2 VC)
 binary_search.adb:26:57: info: index check proved (altergo: 4 VC)
 binary_search.adb:28:61: info: index check proved (altergo: 4 VC)
-binary_search.adb:29:10: info: loop variant proved (altergo: 1 VC)
+binary_search.adb:29:31: info: loop variant proved (altergo: 1 VC)
 binary_search.adb:31:22: info: range check proved (altergo: 1 VC)
 binary_search.adb:31:39: info: division check proved (altergo: 1 VC)
 binary_search.adb:34:25: info: range check proved (altergo: 1 VC)

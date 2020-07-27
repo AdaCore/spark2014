@@ -233,6 +233,9 @@ package SPARK_Util.Types is
    --        and is checked at declaration. Otherwise, it is considered as a
    --        precondition of the default initialization, and is checked at use.
 
+   function Is_Anonymous_Access_Object_Type (T : Entity_Id) return Boolean is
+     (Ekind (T) = E_Anonymous_Access_Type);
+
    function Is_Nouveau_Type (T : Entity_Id) return Boolean is
      (Etype (T) = T)
    with Pre => Is_Type (T);
@@ -312,6 +315,10 @@ package SPARK_Util.Types is
      Pre => Is_Type (Typ);
    --  Returns True if Typ has subcomponents whose type may be used for
    --  expressions with relaxed initialization.
+
+   function Get_Access_Type_From_Profile (Ty : Entity_Id) return Entity_Id with
+     Pre  => Ekind (Ty) = E_Subprogram_Type,
+     Post => Is_Access_Subprogram_Type (Get_Access_Type_From_Profile'Result);
 
    --------------------------------
    -- Queries related to records --

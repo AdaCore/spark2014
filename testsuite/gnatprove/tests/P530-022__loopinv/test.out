@@ -87,10 +87,10 @@ x86.adb:738:32: info: loop invariant preservation proved (altergo: 1 VC)
 x86.adb:746:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 x86.adb:755:07: info: initialization of "Val1" proved
 x86.adb:755:13: info: initialization of "Val2" proved
-x86.adb:759:10: info: loop variant proved (CVC4: 1 VC)
+x86.adb:759:31: info: loop variant proved (CVC4: 1 VC)
 x86.adb:779:07: info: initialization of "Val1" proved
 x86.adb:779:13: info: initialization of "Val2" proved
-x86.adb:783:10: info: loop variant proved (CVC4: 1 VC)
+x86.adb:783:31: info: loop variant proved (CVC4: 1 VC)
 x86.ads:57:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:57:47: info: division check proved (CVC4: 1 VC)
 x86.ads:69:14: info: postcondition proved (CVC4: 5 VC)

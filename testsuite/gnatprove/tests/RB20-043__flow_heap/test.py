@@ -1,7 +1,8 @@
 from test_support import *
-from gnatpython.env import putenv
+import os
 
-putenv("SPARK_HEAP_OBJECT_DIR", TESTDIR)
+os.environ["SPARK_HEAP_OBJECT_DIR"] = TESTDIR
+
 do_flow()
 
 # Build the test program

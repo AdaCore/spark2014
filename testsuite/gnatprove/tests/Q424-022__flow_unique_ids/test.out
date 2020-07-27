@@ -1,0 +1,1 @@
+state.ads:12:33: medium: constant without variable input "Val" not allowed as input to "Test" (SPARK RM 6.1.4(15))

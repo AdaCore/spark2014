@@ -1,4 +1,4 @@
-from gnatpython.env import Env
+from e3.env import Env
 from test_support import Run, spark_install_path
 import os.path
 
@@ -13,4 +13,4 @@ lines = process.out.splitlines()
 # git commit in some builds.
 for line in lines[3:]:
     if not line.startswith("scm"):
-        print line
+        print(line)
