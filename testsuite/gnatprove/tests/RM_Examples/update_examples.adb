@@ -13,29 +13,20 @@ is
       A (1) := 2;
    end P2;
 
-   -- 2D array update
-   procedure P3 (A2D : in out Arr_2D) is
-   begin
-       A2D (1, 1) := 1;
-       A2D (2, 2) := 2;
-       A2D (3, 3) := 3;
-   end P3;
-
    -- Nested record update
-   procedure P4 (NR : in out Nested_Rec) is
+   procedure P3 (NR : in out Nested_Rec) is
    begin
        NR.A     := 1;
        NR.B.X   := 1;
        NR.C (1) := 5;
-   end P4;
+   end P3;
 
    -- Nested array update
-   procedure P5 (NA : in out Nested_Arr) is
+   procedure P4 (NA : in out Nested_Arr) is
    begin
        NA (1).A        := 1;
-       NA (1).D (2, 2) := 0;
        NA (2).B.X      := 2;
        NA (3).C (1)    := 5;
-   end P5;
+   end P4;
 
 end Update_Examples;

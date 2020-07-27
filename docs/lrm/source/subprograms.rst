@@ -607,7 +607,7 @@ is used purely for static analysis purposes and is not executed.
         value, of the ``global_item`` [examples of attributes that may
         be used are A'Last, A'First and A'Length; examples of
         attributes that are dependent on the value of the object and
-        shall not be used are X'Old and X'Update] and
+        shall not be used are X'Old and X'Loop_Entry] and
 
       - it does not have relaxed initialization
         (see :ref:`relaxed-initialization`);
@@ -1132,13 +1132,14 @@ Extensions_Visible Aspects
    parameter in a call to a subprogram whose Extensions_Visible aspect is
    True. These restrictions also apply to any parenthesized expression,
    qualified expression, or type conversion whose operand is subject to
-   these restrictions, to any Old, Update, or Loop_Entry
+   these restrictions, to any Old or Loop_Entry
    ``attribute_reference`` whose prefix is subject to these restrictions,
+   to any delta aggregate whose expression is subject to these restrictions,
    and to any conditional expression having at least one dependent_expression
    which is subject to these restrictions.
    [A subcomponent of a parameter is not itself a parameter and is therefore
    not subject to these restrictions. A parameter whose type is class-wide
-   is not subject to these restrictions. An Old, Update, or
+   is not subject to these restrictions. An Old or
    Loop_Entry ``attribute_reference`` does not itself violate these
    restrictions (despite the fact that (in the tagged case) each of these
    attributes yields a result having the same underlying dynamic tag as their
@@ -1357,7 +1358,7 @@ it.
    of the formal parameter. [Examples of attributes that may be used
    are A'First, A'Last and A'Length; examples of attributes that are
    dependent on the value of the formal parameter and shall not be
-   used are X'Old and X'Update.]
+   used are X'Old and X'Loop_Entry.]
 
 
 .. centered:: **Examples**

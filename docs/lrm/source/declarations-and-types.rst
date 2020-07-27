@@ -121,8 +121,7 @@ Static predicates and dynamic predicates are both in
 
   [No such proof obligations are generated for assignments
   to subcomponents of the result object of an aggregate,
-  an extension aggregate, or an update expression (see section
-  :ref:`update-expressions`).
+  an extension aggregate, or a delta aggregate.
   These are assignment operations but not assignment statements.]
 
 3. A Static_Predicate or Dynamic_Predicate shall not apply to a subtype of a
