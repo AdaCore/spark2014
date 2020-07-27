@@ -5,11 +5,8 @@ volatiles_illegal_2.ads:31:72: expression of external state property must be sta
 volatiles_illegal_2.ads:34:27: illegal combination of external properties (SPARK RM 7.1.2(6))
 volatiles_illegal_2.ads:38:27: illegal combination of external properties (SPARK RM 7.1.2(6))
 volatiles_illegal_2.ads:43:11: external property "Async_Writers" must apply to a volatile type or object
-volatiles_illegal_2.ads:47:31: missing ")"
-volatiles_illegal_2.ads:47:31: missing ";"
-volatiles_illegal_2.ads:47:37: inappropriate entity for aspect "Volatile"
-volatiles_illegal_2.ads:47:47: incorrect placement of aspect "Async_Readers"
-volatiles_illegal_2.ads:47:60: missing ";"
+volatiles_illegal_2.ads:47:37: unsupported aspect "Volatile" on parameter
+volatiles_illegal_2.ads:47:47: unsupported aspect "Async_Readers" on parameter
 volatiles_illegal_3.ads:20:59: volatile object cannot act as actual in generic instantiation
 volatiles_illegal_3.ads:25:21: volatile object "Vol" cannot act as global item of a function
 volatiles_illegal_3.ads:30:17: nonvolatile function "F2" cannot have a volatile parameter
