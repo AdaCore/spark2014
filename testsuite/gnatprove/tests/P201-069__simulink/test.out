@@ -17,7 +17,7 @@ abs_controller_supplier_with_property.adb:30:07: info: initialization of "Sum_1_
 abs_controller_supplier_with_property.adb:49:40: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: subprogram at abs_controller_supplier_with_property.ads:19 should mention Wheel_Speed in a precondition]
 abs_controller_supplier_with_property.adb:49:58: info: overflow check proved (CodePeer)
 abs_controller_supplier_with_property.adb:49:77: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: subprogram at abs_controller_supplier_with_property.ads:19 should mention Vehicle_Speed in a precondition]
-abs_controller_supplier_with_property.adb:53:82: medium: overflow check might fail [reason for check: result of subtraction must fit in a 8-bits machine integer]
+abs_controller_supplier_with_property.adb:53:82: medium: overflow check might fail [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: you should consider adding a postcondition to function Boolean_To_Integer_8 or turning it into an expression function]
 abs_controller_supplier_with_property.adb:62:41: info: range check proved (CodePeer)
 abs_controller_supplier_with_property.adb:93:22: info: assertion proved (CVC4: 1 VC)
 abs_controller_supplier_with_property.ads:22:08: info: initialization of "Apply_Brakes" proved

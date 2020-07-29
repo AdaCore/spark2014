@@ -121,7 +121,7 @@ decadriver.ads:252:49: medium: incorrect dependency "BSP.Device_State => Driver_
 decadriver.ads:281:07: warning: no check message justified by this pragma
 decadriver.ads:287:14: info: data dependencies proved
 decadriver.ads:288:09: info: flow dependencies proved
-decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode
+decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode [possible fix: you should consider adding a postcondition to function PHR_Mode or turning it into an expression function]
 decadriver.ads:294:07: warning: no check message justified by this pragma
 decadriver.ads:305:14: info: data dependencies proved
 decadriver.ads:306:09: info: flow dependencies proved

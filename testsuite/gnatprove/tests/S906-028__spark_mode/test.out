@@ -1,2 +1,2 @@
-g.ads:5:19: medium: assertion might fail, cannot prove Func (0), in instantiation at spark_inst.ads:3
-spark_g.ads:5:19: medium: assertion might fail, cannot prove Func (0), in instantiation at spark_inst2.ads:3
+g.ads:5:19: medium: assertion might fail, cannot prove Func (0), in instantiation at spark_inst.ads:3 [possible fix: you should consider adding a postcondition to function Func or turning it into an expression function]
+spark_g.ads:5:19: medium: assertion might fail, cannot prove Func (0), in instantiation at spark_inst2.ads:3 [possible fix: you should consider adding a postcondition to function Func or turning it into an expression function]

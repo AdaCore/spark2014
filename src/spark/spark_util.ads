@@ -653,6 +653,11 @@ package SPARK_Util is
    --    Ada.Unchecked_Conversion)
    --  @return the corresponding formal parameter
 
+   function Get_Operator_Symbol (N : Node_Id) return String
+     with Pre => Is_Operator_Symbol_Name (Chars (N));
+   --  Lookup function (based on the contents of the Snames package) to
+   --  convert "operator symbol" to a user-meaningful operator.
+
    function Get_Range (N : Node_Id) return Node_Id
      with Post => Present (Low_Bound (Get_Range'Result)) and then
                   Present (High_Bound (Get_Range'Result));

@@ -1,1 +1,1 @@
-c34014g.adb:49:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+c34014g.adb:49:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: you should consider adding a postcondition to function IDENT_INT or turning it into an expression function]

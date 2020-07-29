@@ -1,17 +1,17 @@
-semantics.adb:9:22: medium: assertion might fail, cannot prove Formal + Ghost_Func > 0
-semantics.adb:9:29: medium: overflow check might fail (e.g. when Formal = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer]
-semantics.adb:10:29: medium: overflow check might fail (e.g. when Formal = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer]
+semantics.adb:9:22: medium: assertion might fail, cannot prove Formal + Ghost_Func > 0 [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
+semantics.adb:9:29: medium: overflow check might fail (e.g. when Formal = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
+semantics.adb:10:29: medium: overflow check might fail (e.g. when Formal = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
 semantics.adb:13:27: medium: overflow check might fail (e.g. when Formal = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 semantics.adb:15:33: info: loop invariant initialization proved (CVC4: 1 VC)
 semantics.adb:15:33: info: loop invariant preservation proved (CVC4: 1 VC)
-semantics.adb:15:40: medium: overflow check might fail (e.g. when Formal = 1073741825) [reason for check: result of addition must fit in a 32-bits machine integer]
+semantics.adb:15:40: medium: overflow check might fail (e.g. when Formal = 1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
 semantics.adb:16:33: info: loop variant proved (CVC4: 1 VC)
 semantics.adb:16:53: info: overflow check proved (CVC4: 2 VC)
 semantics.adb:25:17: info: add a contract to analyze it separately from calling contexts
 semantics.adb:25:17: info: local subprogram "Nested_Non_Ghost" only analyzed in the context of calls
 semantics.adb:35:14: warning: unused assignment, in call inlined at semantics.adb:41
-semantics.adb:35:21: medium: overflow check might fail, in call inlined at semantics.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer]
-semantics.adb:35:34: medium: overflow check might fail, in call inlined at semantics.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer]
+semantics.adb:35:21: medium: overflow check might fail, in call inlined at semantics.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
+semantics.adb:35:34: medium: overflow check might fail, in call inlined at semantics.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
 semantics.ads:12:19: info: postcondition proved (CVC4: 1 VC)
 semantics.ads:12:43: info: overflow check proved (CVC4: 1 VC)
 semantics.ads:13:41: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)

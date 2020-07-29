@@ -27,7 +27,7 @@ professionals.adb:206:72: medium: overflow check might fail [reason for check: r
 professionals.ads:50:11: info: data dependencies proved
 professionals.ads:59:11: info: data dependencies proved
 professionals.ads:63:11: info: data dependencies proved
-professionals.ads:72:25: medium: postcondition might fail, cannot prove Is_Alive (Killer)
+professionals.ads:72:25: medium: postcondition might fail, cannot prove Is_Alive (Killer) [possible fix: you should consider adding a postcondition to function Is_Alive or turning it into an expression function]
 simple_oo_with_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2 [possible fix: subprogram at simple_oo_with_contracts.ads:8 should mention G1 and G2 in a precondition]
 simple_oo_with_contracts.adb:5:16: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at simple_oo_with_contracts.ads:8 should mention G2 and G3 in a precondition]
 simple_oo_with_contracts.adb:6:19: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at simple_oo_with_contracts.ads:8 should mention Par and G3 in a precondition]

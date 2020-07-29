@@ -1,3 +1,3 @@
 misc.adb:5:11: info: flow dependencies proved
 misc.adb:9:39: info: data dependencies proved
-misc.adb:15:25: medium: range check might fail [reason for check: value cannot be maximum value of the type]
+misc.adb:15:25: medium: range check might fail [reason for check: value cannot be maximum value of the type] [possible fix: you should consider adding a postcondition to function Foo or turning it into an expression function]

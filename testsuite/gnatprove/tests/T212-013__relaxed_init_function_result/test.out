@@ -1,4 +1,4 @@
-test_default.adb:11:21: medium: initialization check might fail
+test_default.adb:11:21: medium: initialization check might fail [possible fix: you should consider adding a postcondition to function C or turning it into an expression function]
 test_default.adb:24:08: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC)
 test_default.adb:26:31: info: initialization check proved (CVC4: 1 VC)
 test_default.adb:27:34: info: index check proved (CVC4: 2 VC)

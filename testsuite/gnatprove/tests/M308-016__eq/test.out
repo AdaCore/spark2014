@@ -1,5 +1,5 @@
 q.adb:7:16: info: discriminant check proved (CVC4: 1 VC)
 q.adb:9:16: info: discriminant check proved (CVC4: 1 VC)
-q.adb:16:09: medium: discriminant check might fail (e.g. when X = (B => ?, A => 0, C => True))
-q.adb:17:09: medium: discriminant check might fail (e.g. when Y = (B => ?, A => 0, C => True))
+q.adb:16:09: medium: discriminant check might fail (e.g. when X = (B => ?, A => 0, C => True)) [possible fix: you should consider adding a postcondition to function Change or turning it into an expression function]
+q.adb:17:09: medium: discriminant check might fail (e.g. when Y = (B => ?, A => 0, C => True)) [possible fix: you should consider adding a postcondition to function Change or turning it into an expression function]
 q.ads:23:14: medium: postcondition might fail, cannot prove X = Y (e.g. when X = (B => ?, A => -1, C => True) and Y = (B => ?, A => 0, C => True))

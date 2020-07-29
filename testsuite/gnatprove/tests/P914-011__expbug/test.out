@@ -1,4 +1,4 @@
 repr.adb:16:27: info: precondition proved (Trivial: 2 VC)
-repr.adb:16:27: medium: array index check might fail [reason for check: value must be a valid index into the array]
+repr.adb:16:27: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function F or turning it into an expression function]
 repr.adb:16:30: info: float overflow check proved (CVC4: 1 VC)
 repr.ads:3:11: warning: subprogram "Check" has no effect

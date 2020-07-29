@@ -1,1 +1,1 @@
-p.adb:6:19: medium: assertion might fail, cannot prove (F)
+p.adb:6:19: medium: assertion might fail, cannot prove (F) [possible fix: you should consider adding a postcondition to function F or turning it into an expression function]

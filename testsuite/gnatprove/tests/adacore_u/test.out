@@ -182,7 +182,7 @@ use_stack.adb:3:31: medium: "Stack.P_Stack" might not be initialized after elabo
 use_stack.adb:5:04: info: initialization of "F" proved
 use_stack.adb:7:09: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:9:19: info: precondition proved (CVC4: 1 VC)
-use_stack.adb:9:19: medium: assertion might fail, cannot prove Peek = E or Peek = F (e.g. when E = 1 and F = 1)
+use_stack.adb:9:19: medium: assertion might fail, cannot prove Peek = E or Peek = F (e.g. when E = 1 and F = 1) [possible fix: you should consider adding a postcondition to function Peek or turning it into an expression function]
 use_stack.adb:9:31: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:10:09: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: assertion proved (CVC4: 1 VC)
@@ -379,7 +379,7 @@ distributed_file_system.ads:12:20: info: class-wide precondition is weaker than 
 distributed_file_system.ads:13:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:16:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:17:20: info: class-wide postcondition is stronger than overridden one (CVC4: 2 VC)
-distributed_file_system.ads:20:20: medium: class-wide precondition might be stronger than overridden one, cannot prove F.Is_Synchronized
+distributed_file_system.ads:20:20: medium: class-wide precondition might be stronger than overridden one, cannot prove F.Is_Synchronized [possible fix: you should consider adding a postcondition to function Is_Open and function Is_Synchronized or turning them into expression functions]
 distributed_file_system.ads:21:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
 ints.adb:29:10: info: precondition proved (CVC4: 1 VC)
