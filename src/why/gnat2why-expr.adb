@@ -1276,7 +1276,9 @@ package body Gnat2Why.Expr is
                         (Ada_Node => N,
                          Name     => Binder.Is_Moved,
                          Labels   => Symbol_Sets.Empty_Set,
-                         Value    => +False_Term,
+                         Value    => +New_Pointer_Is_Moved_Access
+                           (E    => Etype (Lvalue),
+                            Name => +Tmp_Var),
                          Typ      => EW_Bool_Type));
 
                   return +New_Typed_Binding
