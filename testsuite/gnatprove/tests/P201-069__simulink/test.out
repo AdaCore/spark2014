@@ -70,16 +70,16 @@ simulink_functions.adb:44:67: info: type is suitable for unchecked conversion (T
 simulink_functions.adb:45:13: info: types in unchecked conversion have the same size (Trivial)
 simulink_functions.adb:45:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:46:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:48:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Unsigned_32 and Unsigned_16 differ]
+simulink_functions.adb:48:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Unsigned_32 and type Unsigned_16 differ]
 simulink_functions.adb:48:65: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:49:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:50:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Unsigned_32 and Unsigned_8 differ]
+simulink_functions.adb:50:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Unsigned_32 and type Unsigned_8 differ]
 simulink_functions.adb:50:64: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:51:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:52:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Unsigned_32 and Integer_16 differ]
+simulink_functions.adb:52:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Unsigned_32 and type Integer_16 differ]
 simulink_functions.adb:52:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:53:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:54:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Unsigned_32 and Integer_8 differ]
+simulink_functions.adb:54:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type Unsigned_32 and type Integer_8 differ]
 simulink_functions.adb:54:66: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:55:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:189:47: medium: precondition might fail, cannot prove X > 0.0 [possible fix: subprogram at simulink_functions.ads:58 should mention F in a precondition]
