@@ -1,0 +1,3 @@
+project Proj1 is
+   for Source_Files use ("file1.ads");
+end Proj1;

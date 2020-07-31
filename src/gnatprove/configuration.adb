@@ -2087,12 +2087,39 @@ package body Configuration is
 
    procedure Sanitize_File_List (Tree : Project_Tree) is
       use String_Lists;
+
+      function Check_Unique_File (F : Virtual_File) return File_Info;
+
+      -----------------------
+      -- Check_Unique_File --
+      -----------------------
+
+      function Check_Unique_File (F : Virtual_File) return File_Info is
+      begin
+
+         if not Tree.Root_Project.Is_Aggregate_Project then
+            return Tree.Info (F);
+         end if;
+         declare
+            Info_Set : constant File_Info_Set := Tree.Info_Set (F);
+         begin
+            if Info_Set.Length > 1 then
+               Abort_Msg ("filename " & F.Display_Full_Name & " is not unique "
+                          & "in aggregate project",
+                          With_Help => False);
+            end if;
+            return File_Info (Info_Set.First_Element);
+         end;
+      end Check_Unique_File;
+
+   --  Start of processing for Sanitize_File_List
+
    begin
       for Cursor in CL_Switches.File_List.Iterate loop
          declare
             File_VF : constant Virtual_File :=
               Tree.Create (Filesystem_String (Element (Cursor)));
-            Info    : constant File_Info := Tree.Info (File_VF);
+            Info    : constant File_Info := Check_Unique_File (File_VF);
          begin
             case Unit_Part (Info) is
                when Unit_Body =>

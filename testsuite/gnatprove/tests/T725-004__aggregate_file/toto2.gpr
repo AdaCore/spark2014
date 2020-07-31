@@ -1,0 +1,3 @@
+aggregate project Toto2 is
+   for Project_Files use ("proj1.gpr", "proj3.gpr");
+end Toto2;
