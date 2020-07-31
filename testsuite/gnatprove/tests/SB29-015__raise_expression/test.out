@@ -30,7 +30,7 @@ test_raise.adb:69:07: medium: precondition might fail, cannot prove (X /= Y) or 
 test_raise.adb:71:07: medium: precondition might fail (e.g. when X = 1) [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 test_raise.adb:73:07: medium: precondition might fail (e.g. when X = -1) [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 test_raise.adb:75:07: info: precondition proved (CVC4: 5 VC; Trivial: 3 VC)
-test_raise.adb:78:19: medium: assertion might fail, cannot prove Float_Conv.From_Big_Real (Z) = 0.0 [possible fix: you should consider adding a postcondition to function From_Big_Real or turning it into an expression function]
+test_raise.adb:78:19: medium: assertion might fail, cannot prove Float_Conv.From_Big_Real (Z) = 0.0
 test_raise.adb:78:29: info: precondition proved (CVC4: 1 VC)
 test_raise_bad.adb:5:15: raise expression in a complex expression in a precondition is not yet supported
 test_raise_bad.adb:6:29: raise expression in a complex expression in a precondition is not yet supported
