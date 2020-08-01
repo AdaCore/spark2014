@@ -113,7 +113,7 @@ camera_motion.adb:233:19: medium: length check might fail [reason for check: arr
 camera_motion.adb:234:16: info: length check proved (CVC4: 6 VC; Trivial: 1 VC)
 camera_motion.adb:234:19: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: subprogram at camera_motion.ads:15 should mention New_Image in a precondition]
 camera_motion.adb:237:18: info: length check proved (CVC4: 6 VC; Trivial: 1 VC)
-camera_motion.adb:237:21: medium: length check might fail [reason for check: array must be of the appropriate length]
+camera_motion.adb:237:21: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: you should consider adding a postcondition to function Difference_Image or turning it into an expression function]
 camera_motion.adb:240:16: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:240:16: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:240:16: info: cannot unroll loop (too many loop iterations)
@@ -126,7 +126,7 @@ camera_motion.adb:240:16: info: in inlined body at line 151
 camera_motion.adb:240:16: info: in inlined body at line 24
 camera_motion.adb:240:16: info: unrolling loop
 camera_motion.adb:243:20: info: length check proved (CVC4: 6 VC; Trivial: 1 VC)
-camera_motion.adb:243:23: medium: length check might fail [reason for check: array must be of the appropriate length]
+camera_motion.adb:243:23: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: you should consider adding a postcondition to function Clip_Image or turning it into an expression function]
 camera_motion.adb:243:46: medium: range check might fail [reason for check: input value must fit in parameter type]
 camera_motion.adb:246:37: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:247:46: info: cannot unroll loop (too many loop iterations)
