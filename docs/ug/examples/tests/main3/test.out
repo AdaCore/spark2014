@@ -1,2 +1,0 @@
-main3.adb:2:06: file "sensor.ads" not found
-gnatprove: error during generation of Global contracts
