@@ -3397,7 +3397,8 @@ package body SPARK_Util is
 
       else
          declare
-            function Short_Name (E : Entity_Id) return String;
+            function Short_Name (E : Entity_Id) return String
+            with Post => Short_Name'Result /= "";
             --  @return the uncapitalized unqualified name for E
 
             ----------------
@@ -3417,7 +3418,7 @@ package body SPARK_Util is
             Buf  : Source_Buffer_Ptr;
 
          begin
-            if Name /= "" and then Loc >= First_Source_Ptr then
+            if Loc >= First_Source_Ptr then
                Buf := Source_Text (Get_Source_File_Index (Loc));
 
                --  Copy characters from source while they match (modulo
