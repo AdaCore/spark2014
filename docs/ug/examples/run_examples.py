@@ -2,7 +2,7 @@
 
 from e3.testsuite import Testsuite
 from e3.testsuite.testcase_finder import TestFinder, ParsedTest
-from e3.testsuite.driver.diff import DiffTestDriver
+from e3.testsuite.driver.diff import DiffTestDriver, OutputRefiner
 import glob
 import os
 import os.path
@@ -32,9 +32,19 @@ class ExamplesTestFinder(TestFinder):
         return ParsedTest(testname, self.driver_cls, {}, dirpath)
 
 
+class NoEmptyOutputRefiner(OutputRefiner):
+
+    def refine(self, output):
+        if len(output) == 0:
+            return "(no output)"
+        return output
+
+
 class ExamplesTestDriver(DiffTestDriver):
 
     copy_test_directory = True
+
+    output_refiners = [NoEmptyOutputRefiner()]
 
     def run(self):
         pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
