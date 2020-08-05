@@ -7372,35 +7372,36 @@ package body SPARK_Definition is
       --  Standard types which are in SPARK are associated to True
 
       Standard_Type_Is_In_SPARK : constant array (S_Types) of Boolean :=
-        (S_Boolean             => True,
+        (S_Boolean                => True,
 
-         S_Short_Short_Integer => True,
-         S_Short_Integer       => True,
-         S_Integer             => True,
-         S_Long_Integer        => True,
-         S_Long_Long_Integer   => True,
+         S_Short_Short_Integer    => True,
+         S_Short_Integer          => True,
+         S_Integer                => True,
+         S_Long_Integer           => True,
+         S_Long_Long_Integer      => True,
+         S_Long_Long_Long_Integer => True,
 
-         S_Natural             => True,
-         S_Positive            => True,
+         S_Natural                => True,
+         S_Positive               => True,
 
-         S_Short_Float         =>
+         S_Short_Float            =>
            Is_Single_Precision_Floating_Point_Type
              (Standard_Entity (S_Short_Float)),
-         S_Float               => True,
-         S_Long_Float          => True,
-         S_Long_Long_Float     =>
+         S_Float                  => True,
+         S_Long_Float             => True,
+         S_Long_Long_Float        =>
            Is_Double_Precision_Floating_Point_Type
              (Standard_Entity (S_Long_Long_Float)),
 
-         S_Character           => True,
-         S_Wide_Character      => True,
-         S_Wide_Wide_Character => True,
+         S_Character              => True,
+         S_Wide_Character         => True,
+         S_Wide_Wide_Character    => True,
 
-         S_String              => True,
-         S_Wide_String         => True,
-         S_Wide_Wide_String    => True,
+         S_String                 => True,
+         S_Wide_String            => True,
+         S_Wide_Wide_String       => True,
 
-         S_Duration            => True);
+         S_Duration               => True);
 
    --  Start of processing for Mark_Standard_Package
 
