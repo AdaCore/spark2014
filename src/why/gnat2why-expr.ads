@@ -357,6 +357,12 @@ package Gnat2Why.Expr is
      (N : Node_Id) return W_Statement_Sequence_Id;
    --  Havoc all entities borrowed in the block
 
+   procedure Initialize_Tables_Nth_Roots;
+   --  This initializing procedure is called after initializing the module
+   --  Uintp to fill in the tabled values for nth roots of the modulus of
+   --  machine integers, and check in ghost code that the tabled values are
+   --  correct.
+
    function Insert_Predicate_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;

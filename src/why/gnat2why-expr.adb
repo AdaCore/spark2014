@@ -120,6 +120,41 @@ package body Gnat2Why.Expr is
    --      why-gen-arrays.adb:Declare_Unconstrained_Array
    --    * handling of the attributes: Transform_Attr in this file.
 
+   ---------------------
+   -- Local Constants --
+   ---------------------
+
+   --  Nth roots of the usual modulus for machine integers are tabled so that
+   --  they can be used in Check_No_Wrap_Around_Modular_Operation for the case
+   --  of an exponentiation of a value of a modular type with No_Wrap_Around
+   --  annotation. The nth roots of a modulus M are represented as an array
+   --  mapping every exponent e to a root r such that
+   --
+   --    r ** e < M <= (r+1) ** e
+   --
+   --  We use strict inequality on the left here because we ultimately want to
+   --  find the maximum value r which can be raised to the exponent e without
+   --  overflowing. Because Uintp unit is not initialized during elaboration
+   --  but by an explicit call to Initialize procedure, we need to similarly
+   --  fill in the value of these tables and check that the values in these
+   --  tables are correct in a procedure called Initialize_Tables_Nth_Roots
+   --  called at the start of gnat2why.
+
+   type Roots is array (Natural range <>) of Uint
+     with Predicate => Roots'First = 2;
+
+   --  Nth roots of 2**8-1, rounded towards zero
+   Roots_8_Bits : Roots (2 .. 7) := (others => No_Uint);
+
+   --  Nth roots of 2**16-1, rounded towards zero
+   Roots_16_Bits : Roots (2 .. 15) := (others => No_Uint);
+
+   --  Nth roots of 2**32-1, rounded towards zero
+   Roots_32_Bits : Roots (2 .. 31) := (others => No_Uint);
+
+   --  Nth roots of 2**64-1, rounded towards zero
+   Roots_64_Bits : Roots (2 .. 63) := (others => No_Uint);
+
    -----------------------
    -- Local Subprograms --
    -----------------------
@@ -174,18 +209,25 @@ package body Gnat2Why.Expr is
       Right_Opnd : W_Expr_Id;
       Rep_Type   : W_Type_Id;
       Modulus    : Uint) return W_Prog_Id
-   with Pre => Present (Ada_Node);
+   with Pre => Present (Ada_Node)
+     and then Op in N_Op_Minus
+                  | N_Op_Add
+                  | N_Op_Subtract
+                  | N_Op_Multiply
+                  | N_Op_Expon;
    --  For modular type Ada_Type with annotation No_Wrap_Around, a check must
-   --  be emitted on unary operation - and binary operations - + *
+   --  be emitted on unary operation - and binary operations - + * **
    --
    --  @param Ada_Node the node to which the check should be attached
    --  @param Ada_Type type of the Ada node, used to retrieve type Size in bits
-   --  @param Op the operation, should be either Minus, Add, Sub or Mul
+   --  @param Op the operation, should be either Minus, Add, Sub, Mul or Expon
    --  @param Left_Opnd the left operand of type [Rep_Type], should be empty if
    --     Op is N_Op_Minus.
-   --  @param Right_Opnd the right operand of type [Rep_Type]
+   --  @param Right_Opnd the right operand of type [Rep_Type] for Add, Sub, Mul
+   --     or type int for Expon
    --  @param Rep_Type the representation type in which the operation is done.
-   --     Both operand should already be converted to this type.
+   --     Both operand should already be converted to this type for Add, Sub,
+   --     Mul, only the first operand for Expon while the second is of type int
    --  @param Modulus the modulus of the type in which the operation is done
    --  @return the Why3 check expression
 
@@ -2262,6 +2304,137 @@ package body Gnat2Why.Expr is
                                      EW_Assert));
             return +Binding_For_Temp (Domain  => EW_Prog,
                                       Tmp     => Right_Expr,
+                                      Context => Check);
+         end;
+
+      --  Exponential value ** expon does not overflow if
+      --    . expon is zero or one, or
+      --    . value is zero or one, or
+      --    . for value n of expon, value is less than the nth root of the
+      --      modulus (to avoid an overflow when computing the exponential in
+      --      the underlying machine integer) and the result is less than this
+      --      modulus.
+      --
+      --  The overall check is thus:
+      --
+      --      ( expon = 0 \/ expon = 1 \/
+      --        value = 0 \/ value = 1 \/
+      --        (expon = 2 /\ value <= roots (2)) \/ ...) )
+      --      /\ value ** expon < modulus
+
+      elsif Op = N_Op_Expon then
+         declare
+            function Select_Roots return Roots is
+              (if    Rep_Type = EW_BitVector_8_Type  then Roots_8_Bits
+               elsif Rep_Type = EW_BitVector_16_Type then Roots_16_Bits
+               elsif Rep_Type = EW_BitVector_32_Type then Roots_32_Bits
+               elsif Rep_Type = EW_BitVector_64_Type then Roots_64_Bits
+               else raise Program_Error);
+
+            function Rep_Modulus return Uint is
+              (if    Rep_Type = EW_BitVector_8_Type  then Uint_2 ** 8
+               elsif Rep_Type = EW_BitVector_16_Type then Uint_2 ** 16
+               elsif Rep_Type = EW_BitVector_32_Type then Uint_2 ** 32
+               elsif Rep_Type = EW_BitVector_64_Type then Uint_2 ** 64
+               else raise Program_Error);
+
+            Value_Expr : constant W_Expr_Id := New_Temp_For_Expr (Left_Opnd);
+            Expon_Expr : constant W_Expr_Id := New_Temp_For_Expr (Right_Opnd);
+            Nth_Roots  : constant Roots := Select_Roots;
+            Oper_Expr  : constant W_Expr_Id :=
+              New_Call (Ada_Node => Ada_Node,
+                        Domain   => EW_Term,
+                        Name     => MF_BVs (Rep_Type).Power,
+                        Args     => (1 => Value_Expr,
+                                     2 => Expon_Expr),
+                        Typ      => Rep_Type);
+            Check      : W_Expr_Id;
+
+         begin
+            --  There is no overflow if the exponent is zero or one, or if the
+            --  value is zero or one.
+
+            Check := +New_Or_Expr
+              ((1 => +New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => Expon_Expr,
+                  Right  => New_Integer_Constant (Value => Uint_0),
+                  Domain => EW_Pred),
+                2 => +New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => Expon_Expr,
+                  Right  => New_Integer_Constant (Value => Uint_1),
+                  Domain => EW_Pred),
+                3 => +New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => Value_Expr,
+                  Right  => New_Modular_Constant
+                    (Value => Uint_0, Typ => Rep_Type),
+                  Domain => EW_Pred),
+                4 => +New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => Value_Expr,
+                  Right  => New_Modular_Constant
+                    (Value => Uint_1, Typ => Rep_Type),
+                  Domain => EW_Pred)),
+               Domain => EW_Pred);
+
+            --  For other values of exponents, check that the value being
+            --  raised to this exponent is less or equal to the maximum
+            --  value which leads to a result in bounds for that bitvector.
+
+            for Expon in Nth_Roots'Range loop
+               Check := +New_Or_Expr
+                 (Left   => +New_And_Expr
+                    (Left   => +New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Expon_Expr,
+                        Right  => New_Integer_Constant
+                          (Value => UI_From_Int (Int (Expon))),
+                        Domain => EW_Pred),
+                     Right  => +New_Comparison
+                       (Symbol => MF_BVs (Rep_Type).Ule,
+                        Left   => Value_Expr,
+                        Right  => New_Modular_Constant
+                          (Value => Nth_Roots (Expon),
+                           Typ   => Rep_Type),
+                        Domain => EW_Pred),
+                     Domain => EW_Pred),
+                  Right  => Check,
+                  Domain => EW_Pred);
+            end loop;
+
+            --  Now check also that the result is less than the value of
+            --  modulus, in case the modulus is smaller than the full range
+            --  of the bitvector.
+
+            if Modulus /= Rep_Modulus then
+               declare
+                  Modulus_Expr : constant W_Expr_Id :=
+                    New_Modular_Constant (Value => Modulus,
+                                          Typ   => Rep_Type);
+               begin
+                  Check := +New_And_Expr
+                    (Left   => Check,
+                     Right  => +New_Comparison
+                       (Symbol => MF_BVs (Rep_Type).Ult,
+                        Left   => Oper_Expr,
+                        Right  => Modulus_Expr,
+                        Domain => EW_Pred),
+                     Domain => EW_Pred);
+               end;
+            end if;
+
+            Check := +New_Ignore (Prog =>
+                                   New_Located_Assert (Ada_Node,
+                                     +Check,
+                                     VC_Overflow_Check,
+                                     EW_Assert));
+            Check := Binding_For_Temp (Domain  => EW_Prog,
+                                       Tmp     => Expon_Expr,
+                                       Context => Check);
+            return +Binding_For_Temp (Domain  => EW_Prog,
+                                      Tmp     => Value_Expr,
                                       Context => Check);
          end;
 
@@ -6473,6 +6646,101 @@ package body Gnat2Why.Expr is
       end return;
    end Havoc_Borrowed_From_Block;
 
+   ---------------------------------
+   -- Initialize_Tables_Nth_Roots --
+   ---------------------------------
+
+   procedure Initialize_Tables_Nth_Roots is
+
+      procedure Check_Roots (Modulus : Uint; R : Roots) with Ghost;
+      --  Check that the tabled values of nth roots R for Modulus are correct
+
+      procedure Check_Roots (Modulus : Uint; R : Roots) is
+      begin
+         for Expon in R'Range loop
+            declare
+               Pow  : constant Uint := R (Expon) ** Int (Expon);
+               Next : constant Uint := (R (Expon) + 1) ** Int (Expon);
+            begin
+               pragma Assert (Pow < Modulus and Modulus <= Next);
+            end;
+         end loop;
+      end Check_Roots;
+
+   --  Start of processing for Initialize_Tables_Nth_Roots
+
+   begin
+      Roots_8_Bits :=
+        (2     => UI_From_Int (15),
+         3     => UI_From_Int (6),
+         4 | 5 => UI_From_Int (3),
+         6 | 7 => UI_From_Int (2));
+
+      Check_Roots (Uint_2 ** 8, Roots_8_Bits);
+
+      Roots_16_Bits :=
+        (2        => UI_From_Int (255),
+         3        => UI_From_Int (40),
+         4        => UI_From_Int (15),
+         5        => UI_From_Int (9),
+         6        => UI_From_Int (6),
+         7        => UI_From_Int (4),
+         8  .. 10 => UI_From_Int (3),
+         11 .. 15 => UI_From_Int (2));
+
+      Check_Roots (Uint_2 ** 16, Roots_16_Bits);
+
+      Roots_32_Bits :=
+        (2        => UI_From_Int (65_535),
+         3        => UI_From_Int (1625),
+         4        => UI_From_Int (255),
+         5        => UI_From_Int (84),
+         6        => UI_From_Int (40),
+         7        => UI_From_Int (23),
+         8        => UI_From_Int (15),
+         9        => UI_From_Int (11),
+         10       => UI_From_Int (9),
+         11       => UI_From_Int (7),
+         12       => UI_From_Int (6),
+         13       => UI_From_Int (5),
+         14 .. 15 => UI_From_Int (4),
+         16 .. 20 => UI_From_Int (3),
+         21 .. 31 => UI_From_Int (2));
+
+      Check_Roots (Uint_2 ** 32, Roots_32_Bits);
+
+      Roots_64_Bits :=
+        (2        => UI_From_Int (2**31 - 1) * 2 + 1,
+         3        => UI_From_Int (2_642_245),
+         4        => UI_From_Int (65_535),
+         5        => UI_From_Int (7131),
+         6        => UI_From_Int (1625),
+         7        => UI_From_Int (565),
+         8        => UI_From_Int (255),
+         9        => UI_From_Int (138),
+         10       => UI_From_Int (84),
+         11       => UI_From_Int (56),
+         12       => UI_From_Int (40),
+         13       => UI_From_Int (30),
+         14       => UI_From_Int (23),
+         15       => UI_From_Int (19),
+         16       => UI_From_Int (15),
+         17       => UI_From_Int (13),
+         18       => UI_From_Int (11),
+         19       => UI_From_Int (10),
+         20       => UI_From_Int (9),
+         21       => UI_From_Int (8),
+         22       => UI_From_Int (7),
+         23 .. 24 => UI_From_Int (6),
+         25 .. 27 => UI_From_Int (5),
+         28 .. 31 => UI_From_Int (4),
+         32 .. 40 => UI_From_Int (3),
+         41 .. 63 => UI_From_Int (2));
+
+      Check_Roots (Uint_2 ** 64, Roots_64_Bits);
+
+   end Initialize_Tables_Nth_Roots;
+
    ----------------------------
    -- Insert_Invariant_Check --
    ----------------------------
@@ -7903,16 +8171,16 @@ package body Gnat2Why.Expr is
 
          when N_Op_Expon =>
             declare
-               Name : W_Identifier_Id;
-               Typ  : constant W_Type_Id := Base_Why_Type (Left_Type);
-               Base : constant W_Expr_Id :=
+               Name  : W_Identifier_Id;
+               Typ   : constant W_Type_Id := Base_Why_Type (Left_Type);
+               Value : constant W_Expr_Id :=
                  New_Temp_For_Expr
                    (Insert_Simple_Conversion
                       (Ada_Node => Ada_Node,
                        Domain   => Domain,
                        Expr     => Left,
                        To       => Typ));
-               Expo : constant W_Expr_Id :=
+               Expon : constant W_Expr_Id :=
                  New_Temp_For_Expr
                    (Insert_Simple_Conversion
                       (Ada_Node => Ada_Node,
@@ -7920,6 +8188,8 @@ package body Gnat2Why.Expr is
                        Expr     => Right,
                        To       => EW_Int_Type));
             begin
+               Base := Typ;
+
                if Has_Modular_Integer_Type (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
@@ -7928,8 +8198,8 @@ package body Gnat2Why.Expr is
                      Ada_Type   => Return_Type,
                      Domain     => Domain,
                      Op         => Op,
-                     Left_Opnd  => Base,
-                     Right_Opnd => Expo,
+                     Left_Opnd  => Value,
+                     Right_Opnd => Expon,
                      Rep_Type   => Typ,
                      Modulus    => Modulus (Return_Type));
 
@@ -7940,7 +8210,7 @@ package body Gnat2Why.Expr is
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
                      Name     => Name,
-                     Args     => (1 => Base, 2 => Expo),
+                     Args     => (1 => Value, 2 => Expon),
                      Typ      => Typ);
 
                   T := Apply_Modulus (Op, Return_Type, T, Domain);
@@ -7952,21 +8222,22 @@ package body Gnat2Why.Expr is
                     and then Is_Floating_Point_Type (Left_Type)
                   then
                      declare
-                        Expo_Negative : constant W_Pred_Id :=
+                        Expon_Negative : constant W_Pred_Id :=
                           +New_Comparison
-                          (Int_Infix_Lt, Expo,
+                          (Int_Infix_Lt, Expon,
                            New_Integer_Constant (Value => Uint_0), EW_Term);
-                        Base_Zero     : constant W_Pred_Id :=
+                        Value_Zero     : constant W_Pred_Id :=
                           +New_Comparison
-                          (Why_Neq, Base, +MF_Floats (Typ).Plus_Zero, EW_Term);
+                          (Why_Neq, Value,
+                           +MF_Floats (Typ).Plus_Zero, EW_Term);
                         Ass           : constant W_Prog_Id :=
                           New_Located_Assert
                             (Ada_Node => Ada_Node,
                              Pred     =>
                                +New_Simpl_Conditional
                                (Domain    => EW_Pred,
-                                Condition => +Expo_Negative,
-                                Then_Part => +Base_Zero,
+                                Condition => +Expon_Negative,
+                                Then_Part => +Value_Zero,
                                 Else_Part => +True_Pred
                                ),
                              Reason   => VC_Division_Check,
@@ -7977,13 +8248,13 @@ package body Gnat2Why.Expr is
                   end if;
                end if;
 
-               T := Binding_For_Temp (Ada_Node, Domain, Base, T);
-               T := Binding_For_Temp (Ada_Node, Domain, Expo, T);
+               T := Binding_For_Temp (Ada_Node, Domain, Value, T);
+               T := Binding_For_Temp (Ada_Node, Domain, Expon, T);
             end;
       end case;
 
       if Domain = EW_Prog
-        and then Op in N_Op_Add | N_Op_Subtract | N_Op_Multiply
+        and then Op in N_Op_Add | N_Op_Subtract | N_Op_Multiply | N_Op_Expon
         and then Has_No_Wrap_Around_Annotation (Return_Type)
       then
          declare
@@ -15704,7 +15975,7 @@ package body Gnat2Why.Expr is
             --  help the provers, the optimization is not limited to
             --  floating-points exponentiation.
 
-            declare
+            N_Op_Expon_Case : declare
                Left      : constant Node_Id := Left_Opnd (Expr);
                Right     : constant Node_Id := Right_Opnd (Expr);
                W_Right   : constant W_Expr_Id :=
@@ -15789,6 +16060,8 @@ package body Gnat2Why.Expr is
                   end if;
                end Inv;
 
+            --  Start of processing for N_Op_Expon_Case
+
             begin
                --  Translate powers of 2 on modular types as shifts. If the
                --  modulus is not a power of two, this cannot be done as the
@@ -15842,6 +16115,28 @@ package body Gnat2Why.Expr is
                      T := Apply_Modulus (Nkind (Expr), Left_Type, T, Domain);
                      T := Binding_For_Temp
                        (Domain => Domain, Tmp => Expo, Context => T);
+
+                     --  Deal separately with no wrap-around on exponential in
+                     --  this case, as New_Binary_Op_Expr is not called, yet
+                     --  there could be an overflow.
+
+                     if Domain = EW_Prog
+                       and then Has_No_Wrap_Around_Annotation (Expr_Type)
+                     then
+                        declare
+                           Check : constant W_Prog_Id :=
+                             Check_No_Wrap_Around_Modular_Operation
+                               (Ada_Node   => Expr,
+                                Ada_Type   => Expr_Type,
+                                Op         => N_Op_Expon,
+                                Left_Opnd  => W_Left,
+                                Right_Opnd => W_Right,
+                                Rep_Type   => Base_Type,
+                                Modulus    => Modulus (Expr_Type));
+                        begin
+                           T := +Sequence (Check, +T);
+                        end;
+                     end if;
                   end;
 
                --  Static exponentiation up to 3 are expended into equivalent
@@ -15893,7 +16188,7 @@ package body Gnat2Why.Expr is
                      Domain      => Domain,
                      Ada_Node    => Expr);
                end if;
-            end;
+            end N_Op_Expon_Case;
 
          when N_Op_Not =>
             if Has_Array_Type (Etype (Right_Opnd (Expr))) then

@@ -1,0 +1,67 @@
+exp.adb:18:17: info: postcondition proved (CVC4: 4 VC)
+exp.adb:18:29: medium: overflow check might fail (e.g. when X8 = U8'Last) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: subprogram at line 14 should mention X8 in a precondition]
+exp.adb:19:31: medium: overflow check might fail (e.g. when X16 = U16'Last) [reason for check: result of addition must fit in a 16-bits machine integer] [possible fix: subprogram at line 14 should mention X16 in a precondition]
+exp.adb:20:31: medium: overflow check might fail (e.g. when X32 = U32'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 14 should mention X32 in a precondition]
+exp.adb:21:31: medium: overflow check might fail (e.g. when X64 = U64'Last) [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: subprogram at line 14 should mention X64 in a precondition]
+exp.adb:24:16: medium: overflow check might fail (e.g. when X8 = U8'Last) [reason for check: value must fit in a 8-bits machine integer] [possible fix: subprogram at line 14 should mention X8 in a precondition]
+exp.adb:25:17: medium: overflow check might fail (e.g. when X16 = U16'Last) [reason for check: value must fit in a 16-bits machine integer] [possible fix: subprogram at line 14 should mention X16 in a precondition]
+exp.adb:26:17: medium: overflow check might fail (e.g. when X32 = U32'Last) [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at line 14 should mention X32 in a precondition]
+exp.adb:27:17: medium: overflow check might fail (e.g. when X64 = U64'Last) [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 14 should mention X64 in a precondition]
+exp.adb:38:17: info: postcondition proved (CVC4: 4 VC)
+exp.adb:38:29: info: overflow check proved (CVC4: 1 VC)
+exp.adb:39:31: info: overflow check proved (CVC4: 1 VC)
+exp.adb:40:31: info: overflow check proved (CVC4: 1 VC)
+exp.adb:41:31: info: overflow check proved (CVC4: 1 VC)
+exp.adb:44:16: info: overflow check proved (CVC4: 1 VC)
+exp.adb:45:17: info: overflow check proved (CVC4: 1 VC)
+exp.adb:46:17: info: overflow check proved (CVC4: 1 VC)
+exp.adb:47:17: info: overflow check proved (CVC4: 1 VC)
+exp.adb:54:17: info: postcondition proved (CVC4: 4 VC)
+exp.adb:54:29: medium: overflow check might fail (e.g. when X8 = 0) [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: subprogram at line 50 should mention X8 in a precondition]
+exp.adb:55:31: medium: overflow check might fail (e.g. when X16 = 0) [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible fix: subprogram at line 50 should mention X16 in a precondition]
+exp.adb:56:31: medium: overflow check might fail (e.g. when X32 = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 50 should mention X32 in a precondition]
+exp.adb:57:31: medium: overflow check might fail (e.g. when X64 = 0) [reason for check: result of subtraction must fit in a 64-bits machine integer] [possible fix: subprogram at line 50 should mention X64 in a precondition]
+exp.adb:60:16: medium: overflow check might fail [reason for check: value must fit in a 8-bits machine integer] [possible fix: subprogram at line 50 should mention X8 in a precondition]
+exp.adb:61:17: medium: overflow check might fail (e.g. when X16 = 0) [reason for check: value must fit in a 16-bits machine integer] [possible fix: subprogram at line 50 should mention X16 in a precondition]
+exp.adb:62:17: medium: overflow check might fail (e.g. when X32 = 0) [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at line 50 should mention X32 in a precondition]
+exp.adb:63:17: medium: overflow check might fail (e.g. when X64 = 0) [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 50 should mention X64 in a precondition]
+exp.adb:74:17: info: postcondition proved (CVC4: 4 VC)
+exp.adb:74:29: info: overflow check proved (CVC4: 1 VC)
+exp.adb:75:31: info: overflow check proved (CVC4: 1 VC)
+exp.adb:76:31: info: overflow check proved (CVC4: 1 VC)
+exp.adb:77:31: info: overflow check proved (CVC4: 1 VC)
+exp.adb:80:16: info: overflow check proved (CVC4: 1 VC)
+exp.adb:81:17: info: overflow check proved (CVC4: 1 VC)
+exp.adb:82:17: info: overflow check proved (CVC4: 1 VC)
+exp.adb:83:17: info: overflow check proved (CVC4: 1 VC)
+exp.adb:90:17: info: postcondition proved (CVC4: 4 VC)
+exp.adb:90:29: medium: overflow check might fail (e.g. when X8 = 235) [reason for check: result of exponentiation must fit in a 8-bits machine integer] [possible fix: subprogram at line 86 should mention X8 in a precondition]
+exp.adb:90:29: medium: overflow check might fail (e.g. when X8 = 249) [reason for check: result of exponentiation must fit in a 8-bits machine integer] [possible fix: subprogram at line 86 should mention X8 in a precondition]
+exp.adb:91:31: medium: overflow check might fail (e.g. when X16 = 4) [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: subprogram at line 86 should mention X16 in a precondition]
+exp.adb:92:31: medium: overflow check might fail (e.g. when X32 = 4) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at line 86 should mention X32 in a precondition]
+exp.adb:93:31: medium: overflow check might fail (e.g. when X64 = 566) [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: subprogram at line 86 should mention X64 in a precondition]
+exp.adb:96:17: medium: overflow check might fail (e.g. when X8 = 235) [reason for check: result of exponentiation must fit in a 8-bits machine integer] [possible fix: subprogram at line 86 should mention X8 in a precondition]
+exp.adb:96:17: medium: overflow check might fail (e.g. when X8 = 249) [reason for check: result of exponentiation must fit in a 8-bits machine integer] [possible fix: subprogram at line 86 should mention X8 in a precondition]
+exp.adb:97:18: medium: overflow check might fail (e.g. when X16 = 4) [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: subprogram at line 86 should mention X16 in a precondition]
+exp.adb:98:18: medium: overflow check might fail (e.g. when X32 = 4) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at line 86 should mention X32 in a precondition]
+exp.adb:99:18: medium: overflow check might fail (e.g. when X64 = 566) [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: subprogram at line 86 should mention X64 in a precondition]
+exp.adb:110:17: info: postcondition proved (CVC4: 4 VC)
+exp.adb:110:29: info: overflow check proved (CVC4: 1 VC)
+exp.adb:110:29: info: overflow check proved (CVC4: 2 VC)
+exp.adb:111:31: info: overflow check proved (CVC4: 1 VC)
+exp.adb:112:31: info: overflow check proved (CVC4: 1 VC)
+exp.adb:113:31: info: overflow check proved (CVC4: 1 VC)
+exp.adb:116:17: info: overflow check proved (CVC4: 1 VC)
+exp.adb:116:17: info: overflow check proved (CVC4: 2 VC)
+exp.adb:117:18: info: overflow check proved (CVC4: 1 VC)
+exp.adb:118:18: info: overflow check proved (CVC4: 1 VC)
+exp.adb:119:18: info: overflow check proved (CVC4: 1 VC)
+exp.adb:127:17: medium: postcondition might fail, cannot prove X16 = X16'old (e.g. when X16 = U16'Last and X16'Old = 0)
+exp.adb:133:20: info: overflow check proved (CVC4: 1 VC)
+exp.adb:133:20: info: overflow check proved (CVC4: 2 VC)
+exp.adb:136:21: info: overflow check proved (CVC4: 1 VC)
+exp.adb:139:21: info: overflow check proved (CVC4: 1 VC)
+exp.adb:142:21: info: overflow check proved (CVC4: 1 VC)
+exp.adb:152:04: info: precondition proved (CVC4: 4 VC)
+exp.adb:154:04: info: precondition proved (CVC4: 4 VC)
+exp.adb:156:04: medium: precondition might fail, cannot prove X16 <= 3 (e.g. when X16 = 4)
