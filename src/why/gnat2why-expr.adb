@@ -10331,7 +10331,7 @@ package body Gnat2Why.Expr is
                   B_Name   => Ident,
                   B_Ent    => Null_Entity_Name,
                   Mutable  => False,
-                  Labels   => <>);
+                  Labels   => Symbol_Sets.Empty_Set);
                Dyn_Prop : constant W_Pred_Id :=
                  Compute_Dynamic_Invariant
                    (Expr   => +Ident,
