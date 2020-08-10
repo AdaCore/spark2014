@@ -522,11 +522,10 @@ package body SPARK_Definition.Annotate is
             New_Prim);
       end if;
 
-      String_To_Name_Buffer (Args_Str);
-      if Name_Len = 5 and then Name_Buffer (1 .. 5) = "Model" then
+      if To_String (Args_Str) = "Model" then
          Kind := Model;
          Check_Model_Entity (New_Prim, Ok);
-      elsif Name_Len = 8 and then Name_Buffer (1 .. 8) = "Contains" then
+      elsif To_String (Args_Str) = "Contains" then
          Kind := Contains;
          Check_Contains_Entity (New_Prim, Ok);
       else
