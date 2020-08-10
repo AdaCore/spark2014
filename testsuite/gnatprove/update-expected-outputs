@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
+from e3.testsuite.report.index import ReportIndex
 from e3.testsuite.result import TestStatus
-from glob import glob
-import io
 import os.path
-import yaml
 
 
 def update_baseline(testname, out):
@@ -14,46 +12,8 @@ def update_baseline(testname, out):
         f.write(out)
 
 
-def load_if_failure(yaml_file):
-    """
-    If it contains a test failure, load a TestResult instance from
-    ``yaml_file`` and return it.
-    """
-    # What follows is a very crude (but efficient!) optimization: assume that
-    # the result's status is encoded in ``yaml_file`` on two lines such as:
-    #
-    #    status: !e3.testsuite.result.TestStatus |-
-    #      2
-    #
-    # This assumption allows us to avoid parsing the entire YAML file (which is
-    # expensive as it happens on several thousands of files), and load only the
-    # ones that contain a FAIL test.
-
-    # Look for a line that starts with the "status: !" substring
-    with open(yaml_file, "r") as f:
-        lines = f.read().splitlines()
-    for i, line in enumerate(lines):
-        if line.startswith('status: !'):
-            # Found it: new load this line and the next one as a standalone
-            # YAML document to retrieve a TestStatus instance.
-            stream = io.StringIO()
-            stream.write(line + '\n' + lines[i + 1])
-            stream.seek(0)
-            small_result = yaml.safe_load(stream)
-            if small_result["status"] != TestStatus.FAIL:
-                return None
-            break
-
-    # We end up here either if:
-    # * we haven't found a line prefixed with "status: !": in this case we need
-    #   to parse the entire YAML file to get the status;
-    # * or if the test status is TestStatus.FAIL: we need to parse the entire
-    #   YÀML file to get the testcase actual output it contains.
-    with open(yaml_file, "r") as f:
-        return yaml.safe_load(f)
-
-
-for yaml_file in glob("out/new/*.yaml"):
-    result = load_if_failure(yaml_file)
-    if result is not None and result.status == TestStatus.FAIL:
+index = ReportIndex.read("out/new")
+for entry in index.entries.values():
+    if entry.status == TestStatus.FAIL:
+        result = entry.load()
         update_baseline(result.env['test_name'], result.out)
