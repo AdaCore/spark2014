@@ -19450,7 +19450,10 @@ package body Gnat2Why.Expr is
          W_Index_Var  : W_Expr_Id;
          Domain       : EW_Domain;
          Params       : Transformation_Params)
-         return W_Expr_Id;
+         return W_Expr_Id
+      with Pre => Nkind (Ada_Node) = N_Quantified_Expression
+                    and then
+                  Is_Type (Over_Type);
       --  @param Ada_Node quantified expression over a container
       --  @param Use_Contains wether there is a Contains primitive specified
       --         for Over_Type
@@ -19848,7 +19851,7 @@ package body Gnat2Why.Expr is
 
       Quant_Var  : Entity_Id;  --  Quantified variable for quantification
       Over_Expr  : Node_Id;    --  Expression over which quantification is done
-      Over_Type  : Node_Id;    --  Type used for the quantification
+      Over_Type  : Entity_Id;  --  Type used for the quantification
       Quant_Type : Entity_Id;  --  Type of the quantified variable
       Index_Type : Entity_Id;  --  Index type for the quantification
 
