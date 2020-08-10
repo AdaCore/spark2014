@@ -519,6 +519,14 @@ package body SPARK_Definition.Annotate is
             New_Prim);
       end if;
 
+      --  Pull function specified by the annotation for translation (and report
+      --  a violation this function is not in SPARK).
+
+      if not In_SPARK (New_Prim) then
+         Mark_Violation (Arg4_Exp, From => New_Prim);
+         return;
+      end if;
+
       if To_String (Args_Str) = "Model" then
          Kind := Model;
          Check_Model_Entity (New_Prim, Ok);
