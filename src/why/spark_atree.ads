@@ -478,6 +478,9 @@ package SPARK_Atree is
    --  @param Target same for the second argument of the instance of
    --           Unchecked_Conversion.
 
+   function Has_Target_Names (N : Node_Id) return Boolean with
+     Pre => Nkind (N) = N_Assignment_Statement;
+
    function Handled_Statement_Sequence (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Accept_Statement
                        | N_Block_Statement

@@ -884,6 +884,13 @@ package body SPARK_Atree is
    function Handled_Statement_Sequence (N : Node_Id) return Node_Id renames
      Sinfo.Handled_Statement_Sequence;
 
+   ----------------------
+   -- Has_Target_Names --
+   ----------------------
+
+   function Has_Target_Names (N : Node_Id) return Boolean renames
+     Sinfo.Has_Target_Names;
+
    ----------------
    -- High_Bound --
    ----------------

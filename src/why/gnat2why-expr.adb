@@ -16973,7 +16973,6 @@ package body Gnat2Why.Expr is
          when N_Target_Name =>
             pragma Assert (Target_Name /= Why_Empty);
             T := +Target_Name;
-            Target_Used := True;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="
@@ -20737,7 +20736,6 @@ package body Gnat2Why.Expr is
             begin
                --  Sanity checking, the global state should be clean
 
-               pragma Assert (Target_Used = False);
                pragma Assert (Target_Name = Why_Empty);
 
                --  Create an identifier for references to the target name in
@@ -20760,8 +20758,7 @@ package body Gnat2Why.Expr is
 
                --  Only introduce a binding for Target_Name if it was actually
                --  used in the assignment.
-
-               if Target_Used then
+               if Has_Target_Names (Stmt_Or_Decl) then
                   T := New_Binding
                     (Ada_Node => Stmt_Or_Decl,
                      Name     => Target_Name,
@@ -20777,7 +20774,6 @@ package body Gnat2Why.Expr is
                --  Clean up global state
 
                Target_Name := Why_Empty;
-               Target_Used := False;
 
                return T;
             end;

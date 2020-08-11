@@ -3471,7 +3471,7 @@ package body SPARK_Definition is
                                  | Pragma_Pre
                                  | Pragma_Post
                                  | Pragma_Check
-                                 =>
+                              =>
                                  return True;
                               when Pragma_Contract_Cases =>
                                  raise Program_Error;
