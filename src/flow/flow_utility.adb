@@ -3271,15 +3271,11 @@ package body Flow_Utility is
 
             when N_Selected_Component =>
                declare
-                  Comp : constant Entity_Id := Entity (Selector_Name (N));
+                  Comp : constant Entity_Id :=
+                    Unique_Component (Entity (Selector_Name (N)));
+
                   Root_Entity : constant Entity_Id := Entity (Root_Node);
-
-                  pragma Assert (Ekind (Comp) in E_Component
-                                               | E_Discriminant);
-
                   pragma Assert (Is_Object (Root_Entity));
-
-                  E : constant Entity_Id := Unique_Component (Comp);
 
                   New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
@@ -3288,7 +3284,7 @@ package body Flow_Utility is
 
                   if Debug_Trace_Untangle_Fields then
                      Write_Str ("Trimming for: ");
-                     Sprint_Node_Inline (E);
+                     Sprint_Node_Inline (Comp);
                      Write_Eol;
                   end if;
 
@@ -3300,7 +3296,7 @@ package body Flow_Utility is
                      begin
                         if K.Kind = Record_Field
                           and then Natural (K.Component.Length) >= Comp_Id
-                          and then K.Component (Comp_Id) = E
+                          and then K.Component (Comp_Id) = Comp
                         then
                            New_Map.Insert (K, V);
                         end if;
@@ -3310,7 +3306,7 @@ package body Flow_Utility is
                   Flow_Id_Maps.Move (Target => M,
                                      Source => New_Map);
 
-                  Current_Field := Add_Component (Current_Field, E);
+                  Current_Field := Add_Component (Current_Field, Comp);
                   Comp_Id       := Comp_Id + 1;
                end;
 
