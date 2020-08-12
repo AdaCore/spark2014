@@ -4100,12 +4100,12 @@ package body Flow.Control_Flow_Graph is
 
             To_CW : constant Boolean :=
               Is_Class_Wide_Type (Get_Type (E, FA.B_Scope))
-                and then not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
+              and then not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
 
             FS : constant Flow_Id_Sets.Set := Flatten_Variable (E, FA.B_Scope);
 
          begin
-            --  Initialize the set of defined variables with all compononents
+            --  Initialize the set of defined variables with all components
             --  of the flattened view and add extra elements for bounds.
             Var_Def := FS;
 
@@ -4240,7 +4240,6 @@ package body Flow.Control_Flow_Graph is
 
             Ctx.Folded_Function_Checks.Append (Expr);
          end;
-
          pragma Assert (not Inits.Is_Empty);
 
       --  We have no initializing expression so we fall back to the default
@@ -6030,7 +6029,8 @@ package body Flow.Control_Flow_Graph is
                return Is_Attribute_Update (N)
                  and then Rec (Prefix (N));
 
-            when N_Qualified_Expression | N_Type_Conversion =>
+            when N_Qualified_Expression | N_Type_Conversion |
+                 N_Expression_With_Actions =>
                return Rec (Expression (N));
 
             when others =>

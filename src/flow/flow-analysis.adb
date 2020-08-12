@@ -409,6 +409,13 @@ package body Flow.Analysis is
                    else To_Entire_Variables (Expr_Vars).Contains (Var_Tgt))
                then
                   First_Use := N;
+                  --  ??? Returning OK won't actually pick up the "first" use
+                  --  of the variable in an expression, however it behaves
+                  --  more intuitively with regard to subprogram parameters.
+                  --  Returning Abandon here instead will tend to pick up
+                  --  the first occurrence when the variable is found in an
+                  --  expression, which is more intuitive for expressions but
+                  --  less so in other cases.
                   return OK;
                else
                   return Skip;
@@ -2225,13 +2232,13 @@ package body Flow.Analysis is
            Post => Vertex_Sets.Is_Subset (Subset => Visited'Old,
                                           Of_Set => Visited)
                    and then (if not OK'Old then not OK);
-      --  Detect uses of Var, which is an not-yet-initializes object, by
+      --  Detect uses of Var, which is a not-yet-initialized object, by
       --  looking at the PDG vertices originating from Start. For arrays this
       --  routine might be called recursively and then Possibly_Initialized
       --  is True iff some elements of the array have been written. Visited
       --  contains vertices that have been already examined; it is to prevent
       --  infinite recursive calls. If any message is emitted, then OK will
-      --  become False; otherwise, if will be unmodified.
+      --  become False; otherwise, it will be unmodified.
 
       function Is_Array (F : Flow_Id) return Boolean;
       --  Returns True iff F represents an array and thus requires special

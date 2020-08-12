@@ -1,6 +1,16 @@
 flow.adb:7:38: info: initialization of "Y1" proved
 flow.adb:7:42: info: initialization of "Y2" proved
 flow.adb:8:22: info: postcondition proved (CVC4: 2 VC)
-flow.adb:9:23: medium: missing dependency "Y1 => X2"
-flow.adb:9:33: medium: missing dependency "Y2 => X1"
+flow.adb:9:11: info: flow dependencies proved
 flow.adb:11:07: info: initialization of "Proxy" proved
+flow.adb:24:34: info: initialization of "Y" proved
+flow.adb:25:11: info: flow dependencies proved
+flow.adb:25:54: info: postcondition proved (CVC4: 1 VC)
+flow.adb:35:11: info: data dependencies proved
+flow.adb:40:10: medium: array index check might fail [reason for check: value must be a valid index into the array]
+flow.adb:40:13: high: "X" is not initialized
+flow.adb:41:15: high: "X" is not initialized
+flow.adb:41:15: info: index check proved (CVC4: 2 VC)
+main.adb:10:39: high: "X" is not initialized
+main.adb:11:29: high: "A" is not initialized
+main.adb:22:13: high: "X" is not initialized

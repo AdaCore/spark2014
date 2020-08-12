@@ -2114,10 +2114,12 @@ package body Flow_Utility is
                   Is_Concurrent_Component_Or_Discr (E);
       --  Return a set that can be merged into Variables, as above
 
-      function Recurse (N                   : Node_Id;
-                        Consider_Extensions : Boolean := False)
-                        return Flow_Id_Sets.Set
-      with Pre => Present (N);
+      function Recurse
+        (N                   : Node_Id;
+         Consider_Extensions : Boolean := False;
+         Fold_Functions      : Reference_Kind := Ctx.Fold_Functions)
+         return Flow_Id_Sets.Set
+        with Pre => Present (N);
       --  Helper function to recurse on N
 
       function Untangle_Record_Fields
@@ -2165,13 +2167,16 @@ package body Flow_Utility is
       -- Recurse --
       -------------
 
-      function Recurse (N                   : Node_Id;
-                        Consider_Extensions : Boolean := False)
-                        return Flow_Id_Sets.Set
+      function Recurse
+        (N                   : Node_Id;
+         Consider_Extensions : Boolean := False;
+         Fold_Functions      : Reference_Kind := Ctx.Fold_Functions)
+         return Flow_Id_Sets.Set
       is
          New_Ctx : Get_Variables_Context := Ctx;
       begin
          New_Ctx.Consider_Extensions := Consider_Extensions;
+         New_Ctx.Fold_Functions := Fold_Functions;
          return Get_Variables_Internal (N, New_Ctx);
       end Recurse;
 
@@ -3959,19 +3964,68 @@ package body Flow_Utility is
                   end if;
                end;
 
-            --  For a declare expression we recurse into the expression itself
-            --  and then we recurse into the expression of declared constants
-            --  whenever it is referenced. ??? This is incorrect when the
-            --  declared constant is not referenced, e.g.:
-            --     declare
-            --        X : constant Integer := V;
-            --        -- constant with variable input
-            --     begin
-            --        0;
-            --  because this expression has a null dependency on V, but this
-            --  is acceptable for now.
+            --  A declare expression (see Ada RM 4.5.9) consists of a set of
+            --  declare items and a body_expression. We recurse into each
+            --  part in turn.
 
             when N_Expression_With_Actions =>
+
+               --  The declare items include object declarations and object
+               --  renaming declarations; process these depending on the
+               --  context's Fold_Function component.
+               declare
+                  procedure Process_Actions (FF : Reference_Kind);
+                  --  Helper procedure to process the expression's actions
+
+                  procedure Process_Actions (FF : Reference_Kind)
+                  is
+                     Action_List : constant List_Id := Actions (N);
+                     Action  : Node_Id := First (Action_List);
+                  begin
+                     while Present (Action) loop
+                        case Nkind (Action) is
+                        when N_Object_Declaration =>
+                           Variables.Union
+                             (Recurse
+                                (N              => Expression (Action),
+                                 Fold_Functions => FF));
+                        when N_Object_Renaming_Declaration =>
+                           Variables.Union
+                             (Recurse
+                                (N              => Name (Action),
+                                 Fold_Functions => FF));
+                        when others =>
+                           --  The frontend should have rejected all other
+                           --  code constructs. Therefore anything else we find
+                           --  in this action list has been synthesised so we
+                           --  ignore it.
+                           pragma Assert (not Comes_From_Source (Action));
+                        end case;
+                        Next (Action);
+                     end loop;
+                  end Process_Actions;
+               begin
+                  case Ctx.Fold_Functions is
+
+                     --  Variables referenced in object declarations do not
+                     --  flow into inputs.
+                     when Inputs =>
+                        null;
+
+                     --  Proof inputs need to be pulled
+                     when Proof_Ins =>
+                        Process_Actions (FF => Proof_Ins);
+
+                     --  Anything evaluated is referenced as a null
+                     --  dependency; it will be pulled when referenced.
+                     when Null_Deps =>
+                        Process_Actions (FF => Inputs);
+                        Process_Actions (FF => Null_Deps);
+                  end case;
+
+               end;
+
+               --  And now the body expression.
                Variables.Union (Recurse (Expression (N)));
                return Skip;
 
@@ -5231,118 +5285,128 @@ package body Flow_Utility is
                Write_Eol;
             end if;
 
-            declare
-               E : constant Entity_Id :=
-                 (if Nkind (N) = N_Target_Name
-                  then Get_Direct_Mapping_Id (Target_Name)
-                  else Entity (N));
+            if Nkind (N) /= N_Target_Name
+              and then Comes_From_Declare_Expr (Entity (N))
+            then
+               --  Need to recurse into the declare expression
+               M := Recurse_On
+                 (N        => Expression (Declaration_Node (Entity (N))),
+                  Map_Root => Map_Root);
+            else
+               declare
+                  E : constant Entity_Id :=
+                    (if Nkind (N) = N_Target_Name
+                     then Get_Direct_Mapping_Id (Target_Name)
+                     else Entity (N));
 
-               Is_Pure_Constant : constant Boolean :=
-                 Fold_Functions /= Inputs
-                   or else
-                 (Ekind (E) = E_Constant
-                  and then not Has_Variable_Input (E));
-               --  If we are assigning a pure constant, we don't really want to
-               --  see it (just like if we assign integer/string/... literals
-               --  then we don't want to see them in flow). However, we can't
-               --  just pretend that the RHS is an empty map; it is a map
-               --  (i.e. a certain structure) with empty elements, e.g. the
-               --  private extension part.
-               --  Same when we detect Proof_Ins/Null_Deps and see a plain
-               --  object reference.
+                  Is_Pure_Constant : constant Boolean :=
+                    Fold_Functions /= Inputs
+                      or else
+                      (Ekind (E) = E_Constant
+                       and then not Has_Variable_Input (E));
+                  --  If we are assigning a pure constant, we don't really
+                  --  want to see it (just like if we assign integer/string/...
+                  --  literals then we don't want to see them in flow).
+                  --  However, we can't just pretend that the RHS is an empty
+                  --  map; it is a map (i.e. a certain structure) with empty
+                  --  elements, e.g. the private extension part. Same when
+                  --  we detect Proof_Ins/Null_Deps and see a plain object
+                  --  reference.
 
-               LHS : constant Flow_Id_Sets.Set :=
-                 Flatten_Variable (Map_Root, Scope);
+                  LHS : constant Flow_Id_Sets.Set :=
+                    Flatten_Variable (Map_Root, Scope);
 
-               LHS_Ext : constant Flow_Id :=
-                 (Map_Root with delta Facet => Extension_Part);
+                  LHS_Ext : constant Flow_Id :=
+                    (Map_Root with delta Facet => Extension_Part);
 
-               RHS : Flow_Id_Sets.Set :=
-                 (if Nkind (N) = N_Target_Name then
-                    Flatten_Variable (Target_Name, Scope)
+                  RHS : Flow_Id_Sets.Set :=
+                    (if Nkind (N) = N_Target_Name then
+                       Flatten_Variable (Target_Name, Scope)
 
-                  elsif Is_Concurrent_Component_Or_Discr (E) then
-                    Flatten_Variable
-                      (Add_Component
-                         (Direct_Mapping_Id (Sinfo.Scope (E)),
-                          E),
-                       Scope)
+                     elsif Is_Concurrent_Component_Or_Discr (E) then
+                       Flatten_Variable
+                         (Add_Component
+                            (Direct_Mapping_Id (Sinfo.Scope (E)),
+                             E),
+                          Scope)
 
-                  elsif Is_Part_Of_Concurrent_Object (E) then
-                    Flatten_Variable
-                      (Add_Component
-                         (Direct_Mapping_Id
-                            (Etype (Encapsulating_State (E))),
-                          E),
-                       Scope)
+                     elsif Is_Part_Of_Concurrent_Object (E) then
+                       Flatten_Variable
+                         (Add_Component
+                            (Direct_Mapping_Id
+                               (Etype (Encapsulating_State (E))),
+                             E),
+                          Scope)
 
-                  else Flatten_Variable (E, Scope));
+                     else Flatten_Variable (E, Scope));
 
-               To_Ext : Flow_Id_Sets.Set;
-               F      : Flow_Id;
+                  To_Ext : Flow_Id_Sets.Set;
+                  F      : Flow_Id;
 
-               LHS_Pos : Flow_Id_Maps.Cursor;
-               Unused  : Boolean;
+                  LHS_Pos : Flow_Id_Maps.Cursor;
+                  Unused  : Boolean;
 
-            begin
-               if (Is_Class_Wide_Type (Map_Type)
-                  and then not Is_Class_Wide_Type (Etype (N)))
-                    or else not Extensions_Irrelevant
-               then
-                  --  This is an implicit conversion to class wide, or we
-                  --  for some other reason care specifically about the
-                  --  extensions.
+               begin
+                  if (Is_Class_Wide_Type (Map_Type)
+                    and then not Is_Class_Wide_Type (Etype (N)))
+                      or else not Extensions_Irrelevant
+                  then
+                     --  This is an implicit conversion to class wide, or we
+                     --  for some other reason care specifically about the
+                     --  extensions.
 
-                  case Nkind (N) is
-                     when N_Target_Name =>
-                        if Extensions_Visible (Target_Name, Scope) then
-                           RHS.Insert
-                             ((Target_Name with delta
-                                  Facet => Extension_Part));
+                     case Nkind (N) is
+                        when N_Target_Name =>
+                           if Extensions_Visible (Target_Name, Scope) then
+                              RHS.Insert
+                                ((Target_Name with delta
+                                     Facet => Extension_Part));
 
-                           --  RHS.Insert
-                           --    ((Target_Name with delta
-                           --         Facet => The_Tag));
-                        end if;
+                              --  RHS.Insert
+                              --    ((Target_Name with delta
+                              --         Facet => The_Tag));
+                           end if;
 
-                     when N_Identifier | N_Expanded_Name =>
-                        if Extensions_Visible (E, Scope) then
-                           RHS.Insert
-                             (Direct_Mapping_Id (E, Facet => Extension_Part));
+                        when N_Identifier | N_Expanded_Name =>
+                           if Extensions_Visible (E, Scope) then
+                              RHS.Insert
+                                (Direct_Mapping_Id
+                                   (E, Facet => Extension_Part));
 
-                           --  RHS.Insert
-                           --    (Direct_Mapping_Id (E, Facet => The_Tag));
-                        end if;
+                              --  RHS.Insert
+                              --    (Direct_Mapping_Id (E, Facet => The_Tag));
+                           end if;
 
-                     when others =>
-                        raise Program_Error;
-                  end case;
-               end if;
-
-               for Input of RHS loop
-                  F := Join (Map_Root, Input);
-                  if LHS.Contains (F) then
-                     M.Insert (F, (if Is_Pure_Constant
-                               then Flow_Id_Sets.Empty_Set
-                               else Flow_Id_Sets.To_Set (Input)));
-                  else
-                     To_Ext.Insert (Input);
+                        when others =>
+                           raise Program_Error;
+                     end case;
                   end if;
-               end loop;
 
-               if not To_Ext.Is_Empty
-                 and then Is_Tagged_Type (Map_Type)
-               then
-                  --  Attempt to insert an empty set
-                  M.Insert (Key      => LHS_Ext,
-                            Position => LHS_Pos,
-                            Inserted => Unused);
+                  for Input of RHS loop
+                     F := Join (Map_Root, Input);
+                     if LHS.Contains (F) then
+                        M.Insert (F, (if Is_Pure_Constant
+                                  then Flow_Id_Sets.Empty_Set
+                                  else Flow_Id_Sets.To_Set (Input)));
+                     else
+                        To_Ext.Insert (Input);
+                     end if;
+                  end loop;
 
-                  if not Is_Pure_Constant then
-                     M (LHS_Pos).Union (To_Ext);
+                  if not To_Ext.Is_Empty
+                    and then Is_Tagged_Type (Map_Type)
+                  then
+                     --  Attempt to insert an empty set
+                     M.Insert (Key      => LHS_Ext,
+                               Position => LHS_Pos,
+                               Inserted => Unused);
+
+                     if not Is_Pure_Constant then
+                        M (LHS_Pos).Union (To_Ext);
+                     end if;
                   end if;
-               end if;
-            end;
+               end;
+            end if;
 
          when N_Type_Conversion =>
             if Debug_Trace_Untangle_Record then
@@ -5425,8 +5489,8 @@ package body Flow_Utility is
                end if;
             end;
 
-         when N_Qualified_Expression =>
-            --  We can completely ignore these.
+         when N_Qualified_Expression | N_Expression_With_Actions =>
+            --  Recurse into the expression.
             M := Recurse_On (Expression (N), Map_Root, Map_Type);
 
          when N_Attribute_Reference =>
