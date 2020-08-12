@@ -3274,9 +3274,6 @@ package body Flow_Utility is
                   Comp : constant Entity_Id :=
                     Unique_Component (Entity (Selector_Name (N)));
 
-                  Root_Entity : constant Entity_Id := Entity (Root_Node);
-                  pragma Assert (Is_Object (Root_Entity));
-
                   New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
                begin
