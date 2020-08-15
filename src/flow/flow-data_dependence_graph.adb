@@ -21,6 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with Flow_Utility;           use Flow_Utility;
+
 package body Flow.Data_Dependence_Graph is
 
    ------------
@@ -28,6 +31,41 @@ package body Flow.Data_Dependence_Graph is
    ------------
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
+
+      function Potential_Definite_Calls
+        (Calls : Node_Sets.Set)
+         return Flow_Id_Sets.Set;
+      --  Returns subprograms whose calls need to be checked for being
+      --  definitive (as opposed to being conditional or being only called
+      --  in assertions).
+
+      ------------------------------
+      -- Potential_Definite_Calls --
+      ------------------------------
+
+      function Potential_Definite_Calls
+        (Calls : Node_Sets.Set)
+         return Flow_Id_Sets.Set
+      is
+         Check : Flow_Id_Sets.Set;
+      begin
+         if FA.Generating_Globals
+           and then FA.Is_Generative
+         then
+            for E of Calls loop
+               if Ekind (E) in E_Procedure | E_Entry
+                 and then (not Has_User_Supplied_Globals (E)
+                           or else Rely_On_Generated_Global (E, FA.B_Scope))
+               then
+                  Check.Insert (Direct_Mapping_Id (E));
+               end if;
+            end loop;
+         end if;
+         return Check;
+      end Potential_Definite_Calls;
+
+   --  Start of processing for Create
+
    begin
       FA.DDG := FA.CFG.Create;
 
@@ -39,9 +77,7 @@ package body Flow.Data_Dependence_Graph is
 
             Combined_Defined : constant Flow_Id_Sets.Set :=
               Atr_Def.Variables_Defined or Atr_Def.Volatiles_Read or
-              (if FA.Generating_Globals
-               then To_Flow_Id_Set (Atr_Def.Subprograms_Called)
-               else Flow_Id_Sets.Empty_Set);
+              Potential_Definite_Calls (Atr_Def.Subprograms_Called);
 
          begin
             for Var of Combined_Defined loop
@@ -93,8 +129,15 @@ package body Flow.Data_Dependence_Graph is
                            TV := Flow_Graphs.Skip_Children;
                         end if;
 
+                     --  Deal with calls to potentially definite calls, which
+                     --  is only needed in phase 1 and only if generating
+                     --  globals for the currently analysed subprogram.
+
                      elsif FA.Generating_Globals
+                       and then FA.Is_Generative
                        and then Var.Kind = Direct_Mapping
+                       and then
+                         Is_Subprogram_Or_Entry (Get_Direct_Mapping_Id (Var))
                        and then Atr.Subprograms_Called.Contains
                          (Get_Direct_Mapping_Id (Var))
                      then
