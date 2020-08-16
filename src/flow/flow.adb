@@ -508,16 +508,27 @@ package body Flow is
             Print_Node (A.Error_Location);
 
          elsif A.Pretty_Print_Kind = Pretty_Print_Record_Field then
-            --  Sanity check that we only have one defined variable
-            pragma Assert (A.Variables_Defined.Length = 1);
 
-            declare
-               Var_Def : Flow_Id renames
-                 A.Variables_Defined (A.Variables_Defined.First);
-            begin
-               Write_Str (Flow_Id_To_String (Var_Def));
-               Write_Str (" => ");
-            end;
+            --  Record self-assignments are represented with two vertices;
+            --  and one of them has Variables_Defined empty.
+
+            if A.Variables_Defined.Is_Empty then
+               null;
+
+            --  Otherwise there is exactly one defined variable (a single
+            --  record component).
+
+            else
+               pragma Assert (A.Variables_Defined.Length = 1);
+
+               declare
+                  Var_Def : Flow_Id renames
+                    A.Variables_Defined (A.Variables_Defined.First);
+               begin
+                  Write_Str (Flow_Id_To_String (Var_Def));
+                  Write_Str (" => ");
+               end;
+            end if;
 
             declare
                Commas_Remaining : Integer :=

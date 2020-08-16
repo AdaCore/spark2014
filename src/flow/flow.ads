@@ -30,7 +30,6 @@ with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;
 with Flow_Dependency_Maps;       use Flow_Dependency_Maps;
 with Flow_Types;                 use Flow_Types;
-with Graphs;
 with Types;                      use Types;
 
 package Flow is
@@ -52,13 +51,6 @@ package Flow is
    ----------------------------------------------------------------------
    --  Flow_Graphs
    ----------------------------------------------------------------------
-
-   package Flow_Graphs is new Graphs
-     (Vertex_Key   => Flow_Id,
-      Key_Hash     => Hash,
-      Edge_Colours => Edge_Colours,
-      Null_Key     => Null_Flow_Id,
-      Test_Key     => "=");
 
    package Attribute_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Flow_Graphs.Vertex_Id,

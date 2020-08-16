@@ -31,6 +31,7 @@ with Ada.Containers.Ordered_Sets;
 with Atree;                       use Atree;
 with Common_Containers;           use Common_Containers;
 with Einfo;                       use Einfo;
+with Graphs;
 with Sinfo;                       use Sinfo;
 with SPARK_Util;                  use SPARK_Util;
 with Types;                       use Types;
@@ -469,6 +470,13 @@ package Flow_Types is
    function Is_Easily_Printable (F : Flow_Id) return Boolean;
    --  Check if F can be printed without resorting to Sprint
 
+   package Flow_Graphs is new Graphs
+     (Vertex_Key   => Flow_Id,
+      Key_Hash     => Hash,
+      Edge_Colours => Edge_Colours,
+      Null_Key     => Null_Flow_Id,
+      Test_Key     => "=");
+
    ----------------------------------------------------------------------
    --  Types based on Flow_Id
    ----------------------------------------------------------------------
@@ -699,6 +707,9 @@ package Flow_Types is
       --  Which loops are we a member of (identified by loop name/label). For
       --  loop stability analysis.
 
+      Record_RHS                   : Flow_Graphs.Vertex_Id;
+      --  Vertex with a variables used on the RHS of a record assignment
+
       Error_Location               : Node_Or_Entity_Id;
       --  If we have an error involving this vertex, raise it here
 
@@ -754,6 +765,7 @@ package Flow_Types is
                    Volatiles_Written               => Flow_Id_Sets.Empty_Set,
                    Subprograms_Called              => Node_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
+                   Record_RHS                      => Flow_Graphs.Null_Vertex,
                    Error_Location                  => Empty,
                    Aux_Node                        => Empty,
                    Pretty_Print_Kind               => Pretty_Print_Null);

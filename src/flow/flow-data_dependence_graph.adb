@@ -79,7 +79,19 @@ package body Flow.Data_Dependence_Graph is
               Atr_Def.Variables_Defined or Atr_Def.Volatiles_Read or
               Potential_Definite_Calls (Atr_Def.Subprograms_Called);
 
+            use type Flow_Graphs.Vertex_Id;
+
          begin
+            --  If this vertex defines a component of a record assignment, then
+            --  connect it with a corresponding vertex with variables used for
+            --  the new value of this record component. This is similar to
+            --  connecting 'In and 'Out vertices of procedure calls according
+            --  to the Depends contract, which happens when building TDG.
+
+            if Atr_Def.Record_RHS /= Flow_Graphs.Null_Vertex then
+               FA.DDG.Add_Edge (Atr_Def.Record_RHS, V_D, EC_DDG);
+            end if;
+
             for Var of Combined_Defined loop
                declare
                   procedure Visitor
@@ -176,8 +188,6 @@ package body Flow.Data_Dependence_Graph is
                         V_Final : constant Flow_Graphs.Vertex_Id :=
                           FA.CFG.Get_Vertex
                             (Change_Variant (Vol, Final_Value));
-
-                        use type Flow_Graphs.Vertex_Id;
 
                      begin
                         if V_Final /= Flow_Graphs.Null_Vertex then
