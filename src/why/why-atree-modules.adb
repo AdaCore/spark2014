@@ -32,7 +32,6 @@ with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Util;                 use SPARK_Util;
-with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Stand;                      use Stand;
 with String_Utils;               use String_Utils;
@@ -176,9 +175,7 @@ package body Why.Atree.Modules is
       elsif Nkind (E) in N_Entity then
          declare
             Name : constant String :=
-              Full_Name (E) &
-            (if Entity_In_Ext_Axioms (E) then ""
-             else To_String (WNE_Axiom_Suffix));
+              Full_Name (E) & To_String (WNE_Axiom_Suffix);
             M : constant W_Module_Id :=
               New_Module
                 (Ada_Node => E,

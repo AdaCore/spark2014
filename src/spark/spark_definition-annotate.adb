@@ -1148,7 +1148,10 @@ package body SPARK_Definition.Annotate is
       --  Check the name and number of arguments
 
       if Name = "external_axiomatization" then
-         Check_Argument_Number (Name, 2, Ok);
+         Error_Msg_N ("?External Axiomatizations are not supported anymore, "
+                      & "ignored",
+                      Prag);
+         return;
 
       elsif Name = "init_by_proof"
         or else Name = "inline_for_proof"

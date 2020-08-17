@@ -31,13 +31,11 @@ with Flow_Utility;
 with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
 with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
-with Gnat2Why.External_Axioms;   use Gnat2Why.External_Axioms;
 with Lib;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Definition.Annotate;
-with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with String_Utils;               use String_Utils;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Atree.Modules;          use Why.Atree.Modules;
@@ -459,8 +457,6 @@ package body Gnat2Why.Util is
       Seen : Symbol_Set;
       Plan : Why_Node_Lists.List;
 
-      External_Axioms_Found : exception;
-
       procedure Recurse (Th : W_Theory_Declaration_Id);
 
       -------------
@@ -480,9 +476,6 @@ package body Gnat2Why.Util is
                M : constant W_Module_Id :=
                  Get_Module (W_Include_Declaration_Id (Incl));
             begin
-               if Is_External_Axiom_Module (M) then
-                  raise External_Axioms_Found;
-               end if;
                if Get_File (M) = No_Symbol then
                   Recurse (Find_Decl (Get_Name (M)));
                end if;
@@ -498,9 +491,6 @@ package body Gnat2Why.Util is
          Recurse (+Th);
       end loop;
       return Plan;
-   exception
-      when External_Axioms_Found =>
-         return Why_Node_Lists.Empty_List;
    end Build_Printing_Plan;
 
    ------------------
@@ -1356,11 +1346,7 @@ package body Gnat2Why.Util is
 
         --  Functions from predefined units should be safe
 
-        and then not Lib.In_Predefined_Unit (E)
-
-        --  No axioms are generated for functions with external axiomatizations
-
-        and then not Entity_In_Ext_Axioms (E);
+        and then not Lib.In_Predefined_Unit (E);
    end Use_Guard_For_Function;
 
    -----------------------------

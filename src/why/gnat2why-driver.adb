@@ -56,7 +56,6 @@ with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;
-with Gnat2Why.External_Axioms;        use Gnat2Why.External_Axioms;
 with Gnat2Why.Subprograms;            use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                 use Gnat2Why.Tables;
 with Gnat2Why.Types;                  use Gnat2Why.Types;
@@ -79,7 +78,6 @@ with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Register;                  use SPARK_Register;
 with SPARK_Rewrite;                   use SPARK_Rewrite;
 with SPARK_Util;                      use SPARK_Util;
-with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Hardcoded;            use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
@@ -442,9 +440,7 @@ package body Gnat2Why.Driver is
             end if;
 
          when E_Package =>
-            if not Entity_In_Ext_Axioms (E) then
-               Generate_VCs_For_Package_Elaboration (WF_Main, E);
-            end if;
+            Generate_VCs_For_Package_Elaboration (WF_Main, E);
 
          when Type_Kind =>
             if Entity_Spec_In_SPARK (Enclosing_Unit (E))
@@ -880,13 +876,6 @@ package body Gnat2Why.Driver is
 
        and then not Subprogram_Is_Ignored_For_Proof (E)
 
-       --  Subprograms entities of actual parameter of generic packages with
-       --  external axioms are only needed for check of runtime errors.
-
-       and then not (Ekind (E) in E_Function | E_Procedure
-                     and then Is_Generic_Actual_Subprogram (E)
-                     and then Entity_In_Ext_Axioms (E))
-
        --  Ignore simple shifts and rotates
 
        and then not Is_Simple_Shift_Or_Rotate (E)
@@ -902,29 +891,9 @@ package body Gnat2Why.Driver is
    procedure Print_GNAT_Json_File (Filename : String) is
       Modules    : constant Why_Node_Lists.List := Build_Printing_Plan;
       Json_File  : constant JSON_Value := Create_Object;
-      Json_Decls : JSON_Value;
+      Json_Decls : constant JSON_Value :=
+        Why_Node_Lists_List_To_Json (Modules);
    begin
-
-      if Modules.Is_Empty then
-         --  Construct Json from theories
-         Json_Decls := Create (Empty_Array);
-         for WF in W_Section_Id loop
-            --  If there was a procedure
-            --    GNATCOLL.JSON.Append (Arr : in out JSON_Array;
-            --                          Arr1 : JSON_Array);
-            --  we could just do
-            --    Append (Json, Why_Node_Lists_List_To_Json
-            --                    (Why_Sections (WF).Theories));
-            --  but helas!
-            for WN_Id of Why_Sections (WF).Theories loop
-               Append (Json_Decls, Why_Node_To_Json (Get_Node (WN_Id)));
-            end loop;
-         end loop;
-      else
-         --  Construct Json from printing plan
-         Json_Decls := Why_Node_Lists_List_To_Json (Modules);
-      end if;
-
       Set_Field (Json_File, "theory_declarations", Json_Decls);
 
       --  Output to file
@@ -1270,20 +1239,12 @@ package body Gnat2Why.Driver is
                Translate_Subprogram_Spec (File, E);
             end if;
 
-         --  Given to the handler for packages with an associated theory ???
-
-         --  Ordinary packages are never referenced by other entities, so they
-         --  don't need to be introduced like subprograms or objects. Only
-         --  packages with external axiomatization needs some special work.
-
-         when E_Package =>
-            if Entity_In_Ext_Axioms (E) then
-               Translate_Package_With_External_Axioms (E);
-            end if;
-
          when E_Loop =>
             Translate_Loop_Entity (File, E);
             Generate_Empty_Axiom_Theory (File, E);
+
+         when E_Package =>
+            null;
 
          when others =>
             raise Program_Error;

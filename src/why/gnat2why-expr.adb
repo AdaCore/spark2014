@@ -59,7 +59,6 @@ with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
-with SPARK_Util.External_Axioms;     use SPARK_Util.External_Axioms;
 with SPARK_Util.Hardcoded;           use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Stand;                          use Stand;
@@ -17445,7 +17444,6 @@ package body Gnat2Why.Expr is
 
       elsif Debug.Debug_Flag_Underscore_F
         and then Domain in EW_Pred | EW_Term
-        and then not Entity_In_Ext_Axioms (Subp)
       then
          declare
             Has_Explicit_Contracts : constant Boolean :=
@@ -22252,7 +22250,6 @@ package body Gnat2Why.Expr is
    begin
       return (Selector /= Dispatch and then Has_Precondition)
         or else Has_Classwide_Or_Inherited_Precondition
-        or else Entity_In_Ext_Axioms (E)
 
         --  E is an error-signaling procedure called outside another
         --  error-signaling procedure (this is what the No_Return variant

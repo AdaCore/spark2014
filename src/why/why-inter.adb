@@ -26,30 +26,29 @@
 with Ada.Containers.Hashed_Maps;
 with Flow_Generated_Globals.Phase_2;
 with Flow_Utility;
-with Gnat2Why.Tables;            use Gnat2Why.Tables;
-with Namet;                      use Namet;
-with Snames;                     use Snames;
-with SPARK_Definition;           use SPARK_Definition;
-with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
-with SPARK_Util;                 use SPARK_Util;
-with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
-with SPARK_Xrefs;                use SPARK_Xrefs;
-with Stand;                      use Stand;
-with String_Utils;               use String_Utils;
+with Gnat2Why.Tables;        use Gnat2Why.Tables;
+with Namet;                  use Namet;
+with Snames;                 use Snames;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
+with SPARK_Xrefs;            use SPARK_Xrefs;
+with Stand;                  use Stand;
+with String_Utils;           use String_Utils;
 with Uintp;
-with Why.Atree.Accessors;        use Why.Atree.Accessors;
-with Why.Atree.Builders;         use Why.Atree.Builders;
-with Why.Atree.Modules;          use Why.Atree.Modules;
-with Why.Atree.Mutators;         use Why.Atree.Mutators;
-with Why.Atree.Tables;           use Why.Atree.Tables;
-with Why.Atree.Traversal;        use Why.Atree.Traversal;
-with Why.Conversions;            use Why.Conversions;
-with Why.Gen.Arrays;             use Why.Gen.Arrays;
-with Why.Gen.Expr;               use Why.Gen.Expr;
-with Why.Gen.Names;              use Why.Gen.Names;
-with Why.Gen.Pointers;           use Why.Gen.Pointers;
-with Why.Gen.Scalars;            use Why.Gen.Scalars;
-with Why.Images;                 use Why.Images;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
+with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Atree.Mutators;     use Why.Atree.Mutators;
+with Why.Atree.Tables;       use Why.Atree.Tables;
+with Why.Atree.Traversal;    use Why.Atree.Traversal;
+with Why.Conversions;        use Why.Conversions;
+with Why.Gen.Arrays;         use Why.Gen.Arrays;
+with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Gen.Names;          use Why.Gen.Names;
+with Why.Gen.Pointers;       use Why.Gen.Pointers;
+with Why.Gen.Scalars;        use Why.Gen.Scalars;
+with Why.Images;             use Why.Images;
 
 ---------------
 -- Why.Inter --
@@ -334,9 +333,7 @@ package body Why.Inter is
 
       Add_With_Clause (P, Module, Use_Kind);
 
-      if With_Completion
-        and then (not Entity_In_Ext_Axioms (E) or else Is_Type (E))
-      then
+      if With_Completion then
          Add_With_Clause (P, E_Axiom_Module (E), Use_Kind);
       end if;
    end Add_Use_For_Entity;
@@ -519,33 +516,29 @@ package body Why.Inter is
          use Flow_Generated_Globals.Phase_2;
       begin
          for N of S loop
-            if Nkind (N) not in N_Entity
-              or else not Entity_In_Ext_Axioms (N)
+            Add_With_Clause (P,
+                             E_Axiom_Module (N),
+                             EW_Clone_Default);
+
+            --  Add a with clause for the theory containing the post axiom
+            --  of a recursive function. We do not include it when proving
+            --  the subprogram itself or mutually recursive subprograms as
+            --  it would be unsound. We do not include it either when
+            --  proving a package elaboration, or VCs for a type declaration
+            --  as it is not clear yet how we can decide whether those are
+            --  mutually recursive with a function or not.
+
+            if Present (Defined_Entity)
+              and then Is_Subprogram_Or_Entry (Defined_Entity)
+              and then Nkind (N) in N_Entity
+              and then Is_Subprogram_Or_Entry (N)
+              and then Is_Recursive (N)
+              and then Has_Post_Axiom (N)
+              and then not Mutually_Recursive (Defined_Entity, N)
             then
                Add_With_Clause (P,
-                                E_Axiom_Module (N),
+                                E_Rec_Axiom_Module (N),
                                 EW_Clone_Default);
-
-               --  Add a with clause for the theory containing the post axiom
-               --  of a recursive function. We do not include it when proving
-               --  the subprogram itself or mutually recursive subprograms as
-               --  it would be unsound. We do not include it either when
-               --  proving a package elaboration, or VCs for a type declaration
-               --  as it is not clear yet how we can decide whether those are
-               --  mutually recursive with a function or not.
-
-               if Present (Defined_Entity)
-                 and then Is_Subprogram_Or_Entry (Defined_Entity)
-                 and then Nkind (N) in N_Entity
-                 and then Is_Subprogram_Or_Entry (N)
-                 and then Is_Recursive (N)
-                 and then Has_Post_Axiom (N)
-                 and then not Mutually_Recursive (Defined_Entity, N)
-               then
-                  Add_With_Clause (P,
-                                   E_Rec_Axiom_Module (N),
-                                   EW_Clone_Default);
-               end if;
             end if;
          end loop;
       end Add_Axiom_Imports;
@@ -702,11 +695,6 @@ package body Why.Inter is
 
             if not Is_Mutable_In_Why (E) then
                return WF_Pure;
-
-            elsif Ekind (E) = E_Discriminant
-              and then Is_Ext_Axioms_Discriminant (E)
-            then
-               return WF_Context;
 
             else
                return WF_Variables;

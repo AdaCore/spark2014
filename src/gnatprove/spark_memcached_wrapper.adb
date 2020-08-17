@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
@@ -62,16 +61,6 @@ is
    --  @param Fn the file to be hashed
    --  Compute a hash of the file in argument
 
-   procedure Hash_Proof_Dir (C : in out GNAT.SHA1.Context; Dir : String);
-   --  @param C the hash context to be updated
-   --  @param Dir the directory to be hashed
-   --  Compute a hash which represents the .mlw files in the proof dir. This
-   --  takes into account changes to external axiomatization. Note that this
-   --  and similar cases (changes to external axiomatization and changes
-   --  to manual proofs) are also not taken into account in other parts of
-   --  gnatprove, so it is a bit pointless to do that here. But it helps for
-   --  the SPARK testsuite.
-
    function Compute_Key return GNAT.SHA1.Message_Digest;
    --  @return the key to be used for this invocation of the wrapper in the
    --    memcached table
@@ -103,9 +92,6 @@ is
               or else Arg = "-f"
             then
                I := I + 1;
-            elsif Arg = "--proof-dir" then
-               Hash_Proof_Dir (C, Ada.Command_Line.Argument (I + 1));
-               I := I + 2;
             elsif Arg = "--why3-conf" then
                Hash_File (C, Ada.Command_Line.Argument (I + 1));
                I := I + 2;
@@ -178,26 +164,6 @@ is
    exception
       when Constraint_Error => Report_Error (Wrong_Port_Msg);
    end Init_Client;
-
-   --------------------
-   -- Hash_Proof_Dir --
-   --------------------
-
-   procedure Hash_Proof_Dir (C : in out GNAT.SHA1.Context; Dir : String) is
-      use Ada.Directories;
-      Search : Search_Type;
-   begin
-      Start_Search (Search, Dir, "*.mlw",
-                    (Ordinary_File => True, others => False));
-      while More_Entries (Search) loop
-         declare
-            Ent : Directory_Entry_Type;
-         begin
-            Get_Next_Entry (Search, Ent);
-            Hash_File (C, Full_Name (Ent));
-         end;
-      end loop;
-   end Hash_Proof_Dir;
 
    ------------------
    -- Report_Error --

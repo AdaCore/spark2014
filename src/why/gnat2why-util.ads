@@ -605,7 +605,5 @@ package Gnat2Why.Util is
    function Build_Printing_Plan return Why_Node_Lists.List;
    --  Return a list of Theory Declarations which contains all theories of the
    --  WF_Main section and all their dependencies, topologically sorted.
-   --  Returns empty if such a list cannot be constructed (e.g. in the presence
-   --  of external axioms modules).
 
 end Gnat2Why.Util;

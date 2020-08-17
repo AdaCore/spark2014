@@ -24,14 +24,12 @@
 ------------------------------------------------------------------------------
 
 with Common_Iterators;                   use Common_Iterators;
-with Gnat2Why.External_Axioms;           use Gnat2Why.External_Axioms;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
 with SPARK_Definition;                   use SPARK_Definition;
-with SPARK_Util.External_Axioms;         use SPARK_Util.External_Axioms;
 
 package body Gnat2Why.Tables is
 
@@ -691,11 +689,6 @@ package body Gnat2Why.Tables is
          else
             Init_Component_Info (E);
          end if;
-      elsif Ekind (E) = E_Package
-        and then Entity_In_Ext_Axioms (E)
-        and then Entity_In_SPARK (E)
-      then
-         Process_External_Entities (E, Store_Information_For_Entity'Access);
       end if;
    end Store_Information_For_Entity;
 

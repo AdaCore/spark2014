@@ -12,6 +12,7 @@ a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at formal_list.ads:8
 formal_list.ads:15:30: info: range check proved (CVC4: 1 VC)
 formal_list.ads:19:30: info: range check proved (CVC4: 1 VC)
+informal_list.ads:5:04: warning: External Axiomatizations are not supported anymore, ignored
 test.adb:4:17: info: initialization of "A" proved
 test.adb:5:17: info: initialization of "B" proved
 test.adb:6:17: medium: "C" is not set in "Test"

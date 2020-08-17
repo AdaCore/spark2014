@@ -25,7 +25,6 @@
 
 with Aspects;
 with Einfo;      use Einfo;
-with Exp_Util;
 with Sem_Aux;
 with SPARK_Util;
 
@@ -110,9 +109,6 @@ package SPARK_Atree.Entities is
    E_Void                        : Entity_Kind renames Einfo.E_Void;
 
    function "=" (L, R : Entity_Kind) return Boolean renames Einfo."=";
-
-   function Containing_Package_With_Ext_Axioms (E : Entity_Id) return Entity_Id
-    renames Exp_Util.Containing_Package_With_Ext_Axioms;
 
    function Ekind (E : Entity_Id) return Entity_Kind renames Atree.Ekind;
 
