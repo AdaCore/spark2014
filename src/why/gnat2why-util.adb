@@ -50,10 +50,7 @@ package body Gnat2Why.Util is
 
    Why3_Keywords : String_Utils.String_Sets.Set;
 
-   procedure Make_Empty_Why_Section
-     (Kind : W_Section_Id; Section : out Why_Section)
-     with Post => (Section.Cur_Theory = Why.Types.Why_Empty);
-   --  Return an empty Why_Section with the given kind
+   procedure Make_Empty_Why_Section (Section : out Why_Section);
 
    --------------------
    -- Ada_Ent_To_Why --
@@ -487,7 +484,7 @@ package body Gnat2Why.Util is
    --  Start of processing for Build_Printing_Plan
 
    begin
-      for Th of Why_Sections (WF_Main).Theories loop
+      for Th of Why_Sections (WF_Main) loop
          Recurse (+Th);
       end loop;
       return Plan;
@@ -846,7 +843,7 @@ package body Gnat2Why.Util is
    procedure Init_Why_Sections is
    begin
       for Kind in W_Section_Id loop
-         Make_Empty_Why_Section (Kind => Kind, Section => Why_Sections (Kind));
+         Make_Empty_Why_Section (Section => Why_Sections (Kind));
       end loop;
    end Init_Why_Sections;
 
@@ -1056,11 +1053,9 @@ package body Gnat2Why.Util is
    ----------------------------
 
    procedure Make_Empty_Why_Section
-     (Kind : W_Section_Id; Section : out Why_Section) is
+     (Section : out Why_Section) is
    begin
-      Section.Kind := Kind;
-      Section.Theories := Why_Node_Lists.Empty_List;
-      Section.Cur_Theory := Why.Types.Why_Empty;
+      Section := Why_Node_Lists.Empty_List;
    end Make_Empty_Why_Section;
 
    -----------------------------

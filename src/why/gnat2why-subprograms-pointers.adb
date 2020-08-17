@@ -71,7 +71,6 @@ package body Gnat2Why.Subprograms.Pointers is
 
    procedure Declare_Theory_For_Access_If_Needed
      (Expr     : Entity_Id;
-      Params   : Transformation_Params;
       Logic_Id : out W_Identifier_Id)
    with Pre => Nkind (Expr) = N_Attribute_Reference
      and then Nkind (Prefix (Expr)) in N_Has_Entity
@@ -451,8 +450,7 @@ package body Gnat2Why.Subprograms.Pointers is
    -- Complete_Access_To_Subprogram_Type --
    ----------------------------------------
 
-   procedure Complete_Access_To_Subprogram_Type
-     (P : W_Section_Id; E : Entity_Id)
+   procedure Complete_Access_To_Subprogram_Type (Th : Theory_UC; E : Entity_Id)
    is
       Spec_Binders       : constant Binder_Array :=
         Binder_Array'(1 => Subp_Binder);
@@ -478,7 +476,7 @@ package body Gnat2Why.Subprograms.Pointers is
       --  Generate a program function for calling the designated subprogram
 
       Generate_Subprogram_Program_Fun
-        (File                   => P,
+        (Th                     => Th,
          E                      => Profile_Or_Wrapper,
          Prog_Id                => To_Local (E_Symb (E, WNE_Pointer_Call)),
          Spec_Binders           => Spec_Binders,
@@ -490,7 +488,7 @@ package body Gnat2Why.Subprograms.Pointers is
       --  predicate of the type.
 
       Generate_Axiom_For_Post
-        (File                   => P,
+        (Th                     => Th,
          E                      => Profile_Or_Wrapper,
          Spec_Binders           => Spec_Binders,
          Spec_Guard             => +New_Call
@@ -510,8 +508,7 @@ package body Gnat2Why.Subprograms.Pointers is
    -- Create_Theory_For_Profile_If_Needed --
    -----------------------------------------
 
-   procedure Create_Theory_For_Profile_If_Needed
-     (P : W_Section_Id; E : Entity_Id)
+   procedure Create_Theory_For_Profile_If_Needed (E : Entity_Id)
    is
       Profile : constant Entity_Id := Directly_Designated_Type (E);
       Name    : constant Symbol := Get_Profile_Theory_Name (Profile);
@@ -519,21 +516,23 @@ package body Gnat2Why.Subprograms.Pointers is
         (File => No_Symbol,
          Name => Img (Name));
 
+      Th : Theory_UC;
    begin
       if M_Subprogram_Profiles.Contains (Key => Name) then
          return;
       end if;
 
-      Open_Theory
-        (P, Module,
-         Comment =>
-           "Module for possibly declaring a call function associated to"
-         & "function profiles designated by type "
-         & """" & Get_Name_String (Chars (E)) & """"
-         & (if Sloc (E) > 0 then
-              " defined at " & Build_Location_String (Sloc (E))
-           else "")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context, Module,
+           Comment =>
+             "Module for possibly declaring a call function associated to"
+           & "function profiles designated by type "
+           & """" & Get_Name_String (Chars (E)) & """"
+           & (if Sloc (E) > 0 then
+                " defined at " & Build_Location_String (Sloc (E))
+             else "")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  For functions, declare a __call logic function and a pred_call
       --  predicate which can be used for axiom guards.
@@ -559,7 +558,7 @@ package body Gnat2Why.Subprograms.Pointers is
                                                 Module      => Module));
 
             Declare_Logic_Functions
-              (File         => P,
+              (Th           => Th,
                E            => Profile,
                Spec_Binders => Binder_Array'(1 => Subp_Binder));
          end;
@@ -575,28 +574,27 @@ package body Gnat2Why.Subprograms.Pointers is
                                              Module      => Module));
       end if;
 
-      Close_Theory (P, Kind => Definition_Theory);
+      Close_Theory (Th, Kind => Definition_Theory);
    end Create_Theory_For_Profile_If_Needed;
 
    ---------------------------------------
    -- Declare_Access_To_Subprogram_Type --
    ---------------------------------------
 
-   procedure Declare_Access_To_Subprogram_Type
-     (P : W_Section_Id; E : Entity_Id)
+   procedure Declare_Access_To_Subprogram_Type (Th : Theory_UC; E : Entity_Id)
    is
    begin
       --  Export the theory containing the pointer record definition.
 
-      Add_With_Clause (P, M_Subprogram_Access.Module, EW_Export);
+      Add_With_Clause (Th, M_Subprogram_Access.Module, EW_Export);
 
       --  Rename the representative record type as expected.
 
-      Emit (P, New_Type_Decl (Name  => To_Why_Type (E, Local => True),
-                              Alias => +New_Named_Type
-                                (Name => To_Name (WNE_Rec_Rep))));
+      Emit (Th, New_Type_Decl (Name  => To_Why_Type (E, Local => True),
+                               Alias => +New_Named_Type
+                                 (Name => To_Name (WNE_Rec_Rep))));
       Emit
-        (P,
+        (Th,
          Why.Atree.Builders.New_Function_Decl
            (Domain      => EW_Pterm,
             Name        => To_Local (E_Symb (E, WNE_Dummy)),
@@ -615,7 +613,7 @@ package body Gnat2Why.Subprograms.Pointers is
       --  procedures.
 
       Emit
-        (P,
+        (Th,
          Why.Gen.Binders.New_Function_Decl
            (Domain   => EW_Pred,
             Name     => To_Local (E_Symb (E, WNE_Range_Pred)),
@@ -668,7 +666,6 @@ package body Gnat2Why.Subprograms.Pointers is
 
    procedure Declare_Theory_For_Access_If_Needed
      (Expr     : Entity_Id;
-      Params   : Transformation_Params;
       Logic_Id : out W_Identifier_Id)
    is
       Subp          : constant Entity_Id :=
@@ -683,15 +680,9 @@ package body Gnat2Why.Subprograms.Pointers is
 
       --  Select files for the declaration and axiom
 
-      Decl_File     : constant W_Section_Id := Dispatch_Entity (Expr);
-      Compl_File    : constant W_Section_Id :=
-        Dispatch_Entity_Completion (Expr);
-
-      --  use this variable to temporarily store current theory
-      Save_Theory   : W_Theory_Declaration_Id;
-
-      Position      : Ada_To_Why_Ident.Cursor;
-      Inserted      : Boolean;
+      Position : Ada_To_Why_Ident.Cursor;
+      Inserted : Boolean;
+      Th       : Theory_UC;
 
    begin
       Logic_Id :=
@@ -729,22 +720,18 @@ package body Gnat2Why.Subprograms.Pointers is
 
       --  Generate the logic constant declaration
 
-      if Params.File = Decl_File then
-         Save_Theory := Why_Sections (Decl_File).Cur_Theory;
-         Why_Sections (Decl_File).Cur_Theory := Why_Empty;
-      end if;
+      Th :=
+        Open_Theory
+          (WF_Context, E_Module (Expr),
+           Comment =>
+             "Module for declaring an abstract constant for the subprogram"
+           & " Access attribute at "
+           & (if Sloc (Expr) > 0 then
+                Build_Location_String (Sloc (Expr))
+             else "<no location>")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Open_Theory
-        (Decl_File, E_Module (Expr),
-         Comment =>
-           "Module for declaring an abstract constant for the subprogram"
-         & " Access attribute at "
-         & (if Sloc (Expr) > 0 then
-              Build_Location_String (Sloc (Expr))
-           else "<no location>")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Emit (Decl_File,
+      Emit (Th,
             New_Function_Decl
               (Domain      => EW_Pterm,
                Name        => To_Local (Logic_Id),
@@ -752,28 +739,20 @@ package body Gnat2Why.Subprograms.Pointers is
                Location    => No_Location,
                Return_Type => M_Subprogram_Access.Subprogram_Type));
 
-      Close_Theory (Decl_File,
+      Close_Theory (Th,
                     Kind           => Definition_Theory,
                     Defined_Entity => Expr);
 
-      if Params.File = Decl_File then
-         Why_Sections (Decl_File).Cur_Theory := Save_Theory;
-      end if;
-
-      if Params.File = Compl_File then
-         Save_Theory := Why_Sections (Compl_File).Cur_Theory;
-         Why_Sections (Compl_File).Cur_Theory := Why_Empty;
-      end if;
-
-      Open_Theory
-        (Compl_File, E_Axiom_Module (Expr),
-         Comment =>
-           "Module for defining the value of the subprogram Access"
-         & " attribute at "
-         & (if Sloc (Expr) > 0 then
-              Build_Location_String (Sloc (Expr))
-           else "<no location>")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context, E_Axiom_Module (Expr),
+           Comment =>
+             "Module for defining the value of the subprogram Access"
+           & " attribute at "
+           & (if Sloc (Expr) > 0 then
+                Build_Location_String (Sloc (Expr))
+             else "<no location>")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  For functions, generate the axiom in a completion module. It states
       --  that __call and pred_call match the specific symbols for the Subp.
@@ -820,12 +799,12 @@ package body Gnat2Why.Subprograms.Pointers is
                Op    => EW_Equivalent);
          begin
 
-            Emit (Compl_File,
+            Emit (Th,
                   New_Guarded_Axiom (Name     => NID (Def_Axiom),
                                      Binders  => To_Binder_Array (Binders),
                                      Def      => Call_Eq));
 
-            Emit (Compl_File,
+            Emit (Th,
                   New_Guarded_Axiom
                     (Name     => NID
                        (Def_Axiom & "__" & Function_Guard),
@@ -840,13 +819,10 @@ package body Gnat2Why.Subprograms.Pointers is
          end;
       end if;
 
-      Close_Theory (Compl_File,
+      Close_Theory (Th,
                     Kind           => Axiom_Theory,
                     Defined_Entity => Expr);
 
-      if Params.File = Compl_File then
-         Why_Sections (Compl_File).Cur_Theory := Save_Theory;
-      end if;
    end Declare_Theory_For_Access_If_Needed;
 
    -----------------------------------------
@@ -914,7 +890,7 @@ package body Gnat2Why.Subprograms.Pointers is
       --  Declare a logic symbol for the subprogram object designated by Expr
       --  if needed.
 
-      Declare_Theory_For_Access_If_Needed (Expr, Params, Logic_Id);
+      Declare_Theory_For_Access_If_Needed (Expr, Logic_Id);
 
       --  Construct a pointer value from the subprogram logic object
 

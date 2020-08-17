@@ -43,12 +43,19 @@ with Why.Types;           use Why.Types;
 
 package body Why.Gen.Decl is
 
+   procedure Emit
+     (Theory : W_Theory_Declaration_Id;
+      Decl   : W_Declaration_Id);
+   --  Append Decl to the list of declarations from Theory
+   --  @param Theory the theory where the declaration will be emitted
+   --  @param Decl declaration to emit
+
    procedure Emit_Record_Projection_Declaration
-     (Section       : W_Section_Id;
+     (Th            : Theory_UC;
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
       Labels        : Symbol_Sets.Set)
-   with Pre => Field_Id /= Why_Empty;
+     with Pre => Field_Id /= Why_Empty;
    --  Emit declaration of a projection for a Why3 record type. The projection
    --  projects values of the record type to given field of this type.
    --  The declaration consists of a declaration of a function that returns a
@@ -80,27 +87,26 @@ package body Why.Gen.Decl is
    ----------
 
    procedure Emit
-     (S    : W_Section_Id;
+     (Th   : Theory_UC;
       Decl : W_Declaration_Id) is
    begin
-      Emit (Why_Sections (S).Cur_Theory, Decl);
+      Emit (Th.Th, Decl);
    end Emit;
 
    ---------------------------
    -- Emit_Projection_Metas --
    ---------------------------
 
-   procedure Emit_Projection_Metas
-     (Section : W_Section_Id; Projection_Fun : String) is
+   procedure Emit_Projection_Metas (Th : Theory_UC; Projection_Fun : String) is
    begin
       --  mark function as projection function
-      Emit (Section,
+      Emit (Th,
             New_Meta_Declaration (Name      => NID (Model_Proj_Meta),
                                   Parameter => NID ("function " &
                                       Projection_Fun)));
 
       --  disable inlining of projection functions
-      Emit (Section,
+      Emit (Th,
             New_Meta_Declaration (Name      => NID ("inline:no"),
                                   Parameter => NID ("function " &
                                       Projection_Fun)));
@@ -111,21 +117,21 @@ package body Why.Gen.Decl is
    -----------------------------
 
    procedure Emit_Record_Declaration
-     (Section      : W_Section_Id;
+     (Th           : Theory_UC;
       Name         : W_Name_Id;
       Binders      : Why.Gen.Binders.Binder_Array;
       SPARK_Record : Boolean := False)
    is
    begin
       --  Emit declaration of the record
-      Emit (Section,
+      Emit (Th,
             Decl   => New_Record_Definition (Name     => Name,
                                              Binders  => Binders));
 
       --  For each record field, emit projection from the record to the field
       for Binder in Binders'Range loop
          Emit_Record_Projection_Declaration
-           (Section       => Section,
+           (Th            => Th,
             Param_Ty_Name => Name,
             Field_Id      => Binders (Binder).B_Name,
             Labels        =>
@@ -158,7 +164,7 @@ package body Why.Gen.Decl is
    ----------------------------------------
 
    procedure Emit_Record_Projection_Declaration
-     (Section       : W_Section_Id;
+     (Th            : Theory_UC;
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
       Labels        : Symbol_Sets.Set)
@@ -206,7 +212,7 @@ package body Why.Gen.Decl is
       end if;
 
       Emit
-        (Section,
+        (Th,
          Why.Atree.Builders.New_Function_Decl
            (Domain      => EW_Term,
             Name        => Why.Gen.Names.New_Identifier (
@@ -219,7 +225,7 @@ package body Why.Gen.Decl is
             Location    => No_Location,
             Def         => Field_Access));
 
-      Emit_Projection_Metas (Section, Proj_Fun_Name);
+      Emit_Projection_Metas (Th, Proj_Fun_Name);
    end Emit_Record_Projection_Declaration;
 
    ------------------------------
@@ -227,7 +233,7 @@ package body Why.Gen.Decl is
    ------------------------------
 
    procedure Emit_Ref_Type_Definition
-     (File : W_Section_Id;
+     (Th   : Theory_UC;
       Name : W_Name_Id)
    is
       Field_Typ : constant W_Type_Id := New_Type
@@ -235,7 +241,7 @@ package body Why.Gen.Decl is
          Name       => Name);
    begin
       Emit_Record_Declaration
-        (Section => File,
+        (Th => Th,
          Name    => Ref_Append (Name),
          Binders => (1 => (B_Name  => Content_Append (Name, Field_Typ),
                            Mutable => True,

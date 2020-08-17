@@ -33,9 +33,7 @@ with Why.Sinfo;            use Why.Sinfo;
 
 package Why.Gen.Hardcoded is
 
-   procedure Emit_Hardcoded_Type_Declaration
-     (P : W_Section_Id;
-      E : Entity_Id)
+   procedure Emit_Hardcoded_Type_Declaration (Th : Theory_UC; E : Entity_Id)
    with
      Pre => Is_Type (E) and then Is_Hardcoded_Entity (E);
    --  Emit declaration of a Why3 type whose representative type is

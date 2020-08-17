@@ -36,22 +36,19 @@ with Why.Sinfo;              use Why.Sinfo;
 package Why.Gen.Pointers is
    --  This package encapsulates the encoding of access types into Why.
 
-   procedure Declare_Rep_Pointer_Compl_If_Needed
-     (P : W_Section_Id; E : Entity_Id)
+   procedure Declare_Rep_Pointer_Compl_If_Needed (E : Entity_Id)
    with
      Pre => Is_Access_Type (E) and then Designates_Incomplete_Type (E);
    --  Declare a new module for completion of access types designating
    --  incomplete types.
 
-   procedure Declare_Ada_Pointer (P : W_Section_Id; E : Entity_Id)
+   procedure Declare_Ada_Pointer (Th : Theory_UC; E : Entity_Id)
    with Pre => Is_Access_Type (E);
    --  Emit all necessary Why3 declarations to support Ada pointers.
    --  @param P the Why section to insert the declaration
    --  @param E the type entity to translate
 
-   procedure Create_Rep_Pointer_Theory_If_Needed
-     (P : W_Section_Id;
-      E : Entity_Id);
+   procedure Create_Rep_Pointer_Theory_If_Needed (E : Entity_Id);
    --  Similar to Create_Rep_Record_Theory_If_Needed but handles objects of
    --  access type. It declares a pointer type as a why record with three
    --  fields: pointer_address, is_null_pointer, and pointer_address.
@@ -177,13 +174,13 @@ package Why.Gen.Pointers is
    ---------------
 
    procedure Declare_Pledge_Function
-     (File    : W_Section_Id;
+     (File    : Theory_UC;
       E       : Entity_Id;
       Binders : Binder_Array);
    --  Clone the pledge module for E and emit a function returning the pledge
    --  for the result of a traversal function.
 
-   procedure Declare_Pledge_Ref (File : W_Section_Id; E : Entity_Id);
+   procedure Declare_Pledge_Ref (Th : Theory_UC; E : Entity_Id);
    --  Clone the pledge module for E and emit a global reference for the pledge
 
    function Get_Borrowed_Entity (E : Entity_Id) return Entity_Id;

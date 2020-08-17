@@ -38,8 +38,8 @@ package Why.Gen.Records is
    --  also includes records with variant parts.
 
    procedure Declare_Ada_Record
-     (P : W_Section_Id;
-      E : Entity_Id) with
+     (Th : Theory_UC;
+      E  : Entity_Id) with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
                          Private_Kind  | Concurrent_Kind;
    --  Emit all necessary Why3 declarations to support Ada records. This also
@@ -49,15 +49,13 @@ package Why.Gen.Records is
    --  @param E the type entity to translate
 
    procedure Declare_Init_Wrapper_For_Record
-     (P : W_Section_Id;
-      E : Entity_Id) with
+     (Th : Theory_UC;
+      E  : Entity_Id) with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
                          Private_Kind
      and then Might_Contain_Relaxed_Init (E);
 
-   procedure Create_Rep_Record_Theory_If_Needed
-     (P : W_Section_Id;
-      E : Entity_Id)
+   procedure Create_Rep_Record_Theory_If_Needed (E : Entity_Id)
    with
      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
                          Private_Kind  | Concurrent_Kind;

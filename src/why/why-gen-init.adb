@@ -169,11 +169,11 @@ package body Why.Gen.Init is
    -- Declare_Init_Wrapper --
    --------------------------
 
-   procedure Declare_Init_Wrapper (P : W_Section_Id; E : Entity_Id) is
+   procedure Declare_Init_Wrapper (Th : Theory_UC; E : Entity_Id) is
    begin
       if Is_Scalar_Type (E) then
          Declare_Simple_Wrapper_Type
-           (P          => P,
+           (Th          => Th,
             W_Nam      => To_Why_Type
               (E, Local => True, Relaxed_Init => True),
             Init_Val   => To_Local (E_Symb (E, WNE_Init_Value)),
@@ -181,9 +181,9 @@ package body Why.Gen.Init is
             Of_Wrapper => To_Local (E_Symb (E, WNE_Of_Wrapper)),
             To_Wrapper => To_Local (E_Symb (E, WNE_To_Wrapper)));
       elsif Is_Record_Type_In_Why (E) then
-         Declare_Init_Wrapper_For_Record (P, E);
+         Declare_Init_Wrapper_For_Record (Th, E);
       elsif Is_Array_Type (E) then
-         Declare_Init_Wrapper_For_Array (P, E);
+         Declare_Init_Wrapper_For_Array (Th, E);
       else
          raise Program_Error;
       end if;
@@ -194,7 +194,7 @@ package body Why.Gen.Init is
    ---------------------------------
 
    procedure Declare_Simple_Wrapper_Type
-     (P          : W_Section_Id;
+     (Th         : Theory_UC;
       W_Nam      : W_Name_Id;
       Init_Val   : W_Identifier_Id;
       Attr_Init  : W_Identifier_Id;
@@ -218,20 +218,20 @@ package body Why.Gen.Init is
       --  flag.
 
       Emit_Record_Declaration
-        (Section      => P,
-         Name         => W_Nam,
-         Binders      =>
+        (Th      => Th,
+         Name    => W_Nam,
+         Binders =>
            (1 =>
                 (B_Name => Init_Val,
                  others => <>),
             2 =>
-              (B_Name => Attr_Init,
-               others => <>)));
+              (B_Name   => Attr_Init,
+               others   => <>)));
 
       --  Declare conversion functions to and from the wrapper type
 
       Emit
-        (P,
+        (Th,
          New_Function_Decl
            (Domain      => EW_Pterm,
             Name        => Of_Wrapper,
@@ -243,7 +243,7 @@ package body Why.Gen.Init is
                                               Field => Init_Val,
                                               Typ   => Get_Typ (Init_Val))));
       Emit
-        (P,
+        (Th,
          New_Function_Decl
            (Domain      => EW_Pterm,
             Name        => To_Wrapper,

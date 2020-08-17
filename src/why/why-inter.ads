@@ -63,26 +63,28 @@ package Why.Inter is
    with Post => (for all N of Compute_Ada_Node_Set'Result => Present (N));
 
    procedure Close_Theory
-     (P              : W_Section_Id;
+     (Th             : in out Theory_UC;
       Kind           : Theory_Kind;
-      Defined_Entity : Entity_Id := Empty);
+      Defined_Entity : Entity_Id := Empty)
+   with Post => Th.Finished = True;
    --  Close the current theory by adding all necessary imports and adding
    --  the theory to the file. If not Empty, Defined_Entity is the entity
    --  defined by the current theory, which is used to complete the graph
    --  of dependencies for this entity.
 
-   procedure Open_Theory
+   function Open_Theory
      (P       : W_Section_Id;
       Module  : W_Module_Id;
       Comment : String)
-     with Pre => Why_Sections (P).Cur_Theory = Why_Empty;
+     return Theory_UC
+     with Post => Open_Theory'Result.Finished = False;
    --  Open a new theory in the file
 
    function Find_Decl (S : Symbol) return W_Theory_Declaration_Id;
    --  Return the Theory Declaration that defines the theory with the name S
 
    procedure Add_Use_For_Entity
-     (P               : W_Section_Id;
+     (Th              : Theory_UC;
       E               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True);
@@ -90,7 +92,7 @@ package Why.Inter is
    --  With_Completion is True if the completion theories for E should be
    --  added too.
 
-   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
+   procedure Add_With_Clause (T        : Theory_UC;
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
@@ -100,26 +102,6 @@ package Why.Inter is
    --  @param Use_Kind kind of Why3 use clause. It will be overrdidden to
    --     Import for Int_Module and RealInfix modules to allow infix notations.
    --  @param Th_Type theory type of Module
-
-   procedure Add_With_Clause (P        : W_Section_Id;
-                              Module   : W_Module_Id;
-                              Use_Kind : EW_Clone_Type;
-                              Th_Type  : EW_Theory_Type := EW_Module);
-   --  Add use clause for Module to the list of declarations from the current
-   --  current theory in P.
-   --  @param P section of the Why file where the use clause will be emitted
-   --  @param Module module that we want to use
-   --  @param Use_Kind kind of Why3 use clause. It will be overrdidden to
-   --     Import for Int_Module and RealInfix modules to allow infix notations.
-   --  @param Th_Type theory type of Modules
-
-   function Dispatch_Entity (E : Entity_Id) return W_Section_Id;
-   --  Given an Ada Entity, return the appropriate Why file to insert the
-   --  entity.
-
-   function Dispatch_Entity_Completion (E : Entity_Id) return W_Section_Id;
-   --  Given an Ada Entity, return the appropriate Why file to insert the
-   --  completion theory for the entity.
 
    function Goto_Exception_Name (E : Entity_Id) return W_Name_Id
    with Pre => Ekind (E) = E_Label;

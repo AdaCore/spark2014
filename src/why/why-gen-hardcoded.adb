@@ -48,10 +48,7 @@ package body Why.Gen.Hardcoded is
    -- Emit_Hardcoded_Type_Declaration --
    -------------------------------------
 
-   procedure Emit_Hardcoded_Type_Declaration
-     (P : W_Section_Id;
-      E : Entity_Id)
-   is
+   procedure Emit_Hardcoded_Type_Declaration (Th : Theory_UC; E : Entity_Id) is
       Alias : W_Type_Id;
    begin
 
@@ -64,7 +61,7 @@ package body Why.Gen.Hardcoded is
          when Big_Reals    => Alias := EW_Real_Type;
       end case;
 
-      Emit (P,
+      Emit (Th,
             New_Type_Decl
               (Name  => To_Name (WNE_Rec_Rep),
                Alias => Alias));

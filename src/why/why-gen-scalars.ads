@@ -36,23 +36,22 @@ package Why.Gen.Scalars is
    --  scalar types, and how this relates to ada__model.mlw
 
    procedure Create_Fixed_Point_Mult_Div_Theory_If_Needed
-     (Current_File : W_Section_Id;
-      Typ_Left     : Entity_Id;
+     (Typ_Left     : Entity_Id;
       Typ_Right    : Entity_Id;
       Typ_Result   : Entity_Id;
       Expr         : Node_Id)
    with Pre => Nkind (Expr) in N_Op_Multiply | N_Op_Divide | N_Type_Conversion;
 
    procedure Declare_Scalar_Type
-     (File : W_Section_Id;
-      E    : Entity_Id)
+     (Th : Theory_UC;
+      E  : Entity_Id)
      with Pre => Is_Scalar_Type (E);
    --  Populate the Theory with all the necessary declarations for Entity E
    --  (which must be a scalar type)
 
    procedure Define_Scalar_Rep_Proj
-     (File : W_Section_Id;
-      E    : Entity_Id)
+     (Th : Theory_UC;
+      E  : Entity_Id)
      with Pre => Is_Scalar_Type (E);
    --  Populate the theory associated to the theory of the scalar type E where
    --  the projection to and from the representation type are defined.

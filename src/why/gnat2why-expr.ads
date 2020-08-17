@@ -323,8 +323,7 @@ package Gnat2Why.Expr is
    --          of all its parts and ancestors over [Expr].
 
    function Get_Pure_Logic_Term_If_Possible
-     (File          : W_Section_Id;
-      Expr          : Node_Id;
+     (Expr          : Node_Id;
       Expected_Type : W_Type_Id) return W_Term_Id;
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.

@@ -25,7 +25,6 @@
 
 with Ada.Containers.Hashed_Maps;
 with Flow_Generated_Globals.Phase_2;
-with Flow_Utility;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Namet;                  use Namet;
 with Snames;                 use Snames;
@@ -68,14 +67,6 @@ package body Why.Inter is
    -- Local Subprograms --
    -----------------------
 
-   subtype N_Has_Theory is Node_Kind with
-     Static_Predicate => N_Has_Theory in N_String_Literal
-                                       | N_Aggregate
-                                       | N_Delta_Aggregate
-                                       | N_Attribute_Reference;
-   --  Subtype of nodes (instead of entities) which have an associated theory,
-   --  and should be treated specially.
-
    function Extract_Object_Name (Obj : String) return String;
    --  Extract the name after the last "__"; return Obj when the string does
    --  not contain "__". This is useful to determine the user name of an Ada
@@ -117,6 +108,11 @@ package body Why.Inter is
    --          name may be the same as another type's name to avoid name
    --          duplication. It is the case for split forms and static array
    --          types.
+
+   procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
+                              Module   : W_Module_Id;
+                              Use_Kind : EW_Clone_Type;
+                              Th_Type  : EW_Theory_Type := EW_Module);
 
    --------------------------
    -- Compute_Ada_Node_Set --
@@ -314,7 +310,7 @@ package body Why.Inter is
    ------------------------
 
    procedure Add_Use_For_Entity
-     (P               : W_Section_Id;
+     (Th              : Theory_UC;
       E               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True)
@@ -331,10 +327,10 @@ package body Why.Inter is
          return;
       end if;
 
-      Add_With_Clause (P, Module, Use_Kind);
+      Add_With_Clause (Th, Module, Use_Kind);
 
       if With_Completion then
-         Add_With_Clause (P, E_Axiom_Module (E), Use_Kind);
+         Add_With_Clause (Th, E_Axiom_Module (E), Use_Kind);
       end if;
    end Add_Use_For_Entity;
 
@@ -362,12 +358,12 @@ package body Why.Inter is
             Kind     => Th_Type));
    end Add_With_Clause;
 
-   procedure Add_With_Clause (P        : W_Section_Id;
+   procedure Add_With_Clause (T        : Theory_UC;
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module) is
    begin
-      Add_With_Clause (Why_Sections (P).Cur_Theory, Module, Use_Kind, Th_Type);
+      Add_With_Clause (T.Th, Module, Use_Kind, Th_Type);
    end Add_With_Clause;
 
    -------------------
@@ -467,12 +463,11 @@ package body Why.Inter is
    ------------------
 
    procedure Close_Theory
-     (P              : W_Section_Id;
+     (Th             : in out Theory_UC;
       Kind           : Theory_Kind;
       Defined_Entity : Entity_Id := Empty)
    is
-      S : constant Why_Node_Sets.Set :=
-        Compute_Module_Set (+(Why_Sections (P).Cur_Theory));
+      S : constant Why_Node_Sets.Set := Compute_Module_Set (+(Th.Th));
 
       function Is_Relevant_For_Imports
         (N : Node_Or_Entity_Id)
@@ -516,7 +511,7 @@ package body Why.Inter is
          use Flow_Generated_Globals.Phase_2;
       begin
          for N of S loop
-            Add_With_Clause (P,
+            Add_With_Clause (Th,
                              E_Axiom_Module (N),
                              EW_Clone_Default);
 
@@ -536,7 +531,7 @@ package body Why.Inter is
               and then Has_Post_Axiom (N)
               and then not Mutually_Recursive (Defined_Entity, N)
             then
-               Add_With_Clause (P,
+               Add_With_Clause (Th,
                                 E_Rec_Axiom_Module (N),
                                 EW_Clone_Default);
             end if;
@@ -552,7 +547,7 @@ package body Why.Inter is
       begin
          for M of S loop
             if +M /= Filter_Module then
-               Add_With_Clause (P, W_Module_Id (M), EW_Clone_Default);
+               Add_With_Clause (Th, W_Module_Id (M), EW_Clone_Default);
             end if;
          end loop;
       end Add_Definition_Imports;
@@ -589,8 +584,8 @@ package body Why.Inter is
    --  Start of processing for Close_Theory
 
    begin
-      Add_With_Clause (P, M_Main.Module, EW_Import);
-      Add_With_Clause (P, Int_Module, EW_Import);
+      Add_With_Clause (Th.Th, M_Main.Module, EW_Import);
+      Add_With_Clause (Th.Th, Int_Module, EW_Import);
 
       case Kind is
          --  case 1: a standalone theory with no imports
@@ -644,97 +639,14 @@ package body Why.Inter is
       end case;
 
       declare
-         Th : constant W_Theory_Declaration_Id := Why_Sections (P).Cur_Theory;
-         N  : constant Symbol := Get_Name (Th);
+         Th_Id : constant W_Theory_Declaration_Id := Th.Th;
+         N  : constant Symbol := Get_Name (Th_Id);
       begin
-         Why_Sections (P).Theories.Append (+Th);
-         Symbol_To_Theory_Map.Insert (N, Th);
+         Why_Sections (Th.Section).Append (+Th_Id);
+         Symbol_To_Theory_Map.Insert (N, Th_Id);
       end;
-      Why_Sections (P).Cur_Theory := Why_Empty;
+      Th.Finished := True;
    end Close_Theory;
-
-   ---------------------
-   -- Dispatch_Entity --
-   ---------------------
-
-   function Dispatch_Entity (E : Entity_Id) return W_Section_Id is
-   begin
-      --  Theories for nodes that are not entities may depend on constants
-      --  declared in modules for variables (bounds of arrays for example).
-      --  Since they can only be used in expressions, we only need them for
-      --  subprogram's contracts and VCs which are all stored in WF_Main.
-
-      if Nkind (E) in N_Has_Theory then
-         return WF_Context;
-      end if;
-
-      case Ekind (E) is
-         when Named_Kind  =>
-            return WF_Context;
-
-         when Entry_Kind
-            | E_Procedure
-         =>
-            return WF_Context;
-
-         --  Functions without read/write global effects are declared in the
-         --  "type" Why files instead of the "context" Why files, so that they
-         --  can be used as parameters of generics whose axiomatization in Why
-         --  is written manually (example: formal containers).
-
-         when E_Function =>
-            return
-              (if Flow_Utility.Has_Proof_Globals (E)
-               then WF_Context
-               else WF_Pure);
-
-         when Object_Kind =>
-
-            --  Constants are defined in type files. Their defining axiom, if
-            --  any, is defined as a completion in the type or context file.
-
-            if not Is_Mutable_In_Why (E) then
-               return WF_Pure;
-
-            else
-               return WF_Variables;
-            end if;
-
-         when Type_Kind =>
-            return WF_Pure;
-
-         when E_Package =>
-            return WF_Pure;
-
-         when E_Loop =>
-            return WF_Context;
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end Dispatch_Entity;
-
-   --------------------------------
-   -- Dispatch_Entity_Completion --
-   --------------------------------
-
-   function Dispatch_Entity_Completion (E : Entity_Id)
-                                        return W_Section_Id is
-   begin
-
-      --  Completion modules of types are only used by VC generation modules
-      --  and completion modules of subprograms. Other completion modules are
-      --  only used by VC generation modules.
-      --  Since they are generated after defining modules and before VC
-      --  generation modules, the completions of types will have all the
-      --  required definitions and they will be available when necessary.
-
-      if Nkind (E) in N_Entity and then Is_Type (E) then
-         return WF_Context;
-      else
-         return WF_Axioms;
-      end if;
-   end Dispatch_Entity_Completion;
 
    -------------
    -- Eq_Base --
@@ -1265,15 +1177,19 @@ package body Why.Inter is
    -- Open_Theory --
    -----------------
 
-   procedure Open_Theory
+   function Open_Theory
      (P       : W_Section_Id;
       Module  : W_Module_Id;
-      Comment : String) is
+      Comment : String)
+      return Theory_UC
+   is
    begin
-      Why_Sections (P).Cur_Theory :=
-        New_Theory_Declaration (Name    => Get_Name (Module),
-                                Kind    => EW_Module,
-                                Comment => NID (Comment));
+      return Theory_UC'(Th =>
+                          New_Theory_Declaration (Name    => Get_Name (Module),
+                                                  Kind    => EW_Module,
+                                                  Comment => NID (Comment)),
+                        Section => P,
+                        Finished => False);
    end Open_Theory;
 
    ---------------

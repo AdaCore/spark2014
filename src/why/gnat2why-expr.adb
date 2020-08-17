@@ -780,9 +780,7 @@ package body Gnat2Why.Expr is
    --  @return the translation of the expression contained in the invariant
    --          applied on Expr.
 
-   procedure Transform_String_Literal
-     (Params : Transformation_Params;
-      N      : Node_Id);
+   procedure Transform_String_Literal (N : Node_Id);
    --  Create an uninterpreted logic function with no parameters that returns a
    --  string value corresponding to the string literal.
 
@@ -6428,13 +6426,11 @@ package body Gnat2Why.Expr is
    -------------------------------------
 
    function Get_Pure_Logic_Term_If_Possible
-     (File          : W_Section_Id;
-      Expr          : Node_Id;
+     (Expr          : Node_Id;
       Expected_Type : W_Type_Id) return W_Term_Id
    is
       Params : constant Transformation_Params :=
-        (File        => File,
-         Phase       => Generate_Logic,
+        (Phase       => Generate_Logic,
          Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Policy  => As_Old);
@@ -10112,8 +10108,7 @@ package body Gnat2Why.Expr is
          --  Predicate used to define the aggregate/updated object
 
          Params_No_Ref : constant Transformation_Params :=
-                           (File        => Params.File,
-                            Phase       => Params.Phase,
+                           (Phase       => Params.Phase,
                             Gen_Marker  => GM_None,
                             Ref_Allowed => False,
                             Old_Policy  => Ignore);
@@ -10152,14 +10147,7 @@ package body Gnat2Why.Expr is
          Aggr_Temp     : constant W_Identifier_Id :=
            New_Temp_Identifier (Typ => Ret_Type);
 
-         --  Select files for the declaration and axiom
-
-         Decl_File     : constant W_Section_Id := Dispatch_Entity (Expr);
-         Compl_File    : constant W_Section_Id :=
-           Dispatch_Entity_Completion (Expr);
-
-         --  use this variable to temporarily store current theory
-         Save_Theory   : W_Theory_Declaration_Id;
+         Th   : Theory_UC;
 
       --  Start of processing for Generate_Logic_Function
 
@@ -10345,27 +10333,23 @@ package body Gnat2Why.Expr is
 
          --  Generate the logic function declaration
 
-         if Params.File = Decl_File then
-            Save_Theory := Why_Sections (Decl_File).Cur_Theory;
-            Why_Sections (Decl_File).Cur_Theory := Why_Empty;
-         end if;
+         Th :=
+           Open_Theory
+             (WF_Context, E_Module (Expr),
+              Comment =>
+                "Module for declaring an abstract function for the "
+              & (if Nkind (Expr) = N_Delta_Aggregate
+                then "delta aggregate"
+                elsif In_Delta_Aggregate
+                then "update attribute"
+                else "aggregate")
+              & " at "
+              & (if Sloc (Expr) > 0 then
+                   Build_Location_String (Sloc (Expr))
+                else "<no location>")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-         Open_Theory
-           (Decl_File, E_Module (Expr),
-            Comment =>
-              "Module for declaring an abstract function for the "
-                & (if Nkind (Expr) = N_Delta_Aggregate
-                   then "delta aggregate"
-                   elsif In_Delta_Aggregate
-                   then "update attribute"
-                   else "aggregate")
-                & " at "
-                & (if Sloc (Expr) > 0 then
-                      Build_Location_String (Sloc (Expr))
-                   else "<no location>")
-                & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-         Emit (Decl_File,
+         Emit (Th,
                New_Function_Decl (Domain      => EW_Pterm,
                                   Name        => To_Local (Func),
                                   Labels      => Symbol_Sets.Empty_Set,
@@ -10373,46 +10357,35 @@ package body Gnat2Why.Expr is
                                   Binders     => Call_Params & Bnd_Params,
                                   Return_Type => Ret_Type));
 
-         Close_Theory (Decl_File,
+         Close_Theory (Th,
                        Kind => Definition_Theory,
                        Defined_Entity => Expr);
 
-         if Params.File = Decl_File then
-            Why_Sections (Decl_File).Cur_Theory := Save_Theory;
-         end if;
-
          --  Generate the axiom in a completion module
 
-         if Params.File = Compl_File then
-            Save_Theory := Why_Sections (Compl_File).Cur_Theory;
-            Why_Sections (Compl_File).Cur_Theory := Why_Empty;
-         end if;
-
-         Open_Theory
-           (Compl_File, E_Axiom_Module (Expr),
-            Comment =>
-              "Module for defining the value of the "
-                & (if Nkind (Expr) = N_Delta_Aggregate
-                   then "delta aggregate"
-                   elsif In_Delta_Aggregate
-                   then "update attribute"
-                   else "aggregate")
-                & " at "
-                & (if Sloc (Expr) > 0 then
-                      Build_Location_String (Sloc (Expr))
-                   else "<no location>")
-                & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-         Emit (Compl_File,
+         Th :=
+           Open_Theory
+             (WF_Context, E_Axiom_Module (Expr),
+              Comment =>
+                "Module for defining the value of the "
+              & (if Nkind (Expr) = N_Delta_Aggregate
+                then "delta aggregate"
+                elsif In_Delta_Aggregate
+                then "update attribute"
+                else "aggregate")
+              & " at "
+              & (if Sloc (Expr) > 0 then
+                   Build_Location_String (Sloc (Expr))
+                else "<no location>")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         Emit (Th,
                New_Guarded_Axiom (Name     => NID (Def_Axiom),
                                   Binders  => Call_Params & Bnd_Params,
                                   Def      => Def_Pred));
 
-         Close_Theory (Compl_File,
+         Close_Theory (Th,
                        Kind => Axiom_Theory,
                        Defined_Entity => Expr);
-         if Params.File = Compl_File then
-            Why_Sections (Compl_File).Cur_Theory := Save_Theory;
-         end if;
       end Generate_Logic_Function;
 
       ----------------------------
@@ -15692,7 +15665,7 @@ package body Gnat2Why.Expr is
                Id : W_Identifier_Id;
             begin
                if M = Why_Empty then
-                  Transform_String_Literal (Local_Params, Expr);
+                  Transform_String_Literal (Expr);
                   M := E_Module (Expr);
                end if;
                Id :=
@@ -15852,8 +15825,7 @@ package body Gnat2Why.Expr is
                   --  requires the creation of a specific module.
 
                   Create_Fixed_Point_Mult_Div_Theory_If_Needed
-                    (Current_File => Params.File,
-                     Typ_Left     => Etype (Left),
+                    (Typ_Left     => Etype (Left),
                      Typ_Right    => Etype (Right),
                      Typ_Result   => Expr_Type,
                      Expr         => Expr);
@@ -16473,12 +16445,10 @@ package body Gnat2Why.Expr is
                   begin
                      if Target_Comp_Typ /= Source_Comp_Typ then
                         Create_Array_Conversion_Theory_If_Needed
-                          (Current_File => Local_Params.File,
-                           From         => Source_Typ,
+                          (From         => Source_Typ,
                            To           => Target_Typ);
                         Create_Array_Conversion_Theory_If_Needed
-                          (Current_File => Local_Params.File,
-                           From         => Target_Typ,
+                          (From         => Target_Typ,
                            To           => Source_Typ);
                      end if;
                   end;
@@ -16494,8 +16464,7 @@ package body Gnat2Why.Expr is
                   begin
                      if From_Small /= To_Small then
                         Create_Fixed_Point_Mult_Div_Theory_If_Needed
-                          (Current_File => Params.File,
-                           Typ_Left     => Etype (Expression (Expr)),
+                          (Typ_Left     => Etype (Expression (Expr)),
                            Typ_Right    => Standard_Integer,
                            Typ_Result   => Expr_Type,
                            Expr         => Expr);
@@ -18501,8 +18470,7 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Expr_Id
    is
       Pledge_Params    : constant Transformation_Params :=
-        (File        => Params.File,
-         Phase       => Params.Phase,
+        (Phase       => Params.Phase,
          Gen_Marker  => Params.Gen_Marker,
          Ref_Allowed => Params.Ref_Allowed,
          Old_Policy  => Use_Map);
@@ -21457,9 +21425,7 @@ package body Gnat2Why.Expr is
    -- Transform_String_Literal --
    ------------------------------
 
-   procedure Transform_String_Literal
-     (Params : Transformation_Params;
-      N      : Node_Id)
+   procedure Transform_String_Literal (N : Node_Id)
    is
       Name      : constant String := New_Temp_Identifier ("String_Literal");
       Ty        : constant Entity_Id := Type_Of_Node (N);
@@ -21469,32 +21435,28 @@ package body Gnat2Why.Expr is
                         Name     => Name,
                         Typ      => Why_Type);
       Binders   : constant Binder_Array := (1 .. 1 => Unit_Param);
-      Decl_File : constant W_Section_Id := Dispatch_Entity (N);
-      Save_Theory : W_Theory_Declaration_Id;
+      Th        : Theory_UC;
    begin
-      if Params.File = Decl_File then
-         Save_Theory := Why_Sections (Decl_File).Cur_Theory;
-         Why_Sections (Decl_File).Cur_Theory := Why_Empty;
-      end if;
-
       Insert_Extra_Module
         (N,
          New_Module (File => No_Symbol, Name => Name));
 
-      Open_Theory (Decl_File, E_Module (N),
-                   Comment =>
-                     "Module for defining a value for string literal "
-                       & (if Sloc (N) > 0 then
-                            " defined at " & Build_Location_String (Sloc (N))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context, E_Module (N),
+           Comment =>
+             "Module for defining a value for string literal "
+           & (if Sloc (N) > 0 then
+                " defined at " & Build_Location_String (Sloc (N))
+             else "")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  Generate an abstract logic function for the Why3 map of the literal.
       --  Use a function with a unit parameter instead of a constant so that
       --  the axiom is only instanciated when the literal is used.
 
       Emit
-        (Decl_File,
+        (Th,
          New_Function_Decl
            (Domain      => EW_Pterm,
             Name        => Id,
@@ -21568,7 +21530,7 @@ package body Gnat2Why.Expr is
          --  Emit an axiom containing all the assumptions
 
          Emit
-           (Decl_File,
+           (Th,
             New_Axiom
               (Ada_Node => N,
                Name     => NID (Axiom_Name),
@@ -21579,13 +21541,10 @@ package body Gnat2Why.Expr is
                   Pred     => Def)));
       end;
 
-      Close_Theory (Decl_File,
+      Close_Theory (Th,
                     Kind => Definition_Theory,
                     Defined_Entity => N);
 
-      if Params.File = Decl_File then
-         Why_Sections (Decl_File).Cur_Theory := Save_Theory;
-      end if;
    end Transform_String_Literal;
 
    -------------------------------

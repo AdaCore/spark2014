@@ -28,8 +28,7 @@ with Snames;                          use Snames;
 
 package Gnat2Why.Subprograms.Pointers is
 
-   procedure Declare_Access_To_Subprogram_Type
-     (P : W_Section_Id; E : Entity_Id)
+   procedure Declare_Access_To_Subprogram_Type (Th : Theory_UC; E : Entity_Id)
    with
      Pre => Is_Access_Subprogram_Type (E);
    --  Declare a theory for an access to subprogram type by exporting the
@@ -37,16 +36,14 @@ package Gnat2Why.Subprograms.Pointers is
    --  which can be used to express that an access to subprogram object
    --  belongs to the specific access to subprogram type.
 
-   procedure Complete_Access_To_Subprogram_Type
-     (P : W_Section_Id; E : Entity_Id)
+   procedure Complete_Access_To_Subprogram_Type (Th : Theory_UC; E : Entity_Id)
    with
      Pre => Is_Access_Subprogram_Type (E);
    --  Declare a program function __call_ with appropriate contracts to call
    --  objects of type E in the program domain. For functions, also generate an
    --  axiom supplying the definition of the range predicate of E.
 
-   procedure Create_Theory_For_Profile_If_Needed
-     (P : W_Section_Id; E : Entity_Id)
+   procedure Create_Theory_For_Profile_If_Needed (E : Entity_Id)
    with
      Pre => Is_Access_Subprogram_Type (E);
    --  Create a theory for a profile E if no theory has been declared for the

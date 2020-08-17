@@ -260,18 +260,13 @@ package body Gnat2Why.Driver is
             | E_Procedure
          =>
             if Is_Translated_Subprogram (E) then
-               declare
-                  File : constant W_Section_Id :=
-                    Dispatch_Entity_Completion (E);
-               begin
-                  if Is_Expression_Function_Or_Completion (E)
-                    and then Entity_Body_Compatible_With_SPARK (E)
-                  then
-                     Translate_Expression_Function_Body (File, E);
-                  else
-                     Generate_Subprogram_Completion (File, E);
-                  end if;
-               end;
+               if Is_Expression_Function_Or_Completion (E)
+                 and then Entity_Body_Compatible_With_SPARK (E)
+               then
+                  Translate_Expression_Function_Body (E);
+               else
+                  Generate_Subprogram_Completion (E);
+               end if;
             end if;
 
          when Type_Kind =>
@@ -281,12 +276,7 @@ package body Gnat2Why.Driver is
               and then not Is_Standard_Boolean_Type (E)
               and then E /= Universal_Fixed
             then
-               declare
-                  File : constant W_Section_Id :=
-                    Dispatch_Entity_Completion (E);
-               begin
-                  Generate_Type_Completion (File, E);
-               end;
+               Generate_Type_Completion (E);
             end if;
 
          when others =>
@@ -399,7 +389,7 @@ package body Gnat2Why.Driver is
       --  Delete all theories in main so that we start this file with no other
       --  VCs.
 
-      Why_Sections (WF_Main).Theories.Clear;
+      Why_Sections (WF_Main).Clear;
 
       case Ekind (E) is
          when Entry_Kind
@@ -427,26 +417,26 @@ package body Gnat2Why.Driver is
                   --  Generate Why3 code to check absence of run-time errors in
                   --  contracts and body.
 
-                  Generate_VCs_For_Subprogram (WF_Main, E);
+                  Generate_VCs_For_Subprogram (E);
 
                   --  Generate Why3 code to check LSP for primitive of tagged
                   --  types.
 
                   if LSP_Applies then
-                     Generate_VCs_For_LSP (WF_Main, E);
+                     Generate_VCs_For_LSP (E);
                      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                   end if;
                end;
             end if;
 
          when E_Package =>
-            Generate_VCs_For_Package_Elaboration (WF_Main, E);
+            Generate_VCs_For_Package_Elaboration (E);
 
          when Type_Kind =>
             if Entity_Spec_In_SPARK (Enclosing_Unit (E))
               and then Needs_Default_Checks_At_Decl (E)
             then
-               Generate_VCs_For_Type (WF_Main, E);
+               Generate_VCs_For_Type (E);
             end if;
 
             if Ekind (E) in E_Protected_Type | E_Task_Type
@@ -455,10 +445,10 @@ package body Gnat2Why.Driver is
             then
                case Ekind (E) is
                   when E_Protected_Type =>
-                     Generate_VCs_For_Protected_Type (WF_Main, E);
+                     Generate_VCs_For_Protected_Type (E);
 
                   when E_Task_Type =>
-                     Generate_VCs_For_Task_Type (WF_Main, E);
+                     Generate_VCs_For_Task_Type (E);
 
                   when others =>
                      raise Program_Error;
@@ -1128,9 +1118,7 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Entity (E : Entity_Id) is
 
-      procedure Generate_Empty_Axiom_Theory
-        (File : W_Section_Id;
-         E    : Entity_Id);
+      procedure Generate_Empty_Axiom_Theory (E : Entity_Id);
       --  Generates an empty theory for the axiom related to E. This is done
       --  for every entity for which there is no axiom theory generated, so
       --  that modules for VC generation can consistently include the axiom
@@ -1140,25 +1128,22 @@ package body Gnat2Why.Driver is
       -- Generate_Empty_Axiom_Theory --
       ---------------------------------
 
-      procedure Generate_Empty_Axiom_Theory
-        (File : W_Section_Id;
-         E    : Entity_Id) is
+      procedure Generate_Empty_Axiom_Theory (E : Entity_Id)
+      is
+         Th : Theory_UC;
       begin
-         Open_Theory
-           (File, E_Axiom_Module (E),
+         Th := Open_Theory
+           (WF_Context, E_Axiom_Module (E),
             Comment =>
               "Module giving an empty axiom for the entity "
-                & """" & Get_Name_String (Chars (E)) & """"
-                & (if Sloc (E) > 0 then
-                    " defined at " & Build_Location_String (Sloc (E))
-                   else "")
-                & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-         Close_Theory (File,
+            & """" & Get_Name_String (Chars (E)) & """"
+            & (if Sloc (E) > 0 then
+                 " defined at " & Build_Location_String (Sloc (E))
+              else "")
+            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         Close_Theory (Th,
                        Kind => Standalone_Theory);
       end Generate_Empty_Axiom_Theory;
-
-      File       : constant W_Section_Id := Dispatch_Entity (E);
-      Compl_File : constant W_Section_Id := Dispatch_Entity_Completion (E);
 
    --  Start of processing for Translate_Entity
 
@@ -1176,7 +1161,7 @@ package body Gnat2Why.Driver is
                --  otherwise we end up with two definitions for the same
                --  private type.
 
-               Translate_Type (File, E);
+               Translate_Type (E);
             end if;
 
          when Object_Kind =>
@@ -1199,19 +1184,19 @@ package body Gnat2Why.Driver is
             elsif not Is_Mutable_In_Why (E) then
                if Ekind (E) = E_Constant then
                   if Is_Partial_View (E) then
-                     Translate_Constant (File, E);
+                     Translate_Constant (E);
                      if not Entity_In_SPARK (Full_View (E)) then
-                        Generate_Empty_Axiom_Theory (File, E);
+                        Generate_Empty_Axiom_Theory (E);
                      end if;
                   elsif Is_Full_View (E) then
-                     Translate_Constant_Value (Compl_File, E);
+                     Translate_Constant_Value (E);
                   else
-                     Translate_Constant (File, E);
-                     Translate_Constant_Value (Compl_File, E);
+                     Translate_Constant (E);
+                     Translate_Constant_Value (E);
                   end if;
                else
-                  Translate_Constant (File, E);
-                  Generate_Empty_Axiom_Theory (File, E);
+                  Translate_Constant (E);
+                  Generate_Empty_Axiom_Theory (E);
                end if;
 
             --  We translate private constants of access type in the partial
@@ -1225,8 +1210,8 @@ package body Gnat2Why.Driver is
                pragma Assert (Ekind (E) = E_Constant);
 
             else
-               Translate_Variable (File, E);
-               Generate_Empty_Axiom_Theory (File, E);
+               Translate_Variable (E);
+               Generate_Empty_Axiom_Theory (E);
             end if;
 
          --  Generate a logic function for Ada subprograms
@@ -1236,12 +1221,12 @@ package body Gnat2Why.Driver is
             | E_Procedure
          =>
             if Is_Translated_Subprogram (E) then
-               Translate_Subprogram_Spec (File, E);
+               Translate_Subprogram_Spec (E);
             end if;
 
          when E_Loop =>
-            Translate_Loop_Entity (File, E);
-            Generate_Empty_Axiom_Theory (File, E);
+            Translate_Loop_Entity (E);
+            Generate_Empty_Axiom_Theory (E);
 
          when E_Package =>
             null;

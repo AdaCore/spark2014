@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;          use Common_Containers;
-with Gnat2Why.Util;              use Gnat2Why.Util;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Definition;           use SPARK_Definition;
@@ -33,9 +32,7 @@ with Types;                      use Types;
 
 package Gnat2Why.Decls is
 
-   procedure Translate_Constant
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Translate_Constant (E : Entity_Id)
    with Pre => Ekind (E) in E_Constant
                           | E_Discriminant
                           | E_In_Parameter
@@ -44,9 +41,7 @@ package Gnat2Why.Decls is
    --  Generate a function declaration for objects that appear as constant
    --  in Why.
 
-   procedure Translate_Constant_Value
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Translate_Constant_Value (E : Entity_Id)
    with Pre => Ekind (E) = E_Constant;
    --  Possibly generate an axiom to define the value of the function
    --  previously declared by a call to Translate_Constant for a constant
@@ -65,14 +60,10 @@ package Gnat2Why.Decls is
    --  such an object is not in SPARK then such a nested subprogram is also not
    --  in SPARK (and so it ignored in proof).
 
-   procedure Translate_Loop_Entity
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Translate_Loop_Entity (E : Entity_Id)
    with Pre => Ekind (E) = E_Loop;
 
-   procedure Translate_Variable
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Translate_Variable (E : Entity_Id)
    with Pre => Entity_In_SPARK (E);
    --  Generate Why declarations that correspond to an Ada top-level object
    --  declaration.

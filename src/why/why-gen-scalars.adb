@@ -47,15 +47,13 @@ with Why.Types;           use Why.Types;
 
 package body Why.Gen.Scalars is
 
-   procedure Create_Fixed_Point_Theory_If_Needed
-     (Current_File : W_Section_Id;
-      Typ          : Entity_Id);
+   procedure Create_Fixed_Point_Theory_If_Needed (Typ : Entity_Id);
    --  Create a theory for fixed point operation with the small of Typ. Only
    --  one such theory is created for each value of small. The symbols for
    --  these theories are stored in the M_Fixed_Points map.
 
    procedure Define_Scalar_Attributes
-     (Section    : W_Section_Id;
+     (Th         : Theory_UC;
       E          : Entity_Id;
       Base_Type  : W_Type_Id);
    --  Define the attributes first, last, modulus, small for the given type.
@@ -74,13 +72,10 @@ package body Why.Gen.Scalars is
    -- Create_Fixed_Point_Theory_If_Needed --
    -----------------------------------------
 
-   procedure Create_Fixed_Point_Theory_If_Needed
-     (Current_File : W_Section_Id;
-      Typ          : Entity_Id)
+   procedure Create_Fixed_Point_Theory_If_Needed (Typ : Entity_Id)
    is
       use Name_Id_Fixed_Point_Map;
 
-      File        : constant W_Section_Id := WF_Pure;
       Module_Name : constant Symbol :=
         Get_Fixed_Point_Theory_Name (Typ => Typ);
       Module      : constant W_Module_Id :=
@@ -129,9 +124,7 @@ package body Why.Gen.Scalars is
 
       Subst : W_Clone_Substitution_Array (1 .. 2);
 
-      Save_Theory : W_Theory_Declaration_Id;
-      --  Use this variable to temporarily store current theory
-
+      Th : Theory_UC;
    begin
       --  If there is already a module for that value of small, there is
       --  nothing to do.
@@ -140,21 +133,15 @@ package body Why.Gen.Scalars is
          return;
       end if;
 
-      --  Temporarily store the current theory if needed
+      Th :=
+        Open_Theory
+          (WF_Context, Module,
+           Comment =>
+             "Module for fixed-point operation for type at "
+           & Build_Location_String (Sloc (Typ))
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      if File = Current_File then
-         Save_Theory := Why_Sections (File).Cur_Theory;
-         Why_Sections (File).Cur_Theory := Why_Empty;
-      end if;
-
-      Open_Theory
-        (File, Module,
-         Comment =>
-           "Module for fixed-point operation for type at "
-         & Build_Location_String (Sloc (Typ))
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => New_Identifier (Num_Small),
@@ -163,7 +150,7 @@ package body Why.Gen.Scalars is
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Num_Small_V));
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => New_Identifier (Den_Small),
@@ -183,7 +170,7 @@ package body Why.Gen.Scalars is
                  Orig_Name => Den_Small,
                  Image     => Den_Small));
 
-      Emit (File,
+      Emit (Th,
             New_Clone_Declaration
               (Theory_Kind   => EW_Theory,
                Clone_Kind    => EW_Export,
@@ -191,14 +178,7 @@ package body Why.Gen.Scalars is
                As_Name       => No_Symbol,
                Substitutions => Subst));
 
-      Close_Theory (File, Kind => Definition_Theory);
-
-      --  Restore the current theory
-
-      if File = Current_File then
-         Why_Sections (File).Cur_Theory := Save_Theory;
-      end if;
-
+      Close_Theory (Th, Kind => Definition_Theory);
       M_Fixed_Points.Insert (Module_Name, M_Module);
    end Create_Fixed_Point_Theory_If_Needed;
 
@@ -207,8 +187,7 @@ package body Why.Gen.Scalars is
    --------------------------------------------------
 
    procedure Create_Fixed_Point_Mult_Div_Theory_If_Needed
-     (Current_File : W_Section_Id;
-      Typ_Left     : Entity_Id;
+     (Typ_Left     : Entity_Id;
       Typ_Right    : Entity_Id;
       Typ_Result   : Entity_Id;
       Expr         : Node_Id)
@@ -219,7 +198,6 @@ package body Why.Gen.Scalars is
 
       use Name_Id_Fixed_Point_Mult_Div_Map;
 
-      File        : constant W_Section_Id := WF_Pure;
       Module_Name : constant Symbol :=
         Get_Fixed_Point_Mult_Div_Theory_Name (Typ_Left   => Typ_Left,
                                               Typ_Right  => Typ_Right,
@@ -282,8 +260,7 @@ package body Why.Gen.Scalars is
 
       Subst : W_Clone_Substitution_Array (1 .. 6);
 
-      Save_Theory : W_Theory_Declaration_Id;
-      --  Use this variable to temporarily store current theory
+      Th : Theory_UC;
 
    begin
       --  If there is a already a module for that combination of values of
@@ -293,21 +270,15 @@ package body Why.Gen.Scalars is
          return;
       end if;
 
-      --  Temporarily store the current theory if needed
+      Th :=
+        Open_Theory
+          (WF_Context, Module,
+           Comment =>
+             "Module for fixed-point multiplication and division for operation"
+           & " at " & Build_Location_String (Sloc (Expr))
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      if File = Current_File then
-         Save_Theory := Why_Sections (File).Cur_Theory;
-         Why_Sections (File).Cur_Theory := Why_Empty;
-      end if;
-
-      Open_Theory
-        (File, Module,
-         Comment =>
-           "Module for fixed-point multiplication and division for operation"
-         & " at " & Build_Location_String (Sloc (Expr))
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => New_Identifier (Num_Small_X),
@@ -316,7 +287,7 @@ package body Why.Gen.Scalars is
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Num_Small_L));
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => New_Identifier (Den_Small_X),
@@ -325,7 +296,7 @@ package body Why.Gen.Scalars is
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Den_Small_L));
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => New_Identifier (Num_Small_Y),
@@ -334,7 +305,7 @@ package body Why.Gen.Scalars is
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Num_Small_R));
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => New_Identifier (Den_Small_Y),
@@ -343,7 +314,7 @@ package body Why.Gen.Scalars is
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Den_Small_R));
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => New_Identifier (Num_Small_Res),
@@ -352,7 +323,7 @@ package body Why.Gen.Scalars is
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Num_Small_Op));
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => New_Identifier (Den_Small_Res),
@@ -388,7 +359,7 @@ package body Why.Gen.Scalars is
                  Orig_Name => Den_Small_Res,
                  Image     => Den_Small_Res));
 
-      Emit (File,
+      Emit (Th,
             New_Clone_Declaration
               (Theory_Kind   => EW_Theory,
                Clone_Kind    => EW_Export,
@@ -396,13 +367,7 @@ package body Why.Gen.Scalars is
                As_Name       => No_Symbol,
                Substitutions => Subst));
 
-      Close_Theory (File, Kind => Definition_Theory);
-
-      --  Restore the current theory
-
-      if File = Current_File then
-         Why_Sections (File).Cur_Theory := Save_Theory;
-      end if;
+      Close_Theory (Th, Kind => Definition_Theory);
 
       M_Fixed_Point_Mult_Div.Insert (Module_Name, M_Module);
    end Create_Fixed_Point_Mult_Div_Theory_If_Needed;
@@ -412,8 +377,8 @@ package body Why.Gen.Scalars is
    -------------------------
 
    procedure Declare_Scalar_Type
-     (File : W_Section_Id;
-      E      : Entity_Id)
+     (Th : Theory_UC;
+      E  : Entity_Id)
    is
       Why_Name         : constant W_Name_Id := To_Why_Type (E, Local => True);
       Is_Static        : constant Boolean := not Type_Is_Modeled_As_Base (E);
@@ -596,7 +561,7 @@ package body Why.Gen.Scalars is
 
             --  In which case we know that all values are necessary in range,
             --  So we define the range predicate as always true.
-            Emit (File,
+            Emit (Th,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain   => EW_Pred,
                      Name     => To_Local (E_Symb (E, Name)),
@@ -609,7 +574,7 @@ package body Why.Gen.Scalars is
             --  And we directly use the function uint_in_range from the
             --  underlying why3 theory for checking the range againts integers
             --  instead of generating it.
-            Emit (File,
+            Emit (Th,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain   => EW_Pred,
                      Name     => To_Local (E_Symb (E, WNE_Range_Pred_BV_Int)),
@@ -647,7 +612,7 @@ package body Why.Gen.Scalars is
 
                --  In which case we know that all values are necessary in range
                --  so we define the range predicate as "is_finite".
-               Emit (File,
+               Emit (Th,
                      Why.Gen.Binders.New_Function_Decl
                        (Domain   => EW_Pred,
                         Name     => To_Local (E_Symb (E, Name)),
@@ -703,7 +668,7 @@ package body Why.Gen.Scalars is
                                                     others => <>))
                & Static_Binders);
          begin
-            Emit (File,
+            Emit (Th,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain   => EW_Pred,
                      Name     => To_Local (E_Symb (E, Name)),
@@ -797,15 +762,14 @@ package body Why.Gen.Scalars is
       --  Create a theory for the underlying fixed point type if needed
 
       if Has_Fixed_Point_Type (E) then
-         Create_Fixed_Point_Theory_If_Needed (Current_File => File,
-                                              Typ          => E);
+         Create_Fixed_Point_Theory_If_Needed (E);
       end if;
 
       --  Declare the logic type:
       --  If the type is dynamic, declare an alias of its base type.
 
       if not Is_Static then
-         Emit (File,
+         Emit (Th,
                New_Type_Decl
                  (Name  => Why_Name,
                   Alias => Base_Type_In_Why));
@@ -813,7 +777,7 @@ package body Why.Gen.Scalars is
       --  For static signed integer types, declare a range type
 
       elsif Is_Range_Type_In_Why (E) then
-         Emit (File,
+         Emit (Th,
                New_Type_Decl
                  (Name       => Why_Name,
                   Labels     => Symbol_Sets.Empty_Set,
@@ -824,7 +788,7 @@ package body Why.Gen.Scalars is
       --  For other static types, declare an abstract type
 
       else
-         Emit (File,
+         Emit (Th,
                New_Type_Decl
                  (Name   => Why_Name,
                   Labels => Symbol_Sets.Empty_Set));
@@ -833,14 +797,14 @@ package body Why.Gen.Scalars is
       --  retrieve and declare the attributes first, last, small, and modulus
 
       Define_Scalar_Attributes
-        (Section   => File,
+        (Th        => Th,
          E         => E,
          Base_Type => Base_Why_Type (E));
 
       --  define first_int and last_int for static modular types
 
       if Is_Static and then Is_Modular_Integer_Type (E) then
-         Emit (File,
+         Emit (Th,
                Why.Atree.Builders.New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => New_Identifier
@@ -852,7 +816,7 @@ package body Why.Gen.Scalars is
                   Location    => No_Location,
                   Def         => New_Integer_Constant
                     (Value => Expr_Value (Low_Bound (Rng)))));
-         Emit (File,
+         Emit (Th,
                Why.Atree.Builders.New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => New_Identifier
@@ -872,7 +836,7 @@ package body Why.Gen.Scalars is
 
       --  clone the appropriate module
 
-      Emit (File,
+      Emit (Th,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
                                    As_Name       => No_Symbol,
@@ -885,7 +849,7 @@ package body Why.Gen.Scalars is
    ------------------------------
 
    procedure Define_Scalar_Attributes
-     (Section    : W_Section_Id;
+     (Th         : Theory_UC;
       E          : Entity_Id;
       Base_Type  : W_Type_Id)
    is
@@ -949,7 +913,7 @@ package body Why.Gen.Scalars is
                       else
                          raise Program_Error);
 
-            Emit (Section,
+            Emit (Th,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Pterm,
                      Name        =>
@@ -971,7 +935,7 @@ package body Why.Gen.Scalars is
             Den_Small : constant W_Term_OId :=
               New_Integer_Constant (Value => Norm_Den (Small));
          begin
-            Emit (Section,
+            Emit (Th,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Pterm,
                      Name        =>
@@ -981,7 +945,7 @@ package body Why.Gen.Scalars is
                      Labels      => Symbol_Sets.Empty_Set,
                      Location    => No_Location,
                      Def         => +Num_Small));
-            Emit (Section,
+            Emit (Th,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Pterm,
                      Name        =>
@@ -1036,7 +1000,7 @@ package body Why.Gen.Scalars is
                   Typ       => EW_Int_Type);
             end loop;
 
-            Emit (Section,
+            Emit (Th,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Pterm,
                      Name        =>
@@ -1061,7 +1025,7 @@ package body Why.Gen.Scalars is
       --  them.
 
       if not (Type_Is_Modeled_As_Base (E) and then Is_Itype (E)) then
-         Emit (Section,
+         Emit (Th,
                New_Function_Decl
                  (Domain      => EW_Pterm,
                   Name        =>
@@ -1072,7 +1036,7 @@ package body Why.Gen.Scalars is
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set,
                   Def         => +First));
-         Emit (Section,
+         Emit (Th,
                New_Function_Decl
                  (Domain      => EW_Pterm,
                   Name        =>
@@ -1091,8 +1055,8 @@ package body Why.Gen.Scalars is
    ----------------------------
 
    procedure Define_Scalar_Rep_Proj
-     (File : W_Section_Id;
-      E      : Entity_Id)
+     (Th : Theory_UC;
+      E  : Entity_Id)
    is
       Rep_Type : constant W_Type_Id := Base_Why_Type (E);
 
@@ -1193,13 +1157,13 @@ package body Why.Gen.Scalars is
       Clone : constant W_Module_Id := Pick_Clone;
    begin
 
-      Add_With_Clause (File, E_Module (E), EW_Clone_Default);
+      Add_With_Clause (Th, E_Module (E), EW_Clone_Default);
 
       if Is_Modular_Integer_Type (E) then
 
-         Add_With_Clause (File, MF_BVs (Rep_Type).Module, EW_Clone_Default);
+         Add_With_Clause (Th, MF_BVs (Rep_Type).Module, EW_Clone_Default);
       elsif Is_Floating_Point_Type (E) then
-         Add_With_Clause (File,
+         Add_With_Clause (Th,
                           MF_Floats (Rep_Type).Module,
                           EW_Clone_Default);
       end if;
@@ -1218,7 +1182,7 @@ package body Why.Gen.Scalars is
                                               others => <>));
          begin
 
-            Emit (File,
+            Emit (Th,
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (E_Symb (E, WNE_To_Rep)),
@@ -1235,7 +1199,7 @@ package body Why.Gen.Scalars is
          end;
       end if;
 
-      Emit (File,
+      Emit (Th,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
                                    As_Name       => No_Symbol,
@@ -1257,7 +1221,7 @@ package body Why.Gen.Scalars is
       --      for cloned projection functions.
 
       --  Note that if E is dynamic type, to_rep is not projection function
-      Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
+      Emit_Projection_Metas (Th, "to_rep");
 
    end Define_Scalar_Rep_Proj;
 

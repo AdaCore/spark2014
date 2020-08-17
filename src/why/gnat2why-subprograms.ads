@@ -73,44 +73,32 @@ package Gnat2Why.Subprograms is
    --  Compute the set of deep outputs for a procedure or entry E, which
    --  consist in output parameters and globals of mode Output.
 
-   procedure Generate_VCs_For_Subprogram
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Generate_VCs_For_Subprogram (E : Entity_Id)
      with Pre =>
        Ekind (E) in E_Entry | E_Function | E_Procedure | E_Subprogram_Type;
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in E.
 
-   procedure Generate_VCs_For_Package_Elaboration
-     (File : W_Section_Id;
-      E    : Entity_Id) with
+   procedure Generate_VCs_For_Package_Elaboration (E : Entity_Id) with
      Pre => Ekind (E) = E_Package;
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the Initial_Condition of E and the absence of run-time
    --  errors in the declarations and body statements of E.
 
-   procedure Generate_VCs_For_LSP
-     (File : W_Section_Id;
-      E    : Entity_Id) with
+   procedure Generate_VCs_For_LSP (E : Entity_Id) with
      Pre => Ekind (E) in E_Function | E_Procedure;
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the verification of LSP for dispatching subprogram E.
 
-   procedure Generate_VCs_For_Task_Type
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Generate_VCs_For_Task_Type (E : Entity_Id)
    with Pre => Ekind (E) = E_Task_Type;
    --  @param File the file and section in which the VCs should be generated
    --  @param E the task entity to be translated
 
-   procedure Generate_VCs_For_Protected_Type
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Generate_VCs_For_Protected_Type (E : Entity_Id)
    with Pre => Ekind (E) = E_Protected_Type;
 
-   procedure Translate_Subprogram_Spec
-     (File : W_Section_Id;
-      E    : Entity_Id) with
+   procedure Translate_Subprogram_Spec (E : Entity_Id) with
      Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why logic declaration that corresponds to an Ada subprogram
 
@@ -120,16 +108,12 @@ package Gnat2Why.Subprograms is
    --  Get the expressions to use in a function call for an additional logic
    --  binders.
 
-   procedure Generate_Subprogram_Completion
-     (File : W_Section_Id;
-      E    : Entity_Id) with
+   procedure Generate_Subprogram_Completion (E : Entity_Id) with
      Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why program declaration and potentially a defining axiom for
    --  an Ada subprogram.
 
-   procedure Translate_Expression_Function_Body
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Translate_Expression_Function_Body (E : Entity_Id)
    with Pre => Is_Expression_Function_Or_Completion (E);
    --  If subprogram E's body is in SPARK, generate a Why axiom that, given a
    --  function F with expression E, states that: "for all <args> => F(<args>)
@@ -153,7 +137,7 @@ package Gnat2Why.Subprograms is
 private
 
    procedure Declare_Logic_Functions
-     (File         : W_Section_Id;
+     (Th           : Theory_UC;
       E            : Entity_Id;
       Spec_Binders : Binder_Array := Binder_Array'(1 .. 0 => <>));
    --  @param File section in which the expression should be translated
@@ -164,7 +148,7 @@ private
    --  generate a namespace for the dispatching/refined variants.
 
    procedure Generate_Subprogram_Program_Fun
-     (File                   : W_Section_Id;
+     (Th                     : Theory_UC;
       E                      : Entity_Id;
       Prog_Id                : W_Identifier_Id;
       Spec_Binders           : Binder_Array := Binder_Array'(1 .. 0 => <>);
@@ -181,7 +165,7 @@ private
    --  be called before calling E's program function.
 
    procedure Generate_Axiom_For_Post
-     (File                   : W_Section_Id;
+     (Th                     : Theory_UC;
       E                      : Entity_Id;
       Spec_Binders           : Binder_Array := (1 .. 0 => <>);
       Spec_Guard             : W_Pred_Id := True_Pred;
