@@ -775,6 +775,11 @@ package body Flow_Utility is
                exit;
          end case;
       end loop;
+
+      --  Sanity-check: the Map_Root part of the results should be the same as
+      --  what would be returned by Path_To_Flow_Id.
+
+      pragma Assert (Map_Root = Path_To_Flow_Id (N));
    end Get_Assignment_Target_Properties;
 
    -----------------
@@ -5939,7 +5944,10 @@ package body Flow_Utility is
                null;
 
             when N_Selected_Component =>
-               Obj := Add_Component (Obj, Entity (Selector_Name (N)));
+               Obj :=
+                 Add_Component
+                   (Obj,
+                    Unique_Component (Entity (Selector_Name (N))));
 
             when others =>
                raise Program_Error;
