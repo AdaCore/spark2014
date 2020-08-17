@@ -396,8 +396,12 @@ package body Flow.Analysis is
                Expr_Vars : constant Flow_Id_Sets.Set :=
                  Get_All_Variables (N,
                                     Scope                => Scope,
+                                    Target_Name          => Null_Flow_Id,
                                     Assume_In_Expression => False,
                                     Use_Computed_Globals => True);
+               --  ??? Setting Target_Name to Null_Flow_Id is dubious here, but
+               --  this First_Variable_Use routine is dubious itself. Anyway,
+               --  this routine is only for error-reporting on illegal code.
 
             begin
                if (if Precise
@@ -4909,6 +4913,7 @@ package body Flow.Analysis is
                  Get_All_Variables
                    (N,
                     Scope                => FA.B_Scope,
+                    Target_Name          => Null_Flow_Id,
                     Use_Computed_Globals => True);
 
             begin
@@ -5727,6 +5732,7 @@ package body Flow.Analysis is
             VU : constant Flow_Id_Sets.Set :=
               Get_All_Variables (Precondition,
                                  Scope                => FA.S_Scope,
+                                 Target_Name          => Null_Flow_Id,
                                  Use_Computed_Globals => True);
             --  The above set contains all variables used in the precondition.
          begin

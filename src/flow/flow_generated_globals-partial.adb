@@ -2145,6 +2145,7 @@ package body Flow_Generated_Globals.Partial is
               Get_Variables
                 (Expr,
                  Scope                => Get_Flow_Scope (Full),
+                 Target_Name          => Null_Flow_Id,
                  Fold_Functions       => Inputs,
                  Use_Computed_Globals => False);
 

@@ -1240,6 +1240,7 @@ package body Flow_Utility is
                              Get_Variables
                                (Expression (Declaration_Node (E)),
                                 Scope                => Scop,
+                                Target_Name          => Null_Flow_Id,
                                 Fold_Functions       => Flow_Types.Inputs,
                                 Use_Computed_Globals => False);
 
@@ -2003,6 +2004,7 @@ package body Flow_Utility is
    function Get_All_Variables
      (N                       : Node_Id;
       Scope                   : Flow_Scope;
+      Target_Name             : Flow_Id;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False)
@@ -2015,6 +2017,7 @@ package body Flow_Utility is
          Vars.Union
            (Get_Variables (N                       => N,
                            Scope                   => Scope,
+                           Target_Name             => Target_Name,
                            Fold_Functions          => Ref_Kind,
                            Use_Computed_Globals    => Use_Computed_Globals,
                            Assume_In_Expression    => Assume_In_Expression,
@@ -2031,6 +2034,7 @@ package body Flow_Utility is
 
    type Get_Variables_Context is record
       Scope                   : Flow_Scope;
+      Target_Name             : Flow_Id;
       Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean;
@@ -2052,6 +2056,7 @@ package body Flow_Utility is
    function Get_Variables
      (N                       : Node_Id;
       Scope                   : Flow_Scope;
+      Target_Name             : Flow_Id;
       Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
@@ -2061,6 +2066,7 @@ package body Flow_Utility is
    is
       Ctx : constant Get_Variables_Context :=
         (Scope                   => Scope,
+         Target_Name             => Target_Name,
          Fold_Functions          => Fold_Functions,
          Use_Computed_Globals    => Use_Computed_Globals,
          Assume_In_Expression    => Assume_In_Expression,
@@ -2117,6 +2123,7 @@ package body Flow_Utility is
       function Untangle_Record_Fields
         (N                       : Node_Id;
          Scope                   : Flow_Scope;
+         Target_Name             : Flow_Id;
          Fold_Functions          : Reference_Kind;
          Use_Computed_Globals    : Boolean;
          Expand_Internal_Objects : Boolean)
@@ -2144,6 +2151,7 @@ package body Flow_Utility is
       is (Untangle_Record_Fields
            (N,
             Scope                   => Ctx.Scope,
+            Target_Name             => Ctx.Target_Name,
             Fold_Functions          => Ctx.Fold_Functions,
             Use_Computed_Globals    => Ctx.Use_Computed_Globals,
             Expand_Internal_Objects => Ctx.Expand_Internal_Objects))
@@ -2923,6 +2931,7 @@ package body Flow_Utility is
       function Untangle_Record_Fields
         (N                       : Node_Id;
          Scope                   : Flow_Scope;
+         Target_Name             : Flow_Id;
          Fold_Functions          : Reference_Kind;
          Use_Computed_Globals    : Boolean;
          Expand_Internal_Objects : Boolean)
@@ -2941,6 +2950,7 @@ package body Flow_Utility is
          is (Get_Variables
              (N,
               Scope                   => Scope,
+              Target_Name             => Target_Name,
               Fold_Functions          => Fold_Functions,
               Use_Computed_Globals    => Use_Computed_Globals,
               Expand_Internal_Objects => Expand_Internal_Objects));
@@ -3032,7 +3042,9 @@ package body Flow_Utility is
          --  If the root node is not an entire record variable, we recurse here
          --  and then simply merge all variables we find here and then abort.
 
-         if not (Nkind (Root_Node) in N_Identifier | N_Expanded_Name
+         if not (Nkind (Root_Node) in N_Identifier
+                                    | N_Expanded_Name
+                                    | N_Target_Name
                    and then
                  Is_Record_Type
                    (Unchecked_Full_Type (Etype (Root_Node))))
@@ -3084,17 +3096,68 @@ package body Flow_Utility is
 
          --  Ok, so the root is an entire object, so we can untangle it further
 
-         pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
+         pragma Assert (Nkind (Root_Node) in N_Identifier
+                                           | N_Expanded_Name
+                                           | N_Target_Name);
          pragma Assert (not Must_Abort);
 
          --  If the root is a constant without variable inputs and we are
          --  looking for genuine inputs, then we will find none.
 
          if Fold_Functions = Inputs
+           and then Nkind (Root_Node) in N_Identifier | N_Expanded_Name
            and then Ekind (Entity (Root_Node)) = E_Constant
            and then not Has_Variable_Input (Entity (Root_Node))
          then
             return Flow_Id_Sets.Empty_Set;
+         end if;
+
+         --  Set the Current_Field to the object (or its component) that is is
+         --  being untangled. Likewise, set Comp_Id to the index of the current
+         --  component that is being untangled. ??? Actually, Comp_Id could be
+         --  a function of the Current_Field; see the Loop_Invariant below.
+
+         if Nkind (Root_Node) = N_Target_Name then
+            Comp_Id       :=
+              (if Target_Name.Kind = Direct_Mapping
+               then 1
+               else Positive (Target_Name.Component.Length) + 1);
+            Current_Field := Target_Name;
+         else
+            declare
+               Root_Entity : constant Entity_Id := Entity (Root_Node);
+
+               pragma Assert
+                 (Ekind (Root_Entity) in E_Constant
+                                       | E_Variable
+                                       | E_Loop_Parameter -- for cursors
+                                       | Formal_Kind
+                    or else
+                  (Ekind (Root_Entity) in E_Discriminant | E_Component
+                     and then
+                   Is_Concurrent_Type (Sinfo.Scope (Root_Entity))));
+
+            begin
+               if Is_Protected_Component (Root_Entity) then
+                  Comp_Id       := 2;
+                  Current_Field :=
+                    Add_Component
+                      (Direct_Mapping_Id (Sinfo.Scope (Root_Entity)),
+                       Root_Entity);
+
+               elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
+                  Comp_Id       := 2;
+                  Current_Field :=
+                    Add_Component
+                      (Direct_Mapping_Id
+                         (Etype (Encapsulating_State (Root_Entity))),
+                       Root_Entity);
+
+               else
+                  Comp_Id       := 1;
+                  Current_Field := Direct_Mapping_Id (Root_Entity);
+               end if;
+            end;
          end if;
 
          --  We set up an identity map of all fields of the original record.
@@ -3104,48 +3167,13 @@ package body Flow_Utility is
          --     r.x -> r.x
          --     r.y -> r.y
 
-         declare
-            Root_Entity : constant Entity_Id := Entity (Root_Node);
+         for F of Flatten_Variable (Current_Field, Scope) loop
+            M.Insert (F, Flow_Id_Sets.To_Set (F));
+         end loop;
 
-            pragma Assert
-              (Ekind (Root_Entity) in E_Constant
-                                    | E_Variable
-                                    | E_Loop_Parameter -- for cursors
-                                    | Formal_Kind
-                 or else
-               (Ekind (Root_Entity) in E_Discriminant | E_Component
-                  and then
-                Is_Concurrent_Type (Sinfo.Scope (Root_Entity))));
-
-         begin
-            if Is_Protected_Component (Root_Entity) then
-               Comp_Id       := 2;
-               Current_Field :=
-                 Add_Component
-                   (Direct_Mapping_Id (Sinfo.Scope (Root_Entity)),
-                    Root_Entity);
-
-            elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
-               Comp_Id       := 2;
-               Current_Field :=
-                 Add_Component
-                   (Direct_Mapping_Id
-                      (Etype (Encapsulating_State (Root_Entity))),
-                    Root_Entity);
-
-            else
-               Comp_Id       := 1;
-               Current_Field := Direct_Mapping_Id (Root_Entity);
-            end if;
-
-            for F of Flatten_Variable (Current_Field, Scope) loop
-               M.Insert (F, Flow_Id_Sets.To_Set (F));
-            end loop;
-
-            if Debug_Trace_Untangle_Fields then
-               Print_Flow_Map (M);
-            end if;
-         end;
+         if Debug_Trace_Untangle_Fields then
+            Print_Flow_Map (M);
+         end if;
 
          --  We then process Seq (the sequence of actions we have been asked to
          --  take) and update the map or eliminate entries from it.
@@ -3183,6 +3211,12 @@ package body Flow_Utility is
          --  proof variables here.)
 
          for N of Seq loop
+            pragma Loop_Invariant
+              (Comp_Id =
+                 (if Current_Field.Kind = Direct_Mapping
+                  then 1
+                  else Positive (Current_Field.Component.Length) + 1));
+
             if Debug_Trace_Untangle_Fields then
                Write_Str ("Processing: ");
                Print_Node_Briefly (N);
@@ -3260,6 +3294,8 @@ package body Flow_Utility is
                                          (N                       =>
                                             Expression (Component_Association),
                                           Scope                   => Scope,
+                                          Target_Name             =>
+                                            Target_Name,
                                           Fold_Functions          => Inputs,
                                           Use_Computed_Globals    =>
                                             Use_Computed_Globals,
@@ -3285,6 +3321,7 @@ package body Flow_Utility is
                                    (N                       =>
                                       Expression (Component_Association),
                                     Scope                   => Scope,
+                                    Target_Name             => Target_Name,
                                     Fold_Functions          =>
                                       (if Fold_Functions = Proof_Ins
                                        then Proof_Ins
@@ -3535,6 +3572,7 @@ package body Flow_Utility is
                             Direct_Mapping_Id (Etype (N)),
                           Map_Type                =>
                             Get_Type (N, Ctx.Scope),
+                          Target_Name             => Ctx.Target_Name,
                           Scope                   => Ctx.Scope,
                           Fold_Functions          => Ctx.Fold_Functions,
                           Use_Computed_Globals    =>
@@ -3937,6 +3975,13 @@ package body Flow_Utility is
                Variables.Union (Recurse (Expression (N)));
                return Skip;
 
+            when N_Target_Name =>
+               if Ctx.Fold_Functions = Inputs then
+                  Variables.Union
+                    (Flatten_Variable (Ctx.Target_Name, Ctx.Scope));
+               end if;
+               return Skip;
+
             when others =>
                null;
          end case;
@@ -3977,7 +4022,68 @@ package body Flow_Utility is
                                      Scope_N : Node_Id)
                                      return Flow_Id_Sets.Set
    is
+      function Enclosing_Declaration_Or_Statement (N : Node_Id) return Node_Id;
+      --  Return the nearest enclosing declaration or statement that houses
+      --  arbitrary node N.
+      --  ??? This is copy-pasted from sem_res.adb; refactor
+
+      function Resolve_Target_Name (N : Node_Id) return Flow_Id
+      with Pre => Nkind (N) in N_Subexpr;
+      --  If the node N is a subexpression of an assignment statement with
+      --  target_names, it returns the Flow_Id of the object represented by
+      --  those target_names. This routine is needed to adapt proof (which asks
+      --  for variables referenced by arbitrary subexpressions) to flow (which
+      --  keeps track what target_name represents as part of its context info).
+
+      ----------------------------------------
+      -- Enclosing_Declaration_Or_Statement --
+      ----------------------------------------
+
+      function Enclosing_Declaration_Or_Statement
+        (N : Node_Id) return Node_Id
+      is
+         Par : Node_Id;
+
+      begin
+         Par := N;
+         while Present (Par) loop
+            if Is_Declaration (Par) or else Is_Statement (Par) then
+               return Par;
+
+            --  Prevent the search from going too far
+
+            elsif Is_Body_Or_Package_Declaration (Par) then
+               exit;
+            end if;
+
+            Par := Parent (Par);
+         end loop;
+
+         return N;
+      end Enclosing_Declaration_Or_Statement;
+
+      -------------------------
+      -- Resolve_Target_Name --
+      -------------------------
+
+      function Resolve_Target_Name (N : Node_Id) return Flow_Id is
+         Stmt : constant Node_Id := Enclosing_Declaration_Or_Statement (N);
+      begin
+         if Nkind (Stmt) = N_Assignment_Statement
+           and then Has_Target_Names (Stmt)
+         then
+            return Path_To_Flow_Id (Name (Stmt));
+         else
+            return Null_Flow_Id;
+         end if;
+      end Resolve_Target_Name;
+
+      --  Local variables
       Entire_Variables : Flow_Id_Sets.Set;
+
+      Target_Name : constant Flow_Id := Resolve_Target_Name (Expr_N);
+
+   --  Start of processing for Get_Variables_For_Proof
 
    begin
       --  Ignore references to array bounds of objects (because they are never
@@ -3987,6 +4093,7 @@ package body Flow_Utility is
       for V of Get_All_Variables
         (Expr_N,
          Scope                   => Get_Flow_Scope (Scope_N),
+         Target_Name             => Target_Name,
          Use_Computed_Globals    => True,
          Assume_In_Expression    => True,
          Expand_Internal_Objects => False)
@@ -4102,6 +4209,7 @@ package body Flow_Utility is
       Vars := Get_Variables
         (Expr,
          Scope                => Get_Flow_Scope (E),
+         Target_Name          => Null_Flow_Id,
          Fold_Functions       => Inputs,
          Use_Computed_Globals => GG_Has_Been_Generated);
       --  Note that Get_Variables calls Has_Variable_Input when it finds a
@@ -4864,6 +4972,7 @@ package body Flow_Utility is
      (N                       : Node_Id;
       Map_Root                : Flow_Id;
       Map_Type                : Entity_Id;
+      Target_Name             : Flow_Id;
       Scope                   : Flow_Scope;
       Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
@@ -4878,6 +4987,7 @@ package body Flow_Utility is
       is (Get_Variables
             (N,
              Scope                   => Scope,
+             Target_Name             => Target_Name,
              Fold_Functions          => Fold_Functions,
              Use_Computed_Globals    => Use_Computed_Globals,
              Expand_Internal_Objects => Expand_Internal_Objects))
@@ -4896,6 +5006,7 @@ package body Flow_Utility is
              Map_Type                => (if Present (Map_Type)
                                          then Map_Type
                                          else Get_Type (N, Scope)),
+             Target_Name             => Target_Name,
              Scope                   => Scope,
              Fold_Functions          => Fold_Functions,
              Use_Computed_Globals    => Use_Computed_Globals,
@@ -5114,14 +5225,17 @@ package body Flow_Utility is
                end loop;
             end;
 
-         when N_Identifier | N_Expanded_Name =>
+         when N_Identifier | N_Expanded_Name | N_Target_Name =>
             if Debug_Trace_Untangle_Record then
                Write_Str ("processing direct assignment");
                Write_Eol;
             end if;
 
             declare
-               E : constant Entity_Id := Entity (N);
+               E : constant Entity_Id :=
+                 (if Nkind (N) = N_Target_Name
+                  then Get_Direct_Mapping_Id (Target_Name)
+                  else Entity (N));
 
                Is_Pure_Constant : constant Boolean :=
                  Fold_Functions /= Inputs
@@ -5144,7 +5258,10 @@ package body Flow_Utility is
                  (Map_Root with delta Facet => Extension_Part);
 
                RHS : Flow_Id_Sets.Set :=
-                 (if Is_Concurrent_Component_Or_Discr (E) then
+                 (if Nkind (N) = N_Target_Name then
+                    Flatten_Variable (Target_Name, Scope)
+
+                  elsif Is_Concurrent_Component_Or_Discr (E) then
                     Flatten_Variable
                       (Add_Component
                          (Direct_Mapping_Id (Sinfo.Scope (E)),
@@ -5168,19 +5285,38 @@ package body Flow_Utility is
                Unused  : Boolean;
 
             begin
-               if Extensions_Visible (E, Scope)
-                 and then
-                   ((Is_Class_Wide_Type (Map_Type)
-                     and then not Is_Class_Wide_Type (Etype (N)))
-                    or else not Extensions_Irrelevant)
+               if (Is_Class_Wide_Type (Map_Type)
+                  and then not Is_Class_Wide_Type (Etype (N)))
+                    or else not Extensions_Irrelevant
                then
                   --  This is an implicit conversion to class wide, or we
                   --  for some other reason care specifically about the
                   --  extensions.
-                  RHS.Insert (Direct_Mapping_Id (E,
-                                                 Facet => Extension_Part));
-                  --  RHS.Insert (Direct_Mapping_Id (E,
-                  --                                 Facet => The_Tag));
+
+                  case Nkind (N) is
+                     when N_Target_Name =>
+                        if Extensions_Visible (Target_Name, Scope) then
+                           RHS.Insert
+                             ((Target_Name with delta
+                                  Facet => Extension_Part));
+
+                           --  RHS.Insert
+                           --    ((Target_Name with delta
+                           --         Facet => The_Tag));
+                        end if;
+
+                     when N_Identifier | N_Expanded_Name =>
+                        if Extensions_Visible (E, Scope) then
+                           RHS.Insert
+                             (Direct_Mapping_Id (E, Facet => Extension_Part));
+
+                           --  RHS.Insert
+                           --    (Direct_Mapping_Id (E, Facet => The_Tag));
+                        end if;
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
                end if;
 
                for Input of RHS loop
@@ -5438,6 +5574,7 @@ package body Flow_Utility is
       is (Get_Variables
             (N,
              Scope                => Scope,
+             Target_Name          => Null_Flow_Id,
              Fold_Functions       => Fold,
              Use_Computed_Globals => Use_Computed_Globals));
 

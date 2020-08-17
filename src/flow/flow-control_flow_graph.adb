@@ -1610,6 +1610,10 @@ package body Flow.Control_Flow_Graph is
                 (Expression (N),
                  Map_Root                => LHS_Root,
                  Map_Type                => LHS_Type,
+                 Target_Name             =>
+                   (if Has_Target_Names (N)
+                    then LHS_Root
+                    else Null_Flow_Id),
                  Scope                   => FA.B_Scope,
                  Fold_Functions          => Inputs,
                  Use_Computed_Globals    => not FA.Generating_Globals,
@@ -1773,6 +1777,9 @@ package body Flow.Control_Flow_Graph is
               (Get_Variables
                  (Expression (N),
                   Scope                => FA.B_Scope,
+                  Target_Name          => (if Has_Target_Names (N)
+                                           then LHS_Root
+                                           else Null_Flow_Id),
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals,
                   Consider_Extensions  => To_Cw));
@@ -1832,6 +1839,7 @@ package body Flow.Control_Flow_Graph is
            (Var_Ex_Use    => Get_Variables
               (Expression (N),
                Scope                => FA.B_Scope,
+               Target_Name          => Null_Flow_Id,
                Fold_Functions       => Inputs,
                Use_Computed_Globals => not FA.Generating_Globals),
             Sub_Called    => Funcs,
@@ -1934,6 +1942,7 @@ package body Flow.Control_Flow_Graph is
       Vars_Used := Get_Variables
                      (Expression (N),
                       Scope                => FA.B_Scope,
+                      Target_Name          => Null_Flow_Id,
                       Fold_Functions       => Inputs,
                       Use_Computed_Globals => not FA.Generating_Globals);
 
@@ -2045,6 +2054,7 @@ package body Flow.Control_Flow_Graph is
               (Var_Ex_Use    => Get_Variables
                  (Cond,
                   Scope                => FA.B_Scope,
+                  Target_Name          => Null_Flow_Id,
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called    => Funcs,
@@ -2272,6 +2282,7 @@ package body Flow.Control_Flow_Graph is
            (Var_Ex_Use    => Get_Variables
               (Condition (N),
                Scope                => FA.B_Scope,
+               Target_Name          => Null_Flow_Id,
                Fold_Functions       => Inputs,
                Use_Computed_Globals => not FA.Generating_Globals),
             Sub_Called    => Funcs,
@@ -2341,6 +2352,7 @@ package body Flow.Control_Flow_Graph is
                     (Var_Ex_Use    => Get_Variables
                        (Condition (Elsif_Statement),
                         Scope                => FA.B_Scope,
+                        Target_Name          => Null_Flow_Id,
                         Fold_Functions       => Inputs,
                         Use_Computed_Globals => not FA.Generating_Globals),
                      Sub_Called    => Funcs,
@@ -2725,6 +2737,7 @@ package body Flow.Control_Flow_Graph is
               (Var_Ex_Use    => Get_Variables
                  (Condition (Iteration_Scheme (N)),
                   Scope                => FA.B_Scope,
+                  Target_Name          => Null_Flow_Id,
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called    => Funcs,
@@ -2855,12 +2868,14 @@ package body Flow.Control_Flow_Graph is
                     Get_Variables
                       (N                    => LB,
                        Scope                => FA.B_Scope,
+                       Target_Name          => Null_Flow_Id,
                        Fold_Functions       => Inputs,
                        Use_Computed_Globals => not FA.Generating_Globals)
                       or
                     Get_Variables
                       (N                    => HB,
                        Scope                => FA.B_Scope,
+                       Target_Name          => Null_Flow_Id,
                        Fold_Functions       => Inputs,
                        Use_Computed_Globals => not FA.Generating_Globals),
                   Sub_Called    => Funcs,
@@ -3464,6 +3479,7 @@ package body Flow.Control_Flow_Graph is
                Var_Ex_Use    => Get_Variables
                  (Cont,
                   Scope                => FA.B_Scope,
+                  Target_Name          => Null_Flow_Id,
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called    => Funcs,
@@ -3592,6 +3608,7 @@ package body Flow.Control_Flow_Graph is
                  (Var_Use       => Get_All_Variables
                     (Prefix (Reference),
                      Scope                => FA.B_Scope,
+                     Target_Name          => Null_Flow_Id,
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Is_Assertion  => True,
                   Is_Loop_Entry => True,
@@ -3945,6 +3962,7 @@ package body Flow.Control_Flow_Graph is
          Variables_Used := Get_Variables
            (Expr,
             Scope                => FA.B_Scope,
+            Target_Name          => Null_Flow_Id,
             Fold_Functions       => Inputs,
             Use_Computed_Globals => not FA.Generating_Globals);
 
@@ -4111,6 +4129,7 @@ package body Flow.Control_Flow_Graph is
                     (N                       => Expr,
                      Map_Root                => Direct_Mapping_Id (E),
                      Map_Type                => Get_Type (E, FA.B_Scope),
+                     Target_Name             => Null_Flow_Id,
                      Scope                   => FA.B_Scope,
                      Fold_Functions          => Inputs,
                      Use_Computed_Globals    => not FA.Generating_Globals,
@@ -4194,6 +4213,7 @@ package body Flow.Control_Flow_Graph is
                      Var_Ex_Use    => Get_Variables
                        (Expr,
                         Scope                => FA.B_Scope,
+                        Target_Name          => Null_Flow_Id,
                         Fold_Functions       => Inputs,
                         Use_Computed_Globals => not FA.Generating_Globals,
                         Consider_Extensions  => To_CW),
@@ -4268,6 +4288,7 @@ package body Flow.Control_Flow_Graph is
                         Var_Ex_Use    => Get_Variables
                           (Constraint_Expr,
                            Scope                => FA.B_Scope,
+                           Target_Name          => Null_Flow_Id,
                            Fold_Functions       => Inputs,
                            Use_Computed_Globals => not FA.Generating_Globals),
                         Sub_Called    => Funcs,
@@ -4815,6 +4836,7 @@ package body Flow.Control_Flow_Graph is
                         when others =>
                            raise Program_Error),
                   Scope                => FA.B_Scope,
+                  Target_Name          => Null_Flow_Id,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called    => Funcs,
                Is_Assertion  => True,
@@ -5096,6 +5118,7 @@ package body Flow.Control_Flow_Graph is
            (Var_Use       => Get_All_Variables
               (N,
                Scope                => FA.B_Scope,
+               Target_Name          => Null_Flow_Id,
                Use_Computed_Globals => not FA.Generating_Globals),
             Sub_Called    => Funcs,
             Is_Assertion  => True,
@@ -5174,6 +5197,7 @@ package body Flow.Control_Flow_Graph is
                Var_Ex_Use    => Get_Variables
                  (Expr,
                   Scope                => FA.B_Scope,
+                  Target_Name          => Null_Flow_Id,
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called    => Funcs,
@@ -5294,6 +5318,7 @@ package body Flow.Control_Flow_Graph is
                  (Var_Ex_Use    => Get_All_Variables
                     (Cond,
                      Scope                => FA.B_Scope,
+                     Target_Name          => Null_Flow_Id,
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Sub_Called    => Funcs,
                   Loops         => Ctx.Current_Loops,
@@ -5344,11 +5369,13 @@ package body Flow.Control_Flow_Graph is
               Get_All_Variables
                 (N                    => Low_Bound (R),
                  Scope                => FA.B_Scope,
+                 Target_Name          => Null_Flow_Id,
                  Use_Computed_Globals => not FA.Generating_Globals)
                 or
               Get_All_Variables
                 (N                    => High_Bound (R),
                  Scope                => FA.B_Scope,
+                 Target_Name          => Null_Flow_Id,
                  Use_Computed_Globals => not FA.Generating_Globals);
 
          begin
@@ -5859,6 +5886,11 @@ package body Flow.Control_Flow_Graph is
       while Ctx.Folded_Function_Checks.Length > Folded_Functions_Marker loop
          declare
             Expr : constant Node_Id := Ctx.Folded_Function_Checks.Last_Element;
+            Target_Name : constant Flow_Id :=
+              (if Nkind (N) = N_Assignment_Statement
+                 and then Has_Target_Names (N)
+               then Path_To_Flow_Id (Name (N))
+               else Null_Flow_Id);
 
             Unchecked : Flow_Id_Sets.Set;
 
@@ -5869,6 +5901,7 @@ package body Flow.Control_Flow_Graph is
                  Get_Variables
                    (Expr,
                     Scope                => FA.B_Scope,
+                    Target_Name          => Target_Name,
                     Fold_Functions       => Ref_Kind,
                     Use_Computed_Globals => not FA.Generating_Globals);
 
