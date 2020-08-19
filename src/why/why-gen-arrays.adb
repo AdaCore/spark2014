@@ -88,17 +88,14 @@ package body Why.Gen.Arrays is
    --  @param Init_Wrapper True to declare a theory for the wrapper type
 
    procedure Create_Rep_Array_Theory_If_Needed
-     (File          : W_Section_Id;
-      E             : Entity_Id;
-      Init_Wrapper  : Boolean;
-      Register_Only : Boolean := False);
+     (File         : W_Section_Id;
+      E            : Entity_Id;
+      Init_Wrapper : Boolean);
    --  Check if the Array theory of the representation type of E has already
    --  been created. If not create it.
    --  @param File the current why file
    --  @param E the entity of type array
    --  @param Init_Wrapper True to create a theory for init wrappers
-   --  @param Register_Only if Register_Only is true, the declaration is not
-   --         emited.
 
    procedure Declare_Ada_Array
      (File         : W_Section_Id;
@@ -1041,10 +1038,9 @@ package body Why.Gen.Arrays is
    ---------------------------------------
 
    procedure Create_Rep_Array_Theory_If_Needed
-     (File          : W_Section_Id;
-      E             : Entity_Id;
-      Init_Wrapper  : Boolean;
-      Register_Only : Boolean := False)
+     (File         : W_Section_Id;
+      E            : Entity_Id;
+      Init_Wrapper : Boolean)
    is
       Name    : constant Symbol := Get_Array_Theory_Name (E, Init_Wrapper);
       Module  : constant W_Module_Id := New_Module (File => No_Symbol,
@@ -1059,9 +1055,7 @@ package body Why.Gen.Arrays is
       --  If Name was inserted it means that the theory is not present:
       --  let's create it.
 
-      if not Register_Only then
-         Create_Rep_Array_Theory (File, E, Module, Symbols, Init_Wrapper);
-      end if;
+      Create_Rep_Array_Theory (File, E, Module, Symbols, Init_Wrapper);
 
       M_Arrays.Include (Key      => Name,
                         New_Item => Symbols);
@@ -1078,11 +1072,7 @@ package body Why.Gen.Arrays is
                           Name =>
                             Img (Get_Concat_Theory_Name (Name)));
          begin
-            if not Register_Only then
-               Declare_Concatenation_Symbols
-                 (E, File, Array_1_Module, Symbols);
-            end if;
-
+            Declare_Concatenation_Symbols (E, File, Array_1_Module, Symbols);
             M_Arrays_1.Include (Key      => Name,
                                 New_Item =>
                                   Init_Array_1_Module (Array_1_Module));
@@ -1099,11 +1089,8 @@ package body Why.Gen.Arrays is
                  New_Module (File => No_Symbol,
                              Name => Img (Get_Logical_Op_Theory_Name (Name)));
             begin
-               if not Register_Only then
-                  Declare_Logical_Operation_Symbols
-                    (E, File, Bool_Op_Module, Symbols);
-               end if;
-
+               Declare_Logical_Operation_Symbols
+                 (E, File, Bool_Op_Module, Symbols);
                M_Arrays_1_Bool_Op.Include
                  (Key      => Name,
                   New_Item => Init_Array_1_Bool_Op_Module (Bool_Op_Module));
@@ -1121,11 +1108,7 @@ package body Why.Gen.Arrays is
                  New_Module (File => No_Symbol,
                              Name => Img (Get_Comparison_Theory_Name (Name)));
             begin
-               if not Register_Only then
-                  Declare_Comparison_Symbols
-                    (E, File, Comp_Module, Symbols);
-               end if;
-
+               Declare_Comparison_Symbols (E, File, Comp_Module, Symbols);
                M_Arrays_1_Comp.Include
                  (Key      => Name,
                   New_Item => Init_Array_1_Comp_Module (Comp_Module));
@@ -1135,25 +1118,22 @@ package body Why.Gen.Arrays is
    end Create_Rep_Array_Theory_If_Needed;
 
    procedure Create_Rep_Array_Theory_If_Needed
-     (File          : W_Section_Id;
-      E             : Entity_Id;
-      Register_Only : Boolean := False)
+     (File : W_Section_Id;
+      E    : Entity_Id)
    is
    begin
       Create_Rep_Array_Theory_If_Needed
-        (File          => File,
-         E             => E,
-         Init_Wrapper  => False,
-         Register_Only => Register_Only);
+        (File         => File,
+         E            => E,
+         Init_Wrapper => False);
 
       --  Also create a theory for the wrapper type if we need one
 
       if Might_Contain_Relaxed_Init (E) then
          Create_Rep_Array_Theory_If_Needed
-           (File          => File,
-            E             => E,
-            Init_Wrapper  => True,
-            Register_Only => Register_Only);
+           (File         => File,
+            E            => E,
+            Init_Wrapper => True);
 
          --  Create conversion functions to and from the wrapper type
 

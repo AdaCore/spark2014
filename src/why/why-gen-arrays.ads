@@ -441,9 +441,8 @@ package Why.Gen.Arrays is
    --          The name is the key to this theory in M_Array(_1) hash maps.
 
    procedure Create_Rep_Array_Theory_If_Needed
-     (File          : W_Section_Id;
-      E             : Entity_Id;
-      Register_Only : Boolean := False);
+     (File : W_Section_Id;
+      E    : Entity_Id);
    --  Check if the Array theory of the representation type of E has already
    --  been created. If not create it.
    --  @param File the current why file
