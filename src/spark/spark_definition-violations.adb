@@ -177,6 +177,18 @@ package body SPARK_Definition.Violations is
                     and then Restrictions.Set (Simple_Barriers)
                   then
                      null;
+
+                  --  Likewise, No_Implicit_Task_Allocations of the Ravenscar
+                  --  profile implies No_Implicit_Task_Allocations and
+                  --  No_Implicit_Protected_Object_Allocations of the Jorvik
+                  --  profile.
+
+                  elsif J in No_Implicit_Task_Allocations
+                           | No_Implicit_Protected_Object_Allocations
+                    and then Restrictions.Set (No_Implicit_Heap_Allocations)
+                  then
+                     null;
+
                   else
                      Ravenscar_Profile_Result := False;
                      return False;
