@@ -1,5 +1,5 @@
 cf_spark.gpr:1:09: no compiler for language "Ada", cannot compile "main.adb"
-gnatprove: Could not locate exec arm-eabi-gnatls
+gnatprove: Could not locate exec arm-elf-gnatls
 gnatprove: error during generation of Global contracts
 gprbuild: *** compilation phase failed
 gprconfig: can't find a toolchain for the following configuration:
