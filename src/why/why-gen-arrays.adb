@@ -2521,8 +2521,7 @@ package body Why.Gen.Arrays is
       Ty        : constant Entity_Id := Retysp (E);
       Type_Name : Unbounded_String;
       Index     : Node_Id := First_Index (Ty);
-      Dim       : constant Positive :=
-        Positive (Number_Dimensions (Ty));
+      Dim       : constant Positive := Positive (Number_Dimensions (Ty));
    begin
       if Ekind (Ty) = E_String_Literal_Subtype then
          return Get_Array_Theory_Name (Etype (Ty), Init_Wrapper);

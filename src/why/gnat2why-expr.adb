@@ -9821,8 +9821,7 @@ package body Gnat2Why.Expr is
       In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
       Expr_Typ           : constant Entity_Id := Type_Of_Node (Expr);
       Nb_Dim             : constant Positive :=
-        (if Ekind (Expr_Typ) = E_String_Literal_Subtype then 1
-         else Integer (Number_Dimensions (Expr_Typ)));
+        Positive (Number_Dimensions (Expr_Typ));
       Needs_Bounds       : constant Boolean :=
         not In_Delta_Aggregate and then not Is_Static_Array_Type (Expr_Typ);
       --  We do not need to give the array bounds as additional arguments to
