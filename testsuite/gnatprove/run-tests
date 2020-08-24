@@ -25,6 +25,11 @@ class ProofTestDriver(AdaCoreLegacyTestDriver):
         return super().get_script_command_line()
 
 
+class FlowTestDriver(ProofTestDriver):
+
+    default_testpy = ["from test_support import *", "do_flow()"]
+
+
 class SPARKTestFinder(TestFinder):
     """Include all direct subdirs of the tests folder."""
 
@@ -84,7 +89,10 @@ class SPARKTestFinder(TestFinder):
         if "test.py" in filenames or "test.cmd" in filenames:
             driver = AdaCoreLegacyTestDriver
         else:
-            driver = ProofTestDriver
+            if "__flow" in testname:
+                driver = FlowTestDriver
+            else:
+                driver = ProofTestDriver
         # This is a valid test, return the ParsedTest object
         return ParsedTest(testname, driver, {}, dirpath)
 
