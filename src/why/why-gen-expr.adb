@@ -2900,7 +2900,7 @@ package body Why.Gen.Expr is
          then Int_Infix_Add
          else MF_BVs (Rep_Type).Add);
    begin
-      pragma Assert (Rep_Type = EW_Int_Type or eLse
+      pragma Assert (Rep_Type = EW_Int_Type or else
                      Why_Type_Is_BitVector (Rep_Type));
 
       return
@@ -2939,7 +2939,7 @@ package body Why.Gen.Expr is
          then Int_Infix_Subtr
          else MF_BVs (Rep_Type).Sub);
    begin
-      pragma Assert (Rep_Type = EW_Int_Type or eLse
+      pragma Assert (Rep_Type = EW_Int_Type or else
                      Why_Type_Is_BitVector (Rep_Type));
 
       return
