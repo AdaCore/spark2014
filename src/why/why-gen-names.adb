@@ -452,6 +452,8 @@ package body Why.Gen.Names is
             return M_BV_Conv_8_32.To_Big;
          elsif To = EW_BitVector_64_Type then
             return M_BV_Conv_8_64.To_Big;
+         elsif To = EW_BitVector_128_Type then
+            return M_BV_Conv_8_128.To_Big;
          else
             raise Program_Error;
          end if;
@@ -464,6 +466,8 @@ package body Why.Gen.Names is
             return M_BV_Conv_16_32.To_Big;
          elsif To = EW_BitVector_64_Type then
             return M_BV_Conv_16_64.To_Big;
+         elsif To = EW_BitVector_128_Type then
+            return M_BV_Conv_16_128.To_Big;
          else
             raise Program_Error;
          end if;
@@ -476,6 +480,8 @@ package body Why.Gen.Names is
             return M_BV_Conv_16_32.To_Small;
          elsif To = EW_BitVector_64_Type then
             return M_BV_Conv_32_64.To_Big;
+         elsif To = EW_BitVector_128_Type then
+            return M_BV_Conv_32_128.To_Big;
          else
             raise Program_Error;
          end if;
@@ -490,6 +496,22 @@ package body Why.Gen.Names is
             return M_BV_Conv_32_64.To_Small;
          elsif To = EW_BitVector_128_Type then
             return M_BV_Conv_64_128.To_Big;
+         else
+            raise Program_Error;
+         end if;
+
+      elsif From = EW_BitVector_128_Type then
+
+         if To = EW_BitVector_8_Type then
+            return M_BV_Conv_8_128.To_Small;
+         elsif To = EW_BitVector_16_Type then
+            return M_BV_Conv_16_128.To_Small;
+         elsif To = EW_BitVector_32_Type then
+            return M_BV_Conv_32_128.To_Small;
+         elsif To = EW_BitVector_128_Type then
+            return M_BV_Conv_64_128.To_Small;
+         elsif To = EW_BitVector_256_Type then
+            return M_BV_Conv_128_256.To_Big;
          else
             raise Program_Error;
          end if;
@@ -521,6 +543,16 @@ package body Why.Gen.Names is
             return M_BV_Conv_16_64.Range_Check;
          else
             return M_BV_Conv_32_64.Range_Check;
+         end if;
+      elsif From = EW_BitVector_128_Type then
+         if To = EW_BitVector_8_Type then
+            return M_BV_Conv_8_128.Range_Check;
+         elsif To = EW_BitVector_16_Type then
+            return M_BV_Conv_16_128.Range_Check;
+         elsif To = EW_BitVector_32_Type then
+            return M_BV_Conv_32_128.Range_Check;
+         else
+            return M_BV_Conv_64_128.Range_Check;
          end if;
       else
          raise Program_Error;

@@ -436,7 +436,7 @@ package Why.Gen.Arrays is
    --  @param Init_Wrapper True for array modules for wrapper for relaxed
    --         initialization.
    --  @return A name of the form
-   --          "Array_(_(Int|BV8|BV16|BV32|BV64))*__t(__init_wrapper)?"
+   --          "Array_(_(Int|BV8|BV16|BV32|BV64|BV128))*__t(__init_wrapper)?"
    --          of the theory associated to the array type E.
    --          The name is the key to this theory in M_Array(_1) hash maps.
 

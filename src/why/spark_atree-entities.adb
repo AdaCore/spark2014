@@ -682,6 +682,8 @@ package body SPARK_Atree.Entities is
          return Uint_32;
       elsif M <= UI_Expon (Uint_2, Uint_64) then
          return Uint_64;
+      elsif M <= UI_Expon (Uint_2, Uint_128) then
+         return Uint_128;
       else
          raise Program_Error;
       end if;

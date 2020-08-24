@@ -1499,6 +1499,8 @@ package body Why.Gen.Arrays is
                            Array_BV32_Rep_Comparison_Ax
                         elsif Base = EW_BitVector_64_Type then
                            Array_BV64_Rep_Comparison_Ax
+                        elsif Base = EW_BitVector_128_Type then
+                           Array_BV128_Rep_Comparison_Ax
                         else raise Program_Error),
                      As_Name       => No_Symbol,
                      Substitutions => Sbst));

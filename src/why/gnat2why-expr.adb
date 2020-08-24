@@ -891,7 +891,10 @@ package body Gnat2Why.Expr is
       Right_Opnd : W_Expr_Id;
       Rep_Type   : W_Type_Id;
       Modulus    : Uint) return W_Expr_Id
-     with Pre => Modulus < UI_Expon (2, 32);
+   with
+     --  GNAT does not support non-binary modulus greater than 2**32, we can
+     --  use that limit to simplify treatment here.
+     Pre => Modulus < UI_Expon (2, 32);
    --  For non binary modular types, it is incorrect to apply the arithmetic
    --  operations - + * on the base type and then apply the modulus on the
    --  result. The special treatment needed in this case is implemented here.
@@ -18450,10 +18453,14 @@ package body Gnat2Why.Expr is
                     (if Modular_Size (Ada_Type) < 16 then EW_BitVector_16_Type
                      else Rep_Type)
                   elsif Modulus < UI_Expon (2, 16) then
-                     (if Modular_Size (Ada_Type) < 32 then EW_BitVector_32_Type
+                    (if Modular_Size (Ada_Type) < 32 then EW_BitVector_32_Type
                      else Rep_Type)
+                  elsif Modulus < UI_Expon (2, 32) then
+                    EW_BitVector_64_Type
                   else
-                     EW_BitVector_64_Type);
+                    --  GNAT does not support non-binary modulus greater than
+                    --  2**32, which we check conservatively here.
+                    raise Program_Error);
                Modulus_Expr : constant W_Expr_Id :=
                  New_Modular_Constant (Value => Modulus,
                                        Typ   => Next_Bv);
@@ -20380,6 +20387,8 @@ package body Gnat2Why.Expr is
                                         32
                                      elsif Modulus_Val = UI_Expon (2, 64) then
                                         64
+                                     elsif Modulus_Val = UI_Expon (2, 128) then
+                                        128
                                      else
                                         raise Program_Error);
       Typ         : constant W_Type_Id := (if Nb_Of_Bits = 8 then
@@ -20390,12 +20399,14 @@ package body Gnat2Why.Expr is
                                               EW_BitVector_32_Type
                                            elsif Nb_Of_Bits = 64 then
                                               EW_BitVector_64_Type
+                                           elsif Nb_Of_Bits = 128 then
+                                              EW_BitVector_128_Type
                                            else raise Program_Error);
       T           : W_Expr_Id;
 
    begin
       --  ??? it is assumed that rotate calls are only valid on actual
-      --  unsigned_8/16/32/64 types with the corresponding 'Size
+      --  unsigned_8/16/32/64/128 types with the corresponding 'Size
 
       Get_Unqualified_Decoded_Name_String (Chars (Subp));
 

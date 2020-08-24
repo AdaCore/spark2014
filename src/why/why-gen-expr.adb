@@ -2600,7 +2600,8 @@ package body Why.Gen.Expr is
       if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
         Base = EW_BitVector_32_Type or else
-        Base = EW_BitVector_64_Type
+        Base = EW_BitVector_64_Type or else
+        Base = EW_BitVector_128_Type
       then
          return
            New_Call (Domain => Domain,
@@ -3227,7 +3228,8 @@ package body Why.Gen.Expr is
       if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
         Base = EW_BitVector_32_Type or else
-        Base = EW_BitVector_64_Type
+        Base = EW_BitVector_64_Type or else
+        Base = EW_BitVector_128_Type
       then
          return
            New_Call (Domain => Domain,
@@ -3623,7 +3625,8 @@ package body Why.Gen.Expr is
       if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
         Base = EW_BitVector_32_Type or else
-        Base = EW_BitVector_64_Type
+        Base = EW_BitVector_64_Type or else
+        Base = EW_BitVector_128_Type
       then
          return
            New_Call (Domain => Domain,
