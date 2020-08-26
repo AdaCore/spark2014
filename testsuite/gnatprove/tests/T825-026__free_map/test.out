@@ -1,0 +1,8 @@
+a.adb:12:08: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+a.adb:16:14: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+a.adb:16:35: info: pointer dereference check proved (CVC4: 1 VC)
+a.adb:18:15: info: pointer dereference check proved (CVC4: 1 VC)
+a.adb:18:21: info: absence of memory leak proved (CVC4: 1 VC)
+a.adb:19:14: medium: memory leak might occur
+a.adb:20:16: info: absence of memory leak proved (CVC4: 1 VC)
+a.adb:23:20: info: absence of memory leak proved (CVC4: 1 VC)
