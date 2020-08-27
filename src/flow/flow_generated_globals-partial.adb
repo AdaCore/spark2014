@@ -2447,6 +2447,7 @@ package body Flow_Generated_Globals.Partial is
          --  seeded into constant graph.
          --  ??? the graph might include constants that were not seeded, but
          --  added while growing it; but this over-approximation is safe.
+
          if Constant_Graph.Contains (E) then
             declare
                Inputs : constant Node_Lists.List :=
@@ -2456,9 +2457,9 @@ package body Flow_Generated_Globals.Partial is
                --  If we know that constant has variable input, then don't even
                --  register it in the ALI file, so it will be treated as an
                --  ordinary global (i.e. variable).
+
                if Inputs /= Variable then
-                  GG_Register_Constant_Calls
-                    (E, Resolved_Inputs (E, Constant_Graph));
+                  GG_Register_Constant_Calls (E, Inputs);
                end if;
             end;
          end if;

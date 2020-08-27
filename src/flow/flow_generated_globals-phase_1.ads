@@ -31,6 +31,7 @@ package Flow_Generated_Globals.Phase_1 is
    -----------------
    -- Registering --
    -----------------
+
    procedure GG_Register_Constant_Calls
      (E     : Entity_Id;
       Calls : Node_Lists.List)
