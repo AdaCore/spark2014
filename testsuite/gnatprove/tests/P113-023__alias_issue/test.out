@@ -1,7 +1,7 @@
 aalias.adb:12:15: info: postcondition proved (CVC4: 2 VC)
 aalias.adb:14:07: info: initialization of "B" proved
-aalias.adb:23:17: medium: overflow check might fail (e.g. when B1'First = 9223372036854775807 and B1'Last = 18446744073709551615 and B2'Last = 18446744073709551615) [reason for check: value must fit in a 64-bits machine integer]
-aalias.adb:23:29: medium: overflow check might fail (e.g. when B2'First = 9223372036854775807 and B2'Last = 18446744073709551615) [reason for check: value must fit in a 64-bits machine integer]
+aalias.adb:23:17: info: overflow check proved (CVC4: 1 VC)
+aalias.adb:23:29: info: overflow check proved (CVC4: 1 VC)
 aalias.adb:26:25: info: cannot unroll loop (too many loop iterations)
 aalias.adb:27:50: info: index check proved (CVC4: 2 VC)
 aalias.adb:27:50: medium: array index check might fail (e.g. when B1'First = 0 and B2'First = 0 and I = 18446744073709551615) [reason for check: result of addition must be a valid index into the array]
