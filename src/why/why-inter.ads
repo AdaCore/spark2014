@@ -31,7 +31,6 @@ with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
-with Why.Atree.Tables;     use Why.Atree.Tables;
 with Why.Ids;              use Why.Ids;
 with Why.Types;            use Why.Types;
 

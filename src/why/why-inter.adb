@@ -26,7 +26,6 @@
 with Ada.Containers.Hashed_Maps;
 with Flow_Generated_Globals.Phase_2;
 with Flow_Utility;
-with Flow_Types;                 use Flow_Types;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Namet;                      use Namet;
 with Snames;                     use Snames;
@@ -42,6 +41,7 @@ with Why.Atree.Accessors;        use Why.Atree.Accessors;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Atree.Modules;          use Why.Atree.Modules;
 with Why.Atree.Mutators;         use Why.Atree.Mutators;
+with Why.Atree.Tables;           use Why.Atree.Tables;
 with Why.Atree.Traversal;        use Why.Atree.Traversal;
 with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Arrays;             use Why.Gen.Arrays;

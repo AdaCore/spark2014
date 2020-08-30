@@ -73,7 +73,6 @@ with Why.Atree.Builders;             use Why.Atree.Builders;
 with Why.Atree.Accessors;            use Why.Atree.Accessors;
 with Why.Atree.Mutators;             use Why.Atree.Mutators;
 with Why.Atree.Modules;              use Why.Atree.Modules;
-with Why.Atree.Tables;               use Why.Atree.Tables;
 with Why.Gen.Arrays;                 use Why.Gen.Arrays;
 with Why.Gen.Binders;                use Why.Gen.Binders;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
