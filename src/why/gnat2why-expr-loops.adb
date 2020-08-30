@@ -38,7 +38,6 @@ with VC_Kinds;                use VC_Kinds;
 with Why;                     use Why;
 with Why.Atree.Builders;      use Why.Atree.Builders;
 with Why.Atree.Modules;       use Why.Atree.Modules;
-with Why.Atree.Tables;        use Why.Atree.Tables;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;
