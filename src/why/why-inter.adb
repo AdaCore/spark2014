@@ -83,7 +83,12 @@ package body Why.Inter is
    --  entity when all we have is its fully scoped name (for hidden effects of
    --  other units).
 
-   function Compute_Ada_Node_Set (S : Why_Node_Sets.Set) return Node_Sets.Set;
+   function Compute_Ada_Node_Set (S : Why_Node_Sets.Set) return Node_Sets.Set
+     with Post => (for all N of Compute_Ada_Node_Set'Result =>
+                     Nkind (N) in N_Entity | N_Aggregate | N_Delta_Aggregate
+                       or else
+                     (Nkind (N) = N_Attribute_Reference
+                      and then Attribute_Name (N) = Name_Access));
    --  Transform a module set into a node set by taking the Ada_Node of each
    --  element.
 

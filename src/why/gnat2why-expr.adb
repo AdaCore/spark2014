@@ -1709,7 +1709,7 @@ package body Gnat2Why.Expr is
             --  not in SPARK or if it is a local object of the unit.
 
             elsif
-              not (Nkind (Obj) /= N_Aggregate
+              not (Nkind (Obj) in N_Entity
                    and then (Is_Object (Obj) or else Is_Named_Number (Obj)))
               or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
               or else (Present (Scope)
