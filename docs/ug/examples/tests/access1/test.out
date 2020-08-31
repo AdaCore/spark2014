@@ -1,0 +1,8 @@
+
+test.adb:9:21: dereference from "X" is not readable
+    9 |   pragma Assert (X.all = 11); --  but X cannot, or we would have an alias
+      |                    ^ here
+  object was moved at line 6
+    6 |   Y := X;                     --  ownership of X is transferred to Y
+      |        ^ here
+gnatprove: error during flow analysis and proof
