@@ -66,9 +66,6 @@ package body Xtree_Sinfo is
       New_Class ("W_Any_Node",
                  W_Type,
                  W_Module);
-      New_Class ("W_Generic_Theory",
-                 W_Theory_Declaration,
-                 W_Custom_Declaration);
 
       --  AST
 
@@ -718,23 +715,6 @@ package body Xtree_Sinfo is
       New_Field (W_Theory_Declaration,
                  "Comment", "Symbol");
       Set_Domain (W_Theory_Declaration, EW_Prog);
-
-      ---------------------------
-      -- W_Custom_Substitution --
-      ---------------------------
-
-      New_Field (W_Custom_Substitution,
-                 "From", "Symbol");
-
-      New_Field (W_Custom_Substitution,
-                 "To", "W_Any_Node", Id_One);
-
-      --------------------------
-      -- W_Custom_Declaration --
-      --------------------------
-
-      New_Field (W_Custom_Declaration,
-                 "File_Name", "Symbol");
 
    end Build_AST;
 
