@@ -173,6 +173,7 @@ package Flow_Generated_Globals is
       Tasking          : Name_Tasking_Info;
 
       Has_Terminate    : Boolean;
+      Has_Subp_Variant : Boolean;
       Nonreturning     : Boolean;
       Nonblocking      : Boolean;
    end record;

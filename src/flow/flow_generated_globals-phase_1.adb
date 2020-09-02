@@ -183,6 +183,7 @@ package body Flow_Generated_Globals.Phase_1 is
       Tasking          : Tasking_Info;
 
       Has_Terminate    : Boolean;
+      Has_Subp_Variant : Boolean;
       Nonreturning     : Boolean;
       Nonblocking      : Boolean)
    is
@@ -403,6 +404,7 @@ package body Flow_Generated_Globals.Phase_1 is
          --  ??? use Is_Proper_Callee here
          if Ekind (E) /= E_Task_Type then
             Serialize (Has_Terminate);
+            Serialize (Has_Subp_Variant);
             Serialize (Nonreturning);
             Serialize (Nonblocking);
          end if;

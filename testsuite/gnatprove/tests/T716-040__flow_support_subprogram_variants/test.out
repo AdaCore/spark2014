@@ -1,0 +1,71 @@
+foo.adb:6:10: info: subprogram variant proved (CVC4: 1 VC)
+foo.adb:6:38: info: range check proved (CVC4: 1 VC)
+foo.adb:10:14: info: subprogram "Recursive_Proc_W_Variant_Terminating" will terminate, terminating annotation has been proved
+foo.adb:10:14: warning: subprogram "Recursive_Proc_W_Variant_Terminating" has no effect
+foo.adb:17:10: info: subprogram variant proved (CVC4: 1 VC)
+foo.adb:17:50: info: range check proved (CVC4: 1 VC)
+foo.adb:21:04: warning: analyzing unreferenced procedure "Call_To_Recursive_W_Variant_A"
+foo.adb:21:14: info: subprogram "Call_To_Recursive_W_Variant_A" will terminate, terminating annotation has been proved
+foo.adb:21:14: warning: subprogram "Call_To_Recursive_W_Variant_A" has no effect
+foo.adb:26:04: warning: analyzing unreferenced procedure "Call_To_Recursive_W_Variant_B"
+foo.adb:26:14: warning: subprogram "Call_To_Recursive_W_Variant_B" has no effect
+foo.adb:29:18: medium: loop might be nonterminating, terminating annotation on "Call_To_Recursive_W_Variant_B" could be incorrect
+foo.adb:34:14: info: subprogram "Mutually_A" will terminate, terminating annotation has been proved
+foo.adb:35:06: info: data dependencies proved
+foo.adb:40:06: info: data dependencies proved
+foo.adb:46:10: info: subprogram variant proved (CVC4: 1 VC)
+foo.adb:46:24: info: range check proved (CVC4: 1 VC)
+foo.adb:53:10: info: subprogram variant proved (CVC4: 1 VC)
+foo.adb:53:24: info: range check proved (CVC4: 1 VC)
+foo.adb:58:06: info: data dependencies proved
+foo.adb:61:14: info: subprogram "Mutually_D" will terminate, terminating annotation has been proved
+foo.adb:62:06: info: data dependencies proved
+foo.adb:68:10: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
+foo.adb:68:24: info: range check proved (CVC4: 1 VC)
+foo.adb:75:10: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
+foo.adb:75:24: info: range check proved (CVC4: 1 VC)
+foo.adb:80:06: info: data dependencies proved
+foo.adb:82:14: info: subprogram "Mutually_F" will terminate, terminating annotation has been proved
+foo.adb:83:06: info: data dependencies proved
+foo.adb:90:10: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
+foo.adb:90:24: info: range check proved (CVC4: 1 VC)
+foo.adb:97:10: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
+foo.adb:97:24: info: range check proved (CVC4: 1 VC)
+foo.adb:102:06: info: data dependencies proved
+foo.adb:105:06: info: data dependencies proved
+foo.adb:112:10: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
+foo.adb:112:24: info: range check proved (CVC4: 1 VC)
+foo.adb:122:10: medium: call to "Mutually_G" might be nonterminating, terminating annotation on "Mutually_H" could be incorrect
+foo.adb:122:10: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
+foo.adb:122:24: info: range check proved (CVC4: 1 VC)
+foo.adb:128:06: info: data dependencies proved
+foo.adb:131:06: info: data dependencies proved
+foo.adb:138:10: info: subprogram variant proved (CVC4: 1 VC)
+foo.adb:138:24: info: range check proved (CVC4: 1 VC)
+foo.adb:148:10: info: subprogram variant proved (CVC4: 1 VC)
+foo.adb:148:10: medium: call to "Mutually_I" might be nonterminating, terminating annotation on "Mutually_J" could be incorrect
+foo.adb:148:24: info: range check proved (CVC4: 1 VC)
+foo.adb:152:14: info: subprogram "Invisible_Call_To_Nonterminating" will terminate, terminating annotation has been proved
+foo.adb:152:14: warning: subprogram "Invisible_Call_To_Nonterminating" has no effect
+foo.adb:153:24: info: data dependencies proved
+foo.adb:154:62: info: data dependencies proved
+foo.adb:155:24: info: data dependencies proved
+foo.adb:158:28: medium: call to "C" might be nonterminating, terminating annotation on "B" could be incorrect
+foo.adb:170:13: info: implicit function contract might not be available on recursive calls
+foo.adb:170:13: info: subprogram "Subnested_Package" will terminate, terminating annotation has been proved
+foo.adb:174:16: info: implicit function contract might not be available on recursive calls
+foo.adb:177:52: info: subprogram variant proved (CVC4: 1 VC)
+foo.adb:177:73: info: range check proved (CVC4: 1 VC)
+foo.adb:186:17: info: subprogram variant proved (CVC4: 1 VC)
+foo.adb:186:24: info: range check proved (CVC4: 1 VC)
+foo.adb:190:13: info: implicit function contract might not be available on recursive calls
+foo.adb:196:52: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
+foo.adb:196:84: info: range check proved (CVC4: 1 VC)
+foo.adb:205:10: medium: call to "Aux" might be nonterminating, terminating annotation on "Subnested_Package_Wo_Variant" could be incorrect
+foo.adb:205:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
+foo.adb:205:24: info: range check proved (CVC4: 1 VC)
+foo.adb:209:13: info: implicit function contract might not be available on recursive calls
+foo.adb:209:13: info: subprogram "Function_W_Nested_Package" will terminate, terminating annotation has been proved
+foo.adb:214:49: info: subprogram variant proved (CVC4: 1 VC)
+foo.adb:214:78: info: range check proved (CVC4: 1 VC)
+foo.ads:3:14: warning: subprogram "Recursive_Proc_W_Variant" has no effect

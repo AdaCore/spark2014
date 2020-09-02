@@ -257,7 +257,7 @@ package Flow_Generated_Globals.Phase_2 is
 
    function Is_Recursive (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then
-               Ekind (E) in E_Entry | E_Procedure | E_Function;
+               Ekind (E) in E_Entry | E_Procedure | E_Function | E_Package;
    --  Returns True iff subprogram E calls (directly or indirectly) itself,
    --  i.e. is a recursive subprogram.
 
@@ -279,9 +279,23 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True iff subprogram E calls (directly or indirectly) function
    --  Ada.Task_Identification.Current_Task.
 
+   function Calls_Potentially_Nonreturning_Subprogram (E : Entity_Id)
+                                                       return Boolean
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Package | E_Procedure;
+   --  Returns True iff the E calls potentially nonreturning subprograms,
+   --  trusting their Terminating annotations.
+
    function Get_Constituents (E : Entity_Name) return Name_Sets.Set
    with Pre => GG_Is_Abstract_State (E);
    --  Returns the constituents for abstract state E
+
+   function Is_Directly_Nonreturning (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Package | E_Procedure;
+   --  Returns True iff E does not return directly because of a
+   --  non-returning statement.
+   --
+   --  Note: E may still not return because of a call to non-returning
+   --  subprogram or because of recursion.
 
    function Is_Potentially_Nonreturning_Internal (E : Entity_Id)
                                                   return Boolean

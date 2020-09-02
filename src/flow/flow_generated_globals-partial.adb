@@ -163,7 +163,8 @@ package body Flow_Generated_Globals.Partial is
       --  what feeds into the closure/fold in phase 2 to actually work
       --  out what is going on.
 
-      Has_Terminate : Boolean;
+      Has_Terminate    : Boolean;
+      Has_Subp_Variant : Boolean;
       --  Only meaningful for subprograms and entries
 
       Nonreturning       : Boolean;
@@ -1904,6 +1905,17 @@ package body Flow_Generated_Globals.Partial is
             then Has_Terminate_Annotation (E)
             else Meaningless);
 
+         --  Subprogram_Variant stuff, picked no matter if body is in SPARK.
+         --  Nested packages inherit the Subprogram_Variant aspect from their
+         --  enclosing subprogram, for termination analysis purposes.
+         Contr.Has_Subp_Variant :=
+           (if Is_Callable (E)
+               or else (Ekind (E) = E_Package
+                        and then not Is_Library_Level_Entity (E))
+            then Has_Subprogram_Variant
+              (Subprograms.Enclosing_Subprogram (E))
+            else Meaningless);
+
          Contr.Calls_Current_Task :=
            Includes_Current_Task (Contr.Direct_Calls);
 
@@ -2512,6 +2524,7 @@ package body Flow_Generated_Globals.Partial is
                                  else Node_Sets.Empty_Set),
 
             Has_Terminate    => Contr.Has_Terminate,
+            Has_Subp_Variant => Contr.Has_Subp_Variant,
             Nonreturning     => Contr.Nonreturning,
             Nonblocking      => Contr.Nonblocking,
 

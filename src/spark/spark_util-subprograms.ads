@@ -134,6 +134,38 @@ package SPARK_Util.Subprograms is
    --            type
    --  @return the enclosing protected type
 
+   function Enclosing_Subprogram (E : Entity_Id) return Entity_Id
+     with Pre  => Ekind (E) in E_Function
+                             | E_Procedure
+                             | E_Task_Type
+                             | Entry_Kind
+                             | E_Package,
+          Contract_Cases =>
+               ((Ekind (E) in E_Function
+                           | E_Procedure
+                           | E_Task_Type
+                           | Entry_Kind)
+                =>
+                  Enclosing_Subprogram'Result = E,
+
+                Ekind (E) = E_Package and then Is_Library_Level_Entity (E)
+                =>
+                  Enclosing_Subprogram'Result = Empty,
+
+                Ekind (E) = E_Package and then not Is_Library_Level_Entity (E)
+                =>
+                  Ekind (Enclosing_Subprogram'Result) in E_Function
+                                                       | E_Procedure
+                                                       | E_Task_Type
+                                                       | Entry_Kind,
+
+                others => False);
+   --  @param E is an entry, subprogram, task, package
+   --  @return If E is an entry, subprogram or task, E is returned.
+   --           If E is not a library-level package, the first enclosing
+   --           subprogram, task or entry is returned. Otherwise, Empty is
+   --           returned.
+
    function Find_Contract (E : Entity_Id; Prag : Pragma_Id) return Node_Id
    with Pre  => (case Prag is
                     when Pragma_Global
@@ -341,6 +373,14 @@ package SPARK_Util.Subprograms is
        Ekind (E) in E_Function | E_Procedure | Entry_Kind | E_Subprogram_Type;
    --  @param E subprogram
    --  @return True iff Extensions_Visible is specified for E
+
+   function Has_Subprogram_Variant (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in Entry_Kind
+                          | E_Function
+                          | E_Procedure
+                          | E_Task_Type;
+   --  @param E is a subprogram, entry or task
+   --  @return True iff E is annotated with the Subprogram_Variant aspect
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Function  |
