@@ -9822,6 +9822,10 @@ package body Gnat2Why.Expr is
       --  delta aggregate if and only if Update_Prefix has been supplied.
 
       In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
+      Base_First_Index   : constant Node_Id :=
+        First_Index (Type_Of_Node (Etype (Etype (Expr))));
+      --  We should use the aggregate's type Etype for checks as the aggregate
+      --  may have incorrect index bounds.
       Expr_Typ           : constant Entity_Id := Type_Of_Node (Expr);
       Nb_Dim             : constant Positive :=
         Positive (Number_Dimensions (Expr_Typ));
@@ -9838,11 +9842,9 @@ package body Gnat2Why.Expr is
       -----------------------
 
       procedure Get_Aggregate_Elements
-        (Expr         : Node_Id;
-         Values       : out Node_Lists.List;
-         Types        : out Node_Lists.List;
-         Index_Values : out Node_Lists.List;
-         Index_Types  : out Node_Lists.List);
+        (Expr   : Node_Id;
+         Values : out Node_Lists.List;
+         Types  : out Node_Lists.List);
       --  Extract parts of the aggregate Expr that will be passed in
       --  parameter to the logic function for the aggregate.
       --  Collect these parameters in Values, with the corresponding type
@@ -9851,9 +9853,6 @@ package body Gnat2Why.Expr is
       --  (possibly multi-dimensional) aggregate.
       --  For a delta aggregate, the choice indexes are
       --  collected in Values in addition to the elements.
-      --  For a normal aggregate, each element of Index_Values is a
-      --  component_association whose choices need to be checked against
-      --  the type at the same position in Base_Types.
 
       procedure Generate_Logic_Function
         (Expr   : Node_Id;
@@ -9877,18 +9876,17 @@ package body Gnat2Why.Expr is
       --  mapping between Ada nodes and corresponding Why identifiers.
 
       function Complete_Translation
-        (Params       : Transformation_Params;
-         Domain       : EW_Domain;
-         Func         : W_Identifier_Id;
-         Values       : Node_Lists.List;
-         Types        : Node_Lists.List;
-         Index_Values : Node_Lists.List;
-         Index_Types  : Node_Lists.List) return W_Expr_Id;
+        (Params : Transformation_Params;
+         Domain : EW_Domain;
+         Func   : W_Identifier_Id;
+         Values : Node_Lists.List;
+         Types  : Node_Lists.List) return W_Expr_Id;
       --  Given a logic function Func previously defined for the aggregate,
       --  generate the actual call to Func by translating arguments Values
       --  of type Types in the context given by Params.
 
-      procedure Insert_Check_For_Ranges (T : in out W_Expr_Id)
+      procedure Insert_Check_For_Choices
+        (T : in out W_Expr_Id; Array_Expr : W_Expr_Id)
       with Pre => Domain = EW_Prog;
       --  Insert checks for range constraints
 
@@ -9897,13 +9895,11 @@ package body Gnat2Why.Expr is
       --------------------------
 
       function Complete_Translation
-        (Params       : Transformation_Params;
-         Domain       : EW_Domain;
-         Func         : W_Identifier_Id;
-         Values       : Node_Lists.List;
-         Types        : Node_Lists.List;
-         Index_Values : Node_Lists.List;
-         Index_Types  : Node_Lists.List) return W_Expr_Id
+        (Params : Transformation_Params;
+         Domain : EW_Domain;
+         Func   : W_Identifier_Id;
+         Values : Node_Lists.List;
+         Types  : Node_Lists.List) return W_Expr_Id
       is
          use Node_Lists;
 
@@ -9979,143 +9975,18 @@ package body Gnat2Why.Expr is
                         Args     => Args & Bnd_Args,
                         Typ      => Type_Of_Node (Expr));
 
-         --  For delta aggregates, choices are passed as parameters and
-         --  checks inserted in Transform_Expr when arguments for the
-         --  function call are computed, above, so we don't need to check
-         --  absence of RTE for them. We still need to check that choices are
-         --  in the bounds of the updated expression. In the case of simple
-         --  values of an array constrained type, this check may be redundant.
+         --  Insert checks for the choices of the aggregate
 
-         if In_Delta_Aggregate and then Domain = EW_Prog then
-            Value := Index_Values.First;
-            Typ   := Index_Types.First;
+         if Domain = EW_Prog then
+            Insert_Check_For_Choices
+              (R, (if In_Delta_Aggregate then Args (1) else Why_Empty));
 
-            declare
-               Checks : W_Statement_Sequence_Id := Void_Sequence;
-               Choice : Node_Id;
-               Tmp    : W_Identifier_Id;
-            begin
-               while Value /= No_Element loop
-                  Choice := First (Choices (Element (Value)));
-                  while Present (Choice) loop
-
-                     --  For multidimensional 'Update, we generate an
-                     --  index check for each value of the choice aggregate.
-                     --  For (I1, I2) => ... we generate:
-                     --  index_check <I1>; index_check <I2>
-
-                     if Nb_Dim > 1 then
-                        pragma Assert (Nkind (Choice) = N_Aggregate);
-                        declare
-                           Multi_Exprs      : constant List_Id :=
-                             Expressions (Choice);
-                           Multi_Expression : Node_Id :=
-                             Nlists.First (Multi_Exprs);
-                        begin
-                           for I in 1 .. Nb_Dim loop
-                              pragma Assert (Present (Multi_Expression));
-                              Sequence_Append
-                                (Checks,
-                                 (New_Ignore
-                                      (Prog => Do_Index_Check
-                                         (Ada_Node => Multi_Expression,
-                                          Arr_Expr => Args (1),
-                                          W_Expr   => Transform_Expr
-                                            (Expr          => Multi_Expression,
-                                             Domain        => EW_Pterm,
-                                             Params        => Params,
-                                             Expected_Type =>
-                                               Nth_Index_Rep_Type_No_Bool
-                                                 (Expr_Typ, I)),
-                                          Dim      => I))));
-                              Next (Multi_Expression);
-                           end loop;
-                        end;
-
-                     --  Choices of unary aggregates can involve ranges or
-                     --  subtype indications in addition to values. We reuse
-                     --  translation of choices to generate:
-                     --  let index = any <Index_Type> { result in <Choice> } in
-                     --    index_check index
-
-                     else
-                        Tmp := New_Temp_Identifier
-                          (Base_Name => "index",
-                           Typ       => Base_Why_Type_No_Bool (Element (Typ)));
-
-                        Sequence_Append
-                          (Checks,
-                           (New_Ignore
-                                (Prog => New_Binding
-                                   (Name    => Tmp,
-                                    Def     => New_Any_Expr
-                                      (Post        =>
-                                           +Transform_Discrete_Choice
-                                         (Choice      => Choice,
-                                          Choice_Type => Element (Typ),
-                                          Expr        =>
-                                            +New_Result_Ident (Get_Typ (Tmp)),
-                                          Domain      => EW_Pred,
-                                          Params      => Params),
-                                       Return_Type => Get_Typ (Tmp),
-                                       Labels      => Symbol_Sets.Empty_Set),
-                                    Context => +Do_Index_Check
-                                      (Ada_Node => Choice,
-                                       Arr_Expr => Args (1),
-                                       W_Expr   => +Tmp,
-                                       Dim      => 1)))));
-                     end if;
-                     Next (Choice);
-                  end loop;
-                  Next (Value);
-                  Next (Typ);
-               end loop;
-               R := +Sequence (+Checks, +R);
-
-               R := Binding_For_Temp
-                 (Domain  => EW_Prog,
-                  Tmp     => Args (1),
-                  Context => R);
-            end;
-
-         --  Special case for choices of normal aggregate:
-         --  In programs, we generate a check that all the choices are
-         --  compatible with their index subtype:
-         --  . a non-static value of choice must belong to the index subtype
-         --  . the range_constraint of a subtype_indication must be compatible
-         --    with the given subtype.
-         --  Note that checks are done with respect to the aggregate's type
-         --  Etype, as the aggregate's Etype may not respect its parent's
-         --  constraints.
-
-         elsif not In_Delta_Aggregate and then Domain = EW_Prog then
-            Value    := Index_Values.First;
-            Typ      := Index_Types.First;
-
-            declare
-               Checks : W_Statement_Sequence_Id := Void_Sequence;
-            begin
-               while Value /= No_Element loop
-                  Sequence_Append
-                    (Checks,
-                     (New_Ignore
-                          (Prog =>
-                             +Transform_Discrete_Choices
-                             (Choices      => Choices (Element (Value)),
-                              Choice_Type  => Element (Typ),
-                              Matched_Expr =>
-                              --  The value does not matter here
-                                New_Discrete_Constant
-                                  (Value => Uint_0,
-                                   Typ   =>
-                                     Base_Why_Type_No_Bool (Element (Typ))),
-                              Cond_Domain  => EW_Prog,
-                              Params       => Params))));
-                  Next (Value);
-                  Next (Typ);
-               end loop;
-               R := +Sequence (+Checks, +R);
-            end;
+            if In_Delta_Aggregate then
+               R := Binding_For_Temp (Ada_Node => Expr,
+                                      Domain   => Domain,
+                                      Tmp      => Args (1),
+                                      Context  => R);
+            end if;
          end if;
 
          --  If the aggregate has known bounds, we use this information if it
@@ -10129,8 +10000,7 @@ package body Gnat2Why.Expr is
             declare
                Temp   : constant W_Expr_Id := New_Temp_For_Expr (R, True);
                A1, A2 : W_Prog_Id;
-               Typ    : constant Node_Id := First_Index
-                 (Retysp (Etype (Etype (Expr))));
+               Typ    : constant Node_Id := Base_First_Index;
                W_Typ  : constant W_Type_Id :=
                  (if Typ = Standard.Types.Empty then EW_Int_Type else
                      Base_Why_Type_No_Bool (Typ));
@@ -10179,12 +10049,6 @@ package body Gnat2Why.Expr is
             R := +Insert_Predicate_Check (Ada_Node => Expr,
                                           Check_Ty => Retysp (Etype (Expr)),
                                           W_Expr   => +R);
-         end if;
-
-         --  Insert checks for subtype indications in ranges in the aggregate
-
-         if Domain = EW_Prog then
-            Insert_Check_For_Ranges (R);
          end if;
 
          return R;
@@ -10556,16 +10420,11 @@ package body Gnat2Why.Expr is
       ----------------------------
 
       procedure Get_Aggregate_Elements
-        (Expr         : Node_Id;
-         Values       : out Node_Lists.List;
-         Types        : out Node_Lists.List;
-         Index_Values : out Node_Lists.List;
-         Index_Types  : out Node_Lists.List)
+        (Expr   : Node_Id;
+         Values : out Node_Lists.List;
+         Types  : out Node_Lists.List)
       is
-         Typ     : constant Entity_Id := Type_Of_Node (Etype (Etype (Expr)));
-         --  We should use the aggregate's type Etype here for the checks as
-         --  the aggregate's type may have incorrect index bounds.
-         Num_Dim : constant Pos       := Number_Dimensions (Typ);
+         Num_Dim : constant Pos := Number_Dimensions (Expr_Typ);
 
          -----------------------
          -- Local subprograms --
@@ -10598,85 +10457,73 @@ package body Gnat2Why.Expr is
             Rng    : Node_Id;
 
          begin
-            --  If Expr_Or_Association is a component association, first we
-            --  go through the component association and collect the
-            --  choices to be used later for:
-            --  * Index checks, in the case of normal aggregates.
-            --  * Parameters to the logic function, in the case of delta
-            --  aggregates.
+            --  For delta aggregates, we need the choices as parameters since
+            --  they can be dynamic. If Expr_Or_Association is a component
+            --  association, first we go through the component association and
+            --  collect them.
 
-            if Nkind (Expr_Or_Association) = N_Component_Association
+            if In_Delta_Aggregate
+              and then Nkind (Expr_Or_Association) = N_Component_Association
               and then not Is_Others_Choice (Choices (Expr_Or_Association))
             then
-               Index_Values.Append (Expr_Or_Association);
-               Index_Types.Append (Etype (Index));
+               --  Collect the choices as parameters. Populate Values with
+               --  the parameters needed.
 
-               --  For delta aggregates we also need the choices as
-               --  parameters since they can be dynamic
+               Choice := First (Choices (Expr_Or_Association));
+               while Present (Choice) loop
+                  case Nkind (Choice) is
+                     when N_Range =>
 
-               if In_Delta_Aggregate then
+                        --  The high and low bounds of a range both
+                        --  need to be parameters. We don't use the index
+                        --  type for them as bounds can be outside of the
+                        --  index sutype in case of empty ranges.
 
-                  --  Collect the choices as parameters.
-                  --  We cannot use Index_Values directly since they store
-                  --  the whole associations. Instead, populate Values with
-                  --  the parameters needed.
+                        Rng := Get_Range (Choice);
+                        Values.Append (Low_Bound (Rng));
+                        Types.Append (Etype (Low_Bound (Rng)));
+                        Values.Append (High_Bound (Rng));
+                        Types.Append (Etype (High_Bound (Rng)));
 
-                  Choice := First (Choices (Expr_Or_Association));
-                  while Present (Choice) loop
-                     case Nkind (Choice) is
-                        when N_Range =>
+                     when N_Aggregate =>
 
-                           --  The high and low bounds of a range both
-                           --  need to be parameters. We don't use the index
-                           --  type for them as bounds can be outside of the
-                           --  index sutype in case of empty ranges.
+                        --  This is a special choice, the LHS of an
+                        --  association of a 'Update of a
+                        --  multi-dimensional array,
+                        --  for example: (I, J, K) of
+                        --  'Update((I, J, K) => New_Val)
 
-                           Rng := Get_Range (Choice);
-                           Values.Append (Low_Bound (Rng));
-                           Types.Append (Etype (Low_Bound (Rng)));
-                           Values.Append (High_Bound (Rng));
-                           Types.Append (Etype (High_Bound (Rng)));
+                        pragma Assert
+                          (Dim < Num_Dim and then Dim = 1
+                           and then No (Component_Associations (Choice)));
+                        declare
+                           Multi_Exprs      : constant List_Id :=
+                             Expressions (Choice);
+                           Multi_Expression : Node_Id :=
+                             Nlists.First (Multi_Exprs);
 
-                        when N_Aggregate =>
+                           Current_Index : Node_Id := Index;
+                           --  Dim = 1 so Index is still first index here
 
-                           --  This is a special choice, the LHS of an
-                           --  association of a 'Update of a
-                           --  multi-dimensional array,
-                           --  for example: (I, J, K) of
-                           --  'Update((I, J, K) => New_Val)
+                        begin
+                           pragma Assert (List_Length (Multi_Exprs) =
+                                            Num_Dim);
 
-                           pragma Assert
-                             (Dim < Num_Dim and then Dim = 1
-                                and then No (Component_Associations (Choice)));
-                           declare
-                              Multi_Exprs : constant List_Id :=
-                                Expressions (Choice);
-                              Multi_Expression : Node_Id :=
-                                Nlists.First (Multi_Exprs);
+                           while Present (Multi_Expression) loop
+                              Values.Append (Multi_Expression);
+                              Types.Append (Etype (Current_Index));
+                              Next (Multi_Expression);
+                              Next_Index (Current_Index);
+                           end loop;
+                           pragma Assert (No (Current_Index));
+                        end;
 
-                              Current_Index : Node_Id := Index;
-                              --  Dim = 1 so Index is still first index here
-
-                           begin
-                              pragma Assert (List_Length (Multi_Exprs) =
-                                               Num_Dim);
-
-                              while Present (Multi_Expression) loop
-                                 Values.Append (Multi_Expression);
-                                 Types.Append (Etype (Current_Index));
-                                 Next (Multi_Expression);
-                                 Next_Index (Current_Index);
-                              end loop;
-                              pragma Assert (No (Current_Index));
-                           end;
-
-                        when others =>
-                           Values.Append (Choice);
-                           Types.Append (Etype (Index));
-                     end case;
-                     Next (Choice);
-                  end loop;
-               end if;
+                     when others =>
+                        Values.Append (Choice);
+                        Types.Append (Etype (Index));
+                  end case;
+                  Next (Choice);
+               end loop;
             end if;
 
             --  Next, for both positional and named associations, and for
@@ -10724,7 +10571,7 @@ package body Gnat2Why.Expr is
                   pragma Assert (Dim = Num_Dim or else
                                    (In_Delta_Aggregate and then Dim = 1));
                   declare
-                     Exp_Type  : constant Node_Id := Component_Type (Typ);
+                     Exp_Type  : constant Node_Id := Component_Type (Expr_Typ);
                   begin
 
                      --  Collecting component expression for later use as
@@ -10790,88 +10637,205 @@ package body Gnat2Why.Expr is
          end if;
 
          Traverse_Rec_Aggregate (Dim   => 1,
-                                 Index => First_Index (Typ),
+                                 Index => Base_First_Index,
                                  Expr  => Expr);
       end Get_Aggregate_Elements;
 
-      -----------------------------
-      -- Insert_Check_For_Ranges --
-      -----------------------------
+      -------------------
+      -- Insert_Checks --
+      -------------------
 
-      procedure Insert_Check_For_Ranges (T : in out W_Expr_Id) is
+      procedure Insert_Check_For_Choices
+        (T : in out W_Expr_Id; Array_Expr : W_Expr_Id)
+      is
+         Checks : W_Statement_Sequence_Id := Void_Sequence;
 
-         procedure Insert_Check_Rec (Expr : Node_Id; Dim : Positive);
-         --  Introduce range checks for subtype indications in choices of an
-         --  expression. Recursively call itself to checkchoices for upper
-         --  dimensions in regular multidimensional aggregates.
+         procedure Insert_Checks
+           (Expr  : Node_Id;
+            Dim   : Positive;
+            Index : Node_Id);
+         --  Introduce checks for choices of an expression. Recursively call
+         --  itself to check choices for upper dimensions in regular
+         --  multidimensional aggregates.
 
-         ----------------------
-         -- Insert_Check_Rec --
-         ----------------------
+         -------------------
+         -- Insert_Checks --
+         -------------------
 
-         procedure Insert_Check_Rec (Expr : Node_Id; Dim : Positive) is
+         procedure Insert_Checks
+           (Expr  : Node_Id;
+            Dim   : Positive;
+            Index : Node_Id)
+         is
             Assocs      : constant List_Id := Component_Associations (Expr);
             Association : Node_Id := Nlists.First (Assocs);
             Exprs       : constant List_Id :=
               (if Nkind (Expr) = N_Delta_Aggregate then No_List
                else Expressions (Expr));
             Expression  : Node_Id := Nlists.First (Exprs);
+            Index_Typ   : constant Entity_Id := Etype (Index);
+            Choice      : Node_Id;
 
          begin
-            --  Go over the list of association to check subtype indications
-            --  in choices if any.
+            --  Go over the list of associations to check choices
 
             while Present (Association) loop
                if not Is_Others_Choice (Choices (Association)) then
-                  declare
-                     Choice : Node_Id := First (Choices (Association));
-                  begin
-                     while Present (Choice) loop
-                        case Nkind (Choice) is
+                  Choice := First (Choices (Association));
+
+                  while Present (Choice) loop
+
+                     --  For delta aggregates, choices are passed as parameters
+                     --  and checks inserted in Transform_Expr when arguments
+                     --  for the function call are computed, so we don't need
+                     --  to check absence of RTE for them. We still need to
+                     --  check that choices are in the bounds of the updated
+                     --  expression. In the case of simple values of an array
+                     --  constrained type, this check may be redundant.
+
+                     if In_Delta_Aggregate then
+
+                        --  For multidimensional 'Update, we generate an
+                        --  index check for each value of the choice aggregate.
+                        --  For (I1, I2) => ... we generate:
+                        --  index_check <I1>; index_check <I2>
+
+                        if Nb_Dim > 1 then
+                           pragma Assert (Nkind (Choice) = N_Aggregate);
+                           declare
+                              Multi_Exprs      : constant List_Id :=
+                                Expressions (Choice);
+                              Multi_Expression : Node_Id :=
+                                Nlists.First (Multi_Exprs);
+                           begin
+                              for I in 1 .. Nb_Dim loop
+                                 pragma Assert (Present (Multi_Expression));
+                                 Sequence_Append
+                                   (Checks,
+                                    New_Ignore
+                                      (Prog => Do_Index_Check
+                                           (Ada_Node => Multi_Expression,
+                                            Arr_Expr => Array_Expr,
+                                            W_Expr   => Transform_Expr
+                                              (Expr          =>
+                                                     Multi_Expression,
+                                               Domain        => EW_Pterm,
+                                               Params        => Params,
+                                               Expected_Type =>
+                                                 Nth_Index_Rep_Type_No_Bool
+                                                   (Expr_Typ, I)),
+                                            Dim      => I)));
+                                 Next (Multi_Expression);
+                              end loop;
+                           end;
+
+                        --  Choices of unary aggregates can involve ranges or
+                        --  subtype indications in addition to values. We reuse
+                        --  translation of choices to generate:
+                        --  let index = any <Index_Type> { result in <Choice> }
+                        --    in index_check index
+
+                        else
+
+                           declare
+                              Tmp : constant W_Identifier_Id :=
+                                New_Temp_Identifier
+                                  (Base_Name => "index",
+                                   Typ       =>
+                                     Base_Why_Type_No_Bool (Index_Typ));
+                           begin
+                              Sequence_Append
+                                (Checks,
+                                 (New_Ignore
+                                      (Prog => New_Binding
+                                         (Name    => Tmp,
+                                          Def     => New_Any_Expr
+                                            (Post        =>
+                                                 +Transform_Discrete_Choice
+                                               (Choice      => Choice,
+                                                Choice_Type => Index_Typ,
+                                                Expr        =>
+                                                  +New_Result_Ident
+                                                  (Get_Typ (Tmp)),
+                                                Domain      => EW_Pred,
+                                                Params      => Params),
+                                             Return_Type => Get_Typ (Tmp),
+                                             Labels      =>
+                                               Symbol_Sets.Empty_Set),
+                                          Context => +Do_Index_Check
+                                            (Ada_Node => Choice,
+                                             Arr_Expr => Array_Expr,
+                                             W_Expr   => +Tmp,
+                                             Dim      => 1)))));
+                           end;
+                        end if;
+
+                     --  For normal aggregates, check absence of RTE in Choice
+
+                     else
+                        Sequence_Append
+                          (Checks,
+                           (New_Ignore
+                                (Prog =>
+                                   +Transform_Discrete_Choice
+                                   (Choice      => Choice,
+                                    Choice_Type => Index_Typ,
+                                    Expr        =>
+                                    --  The value does not matter here
+                                      New_Discrete_Constant
+                                        (Value => Uint_0,
+                                         Typ   =>
+                                           Base_Why_Type_No_Bool (Index_Typ)),
+                                    Domain      => EW_Prog,
+                                    Params      => Params))));
+                     end if;
+
+                     --  If Choice is a subtype indication, insert check for
+                     --  range constraint.
+
+                     case Nkind (Choice) is
                         when N_Subtype_Indication =>
-                           T := +Sequence
-                             (Ada_Node => Choice,
-                              Left     => +Check_Scalar_Range
+                           Sequence_Append
+                             (Checks,
+                              +Check_Scalar_Range
                                 (Params => Params,
                                  N      => Get_Range (Choice),
-                                 Base   => Entity (Subtype_Mark (Choice))),
-                              Right    => +T);
+                                 Base   => Entity (Subtype_Mark (Choice))));
                         when others =>
                            null;
-                        end case;
-                        Next (Choice);
-                     end loop;
-                  end;
+                     end case;
+                     Next (Choice);
+                  end loop;
                end if;
 
                --  In regular multidimensional aggregates, we also need to
-               --  check subtype indication in expressions used for choices
-               --  in upper dimensions.
+               --  check choices in upper dimensions.
 
                if not In_Delta_Aggregate and then Dim /= Nb_Dim then
-                  Insert_Check_Rec
-                    (SPARK_Atree.Expression (Association), Dim + 1);
+                  Insert_Checks
+                    (SPARK_Atree.Expression (Association),
+                     Dim + 1, Next_Index (Index));
                end if;
                Next (Association);
             end loop;
 
             --  In regular multidimensional aggregates, we may need to check
-            --  subtype indication in expressions used for choices in upper
-            --  dimensions.
+            --  choices in upper dimensions.
 
             if not In_Delta_Aggregate and then Dim /= Nb_Dim then
                while Present (Expression) loop
-                  Insert_Check_Rec (Expression, Dim + 1);
+                  Insert_Checks (Expression, Dim + 1, Next_Index (Index));
                   Next (Expression);
                end loop;
             end if;
-         end Insert_Check_Rec;
+         end Insert_Checks;
 
-      --  Start of processing of Insert_Check_For_Ranges
+      --  Start of processing of Insert_Check_For_Choices
 
       begin
-         Insert_Check_Rec (Expr, 1);
-      end Insert_Check_For_Ranges;
+         Insert_Checks (Expr, 1, Base_First_Index);
+         T := +Sequence (+Checks, +T);
+      end Insert_Check_For_Choices;
 
       --------------------------------------------
       -- Transform_Array_Component_Associations --
@@ -11591,18 +11555,15 @@ package body Gnat2Why.Expr is
 
       --  Elements of the aggregate
 
-      Values       : Node_Lists.List;
-      Types        : Node_Lists.List;
-      Index_Values : Node_Lists.List;
-      Index_Types  : Node_Lists.List;
+      Values : Node_Lists.List;
+      Types  : Node_Lists.List;
 
    --  Start of processing for Transform_Aggregate
 
    begin
       --  Get the aggregate elements that should be passed in parameter
 
-      Get_Aggregate_Elements
-        (Expr, Values, Types, Index_Values, Index_Types);
+      Get_Aggregate_Elements (Expr, Values, Types);
 
       --  If not done already, generate the logic function
 
@@ -11623,9 +11584,7 @@ package body Gnat2Why.Expr is
                  Module   => M,
                  Symb     => NID (Lower_Case_First (Img (Get_Name (M))))),
               Values,
-              Types,
-              Index_Values,
-              Index_Types);
+              Types);
       end;
    end Transform_Aggregate;
 
