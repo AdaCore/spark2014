@@ -9,27 +9,27 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__float_tests__sqrt_comedy_1.gnat-json"/>
 <theory name="Foo__float_tests__sqrt_comedy_1__subprogram_def">
- <goal name="def&#39;vc" expl="VC for def">
+ <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="precondition">
+  <goal name="def&#39;vc.0">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="368005"/></proof>
   <proof prover="2"><result status="unknown" steps="5370"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="precondition">
+  <goal name="def&#39;vc.1">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="2757007"/></proof>
   <proof prover="2"><result status="unknown" steps="7158"/></proof>
   </goal>
-  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.3" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.3" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.4" expl="postcondition">
+  <goal name="def&#39;vc.4">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="996984"/></proof>
   <proof prover="2"><result status="unknown" steps="365002"/></proof>

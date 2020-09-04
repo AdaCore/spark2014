@@ -9,38 +9,38 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__double_tests__distributed_fun.gnat-json"/>
 <theory name="Foo__double_tests__distributed_fun__subprogram_def">
- <goal name="def&#39;vc" expl="VC for def">
+ <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="precondition">
+  <goal name="def&#39;vc.0">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="1174581"/></proof>
   <proof prover="2"><result status="unknown" steps="24190"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="precondition">
+  <goal name="def&#39;vc.1">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450173"/></proof>
   <proof prover="2"><result status="unknown" steps="59344"/></proof>
   </goal>
-  <goal name="def&#39;vc.2" expl="precondition">
+  <goal name="def&#39;vc.2">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450192"/></proof>
   <proof prover="2"><result status="unknown" steps="98084"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="precondition">
+  <goal name="def&#39;vc.3">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="2931411"/></proof>
   <proof prover="2"><result status="unknown" steps="365002"/></proof>
   </goal>
-  <goal name="def&#39;vc.4" expl="precondition">
+  <goal name="def&#39;vc.4">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450230"/></proof>
   <proof prover="2"><result status="unknown" steps="365002"/></proof>
   </goal>
-  <goal name="def&#39;vc.5" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.6" expl="assertion">
+  <goal name="def&#39;vc.6">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450148"/></proof>
   <proof prover="2"><result status="unknown" steps="80541"/></proof>
