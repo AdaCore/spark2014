@@ -4,10 +4,13 @@ contains_manual_proof = False
 
 def replay():
     prove_all(opt=["--no-axiom-guard"],
-              prover=["cvc4", "z3", "altergo"],
+              level=1,
               procs=10,
-              steps=5000)
+              steps=0)
+    prove_all(opt=["--no-axiom-guard"],
+              level=3,
+              procs=10,
+              steps=0)
 
 prove_all(opt=["--no-axiom-guard"],
-          prover=["cvc4", "z3", "altergo"],
           replay=True)
