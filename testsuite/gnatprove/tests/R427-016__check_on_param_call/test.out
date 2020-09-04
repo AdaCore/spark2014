@@ -79,6 +79,7 @@ formals_arr_split.adb:7:12: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:10:17: info: initialization of "A" proved
 formals_arr_split.adb:14:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 formals_arr_split.adb:14:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:14:12: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:14:15: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:17:14: info: add a contract to analyze it separately from calling contexts
 formals_arr_split.adb:17:14: info: local subprogram "P2" only analyzed in the context of calls
@@ -88,6 +89,8 @@ formals_arr_split.adb:20:09: info: length check proved (CVC4: 3 VC; Trivial: 1 V
 formals_arr_split.adb:20:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:20:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:43
 formals_arr_split.adb:20:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:12: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:12: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:20:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:43
 formals_arr_split.adb:20:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:23:14: info: add a contract to analyze it separately from calling contexts
@@ -96,6 +99,7 @@ formals_arr_split.adb:23:18: info: initialization of "A" proved
 formals_arr_split.adb:26:07: medium: length check might fail, in call inlined at formals_arr_split.adb:54 (e.g. when V'First = 0 and V'Last = 2 and Y = 1) [possible fix: call at line 42 should mention A (for argument V) in a postcondition]
 formals_arr_split.adb:26:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:26:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:12: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:26:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:31:11: info: index check proved (CVC4: 2 VC)
 formals_arr_split.adb:36:07: info: precondition proved (CVC4: 1 VC)

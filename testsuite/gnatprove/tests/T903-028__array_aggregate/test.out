@@ -1,0 +1,3 @@
+repro.adb:6:04: info: range check proved (CVC4: 2 VC)
+repro.adb:7:13: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+repro.adb:7:14: medium: range check might fail (e.g. when A'First = 15 and A'Last = 15) [reason for check: value must fit in component type]

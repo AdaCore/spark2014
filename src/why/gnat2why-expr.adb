@@ -9818,10 +9818,6 @@ package body Gnat2Why.Expr is
       --  delta aggregate if and only if Update_Prefix has been supplied.
 
       In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
-      Base_First_Index   : constant Node_Id :=
-        First_Index (Type_Of_Node (Etype (Etype (Expr))));
-      --  We should use the aggregate's type Etype for checks as the aggregate
-      --  may have incorrect index bounds.
       Expr_Typ           : constant Entity_Id := Type_Of_Node (Expr);
       Nb_Dim             : constant Positive :=
         Positive (Number_Dimensions (Expr_Typ));
@@ -9833,14 +9829,27 @@ package body Gnat2Why.Expr is
       --  are declared in the type).
       Init_Wrapper        : constant Boolean := Expr_Has_Relaxed_Init (Expr);
 
+      type Aggregate_Element_Kind is (Value_Kind, Index_Kind, Prefix_Kind);
+      type Aggregate_Element is record
+         Kind  : Aggregate_Element_Kind;
+         Value : Node_Id;
+         Typ   : Node_Id;
+      end record;
+      --  Aggregate elements are the parts of the aggregate which are given as
+      --  parameters to the aggregate function. This include the values of the
+      --  aggregate, the index expressions used in choices of delta aggregates
+      --  and the update prefix if any.
+
+      package Aggregate_Element_Lists is new Ada.Containers.Vectors
+        (Index_Type => Positive, Element_Type => Aggregate_Element);
+
       -----------------------
       -- Local subprograms --
       -----------------------
 
       procedure Get_Aggregate_Elements
         (Expr   : Node_Id;
-         Values : out Node_Lists.List;
-         Types  : out Node_Lists.List);
+         Values : out Aggregate_Element_Lists.Vector);
       --  Extract parts of the aggregate Expr that will be passed in
       --  parameter to the logic function for the aggregate.
       --  Collect these parameters in Values, with the corresponding type
@@ -9852,8 +9861,7 @@ package body Gnat2Why.Expr is
 
       procedure Generate_Logic_Function
         (Expr   : Node_Id;
-         Values : Node_Lists.List;
-         Types  : Node_Lists.List);
+         Values : Aggregate_Element_Lists.Vector);
       --  Generate the logic function definition for the aggregate Expr, with a
       --  suitable defining axiom:
       --
@@ -9875,8 +9883,7 @@ package body Gnat2Why.Expr is
         (Params : Transformation_Params;
          Domain : EW_Domain;
          Func   : W_Identifier_Id;
-         Values : Node_Lists.List;
-         Types  : Node_Lists.List) return W_Expr_Id;
+         Values : Aggregate_Element_Lists.Vector) return W_Expr_Id;
       --  Given a logic function Func previously defined for the aggregate,
       --  generate the actual call to Func by translating arguments Values
       --  of type Types in the context given by Params.
@@ -9894,14 +9901,11 @@ package body Gnat2Why.Expr is
         (Params : Transformation_Params;
          Domain : EW_Domain;
          Func   : W_Identifier_Id;
-         Values : Node_Lists.List;
-         Types  : Node_Lists.List) return W_Expr_Id
+         Values : Aggregate_Element_Lists.Vector) return W_Expr_Id
       is
-         use Node_Lists;
-
          Cnt      : Positive;
-         Value    : Node_Lists.Cursor;
-         Typ      : Node_Lists.Cursor;
+         Value    : Node_Id;
+         Typ      : Node_Id;
          Args     : W_Expr_Array (1 .. Natural (Values.Length));
          Bnd_Args : W_Expr_Array
            (1 .. (if Needs_Bounds then 2 * Nb_Dim else 0));
@@ -9910,16 +9914,16 @@ package body Gnat2Why.Expr is
       begin
          --  Compute the arguments for the function call
 
-         Cnt   := 1;
-         Value := Values.First;
-         Typ   := Types.First;
-         while Value /= No_Element loop
+         Cnt := 1;
+         for Value_Id in 1 .. Values.Last_Index loop
+            Value := Values (Value_Id).Value;
+            Typ := Values (Value_Id).Typ;
             Args (Cnt) :=
               Transform_Expr
-                (Element (Value),
-                 (if Expr_Has_Relaxed_Init (Element (Value), No_Eval => False)
-                  then EW_Abstract (Element (Typ), Relaxed_Init => True)
-                  else Type_Of_Node (Element (Typ))),
+                (Value,
+                 (if Expr_Has_Relaxed_Init (Value, No_Eval => False)
+                  then EW_Abstract (Typ, Relaxed_Init => True)
+                  else Type_Of_Node (Typ)),
                  --  If a value which is not a scalar type has relaxed
                  --  initialization, so will the aggregate. Go to the wrapper
                  --  type to avoid spurious initialization checks.
@@ -9929,17 +9933,15 @@ package body Gnat2Why.Expr is
 
             --  Attributes of record array elements have default values
 
-            if Has_Record_Type (Element (Typ))
-              or else Full_View_Not_In_SPARK (Element (Typ))
+            if Has_Record_Type (Typ)
+              or else Full_View_Not_In_SPARK (Typ)
             then
                Args (Cnt) := New_Tag_Update
                  (Domain   => Domain,
                   Name     => Args (Cnt),
-                  Ty       => Element (Typ));
+                  Ty       => Typ);
             end if;
 
-            Next (Value);
-            Next (Typ);
             Cnt := Cnt + 1;
          end loop;
 
@@ -9996,7 +9998,7 @@ package body Gnat2Why.Expr is
             declare
                Temp   : constant W_Expr_Id := New_Temp_For_Expr (R, True);
                A1, A2 : W_Prog_Id;
-               Typ    : constant Node_Id := Base_First_Index;
+               Typ    : constant Node_Id := First_Index (Expr_Typ);
                W_Typ  : constant W_Type_Id :=
                  (if Typ = Standard.Types.Empty then EW_Int_Type else
                      Base_Why_Type_No_Bool (Typ));
@@ -10056,8 +10058,7 @@ package body Gnat2Why.Expr is
 
       procedure Generate_Logic_Function
         (Expr   : Node_Id;
-         Values : Node_Lists.List;
-         Types  : Node_Lists.List)
+         Values : Aggregate_Element_Lists.Vector)
       is
          function Get_Name_For_Aggregate (Expr : Node_Id) return String;
          --  Return a suitable name for the aggregate Expr. If Expr is the
@@ -10085,8 +10086,6 @@ package body Gnat2Why.Expr is
                  (To_String (WNE_Aggregate_Def_Suffix));
             end if;
          end Get_Name_For_Aggregate;
-
-         use Node_Lists;
 
          --  Generate name for the function based on the location of the
          --  aggregate.
@@ -10130,11 +10129,9 @@ package body Gnat2Why.Expr is
          Bnd_Args      : W_Expr_Array
            (1 .. (if Needs_Bounds then 2 * Nb_Dim else 0));
 
-         --  Counter and iterators
+         --  Counter
 
          Cnt           : Positive;
-         Value         : Node_Lists.Cursor;
-         Typ           : Node_Lists.Cursor;
 
          --  Variables for the call, guard and proposition for the axiom
 
@@ -10169,17 +10166,16 @@ package body Gnat2Why.Expr is
          --  to_rep (a [x]) = v).
 
          Cnt   := 1;
-         Value := Values.First;
-         Typ := Types.First;
-         while Value /= No_Element loop
+         for Value_Id in 1 .. Values.Last_Index loop
             declare
+               Value    : constant Node_Id := Values (Value_Id).Value;
+               Typ      : constant Node_Id := Values (Value_Id).Typ;
                Ident    : constant W_Identifier_Id :=
                  New_Temp_Identifier
                    (Typ =>
-                      (if Expr_Has_Relaxed_Init
-                         (Element (Value), No_Eval => False)
-                       then EW_Abstract (Element (Typ), Relaxed_Init => True)
-                       else Type_Of_Node (Element (Typ))));
+                      (if Expr_Has_Relaxed_Init (Value, No_Eval => False)
+                       then EW_Abstract (Typ, Relaxed_Init => True)
+                       else Type_Of_Node (Typ)));
                B        : constant Binder_Type :=
                  (Ada_Node => Standard.Types.Empty,
                   B_Name   => Ident,
@@ -10187,10 +10183,16 @@ package body Gnat2Why.Expr is
                   Mutable  => False,
                   Labels   => Symbol_Sets.Empty_Set);
                Dyn_Prop : constant W_Pred_Id :=
-                 Compute_Dynamic_Invariant
-                   (Expr   => +Ident,
-                    Ty     => Element (Typ),
-                    Params => Params);
+                 (if Values (Value_Id).Kind = Value_Kind
+                  then Compute_Dynamic_Invariant
+                    (Expr   => +Ident,
+                     Ty     => Typ,
+                     Params => Params)
+                  else True_Pred);
+               --  Do not guard indexes and prefix. This is not required for
+               --  soundness and it can lead to crashes when index types depend
+               --  on objects which are local to the expression ('Old for
+               --  examples).
 
             begin
 
@@ -10202,11 +10204,9 @@ package body Gnat2Why.Expr is
                --  generation of the proposition in the defining axiom.
 
                Ada_Ent_To_Why.Insert
-                 (Args_Map, Element (Value),
+                 (Args_Map, Value,
                   (Regular, Local => True, Init => <>, Main => B));
 
-               Next (Typ);
-               Next (Value);
                Cnt := Cnt + 1;
             end;
          end loop;
@@ -10394,8 +10394,7 @@ package body Gnat2Why.Expr is
 
       procedure Get_Aggregate_Elements
         (Expr   : Node_Id;
-         Values : out Node_Lists.List;
-         Types  : out Node_Lists.List)
+         Values : out Aggregate_Element_Lists.Vector)
       is
          Num_Dim : constant Pos := Number_Dimensions (Expr_Typ);
 
@@ -10453,10 +10452,14 @@ package body Gnat2Why.Expr is
                         --  index sutype in case of empty ranges.
 
                         Rng := Get_Range (Choice);
-                        Values.Append (Low_Bound (Rng));
-                        Types.Append (Etype (Low_Bound (Rng)));
-                        Values.Append (High_Bound (Rng));
-                        Types.Append (Etype (High_Bound (Rng)));
+                        Values.Append_One
+                          ((Kind  => Index_Kind,
+                            Value => Low_Bound (Rng),
+                            Typ   => Etype (Low_Bound (Rng))));
+                        Values.Append_One
+                          ((Kind  => Index_Kind,
+                            Value => High_Bound (Rng),
+                            Typ   => Etype (High_Bound (Rng))));
 
                      when N_Aggregate =>
 
@@ -10483,8 +10486,10 @@ package body Gnat2Why.Expr is
                                             Num_Dim);
 
                            while Present (Multi_Expression) loop
-                              Values.Append (Multi_Expression);
-                              Types.Append (Etype (Current_Index));
+                              Values.Append_One
+                                ((Kind  => Index_Kind,
+                                  Value => Multi_Expression,
+                                  Typ   => Etype (Current_Index)));
                               Next (Multi_Expression);
                               Next_Index (Current_Index);
                            end loop;
@@ -10492,8 +10497,10 @@ package body Gnat2Why.Expr is
                         end;
 
                      when others =>
-                        Values.Append (Choice);
-                        Types.Append (Etype (Index));
+                        Values.Append_One
+                          ((Kind  => Index_Kind,
+                            Value => Choice,
+                            Typ   => Etype (Index)));
                   end case;
                   Next (Choice);
                end loop;
@@ -10550,8 +10557,10 @@ package body Gnat2Why.Expr is
                      --  Collecting component expression for later use as
                      --  parameter.
 
-                     Values.Append (Expr);
-                     Types.Append (Exp_Type);
+                     Values.Append_One
+                       ((Kind  => Value_Kind,
+                         Value => Expr,
+                         Typ   => Exp_Type));
                   end;
                end if;
             end if;
@@ -10605,12 +10614,14 @@ package body Gnat2Why.Expr is
          --  a parameter to the logic function.
 
          if In_Delta_Aggregate then
-            Values.Append (Update_Prefix);
-            Types.Append (Etype (Update_Prefix));
+            Values.Append_One
+              ((Kind  => Prefix_Kind,
+                Value => Update_Prefix,
+                Typ   => Etype (Update_Prefix)));
          end if;
 
          Traverse_Rec_Aggregate (Dim   => 1,
-                                 Index => Base_First_Index,
+                                 Index => First_Index (Expr_Typ),
                                  Expr  => Expr);
       end Get_Aggregate_Elements;
 
@@ -10806,7 +10817,39 @@ package body Gnat2Why.Expr is
       --  Start of processing of Insert_Check_For_Choices
 
       begin
-         Insert_Checks (Expr, 1, Base_First_Index);
+         --  For regular aggregates, check the scalar ranges of the
+         --  aggregate subtype against its Etype. It is not necessary for
+         --  delta aggregates where the bounds come from the prefix. In a
+         --  similar way, if the aggregate contains an others choice, then the
+         --  index type is taken from the context so we do not need to check
+         --  it.
+
+         if not In_Delta_Aggregate
+           and then
+             (Nb_Dim > 1
+              or else No (Component_Associations (Expr))
+              or else not Is_Others_Choice
+                (Choices (Nlists.Last (Component_Associations (Expr)))))
+         then
+            declare
+               Index      : Node_Id := First_Index (Expr_Typ);
+               Index_Base : Node_Id := First_Index (Retysp (Etype (Expr_Typ)));
+            begin
+               while Present (Index) loop
+                  Sequence_Append
+                    (Checks, Check_Scalar_Range
+                       (Params => Body_Params,
+                        N      => Etype (Index),
+                        Base   => Etype (Index_Base)));
+                  Next_Index (Index);
+                  Next_Index (Index_Base);
+               end loop;
+            end;
+         end if;
+
+         --  Check the actual choice values
+
+         Insert_Checks (Expr, 1, First_Index (Expr_Typ));
          T := +Sequence (+Checks, +T);
       end Insert_Check_For_Choices;
 
@@ -11528,15 +11571,14 @@ package body Gnat2Why.Expr is
 
       --  Elements of the aggregate
 
-      Values : Node_Lists.List;
-      Types  : Node_Lists.List;
+      Values : Aggregate_Element_Lists.Vector;
 
    --  Start of processing for Transform_Aggregate
 
    begin
       --  Get the aggregate elements that should be passed in parameter
 
-      Get_Aggregate_Elements (Expr, Values, Types);
+      Get_Aggregate_Elements (Expr, Values);
 
       --  If not done already, generate the logic function
 
@@ -11544,7 +11586,7 @@ package body Gnat2Why.Expr is
          M : W_Module_Id := E_Module (Expr);
       begin
          if M = Why_Empty then
-            Generate_Logic_Function (Expr, Values, Types);
+            Generate_Logic_Function (Expr, Values);
             M := E_Module (Expr);
          end if;
          return
@@ -11556,8 +11598,7 @@ package body Gnat2Why.Expr is
                  Domain   => Domain,
                  Module   => M,
                  Symb     => NID (Lower_Case_First (Img (Get_Name (M))))),
-              Values,
-              Types);
+              Values);
       end;
    end Transform_Aggregate;
 

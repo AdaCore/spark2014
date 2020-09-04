@@ -32,9 +32,11 @@ do_checks.adb:136:25: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:149:25: info: range check proved (CVC4: 2 VC)
 do_checks.adb:149:57: medium: overflow check might fail (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:161:39: medium: length check might fail (e.g. when Zero = 0) [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 5 should mention Zero]
-do_checks.adb:161:40: medium: range check might fail (e.g. when Zero = 0) [reason for check: value must fit in component type]
+do_checks.adb:161:39: medium: range check might fail (e.g. when Zero = 0)
+do_checks.adb:161:40: info: range check proved (CVC4: 2 VC)
 do_checks.adb:161:60: medium: range check might fail (e.g. when Zero = 0) [possible fix: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:167:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+do_checks.adb:167:38: info: range check proved (CVC4: 2 VC)
 do_checks.adb:167:39: info: range check proved (CVC4: 2 VC)
 do_checks.adb:167:59: info: range check proved (CVC4: 2 VC)
 do_checks.adb:167:67: medium: overflow check might fail (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 5 should mention Zero]
