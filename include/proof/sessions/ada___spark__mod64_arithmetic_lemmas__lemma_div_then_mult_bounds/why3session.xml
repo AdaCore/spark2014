@@ -8,39 +8,39 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="obj"/>
 <path name="gnatprove"/><path name="ada___spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds.gnat-json"/>
 <theory name="Ada___spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__subprogram_def" proved="true">
- <goal name="def&#39;vc" expl="VC for def" proved="true">
+ <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="def&#39;vc.0" expl="precondition" proved="true">
+  <goal name="def&#39;vc.0" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.1" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.3" expl="assertion" proved="true">
+  <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><path name=".."/><path name=".."/><path name="Coq"/><path name="Ada___spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__pragargs__cmp.v"/><result status="valid"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
-  <goal name="def&#39;vc.4" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.4" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.5" expl="assertion" proved="true">
+  <goal name="def&#39;vc.5" proved="true">
   <proof prover="0"><path name=".."/><path name=".."/><path name="Coq"/><path name="Ada___spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__pragargs__cmp1.v"/><result status="valid"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
-  <goal name="def&#39;vc.6" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.6" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.7" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.7" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.8" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.8" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
  </transf>
