@@ -25,6 +25,7 @@
 
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
+with Atree;
 with Flow_Generated_Globals.Phase_2;
 with Flow_Types;
 with Flow_Utility;
@@ -489,6 +490,47 @@ package body Gnat2Why.Util is
       end loop;
       return Plan;
    end Build_Printing_Plan;
+
+   -----------------------
+   -- Collect_Old_Parts --
+   -----------------------
+
+   procedure Collect_Old_Parts (N : Node_Id; Old_Parts : in out Node_Sets.Set)
+   is
+      function Is_Old_Attribute (N : Node_Id) return Atree.Traverse_Result;
+      --  Search for attribute Old and enter its prefix in the map
+
+      ----------------------
+      -- Is_Old_Attribute --
+      ----------------------
+
+      function Is_Old_Attribute (N : Node_Id) return Atree.Traverse_Result is
+      begin
+         if Nkind (N) = N_Attribute_Reference
+             and then Attribute_Name (N) in Name_Old
+         then
+            Old_Parts.Include (Prefix (N));
+            return Atree.Skip;
+         else
+            return Atree.OK;
+         end if;
+      end Is_Old_Attribute;
+
+      procedure Search_Old_Attributes is new Traverse_More_Proc
+        (Is_Old_Attribute);
+   begin
+      Search_Old_Attributes (N);
+   end Collect_Old_Parts;
+
+   procedure Collect_Old_Parts
+     (L         : Node_Lists.List;
+      Old_Parts : in out Node_Sets.Set)
+   is
+   begin
+      for N of L loop
+         Collect_Old_Parts (N, Old_Parts);
+      end loop;
+   end Collect_Old_Parts;
 
    ------------------
    -- Compute_Spec --

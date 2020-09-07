@@ -240,4 +240,15 @@ private
    --  subprogram E (if any), to be used in the postcondition of the program
    --  function.
 
+   procedure Collect_Old_For_Subprogram
+     (E                 : Entity_Id;
+      Old_Parts         : in out Node_Sets.Set;
+      Exclude_Classwide : Boolean := True;
+      Exclude_CC        : Boolean := False);
+   --  Collects the set of old attributes occuring in the postcondition of E.
+   --  If Exclude_CC is False, also collects old attributes and guards from
+   --  the contract case if any.
+   --  If Exclude_Classwide is False, defaults to the classwide postcondition
+   --  if no contract cases/specific postconditions are present.
+
 end Gnat2Why.Subprograms;

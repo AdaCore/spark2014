@@ -503,6 +503,15 @@ package Gnat2Why.Util is
      Pre => Is_Subprogram_Or_Entry (E);
    --  Returns True if we may produce an axiom for the post of E
 
+   procedure Collect_Old_Parts (N : Node_Id; Old_Parts : in out Node_Sets.Set);
+   --  Add to Old_Parts the set of prefixes of references to the 'Old attribute
+   --  in N.
+
+   procedure Collect_Old_Parts
+     (L         : Node_Lists.List;
+      Old_Parts : in out Node_Sets.Set);
+   --  Call Collect_Old_Parts on all elements of L
+
    ------------------------------
    -- Symbol table subprograms --
    ------------------------------

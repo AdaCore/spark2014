@@ -179,6 +179,17 @@ package body Gnat2Why.Expr is
    --  @param N the object declaration
    --  @return an assignment of the declared variable to its initial value
 
+   function Bind_From_Mapping_In_Expr
+     (Params : Transformation_Params;
+      Expr   : W_Expr_Id;
+      N      : Node_Id;
+      Name   : W_Identifier_Id;
+      Domain : EW_Domain;
+      As_Old : Boolean) return W_Expr_Id;
+   --  Introduce a mapping from the name Name to the Ada expression or entity N
+   --  in Expr. If As_Old is True, the expression should be evaluated in the
+   --  pre state.
+
    function Case_Expr_Of_Ada_Node
      (N             : Node_Id;
       Expected_Type : W_Type_OId := Why_Empty;
@@ -1810,154 +1821,70 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Bind_From_Mapping_In_Expr
-     (Params                 : Transformation_Params;
-      Map                    : Ada_To_Why_Ident.Map;
-      Expr                   : W_Prog_Id;
-      Guard_Map              : Ada_To_Why_Ident.Map :=
-        Ada_To_Why_Ident.Empty_Map;
-      Others_Guard_Ident     : W_Identifier_Id := Why_Empty;
-      Do_Runtime_Error_Check : Boolean := True;
-      Bind_Value_Of_Old      : Boolean := False) return W_Prog_Id
+     (Params : Transformation_Params;
+      Expr   : W_Expr_Id;
+      N      : Node_Id;
+      Name   : W_Identifier_Id;
+      Domain : EW_Domain;
+      As_Old : Boolean) return W_Expr_Id
    is
-      function Get_Corresponding_Guard (N : Node_Id) return Node_Id;
-      --  If N is inside the consequence expression of a contract case, return
-      --  the corresponding guard expression. Otherwise, return Empty.
+   begin
+      return New_Typed_Binding
+        (Name    => Name,
+         Domain  => Domain,
+         Def     => +Insert_Simple_Conversion
+           (Domain         => Prog_Or_Term_Domain (Domain),
+            Expr           =>
+              (if As_Old
+               then Transform_Attribute_Old (N, Domain, Params)
+               else Transform_Expr_Or_Identifier
+                 (N, Prog_Or_Term_Domain (Domain), Params)),
+            To             => Get_Typ (Name),
+            Force_No_Slide => True),
+         Context => Expr);
+   end Bind_From_Mapping_In_Expr;
 
-      -----------------------------
-      -- Get_Corresponding_Guard --
-      -----------------------------
-
-      function Get_Corresponding_Guard (N : Node_Id) return Node_Id is
-
-         function Is_Pragma (N : Node_Id) return Boolean is
-           (Nkind (N) = N_Pragma);
-         --  @param N any Node
-         --  @return True if N is a pragma.
-
-         function Enclosing_Pragma is new
-           First_Parent_With_Property (Is_Pragma);
-
-         P : Node_Id;
-
-      begin
-         --  Retrieve the enclosing pragma, which may be either a postcondition
-         --  or a contract_cases pragma.
-
-         P := Enclosing_Pragma (N);
-
-         --  Return Empty for a postcondition pragma
-
-         if Is_Pragma_Check (P, Name_Post)
-              or else
-            Is_Pragma_Check (P, Name_Postcondition)
-              or else
-            Is_Pragma_Check (P, Name_Refined_Post)
-              or else
-            Is_Pragma (P, Pragma_Post)
-              or else
-            Is_Pragma (P, Pragma_Postcondition)
-              or else
-            Is_Pragma (P, Pragma_Refined_Post)
-         then
-            return Empty;
-         end if;
-
-         pragma Assert (Is_Pragma (P, Pragma_Contract_Cases));
-
-         --  Retrieve the enclosing contract case component_association
-
-         declare
-            All_Cases : constant List_Id :=
-              Component_Associations
-                (Get_Pragma_Arg (First (Pragma_Argument_Associations (P))));
-
-            function Is_Contract_Case (N : Node_Id) return Boolean is
-              (Is_List_Member (N) and then List_Containing (N) = All_Cases);
-            --  @param N any Node
-            --  @return True if N is a an element of All_Cases.
-
-            function Enclosing_Contract_Case is new
-              First_Parent_With_Property (Is_Contract_Case);
-
-         begin
-            P := Enclosing_Contract_Case (N);
-         end;
-
-         pragma Assert (Nkind (P) = N_Component_Association);
-
-         --  Return the guard of the enclosing contract case
-
-         return First (Choices (P));
-      end Get_Corresponding_Guard;
-
-      Result : W_Prog_Id := Expr;
-
-   --  Start of processing for Bind_From_Mapping_In_Expr
+   function Bind_From_Mapping_In_Expr
+     (Params : Transformation_Params;
+      Map    : Ada_To_Why_Ident.Map;
+      Expr   : W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+      Result : W_Expr_Id := Expr;
 
    begin
       for C in Map.Iterate loop
-         declare
-            N     : constant Node_Id := Ada_To_Why_Ident.Key (C);
-            Name  : constant W_Identifier_Id := Ada_To_Why_Ident.Element (C);
-            Guard : constant Node_Id :=
-              (if Bind_Value_Of_Old
-               then Get_Corresponding_Guard (N)
-               else Empty);
+         Result := Bind_From_Mapping_In_Expr
+           (Params => Params,
+            Expr   => Result,
+            N      => Ada_To_Why_Ident.Key (C),
+            Name   => Ada_To_Why_Ident.Element (C),
+            Domain => Domain,
+            As_Old => False);
+      end loop;
 
-            --  Generate a program expression to check absence of run-time
-            --  errors. When checking for X in X'Old inside a contract case
-            --  (which corresponds to Guard being non Empty), do this checking
-            --  only under a condition that the corresponding case is enabled.
+      return Result;
+   end Bind_From_Mapping_In_Expr;
 
-            RE_Prog : constant W_Prog_Id :=
-              (if Do_Runtime_Error_Check then
-                (if Present (Guard) then
-                  New_Conditional
-                    (Condition =>
-                       +(if Nkind (Guard) = N_Others_Choice then
-                           Others_Guard_Ident
-                         else
-                           Guard_Map.Element (Guard)),
-                     Then_Part => +New_Ignore
-                       (Prog => +Transform_Expr_Or_Identifier
-                            (N, EW_Prog, Params)))
-                 else
-                     New_Ignore (Prog => +Transform_Expr_Or_Identifier
-                                 (N, EW_Prog, Params)))
-               else
-                 +Void);
+   function Bind_From_Mapping_In_Expr
+     (Params : Transformation_Params;
+      Map    : Ada_To_Why_Ident.Map;
+      Expr   : W_Expr_Id;
+      Domain : EW_Domain;
+      Subset : Node_Sets.Set;
+      As_Old : Boolean := False) return W_Expr_Id
+   is
+      Result : W_Expr_Id := Expr;
 
-            --  Generate a term definition for the value of the object at
-            --  subprogram entry, and link with rest of code. This
-            --  definition does not involve lazy boolean operators, so it
-            --  does not lead to more paths being generated in the naive WP,
-            --  contrary to what we would get if directly defining the value
-            --  of the object as a program. This is particularly useful for
-            --  guards of Contract_Cases.
-
-            Let_Prog : constant W_Prog_Id :=
-              +New_Typed_Binding
-                (Name   => Name,
-                 Domain => EW_Prog,
-                 Def    =>
-                   +New_Simpl_Any_Prog
-                   (T    => Get_Typ (Name),
-                    Pred =>
-                      New_Call
-                        (Name   => Why_Eq,
-                         Typ    => EW_Bool_Type,
-                         Args =>
-                           (1 => +New_Result_Ident (Get_Typ (Name)),
-                            2 => +Insert_Simple_Conversion
-                              (Domain         => EW_Term,
-                               Expr           => Transform_Expr_Or_Identifier
-                                 (N, EW_Term, Params),
-                               To             => Get_Typ (Name),
-                               Force_No_Slide => True)))),
-                 Context => +Result);
-         begin
-            Result := Sequence (RE_Prog, Let_Prog);
-         end;
+   begin
+      for N of Subset loop
+         Result := Bind_From_Mapping_In_Expr
+           (Params => Params,
+            Expr   => Result,
+            N      => N,
+            Name   => Map.Element (N),
+            Domain => Domain,
+            As_Old => As_Old);
       end loop;
 
       return Result;
@@ -9605,24 +9532,6 @@ package body Gnat2Why.Expr is
          Expr     => +T,
          To       => Type_Of_Node (Actual));
    end Reconstruct_Expr_From_Item;
-
-   -----------------------
-   -- Reset_Map_For_Old --
-   -----------------------
-
-   procedure Reset_Map_For_Old is
-   begin
-      Old_Map.Clear;
-   end Reset_Map_For_Old;
-
-   -------------------------
-   -- Restore_Map_For_Old --
-   -------------------------
-
-   procedure Restore_Map_For_Old (Saved_Map : Ada_To_Why_Ident.Map) is
-   begin
-      Old_Map.Assign (Saved_Map);
-   end Restore_Map_For_Old;
 
    ------------------
    -- Shift_Rvalue --
@@ -18592,7 +18501,6 @@ package body Gnat2Why.Expr is
 
       Save_Result_Name    : constant W_Identifier_Id := Result_Name;
       Save_Res_Is_Mutable : constant Boolean := Result_Is_Mutable;
-      Save_Map_For_Old    : constant Ada_To_Why_Ident.Map := Map_For_Old;
 
    begin
       --  For a borrow Brower := Borrowed.Path, we want to generate:
@@ -18627,16 +18535,6 @@ package body Gnat2Why.Expr is
          Insert_Entity (Brower, Brower_Id);
       end if;
       Insert_Entity (Borrowed, Borrowed_Id);
-
-      --  If we are forcing the use of the map for old, we need to reset it.
-      --  It will be reset at the end of the translation to avoid poluting
-      --  other potential users.
-      --  ??? Should we use a stack for the map of Old, or possibly have a
-      --  temporary map?
-
-      if Params.Old_Policy /= Use_Map then
-         Reset_Map_For_Old;
-      end if;
 
       --  Transform the pledge in the pred domain, we will lift it to other
       --  domains afterward.
@@ -18747,26 +18645,18 @@ package body Gnat2Why.Expr is
          --  map for old to its former value.
 
          if Params.Old_Policy /= Use_Map then
-            for C in Map_For_Old.Iterate loop
-               declare
-                  N     : constant Node_Id := Ada_To_Why_Ident.Key (C);
-                  Name  : constant W_Identifier_Id :=
-                    Ada_To_Why_Ident.Element (C);
-               begin
-                  Res := New_Typed_Binding
-                    (Domain  => Domain,
-                     Name    => Name,
-                     Def     => +Insert_Checked_Conversion
-                       (Ada_Node => N,
-                        Domain   => Domain,
-                        Expr     =>
-                          Transform_Attribute_Old (N, Domain, Params),
-                        To       => Get_Typ (Name)),
-                     Context => Res);
-               end;
-            end loop;
-
-            Old_Map := Save_Map_For_Old;
+            declare
+               Old_Parts : Node_Sets.Set;
+            begin
+               Collect_Old_Parts (Def, Old_Parts);
+               Res := Bind_From_Mapping_In_Expr
+                 (Params => Params,
+                  Map    => Map_For_Old,
+                  Expr   => Res,
+                  Domain => Domain,
+                  Subset => Old_Parts,
+                  As_Old => True);
+            end;
          end if;
 
          return Res;
@@ -20769,6 +20659,7 @@ package body Gnat2Why.Expr is
 
                --  Only introduce a binding for Target_Name if it was actually
                --  used in the assignment.
+
                if Has_Target_Names (Stmt_Or_Decl) then
                   T := New_Binding
                     (Ada_Node => Stmt_Or_Decl,

@@ -586,6 +586,69 @@ package body Gnat2Why.Subprograms is
       Subprogram_Exceptions.Clear;
    end Clear_Exceptions;
 
+   --------------------------------
+   -- Collect_Old_For_Subprogram --
+   --------------------------------
+
+   procedure Collect_Old_For_Subprogram
+     (E                 : Entity_Id;
+      Old_Parts         : in out Node_Sets.Set;
+      Exclude_Classwide : Boolean := True;
+      Exclude_CC        : Boolean := False)
+   is
+      CC_Prag   : constant Node_Id :=
+        (if Exclude_CC then Empty
+         else Get_Pragma (E, Pragma_Contract_Cases));
+      Post_List : constant Node_Lists.List :=
+        Find_Contracts (E, Pragma_Postcondition);
+   begin
+      Collect_Old_Parts (Post_List, Old_Parts);
+
+      --  If there are no post pragmas or contract cases, the post defaults to
+      --  the classwide one.
+
+      if not Exclude_Classwide
+        and then Post_List.Is_Empty
+        and then No (CC_Prag)
+      then
+         declare
+            Classwide_List : constant Node_Lists.List :=
+              Find_Contracts (E, Pragma_Postcondition, Classwide => True);
+         begin
+            Collect_Old_Parts (Classwide_List, Old_Parts);
+
+            --  If no classwide post is specified for E, use the inherited one.
+
+            if Classwide_List.Is_Empty then
+               Collect_Old_Parts
+                 (Find_Contracts (E, Pragma_Postcondition, Inherited => True),
+                  Old_Parts);
+            end if;
+         end;
+      end if;
+
+      --  Go over contract cases to collect the old attributes. Also collect
+      --  the guards which have to be evaluated in the pre-state.
+
+      if not Exclude_CC and then Present (CC_Prag) then
+         declare
+            Aggr          : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (CC_Prag)));
+            Contract_Case : Node_Id :=
+              First (Component_Associations (Aggr));
+         begin
+            while Present (Contract_Case) loop
+               Collect_Old_Parts (Expression (Contract_Case), Old_Parts);
+               if not Is_Others_Choice (Choices (Contract_Case)) then
+                  Old_Parts.Include (First (Choices (Contract_Case)));
+               end if;
+
+               Next (Contract_Case);
+            end loop;
+         end;
+      end if;
+   end Collect_Old_For_Subprogram;
+
    ------------------
    -- Compute_Args --
    ------------------
@@ -2330,6 +2393,8 @@ package body Gnat2Why.Subprograms is
       Classwide_Post_RTE      : W_Prog_Id := +Void;
       Stronger_Classwide_Post : W_Prog_Id := +Void;
 
+      Old_Parts               : Node_Sets.Set;
+
       Th : Theory_UC;
    begin
       Th :=
@@ -2356,10 +2421,6 @@ package body Gnat2Why.Subprograms is
              (Name  => Name & "__result",
               Typ   => Type_Of_Node (E));
       end if;
-
-      --  Clear the list of translations for X'Old expressions
-
-      Reset_Map_For_Old;
 
       Params :=
         (Phase       => Generate_VCs_For_Contract,
@@ -2512,6 +2573,14 @@ package body Gnat2Why.Subprograms is
 
          Stronger_Post :=
            New_Ignore (Prog => Stronger_Post);
+
+         --  Collect old attributes referenced by the checks
+
+         Collect_Old_For_Subprogram (E, Old_Parts);
+         Collect_Old_Parts (Classwide_Post_List, Old_Parts);
+         if Classwide_Post_List.Is_Empty then
+            Collect_Old_Parts (Inherited_Post_List, Old_Parts);
+         end if;
       end if;
 
       --  If E is overriding another subprogram, check that its specified
@@ -2544,6 +2613,11 @@ package body Gnat2Why.Subprograms is
 
          Stronger_Classwide_Post :=
            New_Ignore (Prog => Stronger_Classwide_Post);
+
+         --  Collect old attributes referenced by the checks
+
+         Collect_Old_Parts (Inherited_Post_List, Old_Parts);
+         Collect_Old_Parts (Classwide_Post_List, Old_Parts);
       end if;
 
       Why_Body := Sequence
@@ -2553,14 +2627,14 @@ package body Gnat2Why.Subprograms is
           4 => Stronger_Post,
           5 => Stronger_Classwide_Post));
 
-      --  add declarations for 'Old variables
+      --  Add declarations for 'Old variables
 
-      Why_Body := Bind_From_Mapping_In_Expr
-        (Params                 => Params,
-         Map                    => Map_For_Old,
-         Expr                   => Why_Body,
-         Do_Runtime_Error_Check => False,
-         Bind_Value_Of_Old      => True);
+      Why_Body := +Bind_From_Mapping_In_Expr
+        (Params => Params,
+         Map    => Map_For_Old,
+         Expr   => +Why_Body,
+         Domain => EW_Pterm,
+         Subset => Old_Parts);
 
       --  Check that the class-wide postcondition cannot raise runtime errors.
       --  To that end, perform equivalent effects of call in an empty context.
@@ -2570,11 +2644,6 @@ package body Gnat2Why.Subprograms is
       --  in overridings weakening the precondition.
 
       if not Classwide_Post_List.Is_Empty then
-
-         --  Clear the list of translations for X'Old expressions
-
-         Reset_Map_For_Old;
-
          Classwide_Post_RTE :=
            +Compute_Spec (Params, Classwide_Post_List, EW_Prog);
          Classwide_Post_RTE :=
@@ -2586,14 +2655,17 @@ package body Gnat2Why.Subprograms is
              2 => Call_Effects,
              3 => Classwide_Post_RTE));
 
-         --  add declarations for 'Old variables with RTE
+         --  Add declarations for 'Old variables with RTE
 
-         Classwide_Post_RTE := Bind_From_Mapping_In_Expr
-           (Params                 => Params,
-            Map                    => Map_For_Old,
-            Expr                   => Classwide_Post_RTE,
-            Do_Runtime_Error_Check => True,
-            Bind_Value_Of_Old      => True);
+         Old_Parts.Clear;
+         Collect_Old_Parts (Classwide_Post_List, Old_Parts);
+
+         Classwide_Post_RTE := +Bind_From_Mapping_In_Expr
+           (Params => Params,
+            Map    => Map_For_Old,
+            Expr   => +Classwide_Post_RTE,
+            Domain => EW_Prog,
+            Subset => Old_Parts);
       end if;
 
       Why_Body := Sequence (Why_Body, Classwide_Post_RTE);
@@ -3587,16 +3659,77 @@ package body Gnat2Why.Subprograms is
       ---------------------------
 
       function Declare_Old_Variables (P : W_Prog_Id) return W_Prog_Id is
+         CC_Prag  : constant Node_Id :=
+           Get_Pragma (E, Pragma_Contract_Cases);
+         Post_Old : Node_Sets.Set;
+         CC_Old   : Node_Sets.Set;
+         R        : W_Prog_Id;
       begin
-         return
-           Bind_From_Mapping_In_Expr
-             (Params                 => Body_Params,
-              Map                    => Map_For_Old,
-              Expr                   => P,
-              Guard_Map              => Guard_Map,
-              Others_Guard_Ident     => Others_Guard_Ident,
-              Do_Runtime_Error_Check => True,
-              Bind_Value_Of_Old      => True);
+         --  Add mapping for Old variables coming from the postcondition. Use
+         --  the EW_Prog domain to generate checks for them.
+
+         Collect_Old_For_Subprogram (E, Post_Old, Exclude_CC => True);
+
+         if Entity_Body_In_SPARK (E) then
+            Collect_Old_Parts
+              (Find_Contracts (E, Pragma_Refined_Post), Post_Old);
+            Collect_Old_Parts (Post_Prags, Post_Old);
+         end if;
+
+         R := +Bind_From_Mapping_In_Expr
+           (Params => Body_Params,
+            Map    => Map_For_Old,
+            Expr   => +P,
+            Domain => EW_Prog,
+            Subset => Post_Old);
+
+         --  Add mapping for Old variables coming from the contract case if
+         --  any. Checks are generated separately as they should only be done
+         --  when in the correct contract case.
+
+         if Present (CC_Prag) then
+            Collect_Old_Parts (CC_Prag, CC_Old);
+            R := +Bind_From_Mapping_In_Expr
+              (Params => Body_Params,
+               Map    => Map_For_Old,
+               Expr   => +R,
+               Domain => EW_Pterm,
+               Subset => CC_Old);
+
+            --  Generate checks for Old variables inside ignore blocks when the
+            --  corresponding guard is enabled.
+
+            declare
+               Aggr          : constant Node_Id :=
+                 Expression (First (Pragma_Argument_Associations (CC_Prag)));
+               Contract_Case : Node_Id :=
+                 First (Component_Associations (Aggr));
+               Case_Guard    : Node_Id;
+            begin
+               while Present (Contract_Case) loop
+                  CC_Old.Clear;
+                  Collect_Old_Parts (Expression (Contract_Case), CC_Old);
+                  Case_Guard := First (Choices (Contract_Case));
+                  R := Sequence
+                    (Left  => New_Conditional
+                       (Condition =>
+                            +(if Nkind (Case_Guard) = N_Others_Choice
+                              then Others_Guard_Ident
+                              else Guard_Map.Element (Case_Guard)),
+                        Then_Part => +New_Ignore
+                          (Prog => +Bind_From_Mapping_In_Expr
+                               (Params => Body_Params,
+                                Map    => Map_For_Old,
+                                Expr   => +Void,
+                                Domain => EW_Prog,
+                                Subset => CC_Old))),
+                     Right => R);
+
+                  Next (Contract_Case);
+               end loop;
+            end;
+         end if;
+         return R;
       end Declare_Old_Variables;
 
       --------------------------
@@ -3880,11 +4013,11 @@ package body Gnat2Why.Subprograms is
                                         Context => +Prog);
          end if;
 
-         Prog := Bind_From_Mapping_In_Expr
-           (Params                 => Contract_Params,
-            Map                    => Guard_Map,
-            Expr                   => Prog,
-            Do_Runtime_Error_Check => True);
+         Prog := +Bind_From_Mapping_In_Expr
+           (Params => Contract_Params,
+            Map    => Guard_Map,
+            Expr   => +Prog,
+            Domain => EW_Prog);
          return Prog;
       end Wrap_Decls_For_CC_Guards;
 
@@ -3945,11 +4078,6 @@ package body Gnat2Why.Subprograms is
       --  Reset the toplevel exceptions for exit paths
 
       Clear_Exceptions;
-
-      --  First, clear the list of translations for X'Old expressions, and
-      --  create a new identifier for F'Result.
-
-      Reset_Map_For_Old;
 
       if Ekind (E) = E_Function then
          Result_Name :=
@@ -5040,6 +5168,7 @@ package body Gnat2Why.Subprograms is
                   Desc_Params : Item_Array :=
                     Compute_Raw_Binders (Descendant_E);
                   Desc_Post   : W_Pred_Id;
+                  Old_Parts   : Node_Sets.Set;
                   Params      : Transformation_Params;
 
                begin
@@ -5094,11 +5223,6 @@ package body Gnat2Why.Subprograms is
 
                   Push_Binders_To_Symbol_Table (New_Binders);
 
-                  --  We will use the map for old to store expressions whose
-                  --  values need to be computed in the pre state.
-
-                  Reset_Map_For_Old;
-
                   Params :=
                     (Phase       => Generate_Logic,
                      Gen_Marker  => GM_None,
@@ -5130,6 +5254,11 @@ package body Gnat2Why.Subprograms is
                           Get_LSP_Contract
                             (Params, Descendant_E, Pragma_Postcondition);
                      end if;
+
+                     --  Collect references to Old in Old_Parts
+
+                     Collect_Old_For_Subprogram
+                       (Descendant_E, Old_Parts, Exclude_Classwide => False);
                   end if;
 
                   Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -5187,29 +5316,12 @@ package body Gnat2Why.Subprograms is
 
                   --  Insert let bindings for old expressions
 
-                  for C in Map_For_Old.Iterate loop
-                     declare
-                        Name : constant W_Identifier_Id :=
-                          Ada_To_Why_Ident.Element (C);
-                        Expr : constant Node_Id := Ada_To_Why_Ident.Key (C);
-                        Def  : constant W_Expr_Id :=
-                          Insert_Simple_Conversion
-                            (Domain         => EW_Term,
-                             Expr           =>
-                               (if Nkind (Expr) = N_Defining_Identifier then
-                                     Transform_Identifier
-                                        (Params, Expr, Expr, EW_Term)
-                                else Transform_Expr (Expr, EW_Term, Params)),
-                             To             => Get_Typ (Name),
-                             Force_No_Slide => True);
-                     begin
-                        Desc_Post := +New_Typed_Binding
-                          (Domain   => EW_Pred,
-                           Name     => Name,
-                           Def      => Def,
-                           Context  => +Desc_Post);
-                     end;
-                  end loop;
+                  Desc_Post := +Bind_From_Mapping_In_Expr
+                    (Params => Params,
+                     Map    => Map_For_Old,
+                     Expr   => +Desc_Post,
+                     Domain => EW_Term,
+                     Subset => Old_Parts);
 
                   --  Insert bindings for contolling parameters of Descendant_E
 
@@ -5236,7 +5348,6 @@ package body Gnat2Why.Subprograms is
                      end;
                   end loop;
 
-                  Reset_Map_For_Old;
                   Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
                   Emit

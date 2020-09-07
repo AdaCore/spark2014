@@ -9,7 +9,7 @@ formal_vectors.adb:9:14: info: postcondition proved (CVC4: 1 VC), in instantiati
 formal_vectors.adb:16:20: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:21:22: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:21:25: info: range check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:34:38: medium: postcondition might fail, cannot prove Size (V) > V.Top, in instantiation at use_formal_vectors.ads:10 (e.g. when Min_Size = 0 and V = (Top => 0, Content => (all => (others => (all => (all => 0))))) and V'Old = (Top => 0, Content => null))
+formal_vectors.adb:34:38: medium: postcondition might fail, cannot prove Size (V) > V.Top, in instantiation at use_formal_vectors.ads:10 (e.g. when Min_Size = 0 and V = (Top => 0, Content => (all => (others => (all => (all => 1))))) and V'Old = (Top => 0, Content => (all => (others => (all => (all => 1))))))
 formal_vectors.adb:40:21: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:44:11: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:44:20: info: absence of memory leak proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -29,7 +29,7 @@ formal_vectors.adb:53:59: info: length check proved (CVC4: 3 VC; Trivial: 1 VC),
 formal_vectors.adb:53:74: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:53:74: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:53:74: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:54:14: medium: predicate check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when New_Content.all = (1 => null, others => (all => (all => 1))) and New_Content.all'First = 1 and New_Content.all'Last = 2 and V = (Top => 1, Content => (all => (1 => (all => (all => 2)), others => (all => (all => 2)))))) [possible fix: subprogram at line 29 should mention V in a precondition]
+formal_vectors.adb:54:14: medium: predicate check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when New_Content.all = (Positive'Last-1 => null, others => (all => (all => 1))) and New_Content.all'First = 1 and New_Content.all'Last = 2147483647 and V = (Top => Natural'Last-1, Content => (all => (Positive'Last-1 => (all => (all => 0)), others => (all => (all => Integer'Last)))))) [possible fix: subprogram at line 29 should mention V in a precondition]
 formal_vectors.adb:54:23: info: absence of memory leak proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:63:14: info: postcondition proved (CVC4: 3 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:63:43: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -260,7 +260,7 @@ formal_vectors.ads:19:31: info: range check proved (CVC4: 1 VC), in instantiatio
 formal_vectors.ads:22:41: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:23:43: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:26:19: info: precondition proved (CVC4: 4 VC; Trivial: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.ads:26:19: medium: postcondition might fail, cannot prove Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Count_Type (Length (V)'old)), in instantiation at use_formal_vectors.ads:10 (e.g. when E'Old = (Top => 0, Content => null) and V = (Top => 0, Content => null) and V'Old = (Top => 0, Content => null))
+formal_vectors.ads:26:19: medium: postcondition might fail, cannot prove Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Count_Type (Length (V)'old)), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:27:56: warning: "E" is not modified, could be of access constant type, in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:28:71: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:30:56: warning: "E" is not modified, could be of access constant type, in instantiation at use_formal_vectors.ads:10

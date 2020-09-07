@@ -102,10 +102,6 @@ package body Gnat2Why.Subprograms.Pointers is
       --  True if we need to check the compatibility of preconditions
 
    begin
-      --  Clear the list of translations for X'Old expressions
-
-      Reset_Map_For_Old;
-
       if not Need_Pre_Check and not Need_Post_Check then
          return +Void;
       end if;
@@ -204,14 +200,19 @@ package body Gnat2Why.Subprograms.Pointers is
             Why_Body);
 
          if Need_Post_Check then
-            Why_Body := Bind_From_Mapping_In_Expr
-              (Params                 => Params,
-               Map                    => Map_For_Old,
-               Expr                   => Why_Body,
-               Do_Runtime_Error_Check => False,
-               Bind_Value_Of_Old      => True);
+            declare
+               Old_Parts : Node_Sets.Set;
+            begin
+               Collect_Old_For_Subprogram (From, Old_Parts);
+               Collect_Old_For_Subprogram (To, Old_Parts);
 
-            Reset_Map_For_Old;
+               Why_Body := +Bind_From_Mapping_In_Expr
+                 (Params => Params,
+                  Map    => Map_For_Old,
+                  Expr   => +Why_Body,
+                  Domain => EW_Pterm,
+                  Subset => Old_Parts);
+            end;
          end if;
 
          return Why_Body;
@@ -253,11 +254,10 @@ package body Gnat2Why.Subprograms.Pointers is
       Checks                 : W_Prog_Id;
 
       --  As this check can occur anywhere during the translation, we need to
-      --  preserve the map for old and the result name.
+      --  preserve the result name.
 
       Save_Result_Is_Mutable : constant Boolean := Result_Is_Mutable;
       Save_Result_Name       : constant W_Identifier_Id := Result_Name;
-      Save_Map_For_Old       : constant Ada_To_Why_Ident.Map := Map_For_Old;
 
    begin
       --  Need_Conversion returns False on null which can be of any access
@@ -383,10 +383,6 @@ package body Gnat2Why.Subprograms.Pointers is
             Result_Name := Save_Result_Name;
          end;
       end if;
-
-      --  Restore the map for old
-
-      Restore_Map_For_Old (Saved_Map => Save_Map_For_Old);
 
       --  Map both constant and mutable parts of Formals
 
