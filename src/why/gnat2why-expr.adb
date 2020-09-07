@@ -142,16 +142,19 @@ package body Gnat2Why.Expr is
      with Predicate => Roots'First = 2;
 
    --  Nth roots of 2**8-1, rounded towards zero
-   Roots_8_Bits : Roots (2 .. 7) := (others => No_Uint);
+   Roots_8_Bits   : Roots (2 .. 7) := (others => No_Uint);
 
    --  Nth roots of 2**16-1, rounded towards zero
-   Roots_16_Bits : Roots (2 .. 15) := (others => No_Uint);
+   Roots_16_Bits  : Roots (2 .. 15) := (others => No_Uint);
 
    --  Nth roots of 2**32-1, rounded towards zero
-   Roots_32_Bits : Roots (2 .. 31) := (others => No_Uint);
+   Roots_32_Bits  : Roots (2 .. 31) := (others => No_Uint);
 
    --  Nth roots of 2**64-1, rounded towards zero
-   Roots_64_Bits : Roots (2 .. 63) := (others => No_Uint);
+   Roots_64_Bits  : Roots (2 .. 63) := (others => No_Uint);
+
+   --  Nth roots of 2**128-1, rounded towards zero
+   Roots_128_Bits : Roots (2 .. 127) := (others => No_Uint);
 
    -----------------------
    -- Local Subprograms --
@@ -2326,17 +2329,19 @@ package body Gnat2Why.Expr is
       elsif Op = N_Op_Expon then
          declare
             function Select_Roots return Roots is
-              (if    Rep_Type = EW_BitVector_8_Type  then Roots_8_Bits
-               elsif Rep_Type = EW_BitVector_16_Type then Roots_16_Bits
-               elsif Rep_Type = EW_BitVector_32_Type then Roots_32_Bits
-               elsif Rep_Type = EW_BitVector_64_Type then Roots_64_Bits
+              (if    Rep_Type = EW_BitVector_8_Type   then Roots_8_Bits
+               elsif Rep_Type = EW_BitVector_16_Type  then Roots_16_Bits
+               elsif Rep_Type = EW_BitVector_32_Type  then Roots_32_Bits
+               elsif Rep_Type = EW_BitVector_64_Type  then Roots_64_Bits
+               elsif Rep_Type = EW_BitVector_128_Type then Roots_128_Bits
                else raise Program_Error);
 
             function Rep_Modulus return Uint is
-              (if    Rep_Type = EW_BitVector_8_Type  then Uint_2 ** 8
-               elsif Rep_Type = EW_BitVector_16_Type then Uint_2 ** 16
-               elsif Rep_Type = EW_BitVector_32_Type then Uint_2 ** 32
-               elsif Rep_Type = EW_BitVector_64_Type then Uint_2 ** 64
+              (if    Rep_Type = EW_BitVector_8_Type   then Uint_2 ** 8
+               elsif Rep_Type = EW_BitVector_16_Type  then Uint_2 ** 16
+               elsif Rep_Type = EW_BitVector_32_Type  then Uint_2 ** 32
+               elsif Rep_Type = EW_BitVector_64_Type  then Uint_2 ** 64
+               elsif Rep_Type = EW_BitVector_128_Type then Uint_2 ** 128
                else raise Program_Error);
 
             Value_Expr : constant W_Expr_Id := New_Temp_For_Expr (Left_Opnd);
@@ -2457,8 +2462,11 @@ package body Gnat2Why.Expr is
                elsif Modulus <= UI_Expon (2, 32) then
                  (if Modular_Size (Ada_Type) < 64 then EW_BitVector_64_Type
                   else Rep_Type)
+               elsif Modulus <= UI_Expon (2, 64) then
+                 (if Modular_Size (Ada_Type) < 128 then EW_BitVector_128_Type
+                  else Rep_Type)
                else
-                  EW_BitVector_128_Type);
+                  EW_BitVector_256_Type);
             Modulus_Expr : constant W_Expr_Id :=
               New_Modular_Constant (Value => Modulus,
                                     Typ   => Next_Bv);
@@ -6666,77 +6674,131 @@ package body Gnat2Why.Expr is
          end loop;
       end Check_Roots;
 
+      function UI is new Uintp.UI_From_Integral (Long_Long_Integer);
+      --  Take literal inputs up to 2**63 - 1 below. Use Long_Long_Integer
+      --  which is 64-bits in GNAT for native platforms, to minimize tricks to
+      --  just the value 2**64 - 1, which needs to be expressed based on the
+      --  converted value of 2**63 - 1.
+
    --  Start of processing for Initialize_Tables_Nth_Roots
 
    begin
       Roots_8_Bits :=
-        (2     => UI_From_Int (15),
-         3     => UI_From_Int (6),
-         4 | 5 => UI_From_Int (3),
-         6 | 7 => UI_From_Int (2));
+        (2     => UI (15),
+         3     => UI (6),
+         4 | 5 => UI (3),
+         6 | 7 => UI (2));
 
       Check_Roots (Uint_2 ** 8, Roots_8_Bits);
 
       Roots_16_Bits :=
-        (2        => UI_From_Int (255),
-         3        => UI_From_Int (40),
-         4        => UI_From_Int (15),
-         5        => UI_From_Int (9),
-         6        => UI_From_Int (6),
-         7        => UI_From_Int (4),
-         8  .. 10 => UI_From_Int (3),
-         11 .. 15 => UI_From_Int (2));
+        (2        => UI (255),
+         3        => UI (40),
+         4        => UI (15),
+         5        => UI (9),
+         6        => UI (6),
+         7        => UI (4),
+         8  .. 10 => UI (3),
+         11 .. 15 => UI (2));
 
       Check_Roots (Uint_2 ** 16, Roots_16_Bits);
 
       Roots_32_Bits :=
-        (2        => UI_From_Int (65_535),
-         3        => UI_From_Int (1625),
-         4        => UI_From_Int (255),
-         5        => UI_From_Int (84),
-         6        => UI_From_Int (40),
-         7        => UI_From_Int (23),
-         8        => UI_From_Int (15),
-         9        => UI_From_Int (11),
-         10       => UI_From_Int (9),
-         11       => UI_From_Int (7),
-         12       => UI_From_Int (6),
-         13       => UI_From_Int (5),
-         14 .. 15 => UI_From_Int (4),
-         16 .. 20 => UI_From_Int (3),
-         21 .. 31 => UI_From_Int (2));
+        (2        => UI (65_535),
+         3        => UI (1625),
+         4        => UI (255),
+         5        => UI (84),
+         6        => UI (40),
+         7        => UI (23),
+         8        => UI (15),
+         9        => UI (11),
+         10       => UI (9),
+         11       => UI (7),
+         12       => UI (6),
+         13       => UI (5),
+         14 .. 15 => UI (4),
+         16 .. 20 => UI (3),
+         21 .. 31 => UI (2));
 
       Check_Roots (Uint_2 ** 32, Roots_32_Bits);
 
       Roots_64_Bits :=
-        (2        => UI_From_Int (2**31 - 1) * 2 + 1,
-         3        => UI_From_Int (2_642_245),
-         4        => UI_From_Int (65_535),
-         5        => UI_From_Int (7131),
-         6        => UI_From_Int (1625),
-         7        => UI_From_Int (565),
-         8        => UI_From_Int (255),
-         9        => UI_From_Int (138),
-         10       => UI_From_Int (84),
-         11       => UI_From_Int (56),
-         12       => UI_From_Int (40),
-         13       => UI_From_Int (30),
-         14       => UI_From_Int (23),
-         15       => UI_From_Int (19),
-         16       => UI_From_Int (15),
-         17       => UI_From_Int (13),
-         18       => UI_From_Int (11),
-         19       => UI_From_Int (10),
-         20       => UI_From_Int (9),
-         21       => UI_From_Int (8),
-         22       => UI_From_Int (7),
-         23 .. 24 => UI_From_Int (6),
-         25 .. 27 => UI_From_Int (5),
-         28 .. 31 => UI_From_Int (4),
-         32 .. 40 => UI_From_Int (3),
-         41 .. 63 => UI_From_Int (2));
+        (2        => UI (2**32 - 1),
+         3        => UI (2_642_245),
+         4        => UI (65_535),
+         5        => UI (7131),
+         6        => UI (1625),
+         7        => UI (565),
+         8        => UI (255),
+         9        => UI (138),
+         10       => UI (84),
+         11       => UI (56),
+         12       => UI (40),
+         13       => UI (30),
+         14       => UI (23),
+         15       => UI (19),
+         16       => UI (15),
+         17       => UI (13),
+         18       => UI (11),
+         19       => UI (10),
+         20       => UI (9),
+         21       => UI (8),
+         22       => UI (7),
+         23 .. 24 => UI (6),
+         25 .. 27 => UI (5),
+         28 .. 31 => UI (4),
+         32 .. 40 => UI (3),
+         41 .. 63 => UI (2));
 
       Check_Roots (Uint_2 ** 64, Roots_64_Bits);
+
+      Roots_128_Bits :=
+        (2         => UI (2**63 - 1) * 2 + 1,
+         3         => UI (6_981_463_658_331),
+         4         => UI (2**32 - 1),
+         5         => UI (50_859_008),
+         6         => UI (2_642_245),
+         7         => UI (319_557),
+         8         => UI (65_535),
+         9         => UI (19_112),
+         10        => UI (7131),
+         11        => UI (3183),
+         12        => UI (1625),
+         13        => UI (920),
+         14        => UI (565),
+         15        => UI (370),
+         16        => UI (255),
+         17        => UI (184),
+         18        => UI (138),
+         19        => UI (106),
+         20        => UI (84),
+         21        => UI (68),
+         22        => UI (56),
+         23        => UI (47),
+         24        => UI (40),
+         25        => UI (34),
+         26        => UI (30),
+         27        => UI (26),
+         28        => UI (23),
+         29        => UI (21),
+         30        => UI (19),
+         31        => UI (17),
+         32        => UI (15),
+         33        => UI (14),
+         34        => UI (13),
+         35        => UI (12),
+         36 .. 37  => UI (11),
+         38        => UI (10),
+         39 .. 40  => UI (9),
+         41 .. 42  => UI (8),
+         43 .. 45  => UI (7),
+         46 .. 49  => UI (6),
+         50 .. 55  => UI (5),
+         56 .. 63  => UI (4),
+         64 .. 80  => UI (3),
+         81 .. 127 => UI (2));
+
+      Check_Roots (Uint_2 ** 128, Roots_128_Bits);
 
    end Initialize_Tables_Nth_Roots;
 

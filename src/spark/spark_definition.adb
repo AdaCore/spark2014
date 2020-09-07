@@ -45,6 +45,7 @@ with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Snames;                          use Snames;
+with SPARK_Atree.Entities;
 with SPARK_Util;                      use SPARK_Util;
 with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Definition.Violations;     use SPARK_Definition.Violations;
@@ -1996,23 +1997,33 @@ package body SPARK_Definition is
                end;
 
             else
-               declare
-                  From_Type  : constant Entity_Id := Etype (Expression (N));
-                  To_Type    : constant Entity_Id := Etype (N);
-                  From_Float : constant Boolean :=
+               Scalar_Conversion : declare
+                  From_Type        : constant Entity_Id :=
+                    Etype (Expression (N));
+                  To_Type          : constant Entity_Id := Etype (N);
+                  From_Float       : constant Boolean :=
                     Has_Floating_Point_Type (From_Type);
-                  From_Fixed : constant Boolean :=
+                  From_Fixed       : constant Boolean :=
                     Has_Fixed_Point_Type (From_Type);
-                  From_Int   : constant Boolean :=
+                  From_Int         : constant Boolean :=
                     Has_Signed_Integer_Type (From_Type)
                       or else Has_Modular_Integer_Type (From_Type);
-                  To_Float : constant Boolean :=
+                  From_Modular_128 : constant Boolean :=
+                    Has_Modular_Integer_Type (From_Type)
+                      and then SPARK_Atree.Entities.Modular_Size (From_Type)
+                        = Uintp.UI_From_Int (128);
+
+                  To_Float       : constant Boolean :=
                     Has_Floating_Point_Type (To_Type);
-                  To_Fixed   : constant Boolean :=
+                  To_Fixed       : constant Boolean :=
                     Has_Fixed_Point_Type (To_Type);
-                  To_Int   : constant Boolean :=
+                  To_Int         : constant Boolean :=
                     Has_Signed_Integer_Type (To_Type)
                       or else Has_Modular_Integer_Type (To_Type);
+                  To_Modular_128 : constant Boolean :=
+                    Has_Modular_Integer_Type (To_Type)
+                      and then SPARK_Atree.Entities.Modular_Size (To_Type)
+                        = Uintp.UI_From_Int (128);
 
                begin
                   if (From_Float and To_Fixed)
@@ -2064,8 +2075,15 @@ package body SPARK_Definition is
                               & "leads to imprecise conversion");
                         end if;
                      end;
+
+                  elsif (From_Modular_128 and To_Float)
+                    or (From_Float and To_Modular_128)
+                  then
+                     Mark_Unsupported
+                       ("conversion between floating-point "
+                        & "and 128-bits modular types", N);
                   end if;
-               end;
+               end Scalar_Conversion;
             end if;
 
          when N_Unary_Op =>
