@@ -283,7 +283,7 @@ ar.ads:314:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 ar.ads:318:11: info: flow dependencies proved
 ar.ads:319:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:323:11: info: flow dependencies proved
-ar.ads:324:22: info: postcondition proved (Z3: 1 VC)
+ar.ads:324:22: medium: postcondition might fail, cannot prove J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last)...)))
 ar.ads:324:113: info: index check proved (CVC4: 2 VC)
 ar.ads:324:123: info: range check proved (CVC4: 1 VC)
 ar.ads:324:136: info: index check proved (CVC4: 2 VC)
@@ -391,7 +391,7 @@ ar.ads:461:55: info: index check proved (CVC4: 2 VC)
 ar.ads:465:11: info: flow dependencies proved
 ar.ads:466:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:470:11: info: flow dependencies proved
-ar.ads:471:22: info: postcondition proved (Z3: 1 VC)
+ar.ads:471:22: medium: postcondition might fail, cannot prove K < IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Upd...)))
 ar.ads:471:115: info: index check proved (CVC4: 2 VC)
 ar.ads:471:140: info: index check proved (CVC4: 2 VC)
 ar.ads:471:151: info: range check proved (CVC4: 1 VC)
