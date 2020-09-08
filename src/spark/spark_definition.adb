@@ -2010,7 +2010,8 @@ package body SPARK_Definition is
                       or else Has_Modular_Integer_Type (From_Type);
                   From_Modular_128 : constant Boolean :=
                     Has_Modular_Integer_Type (From_Type)
-                      and then SPARK_Atree.Entities.Modular_Size (From_Type)
+                      and then SPARK_Atree.Entities.Modular_Size
+                        (Retysp (From_Type))
                         = Uintp.UI_From_Int (128);
 
                   To_Float       : constant Boolean :=
@@ -2022,7 +2023,8 @@ package body SPARK_Definition is
                       or else Has_Modular_Integer_Type (To_Type);
                   To_Modular_128 : constant Boolean :=
                     Has_Modular_Integer_Type (To_Type)
-                      and then SPARK_Atree.Entities.Modular_Size (To_Type)
+                      and then SPARK_Atree.Entities.Modular_Size
+                        (Retysp (To_Type))
                         = Uintp.UI_From_Int (128);
 
                begin
