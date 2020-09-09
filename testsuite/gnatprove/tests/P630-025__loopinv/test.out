@@ -20,14 +20,14 @@ decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:127:38: info: precondition proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: range check proved (CVC4: 4 VC)
-decadriver.adb:133:38: medium: predicate check might fail (e.g. when Frame_Length = 127 and Next_Idx = 1)
+decadriver.adb:133:38: medium: predicate check might fail (e.g. when Frame_Length = 127 and Next_Idx = 0)
 decadriver.adb:133:50: info: range check proved (CVC4: 1 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:135:38: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:145:10: info: initialization of "Next_Idx" proved
 decadriver.adb:152:60: info: range check proved (CVC4: 1 VC)
 decadriver.adb:154:34: info: overflow check proved (CVC4: 1 VC)
-decadriver.adb:156:35: medium: predicate check might fail (e.g. when Next_Idx = 1)
+decadriver.adb:156:35: medium: predicate check might fail (e.g. when Next_Idx = 0)
 decadriver.adb:157:35: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:158:35: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:189:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Set_Tx_Data"
@@ -121,7 +121,7 @@ decadriver.ads:252:49: medium: incorrect dependency "BSP.Device_State => Driver_
 decadriver.ads:281:07: warning: no check message justified by this pragma
 decadriver.ads:287:14: info: data dependencies proved
 decadriver.ads:288:09: info: flow dependencies proved
-decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode [possible fix: you should consider adding a postcondition to function PHR_Mode or turning it into an expression function]
+decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode (e.g. when Config = (Channel => 1, PRF => PRF_16MHz, Tx_Preamble_Length => PLEN_512, Tx_PAC => PAC_8, Use_Nonstandard_SFD => False, Data_Rate => Data_Rate_110k, PHR_Mode => Standard_Frames, SFD_Timeout => 0, Enable_Smart_Power => False, others => ?)) [possible fix: you should consider adding a postcondition to function PHR_Mode or turning it into an expression function]
 decadriver.ads:294:07: warning: no check message justified by this pragma
 decadriver.ads:305:14: info: data dependencies proved
 decadriver.ads:306:09: info: flow dependencies proved

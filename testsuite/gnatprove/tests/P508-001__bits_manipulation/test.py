@@ -5,4 +5,5 @@ from test_support import *
 prove_all(opt=["--no-axiom-guard",
                "--prover=cvc4",
                "--proof-warnings"],
+          steps=3000,
           counterexample=False)

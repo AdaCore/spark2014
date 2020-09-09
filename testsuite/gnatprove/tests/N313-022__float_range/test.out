@@ -8,7 +8,7 @@ fr.adb:14:14: info: range check proved (Trivial)
 fr.adb:15:14: info: float overflow check proved (Trivial)
 fr.adb:15:20: info: float overflow check proved (Trivial)
 fr.adb:15:24: info: float overflow check proved (Trivial)
-fr.adb:15:24: medium: range check might fail (e.g. when X = 8.9999998E-1 and Y = 8.9843738E-1) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 10 should mention X and Y]
+fr.adb:15:24: medium: range check might fail (e.g. when X = 8.9999998E-1 and Y = 8.9937502E-1) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 10 should mention X and Y]
 fr.adb:20:09: warning: unused assignment
 fr.adb:20:14: info: float overflow check proved (Trivial)
 fr.adb:21:14: info: float overflow check proved (Trivial)
@@ -20,14 +20,14 @@ fr.adb:27:09: warning: unused assignment
 fr.adb:27:17: info: float overflow check proved (Trivial)
 fr.adb:27:17: info: range check proved (Trivial)
 fr.adb:28:17: info: float overflow check proved (Trivial)
-fr.adb:28:17: medium: range check might fail (e.g. when X = 8.9844328E-1) [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 25 should mention X]
+fr.adb:28:17: medium: range check might fail (e.g. when X = 8.9999998E-1) [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 25 should mention X]
 fr.adb:33:09: warning: unused assignment
 fr.adb:33:14: info: division check proved (CVC4: 1 VC)
 fr.adb:33:14: info: float overflow check proved (Trivial)
 fr.adb:33:14: info: range check proved (Trivial)
 fr.adb:34:14: info: division check proved (CVC4: 1 VC)
 fr.adb:34:14: info: float overflow check proved (Trivial)
-fr.adb:34:14: medium: range check might fail (e.g. when X = 8.9639997E-1) [reason for check: result of division must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 31 should mention X]
+fr.adb:34:14: medium: range check might fail (e.g. when X = 8.9077914E-1) [reason for check: result of division must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 31 should mention X]
 fr.adb:41:04: info: precondition proved (Trivial: 1 VC)
 fr.adb:43:04: info: precondition proved (Trivial: 1 VC)
 fr.adb:45:04: info: precondition proved (Trivial: 1 VC)

@@ -1,5 +1,5 @@
 counter_examples.adb:8:38: info: float overflow check proved (CVC4: 1 VC)
-counter_examples.adb:9:16: medium: float overflow check might fail (e.g. when X = 3.3895318E+38 and Y = -1.3291773E+36) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at counter_examples.ads:8 should mention X and Y in a precondition]
+counter_examples.adb:9:16: medium: float overflow check might fail (e.g. when X = 3.3945038E+38 and Y = -8.3197430E+35) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at counter_examples.ads:8 should mention X and Y in a precondition]
 counter_examples.adb:17:24: info: division check proved (CVC4: 1 VC)
 counter_examples.adb:19:25: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 64 and X = 32) [possible fix: subprogram at counter_examples.ads:11 should mention X in a precondition]
 counter_examples.adb:21:25: medium: assertion might fail, cannot prove Res >= X (e.g. when Res = 0 and X = 4294967233) [possible fix: subprogram at counter_examples.ads:11 should mention X in a precondition]

@@ -301,10 +301,10 @@
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.82" proved="true">
-  <proof prover="1"><result status="valid" steps="7507"/></proof>
+  <proof prover="1"><result status="valid" steps="7779"/></proof>
   </goal>
   <goal name="def&#39;vc.83" proved="true">
-  <proof prover="1"><result status="valid" steps="7816"/></proof>
+  <proof prover="1"><result status="valid" steps="7824"/></proof>
   </goal>
   <goal name="def&#39;vc.84" proved="true">
   <proof prover="0"><result status="valid" steps="150536"/></proof>
@@ -393,10 +393,10 @@
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.107" proved="true">
-  <proof prover="1"><result status="valid" steps="7845"/></proof>
+  <proof prover="1"><result status="valid" steps="7917"/></proof>
   </goal>
   <goal name="def&#39;vc.108" proved="true">
-  <proof prover="1"><result status="valid" steps="10343"/></proof>
+  <proof prover="1"><result status="valid" steps="10742"/></proof>
   </goal>
  </transf>
  </goal>

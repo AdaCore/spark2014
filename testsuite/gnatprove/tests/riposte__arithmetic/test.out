@@ -77,7 +77,7 @@ arithmetic.adb:198:19: medium: postcondition might fail, cannot prove Test_Mod_A
 arithmetic.adb:201:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:205:19: medium: postcondition might fail, cannot prove Test_Mod_B'Result = N (e.g. when N = -11 and Test_Mod_B'Result = -1)
 arithmetic.adb:208:16: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:215:19: medium: postcondition might fail, cannot prove Test_Mod_C'Result = A (e.g. when A = -3 and Test_Mod_C'Result = -1)
+arithmetic.adb:215:19: medium: postcondition might fail, cannot prove Test_Mod_C'Result = A (e.g. when A = -1 and Test_Mod_C'Result = 0)
 arithmetic.adb:218:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:223:04: warning: analyzing unreferenced function "Test_Div_A"
 arithmetic.adb:226:36: medium: assertion might fail, cannot prove N / 10 < 0 (e.g. when N = -1) [possible fix: subprogram at line 223 should mention N in a precondition]

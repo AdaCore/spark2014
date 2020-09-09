@@ -10,7 +10,7 @@
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="1218"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="1218"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <transf name="trivial_true" proved="true" >

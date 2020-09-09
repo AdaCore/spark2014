@@ -3,8 +3,7 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="bitwalker__lemma_nth_eq.gnat-json"/>
@@ -28,43 +27,42 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="2"><result status="valid" steps="2391"/></proof>
+  <proof prover="1"><result status="valid" steps="2790"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="2"><result status="valid" steps="142"/></proof>
+  <proof prover="1"><result status="valid" steps="142"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="2"><result status="valid" steps="142"/></proof>
+  <proof prover="1"><result status="valid" steps="142"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="2"><result status="valid" steps="187"/></proof>
+  <proof prover="1"><result status="valid" steps="187"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="2"><result status="valid" steps="187"/></proof>
+  <proof prover="1"><result status="valid" steps="187"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="1385233"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="0"><result status="valid" steps="15737"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
  </transf>
  </goal>

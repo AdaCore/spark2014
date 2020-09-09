@@ -1,9 +1,9 @@
 ghost_legal.adb:3:10: info: division check proved (CVC4: 1 VC)
 ghost_legal.adb:7:07: info: initialization of "Temp" proved
 ghost_legal.adb:9:13: info: division check proved (CVC4: 1 VC)
-ghost_legal.adb:10:33: info: assertion proved (altergo: 1 VC)
+ghost_legal.adb:10:33: info: assertion proved (CVC4: 1 VC)
 ghost_legal.adb:16:33: info: loop invariant initialization proved (CVC4: 1 VC)
 ghost_legal.adb:16:33: info: loop invariant preservation proved (CVC4: 1 VC)
 ghost_legal.adb:18:16: info: division check proved (CVC4: 1 VC)
 ghost_legal.adb:22:23: info: overflow check proved (CVC4: 1 VC)
-ghost_legal.ads:8:19: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC)
+ghost_legal.ads:8:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)

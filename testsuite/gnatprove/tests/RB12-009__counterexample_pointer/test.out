@@ -10,7 +10,7 @@ counterexamples.adb:28:22: medium: assertion might fail, cannot prove Y.all >= C
 counterexamples.adb:28:24: info: pointer dereference check proved (CVC4: 1 VC)
 counterexamples.adb:31:14: warning: subprogram "Bad_3" has no effect
 counterexamples.adb:32:07: medium: memory leak might occur at end of scope
-counterexamples.adb:34:22: medium: assertion might fail, cannot prove V.all'Length <= C (e.g. when C = 0 and V.all = (1 => 'h', 2 => 'e', 5 => 'o', others => 'l') and V.all'First = 1 and V.all'Last = 5)
+counterexamples.adb:34:22: medium: assertion might fail, cannot prove V.all'Length <= C (e.g. when C = 4 and V.all = (1 => 'h', 2 => 'e', 5 => 'o', others => 'l') and V.all'First = 1 and V.all'Last = 5)
 counterexamples.adb:34:24: info: pointer dereference check proved (CVC4: 2 VC)
 counterexamples.adb:34:27: info: range check proved (CVC4: 1 VC)
 counterexamples.adb:37:14: warning: subprogram "Bad_4" has no effect

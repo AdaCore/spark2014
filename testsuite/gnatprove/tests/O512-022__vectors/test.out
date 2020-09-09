@@ -2,7 +2,7 @@ vectors.adb:5:14: info: add a contract to analyze it separately from calling con
 vectors.adb:5:14: info: local subprogram "Set_Id" only analyzed in the context of calls
 vectors.adb:13:14: info: add a contract to analyze it separately from calling contexts
 vectors.adb:13:14: info: local subprogram "Bump_Sig" only analyzed in the context of calls
-vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:108 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 103 should mention Container in a loop invariant]
+vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:108 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 103 should mention Container in a loop invariant]
 vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:120 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 0)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 116 should mention Container in a loop invariant]
 vectors.adb:32:07: info: initialization of "Position" proved
 vectors.adb:37:56: medium: range check might fail (e.g. when Container = (Id => 0, Sig => ?, Elements => (others => 0), Last_Index => 0)) [possible fix: subprogram at vectors.ads:21 should mention Container in a precondition]

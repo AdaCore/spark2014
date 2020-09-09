@@ -1,4 +1,4 @@
-main.adb:18:17: medium: array index check might fail (e.g. when Count = 1) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 16 should mention Count in a precondition]
+main.adb:18:17: medium: array index check might fail (e.g. when Count = 5) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 16 should mention Count in a precondition]
 main.adb:18:42: info: range check proved (CVC4: 4 VC)
 main.adb:18:86: info: range check proved (CVC4: 1 VC)
 main.adb:19:42: info: range check proved (CVC4: 1 VC)

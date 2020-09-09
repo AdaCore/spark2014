@@ -668,7 +668,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.183">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="3784"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="3784"/></proof>
   </goal>
   <goal name="def&#39;vc.184" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -698,7 +698,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.191">
-  <proof prover="0" timelimit="1"><result status="timeout" steps="3860"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="3860"/></proof>
   </goal>
   <goal name="def&#39;vc.192" proved="true">
   <transf name="trivial_true" proved="true" >

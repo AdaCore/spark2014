@@ -1,2 +1,2 @@
-expo.adb:6:11: medium: divide by zero might fail (e.g. when X = 6.4459729E-44)
-expo.adb:6:11: medium: float overflow check might fail (e.g. when X = 3.4364787E-14) [reason for check: result of floating-point exponentiation must be bounded]
+expo.adb:6:11: medium: divide by zero might fail (e.g. when X = 3.8952041E-19)
+expo.adb:6:11: medium: float overflow check might fail (e.g. when X = 2.5385099E-15) [reason for check: result of floating-point exponentiation must be bounded]

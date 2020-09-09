@@ -21,7 +21,7 @@
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="1552896"/></proof>
-  <proof prover="2"><result status="unknown" steps="11677"/></proof>
+  <proof prover="2"><result status="unknown" steps="12147"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -30,7 +30,7 @@
   <goal name="def&#39;vc.4">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="789101"/></proof>
-  <proof prover="2"><result status="unknown" steps="102491"/></proof>
+  <proof prover="2"><result status="unknown" steps="98517"/></proof>
   </goal>
  </transf>
  </goal>

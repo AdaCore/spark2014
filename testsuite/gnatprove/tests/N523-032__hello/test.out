@@ -34,5 +34,5 @@ hello.adb:70:37: info: index check proved (CVC4: 4 VC)
 hello.adb:70:47: info: index check proved (CVC4: 4 VC)
 hello.adb:81:22: info: assertion proved (Trivial: 2 VC)
 hello.adb:113:35: info: range check proved (CVC4: 1 VC)
-hello.adb:113:44: low: range check might fail (e.g. when Who = (others => 'NUL') and Who'First = 1 and Who'Last = 1) [possible fix: subprogram at hello.ads:10 should mention Who in a precondition]
+hello.adb:113:44: low: range check might fail (e.g. when Who = (others => 'NUL') and Who'First = 0 and Who'Last = -1) [possible fix: subprogram at hello.ads:10 should mention Who in a precondition]
 hello.adb:113:66: low: range check might fail (e.g. when Who = (others => 'NUL')) [reason for check: input value must fit in parameter type] [possible fix: subprogram at hello.ads:10 should mention Who in a precondition]

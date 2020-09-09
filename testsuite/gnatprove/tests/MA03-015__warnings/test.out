@@ -1,5 +1,5 @@
 warn_suppr.adb:8:14: medium: overflow check might fail (e.g. when X = -2 and Y = 2) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at warn_suppr.ads:3 should mention X and Y in a precondition]
-warn_suppr.adb:9:14: medium: overflow check might fail (e.g. when Z = -1073741822) [reason for check: result of addition must fit in a 32-bits machine integer]
+warn_suppr.adb:9:14: medium: overflow check might fail (e.g. when K = Integer'First and Z = -1073741822) [reason for check: result of addition must fit in a 32-bits machine integer]
 warn_suppr.ads:3:14: warning: subprogram "P" has no effect
 Summary of SPARK analysis
 =========================

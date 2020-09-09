@@ -1,7 +1,7 @@
 count_locations.adb:15:33: info: loop invariant initialization proved (CVC4: 1 VC)
 count_locations.adb:15:33: info: loop invariant preservation proved (CVC4: 1 VC)
 count_locations.adb:16:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
-count_locations.adb:16:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+count_locations.adb:16:33: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
 count_locations.adb:16:84: info: index check proved (CVC4: 4 VC)
 count_locations.adb:16:96: info: index check proved (CVC4: 4 VC)
 count_locations.adb:17:33: info: loop invariant initialization proved (CVC4: 1 VC)

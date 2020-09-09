@@ -15,11 +15,11 @@ list.adb:20:14: info: initialization of "Res" proved
 list.adb:23:10: medium: precondition might fail, cannot prove not Is_Full (S) (e.g. when I = 1 and S = (Top => 0, Content => (others => 0)))
 list.adb:23:19: info: precondition proved (CVC4: 4 VC)
 list.adb:23:31: info: range check proved (CVC4: 2 VC)
-list.adb:25:13: medium: loop invariant might fail in first iteration, cannot prove Model.To (S)'Last = I - First + 1 (e.g. when First = 1 and I = 1 and S = (Top => 0, Content => (others => 0))) [possible fix: you should consider adding a postcondition to function To or turning it into an expression function]
+list.adb:25:13: medium: loop invariant might fail in first iteration, cannot prove Model.To (S)'Last = I - First + 1 (e.g. when First = 1 and I = 1 and S = (Top => 0, Content => (others => -1))) [possible fix: you should consider adding a postcondition to function To or turning it into an expression function]
 list.adb:25:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model.To (S)'Last = I - First + 1 (e.g. when First = 1 and I = 2 and S = (Top => 0, Content => (others => 0))) [possible fix: you should consider adding a postcondition to function To or turning it into an expression function]
 list.adb:25:35: info: overflow check proved (CVC4: 2 VC)
 list.adb:25:43: info: overflow check proved (CVC4: 2 VC)
-list.adb:26:54: medium: array index check might fail (e.g. when S = (Top => 0, Content => (others => 0))) [reason for check: value must be a valid index into the array]
+list.adb:26:54: medium: array index check might fail (e.g. when S = (Top => 0, Content => (others => 1))) [reason for check: value must be a valid index into the array]
 list.adb:26:59: info: precondition proved (CVC4: 4 VC)
 list.adb:26:71: info: range check proved (CVC4: 2 VC)
 list.adb:30:10: medium: precondition might fail, cannot prove Length (Container) < Capacity (Container) (e.g. when S = (Top => 0, Content => (1 => 0, others => 0)))

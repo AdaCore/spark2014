@@ -215,10 +215,10 @@
   <proof prover="0"><result status="valid" steps="1757"/></proof>
   </goal>
   <goal name="def&#39;vc.56" proved="true">
-  <proof prover="0"><result status="valid" steps="4540"/></proof>
+  <proof prover="0"><result status="valid" steps="4714"/></proof>
   </goal>
   <goal name="def&#39;vc.57" proved="true">
-  <proof prover="0"><result status="valid" steps="5504"/></proof>
+  <proof prover="0"><result status="valid" steps="5886"/></proof>
   </goal>
   <goal name="def&#39;vc.58" proved="true">
   <transf name="trivial_true" proved="true" >

@@ -227,7 +227,7 @@
   <proof prover="0"><result status="valid" steps="561"/></proof>
   </goal>
   <goal name="def&#39;vc.61" proved="true">
-  <proof prover="0"><result status="valid" steps="10397"/></proof>
+  <proof prover="0"><result status="valid" steps="10430"/></proof>
   </goal>
   <goal name="def&#39;vc.62" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -291,7 +291,7 @@
   <proof prover="0"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="def&#39;vc.80" proved="true">
-  <proof prover="0"><result status="valid" steps="8842"/></proof>
+  <proof prover="0"><result status="valid" steps="8782"/></proof>
   </goal>
   <goal name="def&#39;vc.81" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -313,7 +313,7 @@
   <proof prover="0"><result status="valid" steps="6106"/></proof>
   </goal>
   <goal name="def&#39;vc.86" proved="true">
-  <proof prover="0"><result status="valid" steps="5805"/></proof>
+  <proof prover="0"><result status="valid" steps="4137"/></proof>
   </goal>
   <goal name="def&#39;vc.87" proved="true">
   <proof prover="0"><result status="valid" steps="6109"/></proof>
@@ -336,14 +336,14 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.93" proved="true">
-  <proof prover="0"><result status="valid" steps="6095"/></proof>
+  <proof prover="0"><result status="valid" steps="6200"/></proof>
   </goal>
   <goal name="def&#39;vc.94" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.95" proved="true">
-  <proof prover="0"><result status="valid" steps="635"/></proof>
+  <proof prover="0"><result status="valid" steps="651"/></proof>
   </goal>
   <goal name="def&#39;vc.96" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -372,7 +372,7 @@
   <proof prover="0"><result status="valid" steps="5724"/></proof>
   </goal>
   <goal name="def&#39;vc.103" proved="true">
-  <proof prover="0"><result status="valid" steps="10563"/></proof>
+  <proof prover="0"><result status="valid" steps="10742"/></proof>
   </goal>
  </transf>
  </goal>
