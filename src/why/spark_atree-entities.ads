@@ -385,6 +385,9 @@ package SPARK_Atree.Entities is
    function Next_Literal (E : Entity_Id) return Entity_Id renames
      Einfo.Next_Literal;
 
+   procedure Next_Literal (E : in out Entity_Id) renames
+     Einfo.Next_Literal;
+
    function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
    with
      Pre  => Is_Enumeration_Type (Typ),

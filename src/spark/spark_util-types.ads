@@ -306,6 +306,10 @@ package SPARK_Util.Types is
      Pre  => Ekind (Ty) = E_Subprogram_Type,
      Post => Is_Access_Subprogram_Type (Get_Access_Type_From_Profile'Result);
 
+   function Num_Literals (Ty : Entity_Id) return Positive
+     with Pre => Is_Enumeration_Type (Ty);
+   --  Returns the number of literals for an enumeration type
+
    --------------------------------
    -- Queries related to records --
    --------------------------------

@@ -979,27 +979,70 @@ package body Why.Gen.Scalars is
               New_Identifier (Domain => EW_Term,
                               Name   => "x",
                               Typ    => EW_Int_Type);
-            Lit     : Entity_Id := First_Literal (Retysp (E));
-            Expr    : W_Expr_Id := New_Integer_Constant
-              (Value => Enumeration_Rep (Lit));
+            Lit         : Entity_Id;
+            Else_Part   : W_Expr_Id;
+            Cond        : W_Expr_Id;
+            Then_Part   : W_Expr_Id;
+            Expr        : W_Expr_Id;
+            Elsif_Parts : W_Expr_Array
+              (1 .. Integer (Num_Literals (Retysp (E))) - 2);
+            Index : Positive := 1;
          begin
-            loop
-               Lit := Next_Literal (Lit);
-               exit when No (Lit);
-               Expr := New_Conditional
-                 (Domain    => EW_Term,
-                  Condition => New_Comparison
-                    (Symbol => Why_Eq,
-                     Left   => +X_Ident,
-                     Right  => New_Integer_Constant
-                       (Value => Enumeration_Pos (Lit)),
-                     Domain => EW_Term),
-                  Then_Part => New_Integer_Constant
-                    (Value => Enumeration_Rep (Lit)),
-                  Else_Part => Expr,
-                  Typ       => EW_Int_Type);
-            end loop;
+            --  First value of enumeration covered by the else branch
+            Lit := First_Literal (Retysp (E));
+            Else_Part :=
+              New_Integer_Constant (Value => Enumeration_Rep (Lit));
 
+            --  Second value of enumeration covered by top-level if
+
+            Next_Literal (Lit);
+
+            --  If there is no second value, the "Else_Part", which is just an
+            --  integer constant, can be returned.
+
+            if No (Lit) then
+               Expr := Else_Part;
+            else
+
+               Cond :=
+                 New_Comparison
+                   (Domain => EW_Term,
+                    Symbol => Why_Eq,
+                    Left   => +X_Ident,
+                    Right  => New_Integer_Constant
+                      (Value => Enumeration_Pos (Lit)));
+               Then_Part :=
+                 New_Integer_Constant (Value => Enumeration_Rep (Lit));
+
+               --  Remaining values covered by elsif parts
+               loop
+                  Next_Literal (Lit);
+                  exit when No (Lit);
+                  Elsif_Parts (Index) :=
+                    New_Elsif
+                      (Domain => EW_Term,
+                       Condition =>
+                         New_Comparison
+                           (Domain => EW_Term,
+                            Symbol => Why_Eq,
+                            Left   => +X_Ident,
+                            Right  => New_Integer_Constant
+                              (Value => Enumeration_Pos (Lit))),
+                       Then_Part =>
+                         New_Integer_Constant
+                           (Value => Enumeration_Rep (Lit)));
+                  Index := Index + 1;
+               end loop;
+
+               Expr :=
+                 New_Conditional
+                   (Domain      => EW_Term,
+                    Condition   => Cond,
+                    Then_Part   => Then_Part,
+                    Elsif_Parts => Elsif_Parts,
+                    Else_Part   => Else_Part);
+
+            end if;
             Emit (Th,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Pterm,

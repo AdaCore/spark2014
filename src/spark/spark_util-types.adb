@@ -1264,6 +1264,22 @@ package body SPARK_Util.Types is
       return Etype (Index);
    end Nth_Index_Type;
 
+   ------------------
+   -- Num_Literals --
+   ------------------
+
+   function Num_Literals (Ty : Entity_Id) return Positive is
+      Lit : Entity_Id := First_Literal (Ty);
+      Count : Positive := 1;
+   begin
+      loop
+         Next_Literal (Lit);
+         exit when No (Lit);
+         Count := Count + 1;
+      end loop;
+      return Count;
+   end Num_Literals;
+
    ---------------------------------------
    -- Private_Declarations_Of_Prot_Type --
    ---------------------------------------
