@@ -1,7 +1,4 @@
 with "spark_lemmas";
 
 project Test is
-   package Compiler is
-      for Default_Switches ("Ada") use ("-gnateDSPARK_BODY_MODE=Off"); -- define SPARK_BODY_MODE as workaround
-   end Compiler;
 end Test;
