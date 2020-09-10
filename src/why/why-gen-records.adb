@@ -210,8 +210,9 @@ package body Why.Gen.Records is
          (Etype (Field),
           Relaxed_Init => Ekind (Field) = E_Component
           and then
-            (Init_Wrapper
-             or else SPARK_Definition.Has_Relaxed_Init (Etype (Field)))));
+            (if Init_Wrapper
+             then Might_Contain_Relaxed_Init (Etype (Field))
+             else SPARK_Definition.Has_Relaxed_Init (Etype (Field)))));
    --  Compute the expected Why type of a record component. If the component is
    --  a type, it stands for the invisible fields of the type and is translated
    --  as the appropriate private type. Otherwise, return the abstract type of

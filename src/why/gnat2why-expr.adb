@@ -20173,8 +20173,10 @@ package body Gnat2Why.Expr is
                        EW_Abstract
                          (Etype (Component),
                           Relaxed_Init =>
-                            (Init_Wrapper
-                             or else Has_Relaxed_Init (Etype (Component)))
+                            (if Init_Wrapper
+                             then Might_Contain_Relaxed_Init
+                               (Etype (Component))
+                             else Has_Relaxed_Init (Etype (Component)))
                           and then Ekind (Component) = E_Component),
                      Domain        => Domain,
                      Params        => Params);
@@ -20185,8 +20187,10 @@ package body Gnat2Why.Expr is
                        EW_Abstract
                          (Etype (Component),
                           Relaxed_Init =>
-                            (Init_Wrapper
-                             or else Has_Relaxed_Init (Etype (Component)))
+                            (if Init_Wrapper
+                             then Might_Contain_Relaxed_Init
+                               (Etype (Component))
+                             else Has_Relaxed_Init (Etype (Component)))
                           and then Ekind (Component) = E_Component));
                end if;
 
