@@ -42,7 +42,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2" timelimit="20" memlimit="2000"><result status="valid" steps="145286"/></proof>
-  <proof prover="3"><result status="timeout"/></proof>
+  <proof prover="3"><result status="unknown" steps="8948"/></proof>
   </goal>
  </transf>
  </goal>
