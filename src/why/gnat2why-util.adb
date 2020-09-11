@@ -33,7 +33,6 @@ with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
 with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Lib;
-with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Definition.Annotate;
@@ -45,7 +44,6 @@ with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Names;              use Why.Gen.Names;
 with Why.Inter;                  use Why.Inter;
 with Why.Keywords;               use Why.Keywords;
-with Why.Types;                  use Why.Types;
 
 package body Gnat2Why.Util is
 
@@ -490,6 +488,77 @@ package body Gnat2Why.Util is
       end loop;
       return Plan;
    end Build_Printing_Plan;
+
+   ------------------------------
+   -- Collect_Contextual_Nodes --
+   ------------------------------
+
+   function Collect_Contextual_Nodes (N : Node_Id) return Node_Sets.Set is
+      Contextual_Nodes : Node_Sets.Set;
+      Local_Entities   : Node_Sets.Set;
+
+      function Is_Contextual_Part (N : Node_Id) return Atree.Traverse_Result;
+      --  Search for contextual node and enter them in the set
+
+      ------------------------
+      -- Is_Contextual_Part --
+      ------------------------
+
+      function Is_Contextual_Part (N : Node_Id) return Atree.Traverse_Result is
+      begin
+         --  'Old and Loop_Entry attributes are translated using local
+         --  constants introduced at the beginning of the subprogram/loop.
+         --  Target name is a local constant declared just before the
+         --  assignment.
+
+         if (Nkind (N) = N_Attribute_Reference
+             and then Attribute_Name (N) in Name_Old | Name_Loop_Entry)
+           or else Nkind (N) in N_Target_Name
+         then
+            Contextual_Nodes.Include (N);
+            return Atree.Skip;
+
+         --  Constants declared in declare expressions are translated using
+         --  local constants.
+
+         elsif Nkind (N) in N_Expanded_Name | N_Identifier then
+            if Present (Entity (N))
+              and then Comes_From_Declare_Expr (Entity (N))
+            then
+               Contextual_Nodes.Include (Entity (N));
+            end if;
+            return Atree.Skip;
+
+         --  Store entities declared in declare expressions local to N in
+         --  Local_Entities so that they can be removed from the set of
+         --  contextual nodes.
+
+         elsif Nkind (N) = N_Expression_With_Actions then
+            declare
+               Action : Node_Id := First (Actions (N));
+            begin
+               while Present (Action) loop
+                  case Nkind (Action) is
+                     when N_Object_Declaration =>
+                        Local_Entities.Include (Defining_Identifier (Action));
+                     when others => null;
+                  end case;
+                  Next (Action);
+               end loop;
+            end;
+            return Atree.OK;
+         else
+            return Atree.OK;
+         end if;
+      end Is_Contextual_Part;
+
+      procedure Search_Contextual_Parts is new Traverse_More_Proc
+        (Is_Contextual_Part);
+   begin
+      Search_Contextual_Parts (N);
+      Contextual_Nodes.Difference (Local_Entities);
+      return Contextual_Nodes;
+   end Collect_Contextual_Nodes;
 
    -----------------------
    -- Collect_Old_Parts --
@@ -1099,6 +1168,213 @@ package body Gnat2Why.Util is
    begin
       Section := Why_Node_Lists.Empty_List;
    end Make_Empty_Why_Section;
+
+   ------------------------
+   -- Map_For_Loop_Entry --
+   ------------------------
+
+   function Map_For_Loop_Entry
+     (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map
+   is
+      use Loop_Entry_Nodes;
+      C : constant Loop_Entry_Nodes.Cursor := Loop_Entry_Map.Find (Loop_Id);
+   begin
+      return (if Has_Element (C) then
+                 Element (C)
+              else
+                 Ada_To_Why_Ident.Empty_Map);
+   end Map_For_Loop_Entry;
+
+   -------------------------
+   -- Name_For_Loop_Entry --
+   -------------------------
+
+   function Name_For_Loop_Entry (Attr : Node_Id) return W_Identifier_Id is
+      function Is_Loop_Stmt (N : Node_Id) return Boolean is
+        (Nkind (N) = N_Loop_Statement);
+
+      function Enclosing_Loop_Stmt is new
+        First_Parent_With_Property (Is_Loop_Stmt);
+
+      Arg       : constant Node_Id := First (Expressions (Attr));
+      Loop_Id   : Entity_Id;
+      Loop_Stmt : Node_Id;
+
+   begin
+      --  The loop to which attribute Loop_Entry applies is either
+      --  identified explicitly in argument, or, if Loop_Entry takes
+      --  no arguments, it is the innermost enclosing loop.
+
+      if Present (Arg) then
+         Loop_Id := Entity (Arg);
+
+      --  Climb the parent chain to find the nearest enclosing loop
+
+      else
+         Loop_Stmt := Enclosing_Loop_Stmt (Attr);
+         Loop_Id := Entity (Identifier (Loop_Stmt));
+      end if;
+
+      return Name_For_Loop_Entry (Prefix (Attr), Loop_Id);
+   end Name_For_Loop_Entry;
+
+   function Name_For_Loop_Entry
+     (Expr    : Node_Id;
+      Loop_Id : Node_Id) return W_Identifier_Id
+   is
+      Result : W_Identifier_Id;
+
+      procedure Get_Name
+        (Loop_Id  : Node_Id;
+         Loop_Map : in out Ada_To_Why_Ident.Map);
+      --  Update the mapping Loop_Map with an entry for Expr if not already
+      --  present, and store the corresponding identifier in Result.
+
+      --------------
+      -- Get_Name --
+      --------------
+
+      procedure Get_Name
+        (Loop_Id  : Node_Id;
+         Loop_Map : in out Ada_To_Why_Ident.Map)
+      is
+         Typ : W_Type_Id;
+         Nd  : Node_Id;
+
+         Pos   : Ada_To_Why_Ident.Cursor := Loop_Map.Find (Expr);
+         Dummy : Boolean;
+
+         use Ada_To_Why_Ident;
+
+         Attrs : Common_Containers.String_Sets.Set :=
+                   Common_Containers.String_Sets.Empty_Set;
+         Model_Trace : constant String :=
+           --  Here we exclude Loop_Entry expressions and only consider
+           --  Entities
+           (if Nkind (Expr) in N_Has_Entity then
+               "model_trace:" &
+               Trim (Source => Entity (Expr)'Image,
+                     Side   => Ada.Strings.Left) &
+              "'Loop_Entry"
+            else "");
+
+      begin
+         pragma Unreferenced (Loop_Id);
+
+         if not Has_Element (Pos) then
+
+            if Nkind (Expr) in N_Defining_Identifier then
+               Typ := Why_Type_Of_Entity (Expr);
+               Nd  := Expr;
+            elsif Nkind (Expr) in N_Identifier | N_Expanded_Name then
+               Typ := Why_Type_Of_Entity (Entity (Expr));
+               Nd  := Entity (Expr);
+            else
+               Typ := Type_Of_Node (Expr);
+               Nd  := Types.Empty;
+            end if;
+
+            if Model_Trace /= "" then
+               Common_Containers.String_Sets.Insert (Attrs, Model_Trace);
+            end if;
+            Loop_Map.Insert (Key      => Expr,
+                             New_Item => New_Generated_Identifier
+                                           (Typ       => Typ,
+                                            Ada_Node  => Nd,
+                                            Base_Name => "loop_entry",
+                                            Attrs     => Attrs),
+                             Position => Pos,
+                             Inserted => Dummy);
+         end if;
+
+         Result := Loop_Map (Pos);
+      end Get_Name;
+
+      Cur   : Loop_Entry_Nodes.Cursor;
+      Dummy : Boolean;
+
+   --  Start of processing for Name_For_Loop_Entry
+
+   begin
+      Loop_Entry_Map.Insert
+        (Key      => Loop_Id,
+         Position => Cur,
+         Inserted => Dummy);
+
+      Loop_Entry_Map.Update_Element
+        (Position => Cur,
+         Process  => Get_Name'Access);
+
+      return Result;
+   end Name_For_Loop_Entry;
+
+   ------------------
+   -- Name_For_Old --
+   ------------------
+
+   function Name_For_Old (N : Node_Id) return W_Identifier_Id is
+      Position : Ada_To_Why_Ident.Cursor;
+      Inserted : Boolean;
+
+      use Ada_To_Why_Ident;
+
+   begin
+      --  Tentatively insert an empty node to update it later
+      Old_Map.Insert (Key      => N,
+                      New_Item => Why_Empty,
+                      Position => Position,
+                      Inserted => Inserted);
+
+      if Inserted then
+         declare
+            function Is_Contract_Case (P : Node_Id) return Boolean is
+              (Is_Pragma (P, Pragma_Contract_Cases));
+
+            function Enclosing_Contract_Case is new
+              First_Parent_With_Property (Is_Contract_Case);
+
+            Typ : W_Type_Id;
+            Nd  : Node_Id;
+            Attrs : Common_Containers.String_Sets.Set :=
+                   Common_Containers.String_Sets.Empty_Set;
+            Model_Trace : constant String :=
+              --  Here we exclude Old expressions and only consider Entities
+              (if Nkind (N) in N_Has_Entity then
+                  "model_trace:" &
+                  Trim (Source => Entity (N)'Image,
+                        Side   => Ada.Strings.Left) &
+                 "'Old"
+               else "");
+         begin
+            if Nkind (N) in N_Identifier | N_Expanded_Name then
+               Typ := Type_Of_Node (N);
+               Nd  := Entity (N);
+            else
+               Typ := Type_Of_Node (Etype (N));
+               Nd  := Types.Empty;
+            end if;
+
+            if Present (Enclosing_Contract_Case (N)) and then
+              Model_Trace /= ""
+            then
+               Common_Containers.String_Sets.Insert (Attrs, Model_Trace);
+               Old_Map (Position) :=
+                 New_Generated_Identifier
+                   (Base_Name => "old",
+                    Typ       => Typ,
+                    Ada_Node  => Nd,
+                    Attrs     => Attrs);
+            else
+               Old_Map (Position) :=
+                 New_Temp_Identifier (Base_Name => "old",
+                                      Typ       => Typ,
+                                      Ada_Node  => Nd);
+            end if;
+         end;
+      end if;
+
+      return Old_Map (Position);
+   end Name_For_Old;
 
    -----------------------------
    -- Needs_DIC_Check_At_Decl --

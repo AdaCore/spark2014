@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with Common_Containers;

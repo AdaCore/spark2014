@@ -21,7 +21,7 @@ simple_arrays.adb:79:11: info: flow dependencies proved
 simple_arrays.adb:81:13: info: postcondition proved (CVC4: 2 VC; Trivial: 5 VC; Z3: 1 VC)
 simple_arrays.adb:85:54: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:86:50: info: index check proved (CVC4: 2 VC)
-simple_arrays.adb:89:22: medium: assertion might fail, cannot prove (A with delta 1 => 5,  N => 6) = ... (e.g. when A = (others => 5) and N = 0) [possible fix: subprogram at line 77 should mention A and N in a precondition]
+simple_arrays.adb:89:22: medium: assertion might fail, cannot prove (A with delta 1 => 5,  N => 6) = ... (e.g. when A = (1 => 5, others => Integer'First) and N = 1) [possible fix: subprogram at line 77 should mention A and N in a precondition]
 simple_arrays.adb:89:36: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:90:32: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:90:56: info: index check proved (CVC4: 2 VC)
@@ -38,7 +38,7 @@ simple_arrays.adb:125:11: info: flow dependencies proved
 simple_arrays.adb:127:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 simple_arrays.adb:140:11: info: flow dependencies proved
 simple_arrays.adb:142:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-simple_arrays.adb:152:22: info: assertion proved (Z3: 1 VC)
+simple_arrays.adb:152:22: info: assertion proved (CVC4: 1 VC)
 simple_arrays.adb:152:40: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:153:36: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:154:36: info: index check proved (CVC4: 2 VC)

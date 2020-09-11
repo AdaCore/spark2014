@@ -25,8 +25,7 @@
 
 with Flow_Utility;        use Flow_Utility;
 with Gnat2Why.Util;       use Gnat2Why.Util;
-with Snames;              use Snames;
-with SPARK_Util;          use SPARK_Util;
+with Namet;               use Namet;
 with SPARK_Util.Types;    use SPARK_Util.Types;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
@@ -205,21 +204,6 @@ package body Why.Gen.Binders is
       return Args;
    end Get_Args_From_Binders;
 
-   ------------------------------
-   -- Get_Args_From_Expression --
-   ------------------------------
-
-   function Get_Args_From_Expression (E           : Node_Id;
-                                      Ref_Allowed : Boolean)
-                                      return W_Expr_Array
-   is
-      Variables : constant Flow_Id_Sets.Set := Get_Variables_For_Proof (E, E);
-
-   begin
-      pragma Assert (if Is_Static_Expression (E) then Variables.Is_Empty);
-      return Get_Args_From_Variables (Variables, Ref_Allowed);
-   end Get_Args_From_Expression;
-
    -----------------------------
    -- Get_Args_From_Variables --
    -----------------------------
@@ -227,20 +211,57 @@ package body Why.Gen.Binders is
    function Get_Args_From_Variables (Variables   : Flow_Id_Sets.Set;
                                      Ref_Allowed : Boolean)
                                      return W_Expr_Array
+   is (Get_Args_From_Binders
+       (To_Binder_Array
+        (Get_Binders_From_Variables (Variables)), Ref_Allowed));
+
+   ---------------------------------------
+   -- Get_Binders_From_Contextual_Nodes --
+   ---------------------------------------
+
+   function Get_Binders_From_Contextual_Nodes
+     (Contextual_Nodes : Node_Sets.Set) return Item_Array
    is
-      Items   : constant Item_Array := Get_Binders_From_Variables (Variables);
-      Binders : constant Binder_Array := To_Binder_Array (Items);
+      Binders : Item_Array (1 .. Natural (Contextual_Nodes.Length));
+      I       : Positive := 1;
    begin
-      return Get_Args_From_Binders (Binders, Ref_Allowed);
-   end Get_Args_From_Variables;
+      for N of Contextual_Nodes loop
+         case Nkind (N) is
+            when N_Target_Name =>
+               pragma Assert (Target_Name /= Why_Empty);
+               Binders (I) := Mk_Tmp_Item_Of_Entity
+                 (E       => Empty,
+                  Id      => Target_Name,
+                  Mutable => False);
+            when N_Attribute_Reference =>
+               if Attribute_Name (N) = Name_Old then
+                  Binders (I) := Mk_Tmp_Item_Of_Entity
+                    (E       => Empty,
+                     Id      => Name_For_Old (Prefix (N)),
+                     Mutable => False);
+               else
+                  pragma Assert (Attribute_Name (N) = Name_Loop_Entry);
+                  Binders (I) := Mk_Tmp_Item_Of_Entity
+                    (E       => Empty,
+                     Id      => Name_For_Loop_Entry (N),
+                     Mutable => False);
+               end if;
+            when others =>
+               pragma Assert (Nkind (N) = N_Defining_Identifier);
+               Binders (I) := Ada_Ent_To_Why.Element (Symbol_Table, N);
+         end case;
+         I := I + 1;
+      end loop;
+      return Binders;
+   end Get_Binders_From_Contextual_Nodes;
 
    ---------------------------------
    -- Get_Binders_From_Expression --
    ---------------------------------
 
-   function Get_Binders_From_Expression (Expr    : Node_Id;
-                                         Compute : Boolean := False)
-                                         return Item_Array
+   function Get_Binders_From_Expression
+     (Expr    : Node_Id;
+      Compute : Boolean := False) return Item_Array
    is
       Variables : constant Flow_Id_Sets.Set :=
         Get_Variables_For_Proof (Expr, Expr);
@@ -399,9 +420,15 @@ package body Why.Gen.Binders is
 
    function Item_Array_Length
      (Arr         : Item_Array;
-      Keep_Local  : Boolean := True;
+      Keep_Const  : Handling := Local_Only;
       Ignore_Init : Boolean := False) return Natural
    is
+      function Keep_Local (Is_Local : Boolean) return Boolean is
+        (case Keep_Const is
+            when Keep       => True,
+            when Local_Only => Is_Local,
+            when Erase      => False);
+
       Count : Natural := 0;
    begin
       for Index in Arr'Range loop
@@ -416,13 +443,13 @@ package body Why.Gen.Binders is
                when Regular
                  | Concurrent_Self
                   =>
-                  if (Keep_Local and then B.Local) or else B.Main.Mutable then
+                  if Keep_Local (B.Local) or else B.Main.Mutable then
                      Count := Count + 1;
                   end if;
 
                when Pointer =>
                   pragma Assert (B.Value.Mutable);
-                  if B.Mutable or else (Keep_Local and then B.Local) then
+                  if B.Mutable or else Keep_Local (B.Local) then
                      Count := Count + 4;
                   else
                      Count := Count + 2;
@@ -430,7 +457,7 @@ package body Why.Gen.Binders is
 
                when UCArray =>
                   pragma Assert (B.Content.Mutable);
-                  if Keep_Local and then B.Local then
+                  if Keep_Local (B.Local) then
                      Count := Count + 1 + 2 * B.Dim;
                   else
                      Count := Count + 1;
@@ -444,24 +471,24 @@ package body Why.Gen.Binders is
                         and then B.Fields.Binder.Mutable));
 
                   if B.Discrs.Present
-                    and then ((Keep_Local and then B.Local)
+                    and then (Keep_Local (B.Local)
                                or else B.Discrs.Binder.Mutable)
                   then
                      Count := Count + 1;
                   end if;
 
                   if B.Fields.Present
-                    and then ((Keep_Local and then B.Local)
+                    and then (Keep_Local (B.Local)
                                or else B.Fields.Binder.Mutable)
                   then
                      Count := Count + 1;
                   end if;
 
-                  if Keep_Local and then B.Local and then B.Constr.Present then
+                  if Keep_Local (B.Local) and then B.Constr.Present then
                      Count := Count + 1;
                   end if;
 
-                  if Keep_Local and then B.Local and then B.Tag.Present then
+                  if Keep_Local (B.Local) and then B.Tag.Present then
                      Count := Count + 1;
                   end if;
 
@@ -492,17 +519,62 @@ package body Why.Gen.Binders is
       end case;
    end Item_Is_Mutable;
 
-   -----------------------------
-   -- Localize_Variable_Parts --
-   -----------------------------
+   ----------------------
+   -- Localize_Binders --
+   ----------------------
 
-   procedure Localize_Variable_Parts
-     (Binders : in out Item_Array;
-      Suffix  : String := "")
+   procedure Localize_Binders
+     (Binders        : in out Item_Array;
+      Suffix         : String := "";
+      Only_Variables : Boolean := True)
    is
+
+      function Local_Name (Name : W_Identifier_Id) return W_Identifier_Id;
+      --  Compute a local name for Name.
+      --  Return Module___Namespace___Symbol___Suffix.
+
+      ----------------
+      -- Local_Name --
+      ----------------
+
+      function Local_Name (Name : W_Identifier_Id) return W_Identifier_Id is
+         Module    : constant W_Module_Id :=
+           Get_Module (Get_Name (Name));
+         Namespace : constant Symbol := Get_Namespace (Get_Name (Name));
+         L_Name    : constant String :=
+           (if Module = Why_Empty then "" else Img (Get_Name (Module)) & "___")
+           & (if Namespace = No_Symbol then "" else Img (Namespace) & "___")
+           & Img (Get_Symb (Get_Name (Name))) & "___" & Suffix;
+      begin
+         return New_Identifier
+           (Ada_Node => Get_Ada_Node (+Name),
+            Domain   => Get_Domain (+Name),
+            Name     => New_Name
+              (Ada_Node  => Get_Ada_Node (+Get_Name (Name)),
+               Symb      => NID (L_Name),
+               Module    => Why_Empty,
+               Infix     => Get_Infix (Get_Name (Name))),
+            Typ      => Get_Typ (Name),
+            Labels   => Get_Labels (Name));
+      end Local_Name;
+
+   --  Start of processing for Localize_Binders
+
    begin
       for B of Binders loop
-         case B.Kind is
+
+         --  If the B is already local and no suffix is provided, there is
+         --  nothing to do.
+
+         if Suffix /= "" or else not B.Local then
+
+            --  The Init field is always mutable when present
+
+            if B.Init.Present then
+               B.Init.Id := Local_Name (B.Init.Id);
+            end if;
+
+            case B.Kind is
             when Concurrent_Self =>
                --  Concurrent self is already local
 
@@ -510,123 +582,65 @@ package body Why.Gen.Binders is
                null;
 
             when Regular =>
-               declare
-                  Local_Name : constant String :=
-                    (if Present (B.Main.Ada_Node)
-                     then Full_Name (B.Main.Ada_Node)
-                     else To_String (B.Main.B_Ent))
-                    & Suffix;
-               begin
-                  if B.Main.Mutable then
-                     B.Main.B_Name :=
-                       New_Identifier
-                         (Ada_Node => B.Main.Ada_Node,
-                          Name     => Local_Name,
-                          Typ      => Get_Typ (B.Main.B_Name));
-                  end if;
-
-                  if B.Init.Present then
-                     B.Init.Id :=
-                       New_Identifier
-                         (Name => Local_Name & "__attr__init",
-                          Typ  => Get_Typ (B.Init.Id));
-                  end if;
-               end;
+               if B.Main.Mutable or else not Only_Variables then
+                  B.Main.B_Name := Local_Name (B.Main.B_Name);
+               end if;
 
             when UCArray =>
-               declare
-                  Local_Name : constant String :=
-                    Full_Name (B.Content.Ada_Node) & Suffix;
-               begin
-                  pragma Assert (B.Content.Mutable);
-                  B.Content.B_Name :=
-                    New_Identifier
-                      (Ada_Node => B.Content.Ada_Node,
-                       Name     => Local_Name,
-                       Typ      => Get_Typ (B.Content.B_Name));
+               pragma Assert (B.Content.Mutable);
+               B.Content.B_Name := Local_Name (B.Content.B_Name);
 
-                  if B.Init.Present then
-                     B.Init.Id :=
-                       New_Identifier
-                         (Name => Local_Name & "__attr__init",
-                          Typ  => Get_Typ (B.Init.Id));
-                  end if;
-               end;
+               if not Only_Variables then
+                  for Dim_Index in 1 .. B.Dim loop
+                     B.Bounds (Dim_Index).First :=
+                       Local_Name (B.Bounds (Dim_Index).First);
+                     B.Bounds (Dim_Index).Last :=
+                       Local_Name (B.Bounds (Dim_Index).Last);
+                  end loop;
+               end if;
 
             when Pointer =>
-               declare
-                  Local_Name : constant String :=
-                    Full_Name (B.Value.Ada_Node) & Suffix;
-               begin
-                  pragma Assert (B.Value.Mutable);
-                  B.Value.B_Name :=
-                    New_Identifier
-                      (Ada_Node => B.Value.Ada_Node,
-                       Name     => Local_Name,
-                       Typ      => Get_Typ (B.Value.B_Name));
+               pragma Assert (B.Value.Mutable);
+               B.Value.B_Name := Local_Name (B.Value.B_Name);
 
-                  if B.Mutable then
-                     B.Address :=
-                       New_Identifier
-                         (Ada_Node => Get_Ada_Node (+B.Address),
-                          Name     => Local_Name & "__address",
-                          Typ      => Get_Typ (B.Address));
-                     B.Is_Null :=
-                       New_Identifier
-                         (Ada_Node => Get_Ada_Node (+B.Is_Null),
-                          Name     => Local_Name & "__is_null",
-                          Typ      => Get_Typ (B.Is_Null));
-                  end if;
+               if B.Mutable or else not Only_Variables then
+                  B.Address := Local_Name (B.Address);
+                  B.Is_Null := Local_Name (B.Is_Null);
+               end if;
 
-                  B.Is_Moved :=
-                    New_Identifier
-                      (Ada_Node => Get_Ada_Node (+B.Is_Moved),
-                       Name     => Local_Name & "__is_moved",
-                       Typ      => Get_Typ (B.Is_Moved));
-
-                  if B.Init.Present then
-                     B.Init.Id :=
-                       New_Identifier
-                         (Name => Local_Name & "__attr__init",
-                          Typ  => Get_Typ (B.Init.Id));
-                  end if;
-               end;
+               B.Is_Moved := Local_Name (B.Is_Moved);
 
             when DRecord =>
-               declare
-                  Local_Name : constant String :=
-                    (if B.Fields.Present
-                     then Full_Name (B.Fields.Binder.Ada_Node)
-                     else Full_Name (B.Discrs.Binder.Ada_Node))
-                    & Suffix;
-               begin
-                  if B.Discrs.Present and then B.Discrs.Binder.Mutable then
-                     B.Discrs.Binder.B_Name :=
-                       New_Identifier
-                         (Ada_Node => B.Discrs.Binder.Ada_Node,
-                          Name     => Local_Name & "__discrs",
-                          Typ      => Get_Typ (B.Discrs.Binder.B_Name));
-                  end if;
-                  if B.Fields.Present and then B.Fields.Binder.Mutable then
-                     B.Fields.Binder.B_Name :=
-                       New_Identifier
-                         (Ada_Node => B.Fields.Binder.Ada_Node,
-                          Name     => Local_Name & "__fields",
-                          Typ      => Get_Typ (B.Fields.Binder.B_Name));
-                  end if;
+               if B.Discrs.Present
+                 and then (B.Discrs.Binder.Mutable
+                           or else not Only_Variables)
+               then
+                  B.Discrs.Binder.B_Name :=
+                    Local_Name (B.Discrs.Binder.B_Name);
+               end if;
 
-                  if B.Init.Present then
-                     B.Init.Id :=
-                       New_Identifier
-                         (Name => Local_Name & "__attr__init",
-                          Typ  => Get_Typ (B.Init.Id));
-                  end if;
-               end;
+               if B.Fields.Present
+                 and then (B.Fields.Binder.Mutable
+                           or else not Only_Variables)
+               then
+                  B.Fields.Binder.B_Name :=
+                    Local_Name (B.Fields.Binder.B_Name);
+               end if;
 
-            when Func => raise Program_Error;
-         end case;
+               if not Only_Variables and then B.Constr.Present then
+                  B.Constr.Id := Local_Name (B.Constr.Id);
+               end if;
+
+               if not Only_Variables and then B.Tag.Present then
+                  B.Tag.Id := Local_Name (B.Tag.Id);
+               end if;
+
+               when Func => raise Program_Error;
+            end case;
+            B.Local := B.Local or not Only_Variables;
+         end if;
       end loop;
-   end Localize_Variable_Parts;
+   end Localize_Binders;
 
    -----------------------
    -- Mk_Item_Of_Entity --
@@ -1213,7 +1227,7 @@ package body Why.Gen.Binders is
       return W_Declaration_Id is
       Loc_Items : Item_Array := Items;
    begin
-      Localize_Variable_Parts (Loc_Items);
+      Localize_Binders (Loc_Items);
 
       return New_Function_Decl
         (Ada_Node    => Ada_Node,
@@ -1473,9 +1487,15 @@ package body Why.Gen.Binders is
 
    function To_Binder_Array
      (A          : Item_Array;
-      Keep_Local : Boolean := True) return Binder_Array
+      Keep_Const : Handling := Local_Only) return Binder_Array
    is
-      Result : Binder_Array (1 .. Item_Array_Length (A, Keep_Local));
+      function Keep_Local (Is_Local : Boolean) return Boolean is
+        (case Keep_Const is
+            when Keep       => True,
+            when Local_Only => Is_Local,
+            when Erase      => False);
+
+      Result : Binder_Array (1 .. Item_Array_Length (A, Keep_Const));
       Count  : Natural := 1;
    begin
       for Index in A'Range loop
@@ -1494,9 +1514,7 @@ package body Why.Gen.Binders is
                when Regular
                   | Concurrent_Self
                =>
-                  if (Keep_Local and then Cur.Local)
-                    or else Cur.Main.Mutable
-                  then
+                  if Keep_Local (Cur.Local) or else Cur.Main.Mutable then
                      Result (Count) := Cur.Main;
                      Count := Count + 1;
                   end if;
@@ -1505,7 +1523,7 @@ package body Why.Gen.Binders is
                   Result (Count) := Cur.Content;
                   Count := Count + 1;
 
-                  if Keep_Local and then Cur.Local then
+                  if Keep_Local (Cur.Local) then
                      for Dim_Index in 1 .. Cur.Dim loop
                         Result (Count) :=
                           (B_Name => Cur.Bounds (Dim_Index).First,
@@ -1521,7 +1539,7 @@ package body Why.Gen.Binders is
                   Result (Count) := Cur.Value;
                   Count := Count + 1;
 
-                  if Cur.Mutable or else (Keep_Local and then Cur.Local) then
+                  if Cur.Mutable or else Keep_Local (Cur.Local) then
                      Result (Count) :=
                        (B_Name  => Cur.Address,
                         Mutable => Cur.Mutable,
@@ -1541,32 +1559,26 @@ package body Why.Gen.Binders is
 
                when DRecord =>
                   if Cur.Fields.Present
-                    and then ((Keep_Local and then Cur.Local)
+                    and then (Keep_Local (Cur.Local)
                                or else Cur.Fields.Binder.Mutable)
                   then
                      Result (Count) := Cur.Fields.Binder;
                      Count := Count + 1;
                   end if;
                   if Cur.Discrs.Present
-                    and then ((Keep_Local and then Cur.Local)
+                    and then (Keep_Local (Cur.Local)
                                or else Cur.Discrs.Binder.Mutable)
                   then
                      Result (Count) := Cur.Discrs.Binder;
                      Count := Count + 1;
                   end if;
-                  if Keep_Local
-                    and then Cur.Local
-                    and then Cur.Constr.Present
-                  then
+                  if Keep_Local (Cur.Local) and then Cur.Constr.Present then
                      Result (Count) :=
                        (B_Name => Cur.Constr.Id,
                         others => <>);
                      Count := Count + 1;
                   end if;
-                  if Keep_Local
-                    and then Cur.Local
-                    and then Cur.Tag.Present
-                  then
+                  if Keep_Local (Cur.Local) and then Cur.Tag.Present then
                      Result (Count) :=
                        (B_Name => Cur.Tag.Id,
                         others => <>);

@@ -639,8 +639,8 @@ package body Gnat2Why.Subprograms is
          begin
             while Present (Contract_Case) loop
                Collect_Old_Parts (Expression (Contract_Case), Old_Parts);
-               if not Is_Others_Choice (Choices (Contract_Case)) then
-                  Old_Parts.Include (First (Choices (Contract_Case)));
+               if not Is_Others_Choice (Choice_List (Contract_Case)) then
+                  Old_Parts.Include (First (Choice_List (Contract_Case)));
                end if;
 
                Next (Contract_Case);
@@ -1652,7 +1652,7 @@ package body Gnat2Why.Subprograms is
       Effect_Binders : Item_Array :=
         Compute_Binders_For_Effects (E, Compute => True);
    begin
-      Localize_Variable_Parts (Effect_Binders);
+      Localize_Binders (Effect_Binders);
       return Raw_Binders & Effect_Binders;
    end Add_Logic_Binders;
 
@@ -1783,7 +1783,7 @@ package body Gnat2Why.Subprograms is
             Enabled     : constant W_Expr_Id := +Guard_Ident;
 
          begin
-            Case_Guard := First (Choices (Contract_Case));
+            Case_Guard := First (Choice_List (Contract_Case));
 
             --  The OTHERS choice requires special processing
 
@@ -1871,7 +1871,7 @@ package body Gnat2Why.Subprograms is
       Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
       Contract_Case := First (Component_Associations (Aggr));
       while Present (Contract_Case) loop
-         Case_Guard := First (Choices (Contract_Case));
+         Case_Guard := First (Choice_List (Contract_Case));
 
          --  The OTHERS choice requires special processing
 
@@ -2069,7 +2069,7 @@ package body Gnat2Why.Subprograms is
       Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
       Contract_Case := First (Component_Associations (Aggr));
       while Present (Contract_Case) loop
-         Case_Guard := First (Choices (Contract_Case));
+         Case_Guard := First (Choice_List (Contract_Case));
 
          declare
             --  Temporary Why name for the current guard
@@ -2140,7 +2140,7 @@ package body Gnat2Why.Subprograms is
       Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
       Contract_Case := Last (Component_Associations (Aggr));
       while Present (Contract_Case) loop
-         Case_Guard := First (Choices (Contract_Case));
+         Case_Guard := First (Choice_List (Contract_Case));
          Consequence := Expression (Contract_Case);
 
          --  The "others" choice requires special processing
@@ -3709,7 +3709,7 @@ package body Gnat2Why.Subprograms is
                while Present (Contract_Case) loop
                   CC_Old.Clear;
                   Collect_Old_Parts (Expression (Contract_Case), CC_Old);
-                  Case_Guard := First (Choices (Contract_Case));
+                  Case_Guard := First (Choice_List (Contract_Case));
                   R := Sequence
                     (Left  => New_Conditional
                        (Condition =>
@@ -5172,8 +5172,8 @@ package body Gnat2Why.Subprograms is
                   Params      : Transformation_Params;
 
                begin
-                  Localize_Variable_Parts (New_Binders);
-                  Localize_Variable_Parts (Old_Binders, "__old");
+                  Localize_Binders (New_Binders);
+                  Localize_Binders (Old_Binders, "old");
 
                   Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
@@ -5874,9 +5874,9 @@ package body Gnat2Why.Subprograms is
                        Tag_Arg &
                        Get_Args_From_Binders
                        (To_Binder_Array
-                          (Logic_Binders, Keep_Local => True) &
+                          (Logic_Binders, Keep_Const => Local_Only) &
                           To_Binder_Array
-                          (Logic_Binders, Keep_Local => False),
+                          (Logic_Binders, Keep_Const => Erase),
                         Ref_Allowed => True);
                      --  Arguments of the predicate function for E's
                      --  specific post:
@@ -5886,7 +5886,7 @@ package body Gnat2Why.Subprograms is
 
                      First_Old       : constant Natural :=
                        2 + Item_Array_Length
-                         (Logic_Binders, Keep_Local => True);
+                         (Logic_Binders, Keep_Const => Local_Only);
 
                   begin
                      --  Insert calls to old on expressions for the old
@@ -6049,7 +6049,7 @@ package body Gnat2Why.Subprograms is
                   WTyp : constant W_Type_Id :=
                     Get_Typ (W_Identifier_Id'(+Variants_Ids (Count)));
                   Cmp  : constant W_Identifier_Id :=
-                    (if Chars (First (Choices (Variant))) = Name_Decreases
+                    (if Chars (First (Choice_List (Variant))) = Name_Decreases
                      then (if Why_Type_Is_BitVector (WTyp)
                        then MF_BVs (WTyp).Ult
                        else Int_Infix_Lt)
@@ -6164,10 +6164,10 @@ package body Gnat2Why.Subprograms is
       New_Binders       : Item_Array := Logic_Binders;
       Old_Binders       : Item_Array := Logic_Binders;
    begin
-      Localize_Variable_Parts (New_Binders);
-      Localize_Variable_Parts (Old_Binders, "__old");
-      return To_Binder_Array (New_Binders, Keep_Local => True) &
-        To_Binder_Array (Old_Binders, Keep_Local => False);
+      Localize_Binders (New_Binders);
+      Localize_Binders (Old_Binders, "old");
+      return To_Binder_Array (New_Binders, Keep_Const => Local_Only) &
+        To_Binder_Array (Old_Binders, Keep_Const => Erase);
    end Procedure_Logic_Binders;
 
    ------------------

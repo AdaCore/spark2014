@@ -26,9 +26,11 @@
 with Common_Containers;      use Common_Containers;
 with Flow_Types;             use Flow_Types;
 with GNATCOLL.Symbols;       use GNATCOLL.Symbols;
+with Snames;                 use Snames;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
 with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Util;             use SPARK_Util;
 with Types;                  use Types;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Gen.Preds;          use Why.Gen.Preds;
@@ -156,20 +158,30 @@ package Why.Gen.Binders is
 
    type Item_Array is array (Positive range <>) of Item_Type;
 
+   type Handling is (Erase, Local_Only, Keep);
+   --  Defines the the handling that should be applied to parts of a binder.
+   --  If it is Erase, they are ignored, Local_Only means that we keep them
+   --  only for local binders, and Keep that they should always be included.
+
    function Item_Array_Length
      (Arr         : Item_Array;
-      Keep_Local  : Boolean := True;
+      Keep_Const  : Handling := Local_Only;
       Ignore_Init : Boolean := False) return Natural;
-   --  Return the number of variables that is introduced by the given
-   --  item_array (counting items plus e.g. array bounds). If Keep_Local is
-   --  True, also count local parts. If Ignore_Init is True, do not count the
-   --  initialization flag.
+   --  @param Arr an array of items.
+   --  @param Keep_Const handling to be used for constant parts of Arr.
+   --  @param Ignore_Init whether initialization flags should be counted.
+   --  @return the number of variables that is introduced by Arr (counting
+   --    items plus e.g. array bounds).
 
    function To_Binder_Array
      (A          : Item_Array;
-      Keep_Local : Boolean := True) return Binder_Array;
+      Keep_Const : Handling := Local_Only) return Binder_Array
+   with Post =>
+       To_Binder_Array'Result'Length = Item_Array_Length (A, Keep_Const);
    --  "Flatten" the Item_Array to a binder_array, transforming e.g. array
    --  bounds to binders.
+   --  @param A an array of items.
+   --  @param Keep_Const handling to be used for constant parts of Arr.
 
    function New_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
@@ -322,15 +334,15 @@ package Why.Gen.Binders is
    --  @param E Ada Entity to be translated into an item.
    --  @param Local do not prefix names.
    --  @param In_Fun_Decl Use the type expected in function declaration for
-   --  parameters of subprograms (Do not use Actual_Subtype; use
-   --  representation type for scalars...).
+   --    parameters of subprograms (Do not use Actual_Subtype; use
+   --    representation type for scalars...).
    --  @return an Item representing the Entity E.
 
    function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id;
    --  Get the Ada Node of an item.
    --  @param B item whose Ada node we query.
    --  @return the ada node that produced the binder. If the node is empty,
-   --  then either B is the unit binder or it is a binder for effects only.
+   --    then either B is the unit binder or it is a binder for effects only.
 
    function Get_Why_Type_From_Item (B : Item_Type) return W_Type_Id;
    --  Get the why type of an item.
@@ -374,21 +386,52 @@ package Why.Gen.Binders is
    --  Should only be put to True if only localized versions of names are used.
    --  @result An array of items used to represent these variables in Why
 
-   function Get_Binders_From_Expression (Expr    : Node_Id;
-                                         Compute : Boolean := False)
-                                         return Item_Array
+   subtype Contextual_Node is Node_Id with
+     Ghost,
+     Predicate =>
+       (case Nkind (Contextual_Node) is
+          when N_Target_Name         => True,
+          when N_Attribute_Reference =>
+             Attribute_Name (Contextual_Node) in Name_Old | Name_Loop_Entry,
+          when N_Defining_Identifier =>
+             Comes_From_Declare_Expr (Contextual_Node),
+          when others                => False);
+   --  Nodes whose translation is a local Why3 objects defined in the context
+   --  of the expression. This includes attributes 'Loop_entry and 'Old, target
+   --  name, and constants coming from declare expressions.
+
+   function Get_Binders_From_Contextual_Nodes
+     (Contextual_Nodes : Node_Sets.Set) return Item_Array
+   with
+       Pre => (for all E of Contextual_Nodes => E in Contextual_Node),
+       Post =>
+         (for all Item of Get_Binders_From_Contextual_Nodes'Result =>
+            Item.Local and Item.Kind = Regular and not Item.Main.Mutable);
+   --  A set of of items for contextual nodes.
+   --  NB. For split array types, old items will not contain the bounds of
+   --  the array. These elements should be provided separately (it is usually
+   --  done by providing the binders for variables referenced in the
+   --  expression).
+
+   function Get_Binders_From_Expression
+     (Expr    : Node_Id;
+      Compute : Boolean := False) return Item_Array
    with Pre => Nkind (Expr) in N_Subexpr;
    --  Compute an array of items representing the variables of E in Why.
    --  @param Expr Ada node for an expression
    --  @param Compute Should be True if we want to compute binders missing from
-   --  the Symbol_Table. Only put it to True when the names are localized.
-   --  @result An array of items used to represent these variables in Why
+   --    the Symbol_Table. Only put it to True when the names are localized.
+   --  @result An array of items used to represent these variales in Why
 
-   procedure Localize_Variable_Parts
-     (Binders : in out Item_Array;
-      Suffix  : String := "");
-   --  Changes variables components of Binders to refer to local names.
+   procedure Localize_Binders
+     (Binders        : in out Item_Array;
+      Suffix         : String := "";
+      Only_Variables : Boolean := True);
+   --  Changes components of Binders to refer to local names.
    --  @param Binders an array of items.
+   --  @param Suffix a string to add as a suffix of local names of Binders.
+   --  @param Only_Variables True if we only need local names for variable
+   --     parts of Binders.
 
    procedure Push_Binders_To_Symbol_Table (Binders : Item_Array);
    --  Modifies Symbol_Table to store bindings from Binders.
@@ -407,16 +450,6 @@ package Why.Gen.Binders is
    --  From a set of names returned by flow analysis, compute an array of
    --  expressions for the values of their variable parts.
    --  @param Variables variables returned by flow analysis
-   --  @param Ref_Allowed whether variables should be dereferenced
-   --  @result An array of W_Expr_Ids used to represent the variable parts
-   --  of these variables in Why.
-
-   function Get_Args_From_Expression (E           : Node_Id;
-                                      Ref_Allowed : Boolean)
-                                      return W_Expr_Array;
-   --  Compute an array of expressions representing the value of variable
-   --  parts of variables of E.
-   --  @param E Ada node for an expression
    --  @param Ref_Allowed whether variables should be dereferenced
    --  @result An array of W_Expr_Ids used to represent the variable parts
    --  of these variables in Why.

@@ -163,7 +163,7 @@ package body Gnat2Why.Types is
          begin
             --  Use local names for variables
 
-            Localize_Variable_Parts (Items);
+            Localize_Binders (Items);
 
             --  Push the names to Symbol_Table
 
@@ -238,7 +238,7 @@ package body Gnat2Why.Types is
          begin
             --  Use local names for variables
 
-            Localize_Variable_Parts (Items);
+            Localize_Binders (Items);
 
             --  Push the names to Symbol_Table
 
@@ -349,7 +349,7 @@ package body Gnat2Why.Types is
             begin
                --  Use local names for variables
 
-               Localize_Variable_Parts (Items);
+               Localize_Binders (Items);
 
                --  Push the names to Symbol_Table
 
@@ -479,7 +479,7 @@ package body Gnat2Why.Types is
          begin
             --  Use local names for variables
 
-            Localize_Variable_Parts (Items);
+            Localize_Binders (Items);
 
             --  Push the names to Symbol_Table
 
@@ -651,7 +651,7 @@ package body Gnat2Why.Types is
          begin
             --  Use local names for variables
 
-            Localize_Variable_Parts (Items);
+            Localize_Binders (Items);
 
             --  Push the names to Symbol_Table
 

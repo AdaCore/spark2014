@@ -15,7 +15,7 @@ client_unit.adb:62:07: info: precondition proved (CVC4: 1 VC)
 client_unit.adb:64:10: info: precondition proved (CVC4: 1 VC)
 client_unit.adb:69:10: info: precondition proved (CVC4: 1 VC)
 concurrency_example.adb:23:07: info: initialization of "Value" proved
-concurrency_example.adb:32:25: medium: assertion might fail, cannot prove Value = All_Zeroes or Value = All_Ones (e.g. when Value = (1 => Integer'First+1, others => 0)) [possible fix: loop at line 26 should mention Value in a loop invariant]
+concurrency_example.adb:32:25: medium: assertion might fail, cannot prove Value = All_Zeroes or Value = All_Ones (e.g. when Value = (others => Integer'First+1)) [possible fix: loop at line 26 should mention Value in a loop invariant]
 concurrency_example.ads:8:09: high: possible data race when accessing variable "concurrency_example.data"
 concurrency_example.ads:8:09: high: with task "concurrency_example.reader"
 concurrency_example.ads:8:09: high: with task "concurrency_example.writer"

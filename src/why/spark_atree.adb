@@ -101,11 +101,12 @@ package body SPARK_Atree is
 
    function Chars (N : Node_Id) return Name_Id renames Sinfo.Chars;
 
-   -------------
-   -- Choices --
-   -------------
+   -----------------
+   -- Choice_List --
+   -----------------
 
-   function Choices (N : Node_Id) return List_Id renames Sinfo.Choices;
+   function Choice_List (N : Node_Id) return List_Id renames
+     Sem_Util.Choice_List;
 
    ----------------------------
    -- Component_Associations --
@@ -665,7 +666,7 @@ package body SPARK_Atree is
 
                   if SPARK_Util.Types.Has_Record_Type (Prefix_Type) then
 
-                     Check_Type := Etype (Nlists.First (Choices (Par)));
+                     Check_Type := Etype (Nlists.First (Sinfo.Choices (Par)));
 
                   --  it's an array type, determine whether the check is for
                   --  the component or the index
@@ -964,9 +965,9 @@ package body SPARK_Atree is
       if Einfo.Is_Array_Type (Etype (Prefix_Node))
         and then not Einfo.Is_Constrained (Etype (Prefix_Node))
         and then Is_List_Member (Possibly_Choice_Node)
-        and then Present (Choices (Atree.Parent (Possibly_Choice_Node)))
+        and then Present (Choice_List (Atree.Parent (Possibly_Choice_Node)))
         and then List_Containing (Possibly_Choice_Node)
-        = Choices (Atree.Parent (Possibly_Choice_Node))
+        = Choice_List (Atree.Parent (Possibly_Choice_Node))
       then
          return True;
       else

@@ -1056,22 +1056,22 @@ package body SPARK_Definition is
          Assocs       : constant List_Id :=
            Component_Associations (N);
          Assoc        : Node_Id := Nlists.First (Assocs);
-         Choices_List : List_Id;
+         Choices      : List_Id;
 
       begin
          while Present (Assoc) loop
-            Choices_List := Choices (Assoc);
+            Choices := Choice_List (Assoc);
 
             --  There can be only one element for a value of deep type
             --  in order to avoid aliasing.
 
             if not Box_Present (Assoc)
               and then Is_Deep (Etype (Expression (Assoc)))
-              and then not Is_Singleton_Choice (Choices_List)
+              and then not Is_Singleton_Choice (Choices)
             then
                Mark_Violation
                  ("duplicate value of a type with ownership",
-                  First (Choices_List),
+                  First (Choices),
                   Cont_Msg =>
                     "singleton choice required to prevent aliasing");
             end if;
@@ -1418,7 +1418,10 @@ package body SPARK_Definition is
             Mark_Component_Association (N);
 
          when N_Iterated_Component_Association =>
-            Mark_Violation ("iterated associations", N);
+            pragma Assert (No (Loop_Actions (N)));
+            Mark_Entity (Defining_Identifier (N));
+            Mark_List (Discrete_Choices (N));
+            Mark (Expression (N));
 
          when N_Delay_Relative_Statement
             | N_Delay_Until_Statement
@@ -6056,7 +6059,9 @@ package body SPARK_Definition is
             begin
                case Nkind (Parent (E)) is
                   when N_Object_Declaration     => Mark_Object_Entity (E);
-                  when N_Iterator_Specification => Mark_Parameter_Entity (E);
+                  when N_Iterator_Specification
+                     | N_Iterated_Component_Association
+                     => Mark_Parameter_Entity (E);
                   when others                   => raise Program_Error;
                end case;
             end;

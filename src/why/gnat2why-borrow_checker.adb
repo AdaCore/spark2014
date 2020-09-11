@@ -1542,7 +1542,7 @@ package body Gnat2Why.Borrow_Checker is
 
          begin
             while Present (Assoc) loop
-               CL := Choices (Assoc);
+               CL := Choice_List (Assoc);
 
                --  For an array aggregate, we should also check that the
                --  expressions used in choices are readable.

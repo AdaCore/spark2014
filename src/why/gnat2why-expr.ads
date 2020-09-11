@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
 with Common_Containers;          use Common_Containers;
 with Flow_Types;                 use Flow_Types;
 with Gnat2Why.Util;              use Gnat2Why.Util;
@@ -228,13 +227,6 @@ package Gnat2Why.Expr is
    --  @param Use_Pred True iff the named predicate should be used
    --  @result Why3 predicate expressing the dynamic invariant of type [Ty]
    --     over [Expr].
-
-   package Ada_To_Why_Ident is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => W_Identifier_Id,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
 
    procedure Compute_Dynamic_Invariant
      (Expr             : W_Term_Id;
@@ -632,13 +624,6 @@ package Gnat2Why.Expr is
    --  It should be equal to empty when we are not generating code for a
    --  protected subprogram.
 
-   package Loop_Entry_Nodes is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Ada_To_Why_Ident.Map,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Ada_To_Why_Ident."=");
-
    function Bind_From_Mapping_In_Expr
      (Params : Transformation_Params;
       Map    : Ada_To_Why_Ident.Map;
@@ -659,51 +644,9 @@ package Gnat2Why.Expr is
    --  Same as above but only bind the nodes from Subset. If As_Old is True,
    --  the expressions in Map should be evaluated in the pre state.
 
-   function Name_For_Loop_Entry
-     (Expr    : Node_Id;
-      Loop_Id : Node_Id) return W_Identifier_Id;
-   --  Returns the identifier to use for a Expr'Loop_Entry(Loop_Id)
-   --  Can be called both on expressions and on identifiers.
-
-   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map;
-   --  Returns the map of identifiers to use for Loop_Entry attribute
-   --  references applying to loop Loop_Id.
-
-   function Map_For_Old return Ada_To_Why_Ident.Map;
-   --  Returns the map of identifiers to use for Old attribute references in
-   --  the current subprogram.
-
-   function Name_For_Old (N : Node_Id) return W_Identifier_Id;
-   --  During the generation of code for detecting run-time errors in the
-   --  postcondition, return the name to use for occurrences of N'Old.
-
-   --  Register a node that appears with attribute 'Old; return a fresh Name_Id
-   --  for this Node. This function is intended to be called by the code that
-   --  translates expressions to Why (Gnat2why.Expr), which itself is called by
-   --  Transform_Subprogram. For each call to this function, a declaration at
-   --  the beginning of the Why program is generated.
-
 private
-   --  Mapping of all expressions whose 'Old attribute is used in the current
-   --  postcondition to the translation of the corresponding expression in
-   --  Why. Until 'Old is forbidden in the body, this is also used to translate
-   --  occurrences of 'Old that are left by the frontend (for example, inside
-   --  quantified expressions that are only preanalyzed).
-   --
-   --  The mapping is cleared before generating Why code for VC generation for
-   --  the body and postcondition, filled during the translation, and used
-   --  afterwards to generate the necessary copy instructions.
-
-   Old_Map        : Ada_To_Why_Ident.Map;
-   Loop_Entry_Map : Loop_Entry_Nodes.Map;
-
-   function Map_For_Old return Ada_To_Why_Ident.Map is (Old_Map);
 
    Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
    --  Map storing predicates for invariants of access to incomplete types
-
-   Target_Name : W_Identifier_Id := Why_Empty;
-   --  Name to use for occurrences of target names @ in assignments. It should
-   --  be equal to Why_Empty when we are not translating an assignment.
 
 end Gnat2Why.Expr;

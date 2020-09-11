@@ -2617,8 +2617,11 @@ package body SPARK_Util is
       return
         Present (Scope (E))
         and then Present (Parent (Scope (E)))
-        and then Nkind (Original_Node (Parent (Scope (E))))
-                 = N_Quantified_Expression;
+        and then Nkind (Original_Node (Parent (Scope (E)))) in
+            N_Quantified_Expression
+          | N_Aggregate
+          | N_Delta_Aggregate
+          | N_Iterated_Component_Association;
    end Is_Quantified_Loop_Param;
 
    ------------------------------------
@@ -2785,21 +2788,22 @@ package body SPARK_Util is
          (Ekind (Obj) = E_Variable
           and then Is_Quantified_Loop_Param (Obj))
       then
+         if Has_Scalar_Type (Etype (Obj)) then
+            return False;
+         end if;
+
          declare
             Q_Expr : constant Node_Id :=
               (if Ekind (Obj) = E_Variable
                then Original_Node (Parent (Scope (Obj)))
                else Parent (Parent (Obj)));
             I_Spec : constant Node_Id := Iterator_Specification (Q_Expr);
-         begin
-            if Has_Scalar_Type (Etype (Obj)) then
-               return False;
 
+         begin
             --  On for of quantification over arrays, the quantified variable
             --  ranges over array elements.
 
-            elsif Present (I_Spec) and then Is_Iterator_Over_Array (I_Spec)
-            then
+            if Present (I_Spec) and then Is_Iterator_Over_Array (I_Spec) then
                declare
                   Arr_Expr : constant Node_Id := Name (I_Spec);
                begin

@@ -827,6 +827,21 @@ package body Why.Gen.Expr is
       T := Binding_For_Temp (Domain  => Domain,
                              Tmp     => Arr_Expr,
                              Context => T);
+
+      --  Introduce an empty label to preserve the Ada node of Expr if any.
+      --  This should avoid all the risk of erasing the Ada node of an array
+      --  variable in split form while doing a conversion.
+
+      if Get_Type_Kind (From) = EW_Split
+        and then Get_Type_Kind (To) = EW_Split
+      then
+         T := New_Label (Ada_Node => Get_Entity_Of_Variable (Expr),
+                         Domain   => Domain,
+                         Labels   => Symbol_Sets.Empty_Set,
+                         Def      => T,
+                         Typ      => To);
+      end if;
+
       return T;
    end Insert_Array_Conversion;
 
@@ -2710,8 +2725,10 @@ package body Why.Gen.Expr is
          begin
             return New_Call (Domain   => Subdomain,
                              Name     => Id,
-                             Args     => Get_Args_From_Expression
-                               (Bnd, Params.Ref_Allowed),
+                             Args     => Get_Args_From_Binders
+                               (To_Binder_Array
+                                  (Get_Binders_From_Expression (Bnd)),
+                                Params.Ref_Allowed),
                              Typ      => BT);
          end;
 
