@@ -10423,7 +10423,7 @@ package body Gnat2Why.Expr is
                Choice := First (Choices (Expr_Or_Association));
                while Present (Choice) loop
                   case Nkind (Choice) is
-                     when N_Range =>
+                     when N_Subtype_Indication | N_Range =>
 
                         --  The high and low bounds of a range both
                         --  need to be parameters. We don't use the index
@@ -11151,7 +11151,7 @@ package body Gnat2Why.Expr is
 
                if In_Delta_Aggregate then
                   case Nkind (Choice) is
-                     when N_Range =>
+                     when N_Range | N_Subtype_Indication =>
                         declare
                            Low  : constant Node_Id :=
                              Low_Bound (Get_Range (Choice));

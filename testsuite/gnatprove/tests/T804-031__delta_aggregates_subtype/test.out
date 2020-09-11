@@ -1,0 +1,12 @@
+d.adb:1:11: warning: subprogram "D" has no effect
+d.adb:6:12: info: range check proved (CVC4: 2 VC)
+d.adb:13:27: info: index check proved (CVC4: 2 VC)
+d.adb:14:23: info: index check proved (CVC4: 2 VC)
+d.adb:15:28: info: index check proved (CVC4: 2 VC)
+d.adb:15:46: info: range check proved (CVC4: 2 VC)
+d.adb:16:24: info: index check proved (CVC4: 2 VC)
+d.adb:16:42: info: range check proved (CVC4: 2 VC)
+d.adb:17:28: info: index check proved (CVC4: 2 VC)
+d.adb:17:46: medium: range check might fail
+d.adb:18:24: info: index check proved (CVC4: 2 VC)
+d.adb:18:42: medium: range check might fail
