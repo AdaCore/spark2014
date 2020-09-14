@@ -3782,6 +3782,75 @@ package body Flow_Utility is
                end;
                return Skip;
 
+            when N_Iterated_Component_Association =>
+
+               pragma Assert (Present (Defining_Identifier (N))
+                              and then No (Iterator_Specification (N)));
+
+               declare
+                  Choice : Node_Id := First (Discrete_Choices (N));
+               begin
+                  loop
+                     --  Choices in array component appear in various forms
+
+                     --  "(Low .. High => ...)"
+                     if Nkind (Choice) = N_Range
+
+                     --  "(A_Subtype range Low .. High => ...)"
+                       or else Nkind (Choice) = N_Subtype_Indication
+
+                     --  "(A_Subtype => ...)"
+                       or else (Is_Entity_Name (Choice)
+                                and then Is_Type (Entity (Choice)))
+                     then
+                        declare
+                           R : constant Node_Id := Get_Range (Choice);
+                        begin
+                           Variables.Union (Recurse (Low_Bound (R)));
+                           Variables.Union (Recurse (High_Bound (R)));
+                        end;
+
+                     --  "(others => ...)"
+
+                     elsif Nkind (Choice) = N_Others_Choice then
+                        null;
+
+                     --  "(1 => ...)" or "(X + Y => ...)", etc.
+
+                     elsif Nkind (Choice) in N_Subexpr then
+                        Variables.Union (Recurse (Choice));
+
+                     else
+                        raise Program_Error;
+                     end if;
+
+                     Next (Choice);
+                     exit when No (Choice);
+                  end loop;
+               end;
+
+               declare
+                  E : constant Entity_Id := Defining_Identifier (N);
+               begin
+
+                  --  Filter the iterated component association parameter
+                  --  from variables referenced in the expression, because the
+                  --  parameter is only visible within that expression
+                  --  (similar to what we do for type predicate expressions
+                  --  or quantified expressions).
+
+                  for V of Recurse (Expression (N)) loop
+                     if V.Kind in Direct_Mapping | Record_Field
+                       and then V.Node = E
+                     then
+                        null;
+                     else
+                        Variables.Include (V);
+                     end if;
+                  end loop;
+               end;
+               return Skip;
+
             when N_Slice =>
                declare
                   R : constant Node_Id := Get_Range (Discrete_Range (N));
