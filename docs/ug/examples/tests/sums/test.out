@@ -1,1 +1,4 @@
-(no output)
+
+sums.ads:2:04: warning: External Axiomatizations are not supported anymore, ignored
+    2 |   pragma Annotate (GNATprove, External_Axiomatization);
+      |   ^ here

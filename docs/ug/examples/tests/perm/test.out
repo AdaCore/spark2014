@@ -1,9 +1,6 @@
 perm.ads:7:07: info: range check proved
 perm.ads:7:28: info: overflow check proved
-
-perm.ads:11:07: medium: "Occ_Def" is recursive, terminating annotation could be incorrect
-   11 |     (if A'Length = 0 then 0
-      |      ^ here
+perm.ads:10:13: info: subprogram "Occ_Def" will terminate, terminating annotation has been proved
 perm.ads:12:17: info: index check proved
 perm.ads:12:33: info: subprogram variant proved
 perm.ads:12:42: info: precondition proved

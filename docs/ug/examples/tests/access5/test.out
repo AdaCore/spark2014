@@ -1,6 +1,6 @@
 
 test.adb:9:04: medium: memory leak might occur at end of scope
-    9 |   X : Int_Ptr := new Integer'(10);  -- memory leak here
+    9 |   X : Int_Ptr     := new Integer'(10);  -- memory leak here
       |   ^ here
 
 test.adb:13:10: medium: memory leak might occur
