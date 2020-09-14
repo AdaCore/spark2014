@@ -120,6 +120,9 @@ class SPARKTestsuite(Testsuite):
             "--inverse-prover", action="store_true",
             help="run testsuite in inverse-prover mode")
         parser.add_argument(
+            "--benchmarks", action="store_true",
+            help="run testsuite and collect VCs")
+        parser.add_argument(
             "--no-gaia-output", action="store_true",
             help="The opposite of --gaia-output (which is on by default).")
         parser.add_argument(
@@ -145,6 +148,8 @@ class SPARKTestsuite(Testsuite):
             os.environ["cache"] = "true"
         if self.main.args.inverse_prover:
             os.environ["inverse_prover"] = "true"
+        if self.main.args.benchmarks:
+            os.environ["benchmarks"] = "true"
         return dict(os.environ)
 
     def set_up(self):

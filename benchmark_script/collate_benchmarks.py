@@ -19,13 +19,7 @@ for path, dirs, files in os.walk("data"):
             else:
                 vc_index = int(vc_index)
 
-            # Chop off prefix
-            test_name = path[len("data/tmp-test-"):]
-            # Chop rest of the path
-            test_name = test_name.split("/", 1)[0]
-            # Chop the number suffix
-            test_name = test_name.rsplit("-", 1)[0]
-
+            test_name = path.split("/")[2]
             name = test_name + "__" + vc_name
             name = name.replace(" ", "_")
 
@@ -73,8 +67,6 @@ EXT = {
     "z3_gnatprove": "smt2",
     "z3_gnatprove_ce":  "smt2",
 }
-
-assert sorted(EXT) == PROVERS
 
 for p in PROVERS:
     os.makedirs(os.path.join("bench", p))

@@ -681,7 +681,7 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     # Issue all information messages for tests
     cmd += ["--info"]
     if benchmark_mode():
-        cmd += ["--benchmark"]
+        cmd += ["--benchmark", "--debug-save-vcs"]
     if cache_allowed and cache_mode():
         cmd += ["--memcached-server=localhost:11211"]
     cmd += to_list(opt)
@@ -783,7 +783,7 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
             fullopt += build_prover_switch(prover)
     if benchmark_mode():
         fullopt += ["--benchmark"]
-    if not counterexample:
+    if not counterexample or benchmark_mode():
         fullopt += ["--no-counterexample"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
