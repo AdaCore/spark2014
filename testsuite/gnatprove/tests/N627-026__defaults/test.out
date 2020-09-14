@@ -1,4 +1,4 @@
-with_default.adb:4:69: medium: range check might fail [reason for check: default value must fit in the type]
+with_default.adb:4:69: medium: range check might fail (e.g. when C = 1) [reason for check: default value must fit in the type]
 with_default.adb:5:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:13:69: info: range check proved (CVC4: 1 VC)
 with_default.adb:14:15: info: range check proved (CVC4: 2 VC)
@@ -6,10 +6,10 @@ with_default.adb:16:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:18:07: info: initialization of "Ok_Def" proved
 with_default.adb:19:38: info: range check proved (CVC4: 1 VC)
 with_default.adb:23:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:27:69: medium: range check might fail [reason for check: default value must fit in the type]
+with_default.adb:27:69: medium: range check might fail (e.g. when C = 1) [reason for check: default value must fit in the type]
 with_default.adb:28:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:37:15: info: range check proved (CVC4: 2 VC)
-with_default.adb:39:41: medium: range check might fail [reason for check: default component value must fit in the component type]
+with_default.adb:39:41: medium: range check might fail (e.g. when C = 1) [reason for check: default component value must fit in the component type]
 with_default.adb:46:69: info: range check proved (CVC4: 1 VC)
 with_default.adb:47:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:49:15: info: range check proved (CVC4: 2 VC)
@@ -24,12 +24,12 @@ with_default.adb:70:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:71:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:75:69: info: range check proved (CVC4: 1 VC)
 with_default.adb:76:15: info: range check proved (CVC4: 2 VC)
-with_default.adb:80:36: medium: range check might fail [reason for check: default component value must fit in the type]
-with_default.adb:89:69: medium: range check might fail (e.g. when Bad = (B => False, F2 => ?)) [reason for check: default value must fit in the type]
+with_default.adb:80:36: medium: range check might fail (e.g. when C = 1) [reason for check: default component value must fit in the type]
+with_default.adb:89:69: medium: range check might fail (e.g. when Bad = (B => False, F2 => ?) and C = 1) [reason for check: default value must fit in the type]
 with_default.adb:90:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:102:29: info: range check proved (CVC4: 1 VC)
 with_default.adb:108:69: info: range check proved (CVC4: 1 VC)
-with_default.adb:108:69: medium: range check might fail (e.g. when Bad'Constrained = False) [reason for check: default value must fit in the type]
+with_default.adb:108:69: medium: range check might fail (e.g. when Bad'Constrained = False and C = 1) [reason for check: default value must fit in the type]
 with_default.adb:109:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:127:69: info: range check proved (CVC4: 1 VC)
 with_default.adb:128:15: info: range check proved (CVC4: 2 VC)

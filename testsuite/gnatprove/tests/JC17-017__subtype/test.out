@@ -4,7 +4,7 @@ p.adb:9:07: info: initialization of "Tmp_S" proved
 p.adb:11:07: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:11:17: warning: subprogram "Proc_Loop" has no effect
 p.adb:12:10: info: initialization of "Tmp_S" proved
-p.adb:16:14: medium: range check might fail (e.g. when X = 0)
+p.adb:16:14: medium: range check might fail (e.g. when X = 2 and X = 0)
 p.adb:16:34: medium: overflow check might fail (e.g. when X = 1 and Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 11 should mention X and Y in a precondition]
 p.adb:16:38: info: cannot unroll loop (too many loop iterations)
 p.adb:17:28: info: overflow check proved (CodePeer)
@@ -13,7 +13,7 @@ p.adb:23:11: medium: range check might fail (e.g. when X = -1 and Y = Integer'La
 p.adb:23:37: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 p.adb:23:41: info: cannot unroll loop (too many loop iterations)
 p.adb:24:25: info: overflow check proved (CodePeer)
-p.adb:24:25: medium: range check might fail (e.g. when Tmp_S = 0) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 23 should mention Tmp_S in a loop invariant]
+p.adb:24:25: medium: range check might fail (e.g. when Tmp_S = 0 and X = -1 and Y = 0) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 23 should mention Tmp_S in a loop invariant]
 p.adb:28:04: warning: analyzing unreferenced procedure "Proc_Loop"
 p.adb:28:14: warning: subprogram "Proc_Loop" has no effect
 p.adb:29:07: info: initialization of "Tmp_S" proved

@@ -2727,7 +2727,8 @@ package body Why.Gen.Expr is
                              Name     => Id,
                              Args     => Get_Args_From_Binders
                                (To_Binder_Array
-                                  (Get_Binders_From_Expression (Bnd)),
+                                  (Get_Binders_From_Expression (Bnd),
+                                   Keep_Const => Keep),
                                 Params.Ref_Allowed),
                              Typ      => BT);
          end;

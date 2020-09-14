@@ -1,4 +1,6 @@
 test_pred_on_array.adb:3:09: predicate on a type with initialization by proof is not yet supported
+test_pred_on_array.adb:4:29: subtype of "Integer" is not allowed in SPARK (due to predicate on a type with initialization by proof)
+test_pred_on_array.adb:4:29: violation of aspect SPARK_Mode at line 1
 test_pred_on_array.adb:4:34: subtype of "Integer" is not allowed in SPARK (due to predicate on a type with initialization by proof)
 test_pred_on_array.adb:4:34: violation of aspect SPARK_Mode at line 1
 test_pred_on_array.adb:4:49: "E_Arr" is not allowed in SPARK (due to predicate on a type with initialization by proof)

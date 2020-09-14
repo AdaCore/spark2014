@@ -1619,6 +1619,8 @@ package body SPARK_Definition is
 
          when N_Quantified_Expression =>
             if Present (Loop_Parameter_Specification (N)) then
+               Mark_Entity (Defining_Identifier
+                            (Loop_Parameter_Specification (N)));
                Mark (Discrete_Subtype_Definition
                        (Loop_Parameter_Specification (N)));
             else

@@ -213,7 +213,8 @@ package body Why.Gen.Binders is
                                      return W_Expr_Array
    is (Get_Args_From_Binders
        (To_Binder_Array
-        (Get_Binders_From_Variables (Variables)), Ref_Allowed));
+        (Get_Binders_From_Variables (Variables), Keep_Const => Keep),
+         Ref_Allowed));
 
    ---------------------------------------
    -- Get_Binders_From_Contextual_Nodes --
@@ -319,13 +320,10 @@ package body Why.Gen.Binders is
                   I := I + 1;
                end;
 
-            --  Do nothing if the entity is not mutable or if it is a reference
-            --  to a concurrent type and they are ignored.
+            --  Do nothing if the entity is a reference to a concurrent type
+            --  and they are ignored.
 
-            elsif Use_Ent
-              and then (not Is_Mutable_In_Why (Entity)
-                        or else Is_Type (Entity))
-            then
+            elsif Use_Ent and then Is_Type (Entity) then
                pragma Assert
                  (if Is_Protected_Component_Or_Discr_Or_Part_Of (Entity)
                     or else Is_Type (Entity)

@@ -21859,6 +21859,8 @@ package body Gnat2Why.Expr is
                Variables.Union
                  (Get_Variables_For_Proof
                     (Get_Expr_From_Return_Only_Func (Pred_Fun), Rep_Type));
+               Variables.Exclude
+                 (Direct_Mapping_Id (Unique_Entity (First_Formal (Pred_Fun))));
             end if;
 
             Rep_Type := Retysp
