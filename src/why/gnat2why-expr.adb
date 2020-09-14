@@ -10533,10 +10533,10 @@ package body Gnat2Why.Expr is
             Expression   : Node_Id := Nlists.First (Exprs);
             Index_Typ    : constant Entity_Id := Etype (Index);
             Save_In_Iter : constant Boolean := In_Iterated_Assoc;
-            All_Checks   : W_Statement_Sequence_Id;
+            All_Checks   : W_Statement_Sequence_Id := Why_Empty;
             Choice       : Node_Id;
-            Idx          : W_Identifier_Id;
-            Binding      : W_Expr_Id;
+            Idx          : W_Identifier_Id := Why_Empty;
+            Binding      : W_Expr_Id := Why_Empty;
 
          begin
             --  Go over the list of associations to insert checks
