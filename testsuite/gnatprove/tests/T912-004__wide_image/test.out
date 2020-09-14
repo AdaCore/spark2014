@@ -1,0 +1,5 @@
+test_image.adb:3:24: attribute "Wide_Image" is not allowed in SPARK
+test_image.adb:3:24: violation of aspect SPARK_Mode at line 1
+test_image.adb:4:29: attribute "Wide_Wide_Image" is not allowed in SPARK
+test_image.adb:4:29: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

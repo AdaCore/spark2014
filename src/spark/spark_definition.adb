@@ -2794,8 +2794,6 @@ package body SPARK_Definition is
          --  may be inaccurate for identifiers.
          when Attribute_Img
             | Attribute_Image
-            | Attribute_Wide_Image
-            | Attribute_Wide_Wide_Image
          =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
