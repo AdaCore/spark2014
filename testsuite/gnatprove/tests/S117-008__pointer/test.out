@@ -76,7 +76,7 @@ formal_vectors.adb:107:33: info: loop invariant preservation proved (CVC4: 1 VC)
 formal_vectors.adb:109:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:109:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:110:23: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:110:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (1 => (all => null), others => (all => (all => Integer'Last)))))) [reason for check: value must be a valid index into the array]
+formal_vectors.adb:110:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1073741823, Content => (all => (1073741823 => (all => null), others => (all => (all => Integer'Last)))))) [reason for check: value must be a valid index into the array]
 formal_vectors.adb:110:36: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:110:43: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:111:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -122,7 +122,7 @@ formal_vectors.adb:130:51: medium: array index check might fail, in instantiatio
 formal_vectors.adb:132:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:132:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:133:23: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:133:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 2, Content => (all => (1 => (all => null), others => (all => (all => Integer'Last)))))) [reason for check: value must be a valid index into the array]
+formal_vectors.adb:133:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 2, Content => (all => (1 => (all => null), others => (all => (all => 3)))))) [reason for check: value must be a valid index into the array]
 formal_vectors.adb:133:36: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:133:43: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:134:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -150,7 +150,7 @@ formal_vectors.adb:140:57: info: range check proved (CVC4: 2 VC), in instantiati
 formal_vectors.adb:142:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:142:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:143:23: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:143:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (1 => (all => null), others => (all => (all => Integer'Last)))))) [reason for check: value must be a valid index into the array]
+formal_vectors.adb:143:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (1 => (all => null), others => (all => (all => 2)))))) [reason for check: value must be a valid index into the array]
 formal_vectors.adb:143:36: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:143:43: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:143:55: info: range check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
@@ -158,11 +158,11 @@ formal_vectors.adb:144:10: info: precondition proved (CVC4: 2 VC), in instantiat
 formal_vectors.adb:144:17: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:144:17: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:144:27: info: index check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:144:27: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when J = 2 and V = (Top => 2, Content => (all => (1 => (all => (all => 5)), others => (all => (all => 5)))))) [reason for check: value must be a valid index into the array]
+formal_vectors.adb:144:27: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when J = 2 and V = (Top => 2, Content => (all => (1 => (all => (all => 0)), others => (all => (all => Integer'Last-2)))))) [reason for check: value must be a valid index into the array]
 formal_vectors.adb:146:08: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:146:08: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:146:24: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:146:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 0, Content => (all => (1 => (all => (all => 0)), 2 => (all => null), others => (all => (all => 3)))))) [reason for check: result of addition must be a valid index into the array]
+formal_vectors.adb:146:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 0, Content => (all => (1 => (all => (all => 0)), 2 => null, others => (all => (all => 3)))))) [reason for check: result of addition must be a valid index into the array]
 formal_vectors.adb:146:29: medium: memory leak might occur, in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:147:08: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:147:22: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
