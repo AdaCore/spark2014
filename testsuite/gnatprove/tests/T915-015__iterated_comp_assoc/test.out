@@ -1,0 +1,1 @@
+test_aggr.adb:9:31: medium: range check might fail (e.g. when C = 3)

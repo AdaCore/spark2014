@@ -628,7 +628,9 @@ package body SPARK_Atree is
 
             Check_Type := Standard_Natural;
 
-         when N_Component_Association =>
+         when N_Component_Association
+            | N_Iterated_Component_Association
+            =>
 
             declare
                Pref        : Node_Id;
@@ -666,7 +668,7 @@ package body SPARK_Atree is
 
                   if SPARK_Util.Types.Has_Record_Type (Prefix_Type) then
 
-                     Check_Type := Etype (Nlists.First (Sinfo.Choices (Par)));
+                     Check_Type := Etype (Nlists.First (Choice_List (Par)));
 
                   --  it's an array type, determine whether the check is for
                   --  the component or the index
