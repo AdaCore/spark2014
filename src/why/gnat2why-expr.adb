@@ -10504,7 +10504,8 @@ package body Gnat2Why.Expr is
       procedure Insert_Check_For_Choices
         (T : in out W_Expr_Id; Array_Expr : W_Expr_Id)
       is
-         Checks            : W_Statement_Sequence_Id := Void_Sequence;
+         Choice_Checks     : W_Statement_Sequence_Id := Void_Sequence;
+         Comp_Checks       : W_Statement_Sequence_Id := Void_Sequence;
          In_Iterated_Assoc : Boolean := False;
          --  Register whether we have traversed iterated component associations
 
@@ -10533,7 +10534,7 @@ package body Gnat2Why.Expr is
             Expression   : Node_Id := Nlists.First (Exprs);
             Index_Typ    : constant Entity_Id := Etype (Index);
             Save_In_Iter : constant Boolean := In_Iterated_Assoc;
-            All_Checks   : W_Statement_Sequence_Id := Why_Empty;
+            Save_Checks  : W_Statement_Sequence_Id := Why_Empty;
             Choice       : Node_Id;
             Idx          : W_Identifier_Id := Why_Empty;
             Binding      : W_Expr_Id := Why_Empty;
@@ -10573,7 +10574,7 @@ package body Gnat2Why.Expr is
                               for I in 1 .. Nb_Dim loop
                                  pragma Assert (Present (Multi_Expression));
                                  Sequence_Append
-                                   (Checks,
+                                   (Choice_Checks,
                                     New_Ignore
                                       (Prog => Do_Index_Check
                                            (Ada_Node => Multi_Expression,
@@ -10606,7 +10607,7 @@ package body Gnat2Why.Expr is
                                      Base_Why_Type_No_Bool (Index_Typ));
                            begin
                               Sequence_Append
-                                (Checks,
+                                (Choice_Checks,
                                  (New_Ignore
                                       (Prog => New_Binding
                                          (Name    => Tmp,
@@ -10635,7 +10636,7 @@ package body Gnat2Why.Expr is
 
                      else
                         Sequence_Append
-                          (Checks,
+                          (Choice_Checks,
                            (New_Ignore
                                 (Prog =>
                                    +Transform_Discrete_Choice
@@ -10657,7 +10658,7 @@ package body Gnat2Why.Expr is
                      case Nkind (Choice) is
                         when N_Subtype_Indication =>
                            Sequence_Append
-                             (Checks,
+                             (Choice_Checks,
                               +Check_Scalar_Range
                                 (Params => Params,
                                  N      => Get_Range (Choice),
@@ -10679,25 +10680,35 @@ package body Gnat2Why.Expr is
                if Nkind (Association) = N_Iterated_Component_Association then
                   In_Iterated_Assoc := True;
 
-                  All_Checks := Checks;
-                  Checks := Void_Sequence;
+                  Save_Checks := Comp_Checks;
+                  Comp_Checks := Void_Sequence;
 
                   declare
                      Quant_Var : constant Entity_Id :=
                        Defining_Identifier (Association);
+                     Base      : constant W_Type_Id :=
+                       Base_Why_Type_No_Bool (Quant_Var);
+                     Choices   : constant List_Id := Choice_List (Association);
+                     Constr    : constant W_Pred_Id :=
+                       (if Is_Others_Choice (Choices)
+                        then +Range_Expr
+                          (N      => Nth_Index_Type (Expr_Typ, Dim),
+                           T      => +New_Result_Ident (Base),
+                           Domain => EW_Pred,
+                           Params => Params)
+                        else +Transform_Discrete_Choices
+                          (Choices      => Choices,
+                           Choice_Type  => Etype (Quant_Var),
+                           Matched_Expr => +New_Result_Ident (Base),
+                           Cond_Domain  => EW_Pred,
+                           Params       => Params));
                   begin
                      Idx := New_Temp_Identifier
-                       (Typ       => Base_Why_Type_No_Bool (Quant_Var),
+                       (Typ       => Base,
                         Base_Name => Short_Name (Quant_Var));
                      Binding := New_Any_Expr
-                       (Post        => +Transform_Discrete_Choices
-                          (Choices      => Choice_List (Association),
-                           Choice_Type  => Etype (Quant_Var),
-                           Matched_Expr =>
-                             +New_Result_Ident (Get_Typ (Idx)),
-                           Cond_Domain  => EW_Pred,
-                           Params       => Params),
-                        Return_Type => Get_Typ (Idx),
+                       (Post        => Constr,
+                        Return_Type => Base,
                         Labels      => Symbol_Sets.Empty_Set);
                      Insert_Entity (Quant_Var, Idx);
                   end;
@@ -10716,7 +10727,7 @@ package body Gnat2Why.Expr is
 
                elsif In_Iterated_Assoc then
                   Sequence_Append
-                    (Checks,
+                    (Comp_Checks,
                      New_Ignore
                        (Ada_Node => SPARK_Atree.Expression (Association),
                         Prog     => +Transform_Aggregate_Value
@@ -10732,13 +10743,13 @@ package body Gnat2Why.Expr is
 
                if Nkind (Association) = N_Iterated_Component_Association then
                   Sequence_Append
-                    (All_Checks,
+                    (Save_Checks,
                      New_Binding
                        (Name    => Idx,
                         Def     => Binding,
-                        Context => +Checks,
+                        Context => +Comp_Checks,
                         Typ     => EW_Unit_Type));
-                  Checks := All_Checks;
+                  Comp_Checks := Save_Checks;
 
                   In_Iterated_Assoc := Save_In_Iter;
                end if;
@@ -10761,7 +10772,7 @@ package body Gnat2Why.Expr is
                   else
                      pragma Assert (In_Iterated_Assoc);
                      Sequence_Append
-                       (Checks,
+                       (Comp_Checks,
                         New_Ignore
                           (Ada_Node => Expression,
                            Prog     => +Transform_Aggregate_Value
@@ -10798,7 +10809,7 @@ package body Gnat2Why.Expr is
             begin
                while Present (Index) loop
                   Sequence_Append
-                    (Checks, Check_Scalar_Range
+                    (Choice_Checks, Check_Scalar_Range
                        (Params => Body_Params,
                         N      => Etype (Index),
                         Base   => Etype (Index_Base)));
@@ -10815,7 +10826,7 @@ package body Gnat2Why.Expr is
          Insert_Checks (Expr, 1, First_Index (Expr_Typ));
 
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         T := +Sequence (+Checks, +T);
+         T := +Sequence ((1 => +Choice_Checks, 2 => +Comp_Checks, 3 => +T));
       end Insert_Check_For_Choices;
 
       -------------------------------

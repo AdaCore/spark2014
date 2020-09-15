@@ -1,0 +1,2 @@
+others_in_assoc.adb:6:58: info: precondition proved (CVC4: 1 VC)
+others_in_assoc.adb:7:60: info: overflow check proved (CVC4: 1 VC)
