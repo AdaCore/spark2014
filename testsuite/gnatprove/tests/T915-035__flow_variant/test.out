@@ -1,0 +1,2 @@
+p.adb:4:20: medium: subprogram variant might fail
+p.ads:3:78: info: data dependencies proved
