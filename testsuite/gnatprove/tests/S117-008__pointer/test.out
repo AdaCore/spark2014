@@ -50,7 +50,6 @@ formal_vectors.adb:84:08: info: predicate check proved (CVC4: 1 VC), in instanti
 formal_vectors.adb:84:24: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:84:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E.all = 0 and V = (Top => 0, Content => (all => (others => (all => (all => Integer'Last)))))) [reason for check: result of addition must be a valid index into the array]
 formal_vectors.adb:84:29: medium: memory leak might occur, in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:84:48: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:85:08: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:85:22: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:97:24: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -110,7 +109,6 @@ formal_vectors.adb:116:64: medium: array index check might fail, in instantiatio
 formal_vectors.adb:118:08: info: predicate check proved (Z3: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:118:22: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:123:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:123:45: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:127:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:127:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:128:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -173,7 +171,6 @@ formal_vectors.adb:152:08: info: predicate check proved (CVC4: 1 VC), in instant
 formal_vectors.adb:152:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E.all = 0 and I = 1 and V = (Top => 1, Content => (all => (1 => null, others => (all => (all => 2)))))) [reason for check: value must be a valid index into the array]
 formal_vectors.adb:152:21: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:152:25: medium: memory leak might occur, in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:152:28: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:158:11: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:158:25: info: range check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:166:11: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -229,7 +226,6 @@ formal_vectors.adb:184:17: info: predicate check proved (CVC4: 1 VC), in instant
 formal_vectors.adb:184:33: info: index check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:184:33: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:184:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 0, Content => (all => (1 => null, others => (all => (all => 1)))))) [reason for check: result of addition must be a valid index into the array]
-formal_vectors.adb:189:07: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:189:14: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:189:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when I = 1 and V = (Top => 1, Content => (all => (1 => null, others => (all => (all => 2)))))) [reason for check: value must be a valid index into the array]
 formal_vectors.adb:189:27: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10

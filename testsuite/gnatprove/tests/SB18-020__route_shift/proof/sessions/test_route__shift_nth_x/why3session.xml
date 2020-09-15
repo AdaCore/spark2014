@@ -89,17 +89,17 @@
   </goal>
   <goal name="def&#39;vc.22" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="685945"/></proof>
+  <proof prover="1"><result status="valid" steps="2827736"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.23" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="318392"/></proof>
+  <proof prover="1"><result status="valid" steps="1738571"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.24" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="1132887"/></proof>
+  <proof prover="1"><result status="valid" steps="1196449"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.25" proved="true">

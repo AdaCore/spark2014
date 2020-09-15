@@ -11,6 +11,6 @@ p.adb:9:07: medium: precondition might fail, cannot prove J < Integer'last, in i
 q.adb:10:14: info: overflow check proved (CVC4: 1 VC)
 q.adb:16:07: info: initialization of "R1" proved
 q.adb:17:07: info: initialization of "R2" proved
-q.adb:21:18: medium: overflow check might fail (e.g. when R1 = (A => 0, B => False, C => 0, D => -1) and R2 = (A => False, B => 0, C => 0, D => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer]
+q.adb:21:18: medium: overflow check might fail (e.g. when R1 = (A => -1, B => False, C => 0, D => -1) and R2 = (A => False, B => -1, C => 0, D => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer]
 q.ads:5:18: warning: unused variable "J"
 q.ads:11:60: info: initialization of "X4" proved

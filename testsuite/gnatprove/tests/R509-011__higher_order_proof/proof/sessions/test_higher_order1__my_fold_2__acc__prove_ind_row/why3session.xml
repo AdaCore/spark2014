@@ -16,16 +16,16 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="2"><result status="valid" steps="70"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="2"><result status="valid" steps="70"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="2"><result status="valid" steps="71"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="2"><result status="valid" steps="64"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -57,16 +57,16 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
-  <proof prover="2"><result status="valid" steps="81"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
-  <proof prover="2"><result status="valid" steps="81"/></proof>
+  <proof prover="2"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="def&#39;vc.16" proved="true">
-  <proof prover="2"><result status="valid" steps="74"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.17" proved="true">
-  <proof prover="2"><result status="valid" steps="81"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -75,8 +75,8 @@
   <goal name="def&#39;vc.19">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="unknown" steps="161"/></proof>
-  <proof prover="3"><result status="unknown" steps="240"/></proof>
+  <proof prover="2"><result status="unknown" steps="138"/></proof>
+  <proof prover="3"><result status="unknown" steps="210"/></proof>
   </goal>
  </transf>
  </goal>
