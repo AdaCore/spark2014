@@ -1,5 +1,0 @@
-pragma SPARK_Mode (On);
-pragma Profile (Ravenscar);
-pragma Partition_Elaboration_Policy (Sequential);
-pragma Warnings (GNATprove, Off, "subprogram * has no effect",
-                 Reason => "cut-down examples have intentionnally no effect");
