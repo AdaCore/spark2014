@@ -2,11 +2,11 @@
 --                                                                          --
 --                        SPARK LIBRARY COMPONENTS                          --
 --                                                                          --
---              S P A R K . A R I T H M E T I C _ L E M M A S               --
+--        S P A R K . L O N G _ I N T E G E R _ C O N V E R S I O N S       --
 --                                                                          --
---                                 B o d y                                  --
+--                                 S p e c                                  --
 --                                                                          --
---                   Copyright (C) 2016-2018, AdaCore                       --
+--                       Copyright (C) 2020, AdaCore                        --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -26,89 +26,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body SPARK.Arithmetic_Lemmas
-  with SPARK_Mode =>
-#if SPARK_BODY_MODE="On"
-  On
-#else
-  Off
-#end if;
-is
+pragma SPARK_Mode;
 
-   procedure Lemma_Div_Is_Monotonic
-     (Val1  : Int;
-      Val2  : Int;
-      Denom : Pos)
-   is null;
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 
-   procedure Lemma_Div_Is_Antimonotonic
-     (Num    : Int;
-      Denom1 : Pos;
-      Denom2 : Pos)
-   is null;
-
-   procedure Lemma_Exp_Is_Monotonic
-     (Val1 : Nat;
-      Val2 : Nat;
-      Exp  : Natural)
-   is null;
-
-   procedure Lemma_Exp_Is_Monotonic_2
-     (Val  : Pos;
-      Exp1 : Natural;
-      Exp2 : Natural)
-   is null;
-
-   procedure Lemma_Mod_Range
-     (Arg1 : Int;
-      Arg2 : Pos)
-   is null;
-
-   procedure Lemma_Mod_Symmetry
-     (Arg1 : Int;
-      Arg2 : Int)
-   is null;
-
-   procedure Lemma_Mult_Is_Monotonic
-     (Val1   : Int;
-      Val2   : Int;
-      Factor : Nat)
-   is null;
-
-   procedure Lemma_Mult_Is_Strictly_Monotonic
-     (Val1   : Int;
-      Val2   : Int;
-      Factor : Pos)
-   is null;
-
-   procedure Lemma_Mult_Protect
-     (Arg1        : Int;
-      Arg2        : Nat;
-      Upper_Bound : Nat)
-   is null;
-
-   procedure Lemma_Mult_Scale
-     (Val         : Int;
-      Scale_Num   : Nat;
-      Scale_Denom : Pos;
-      Res         : Int)
-   is
-   begin
-      if Res >= 0 then
-         pragma Assert (abs (Big (Res)) <= abs (Big (Val)));
-      else
-         pragma Assert (abs (Big (Res)) <= abs (Big (Val)));
-      end if;
-   end Lemma_Mult_Scale;
-
-   procedure Lemma_Mult_Then_Div_Is_Ident
-     (Val1 : Int;
-      Val2 : Pos)
-   is null;
-
-   procedure Lemma_Mult_Then_Mod_Is_Zero
-     (Arg1 : Int;
-      Arg2 : Pos)
-   is null;
-
-end SPARK.Arithmetic_Lemmas;
+package SPARK.Long_Integer_Conversions is new
+  Signed_Conversions (Long_Integer);

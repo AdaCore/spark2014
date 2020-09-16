@@ -33,7 +33,8 @@ project SPARK_Lemmas is
       --  not work for preprocessed files, and alphabetical ordering of
       --  subprogram bodies (although not applicable to null subprograms).
       for Default_Switches ("Ada") use
-         ("-gnato13", "-gnata", "-gnatygo-u", "-gnateDSPARK_BODY_MODE=" & SPARK_Body_Mode);
+         ("-gnat2020", "-gnata", "-gnatygo-u",
+          "-gnateDSPARK_BODY_MODE=" & SPARK_Body_Mode);
    end Compiler;
 
    package Prove is

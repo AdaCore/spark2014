@@ -191,5 +191,5 @@ mul_lemmas.adb:254:25: info: range check proved (CVC4: 1 VC)
 mul_lemmas.adb:254:28: info: range check proved (CVC4: 1 VC)
 mul_lemmas.adb:258:27: info: range check proved (CVC4: 1 VC)
 mul_lemmas.adb:258:30: info: range check proved (CVC4: 1 VC)
-spark-arithmetic_lemmas.ads:112:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:123:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:116:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:36
+spark-arithmetic_lemmas.ads:127:56: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:36

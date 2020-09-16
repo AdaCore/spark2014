@@ -25,7 +25,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><path name=".."/><path name=".."/><path name="Coq"/><path name="Ada___spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"/><result status="valid"/></proof>
+  <proof prover="0"><path name=".."/><path name=".."/><path name="Coq"/><path name="Ada___spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__call_Oeq.v"/><result status="valid"/></proof>
   <proof prover="1"><result status="unknown" steps="121"/></proof>
   </goal>
  </transf>

@@ -120,6 +120,56 @@ Definition real__ref___projection (a:real__ref) : Reals.Rdefinitions.R :=
 Definition us_private__ref___projection (a:us_private__ref) : us_private :=
   us_private__content a.
 
+Parameter bool_eq:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
+
+Parameter bool_ne:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
+
+Parameter bool_lt:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
+
+Parameter bool_le:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
+
+Parameter bool_gt:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
+
+Parameter bool_ge:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
+
+Axiom bool_eq_axiom :
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_eq x y) = Init.Datatypes.true) <-> (x = y).
+
+Axiom bool_ne_axiom :
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_ne x y) = Init.Datatypes.true) <-> ~ (x = y).
+
+Axiom bool_lt_axiom :
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_lt x y) = Init.Datatypes.true) <-> (x < y)%Z.
+
+Axiom bool_int__le_axiom :
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_le x y) = Init.Datatypes.true) <-> (x <= y)%Z.
+
+Axiom bool_gt_axiom :
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_gt x y) = Init.Datatypes.true) <-> (y < x)%Z.
+
+Axiom bool_ge_axiom :
+  forall (x:Numbers.BinNums.Z), forall (y:Numbers.BinNums.Z),
+  ((bool_ge x y) = Init.Datatypes.true) <-> (y <= x)%Z.
+
+Parameter length:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Numbers.BinNums.Z.
+
+Axiom length'def :
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
+  ((x <= y)%Z -> ((length x y) = ((y - x)%Z + 1%Z)%Z)) /\
+  (~ (x <= y)%Z -> ((length x y) = 0%Z)).
+
 Axiom long_integer : Type.
 Parameter long_integer_WhyType : WhyType long_integer.
 Existing Instance long_integer_WhyType.
@@ -135,13 +185,13 @@ Axiom long_integer'axiom :
 Definition in_range (x:Numbers.BinNums.Z) : Prop :=
   ((-9223372036854775808%Z)%Z <= x)%Z /\ (x <= 9223372036854775807%Z)%Z.
 
-Parameter bool_eq:
+Parameter bool_eq1:
   Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 
 Axiom bool_eq'def :
   forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
-  ((x = y) -> ((bool_eq x y) = Init.Datatypes.true)) /\
-  (~ (x = y) -> ((bool_eq x y) = Init.Datatypes.false)).
+  ((x = y) -> ((bool_eq1 x y) = Init.Datatypes.true)) /\
+  (~ (x = y) -> ((bool_eq1 x y) = Init.Datatypes.false)).
 
 Parameter attr__ATTRIBUTE_IMAGE: Numbers.BinNums.Z -> us_image.
 
@@ -188,13 +238,89 @@ Parameter arg2: Numbers.BinNums.Z.
 
 Parameter attr__ATTRIBUTE_ADDRESS1: Numbers.BinNums.Z.
 
+(* Why3 assumption *)
+Definition us_rep := Numbers.BinNums.Z.
+
+Parameter bool_eq2:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
+
+(* Why3 assumption *)
+Definition big_integer := Numbers.BinNums.Z.
+
+Parameter value__size: Numbers.BinNums.Z.
+
+Parameter object__size: Numbers.BinNums.Z.
+
+Parameter alignment: Numbers.BinNums.Z.
+
+Axiom value__size_axiom : (0%Z <= value__size)%Z.
+
+Axiom object__size_axiom : (0%Z <= object__size)%Z.
+
+Axiom alignment_axiom : (0%Z <= alignment)%Z.
+
+Parameter user_eq1:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
+
+Parameter dummy1: Numbers.BinNums.Z.
+
+(* Why3 assumption *)
+Inductive big_integer__ref :=
+  | big_integer__ref'mk : Numbers.BinNums.Z -> big_integer__ref.
+Axiom big_integer__ref_WhyType : WhyType big_integer__ref.
+Existing Instance big_integer__ref_WhyType.
+
+(* Why3 assumption *)
+Definition big_integer__content (v:big_integer__ref) : Numbers.BinNums.Z :=
+  match v with
+  | big_integer__ref'mk x => x
+  end.
+
+(* Why3 assumption *)
+Definition big_integer__ref_big_integer__content__projection
+    (a:big_integer__ref) : Numbers.BinNums.Z :=
+  big_integer__content a.
+
+(* Why3 assumption *)
+Definition valid_big_integer := Numbers.BinNums.Z.
+
+(* Why3 assumption *)
+Inductive valid_big_integer__ref :=
+  | valid_big_integer__ref'mk : Numbers.BinNums.Z -> valid_big_integer__ref.
+Axiom valid_big_integer__ref_WhyType : WhyType valid_big_integer__ref.
+Existing Instance valid_big_integer__ref_WhyType.
+
+(* Why3 assumption *)
+Definition valid_big_integer__content (v:valid_big_integer__ref) :
+    Numbers.BinNums.Z :=
+  match v with
+  | valid_big_integer__ref'mk x => x
+  end.
+
+(* Why3 assumption *)
+Definition valid_big_integer__ref_valid_big_integer__content__projection
+    (a:valid_big_integer__ref) : Numbers.BinNums.Z :=
+  valid_big_integer__content a.
+
+(* Why3 assumption *)
+Definition dynamic_invariant1 (temp___expr_188:Numbers.BinNums.Z)
+    (temp___is_init_184:Init.Datatypes.bool)
+    (temp___skip_constant_185:Init.Datatypes.bool)
+    (temp___do_toplevel_186:Init.Datatypes.bool)
+    (temp___do_typ_inv_187:Init.Datatypes.bool) : Prop :=
+  True.
+
+(* Why3 assumption *)
+Definition dynamic_predicate (temp___192:Numbers.BinNums.Z) : Prop := True.
+
 (* Why3 goal *)
 Theorem def'vc :
   dynamic_invariant arg1 Init.Datatypes.true Init.Datatypes.false
   Init.Datatypes.true Init.Datatypes.true ->
   dynamic_invariant arg2 Init.Datatypes.true Init.Datatypes.false
   Init.Datatypes.true Init.Datatypes.true -> ~ (arg2 = 0%Z) ->
-  ((ZArith.BinInt.Z.modulo (-arg1)%Z (-arg2)%Z) =
-   (-(ZArith.BinInt.Z.modulo arg1 arg2))%Z).
+  ((bool_eq (ZArith.BinInt.Z.modulo (-arg1)%Z (-arg2)%Z)
+    (-(ZArith.BinInt.Z.modulo arg1 arg2))%Z)
+   = Init.Datatypes.true).
 Proof.
 #include "lemma_mod_symmetry.prf"

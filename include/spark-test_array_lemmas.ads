@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2016-2019, AdaCore                     --
+--                     Copyright (C) 2016-2020, AdaCore                     --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -60,8 +60,8 @@ is
    procedure Test_Transitive_Order_Int (Arr : Arr_Int_Unconstrained) with
      Global => null,
      Pre =>
-       (for all I in Arr'First + 1 .. Arr'Last =>
-          (Arr (I - 1) < Arr (I))),
+       (for all I in Arr'First .. Arr'Last =>
+          (if I > Arr'First then Arr (I - 1) < Arr (I))),
      Post => (for all I in Arr'Range =>
                 (for all J in Arr'Range =>
                      (if I < J then Arr (I) < Arr (J))));
@@ -69,8 +69,8 @@ is
    procedure Test_Transitive_Order_Float (Arr : Arr_Float_Unconstrained) with
      Global => null,
      Pre =>
-       (for all I in Arr'First + 1 .. Arr'Last =>
-          (Arr (I - 1) < Arr (I))),
+       (for all I in Arr'First .. Arr'Last =>
+          (if I > Arr'First then Arr (I - 1) < Arr (I))),
      Post => (for all I in Arr'Range =>
                 (for all J in Arr'Range =>
                      (if I < J then Arr (I) < Arr (J))));

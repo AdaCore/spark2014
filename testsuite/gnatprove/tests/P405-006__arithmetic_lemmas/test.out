@@ -1,5 +1,5 @@
-spark-arithmetic_lemmas.ads:112:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:123:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:116:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:36
+spark-arithmetic_lemmas.ads:127:56: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:36
 test_arith.adb:16:41: info: initialization of "R" proved
 test_arith.adb:18:14: info: postcondition proved (CVC4: 1 VC)
 test_arith.adb:21:14: info: overflow check proved (CVC4: 1 VC)

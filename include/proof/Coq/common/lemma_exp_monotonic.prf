@@ -1,6 +1,9 @@
 unfold dynamic_invariant1, dynamic_invariant, in_range, in_range1.
 intros.
 
+(* remove bool_le layer *)
+apply bool_int__le_axiom.
+
 (* apply theorem about monotonicity of power *)
 apply Z.pow_le_mono_l.
 

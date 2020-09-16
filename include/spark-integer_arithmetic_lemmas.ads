@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2016-2019, AdaCore                     --
+--                     Copyright (C) 2016-2020, AdaCore                     --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -27,6 +27,11 @@
 ------------------------------------------------------------------------------
 
 pragma SPARK_Mode;
+
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+
 with SPARK.Arithmetic_Lemmas; pragma Elaborate_All (SPARK.Arithmetic_Lemmas);
+
 package SPARK.Integer_Arithmetic_Lemmas is new
-  SPARK.Arithmetic_Lemmas (Integer);
+  SPARK.Arithmetic_Lemmas (Integer, To_Big_Integer);

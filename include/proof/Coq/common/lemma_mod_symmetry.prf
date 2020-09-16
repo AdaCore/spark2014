@@ -1,6 +1,9 @@
 intros.
 Open Scope Z_scope.
 
+(* remove bool_eq layer *)
+apply bool_eq_axiom.
+
 (* apply arithmetic theorem *)
 apply Zmod_opp_opp.
 
