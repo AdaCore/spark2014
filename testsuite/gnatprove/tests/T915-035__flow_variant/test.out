@@ -1,2 +1,8 @@
-p.adb:4:20: medium: subprogram variant might fail
-p.ads:3:78: info: data dependencies proved
+p.adb:4:09: high: "X" must be a global output of "A" (SPARK RM 6.1.4(17))
+p.adb:17:09: high: "X" must be a global output of "C" (SPARK RM 6.1.4(17))
+p.ads:3:94: "Y" is referenced in Pre but missing from the Global
+p.ads:5:94: high: "X" must be listed in the Global aspect of "B" (SPARK RM 6.1.4(14))
+p.ads:5:110: high: "Y" must be listed in the Global aspect of "B" (SPARK RM 6.1.4(14))
+p.ads:5:114: "X" is referenced in Pre but missing from the Global
+p.ads:5:114: "Y" is referenced in Pre but missing from the Global
+gnatprove: error during flow analysis and proof

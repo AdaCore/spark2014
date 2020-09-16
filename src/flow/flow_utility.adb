@@ -1636,6 +1636,8 @@ package body Flow_Utility is
         Find_Contracts (E, Pragma_Precondition);
       Contract_Cases           : constant Node_Lists.List :=
         Find_Contracts (E, Pragma_Contract_Cases);
+      Subprogram_Variant       : constant Node_Id :=
+        Get_Pragma (E, Pragma_Subprogram_Variant);
    begin
       if Is_Dispatching_Operation (E) then
          for Pre of Classwide_Pre_Post (E, Pragma_Precondition) loop
@@ -1663,6 +1665,26 @@ package body Flow_Utility is
                Next (Contract_Case);
 
                exit when No (Contract_Case);
+            end loop;
+         end;
+      end if;
+
+      --  If a Subprogram_Variant aspect was found then we add every
+      --  expression to the returned list. Subprogram variants are treated
+      --  as preconditions because they are read at the program entry.
+      if Present (Subprogram_Variant) then
+         declare
+            Aggr : constant Node_Id :=
+              Expression
+                (First (Pragma_Argument_Associations (Subprogram_Variant)));
+
+            Variant : Node_Id := First (Component_Associations (Aggr));
+         begin
+            loop
+               Precondition_Expressions.Append (Expression (Variant));
+               Next (Variant);
+
+               exit when No (Variant);
             end loop;
          end;
       end if;

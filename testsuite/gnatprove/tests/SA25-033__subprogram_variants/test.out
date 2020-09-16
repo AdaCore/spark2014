@@ -1,8 +1,8 @@
 fibo_variant.adb:2:13: info: implicit function contract might not be available on recursive calls
-fibo_variant.adb:3:44: medium: overflow check might fail (e.g. when Z = -2147483650) [reason for check: result of addition must fit in a 32-bits machine integer]
+fibo_variant.adb:3:44: medium: overflow check might fail (e.g. when Z = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention Z in a precondition]
 fibo_variant.adb:11:17: info: subprogram variant proved (CVC4: 1 VC)
 fibo_variant.adb:11:25: info: range check proved (CVC4: 1 VC)
-fibo_variant.adb:12:12: medium: overflow check might fail (e.g. when N = 3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention N in a precondition]
+fibo_variant.adb:12:12: medium: overflow check might fail (e.g. when N = 3 and Z = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention N and Z in a precondition]
 fibo_variant.adb:12:14: info: subprogram variant proved (CVC4: 1 VC)
 fibo_variant.adb:12:22: info: range check proved (CVC4: 1 VC)
 test_bad_variant.adb:6:27: medium: precondition might fail, cannot prove X = 0 or else Bad_1 (X - 1) (e.g. when X = 2)
@@ -48,7 +48,6 @@ test_bad_variant.adb:173:25: medium: overflow check might fail (e.g. when B = Tr
 test_bad_variant.adb:173:32: medium: overflow check might fail (e.g. when B = True and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 172 should mention Y in a precondition]
 test_bad_variant.adb:174:12: info: subprogram variant proved (CVC4: 1 VC)
 test_bad_variant.adb:174:23: medium: overflow check might fail (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 172 should mention Y in a precondition]
-test_bad_variant.adb:177:19: warning: unused variable "X"
 test_bad_variant.adb:179:11: warning: no recursive call visible
 test_bad_variant.adb:188:13: info: implicit function contract might not be available on recursive calls
 test_bad_variant.adb:188:13: info: subprogram "Length" will terminate, terminating annotation has been proved
