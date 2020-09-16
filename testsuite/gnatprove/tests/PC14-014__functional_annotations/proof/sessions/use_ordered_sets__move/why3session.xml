@@ -231,13 +231,13 @@
   <proof prover="0"><result status="valid" steps="9554"/></proof>
   </goal>
   <goal name="def&#39;vc.58" proved="true">
-  <proof prover="0"><result status="valid" steps="4323"/></proof>
+  <proof prover="0"><result status="valid" steps="4318"/></proof>
   </goal>
   <goal name="def&#39;vc.59" proved="true">
   <proof prover="0"><result status="valid" steps="1146"/></proof>
   </goal>
   <goal name="def&#39;vc.60" proved="true">
-  <proof prover="0"><result status="valid" steps="4330"/></proof>
+  <proof prover="0"><result status="valid" steps="4325"/></proof>
   </goal>
   <goal name="def&#39;vc.61" proved="true">
   <proof prover="0"><result status="valid" steps="35599"/></proof>

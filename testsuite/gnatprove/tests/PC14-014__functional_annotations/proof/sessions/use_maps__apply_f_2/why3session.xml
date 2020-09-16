@@ -297,19 +297,19 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.81" proved="true">
-  <proof prover="0"><result status="valid" steps="8503"/></proof>
+  <proof prover="0"><result status="valid" steps="7556"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.82" proved="true">
-  <proof prover="0"><result status="valid" steps="7907"/></proof>
+  <proof prover="0"><result status="valid" steps="7188"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.83" proved="true">
-  <proof prover="0"><result status="valid" steps="7807"/></proof>
+  <proof prover="0"><result status="valid" steps="6311"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.84" proved="true">
-  <proof prover="0"><result status="valid" steps="17113"/></proof>
+  <proof prover="0"><result status="valid" steps="13520"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.85" proved="true">
@@ -387,19 +387,19 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.105" proved="true">
-  <proof prover="0"><result status="valid" steps="12546"/></proof>
+  <proof prover="0"><result status="valid" steps="12932"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.106" proved="true">
-  <proof prover="0"><result status="valid" steps="27709"/></proof>
+  <proof prover="0"><result status="valid" steps="33060"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.107" proved="true">
-  <proof prover="0"><result status="valid" steps="8299"/></proof>
+  <proof prover="0"><result status="valid" steps="7402"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.108" proved="true">
-  <proof prover="0"><result status="valid" steps="18152"/></proof>
+  <proof prover="0"><result status="valid" steps="16937"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>

@@ -243,7 +243,7 @@ list_mod_allocator.adb:242:13: info: index check proved (CVC4: 2 VC)
 list_mod_allocator.adb:242:13: info: precondition proved (CVC4: 2 VC)
 list_mod_allocator.adb:242:18: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.adb:242:52: info: precondition proved (CVC4: 1 VC)
-list_mod_allocator.adb:244:07: info: assertion proved (altergo: 1 VC)
+list_mod_allocator.adb:244:07: info: assertion proved (Z3: 1 VC)
 list_mod_allocator.adb:244:49: info: precondition proved (CVC4: 1 VC)
 list_mod_allocator.ads:10:03: info: flow dependencies proved
 list_mod_allocator.ads:11:03: info: initial condition proved (CVC4: 2 VC)
