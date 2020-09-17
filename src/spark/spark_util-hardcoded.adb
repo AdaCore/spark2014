@@ -56,19 +56,25 @@ package body SPARK_Util.Hardcoded is
       Unit : Hardcoded_Enum)
       return Boolean
    is
+      Par : Node_Id := Parent (Scope (E));
    begin
+      --  Special case for top level instances as child units
+
+      if Nkind (Par) = N_Defining_Program_Unit_Name then
+         Par := Parent (Par);
+      end if;
 
       --  We need to check first if the scope of E is a package whose
       --  generic parent is defined in Unit.
 
-      if Nkind (Parent (Scope (E))) not in N_Package_Specification
+      if Nkind (Par) not in N_Package_Specification
            or else
-         No (Generic_Parent (Parent (Scope (E))))
+         No (Generic_Parent (Par))
            or else
-         Nkind (Generic_Parent (Parent (Scope (E)))) not in N_Has_Chars
+         Nkind (Generic_Parent (Par)) not in N_Has_Chars
            or else
          not Is_From_Hardcoded_Unit
-               (E    => Generic_Parent (Parent (Scope (E))),
+               (E    => Generic_Parent (Par),
                 Unit => Unit)
       then
          return False;
@@ -81,16 +87,14 @@ package body SPARK_Util.Hardcoded is
             return Get_Name_String
                      (Chars
                         (Generic_Parent
-                           (Parent
-                              (Scope (E))))) in "signed_conversions"
-                                              | "unsigned_conversions";
+                           (Par))) in "signed_conversions"
+                                    | "unsigned_conversions";
          when Big_Reals =>
             return Get_Name_String
                      (Chars
                         (Generic_Parent
-                           (Parent
-                              (Scope (E))))) in "fixed_conversions"
-                                              | "float_conversions";
+                           (Par))) in "fixed_conversions"
+                                    | "float_conversions";
       end case;
    end Is_From_Hardcoded_Generic_Unit;
 

@@ -1,2 +1,2 @@
 spark-arithmetic_lemmas.ads:18:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:7
-spark-arithmetic_lemmas.ads:20:14: medium: postcondition might fail, cannot prove Big (Val1) * Big (Factor) <= Big (Val2) * Big (Factor), in instantiation at spark-long_integer_arithmetic_lemmas.ads:7 (e.g. when Factor = 0 and Val1 = 0 and Val2 = 1)
+spark-arithmetic_lemmas.ads:20:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:7
