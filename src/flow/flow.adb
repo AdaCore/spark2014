@@ -22,9 +22,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Latin_1;
+with Ada.Directories;
 with Ada.Strings.Maps;
 with Ada.Strings;
 with Ada.Strings.Fixed;
+with Ada.Text_IO;
 with Assumptions;                      use Assumptions;
 with Errout;
 with Flow.Analysis;
@@ -46,6 +48,7 @@ with Flow_Refinement;                  use Flow_Refinement;
 with Flow_Utility;                     use Flow_Utility;
 with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
+with GNATCOLL.JSON;                    use GNATCOLL.JSON;
 with Lib;                              use Lib;
 with Namet;                            use Namet;
 with Osint;                            use Osint;
@@ -53,11 +56,13 @@ with Output;                           use Output;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
 with Sinfo;                            use Sinfo;
+with Sinput;                           use Sinput;
 with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
 with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with Sprint;                           use Sprint;
+with String_Utils;                     use String_Utils;
 with VC_Kinds;                         use VC_Kinds;
 with Why;
 
@@ -228,6 +233,213 @@ package body Flow is
 
       Outdent;
    end Debug_Print_Generated_Contracts;
+
+   Flow_GGs : JSON_Array;
+   --  Each call of Flow_Analyse_Entity appends JSON-formatted GG information
+   --  to this array.
+
+   procedure Write_Flow_GG_To_JSON_File (Arr : JSON_Array);
+   --  Writes out to disk a JSON file of flow analysis' generated globals
+
+   procedure GG_To_JSON (FA  : Flow_Analysis_Graphs;
+                         Arr : in out JSON_Array);
+   --  Convert the flow-analysis generated contracts from FA to JSON format
+
+   --------------------------------
+   -- Write_Flow_GG_To_JSON_File --
+   --------------------------------
+
+   procedure Write_Flow_GG_To_JSON_File (Arr : JSON_Array) is
+      FD : Ada.Text_IO.File_Type;
+      File_Name : constant String :=
+        Ada.Directories.Compose
+          (Name      => Unit_Name,
+           Extension => "gg");
+      Full : constant JSON_Value := Create_Object;
+
+   begin
+      Set_Field (Full, "contracts", Create (Arr));
+      Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
+      Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));
+      Ada.Text_IO.Close (FD);
+   end Write_Flow_GG_To_JSON_File;
+
+   ----------------
+   -- GG_To_JSON --
+   ----------------
+
+   procedure GG_To_JSON (FA  : Flow_Analysis_Graphs;
+                         Arr : in out JSON_Array)
+   is
+      function To_JSON (S : Flow_Id_Sets.Set) return JSON_Array
+        with Pre => (for all Obj of S => Obj.Variant = Normal_Use);
+      --  Returns the generated globals for the given set, if any, for the
+      --  current program unit.
+
+      function To_JSON (Globals : Global_Flow_Ids) return JSON_Value;
+      --  Returns the generated globals for all modes (Input, In_Out, Output,
+      --  Proof_In) for the current program unit.
+
+      function To_JSON (E : Entity_Id) return JSON_Value
+        with Pre  => Is_Global_Entity (E),
+             Post => Kind (To_JSON'Result) = JSON_String_Type;
+      --  Returns the full source name for E
+
+      function To_JSON return JSON_Value;
+      --  Returns the generated globals and refined globals for the current
+      --  program unit.
+
+      -------------
+      -- To_JSON --
+      -------------
+
+      function To_JSON return JSON_Value is
+         Globals : Global_Flow_Ids;
+         Obj     : JSON_Value;
+         Result  : constant JSON_Value := Create_Object;
+
+      begin
+         for Refined in Boolean'Range loop
+            GG_Get_Globals
+              (E       => FA.Spec_Entity,
+               S       => (if Refined then FA.B_Scope else FA.S_Scope),
+               Globals => Globals);
+
+            Obj := To_JSON (Globals);
+            if not Is_Empty (Obj) then
+               Set_Field (Result,
+                          Standard_Ada_Case (Get_Name_String
+                            (if Refined
+                             then Name_Refined_Global
+                             else Name_Global)),
+                          Obj);
+            end if;
+         end loop;
+
+         --  Result looks like:
+         --
+         --  {"Global":
+         --      {"Input": ["X", "Y", ..], "Proof_In": ..},
+         --   "Refined_Global":
+         --      {"Input": .. }
+         --  }
+         return Result;
+      end To_JSON;
+
+      function To_JSON (Globals : Global_Flow_Ids) return JSON_Value is
+         Result : constant JSON_Value := Create_Object;
+
+         procedure Set_Field_Unless_Empty (Name : Name_Id;
+                                           S    : Flow_Id_Sets.Set);
+         --  Only append to Result if S is non-empty
+
+         -----------------------------
+         --  Set_Field_Unless_Empty --
+         -----------------------------
+
+         procedure Set_Field_Unless_Empty (Name : Name_Id;
+                                           S    : Flow_Id_Sets.Set)
+         is
+            Obj : constant JSON_Array := To_JSON (S);
+
+         begin
+            if not Is_Empty (Obj) then
+               Set_Field (Result,
+                          Standard_Ada_Case (Get_Name_String (Name)),
+                          Obj);
+            end if;
+         end Set_Field_Unless_Empty;
+
+         --  Local variables
+
+         use type Flow_Id_Sets.Set;
+         Inputs  : constant Flow_Id_Sets.Set :=
+           Change_Variant (Globals.Inputs, Normal_Use);
+         Outputs : constant Flow_Id_Sets.Set :=
+           Change_Variant (Globals.Outputs, Normal_Use);
+
+      --  Start of processing for To_JSON
+
+      begin
+         Set_Field_Unless_Empty (Name_Proof_In,
+            Change_Variant (Globals.Proof_Ins, Normal_Use));
+         Set_Field_Unless_Empty (Name_Input, Inputs - Outputs);
+         Set_Field_Unless_Empty (Name_In_Out, Inputs and Outputs);
+         Set_Field_Unless_Empty (Name_Output, Outputs - Inputs);
+
+         --  Result looks like:
+         --  {"Proof_In": ["X", "Y", ..]}, "Input": ["X"], ..}
+         return Result;
+      end To_JSON;
+
+      function To_JSON (S : Flow_Id_Sets.Set) return JSON_Array is
+         Variables : JSON_Array;
+
+      begin
+         for E of To_Ordered_Flow_Id_Set (S) loop
+            case E.Kind is
+               when Direct_Mapping =>
+                  Append (Variables, To_JSON (E.Node));
+               when Magic_String =>
+                  null; --  ??? todo
+               when others =>
+                  raise Program_Error;
+            end case;
+         end loop;
+
+         --  Result looks like:
+         --  Result = {"Proof_In": ["Outer.Inner.X", "Outer.Inner.Y", ..]}, or
+         --  Result = {"Input"   : ...}, or
+         --  Result = {"Output"  : ...}, ..
+         return Variables;
+      end To_JSON;
+
+      function To_JSON (E : Entity_Id) return JSON_Value is
+      begin
+         --  Looks like:
+         --  "Outer.Inner.X"
+         return Create (Full_Source_Name (E));
+      end To_JSON;
+
+      --  Local variables
+
+      Obj : JSON_Value;
+
+   --  Start of processing for GG_To_JSON
+
+   begin
+      --  ??? ignore generated Initializes for now
+      if FA.Kind = Kind_Package then
+         return;
+      end if;
+
+      --  We ignore subprograms that came from a generic instance
+      if Present (Enclosing_Generic_Instance (FA.Spec_Entity)) then
+         return;
+      end if;
+
+      Obj := To_JSON;
+
+      if not Is_Empty (Obj) then
+         declare
+            Result : constant JSON_Value := Create_Object;
+            Slc    : constant Source_Ptr := Sloc (FA.Spec_Entity);
+            File   : constant String     := File_Name (Slc);
+            Line   : constant Positive   :=
+              Positive (Get_Physical_Line_Number (Slc));
+            Col    : constant Positive   :=
+              Positive (Get_Column_Number (Slc));
+
+         begin
+            Set_Field (Result, "file", File);
+            Set_Field (Result, "line", Line);
+            Set_Field (Result, "col", Col);
+            Set_Field (Result, "globals", Obj);
+            Append (Arr, Result);
+         end;
+      end if;
+
+   end GG_To_JSON;
 
    ------------------------
    -- Print_Graph_Vertex --
@@ -1201,6 +1413,7 @@ package body Flow is
         and then FA.Is_Generative
       then
          Debug_Print_Generated_Contracts (FA);
+         GG_To_JSON (FA, Flow_GGs);
       end if;
 
       --  Even if aborting we still need to collect tasking-related info,
@@ -1295,6 +1508,12 @@ package body Flow is
    begin
       if Present (Root_Entity) then
          Build_Graphs_For_Entity (Root_Entity);
+
+         if Gnat2Why_Args.Flow_Show_GG and then not Is_Empty (Flow_GGs) then
+            Write_Flow_GG_To_JSON_File (Flow_GGs);
+            Clear (Flow_GGs);
+         end if;
+
       end if;
    end Build_Graphs_For_Analysis;
 
