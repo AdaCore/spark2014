@@ -23,8 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
 with Gnat2Why_Args;
 with Sem_Disp;
+
+use type Ada.Containers.Count_Type;
 
 package SPARK_Util.Subprograms is
 
@@ -203,24 +206,38 @@ package SPARK_Util.Subprograms is
       Name      : Pragma_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-   with Pre => Ekind (E) in E_Function       |
-                            E_Package        |
-                            E_Procedure      |
-                            Entry_Kind       |
-                            E_Protected_Type |
-                            E_Task_Type      |
-                            E_Subprogram_Type
-               and then Name in Pragma_Precondition      |
-                                Pragma_Postcondition     |
-                                Pragma_Refined_Post      |
-                                Pragma_Contract_Cases    |
-                                Pragma_Initial_Condition
-               and then not (Classwide and Inherited);
+   with Pre => Ekind (E) in E_Function
+                          | E_Package
+                          | E_Procedure
+                          | Entry_Kind
+                          | E_Subprogram_Type
+               and then Name in Pragma_Precondition
+                              | Pragma_Postcondition
+                              | Pragma_Refined_Post
+                              | Pragma_Initial_Condition
+               and then not (Classwide and Inherited),
+     Post => (for all Expr of Find_Contracts'Result =>
+                Nkind (Expr) in N_Subexpr
+                and then Is_Boolean_Type (Etype (Expr)))
+             and then
+             (if Name not in Pragma_Precondition | Pragma_Postcondition
+              then Find_Contracts'Result.Length <= 1);
    --  @param E entry, subprogram, package, task or protected type
    --  @param Name contract pragma identifier
    --  @param Classwide True when asking for the classwide version of contract
    --  @param Inherited True when asking only for inherited contracts
-   --  @return the list of pragma nodes of E for contract Name
+   --  @return list of Boolean-valued expressions for pragma Name of E
+   --
+   --  Note: the return value is a list and not a single expression, because
+   --  pragmas Precondition/Postcondition (as opposed to Pre/Post) can be
+   --  repeated. In particular, frontend splits expressions of pragma Pre/Post
+   --  into individual conjuncts of the AND THEN operators for a more precise
+   --  diagnostics of a failed contract.
+   --
+   --  ??? The returned list is only needed for Preconditions and
+   --  Postconditions; for other contracts we could have simpler
+   --  API (especially since they can't be classwide nor inherited).
+   --
    --  ??? contract should detect invalid combinations of Ekind (E) and Name,
    --      just like it is done in Find_Contract.
 
@@ -350,18 +367,15 @@ package SPARK_Util.Subprograms is
       Name      : Pragma_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
-   with Pre => Ekind (E) in E_Function        |
-                            E_Package         |
-                            E_Procedure       |
-                            Entry_Kind        |
-                            E_Protected_Type  |
-                            E_Task_Type       |
-                            E_Subprogram_Type
-             and then Name in Pragma_Precondition      |
-                              Pragma_Postcondition     |
-                              Pragma_Refined_Post      |
-                              Pragma_Contract_Cases    |
-                              Pragma_Initial_Condition;
+   with Pre => Ekind (E) in E_Function
+                          | E_Package
+                          | E_Procedure
+                          | Entry_Kind
+                          | E_Subprogram_Type
+             and then Name in Pragma_Precondition
+                            | Pragma_Postcondition
+                            | Pragma_Refined_Post
+                            | Pragma_Initial_Condition;
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract

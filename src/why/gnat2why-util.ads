@@ -316,12 +316,18 @@ package Gnat2Why.Util is
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain) return W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
 
    function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Pragma_Id) return W_Pred_Id;
+      Kind   : Pragma_Id) return W_Pred_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  dispatching call.
 
@@ -329,12 +335,14 @@ package Gnat2Why.Util is
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain) return W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   with Pre => Kind in Pragma_Precondition | Pragma_Postcondition;
 
    function Get_Dispatching_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Pragma_Id) return W_Pred_Id;
+      Kind   : Pragma_Id) return W_Pred_Id
+   with Pre => Kind in Pragma_Precondition | Pragma_Postcondition;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  dispatching call.
 
@@ -342,12 +350,18 @@ package Gnat2Why.Util is
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain) return W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
 
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Pragma_Id) return W_Pred_Id;
+      Kind   : Pragma_Id) return W_Pred_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
 

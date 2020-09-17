@@ -1573,7 +1573,7 @@ package body Flow_Utility is
                                            return Node_Lists.List
    is
       P_Expr : Node_Lists.List;
-      P_CC   : Node_Lists.List;
+      P_CC   : Node_Id;
    begin
       case Ekind (E) is
          when Entry_Kind | E_Function | E_Procedure | E_Subprogram_Type =>
@@ -1581,7 +1581,7 @@ package body Flow_Utility is
                P_Expr := Find_Contracts (E, Pragma_Refined_Post);
             else
                P_Expr := Find_Contracts (E, Pragma_Postcondition);
-               P_CC   := Find_Contracts (E, Pragma_Contract_Cases);
+               P_CC   := Get_Pragma (E, Pragma_Contract_Cases);
 
                if Is_Dispatching_Operation (E) then
                   for Post of Classwide_Pre_Post (E, Pragma_Postcondition) loop
@@ -1591,21 +1591,20 @@ package body Flow_Utility is
 
                --  If a Contract_Cases aspect was found then we pull out
                --  every right-hand-side.
-               if not P_CC.Is_Empty then
-
-                  --  At the most one Contract_Cases expression is allowed
-                  pragma Assert (P_CC.Length = 1);
-
+               if Present (P_CC) then
                   declare
-                     Consequence : Node_Id :=
-                       First (Component_Associations (P_CC.First_Element));
-
+                     Contract_Case : Node_Id :=
+                       First
+                         (Component_Associations
+                            (Expression
+                               (First
+                                  (Pragma_Argument_Associations (P_CC)))));
                   begin
                      loop
-                        P_Expr.Append (Expression (Consequence));
-                        Next (Consequence);
+                        P_Expr.Append (Expression (Contract_Case));
+                        Next (Contract_Case);
 
-                        exit when No (Consequence);
+                        exit when No (Contract_Case);
                      end loop;
                   end;
                end if;
@@ -1634,10 +1633,12 @@ package body Flow_Utility is
    is
       Precondition_Expressions : Node_Lists.List :=
         Find_Contracts (E, Pragma_Precondition);
-      Contract_Cases           : constant Node_Lists.List :=
-        Find_Contracts (E, Pragma_Contract_Cases);
-      Subprogram_Variant       : constant Node_Id :=
+
+      Contract_Cases     : constant Node_Id :=
+        Get_Pragma (E, Pragma_Contract_Cases);
+      Subprogram_Variant : constant Node_Id :=
         Get_Pragma (E, Pragma_Subprogram_Variant);
+
    begin
       if Is_Dispatching_Operation (E) then
          for Pre of Classwide_Pre_Post (E, Pragma_Precondition) loop
@@ -1645,12 +1646,17 @@ package body Flow_Utility is
          end loop;
       end if;
 
-      --  If a Contract_Cases aspect was found then we pull out every
-      --  condition apart from the others.
-      if not Contract_Cases.Is_Empty then
+      --  If a Contract_Cases aspect was found then we pull every condition
+      --  apart from the others.
+
+      if Present (Contract_Cases) then
          declare
             Contract_Case : Node_Id :=
-              First (Component_Associations (Contract_Cases.First_Element));
+              First
+                (Component_Associations
+                   (Expression
+                      (First
+                         (Pragma_Argument_Associations (Contract_Cases)))));
 
             Case_Guard : Node_Id;
 

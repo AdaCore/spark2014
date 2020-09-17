@@ -1239,7 +1239,11 @@ package body Flow_Error_Messages is
 
       function Get_Pre_Post
         (Proc    : Entity_Id;
-         Prag_Id : Pragma_Id) return Node_Lists.List;
+         Prag_Id : Pragma_Id) return Node_Lists.List
+      with Pre  => Prag_Id in Pragma_Precondition | Pragma_Postcondition,
+           Post => (for all Expr of Get_Pre_Post'Result =>
+                       Nkind (Expr) in N_Subexpr
+                       and then Is_Boolean_Type (Etype (Expr)));
       --  Return the list of expressions mentioned in a precondition or a
       --  postcondition, including the class-wide ones.
 
@@ -1407,9 +1411,10 @@ package body Flow_Error_Messages is
                --  specified.
 
                elsif not Dispatch
-                 and then (Has_Contracts (Wrapper, Pragma_Postcondition)
-                            or else
-                           Has_Contracts (Wrapper, Pragma_Contract_Cases))
+                 and then
+                   (Has_Contracts (Wrapper, Pragma_Postcondition)
+                     or else
+                    Present (Get_Pragma (Wrapper, Pragma_Contract_Cases)))
                then
                   null;
 

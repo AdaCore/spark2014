@@ -17476,7 +17476,7 @@ package body Gnat2Why.Expr is
          declare
             Has_Explicit_Contracts : constant Boolean :=
               Has_Contracts (Subp, Pragma_Postcondition)
-              or else Has_Contracts (Subp, Pragma_Contract_Cases);
+              or else Present (Get_Pragma (Subp, Pragma_Contract_Cases));
             Has_Implicit_Contracts : constant Boolean :=
               Type_Needs_Dynamic_Invariant (Etype (Subp));
             Is_Expression_Function : constant Boolean :=

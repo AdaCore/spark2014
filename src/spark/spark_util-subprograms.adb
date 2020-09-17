@@ -383,7 +383,6 @@ package body SPARK_Util.Subprograms is
          when Pragma_Precondition
             | Pragma_Postcondition
             | Pragma_Refined_Post
-            | Pragma_Contract_Cases
             | Pragma_Initial_Condition
          =>
             if Name = Pragma_Refined_Post then
@@ -419,9 +418,6 @@ package body SPARK_Util.Subprograms is
 
                      when Pragma_Initial_Condition =>
                         Classifications (Contr),
-
-                     when Pragma_Contract_Cases =>
-                        Contract_Test_Cases (Contr),
 
                      when others =>
                         raise Program_Error);
@@ -1270,7 +1266,7 @@ package body SPARK_Util.Subprograms is
            --  without functional contract
            and then not Has_Contracts (E, Pragma_Precondition)
            and then not Has_Contracts (E, Pragma_Postcondition)
-           and then not Has_Contracts (E, Pragma_Contract_Cases)
+           and then No (Get_Pragma (E, Pragma_Contract_Cases))
 
            --  which corresponds to a shift or rotate
            and then

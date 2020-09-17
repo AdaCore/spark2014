@@ -265,8 +265,7 @@ package body Gnat2Why.Subprograms is
       Classwide : Boolean := False) return Node_Id
    with Pre => Kind in Pragma_Precondition
                      | Pragma_Postcondition
-                     | Pragma_Refined_Post
-                     | Pragma_Contract_Cases;
+                     | Pragma_Refined_Post;
    --  Return a node with a proper location for the pre- or postcondition of E,
    --  if any.
 
@@ -2551,9 +2550,15 @@ package body Gnat2Why.Subprograms is
 
          Classwide_Post_Check := New_Located_Assert
            (Ada_Node =>
-              (if Post_List.Is_Empty then
-                    Get_Location_For_Aspect (E, Pragma_Contract_Cases)
-               else Get_Location_For_Aspect (E, Pragma_Postcondition)),
+              (if not Post_List.Is_Empty then
+                 Get_Location_For_Aspect (E, Pragma_Postcondition)
+               elsif Present (Get_Pragma (E, Pragma_Contract_Cases)) then
+                  Expression
+                    (First
+                      (Pragma_Argument_Associations
+                         (Get_Pragma (E, Pragma_Contract_Cases))))
+               else
+                  Empty),
             Pred     =>
               Get_LSP_Contract (Params, E, Pragma_Postcondition),
             Reason   => VC_Stronger_Post,
@@ -2596,11 +2601,11 @@ package body Gnat2Why.Subprograms is
            New_Assume_Statement (Pred => Classwide_Post_Spec);
 
          Inherited_Post_Check := New_Located_Assert
-           (Ada_Node => Get_Location_For_Aspect (E, Pragma_Postcondition,
+           (Ada_Node  => Get_Location_For_Aspect (E, Pragma_Postcondition,
             Classwide => True),
-            Pred     => Inherited_Post_Spec,
-            Reason   => VC_Stronger_Classwide_Post,
-            Kind     => EW_Assert);
+            Pred      => Inherited_Post_Spec,
+            Reason    => VC_Stronger_Classwide_Post,
+            Kind      => EW_Assert);
 
          Stronger_Classwide_Post := Sequence
            ((1 => New_Comment
@@ -4704,7 +4709,7 @@ package body Gnat2Why.Subprograms is
          declare
             Has_Explicit_Contracts : constant Boolean :=
               Has_Contracts (E, Pragma_Postcondition)
-              or else Has_Contracts (E, Pragma_Contract_Cases);
+              or else Present (Get_Pragma (E, Pragma_Contract_Cases));
             Has_Implicit_Contracts : constant Boolean :=
               Type_Needs_Dynamic_Invariant (Etype (E));
          begin
