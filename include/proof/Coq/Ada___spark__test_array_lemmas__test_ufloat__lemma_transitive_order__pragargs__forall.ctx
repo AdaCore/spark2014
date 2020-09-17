@@ -20,9 +20,9 @@ Parameter us_private_WhyType : WhyType us_private.
 Existing Instance us_private_WhyType.
 
 (* Why3 assumption *)
-Definition us_fixed := Z.
+Definition us_fixed := Numbers.BinNums.Z.
 
-Parameter private__bool_eq: us_private -> us_private -> bool.
+Parameter private__bool_eq: us_private -> us_private -> Init.Datatypes.bool.
 
 Parameter us_null_ext__: us_private.
 
@@ -32,7 +32,7 @@ Existing Instance us_type_of_heap_WhyType.
 
 (* Why3 assumption *)
 Inductive us_type_of_heap__ref :=
-  | mk___type_of_heap__ref : us_type_of_heap -> us_type_of_heap__ref.
+  | us_type_of_heap__ref'mk : us_type_of_heap -> us_type_of_heap__ref.
 Axiom us_type_of_heap__ref_WhyType : WhyType us_type_of_heap__ref.
 Existing Instance us_type_of_heap__ref_WhyType.
 
@@ -40,7 +40,7 @@ Existing Instance us_type_of_heap__ref_WhyType.
 Definition us_type_of_heap__content (v:us_type_of_heap__ref) :
     us_type_of_heap :=
   match v with
-  | mk___type_of_heap__ref x => x
+  | us_type_of_heap__ref'mk x => x
   end.
 
 Axiom us_image : Type.
@@ -49,76 +49,79 @@ Existing Instance us_image_WhyType.
 
 (* Why3 assumption *)
 Inductive int__ref :=
-  | mk_int__ref : Z -> int__ref.
+  | int__ref'mk : Numbers.BinNums.Z -> int__ref.
 Axiom int__ref_WhyType : WhyType int__ref.
 Existing Instance int__ref_WhyType.
 
 (* Why3 assumption *)
-Definition int__content (v:int__ref) : Z :=
+Definition int__content (v:int__ref) : Numbers.BinNums.Z :=
   match v with
-  | mk_int__ref x => x
+  | int__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive bool__ref :=
-  | mk_bool__ref : bool -> bool__ref.
+  | bool__ref'mk : Init.Datatypes.bool -> bool__ref.
 Axiom bool__ref_WhyType : WhyType bool__ref.
 Existing Instance bool__ref_WhyType.
 
 (* Why3 assumption *)
-Definition bool__content (v:bool__ref) : bool :=
+Definition bool__content (v:bool__ref) : Init.Datatypes.bool :=
   match v with
-  | mk_bool__ref x => x
+  | bool__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive us_fixed__ref :=
-  | mk___fixed__ref : Z -> us_fixed__ref.
+  | us_fixed__ref'mk : Numbers.BinNums.Z -> us_fixed__ref.
 Axiom us_fixed__ref_WhyType : WhyType us_fixed__ref.
 Existing Instance us_fixed__ref_WhyType.
 
 (* Why3 assumption *)
-Definition us_fixed__content (v:us_fixed__ref) : Z :=
+Definition us_fixed__content (v:us_fixed__ref) : Numbers.BinNums.Z :=
   match v with
-  | mk___fixed__ref x => x
+  | us_fixed__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive real__ref :=
-  | mk_real__ref : R -> real__ref.
+  | real__ref'mk : Reals.Rdefinitions.R -> real__ref.
 Axiom real__ref_WhyType : WhyType real__ref.
 Existing Instance real__ref_WhyType.
 
 (* Why3 assumption *)
-Definition real__content (v:real__ref) : R :=
+Definition real__content (v:real__ref) : Reals.Rdefinitions.R :=
   match v with
-  | mk_real__ref x => x
+  | real__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive us_private__ref :=
-  | mk___private__ref : us_private -> us_private__ref.
+  | us_private__ref'mk : us_private -> us_private__ref.
 Axiom us_private__ref_WhyType : WhyType us_private__ref.
 Existing Instance us_private__ref_WhyType.
 
 (* Why3 assumption *)
 Definition us_private__content (v:us_private__ref) : us_private :=
   match v with
-  | mk___private__ref x => x
+  | us_private__ref'mk x => x
   end.
 
 (* Why3 assumption *)
-Definition int__ref___projection (a:int__ref) : Z := int__content a.
+Definition int__ref___projection (a:int__ref) : Numbers.BinNums.Z :=
+  int__content a.
 
 (* Why3 assumption *)
-Definition us_fixed__ref___projection (a:us_fixed__ref) : Z :=
+Definition us_fixed__ref___projection (a:us_fixed__ref) : Numbers.BinNums.Z :=
   us_fixed__content a.
 
 (* Why3 assumption *)
-Definition bool__ref___projection (a:bool__ref) : bool := bool__content a.
+Definition bool__ref___projection (a:bool__ref) : Init.Datatypes.bool :=
+  bool__content a.
 
 (* Why3 assumption *)
-Definition real__ref___projection (a:real__ref) : R := real__content a.
+Definition real__ref___projection (a:real__ref) : Reals.Rdefinitions.R :=
+  real__content a.
 
 (* Why3 assumption *)
 Definition us_private__ref___projection (a:us_private__ref) : us_private :=
@@ -128,65 +131,72 @@ Axiom t : Type.
 Parameter t_WhyType : WhyType t.
 Existing Instance t_WhyType.
 
-Parameter t'real: t -> R.
+Parameter t'real: t -> Reals.Rdefinitions.R.
 
 Parameter t'isFinite: t -> Prop.
 
 Axiom t'axiom :
-  forall (x:t), (t'isFinite x) ->
-  ((-(16777215 * 20282409603651670423947251286016)%R)%R <= (t'real x))%R /\
-  ((t'real x) <= (16777215 * 20282409603651670423947251286016)%R)%R.
+  forall (x:t), t'isFinite x ->
+  ((-340282346638528859811704183484516925440%R)%R <= (t'real x))%R /\
+  ((t'real x) <= 340282346638528859811704183484516925440%R)%R.
 
-Parameter truncate: R -> Z.
+Parameter truncate: Reals.Rdefinitions.R -> Numbers.BinNums.Z.
 
-Axiom Truncate_int : forall (i:Z), ((truncate (BuiltIn.IZR i)) = i).
+Axiom Truncate_int :
+  forall (i:Numbers.BinNums.Z), ((truncate (BuiltIn.IZR i)) = i).
 
 Axiom Truncate_down_pos :
-  forall (x:R), (0%R <= x)%R ->
+  forall (x:Reals.Rdefinitions.R), (0%R <= x)%R ->
   ((BuiltIn.IZR (truncate x)) <= x)%R /\
   (x < (BuiltIn.IZR ((truncate x) + 1%Z)%Z))%R.
 
 Axiom Truncate_up_neg :
-  forall (x:R), (x <= 0%R)%R ->
+  forall (x:Reals.Rdefinitions.R), (x <= 0%R)%R ->
   ((BuiltIn.IZR ((truncate x) - 1%Z)%Z) < x)%R /\
   (x <= (BuiltIn.IZR (truncate x)))%R.
 
 Axiom Real_of_truncate :
-  forall (x:R),
+  forall (x:Reals.Rdefinitions.R),
   ((x - 1%R)%R <= (BuiltIn.IZR (truncate x)))%R /\
   ((BuiltIn.IZR (truncate x)) <= (x + 1%R)%R)%R.
 
 Axiom Truncate_monotonic :
-  forall (x:R) (y:R), (x <= y)%R -> ((truncate x) <= (truncate y))%Z.
+  forall (x:Reals.Rdefinitions.R) (y:Reals.Rdefinitions.R), (x <= y)%R ->
+  ((truncate x) <= (truncate y))%Z.
 
 Axiom Truncate_monotonic_int1 :
-  forall (x:R) (i:Z), (x <= (BuiltIn.IZR i))%R -> ((truncate x) <= i)%Z.
+  forall (x:Reals.Rdefinitions.R) (i:Numbers.BinNums.Z),
+  (x <= (BuiltIn.IZR i))%R -> ((truncate x) <= i)%Z.
 
 Axiom Truncate_monotonic_int2 :
-  forall (x:R) (i:Z), ((BuiltIn.IZR i) <= x)%R -> (i <= (truncate x))%Z.
+  forall (x:Reals.Rdefinitions.R) (i:Numbers.BinNums.Z),
+  ((BuiltIn.IZR i) <= x)%R -> (i <= (truncate x))%Z.
 
-Parameter floor: R -> Z.
+Parameter floor: Reals.Rdefinitions.R -> Numbers.BinNums.Z.
 
-Parameter ceil: R -> Z.
+Parameter ceil: Reals.Rdefinitions.R -> Numbers.BinNums.Z.
 
-Axiom Floor_int : forall (i:Z), ((floor (BuiltIn.IZR i)) = i).
+Axiom Floor_int :
+  forall (i:Numbers.BinNums.Z), ((floor (BuiltIn.IZR i)) = i).
 
-Axiom Ceil_int : forall (i:Z), ((ceil (BuiltIn.IZR i)) = i).
+Axiom Ceil_int : forall (i:Numbers.BinNums.Z), ((ceil (BuiltIn.IZR i)) = i).
 
 Axiom Floor_down :
-  forall (x:R),
+  forall (x:Reals.Rdefinitions.R),
   ((BuiltIn.IZR (floor x)) <= x)%R /\
   (x < (BuiltIn.IZR ((floor x) + 1%Z)%Z))%R.
 
 Axiom Ceil_up :
-  forall (x:R),
+  forall (x:Reals.Rdefinitions.R),
   ((BuiltIn.IZR ((ceil x) - 1%Z)%Z) < x)%R /\ (x <= (BuiltIn.IZR (ceil x)))%R.
 
 Axiom Floor_monotonic :
-  forall (x:R) (y:R), (x <= y)%R -> ((floor x) <= (floor y))%Z.
+  forall (x:Reals.Rdefinitions.R) (y:Reals.Rdefinitions.R), (x <= y)%R ->
+  ((floor x) <= (floor y))%Z.
 
 Axiom Ceil_monotonic :
-  forall (x:R) (y:R), (x <= y)%R -> ((ceil x) <= (ceil y))%Z.
+  forall (x:Reals.Rdefinitions.R) (y:Reals.Rdefinitions.R), (x <= y)%R ->
+  ((ceil x) <= (ceil y))%Z.
 
 (* Why3 assumption *)
 Inductive mode :=
@@ -246,640 +256,612 @@ Parameter is_positive: t -> Prop.
 Parameter is_negative: t -> Prop.
 
 (* Why3 assumption *)
-Definition is_plus_infinity (x:t) : Prop :=
-  (is_infinite x) /\ (is_positive x).
+Definition is_plus_infinity (x:t) : Prop := is_infinite x /\ is_positive x.
 
 (* Why3 assumption *)
-Definition is_minus_infinity (x:t) : Prop :=
-  (is_infinite x) /\ (is_negative x).
+Definition is_minus_infinity (x:t) : Prop := is_infinite x /\ is_negative x.
 
 (* Why3 assumption *)
-Definition is_plus_zero (x:t) : Prop := (is_zero x) /\ (is_positive x).
+Definition is_plus_zero (x:t) : Prop := is_zero x /\ is_positive x.
 
 (* Why3 assumption *)
-Definition is_minus_zero (x:t) : Prop := (is_zero x) /\ (is_negative x).
+Definition is_minus_zero (x:t) : Prop := is_zero x /\ is_negative x.
 
 (* Why3 assumption *)
-Definition is_not_nan (x:t) : Prop := (t'isFinite x) \/ (is_infinite x).
+Definition is_not_nan (x:t) : Prop := t'isFinite x \/ is_infinite x.
 
-Axiom is_not_nan1 : forall (x:t), (is_not_nan x) <-> ~ (is_nan x).
+Axiom is_not_nan1 : forall (x:t), is_not_nan x <-> ~ is_nan x.
 
 Axiom is_not_finite :
-  forall (x:t), ~ (t'isFinite x) <-> ((is_infinite x) \/ (is_nan x)).
+  forall (x:t), ~ t'isFinite x <-> is_infinite x \/ is_nan x.
 
 Axiom zeroF_is_positive : is_positive zeroF.
 
 Axiom zeroF_is_zero : is_zero zeroF.
 
 Axiom zero_to_real :
-  forall (x:t), (is_zero x) <-> ((t'isFinite x) /\ ((t'real x) = 0%R)).
+  forall (x:t), is_zero x <-> t'isFinite x /\ ((t'real x) = 0%R).
 
-Parameter of_int: mode -> Z -> t.
+Parameter of_int: mode -> Numbers.BinNums.Z -> t.
 
-Parameter to_int: mode -> t -> Z.
+Parameter to_int: mode -> t -> Numbers.BinNums.Z.
 
 Axiom zero_of_int : forall (m:mode), (zeroF = (of_int m 0%Z)).
 
-Parameter round: mode -> R -> R.
+Parameter round: mode -> Reals.Rdefinitions.R -> Reals.Rdefinitions.R.
 
-Parameter max_int: Z.
+Parameter max_int: Numbers.BinNums.Z.
 
 Axiom max_real_int :
   ((33554430 * 10141204801825835211973625643008)%R = (BuiltIn.IZR max_int)).
 
 (* Why3 assumption *)
-Definition in_range (x:R) : Prop :=
+Definition in_range (x:Reals.Rdefinitions.R) : Prop :=
   ((-(33554430 * 10141204801825835211973625643008)%R)%R <= x)%R /\
   (x <= (33554430 * 10141204801825835211973625643008)%R)%R.
 
 (* Why3 assumption *)
-Definition in_int_range (i:Z) : Prop :=
+Definition in_int_range (i:Numbers.BinNums.Z) : Prop :=
   ((-max_int)%Z <= i)%Z /\ (i <= max_int)%Z.
 
-Axiom is_finite : forall (x:t), (t'isFinite x) -> in_range (t'real x).
+Axiom is_finite : forall (x:t), t'isFinite x -> in_range (t'real x).
 
 (* Why3 assumption *)
-Definition no_overflow (m:mode) (x:R) : Prop := in_range (round m x).
+Definition no_overflow (m:mode) (x:Reals.Rdefinitions.R) : Prop :=
+  in_range (round m x).
 
 Axiom Bounded_real_no_overflow :
-  forall (m:mode) (x:R), (in_range x) -> no_overflow m x.
+  forall (m:mode) (x:Reals.Rdefinitions.R), in_range x -> no_overflow m x.
 
 Axiom Round_monotonic :
-  forall (m:mode) (x:R) (y:R), (x <= y)%R -> ((round m x) <= (round m y))%R.
+  forall (m:mode) (x:Reals.Rdefinitions.R) (y:Reals.Rdefinitions.R),
+  (x <= y)%R -> ((round m x) <= (round m y))%R.
 
 Axiom Round_idempotent :
-  forall (m1:mode) (m2:mode) (x:R), ((round m1 (round m2 x)) = (round m2 x)).
+  forall (m1:mode) (m2:mode) (x:Reals.Rdefinitions.R),
+  ((round m1 (round m2 x)) = (round m2 x)).
 
 Axiom Round_to_real :
-  forall (m:mode) (x:t), (t'isFinite x) ->
-  ((round m (t'real x)) = (t'real x)).
+  forall (m:mode) (x:t), t'isFinite x -> ((round m (t'real x)) = (t'real x)).
 
-Axiom Round_down_le : forall (x:R), ((round RTN x) <= x)%R.
+Axiom Round_down_le :
+  forall (x:Reals.Rdefinitions.R), ((round RTN x) <= x)%R.
 
-Axiom Round_up_ge : forall (x:R), (x <= (round RTP x))%R.
+Axiom Round_up_ge : forall (x:Reals.Rdefinitions.R), (x <= (round RTP x))%R.
 
 Axiom Round_down_neg :
-  forall (x:R), ((round RTN (-x)%R) = (-(round RTP x))%R).
+  forall (x:Reals.Rdefinitions.R), ((round RTN (-x)%R) = (-(round RTP x))%R).
 
-Axiom Round_up_neg : forall (x:R), ((round RTP (-x)%R) = (-(round RTN x))%R).
+Axiom Round_up_neg :
+  forall (x:Reals.Rdefinitions.R), ((round RTP (-x)%R) = (-(round RTN x))%R).
 
 (* Why3 assumption *)
-Definition in_safe_int_range (i:Z) : Prop :=
+Definition in_safe_int_range (i:Numbers.BinNums.Z) : Prop :=
   ((-16777216%Z)%Z <= i)%Z /\ (i <= 16777216%Z)%Z.
 
 Axiom Exact_rounding_for_integers :
-  forall (m:mode) (i:Z), (in_safe_int_range i) ->
+  forall (m:mode) (i:Numbers.BinNums.Z), in_safe_int_range i ->
   ((round m (BuiltIn.IZR i)) = (BuiltIn.IZR i)).
 
 (* Why3 assumption *)
 Definition same_sign (x:t) (y:t) : Prop :=
-  ((is_positive x) /\ (is_positive y)) \/
-  ((is_negative x) /\ (is_negative y)).
+  is_positive x /\ is_positive y \/ is_negative x /\ is_negative y.
 
 (* Why3 assumption *)
 Definition diff_sign (x:t) (y:t) : Prop :=
-  ((is_positive x) /\ (is_negative y)) \/
-  ((is_negative x) /\ (is_positive y)).
+  is_positive x /\ is_negative y \/ is_negative x /\ is_positive y.
 
 Axiom feq_eq :
-  forall (x:t) (y:t), (t'isFinite x) -> (t'isFinite y) -> ~ (is_zero x) ->
-  (eq x y) -> (x = y).
+  forall (x:t) (y:t), t'isFinite x -> t'isFinite y -> ~ is_zero x ->
+  eq x y -> (x = y).
 
 Axiom eq_feq :
-  forall (x:t) (y:t), (t'isFinite x) -> (t'isFinite y) -> (x = y) -> eq x y.
+  forall (x:t) (y:t), t'isFinite x -> t'isFinite y -> (x = y) -> eq x y.
 
-Axiom eq_refl : forall (x:t), (t'isFinite x) -> eq x x.
+Axiom eq_refl : forall (x:t), t'isFinite x -> eq x x.
 
-Axiom eq_sym : forall (x:t) (y:t), (eq x y) -> eq y x.
+Axiom eq_sym : forall (x:t) (y:t), eq x y -> eq y x.
 
-Axiom eq_trans : forall (x:t) (y:t) (z:t), (eq x y) -> (eq y z) -> eq x z.
+Axiom eq_trans : forall (x:t) (y:t) (z:t), eq x y -> eq y z -> eq x z.
 
 Axiom eq_zero : eq zeroF (neg zeroF).
 
 Axiom eq_to_real_finite :
-  forall (x:t) (y:t), ((t'isFinite x) /\ (t'isFinite y)) ->
-  (eq x y) <-> ((t'real x) = (t'real y)).
+  forall (x:t) (y:t), t'isFinite x /\ t'isFinite y ->
+  eq x y <-> ((t'real x) = (t'real y)).
 
 Axiom eq_special :
-  forall (x:t) (y:t), (eq x y) ->
-  (is_not_nan x) /\
-  ((is_not_nan y) /\
-   (((t'isFinite x) /\ (t'isFinite y)) \/
-    ((is_infinite x) /\ ((is_infinite y) /\ (same_sign x y))))).
+  forall (x:t) (y:t), eq x y ->
+  is_not_nan x /\
+  is_not_nan y /\
+  (t'isFinite x /\ t'isFinite y \/
+   is_infinite x /\ is_infinite y /\ same_sign x y).
 
 Axiom lt_finite :
-  forall (x:t) (y:t), ((t'isFinite x) /\ (t'isFinite y)) ->
-  (lt x y) <-> ((t'real x) < (t'real y))%R.
+  forall (x:t) (y:t), t'isFinite x /\ t'isFinite y ->
+  lt x y <-> ((t'real x) < (t'real y))%R.
 
 Axiom le_finite :
-  forall (x:t) (y:t), ((t'isFinite x) /\ (t'isFinite y)) ->
-  (le x y) <-> ((t'real x) <= (t'real y))%R.
+  forall (x:t) (y:t), t'isFinite x /\ t'isFinite y ->
+  le x y <-> ((t'real x) <= (t'real y))%R.
 
-Axiom le_lt_trans :
-  forall (x:t) (y:t) (z:t), ((le x y) /\ (lt y z)) -> lt x z.
+Axiom le_lt_trans : forall (x:t) (y:t) (z:t), le x y /\ lt y z -> lt x z.
 
-Axiom lt_le_trans :
-  forall (x:t) (y:t) (z:t), ((lt x y) /\ (le y z)) -> lt x z.
+Axiom lt_le_trans : forall (x:t) (y:t) (z:t), lt x y /\ le y z -> lt x z.
 
-Axiom le_ge_asym : forall (x:t) (y:t), ((le x y) /\ (le y x)) -> eq x y.
+Axiom le_ge_asym : forall (x:t) (y:t), le x y /\ le y x -> eq x y.
 
 Axiom not_lt_ge :
-  forall (x:t) (y:t), (~ (lt x y) /\ ((is_not_nan x) /\ (is_not_nan y))) ->
-  le y x.
+  forall (x:t) (y:t), ~ lt x y /\ is_not_nan x /\ is_not_nan y -> le y x.
 
 Axiom not_gt_le :
-  forall (x:t) (y:t), (~ (lt y x) /\ ((is_not_nan x) /\ (is_not_nan y))) ->
-  le x y.
+  forall (x:t) (y:t), ~ lt y x /\ is_not_nan x /\ is_not_nan y -> le x y.
 
 Axiom le_special :
-  forall (x:t) (y:t), (le x y) ->
-  ((t'isFinite x) /\ (t'isFinite y)) \/
-  (((is_minus_infinity x) /\ (is_not_nan y)) \/
-   ((is_not_nan x) /\ (is_plus_infinity y))).
+  forall (x:t) (y:t), le x y ->
+  t'isFinite x /\ t'isFinite y \/
+  is_minus_infinity x /\ is_not_nan y \/ is_not_nan x /\ is_plus_infinity y.
 
 Axiom lt_special :
-  forall (x:t) (y:t), (lt x y) ->
-  ((t'isFinite x) /\ (t'isFinite y)) \/
-  (((is_minus_infinity x) /\ ((is_not_nan y) /\ ~ (is_minus_infinity y))) \/
-   ((is_not_nan x) /\ (~ (is_plus_infinity x) /\ (is_plus_infinity y)))).
+  forall (x:t) (y:t), lt x y ->
+  t'isFinite x /\ t'isFinite y \/
+  is_minus_infinity x /\ is_not_nan y /\ ~ is_minus_infinity y \/
+  is_not_nan x /\ ~ is_plus_infinity x /\ is_plus_infinity y.
 
 Axiom lt_lt_finite :
-  forall (x:t) (y:t) (z:t), (lt x y) -> (lt y z) -> t'isFinite y.
+  forall (x:t) (y:t) (z:t), lt x y -> lt y z -> t'isFinite y.
 
 Axiom positive_to_real :
-  forall (x:t), (t'isFinite x) -> (is_positive x) -> (0%R <= (t'real x))%R.
+  forall (x:t), t'isFinite x -> is_positive x -> (0%R <= (t'real x))%R.
 
 Axiom to_real_positive :
-  forall (x:t), (t'isFinite x) -> (0%R < (t'real x))%R -> is_positive x.
+  forall (x:t), t'isFinite x -> (0%R < (t'real x))%R -> is_positive x.
 
 Axiom negative_to_real :
-  forall (x:t), (t'isFinite x) -> (is_negative x) -> ((t'real x) <= 0%R)%R.
+  forall (x:t), t'isFinite x -> is_negative x -> ((t'real x) <= 0%R)%R.
 
 Axiom to_real_negative :
-  forall (x:t), (t'isFinite x) -> ((t'real x) < 0%R)%R -> is_negative x.
+  forall (x:t), t'isFinite x -> ((t'real x) < 0%R)%R -> is_negative x.
 
 Axiom negative_xor_positive :
-  forall (x:t), ~ ((is_positive x) /\ (is_negative x)).
+  forall (x:t), ~ (is_positive x /\ is_negative x).
 
 Axiom negative_or_positive :
-  forall (x:t), (is_not_nan x) -> (is_positive x) \/ (is_negative x).
+  forall (x:t), is_not_nan x -> is_positive x \/ is_negative x.
 
 Axiom diff_sign_trans :
-  forall (x:t) (y:t) (z:t), ((diff_sign x y) /\ (diff_sign y z)) ->
-  same_sign x z.
+  forall (x:t) (y:t) (z:t), diff_sign x y /\ diff_sign y z -> same_sign x z.
 
 Axiom diff_sign_product :
   forall (x:t) (y:t),
-  ((t'isFinite x) /\
-   ((t'isFinite y) /\ (((t'real x) * (t'real y))%R < 0%R)%R)) ->
+  t'isFinite x /\ t'isFinite y /\ (((t'real x) * (t'real y))%R < 0%R)%R ->
   diff_sign x y.
 
 Axiom same_sign_product :
-  forall (x:t) (y:t),
-  ((t'isFinite x) /\ ((t'isFinite y) /\ (same_sign x y))) ->
+  forall (x:t) (y:t), t'isFinite x /\ t'isFinite y /\ same_sign x y ->
   (0%R <= ((t'real x) * (t'real y))%R)%R.
 
 (* Why3 assumption *)
 Definition product_sign (z:t) (x:t) (y:t) : Prop :=
-  ((same_sign x y) -> is_positive z) /\ ((diff_sign x y) -> is_negative z).
+  (same_sign x y -> is_positive z) /\ (diff_sign x y -> is_negative z).
 
 (* Why3 assumption *)
 Definition overflow_value (m:mode) (x:t) : Prop :=
   match m with
   | RTN =>
-      ((is_positive x) ->
-       (t'isFinite x) /\
+      (is_positive x ->
+       t'isFinite x /\
        ((t'real x) = (33554430 * 10141204801825835211973625643008)%R)) /\
-      (~ (is_positive x) -> is_infinite x)
+      (~ is_positive x -> is_infinite x)
   | RTP =>
-      ((is_positive x) -> is_infinite x) /\
-      (~ (is_positive x) ->
-       (t'isFinite x) /\
+      (is_positive x -> is_infinite x) /\
+      (~ is_positive x ->
+       t'isFinite x /\
        ((t'real x) = (-(33554430 * 10141204801825835211973625643008)%R)%R))
   | RTZ =>
-      ((is_positive x) ->
-       (t'isFinite x) /\
+      (is_positive x ->
+       t'isFinite x /\
        ((t'real x) = (33554430 * 10141204801825835211973625643008)%R)) /\
-      (~ (is_positive x) ->
-       (t'isFinite x) /\
+      (~ is_positive x ->
+       t'isFinite x /\
        ((t'real x) = (-(33554430 * 10141204801825835211973625643008)%R)%R))
   | RNA|RNE => is_infinite x
   end.
 
 (* Why3 assumption *)
 Definition sign_zero_result (m:mode) (x:t) : Prop :=
-  (is_zero x) -> match m with
-                 | RTN => is_negative x
-                 | _ => is_positive x
-                 end.
+  is_zero x -> match m with
+               | RTN => is_negative x
+               | _ => is_positive x
+               end.
 
 Axiom add_finite :
-  forall (m:mode) (x:t) (y:t), (t'isFinite x) -> (t'isFinite y) ->
-  (no_overflow m ((t'real x) + (t'real y))%R) ->
-  (t'isFinite (add m x y)) /\
+  forall (m:mode) (x:t) (y:t), t'isFinite x -> t'isFinite y ->
+  no_overflow m ((t'real x) + (t'real y))%R ->
+  t'isFinite (add m x y) /\
   ((t'real (add m x y)) = (round m ((t'real x) + (t'real y))%R)).
 
 Axiom add_finite_rev :
-  forall (m:mode) (x:t) (y:t), (t'isFinite (add m x y)) ->
-  (t'isFinite x) /\ (t'isFinite y).
+  forall (m:mode) (x:t) (y:t), t'isFinite (add m x y) ->
+  t'isFinite x /\ t'isFinite y.
 
 Axiom add_finite_rev_n :
-  forall (m:mode) (x:t) (y:t), (to_nearest m) -> (t'isFinite (add m x y)) ->
-  (no_overflow m ((t'real x) + (t'real y))%R) /\
+  forall (m:mode) (x:t) (y:t), to_nearest m -> t'isFinite (add m x y) ->
+  no_overflow m ((t'real x) + (t'real y))%R /\
   ((t'real (add m x y)) = (round m ((t'real x) + (t'real y))%R)).
 
 Axiom sub_finite :
-  forall (m:mode) (x:t) (y:t), (t'isFinite x) -> (t'isFinite y) ->
-  (no_overflow m ((t'real x) - (t'real y))%R) ->
-  (t'isFinite (sub m x y)) /\
+  forall (m:mode) (x:t) (y:t), t'isFinite x -> t'isFinite y ->
+  no_overflow m ((t'real x) - (t'real y))%R ->
+  t'isFinite (sub m x y) /\
   ((t'real (sub m x y)) = (round m ((t'real x) - (t'real y))%R)).
 
 Axiom sub_finite_rev :
-  forall (m:mode) (x:t) (y:t), (t'isFinite (sub m x y)) ->
-  (t'isFinite x) /\ (t'isFinite y).
+  forall (m:mode) (x:t) (y:t), t'isFinite (sub m x y) ->
+  t'isFinite x /\ t'isFinite y.
 
 Axiom sub_finite_rev_n :
-  forall (m:mode) (x:t) (y:t), (to_nearest m) -> (t'isFinite (sub m x y)) ->
-  (no_overflow m ((t'real x) - (t'real y))%R) /\
+  forall (m:mode) (x:t) (y:t), to_nearest m -> t'isFinite (sub m x y) ->
+  no_overflow m ((t'real x) - (t'real y))%R /\
   ((t'real (sub m x y)) = (round m ((t'real x) - (t'real y))%R)).
 
 Axiom mul_finite :
-  forall (m:mode) (x:t) (y:t), (t'isFinite x) -> (t'isFinite y) ->
-  (no_overflow m ((t'real x) * (t'real y))%R) ->
-  (t'isFinite (mul m x y)) /\
+  forall (m:mode) (x:t) (y:t), t'isFinite x -> t'isFinite y ->
+  no_overflow m ((t'real x) * (t'real y))%R ->
+  t'isFinite (mul m x y) /\
   ((t'real (mul m x y)) = (round m ((t'real x) * (t'real y))%R)).
 
 Axiom mul_finite_rev :
-  forall (m:mode) (x:t) (y:t), (t'isFinite (mul m x y)) ->
-  (t'isFinite x) /\ (t'isFinite y).
+  forall (m:mode) (x:t) (y:t), t'isFinite (mul m x y) ->
+  t'isFinite x /\ t'isFinite y.
 
 Axiom mul_finite_rev_n :
-  forall (m:mode) (x:t) (y:t), (to_nearest m) -> (t'isFinite (mul m x y)) ->
-  (no_overflow m ((t'real x) * (t'real y))%R) /\
+  forall (m:mode) (x:t) (y:t), to_nearest m -> t'isFinite (mul m x y) ->
+  no_overflow m ((t'real x) * (t'real y))%R /\
   ((t'real (mul m x y)) = (round m ((t'real x) * (t'real y))%R)).
 
 Axiom div_finite :
-  forall (m:mode) (x:t) (y:t), (t'isFinite x) -> (t'isFinite y) ->
-  ~ (is_zero y) -> (no_overflow m ((t'real x) / (t'real y))%R) ->
-  (t'isFinite (div m x y)) /\
+  forall (m:mode) (x:t) (y:t), t'isFinite x -> t'isFinite y -> ~ is_zero y ->
+  no_overflow m ((t'real x) / (t'real y))%R ->
+  t'isFinite (div m x y) /\
   ((t'real (div m x y)) = (round m ((t'real x) / (t'real y))%R)).
 
 Axiom div_finite_rev :
-  forall (m:mode) (x:t) (y:t), (t'isFinite (div m x y)) ->
-  ((t'isFinite x) /\ ((t'isFinite y) /\ ~ (is_zero y))) \/
-  ((t'isFinite x) /\ ((is_infinite y) /\ ((t'real (div m x y)) = 0%R))).
+  forall (m:mode) (x:t) (y:t), t'isFinite (div m x y) ->
+  t'isFinite x /\ t'isFinite y /\ ~ is_zero y \/
+  t'isFinite x /\ is_infinite y /\ ((t'real (div m x y)) = 0%R).
 
 Axiom div_finite_rev_n :
-  forall (m:mode) (x:t) (y:t), (to_nearest m) -> (t'isFinite (div m x y)) ->
-  (t'isFinite y) ->
-  (no_overflow m ((t'real x) / (t'real y))%R) /\
+  forall (m:mode) (x:t) (y:t), to_nearest m -> t'isFinite (div m x y) ->
+  t'isFinite y ->
+  no_overflow m ((t'real x) / (t'real y))%R /\
   ((t'real (div m x y)) = (round m ((t'real x) / (t'real y))%R)).
 
 Axiom neg_finite :
-  forall (x:t), (t'isFinite x) ->
-  (t'isFinite (neg x)) /\ ((t'real (neg x)) = (-(t'real x))%R).
+  forall (x:t), t'isFinite x ->
+  t'isFinite (neg x) /\ ((t'real (neg x)) = (-(t'real x))%R).
 
 Axiom neg_finite_rev :
-  forall (x:t), (t'isFinite (neg x)) ->
-  (t'isFinite x) /\ ((t'real (neg x)) = (-(t'real x))%R).
+  forall (x:t), t'isFinite (neg x) ->
+  t'isFinite x /\ ((t'real (neg x)) = (-(t'real x))%R).
 
 Axiom abs_finite :
-  forall (x:t), (t'isFinite x) ->
-  (t'isFinite (abs x)) /\
-  (((t'real (abs x)) = (Reals.Rbasic_fun.Rabs (t'real x))) /\
-   (is_positive (abs x))).
+  forall (x:t), t'isFinite x ->
+  t'isFinite (abs x) /\
+  ((t'real (abs x)) = (Reals.Rbasic_fun.Rabs (t'real x))) /\
+  is_positive (abs x).
 
 Axiom abs_finite_rev :
-  forall (x:t), (t'isFinite (abs x)) ->
-  (t'isFinite x) /\ ((t'real (abs x)) = (Reals.Rbasic_fun.Rabs (t'real x))).
+  forall (x:t), t'isFinite (abs x) ->
+  t'isFinite x /\ ((t'real (abs x)) = (Reals.Rbasic_fun.Rabs (t'real x))).
 
-Axiom abs_universal : forall (x:t), ~ (is_negative (abs x)).
+Axiom abs_universal : forall (x:t), ~ is_negative (abs x).
 
 Axiom fma_finite :
-  forall (m:mode) (x:t) (y:t) (z:t), (t'isFinite x) -> (t'isFinite y) ->
-  (t'isFinite z) ->
-  (no_overflow m (((t'real x) * (t'real y))%R + (t'real z))%R) ->
-  (t'isFinite (fma m x y z)) /\
+  forall (m:mode) (x:t) (y:t) (z:t), t'isFinite x -> t'isFinite y ->
+  t'isFinite z ->
+  no_overflow m (((t'real x) * (t'real y))%R + (t'real z))%R ->
+  t'isFinite (fma m x y z) /\
   ((t'real (fma m x y z)) =
    (round m (((t'real x) * (t'real y))%R + (t'real z))%R)).
 
 Axiom fma_finite_rev :
-  forall (m:mode) (x:t) (y:t) (z:t), (t'isFinite (fma m x y z)) ->
-  (t'isFinite x) /\ ((t'isFinite y) /\ (t'isFinite z)).
+  forall (m:mode) (x:t) (y:t) (z:t), t'isFinite (fma m x y z) ->
+  t'isFinite x /\ t'isFinite y /\ t'isFinite z.
 
 Axiom fma_finite_rev_n :
-  forall (m:mode) (x:t) (y:t) (z:t), (to_nearest m) ->
-  (t'isFinite (fma m x y z)) ->
-  (no_overflow m (((t'real x) * (t'real y))%R + (t'real z))%R) /\
+  forall (m:mode) (x:t) (y:t) (z:t), to_nearest m ->
+  t'isFinite (fma m x y z) ->
+  no_overflow m (((t'real x) * (t'real y))%R + (t'real z))%R /\
   ((t'real (fma m x y z)) =
    (round m (((t'real x) * (t'real y))%R + (t'real z))%R)).
 
 Axiom sqrt_finite :
-  forall (m:mode) (x:t), (t'isFinite x) -> (0%R <= (t'real x))%R ->
-  (t'isFinite (sqrt m x)) /\
+  forall (m:mode) (x:t), t'isFinite x -> (0%R <= (t'real x))%R ->
+  t'isFinite (sqrt m x) /\
   ((t'real (sqrt m x)) = (round m (Reals.R_sqrt.sqrt (t'real x)))).
 
 Axiom sqrt_finite_rev :
-  forall (m:mode) (x:t), (t'isFinite (sqrt m x)) ->
-  (t'isFinite x) /\
-  ((0%R <= (t'real x))%R /\
-   ((t'real (sqrt m x)) = (round m (Reals.R_sqrt.sqrt (t'real x))))).
+  forall (m:mode) (x:t), t'isFinite (sqrt m x) ->
+  t'isFinite x /\
+  (0%R <= (t'real x))%R /\
+  ((t'real (sqrt m x)) = (round m (Reals.R_sqrt.sqrt (t'real x)))).
 
 (* Why3 assumption *)
-Definition same_sign_real (x:t) (r:R) : Prop :=
-  ((is_positive x) /\ (0%R < r)%R) \/ ((is_negative x) /\ (r < 0%R)%R).
+Definition same_sign_real (x:t) (r:Reals.Rdefinitions.R) : Prop :=
+  is_positive x /\ (0%R < r)%R \/ is_negative x /\ (r < 0%R)%R.
 
 Axiom add_special :
   forall (m:mode) (x:t) (y:t),
   let r := add m x y in
-  (((is_nan x) \/ (is_nan y)) -> is_nan r) /\
-  ((((t'isFinite x) /\ (is_infinite y)) ->
-    (is_infinite r) /\ (same_sign r y)) /\
-   ((((is_infinite x) /\ (t'isFinite y)) ->
-     (is_infinite r) /\ (same_sign r x)) /\
-    ((((is_infinite x) /\ ((is_infinite y) /\ (same_sign x y))) ->
-      (is_infinite r) /\ (same_sign r x)) /\
-     ((((is_infinite x) /\ ((is_infinite y) /\ (diff_sign x y))) -> is_nan r) /\
-      ((((t'isFinite x) /\
-         ((t'isFinite y) /\ ~ (no_overflow m ((t'real x) + (t'real y))%R))) ->
-        (same_sign_real r ((t'real x) + (t'real y))%R) /\
-        (overflow_value m r)) /\
-       (((t'isFinite x) /\ (t'isFinite y)) ->
-        ((same_sign x y) -> same_sign r x) /\
-        (~ (same_sign x y) -> sign_zero_result m r))))))).
+  (is_nan x \/ is_nan y -> is_nan r) /\
+  (t'isFinite x /\ is_infinite y -> is_infinite r /\ same_sign r y) /\
+  (is_infinite x /\ t'isFinite y -> is_infinite r /\ same_sign r x) /\
+  (is_infinite x /\ is_infinite y /\ same_sign x y ->
+   is_infinite r /\ same_sign r x) /\
+  (is_infinite x /\ is_infinite y /\ diff_sign x y -> is_nan r) /\
+  (t'isFinite x /\
+   t'isFinite y /\ ~ no_overflow m ((t'real x) + (t'real y))%R ->
+   same_sign_real r ((t'real x) + (t'real y))%R /\ overflow_value m r) /\
+  (t'isFinite x /\ t'isFinite y ->
+   (same_sign x y -> same_sign r x) /\
+   (~ same_sign x y -> sign_zero_result m r)).
 
 Axiom sub_special :
   forall (m:mode) (x:t) (y:t),
   let r := sub m x y in
-  (((is_nan x) \/ (is_nan y)) -> is_nan r) /\
-  ((((t'isFinite x) /\ (is_infinite y)) ->
-    (is_infinite r) /\ (diff_sign r y)) /\
-   ((((is_infinite x) /\ (t'isFinite y)) ->
-     (is_infinite r) /\ (same_sign r x)) /\
-    ((((is_infinite x) /\ ((is_infinite y) /\ (same_sign x y))) -> is_nan r) /\
-     ((((is_infinite x) /\ ((is_infinite y) /\ (diff_sign x y))) ->
-       (is_infinite r) /\ (same_sign r x)) /\
-      ((((t'isFinite x) /\
-         ((t'isFinite y) /\ ~ (no_overflow m ((t'real x) - (t'real y))%R))) ->
-        (same_sign_real r ((t'real x) - (t'real y))%R) /\
-        (overflow_value m r)) /\
-       (((t'isFinite x) /\ (t'isFinite y)) ->
-        ((diff_sign x y) -> same_sign r x) /\
-        (~ (diff_sign x y) -> sign_zero_result m r))))))).
+  (is_nan x \/ is_nan y -> is_nan r) /\
+  (t'isFinite x /\ is_infinite y -> is_infinite r /\ diff_sign r y) /\
+  (is_infinite x /\ t'isFinite y -> is_infinite r /\ same_sign r x) /\
+  (is_infinite x /\ is_infinite y /\ same_sign x y -> is_nan r) /\
+  (is_infinite x /\ is_infinite y /\ diff_sign x y ->
+   is_infinite r /\ same_sign r x) /\
+  (t'isFinite x /\
+   t'isFinite y /\ ~ no_overflow m ((t'real x) - (t'real y))%R ->
+   same_sign_real r ((t'real x) - (t'real y))%R /\ overflow_value m r) /\
+  (t'isFinite x /\ t'isFinite y ->
+   (diff_sign x y -> same_sign r x) /\
+   (~ diff_sign x y -> sign_zero_result m r)).
 
 Axiom mul_special :
   forall (m:mode) (x:t) (y:t),
   let r := mul m x y in
-  (((is_nan x) \/ (is_nan y)) -> is_nan r) /\
-  ((((is_zero x) /\ (is_infinite y)) -> is_nan r) /\
-   ((((t'isFinite x) /\ ((is_infinite y) /\ ~ (is_zero x))) -> is_infinite r) /\
-    ((((is_infinite x) /\ (is_zero y)) -> is_nan r) /\
-     ((((is_infinite x) /\ ((t'isFinite y) /\ ~ (is_zero y))) ->
-       is_infinite r) /\
-      ((((is_infinite x) /\ (is_infinite y)) -> is_infinite r) /\
-       ((((t'isFinite x) /\
-          ((t'isFinite y) /\ ~ (no_overflow m ((t'real x) * (t'real y))%R))) ->
-         overflow_value m r) /\
-        (~ (is_nan r) -> product_sign r x y))))))).
+  (is_nan x \/ is_nan y -> is_nan r) /\
+  (is_zero x /\ is_infinite y -> is_nan r) /\
+  (t'isFinite x /\ is_infinite y /\ ~ is_zero x -> is_infinite r) /\
+  (is_infinite x /\ is_zero y -> is_nan r) /\
+  (is_infinite x /\ t'isFinite y /\ ~ is_zero y -> is_infinite r) /\
+  (is_infinite x /\ is_infinite y -> is_infinite r) /\
+  (t'isFinite x /\
+   t'isFinite y /\ ~ no_overflow m ((t'real x) * (t'real y))%R ->
+   overflow_value m r) /\
+  (~ is_nan r -> product_sign r x y).
 
 Axiom div_special :
   forall (m:mode) (x:t) (y:t),
   let r := div m x y in
-  (((is_nan x) \/ (is_nan y)) -> is_nan r) /\
-  ((((t'isFinite x) /\ (is_infinite y)) -> is_zero r) /\
-   ((((is_infinite x) /\ (t'isFinite y)) -> is_infinite r) /\
-    ((((is_infinite x) /\ (is_infinite y)) -> is_nan r) /\
-     ((((t'isFinite x) /\
-        ((t'isFinite y) /\
-         (~ (is_zero y) /\ ~ (no_overflow m ((t'real x) / (t'real y))%R)))) ->
-       overflow_value m r) /\
-      ((((t'isFinite x) /\ ((is_zero y) /\ ~ (is_zero x))) -> is_infinite r) /\
-       ((((is_zero x) /\ (is_zero y)) -> is_nan r) /\
-        (~ (is_nan r) -> product_sign r x y))))))).
+  (is_nan x \/ is_nan y -> is_nan r) /\
+  (t'isFinite x /\ is_infinite y -> is_zero r) /\
+  (is_infinite x /\ t'isFinite y -> is_infinite r) /\
+  (is_infinite x /\ is_infinite y -> is_nan r) /\
+  (t'isFinite x /\
+   t'isFinite y /\ ~ is_zero y /\ ~ no_overflow m ((t'real x) / (t'real y))%R ->
+   overflow_value m r) /\
+  (t'isFinite x /\ is_zero y /\ ~ is_zero x -> is_infinite r) /\
+  (is_zero x /\ is_zero y -> is_nan r) /\ (~ is_nan r -> product_sign r x y).
 
 Axiom neg_special :
   forall (x:t),
-  ((is_nan x) -> is_nan (neg x)) /\
-  (((is_infinite x) -> is_infinite (neg x)) /\
-   (~ (is_nan x) -> diff_sign x (neg x))).
+  (is_nan x -> is_nan (neg x)) /\
+  (is_infinite x -> is_infinite (neg x)) /\
+  (~ is_nan x -> diff_sign x (neg x)).
 
 Axiom abs_special :
   forall (x:t),
-  ((is_nan x) -> is_nan (abs x)) /\
-  (((is_infinite x) -> is_infinite (abs x)) /\
-   (~ (is_nan x) -> is_positive (abs x))).
+  (is_nan x -> is_nan (abs x)) /\
+  (is_infinite x -> is_infinite (abs x)) /\
+  (~ is_nan x -> is_positive (abs x)).
 
 Axiom fma_special :
   forall (m:mode) (x:t) (y:t) (z:t),
   let r := fma m x y z in
-  (((is_nan x) \/ ((is_nan y) \/ (is_nan z))) -> is_nan r) /\
-  ((((is_zero x) /\ (is_infinite y)) -> is_nan r) /\
-   ((((is_infinite x) /\ (is_zero y)) -> is_nan r) /\
-    ((((t'isFinite x) /\
-       (~ (is_zero x) /\ ((is_infinite y) /\ (t'isFinite z)))) ->
-      (is_infinite r) /\ (product_sign r x y)) /\
-     ((((t'isFinite x) /\
-        (~ (is_zero x) /\ ((is_infinite y) /\ (is_infinite z)))) ->
-       ((product_sign z x y) -> (is_infinite r) /\ (same_sign r z)) /\
-       (~ (product_sign z x y) -> is_nan r)) /\
-      ((((is_infinite x) /\
-         ((t'isFinite y) /\ (~ (is_zero y) /\ (t'isFinite z)))) ->
-        (is_infinite r) /\ (product_sign r x y)) /\
-       ((((is_infinite x) /\
-          ((t'isFinite y) /\ (~ (is_zero y) /\ (is_infinite z)))) ->
-         ((product_sign z x y) -> (is_infinite r) /\ (same_sign r z)) /\
-         (~ (product_sign z x y) -> is_nan r)) /\
-        ((((is_infinite x) /\ ((is_infinite y) /\ (t'isFinite z))) ->
-          (is_infinite r) /\ (product_sign r x y)) /\
-         ((((t'isFinite x) /\ ((t'isFinite y) /\ (is_infinite z))) ->
-           (is_infinite r) /\ (same_sign r z)) /\
-          ((((is_infinite x) /\ ((is_infinite y) /\ (is_infinite z))) ->
-            ((product_sign z x y) -> (is_infinite r) /\ (same_sign r z)) /\
-            (~ (product_sign z x y) -> is_nan r)) /\
-           ((((t'isFinite x) /\
-              ((t'isFinite y) /\
-               ((t'isFinite z) /\
-                ~ (no_overflow m
-                   (((t'real x) * (t'real y))%R + (t'real z))%R)))) ->
-             (same_sign_real r (((t'real x) * (t'real y))%R + (t'real z))%R) /\
-             (overflow_value m r)) /\
-            (((t'isFinite x) /\ ((t'isFinite y) /\ (t'isFinite z))) ->
-             ((product_sign z x y) -> same_sign r z) /\
-             (~ (product_sign z x y) ->
-              ((((t'real x) * (t'real y))%R + (t'real z))%R = 0%R) ->
-              ((m = RTN) -> is_negative r) /\ (~ (m = RTN) -> is_positive r))))))))))))).
+  (is_nan x \/ is_nan y \/ is_nan z -> is_nan r) /\
+  (is_zero x /\ is_infinite y -> is_nan r) /\
+  (is_infinite x /\ is_zero y -> is_nan r) /\
+  (t'isFinite x /\ ~ is_zero x /\ is_infinite y /\ t'isFinite z ->
+   is_infinite r /\ product_sign r x y) /\
+  (t'isFinite x /\ ~ is_zero x /\ is_infinite y /\ is_infinite z ->
+   (product_sign z x y -> is_infinite r /\ same_sign r z) /\
+   (~ product_sign z x y -> is_nan r)) /\
+  (is_infinite x /\ t'isFinite y /\ ~ is_zero y /\ t'isFinite z ->
+   is_infinite r /\ product_sign r x y) /\
+  (is_infinite x /\ t'isFinite y /\ ~ is_zero y /\ is_infinite z ->
+   (product_sign z x y -> is_infinite r /\ same_sign r z) /\
+   (~ product_sign z x y -> is_nan r)) /\
+  (is_infinite x /\ is_infinite y /\ t'isFinite z ->
+   is_infinite r /\ product_sign r x y) /\
+  (t'isFinite x /\ t'isFinite y /\ is_infinite z ->
+   is_infinite r /\ same_sign r z) /\
+  (is_infinite x /\ is_infinite y /\ is_infinite z ->
+   (product_sign z x y -> is_infinite r /\ same_sign r z) /\
+   (~ product_sign z x y -> is_nan r)) /\
+  (t'isFinite x /\
+   t'isFinite y /\
+   t'isFinite z /\
+   ~ no_overflow m (((t'real x) * (t'real y))%R + (t'real z))%R ->
+   same_sign_real r (((t'real x) * (t'real y))%R + (t'real z))%R /\
+   overflow_value m r) /\
+  (t'isFinite x /\ t'isFinite y /\ t'isFinite z ->
+   (product_sign z x y -> same_sign r z) /\
+   (~ product_sign z x y ->
+    ((((t'real x) * (t'real y))%R + (t'real z))%R = 0%R) ->
+    ((m = RTN) -> is_negative r) /\ (~ (m = RTN) -> is_positive r))).
 
 Axiom sqrt_special :
   forall (m:mode) (x:t),
   let r := sqrt m x in
-  ((is_nan x) -> is_nan r) /\
-  (((is_plus_infinity x) -> is_plus_infinity r) /\
-   (((is_minus_infinity x) -> is_nan r) /\
-    ((((t'isFinite x) /\ ((t'real x) < 0%R)%R) -> is_nan r) /\
-     (((is_zero x) -> same_sign r x) /\
-      (((t'isFinite x) /\ (0%R < (t'real x))%R) -> is_positive r))))).
+  (is_nan x -> is_nan r) /\
+  (is_plus_infinity x -> is_plus_infinity r) /\
+  (is_minus_infinity x -> is_nan r) /\
+  (t'isFinite x /\ ((t'real x) < 0%R)%R -> is_nan r) /\
+  (is_zero x -> same_sign r x) /\
+  (t'isFinite x /\ (0%R < (t'real x))%R -> is_positive r).
 
 Axiom of_int_add_exact :
-  forall (m:mode) (n:mode) (i:Z) (j:Z), (in_safe_int_range i) ->
-  (in_safe_int_range j) -> (in_safe_int_range (i + j)%Z) ->
+  forall (m:mode) (n:mode) (i:Numbers.BinNums.Z) (j:Numbers.BinNums.Z),
+  in_safe_int_range i -> in_safe_int_range j ->
+  in_safe_int_range (i + j)%Z ->
   eq (of_int m (i + j)%Z) (add n (of_int m i) (of_int m j)).
 
 Axiom of_int_sub_exact :
-  forall (m:mode) (n:mode) (i:Z) (j:Z), (in_safe_int_range i) ->
-  (in_safe_int_range j) -> (in_safe_int_range (i - j)%Z) ->
+  forall (m:mode) (n:mode) (i:Numbers.BinNums.Z) (j:Numbers.BinNums.Z),
+  in_safe_int_range i -> in_safe_int_range j ->
+  in_safe_int_range (i - j)%Z ->
   eq (of_int m (i - j)%Z) (sub n (of_int m i) (of_int m j)).
 
 Axiom of_int_mul_exact :
-  forall (m:mode) (n:mode) (i:Z) (j:Z), (in_safe_int_range i) ->
-  (in_safe_int_range j) -> (in_safe_int_range (i * j)%Z) ->
+  forall (m:mode) (n:mode) (i:Numbers.BinNums.Z) (j:Numbers.BinNums.Z),
+  in_safe_int_range i -> in_safe_int_range j ->
+  in_safe_int_range (i * j)%Z ->
   eq (of_int m (i * j)%Z) (mul n (of_int m i) (of_int m j)).
 
-Axiom Min_r : forall (x:t) (y:t), (le y x) -> eq (min x y) y.
+Axiom Min_r : forall (x:t) (y:t), le y x -> eq (min x y) y.
 
-Axiom Min_l : forall (x:t) (y:t), (le x y) -> eq (min x y) x.
+Axiom Min_l : forall (x:t) (y:t), le x y -> eq (min x y) x.
 
-Axiom Max_r : forall (x:t) (y:t), (le y x) -> eq (max x y) x.
+Axiom Max_r : forall (x:t) (y:t), le y x -> eq (max x y) x.
 
-Axiom Max_l : forall (x:t) (y:t), (le x y) -> eq (max x y) y.
+Axiom Max_l : forall (x:t) (y:t), le x y -> eq (max x y) y.
 
 Parameter is_int: t -> Prop.
 
 Axiom zeroF_is_int : is_int zeroF.
 
 Axiom of_int_is_int :
-  forall (m:mode) (x:Z), (in_int_range x) -> is_int (of_int m x).
+  forall (m:mode) (x:Numbers.BinNums.Z), in_int_range x ->
+  is_int (of_int m x).
 
 Axiom big_float_is_int :
-  forall (m:mode) (i:t), (t'isFinite i) ->
-  ((le i (neg (of_int m 16777216%Z))) \/ (le (of_int m 16777216%Z) i)) ->
-  is_int i.
+  forall (m:mode) (i:t), t'isFinite i ->
+  le i (neg (of_int m 16777216%Z)) \/ le (of_int m 16777216%Z) i -> is_int i.
 
 Axiom roundToIntegral_is_int :
-  forall (m:mode) (x:t), (t'isFinite x) -> is_int (roundToIntegral m x).
+  forall (m:mode) (x:t), t'isFinite x -> is_int (roundToIntegral m x).
 
-Axiom eq_is_int : forall (x:t) (y:t), (eq x y) -> (is_int x) -> is_int y.
+Axiom eq_is_int : forall (x:t) (y:t), eq x y -> is_int x -> is_int y.
 
 Axiom add_int :
-  forall (x:t) (y:t) (m:mode), (is_int x) -> (is_int y) ->
-  (t'isFinite (add m x y)) -> is_int (add m x y).
+  forall (x:t) (y:t) (m:mode), is_int x -> is_int y ->
+  t'isFinite (add m x y) -> is_int (add m x y).
 
 Axiom sub_int :
-  forall (x:t) (y:t) (m:mode), (is_int x) -> (is_int y) ->
-  (t'isFinite (sub m x y)) -> is_int (sub m x y).
+  forall (x:t) (y:t) (m:mode), is_int x -> is_int y ->
+  t'isFinite (sub m x y) -> is_int (sub m x y).
 
 Axiom mul_int :
-  forall (x:t) (y:t) (m:mode), (is_int x) -> (is_int y) ->
-  (t'isFinite (mul m x y)) -> is_int (mul m x y).
+  forall (x:t) (y:t) (m:mode), is_int x -> is_int y ->
+  t'isFinite (mul m x y) -> is_int (mul m x y).
 
 Axiom fma_int :
-  forall (x:t) (y:t) (z:t) (m:mode), (is_int x) -> (is_int y) ->
-  (is_int z) -> (t'isFinite (fma m x y z)) -> is_int (fma m x y z).
+  forall (x:t) (y:t) (z:t) (m:mode), is_int x -> is_int y -> is_int z ->
+  t'isFinite (fma m x y z) -> is_int (fma m x y z).
 
-Axiom neg_int : forall (x:t), (is_int x) -> is_int (neg x).
+Axiom neg_int : forall (x:t), is_int x -> is_int (neg x).
 
-Axiom abs_int : forall (x:t), (is_int x) -> is_int (abs x).
+Axiom abs_int : forall (x:t), is_int x -> is_int (abs x).
 
 Axiom is_int_of_int :
-  forall (x:t) (m:mode) (m':mode), (is_int x) ->
-  eq x (of_int m' (to_int m x)).
+  forall (x:t) (m:mode) (m':mode), is_int x -> eq x (of_int m' (to_int m x)).
 
 Axiom is_int_to_int :
-  forall (m:mode) (x:t), (is_int x) -> in_int_range (to_int m x).
+  forall (m:mode) (x:t), is_int x -> in_int_range (to_int m x).
 
-Axiom is_int_is_finite : forall (x:t), (is_int x) -> t'isFinite x.
+Axiom is_int_is_finite : forall (x:t), is_int x -> t'isFinite x.
 
 Axiom int_to_real :
-  forall (m:mode) (x:t), (is_int x) ->
+  forall (m:mode) (x:t), is_int x ->
   ((t'real x) = (BuiltIn.IZR (to_int m x))).
 
 Axiom truncate_int :
-  forall (m:mode) (i:t), (is_int i) -> eq (roundToIntegral m i) i.
+  forall (m:mode) (i:t), is_int i -> eq (roundToIntegral m i) i.
 
 Axiom truncate_neg :
-  forall (x:t), (t'isFinite x) -> (is_negative x) ->
+  forall (x:t), t'isFinite x -> is_negative x ->
   ((roundToIntegral RTZ x) = (roundToIntegral RTP x)).
 
 Axiom truncate_pos :
-  forall (x:t), (t'isFinite x) -> (is_positive x) ->
+  forall (x:t), t'isFinite x -> is_positive x ->
   ((roundToIntegral RTZ x) = (roundToIntegral RTN x)).
 
-Axiom ceil_le : forall (x:t), (t'isFinite x) -> le x (roundToIntegral RTP x).
+Axiom ceil_le : forall (x:t), t'isFinite x -> le x (roundToIntegral RTP x).
 
 Axiom ceil_lest :
-  forall (x:t) (y:t), ((le x y) /\ (is_int y)) ->
-  le (roundToIntegral RTP x) y.
+  forall (x:t) (y:t), le x y /\ is_int y -> le (roundToIntegral RTP x) y.
 
 Axiom ceil_to_real :
-  forall (x:t), (t'isFinite x) ->
+  forall (x:t), t'isFinite x ->
   ((t'real (roundToIntegral RTP x)) = (BuiltIn.IZR (ceil (t'real x)))).
 
 Axiom ceil_to_int :
-  forall (m:mode) (x:t), (t'isFinite x) ->
+  forall (m:mode) (x:t), t'isFinite x ->
   ((to_int m (roundToIntegral RTP x)) = (ceil (t'real x))).
 
-Axiom floor_le :
-  forall (x:t), (t'isFinite x) -> le (roundToIntegral RTN x) x.
+Axiom floor_le : forall (x:t), t'isFinite x -> le (roundToIntegral RTN x) x.
 
 Axiom floor_lest :
-  forall (x:t) (y:t), ((le y x) /\ (is_int y)) ->
-  le y (roundToIntegral RTN x).
+  forall (x:t) (y:t), le y x /\ is_int y -> le y (roundToIntegral RTN x).
 
 Axiom floor_to_real :
-  forall (x:t), (t'isFinite x) ->
+  forall (x:t), t'isFinite x ->
   ((t'real (roundToIntegral RTN x)) = (BuiltIn.IZR (floor (t'real x)))).
 
 Axiom floor_to_int :
-  forall (m:mode) (x:t), (t'isFinite x) ->
+  forall (m:mode) (x:t), t'isFinite x ->
   ((to_int m (roundToIntegral RTN x)) = (floor (t'real x))).
 
 Axiom RNA_down :
   forall (x:t),
-  (lt (sub RNE x (roundToIntegral RTN x))
-   (sub RNE (roundToIntegral RTP x) x)) ->
+  lt (sub RNE x (roundToIntegral RTN x)) (sub RNE (roundToIntegral RTP x) x) ->
   ((roundToIntegral RNA x) = (roundToIntegral RTN x)).
 
 Axiom RNA_up :
   forall (x:t),
-  (lt (sub RNE (roundToIntegral RTP x) x)
-   (sub RNE x (roundToIntegral RTN x))) ->
+  lt (sub RNE (roundToIntegral RTP x) x) (sub RNE x (roundToIntegral RTN x)) ->
   ((roundToIntegral RNA x) = (roundToIntegral RTP x)).
 
 Axiom RNA_down_tie :
   forall (x:t),
-  (eq (sub RNE x (roundToIntegral RTN x))
-   (sub RNE (roundToIntegral RTP x) x)) ->
-  (is_negative x) -> ((roundToIntegral RNA x) = (roundToIntegral RTN x)).
+  eq (sub RNE x (roundToIntegral RTN x)) (sub RNE (roundToIntegral RTP x) x) ->
+  is_negative x -> ((roundToIntegral RNA x) = (roundToIntegral RTN x)).
 
 Axiom RNA_up_tie :
   forall (x:t),
-  (eq (sub RNE (roundToIntegral RTP x) x)
-   (sub RNE x (roundToIntegral RTN x))) ->
-  (is_positive x) -> ((roundToIntegral RNA x) = (roundToIntegral RTP x)).
+  eq (sub RNE (roundToIntegral RTP x) x) (sub RNE x (roundToIntegral RTN x)) ->
+  is_positive x -> ((roundToIntegral RNA x) = (roundToIntegral RTP x)).
 
 Axiom to_int_roundToIntegral :
   forall (m:mode) (x:t), ((to_int m x) = (to_int m (roundToIntegral m x))).
 
 Axiom to_int_monotonic :
-  forall (m:mode) (x:t) (y:t), (t'isFinite x) -> (t'isFinite y) ->
-  (le x y) -> ((to_int m x) <= (to_int m y))%Z.
+  forall (m:mode) (x:t) (y:t), t'isFinite x -> t'isFinite y -> le x y ->
+  ((to_int m x) <= (to_int m y))%Z.
 
 Axiom to_int_of_int :
-  forall (m:mode) (i:Z), (in_safe_int_range i) ->
+  forall (m:mode) (i:Numbers.BinNums.Z), in_safe_int_range i ->
   ((to_int m (of_int m i)) = i).
 
 Axiom eq_to_int :
-  forall (m:mode) (x:t) (y:t), (t'isFinite x) -> (eq x y) ->
+  forall (m:mode) (x:t) (y:t), t'isFinite x -> eq x y ->
   ((to_int m x) = (to_int m y)).
 
 Axiom neg_to_int :
-  forall (m:mode) (x:t), (is_int x) ->
-  ((to_int m (neg x)) = (-(to_int m x))%Z).
+  forall (m:mode) (x:t), is_int x -> ((to_int m (neg x)) = (-(to_int m x))%Z).
 
 Axiom roundToIntegral_is_finite :
-  forall (m:mode) (x:t), (t'isFinite x) -> t'isFinite (roundToIntegral m x).
+  forall (m:mode) (x:t), t'isFinite x -> t'isFinite (roundToIntegral m x).
 
 Axiom round_bound_ne :
-  forall (x:R), (no_overflow RNE x) ->
+  forall (x:Reals.Rdefinitions.R), no_overflow RNE x ->
   (((x - ((1 / 16777216)%R * (Reals.Rbasic_fun.Rabs x))%R)%R -
     (1 / 1427247692705959881058285969449495136382746624)%R)%R
    <= (round RNE x))%R /\
@@ -888,7 +870,7 @@ Axiom round_bound_ne :
     (1 / 1427247692705959881058285969449495136382746624)%R)%R)%R.
 
 Axiom round_bound :
-  forall (m:mode) (x:R), (no_overflow m x) ->
+  forall (m:mode) (x:Reals.Rdefinitions.R), no_overflow m x ->
   (((x - ((1 / 8388608)%R * (Reals.Rbasic_fun.Rabs x))%R)%R -
     (1 / 713623846352979940529142984724747568191373312)%R)%R
    <= (round m x))%R /\
@@ -897,55 +879,55 @@ Axiom round_bound :
     (1 / 713623846352979940529142984724747568191373312)%R)%R)%R.
 
 (* Why3 assumption *)
-Definition neq (x:t) (y:t) : Prop := ~ (eq x y).
+Definition neq (x:t) (y:t) : Prop := ~ eq x y.
 
-Parameter bool_lt: t -> t -> bool.
+Parameter bool_lt: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_lt_def :
+Axiom bool_lt'def :
   forall (x:t) (y:t),
-  ((lt x y) -> ((bool_lt x y) = true)) /\
-  (~ (lt x y) -> ((bool_lt x y) = false)).
+  (lt x y -> ((bool_lt x y) = Init.Datatypes.true)) /\
+  (~ lt x y -> ((bool_lt x y) = Init.Datatypes.false)).
 
-Parameter bool_le: t -> t -> bool.
+Parameter bool_le: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_le_def :
+Axiom bool_le'def :
   forall (x:t) (y:t),
-  ((le x y) -> ((bool_le x y) = true)) /\
-  (~ (le x y) -> ((bool_le x y) = false)).
+  (le x y -> ((bool_le x y) = Init.Datatypes.true)) /\
+  (~ le x y -> ((bool_le x y) = Init.Datatypes.false)).
 
-Parameter bool_gt: t -> t -> bool.
+Parameter bool_gt: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_gt_def :
+Axiom bool_gt'def :
   forall (x:t) (y:t),
-  ((lt y x) -> ((bool_gt x y) = true)) /\
-  (~ (lt y x) -> ((bool_gt x y) = false)).
+  (lt y x -> ((bool_gt x y) = Init.Datatypes.true)) /\
+  (~ lt y x -> ((bool_gt x y) = Init.Datatypes.false)).
 
-Parameter bool_ge: t -> t -> bool.
+Parameter bool_ge: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_ge_def :
+Axiom bool_ge'def :
   forall (x:t) (y:t),
-  ((le y x) -> ((bool_ge x y) = true)) /\
-  (~ (le y x) -> ((bool_ge x y) = false)).
+  (le y x -> ((bool_ge x y) = Init.Datatypes.true)) /\
+  (~ le y x -> ((bool_ge x y) = Init.Datatypes.false)).
 
-Parameter bool_eq: t -> t -> bool.
+Parameter bool_eq: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_eq_def :
+Axiom bool_eq'def :
   forall (x:t) (y:t),
-  ((eq x y) -> ((bool_eq x y) = true)) /\
-  (~ (eq x y) -> ((bool_eq x y) = false)).
+  (eq x y -> ((bool_eq x y) = Init.Datatypes.true)) /\
+  (~ eq x y -> ((bool_eq x y) = Init.Datatypes.false)).
 
-Parameter bool_neq: t -> t -> bool.
+Parameter bool_neq: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_neq_def :
+Axiom bool_neq'def :
   forall (x:t) (y:t),
-  (~ (eq x y) -> ((bool_neq x y) = true)) /\
-  ((eq x y) -> ((bool_neq x y) = false)).
+  (~ eq x y -> ((bool_neq x y) = Init.Datatypes.true)) /\
+  (eq x y -> ((bool_neq x y) = Init.Datatypes.false)).
 
 Parameter rem: t -> t -> t.
 
 Parameter fliteral: t.
 
-Axiom fliteral_axiom : (t'isFinite fliteral) /\ ((t'real fliteral) = 1%R).
+Axiom fliteral_axiom : t'isFinite fliteral /\ ((t'real fliteral) = 1%R).
 
 Axiom one_is_int : is_int fliteral.
 
@@ -953,57 +935,59 @@ Axiom one_of_int : (fliteral = (of_int RNA 1%Z)).
 
 (* Why3 assumption *)
 Inductive t__ref :=
-  | mk_t__ref : t -> t__ref.
+  | t__ref'mk : t -> t__ref.
 Axiom t__ref_WhyType : WhyType t__ref.
 Existing Instance t__ref_WhyType.
 
 (* Why3 assumption *)
 Definition t__content (v:t__ref) : t := match v with
-                                        | mk_t__ref x => x
+                                        | t__ref'mk x => x
                                         end.
 
 (* Why3 assumption *)
-Definition ite {a:Type} {a_WT:WhyType a} (b:bool) (x:a) (y:a) : a :=
+Definition ite {a:Type} {a_WT:WhyType a} (b:Init.Datatypes.bool) (x:a)
+    (y:a) : a :=
   match b with
-  | true => x
-  | false => y
+  | Init.Datatypes.true => x
+  | Init.Datatypes.false => y
   end.
 
-Parameter bool_eq1: bool -> bool -> bool.
+Parameter bool_eq1:
+  Init.Datatypes.bool -> Init.Datatypes.bool -> Init.Datatypes.bool.
 
-Axiom bool_eq_def1 :
-  forall (x:bool) (y:bool),
-  ((x = y) -> ((bool_eq1 x y) = true)) /\
-  (~ (x = y) -> ((bool_eq1 x y) = false)).
+Axiom bool_eq'def1 :
+  forall (x:Init.Datatypes.bool) (y:Init.Datatypes.bool),
+  ((x = y) -> ((bool_eq1 x y) = Init.Datatypes.true)) /\
+  (~ (x = y) -> ((bool_eq1 x y) = Init.Datatypes.false)).
 
-Parameter to_int1: bool -> Z.
+Parameter to_int1: Init.Datatypes.bool -> Numbers.BinNums.Z.
 
-Axiom to_int_def :
-  forall (b:bool),
-  ((b = true) -> ((to_int1 b) = 1%Z)) /\
-  (~ (b = true) -> ((to_int1 b) = 0%Z)).
+Axiom to_int'def :
+  forall (b:Init.Datatypes.bool),
+  ((b = Init.Datatypes.true) -> ((to_int1 b) = 1%Z)) /\
+  (~ (b = Init.Datatypes.true) -> ((to_int1 b) = 0%Z)).
 
-Parameter of_int1: Z -> bool.
+Parameter of_int1: Numbers.BinNums.Z -> Init.Datatypes.bool.
 
-Axiom of_int_def :
-  forall (i:Z),
-  ((i = 0%Z) -> ((of_int1 i) = false)) /\
-  (~ (i = 0%Z) -> ((of_int1 i) = true)).
+Axiom of_int'def :
+  forall (i:Numbers.BinNums.Z),
+  ((i = 0%Z) -> ((of_int1 i) = Init.Datatypes.false)) /\
+  (~ (i = 0%Z) -> ((of_int1 i) = Init.Datatypes.true)).
 
 (* Why3 assumption *)
-Definition in_range1 (x:Z) : Prop := (x = 0%Z) \/ (x = 1%Z).
+Definition in_range1 (x:Numbers.BinNums.Z) : Prop := (x = 0%Z) \/ (x = 1%Z).
 
-Parameter attr__ATTRIBUTE_IMAGE: bool -> us_image.
+Parameter attr__ATTRIBUTE_IMAGE: Init.Datatypes.bool -> us_image.
 
 Parameter attr__ATTRIBUTE_VALUE__pre_check: us_image -> Prop.
 
-Parameter attr__ATTRIBUTE_VALUE: us_image -> bool.
+Parameter attr__ATTRIBUTE_VALUE: us_image -> Init.Datatypes.bool.
 
 Axiom integer : Type.
 Parameter integer_WhyType : WhyType integer.
 Existing Instance integer_WhyType.
 
-Parameter integer'int: integer -> Z.
+Parameter integer'int: integer -> Numbers.BinNums.Z.
 
 Axiom integer'axiom :
   forall (i:integer),
@@ -1011,36 +995,37 @@ Axiom integer'axiom :
   ((integer'int i) <= 2147483647%Z)%Z.
 
 (* Why3 assumption *)
-Definition in_range2 (x:Z) : Prop :=
+Definition in_range2 (x:Numbers.BinNums.Z) : Prop :=
   ((-2147483648%Z)%Z <= x)%Z /\ (x <= 2147483647%Z)%Z.
 
-Parameter bool_eq2: Z -> Z -> bool.
+Parameter bool_eq2:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 
-Axiom bool_eq_def2 :
-  forall (x:Z) (y:Z),
-  ((x = y) -> ((bool_eq2 x y) = true)) /\
-  (~ (x = y) -> ((bool_eq2 x y) = false)).
+Axiom bool_eq'def2 :
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
+  ((x = y) -> ((bool_eq2 x y) = Init.Datatypes.true)) /\
+  (~ (x = y) -> ((bool_eq2 x y) = Init.Datatypes.false)).
 
-Parameter attr__ATTRIBUTE_IMAGE1: Z -> us_image.
+Parameter attr__ATTRIBUTE_IMAGE1: Numbers.BinNums.Z -> us_image.
 
 Parameter attr__ATTRIBUTE_VALUE__pre_check1: us_image -> Prop.
 
-Parameter attr__ATTRIBUTE_VALUE1: us_image -> Z.
+Parameter attr__ATTRIBUTE_VALUE1: us_image -> Numbers.BinNums.Z.
 
-Parameter user_eq: integer -> integer -> bool.
+Parameter user_eq: integer -> integer -> Init.Datatypes.bool.
 
 Parameter dummy: integer.
 
 (* Why3 assumption *)
 Inductive integer__ref :=
-  | mk_integer__ref : integer -> integer__ref.
+  | integer__ref'mk : integer -> integer__ref.
 Axiom integer__ref_WhyType : WhyType integer__ref.
 Existing Instance integer__ref_WhyType.
 
 (* Why3 assumption *)
 Definition integer__content (v:integer__ref) : integer :=
   match v with
-  | mk_integer__ref x => x
+  | integer__ref'mk x => x
   end.
 
 (* Why3 assumption *)
@@ -1048,18 +1033,18 @@ Definition integer__ref_integer__content__projection (a:integer__ref) :
     integer :=
   integer__content a.
 
-Axiom float : Type.
-Parameter float_WhyType : WhyType float.
-Existing Instance float_WhyType.
+Axiom float__ : Type.
+Parameter float___WhyType : WhyType float__.
+Existing Instance float___WhyType.
 
-Parameter bool_eq3: t -> t -> bool.
+Parameter bool_eq3: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_eq_def3 :
+Axiom bool_eq'def3 :
   forall (x:t) (y:t),
-  ((eq x y) -> ((bool_eq3 x y) = true)) /\
-  (~ (eq x y) -> ((bool_eq3 x y) = false)).
+  (eq x y -> ((bool_eq3 x y) = Init.Datatypes.true)) /\
+  (~ eq x y -> ((bool_eq3 x y) = Init.Datatypes.false)).
 
-Parameter user_eq1: float -> float -> bool.
+Parameter user_eq1: float__ -> float__ -> Init.Datatypes.bool.
 
 Parameter attr__ATTRIBUTE_IMAGE2: t -> us_image.
 
@@ -1067,115 +1052,124 @@ Parameter attr__ATTRIBUTE_VALUE__pre_check2: us_image -> Prop.
 
 Parameter attr__ATTRIBUTE_VALUE2: us_image -> t.
 
-Parameter dummy1: float.
+Parameter dummy1: float__.
 
 (* Why3 assumption *)
-Inductive float__ref :=
-  | mk_float__ref : float -> float__ref.
-Axiom float__ref_WhyType : WhyType float__ref.
-Existing Instance float__ref_WhyType.
+Inductive float____ref :=
+  | float____ref'mk : float__ -> float____ref.
+Axiom float____ref_WhyType : WhyType float____ref.
+Existing Instance float____ref_WhyType.
 
 (* Why3 assumption *)
-Definition float__content (v:float__ref) : float :=
+Definition float____content (v:float____ref) : float__ :=
   match v with
-  | mk_float__ref x => x
+  | float____ref'mk x => x
   end.
 
 (* Why3 assumption *)
-Definition float__ref_float__content__projection (a:float__ref) : float :=
-  float__content a.
+Definition float____ref_float____content__projection (a:float____ref) :
+    float__ :=
+  float____content a.
 
-Parameter to_rep: float -> t.
+Parameter to_rep: float__ -> t.
 
-Parameter of_rep: t -> float.
+Parameter of_rep: t -> float__.
 
-Axiom inversion_axiom : forall (x:float), ((of_rep (to_rep x)) = x).
+Axiom inversion_axiom : forall (x:float__), ((of_rep (to_rep x)) = x).
 
-Axiom range_axiom : forall (x:float), t'isFinite (to_rep x).
+Axiom range_axiom : forall (x:float__), t'isFinite (to_rep x).
 
-Axiom coerce_axiom :
-  forall (x:t), (t'isFinite x) -> ((to_rep (of_rep x)) = x).
+Axiom coerce_axiom : forall (x:t), t'isFinite x -> ((to_rep (of_rep x)) = x).
 
 (* Why3 assumption *)
-Definition to_rep1 (x:integer) : Z := integer'int x.
+Definition to_rep1 (x:integer) : Numbers.BinNums.Z := integer'int x.
 
-Parameter of_rep1: Z -> integer.
+Parameter of_rep1: Numbers.BinNums.Z -> integer.
 
 Axiom inversion_axiom1 : forall (x:integer), ((of_rep1 (to_rep1 x)) = x).
 
 Axiom range_axiom1 : forall (x:integer), in_range2 (to_rep1 x).
 
 Axiom coerce_axiom1 :
-  forall (x:Z), (in_range2 x) -> ((to_rep1 (of_rep1 x)) = x).
+  forall (x:Numbers.BinNums.Z), in_range2 x -> ((to_rep1 (of_rep1 x)) = x).
 
 (* Why3 assumption *)
-Definition component_type := float.
+Definition component_type := float__.
 
 (* Why3 assumption *)
-Definition map := Z -> float.
+Definition map := Numbers.BinNums.Z -> float__.
 
 (* Why3 assumption *)
 Inductive map__ref :=
-  | mk_map__ref : (Z -> float) -> map__ref.
+  | map__ref'mk : (Numbers.BinNums.Z -> float__) -> map__ref.
 Axiom map__ref_WhyType : WhyType map__ref.
 Existing Instance map__ref_WhyType.
 
 (* Why3 assumption *)
-Definition map__content (v:map__ref) : Z -> float :=
+Definition map__content (v:map__ref) : Numbers.BinNums.Z -> float__ :=
   match v with
-  | mk_map__ref x => x
+  | map__ref'mk x => x
   end.
 
-Parameter slide: (Z -> float) -> Z -> Z -> Z -> float.
+Parameter slide:
+  (Numbers.BinNums.Z -> float__) -> Numbers.BinNums.Z -> Numbers.BinNums.Z ->
+  Numbers.BinNums.Z -> float__.
 
 Axiom slide_eq :
-  forall (a:Z -> float), forall (first:Z), ((slide a first first) = a).
+  forall (a:Numbers.BinNums.Z -> float__), forall (first:Numbers.BinNums.Z),
+  ((slide a first first) = a).
 
 Axiom slide_def :
-  forall (a:Z -> float), forall (old_first:Z), forall (new_first:Z),
-  forall (i:Z),
-  (((slide a old_first new_first) i) = (a (i - (new_first - old_first)%Z)%Z)).
+  forall (a:Numbers.BinNums.Z -> float__),
+  forall (old_first:Numbers.BinNums.Z), forall (new_first:Numbers.BinNums.Z),
+  forall (i:Numbers.BinNums.Z),
+  ((slide a old_first new_first i) = (a (i - (new_first - old_first)%Z)%Z)).
 
-Parameter bool_eq4: (Z -> float) -> Z -> Z -> (Z -> float) -> Z -> Z -> bool.
+Parameter bool_eq4:
+  (Numbers.BinNums.Z -> float__) -> Numbers.BinNums.Z -> Numbers.BinNums.Z ->
+  (Numbers.BinNums.Z -> float__) -> Numbers.BinNums.Z -> Numbers.BinNums.Z ->
+  Init.Datatypes.bool.
 
-Axiom bool_eq_def4 :
-  forall (a:Z -> float) (a__first:Z) (a__last:Z) (b:Z -> float) (b__first:Z)
-    (b__last:Z),
-  (((((a__first <= a__last)%Z /\
-      ((b__first <= b__last)%Z /\
-       ((a__last - a__first)%Z = (b__last - b__first)%Z))) \/
-     (~ (a__first <= a__last)%Z /\ (b__last < b__first)%Z)) /\
-    forall (temp___idx_155:Z),
-    (((a__first <= temp___idx_155)%Z /\ (temp___idx_155 <= a__last)%Z) /\
-     (eq (to_rep (a temp___idx_155))
-      (to_rep (b ((b__first - a__first)%Z + temp___idx_155)%Z)))) \/
-    ~ ((a__first <= temp___idx_155)%Z /\ (temp___idx_155 <= a__last)%Z)) ->
-   ((bool_eq4 a a__first a__last b b__first b__last) = true)) /\
+Axiom bool_eq'def4 :
+  forall (a:Numbers.BinNums.Z -> float__) (a__first:Numbers.BinNums.Z)
+    (a__last:Numbers.BinNums.Z) (b:Numbers.BinNums.Z -> float__)
+    (b__first:Numbers.BinNums.Z) (b__last:Numbers.BinNums.Z),
+  (((a__first <= a__last)%Z /\
+    (b__first <= b__last)%Z /\
+    ((a__last - a__first)%Z = (b__last - b__first)%Z) \/
+    ~ (a__first <= a__last)%Z /\ (b__last < b__first)%Z) /\
+   (forall (temp___idx_162:Numbers.BinNums.Z),
+    ((a__first <= temp___idx_162)%Z /\ (temp___idx_162 <= a__last)%Z) /\
+    eq (to_rep (a temp___idx_162))
+    (to_rep (b ((b__first - a__first)%Z + temp___idx_162)%Z)) \/
+    ~ ((a__first <= temp___idx_162)%Z /\ (temp___idx_162 <= a__last)%Z)) ->
+   ((bool_eq4 a a__first a__last b b__first b__last) = Init.Datatypes.true)) /\
   (~ ((((a__first <= a__last)%Z ->
         (b__first <= b__last)%Z /\
         ((a__last - a__first)%Z = (b__last - b__first)%Z)) /\
        (~ (a__first <= a__last)%Z -> (b__last < b__first)%Z)) /\
-      forall (temp___idx_155:Z),
-      ((a__first <= temp___idx_155)%Z /\ (temp___idx_155 <= a__last)%Z) ->
-      eq (to_rep (a temp___idx_155))
-      (to_rep (b ((b__first - a__first)%Z + temp___idx_155)%Z))) ->
-   ((bool_eq4 a a__first a__last b b__first b__last) = false)).
+      (forall (temp___idx_162:Numbers.BinNums.Z),
+       (a__first <= temp___idx_162)%Z /\ (temp___idx_162 <= a__last)%Z ->
+       eq (to_rep (a temp___idx_162))
+       (to_rep (b ((b__first - a__first)%Z + temp___idx_162)%Z)))) ->
+   ((bool_eq4 a a__first a__last b b__first b__last) = Init.Datatypes.false)).
 
 Axiom bool_eq_rev :
-  forall (a:Z -> float) (b:Z -> float),
-  forall (a__first:Z) (a__last:Z) (b__first:Z) (b__last:Z),
-  ((bool_eq4 b b__first b__last a a__first a__last) = true) ->
+  forall (a:Numbers.BinNums.Z -> float__) (b:Numbers.BinNums.Z -> float__),
+  forall (a__first:Numbers.BinNums.Z) (a__last:Numbers.BinNums.Z)
+    (b__first:Numbers.BinNums.Z) (b__last:Numbers.BinNums.Z),
+  ((bool_eq4 b b__first b__last a a__first a__last) = Init.Datatypes.true) ->
   (((a__first <= a__last)%Z ->
     (b__first <= b__last)%Z /\
     ((a__last - a__first)%Z = (b__last - b__first)%Z)) /\
    (~ (a__first <= a__last)%Z -> (b__last < b__first)%Z)) /\
-  forall (temp___idx_155:Z),
-  ((a__first <= temp___idx_155)%Z /\ (temp___idx_155 <= a__last)%Z) ->
-  eq (to_rep (a temp___idx_155))
-  (to_rep (b ((b__first - a__first)%Z + temp___idx_155)%Z)).
+  (forall (temp___idx_162:Numbers.BinNums.Z),
+   (a__first <= temp___idx_162)%Z /\ (temp___idx_162 <= a__last)%Z ->
+   eq (to_rep (a temp___idx_162))
+   (to_rep (b ((b__first - a__first)%Z + temp___idx_162)%Z))).
 
 (* Why3 assumption *)
-Definition component_type1 := float.
+Definition component_type1 := float__.
 
 Axiom t1 : Type.
 Parameter t1_WhyType : WhyType t1.
@@ -1185,62 +1179,66 @@ Parameter first: t1 -> integer.
 
 Parameter last: t1 -> integer.
 
-Parameter mk: Z -> Z -> t1.
+Parameter mk: Numbers.BinNums.Z -> Numbers.BinNums.Z -> t1.
 
 Axiom mk_def :
-  forall (f:Z) (l:Z), (in_range2 f) -> (in_range2 l) ->
+  forall (f:Numbers.BinNums.Z) (l:Numbers.BinNums.Z), in_range2 f ->
+  in_range2 l ->
   ((to_rep1 (first (mk f l))) = f) /\ ((to_rep1 (last (mk f l))) = l).
 
 (* Why3 assumption *)
-Definition dynamic_property (range_first:Z) (range_last:Z) (low:Z) (high:Z) :
-    Prop :=
-  (in_range2 low) /\
-  ((in_range2 high) /\
-   ((low <= high)%Z -> (in_range2 low) /\ (in_range2 high))).
+Definition dynamic_property (range_first:Numbers.BinNums.Z)
+    (range_last:Numbers.BinNums.Z) (low:Numbers.BinNums.Z)
+    (high:Numbers.BinNums.Z) : Prop :=
+  in_range2 low /\
+  in_range2 high /\ ((low <= high)%Z -> in_range2 low /\ in_range2 high).
 
 (* Why3 assumption *)
 Inductive us_t :=
-  | mk___t : (Z -> float) -> t1 -> us_t.
+  | us_t'mk : (Numbers.BinNums.Z -> float__) -> t1 -> us_t.
 Axiom us_t_WhyType : WhyType us_t.
 Existing Instance us_t_WhyType.
 
 (* Why3 assumption *)
 Definition rt (v:us_t) : t1 := match v with
-                               | mk___t x x1 => x1
+                               | us_t'mk x x1 => x1
                                end.
 
 (* Why3 assumption *)
-Definition elts (v:us_t) : Z -> float := match v with
-                                         | mk___t x x1 => x
-                                         end.
+Definition elts (v:us_t) : Numbers.BinNums.Z -> float__ :=
+  match v with
+  | us_t'mk x x1 => x
+  end.
 
 (* Why3 assumption *)
-Definition to_array (a:us_t) : Z -> float := elts a.
+Definition to_array (a:us_t) : Numbers.BinNums.Z -> float__ := elts a.
 
 (* Why3 assumption *)
-Definition of_array (a:Z -> float) (f:Z) (l:Z) : us_t := mk___t a (mk f l).
+Definition of_array (a:Numbers.BinNums.Z -> float__) (f:Numbers.BinNums.Z)
+    (l:Numbers.BinNums.Z) : us_t :=
+  us_t'mk a (mk f l).
 
 (* Why3 assumption *)
-Definition first1 (a:us_t) : Z := to_rep1 (first (rt a)).
+Definition first1 (a:us_t) : Numbers.BinNums.Z := to_rep1 (first (rt a)).
 
 (* Why3 assumption *)
-Definition last1 (a:us_t) : Z := to_rep1 (last (rt a)).
+Definition last1 (a:us_t) : Numbers.BinNums.Z := to_rep1 (last (rt a)).
 
-Parameter length: us_t -> Z.
+Parameter length: us_t -> Numbers.BinNums.Z.
 
-Axiom length_def :
+Axiom length'def :
   forall (a:us_t),
   (((first1 a) <= (last1 a))%Z ->
    ((length a) = (((last1 a) - (first1 a))%Z + 1%Z)%Z)) /\
   (~ ((first1 a) <= (last1 a))%Z -> ((length a) = 0%Z)).
 
-Parameter value__size: Z.
+Parameter value__size: Numbers.BinNums.Z.
 
-Parameter object__size: Z.
+Parameter object__size: Numbers.BinNums.Z.
 
-Parameter component__size: Z.
+Parameter component__size: Numbers.BinNums.Z.
 
-Parameter alignment: Z.
+Parameter alignment: Numbers.BinNums.Z.
 
 Axiom value__size_axiom : (0%Z <= value__size)%Z.
 
@@ -1251,11 +1249,11 @@ Axiom component__size_axiom : (0%Z <= component__size)%Z.
 Axiom alignment_axiom : (0%Z <= alignment)%Z.
 
 (* Why3 assumption *)
-Definition bool_eq5 (x:us_t) (y:us_t) : bool :=
-  bool_eq4 (elts x) (to_rep1 (first (rt x))) (to_rep1 (last (rt x)))
+Definition bool_eq5 (x:us_t) (y:us_t) : Init.Datatypes.bool :=
+  bool_eq4 (elts x) (to_rep1 (first (rt x))) (to_rep1 (last (rt x))) 
   (elts y) (to_rep1 (first (rt y))) (to_rep1 (last (rt y))).
 
-Parameter user_eq2: us_t -> us_t -> bool.
+Parameter user_eq2: us_t -> us_t -> Init.Datatypes.bool.
 
 Parameter dummy2: us_t.
 
@@ -1264,7 +1262,7 @@ Definition arr_float_unconstrained := us_t.
 
 (* Why3 assumption *)
 Inductive arr_float_unconstrained__ref :=
-  | mk_arr_float_unconstrained__ref : us_t -> arr_float_unconstrained__ref.
+  | arr_float_unconstrained__ref'mk : us_t -> arr_float_unconstrained__ref.
 Axiom arr_float_unconstrained__ref_WhyType : WhyType arr_float_unconstrained__ref.
 Existing Instance arr_float_unconstrained__ref_WhyType.
 
@@ -1272,7 +1270,7 @@ Existing Instance arr_float_unconstrained__ref_WhyType.
 Definition arr_float_unconstrained__content
     (v:arr_float_unconstrained__ref) : us_t :=
   match v with
-  | mk_arr_float_unconstrained__ref x => x
+  | arr_float_unconstrained__ref'mk x => x
   end.
 
 (* Why3 assumption *)
@@ -1280,67 +1278,58 @@ Definition arr_float_unconstrained__ref_arr_float_unconstrained__content__projec
     (a:arr_float_unconstrained__ref) : us_t :=
   arr_float_unconstrained__content a.
 
-(* Why3 assumption *)
-Definition a := us_t.
-
-(* Why3 assumption *)
-Inductive a__ref :=
-  | mk_a__ref : us_t -> a__ref.
-Axiom a__ref_WhyType : WhyType a__ref.
-Existing Instance a__ref_WhyType.
-
-(* Why3 assumption *)
-Definition a__content (v:a__ref) : us_t := match v with
-                                           | mk_a__ref x => x
-                                           end.
-
-(* Why3 assumption *)
-Definition a__ref_a__content__2__projection (a1:a__ref) : us_t :=
-  a__content a1.
-
 Parameter arr: us_t.
 
-Parameter attr__ATTRIBUTE_ADDRESS: Z.
+Parameter attr__ATTRIBUTE_ADDRESS: Numbers.BinNums.Z.
 
 (* Why3 assumption *)
-Definition dynamic_invariant (temp___expr_247:us_t) (temp___is_init_243:bool)
-    (temp___skip_constant_244:bool) (temp___do_toplevel_245:bool)
-    (temp___do_typ_inv_246:bool) : Prop :=
-  ~ (temp___skip_constant_244 = true) ->
-  dynamic_property (-2147483648%Z)%Z 2147483647%Z (first1 temp___expr_247)
-  (last1 temp___expr_247).
+Definition dynamic_invariant (temp___expr_202:us_t)
+    (temp___is_init_198:Init.Datatypes.bool)
+    (temp___skip_constant_199:Init.Datatypes.bool)
+    (temp___do_toplevel_200:Init.Datatypes.bool)
+    (temp___do_typ_inv_201:Init.Datatypes.bool) : Prop :=
+  ~ (temp___skip_constant_199 = Init.Datatypes.true) ->
+  dynamic_property (-2147483648%Z)%Z 2147483647%Z (first1 temp___expr_202)
+  (last1 temp___expr_202).
 
 (* Why3 assumption *)
-Definition dynamic_invariant1 (temp___expr_18:Z) (temp___is_init_14:bool)
-    (temp___skip_constant_15:bool) (temp___do_toplevel_16:bool)
-    (temp___do_typ_inv_17:bool) : Prop :=
-  ((temp___is_init_14 = true) \/ ((-2147483648%Z)%Z <= 2147483647%Z)%Z) ->
-  in_range2 temp___expr_18.
+Definition dynamic_invariant1 (temp___expr_18:Numbers.BinNums.Z)
+    (temp___is_init_14:Init.Datatypes.bool)
+    (temp___skip_constant_15:Init.Datatypes.bool)
+    (temp___do_toplevel_16:Init.Datatypes.bool)
+    (temp___do_typ_inv_17:Init.Datatypes.bool) : Prop :=
+  (temp___is_init_14 = Init.Datatypes.true) \/
+  ((-2147483648%Z)%Z <= 2147483647%Z)%Z -> in_range2 temp___expr_18.
 
 Parameter fliteral1: t.
 
 Axiom fliteral_axiom1 :
-  (t'isFinite fliteral1) /\
+  t'isFinite fliteral1 /\
   ((t'real fliteral1) = 340282346638528859811704183484516925440%R).
 
 (* Why3 assumption *)
-Definition dynamic_invariant2 (temp___expr_60:t) (temp___is_init_56:bool)
-    (temp___skip_constant_57:bool) (temp___do_toplevel_58:bool)
-    (temp___do_typ_inv_59:bool) : Prop :=
-  ((temp___is_init_56 = true) \/ (le (neg fliteral1) fliteral1)) ->
-  t'isFinite temp___expr_60.
+Definition dynamic_invariant2 (temp___expr_67:t)
+    (temp___is_init_63:Init.Datatypes.bool)
+    (temp___skip_constant_64:Init.Datatypes.bool)
+    (temp___do_toplevel_65:Init.Datatypes.bool)
+    (temp___do_typ_inv_66:Init.Datatypes.bool) : Prop :=
+  (temp___is_init_63 = Init.Datatypes.true) \/ le (neg fliteral1) fliteral1 ->
+  t'isFinite temp___expr_67.
 
 (* Why3 goal *)
 Theorem def'vc :
-  (dynamic_invariant arr true false true true) ->
-  (forall (i:Z), (((first1 arr) <= i)%Z /\ (i <= (last1 arr))%Z) ->
-   (~ (i = (first1 arr)) /\
-    (lt (to_rep ((to_array arr) (i - 1%Z)%Z)) (to_rep ((to_array arr) i)))) \/
+  dynamic_invariant arr Init.Datatypes.true Init.Datatypes.false
+  Init.Datatypes.true Init.Datatypes.true ->
+  (forall (i:Numbers.BinNums.Z),
+   ((first1 arr) <= i)%Z /\ (i <= (last1 arr))%Z ->
+   ~ (i = (first1 arr)) /\
+   lt (to_rep (to_array arr (i - 1%Z)%Z)) (to_rep (to_array arr i)) \/
    (i = (first1 arr))) ->
-  (*      Post => (for all I in Arr'Range =>               ^ spark-unconstrained_array_lemmas.ads:57:15:instantiated:spark-test_array_lemmas.adb:49:4:VC_POSTCONDITION *)
-  forall (i:Z), (((first1 arr) <= i)%Z /\ (i <= (last1 arr))%Z) ->
-  forall (j:Z), (((first1 arr) <= j)%Z /\ (j <= (last1 arr))%Z) ->
-  (i < j)%Z -> lt (to_rep ((to_array arr) i)) (to_rep ((to_array arr) j)).
+  forall (i:Numbers.BinNums.Z),
+  ((first1 arr) <= i)%Z /\ (i <= (last1 arr))%Z ->
+  forall (j:Numbers.BinNums.Z),
+  ((first1 arr) <= j)%Z /\ (j <= (last1 arr))%Z -> (i < j)%Z ->
+  lt (to_rep (to_array arr i)) (to_rep (to_array arr j)).
 Proof.
 intros h1 h2 i (h3,h4) j (h5,h6) h7.
 #include "lemma_raising_order_float.prf"

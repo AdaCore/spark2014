@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2016-2019, AdaCore                     --
+--                     Copyright (C) 2016-2020, AdaCore                     --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -58,7 +58,7 @@ is
    with
      Global => null,
      Pre  => Val1 <= Val2,
-     Post => Val1 / Denom <= Val2 / Denom;  --  MANUAL PROOF
+     Post => Val1 / Denom <= Val2 / Denom;
 
    procedure Lemma_Div_Is_Antimonotonic
      (Num    : Int;
@@ -92,7 +92,7 @@ is
    with
      Global => null,
      Pre  => Val1 <= Val2,
-     Post => Val1 * Factor <= Val2 * Factor;  --  MANUAL PROOF
+     Post => Val1 * Factor <= Val2 * Factor;
 
    procedure Lemma_Mult_Is_Strictly_Monotonic
      (Val1   : Int;
@@ -101,7 +101,7 @@ is
    with
      Global => null,
      Pre  => Val1 < Val2,
-     Post => Val1 * Factor < Val2 * Factor;  --  MANUAL PROOF
+     Post => Val1 * Factor < Val2 * Factor;
 
    procedure Lemma_Mult_Protect
      (Arg1        : Int;
@@ -154,6 +154,6 @@ is
    with
      Global => null,
      Pre  => Exp1 <= Exp2,
-     Post => Val ** Exp1 <= Val ** Exp2; --  MANUAL PROOF
+     Post => Val ** Exp1 <= Val ** Exp2;
 
 end SPARK.Arithmetic_Lemmas;

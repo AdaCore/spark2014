@@ -1,8 +1,0 @@
-intros (val1_type,(val2_type,(factor_type,pre))).
-
-(* extract 0 <= factor *)
-destruct factor_type as (H, _).
-
-(* apply arithmetic theorem *)
-apply (Int.CompatOrderMult val1 val2 factor pre H).
-Qed.

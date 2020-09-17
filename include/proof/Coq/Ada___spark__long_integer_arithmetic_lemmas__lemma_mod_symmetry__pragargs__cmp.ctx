@@ -13,9 +13,9 @@ Parameter us_private_WhyType : WhyType us_private.
 Existing Instance us_private_WhyType.
 
 (* Why3 assumption *)
-Definition us_fixed := Z.
+Definition us_fixed := Numbers.BinNums.Z.
 
-Parameter private__bool_eq: us_private -> us_private -> bool.
+Parameter private__bool_eq: us_private -> us_private -> Init.Datatypes.bool.
 
 Parameter us_null_ext__: us_private.
 
@@ -25,7 +25,7 @@ Existing Instance us_type_of_heap_WhyType.
 
 (* Why3 assumption *)
 Inductive us_type_of_heap__ref :=
-  | mk___type_of_heap__ref : us_type_of_heap -> us_type_of_heap__ref.
+  | us_type_of_heap__ref'mk : us_type_of_heap -> us_type_of_heap__ref.
 Axiom us_type_of_heap__ref_WhyType : WhyType us_type_of_heap__ref.
 Existing Instance us_type_of_heap__ref_WhyType.
 
@@ -33,7 +33,7 @@ Existing Instance us_type_of_heap__ref_WhyType.
 Definition us_type_of_heap__content (v:us_type_of_heap__ref) :
     us_type_of_heap :=
   match v with
-  | mk___type_of_heap__ref x => x
+  | us_type_of_heap__ref'mk x => x
   end.
 
 Axiom us_image : Type.
@@ -42,150 +42,158 @@ Existing Instance us_image_WhyType.
 
 (* Why3 assumption *)
 Inductive int__ref :=
-  | mk_int__ref : Z -> int__ref.
+  | int__ref'mk : Numbers.BinNums.Z -> int__ref.
 Axiom int__ref_WhyType : WhyType int__ref.
 Existing Instance int__ref_WhyType.
 
 (* Why3 assumption *)
-Definition int__content (v:int__ref) : Z :=
+Definition int__content (v:int__ref) : Numbers.BinNums.Z :=
   match v with
-  | mk_int__ref x => x
+  | int__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive bool__ref :=
-  | mk_bool__ref : bool -> bool__ref.
+  | bool__ref'mk : Init.Datatypes.bool -> bool__ref.
 Axiom bool__ref_WhyType : WhyType bool__ref.
 Existing Instance bool__ref_WhyType.
 
 (* Why3 assumption *)
-Definition bool__content (v:bool__ref) : bool :=
+Definition bool__content (v:bool__ref) : Init.Datatypes.bool :=
   match v with
-  | mk_bool__ref x => x
+  | bool__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive us_fixed__ref :=
-  | mk___fixed__ref : Z -> us_fixed__ref.
+  | us_fixed__ref'mk : Numbers.BinNums.Z -> us_fixed__ref.
 Axiom us_fixed__ref_WhyType : WhyType us_fixed__ref.
 Existing Instance us_fixed__ref_WhyType.
 
 (* Why3 assumption *)
-Definition us_fixed__content (v:us_fixed__ref) : Z :=
+Definition us_fixed__content (v:us_fixed__ref) : Numbers.BinNums.Z :=
   match v with
-  | mk___fixed__ref x => x
+  | us_fixed__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive real__ref :=
-  | mk_real__ref : R -> real__ref.
+  | real__ref'mk : Reals.Rdefinitions.R -> real__ref.
 Axiom real__ref_WhyType : WhyType real__ref.
 Existing Instance real__ref_WhyType.
 
 (* Why3 assumption *)
-Definition real__content (v:real__ref) : R :=
+Definition real__content (v:real__ref) : Reals.Rdefinitions.R :=
   match v with
-  | mk_real__ref x => x
+  | real__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive us_private__ref :=
-  | mk___private__ref : us_private -> us_private__ref.
+  | us_private__ref'mk : us_private -> us_private__ref.
 Axiom us_private__ref_WhyType : WhyType us_private__ref.
 Existing Instance us_private__ref_WhyType.
 
 (* Why3 assumption *)
 Definition us_private__content (v:us_private__ref) : us_private :=
   match v with
-  | mk___private__ref x => x
+  | us_private__ref'mk x => x
   end.
 
 (* Why3 assumption *)
-Definition int__ref___projection (a:int__ref) : Z := int__content a.
+Definition int__ref___projection (a:int__ref) : Numbers.BinNums.Z :=
+  int__content a.
 
 (* Why3 assumption *)
-Definition us_fixed__ref___projection (a:us_fixed__ref) : Z :=
+Definition us_fixed__ref___projection (a:us_fixed__ref) : Numbers.BinNums.Z :=
   us_fixed__content a.
 
 (* Why3 assumption *)
-Definition bool__ref___projection (a:bool__ref) : bool := bool__content a.
+Definition bool__ref___projection (a:bool__ref) : Init.Datatypes.bool :=
+  bool__content a.
 
 (* Why3 assumption *)
-Definition real__ref___projection (a:real__ref) : R := real__content a.
+Definition real__ref___projection (a:real__ref) : Reals.Rdefinitions.R :=
+  real__content a.
 
 (* Why3 assumption *)
 Definition us_private__ref___projection (a:us_private__ref) : us_private :=
   us_private__content a.
 
-Parameter arg1: Z.
+Axiom long_integer : Type.
+Parameter long_integer_WhyType : WhyType long_integer.
+Existing Instance long_integer_WhyType.
 
-Parameter attr__ATTRIBUTE_ADDRESS: Z.
+Parameter long_integer'int: long_integer -> Numbers.BinNums.Z.
 
-Parameter arg2: Z.
-
-Parameter attr__ATTRIBUTE_ADDRESS1: Z.
-
-Axiom int__ : Type.
-Parameter int___WhyType : WhyType int__.
-Existing Instance int___WhyType.
-
-Parameter int__'int: int__ -> Z.
-
-Axiom int__'axiom :
-  forall (i:int__),
-  ((-9223372036854775808%Z)%Z <= (int__'int i))%Z /\
-  ((int__'int i) <= 9223372036854775807%Z)%Z.
+Axiom long_integer'axiom :
+  forall (i:long_integer),
+  ((-9223372036854775808%Z)%Z <= (long_integer'int i))%Z /\
+  ((long_integer'int i) <= 9223372036854775807%Z)%Z.
 
 (* Why3 assumption *)
-Definition in_range (x:Z) : Prop :=
+Definition in_range (x:Numbers.BinNums.Z) : Prop :=
   ((-9223372036854775808%Z)%Z <= x)%Z /\ (x <= 9223372036854775807%Z)%Z.
 
-Parameter bool_eq: Z -> Z -> bool.
+Parameter bool_eq:
+  Numbers.BinNums.Z -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 
-Axiom bool_eq_def :
-  forall (x:Z) (y:Z),
-  ((x = y) -> ((bool_eq x y) = true)) /\
-  (~ (x = y) -> ((bool_eq x y) = false)).
+Axiom bool_eq'def :
+  forall (x:Numbers.BinNums.Z) (y:Numbers.BinNums.Z),
+  ((x = y) -> ((bool_eq x y) = Init.Datatypes.true)) /\
+  (~ (x = y) -> ((bool_eq x y) = Init.Datatypes.false)).
 
-Parameter attr__ATTRIBUTE_IMAGE: Z -> us_image.
+Parameter attr__ATTRIBUTE_IMAGE: Numbers.BinNums.Z -> us_image.
 
 Parameter attr__ATTRIBUTE_VALUE__pre_check: us_image -> Prop.
 
-Parameter attr__ATTRIBUTE_VALUE: us_image -> Z.
+Parameter attr__ATTRIBUTE_VALUE: us_image -> Numbers.BinNums.Z.
 
-Parameter user_eq: int__ -> int__ -> bool.
+Parameter user_eq: long_integer -> long_integer -> Init.Datatypes.bool.
 
-Parameter dummy: int__.
-
-(* Why3 assumption *)
-Inductive int____ref :=
-  | mk_int____ref : int__ -> int____ref.
-Axiom int____ref_WhyType : WhyType int____ref.
-Existing Instance int____ref_WhyType.
+Parameter dummy: long_integer.
 
 (* Why3 assumption *)
-Definition int____content (v:int____ref) : int__ :=
+Inductive long_integer__ref :=
+  | long_integer__ref'mk : long_integer -> long_integer__ref.
+Axiom long_integer__ref_WhyType : WhyType long_integer__ref.
+Existing Instance long_integer__ref_WhyType.
+
+(* Why3 assumption *)
+Definition long_integer__content (v:long_integer__ref) : long_integer :=
   match v with
-  | mk_int____ref x => x
+  | long_integer__ref'mk x => x
   end.
 
 (* Why3 assumption *)
-Definition int____ref_int____content__projection (a:int____ref) : int__ :=
-  int____content a.
+Definition long_integer__ref_long_integer__content__projection
+    (a:long_integer__ref) : long_integer :=
+  long_integer__content a.
 
 (* Why3 assumption *)
-Definition dynamic_invariant (temp___expr_158:Z) (temp___is_init_154:bool)
-    (temp___skip_constant_155:bool) (temp___do_toplevel_156:bool)
-    (temp___do_typ_inv_157:bool) : Prop :=
-  ((temp___is_init_154 = true) \/
-   ((-9223372036854775808%Z)%Z <= 9223372036854775807%Z)%Z) ->
-  in_range temp___expr_158.
+Definition dynamic_invariant (temp___expr_25:Numbers.BinNums.Z)
+    (temp___is_init_21:Init.Datatypes.bool)
+    (temp___skip_constant_22:Init.Datatypes.bool)
+    (temp___do_toplevel_23:Init.Datatypes.bool)
+    (temp___do_typ_inv_24:Init.Datatypes.bool) : Prop :=
+  (temp___is_init_21 = Init.Datatypes.true) \/
+  ((-9223372036854775808%Z)%Z <= 9223372036854775807%Z)%Z ->
+  in_range temp___expr_25.
+
+Parameter arg1: Numbers.BinNums.Z.
+
+Parameter attr__ATTRIBUTE_ADDRESS: Numbers.BinNums.Z.
+
+Parameter arg2: Numbers.BinNums.Z.
+
+Parameter attr__ATTRIBUTE_ADDRESS1: Numbers.BinNums.Z.
 
 (* Why3 goal *)
 Theorem def'vc :
-  (dynamic_invariant arg1 true false true true) ->
-  (dynamic_invariant arg2 true false true true) -> ~ (arg2 = 0%Z) ->
-  (*      Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);  --  MANUAL PROOF               ^ spark-arithmetic_lemmas.ads:86:15:instantiated:spark-long_integer_arithmetic_lemmas.ads:31:1:VC_POSTCONDITION *)
+  dynamic_invariant arg1 Init.Datatypes.true Init.Datatypes.false
+  Init.Datatypes.true Init.Datatypes.true ->
+  dynamic_invariant arg2 Init.Datatypes.true Init.Datatypes.false
+  Init.Datatypes.true Init.Datatypes.true -> ~ (arg2 = 0%Z) ->
   ((ZArith.BinInt.Z.modulo (-arg1)%Z (-arg2)%Z) =
    (-(ZArith.BinInt.Z.modulo arg1 arg2))%Z).
 Proof.

@@ -28,7 +28,7 @@
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0" timelimit="5"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="3480"/></proof>
+  <proof prover="2"><result status="valid" steps="3396"/></proof>
   </goal>
  </transf>
  </goal>

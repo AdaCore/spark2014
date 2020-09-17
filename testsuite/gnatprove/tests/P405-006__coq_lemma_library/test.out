@@ -198,10 +198,10 @@ spark-floating_point_arithmetic_lemmas.ads:225:19: info: range check proved (Tri
 spark-floating_point_arithmetic_lemmas.ads:225:19: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:225:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:225:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-mod_arithmetic_lemmas.adb:50:22: info: assertion proved (Coq: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.adb:50:22: info: assertion proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.adb:51:22: info: assertion proved (Coq: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.adb:51:22: info: assertion proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.adb:50:22: info: assertion proved (altergo: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.adb:50:22: info: assertion proved (altergo: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.adb:51:22: info: assertion proved (altergo: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.adb:51:22: info: assertion proved (altergo: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:54:14: info: subprogram "Lemma_Div_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:54:14: info: subprogram "Lemma_Div_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:59:06: info: data dependencies proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
@@ -275,15 +275,11 @@ spark-mod_arithmetic_lemmas.ads:128:15: info: postcondition proved (Coq: 1 VC), 
 spark-mod_arithmetic_lemmas.ads:128:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:128:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-test_array_lemmas.adb:60:18: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-spark-test_array_lemmas.adb:61:10: info: range check proved (CVC4: 1 VC)
 spark-test_array_lemmas.adb:61:35: info: range check proved (CVC4: 1 VC)
 spark-test_array_lemmas.adb:67:18: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-spark-test_array_lemmas.adb:67:43: info: range check proved (CVC4: 1 VC)
 spark-test_array_lemmas.adb:72:16: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-spark-test_array_lemmas.adb:73:10: info: range check proved (CVC4: 1 VC)
 spark-test_array_lemmas.adb:73:33: info: range check proved (CVC4: 1 VC)
 spark-test_array_lemmas.adb:78:16: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
-spark-test_array_lemmas.adb:78:41: info: range check proved (CVC4: 1 VC)
 spark-test_array_lemmas.ads:40:06: info: data dependencies proved
 spark-test_array_lemmas.ads:44:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 spark-test_array_lemmas.ads:49:06: info: data dependencies proved

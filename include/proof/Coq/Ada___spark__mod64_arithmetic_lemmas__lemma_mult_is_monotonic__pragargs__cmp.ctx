@@ -15,9 +15,9 @@ Parameter us_private_WhyType : WhyType us_private.
 Existing Instance us_private_WhyType.
 
 (* Why3 assumption *)
-Definition us_fixed := Z.
+Definition us_fixed := Numbers.BinNums.Z.
 
-Parameter private__bool_eq: us_private -> us_private -> bool.
+Parameter private__bool_eq: us_private -> us_private -> Init.Datatypes.bool.
 
 Parameter us_null_ext__: us_private.
 
@@ -27,7 +27,7 @@ Existing Instance us_type_of_heap_WhyType.
 
 (* Why3 assumption *)
 Inductive us_type_of_heap__ref :=
-  | mk___type_of_heap__ref : us_type_of_heap -> us_type_of_heap__ref.
+  | us_type_of_heap__ref'mk : us_type_of_heap -> us_type_of_heap__ref.
 Axiom us_type_of_heap__ref_WhyType : WhyType us_type_of_heap__ref.
 Existing Instance us_type_of_heap__ref_WhyType.
 
@@ -35,7 +35,7 @@ Existing Instance us_type_of_heap__ref_WhyType.
 Definition us_type_of_heap__content (v:us_type_of_heap__ref) :
     us_type_of_heap :=
   match v with
-  | mk___type_of_heap__ref x => x
+  | us_type_of_heap__ref'mk x => x
   end.
 
 Axiom us_image : Type.
@@ -44,76 +44,79 @@ Existing Instance us_image_WhyType.
 
 (* Why3 assumption *)
 Inductive int__ref :=
-  | mk_int__ref : Z -> int__ref.
+  | int__ref'mk : Numbers.BinNums.Z -> int__ref.
 Axiom int__ref_WhyType : WhyType int__ref.
 Existing Instance int__ref_WhyType.
 
 (* Why3 assumption *)
-Definition int__content (v:int__ref) : Z :=
+Definition int__content (v:int__ref) : Numbers.BinNums.Z :=
   match v with
-  | mk_int__ref x => x
+  | int__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive bool__ref :=
-  | mk_bool__ref : bool -> bool__ref.
+  | bool__ref'mk : Init.Datatypes.bool -> bool__ref.
 Axiom bool__ref_WhyType : WhyType bool__ref.
 Existing Instance bool__ref_WhyType.
 
 (* Why3 assumption *)
-Definition bool__content (v:bool__ref) : bool :=
+Definition bool__content (v:bool__ref) : Init.Datatypes.bool :=
   match v with
-  | mk_bool__ref x => x
+  | bool__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive us_fixed__ref :=
-  | mk___fixed__ref : Z -> us_fixed__ref.
+  | us_fixed__ref'mk : Numbers.BinNums.Z -> us_fixed__ref.
 Axiom us_fixed__ref_WhyType : WhyType us_fixed__ref.
 Existing Instance us_fixed__ref_WhyType.
 
 (* Why3 assumption *)
-Definition us_fixed__content (v:us_fixed__ref) : Z :=
+Definition us_fixed__content (v:us_fixed__ref) : Numbers.BinNums.Z :=
   match v with
-  | mk___fixed__ref x => x
+  | us_fixed__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive real__ref :=
-  | mk_real__ref : R -> real__ref.
+  | real__ref'mk : Reals.Rdefinitions.R -> real__ref.
 Axiom real__ref_WhyType : WhyType real__ref.
 Existing Instance real__ref_WhyType.
 
 (* Why3 assumption *)
-Definition real__content (v:real__ref) : R :=
+Definition real__content (v:real__ref) : Reals.Rdefinitions.R :=
   match v with
-  | mk_real__ref x => x
+  | real__ref'mk x => x
   end.
 
 (* Why3 assumption *)
 Inductive us_private__ref :=
-  | mk___private__ref : us_private -> us_private__ref.
+  | us_private__ref'mk : us_private -> us_private__ref.
 Axiom us_private__ref_WhyType : WhyType us_private__ref.
 Existing Instance us_private__ref_WhyType.
 
 (* Why3 assumption *)
 Definition us_private__content (v:us_private__ref) : us_private :=
   match v with
-  | mk___private__ref x => x
+  | us_private__ref'mk x => x
   end.
 
 (* Why3 assumption *)
-Definition int__ref___projection (a:int__ref) : Z := int__content a.
+Definition int__ref___projection (a:int__ref) : Numbers.BinNums.Z :=
+  int__content a.
 
 (* Why3 assumption *)
-Definition us_fixed__ref___projection (a:us_fixed__ref) : Z :=
+Definition us_fixed__ref___projection (a:us_fixed__ref) : Numbers.BinNums.Z :=
   us_fixed__content a.
 
 (* Why3 assumption *)
-Definition bool__ref___projection (a:bool__ref) : bool := bool__content a.
+Definition bool__ref___projection (a:bool__ref) : Init.Datatypes.bool :=
+  bool__content a.
 
 (* Why3 assumption *)
-Definition real__ref___projection (a:real__ref) : R := real__content a.
+Definition real__ref___projection (a:real__ref) : Reals.Rdefinitions.R :=
+  real__content a.
 
 (* Why3 assumption *)
 Definition us_private__ref___projection (a:us_private__ref) : us_private :=
@@ -123,112 +126,122 @@ Axiom t : Type.
 Parameter t_WhyType : WhyType t.
 Existing Instance t_WhyType.
 
-Parameter t'int: t -> Z.
+Parameter t'int: t -> Numbers.BinNums.Z.
 
 Axiom t'axiom :
   forall (i:t),
   (0%Z <= (t'int i))%Z /\ ((t'int i) <= 18446744073709551615%Z)%Z.
 
-Parameter nth: t -> Z -> bool.
+Parameter nth: t -> Numbers.BinNums.Z -> Init.Datatypes.bool.
 
 Axiom nth_out_of_bound :
-  forall (x:t) (n:Z), ((n < 0%Z)%Z \/ (64%Z <= n)%Z) -> ((nth x n) = false).
+  forall (x:t) (n:Numbers.BinNums.Z), (n < 0%Z)%Z \/ (64%Z <= n)%Z ->
+  ((nth x n) = Init.Datatypes.false).
 
 Parameter zeros: t.
 
-Axiom Nth_zeros : forall (n:Z), ((nth zeros n) = false).
+Axiom Nth_zeros :
+  forall (n:Numbers.BinNums.Z), ((nth zeros n) = Init.Datatypes.false).
 
 Parameter one: t.
 
 Parameter ones: t.
 
 Axiom Nth_ones :
-  forall (n:Z), ((0%Z <= n)%Z /\ (n < 64%Z)%Z) -> ((nth ones n) = true).
+  forall (n:Numbers.BinNums.Z), (0%Z <= n)%Z /\ (n < 64%Z)%Z ->
+  ((nth ones n) = Init.Datatypes.true).
 
 Parameter bw_and: t -> t -> t.
 
 Axiom Nth_bw_and :
-  forall (v1:t) (v2:t) (n:Z), ((0%Z <= n)%Z /\ (n < 64%Z)%Z) ->
+  forall (v1:t) (v2:t) (n:Numbers.BinNums.Z), (0%Z <= n)%Z /\ (n < 64%Z)%Z ->
   ((nth (bw_and v1 v2) n) = (Init.Datatypes.andb (nth v1 n) (nth v2 n))).
 
 Parameter bw_or: t -> t -> t.
 
 Axiom Nth_bw_or :
-  forall (v1:t) (v2:t) (n:Z), ((0%Z <= n)%Z /\ (n < 64%Z)%Z) ->
+  forall (v1:t) (v2:t) (n:Numbers.BinNums.Z), (0%Z <= n)%Z /\ (n < 64%Z)%Z ->
   ((nth (bw_or v1 v2) n) = (Init.Datatypes.orb (nth v1 n) (nth v2 n))).
 
 Parameter bw_xor: t -> t -> t.
 
 Axiom Nth_bw_xor :
-  forall (v1:t) (v2:t) (n:Z), ((0%Z <= n)%Z /\ (n < 64%Z)%Z) ->
+  forall (v1:t) (v2:t) (n:Numbers.BinNums.Z), (0%Z <= n)%Z /\ (n < 64%Z)%Z ->
   ((nth (bw_xor v1 v2) n) = (Init.Datatypes.xorb (nth v1 n) (nth v2 n))).
 
 Parameter bw_not: t -> t.
 
 Axiom Nth_bw_not :
-  forall (v:t) (n:Z), ((0%Z <= n)%Z /\ (n < 64%Z)%Z) ->
+  forall (v:t) (n:Numbers.BinNums.Z), (0%Z <= n)%Z /\ (n < 64%Z)%Z ->
   ((nth (bw_not v) n) = (Init.Datatypes.negb (nth v n))).
 
-Parameter lsr: t -> Z -> t.
+Parameter lsr: t -> Numbers.BinNums.Z -> t.
 
 Axiom Lsr_nth_low :
-  forall (b:t) (n:Z) (s:Z), (0%Z <= s)%Z -> (0%Z <= n)%Z ->
-  ((n + s)%Z < 64%Z)%Z -> ((nth (lsr b s) n) = (nth b (n + s)%Z)).
+  forall (b:t) (n:Numbers.BinNums.Z) (s:Numbers.BinNums.Z), (0%Z <= s)%Z ->
+  (0%Z <= n)%Z -> ((n + s)%Z < 64%Z)%Z ->
+  ((nth (lsr b s) n) = (nth b (n + s)%Z)).
 
 Axiom Lsr_nth_high :
-  forall (b:t) (n:Z) (s:Z), (0%Z <= s)%Z -> (0%Z <= n)%Z ->
-  (64%Z <= (n + s)%Z)%Z -> ((nth (lsr b s) n) = false).
+  forall (b:t) (n:Numbers.BinNums.Z) (s:Numbers.BinNums.Z), (0%Z <= s)%Z ->
+  (0%Z <= n)%Z -> (64%Z <= (n + s)%Z)%Z ->
+  ((nth (lsr b s) n) = Init.Datatypes.false).
 
 Axiom lsr_zeros : forall (x:t), ((lsr x 0%Z) = x).
 
-Parameter asr: t -> Z -> t.
+Parameter asr: t -> Numbers.BinNums.Z -> t.
 
 Axiom Asr_nth_low :
-  forall (b:t) (n:Z) (s:Z), (0%Z <= s)%Z -> ((0%Z <= n)%Z /\ (n < 64%Z)%Z) ->
-  ((n + s)%Z < 64%Z)%Z -> ((nth (asr b s) n) = (nth b (n + s)%Z)).
+  forall (b:t) (n:Numbers.BinNums.Z) (s:Numbers.BinNums.Z), (0%Z <= s)%Z ->
+  (0%Z <= n)%Z /\ (n < 64%Z)%Z -> ((n + s)%Z < 64%Z)%Z ->
+  ((nth (asr b s) n) = (nth b (n + s)%Z)).
 
 Axiom Asr_nth_high :
-  forall (b:t) (n:Z) (s:Z), (0%Z <= s)%Z -> ((0%Z <= n)%Z /\ (n < 64%Z)%Z) ->
-  (64%Z <= (n + s)%Z)%Z -> ((nth (asr b s) n) = (nth b (64%Z - 1%Z)%Z)).
+  forall (b:t) (n:Numbers.BinNums.Z) (s:Numbers.BinNums.Z), (0%Z <= s)%Z ->
+  (0%Z <= n)%Z /\ (n < 64%Z)%Z -> (64%Z <= (n + s)%Z)%Z ->
+  ((nth (asr b s) n) = (nth b (64%Z - 1%Z)%Z)).
 
 Axiom asr_zeros : forall (x:t), ((asr x 0%Z) = x).
 
-Parameter lsl: t -> Z -> t.
+Parameter lsl: t -> Numbers.BinNums.Z -> t.
 
 Axiom Lsl_nth_high :
-  forall (b:t) (n:Z) (s:Z), ((0%Z <= s)%Z /\ ((s <= n)%Z /\ (n < 64%Z)%Z)) ->
+  forall (b:t) (n:Numbers.BinNums.Z) (s:Numbers.BinNums.Z),
+  (0%Z <= s)%Z /\ (s <= n)%Z /\ (n < 64%Z)%Z ->
   ((nth (lsl b s) n) = (nth b (n - s)%Z)).
 
 Axiom Lsl_nth_low :
-  forall (b:t) (n:Z) (s:Z), ((0%Z <= n)%Z /\ (n < s)%Z) ->
-  ((nth (lsl b s) n) = false).
+  forall (b:t) (n:Numbers.BinNums.Z) (s:Numbers.BinNums.Z),
+  (0%Z <= n)%Z /\ (n < s)%Z -> ((nth (lsl b s) n) = Init.Datatypes.false).
 
 Axiom lsl_zeros : forall (x:t), ((lsl x 0%Z) = x).
 
-Parameter rotate_right: t -> Z -> t.
+Parameter rotate_right: t -> Numbers.BinNums.Z -> t.
 
 Axiom Nth_rotate_right :
-  forall (v:t) (n:Z) (i:Z), ((0%Z <= i)%Z /\ (i < 64%Z)%Z) -> (0%Z <= n)%Z ->
+  forall (v:t) (n:Numbers.BinNums.Z) (i:Numbers.BinNums.Z),
+  (0%Z <= i)%Z /\ (i < 64%Z)%Z -> (0%Z <= n)%Z ->
   ((nth (rotate_right v n) i) =
    (nth v (int.EuclideanDivision.mod1 (i + n)%Z 64%Z))).
 
-Parameter rotate_left: t -> Z -> t.
+Parameter rotate_left: t -> Numbers.BinNums.Z -> t.
 
 Axiom Nth_rotate_left :
-  forall (v:t) (n:Z) (i:Z), ((0%Z <= i)%Z /\ (i < 64%Z)%Z) -> (0%Z <= n)%Z ->
+  forall (v:t) (n:Numbers.BinNums.Z) (i:Numbers.BinNums.Z),
+  (0%Z <= i)%Z /\ (i < 64%Z)%Z -> (0%Z <= n)%Z ->
   ((nth (rotate_left v n) i) =
    (nth v (int.EuclideanDivision.mod1 (i - n)%Z 64%Z))).
 
 Parameter is_signed_positive: t -> Prop.
 
-Parameter of_int: Z -> t.
+Parameter of_int: Numbers.BinNums.Z -> t.
 
-Parameter to_int: t -> Z.
+Parameter to_int: t -> Numbers.BinNums.Z.
 
-Axiom to_int_def :
+Axiom to_int'def :
   forall (x:t),
-  ((is_signed_positive x) -> ((to_int x) = (t'int x))) /\
-  (~ (is_signed_positive x) ->
+  (is_signed_positive x -> ((to_int x) = (t'int x))) /\
+  (~ is_signed_positive x ->
    ((to_int x) = (-(18446744073709551616%Z - (t'int x))%Z)%Z)).
 
 Axiom to_uint_extensionality :
@@ -238,7 +251,7 @@ Axiom to_int_extensionality :
   forall (v:t) (v':t), ((to_int v) = (to_int v')) -> (v = v').
 
 (* Why3 assumption *)
-Definition uint_in_range (i:Z) : Prop :=
+Definition uint_in_range (i:Numbers.BinNums.Z) : Prop :=
   (0%Z <= i)%Z /\ (i <= 18446744073709551615%Z)%Z.
 
 Axiom to_uint_bounds :
@@ -246,8 +259,8 @@ Axiom to_uint_bounds :
   (0%Z <= (t'int v))%Z /\ ((t'int v) < 18446744073709551616%Z)%Z.
 
 Axiom to_uint_of_int :
-  forall (i:Z), ((0%Z <= i)%Z /\ (i < 18446744073709551616%Z)%Z) ->
-  ((t'int (of_int i)) = i).
+  forall (i:Numbers.BinNums.Z),
+  (0%Z <= i)%Z /\ (i < 18446744073709551616%Z)%Z -> ((t'int (of_int i)) = i).
 
 Parameter size_bv: t.
 
@@ -284,7 +297,7 @@ Definition sgt (v1:t) (v2:t) : Prop := ((to_int v2) < (to_int v1))%Z.
 Definition sge (v1:t) (v2:t) : Prop := ((to_int v2) <= (to_int v1))%Z.
 
 Axiom positive_is_ge_zeros :
-  forall (x:t), (is_signed_positive x) <-> (sge x zeros).
+  forall (x:t), is_signed_positive x <-> sge x zeros.
 
 Parameter add: t -> t -> t.
 
@@ -309,8 +322,8 @@ Axiom to_uint_sub :
 
 Axiom to_uint_sub_bounded :
   forall (v1:t) (v2:t),
-  ((0%Z <= ((t'int v1) - (t'int v2))%Z)%Z /\
-   (((t'int v1) - (t'int v2))%Z < 18446744073709551616%Z)%Z) ->
+  (0%Z <= ((t'int v1) - (t'int v2))%Z)%Z /\
+  (((t'int v1) - (t'int v2))%Z < 18446744073709551616%Z)%Z ->
   ((t'int (sub v1 v2)) = ((t'int v1) - (t'int v2))%Z).
 
 Parameter neg: t -> t.
@@ -378,16 +391,18 @@ Axiom rotate_left_bv_is_rotate_left :
 Axiom rotate_right_bv_is_rotate_right :
   forall (v:t) (n:t), ((rotate_right_bv v n) = (rotate_right v (t'int n))).
 
-Parameter nth_bv: t -> t -> bool.
+Parameter nth_bv: t -> t -> Init.Datatypes.bool.
 
 Axiom nth_bv_def :
   forall (x:t) (i:t),
-  ((nth_bv x i) = true) <-> ~ ((bw_and (lsr_bv x i) one) = zeros).
+  ((nth_bv x i) = Init.Datatypes.true) <->
+  ~ ((bw_and (lsr_bv x i) one) = zeros).
 
 Axiom Nth_bv_is_nth : forall (x:t) (i:t), ((nth x (t'int i)) = (nth_bv x i)).
 
 Axiom Nth_bv_is_nth2 :
-  forall (x:t) (i:Z), ((0%Z <= i)%Z /\ (i < 18446744073709551616%Z)%Z) ->
+  forall (x:t) (i:Numbers.BinNums.Z),
+  (0%Z <= i)%Z /\ (i < 18446744073709551616%Z)%Z ->
   ((nth_bv x (of_int i)) = (nth x i)).
 
 Parameter eq_sub_bv: t -> t -> t -> t -> Prop.
@@ -395,108 +410,110 @@ Parameter eq_sub_bv: t -> t -> t -> t -> Prop.
 Axiom eq_sub_bv_def :
   forall (a:t) (b:t) (i:t) (n:t),
   let mask := lsl_bv (sub (lsl_bv one n) one) i in
-  (eq_sub_bv a b i n) <-> ((bw_and b mask) = (bw_and a mask)).
+  eq_sub_bv a b i n <-> ((bw_and b mask) = (bw_and a mask)).
 
 (* Why3 assumption *)
-Definition eq_sub (a:t) (b:t) (i:Z) (n:Z) : Prop :=
-  forall (j:Z), ((i <= j)%Z /\ (j < (i + n)%Z)%Z) -> ((nth a j) = (nth b j)).
+Definition eq_sub (a:t) (b:t) (i:Numbers.BinNums.Z) (n:Numbers.BinNums.Z) :
+    Prop :=
+  forall (j:Numbers.BinNums.Z), (i <= j)%Z /\ (j < (i + n)%Z)%Z ->
+  ((nth a j) = (nth b j)).
 
 Axiom eq_sub_equiv :
   forall (a:t) (b:t) (i:t) (n:t),
-  (eq_sub a b (t'int i) (t'int n)) <-> (eq_sub_bv a b i n).
+  eq_sub a b (t'int i) (t'int n) <-> eq_sub_bv a b i n.
 
-Axiom Extensionality : forall (x:t) (y:t), (eq_sub x y 0%Z 64%Z) -> (x = y).
+Axiom Extensionality : forall (x:t) (y:t), eq_sub x y 0%Z 64%Z -> (x = y).
 
 (* Why3 assumption *)
 Inductive t__ref :=
-  | mk_t__ref : t -> t__ref.
+  | t__ref'mk : t -> t__ref.
 Axiom t__ref_WhyType : WhyType t__ref.
 Existing Instance t__ref_WhyType.
 
 (* Why3 assumption *)
 Definition t__content (v:t__ref) : t := match v with
-                                        | mk_t__ref x => x
+                                        | t__ref'mk x => x
                                         end.
 
-Parameter bool_eq: t -> t -> bool.
+Parameter bool_eq: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_eq_def :
+Axiom bool_eq'def :
   forall (x:t) (y:t),
-  ((x = y) -> ((bool_eq x y) = true)) /\
-  (~ (x = y) -> ((bool_eq x y) = false)).
+  ((x = y) -> ((bool_eq x y) = Init.Datatypes.true)) /\
+  (~ (x = y) -> ((bool_eq x y) = Init.Datatypes.false)).
 
-Parameter bool_ne: t -> t -> bool.
+Parameter bool_ne: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_ne_def :
+Axiom bool_ne'def :
   forall (x:t) (y:t),
-  (~ (x = y) -> ((bool_ne x y) = true)) /\
-  ((x = y) -> ((bool_ne x y) = false)).
+  (~ (x = y) -> ((bool_ne x y) = Init.Datatypes.true)) /\
+  ((x = y) -> ((bool_ne x y) = Init.Datatypes.false)).
 
-Parameter bool_lt: t -> t -> bool.
+Parameter bool_lt: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_lt_def :
+Axiom bool_lt'def :
   forall (x:t) (y:t),
-  ((ult x y) -> ((bool_lt x y) = true)) /\
-  (~ (ult x y) -> ((bool_lt x y) = false)).
+  (ult x y -> ((bool_lt x y) = Init.Datatypes.true)) /\
+  (~ ult x y -> ((bool_lt x y) = Init.Datatypes.false)).
 
-Parameter bool_le: t -> t -> bool.
+Parameter bool_le: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_le_def :
+Axiom bool_le'def :
   forall (x:t) (y:t),
-  ((ule x y) -> ((bool_le x y) = true)) /\
-  (~ (ule x y) -> ((bool_le x y) = false)).
+  (ule x y -> ((bool_le x y) = Init.Datatypes.true)) /\
+  (~ ule x y -> ((bool_le x y) = Init.Datatypes.false)).
 
-Parameter bool_gt: t -> t -> bool.
+Parameter bool_gt: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_gt_def :
+Axiom bool_gt'def :
   forall (x:t) (y:t),
-  ((ugt x y) -> ((bool_gt x y) = true)) /\
-  (~ (ugt x y) -> ((bool_gt x y) = false)).
+  (ugt x y -> ((bool_gt x y) = Init.Datatypes.true)) /\
+  (~ ugt x y -> ((bool_gt x y) = Init.Datatypes.false)).
 
-Parameter bool_ge: t -> t -> bool.
+Parameter bool_ge: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_ge_def :
+Axiom bool_ge'def :
   forall (x:t) (y:t),
-  ((uge x y) -> ((bool_ge x y) = true)) /\
-  (~ (uge x y) -> ((bool_ge x y) = false)).
+  (uge x y -> ((bool_ge x y) = Init.Datatypes.true)) /\
+  (~ uge x y -> ((bool_ge x y) = Init.Datatypes.false)).
 
-Parameter power: t -> Z -> t.
+Parameter power: t -> Numbers.BinNums.Z -> t.
 
 Axiom Power_0 : forall (x:t), ((power x 0%Z) = one).
 
 Axiom Power_1 : forall (x:t), ((power x 1%Z) = x).
 
 Axiom Power_s :
-  forall (x:t) (n:Z), (0%Z <= n)%Z ->
+  forall (x:t) (n:Numbers.BinNums.Z), (0%Z <= n)%Z ->
   ((power x (n + 1%Z)%Z) = (mul x (power x n))).
 
 Axiom Power_s_alt :
-  forall (x:t) (n:Z), (0%Z < n)%Z ->
+  forall (x:t) (n:Numbers.BinNums.Z), (0%Z < n)%Z ->
   ((power x n) = (mul x (power x (n - 1%Z)%Z))).
 
 Axiom Power_sum :
-  forall (x:t) (n:Z) (m:Z), (0%Z <= n)%Z -> (0%Z <= m)%Z ->
-  ((power x (n + m)%Z) = (mul (power x n) (power x m))).
+  forall (x:t) (n:Numbers.BinNums.Z) (m:Numbers.BinNums.Z), (0%Z <= n)%Z ->
+  (0%Z <= m)%Z -> ((power x (n + m)%Z) = (mul (power x n) (power x m))).
 
 Axiom Power_mult :
-  forall (x:t) (n:Z) (m:Z), (0%Z <= n)%Z -> (0%Z <= m)%Z ->
-  ((power x (n * m)%Z) = (power (power x n) m)).
+  forall (x:t) (n:Numbers.BinNums.Z) (m:Numbers.BinNums.Z), (0%Z <= n)%Z ->
+  (0%Z <= m)%Z -> ((power x (n * m)%Z) = (power (power x n) m)).
 
 Axiom Power_mult2 :
-  forall (x:t) (y:t) (n:Z), (0%Z <= n)%Z ->
+  forall (x:t) (y:t) (n:Numbers.BinNums.Z), (0%Z <= n)%Z ->
   ((power (mul x y) n) = (mul (power x n) (power y n))).
 
 Parameter bv_min: t -> t -> t.
 
-Axiom bv_min_def :
+Axiom bv_min'def :
   forall (x:t) (y:t),
-  ((ule x y) -> ((bv_min x y) = x)) /\ (~ (ule x y) -> ((bv_min x y) = y)).
+  (ule x y -> ((bv_min x y) = x)) /\ (~ ule x y -> ((bv_min x y) = y)).
 
 Parameter bv_max: t -> t -> t.
 
-Axiom bv_max_def :
+Axiom bv_max'def :
   forall (x:t) (y:t),
-  ((ule x y) -> ((bv_max x y) = y)) /\ (~ (ule x y) -> ((bv_max x y) = x)).
+  (ule x y -> ((bv_max x y) = y)) /\ (~ ule x y -> ((bv_max x y) = x)).
 
 Axiom bv_min_to_uint :
   forall (x:t) (y:t),
@@ -508,31 +525,31 @@ Axiom bv_max_to_uint :
 
 Parameter val1: t.
 
-Parameter attr__ATTRIBUTE_ADDRESS: Z.
+Parameter attr__ATTRIBUTE_ADDRESS: Numbers.BinNums.Z.
 
 Parameter val2: t.
 
-Parameter attr__ATTRIBUTE_ADDRESS1: Z.
+Parameter attr__ATTRIBUTE_ADDRESS1: Numbers.BinNums.Z.
 
 Parameter factor: t.
 
-Parameter attr__ATTRIBUTE_ADDRESS2: Z.
+Parameter attr__ATTRIBUTE_ADDRESS2: Numbers.BinNums.Z.
 
-Axiom uint : Type.
-Parameter uint_WhyType : WhyType uint.
-Existing Instance uint_WhyType.
+Axiom unsigned_64 : Type.
+Parameter unsigned_64_WhyType : WhyType unsigned_64.
+Existing Instance unsigned_64_WhyType.
 
 Parameter attr__ATTRIBUTE_MODULUS: t.
 
 (* Why3 assumption *)
 Definition rep_type := t.
 
-Parameter bool_eq1: t -> t -> bool.
+Parameter bool_eq1: t -> t -> Init.Datatypes.bool.
 
-Axiom bool_eq_def1 :
+Axiom bool_eq'def1 :
   forall (x:t) (y:t),
-  ((x = y) -> ((bool_eq1 x y) = true)) /\
-  (~ (x = y) -> ((bool_eq1 x y) = false)).
+  ((x = y) -> ((bool_eq1 x y) = Init.Datatypes.true)) /\
+  (~ (x = y) -> ((bool_eq1 x y) = Init.Datatypes.false)).
 
 Parameter attr__ATTRIBUTE_IMAGE: t -> us_image.
 
@@ -540,25 +557,26 @@ Parameter attr__ATTRIBUTE_VALUE__pre_check: us_image -> Prop.
 
 Parameter attr__ATTRIBUTE_VALUE: us_image -> t.
 
-Parameter user_eq: uint -> uint -> bool.
+Parameter user_eq: unsigned_64 -> unsigned_64 -> Init.Datatypes.bool.
 
-Parameter dummy: uint.
-
-(* Why3 assumption *)
-Inductive uint__ref :=
-  | mk_uint__ref : uint -> uint__ref.
-Axiom uint__ref_WhyType : WhyType uint__ref.
-Existing Instance uint__ref_WhyType.
+Parameter dummy: unsigned_64.
 
 (* Why3 assumption *)
-Definition uint__content (v:uint__ref) : uint :=
+Inductive unsigned_64__ref :=
+  | unsigned_64__ref'mk : unsigned_64 -> unsigned_64__ref.
+Axiom unsigned_64__ref_WhyType : WhyType unsigned_64__ref.
+Existing Instance unsigned_64__ref_WhyType.
+
+(* Why3 assumption *)
+Definition unsigned_64__content (v:unsigned_64__ref) : unsigned_64 :=
   match v with
-  | mk_uint__ref x => x
+  | unsigned_64__ref'mk x => x
   end.
 
 (* Why3 assumption *)
-Definition uint__ref_uint__content__projection (a:uint__ref) : uint :=
-  uint__content a.
+Definition unsigned_64__ref_unsigned_64__content__projection
+    (a:unsigned_64__ref) : unsigned_64 :=
+  unsigned_64__content a.
 
 Parameter rliteral: t.
 
@@ -569,19 +587,22 @@ Parameter rliteral1: t.
 Axiom rliteral_axiom1 : ((t'int rliteral1) = 18446744073709551615%Z).
 
 (* Why3 assumption *)
-Definition dynamic_invariant (temp___expr_165:t) (temp___is_init_161:bool)
-    (temp___skip_constant_162:bool) (temp___do_toplevel_163:bool)
-    (temp___do_typ_inv_164:bool) : Prop :=
+Definition dynamic_invariant (temp___expr_165:t)
+    (temp___is_init_161:Init.Datatypes.bool)
+    (temp___skip_constant_162:Init.Datatypes.bool)
+    (temp___do_toplevel_163:Init.Datatypes.bool)
+    (temp___do_typ_inv_164:Init.Datatypes.bool) : Prop :=
   True.
 
 (* Why3 goal *)
 Theorem def'vc :
-  (dynamic_invariant val1 true false true true) ->
-  (dynamic_invariant val2 true false true true) ->
-  (dynamic_invariant factor true false true true) ->
-  ((ule val1 val2) /\
-   ((factor = rliteral) \/ (ule val2 (udiv rliteral1 factor)))) ->
-  (*      Post => Val1 * Factor <= Val2 * Factor;  --  MANUAL PROOF              ^ spark-mod_arithmetic_lemmas.ads:81:14:instantiated:spark-mod64_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
+  dynamic_invariant val1 Init.Datatypes.true Init.Datatypes.false
+  Init.Datatypes.true Init.Datatypes.true ->
+  dynamic_invariant val2 Init.Datatypes.true Init.Datatypes.false
+  Init.Datatypes.true Init.Datatypes.true ->
+  dynamic_invariant factor Init.Datatypes.true Init.Datatypes.false
+  Init.Datatypes.true Init.Datatypes.true ->
+  ule val1 val2 /\ ((factor = rliteral) \/ ule val2 (udiv rliteral1 factor)) ->
   ule (mul val1 factor) (mul val2 factor).
 Proof.
 #define SPARK_MAX_UINT 18446744073709551615
