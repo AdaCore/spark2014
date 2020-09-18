@@ -38,7 +38,24 @@ numbers. It contains support for:
 
 Theses libraries define representations for big numbers and basic arithmetic
 operations over them, as well as conversions from bounded scalar types such as
-floating point numbers or integer types.
+floating point numbers or integer types. Conversion from an integer to a big
+integer is provided by:
+
+* function ``To_Big_Integer`` in ``Ada.Numerics.Big_Numbers.Big_Integers`` for
+  type ``Integer``
+
+* function ``To_Big_Integer`` in generic package ``Signed_Conversions`` in
+  ``Ada.Numerics.Big_Numbers.Big_Integers`` for all other signed integer types
+
+* function ``To_Big_Integer`` in generic package ``Unsigned_Conversions`` in
+  ``Ada.Numerics.Big_Numbers.Big_Integers`` for modular integer types
+
+Similarly, the same packages define a function ``From_Big_Integer`` to convert
+from a big integer to an integer. A function ``To_Real`` in
+``Ada.Numerics.Big_Numbers.Big_Reals`` converts from type ``Integer`` to a big
+real and function ``To_Big_Real`` in the same package converts from a big
+integer to a big real.
+
 Though these operations do not have postconditions, they are interpreted by
 |GNATprove| as the equivalent operations on mathematical integers and real
 numbers. This allows to benefit from precise support on code using them.
