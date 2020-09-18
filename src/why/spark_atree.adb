@@ -646,7 +646,9 @@ package body SPARK_Atree is
                --  3) a component expression of a 'Update aggregate for
                --  records, and needs a range check towards the type of
                --  the component
-               --  3) an expression of a regular record aggregate, and
+               --  4) a discrete choice of an iterated component association
+               --  ??? Why is it different from regular component associations?
+               --  5) an expression of a regular record aggregate, and
                --  needs a range check towards the expected type.
 
                if (Nkind (Atree.Parent (Par)) = N_Aggregate
@@ -683,6 +685,14 @@ package body SPARK_Atree is
                        Etype (Einfo.First_Index
                               (Sem_Util.Unique_Entity (Prefix_Type)));
                   end if;
+
+               --  for iterated component associations, N might be either
+               --  in the expression or in the choice.
+
+               elsif Nkind (Par) = N_Iterated_Component_Association
+                 and then Expression (Par) /= N
+               then
+                  Check_Type := Etype (Defining_Identifier (Par));
 
                --  must be a regular record aggregate
 

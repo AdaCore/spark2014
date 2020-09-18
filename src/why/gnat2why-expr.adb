@@ -10246,6 +10246,9 @@ package body Gnat2Why.Expr is
            Retysp (Component_Type (Expr_Typ));
          In_Iterated_Assoc : Boolean := False;
          --  Register whether we have traversed iterated component associations
+         Index_Parameters  : Flow_Id_Sets.Set;
+         --  Set of all the index parameters defined in Expr. They are removed
+         --  from the set of accessed global variables.
 
          -----------------------
          -- Local subprograms --
@@ -10377,6 +10380,9 @@ package body Gnat2Why.Expr is
                   when N_Iterated_Component_Association =>
                      Value_Expr := Expression (Expr_Or_Association);
                      In_Iterated_Assoc := True;
+                     Index_Parameters.Insert
+                       (Direct_Mapping_Id
+                          (Defining_Identifier (Expr_Or_Association)));
                   when N_Component_Association =>
                      Value_Expr := Expression (Expr_Or_Association);
                   when others =>
@@ -10495,6 +10501,11 @@ package body Gnat2Why.Expr is
            (Dim   => 1,
             Index => First_Index (Expr_Typ),
             Expr  => Expr);
+
+         --  Remove parameter indices from local component association from the
+         --  set of referenced variables.
+
+         Variables.Difference (Index_Parameters);
       end Get_Aggregate_Elements;
 
       -------------------
@@ -10533,11 +10544,18 @@ package body Gnat2Why.Expr is
                else Expressions (Expr));
             Expression   : Node_Id := Nlists.First (Exprs);
             Index_Typ    : constant Entity_Id := Etype (Index);
+            Index_Base   : constant W_Type_Id :=
+              Base_Why_Type_No_Bool (Index_Typ);
             Save_In_Iter : constant Boolean := In_Iterated_Assoc;
             Save_Checks  : W_Statement_Sequence_Id := Why_Empty;
             Choice       : Node_Id;
             Idx          : W_Identifier_Id := Why_Empty;
             Binding      : W_Expr_Id := Why_Empty;
+            Others_Guard : W_Pred_Id := +Range_Expr
+              (N      => Nth_Index_Type (Expr_Typ, Dim),
+               T      => +New_Result_Ident (Index_Base),
+               Domain => EW_Pred,
+               Params => Params);
 
          begin
             --  Go over the list of associations to insert checks
@@ -10603,8 +10621,7 @@ package body Gnat2Why.Expr is
                               Tmp : constant W_Identifier_Id :=
                                 New_Temp_Identifier
                                   (Base_Name => "index",
-                                   Typ       =>
-                                     Base_Why_Type_No_Bool (Index_Typ));
+                                   Typ       => Index_Base);
                            begin
                               Sequence_Append
                                 (Choice_Checks,
@@ -10618,10 +10635,10 @@ package body Gnat2Why.Expr is
                                                 Choice_Type => Index_Typ,
                                                 Expr        =>
                                                   +New_Result_Ident
-                                                  (Get_Typ (Tmp)),
+                                                  (Index_Base),
                                                 Domain      => EW_Pred,
                                                 Params      => Params),
-                                             Return_Type => Get_Typ (Tmp),
+                                             Return_Type => Index_Base,
                                              Labels      =>
                                                Symbol_Sets.Empty_Set),
                                           Context => +Do_Index_Check
@@ -10646,8 +10663,7 @@ package body Gnat2Why.Expr is
                                     --  The value does not matter here
                                       New_Discrete_Constant
                                         (Value => Uint_0,
-                                         Typ   =>
-                                           Base_Why_Type_No_Bool (Index_Typ)),
+                                         Typ   => Index_Base),
                                     Domain      => EW_Prog,
                                     Params      => Params))));
                      end if;
@@ -10686,29 +10702,36 @@ package body Gnat2Why.Expr is
                   declare
                      Quant_Var : constant Entity_Id :=
                        Defining_Identifier (Association);
-                     Base      : constant W_Type_Id :=
-                       Base_Why_Type_No_Bool (Quant_Var);
                      Choices   : constant List_Id := Choice_List (Association);
-                     Constr    : constant W_Pred_Id :=
-                       (if Is_Others_Choice (Choices)
-                        then +Range_Expr
-                          (N      => Nth_Index_Type (Expr_Typ, Dim),
-                           T      => +New_Result_Ident (Base),
-                           Domain => EW_Pred,
-                           Params => Params)
-                        else +Transform_Discrete_Choices
+                     Constr    : W_Pred_Id;
+
+                  begin
+                     --  Store in Constr the known constraints for the
+                     --  quantified variables. If Choices is not others, also
+                     --  update the Others_Guard to exclude the current choice.
+
+                     if Is_Others_Choice (Choices) then
+                        Constr := Others_Guard;
+                     else
+                        Constr := +Transform_Discrete_Choices
                           (Choices      => Choices,
                            Choice_Type  => Etype (Quant_Var),
-                           Matched_Expr => +New_Result_Ident (Base),
+                           Matched_Expr => +New_Result_Ident (Index_Base),
                            Cond_Domain  => EW_Pred,
-                           Params       => Params));
-                  begin
+                           Params       => Params);
+                        Others_Guard := +New_And_Expr
+                            (Left   => +Others_Guard,
+                             Right  => New_Not (Domain => EW_Pred,
+                                                Right  => +Constr),
+                             Domain => EW_Pred);
+                     end if;
+
                      Idx := New_Temp_Identifier
-                       (Typ       => Base,
+                       (Typ       => Index_Base,
                         Base_Name => Short_Name (Quant_Var));
                      Binding := New_Any_Expr
                        (Post        => Constr,
-                        Return_Type => Base,
+                        Return_Type => Index_Base,
                         Labels      => Symbol_Sets.Empty_Set);
                      Insert_Entity (Quant_Var, Idx);
                   end;
