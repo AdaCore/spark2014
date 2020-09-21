@@ -2,12 +2,12 @@ stable_marriage.adb:9:13: info: loop invariant initialization proved (CVC4: 2 VC
 stable_marriage.adb:9:13: info: loop invariant preservation proved (CVC4: 2 VC)
 stable_marriage.adb:11:26: info: range check proved (CVC4: 4 VC)
 stable_marriage.adb:12:26: info: index check proved (CVC4: 4 VC)
-stable_marriage.adb:15:22: medium: assertion might fail
+stable_marriage.adb:15:22: info: assertion proved (CVC4: 2 VC; altergo: 1 VC)
 stable_marriage.adb:30:13: info: loop invariant initialization proved (CVC4: 2 VC)
 stable_marriage.adb:30:13: info: loop invariant preservation proved (CVC4: 2 VC)
 stable_marriage.adb:32:26: info: range check proved (CVC4: 4 VC)
 stable_marriage.adb:33:26: info: index check proved (CVC4: 4 VC)
-stable_marriage.adb:36:22: medium: assertion might fail
+stable_marriage.adb:36:22: info: assertion proved (CVC4: 2 VC; altergo: 1 VC)
 stable_marriage.adb:51:07: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:54:13: info: loop invariant initialization proved (CVC4: 1 VC)
 stable_marriage.adb:54:13: info: loop invariant preservation proved (CVC4: 1 VC)
@@ -86,7 +86,7 @@ stable_marriage.adb:292:10: info: initialization of "G1" proved
 stable_marriage.adb:293:10: info: initialization of "G2" proved
 stable_marriage.adb:294:10: info: initialization of "Accepted" proved
 stable_marriage.adb:296:10: info: initialization of "Already_Asked" proved
-stable_marriage.adb:300:25: medium: assertion might fail, cannot prove Proposals_Made (G1) < Count'last
+stable_marriage.adb:300:25: medium: assertion might fail, cannot prove Proposals_Made (G1) < Count'last (e.g. when G1 = 1 and Proposals_Made = (1 => Count'Last, others => 0))
 stable_marriage.adb:304:30: info: range check proved (CodePeer)
 stable_marriage.adb:304:45: info: range check proved (CodePeer)
 stable_marriage.adb:306:16: info: assertion proved (CVC4: 1 VC)
@@ -129,24 +129,24 @@ stable_marriage.adb:390:22: info: assertion proved (CVC4: 2 VC)
 stable_marriage.adb:395:33: info: loop invariant initialization proved (CVC4: 1 VC)
 stable_marriage.adb:395:33: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:396:10: info: precondition proved (CVC4: 4 VC)
-stable_marriage.ads:21:14: medium: postcondition might fail
+stable_marriage.ads:21:14: medium: postcondition might fail (e.g. when G1 = 1 and R1 = (others => Group1_Id'Last))
 stable_marriage.ads:26:06: info: flow dependencies proved
-stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2)
-stable_marriage.ads:33:14: medium: postcondition might fail
+stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2) (e.g. when R1 = (others => 1) and Rank1 = 1 and Rank2 = 2)
+stable_marriage.ads:33:14: medium: postcondition might fail (e.g. when G2 = 1 and R2 = (others => Group2_Id'Last))
 stable_marriage.ads:38:06: info: flow dependencies proved
-stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2)
-stable_marriage.ads:51:34: medium: postcondition might fail, cannot prove R1 (Invert_1'Result (G1)) = G1
-stable_marriage.ads:57:34: medium: postcondition might fail, cannot prove R2 (Invert_2'Result (G2)) = G2
+stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2) (e.g. when R2 = (others => 1) and Rank1 = 1 and Rank2 = 2)
+stable_marriage.ads:51:34: medium: postcondition might fail, cannot prove R1 (Invert_1'Result (G1)) = G1 (e.g. when G1 = 2 and Invert_1'Result = (2 => Ranking'Last-1, 3 => Ranking'Last-1, others => Ranking'Last) and R1 = (Ranking'Last => 1, others => 3))
+stable_marriage.ads:57:34: medium: postcondition might fail, cannot prove R2 (Invert_2'Result (G2)) = G2 (e.g. when G2 = 2 and Invert_2'Result = (2 => Ranking'Last-1, 3 => Ranking'Last-1, others => Ranking'Last) and R2 = (Ranking'Last => 1, others => 3))
 stable_marriage.ads:60:06: info: flow dependencies proved
-stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22)
-stable_marriage.ads:71:36: medium: postcondition might fail, cannot prove G2_To_G1 (Invert_Map'Result (G1)) = G1
+stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22) (e.g. when G21 = 1 and G22 = 2 and G2_To_G1 = (others => 1))
+stable_marriage.ads:71:36: medium: postcondition might fail, cannot prove G2_To_G1 (Invert_Map'Result (G1)) = G1 (e.g. when G1 = 2 and G2_To_G1 = (Group2_Id'Last => 1, others => 3) and Invert_Map'Result = (2 => Group2_Id'Last-1, 3 => Group2_Id'Last-1, others => Group2_Id'Last))
 stable_marriage.ads:77:14: info: postcondition proved (CVC4: 2 VC)
 stable_marriage.ads:78:09: info: precondition proved (CVC4: 1 VC)
 stable_marriage.ads:78:33: info: precondition proved (CVC4: 1 VC)
 stable_marriage.ads:83:14: info: postcondition proved (CVC4: 2 VC)
 stable_marriage.ads:84:09: info: precondition proved (CVC4: 1 VC)
 stable_marriage.ads:84:33: info: precondition proved (CVC4: 1 VC)
-stable_marriage.ads:95:08: medium: postcondition might fail
+stable_marriage.ads:95:08: medium: postcondition might fail (e.g. when G1 = 1 and Matching'Result = (Group2_Id'Last => Group1_Id'Last, others => Group1_Id'Last))
 stable_marriage.ads:99:16: info: precondition proved (CVC4: 1 VC)
-stable_marriage.ads:100:17: medium: precondition might fail
+stable_marriage.ads:100:17: medium: precondition might fail (e.g. when G1 = 1 and Matching'Result = (Group2_Id'Last => Group1_Id'Last, others => Group1_Id'Last))
 stable_marriage.ads:101:18: info: precondition proved (CVC4: 1 VC)
