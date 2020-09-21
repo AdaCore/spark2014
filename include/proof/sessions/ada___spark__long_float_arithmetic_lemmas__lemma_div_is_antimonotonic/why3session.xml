@@ -18,13 +18,13 @@
   <proof prover="1" timelimit="1"><result status="valid" steps="3227"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="1"><result status="valid" steps="10486"/></proof>
+  <proof prover="1"><result status="valid" steps="10431"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="1"><result status="valid" steps="4557"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="1"><result status="valid" steps="12857"/></proof>
+  <proof prover="1"><result status="valid" steps="12946"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >

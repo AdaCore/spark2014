@@ -288,14 +288,14 @@ spark-test_array_lemmas.ads:61:06: info: data dependencies proved
 spark-test_array_lemmas.ads:64:41: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:64:41: info: overflow check proved (CVC4: 1 VC)
 spark-test_array_lemmas.ads:64:53: info: index check proved (CVC4: 2 VC)
-spark-test_array_lemmas.ads:65:14: info: postcondition proved (CVC4: 2 VC)
+spark-test_array_lemmas.ads:65:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 spark-test_array_lemmas.ads:67:42: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:67:52: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:70:06: info: data dependencies proved
 spark-test_array_lemmas.ads:73:41: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:73:41: info: overflow check proved (CVC4: 1 VC)
 spark-test_array_lemmas.ads:73:53: info: index check proved (CVC4: 2 VC)
-spark-test_array_lemmas.ads:74:14: info: postcondition proved (CVC4: 2 VC)
+spark-test_array_lemmas.ads:74:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 spark-test_array_lemmas.ads:76:42: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:76:52: info: index check proved (CVC4: 2 VC)
 spark-unconstrained_array_lemmas.ads:52:14: info: subprogram "Lemma_Transitive_Order" will terminate, terminating annotation has been proved, in instantiation at spark-test_array_lemmas.adb:43
