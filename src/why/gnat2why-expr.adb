@@ -12961,14 +12961,14 @@ package body Gnat2Why.Expr is
          when Attribute_Value =>
             declare
                Why_Str : constant W_Type_Id :=
-                           EW_Abstract (Standard_String);
+                 EW_Abstract (Standard_String);
                Arg     : constant W_Expr_Id :=
-                           Transform_Expr (First (Expressions (Expr)),
-                                           Why_Str,
-                                           Domain,
-                                           Params);
+                 Transform_Expr (First (Expressions (Expr)),
+                                 Why_Str,
+                                 Domain,
+                                 Params);
                Func    : constant W_Identifier_Id :=
-                           +New_Attribute_Expr (Etype (Var), Domain, Attr_Id);
+                 +New_Attribute_Expr (Etype (Var), Domain, Attr_Id);
             begin
                T :=
                  New_Call
@@ -17369,6 +17369,38 @@ package body Gnat2Why.Expr is
       --  Hardcoded function calls are transformed in a specific function
 
       if Is_Hardcoded_Entity (Subp) then
+
+         --  If we are translating a call to the parameter of a Integer_Literal
+         --  aspect, try to get a precise value from the ada actual of the
+         --  expression if it is a string literal.
+
+         if Is_Integer_Literal_Aspect_Parameter (Subp) then
+            pragma Assert
+              (Present (First_Actual (Expr))
+               and then No (Next (First_Actual (Expr))));
+
+            if Nkind (First_Actual (Expr)) = N_String_Literal then
+               T := Transform_Hardcoded_Integer_Literal
+                 (First_Actual (Expr), Etype (Subp), Domain);
+            else
+               T := Why_Empty;
+            end if;
+
+            --  If the precise transformation was succesful, return it
+
+            if T /= Why_Empty then
+               return T;
+
+            --  Otherwise raise a warning if --info is given and default to
+            --  imprecise translation.
+
+            elsif Debug.Debug_Flag_Underscore_F then
+               Error_Msg_NE
+                 ("info: ?" & "call to & is not handled precisely",
+                  Expr, Subp);
+            end if;
+         end if;
+
          T := Transform_Hardcoded_Function_Call
            (Subp, Args, Domain, Expr);
          return T;

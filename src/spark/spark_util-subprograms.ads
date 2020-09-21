@@ -431,6 +431,10 @@ package SPARK_Util.Subprograms is
    --     and is considered to always terminate abnormally.
    --  Note: this routine is meant to be only used in phase 2
 
+   function Is_Integer_Literal_Aspect_Parameter (E : Entity_Id) return Boolean;
+   --  Return True if E is a function associated with the Integer_Literal
+   --  aspect of a type.
+
    function Is_Intrinsic (E : Entity_Id) return Boolean
    is
      (Ekind (E) in E_Function | E_Procedure

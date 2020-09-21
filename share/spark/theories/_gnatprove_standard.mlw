@@ -82,6 +82,32 @@ module Main
   val spark__branch [@model_trace:0000]: bool__ref
 end
 
+(* Functions reading built-in values from __image *)
+
+module Builtin_from_image
+  use Main
+
+  (* function reading an integer from an image *)
+
+  function int__attr__ATTRIBUTE_VALUE __image : int
+
+  predicate int__attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  val int__attr__ATTRIBUTE_VALUE_ (x : __image) : int
+    requires { int__attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { result = int__attr__ATTRIBUTE_VALUE x }
+
+  (* function reading a real from an image *)
+
+  function real__attr__ATTRIBUTE_VALUE __image : real
+
+  predicate real__attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  val real__attr__ATTRIBUTE_VALUE_ (x : __image) : real
+    requires { real__attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures {  result = real__attr__ATTRIBUTE_VALUE x }
+end
+
 module Compatible_Tags
   (* A prediacte to check compatibility between tags *)
   val predicate __compatible_tags (from_tag : int) (to_tag : int)

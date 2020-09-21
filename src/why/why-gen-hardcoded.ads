@@ -25,6 +25,7 @@
 
 with Einfo;                use Einfo;
 with Gnat2Why.Util;        use Gnat2Why.Util;
+with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Util;           use SPARK_Util;
 with SPARK_Util.Hardcoded; use SPARK_Util.Hardcoded;
 with Types;                use Types;
@@ -50,5 +51,17 @@ package Why.Gen.Hardcoded is
    with
      Pre => Is_Subprogram (Subp) and then Is_Hardcoded_Entity (Subp);
    --  Transform a hardcoded function call
+
+   function Transform_Hardcoded_Integer_Literal
+     (String_Literal : Node_Id;
+      Typ            : Entity_Id;
+      Domain         : EW_Domain)
+      return W_Expr_Id
+   with
+     Pre => Is_Type (Typ) and then Is_Hardcoded_Entity (Typ)
+     and then Nkind (String_Literal) = N_String_Literal;
+   --  Transform an integer literal of an hardcoded type in a precise way
+   --  whenever possible. If no precise translation was achieved, return
+   --  Why_Empty;
 
 end Why.Gen.Hardcoded;

@@ -27,8 +27,9 @@ with Common_Containers;  use Common_Containers;
 with Errout;             use Errout;
 with Namet;              use Namet;
 with Snames;             use Snames;
-with SPARK_Atree;        use SPARK_Atree;
 with SPARK_Util.Types;   use SPARK_Util.Types;
+with Stringt;            use Stringt;
+with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Modules;  use Why.Atree.Modules;
@@ -288,7 +289,8 @@ package body Why.Gen.Hardcoded is
                end if;
             end;
 
-         --  This block transforms the unary operators and Is_Valid
+         --  This block transforms the unary operators, Is_Valid, and
+         --  From_String.
 
          elsif Args'Length = 1 then
 
@@ -307,6 +309,41 @@ package body Why.Gen.Hardcoded is
                   T := Why.Conversions."+"(New_Literal (Value  => EW_True,
                                                         Domain => Domain));
                end if;
+
+            --  Imprecise translation of From_String
+
+            elsif Name_String = BIN.From_String then
+               T :=
+                 New_Call
+                   (Ada_Node => Ada_Node,
+                    Domain   => Domain,
+                    Name     => Of_String_Id,
+                    Args     => (1 => Args (1)));
+
+               if Domain = EW_Prog then
+                  T := New_VC_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => To_Program_Space
+                       (M_Builtin_From_Image.Int_Value),
+                     Progs    => (1 => T),
+                     Reason   => VC_Precondition,
+                     Typ      => EW_Int_Type);
+               else
+                  T := New_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => M_Builtin_From_Image.Int_Value,
+                     Args     => (1 => T),
+                     Typ      => EW_Int_Type);
+               end if;
+
+               T := New_Label
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Def      => T,
+                  Typ      => Type_Of_Node (Etype (Subp)));
 
             elsif Chars (Subp) = Name_Op_Add then
                T := Args (1);
@@ -463,7 +500,8 @@ package body Why.Gen.Hardcoded is
                end if;
             end;
 
-         --  This block transforms the unary operators and Is_Valid
+         --  This block transforms the unary operators, Is_Valid, and
+         --  From_String.
 
          elsif Args'Length = 1 then
 
@@ -482,6 +520,41 @@ package body Why.Gen.Hardcoded is
                   T := Why.Conversions."+"(New_Literal (Value  => EW_True,
                                                         Domain => Domain));
                end if;
+
+            --  Imprecise translation of From_String
+
+            elsif Name_String = BRN.From_String then
+               T :=
+                 New_Call
+                   (Ada_Node => Ada_Node,
+                    Domain   => Domain,
+                    Name     => Of_String_Id,
+                    Args     => (1 => Args (1)));
+
+               if Domain = EW_Prog then
+                  T := New_VC_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => To_Program_Space
+                       (M_Builtin_From_Image.Real_Value),
+                     Progs    => (1 => T),
+                     Reason   => VC_Precondition,
+                     Typ      => EW_Real_Type);
+               else
+                  T := New_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => M_Builtin_From_Image.Real_Value,
+                     Args     => (1 => T),
+                     Typ      => EW_Real_Type);
+               end if;
+
+               T := New_Label
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Def      => T,
+                  Typ      => Type_Of_Node (Etype (Subp)));
 
             elsif Chars (Subp) = Name_Op_Add then
                T := Args (1);
@@ -550,5 +623,68 @@ package body Why.Gen.Hardcoded is
       end if;
       return T;
    end Transform_Hardcoded_Function_Call;
+
+   -----------------------------------------
+   -- Transform_Hardcoded_Integer_Literal --
+   -----------------------------------------
+
+   function Transform_Hardcoded_Integer_Literal
+     (String_Literal : Node_Id;
+      Typ            : Entity_Id;
+      Domain         : EW_Domain)
+      return W_Expr_Id
+   is
+
+      function UI_From_Long_Long_Long_Integer is
+        new UI_From_Integral (Long_Long_Long_Integer);
+
+   begin
+      --  Transformation of integer literals from Big_Integers
+
+      if Is_From_Hardcoded_Unit (Typ, Big_Integers) then
+         declare
+            Str_Value    : constant String_Id := Strval (String_Literal);
+            Len          : constant Nat := String_Length (Str_Value);
+            Value_String : String (1 .. Natural (Len));
+            Def          : Long_Long_Long_Integer;
+            UI_Val       : Uint;
+
+         begin
+            --  Fetch the value of the string literal
+
+            String_To_Name_Buffer (Str_Value);
+            Value_String := Name_Buffer (1 .. Natural (Len));
+
+            --  Get its value as a long long long integer
+
+            Def := Long_Long_Long_Integer'Value (Value_String);
+
+            --  Transform Def into a Uint
+
+            UI_Val := UI_From_Long_Long_Long_Integer (Def);
+
+            --  Return the appropriate integer constant
+
+            return New_Label
+              (Ada_Node => String_Literal,
+               Domain   => Domain,
+               Labels   => Symbol_Sets.Empty_Set,
+               Def      => New_Integer_Constant (Ada_Node => String_Literal,
+                                                 Value    => UI_Val),
+               Typ      => Type_Of_Node (Typ));
+
+         exception
+            when Constraint_Error =>
+               --  If the parameter of the call does not fit in
+               --  Long_Long_Long_Integer, then default to imprecise
+               --  translation.
+
+               return Why_Empty;
+         end;
+
+      else
+         raise Program_Error;
+      end if;
+   end Transform_Hardcoded_Integer_Literal;
 
 end Why.Gen.Hardcoded;
