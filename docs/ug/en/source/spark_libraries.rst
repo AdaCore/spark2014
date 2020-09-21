@@ -3,6 +3,8 @@
 |SPARK| Libraries
 =================
 
+.. _Big Numbers Library:
+
 Big Numbers Library
 -------------------
 

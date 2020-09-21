@@ -13,7 +13,13 @@ Integer overflows are a kind of run-time error that occurs when the result of
 an arithmetic computation does not fit in the bounds of the machine type used
 to hold the result. In some cases, it is convenient to express properties in
 annotations as they would be expressed in mathematics, where quantities are
-unbounded, for example:
+unbounded. This is best achieved using the :ref:`Big Numbers Library`, which
+defines types for unbounded integers and rational numbers, operations on these
+and conversions from/to machine integers and reals.
+
+Alternatively, |GNATprove| supports different overflow modes, so that the usual
+signed arithmetic operations are interpreted differently from their standard
+interpretation. For example:
 
 .. code-block:: ada
    :linenos:
