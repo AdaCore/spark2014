@@ -1,5 +1,5 @@
 package X
-   with Abstract_State => channel
+   with Abstract_State => channel_x
 is
-   procedure init;
+   procedure init_x;
 end X;

@@ -2,13 +2,13 @@ with X.Y;
 
 package body X
    with Refined_State =>
-      (channel => X.Y.channel)
+      (channel_x => X.Y.channel_y)
 is
 
-   procedure init
+   procedure init_x
    is
    begin
-      Y.init;
-   end init;
+      Y.init_y;
+   end init_x;
 
 end X;

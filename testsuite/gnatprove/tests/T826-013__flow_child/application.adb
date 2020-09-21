@@ -4,7 +4,7 @@ package body Application is
 
    procedure init is
    begin
-      X.init;
+      X.init_x;
    end init;
 
 end Application;

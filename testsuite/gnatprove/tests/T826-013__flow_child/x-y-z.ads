@@ -1,9 +1,9 @@
 private package X.Y.Z
    with Abstract_State => (
-      (channel with
-         Part_Of => X.Y.channel))
+      (channel_z with
+         Part_Of => X.Y.channel_y))
 is
-   procedure init
-      with Global  => (Output => channel),
-           Depends => (channel => null);
+   procedure init_z
+      with Global  => (Output => channel_z),
+           Depends => (channel_z => null);
 end X.Y.Z;
