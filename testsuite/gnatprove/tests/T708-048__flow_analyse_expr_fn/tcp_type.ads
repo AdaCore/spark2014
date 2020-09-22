@@ -12,9 +12,13 @@ package Tcp_Type is
    type Socket is access Socket_Struct;
    subtype Not_Null_Socket is not null Socket;
 
+   --  Expression function which uses an access type, and is used in the other
+   --  package's postconditions. We want this properly analysed, and not default
+   --  to using the crude "heap" variable.
+
    function Tcp_Syn_Queue_Item_Model
       (Queue : access constant Tcp_Syn_Queue_Item) return Boolean is
       (Queue = null or else
          (Tcp_Syn_Queue_Item_Model (Queue.Next)))
-      with Ghost;
+      with Ghost, Annotate => (GNATprove, Terminating);
 end Tcp_Type;

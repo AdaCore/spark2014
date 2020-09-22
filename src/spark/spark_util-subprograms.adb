@@ -393,7 +393,11 @@ package body SPARK_Util.Subprograms is
                --  make no decision based on the presence, absence or contents
                --  of this contract.
 
-               pragma Assert (Entity_Body_In_SPARK (E));
+               pragma Assert
+                 (Entity_Body_In_SPARK (E)
+                  or else
+                    (Is_Expression_Function_Or_Completion (E)
+                     and then Entity_Body_Compatible_With_SPARK (E)));
 
                declare
                   Body_E : constant Entity_Id := Get_Body_Entity (E);

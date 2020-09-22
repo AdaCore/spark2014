@@ -292,10 +292,14 @@ package Flow_Refinement is
    --  abstraction whose refinement is ambiguous from Scope.
 
    function Refinement_Needed (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type
-               and then Entity_Body_In_SPARK (E);
+     with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type
+                 and then (Entity_Body_In_SPARK (E)
+                           or else
+                             (Is_Expression_Function_Or_Completion (E)
+                              and then Entity_Body_Compatible_With_SPARK (E)));
    --  Returns True if a refinement is needed for the given subprogram, entry
-   --  or task E. Only meaningful when entity body is present and is in SPARK.
+   --  or task E. Only meaningful when the entity body (or equivalently, the
+   --  return expression of an expression function) is present and is in SPARK.
    --
    --  If a body is present then we need a refinement if either:
    --     * no Global and no Depends is present
