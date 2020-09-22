@@ -31,7 +31,7 @@
 #include <stdlib.h>
 
 sem_t* create_semaphore (const char *name, unsigned int init) {
-  sem_t* r = sem_open (name, O_CREAT | O_EXCL, 0666, init);
+  sem_t* r = sem_open (name, O_CREAT | O_EXCL, 0600, init);
   if (r == SEM_FAILED) {
     perror("failed to create semaphore");
     exit(1);
