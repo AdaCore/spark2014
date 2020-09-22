@@ -24,8 +24,8 @@ import ada_pygments
 
 
 def setup(app):
-    app.add_lexer('ada', ada_pygments.AdaLexer())
-    app.add_lexer('gpr', ada_pygments.GNATProjectLexer())
+    app.add_lexer('ada', ada_pygments.AdaLexer)
+    app.add_lexer('gpr', ada_pygments.GNATProjectLexer)
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
