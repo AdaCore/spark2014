@@ -1235,6 +1235,17 @@ package body SPARK_Util.Subprograms is
       end if;
    end Is_Local_Subprogram_Always_Inlined;
 
+   --------------------------------------
+   -- Is_Real_Literal_Aspect_Parameter --
+   --------------------------------------
+
+   function Is_Real_Literal_Aspect_Parameter (E : Entity_Id) return Boolean
+   is (Ekind (E) = E_Function
+       and then Has_Aspect (Etype (E), Aspect_Real_Literal)
+       and then
+       Entity (Find_Value_Of_Aspect
+               (Etype (E), Aspect_Real_Literal)) = E);
+
    -------------------------------------
    -- Is_Requested_Subprogram_Or_Task --
    -------------------------------------

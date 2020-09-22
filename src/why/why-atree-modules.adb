@@ -2292,6 +2292,11 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symb   => NID ("bool_gt"),
                         Typ    => EW_Bool_Type);
+      M_Real.Div :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("div"),
+                        Typ    => EW_Real_Type);
    end Init_Real_Module;
 
    ----------------------------

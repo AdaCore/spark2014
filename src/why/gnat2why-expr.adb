@@ -17370,20 +17370,26 @@ package body Gnat2Why.Expr is
 
       if Is_Hardcoded_Entity (Subp) then
 
-         --  If we are translating a call to the parameter of a Integer_Literal
+         --  If we are translating a call to the parameter of a ***_Literal
          --  aspect, try to get a precise value from the ada actual of the
          --  expression if it is a string literal.
 
-         if Is_Integer_Literal_Aspect_Parameter (Subp) then
+         if Is_Integer_Literal_Aspect_Parameter (Subp)
+           or else Is_Real_Literal_Aspect_Parameter (Subp)
+         then
             pragma Assert
               (Present (First_Actual (Expr))
                and then No (Next (First_Actual (Expr))));
 
-            if Nkind (First_Actual (Expr)) = N_String_Literal then
+            if Nkind (First_Actual (Expr)) /= N_String_Literal then
+               T := Why_Empty;
+            elsif Is_Integer_Literal_Aspect_Parameter (Subp) then
                T := Transform_Hardcoded_Integer_Literal
                  (First_Actual (Expr), Etype (Subp), Domain);
             else
-               T := Why_Empty;
+               pragma Assert (Is_Real_Literal_Aspect_Parameter (Subp));
+               T := Transform_Hardcoded_Real_Literal
+                 (First_Actual (Expr), Etype (Subp), Domain);
             end if;
 
             --  If the precise transformation was succesful, return it

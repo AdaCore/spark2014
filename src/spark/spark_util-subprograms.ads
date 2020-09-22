@@ -465,6 +465,10 @@ package SPARK_Util.Subprograms is
    --  @param E subprogram
    --  @return True iff E is a predefined potentially blocking subprogram
 
+   function Is_Real_Literal_Aspect_Parameter (E : Entity_Id) return Boolean;
+   --  Return True if E is a function associated with the Real_Literal
+   --  aspect of a type.
+
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is a subprogram/task whose analysis was specifically

@@ -64,4 +64,16 @@ package Why.Gen.Hardcoded is
    --  whenever possible. If no precise translation was achieved, return
    --  Why_Empty;
 
+   function Transform_Hardcoded_Real_Literal
+     (String_Literal : Node_Id;
+      Typ            : Entity_Id;
+      Domain         : EW_Domain)
+      return W_Expr_Id
+   with
+     Pre => Is_Type (Typ) and then Is_Hardcoded_Entity (Typ)
+     and then Nkind (String_Literal) = N_String_Literal;
+   --  Transform a real literal of an hardcoded type in a precise way
+   --  whenever possible. If no precise translation was achieved, return
+   --  Why_Empty;
+
 end Why.Gen.Hardcoded;

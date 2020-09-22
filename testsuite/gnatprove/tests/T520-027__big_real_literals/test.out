@@ -1,0 +1,40 @@
+test_literal.adb:8:14: info: call to "From_String" is not handled precisely
+test_literal.adb:8:14: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:8:14: medium: precondition might fail
+test_literal.adb:8:70: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:14:22: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:14:22: medium: assertion might fail, cannot prove 0.0 <= Value
+test_literal.adb:14:29: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:17:04: warning: analyzing unreferenced procedure "Bad"
+test_literal.adb:17:14: warning: subprogram "Bad" has no effect
+test_literal.adb:22:15: info: call to "From_String" is not handled precisely
+test_literal.adb:22:15: medium: precondition might fail
+test_literal.adb:24:15: info: call to "From_String" is not handled precisely
+test_literal.adb:24:15: medium: precondition might fail
+test_literal.adb:26:15: info: call to "From_String" is not handled precisely
+test_literal.adb:26:15: medium: precondition might fail
+test_literal.adb:33:19: info: assertion proved (CVC4: 1 VC)
+test_literal.adb:33:27: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:33:79: info: division check proved (CVC4: 1 VC)
+test_literal.adb:34:19: info: assertion proved (CVC4: 1 VC)
+test_literal.adb:34:27: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:34:81: info: division check proved (CVC4: 1 VC)
+test_literal.adb:35:19: info: assertion proved (CVC4: 1 VC)
+test_literal.adb:35:27: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:35:82: info: division check proved (CVC4: 1 VC)
+test_literal.adb:35:104: info: division check proved (CVC4: 1 VC)
+test_literal.adb:36:19: info: assertion proved (CVC4: 1 VC)
+test_literal.adb:36:27: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:36:51: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:36:70: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:36:79: info: division check proved (CVC4: 1 VC)
+test_literal.adb:36:89: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:36:110: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:37:19: info: assertion proved (CVC4: 1 VC)
+test_literal.adb:37:27: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:37:52: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:37:71: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:37:80: info: division check proved (CVC4: 1 VC)
+test_literal.adb:37:90: info: predicate check proved (CVC4: 1 VC)
+test_literal.adb:37:101: info: division check proved (CVC4: 1 VC)
+test_literal.adb:37:111: info: predicate check proved (CVC4: 1 VC)

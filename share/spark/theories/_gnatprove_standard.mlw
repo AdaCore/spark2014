@@ -221,6 +221,7 @@ module Int_Division
 end
 
 module Real
+  use        real.RealInfix
   use export "_gnatprove_standard_th".Real
 
   val bool_eq (x y : real) : bool
@@ -235,6 +236,14 @@ module Real
   ensures { result = bool_gt x y }
   val bool_ge (x y : real) : bool
   ensures { result = bool_ge x y }
+
+  (* Division operators with no preconditions, to use when no checks are
+   * necessary. *)
+
+  function div (x y:real) : real = x /. y
+
+  val div (x y:real) : real
+    ensures  { y <> 0.0 -> result = div x y }
 end
 
 module Real_Power
