@@ -12439,7 +12439,10 @@ package body Gnat2Why.Expr is
               Name     => Why_Eq,
               Args     =>
                 (1 => +Transform_Attribute_Old (Expr, EW_Term, Params),
-                 2 => +True_Term));
+                 2 => Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => +True_Term,
+                    To     => Type_Of_Node (Expr))));
 
       --  Use the map for old when references are not allowed
 

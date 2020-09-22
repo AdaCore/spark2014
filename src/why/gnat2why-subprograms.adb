@@ -2036,8 +2036,10 @@ package body Gnat2Why.Subprograms is
                     Condition   => Enabled,
                     Then_Part   => WP_Consequence,
                     Else_Part   =>
-                      New_Literal (Domain => EW_Prog,
-                                   Value  => EW_True)))),
+                      Insert_Simple_Conversion
+                        (Domain => EW_Prog,
+                         Expr   => +True_Prog,
+                         To     => Type_Of_Node (Consequence))))),
             New_Assert
               (Pred => +New_VC_Expr
                  (Contract_Case,
