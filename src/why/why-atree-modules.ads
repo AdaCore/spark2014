@@ -283,6 +283,7 @@ package Why.Atree.Modules is
       One                   : W_Identifier_Id;
       Sqrt                  : W_Identifier_Id;
       To_Real               : W_Identifier_Id;
+      Copy_Sign             : W_Identifier_Id;
    end record;
 
    type M_Floating_Conv_Type is record

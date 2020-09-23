@@ -456,6 +456,12 @@ module Float32RNE
   function to_real (x : t) : real = t'real x
   val to_real (x:t) : real
     ensures { result = t'real x }
+
+  function copy_sign (x : t) (y : t) : t =
+    if same_sign x y then x else neg x
+  val copy_sign (x : t) (y : t) : t
+    ensures { result = (if same_sign x y then x else neg x) }
+
 end
 
 module Float64RNE

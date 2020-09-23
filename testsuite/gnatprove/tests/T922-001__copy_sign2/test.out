@@ -1,0 +1,4 @@
+copy.adb:6:19: info: assertion proved (CVC4: 1 VC)
+copy.adb:7:19: info: assertion proved (CVC4: 1 VC)
+copy.adb:8:19: info: assertion proved (CVC4: 1 VC)
+copy.adb:9:19: medium: assertion might fail, cannot prove Float'Copy_Sign ( Y, Z) = -1.0 (e.g. when Y = -1.0 and Z = 1.0)

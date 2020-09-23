@@ -13,5 +13,5 @@ procedure Conv is
    Z1_Sign : constant Boolean := Has_Neg_Sign (Z1);
    Z2_Sign : constant Boolean := Has_Neg_Sign (Z2);
 begin
-   pragma Assert (Z1_Sign = Z2_Sign);
+   pragma Assert (Z1_Sign = Z2_Sign); --@ASSERT:FAIL
 end Conv;

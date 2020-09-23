@@ -13310,6 +13310,24 @@ package body Gnat2Why.Expr is
                Domain => Domain,
                Params => Params);
 
+         when Attribute_Copy_Sign =>
+            declare
+               Ty   : constant W_Type_Id := Base_Why_Type (Etype (Expr));
+               Arg1 : constant Node_Id := First (Expressions (Expr));
+               Arg2 : constant Node_Id := Next (Arg1);
+               Mag  : constant W_Expr_Id :=
+                 Transform_Expr (Arg1, Ty, Domain, Params);
+               Sign : constant W_Expr_Id :=
+                 Transform_Expr (Arg2, Ty, Domain, Params);
+            begin
+               T := New_Call
+                 (Domain   => Domain,
+                  Ada_Node => Expr,
+                  Name     => MF_Floats (Ty).Copy_Sign,
+                  Args     => (1 => Mag, 2 => Sign),
+                  Typ      => Ty);
+            end;
+
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] not implemented: "
                                   & Attribute_Id'Image (Attr_Id));

@@ -1,7 +1,10 @@
 with Unchecked_Conversion;
 procedure Conv is
+
+   type Bytes is mod 255;
+
    type Float_Bytes is
-     array (1 .. Float'Size / 8) of Integer range 0 .. 255 with
+     array (1 .. Float'Size / 8) of Bytes with
       Component_Size => 8,
       Size           => Float'Size;
 
@@ -15,5 +18,5 @@ procedure Conv is
    Z1_Bytes : constant Float_Bytes := To_Bytes (Z1);
    Z2_Bytes : constant Float_Bytes := To_Bytes (Z2);
 begin
-   pragma Assert (Z1_Bytes = Z1_Bytes); --@ASSERT:FAIL
+   pragma Assert (Z1_Bytes = Z2_Bytes); --@ASSERT:FAIL
 end Conv;

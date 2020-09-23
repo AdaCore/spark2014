@@ -1959,6 +1959,11 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symb   => NID ("to_real"),
                            Typ    => EW_Int_Type);
+         M_Floats (Fl).Copy_Sign :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symb   => NID ("copy_sign"),
+                           Typ    => M_Floats (Fl).T);
       end loop;
 
       EW_Float_32_Type := M_Floats (Float32).T;
