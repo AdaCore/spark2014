@@ -1,4 +1,4 @@
 ml_bits.adb:7:07: info: initialization of "Result" proved
 ml_bits.adb:8:16: info: types in unchecked conversion have the same size (Trivial)
-ml_bits.adb:8:73: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: array type has size 8 but components add up to size 4]
+ml_bits.adb:8:73: high: type with holes is unsuitable for unchecked conversion [possible explanation: array type has size 8 but components add up to size 4]
 ml_bits.adb:8:98: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type T_4bit has 16 values but has bit size 8]

@@ -1,5 +1,5 @@
 conversions_of_records.adb:20:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Rec_A doesn't have an Object_Size representation clause or aspect]
-conversions_of_records.adb:20:65: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Rec_A doesn't have an Object_Size representation clause or aspect]
+conversions_of_records.adb:20:65: high: type with holes is unsuitable for unchecked conversion [possible explanation: type Rec_A doesn't have an Object_Size representation clause or aspect]
 conversions_of_records.adb:21:65: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Rec_B doesn't have an Object_Size representation clause or aspect]
 conversions_of_records.adb:25:26: info: initialization of "Y1" proved
 conversions_of_records.adb:26:26: info: initialization of "Y2" proved

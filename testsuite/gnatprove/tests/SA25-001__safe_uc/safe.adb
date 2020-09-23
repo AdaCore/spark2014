@@ -6,7 +6,7 @@ procedure Safe is
 
    function To_Nat_NO is new Ada.Unchecked_Conversion (Float, Natural);  --@UNCHECKED_CONVERSION:FAIL
 
-   function To_Integer_NO is new Ada.Unchecked_Conversion (Float, Integer); --@UNCHECKED_CONVERSION:FAIL
+   function To_Integer_OK is new Ada.Unchecked_Conversion (Float, Integer);
 
    type Short_Short is range -128 .. 127;
    type U8 is mod 2 ** 8;
@@ -104,7 +104,7 @@ procedure Safe is
    subtype My_Enum_Sub is My_Enum range E1 .. E255;
 
    function Enum_OK is new Ada.Unchecked_Conversion (My_Enum, Enum_Num);
-   function Enum_NO is new Ada.Unchecked_Conversion (My_Enum_Sub, Enum_Num); --@UNCHECKED_CONVERSION:FAIL
+   function Enum_NO is new Ada.Unchecked_Conversion (Enum_Num, My_Enum_Sub); --@UNCHECKED_CONVERSION:FAIL
 
    type My_Rec (D : Character) is record
       X : Integer;

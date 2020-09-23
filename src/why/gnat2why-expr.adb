@@ -15045,7 +15045,7 @@ package body Gnat2Why.Expr is
                        (Retysp (Etype (Defining_Identifier (Decl))),
                         Valid, Explanation);
                      Emit_Static_Proof_Result
-                       (Decl, VC_UC_No_Holes, Valid, Current_Subp,
+                       (Decl, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
                   end;
                end if;
@@ -15066,7 +15066,7 @@ package body Gnat2Why.Expr is
                         Is_Valid_Bitpattern_No_Holes
                           (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
                         Emit_Static_Proof_Result
-                          (Expr, VC_UC_No_Holes, Valid, Current_Subp,
+                          (Expr, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
 
                         Types_Have_Same_Known_Esize

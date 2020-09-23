@@ -1023,7 +1023,8 @@ procedure SPARK_Report is
             | VC_Task_Termination
             | VC_Raise
             | VC_Initialization_Check
-            | VC_UC_No_Holes
+            | VC_UC_Source
+            | VC_UC_Target
             | VC_UC_Same_Size
             | VC_UC_Alignment
          =>

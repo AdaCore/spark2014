@@ -39,6 +39,21 @@ package body SPARK_Util.Types is
    --  This function computes a user-visible string to represent the type in
    --  argument.
 
+   generic
+      with procedure Callback
+        (Typ         : Entity_Id;
+         Result      : out Boolean;
+         Explanation : out Unbounded_String);
+   procedure Check_Composite_Types_For_Holes
+     (Typ         : Entity_Id;
+      Size        : Uint;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
+   --  This function is used by Type_Has_No_Holes and
+   --  Is_Valid_Bitpattern_No_Holes to recurse over composite types. It checks
+   --  that the composite types have no holes, and that each field has the
+   --  property checked by the Callback.
+
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
@@ -255,6 +270,102 @@ package body SPARK_Util.Types is
       return Has_Invariants_In_SPARK (Ty) and then
         Is_Declared_In_Main_Lib_Unit (Real_Node);
    end Has_Visible_Type_Invariants;
+
+   -------------------------------------
+   -- Check_Composite_Types_For_Holes --
+   -------------------------------------
+
+   procedure Check_Composite_Types_For_Holes
+     (Typ         : Entity_Id;
+      Size        : Uint;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+   begin
+      if Is_Array_Type (Typ) then
+         if not Is_Static_Array_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("size of non-static array type cannot "
+                                   & "be determined");
+            return;
+         end if;
+
+         declare
+            Comp_Typ : constant Entity_Id :=
+              Retysp (Component_Type (Typ));
+            Mult_Size : Uint := Uint_1;
+            Index : Entity_Id;
+         begin
+            Callback (Comp_Typ, Result, Explanation);
+            if not Result then
+               return;
+            end if;
+
+            pragma Assert (Known_RM_Size (Comp_Typ));
+
+            Mult_Size := UI_Mul (Mult_Size, RM_Size (Comp_Typ));
+            Index := First_Index (Typ);
+            while Present (Index) loop
+               declare
+                  Rng : constant Node_Id := Get_Range (Index);
+               begin
+                  Mult_Size :=
+                    UI_Mul (Mult_Size,
+                            UI_Add (
+                              UI_Sub (Expr_Value (High_Bound (Rng)),
+                                Expr_Value (Low_Bound (Rng))),
+                              Uint_1));
+                  Next_Index (Index);
+               end;
+            end loop;
+            if not UI_Eq (Size, Mult_Size) then
+               Result := False;
+               Explanation :=
+                 To_Unbounded_String
+                   ("array type has size " & UI_Image (Size) & " but "
+                    & "components add up to size " & UI_Image (Mult_Size));
+               return;
+            end if;
+         end;
+
+      end if;
+
+      if Is_Record_Type (Typ) then
+         declare
+            Comp     : Node_Id := First_Component (Typ);
+            Sum_Size : Uint := Uint_0;
+         begin
+            while Present (Comp) loop
+               declare
+                  Comp_Ty  : constant Entity_Id := Retysp (Etype (Comp));
+               begin
+                  if Ekind (Comp) = E_Component then
+                     Callback
+                       (Comp_Ty, Result, Explanation);
+                     if not Result then
+                        return;
+                     end if;
+                  end if;
+                  pragma Assert (Known_RM_Size (Comp_Ty));
+                  Sum_Size := UI_Add (Sum_Size, RM_Size (Comp_Ty));
+                  Next_Component (Comp);
+               end;
+            end loop;
+            if not UI_Eq (Size, Sum_Size) then
+               Result := False;
+               Explanation :=
+                 To_Unbounded_String
+                   ("record type has size " & UI_Image (Size) & " but "
+                    & "components add up to size " & UI_Image (Sum_Size));
+               return;
+            end if;
+         end;
+      end if;
+      Result := True;
+      Explanation := To_Unbounded_String ("");
+      return;
+   end Check_Composite_Types_For_Holes;
 
    ------------------------------
    -- Check_DIC_At_Declaration --
@@ -876,6 +987,120 @@ package body SPARK_Util.Types is
         and then Is_Constrained (E)
         and then Has_Static_Array_Bounds (E));
 
+   -----------------------
+   -- Type_Has_No_Holes --
+   -----------------------
+
+   procedure Type_Has_No_Holes (Typ         : Entity_Id;
+                                Result      : out Boolean;
+                                Explanation : out Unbounded_String)
+   is
+
+      procedure Type_Has_No_Holes_Internal
+        (Typ         : Entity_Id;
+         Use_RM_Size : Boolean;
+         Result      : out Boolean;
+         Explanation : out Unbounded_String);
+
+      procedure Type_Has_No_Holes_Callback
+        (Typ         : Entity_Id;
+         Result      : out Boolean;
+         Explanation : out Unbounded_String);
+      --  This function is a wrapper for Type_Has_No_Holes_Internal, that can
+      --  be used with the generic to traverse records and arrays.
+
+      procedure Type_Has_No_Holes_Callback
+        (Typ         : Entity_Id;
+         Result      : out Boolean;
+         Explanation : out Unbounded_String) is
+      begin
+         Type_Has_No_Holes_Internal (Typ, True, Result, Explanation);
+      end Type_Has_No_Holes_Callback;
+
+      procedure Recurse is new
+        Check_Composite_Types_For_Holes (Type_Has_No_Holes_Callback);
+
+      --------------------------------
+      -- Type_Has_No_Holes_Internal --
+      --------------------------------
+
+      procedure Type_Has_No_Holes_Internal
+        (Typ         : Entity_Id;
+         Use_RM_Size : Boolean;
+         Result      : out Boolean;
+         Explanation : out Unbounded_String)
+      is
+
+         function Typ_Name return String is (Type_Name_For_Explanation (Typ));
+
+         Typ_Size : Uint;
+
+      begin
+
+         if Is_Tagged_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is a tagged type");
+            return;
+         end if;
+
+         if Is_Private_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is a private type");
+            return;
+         end if;
+
+         if Is_Concurrent_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is a concurrent type");
+            return;
+         end if;
+
+         if Has_Discriminants (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " has discriminants");
+            return;
+         end if;
+
+         if Is_Scalar_Type (Typ) then
+            Result := True;
+            return;
+         end if;
+
+         if Use_RM_Size and then not Known_RM_Size (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " doesn't "
+                                   & "have a Size representation clause or "
+                                   & "aspect");
+            return;
+         end if;
+         if not Use_RM_Size and then not Known_Esize (Typ)
+         then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " doesn't "
+                                   & "have an Object_Size representation "
+                                   & "clause or aspect");
+            return;
+         end if;
+
+         if Use_RM_Size then
+            Typ_Size := RM_Size (Typ);
+         else
+            Typ_Size := Esize (Typ);
+         end if;
+
+         Recurse (Typ, Typ_Size, Result, Explanation);
+      end Type_Has_No_Holes_Internal;
+
+   begin
+      Type_Has_No_Holes_Internal (Typ, False, Result, Explanation);
+   end Type_Has_No_Holes;
+
    ----------------------------------
    -- Is_Valid_Bitpattern_No_Holes --
    ----------------------------------
@@ -910,6 +1135,28 @@ package body SPARK_Util.Types is
       --  The internal version of the function. If Use_RM_Size is set to True,
       --  the RM_Size is used for size computations, otherwise the
       --  Object_Size/Esize is used.
+
+      procedure Is_Valid_Bitpattern_No_Holes_Callback
+        (Typ         : Entity_Id;
+         Result      : out Boolean;
+         Explanation : out Unbounded_String);
+
+      -------------------------------------------
+      -- Is_Valid_Bitpattern_No_Holes_Callback --
+      -------------------------------------------
+
+      procedure Is_Valid_Bitpattern_No_Holes_Callback
+        (Typ         : Entity_Id;
+         Result      : out Boolean;
+         Explanation : out Unbounded_String)
+      is
+      begin
+         Is_Valid_Bitpattern_No_Holes_Internal
+           (Typ, True, Result, Explanation);
+      end Is_Valid_Bitpattern_No_Holes_Callback;
+
+      procedure Recurse is new Check_Composite_Types_For_Holes
+        (Is_Valid_Bitpattern_No_Holes_Callback);
 
       -------------------------------------------
       -- Is_Valid_Bitpattern_No_Holes_Internal --
@@ -1031,90 +1278,7 @@ package body SPARK_Util.Types is
             end;
          end if;
 
-         if Is_Array_Type (Typ) then
-            if not Is_Static_Array_Type (Typ) then
-               Result := False;
-               Explanation :=
-                 To_Unbounded_String ("size of non-static array type cannot "
-                                      & "be determined");
-               return;
-            end if;
-
-            declare
-               Comp_Typ : constant Entity_Id :=
-                 Retysp (Component_Type (Typ));
-               Mult_Size : Uint := Uint_1;
-               Index : Entity_Id;
-            begin
-               Is_Valid_Bitpattern_No_Holes_Internal
-                 (Comp_Typ, True, Result, Explanation);
-               if not Result then
-                  return;
-               end if;
-
-               pragma Assert (Known_RM_Size (Comp_Typ));
-
-               Mult_Size := UI_Mul (Mult_Size, RM_Size (Comp_Typ));
-               Index := First_Index (Typ);
-               while Present (Index) loop
-                  declare
-                     Rng : constant Node_Id := Get_Range (Index);
-                  begin
-                     Mult_Size :=
-                       UI_Mul (Mult_Size,
-                               UI_Add (
-                                 UI_Sub (Expr_Value (High_Bound (Rng)),
-                                   Expr_Value (Low_Bound (Rng))),
-                                 Uint_1));
-                     Next_Index (Index);
-                  end;
-               end loop;
-               if not UI_Eq (Typ_Size, Mult_Size) then
-                  Result := False;
-                  Explanation :=
-                    To_Unbounded_String
-                      ("array type has size " & UI_Image (Typ_Size) & " but "
-                       & "components add up to size " & UI_Image (Mult_Size));
-                  return;
-               end if;
-            end;
-
-         end if;
-
-         if Is_Record_Type (Typ) then
-            declare
-               Comp     : Node_Id := First_Component (Typ);
-               Sum_Size : Uint := Uint_0;
-            begin
-               while Present (Comp) loop
-                  declare
-                     Comp_Ty  : constant Entity_Id := Retysp (Etype (Comp));
-                  begin
-                     if Ekind (Comp) = E_Component then
-                        Is_Valid_Bitpattern_No_Holes_Internal
-                          (Comp_Ty, True, Result, Explanation);
-                        if not Result then
-                           return;
-                        end if;
-                     end if;
-                     pragma Assert (Known_RM_Size (Comp_Ty));
-                     Sum_Size := UI_Add (Sum_Size, RM_Size (Comp_Ty));
-                     Next_Component (Comp);
-                  end;
-               end loop;
-               if not UI_Eq (Typ_Size, Sum_Size) then
-                  Result := False;
-                  Explanation :=
-                    To_Unbounded_String
-                      ("record type has size " & UI_Image (Typ_Size) & " but "
-                       & "components add up to size " & UI_Image (Sum_Size));
-                  return;
-               end if;
-            end;
-         end if;
-         Result := True;
-         Explanation := To_Unbounded_String ("");
-         return;
+         Recurse (Typ, Typ_Size, Result, Explanation);
       end Is_Valid_Bitpattern_No_Holes_Internal;
 
    begin

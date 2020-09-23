@@ -275,6 +275,11 @@ package SPARK_Util.Types is
      with Pre => Is_Type (A) and then Is_Type (B);
    --  Returns True if the two types in argument have the same Esize
 
+   procedure Type_Has_No_Holes (Typ         : Entity_Id;
+                                Result      : out Boolean;
+                                Explanation : out Unbounded_String)
+     with Pre => Is_Type (Typ);
+
    function Contains_Relaxed_Init_Parts
      (Typ        : Entity_Id;
       Ignore_Top : Boolean := False) return Boolean

@@ -259,7 +259,8 @@ package body Gnat2Why.Error_Messages is
                | VC_Inline_Check
                | VC_Initialization_Check
                | VC_Subprogram_Variant
-               | VC_UC_No_Holes
+               | VC_UC_Source
+               | VC_UC_Target
                | VC_UC_Same_Size
                | VC_UC_Alignment
                | VC_Memory_Leak
@@ -721,7 +722,10 @@ package body Gnat2Why.Error_Messages is
             return "Inline_For_Proof annotation might be incorrect";
          when VC_Subprogram_Variant        =>
             return "subprogram variant might fail";
-         when VC_UC_No_Holes               =>
+         when VC_UC_Source               =>
+            return "type with holes is unsuitable for unchecked conversion";
+
+         when VC_UC_Target               =>
             declare
                Common : constant String :=
                  " with constraints on bit representation is unsuitable for ";
@@ -1087,7 +1091,9 @@ package body Gnat2Why.Error_Messages is
             return "Inline_For_Proof annotation proved";
          when VC_Subprogram_Variant        =>
             return "subprogram variant proved";
-         when VC_UC_No_Holes               =>
+         when VC_UC_Source                 =>
+            return "type is suitable as source for unchecked conversion";
+         when VC_UC_Target                 =>
             declare
                Common : constant String := " is suitable for ";
             begin

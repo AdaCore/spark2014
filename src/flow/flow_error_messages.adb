@@ -645,7 +645,7 @@ package body Flow_Error_Messages is
          --  The checks related to Unchecked_Conversion are quite precise (if
          --  the Esize is known), so we can make them of high severity.
 
-         elsif Tag in VC_UC_No_Holes | VC_UC_Same_Size then
+         elsif Tag in VC_UC_Source | VC_UC_Target | VC_UC_Same_Size then
             Result := High_Check_Kind;
 
          --  Range checks on concatenation of strings are likely to be
@@ -1973,7 +1973,7 @@ package body Flow_Error_Messages is
       --  and Flow_Utility.Get_Variables_For_Proof cannot be called on such
       --  nodes.
 
-      elsif Tag in VC_UC_No_Holes | VC_UC_Same_Size then
+      elsif Tag in VC_UC_Source | VC_UC_Target | VC_UC_Same_Size then
          return "";
 
       --  Do not try to generate a fix message for static checks on subprogram

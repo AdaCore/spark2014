@@ -106,8 +106,11 @@ package VC_Kinds is
                                      --  annotation provided for a function is
                                      --  correct.
 
-      VC_UC_No_Holes,                --  Check that Unchecked_Conversion is
-                                    --  safe from/to type
+      VC_UC_Source,                  --  Check that this type is suitable as a
+                                    --  source for an Unchecked_Conversion
+      VC_UC_Target,                  --  Check that this type is suitable as a
+                                    --  target for an Unchecked_Conversion
+
       VC_UC_Same_Size,               --  Check that the two types of an
                                     --  Unchecked_Conversion are of the same
                                     --  size
