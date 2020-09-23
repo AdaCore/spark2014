@@ -71,4 +71,9 @@ is
       Val3 : Fl)
    is null;
 
+   procedure Lemma_Mul_By_Less_Than_One
+     (Val1 : Fl;
+      Val2 : Fl)
+   is null;
+
 end SPARK.Floating_Point_Arithmetic_Lemmas;

@@ -104,6 +104,14 @@ is
          Val1 <= Val2,
        Post => Val2 * Val3 <= Val1 * Val3;  --  MANUAL PROOF
 
+   procedure Lemma_Mul_By_Less_Than_One
+     (Val1 : Fl;
+      Val2 : Fl)
+     with
+       Global => null,
+       Pre => Val1 in 0.0 .. 1.0 and Val2 >= 0.0,
+       Post => Val1 * Val2 <= Val2;  --  MANUAL PROOF
+
    procedure Lemma_Div_Is_Monotonic
      (Val1 : Fl;
       Val2 : Fl;
@@ -128,7 +136,7 @@ is
          (Val2 in -Fl_Last_Sqrt .. Fl_Last_Sqrt) and then
          (Val3 in Fl'First .. -1.0 / Fl_Last_Sqrt) and then
          Val1 <= Val2,
-     Post => Val2 / Val3 <= Val1 / Val3;  --  MANUAL PROOF
+       Post => Val2 / Val3 <= Val1 / Val3;  --  MANUAL PROOF
 
    ---------------------------------------------
    -- Conversions between floats and integers --
