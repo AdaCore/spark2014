@@ -28,10 +28,10 @@ import pygments.lexers.ml
 
 
 def setup(app):
-    app.add_lexer('ada', ada_pygments.AdaLexer)
-    app.add_lexer('gpr', ada_pygments.GNATProjectLexer)
-    app.add_lexer('whyml', whyml_pygments.WhymlLexer)
-    app.add_lexer('Ocaml', pygments.lexers.ml.OcamlLexer)
+    app.add_lexer('ada', ada_pygments.AdaLexer())
+    app.add_lexer('gpr', ada_pygments.GNATProjectLexer())
+    app.add_lexer('whyml', whyml_pygments.WhymlLexer())
+    app.add_lexer('Ocaml', pygments.lexers.ml.OcamlLexer())
 
 
 # -- General configuration ------------------------------------------------
