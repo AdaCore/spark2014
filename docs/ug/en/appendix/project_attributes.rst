@@ -1,3 +1,5 @@
+.. index:: project file; project attributes
+
 .. _Project Attributes:
 
 Project Attributes
@@ -74,5 +76,3 @@ is allowed to contain the following attributes:
 
      * ``configure_build`` is the name of a configuration command to run prior to the build commands
      * ``build_commands`` is a list of names of build commands to execute in turn
-
-

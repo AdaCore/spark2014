@@ -24,6 +24,8 @@ The examples in this section use the types defined in package ``Loop_Types``:
    :language: ada
    :linenos:
 
+.. index:: Loop_Invariant; rationale
+
 The Need for a Loop Invariant
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -65,6 +67,8 @@ invariant is known. In the following sections, we describe these common
 patterns of loops and their loop invariant, which involve in general iterating
 over the content of a collection (either an array or a container from the
 :ref:`Formal Containers Library`).
+
+.. index:: Loop_Invariant; initialization loops
 
 .. _Initialization Loops:
 
@@ -181,6 +185,8 @@ Similarly, variants of ``Init_Vec_Zero`` and ``Init_List_Zero`` that assign a
 different value to each element of the collection would be proved by
 |GNATprove|.
 
+.. index:: Loop_Invariant; mapping loops
+
 .. _Mapping Loops:
 
 Mapping Loops
@@ -255,6 +261,8 @@ loop invariant, |GNATprove| is able to prove the postcondition of
 
 .. literalinclude:: /examples/tests/map_list_incr/test.out
    :language: none
+
+.. index:: Loop_Invariant; validation loops
 
 .. _Validation Loops:
 
@@ -364,6 +372,8 @@ Similarly, variants of ``Validate_Vec_Zero`` and ``Validate_List_Zero`` that
 keep validating elements of the collection after a non-zero element has been
 encountered would be proved by |GNATprove|.
 
+.. index:: Loop_Invariant; counting loops
+
 .. _Counting Loops:
 
 Counting Loops
@@ -419,6 +429,8 @@ value:
 
 .. literalinclude:: /examples/tests/count_vec_zero/test.out
    :language: none
+
+.. index:: Loop_Invariant; search loops
 
 .. _Search Loops:
 
@@ -488,6 +500,8 @@ value zero, and that ``Pos`` is the cursor of such an element:
 The case of sets and maps is similar to the case of lists. For more complex
 examples of search loops, see the :ref:`SPARK Tutorial` as well as the section
 on :ref:`How to Write Loop Invariants`.
+
+.. index:: Loop_Invariant; maximize loops
 
 .. _Maximize Loops:
 
@@ -571,6 +585,8 @@ elements in the list, and that ``Pos`` is the cursor of such an element:
 The case of sets and maps is similar to the case of lists. For more complex
 examples of search loops, see the :ref:`SPARK Tutorial` as well as the section
 on :ref:`How to Write Loop Invariants`.
+
+.. index:: Loop_Invariant; update loops
 
 .. _Update Loops:
 

@@ -1,3 +1,8 @@
+.. index:: distributed examples
+           bronze level; distributed examples
+           silver level; distributed examples
+           gold level; distributed examples
+
 .. _Examples in the Toolset Distribution:
 
 Examples in the Toolset Distribution

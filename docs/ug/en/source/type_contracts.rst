@@ -21,6 +21,8 @@ Type Contracts
 
 Note that |SPARK| does not yet support aspect ``Type_Invariant`` from Ada 2012.
 
+.. index:: range
+
 .. _Scalar Ranges:
 
 Scalar Ranges
@@ -71,6 +73,8 @@ All the variants above result in the same range checks both at run-time and in
 |GNATprove|. |GNATprove| also uses the range information for proving properties
 about the program (for example, the absence of overflows in computations).
 
+.. index:: discriminant
+
 Record Discriminants
 ---------------------
 
@@ -107,6 +111,8 @@ bounds:
 
 .. literalinclude:: /examples/tests/logging_discr/test.out
    :language: none
+
+.. index:: predicate, Static_Predicate, Dynamic_Predicate
 
 .. _Predicates:
 
@@ -298,6 +304,8 @@ Thus, not all violations of the dynamic predicate are caught at run time. On
 the contrary, during analysis, |GNATprove| checks that initialized variables
 whose subtype has a predicate always contain a value allowed by the predicate.
 
+.. index:: Invariant, Type_Invariant
+
 .. _Type Invariants:
 
 Type Invariants
@@ -364,6 +372,8 @@ Like for subtype predicates, the name of the type can be used inside the invaria
 expression to refer to the current instance of the type. Here the subtype predicate
 of ``Stack`` expresses that the ``Max`` field of a valid stack is the maximum of
 the elements stored in the stack.
+
+.. index:: Default_Initial_Condition; with value False
 
 To make sure that the invariant holds for every value of type ``Stack`` outside
 of the package ``P``, |GNATprove| introduces invariant checks in several
@@ -496,6 +506,8 @@ invariant check on exit of ``Push_Internal``:
 
 In this way, users will never have to use contracts to ensure that the invariant
 holds on global variable ``The_Stack`` through local subprogram calls.
+
+.. index:: Default_Initial_Condition
 
 .. _Default Initial Condition:
 

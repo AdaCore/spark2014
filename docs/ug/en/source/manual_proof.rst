@@ -23,6 +23,9 @@ degre of interaction required depends on the difficuly of the proof:
   Why3 for arbitrary complex properties, as described in
   :ref:`Manual Proof Using GNAT Studio`
 
+.. index:: manual proof; using the lemma library
+           lemma library; example of use
+
 .. _Manual Proof Using SPARK Lemma Library:
 
 Manual Proof Using SPARK Lemma Library
@@ -99,6 +102,9 @@ passed in arguments, as follows:
    --  the following assertion is proved automatically:
    pragma Assert (R1 <= R2);
 
+.. index:: manual proof; using lemmas
+           ghost code; manual proof using lemmas
+
 .. _Manual Proof Using User Lemmas:
 
 Manual Proof Using User Lemmas
@@ -159,6 +165,9 @@ Or it can be implemented as a normal procedure body with a single assumption:
 Or it can be implemented in some cases as a normal procedure body with ghost
 code to achieve fully automatic proof, see :ref:`Manual Proof Using Ghost
 Code`.
+
+.. index:: manual proof; using ghost code
+           ghost code; manual proof
 
 .. _Manual Proof Using Ghost Code:
 
@@ -336,6 +345,8 @@ timeout of 1s for the default automatic prover CVC4.
 
 .. literalinclude:: /examples/tests/perm/test.out
    :language: none
+
+.. index:: manual proof; using Coq
 
 .. _Manual Proof Using Coq:
 
@@ -683,6 +694,7 @@ proved::
   nonlinear.adb:8:12: info: range check proved
   nonlinear.adb:8:12: info: division check proved
 
+.. index:: manual proof; in GNAT Studio
 
 .. _Manual Proof Using GNAT Studio:
 

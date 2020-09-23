@@ -29,6 +29,9 @@ type in both units:
    :language: ada
    :linenos:
 
+.. index:: Pre'Class; how to use
+           Post'Class; how to use
+
 Writing Contracts on Dispatching Subprograms
 --------------------------------------------
 
@@ -83,6 +86,8 @@ configurations that can be found in practice:
    class-wide contract (here only a postcondition). The default class-wide
    postcondition of ``True`` is used for the overridden
    ``Shape.Set_Default_No_Post``.
+
+.. index:: Liskov Substitution Principle
 
 In case 1, the overriding subprogram satisfies Liskov Substitution Principle by
 construction, so |GNATprove| emits no check in that case. Note that this is not

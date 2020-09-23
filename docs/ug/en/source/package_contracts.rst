@@ -23,6 +23,8 @@ declarations which contain an initialization expression, as well as the
 statements sometimes given at the end of a package body that are precisely
 executed at package startup.
 
+.. index:: state abstraction; in package contract
+
 .. _State Abstraction:
 
 State Abstraction
@@ -36,6 +38,8 @@ to define :ref:`Subprogram Contracts` at an abstract level that does not depend
 on a particular choice of implementation (see :ref:`State Abstraction and
 Contracts`), which is better both for maintenance (no need to change contracts)
 and scalability of analysis (contracts can be much smaller).
+
+.. index:: Abstract_State, Refined_State
 
 Basic State Abstraction
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -152,6 +156,8 @@ itself is visible:
 The last case allows subprograms in two packages to mutually reference the
 abstract state of the other package in their data and flow dependencies.
 
+.. index:: constant with variable inputs; in state abstraction
+
 Special Cases of State Abstraction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -200,6 +206,8 @@ P's refinement. For example, we can nest ``Account`` in the body of the
       end Account;
       ...
    end Account_Manager;
+
+.. index:: Part_Of; in state abstraction
 
 State In The Private Part
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -259,6 +267,8 @@ abstract state of the enclosing package:
       package Account is new Generic_Account (Max_Total) with Part_Of => Details;
       ...
    end Account_Manager;
+
+.. index:: Initializes
 
 .. _Package Initialization:
 
@@ -341,6 +351,8 @@ variable:
       ...
    end Account;
 
+.. index:: Initial_Condition
+
 .. _Package Initial Condition:
 
 Package Initial Condition
@@ -384,6 +396,8 @@ Interfaces to the Physical World
 --------------------------------
 
 [|SPARK|]
+
+.. index:: volatile; variables
 
 Volatile Variables
 ^^^^^^^^^^^^^^^^^^
@@ -440,6 +454,11 @@ on the similar first assignment to ``V``, because the intermediate value of
 Note that in real code, the memory address of the volatile variable is set
 through aspect ``Address`` or the corresponding representation clause, so that
 it can be read or written outside the program.
+
+.. index:: Async_Writers; variables
+           Async_Readers; variables
+           Effective_Writes; variables
+           Effective_Reads; variables
 
 .. _Properties of Volatile Variables:
 
@@ -518,6 +537,8 @@ assumed to have all four aspects set to ``True``. A volatile variable on which
 some of the four aspects are set to ``True`` is assumed to have the remaining
 ones set to ``False``. See SPARK RM 7.1.3 for details.
 
+.. index:: volatile; types
+
 .. _Properties of Volatile Types:
 
 Properties of Volatile Types
@@ -543,6 +564,14 @@ can be written equivalently:
 
    type T is new Integer with Volatile, Async_Writers, Effective_Reads;
    Log_In : T;
+
+.. index:: volatile; state
+           External; in state abstraction
+           Async_Writers; state
+           Async_Readers; state
+           Effective_Writes; state
+           Effective_Reads; state
+
 
 .. _External State Abstraction:
 

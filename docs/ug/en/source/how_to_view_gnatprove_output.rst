@@ -5,6 +5,8 @@ How to View |GNATprove| Output
 output or displayed in your IDE (GNAT Studio or GNATbench), and a textual summary of
 the analysis results.
 
+.. index:: GNAT Studio integration; analysis report
+
 The Analysis Report Panel
 -------------------------
 
@@ -21,6 +23,8 @@ Here is an example of this view:
 
 .. image:: /static/analysis_report_panel.png
 
+.. index:: GNAT Studio integration; log file
+
 .. _The Analysis Results Summary File:
 
 The Analysis Results Summary File
@@ -30,6 +34,8 @@ The Analysis Results Summary File
 which can be displayed in GNAT Studio using the menu :menuselection:`SPARK --> Show
 Log`. The file ``gnatprove.out`` is generated in the ``gnatprove`` subdirectory
 of the object directory of the project.
+
+.. index:: --output-header
 
 When switch ``--output-header`` is used, this file starts with a header
 containing extra information about the run including:
@@ -114,6 +120,8 @@ automated provers. The line may look like this::
 
    max steps used for successful proof: 1234
 
+.. index:: --steps; max steps used
+
 The use of this line is to help with reproducability of a run of |GNATprove|
 that proved all checks and properties. If the user provides the given number
 via the ``--steps`` option to |GNATprove|, and disables the time and memory
@@ -143,14 +151,20 @@ Categories of Messages
 |GNATprove| issues four different kinds of messages: errors, warnings,
 check messages and information messages.
 
+.. index:: error messages
+
 * Errors are issued for |SPARK| violations or other language legality problems,
   or any other problem which does not allow to proceed to analysis.  Errors
   cannot be suppressed and must be fixed to proceed with analysis.
+
+.. index:: warnings
 
 * Warnings are issued for any suspicious situation like unused values of
   variables, useless assignments, etc. Warnings are prefixed with the text
   ``"warning: "`` and can be suppressed with ``pragma Warnings``, see section
   :ref:`Suppressing Warnings`.
+
+.. index:: check messages
 
 * Check messages are issued for any potential problem in the code which could
   affect the correctness of the program, such as missing initialization,
@@ -160,10 +174,14 @@ check messages and information messages.
   suppressed like warnings, but they can be individually justified with pragma
   ``Annotate``, see section :ref:`Justifying Check Messages`.
 
+.. index:: info messages
+
 * Information messages are issued to notify the user of limitations of
   |GNATprove| on some constructs, or to prevent possible confusion in
   understanding the output of |GNATprove|. They are also issued to report
   proved checks in some modes of |GNATprove|.
+
+.. index:: --mode; effect on output
 
 .. _Effect of Mode on Output:
 
@@ -195,6 +213,8 @@ implementation (using proof).
 In mode ``all``, |GNATprove| prints on the standard output both messages for
 mode ``flow`` and for mode ``prove``.
 
+.. index:: --report
+
 If switch ``--report=all``, ``--report=provers`` or ``--report=statistics`` is
 specified, |GNATprove| additionally prints on the standard output information
 messages for proved checks.
@@ -219,6 +239,8 @@ is about ``Y``, and that |GNATprove| was unable to prove that ``Y`` cannot be
 zero. The explanations in the table below should be read with the context that
 is given by the source location.
 
+.. index:: --cwe
+
 When switch ``--cwe`` is used, a corresponding CWE id is included in the
 message when relevant. For example, on the example above, |GNATprove| will
 output a message such as::
@@ -232,6 +254,8 @@ Effectiveness Program (`http://cwe.mitre.org/ <http://cwe.mitre.org/>`_). The
 current version of |GNATprove| is based on CWE version 3.2 released on January
 3, 2019.
 
+.. index:: check messages; categories of messages
+
 .. toctree::
    :maxdepth: 2
 
@@ -243,6 +267,8 @@ inside GNAT Studio by typing the desired substring in the search bar of the
 ``Locations`` panel. For example, search for "CWE" to get all messages with a
 corresponding CWE, or "CWE 369" to get all messages related to division by zero
 vulnerability.
+
+.. index:: counterexample; understanding counterexamples
 
 .. _Understanding Counterexamples:
 
@@ -329,7 +355,7 @@ feasible execution of the program:
    the counterexample produced may not correspond to a feasible execution.
 
 #. When the value of ``--proof`` switch is ``per_check`` (the default value),
-   then the counterexample gives values to variables on all paths through the
+   then the counterexample may give values to variables on all paths through the
    subprogram, not only the path which corresponds to the feasible
    execution. One can rerun |GNATprove| with value ``progressive`` or
    ``per_path`` to separate possible execution paths in the counterexample.

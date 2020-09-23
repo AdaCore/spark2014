@@ -1,8 +1,8 @@
-function Addition_Saturated (X, Y : Integer) return Integer with
+function Addition (X, Y : Integer) return Integer with
   SPARK_Mode,
-  Contract_Cases => ((X + Y in Integer)    => Addition_Saturated'Result = X + Y,
-                     X + Y < Integer'First => Addition_Saturated'Result = Integer'First,
-                     X + Y > Integer'Last  => Addition_Saturated'Result = Integer'Last)
+  Contract_Cases => ((X + Y in Integer)    => Addition'Result = X + Y,
+                     X + Y < Integer'First => Addition'Result = Integer'First,
+                     X + Y > Integer'Last  => Addition'Result = Integer'Last)
 is
 begin
    if X < 0 and Y < 0 then -- both negative
@@ -22,4 +22,4 @@ begin
    else -- one positive or null, one negative or null, adding them is safe
       return X + Y;
    end if;
-end Addition_Saturated;
+end Addition;

@@ -10,6 +10,8 @@ programs. Some of these features come from Ada 2012 (:ref:`Attribute Old` and
 this section, we describe these features and their impact on execution and
 formal verification.
 
+.. index:: Constant_After_Elaboration
+
 .. _Aspect Constant_After_Elaboration:
 
 Aspect ``Constant_After_Elaboration``
@@ -57,6 +59,8 @@ unsynchronized modifications (see :ref:`Tasks and Data Races`).
       Legal;
    end CAE;
 
+.. index:: No_Caching
+
 Aspect ``No_Caching``
 ---------------------
 
@@ -88,12 +92,16 @@ Without ``No_Caching``, the volatile variable is assumed to be used for
 :ref:`Interfaces to the Physical World`, |GNATprove| analyses it specially and
 one cannot declare it inside a subprogram.
 
+.. index:: Old
+
 .. _Attribute Old:
 
 Attribute ``Old``
 -----------------
 
 [Ada 2012]
+
+.. index:: postcondition; and Old
 
 In a Postcondition
 ^^^^^^^^^^^^^^^^^^
@@ -155,6 +163,9 @@ attribute ``Old`` to the entity prefix ``A``:
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
      Post => (if J in A'Range then V = A'Old(J));
 
+
+.. index:: Contract_Cases; and Old
+
 In Contract Cases
 ^^^^^^^^^^^^^^^^^
 
@@ -199,6 +210,8 @@ apply attribute ``Old`` to the entity prefix ``A``:
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
      Contract_Cases => (J >= A'First => (if J <= A'Last then V = A'Old(J)),
                         others       => True);
+
+.. index:: Unevaluated_Use_Of_Old
 
 .. _In a Potentially Unevaluated Expression:
 
@@ -258,6 +271,10 @@ Pragma ``Unevaluated_Use_Of_Old`` applies to uses of attribute ``Old`` both
 inside postconditions and inside contract cases. See |GNAT Pro| RM for a
 detailed description of this pragma.
 
+.. index:: Result
+           postcondition; and Result
+           Contract_Cases; and Result
+
 .. _Attribute Result:
 
 Attribute ``Result``
@@ -279,6 +296,9 @@ Contrary to ``Attribute Old``, attribute ``Result`` does not require copying
 the value, hence it can be applied to functions that return a limited
 type. Attribute ``Result`` can also be used inside consequence expressions in
 :ref:`Contract Cases`.
+
+.. index:: Loop_Entry
+           loop; and Loop_Entry
 
 .. _Attribute Loop_Entry:
 
@@ -354,6 +374,8 @@ By default, similar restrictions exist for the use of attribute ``Loop_Entry``
 and the use of attribute ``Old`` :ref:`In a Potentially Unevaluated
 Expression`. The same solutions apply here, in particular the use of |GNAT Pro|
 pragma ``Unevaluated_Use_Of_Old``.
+
+.. index:: delta aggregate
 
 .. _Delta Aggregates:
 
@@ -440,6 +462,8 @@ limited.
 
    In |SPARK| versions up to |SPARK| 21, delta aggregates are not supported
    and an equivalent attribute named ``Update`` can be used instead.
+
+.. index:: if-expression; case-expression
 
 .. _Conditional Expressions:
 
@@ -533,6 +557,8 @@ A last case of ``others`` can be used to denote all cases not covered by
 previous conditions. If-expressions and case-expressions should always be
 parenthesized.
 
+.. index:: quantified-expression
+
 .. _Quantified Expressions:
 
 Quantified Expressions
@@ -592,6 +618,8 @@ the entire range ``I in 1 .. 10`` (including ``I = 3``) so it issues a check
 message for a possible division by zero in this case.
 
 Quantified expressions should always be parenthesized.
+
+.. index:: declare-expression
 
 .. _Declare Expressions:
 
@@ -663,6 +691,8 @@ the second bound:
 	     (A'Old (Fst_Zero + 1 .. A'Last));
         begin
           A = (A'Old with delta Fst_Zero .. Snd_Zero => 0));
+
+.. index:: expression function
 
 .. _Expression Functions:
 
@@ -770,6 +800,8 @@ implicit postcondition at every call. If an expression function is defined in a
 unit body, |GNATprove| can use its implicit postcondition at every call in the
 same unit, but not at calls inside other units. This is true even if the
 expression function is declared in the unit spec and defined in the unit body.
+
+.. index:: ghost code, Ghost
 
 .. _Ghost Code:
 
@@ -1379,6 +1411,8 @@ constraining. In particular, it does not permit initializing composite objects
 by part through different subprograms, or leaving data uninitialized on return
 if an error occurred.
 
+.. index:: Relaxed_Initialization
+
 Aspect ``Relaxed_Initialization``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1491,6 +1525,8 @@ field.
 
   The ``Relaxed_Initialization`` aspect is not allowed on subtypes, so a
   derived type is necessary to add the aspect to an existing type.
+
+.. index:: Initialized
 
 Attribute ``Initialized``
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1614,7 +1650,7 @@ following way:
 
   It is possible to annotate an object with the ``Relaxed_Initialization``
   aspect to use proof to verify its initialization. For example, it allows to
-  workaround limitations in flow analysis with respect to initialization 
+  workaround limitations in flow analysis with respect to initialization
   of arrays. However, if this initialization goes through a loop, using the
   ``Initialized`` attribute in a loop invariant might be required for proof to
   verify the program.

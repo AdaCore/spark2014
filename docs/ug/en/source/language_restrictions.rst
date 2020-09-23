@@ -11,11 +11,15 @@ Excluded Ada Features
 To facilitate formal verification, |SPARK| enforces a number of global
 simplifications to Ada. The most notable simplifications are:
 
+.. index:: access types; excluded feature
+
 * Uses of access types and allocators must follow an ownership policy, so that
   only one access object has read-write permission to some allocated memory at
   any given time, or only read-only permission for that allocated memory is
   granted to possibly multiple access objects. See :ref:`Memory Ownership
   Policy`.
+
+  .. index:: side effects; excluded feature
 
 * All expressions (including function calls) are free of
   side-effects. Functions with side-effects are more complex to treat logically
@@ -23,21 +27,29 @@ simplifications to Ada. The most notable simplifications are:
   in sub-expressions of an enclosing expression. Functions with side-effects
   should be written as procedures in |SPARK|.
 
+.. index:: aliasing; excluded feature
+
 * Aliasing of names is not permitted. Aliasing may lead to unexpected
   interferences, in which the value denoted locally by a given name changes as
   the result of an update to another locally named variable. Formal
   verification of programs with aliasing is less precise and requires more
   manual work. See :ref:`Absence of Interferences`.
 
+.. index:: goto; excluded feature
+
 * The backward goto statement is not permitted. Backward gotos can be used
   to create loops, which
   require a specific treatment in formal verification, and thus should be
   precisely identified. See :ref:`Loop Invariants` and :ref:`Loop Variants`.
 
+.. index:: controlled types; excluded feature
+
 * The use of controlled types is not permitted. Controlled types lead to the
   insertion of implicit calls by the compiler. Formal verification of implicit
   calls makes it harder for users to interact with formal verification tools,
   as there is no source code on which information can be reported.
+
+.. index:: exceptions; excluded feature
 
 * Handling of exceptions is not permitted. Exception handling gives raise to
   numerous interprocedural control-flow paths. Formal verification of programs
@@ -46,12 +58,16 @@ simplifications to Ada. The most notable simplifications are:
   exceptions is allowed (see :ref:`Raising Exceptions and Other Error Signaling
   Mechanisms`).
 
+.. index:: termination; excluded feature
+
 * Unless explicitly specified as (possibly) nonreturning, subprograms should
   always terminate when called on inputs satisfying the subprogram
   precondition.  While care is taken in |GNATprove| to reduce possibilities of
   unsoundness resulting from nonreturning subprograms, it is possible that
   axioms generated for nonreturning subprograms not specified as such may lead
   to unsoundness. See :ref:`Nonreturning Procedures`.
+
+.. index:: generics; excluded feature
 
 * Generic code is not analyzed directly. Doing so would require lengthy
   contracts on generic parameters, and would restrict the kind of code that can
@@ -67,6 +83,8 @@ Uses of these features in |SPARK| code are detected by |GNATprove| and reported
 as errors. Formal verification is not possible on subprograms using these
 features. But these features can be used in subprograms in Ada not identified
 as |SPARK| code, see :ref:`Identifying SPARK Code`.
+
+.. index:: Size, Object_Size
 
 .. _Sizes of Objects:
 
@@ -96,6 +114,8 @@ aspect syntax:
 .. literalinclude:: /examples/tests/uc/uc.ads
    :language: ada
    :lines: 5-22
+
+.. index:: validity, Unchecked_Conversion, Valid
 
 Data Validity
 -------------
@@ -147,6 +167,9 @@ The following example shows some typical usages of unchecked conversions and
 .. literalinclude:: /examples/tests/uc/uc.ads
    :language: ada
    :linenos:
+
+.. index:: initialization
+           Relaxed_Initialization; initialization policy
 
 .. _Data Initialization Policy:
 
@@ -229,6 +252,9 @@ initialization through contracts that are verified by proof (as opposed to
 flow analysis). Thus, ``Relaxed_Initialization`` should only be used when
 needed as it requires more effort to verify data initialization from both the
 user and the tool.
+
+.. index:: access types; ownership policy
+           ownership
 
 .. _Memory Ownership Policy:
 
@@ -313,6 +339,8 @@ general access types. This ensures in particular that access values in SPARK
 always point to dynamically-allocated memory, and thus can be freed when not
 null.
 
+.. index:: aliasing; absence of interference
+
 .. _Absence of Interferences:
 
 Absence of Interferences
@@ -391,6 +419,9 @@ messages:
 Note that |SPARK| currently does not detect aliasing between objects that
 arises due to the use of Address clauses or aspects.
 
+.. index:: exceptions; raising exception
+           No_Return; error signaling
+
 .. _Raising Exceptions and Other Error Signaling Mechanisms:
 
 Raising Exceptions and Other Error Signaling Mechanisms
@@ -451,6 +482,9 @@ thanks to the precondition of ``Check_OK`` which states that parameter
 ``No_Return`` do not return: they should either raise an exception or loop
 forever on any input.
 
+.. index:: No_Return; nonreturning procedures
+           Might_Not_Return
+
 .. _Nonreturning Procedures:
 
 Nonreturning Procedures
@@ -501,6 +535,8 @@ the call is unreachable.
 Note that it is also possible to specify explicitly that a subprogram
 terminates, in which case |GNATprove| will verify that it indeed terminates.
 See :ref:`Subprogram Termination`.
+
+.. index:: generics; analysis of instances
 
 .. _Analysis of Generics:
 

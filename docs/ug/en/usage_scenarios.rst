@@ -26,6 +26,8 @@ how |SPARK| can be applied in each case.
 Objectives of Using SPARK
 =========================
 
+.. index:: stone level; safe coding standard
+
 .. _Safe Coding Standard for Critical Software:
 
 Safe Coding Standard for Critical Software
@@ -79,6 +81,8 @@ the complete list).
   insertions of implicit calls by the compiler. Finally, backward goto
   statements are not permitted as they obfuscate the control flow.
 
+.. index:: bronze level; early detection of errors
+
 Early Detection of Errors
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -99,6 +103,8 @@ It will also warn systematically about the following suspicious behaviors:
 
 * unused variables or statements (again, can hurt readability and
   maintainability or even be the sign of a bug)
+
+.. index:: silver level; absence of run-time errors
 
 .. _Prove Absence of Run-Time Errors (AoRTE):
 
@@ -143,6 +149,8 @@ of :ref:`The Analysis Results Summary File`. Multiple columns display the
 number of checks automatically verified, while the column `Justified` displays
 the number of checks manually justified. The column `Unproved` should be empty
 for all checks to be verified.
+
+.. index:: executable contracts; combining proof and test
 
 With a Combination of Proof and Test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -243,6 +251,8 @@ This strategy is particularly well suited in the context of the DO-178C
 certification standard in avionics, which explicitly allows proof or test to be
 used as verification means on each module.
 
+.. index:: gold level; correct component integration
+
 .. _Prove Correct Integration Between Components:
 
 Prove Correct Integration Between Components
@@ -318,6 +328,8 @@ Defensive code can be advantageously replaced by preconditions:
 
 * |GNATprove| can use the preconditions to prove correct integration between
   components, as in new developments.
+
+.. index:: gold level; functional correctness
 
 .. _Prove Functional Correctness:
 
@@ -432,6 +444,8 @@ that clients of the package only see the visible constant declaration without
 value. In such a case, the analysis of client units with |GNATprove| is valid
 for all possible values of the constant.
 
+.. index:: silver level; optimize run-time checks
+
 .. _Safe Optimization of Run-Time Checks:
 
 Safe Optimization of Run-Time Checks
@@ -461,6 +475,8 @@ Assertion_Policy`. For more details, see :ref:`Choosing Which Run-time Checking
 to Keep`. By replacing many checks with a few checks, we can decrease the
 running time of the application by doing safe and controlled optimization of
 run-time checks.
+
+.. index:: bronze level; data and control coupling
 
 .. _Address Data and Control Coupling:
 
@@ -513,6 +529,8 @@ allowed. |SPARK| is ideally equiped to support such analysis, with its detailed
 When using data and flow dependencies, |GNATprove|'s flow analysis is
 sufficient to check that the program implements its specifications. When using
 functional contracts, |GNATprove|'s proof should also be applied.
+
+.. index:: portability
 
 .. _Ensure Portability of Programs:
 
@@ -954,6 +972,8 @@ new development? Or an evolution of an existing codebase? Is the existing
 codebase in Ada or in a version of SPARK prior to SPARK 2014? We examine all
 these project scenarios in this section.
 
+.. index:: migration from Ada; project scenario
+
 .. _Maintenance and Evolution of Existing Ada Software:
 
 Maintenance and Evolution of Existing Ada Software
@@ -1159,6 +1179,8 @@ process for this scenario might be:
 #. As each subprogram is implemented, |GNATprove| can be used (in mode ``flow``
    or ``proof`` depending on the objectives) to verify it (against its
    contract, and/or to show absence of run-time errors).
+
+.. index:: migration from SPARK 2005; project scenario
 
 .. _Conversion of Existing SPARK Software to SPARK 2014:
 

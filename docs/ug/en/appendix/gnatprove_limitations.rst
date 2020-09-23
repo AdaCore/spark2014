@@ -1,3 +1,5 @@
+.. index:: limitations
+
 .. _GNATprove_Limitations:
 
 |GNATprove| Limitations
@@ -102,16 +104,24 @@ Legality Rules
 Flow Analysis Limitations
 -------------------------
 
+.. index:: Depends; limitation
+
 #. Flow dependencies caused by record assignments is not captured with perfect
    accuracy. This means that the value of one field might incorrectly be
    considered to participate in the derivation of another field that it does
    not really participate in.
 
+.. index:: initialization; limitation
+
 #. Initialization of multi-dimensional arrays with nested FOR loops can be only
-   detected if the array bounds are given by static expressions.
+   detected if the array bounds are given by static expressions. A possible
+   solution is to use :ref:`Aspect Relaxed_Initialization` instead in such a
+   case and to prove that only initialized data is read.
 
 Proof Limitations
 -----------------
+
+.. index:: recursion; limitation
 
 #. Postconditions of recursive functions called in contracts and assertion
    pragmas are not available, possibly leading to unproved checks. The current
@@ -119,7 +129,11 @@ Proof Limitations
    the switch ``--info`` reveals where the information about postcondition may
    be lost.
 
+.. index:: Valid; limitation
+
 #. Attribute 'Valid is currently assumed to always return True.
+
+.. index:: validity; limitation
 
 #. Values read from an external source are assumed to be valid values.
    Currently there is no model of invalidity or undefinedness. The onus
@@ -145,6 +159,8 @@ Proof Limitations
 
 #. |GNATprove| does not follow the value of tags for tagged objects. As a
    consequence, tag checks are currently unprovable in most cases.
+
+.. index:: Loop_Invariant; limitation
 
 #. Constants declared in loops before the loop invariant are handled as
    variables by the tool. This means in particular that any information

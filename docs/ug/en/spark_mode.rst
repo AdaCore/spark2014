@@ -1,3 +1,5 @@
+.. index:: SPARK_Mode; usage
+
 .. _Identifying SPARK Code:
 
 ************************
@@ -107,6 +109,8 @@ isolating it in a local subprogram whose body is not in |SPARK|.
 Such patterns are intended to allow for application of formal verification to a
 subset of a program, and the combination of formal verification with more
 traditional testing (see :ref:`Applying SPARK in Practice`).
+
+.. index:: project file; and SPARK_Mode
 
 Project File Setup
 ==================

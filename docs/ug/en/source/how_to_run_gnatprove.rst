@@ -1,6 +1,8 @@
 How to Run |GNATprove|
 ======================
 
+.. index:: project file; setup
+
 .. _Setting Up a Project File:
 
 Setting Up a Project File
@@ -123,6 +125,12 @@ be analyzed by |GNATprove|:
   This is intended for the day-to-day command-line or IDE use of
   |GNATprove| when implementing a project.
 
+.. index:: --mode
+           stone level; command-line switch
+           bronze level; command-line switch
+           silver level; command-line switch
+           gold level; command-line switch
+
 |GNATprove| consists of two distinct analyses: flow analysis and proof.
 Flow analysis checks the correctness of aspects related to data flow
 (``Global``, ``Depends``, ``Abstract_State``, ``Initializes``, and
@@ -159,6 +167,8 @@ and ``gold``, you can choose which analysis is performed:
 * In the default mode ``all``, |GNATprove| does both flow analysis and proof.
   The ``silver`` and ``gold`` modes are synonyms for this mode.
 
+.. index:: --limit-line; command-line usage
+
 Using the option ``--limit-line=`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of
 file ``example.adb``, you can add the option ``--limit-line=example.adb:12`` to
@@ -167,6 +177,8 @@ to a subprogram declared in a particular file at a particular line. Using
 ``--limit-region=`` one can limit proofs to a range of lines in a particular
 file. For example, ``--limit-region=example.adb:12:14`` will limit analysis to
 lines 12 to 14 in ``example.adb``.
+
+.. index:: --prover, --timeout, --memlimit, --steps, -j
 
 A number of options exist to influence the behavior for proof. Internally, the
 prover(s) specified with option ``--prover`` is/are called repeatedly for each
@@ -195,6 +207,8 @@ N is the number of cores on the machine.
    The --memlimit switch is currently ineffective on the Mac OS X operating
    system, due to limitations of the underlying system call on that system.
 
+.. index:: --proof
+
 The way checks are passed to the prover can also be influenced using the option
 ``--proof``. By default, the prover is invoked a single time for each check or
 assertion (mode ``per_check``). This can be changed using mode ``per_path`` to
@@ -215,6 +229,8 @@ can be then be handled with manual proof). The former is most suited for fully
 automatic proof, it is the default value, and can be explicitly selected with
 ``lazy``. The latter is most suited for combination of automatic and manual
 proof and can be selected with ``all``.
+
+.. index:: --level
 
 Instead of setting individually switches that influence the speed and power of
 proof, one may use the switch ``--level``, which corresponds to predefined
@@ -243,12 +259,18 @@ using the ``--steps`` or ``--replay`` switches instead. The number of steps
 required to proved an example can be accessed by running |GNATprove| with the option
 ``--report=statistics``.
 
+.. index:: --codepeer; command-line usage
+
 |GNATprove| also supports using the static analysis tool |CodePeer| as an
 additional source for the proof of checks, by specifying the command line
 option ``--codepeer=on`` (see :ref:`Using CodePeer Static Analysis`).
 
+.. index:: -f
+
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
+
+.. index:: --replay
 
 When |GNATprove| proves a check, it stores this result in a session file,
 along with the required time and steps for this check to be proved. This
@@ -267,12 +289,17 @@ prover that is not configured, or the user has selected other provers using the
 ``--prover`` option), a warning will be issued that the proof could not be
 replayed, but the check will still be marked as proved.
 
+.. index:: -k
+
 By default, |GNATprove| stops at the first unit where it detect errors
 (violations of Ada or |SPARK| legality rules). The option ``-k`` can be used to
 get |GNATprove| to issue errors of the same kind for multiple units. If there
 are any violations of Ada legality rules, |GNATprove| does not attempt any
 analysis. If there are violations of |SPARK| legality rules, |GNATprove| stops
 after the checking phase and does not attempt flow analysis or proof.
+
+.. index:: --checks-as-errors
+           --warnings; warnings as error
 
 |GNATprove| returns with a non-zero exit status when an error is detected.
 This includes cases where |GNATprove| issues unproved check messages when
@@ -281,6 +308,10 @@ issues warnings when switch ``--warnings=error`` is used. In such cases,
 |GNATprove| also issues a message about termination in error. Otherwise,
 |GNATprove| returns with an exit status of zero, even when unproved check
 messages and warnings are issued.
+
+.. index:: project file; setting target and runtime
+           Target
+           Runtime
 
 Using the GNAT Target Runtime Directory
 ---------------------------------------
@@ -311,6 +342,8 @@ can specify the target and runtime as follows:
    for Target use "c";
    for Runtime ("Ada") use "ccg";
 
+.. index:: --pedantic
+
 .. _implementation_defined:
 
 Specifying the Target Architecture and Implementation-Defined Behavior
@@ -332,6 +365,8 @@ on how to :ref:`Ensure Portability of Programs`.
 
 Note that |GNATprove| will always choose the smallest multiple of 8 bits for
 the base type, which is a safe and conservative choice for any Ada compiler.
+
+.. index:: -gnateT
 
 .. _Target Parameterization:
 
@@ -411,6 +446,8 @@ processor configured as big-endian::
   double        15  I  64  64
   long double   15  I  64  64
 
+.. index:: --codepeer; use cases
+
 .. _Using CodePeer Static Analysis:
 
 Using CodePeer Static Analysis
@@ -448,6 +485,7 @@ the strict contract-based reasoning performed in |SPARK| allow in general:
    loops. Hence |CodePeer| may be able to prove properties which cannot be
    deduced otherwise based on imprecise loop invariants, or in absence of a
    loop invariant.
+
 #. |CodePeer| ignores the ``SPARK_Mode`` pragma and aspects; in particular it
    uses information that is hidden from SPARK using ``pragma SPARK_Mode(Off)``
    or the equivalent aspect.
@@ -463,6 +501,8 @@ used.
 |CodePeer| analysis is particularly interesting when analyzing code using
 floating-point computations, as |CodePeer| is both fast and precise for proving
 bounds of floating-point operations.
+
+.. index:: GNAT Studio integration
 
 .. _Running GNATprove from GNAT Studio:
 
@@ -532,19 +572,26 @@ project. For example, if a generic unit is instantiated twice, selecting
 apply proof to the two corresponding subprograms in instances of the generic
 unit.
 
+.. index:: pair: stone level; GNAT Studio integration
+           pair: bronze level; GNAT Studio integration
+
 The menus :menuselection:`SPARK --> Examine ...` open a panel which allows
 setting various switches for |GNATprove|'s analysis. The main choice offered in
 this panel is to select the mode of analysis, among modes ``check``,
-``check_all`` and ``flow`` (the default).
+``check_all`` (which corresponds to the ``stone`` analysis mode) and ``flow``
+(the default, which corresponds to the ``bronze`` analysis mode).
+
+.. index:: pair: silver level; GNAT Studio integration
+           pair: gold level; GNAT Studio integration
 
 The menus :menuselection:`SPARK --> Prove ...` open a panel which allows
-setting various switches for |GNATprove|'s analysis. By default, this panel
-offers a few simple choices, like the proof level (see description of switch
-``--level`` in :ref:`Running GNATprove from the Command Line`). If the user
-changes its ``User profile`` for |SPARK| (in the |SPARK| section of the
-Preferences dialog - menu :menuselection:`Edit --> Preferences`) from ``Basic``
-to ``Advanced``, then a more complex panel is displayed for proof,
-with more detailed switches.
+setting various switches for |GNATprove|'s analysis, corresponding to the
+``silver`` and ``gold`` analysis modes. By default, this panel offers a few
+simple choices, like the proof level (see description of switch ``--level`` in
+:ref:`Running GNATprove from the Command Line`). If the user changes its ``User
+profile`` for |SPARK| (in the |SPARK| section of the Preferences dialog - menu
+:menuselection:`Edit --> Preferences`) from ``Basic`` to ``Advanced``, then a
+more complex panel is displayed for proof, with more detailed switches.
 
 |GNATprove| project switches can be edited from the panel ``GNATprove`` (menu
 :menuselection:`Edit --> Project Properties`, in the :menuselection:`Build --> Switches`
@@ -556,6 +603,8 @@ information for the user to see. The user can display this path in GNAT Studio b
 clicking on the icon to the left of the failed proof message, or to the left of
 the corresponding line in the editor. The path is hidden again when re-clicking
 on the same icon.
+
+.. index:: pair: counterexample; GNAT Studio integration
 
 For checks verified in proof, |GNATprove| may also generate counterexample
 information for the user to see (see :ref:`Understanding Counterexamples`). The
@@ -571,6 +620,8 @@ screenshot which shows how symbols like :code:`=>` (arrow) or :code:`>=`
 (greater than or equal) are displayed in such a font:
 
 .. image:: /static/firacode.png
+
+.. index:: GNATbench
 
 .. _Running GNATprove from GNATbench:
 
@@ -626,6 +677,8 @@ When editing an Ada file, |GNATprove| can also be run from a
    "Prove Subprogram",   "This runs |GNATprove| on the current subprogram."
    "Prove Line",         "This runs |GNATprove| on the current line."
 
+.. index:: manual proof
+
 .. _GNATprove and Manual Proof:
 
 |GNATprove| and Manual Proof
@@ -662,6 +715,8 @@ analysed condition, either:
    saved in the why3 session so |GNATprove| won't need to be specified the
    prover again to know that the condition is valid.
 
+.. index:: --limit-line; calling an interactive prover
+
 Analysis with |GNATprove| can be limited to a single condition with the
 ``--limit-line`` option::
 
@@ -669,6 +724,8 @@ Analysis with |GNATprove| can be limited to a single condition with the
 
 Please use the output of ``gnatprove --list-categories`` to determine the
 ``check-kind`` to be provided in this command.
+
+.. index:: pair: manual proof; GNAT Studio integration
 
 Calling an Interactive Prover From GNAT Studio
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -691,6 +748,7 @@ Once the editor is closed, GNAT Studio re-executes
 alternative prover as before is still specified. After execution, GNAT Studio will
 offer to re-edit the file if the proof fails.
 
+.. _Manual Proof Within GNAT Studio:
 
 Manual Proof Within GNAT Studio
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -858,16 +916,22 @@ useful in your context.
 
 These settings will speed up |GNATprove|:
 
+.. index:: pair: -j; speeding up
+
 * Use the ``-j`` switch to use more than one core on your machine. |GNATprove|
   can make efficient usage of multi-processing. If your machine has more than
   one processor or core, we strongly suggest to enable multi-processing, using
   the ``-j`` switch. This switch should not have an impact on proof results,
   only on running time.
 
+.. index:: pair: --no-loop-unrolling; speeding up
+
 * Use ``--no-loop-unrolling`` to deactivate loop unrolling. Loop unrolling can
   often avoid the use of a loop invariant, but it almost always will be more
   costly to analyze than a loop with a loop invariant. See also :ref:`Automatic
   Unrolling of Simple For-Loops`.
+
+.. index:: pair: --no-inlining; speeding up
 
 * Use ``--no-inlining`` to deactivate contextual analysis of local subprograms
   without contracts. This feature can often avoid the use of subprogram
@@ -875,24 +939,36 @@ These settings will speed up |GNATprove|:
   calling context than analyzing them separately. See also :ref:`Contextual
   Analysis of Subprograms Without Contracts`.
 
+.. index:: pair: --no-counterexample; speeding up
+
 * Use ``--no-counterexample`` to deactive counterexamples. Counter-examples are
   very useful to understand the reason for a failed proof attempt. You can
   disable this feature if you are not working on a failed proof attempt.
 
+.. index:: pair: --level; speeding up
+
 * Use the ``--level`` switch to use a lower level and faster preset.
   Generally, a lower level is faster than higher levels. See also :ref:`Running
   GNATprove from the Command Line`.
+
+.. index:: pair: --prover; speeding up
+           pair: --timeout; speeding up
+           pair: --steps; speeding up
 
 * More fine-grained than the ``--level`` switch, you can directly set the
   ``--prover``, ``--timeout`` and ``--steps`` options. Using only one prover
   with a small timeout or a small steps limit will result in much faster
   execution.
 
+.. index:: pair: --replay; speeding up
+
 * If you have access to up-to-date session files, (see
   :ref:`Running GNATprove from the Command Line`) and you only want to check
   the proof results of the stored session, you can use ``--replay``. Replay
   only runs previously successful provers and is therefore much faster than a
   run of |GNATprove| without this option.
+
+.. index:: pair: --no-axiom-guard; speeding up
 
 * Use ``--no-axiom-guard``. Generally, SPARK checks that subprograms  correctly
   implement their implicit and explicit contracts, and assumes that this is the
@@ -904,6 +980,9 @@ These settings will speed up |GNATprove|:
   in your project, all subprograms are in the |SPARK| subset, or you have
   confidence in the contracts you wrote for the subprograms which are not in
   |SPARK|, you can disable these guards using the ``--no-axiom-guard`` option.
+
+* Use ``--memcached-server`` switch for :ref:`Sharing Proof Results Via a
+  Memcached Server`.
 
 |GNATprove| and Network File Systems or Shared Folders
 ------------------------------------------------------

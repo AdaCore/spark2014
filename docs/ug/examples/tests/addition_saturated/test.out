@@ -1,10 +1,10 @@
-addition_saturated.adb:3:03: info: disjoint contract cases proved
-addition_saturated.adb:3:03: info: complete contract cases proved
-addition_saturated.adb:3:44: info: contract case proved
-addition_saturated.adb:4:44: info: contract case proved
-addition_saturated.adb:5:44: info: contract case proved
-addition_saturated.adb:9:28: info: overflow check proved
-addition_saturated.adb:12:19: info: overflow check proved
-addition_saturated.adb:16:27: info: overflow check proved
-addition_saturated.adb:19:19: info: overflow check proved
-addition_saturated.adb:23:16: info: overflow check proved
+addition.adb:3:03: info: disjoint contract cases proved
+addition.adb:3:03: info: complete contract cases proved
+addition.adb:3:44: info: contract case proved
+addition.adb:4:44: info: contract case proved
+addition.adb:5:44: info: contract case proved
+addition.adb:9:28: info: overflow check proved
+addition.adb:12:19: info: overflow check proved
+addition.adb:16:27: info: overflow check proved
+addition.adb:19:19: info: overflow check proved
+addition.adb:23:16: info: overflow check proved

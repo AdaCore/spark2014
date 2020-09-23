@@ -1,3 +1,5 @@
+.. index:: Ravenscar, concurrency
+
 .. _Concurrency and Ravenscar Profile:
 
 Concurrency and Ravenscar Profile
@@ -48,6 +50,8 @@ expression, as follows (absolute and relative delays, respectively):
 * If the expression is of the type Ada.Calendar.Time then it is considered to
   reference the state abstraction Ada.Calendar.Clock_Time, which is defined
   similarly to Ada.Real_Time.Clock_Time but represents a different time base.
+
+.. index:: tasking, data race
 
 .. _Tasks and Data Races:
 
@@ -130,6 +134,10 @@ need one task ``Account_Management`` then we can write:
       end Account_Management;
 
    end Account;
+
+.. index:: protected object; and data races
+           Suspension_Object; and data races
+           Constant_After_Elaboration; and data races
 
 .. _Preventing Data Races:
 
@@ -223,6 +231,8 @@ without risking data races:
 
    end Account;
 
+.. index:: Part_Of; for concurrency
+
 It is possible for a task to access an unsynchronized global variable only if
 this variable is declared in the same package as the task and if there is a
 single task accessing this variable. To allow this property to be statically
@@ -260,6 +270,8 @@ This is a difference between tasks and subprograms, for which such contracts
 describe the dependencies between outputs and inputs `when the subprogram
 returns`.
 
+.. index:: Global; in task contract
+
 Data Dependencies
 ^^^^^^^^^^^^^^^^^
 
@@ -275,6 +287,8 @@ for task (type or object) ``Account_Management`` as follows:
       task type Account_Management with
         Global => (In_Out => Num_Accounts);
    end Account;
+
+.. index:: Depends; in task contract
 
 Flow Dependencies
 ^^^^^^^^^^^^^^^^^
@@ -312,6 +326,8 @@ The dependency of the task on itself can be left implicit as well, as follows:
       task type Account_Management with
         Depends => (Num_Accounts => Num_Accounts);
    end Account;
+
+.. index:: protected object; and deadlock
 
 .. _Protected Objects and Deadlocks:
 
@@ -631,6 +647,8 @@ used by ``Account_Management``, its ceiling priority should be no lower than 5:
 
    end Account;
 
+.. index:: Suspension_Object
+
 .. _Suspension Objects:
 
 Suspension Objects
@@ -707,6 +725,10 @@ each suspension object:
        Set_True (Semaphore1);
      end loop;
    end T2;
+
+.. index:: state abstraction; and concurrency
+           External; and concurrency
+           Synchronous_State
 
 .. _State Abstraction and Concurrency:
 
@@ -822,6 +844,9 @@ In effect, you might miss checks when:
 
 As a workaround, when building library projects add a dummy main subprogram
 that "withs" all the library-level packages of your project.
+
+.. index:: Attach_Handler
+           interrupt handler
 
 Interrupt Handlers
 ------------------
