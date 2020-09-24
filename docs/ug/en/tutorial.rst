@@ -62,7 +62,7 @@ index.
 We can check that the above code is valid Ada by using the ``Build > Check
 Semantic`` menu, which completes without any errors or warnings:
 
-.. index:: stone level; tutorial
+.. index:: Stone level; tutorial
 
 .. image:: /static/search_check_semantic.png
 
@@ -101,7 +101,7 @@ this type:
    :language: ada
    :linenos:
 
-.. index:: bronze level; tutorial
+.. index:: Bronze level; tutorial
 
 .. _Checking SPARK Initialization Policy:
 
@@ -333,8 +333,8 @@ that achieves 100% coverage for all the common coverage criteria, once
 impossible paths have been ruled out: statement coverage, condition coverage,
 the MC/DC coverage used in avionics, and even the full static path coverage.
 
-.. index:: silver level; tutorial
-           gold level; tutorial
+.. index:: Silver level; tutorial
+           Gold level; tutorial
 
 .. _proving spark programs:
 

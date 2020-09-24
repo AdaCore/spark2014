@@ -5,10 +5,11 @@ Applying |SPARK| in Practice
 ****************************
 
 |SPARK| tools offer different levels of analysis, which are relevant in
-different contexts. This section starts with a description of the main
-:ref:`Objectives of Using SPARK`. This list gathers the most commonly found
-reasons for adopting |SPARK| in industrial projects, but it is not intended to
-be an exhaustive list.
+different contexts. This section starts with a description of the five
+:ref:`Levels of Software Assurance` that can be achieved with SPARK. It
+continues with a description of the main :ref:`Objectives of Using SPARK`. This
+list gathers the most commonly found reasons for adopting |SPARK| in industrial
+projects, but it is not intended to be an exhaustive list.
 
 Whatever the objective(s) of using |SPARK|, any project fits in one of four
 possible :ref:`Project Scenarios`:
@@ -21,12 +22,500 @@ possible :ref:`Project Scenarios`:
 The end of this section examines each of these scenarios in turn and describes
 how |SPARK| can be applied in each case.
 
+.. _Levels of Software Assurance:
+
+Levels of Software Assurance
+============================
+
+.. The text of this section is largely borrowed from the Guidance document for
+   the adoption of SPARK. Changes there should be reflected here when possible.
+
+SPARK analysis can give strong guarantees that a program:
+
+* does not read uninitialized data,
+* accesses global data only as intended,
+* does not contain concurrency errors (deadlocks and data races),
+* does not contain run-time errors (e.g., division by zero or buffer overflow),
+* respects key integrity properties (e.g., interaction between components or global invariants),
+* is a correct implementation of software requirements expressed as contracts.
+
+SPARK can analyze either a complete program or :ref:`those parts that are
+marked as being subject to analysis<Identifying SPARK Code>`, but it can only
+be applied to code that follows :ref:`some restrictions designed to facilitate
+formal verification<Language Restrictions>`. In particular, handling of
+exceptions is not allowed and use of pointers should follow a strict ownership
+policy aiming at preventing aliasing of data allocated in the heap (pointers to
+the stack are not allowed). Pointers and exceptions are both features that, if
+supported completely, make formal verification, as done by SPARK, infeasible,
+either because of limitations of state-of-the-art technology or because of the
+disproportionate effort required from users to apply formal verification in
+such situations. The large subset of Ada that is analyzed by SPARK is also
+called the SPARK language subset.
+
+SPARK builds on the strengths of Ada to provide even more guarantees
+statically rather than dynamically. As summarized in the following table,
+Ada provides strict syntax and strong typing at compile time plus dynamic
+checking of run-time errors and program contracts. SPARK allows
+such checking to be performed statically. In addition, it enforces the use of a safer
+language subset and detects data flow errors statically.
+
+.. csv-table::
+   :header: "", "Ada", "SPARK"
+   :widths: 1, 1, 1
+
+   "Contract programming", "dynamic", "dynamic / static"
+   "Run-time errors",      "dynamic", "dynamic / static"
+   "Data flow errors",     "--",      "static"
+   "Strong typing",        "static",  "static"
+   "Safer language subset","--",      "static"
+   "Strict clear syntax",  "static",  "static"
+
+The main benefit of formal program verification as performed by SPARK is that
+it allows verifying properties that are difficult or very costly to verify by
+other methods, such as testing or reviews. That difficulty may stem from the
+complexity of the software, the complexity of the requirements, and/or the
+unknown capabilities of attackers. Formal verification allows giving guarantees
+that some properties are always verified, however complex the context. The
+latest versions of international certification standards for avionics (DO-178C
+/ ED-12C) and railway systems (CENELEC EN 50128:2011) have recognized these
+benefits by increasing the role that formal methods can play in the development
+and verification of critical software.
+
+Levels of SPARK Use
+-------------------
+
+The scope and level of SPARK analysis depend on the objectives being
+pursued by the adoption of SPARK. The scope of analysis may be the totality
+of a project, only some units, or only parts of units. The level of
+analysis may range from simple guarantees provided by flow analysis to
+complex properties being proved.  These can be divided into five easily
+remembered levels:
+
+#. `Stone level` - valid SPARK
+#. `Bronze level` - initialization and correct data flow
+#. `Silver level` - absence of run-time errors (AoRTE)
+#. `Gold level` - proof of key integrity properties
+#. `Platinum level` - full functional proof of requirements
+
+Platinum level is defined here for completeness, but it is seldom applicable
+due to the high cost of achieving it. Each level builds on the previous one, so
+that the code subject to the Gold level should be a subset of the code subject
+to Silver level, which itself is a subset of the code subject to Bronze level,
+which is in general the same as the code subject to Stone level. We advise
+using:
+
+* Stone level only as an intermediate level during adoption,
+* Bronze level for as large a part of the code as possible,
+* Silver level as the default target for critical software (subject to costs
+  and limitations),
+* Gold level only for a subset of the code subject to specific key integrity
+  (safety/security) properties,
+* Platinum level only for those parts of the code with the highest integrity
+  (safety/security) constraints.
+
+Our starting point is a program in Ada, which could be thought of as the
+Brick level: thanks to the use of Ada programming language, this level
+already provides some confidence: it is the highest level in The Three
+Little Pigs fable! And indeed languages with weaker semantics could be
+thought of as Straw and Sticks levels. However, the adoption of SPARK
+allows us to get stronger guarantees, should the wolf in the fable adopt
+more aggressive means of attack than simply blowing.
+
+A pitfall when using tools for automating human tasks is to end up "pleasing
+the tools" rather than working around the tool limitations. Both flow analysis
+and proof, the two technologies used in SPARK, have known limitations. Users
+should refrain from changing the program for the benefit of only getting fewer
+messages from the tools. When relevant, users should justify tool messages
+through appropriate pragmas. See the sections on :ref:`Suppressing Warnings`
+and :ref:`Justifying Check Messages` for more details.
+
+GNATprove can be run at the different levels mentioned in this document, either
+through the Integrated Development Environments (IDE) Eclipse (:ref:`GNATbench
+plugin<Running GNATprove from GNATbench>`) or :ref:`GNAT Studio<Running
+GNATprove from GNAT Studio>`, or :ref:`on the command line<Running GNATprove
+from the Command Line>`. Use of the command-line interface at a given level is
+facilitated by convenient synonyms:
+
+* use switch ``--mode=stone`` for Stone level (synonym of ``--mode=check_all``)
+* use switch ``--mode=bronze`` for Bronze level (synonym of ``--mode=flow``)
+* use switch ``--mode=silver`` for Silver level (synonym of ``--mode=all``)
+* use switch ``--mode=gold`` for Gold level (synonym of ``--mode=all``)
+
+Note that levels Silver and Gold are activated with the same switches. Indeed,
+the difference between these levels is not on how GNATprove is run, but on the
+objectives of verification. This is explained in the section on :ref:`Gold
+Level <Gold Level>`. Platinum level is not given a separate switch value, as it
+would be the same.
+
+Sections :ref:`Stone Level <Stone Level>` to :ref:`Platinum Level <Platinum
+Level>` present the details of the five levels of software assurance. Each
+section consists in a short description of three key aspects of adopting SPARK
+at that level:
+
+* `Benefits` - What is gained from adopting SPARK?
+* `Impact on Process` - How should the process (i.e., the software life cycle
+  development and verification activities) be adapted to use SPARK?
+* `Costs and Limitations` - What are the main costs and limitations for
+  adopting SPARK?
+
+Additionally, the index of this document contains entries for all levels (from
+`Stone level` to `Platinum level`) which point to parts of the User's Guide
+relevant for reaching a specific level.
+
+.. index:: Stone level
+
+.. _Stone Level:
+
+Stone Level - Valid SPARK
+-------------------------
+
+The goal of reaching this level is to identify as much code as possible as
+belonging to the SPARK subset. The user is responsible for :ref:`identifying
+candidate SPARK code<Identifying SPARK Code>` by applying the marker
+``SPARK_Mode`` to flag SPARK code to GNATprove, which is responsible for
+checking that the code marked with ``SPARK_Mode`` is indeed valid SPARK
+code. Note that valid SPARK code may still be incorrect in many ways, such as
+raising run-time exceptions. Being valid merely means that the code respects
+the legality rules that define the SPARK subset in the SPARK Reference Manual
+(see http://docs.adacore.com/spark2014-docs/html/lrm/). The number of lines of
+SPARK code in a program can be computed (along with other metrics such as the
+total number of lines of code) by the metrics computation tool GNATmetric.
+
+.. rubric:: Benefits
+
+The stricter SPARK rules are enforced on a (hopefully) large part of the
+program, which leads to higher quality and maintainability, as error-prone
+features such as side-effects in functions are avoided, and others, such as use
+of pointers to the stack, are isolated to non-SPARK parts of the program.
+Individual and
+peer review processes can be reduced on the SPARK parts of the program, since
+analysis automatically eliminates some categories of defects. The parts of the
+program that don't respect the SPARK rules are carefully isolated so they can
+be more thoroughly reviewed and tested.
+
+.. rubric:: Impact on Process
+
+After the initial pass of applying the SPARK rules to the program, ongoing
+maintenance of SPARK code is similar to ongoing maintenance of Ada code, with a
+few additional rules, such as the need to avoid side effects in
+functions. These additional rules are checked automatically by running
+GNATprove on the modified program, which can be done either by the developer
+before committing changes or by an automatic system (continuous builder,
+regression testsuite, etc.)
+
+.. rubric:: Costs and Limitations
+
+Pointer-heavy code needs to be rewritten to follow the ownership policy or
+to hide pointers from SPARK analysis, which may be difficult. The initial
+pass may require large, but shallow, rewrites in order to transform the
+code, for example to rewrite functions with side effects into procedures.
+
+.. index:: Bronze level
+
+.. _Bronze Level:
+
+Bronze Level - Initialization and Correct Data Flow
+---------------------------------------------------
+
+The goal of reaching this level is to make sure that no uninitialized data
+can ever be read and, optionally, to prevent unintended access to global
+variables. This also ensures no possible interference between parameters
+and global variables; i.e., the same variable isn't passed multiple
+times to a subprogram, either as a parameter or global variable.
+
+.. rubric:: Benefits
+
+The SPARK code is guaranteed to be free from a number of defects: :ref:`no
+reads of uninitialized variables<Data Initialization Policy>`, :ref:`no
+possible interference between parameters and global variables<Absence of
+Interferences>`, no unintended access to global variables.
+
+.. index:: Global; for Bronze level
+
+When ``Global`` contracts are used to specify which global variables are read
+and/or written by subprograms, maintenance is facilitated by a clear
+documentation of intent. This is checked automatically by GNATprove,
+so that any mismatch between the implementation and the specification is
+reported.
+
+.. rubric:: Impact on Process
+
+An initial pass is required where flow analysis is enabled and the resulting
+messages are resolved either by rewriting code or justifying any false
+alarms. Once this is complete, ongoing maintenance can preserve the same
+guarantees at a low cost. A few simple idioms can be used to avoid most false
+alarms, and the remaining false alarms :ref:`can be easily justified<Justifying
+Check Messages>`.
+
+.. rubric:: Costs and Limitations
+
+The initial pass may require a substantial effort to deal with the false
+alarms, depending on the coding style adopted up to that point. The analysis
+may take a long time, up to an hour on large programs, but it is guaranteed to
+terminate. Flow analysis is, by construction, limited to local understanding of
+the code, with no knowledge of values (only code paths) and handling of
+composite variables is only through calls, rather than component by component,
+which may lead to false alarms.
+
+.. index:: Silver level
+
+.. _Silver Level:
+
+Silver Level - Absence of Run-time Errors (AoRTE)
+-------------------------------------------------
+
+The goal of this level is to ensure that the program does not raise an
+exception at run time. Among other things, this guarantees that the control
+flow of the program cannot be circumvented by exploiting a buffer overflow,
+or integer overflow. This also ensures that
+the program cannot crash or behave erratically when compiled without
+support for run-time checking (compiler switch ``-gnatp``) because of
+operations that would have triggered a run-time exception.
+
+GNATprove can be used to prove the complete absence of possible run-time
+errors corresponding to the explicit raising of exceptions in the
+program, raising the exception ``Constraint_Error`` at run time, and
+failures of assertions (corresponding to raising exception ``Assertion_Error`` at
+run time).
+
+A special kind of run-time error that can be proved at this level is the
+absence of exceptions from defensive code. This requires users to add
+subprogram preconditions (see section :ref:`Preconditions` for details) that
+correspond to the conditions checked in defensive code. For example, defensive
+code that checks the range of inputs is modeled by a precondition of the
+form ``Input_X in Low_Bound .. High_Bound``. These conditions are then checked by
+GNATprove at each call.
+
+.. rubric:: Benefits
+
+The SPARK code is guaranteed to be free from run-time errors (Absence of
+Run Time Errors - AoRTE) plus all the defects already detected at Bronze
+level: no reads of uninitialized variables, no possible interference
+between parameters and/or global variables, and no unintended access to
+global variables. Thus, the quality of the program can be guaranteed to
+achieve higher levels of integrity than would be possible in other
+programming languages.
+
+All the messages about possible run-time errors can be carefully reviewed
+and justified (for example by relying on external system constraints such
+as the maximum time between resets) and these justifications can be later
+reviewed as part of quality inspections.
+
+The proof of AoRTE can be used to compile the final executable without
+run-time exceptions (compiler switch ``-gnatp``), which results in very
+efficient code comparable to what can be achieved in C or assembly.
+
+The proof of AoRTE can be used to comply with the objectives of
+certification standards in various domains (DO-178B/C in avionics, EN 50128 in
+railway, IEC 61508 in many safety-related industries, ECSS-Q-ST-80C in
+space, IEC 60880 in nuclear, IEC 62304 in medical, ISO 26262 in
+automotive). To date, the use of SPARK has been qualified in an EN 50128
+context. Qualification plans for DO-178 have been developed by AdaCore.
+Qualification material in any context can be developed by AdaCore as
+part of a contract.
+
+.. rubric:: Impact on Process
+
+An initial pass is required where proof of AoRTE is applied to the program,
+and the resulting messages are resolved by either rewriting code or
+justifying any false alarms. Once this is complete, as for the Bronze
+level, ongoing maintenance can retain the same guarantees at reasonable
+cost. Using precise types and simple subprogram contracts (preconditions
+and postconditions) is sufficient to avoid most false alarms, and any
+remaining false alarms can be easily justified.
+
+.. index:: Loop_Invariant; for Silver level
+
+Special treatment is required for loops, which may need the addition of loop
+invariants to prove AoRTE inside and after the loop. The detailed process for
+adding loop contracts is described in :ref:`How to Write Loop Invariants`, as
+well as examples of common patterns of loops and their corresponding loop
+invariants.
+
+.. rubric:: Costs and Limitations
+
+The initial pass may require a substantial effort to resolve all false
+alarms, depending on the coding style adopted previously. The analysis may
+take a long time, up to a few hours, on large programs but is guaranteed to
+terminate. Proof is, by construction, limited to local understanding of the
+code, which requires using sufficiently precise types of variables, and
+some preconditions and postconditions on subprograms to communicate
+relevant properties to their callers.
+
+Even if a property is provable, automatic provers may nevertheless not be
+able to prove it, due to limitations of the heuristic techniques used in
+automatic provers. In practice, these limitations mostly show up on
+non-linear integer arithmetic (such as division and modulo) and
+floating-point arithmetic.
+
+.. index:: Gold level
+
+.. _Gold Level:
+
+Gold Level - Proof of Key Integrity Properties
+----------------------------------------------
+
+The goal of the Gold level is to ensure key integrity properties such as
+maintaining critical data invariants throughout execution and guaranteeing that
+transitions between states follow a specified safety automaton. Typically
+these properties derive from software requirements. Together with the
+Silver level, these goals ensure program integrity, that is, the program
+executes within safe boundaries: the control flow of the program is
+correctly programmed and cannot be circumvented through run-time errors
+and data cannot be corrupted.
+
+SPARK has a number of useful features for specifying both data
+invariants and control flow constraints:
+
+* Type :ref:`Predicates` reflect properties that should always be true of any
+  object of the type.
+* :ref:`Preconditions` reflect properties that should always hold on subprogram
+  entry.
+* :ref:`Postconditions` reflect properties that should always hold on
+  subprogram exit.
+
+These features can be verified statically by running GNATprove in proof
+mode, similarly to what was done at the Silver level. At every point where
+a violation of the property may occur, GNATprove issues either an 'info'
+message, verifying that the property always holds, or a 'check' message
+about a possible violation. Of course, a benefit of proving properties is
+that they don't need to be tested, which can be used to reduce or
+completely eliminate unit testing.
+
+These features can also be used to augment integration testing with dynamic
+verification of key integrity properties. To enable
+this additional verification during execution, you can use either the
+compilation switch ``-gnata`` (which enables verification of all invariants and
+contracts at run time) or ``pragma Assertion_Policy`` (which enables a subset
+of the verification) either inside the code (so that it applies to the
+code that follows in the current unit) or in a pragma configuration file
+(so that it applies to the entire program).
+
+.. rubric:: Benefits
+
+The SPARK code is guaranteed to respect key integrity properties as well as
+being free from all the defects already detected at the Bronze and Silver
+levels: no reads of uninitialized variables, no possible interference
+between parameters and global variables, no unintended access to global
+variables, and no run-time errors. This is a unique feature of SPARK that
+is not found in other programming languages. In particular, such guarantees
+may be used in a safety case to make reliability claims.
+
+The effort in achieving this level of confidence based on proof is
+relatively low compared to the effort required to achieve the same level
+based on testing. Indeed, confidence based on testing has to rely on an
+extensive testing strategy. Certification standards
+define criteria for approaching comprehensive testing, such as Modified
+Condition / Decision Coverage (MC/DC), which are expensive to
+achieve. Some certification standards allow the use of proof as a
+replacement for certain forms of testing, in particular DO-178C in avionics, EN 50128 in
+railway and IEC 61508 for functional safety. Obtaining proofs, as done in
+SPARK, can thus be used as a cost-effective alternative to unit testing.
+
+.. rubric:: Impact on Process
+
+In a high-DAL certification context where proof replaces testing and
+independence is required between certain development/verification activities,
+one person can define the architecture and low-level requirements
+(package specs) and another person can develop the corresponding bodies
+and use GNATprove for verification. Using a common syntax/semantics
+-- contracts -- for both the specs/requirements and the code
+facilitates communication between the two activities and makes it easier
+for the same person(s) to play different roles at different times.
+
+Depending on the complexity of the property being proven, it may be more or
+less costly to add the necessary contracts on types and subprograms and to
+achieve complete automatic proof by interacting with the tool. This
+typically requires some experience with the tool, which can be gained by
+training and practice. Thus not all developers should be
+tasked with developing such contracts and proofs, but instead a few
+developers should be designated for this task.
+
+.. index:: Loop_Invariant; for Gold level
+
+As with the proof of AoRTE at Silver level, special treatment is required for
+loops, such as the addition of loop invariants to prove properties inside and
+after the loop. Details are presented in :ref:`How to Write Loop Invariants`,
+as well as examples of common patterns of loops and their corresponding loop
+invariants.
+
+.. rubric:: Costs and Limitations
+
+The analysis may take a long time, up to a few hours, on large programs,
+but it is guaranteed to terminate. It may also take more or less time
+depending on the proof strategy adopted (as indicated by the switches
+passed to GNATprove). Proof is, by construction, limited to local
+understanding of the code, which requires using sufficiently precise types
+of variables and some preconditions and postconditions on subprograms to
+communicate relevant properties to their callers.
+
+Even if a property is provable, automatic provers may fail to prove it due
+to limitations of the heuristic techniques they employ. In
+practice, these limitations are mostly visible on non-linear integer
+arithmetic (such as division and modulo) and on floating-point arithmetic.
+
+Some properties might not be easily expressible in the form of data
+invariants and subprogram contracts, for example properties of execution
+traces or temporal properties. Other properties may require the use of
+non-intrusive instrumentation in the form of ghost code.
+
+.. index:: Platinum level
+
+.. _Platinum Level:
+
+Platinum Level - Full Functional Correctness
+--------------------------------------------
+
+Platinum level is achieved when contracts fully cover the functional
+requirements. Achieving the Platinum level is rare in itself, and usually done
+for small parts of an application. The :ref:`Examples in the Toolset
+Distribution` contain many such examples of proof at Platinum level, both as
+:ref:`Individual Subprograms` and as :ref:`Single Units`.
+
+.. rubric:: Benefits
+
+The SPARK code is guaranteed to correctly implement its specification,
+including being free from all the defects already detected at the Bronze,
+Silver and Gold levels. These strong guarantees can be used as arguments in a
+safety/security case for the overall software system, providing steps are taken
+for :ref:`Managing Assumptions`.
+
+.. rubric:: Impact on Process
+
+The impact on process is mostly the same as for Gold level. When manual proof
+is used, which is very likely at this level, there is an associated activity to
+maintain these proofs as the code evolves. Typically a dedicated verification
+engineer with enough experience of formal program verification in SPARK should
+be tasked with this activity.
+
+.. rubric:: Costs and Limitations
+
+These are the same as for Gold level, plus the cost of applying manual proof
+more systematically. Depending on the manual proof technique used and the
+complexity of the proof, this might be more or less costly initially and during
+maintenance:
+
+* :ref:`Manual Proof Using SPARK Lemma Library` is the least costly of all,
+  only requiring to use the right lemma from the library.
+
+* :ref:`Manual Proof Using Ghost Code` is more costly, as it requires expertise
+  and interactions with the tool to guide automatic provers.
+
+* :ref:`Manual Proof Using Coq` and :ref:`Manual Proof Using GNAT Studio` are
+  the most costly, as they require expertise in interactive proof (as well as a
+  different syntax in the case of Coq).
+
+While the use of manual proof allows to prove any provable property in
+principle, a balance needs to be found between the higher cost of manual proof
+techniques and the benefits they bring compared to testing or manual
+justification.
+
 .. _Objectives of Using SPARK:
 
 Objectives of Using SPARK
 =========================
 
-.. index:: stone level; safe coding standard
+.. index:: Stone level; safe coding standard
 
 .. _Safe Coding Standard for Critical Software:
 
@@ -81,7 +570,7 @@ the complete list).
   insertions of implicit calls by the compiler. Finally, backward goto
   statements are not permitted as they obfuscate the control flow.
 
-.. index:: bronze level; early detection of errors
+.. index:: Bronze level; early detection of errors
 
 Early Detection of Errors
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -104,7 +593,7 @@ It will also warn systematically about the following suspicious behaviors:
 * unused variables or statements (again, can hurt readability and
   maintainability or even be the sign of a bug)
 
-.. index:: silver level; absence of run-time errors
+.. index:: Silver level; absence of run-time errors
 
 .. _Prove Absence of Run-Time Errors (AoRTE):
 
@@ -251,7 +740,7 @@ This strategy is particularly well suited in the context of the DO-178C
 certification standard in avionics, which explicitly allows proof or test to be
 used as verification means on each module.
 
-.. index:: gold level; correct component integration
+.. index:: Gold level; correct component integration
 
 .. _Prove Correct Integration Between Components:
 
@@ -329,7 +818,7 @@ Defensive code can be advantageously replaced by preconditions:
 * |GNATprove| can use the preconditions to prove correct integration between
   components, as in new developments.
 
-.. index:: gold level; functional correctness
+.. index:: Gold level; functional correctness
 
 .. _Prove Functional Correctness:
 
@@ -444,7 +933,7 @@ that clients of the package only see the visible constant declaration without
 value. In such a case, the analysis of client units with |GNATprove| is valid
 for all possible values of the constant.
 
-.. index:: silver level; optimize run-time checks
+.. index:: Silver level; optimize run-time checks
 
 .. _Safe Optimization of Run-Time Checks:
 
@@ -476,7 +965,7 @@ to Keep`. By replacing many checks with a few checks, we can decrease the
 running time of the application by doing safe and controlled optimization of
 run-time checks.
 
-.. index:: bronze level; data and control coupling
+.. index:: Bronze level; data and control coupling
 
 .. _Address Data and Control Coupling:
 

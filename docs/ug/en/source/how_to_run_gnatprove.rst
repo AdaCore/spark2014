@@ -126,10 +126,10 @@ be analyzed by |GNATprove|:
   |GNATprove| when implementing a project.
 
 .. index:: --mode
-           stone level; command-line switch
-           bronze level; command-line switch
-           silver level; command-line switch
-           gold level; command-line switch
+           Stone level; command-line switch
+           Bronze level; command-line switch
+           Silver level; command-line switch
+           Gold level; command-line switch
 
 |GNATprove| consists of two distinct analyses: flow analysis and proof.
 Flow analysis checks the correctness of aspects related to data flow
@@ -572,8 +572,8 @@ project. For example, if a generic unit is instantiated twice, selecting
 apply proof to the two corresponding subprograms in instances of the generic
 unit.
 
-.. index:: pair: stone level; GNAT Studio integration
-           pair: bronze level; GNAT Studio integration
+.. index:: pair: Stone level; GNAT Studio integration
+           pair: Bronze level; GNAT Studio integration
 
 The menus :menuselection:`SPARK --> Examine ...` open a panel which allows
 setting various switches for |GNATprove|'s analysis. The main choice offered in
@@ -581,8 +581,8 @@ this panel is to select the mode of analysis, among modes ``check``,
 ``check_all`` (which corresponds to the ``stone`` analysis mode) and ``flow``
 (the default, which corresponds to the ``bronze`` analysis mode).
 
-.. index:: pair: silver level; GNAT Studio integration
-           pair: gold level; GNAT Studio integration
+.. index:: pair: Silver level; GNAT Studio integration
+           pair: Gold level; GNAT Studio integration
 
 The menus :menuselection:`SPARK --> Prove ...` open a panel which allows
 setting various switches for |GNATprove|'s analysis, corresponding to the
@@ -678,6 +678,7 @@ When editing an Ada file, |GNATprove| can also be run from a
    "Prove Line",         "This runs |GNATprove| on the current line."
 
 .. index:: manual proof
+           Platinum level; manual proof
 
 .. _GNATprove and Manual Proof:
 

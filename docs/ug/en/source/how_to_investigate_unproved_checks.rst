@@ -1,5 +1,5 @@
-.. index:: silver level; investigate unproved checks
-           gold level; investigate unproved checks
+.. index:: Silver level; investigate unproved checks
+           Gold level; investigate unproved checks
 
 .. _How to Investigate Unproved Checks:
 

@@ -463,7 +463,7 @@ limited.
    In |SPARK| versions up to |SPARK| 21, delta aggregates are not supported
    and an equivalent attribute named ``Update`` can be used instead.
 
-.. index:: if-expression; case-expression
+.. index:: if-expression, case-expression
 
 .. _Conditional Expressions:
 
@@ -693,6 +693,7 @@ the second bound:
           A = (A'Old with delta Fst_Zero .. Snd_Zero => 0));
 
 .. index:: expression function
+           Gold level; expression function
 
 .. _Expression Functions:
 
@@ -801,7 +802,10 @@ unit body, |GNATprove| can use its implicit postcondition at every call in the
 same unit, but not at calls inside other units. This is true even if the
 expression function is declared in the unit spec and defined in the unit body.
 
-.. index:: ghost code, Ghost
+.. index:: ghost code
+           see: Ghost; ghost code
+           Gold level; ghost code
+           Platinum level; ghost code
 
 .. _Ghost Code:
 
