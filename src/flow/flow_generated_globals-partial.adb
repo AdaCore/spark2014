@@ -800,6 +800,29 @@ package body Flow_Generated_Globals.Partial is
       O_Proof, O_Conditional, O_Definite : Node_Sets.Set;
       --  Sets for intermediate results, i.e. overlapping sets of calls
 
+      procedure Crash_On_Abstract_Callee (Pick : Entity_Id)
+      with Pre => Is_Overloadable (Pick) or else Ekind (Pick) = E_Package;
+      --  ??? global generation with calls to abstract subprograms is not
+      --  yet implemented; explicitly crash with an informational message,
+      --  as otherwise we would crash with "key not in map" when accessing
+      --  "Contracts (Pick)".
+
+      ------------------------------
+      -- Crash_On_Abstract_Callee --
+      ------------------------------
+
+      procedure Crash_On_Abstract_Callee (Pick : Entity_Id) is
+      begin
+         if Is_Overloadable (Pick) and then Is_Abstract_Subprogram (Pick) then
+            Ada.Text_IO.Put_Line
+              ("[Categorize_Calls] call to abstract subprogram = "
+               & Full_Source_Name (E) & " -> " & Full_Source_Name (Pick));
+            raise Why.Not_Implemented;
+         end if;
+      end Crash_On_Abstract_Callee;
+
+   --  Start of processing for Categorize_Calls
+
    begin
       --  Definitive calls are the easiest to find and the implementation is
       --  fairly straightforward, as it ignores conditional and proof calls.
@@ -828,18 +851,7 @@ package body Flow_Generated_Globals.Partial is
 
                   if Scope_Truly_Within_Or_Same (Pick, Analyzed) then
 
-                     --  ??? global generation with calls to abstract
-                     --  subprograms is not yet implemented; explicitly
-                     --  crash with an informational message, as otherwise
-                     --  we would crash with "key not in map" when accessing
-                     --  "Contracts (Pick)" below.
-
-                     if Is_Abstract_Subprogram (Pick) then
-                        Ada.Text_IO.Put_Line
-                          ("[Find_Definite_Calls] abstract subprogram = "
-                           & Full_Source_Name (Pick));
-                        raise Why.Not_Implemented;
-                     end if;
+                     Crash_On_Abstract_Callee (Pick);
 
                      Todo.Union
                        (Contracts (Pick).Globals.Calls.Definite_Calls - Done);
@@ -883,6 +895,9 @@ package body Flow_Generated_Globals.Partial is
                   Done.Conditional.Insert (Pick);
 
                   if Scope_Truly_Within_Or_Same (Pick, Analyzed) then
+
+                     Crash_On_Abstract_Callee (Pick);
+
                      declare
                         Picked : Call_Nodes renames
                           Contracts (Pick).Globals.Calls;
@@ -904,6 +919,8 @@ package body Flow_Generated_Globals.Partial is
                   Done.Definite.Insert (Pick);
 
                   if Scope_Truly_Within_Or_Same (Pick, Analyzed) then
+
+                     Crash_On_Abstract_Callee (Pick);
 
                      declare
                         Picked : Call_Nodes renames
@@ -957,6 +974,8 @@ package body Flow_Generated_Globals.Partial is
 
                   if Scope_Truly_Within_Or_Same (Pick, Analyzed) then
 
+                     Crash_On_Abstract_Callee (Pick);
+
                      declare
                         Picked : Call_Nodes renames
                           Contracts (Pick).Globals.Calls;
@@ -980,6 +999,8 @@ package body Flow_Generated_Globals.Partial is
                   Done.Other.Insert (Pick);
 
                   if Scope_Truly_Within_Or_Same (Pick, Analyzed) then
+
+                     Crash_On_Abstract_Callee (Pick);
 
                      declare
                         Picked : Call_Nodes renames
