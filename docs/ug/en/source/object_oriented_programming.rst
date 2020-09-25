@@ -30,7 +30,7 @@ overriding operation:
 * The `class-wide postcondition` introduced by aspect ``Post'Class`` is similar
   to the normal postcondition.
 
-Although these contracts are defined in Ada 2012, they have a stricter meaning
+Although these contracts are defined in Ada, they have a stricter meaning
 in |SPARK| for checking Liskov Substitution Principle:
 
 * The class-wide precondition of an overriding operation should be weaker (more

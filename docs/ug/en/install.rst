@@ -3,8 +3,8 @@
 Installation of |GNATprove|
 ===========================
 
-In general, you will need to install a recent version of GNAT toolchain (that
-supports Ada 2012 syntax) to compile |SPARK| programs. You will need to install
+In general, you will need to install a recent version of GNAT toolchain
+to compile |SPARK| programs. You will need to install
 one toolchain for each platform that you target, for example one toolchain for
 native compilation on your machine and one toolchain for cross compilation to
 an embedded platform.

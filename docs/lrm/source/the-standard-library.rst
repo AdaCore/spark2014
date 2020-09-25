@@ -26,7 +26,7 @@ onus is on the user to ensure that a library subprogram is called with
 consistent actual parameters.
 
 .. todo:: Provide suitable preconditions on library subprograms using
-          raise expressions for compatibility with Ada 2012. Post release 1.
+          raise expressions for compatibility with Ada. Post release 1.
 
 .. todo:: Provide detail on Standard Libraries.
           To be completed in a post-Release 1 version of this document. This targeting applies

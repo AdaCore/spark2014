@@ -1,7 +1,7 @@
 Lexical Elements
 ================
 
-|SPARK| supports the full Ada 2012 language with respect to lexical elements.
+|SPARK| supports the full Ada language with respect to lexical elements.
 Users may choose to apply restrictions to simplify the use of wide character sets and strings.
 
 Character Set

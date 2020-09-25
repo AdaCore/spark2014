@@ -5,13 +5,13 @@ SPARK 2005 to SPARK 2014 Mapping Specification
 
 This appendix defines the mapping between SPARK 2005 and |SPARK|.
 It is intended as both a completeness check for the |SPARK| language
-design, and as a guide for projects upgrading from SPARK 2005 to |SPARK|.
+design, and as a guide for projects upgrading from SPARK 2005 to SPARK 2014.
 
-SPARK 2005 Features and |SPARK| Alternatives
---------------------------------------------
+SPARK 2005 Features and SPARK 2014 Alternatives
+-----------------------------------------------
 
-Nearly every SPARK 2005 feature has a |SPARK| equivalent or there is
-an alternative way of providing the same feature in |SPARK|.  The only
+Nearly every SPARK 2005 feature has a SPARK 2014 equivalent or there is
+an alternative way of providing the same feature in SPARK 2014.  The only
 SPARK 2005 (not including RavenSPARK) features that do not have a direct
 alternative are:
 
@@ -21,18 +21,18 @@ alternative are:
     generic subprogram, e.g., Unchecked_Conversion; and
 
   * a precondition on the body of a subprogram refining the one on the
-    specification - this is not usually required in |SPARK|, it is
+    specification - this is not usually required in SPARK 2014, it is
     normally replaced by the use of expression functions.
 
 At the moment the first two features have to be accomplished using
 pragma Assume.
 
 The following subsections of this appendix demonstrate how many SPARK
-2005 idioms map into |SPARK|.  As a quick reference the table below
+2005 idioms map into SPARK 2014.  As a quick reference the table below
 shows, for each SPARK 2005 annotation or SPARK 2005 specific feature,
-a reference to the equivalent or alternative in |SPARK|.  In the table
-headings 2014 RM is the |SPARK| Reference Manual and Mapping is this
-appendix, the SPARK 2005 to |SPARK| mapping specification.
+a reference to the equivalent or alternative in SPARK 2014.  In the table
+headings 2014 RM is the SPARK Reference Manual and Mapping is this
+appendix, the SPARK 2005 to SPARK 2014 mapping specification.
 
 ================= ======================================== ================================================ ========
 SPARK 2005        SPARK 2014                               2014 RM                                          Mapping
@@ -82,7 +82,7 @@ Global and Derives
 
 This example demonstrates how global variables can be accessed through
 procedures/functions and presents how the SPARK 2005 `derives` annotation maps
-over to `depends` in |SPARK|. The example consists of one procedure (`Swap`) and
+over to `depends` in SPARK 2014. The example consists of one procedure (`Swap`) and
 one function (`Add`). `Swap` accesses two global variables and swaps their contents
 while `Add` returns their sum.
 
@@ -98,13 +98,13 @@ body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__global_derives/swap_add_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__global_derives/swap_add_14.adb
    :language: ada
@@ -116,7 +116,7 @@ Pre/Post/Return contracts
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This example demonstrates how the `Pre`/`Post`/`Return` contracts are
-restructured and how they map from SPARK 2005 to |SPARK|. Procedure
+restructured and how they map from SPARK 2005 to SPARK 2014. Procedure
 `Swap` and function `Add` perform the same task as in the previous
 example, but the global variables have been replaced by parameters
 (this is not necessarry for proof) and they have been augmented by pre
@@ -140,13 +140,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__pre_post_return/swap_add_max_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__pre_post_return/swap_add_max_14.adb
    :language: ada
@@ -174,13 +174,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__attributes_of_unconstrained_out_parameter_in_precondition/p.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__attributes_of_unconstrained_out_parameter_in_precondition/p.adb
    :language: ada
@@ -212,13 +212,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__nesting_refinement/nesting_refinement_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__nesting_refinement/nesting_refinement_14.adb
    :language: ada
@@ -235,7 +235,7 @@ Abstract Data Types (ADTs)
 Visible type
 ^^^^^^^^^^^^
 
-The following example adds no mapping information. The SPARK 2005 and |SPARK| versions
+The following example adds no mapping information. The SPARK 2005 and SPARK 2014 versions
 of the code are identical. Only the specification of the SPARK 2005 code will be presented.
 The reason why this code is being provided is to allow for a comparison between a package that
 is purely public and an equivalent one that also has private elements.
@@ -252,7 +252,7 @@ Private type
 ^^^^^^^^^^^^
 
 Similarly to the previous example, this one does not contain any annotations either. Due
-to this, the SPARK 2005 and |SPARK| versions are exactly the same. Only the specification of
+to this, the SPARK 2005 and SPARK 2014 versions are exactly the same. Only the specification of
 the 2005 version shall be presented.
 
 Specification in SPARK 2005:
@@ -270,11 +270,11 @@ This example demonstrates how `pre` and `post` conditions of
 subprograms may be specified in terms of functions declared in the
 same package specification.  The function declarations are completed
 in the body and the postconditions of the completed functions are used
-to prove the implementations of the other subprograms.  In |SPARK|
+to prove the implementations of the other subprograms.  In SPARK 2014
 explicit postconditions do not have to be specified on the bodies of
 the functions as they are implemented as expression functions and the
 expression, E, of the function acts as a default refined
-postcondition, i.e., F'Result = E.  Note that the |SPARK| version is
+postcondition, i.e., F'Result = E.  Note that the SPARK 2014 version is
 proven entirely automatically whereas the SPARK 2005 version requires
 user defined proof rules.
 
@@ -290,13 +290,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_refinement/stacks_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_refinement/stacks_14.adb
    :language: ada
@@ -338,7 +338,7 @@ Body in |SPARK|:
        :language: ada
        :linenos:
 
-    Specifications of both parent and child in |SPARK|:
+    Specifications of both parent and child in SPARK 2014:
 
     .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_public_child_non_tagged_parent/pairs_14.ads
        :language: ada
@@ -348,7 +348,7 @@ Body in |SPARK|:
        :language: ada
        :linenos:
 
-    Bodies of both parent and child in |SPARK|:
+    Bodies of both parent and child in SPARK 2014:
 
     As per SPARK 2005.
 
@@ -370,13 +370,13 @@ Body in |SPARK|:
 
     N/A
 
-    Specification in |SPARK|:
+    Specification in SPARK 2014:
 
     .. literalinclude:: ../code/adt_tagged_type/14/stacks_14.ads
        :language: ada
        :linenos:
 
-    Body in |SPARK|:
+    Body in SPARK 2014:
 
     N/A
 
@@ -400,13 +400,13 @@ Body in |SPARK|:
        :language: ada
        :linenos:
 
-    Specification in |SPARK|:
+    Specification in SPARK 2014:
 
     .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_tagged_type_extension/stacks_14_monitored_14.ads
        :language: ada
        :linenos:
 
-    Body in |SPARK|:
+    Body in SPARK 2014:
 
     As per SPARK 2005.
 
@@ -425,8 +425,8 @@ private children and their parent in SPARK 2005. More specifically, it shows tha
 Applying the SPARK tools on the following files will produce certain errors. This was
 intentionally done in order to illustrate both legal and illegal access attempts.
 
-|SPARK| shares Ada2012's visibility rules. No restrictions have been applied
-in terms of visibility.  Note that |SPARK| code does not require Inherit annotations.
+SPARK 2014 shares Ada's visibility rules. No restrictions have been applied
+in terms of visibility.  Note that SPARK 2014 code does not require Inherit annotations.
 
 Specification of parent in SPARK 2005:
 
@@ -482,55 +482,55 @@ Body of private child B in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification of parent in |SPARK|:
+Specification of parent in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14.ads
    :language: ada
    :linenos:
 
-Specification of private child A in |SPARK|:
+Specification of private child A in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-private_child_a_14.ads
    :language: ada
    :linenos:
 
-Specification of private child B in |SPARK|:
+Specification of private child B in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-private_child_b_14.ads
    :language: ada
    :linenos:
 
-Specification of public child A in |SPARK|:
+Specification of public child A in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-public_child_a_14.ads
    :language: ada
    :linenos:
 
-Specification of public child B in |SPARK|:
+Specification of public child B in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-public_child_b_14.ads
    :language: ada
    :linenos:
 
-Body of parent in |SPARK|:
+Body of parent in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14.adb
    :language: ada
    :linenos:
 
-Body of public child A in |SPARK|:
+Body of public child A in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-public_child_a_14.adb
    :language: ada
    :linenos:
 
-Body of public child B in |SPARK|:
+Body of public child B in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-public_child_b_14.adb
    :language: ada
    :linenos:
 
-Body of private child B in |SPARK|:
+Body of private child B in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__adt_private_public_child_visibility/parent_14-private_child_b_14.adb
    :language: ada
@@ -556,7 +556,7 @@ is not good practice to declare several concrete own variables,
 data abstraction should be used but here we are doing it for the
 point of illustration.
 
-In |SPARK| the client's view of package state is either visible
+In SPARK 2014 the client's view of package state is either visible
 (declared in the visible part of the package) or a state abstraction
 representing hidden state.  A variable cannot overload the name of a
 state abstraction and therefore a state abstraction must be completed
@@ -576,13 +576,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_visible_concrete_initialized_by_declaration/stack_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_visible_concrete_initialized_by_declaration/stack_14.adb
    :language: ada
@@ -594,7 +594,7 @@ Initialized by elaboration
 ++++++++++++++++++++++++++
 
 The following example presents how a package's concrete state can be initialized at
-the statements section of the body. The specifications of both SPARK 2005 and |SPARK|
+the statements section of the body. The specifications of both SPARK 2005 and SPARK 2014
 are not presented since they are identical to the specifications of the previous example.
 
 Body in SPARK 2005:
@@ -603,7 +603,7 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_visible_concrete_initialized_by_elaboration/stack_14.adb
    :language: ada
@@ -615,7 +615,7 @@ Private, concrete state
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 In SPARK 2005 variables declared in the private part of a package are
-considered to be concrete own variables.  In |SPARK| they are hidden
+considered to be concrete own variables.  In SPARK 2014 they are hidden
 state and must be constituents of a state abstraction.
 
 The SPARK 2005 body has not been included since it does not contain
@@ -627,13 +627,13 @@ Specification in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_concrete/stack_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_concrete/stack_14.adb
    :language: ada
@@ -662,13 +662,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_procedureinit/stack_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_procedureinit/stack_14.adb
    :language: ada
@@ -694,13 +694,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_elaborationinit/stack_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_elaborationinit/stack_14.adb
    :language: ada
@@ -713,7 +713,7 @@ Initialized by package body statements
 
 This example introduces an abstract state at the specification and refines it at the body.
 The constituents of the abstract state are initialized at the statements part of the body.
-The specifications of the SPARK 2005 and |SPARK| versions of the code are as in the previous
+The specifications of the SPARK 2005 and SPARK 2014 versions of the code are as in the previous
 example and have thus not been included.
 
 Body in SPARK 2005:
@@ -722,7 +722,7 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_statementinit/stack_14.adb
    :language: ada
@@ -749,13 +749,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_mixedinit/stack_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_private_abstract_bodyref_mixedinit/stack_14.adb
    :language: ada
@@ -766,7 +766,7 @@ Body in |SPARK|:
 Initial condition
 ^^^^^^^^^^^^^^^^^
 
-This example introduces a new |SPARK| feature that did not exist in
+This example introduces a new SPARK 2014 feature that did not exist in
 SPARK 2005. On top of declaring an abstract state and promising to
 initialize it, we also illustrate certain conditions that will be
 valid after initialization. There is a verification condition to show that
@@ -775,13 +775,13 @@ Initial_Condition is True. Checks will be generated that have to be
 proven (or executed at run-time) to show that the initial condition is
 True.
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_initial_condition/stack_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_initial_condition/stack_14.adb
    :language: ada
@@ -828,19 +828,19 @@ Bodies of Private Children in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification of Parent in |SPARK|:
+Specification of Parent in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14.ads
    :language: ada
    :linenos:
 
-Body of Parent in |SPARK|:
+Body of Parent in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14.adb
    :language: ada
    :linenos:
 
-Specifications of Private Children in |SPARK|:
+Specifications of Private Children in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14-source_a_14.ads
    :language: ada
@@ -850,7 +850,7 @@ Specifications of Private Children in |SPARK|:
    :language: ada
    :linenos:
 
-Bodies of Private Children in |SPARK|:
+Bodies of Private Children in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_private_child/power_14-source_a_14.adb
    :language: ada
@@ -882,13 +882,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_embedded_package/power_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__asm_abstract_state_refined_in_embedded_package/power_14.adb
    :language: ada
@@ -948,25 +948,25 @@ Body of output port in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification of main program in |SPARK|:
+Specification of main program in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_output/copy_14.adb
    :language: ada
    :linenos:
 
-Specification of input port in |SPARK|:
+Specification of input port in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_output/input_port_14.ads
    :language: ada
    :linenos:
 
-Specification of output port in |SPARK|:
+Specification of output port in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_output/output_port_14.ads
    :language: ada
    :linenos:
 
-Body of input port in |SPARK|:
+Body of input port in SPARK 2014:
 
 This is as per SPARK 2005, but uses aspects instead of representation clauses and pragmas.
 
@@ -974,7 +974,7 @@ This is as per SPARK 2005, but uses aspects instead of representation clauses an
    :language: ada
    :linenos:
 
-Body of output port in |SPARK|:
+Body of output port in SPARK 2014:
 
 This is as per SPARK 2005, but uses aspects instead of representation clauses and pragmas.
 
@@ -992,7 +992,7 @@ and adds a contract using the 'Tail attribute. The example also use the Always_V
 in order to allow proof to succeed (otherwise, there is no guarantee in the proof context
 that the value read from the port is of the correct type).
 
-|SPARK| does not have the attribute 'Tail but, often, an equivalent
+SPARK 2014 does not have the attribute 'Tail but, often, an equivalent
 proof can be achieved using assert pragmas.  Neither is there a direct
 equivalent of the Always_Valid attribute but the paragma Assume may be
 used to the same effect.
@@ -1009,13 +1009,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_append_tail/input_port_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_input_append_tail/input_port_14.adb
    :language: ada
@@ -1029,7 +1029,7 @@ Output driver using \'Append in a contract
 This example uses the Output package from section `Basic Input and Output Device Drivers`_
 and adds a contract using the 'Append attribute.
 
-|SPARK| does not have the attribute 'Append but, often, an equivalent proof can
+SPARK 2014 does not have the attribute 'Append but, often, an equivalent proof can
 be achieved using assert pragmas.
 
 Specification in SPARK 2005:
@@ -1044,13 +1044,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_output_append_tail/output_port_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_output_append_tail/output_port_14.adb
    :language: ada
@@ -1090,13 +1090,13 @@ Switch body in SPARK 2005:
    :language: ada
    :linenos:
 
-Abstract Switch specification in |SPARK|:
+Abstract Switch specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_refinement_voting_input_switch/switch.ads
    :language: ada
    :linenos:
 
-Component Switch specifications in |SPARK|:
+Component Switch specifications in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_refinement_voting_input_switch/switch-val1.ads
    :language: ada
@@ -1110,7 +1110,7 @@ Component Switch specifications in |SPARK|:
    :language: ada
    :linenos:
 
-Switch body in |SPARK|:
+Switch body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_refinement_voting_input_switch/switch.adb
    :language: ada
@@ -1139,13 +1139,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_complex_io_device/device.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_complex_io_device/device.adb
    :language: ada
@@ -1162,7 +1162,7 @@ the first values read from the sequence are in ascending order. This example
 shows that postconditions can refer to multiple individual elements of the
 input stream.
 
-In |SPARK| we can use assert pragmas in the subprogram instead of
+In SPARK 2014 we can use assert pragmas in the subprogram instead of
 specifying the action in the postcondition, as was done in
 :ref:`ms-external_variables_input_append_tail-label`. Another
 alternative, as shown in this example, is to use a formal parameter of
@@ -1180,13 +1180,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_increasing_values_in_input_stream/inc.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__external_variables_increasing_values_in_input_stream/inc.adb
    :language: ada
@@ -1197,8 +1197,8 @@ Body in |SPARK|:
 Package Inheritance
 ~~~~~~~~~~~~~~~~~~~
 
-|SPARK| does not have the SPARK 2005 concept of package
-inheritance.  It has the same package visibility rules as Ada 2012.
+SPARK 2014 does not have the SPARK 2005 concept of package
+inheritance.  It has the same package visibility rules as Ada.
 
 .. _ms-contracts_with_remote_state-label:
 
@@ -1225,7 +1225,7 @@ Specifications in SPARK 2005:
    :language: ada
    :linenos:
 
-Specifications in |SPARK|:
+Specifications in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__contracts_with_remote_state/raw_data.ads
    :language: ada
@@ -1271,17 +1271,17 @@ Switch body in SPARK 2005:
    :language: ada
    :linenos:
 
-Abstract Switch specification in |SPARK|:
+Abstract Switch specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__package_nested_inside_subprogram/switch.ads
    :language: ada
    :linenos:
 
-Component Switch specification in |SPARK|:
+Component Switch specification in SPARK 2014:
 
 As in `Refinement of external state - voting input switch`_
 
-Switch body in |SPARK|:
+Switch body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__package_nested_inside_subprogram/switch.adb
    :language: ada
@@ -1300,18 +1300,18 @@ defined subprograms cannot be called in the sequence of statements of
 a package body and a package can only initialize variables declared in
 its delarative part.
 
-|SPARK| does not have the inherit annotation and only enforces the
+SPARK 2014 does not have the inherit annotation and only enforces the
 restriction that a package can only initialize an object declared in
-its declarative region. Hence, in |SPARK| two package bodies that
+its declarative region. Hence, in SPARK 2014 two package bodies that
 depend on each other's specification may be legal, as is calling a user
 defined suprogram.
 
 Instead of the elaboration restrictions of SPARK 2005 a set of rules
-is applied in |SPARK| which determines when elaboration order control
+is applied in SPARK 2014 which determines when elaboration order control
 pragmas such as Elaborate_Body or Elaborate_All are required.  These
 rules ensure the absence of elaboration order dependencies.
 
-Examples of the features of |SPARK| elaboration order rules are given
+Examples of the features of SPARK 2014 elaboration order rules are given
 below. In the example described below the partial elaboration order
 would be either of P_14 or Q_14 specifications first followed by P_14
 body because of the Elaborate_All on the specification of R_14
@@ -1320,7 +1320,7 @@ or the specification of R_14 and the body of R_14 after the
 elaboration of Q_14. Elaboration order dependencies are avoided by
 the (required) use of elaboration control pragmas.
 
-Package Specifications in |SPARK|:
+Package Specifications in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__circular_dependence_and_elaboration_order/p_14.ads
    :language: ada
@@ -1334,7 +1334,7 @@ Package Specifications in |SPARK|:
    :language: ada
    :linenos:
 
-Package Bodies in |SPARK|
+Package Bodies in SPARK 2014
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__circular_dependence_and_elaboration_order/p_14.adb
    :language: ada
@@ -1366,15 +1366,15 @@ for the path is cleared. A verification condition is generated to prove
 that the assert expression is True, and the expression is the basis of
 the new hypotheses.
 
-|SPARK| has a specific pragma for defining a loop invariant, `pragma
+SPARK 2014 has a specific pragma for defining a loop invariant, `pragma
 Loop_Invariant` which is more sophisticated than the SPARK 2005 assert
 annotation and often requires less conditions in the invariant
 expression than in SPARK 2005. As in SPARK 2005 a default loop
 invariant will be used if one is not provided which, often, may be
 sufficient to prove absence of run-time exceptions. Like all
-|SPARK| assertion expressions the loop invariant is executable.
+SPARK 2014 assertion expressions the loop invariant is executable.
 
-Note in the example below the |SPARK| version proves absence of
+Note in the example below the SPARK 2014 version proves absence of
 run-time exceptions without an explicit loop invariant being provided.
 
 Specification in SPARK 2005:
@@ -1389,13 +1389,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__assert_loop_contract/assert_loop_14.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__assert_loop_contract/assert_loop_14.adb
    :language: ada
@@ -1407,7 +1407,7 @@ Assert (no loop) contract
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 While not in a loop, the SPARK 2005 `assert` annotation maps to
-`pragma Assert_And_Cut` in |SPARK|. Both the assert annotation and
+`pragma Assert_And_Cut` in SPARK 2014. Both the assert annotation and
 pragma assert clear the list of hypotheses on the path, generate a
 verification condition to prove the assertion expression and use the
 assertion expression as the basis of the new hypotheses.
@@ -1419,7 +1419,7 @@ Assume contract
 
 The following example illustrates use of an Assume annotation.  The
 assumed expression does not generate a verification condition and is
-not proved (although it is executed in |SPARK| if assertion
+not proved (although it is executed in SPARK 2014 if assertion
 expressions are not ignored at run-time).
 
 In this example, the Assume annotation is effectively being used to
@@ -1437,13 +1437,13 @@ Body for Assume annotation in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification for Assume annotation in |SPARK|:
+Specification for Assume annotation in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__proof_assume_contract/input_port.ads
    :language: ada
    :linenos:
 
-Body for Assume annotation in |SPARK|:
+Body for Assume annotation in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__proof_assume_contract/input_port.adb
    :language: ada
@@ -1455,7 +1455,7 @@ Check contract
 ^^^^^^^^^^^^^^
 
 The SPARK 2005 `check` annotation is replaced by `pragma assert` in
-|SPARK|. This annotation generates a verification condition to prove
+SPARK 2014. This annotation generates a verification condition to prove
 the checked expression and adds the expression as a new hypothesis to
 the list of existing hypotheses.
 
@@ -1471,13 +1471,13 @@ Body for Check annotation in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification for Check annotation in |SPARK|:
+Specification for Check annotation in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__check_contract/check_14.ads
    :language: ada
    :linenos:
 
-Body for Check annotation in |SPARK|:
+Body for Check annotation in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__check_contract/check_14.adb
    :language: ada
@@ -1486,7 +1486,7 @@ Body for Check annotation in |SPARK|:
 Assert used to control path explosion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This capability is in general not needed with the |SPARK| toolset where
+This capability is in general not needed with the SPARK 2014 toolset where
 path explosion is handled automatically. In the rare cases where this is
 needed you can use `pragma Assert_And_Cut`.
 
@@ -1517,20 +1517,20 @@ of a rule declaration annotation - in the body of procedure
 Initialize - to introduce a rule related to the components of a
 constant record value.
 
-|SPARK| does not have a direct equivalent of proof types and proof
+SPARK 2014 does not have a direct equivalent of proof types and proof
 functions. State abstractions cannot have a type and all functions in
-|SPARK| are Ada functions.  Functions may be defined to be ghost functions
+SPARK 2014 are Ada functions.  Functions may be defined to be ghost functions
 which means that they can only be called within an
 assertion expression such as a pre or postcondition. Assertion
 expressions may be executed or ignored at run-time and if they are
 ignored Ghost functions behave much like SPARK 2005 proof functions.
 
-Rule declaration annotations for structured constants are not required in |SPARK|.
+Rule declaration annotations for structured constants are not required in SPARK 2014.
 
 The SPARK 2005 version of the example given below will require user
 defined proof rules to discharge the proofs because refined
 definitions of some of the proof functions cannot be provided as they
-would have different formal parameters. The |SPARK| version does not
+would have different formal parameters. The SPARK 2014 version does not
 suffer from this problem as functions called within assertion expressions
 may have global items.
 
@@ -1546,13 +1546,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|
+Specification in SPARK 2014
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack.adb
    :language: ada
@@ -1563,11 +1563,11 @@ Using an External Prover
 
 One may wish to use an external prover such as Isabelle, with rules
 defining a ghost function written in the prover input language. This
-can be done in |SPARK| by denoting the ghost function as an Import in
+can be done in SPARK 2014 by denoting the ghost function as an Import in
 lieu of providing a body for it. Of course such ghost functions cannot
 be executed.
 
-Specification in |SPARK| using an external prover:
+Specification in SPARK 2014 using an external prover:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack_external_prover.ads
    :language: ada
@@ -1585,7 +1585,7 @@ abstract. As seen in :ref:`ms-proof_types_and_proof_functions-label`.
 Once the own variable has a type it can be used in a SPARK 2005 proof
 context.
 
-A state abstraction in |SPARK| does not have a type. Instead, an Ada
+A state abstraction in SPARK 2014 does not have a type. Instead, an Ada
 type to represent the abstract state is declared. A function
 which has the state abstraction as a global item is then declared
 which returns an object of the type. This function may have the same
@@ -1614,13 +1614,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|
+Specification in SPARK 2014
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack_functional_spec.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__other_proof_types_and_functions/stack_functional_spec.adb
    :language: ada
@@ -1641,7 +1641,7 @@ Update Expressions
 SPARK 2005 has update expressions for updating records and arrays.
 They can only be used in SPARK 2005 proof contexts.
 
-The equivalent in |SPARK| is a delta aggregate.  This can be
+The equivalent in SPARK 2014 is a delta aggregate.  This can be
 used in any Ada expression.
 
 Specification in SPARK 2005:
@@ -1650,7 +1650,7 @@ Specification in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|
+Specification in SPARK 2014
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/update_examples.ads
    :language: ada
@@ -1669,10 +1669,10 @@ changed within the loop by stating X = X%.  This notation is
 restricted to a variable which defines the lower or upper range of a
 for loop.
 
-|SPARK| has a more general scheme whereby the loop entry value of any
+SPARK 2014 has a more general scheme whereby the loop entry value of any
 variable can be denoted within any sort of loop using the
 '*Loop_Entry* attribute.  However, its main use is not for showing
-that the value of a for loop variable has not changed as the |SPARK|
+that the value of a for loop variable has not changed as the SPARK 2014
 tools are able to determine this automatically.  Rather it is used
 instead of ~ in loops because the attribute 'Old is only permitted in
 postconditions (including Contract_Cases).
@@ -1689,13 +1689,13 @@ Body in SPARK 2005:
    :language: ada
    :linenos:
 
-Specification in |SPARK|:
+Specification in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__loop_entry/loop_entry.ads
    :language: ada
    :linenos:
 
-Body in |SPARK|:
+Body in SPARK 2014:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_MS__loop_entry/loop_entry.adb
    :language: ada
@@ -1708,5 +1708,5 @@ Body in |SPARK|:
   RavenSPARK patterns
   ~~~~~~~~~~~~~~~~~~~
 
-  The Ravenscar profile for tasking is not yet supported in |SPARK|.
+  The Ravenscar profile for tasking is not yet supported in SPARK 2014.
   Mapping examples will be added here in future.

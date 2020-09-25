@@ -8,7 +8,7 @@ Identifying |SPARK| Code
 
 In general a program can have some parts that are in |SPARK| (and follow all
 the rules in the |SPARK| Reference Manual), and some parts that are full
-Ada 2012. Pragma or aspect ``SPARK_Mode`` is used to identify which parts are
+Ada. Pragma or aspect ``SPARK_Mode`` is used to identify which parts are
 in |SPARK| (by default programs are in full Ada).
 
 This section contains a simple description of pragma and aspect

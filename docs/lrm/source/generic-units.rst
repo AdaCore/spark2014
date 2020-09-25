@@ -56,6 +56,3 @@ meet this requirement.]
    which overrides a dispatching operation. OK, for example, if a
    subprogram reads fewer inputs than it said it would.] To be
    considered post release 1.
-
-.. todo:: Update SPARK 2014 to allow prove once/use many approach to generics.
-          To be completed in a post-Release 1 version of this document.
