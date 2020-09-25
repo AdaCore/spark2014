@@ -24,6 +24,9 @@ Package Specifications and Declarations
 Abstraction of State
 ~~~~~~~~~~~~~~~~~~~~
 
+.. index:: visible state
+           hidden state
+
 The variables declared within a package but not within a subprogram body or
 block which does not also enclose the given package constitute the *persistent
 state* of the package. A package's persistent state is divided into *visible
@@ -31,6 +34,8 @@ state* and *hidden state*. If a declaration that is part of a package's
 persistent state is visible outside of the package, then it is a constituent of
 the package's visible state; otherwise it is a constituent of the package's
 hidden state.
+
+.. index:: state abstraction
 
 Though the variables may be hidden they still form part (or all) of
 the persistent state of the package and the hidden state cannot be
@@ -73,6 +78,8 @@ themselves records.
    :ref:`tasks-and-synchronization`).
 
 
+.. index:: external state
+
 .. _external_state:
 
 External State
@@ -88,6 +95,9 @@ potential effect on that device or subsystem. Similarly the value read from an
 external state might depend on a value provided by some external device or
 subsystem.
 
+.. index:: asynchronous readers
+           asynchronous writers
+
 Ada uses the terms external readers and writers to describe entities external to
 a program which interact with the program through reading and writing data. Of
 particular concern to |SPARK| are external readers and writers which are not
@@ -102,10 +112,14 @@ reading a temperature from a device or writing the same value to a
 lamp driver or display. |SPARK| provides a mechanism to indicate
 whether a read or write is always significant.
 
+.. index:: effectively volatile; type
+
 A type is said to be *effectively volatile* if it is either a volatile type, an
 array type whose Volatile_Components aspect is True, an array type whose
 component type is effectively volatile, a protected type, or a descendant of
 the type Ada.Synchronous_Task_Control.Suspension_Object.
+
+.. index:: effectively volatile for reading; type
 
 A type is said to be *effectively volatile for reading* if it is either a
 volatile type with the properties Async_Writers or Effective_Reads set to True
@@ -120,6 +134,10 @@ A nonvolatile protected type is said to be *nonvolatile during a protected
 action* if none of its subcomponent types are effectively volatile. [In other
 words, if the only reason that the protected type is effectively volatile
 is because it is protected.]
+
+.. index:: effectively volatile; object
+           effectively volatile for reading; object
+           No_Caching
 
 An *effectively volatile object* is a volatile object, or an object of an
 effectively volatile type. An *effectively volatile object for reading* is a
@@ -158,6 +176,11 @@ the SPARK portion of the program (although it might be); it refers to the
 state being potentially visible to multiple tasks (as well as to the outside
 world), so that it is externally visible from the perspective of any one task.]
 
+.. index:: Async_Readers
+           Async_Writers
+           Effective_Writes
+           Effective_Reads
+
 Four Boolean valued *properties* of external states that may be specified are
 defined:
 
@@ -173,6 +196,9 @@ defined:
 
 These properties may be specified for an effectively volatile object
 as Boolean aspects or as external properties of an external state abstraction.
+
+.. index:: volatile function
+           see: Volatile_Function; volatile function
 
 The Boolean aspect Volatile_Function may be specified as part of the
 (explicit) initial declaration of a function. A function whose
@@ -448,6 +474,8 @@ be *compatible with respect to volatility* with E2 if
    does not apply to the notional parameter denoting the current instance of
    the associated protected unit described in section :ref:`global-aspects`.]
 
+.. index:: non-interfering context; for read of volatile object
+
 10. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object for reading is
     considered to have an effect when read. To reconcile this
@@ -532,6 +560,8 @@ be *compatible with respect to volatility* with E2 if
    :language: ada
    :linenos:
 
+.. index:: Abstract_State
+           External
 
 .. _abstract-state-aspect:
 
@@ -731,6 +761,8 @@ There are no verification rules associated with the Abstract_State aspect.
       ...
    end X;
 
+.. index:: Initializes
+
 .. _initializes_aspect:
 
 Initializes Aspects
@@ -823,6 +855,7 @@ There are no dynamic semantics associated with the Initializes aspect.
 
 .. centered:: **Verification Rules**
 
+.. index:: initialization; of package state
 
 9. If the Initializes aspect is specified for a package, then after
    the body (which may be implicit if the package has no explicit
@@ -917,6 +950,8 @@ of the package.]
       ...
    end Z;
 
+.. index:: Initial_Condition
+
 .. _initial_condition_aspect:
 
 Initial_Condition Aspects
@@ -965,6 +1000,7 @@ be a *Boolean_*\ ``expression``.
 
 .. centered:: **Verification Rules**
 
+.. index:: verification condition; for Initial_Condition
 
 4. [The Initial_Condition aspect gives a verification condition to show that the
    implementation of the ``package_specification`` and its body satisfy the
@@ -1014,10 +1050,14 @@ be a *Boolean_*\ ``expression``.
 Package Bodies
 --------------
 
+.. index:: state refinement
+
 .. _state_refinement:
 
 State Refinement
 ~~~~~~~~~~~~~~~~
+
+.. index:: constituent
 
 A ``state_name`` declared by an Abstract_State aspect in the specification of a
 package shall denote an abstraction representing all or part of its hidden
@@ -1041,6 +1081,8 @@ In a refined view a subprogram has visibility of the full type declarations of
 any private types declared by the enclosing package and visibility of the
 refinements of state abstractions declared by the package. Refined versions of
 aspects are provided to express the contracts of a refined view of a subprogram.
+
+.. index:: Refined_State
 
 .. _refined_state_aspect:
 
@@ -1210,6 +1252,7 @@ There are no dynamic semantics associated with Refined_State aspect.
       ...
    end Q;
 
+.. index:: initialization; of constituents
 
 Initialization Issues
 ~~~~~~~~~~~~~~~~~~~~~
@@ -1237,6 +1280,8 @@ which reside in another package, initialization by their declaring package.
      that such constituents will appear in the initialization clause
      of the declaring unit unless they are external states.]
 
+
+.. index:: Refined_Global
 
 .. _refined-global-aspect:
 
@@ -1390,6 +1435,7 @@ There are no dynamic semantics associated with a Refined_Global aspect.
    :language: ada
    :linenos:
 
+.. index:: Refined_Depends
 
 .. _refined-depends-aspect:
 
@@ -1560,6 +1606,8 @@ as it is used purely for static analysis purposes and is not executed.
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/refined_depends_examples.adb
    :language: ada
    :linenos:
+
+.. index:: Part_Of; in state refinement
 
 .. _package_hierarchy:
 
@@ -1971,6 +2019,8 @@ were declared within a protected unit or task unit (see section
       end Private_Op;
    end R.Child;
 
+.. index:: Refined_Post
+
 .. _refined-postcondition:
 
 Refined Postcondition Aspects
@@ -2038,6 +2088,7 @@ be a Boolean ``expression``.
 
 .. centered:: **Verification Rules**
 
+.. index:: verification condition; for Refined_Post
 
 7. If a subprogram has both a Refined_Post aspect and a
    Post (and/or Post'Class) aspect, then the verification condition
@@ -2113,60 +2164,7 @@ used here for brevity of the example.
    :language: ada
    :linenos:
 
-.. todo:: refined contract_cases.
-          To be completed in a post-Release 1 version of this document.
-
-.. Refined Precondition Aspect
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. todo:: The Refined_Pre aspect will not be implemented in Release 1 of the
-     |SPARK| Toolset.  Its usefulness and exact semantics are still to be
-     determined.
-
-.. Text commented out until decision on Refined_Pre is finalized.
-   A subprogram declared in the specification of a package may have a Refined
-   Precondition aspect applied to its body or body stub. The Refined
-   Precondition may be used to restate a precondition given on the declaration
-   of a subprogram in terms of the full view of a private type or the
-   ``constituents`` of a refined ``state_name``.
-
-   The Refined Precondition aspect is introduced by an ``aspect_specification``
-   where the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition``
-   shall be a Boolean ``expression``.
-
-   .. centered:: **Legality Rules**
-
-   #. A Refined_Pre aspect may appear only on a body_stub (if one is present) or
-      the body (if no stub is present) of subprogram if the subprogram is declared
-      in the specification of a package, its abstract view. If the subprogram
-      declaration in the visible part has no explicit precondition, a precondition
-      of True is assumed for its abstract view.
-
-   #. At the point of call of a subprogram, both its precondition and the
-      expression of its Refined_Pre aspect shall evaluate to True.
-
-   #. The same legality rules apply to a Refined Precondition as for
-      a precondition.
-
-   .. centered:: **Static Semantics**
-
-   #. A Refined Precondition of a subprogram defines a *refinement*
-      of the precondition of the subprogram.
-
-   #. The static semantics are otherwise as for a precondition.
-
-   .. centered:: **Dynamic Semantics**
-
-   #. When a subprogram with a Refined Precondition is called; first
-      the precondition is evaluated as defined in the Ada RM. If the
-      precondition evaluates to True, then the Refined Precondition
-      is evaluated. If either precondition or Refined Precondition
-      do not evaluate to True an exception is raised.
-
-   .. centered:: **Verification Rules**
-
-   #. The precondition of the abstract view of the subprogram shall imply its
-      Refined_Precondition.
+.. index:: state refinement; external state
 
 .. _refined_external_states:
 
@@ -2245,6 +2243,8 @@ Private Operations
 
 No extensions or restrictions.
 
+.. index:: Type_Invariant, Invariant
+
 .. _type_invariants:
 
 Type Invariants
@@ -2301,6 +2301,8 @@ language definition and what is not.]
 4. A Type_Invariant shall not apply to an effectively volatile type for reading.
 
 .. centered:: **Verification Rules**
+
+.. index:: verification condition; for Type_Invariant
 
 In Ada RM 7.3.2, Ada defines the points at which runtime checking of
 type invariants is performed. In SPARK, these rules (or, more precisely,
@@ -2384,66 +2386,68 @@ parameters. The rules about tagged inputs and outputs in rules 6 and 8
 are introduced in order to deal with technical difficulties that would
 otherwise arise in the treatment of these hidden components.
 
+.. index:: Default_Initial_Condition
+
 .. _default_initial_condition_aspect:
 
 Default_Initial_Condition Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   The Default_Initial_Condition aspect is introduced by an aspect_specification
-   where the aspect_mark is Default_Initial_Condition. The aspect may be
-   specified only as part of the aspect_specification of a
-   ``private_type_declaration``.
-   The ``aspect_definition``, if any, of such an aspect specification
-   shall be either a null literal or a *Boolean_*\ ``expression``.
+The Default_Initial_Condition aspect is introduced by an aspect_specification
+where the aspect_mark is Default_Initial_Condition. The aspect may be
+specified only as part of the aspect_specification of a
+``private_type_declaration``.
+The ``aspect_definition``, if any, of such an aspect specification
+shall be either a null literal or a *Boolean_*\ ``expression``.
 
-   The ``aspect_definition`` may be omitted; this is semantically
-   equivalent to specifying a static *Boolean_*\ ``expression`` having the
-   value True.
+The ``aspect_definition`` may be omitted; this is semantically
+equivalent to specifying a static *Boolean_*\ ``expression`` having the
+value True.
 
-   An aspect specification of "null" indicates that the partial view of the
-   type does not define full default initialization (see :ref:`declarations`).
-   [The full view of the type might or might not define full default
-   initialization.]
+An aspect specification of "null" indicates that the partial view of the
+type does not define full default initialization (see :ref:`declarations`).
+[The full view of the type might or might not define full default
+initialization.]
 
-   Conversely, an aspect specification of a *Boolean_*\ ``expression`` indicates
-   that the partial view of the type does define full default initialization.
-   In this case, the completion of the private type shall define full
-   default initialization. [Implementations may provide a mechanism for
-   suppressing enforcement of this rule as described; the burden is then on
-   the user to ensure that this does not result in undetected uses of
-   uninitialized variables.]
+Conversely, an aspect specification of a *Boolean_*\ ``expression`` indicates
+that the partial view of the type does define full default initialization.
+In this case, the completion of the private type shall define full
+default initialization. [Implementations may provide a mechanism for
+suppressing enforcement of this rule as described; the burden is then on
+the user to ensure that this does not result in undetected uses of
+uninitialized variables.]
 
-   Unlike the null literal case, this case has associated dynamic semantics.
-   The *Boolean_*\ ``expression`` (which might typically mention the current
-   instance of the type, although this is not required) is an assertion
-   which is checked (at run time) after any object of the given type (or of
-   any descendant of the given type for which the specified aspect is
-   inherited and not overridden), is "initialized by
-   default" (see Ada RM 3.3.1). [Note that an imported object is not
-   "initialized by default" (see Ada RM B.3).]
+Unlike the null literal case, this case has associated dynamic semantics.
+The *Boolean_*\ ``expression`` (which might typically mention the current
+instance of the type, although this is not required) is an assertion
+which is checked (at run time) after any object of the given type (or of
+any descendant of the given type for which the specified aspect is
+inherited and not overridden), is "initialized by
+default" (see Ada RM 3.3.1). [Note that an imported object is not
+"initialized by default" (see Ada RM B.3).]
 
-   The *Boolean_*\ ``expression``, if any, causes freezing in the
-   same way as the ``default_expression`` of a ``component_declaration``.
-   [If the expresion is non-static, this means that the expression does not
-   cause freezing where it occurs, but instead when an object of the type
-   is initialized by default.]
+The *Boolean_*\ ``expression``, if any, causes freezing in the
+same way as the ``default_expression`` of a ``component_declaration``.
+[If the expresion is non-static, this means that the expression does not
+cause freezing where it occurs, but instead when an object of the type
+is initialized by default.]
 
-   Default_Initial_Condition assertion is an assertion aspect, which means
-   that it may be used in an Assertion_Policy pragma.
+Default_Initial_Condition assertion is an assertion aspect, which means
+that it may be used in an Assertion_Policy pragma.
 
-   Within the Boolean expression of the Default_Initial_Condition aspect of
-   a tagged type T, a name that denotes the current instance of the
-   tagged type is interpreted as though it had a (notional) type NT
-   that is a formal derived type whose ancestor type is T, with
-   directly visible primitive operations. [This name resolution rule
-   is similar to the "notional formal derived type" name resolution
-   rule introduced in Ada RM 6.1.1 for certain subexpressions of
-   class-wide precondition and postcondition expressions.]
-   Any operations within a Default_Initial_Condition expression that
-   were resolved in this way (i.e., as primitive operations of the (notional)
-   formal derived type NT), are in the evaluation of the expression
-   (i.e., at run-time) bound to the corresponding operations of the type of the
-   object being "initialized by default" (see Ada RM 3.3.1).
+Within the Boolean expression of the Default_Initial_Condition aspect of
+a tagged type T, a name that denotes the current instance of the
+tagged type is interpreted as though it had a (notional) type NT
+that is a formal derived type whose ancestor type is T, with
+directly visible primitive operations. [This name resolution rule
+is similar to the "notional formal derived type" name resolution
+rule introduced in Ada RM 6.1.1 for certain subexpressions of
+class-wide precondition and postcondition expressions.]
+Any operations within a Default_Initial_Condition expression that
+were resolved in this way (i.e., as primitive operations of the (notional)
+formal derived type NT), are in the evaluation of the expression
+(i.e., at run-time) bound to the corresponding operations of the type of the
+object being "initialized by default" (see Ada RM 3.3.1).
 
 Deferred Constants
 ------------------
@@ -2463,6 +2467,8 @@ Assignment and Finalization
 
 1. Controlled types are not permitted in |SPARK|.
 
+
+.. index:: elaboration
 
 .. _elaboration_issues:
 
@@ -2751,6 +2757,9 @@ global variables discussed later in this section.
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/inter_unit_elaboration_examples.adb
    :language: ada
    :linenos:
+
+.. index:: Initial_Condition; and elaboration
+           Initializes; and elaboration
 
 Use of Initial_Condition and Initializes Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

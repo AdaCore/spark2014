@@ -8,6 +8,8 @@ No extensions or restrictions.
 Declarations
 ------------
 
+.. index:: entity, view of an entity
+
 The view of an entity is in |SPARK| if and only if the corresponding
 declaration is in |SPARK|. When clear from the context, we say *entity* instead
 of using the more formal term *view of an entity*. If the initial declaration
@@ -18,6 +20,8 @@ even if the completion is not in |SPARK|. [This distinction between views
 is much less important in "pure" |SPARK| than in the case where SPARK_Mode is
 used (as described in the SPARK Toolset User's Guide) to allow mixing
 of |SPARK| and non-|SPARK| code.]
+
+.. index:: define full default initialization
 
 A type is said to *define full default initialization* if it is
 
@@ -70,11 +74,12 @@ subprogram of mode **in** is a constant and may be used in defining a
 constraint. This restriction gives an explicit constant which can be
 referenced in analysis and proof.
 
-An expression with a *variable input* reads a variable or calls a
+.. index:: expression with a variable input
+
+An *expression with a variable input* reads a variable or calls a
 function which (directly or indirectly) reads a variable.
 
 .. centered:: **Legality Rules**
-
 
 1. [A ``constraint``, excluding the ``range`` of a
    ``loop_parameter_specification``, shall not be defined using an
@@ -88,6 +93,8 @@ Classification of Operations
 
 No restrictions or extensions.
 
+.. index:: subtype predicate
+
 .. _subtype_predicates:
 
 Subtype Predicates
@@ -100,6 +107,8 @@ Static predicates and dynamic predicates are both in
 
 1. [A Dynamic_Predicate expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
+
+.. index:: verification condition; for Dynamic_Predicate
 
 2. If a Dynamic_Predicate applies to the subtype of a composite object,
    then a verification condition is generated to ensure that the object
@@ -124,10 +133,14 @@ Static predicates and dynamic predicates are both in
   an extension aggregate, or a delta aggregate.
   These are assignment operations but not assignment statements.]
 
+.. index:: effectively volatile for reading; exclusion of predicates
+
 3. A Static_Predicate or Dynamic_Predicate shall not apply to a subtype of a
    type that is effectively volatile for reading.
 
 .. centered:: **Verification Rules**
+
+.. index:: termination; of Dynamic_Predicate
 
 4. A Dynamic_Predicate expression shall always terminate.
 
@@ -139,6 +152,8 @@ Objects and Named Numbers
 
 Object Declarations
 ~~~~~~~~~~~~~~~~~~~
+
+.. index:: Constant_After_Elaboration
 
 The Boolean aspect Constant_After_Elaboration may be specified as part of
 the declaration of a library-level variable.
@@ -152,6 +167,8 @@ thereof, is said to be *constant after elaboration*.
 [The Constant_After_Elaboration aspect indicates that the variable will not
 be modified after execution of the main subprogram begins
 (see section :ref:`tasks-and-synchronization`).]
+
+.. index:: constant with variable inputs
 
 A stand-alone constant is a *constant with variable inputs* if its
 initialization expression depends on:
@@ -330,6 +347,8 @@ Interface Types
 
 No extensions or restrictions.
 
+.. index:: access type, ownership
+
 .. _access-types:
 
 Access Types
@@ -431,6 +450,9 @@ Only the following (named or anonymous) access types are in |SPARK|:
 and access-to-subprogram types with the "protected" calling convention are not
 in |SPARK|.]
 
+.. index:: access type; owning
+           access type; observing
+
 An access-to-object type abiding by these rules is said to be an *owning*
 access type when it is an access-to-variable type, and an *observing* access
 type when it is an access-to-constant type.
@@ -438,6 +460,8 @@ type when it is an access-to-constant type.
 User-defined storage pools are not in |SPARK|; more specifically, the package
 System.Storage_Pools, Storage_Pool aspect specifications, and the Storage_Pool
 attribute are not in |SPARK|.
+
+.. index:: owning type
 
 A composite type is also said to be an *owning* type if it has an
 access subcomponent [redundant: , regardless of whether the subcomponent's
@@ -455,6 +479,10 @@ a parameter of an owning type passed by value in the case where the
 call propagates an exception instead of returning normally. SPARK programs
 are not supposed to raise exceptions, but this rule still seems desirable.]
 
+.. index:: owning object
+           observing object
+           managed object
+
 An object of an owning access type is said to be an *owning* object;
 an object of an observing access type is said to be an *observing* object.
 An object that is a part of an object of an owning or observing type, or that
@@ -470,6 +498,10 @@ because a subcomponent of a constant is itself a constant and a dereference
 of a subcomponent is treated, for purposes of analysis, like a
 subcomponent].
 
+.. index:: traversal function
+           observing traversal function
+           borrowing traversal function
+
 A function is said to be a *traversal function* if the result type of the
 function is an anonymous access-to-object type, the function has at least one
 formal parameter, and the function's first parameter is of an access type
@@ -482,6 +514,8 @@ will see later that if a traversal function yields a non-null result, then that
 result is "reachable" from the traversed parameter in the sense that it could
 be obtained from the traversed parameter by some sequence of component
 selections, array indexing operations, and access value dereferences.]
+
+.. index:: root object
 
 The *root object* of a name that denotes an object is defined as follows:
 
@@ -504,6 +538,8 @@ The *root object* of a name that denotes an object is defined as follows:
 
 - otherwise, the name statically denotes an object and the root
   object is the statically denoted object.
+
+.. index:: potential aliases
 
 Two names are said to be *potential aliases* when:
 
@@ -533,6 +569,8 @@ Two names are said to be *potential aliases* when:
 
 - at least one name denotes an object renaming declaration, and the other
   is a potential alias with the object_name denoting the renamed entity.
+
+.. index:: potentially overlap
 
 Two names N1 and N2 are said to *potentially overlap* if
 
@@ -574,6 +612,10 @@ In the Moved state, the name is unusable for reading
 
 In the Borrowed state, the name is unusable for writing, observing and
 borrowing (see below).
+
+.. index:: ownership; move
+           ownership; observe
+           ownership; borrow
 
 A name that denotes a managed object has an initial ownership state
 of Unrestricted unless otherwise specified.
@@ -861,6 +903,7 @@ be an owning type).]
     owning or observing type unless the prefix is a function_call and the
     called function is not a traversal function.
 
+
 14. If the designated type of a named nonderived access type is incomplete
     at the point of the access type's declaration then the incomplete
     type declaration and its completion shall occur in the same
@@ -869,16 +912,19 @@ be an owning type).]
     in the private part of a package then its completion shall also occur
     in that private part.]
 
+
 15. The name of an effectively volatile managed object shall not be moved,
     borrowed, or observed. [This rule is meant to avoid introducing aliases
     between volatile variables used by another task or thread. Borrowers can
     also break the invariant on the borrowed object for the time of the
     borrow.]
 
+
 .. centered:: **Verification Rules**
 
+.. index:: memory leak, deallocation, Unchecked_Deallocation
 
-15. When an owning access object other than a borrower, an observer,
+16. When an owning access object other than a borrower, an observer,
     or an object in the Moved state is finalized, or when such an object
     is passed as a part of an actual parameter of mode **out**, its value
     shall be null.
@@ -892,7 +938,8 @@ be an owning type).]
     the Ada RM 13.11.2 rule "Free(X), ... first performs finalization of
     the object designated by X".]
 
-16. When converting from a [named or anonymous] access-to-subprogram type
+
+17. When converting from a [named or anonymous] access-to-subprogram type
     to another, if the converted expression is not null,
     a verification condition is introduced to ensure that the
     precondition of the source of the conversion is implied by the
@@ -900,6 +947,7 @@ be an owning type).]
     condition is introduced to ensure that the postcondition of the target
     is implied by the postcondition of the converted access-to-subprogram
     expression.
+
 
 Declarative Parts
 -----------------

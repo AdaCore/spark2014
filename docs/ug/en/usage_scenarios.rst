@@ -1149,6 +1149,8 @@ types of errors (see Ada RM 1.1.5 "Classification of Errors"):
   detected by any Ada compiler. They do not cause any portability issue, as
   they must be fixed before compilation.
 
+.. index:: run-time error
+
 * *Run-time errors* - These errors are signaled by raising an exception at run
   time. They might be a cause of portability problems, as a change of compiler
   and/or target may lead to new run-time errors. For example, a new compiler
@@ -1156,12 +1158,16 @@ types of errors (see Ada RM 1.1.5 "Classification of Errors"):
   ``Storage_Error``, and a new target may change the size of standard integer
   types, leading to an exception ``Constraint_Error``.
 
+.. index:: bounded error
+
 * *Bounded errors* - These errors need not be detected either at compiler time
   or at run time, but their effects should be bounded. For example, reading an
   uninitialized value may result in any value of the type to be used, or to
   ``Program_Error`` being raised. Like for run-time errors, they might be a
   cause of portability problems, as a change of compiler and/or target may lead
   to new bounded errors.
+
+.. index:: erroneous execution
 
 * *Erroneous execution* - For the remaining errors, a program exhibits
   erroneous execution, which means that the error need not be detected, and

@@ -21,17 +21,16 @@ reverse_ord.adb:24:21: info: index check proved (CVC4: 4 VC)
 reverse_ord.adb:24:40: info: index check proved (CVC4: 4 VC)
 up_timer.adb:14:36: info: overflow check proved (CVC4: 1 VC)
 f.adb:3:16: info: postcondition proved (CVC4: 2 VC)
-f.adb:7:04: info: initialization of "Valid" proved
 f.adb:10:16: info: range check proved (CVC4: 4 VC)
 f.adb:10:38: info: overflow check proved (CVC4: 1 VC)
+f.adb:11:10: info: initialization check proved (CVC4: 1 VC)
 f.adb:11:36: info: index check proved (CVC4: 2 VC)
 f.adb:11:36: info: overflow check proved (CVC4: 1 VC)
 f.adb:13:26: info: range check proved (CVC4: 1 VC)
 f.adb:13:37: info: index check proved (CVC4: 2 VC)
 f.adb:13:37: info: overflow check proved (CVC4: 1 VC)
-f.adb:21:27: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
-f.adb:21:41: medium: "Control_Char" might not be initialized
-f.adb:34:12: medium: "Control_Char" might not be initialized
+f.adb:21:07: info: initialization check proved (CVC4: 1 VC)
+f.adb:22:12: info: initialization check proved (CVC4: 3 VC)
 param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illegal"
 param_1_illegal.adb:9:10: info: index check proved (CVC4: 2 VC)
 param_1_legal.adb:7:10: info: index check proved (CVC4: 2 VC)
@@ -177,13 +176,3 @@ initialization_and_elaboration.ads:6:08: info: flow dependencies proved
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:13:11: info: data dependencies proved
 initialization_and_elaboration.ads:16:11: info: data dependencies proved
-f.adb:5
-f.adb:9
-f.adb:18
-
-f.adb:5
-f.adb:9
-f.adb:18
-f.adb:21
-f.adb:33
-

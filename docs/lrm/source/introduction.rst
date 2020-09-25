@@ -206,6 +206,8 @@ detected  (see Ada 2012 RM 1.1.5(5-8)).  For example, evaluating the name of an
 array component includes a check that each index value belongs to the
 corresponding index range of the array (see Ada 2012 RM 4.1.1(7)).
 
+.. index:: verification condition; for run-time checks
+
 For every such run-time check a corresponding obligation to prove that the error
 condition cannot be true is introduced. In particular, this rule applies to the
 run-time checks associated with any assertion (see Ada 2012 RM (11.4.2));
@@ -262,6 +264,8 @@ In such cases it must be possible to provide the needed information
 as explicit inputs to the formal verification process.
 The means by which this is accomplished is not specified as part of
 the |SPARK| language definition.
+
+.. index:: executable contracts
 
 .. _exec_sem:
 
@@ -449,6 +453,8 @@ Some are expanded in subsequent sections within this chapter.
   to be written in |SPARK|, making it potentially entirely provable largely
   using automatic proof tools.
 
+.. index:: constructive analysis; requirement
+
 - |SPARK| shall support *constructive*, modular development which allows
   contracts to be specified on the declaration of program units and allows
   analysis and verification to be performed based on these contracts as early as
@@ -456,6 +462,8 @@ Some are expanded in subsequent sections within this chapter.
   implemented. As units are implemented the implementation is verified against
   its specification given in its contract. The contracts are specified using
   |SPARK| specific aspects.
+
+.. index:: generative analysis; requirement
 
 - A |SPARK| analysis tool is required to synthesize at least some of the |SPARK|
   specific aspects, used to specify the contract of a program unit, if a
@@ -803,7 +811,9 @@ but if the function is a ghost function this might not matter.
 Synthesis of |SPARK| Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| supports a *constructive* analysis style where all program units
+.. index:: constructive analysis
+
+|SPARK| supports a *constructive analysis* style where all program units
 require contracts specified by |SPARK| specific aspects to be provided on their
 declarations. Under this constructive analysis style, these contracts have to
 be designed and added at an early stage to assist modular analysis and
@@ -877,6 +887,8 @@ manually.
 An analysis tool may provide the synthesis of more aspects and more precise
 synthesis of the mandatory ones.
 
+.. index:: generative analysis
+
 Some use cases where the synthesis of aspects is likely to be required are:
 
 - Code has been developed as |SPARK| but not all the aspects are included on all
@@ -887,6 +899,8 @@ Some use cases where the synthesis of aspects is likely to be required are:
   specific aspects.  If there are aspects missing they are automatically
   for analysis purposes when possible. This is also regarded as generative
   analysis.
+
+.. index:: retrospective analysis
 
 - Legacy code is analyzed which has no or incomplete |SPARK| specific aspects
   This is regarded as *retrospective analysis*, where code is being analyzed
@@ -900,6 +914,8 @@ Some use cases where the synthesis of aspects is likely to be required are:
   * Manual definition of the boundary between the |SPARK| and non-|SPARK| code
     by explicitly specifying accurate and truthful contracts using |SPARK|
     specific aspects on the declarations of non-|SPARK| program units.
+
+.. index:: SPARK_Mode
 
 .. _in_out:
 
