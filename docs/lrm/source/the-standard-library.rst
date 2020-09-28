@@ -346,64 +346,109 @@ No additions or restrictions.
 The Package Text_IO (A.10.1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Ada.Text_IO is ostensibly in |SPARK| except for the type File_Access
-and the functions which return this type. The use Ada.Text_IO may give
-rise to flow-errors as the effect of reads and writes is not captured
-in the subprogram contracts.  The Ada.Text_IO.Get_Line functions
-should not be called as they have a side effect of reading data from a
-file and updating its file pointers. The subprograms Set_Input,
-Set_Output and Set_Error should not be called as they introduce an
-alias to the file passed as a parameter. Calls to the subprograms of
-Ada.Text_IO may raise IO_Exceptions based on external events.
+Ada.Text_IO is ostensibly in |SPARK| except for the type File_Access, a
+generalized access type, thus preventing Ada.Text_IO from being declared with
+SPARK_Mode On explicitly in the visible part. The following subprograms are
+explicitly marked as SPARK_Mode Off:
+
+- The functions Current_Input, Current_Output, Current_Error, Standard_Input,
+  Standard_Output and Standard_Error because they create aliasing, by returning
+  the corresponding file.
+
+- The procedures Set_Input, Set_Output and Set_Error because they also create
+  aliasing, by assigning a File_Type variable to respectively Current_Input,
+  Current_Output or Current_Error.
+
+- Functions Get_Line because they have a side effect of reading data from a
+  file and updating its file pointers.
+
+The abstract state File_System declared in Ada.Text_IO is used to model the
+memory on the system and the file handles (Line_Length, Col, etc.). This is
+made necessary by the fact that almost every procedure in Text_IO that actually
+modifies attributes of its File_Type parameter takes it as an **in** parameter.
+
+All functions and procedures are annotated with Global, and Pre/Post when
+possible. The Global contracts are typically In_Out for File_System,
+even in Put or Get procedures that update the current column and/or
+line. Functions have an Input global contract. The only functions with Global
+=> null are the functions Get and Put in the generic packages that have
+the same behavior as sprintf and sscanf.
+
+Preconditions are not always complete, as not all conditions
+leading to run-time exceptions can be effectively modelled in SPARK:
+
+- Status_Error (due to a file already open/not open) is fully modelled
+
+- Mode_Error (due to a violation of the internal state machine) is fully
+  modelled
+
+- Layout_Error is partially modelled
+
+- Use_Error is not modelled (it is related to the external environment)
+
+- Name_Error is not modelled (it would require checking availability on disk
+  beforehand)
+
+- End_Error is not modelled (it is raised when a file terminator is read while
+  running the procedure)
+
+In the exceptional cases that are not fully modelled, it is possible that SPARK
+tools do not issue a possible precondition failure message on a call, yet an
+exception can be raised at run-time. See the spec files for the exact
+contracts.
 
 Text File Management (A.10.2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No additions or restrictions.
+The possibility of errors related to the actual content or limitations of the
+file system are not modelled (e.g. when trying to create an already existing
+file, or open a file that does not exist).
+
+Preconditions and postconditions are added to describe other constraints.
 
 Default Input, Output and Error Files (A.10.3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The subprograms Ada.Text_IO.Set_Input, Ada.Text_IO.Set_Output and
-Ada.Text_IO.Set_Error should not be called from |SPARK| program text
-as they introduce an alias of the file parameter.
+Apart from procedure Flush, all other subprograms are explicitly marked as
+SPARK_Mode Off, as described above, because they create aliasing.
 
 Specification of Line and Page Lengths (A.10.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No additions or restrictions.
+Global, preconditions and postconditions are added to subprograms.
 
 Operations on Columns, Lines and Pages (A.10.5)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No additions or restrictions.
+Global, preconditions and postconditions are added to subprograms.
 
 Get and Put Procedures (A.10.6)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No additions or restrictions.
+Global, preconditions and postconditions are added to subprograms.
 
 Input-Output of Characters and Strings (A.10.7)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The functions Ada.Text_IO.Get_Line should not be called from |SPARK|
-program text as the functions have a side effect of reading from a
-file.
+Functions Get_Line are explicitly marked as SPARK_Mode Off, as described above,
+because they have side effects.
+
+Global, preconditions and postconditions are added to other subprograms.
 
 Input-Output for Integer Types (A.10.8)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No additions or restrictions.
+Global, preconditions and postconditions are added to subprograms.
 
 Input-Output for Real Types (A.10.9)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No additions or restrictions.
+Global, preconditions and postconditions are added to subprograms.
 
 Input-Output for Enumeration Types (A.10.10)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No additions or restrictions.
+Global, preconditions and postconditions are added to subprograms.
 
 Input-Output for Bounded Strings (A.10.11)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -412,7 +457,6 @@ An instantiation of Bounded_IO will ostensibly be in |SPARK| but in
 use it may give rise to flow-errors as the effect of reads and writes
 is not captured in the subprogram contracts. Calls to its subprograms
 may raise IO_Exceptions based on external events.
-
 
 Input-Output of Unbounded Strings (A.10.12)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
