@@ -1,4 +1,3 @@
-arr.adb:11:11: info: data dependencies proved
-arr.adb:11:32: info: initialization of "Buffer" proved
-arr.adb:22:11: info: data dependencies proved
-arr.adb:22:32: info: initialization of "Buffer" proved
+arr.adb:14:14: aspect "Global" cannot apply to null procedure
+arr.adb:25:14: aspect "Depends" cannot apply to null procedure
+gnatprove: error during generation of Global contracts
