@@ -9,4 +9,4 @@ counterex.adb:10:17: medium: overflow check might fail
 counterex.adb:11:25: medium: assertion might fail, cannot prove R < 42
    11 |         pragma Assert (R < 42);
       |                        ^ here
-  e.g. when R = 42
+  e.g. when R = 43
