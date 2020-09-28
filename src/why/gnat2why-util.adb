@@ -513,9 +513,9 @@ package body Gnat2Why.Util is
 
          if (Nkind (N) = N_Attribute_Reference
              and then Attribute_Name (N) in Name_Old | Name_Loop_Entry)
-           or else Nkind (N) in N_Target_Name
+           or else Nkind (N) = N_Target_Name
          then
-            Contextual_Nodes.Include (N);
+            Contextual_Nodes.Insert (N);
             return Atree.Skip;
 
          --  Constants declared in declare expressions are translated using
