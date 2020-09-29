@@ -316,6 +316,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Categorize_Calls
      (EN        : Entity_Name;
+      Analyzed  : Entity_Name;
       Contracts : Entity_Contract_Maps.Map)
       return Call_Names;
    --  Equivalent of a routine with the same name from phase 1, but operating
@@ -1948,7 +1949,7 @@ package body Flow_Generated_Globals.Phase_2 is
                Result : Flow_Names;
 
             begin
-               Result.Calls := Categorize_Calls (Caller, Contracts);
+               Result.Calls := Categorize_Calls (Caller, Analyzed, Contracts);
 
                --  Now collect their globals
 
@@ -3181,6 +3182,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Categorize_Calls
      (EN        : Entity_Name;
+      Analyzed  : Entity_Name;
       Contracts : Entity_Contract_Maps.Map)
       return Call_Names
    is
@@ -3203,7 +3205,9 @@ package body Flow_Generated_Globals.Phase_2 is
                begin
                   Done.Insert (Pick);
 
-                  if Contracts.Contains (Pick) then
+                  if Contracts.Contains (Pick)
+                    and then Scope_Within_Or_Same (Pick, Analyzed)
+                  then
                      Todo.Union (Contracts (Pick).Calls.Definite_Calls - Done);
                   end if;
 
@@ -3240,7 +3244,9 @@ package body Flow_Generated_Globals.Phase_2 is
                begin
                   Done.Conditional.Insert (Pick);
 
-                  if Contracts.Contains (Pick) then
+                  if Contracts.Contains (Pick)
+                    and then Scope_Within_Or_Same (Pick, Analyzed)
+                  then
                      declare
                         Picked : Call_Names renames Contracts (Pick).Calls;
 
@@ -3261,7 +3267,9 @@ package body Flow_Generated_Globals.Phase_2 is
                begin
                   Done.Definite.Insert (Pick);
 
-                  if Contracts.Contains (Pick) then
+                  if Contracts.Contains (Pick)
+                    and then Scope_Within_Or_Same (Pick, Analyzed)
+                  then
                      declare
                         Picked : Call_Names renames Contracts (Pick).Calls;
 
@@ -3309,7 +3317,9 @@ package body Flow_Generated_Globals.Phase_2 is
                begin
                   Done.Proof.Insert (Pick);
 
-                  if Contracts.Contains (Pick) then
+                  if Contracts.Contains (Pick)
+                    and then Scope_Within_Or_Same (Pick, Analyzed)
+                  then
                      declare
                         Picked : Call_Names renames Contracts (Pick).Calls;
 
@@ -3332,7 +3342,9 @@ package body Flow_Generated_Globals.Phase_2 is
                begin
                   Done.Other.Insert (Pick);
 
-                  if Contracts.Contains (Pick) then
+                  if Contracts.Contains (Pick)
+                    and then Scope_Within_Or_Same (Pick, Analyzed)
+                  then
                      declare
                         Picked : Call_Names renames Contracts (Pick).Calls;
 
