@@ -1,2 +1,3 @@
 community SKIP codepeer not supported in community
 packaged REQUIRED
+NT SKIP diff on one check on Windows
