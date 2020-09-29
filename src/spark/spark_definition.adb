@@ -3341,7 +3341,9 @@ package body SPARK_Definition is
          --  If Formal has an anonymous access type, it can happen that Formal
          --  and Actual have incompatible designated type. Reject this case.
 
-         Check_Compatible_Access_Types (Etype (Formal), Actual);
+         if In_SPARK (Etype (Formal)) then
+            Check_Compatible_Access_Types (Etype (Formal), Actual);
+         end if;
       end Mark_Param;
 
       procedure Mark_Actuals is new Iterate_Call_Parameters (Mark_Param);
@@ -4138,13 +4140,6 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  If T has an anonymous access type, it can happen that Expr and E
-         --  have incompatible designated type. Reject this case.
-
-         if Present (Expr) then
-            Check_Compatible_Access_Types (T, Expr);
-         end if;
-
          if Present (Sub)
            and then not In_SPARK (Sub)
          then
@@ -4183,6 +4178,11 @@ package body SPARK_Definition is
             elsif Is_Deep (T) then
                Check_Source_Of_Move (Expr);
             end if;
+
+            --  If T has an anonymous access type, it can happen that Expr and
+            --  E have incompatible designated type. Reject this case.
+
+            Check_Compatible_Access_Types (T, Expr);
          end if;
 
          --  If no violations were found and the object is annotated with
