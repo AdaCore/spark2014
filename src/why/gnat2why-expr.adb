@@ -13884,6 +13884,7 @@ package body Gnat2Why.Expr is
                  Right  => Right_Expr,
                  Op     => EW_Equivalent);
          end;
+
       elsif Has_Array_Type (Left_Type) then
 
          --  If Expr is of the form Id = Id'Old'Update (...) and equality is
@@ -13928,6 +13929,57 @@ package body Gnat2Why.Expr is
                end if;
             end;
          end if;
+
+      elsif Has_Access_Type (Left_Type) then
+
+         --  For access types, there might not be a type which can act as
+         --  a base type of both operands (imagine one is a named access type
+         --  with a predicate and the other an anonymous type with a null
+         --  exclusion). Fortunately, the root of both types should really be
+         --  the same Why type, so we don't really need such a base.
+
+         declare
+            Op         : constant Node_Kind := Nkind (Expr);
+            Right_Type : constant Node_Id := Etype (Right);
+            Subdomain  : constant EW_Domain :=
+              (if Domain = EW_Pred then EW_Term else Domain);
+
+            W_Left_Ty  : constant W_Type_Id :=
+              EW_Abstract (Root_Retysp (Left_Type));
+            W_Right_Ty : constant W_Type_Id :=
+              EW_Abstract (Root_Retysp (Right_Type));
+            Left_Expr  : constant W_Expr_Id :=
+              Transform_Expr (Left, W_Left_Ty, Subdomain, Params);
+            Right_Expr : constant W_Expr_Id :=
+              Transform_Expr (Right, W_Right_Ty, Subdomain, Params);
+         begin
+            T := New_Call
+              (Ada_Node => Expr,
+               Domain   => Subdomain,
+               Name     =>
+                 E_Symb (Root_Retysp (Left_Type),
+                   WNE_Bool_Eq),
+               Args     => (1 => Left_Expr,
+                            2 => Right_Expr),
+               Typ      => EW_Bool_Type);
+
+            if Domain = EW_Pred then
+               T := New_Comparison
+                 (Symbol =>
+                    Transform_Compare_Op (Op, EW_Bool_Type, Domain),
+                  Left   => T,
+                  Right  => New_Literal (Domain => Subdomain,
+                                         Value  => EW_True),
+                  Domain => Domain);
+
+            elsif Op = N_Op_Ne then
+               T :=
+                 New_Call (Domain => Domain,
+                           Name   => M_Boolean.Notb,
+                           Args   => (1 => T),
+                           Typ    => EW_Bool_Type);
+            end if;
+         end;
       else
          declare
             Op         : constant Node_Kind := Nkind (Expr);
@@ -14030,34 +14082,6 @@ package body Gnat2Why.Expr is
                                     2 => Right_Expr),
                        Typ      => EW_Bool_Type);
                end if;
-
-               if Domain = EW_Pred then
-                  T := New_Comparison
-                    (Symbol =>
-                       Transform_Compare_Op (Op, EW_Bool_Type, Domain),
-                     Left   => T,
-                     Right  => New_Literal (Domain => Subdomain,
-                                            Value  => EW_True),
-                     Domain => Domain);
-
-               elsif Op = N_Op_Ne then
-                  T :=
-                    New_Call (Domain => Domain,
-                              Name   => M_Boolean.Notb,
-                              Args   => (1 => T),
-                              Typ    => EW_Bool_Type);
-               end if;
-
-            elsif Is_Access_Type (Retysp (Left_Type)) then
-               T :=
-                 New_Call
-                   (Ada_Node => Expr,
-                    Domain   => Subdomain,
-                    Name     =>
-                      E_Symb (Get_Ada_Node (+BT), WNE_Bool_Eq),
-                    Args     => (1 => Left_Expr,
-                                 2 => Right_Expr),
-                    Typ      => EW_Bool_Type);
 
                if Domain = EW_Pred then
                   T := New_Comparison

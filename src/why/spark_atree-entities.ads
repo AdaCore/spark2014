@@ -636,7 +636,7 @@ package SPARK_Atree.Entities is
      (Subp : Entity_Id)
       return Boolean
    with Pre =>
-       Ekind (Subp) in  Einfo.Subprogram_Kind | Einfo.E_Subprogram_Type;
+       Ekind (Subp) in Einfo.Subprogram_Kind | Einfo.E_Subprogram_Type;
 
    function Is_Predicate_Function (Subp : Entity_Id) return Boolean with
      Pre => Einfo.Is_Subprogram (Subp);

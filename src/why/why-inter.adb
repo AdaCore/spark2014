@@ -45,7 +45,6 @@ with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Gen.Pointers;       use Why.Gen.Pointers;
 with Why.Gen.Scalars;        use Why.Gen.Scalars;
 with Why.Images;             use Why.Images;
 
@@ -410,7 +409,7 @@ package body Why.Inter is
             elsif Is_Access_Type (Typ)
               and then not Is_Access_Subprogram_Type (Typ)
             then
-               return EW_Abstract (Root_Pointer_Type (Typ));
+               return EW_Abstract (Root_Retysp (Typ));
             else
                return EW_Abstract (Typ);
             end if;
