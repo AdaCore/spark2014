@@ -2779,7 +2779,6 @@ package body SPARK_Definition is
          --  the attributes marked "Yes" in SPARK RM 15.2.
          when Attribute_Adjacent
             | Attribute_Aft
-            | Attribute_Body_Version
             | Attribute_Callable
             | Attribute_Caller
             | Attribute_Ceiling
@@ -2834,7 +2833,6 @@ package body SPARK_Definition is
             | Attribute_Update
             | Attribute_Val
             | Attribute_Value
-            | Attribute_Version
             | Attribute_Wide_Value
             | Attribute_Wide_Wide_Value
             | Attribute_Wide_Wide_Width

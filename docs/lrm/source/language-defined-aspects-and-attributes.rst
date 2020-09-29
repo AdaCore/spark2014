@@ -133,7 +133,7 @@ S'Alignment	    		      Warn                   Warning in pedantic mode
 X'Alignment	    		      Warn		     Warning in pedantic mode
 S'Base				      Yes
 S'Bit_Order	    		      Warn		     Warning in pedantic mode
-P'Body_Version 			      Yes
+P'Body_Version 			      No
 T'Callable	    		      Yes
 E'Caller	    		      Yes
 S'Ceiling	    		      Yes
@@ -233,7 +233,7 @@ X'Update            		      Yes
 S'Val				      Yes                    Implicit precondition (Ada RM 3.5.5(7))
 X'Valid				      Yes	             Assumed to be True at present
 S'Value				      Yes                    Implicit precondition (Ada RM 3.5(55/3))
-P'Version	  		      Yes
+P'Version	  		      No
 S'Wide_Image			      Yes
 S'Wide_Value			      Yes                    Implicit precondition (Ada RM 3.5(43/3))
 S'Wide_Wide_Image 		      Yes

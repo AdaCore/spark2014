@@ -2846,13 +2846,6 @@ package body Flow_Utility is
                --  flow analysis cares about, so we ignore it.
                return Flow_Id_Sets.Empty_Set;
 
-            when Attribute_Body_Version
-               | Attribute_Version
-            =>
-               --  Attributes 'Version and 'Body_Version for flow analysis are
-               --  like references to hidden static constants, so we ignore it.
-               return Flow_Id_Sets.Empty_Set;
-
             when Attribute_Callable
                | Attribute_Caller
                | Attribute_Count
