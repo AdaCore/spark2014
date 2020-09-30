@@ -4890,8 +4890,8 @@ package body Gnat2Why.Subprograms is
                         Name    => Result_Pledge_Id (E),
                         Def     => New_Pledge_For_Call
                           (E    => E,
-                           Args => Compute_Args
-                             (E, Logic_Why_Binders)),
+                           Args => Get_Args_From_Binders
+                             (Logic_Why_Binders, Ref_Allowed => False)),
                         Context => New_And_Then_Expr
                           (Left   => +Post,
                            Right  => New_Pledge_Call
