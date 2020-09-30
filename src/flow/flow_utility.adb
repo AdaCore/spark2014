@@ -3007,15 +3007,6 @@ package body Flow_Utility is
 
          end loop;
 
-         if Root_Node = N then
-
-            --  In some case Arr'Update (...) we need to make sure that Seq
-            --  contains the 'Update so that the early abort can handle things.
-            Root_Node  := Prefix (N);
-            Seq.Prepend (N);
-            Must_Abort := True;
-         end if;
-
          if Debug_Trace_Untangle_Fields then
             Write_Str ("Root: ");
             Sprint_Node_Inline (Root_Node);
