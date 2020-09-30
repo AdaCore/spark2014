@@ -2963,8 +2963,6 @@ package body Flow_Utility is
          Comp_Id       : Positive;
          Current_Field : Flow_Id;
 
-         Must_Abort    : Boolean := False with Ghost;
-
          All_Vars      : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
          Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
          Proof_Vars    : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -3088,7 +3086,6 @@ package body Flow_Utility is
          pragma Assert (Nkind (Root_Node) in N_Identifier
                                            | N_Expanded_Name
                                            | N_Target_Name);
-         pragma Assert (not Must_Abort);
 
          --  If the root is a constant without variable inputs and we are
          --  looking for genuine inputs, then we will find none.
