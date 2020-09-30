@@ -3955,13 +3955,16 @@ package body Flow_Utility is
                --  renaming declarations; process these depending on the
                --  context's Fold_Function component.
                declare
-                  procedure Process_Actions (FF : Reference_Kind);
+                  procedure Process_Actions (Fold_Functions : Reference_Kind);
                   --  Helper procedure to process the expression's actions
 
-                  procedure Process_Actions (FF : Reference_Kind)
+                  ---------------------
+                  -- Process_Actions --
+                  ---------------------
+
+                  procedure Process_Actions (Fold_Functions : Reference_Kind)
                   is
-                     Action_List : constant List_Id := Actions (N);
-                     Action  : Node_Id := First (Action_List);
+                     Action : Node_Id := First (Actions (N));
                   begin
                      while Present (Action) loop
                         case Nkind (Action) is
@@ -3969,17 +3972,19 @@ package body Flow_Utility is
                            Variables.Union
                              (Recurse
                                 (N              => Expression (Action),
-                                 Fold_Functions => FF));
+                                 Fold_Functions => Fold_Functions));
+
                         when N_Object_Renaming_Declaration =>
                            Variables.Union
                              (Recurse
                                 (N              => Name (Action),
-                                 Fold_Functions => FF));
+                                 Fold_Functions => Fold_Functions));
+
+                        --  The frontend should have rejected all other code
+                        --  constructs. Therefore anything else we find in this
+                        --  action list has been synthesised so we ignore it.
+
                         when others =>
-                           --  The frontend should have rejected all other
-                           --  code constructs. Therefore anything else we find
-                           --  in this action list has been synthesised so we
-                           --  ignore it.
                            pragma Assert (not Comes_From_Source (Action));
                         end case;
                         Next (Action);
@@ -3990,23 +3995,26 @@ package body Flow_Utility is
 
                      --  Variables referenced in object declarations do not
                      --  flow into inputs.
+
                      when Inputs =>
                         null;
 
                      --  Proof inputs need to be pulled
-                     when Proof_Ins =>
-                        Process_Actions (FF => Proof_Ins);
 
-                     --  Anything evaluated is referenced as a null
-                     --  dependency; it will be pulled when referenced.
+                     when Proof_Ins =>
+                        Process_Actions (Fold_Functions => Proof_Ins);
+
+                     --  Anything evaluated is referenced as a null dependency;
+                     --  it will be pulled when referenced.
+
                      when Null_Deps =>
-                        Process_Actions (FF => Inputs);
-                        Process_Actions (FF => Null_Deps);
+                        Process_Actions (Fold_Functions => Inputs);
+                        Process_Actions (Fold_Functions => Null_Deps);
                   end case;
 
                end;
 
-               --  And now the body expression.
+               --  And now the expression itself
                Variables.Union (Recurse (Expression (N)));
                return Skip;
 
@@ -5470,7 +5478,7 @@ package body Flow_Utility is
                end if;
             end;
 
-         when N_Qualified_Expression | N_Expression_With_Actions =>
+         when N_Expression_With_Actions | N_Qualified_Expression =>
             --  Recurse into the expression.
             M := Recurse_On (Expression (N), Map_Root, Map_Type);
 

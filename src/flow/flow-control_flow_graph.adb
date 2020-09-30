@@ -6029,8 +6029,10 @@ package body Flow.Control_Flow_Graph is
                return Is_Attribute_Update (N)
                  and then Rec (Prefix (N));
 
-            when N_Qualified_Expression | N_Type_Conversion |
-                 N_Expression_With_Actions =>
+            when N_Expression_With_Actions
+               | N_Qualified_Expression
+               | N_Type_Conversion
+            =>
                return Rec (Expression (N));
 
             when others =>
