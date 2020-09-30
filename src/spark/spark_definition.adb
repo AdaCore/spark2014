@@ -1177,16 +1177,9 @@ package body SPARK_Definition is
       -------------------------
 
       function Is_Update_Aggregate (Aggr : Node_Id) return Boolean is
-         Par : Node_Id;
       begin
-         if Nkind (Aggr) = N_Aggregate then
-            Par := Parent (Aggr);
-
-            return Nkind (Par) = N_Attribute_Reference
-              and then Is_Attribute_Update (Par);
-         else
-            return False;
-         end if;
+         return Nkind (Aggr) = N_Aggregate
+            and then Is_Attribute_Update (Parent (Aggr));
       end Is_Update_Aggregate;
 
       --------------------------------------
