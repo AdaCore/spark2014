@@ -7,30 +7,28 @@ is
    -- Sqrt_Binary --
    -----------------
 
-   function Sqrt_Binary
-     (X : in Sqrt_Domain)
-      return Sqrt_Range
-   is
+   function Sqrt_Binary (X : in Sqrt_Domain) return Sqrt_Range is
       subtype Upper_Guess is Integer range 0 .. Sqrt_Range'Last + 1;
-      Lower  : Sqrt_Range;
-      Upper  : Upper_Guess;
-      Middle : Sqrt_Range;
+      Lower : Sqrt_Range  := 0;
+      Upper : Upper_Guess := Upper_Guess'Last;
    begin
-      Lower := 0;
-      Upper := Upper_Guess'Last;
-
       loop
-         pragma Loop_Invariant ((Lower * Lower) <= X and
-                                (Upper * Upper) > X);
+         pragma Loop_Invariant (Lower * Lower <= X);
+         pragma Loop_Invariant (Big (X) < Big (Upper) * Big (Upper));
+         pragma Loop_Variant (Decreases => Upper - Lower);
 
          exit when Lower + 1 = Upper;
-         Middle := (Lower + Upper) / 2;
-         if (Middle * Middle) > X then
-            Upper := Middle;
-         else
-            Lower := Middle;
-         end if;
+         declare
+            Middle : constant Sqrt_Range := (Lower + Upper) / 2;
+         begin
+            if Middle * Middle > X then
+               Upper := Middle;
+            else
+               Lower := Middle;
+            end if;
+         end;
       end loop;
+
       return Lower;
    end Sqrt_Binary;
 
@@ -55,10 +53,7 @@ is
 --     return y;
 --  }
 
-   function Sqrt_Von_Neumann
-     (X : in Sqrt_Domain)
-      return Sqrt_Range
-   is
+   function Sqrt_Von_Neumann (X : in Sqrt_Domain) return Sqrt_Range is
       subtype U64 is Interfaces.Unsigned_64;
       use type Interfaces.Unsigned_64;
       UX, M, Y, B : U64;
