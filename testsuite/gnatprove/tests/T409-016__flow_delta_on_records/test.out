@@ -1,0 +1,23 @@
+d1.adb:1:33: info: initialization of "Y1" proved
+d1.adb:1:37: info: initialization of "Y2" proved
+d1.adb:3:20: medium: missing dependency "Y1 => X2"
+d1.adb:3:30: medium: missing dependency "Y2 => X1"
+d1.adb:4:16: info: postcondition proved (CVC4: 2 VC)
+d1.adb:11:04: info: initialization of "After" proved
+d2.adb:1:33: info: initialization of "Y1" proved
+d2.adb:1:37: info: initialization of "Y2" proved
+d2.adb:3:20: medium: missing dependency "Y1 => X2"
+d2.adb:3:30: medium: missing dependency "Y2 => X1"
+d2.adb:4:16: info: postcondition proved (CVC4: 2 VC)
+u1.adb:1:33: info: initialization of "Y1" proved
+u1.adb:1:37: info: initialization of "Y2" proved
+u1.adb:3:08: info: flow dependencies proved
+u1.adb:4:16: info: postcondition proved (CVC4: 2 VC)
+u1.adb:11:04: info: initialization of "After" proved
+u2.adb:1:33: info: initialization of "Y1" proved
+u2.adb:1:37: info: initialization of "Y2" proved
+u2.adb:3:08: medium: missing dependency "null => X1"
+u2.adb:3:08: medium: missing dependency "null => X2"
+u2.adb:3:26: medium: incorrect dependency "Y1 => X1"
+u2.adb:3:36: medium: incorrect dependency "Y2 => X2"
+u2.adb:4:16: info: postcondition proved (CVC4: 2 VC)
