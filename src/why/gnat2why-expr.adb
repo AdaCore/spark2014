@@ -3329,10 +3329,10 @@ package body Gnat2Why.Expr is
 
          --  Get values for global inputs of functions
 
-         for B in Bind_Cnt .. Binders'Last loop
+         if Arg_Cnt <= Why_Args'Last then
             Why_Args (Arg_Cnt .. Why_Args'Last) :=
               Get_Logic_Args (Subp, Params.Ref_Allowed);
-         end loop;
+         end if;
 
          return Why_Args;
       end;
@@ -6473,7 +6473,7 @@ package body Gnat2Why.Expr is
       --  If the borrowed object is not mutable (it happens when we are inside
       --  a traversal function), nothing needs to be done.
 
-      if not Is_Mutable_In_Why (Borrowed) then
+      if Is_Constant_Borrower (Brower) then
          return +Void;
       end if;
 
