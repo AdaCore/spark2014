@@ -6321,35 +6321,51 @@ package body Gnat2Why.Expr is
             end if;
 
          when Pointer =>
-
-            --  We can always reuse the reference for the value of split
-            --  pointers, since pointers designating the same type share a
-            --  single Why type.
-
             pragma Assert (Var.Kind = Pointer);
-            Args (Count) := +Var.Value.B_Name;
-            Count := Count + 1;
 
-            if Pattern.Mutable = Var.Mutable then
-               Args (Count) := +Var.Address;
+            --  We can reuse the reference for the value of split
+            --  pointers, if both pointer types designate the same subtype.
+
+            if Repr_Pointer_Type
+                (Get_Ada_Node (+Get_Why_Type_From_Item (Pattern)))
+              = Repr_Pointer_Type
+                (Get_Ada_Node (+Get_Why_Type_From_Item (Var)))
+            then
+
+               Args (Count) := +Var.Value.B_Name;
                Count := Count + 1;
-               Args (Count) := +Var.Is_Null;
+
+               if Pattern.Mutable = Var.Mutable then
+                  Args (Count) := +Var.Address;
+                  Count := Count + 1;
+                  Args (Count) := +Var.Is_Null;
+                  Count := Count + 1;
+               else
+                  pragma Assert (not Pattern.Mutable);
+                  Args (Count) := New_Deref
+                    (Right => Var.Address,
+                     Typ   => Get_Typ (Var.Address));
+                  Count := Count + 1;
+                  Args (Count) := New_Deref
+                    (Right => Var.Is_Null,
+                     Typ   => Get_Typ (Var.Is_Null));
+                  Count := Count + 1;
+               end if;
+
+               Args (Count) := +Var.Is_Moved;
                Count := Count + 1;
+
+            --  Otherwise, use the expression instead.
+
             else
-               pragma Assert (not Pattern.Mutable);
-               Args (Count) := New_Deref
-                 (Right => Var.Address,
-                  Typ   => Get_Typ (Var.Address));
-               Count := Count + 1;
-               Args (Count) := New_Deref
-                 (Right => Var.Is_Null,
-                  Typ   => Get_Typ (Var.Is_Null));
-               Count := Count + 1;
+               Get_Item_From_Expr
+                 (Pattern    => Pattern,
+                  Expr       => Expr,
+                  Context    => Context,
+                  Args       => Args,
+                  Need_Store => Need_Store);
+               return;
             end if;
-
-            Args (Count) := +Var.Is_Moved;
-            Count := Count + 1;
-
          when Func    =>
             raise Program_Error;
       end case;
