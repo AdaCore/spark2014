@@ -44,9 +44,13 @@ package My_Map with SPARK_Mode is
           (declare
              Old_M : constant Map_Acc := Deep_Copy (M)'Old;
            begin
-             (for all K in Map_Acc'(Old_M).all => Model_Contains (M, K))
-               and then (for all L in M.all => Model_Contains (Old_M, L)
-                         and then (if L /= K then Model_Value (M, L) = Model_Value (Old_M, L))));
+             (for all K in Map_Acc'(Old_M).all => Model_Contains (M, K)))
+         and then
+          (declare
+             Old_M : constant Map_Acc := Deep_Copy (M)'Old;
+           begin
+             (for all L in M.all => Model_Contains (Old_M, L)
+              and then (if L /= K then Model_Value (M, L) = Model_Value (Old_M, L))));
 
    function Constant_Access (M : access constant Map; K : Positive) return not null access constant Integer with
      Pre  => Model_Contains (M, K),

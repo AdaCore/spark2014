@@ -31,7 +31,6 @@ with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
 with Namet;               use Namet;
 with Sinput;              use Sinput;
 with Snames;              use Snames;
-with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
@@ -62,25 +61,6 @@ package body Why.Gen.Pointers is
    function Get_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id;
    --  Return the name of a record's representative module.
 
-   procedure Clone_Pledge_Module
-     (Th            : Theory_UC;
-      Brower_Ent    : Entity_Id;
-      Borrowed_Ent  : Entity_Id;
-      Borrowed_Expr : Entity_Id;
-      Borrowed_Ty   : Entity_Id;
-      Loc_Pledge_Id : out W_Identifier_Id);
-   --  Clone the Why3 module for pledges with the provided borrowed and
-   --  borrower types. Also insert the relevant informations in the
-   --  Borrow_Infos map.
-
-   function New_Pledge_Call
-     (E            : Entity_Id;
-      Pledge_Expr  : W_Expr_Id;
-      Borrowed_Arg : W_Expr_Id;
-      Brower_Arg   : W_Expr_Id) return W_Expr_Id;
-   --  Call get for pledge of E on the pledge object Pledge_Expr and the two
-   --  parameters Borrowed_Arg and Brower_Arg.
-
    package Pointer_Typ_To_Roots is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Node_Id,
@@ -94,12 +74,23 @@ package body Why.Gen.Pointers is
    --  for which a completion module has been declared.
 
    type Borrow_Info is record
-      Borrowed_Entity : Entity_Id;        --  Root borrowed object
-      Borrowed_Expr   : Node_Id;          --  Initial expression
-      Borrowed_Ty     : Entity_Id;        --  Type of the borrower
-      Pledge_Id       : W_Identifier_Id;  --  Why id for the pledge function
-      Pledge_Get      : W_Identifier_Id;  --  Why id for get on pledges
+      Borrowed_Entity : Entity_Id;
+      Borrowed_Expr   : Node_Id;
+      Borrowed_Ty     : Entity_Id;
+      Borrowed_At_End : W_Identifier_Id;
+      Brower_At_End   : W_Identifier_Id;
    end record;
+   --  We store for each borrower,
+   --   * the root borrowed object in Borrowed_Entity,
+   --   * the initially borrowed expression in Borrowed_Expr,
+   --   * the enforced type of the borrowed expression in Borrowed_Ty. It is
+   --     the type of the first borrow in the expression. It might not be the
+   --     type of Borrowed_Expr (usually Borrowed_Expr has a named type while
+   --     Borrowed_Ty is an anonymous type) but they are compatible.
+   --   * the name of the constant storing the borrowed expression at the end
+   --     of the borrow in Borrowed_At_End. It has type Borrowed_Ty.
+   --   * the name of the reference holding the value of the borrower at the
+   --     end of the borrow in Brower_At_End.
 
    package Borrow_Info_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
@@ -110,76 +101,6 @@ package body Why.Gen.Pointers is
 
    Borrow_Infos : Borrow_Info_Maps.Map;
    --  Maps borrowers to their borrowed object and their pledge
-
-   -------------------------
-   -- Clone_Pledge_Module --
-   -------------------------
-
-   procedure Clone_Pledge_Module
-     (Th            : Theory_UC;
-      Brower_Ent    : Entity_Id;
-      Borrowed_Ent  : Entity_Id;
-      Borrowed_Expr : Entity_Id;
-      Borrowed_Ty   : Entity_Id;
-      Loc_Pledge_Id : out W_Identifier_Id)
-   is
-      Current_Module  : constant W_Module_Id := E_Module (Brower_Ent);
-      Pledge_Ty_Name  : constant String := "__pledge_ty";
-      Pledge_Name     : constant String := Full_Name (Brower_Ent) & "__pledge";
-      Pledge_Get_Name : constant String := "__pledge_get";
-      Pledge_Type     : constant W_Type_Id :=
-        New_Named_Type (New_Name (Symb   => NID (Pledge_Ty_Name),
-                                  Module => Current_Module));
-
-   begin
-      --  Clone the pledge module. It creates a pledge function relating the
-      --  borrowed entity and the borrower.
-
-      Emit (Th,
-            New_Clone_Declaration
-              (Theory_Kind   => EW_Module,
-               Clone_Kind    => EW_Export,
-               As_Name       => No_Symbol,
-               Origin        => Pledge,
-               Substitutions =>
-                 (1 => New_Clone_Substitution
-                      (Kind      => EW_Type_Subst,
-                       Orig_Name => New_Name
-                         (Symb => NID ("borrower")),
-                       Image     => Get_Name
-                         (Type_Of_Node (Etype (Brower_Ent)))),
-                  2 => New_Clone_Substitution
-                      (Kind      => EW_Type_Subst,
-                       Orig_Name => New_Name
-                         (Symb => NID ("borrowed")),
-                       Image     => Get_Name
-                         (Type_Of_Node (Borrowed_Ent))))));
-
-      Loc_Pledge_Id :=
-        New_Identifier (Symb   => NID (Pledge_Name),
-                        Typ    => New_Named_Type (Pledge_Ty_Name),
-                        Domain => EW_Prog);
-
-      declare
-         Pledge_Id     : constant W_Identifier_Id :=
-           New_Identifier (Symb   => NID (Pledge_Name),
-                           Module => Current_Module,
-                           Typ    => Pledge_Type,
-                           Domain => EW_Prog);
-         Pledge_Get_Id : constant W_Identifier_Id :=
-           New_Identifier (Symb   => NID (Pledge_Get_Name),
-                           Module => Current_Module,
-                           Typ    => EW_Bool_Type,
-                           Domain => EW_Prog);
-      begin
-         Borrow_Infos.Insert
-           (Brower_Ent, Borrow_Info'(Borrowed_Entity => Borrowed_Ent,
-                                     Borrowed_Expr   => Borrowed_Expr,
-                                     Borrowed_Ty     => Borrowed_Ty,
-                                     Pledge_Id       => Pledge_Id,
-                                     Pledge_Get      => Pledge_Get_Id));
-      end;
-   end Clone_Pledge_Module;
 
    -------------------------------
    -- Complete_Rep_Pointer_Type --
@@ -812,44 +733,66 @@ package body Why.Gen.Pointers is
    end Declare_Ada_Pointer;
 
    -----------------------------
-   -- Declare_Pledge_Function --
+   -- Declare_At_End_Function --
    -----------------------------
 
-   procedure Declare_Pledge_Function
+   procedure Declare_At_End_Function
      (File    : Theory_UC;
       E       : Entity_Id;
       Binders : Binder_Array)
    is
       Borrowed_Entity : constant Entity_Id := First_Formal (E);
-      Loc_Pledge_Id   : W_Identifier_Id;
+      Current_Module  : constant W_Module_Id := E_Module (E);
+      Ty              : constant Entity_Id :=
+        Retysp (Etype (Borrowed_Entity));
+      Borrowed_Id     : constant W_Identifier_Id :=
+        New_Identifier (Symb   => NID (Short_Name (E) & "__borrowed_at_end"),
+                        Typ    => Type_Of_Node (Ty),
+                        Module => Current_Module,
+                        Domain => EW_Prog);
+      Brower_Id       : constant W_Identifier_Id :=
+        New_Identifier (Symb   => NID (Short_Name (E) & "__result_at_end"),
+                        Typ    => Type_Of_Node (Etype (E)),
+                        Domain => EW_Prog);
 
    begin
-      Clone_Pledge_Module
-        (Th          => File,
-         Brower_Ent    => E,
-         Borrowed_Ent  => Borrowed_Entity,
-         Borrowed_Expr => Empty,
-         Borrowed_Ty   => Etype (Borrowed_Entity),
-         Loc_Pledge_Id => Loc_Pledge_Id);
+      --  Emit a declaration for a function computing the value of the borrowed
+      --  parameter at the end of the borrow from the call parameters (Binders)
+      --  and the value of the result at the end of the borrow.
 
       Emit (File,
-            New_Function_Decl (Domain      => EW_Pterm,
-                               Name        => Loc_Pledge_Id,
-                               Binders     => Binders,
-                               Return_Type => Get_Typ (Loc_Pledge_Id),
-                               Labels      => Symbol_Sets.Empty_Set,
-                               Location    => No_Location));
-   end Declare_Pledge_Function;
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (Borrowed_Id),
+               Binders     => Binders &
+                 Binder_Type'(B_Name => Brower_Id,
+                              B_Ent  => Null_Entity_Name,
+                              Labels => Symbol_Sets.Empty_Set,
+                              others => <>),
+               Return_Type => Get_Typ (Borrowed_Id),
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location));
+
+      --  Update the Borrow_Infos map. Also insert a local name for the
+      --  borrower at end. It will be used when generating VCs for the
+      --  subprogram.
+
+      Borrow_Infos.Insert
+        (E, Borrow_Info'(Borrowed_Entity => Borrowed_Entity,
+                         Borrowed_Expr   => Borrowed_Entity,
+                         Borrowed_Ty     => Ty,
+                         Borrowed_At_End => Borrowed_Id,
+                         Brower_At_End   => Brower_Id));
+   end Declare_At_End_Function;
 
    ------------------------
-   -- Declare_Pledge_Ref --
+   -- Declare_At_End_Ref --
    ------------------------
 
-   procedure Declare_Pledge_Ref (Th : Theory_UC; E : Entity_Id) is
+   procedure Declare_At_End_Ref (Th : Theory_UC; E : Entity_Id) is
       Borrowed_Expr   : Node_Id;
       Borrowed_Ty     : Entity_Id := Etype (E);
       Borrowed_Entity : Entity_Id;
-      Loc_Pledge_Id   : W_Identifier_Id;
 
    begin
       --  Find the borrowed initial expression and type.
@@ -861,29 +804,91 @@ package body Why.Gen.Pointers is
 
       Get_Observed_Or_Borrowed_Info
         (Expression (Enclosing_Declaration (E)), Borrowed_Expr, Borrowed_Ty);
+
+      --  For constant borrowers, the whole object can be considered to be
+      --  borrowed as it really is a part of the borrowed parameter of a
+      --  traversal function.
+
+      if Is_Constant_Borrower (E) then
+         loop
+            case Nkind (Borrowed_Expr) is
+               when N_Expanded_Name
+                  | N_Identifier
+               =>
+                  Borrowed_Ty := Etype (Borrowed_Expr);
+                  exit;
+
+               when N_Explicit_Dereference
+                  | N_Indexed_Component
+                  | N_Selected_Component
+                  | N_Slice
+               =>
+                  Borrowed_Expr := Prefix (Borrowed_Expr);
+
+               when N_Qualified_Expression
+                  | N_Type_Conversion
+                  | N_Unchecked_Type_Conversion
+               =>
+                  Borrowed_Expr := Expression (Borrowed_Expr);
+
+               when others =>
+                  raise Program_Error;
+            end case;
+         end loop;
+      end if;
+
       Borrowed_Entity := Get_Root_Object (Borrowed_Expr);
 
-      --  Clone the pledge module. It creates a pledge function relating the
-      --  borrowed entity and the borrower. We could have chosen to rather
-      --  relate the borrowed expression and the borrower, but it makes it
-      --  less practical to have good triggers for quantified expressions
-      --  arising from the translation of a call to a function which has a
-      --  pledge annotation.
+      declare
+         Current_Module : constant W_Module_Id := E_Module (E);
+         Brower_Id      : constant W_Identifier_Id :=
+           New_Identifier (Symb   => NID (Short_Name (E) & "__brower_at_end"),
+                           Typ    => Type_Of_Node (Etype (E)),
+                           Module => Current_Module,
+                           Domain => EW_Prog);
+         Borrowed_Id    : constant W_Identifier_Id := New_Identifier
+           (Symb   => NID (Short_Name (E) & "__borrowed_at_end"),
+            Typ    => Type_Of_Node (Borrowed_Ty),
+            Module => Current_Module,
+            Domain => EW_Prog);
+         --  Use the borrowed type for the borrowed at end, since the
+         --  invariants of the specific type of the borrowed expression might
+         --  be broken during the borrow.
 
-      Clone_Pledge_Module
-        (Th            => Th,
-         Brower_Ent    => E,
-         Borrowed_Ent  => Borrowed_Entity,
-         Borrowed_Expr => Borrowed_Expr,
-         Borrowed_Ty   => Borrowed_Ty,
-         Loc_Pledge_Id => Loc_Pledge_Id);
+      begin
+         --  Declare a global reference for the value of the borrower at the
+         --  end of the borrow. We need a reference as this value can be
+         --  modified on reborrows.
 
-      Emit (Th,
-            New_Global_Ref_Declaration (Name     => Loc_Pledge_Id,
-                                        Ref_Type => Get_Typ (Loc_Pledge_Id),
-                                        Labels   => Symbol_Sets.Empty_Set,
-                                        Location => No_Location));
-   end Declare_Pledge_Ref;
+         Emit (Th,
+               New_Global_Ref_Declaration (Name     => To_Local (Brower_Id),
+                                           Ref_Type => Get_Typ (Brower_Id),
+                                           Labels   => Symbol_Sets.Empty_Set,
+                                           Location => No_Location));
+
+         --  Declare a global constant for the value of the borrwoed expression
+         --  at the end of the borrow. We assume its value on the borrow based
+         --  on the value of the borrower at the end.
+
+         Emit (Th,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (Borrowed_Id),
+                  Binders     => (1 .. 0 => <>),
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Location    => No_Location,
+                  Return_Type => Get_Typ (Borrowed_Id)));
+
+         --  Store information in the Borrow_Infos map
+
+         Borrow_Infos.Insert
+           (E, Borrow_Info'(Borrowed_Entity => Borrowed_Entity,
+                            Borrowed_Expr   => Borrowed_Expr,
+                            Borrowed_Ty     => Borrowed_Ty,
+                            Borrowed_At_End => Borrowed_Id,
+                            Brower_At_End   => Brower_Id));
+      end;
+   end Declare_At_End_Ref;
 
    -------------------------------
    -- Declare_Rep_Pointer_Compl --
@@ -1110,6 +1115,13 @@ package body Why.Gen.Pointers is
    end Declare_Rep_Pointer_Type;
 
    -------------------------
+   -- Get_Borrowed_At_End --
+   -------------------------
+
+   function Get_Borrowed_At_End (E : Entity_Id) return W_Identifier_Id is
+     (Borrow_Infos (E).Borrowed_At_End);
+
+   -------------------------
    -- Get_Borrowed_Entity --
    -------------------------
 
@@ -1130,12 +1142,12 @@ package body Why.Gen.Pointers is
    function Get_Borrowed_Typ (E : Entity_Id) return Entity_Id is
      (Borrow_Infos (E).Borrowed_Ty);
 
-   -------------------
-   -- Get_Pledge_Id --
-   -------------------
+   -----------------------
+   -- Get_Brower_At_End --
+   -----------------------
 
-   function Get_Pledge_Id (E : Entity_Id) return W_Identifier_Id is
-     (Borrow_Infos (E).Pledge_Id);
+   function Get_Brower_At_End (E : Entity_Id) return W_Identifier_Id is
+     (Borrow_Infos (E).Brower_At_End);
 
    ----------------------------
    -- Get_Rep_Pointer_Module --
@@ -1353,141 +1365,6 @@ package body Why.Gen.Pointers is
 
       return Binding_For_Temp (Ada_Node, Domain, Tmp, T);
    end New_Ada_Pointer_Update;
-
-   ---------------------
-   -- New_Pledge_Call --
-   ---------------------
-
-   function New_Pledge_Call
-     (E            : Entity_Id;
-      Pledge_Expr  : W_Expr_Id;
-      Borrowed_Arg : W_Expr_Id;
-      Brower_Arg   : W_Expr_Id) return W_Expr_Id
-   is
-      Pledge_Get   : constant W_Identifier_Id :=
-        Borrow_Infos (E).Pledge_Get;
-   begin
-      return New_Call
-        (Domain => EW_Term,
-         Name   => Pledge_Get,
-         Args   => (Pledge_Expr, Borrowed_Arg, Brower_Arg),
-         Typ    => EW_Bool_Type);
-   end New_Pledge_Call;
-
-   function New_Pledge_Call
-     (E            : Entity_Id;
-      Borrowed_Arg : W_Expr_Id;
-      Brower_Arg   : W_Expr_Id;
-      Ref_Allowed  : Boolean) return W_Expr_Id
-   is
-      Pledge_Id    : constant W_Identifier_Id :=
-        (if Ekind (E) = E_Function then Result_Pledge_Id (E)
-         else Borrow_Infos (E).Pledge_Id);
-      Pledge_Deref : constant W_Expr_Id :=
-        (if Ref_Allowed
-         then New_Deref (Right => Pledge_Id, Typ => Get_Typ (Pledge_Id))
-         else +Pledge_Id);
-   begin
-      return New_Pledge_Call
-        (E            => E,
-         Pledge_Expr  => Pledge_Deref,
-         Borrowed_Arg => Borrowed_Arg,
-         Brower_Arg   => Brower_Arg);
-   end New_Pledge_Call;
-
-   function New_Pledge_Call
-     (E            : Entity_Id;
-      Args         : W_Expr_Array;
-      Borrowed_Arg : W_Expr_Id;
-      Brower_Arg   : W_Expr_Id) return W_Expr_Id
-   is
-      Pledge_Call : constant W_Expr_Id :=
-        New_Pledge_For_Call (E, Args);
-   begin
-      return New_Pledge_Call
-        (E            => E,
-         Pledge_Expr  => Pledge_Call,
-         Borrowed_Arg => Borrowed_Arg,
-         Brower_Arg   => Brower_Arg);
-   end New_Pledge_Call;
-
-   --------------------
-   -- New_Pledge_Def --
-   --------------------
-
-   function New_Pledge_Def
-     (E           : Entity_Id;
-      Name        : W_Term_Id;
-      Borrowed_Id : W_Identifier_Id;
-      Brower_Id   : W_Identifier_Id;
-      Def         : W_Term_Id) return W_Pred_Id
-   is
-      Pledge_Get : constant W_Identifier_Id :=
-        Borrow_Infos (E).Pledge_Get;
-      Name_Acc   : constant W_Term_Id :=
-        New_Call (Name => Pledge_Get,
-                  Args => (+Name, +Borrowed_Id, +Brower_Id),
-                  Typ  => EW_Bool_Type);
-   begin
-      return New_Universal_Quantif
-        (Binders  => (1 => Binder_Type'(B_Name => Borrowed_Id,
-                                        others => <>),
-                      2 => Binder_Type'(B_Name => Brower_Id,
-                                        others => <>)),
-         Triggers => New_Triggers
-           (Triggers => (1 => New_Trigger (Terms => (1 => +Name_Acc)))),
-         Pred     => +New_Comparison
-           (Symbol => Why_Eq,
-            Left   => +Name_Acc,
-            Right  => +Def,
-            Domain => EW_Pred));
-   end New_Pledge_Def;
-
-   -------------------------
-   -- New_Pledge_For_Call --
-   -------------------------
-
-   function New_Pledge_For_Call
-     (E    : Entity_Id;
-      Args : W_Expr_Array) return W_Expr_Id
-   is
-      Pledge_Id   : constant W_Identifier_Id :=
-        Borrow_Infos (E).Pledge_Id;
-   begin
-      return New_Call
-        (Domain => EW_Term,
-         Name   => Pledge_Id,
-         Args   => Args,
-         Typ    => Get_Typ (Pledge_Id));
-   end New_Pledge_For_Call;
-
-   -----------------------
-   -- New_Pledge_Update --
-   -----------------------
-
-   function New_Pledge_Update
-     (E           : Entity_Id;
-      Borrowed_Id : W_Identifier_Id;
-      Brower_Id   : W_Identifier_Id;
-      Def         : W_Term_Id) return W_Prog_Id
-   is
-      Pledge_Id  : constant W_Identifier_Id :=
-        (if Ekind (E) = E_Function
-         then Result_Pledge_Id (E)
-         else Borrow_Infos (E).Pledge_Id);
-      Res        : constant W_Identifier_Id :=
-        New_Result_Ident (Typ => Get_Typ (Pledge_Id));
-   begin
-      return New_Assignment
-        (Name   => Pledge_Id,
-         Value  => New_Any_Expr
-           (Post        => New_Pledge_Def
-                (E, +Res, Borrowed_Id, Brower_Id, Def),
-            Return_Type => Get_Typ (Pledge_Id),
-            Labels      => Symbol_Sets.Empty_Set),
-         Typ    => Get_Typ (Pledge_Id),
-         Labels => Symbol_Sets.Empty_Set);
-   end New_Pledge_Update;
 
    --------------------------------
    -- New_Pointer_Address_Access --
@@ -1792,19 +1669,6 @@ package body Why.Gen.Pointers is
          return Standard.Types.Empty;
       end if;
    end Repr_Pointer_Type;
-
-   ----------------------
-   -- Result_Pledge_Id --
-   ----------------------
-
-   function Result_Pledge_Id (E : Entity_Id) return W_Identifier_Id is
-      Pledge_Ty : constant W_Type_Id :=
-        Get_Typ (Get_Pledge_Id (E));
-   begin
-      return New_Identifier
-        (Name  => "__result_pledge",
-         Typ   => Pledge_Ty);
-   end Result_Pledge_Id;
 
    -----------------------
    -- Root_Pointer_Type --

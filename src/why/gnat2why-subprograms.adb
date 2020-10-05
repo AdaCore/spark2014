@@ -307,6 +307,17 @@ package body Gnat2Why.Subprograms is
                     Labels   => <>));
    --  Binder to be used as additional tag argument for dispatching functions
 
+   function Wrap_Post_Of_Traversal
+     (E      : Entity_Id;
+      Post   : W_Pred_Id;
+      Args   : W_Expr_Array;
+      Params : Transformation_Params) return W_Pred_Id
+   with Pre => Is_Borrowing_Traversal_Function (E);
+   --  The postcondition of traversal functions might refer to the value of the
+   --  result of the function and the borrowed parameter at the end of the
+   --  borrow (if it contains a call to a pledge function). Introduce bindings
+   --  for them.
+
    ----------------------------------------------
    -- Assume_Initial_Condition_Of_Withed_Units --
    ----------------------------------------------
@@ -1165,7 +1176,8 @@ package body Gnat2Why.Subprograms is
                        (Eff, Ada_Ent_To_Why.Element (Symbol_Table, Entity));
 
                      if Is_Local_Borrower (Entity) then
-                        Effects_Append_To_Writes (Eff, Get_Pledge_Id (Entity));
+                        Effects_Append_To_Writes
+                          (Eff, Get_Brower_At_End (Entity));
                      end if;
                   end if;
 
@@ -2348,7 +2360,7 @@ package body Gnat2Why.Subprograms is
       --  tagged types cannot be deep.
 
       if Is_Borrowing_Traversal_Function (E) then
-         Declare_Pledge_Function (Th, E, Logic_Why_Binders);
+         Declare_At_End_Function (Th, E, Logic_Why_Binders);
       end if;
    end Declare_Logic_Functions;
 
@@ -4181,19 +4193,29 @@ package body Gnat2Why.Subprograms is
                Ref_Type => Type_Of_Node (E)));
 
          --  If E is a traversal function returning a borrower, declare a
-         --  reference for the plege of its result.
+         --  reference borrower at end and a constant for the borrowed at end.
 
          if Is_Borrowing_Traversal_Function (E) then
             declare
-               Result_Pledge : constant W_Identifier_Id :=
-                 Result_Pledge_Id (E);
+               Brower_At_End   : constant W_Identifier_Id :=
+                 Get_Brower_At_End (E);
+               Borrowed_At_End : constant W_Identifier_Id :=
+                 To_Local (Get_Borrowed_At_End (E));
             begin
                Emit (Th,
                      New_Global_Ref_Declaration
-                       (Name     => Result_Pledge,
-                        Ref_Type => Get_Typ (Result_Pledge),
+                       (Name     => Brower_At_End,
+                        Ref_Type => Get_Typ (Brower_At_End),
                         Labels   => Symbol_Sets.Empty_Set,
                         Location => No_Location));
+               Emit (Th,
+                     Why.Atree.Builders.New_Function_Decl
+                       (Domain      => EW_Pterm,
+                        Name        => Borrowed_At_End,
+                        Binders     => (1 .. 0 => <>),
+                        Labels      => Symbol_Sets.Empty_Set,
+                        Location    => No_Location,
+                        Return_Type => Get_Typ (Borrowed_At_End)));
             end;
          end if;
       end if;
@@ -4879,31 +4901,13 @@ package body Gnat2Why.Subprograms is
               +New_And_Expr
               (Conjuncts =>
                  (1 =>
-
-                    --  If the function is a borrowing traversal function,
-                    --  bind the identifier for the pledge of the result. Also
-                    --  assume that the pledge holds right after the call.
-
                     (if Is_Borrowing_Traversal_Function (E)
-                     then New_Typed_Binding
-                       (Domain  => EW_Pred,
-                        Name    => Result_Pledge_Id (E),
-                        Def     => New_Pledge_For_Call
-                          (E    => E,
-                           Args => Get_Args_From_Binders
-                             (Logic_Why_Binders, Ref_Allowed => False)),
-                        Context => New_And_Then_Expr
-                          (Left   => +Post,
-                           Right  => New_Pledge_Call
-                             (E            => E,
-                              Borrowed_Arg => Transform_Identifier
-                                (Expr   => First_Formal (E),
-                                 Ent    => First_Formal (E),
-                                 Domain => EW_Term,
-                                 Params => Params),
-                              Brower_Arg   => +Result_Name,
-                              Ref_Allowed  => False),
-                           Domain => EW_Pred))
+                     then +Wrap_Post_Of_Traversal
+                       (E      => E,
+                        Post   => Post,
+                        Args   => Get_Args_From_Binders
+                          (Logic_Why_Binders, Ref_Allowed => False),
+                        Params => Params)
                      else +Post),
                   2 => +Dynamic_Prop_Result,
                   3 => +Tag_Comp),
@@ -5610,24 +5614,8 @@ package body Gnat2Why.Subprograms is
                   --  assume that the pledge holds right after the call.
 
                     (if Is_Borrowing_Traversal_Function (E)
-                     then New_Typed_Binding
-                       (Domain  => EW_Pred,
-                        Name    => Result_Pledge_Id (E),
-                        Def     => New_Pledge_For_Call
-                          (E    => E,
-                           Args => Logic_Func_Args),
-                        Context => New_And_Then_Expr
-                          (Left   => +Post,
-                           Right  => New_Pledge_Call
-                             (E            => E,
-                              Borrowed_Arg => Transform_Identifier
-                                (Expr   => First_Formal (E),
-                                 Ent    => First_Formal (E),
-                                 Domain => EW_Term,
-                                 Params => Params),
-                              Brower_Arg   => +Result_Name,
-                              Ref_Allowed  => False),
-                           Domain => EW_Pred))
+                     then +Wrap_Post_Of_Traversal
+                       (E, Post, Logic_Func_Args, Params)
                      else +Post),
                   Domain => EW_Pred);
                Tag_Arg    : constant W_Expr_Array :=
@@ -6373,38 +6361,48 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
+      --  If the function is a traversal function add an axiom to assume the
+      --  value of its borrowed at end function.
+
       if Is_Borrowing_Traversal_Function (E) then
          declare
-            Guard       : constant W_Pred_Id :=
+            Guard                : constant W_Pred_Id :=
               +New_And_Then_Expr
               (Left   => +Compute_Guard_Formula
                  (Logic_Func_Binders, Params),
                Right  => +Func_Guard,
                Domain => EW_Pred);
-            Borrowed_Id : W_Identifier_Id;
-            Brower_Id   : W_Identifier_Id;
-            Def         : constant W_Term_Id := New_Pledge_Def_From_Expression
-              (Brower      => E,
-               Borrowed_Id => Borrowed_Id,
-               Brower_Id   => Brower_Id,
-               Path        => Expr);
+            Def                  : constant W_Term_Id :=
+              Compute_Borrow_At_End_Value
+                (W_Brower => +Get_Brower_At_End (E),
+                 Expr     => Expr);
+            Params               : constant Binder_Array := Flat_Binders
+              & Binder_Type'(B_Name => Get_Brower_At_End (E),
+                             B_Ent  => Null_Entity_Name,
+                             Labels => Symbol_Sets.Empty_Set,
+                             others => <>);
+            Borrowed_At_End_Call : constant W_Expr_Id := New_Call
+              (Domain  => EW_Term,
+               Name    => Get_Borrowed_At_End (E),
+               Binders => Params,
+               Typ     => Get_Typ (Get_Borrowed_At_End (E)));
          begin
             Emit
               (Th,
                New_Guarded_Axiom
                  (Ada_Node => E,
                   Name     => NID (Short_Name (E) & "__" & Pledge_Axiom),
-                  Binders  => Flat_Binders,
+                  Binders  => Params,
+                  Triggers => New_Triggers
+                    (Triggers =>
+                         (1 => New_Trigger
+                              (Terms => (1 => Borrowed_At_End_Call)))),
                   Pre      => Guard,
-                  Def      => New_Pledge_Def
-                    (E           => E,
-                     Name        => +New_Pledge_For_Call
-                       (E    => E,
-                        Args => Get_Args_From_Binders
-                          (Flat_Binders, Ref_Allowed => False)),
-                     Borrowed_Id => Borrowed_Id,
-                     Brower_Id   => Brower_Id,
-                     Def         => Def)));
+                  Def      => +New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => Borrowed_At_End_Call,
+                     Right  => +Def,
+                     Domain => EW_Pred)));
          end;
       end if;
 
@@ -6534,5 +6532,98 @@ package body Gnat2Why.Subprograms is
          Relocate_Symbols (Subp_For_Post);
       end if;
    end Update_Symbol_Table_For_Inherited_Contracts;
+
+   ----------------------------
+   -- Wrap_Post_Of_Traversal --
+   ----------------------------
+
+   function Wrap_Post_Of_Traversal
+     (E      : Entity_Id;
+      Post   : W_Pred_Id;
+      Args   : W_Expr_Array;
+      Params : Transformation_Params) return W_Pred_Id
+   is
+      Brower_Ty       : constant Entity_Id := Retysp (Etype (E));
+      Brower_At_End   : constant W_Identifier_Id :=
+        Get_Brower_At_End (E);
+      Borrowed_At_End : constant W_Identifier_Id :=
+        To_Local (Get_Borrowed_At_End (E));
+      Borrowed_Ent    : constant Entity_Id := First_Formal (E);
+      Borrowed_Ty     : constant Entity_Id := Retysp (Etype (Borrowed_Ent));
+      Borrowed        : constant W_Expr_Id := Transform_Identifier
+        (Expr   => Borrowed_Ent,
+         Ent    => Borrowed_Ent,
+         Domain => EW_Term,
+         Params => Params);
+      Borrowed_Call   : constant W_Expr_Id :=
+        New_Call
+          (Domain => EW_Term,
+           Name   => Get_Borrowed_At_End (E),
+           Args   => Args & (1 => +Brower_At_End),
+           Typ    => Get_Typ (Borrowed_At_End));
+
+   begin
+      --  Generate:
+      --    (forall result_at_end [E.borrowed_at_end args result_at_end].
+      --       dyn_inv result_at_end ->
+      --       result_at_end.is_null = result.is_null ->
+      --         let borrowed_at_end = E.borrowed_at_end args result_at_end in
+      --           borrowed_at_end.is_null = borrowed_arg.is_null
+      --           /\ post)
+      --    /\ borrowed_arg = E.borrowed_at_end args result
+      --
+      --  The ground call to E.borrowed_at_end is used to allow an instance of
+      --  the quantified formula just after the borrow.
+
+      return +New_And_Expr
+        (Left   => New_Universal_Quantif
+           (Variables => (1 => Brower_At_End),
+            Labels    => Symbol_Sets.Empty_Set,
+            Var_Type  => Get_Typ (Brower_At_End),
+            Triggers  => New_Triggers
+              (Triggers =>
+                   (1 => New_Trigger (Terms => (1 => +Borrowed_Call)))),
+            Pred      => New_Conditional
+              (Condition => New_And_Expr
+                   (Left   => +Compute_Dynamic_Invariant
+                        (Expr   => +Brower_At_End,
+                         Ty     => Brower_Ty,
+                         Params => Params),
+                    Right  => New_Comparison
+                      (Symbol => Why_Eq,
+                       Left   => New_Pointer_Is_Null_Access
+                         (E    => Brower_Ty,
+                          Name => +Brower_At_End),
+                       Right  => New_Pointer_Is_Null_Access
+                         (E    => Brower_Ty,
+                          Name => +Result_Name),
+                       Domain => EW_Pred),
+                    Domain => EW_Pred),
+               Then_Part => New_Binding
+                 (Name    => Borrowed_At_End,
+                  Def     => Borrowed_Call,
+                  Context => New_And_Expr
+                    (Left   => New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => New_Pointer_Is_Null_Access
+                            (Borrowed_Ty, +Borrowed_At_End),
+                          Right  => New_Pointer_Is_Null_Access
+                            (Borrowed_Ty, Borrowed),
+                          Domain => EW_Pred),
+                     Right  => +Post,
+                     Domain => EW_Pred),
+                  Domain  => EW_Pred,
+                  Typ     => EW_Bool_Type))),
+         Right  => New_Comparison
+           (Symbol => Why_Eq,
+            Left   => New_Call
+              (Domain => EW_Term,
+               Name   => Get_Borrowed_At_End (E),
+               Args   => Args & (1 => +Result_Name),
+               Typ    => Get_Typ (Borrowed_At_End)),
+            Right  => Borrowed,
+            Domain => EW_Pred),
+         Domain => EW_Pred);
+   end Wrap_Post_Of_Traversal;
 
 end Gnat2Why.Subprograms;
