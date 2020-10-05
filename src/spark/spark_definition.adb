@@ -484,9 +484,15 @@ package body SPARK_Definition is
             Expected_Des_Ty := Full_View (Expected_Des_Ty);
          end if;
 
-         --  Check if they have the same Retysp
+         --  Check if they have the same Retysp. Only do this check if both
+         --  designated types are in SPARK (we need to check this here as
+         --  marking of the designated type of recursive access types might be
+         --  deferred).
 
-         if Retysp (Actual_Des_Ty) /= Retysp (Expected_Des_Ty) then
+         if In_SPARK (Actual_Des_Ty)
+           and then In_SPARK (Expected_Des_Ty)
+           and then Retysp (Actual_Des_Ty) /= Retysp (Expected_Des_Ty)
+         then
             Mark_Unsupported
               ("implicit conversion between access types with different"
                & " designated types", Expression);
