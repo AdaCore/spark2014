@@ -12,5 +12,6 @@ def replay():
               procs=10,
               steps=0)
 
-prove_all(opt=["--no-axiom-guard"],
-          replay=True)
+if __name__ == "__main__":
+    prove_all(opt=["--no-axiom-guard"],
+              replay=True)

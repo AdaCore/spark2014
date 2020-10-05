@@ -5,4 +5,5 @@ contains_manual_proof = False
 def replay():
     prove_all(opt=["--why3-conf=why3.conf"], prover=["cvc4_alt"])
 
-prove_all(opt=["--why3-conf=why3.conf"], prover=[], replay=True)
+if __name__ == "__main__":
+    prove_all(opt=["--why3-conf=why3.conf"], prover=[], replay=True)
