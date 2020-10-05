@@ -2130,7 +2130,7 @@ package body Flow_Utility is
          Use_Computed_Globals    : Boolean;
          Expand_Internal_Objects : Boolean)
          return Flow_Id_Sets.Set
-      with Pre => Nkind (N) = N_Selected_Component
+      with Pre => Nkind (N) in N_Selected_Component | N_Delta_Aggregate
                     or else Is_Attribute_Update (N);
       --  Process a node describing one or more record fields and return a
       --  variable set with all variables referenced.
@@ -2157,7 +2157,11 @@ package body Flow_Utility is
             Fold_Functions          => Ctx.Fold_Functions,
             Use_Computed_Globals    => Ctx.Use_Computed_Globals,
             Expand_Internal_Objects => Ctx.Expand_Internal_Objects))
-      with Pre => Ekind (Unchecked_Full_Type (Etype (Prefix (N))))
+      with Pre => Ekind
+                    (Unchecked_Full_Type
+                       (Etype (if Nkind (N) = N_Delta_Aggregate
+                               then Expression (N)
+                               else Prefix (N))))
                     in Record_Kind | Concurrent_Kind;
       --  Helper function to call Untangle_Record_Fields with the appropriate
       --  context. It can be called on types that have either components or
@@ -2935,6 +2939,20 @@ package body Flow_Utility is
          Expand_Internal_Objects : Boolean)
          return Flow_Id_Sets.Set
       is
+         M             : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+
+         Root_Node     : Node_Id := N;
+
+         Component     : Node_Lists.List := Node_Lists.Empty_List;
+         Seq           : Node_Lists.List := Node_Lists.Empty_List;
+
+         Comp_Id       : Positive;
+         Current_Field : Flow_Id;
+
+         All_Vars      : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
+         Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
+         Proof_Vars    : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
          function Is_Ignored_Attribute (N : Node_Id) return Boolean;
          --  Returns True if N denotes an attribute 'Old or 'Loop_Entry, which
          --  are ignored when detecting references to variables.
@@ -2953,19 +2971,117 @@ package body Flow_Utility is
               Use_Computed_Globals    => Use_Computed_Globals,
               Expand_Internal_Objects => Expand_Internal_Objects));
 
-         M             : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+         procedure Untangle_Delta_Fields (Assocs : List_Id)
+         with Pre => Is_Non_Empty_List (Assocs);
 
-         Root_Node     : Node_Id := N;
+         ---------------------------
+         -- Untangle_Delta_Fields --
+         ---------------------------
 
-         Component     : Node_Lists.List := Node_Lists.Empty_List;
-         Seq           : Node_Lists.List := Node_Lists.Empty_List;
+         procedure Untangle_Delta_Fields (Assocs : List_Id) is
+            Component_Association : Node_Id := First (Assocs);
+            Choice                : Node_Id;
+            --  Iterators for the 'Update (...) expression
 
-         Comp_Id       : Positive;
-         Current_Field : Flow_Id;
+            Expr_Vars             : Flow_Id_Sets.Set;
+            FS                    : Flow_Id_Sets.Set;
 
-         All_Vars      : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
-         Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
-         Proof_Vars    : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+            E : Entity_Id;
+
+         begin
+            Indent;
+            while Present (Component_Association) loop
+               Choice := First (Choices (Component_Association));
+               while Present (Choice) loop
+                  E := Unique_Component (Entity (Choice));
+
+                  if Debug_Trace_Untangle_Fields then
+                     Write_Str ("Updating component ");
+                     Sprint_Node_Inline (E);
+                     Write_Eol;
+                  end if;
+
+                  --  Composite update
+
+                  if Is_Record_Type (Get_Type (E, Scope)) then
+
+                     --  We should call Untangle_Record_Aggregate here.
+                     --  For now we us a safe default (all fields depend
+                     --  on everything).
+
+                     case Nkind (Expression (Component_Association)) is
+                        --  when N_Aggregate =>
+                        --     null;
+
+                        when others =>
+                           if Fold_Functions = Inputs then
+                              Expr_Vars :=
+                                Get_Vars_Wrapper
+                                  (Expression (Component_Association));
+
+                              --  Not sure what to do, so set all
+                              --  sensible fields to the given variables.
+
+                              FS :=
+                                Flatten_Variable
+                                  (Add_Component (Current_Field, E),
+                                   Scope);
+
+                              for F of FS loop
+                                 M.Replace (F, Expr_Vars);
+                              end loop;
+
+                           else
+                              All_Vars.Union
+                                (Get_Variables
+                                   (N                       =>
+                                        Expression (Component_Association),
+                                    Scope                   => Scope,
+                                    Target_Name             =>
+                                      Target_Name,
+                                    Fold_Functions          => Inputs,
+                                    Use_Computed_Globals    =>
+                                      Use_Computed_Globals,
+                                    Expand_Internal_Objects =>
+                                      Expand_Internal_Objects));
+                           end if;
+
+                     end case;
+
+                  --  Direct field update of M
+
+                  else
+                     if Fold_Functions = Inputs then
+                        Expr_Vars :=
+                          Get_Vars_Wrapper
+                            (Expression (Component_Association));
+
+                        M.Replace
+                          (Add_Component (Current_Field, E), Expr_Vars);
+                     else
+                        All_Vars.Union
+                          (Get_Variables
+                             (N                       =>
+                                  Expression (Component_Association),
+                              Scope                   => Scope,
+                              Target_Name             => Target_Name,
+                              Fold_Functions          =>
+                                (if Fold_Functions = Proof_Ins
+                                 then Proof_Ins
+                                 else Inputs),
+                              Use_Computed_Globals    =>
+                                Use_Computed_Globals,
+                              Expand_Internal_Objects =>
+                                Expand_Internal_Objects));
+                     end if;
+                  end if;
+
+                  Next (Choice);
+               end loop;
+               Next (Component_Association);
+            end loop;
+            Outdent;
+         end Untangle_Delta_Fields;
 
       --  Start of processing for Untangle_Record_Fields
 
@@ -2985,7 +3101,9 @@ package body Flow_Utility is
 
          while Nkind (Root_Node) = N_Selected_Component
            or else
-             (Is_Attribute_Update (Root_Node)
+             ((Is_Attribute_Update (Root_Node)
+                 or else
+               Nkind (Root_Node) = N_Delta_Aggregate)
               and then
               Is_Record_Type (Unchecked_Full_Type (Etype (Root_Node))))
            or else
@@ -3001,7 +3119,10 @@ package body Flow_Utility is
                Seq.Prepend (Root_Node);
             end if;
 
-            Root_Node := Prefix (Root_Node);
+            Root_Node :=
+              (if Nkind (Root_Node) = N_Delta_Aggregate
+               then Expression (Root_Node)
+               else Prefix (Root_Node));
 
          end loop;
 
@@ -3042,7 +3163,8 @@ package body Flow_Utility is
 
                Vars := Get_Vars_Wrapper (Root_Node);
 
-               --  Add anything we might find in 'Update expressions
+               --  Add anything we might find in 'Update or delta_aggregate
+               --  expressions.
 
                for N of Seq loop
                   case Nkind (N) is
@@ -3055,6 +3177,20 @@ package body Flow_Utility is
                           First (Component_Associations
                                    (First (Expressions (N))));
 
+                     begin
+                        loop
+                           Vars.Union
+                             (Get_Vars_Wrapper
+                                (Expression (Component_Association)));
+                           Next (Component_Association);
+                           exit when No (Component_Association);
+                        end loop;
+                     end;
+
+                  when N_Delta_Aggregate =>
+                     declare
+                        Component_Association : Node_Id :=
+                          First (Component_Associations (N));
                      begin
                         loop
                            Vars.Union
@@ -3209,6 +3345,15 @@ package body Flow_Utility is
             end if;
 
             case Nkind (N) is
+            when N_Delta_Aggregate =>
+               if Debug_Trace_Untangle_Fields then
+                  Write_Str ("Updating the map at ");
+                  Sprint_Flow_Id (Current_Field);
+                  Write_Eol;
+               end if;
+
+               Untangle_Delta_Fields (Component_Associations (N));
+
             when N_Attribute_Reference =>
                pragma Assert (Is_Attribute_Update (N));
                pragma Assert (List_Length (Expressions (N)) = 1);
@@ -3219,112 +3364,8 @@ package body Flow_Utility is
                   Write_Eol;
                end if;
 
-               --  We update the map as requested
-               declare
-                  Component_Association : Node_Id :=
-                    First (Component_Associations (First (Expressions (N))));
-                  Choice                : Node_Id;
-                  --  Iterators for the 'Update (...) expression
-
-                  Expr_Vars : Flow_Id_Sets.Set;
-                  FS        : Flow_Id_Sets.Set;
-
-                  E : Entity_Id;
-
-               begin
-                  Indent;
-                  while Present (Component_Association) loop
-                     Choice := First (Choices (Component_Association));
-                     while Present (Choice) loop
-                        E := Unique_Component (Entity (Choice));
-
-                        if Debug_Trace_Untangle_Fields then
-                           Write_Str ("Updating component ");
-                           Sprint_Node_Inline (E);
-                           Write_Eol;
-                        end if;
-
-                        --  Composite update
-
-                        if Is_Record_Type (Get_Type (E, Scope)) then
-
-                           --  We should call Untangle_Record_Aggregate here.
-                           --  For now we us a safe default (all fields depend
-                           --  on everything).
-
-                           case Nkind (Expression (Component_Association)) is
-                              --  when N_Aggregate =>
-                              --     null;
-
-                              when others =>
-                                 if Fold_Functions = Inputs then
-                                    Expr_Vars :=
-                                      Get_Vars_Wrapper
-                                        (Expression (Component_Association));
-
-                                    --  Not sure what to do, so set all
-                                    --  sensible fields to the given variables.
-
-                                    FS :=
-                                      Flatten_Variable
-                                        (Add_Component (Current_Field, E),
-                                         Scope);
-
-                                    for F of FS loop
-                                       M.Replace (F, Expr_Vars);
-                                    end loop;
-
-                                 else
-                                    All_Vars.Union
-                                      (Get_Variables
-                                         (N                       =>
-                                            Expression (Component_Association),
-                                          Scope                   => Scope,
-                                          Target_Name             =>
-                                            Target_Name,
-                                          Fold_Functions          => Inputs,
-                                          Use_Computed_Globals    =>
-                                            Use_Computed_Globals,
-                                          Expand_Internal_Objects =>
-                                            Expand_Internal_Objects));
-                                 end if;
-
-                           end case;
-
-                        --  Direct field update of M
-
-                        else
-                           if Fold_Functions = Inputs then
-                              Expr_Vars :=
-                                Get_Vars_Wrapper
-                                  (Expression (Component_Association));
-
-                              M.Replace
-                                (Add_Component (Current_Field, E), Expr_Vars);
-                           else
-                              All_Vars.Union
-                                (Get_Variables
-                                   (N                       =>
-                                      Expression (Component_Association),
-                                    Scope                   => Scope,
-                                    Target_Name             => Target_Name,
-                                    Fold_Functions          =>
-                                      (if Fold_Functions = Proof_Ins
-                                       then Proof_Ins
-                                       else Inputs),
-                                    Use_Computed_Globals    =>
-                                      Use_Computed_Globals,
-                                    Expand_Internal_Objects =>
-                                      Expand_Internal_Objects));
-                           end if;
-                        end if;
-
-                        Next (Choice);
-                     end loop;
-                     Next (Component_Association);
-                  end loop;
-                  Outdent;
-               end;
+               Untangle_Delta_Fields
+                 (Component_Associations (First (Expressions (N))));
 
             when N_Selected_Component =>
                declare
@@ -3523,6 +3564,24 @@ package body Flow_Utility is
                   if Present (Array_Bounds) then
                      Variables.Union (Recurse (Low_Bound (Array_Bounds)));
                      Variables.Union (Recurse (High_Bound (Array_Bounds)));
+                  end if;
+               end;
+
+            when N_Delta_Aggregate =>
+               declare
+                  T : constant Entity_Id := Get_Type (N, Ctx.Scope);
+               begin
+                  if Is_Record_Type (T) then
+                     if Is_Tagged_Type (T) then
+                        --  ??? Precise analysis is disabled for tagged types,
+                        --      so we just do the usual instead.
+                        null;
+                     else
+                        Variables.Union (Untangle_With_Context (N));
+                        return Skip;
+                     end if;
+                  else
+                     pragma Assert (Is_Array_Type (T));
                   end if;
                end;
 
@@ -5093,6 +5152,15 @@ package body Flow_Utility is
       --  If the Input is Empty (because we're looking at a box in an
       --  aggregate), then we don't do anything.
 
+      function Untangle_Delta_Aggregate
+        (Pref   : Node_Id;
+         Assocs : List_Id)
+        return Flow_Id_Maps.Map
+      with Pre => Is_Non_Empty_List (Assocs);
+      --  Untangle delta aggregate or attribute Update
+      --  ??? Pre should include "Is_Object_Reference (Pref)", but currently
+      --  it would fail on nested delta aggregates (TA01-056).
+
       ----------
       -- Join --
       ----------
@@ -5157,6 +5225,62 @@ package body Flow_Utility is
                end;
          end case;
       end Merge;
+
+      ------------------------------
+      -- Untangle_Delta_Aggregate --
+      ------------------------------
+
+      function Untangle_Delta_Aggregate
+        (Pref   : Node_Id;
+         Assocs : List_Id)
+         return Flow_Id_Maps.Map
+      is
+         Assoc  : Node_Id;
+         Output : Node_Id;
+         Input  : Node_Id;
+         F      : Flow_Id;
+
+         Class_Wide_Conversion : constant Boolean :=
+           not Is_Class_Wide_Type (Get_Type (N, Scope))
+           and then Is_Class_Wide_Type (Map_Type);
+
+         M : Flow_Id_Maps.Map;
+
+      begin
+         M := Recurse_On (Pref,
+                          Map_Root,
+                          Ext_Irrelevant =>
+                             not (Class_Wide_Conversion or
+                              not Extensions_Irrelevant));
+
+         Assoc := First (Assocs);
+         while Present (Assoc) loop
+            pragma Assert (Nkind (Assoc) = N_Component_Association);
+
+            Input  := Expression (Assoc);
+            Output := First (Choices (Assoc));
+            while Present (Output) loop
+
+               F := Add_Component
+                 (Map_Root, Unique_Component (Entity (Output)));
+
+               if Is_Record_Type (Get_Type (Entity (Output), Scope)) then
+                  for C in Recurse_On (Input, F).Iterate loop
+                     M.Replace (Flow_Id_Maps.Key (C),
+                                Flow_Id_Maps.Element (C));
+                  end loop;
+               else
+                  M.Replace (F, Get_Vars_Wrapper (Input));
+               end if;
+
+               Next (Output);
+            end loop;
+
+            Next (Assoc);
+         end loop;
+
+         return M;
+      end Untangle_Delta_Aggregate;
 
       --  Local variables
 
@@ -5240,6 +5364,11 @@ package body Flow_Utility is
                   end if;
                end loop;
             end;
+
+         when N_Delta_Aggregate =>
+            M :=
+              Untangle_Delta_Aggregate
+                (Expression (N), Component_Associations (N));
 
          when N_Selected_Component =>
             if Debug_Trace_Untangle_Record then
@@ -5486,63 +5615,19 @@ package body Flow_Utility is
             case Get_Attribute_Id (Attribute_Name (N)) is
                when Attribute_Update =>
                   if Debug_Trace_Untangle_Record then
-                     Write_Str ("processing update expression");
+                     Write_Str ("processing attribute Update");
                      Write_Eol;
                   end if;
 
-                  declare
-                     pragma Assert (List_Length (Expressions (N)) = 1);
-                     The_Aggregate : constant Node_Id :=
-                       First (Expressions (N));
-                     pragma Assert (No (Expressions (The_Aggregate)));
-
-                     Output : Node_Id;
-                     Input  : Node_Id;
-                     Ptr    : Node_Id;
-                     F      : Flow_Id;
-
-                     Class_Wide_Conversion : constant Boolean :=
-                       not Is_Class_Wide_Type (Get_Type (N, Scope))
-                       and then Is_Class_Wide_Type (Map_Type);
-
-                  begin
-                     M := Recurse_On (Prefix (N),
-                                      Map_Root,
-                                      Ext_Irrelevant =>
-                                        not (Class_Wide_Conversion or
-                                               not Extensions_Irrelevant));
-
-                     Ptr := First (Component_Associations (The_Aggregate));
-                     while Present (Ptr) loop
-                        pragma Assert (Nkind (Ptr) = N_Component_Association);
-
-                        Input  := Expression (Ptr);
-                        Output := First (Choices (Ptr));
-                        while Present (Output) loop
-
-                           F := Add_Component (Map_Root, Entity (Output));
-
-                           if Is_Record_Type
-                             (Get_Type (Entity (Output), Scope))
-                           then
-                              for C in Recurse_On (Input, F).Iterate loop
-                                 M.Replace (Flow_Id_Maps.Key (C),
-                                            Flow_Id_Maps.Element (C));
-                              end loop;
-                           else
-                              M.Replace (F, Get_Vars_Wrapper (Input));
-                           end if;
-
-                           Next (Output);
-                        end loop;
-
-                        Next (Ptr);
-                     end loop;
-                  end;
+                  pragma Assert (List_Length (Expressions (N)) = 1);
+                  M :=
+                    Untangle_Delta_Aggregate
+                      (Prefix (N),
+                       Component_Associations (First (Expressions (N))));
 
                when Attribute_Result =>
                   if Debug_Trace_Untangle_Record then
-                     Write_Str ("processing attribute result");
+                     Write_Str ("processing attribute Result");
                      Write_Eol;
                   end if;
 

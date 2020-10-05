@@ -5989,7 +5989,8 @@ package body Flow.Control_Flow_Graph is
                               Scope : Flow_Scope)
                               return Boolean is
 
-      function Rec (N : Node_Id) return Boolean;
+      function Rec (N : Node_Id) return Boolean
+      with Pre => Nkind (N) in N_Subexpr;
       --  Recursive helper function
 
       ---------
@@ -6019,7 +6020,11 @@ package body Flow.Control_Flow_Graph is
          end if;
 
          case Nkind (N) is
-            when N_Identifier | N_Expanded_Name | N_Aggregate =>
+            when N_Aggregate
+               | N_Delta_Aggregate
+               | N_Identifier
+               | N_Expanded_Name
+            =>
                return True;
 
             when N_Selected_Component =>
