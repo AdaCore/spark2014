@@ -17443,11 +17443,11 @@ package body Gnat2Why.Expr is
                T := Why_Empty;
             elsif Is_Integer_Literal_Aspect_Parameter (Subp) then
                T := Transform_Hardcoded_Integer_Literal
-                 (First_Actual (Expr), Etype (Subp), Domain);
+                 (First_Actual (Expr), Root_Retysp (Etype (Subp)), Domain);
             else
                pragma Assert (Is_Real_Literal_Aspect_Parameter (Subp));
                T := Transform_Hardcoded_Real_Literal
-                 (First_Actual (Expr), Etype (Subp), Domain);
+                 (First_Actual (Expr), Root_Retysp (Etype (Subp)), Domain);
             end if;
 
             --  If the precise transformation was succesful, return it
