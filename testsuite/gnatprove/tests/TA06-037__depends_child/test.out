@@ -1,0 +1,17 @@
+outer-public_child.adb:7:12: warning: "Hidden_State" constituent of "A2" is set by "Init_A2" but not used after the call
+outer-public_child.ads:6:14: info: initialization of "Hidden_State" constituent of "A2" proved
+outer-public_child.ads:7:11: info: data dependencies proved
+outer-public_child.ads:7:38: info: initialization of "Outer.A2" proved
+outer-public_child.ads:8:23: medium: missing self-dependency "Outer.A2 => Outer.A2"
+outer.adb:32:46: info: initialization of "Inner.B1" constituent of "Outer.A1" proved
+outer.adb:40:42: info: initialization of "Hidden_State" constituent of "A2" proved
+outer.adb:40:56: info: initialization of "State_In_Body" constituent of "A2" proved
+outer.ads:5:11: info: data dependencies proved
+outer.ads:6:11: info: flow dependencies proved
+outer.ads:9:11: info: data dependencies proved
+outer.ads:10:11: info: flow dependencies proved
+outer.ads:25:14: info: data dependencies proved
+outer.ads:26:14: info: flow dependencies proved
+outer.ads:31:14: info: data dependencies proved
+outer.ads:31:36: info: initialization of "Hidden_State" constituent of "A2" proved
+outer.ads:32:14: info: flow dependencies proved
