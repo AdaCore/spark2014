@@ -345,7 +345,7 @@ package body Gnat2Why.Subprograms.Pointers is
 
       if Is_Function_Type (To_Profile) then
          declare
-            Subp_Value : constant W_Expr_Id :=
+            Subp_Value  : constant W_Expr_Id :=
               New_Subprogram_Value_Access
                 (Ada_Node => Ada_Node,
                  Expr     => Expr,
@@ -354,6 +354,11 @@ package body Gnat2Why.Subprograms.Pointers is
             --  generate a dereference check here. This code will be protected
             --  by a conditional making sure that Expr is not null here.
 
+            Formal_Args : constant W_Expr_Array :=
+              (if Formals'Length = 0 then (1 => +Void)
+               else Get_Args_From_Binders
+                 (To_Binder_Array (Formals), Ref_Allowed => False));
+
          begin
             Checks := New_Binding
               (Ada_Node => Ada_Node,
@@ -361,8 +366,7 @@ package body Gnat2Why.Subprograms.Pointers is
                Def      => New_Call
                  (Domain  => EW_Pterm,
                   Name    => Get_Logic_Function (To_Profile),
-                  Args    => Subp_Value & Get_Args_From_Binders
-                    (To_Binder_Array (Formals), Params.Ref_Allowed),
+                  Args    => Subp_Value & Formal_Args,
                   Typ     => Get_Typ (Result_Name)),
                Context  => +Sequence
                  (Ada_Node => Ada_Node,
@@ -371,8 +375,7 @@ package body Gnat2Why.Subprograms.Pointers is
                      Pred     => New_Call
                        (Name => Get_Logic_Function_Guard (To_Profile),
                         Args => (1 => +Result_Name, 2 => Subp_Value)
-                          & Get_Args_From_Binders
-                            (To_Binder_Array (Formals), Params.Ref_Allowed),
+                          & Formal_Args,
                         Typ  => Get_Typ (Result_Name))),
                   Right    => +Checks),
                Typ      => EW_Unit_Type);
@@ -760,7 +763,7 @@ package body Gnat2Why.Subprograms.Pointers is
             Binders      : constant Item_Array := Compute_Subprogram_Parameters
               (Subp, EW_Term);
             Args         : constant W_Expr_Array :=
-              (if Binders'Length = 0 then (1 => +Unit_Param.B_Name)
+              (if Binders'Length = 0 then (1 => +Void)
                else Get_Args_From_Binders
                  (To_Binder_Array (Binders), Ref_Allowed => False));
             Call_Eq      : constant W_Pred_Id := +New_Comparison
