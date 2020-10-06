@@ -2980,51 +2980,52 @@ package body Flow_Utility is
 
          procedure Untangle_Delta_Fields (Assocs : List_Id) is
             Component_Association : Node_Id := First (Assocs);
-            Choice                : Node_Id;
             --  Iterators for the 'Update (...) expression
-
-            Expr_Vars             : Flow_Id_Sets.Set;
-            FS                    : Flow_Id_Sets.Set;
-
-            E : Entity_Id;
 
          begin
             Indent;
             while Present (Component_Association) loop
-               Choice := First (Choices (Component_Association));
-               while Present (Choice) loop
-                  E := Unique_Component (Entity (Choice));
+               declare
+                  Choice : constant Node_Id :=
+                    First (Choices (Component_Association));
+                  Expr   : constant Node_Id :=
+                    Expression (Component_Association);
 
+                  Comp : constant Entity_Id :=
+                    Unique_Component (Entity (Choice));
+
+                  Expr_Vars : Flow_Id_Sets.Set;
+                  FS        : Flow_Id_Sets.Set;
+
+               begin
                   if Debug_Trace_Untangle_Fields then
                      Write_Str ("Updating component ");
-                     Sprint_Node_Inline (E);
+                     Sprint_Node_Inline (Comp);
                      Write_Eol;
                   end if;
 
                   --  Composite update
 
-                  if Is_Record_Type (Get_Type (E, Scope)) then
+                  if Is_Record_Type (Get_Type (Comp, Scope)) then
 
                      --  We should call Untangle_Record_Aggregate here.
                      --  For now we us a safe default (all fields depend
                      --  on everything).
 
-                     case Nkind (Expression (Component_Association)) is
+                     case Nkind (Expr) is
                         --  when N_Aggregate =>
                         --     null;
 
                         when others =>
                            if Fold_Functions = Inputs then
-                              Expr_Vars :=
-                                Get_Vars_Wrapper
-                                  (Expression (Component_Association));
+                              Expr_Vars := Get_Vars_Wrapper (Expr);
 
                               --  Not sure what to do, so set all
                               --  sensible fields to the given variables.
 
                               FS :=
                                 Flatten_Variable
-                                  (Add_Component (Current_Field, E),
+                                  (Add_Component (Current_Field, Comp),
                                    Scope);
 
                               for F of FS loop
@@ -3034,8 +3035,7 @@ package body Flow_Utility is
                            else
                               All_Vars.Union
                                 (Get_Variables
-                                   (N                       =>
-                                        Expression (Component_Association),
+                                   (N                       => Expr,
                                     Scope                   => Scope,
                                     Target_Name             =>
                                       Target_Name,
@@ -3052,17 +3052,14 @@ package body Flow_Utility is
 
                   else
                      if Fold_Functions = Inputs then
-                        Expr_Vars :=
-                          Get_Vars_Wrapper
-                            (Expression (Component_Association));
+                        Expr_Vars := Get_Vars_Wrapper (Expr);
 
                         M.Replace
-                          (Add_Component (Current_Field, E), Expr_Vars);
+                          (Add_Component (Current_Field, Comp), Expr_Vars);
                      else
                         All_Vars.Union
                           (Get_Variables
-                             (N                       =>
-                                  Expression (Component_Association),
+                             (N                       => Expr,
                               Scope                   => Scope,
                               Target_Name             => Target_Name,
                               Fold_Functions          =>
@@ -3076,8 +3073,15 @@ package body Flow_Utility is
                      end if;
                   end if;
 
-                  Next (Choice);
-               end loop;
+                  --  Expansion rewrites multiple choices like "X | Y => A"
+                  --  into separate component associations like
+                  --  "X => A, Y => A", because depending on the type of the
+                  --  component we might (or might not) need checks for the
+                  --  expression.
+
+                  pragma Assert (No (Next (Choice)));
+               end;
+
                Next (Component_Association);
             end loop;
             Outdent;
@@ -5259,22 +5263,21 @@ package body Flow_Utility is
 
             Input  := Expression (Assoc);
             Output := First (Choices (Assoc));
-            while Present (Output) loop
 
-               F := Add_Component
-                 (Map_Root, Unique_Component (Entity (Output)));
+            F := Add_Component (Map_Root, Unique_Component (Entity (Output)));
 
-               if Is_Record_Type (Get_Type (Entity (Output), Scope)) then
-                  for C in Recurse_On (Input, F).Iterate loop
-                     M.Replace (Flow_Id_Maps.Key (C),
-                                Flow_Id_Maps.Element (C));
-                  end loop;
-               else
-                  M.Replace (F, Get_Vars_Wrapper (Input));
-               end if;
+            if Is_Record_Type (Get_Type (Entity (Output), Scope)) then
+               for C in Recurse_On (Input, F).Iterate loop
+                  M.Replace (Flow_Id_Maps.Key (C),
+                             Flow_Id_Maps.Element (C));
+               end loop;
+            else
+               M.Replace (F, Get_Vars_Wrapper (Input));
+            end if;
 
-               Next (Output);
-            end loop;
+            --  Multiple component choices have been rewritten into individual
+            --  component associations.
+            pragma Assert (No (Next (Output)));
 
             Next (Assoc);
          end loop;
