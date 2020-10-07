@@ -803,6 +803,18 @@ package body Flow_Refinement is
       Visible_Views  : Flow_Id_Sets.Set;
       Projection_Map : Flow_Id_Surjection.Map;
 
+      procedure Check_Direct_Mappings (Deps : Dependency_Maps.Map) with Ghost;
+      --  A sanity check: this up-projection routine is only dealing with
+      --  explicit Depends/Refined_Depends contracts and only when those
+      --  contracts are known to not miss any objects (which is enforced by
+      --  (Check_All_Variables_Known and Check_Generated_Refined_Global).
+      --  Consequently, it should only deal with objects known by Entity_Id.
+      --
+      --  ??? This could also be a pre/postcondition, but let's make it an
+      --  internal check and not part of the contract. Ideally this
+      --  up-projection routine should be rewritten to work on Entity_Ids
+      --  instead of converting Flow_Ids back-and-forth as it is now.
+
       function Is_Hidden_Constituent (F : Flow_Id) return Boolean;
       --  Returns True iff F represents constituents of an abstract state that
       --  are not visible in the body of the current subprogram.
@@ -813,6 +825,30 @@ package body Flow_Refinement is
       --  Return the most precise representation of F visible from Scope
 
       ---------------------------
+      -- Check_Direct_Mappings --
+      ---------------------------
+
+      procedure Check_Direct_Mappings (Deps : Dependency_Maps.Map) is
+      begin
+         for Clause in Deps.Iterate loop
+            declare
+               LHS : Flow_Id renames Dependency_Maps.Key (Clause);
+               RHS : Flow_Id_Sets.Set renames Deps (Clause);
+            begin
+               --  A "null" in the dependency clause is represented as a
+               --  Null_Flow_Id when on the LHS and as an empty set when on
+               --  the RHS.
+
+               pragma Assert (if Present (LHS) then LHS.Kind = Direct_Mapping);
+
+               for RHS_Item of RHS loop
+                  pragma Assert (RHS_Item.Kind = Direct_Mapping);
+               end loop;
+            end;
+         end loop;
+      end Check_Direct_Mappings;
+
+      ---------------------------
       -- Is_Hidden_Constituent --
       ---------------------------
 
@@ -821,11 +857,6 @@ package body Flow_Refinement is
          --  The following condition mirrors Down_Project and its Expand
          --  routine, which reuses the abstract state itself to represent
          --  constituents that are not visible.
-
-         pragma Assert (if Present (F) then F.Kind = Direct_Mapping);
-         --  ??? The condition rightly assumes that we are dealing with objects
-         --  known by Entity_Id (or with the "null" dependency), because indeed
-         --  we are checking explicit Depends/Refined_Depends contracts.
 
          return
            Is_Abstract_State (F)
@@ -850,6 +881,8 @@ package body Flow_Refinement is
    --  Start of processing for Up_Project
 
    begin
+      Check_Direct_Mappings (Deps);
+
       --  First, up-project all items in the dependency map to their most
       --  precise representation that is visible from Scope.
 
@@ -1016,6 +1049,7 @@ package body Flow_Refinement is
          --  cause crashes when processing unconstrained record types
       end if;
 
+      Check_Direct_Mappings (Projected_Deps);
    end Up_Project;
 
    -----------------------
