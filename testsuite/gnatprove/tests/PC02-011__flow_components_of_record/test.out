@@ -1,3 +1,3 @@
 r.adb:2:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
-r.adb:2:11: medium: "Ob" might not be initialized after elaboration of main program "R"
+r.adb:5:12: low: "Ob.B" might not be set after elaboration of main program "R"
 r.adb:5:17: medium: "memory accessed through objects of access type" might not be initialized after elaboration of main program "R"

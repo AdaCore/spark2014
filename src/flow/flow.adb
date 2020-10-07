@@ -1407,9 +1407,6 @@ package body Flow is
                   end if;
                   Analysis.Find_Input_Only_Used_In_Assertions (FA);
                   Analysis.Find_Illegal_Reads_Of_Proof_Ins (FA);
-                  if FA.Is_Main then
-                     Analysis.Analyse_Main (FA);
-                  end if;
                   Analysis.Check_Function_For_Volatile_Effects (FA);
                   Analysis.Check_Output_Constant_After_Elaboration (FA);
 

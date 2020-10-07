@@ -181,10 +181,14 @@ use_stack.adb:3:14: medium: "Stack.The_Stack" might not be initialized after ela
 use_stack.adb:3:31: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:5:04: info: initialization of "F" proved
 use_stack.adb:7:09: info: precondition proved (CVC4: 1 VC)
+use_stack.adb:7:09: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
+use_stack.adb:8:04: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:9:19: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:9:19: medium: assertion might fail, cannot prove Peek = E or Peek = F (e.g. when E = 1 and F = 1) [possible fix: you should consider adding a postcondition to function Peek or turning it into an expression function]
 use_stack.adb:9:31: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:10:09: info: precondition proved (CVC4: 1 VC)
+use_stack.adb:10:09: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
+use_stack.adb:11:04: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:12:19: info: assertion proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:32: info: precondition proved (CVC4: 1 VC)
