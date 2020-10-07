@@ -204,8 +204,8 @@ Otherwise, a stand-alone constant is a *constant without variable inputs*.
    --  No variable inputs
 
    B : constant Integer := F (12, A);
-   --  No variable inputs if F is a function without global inputs (although
-   --  it could have global proof inputs)
+   --  No variable inputs if and only if F is a function without global inputs
+   --  (although it could have global proof inputs)
 
    C : constant Integer := Param + Var;
    --  Constant with variable inputs

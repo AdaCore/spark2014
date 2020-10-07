@@ -259,23 +259,34 @@ No additions or restrictions
 Elementary Functions (A.5.1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Most of the elementarty functions may raise an exception.  The
-functions have no preconditions to guard against an exception being
-raised. The functions should be treated as tested code and call of an
-elementary function should be immediately preceded by a pragma assert
-in lieu of a precondition.
+All functions are annotated with preconditions that guard against exceptions
+being raised.  The following functions may produce infinite results for some
+inputs which satisfy their preconditions (if any). For SPARK, this is just as
+bad as propagating an exception. Both are events that can invalidate SPARK
+proofs because proofs may rely on an assumption that these events do not
+occur. Thus, the onus is on the user to avoid such inputs:
 
-For instance a call to Log (X, Base) should be immediately preceded by
-the assert statement:
+- function Exp returns +infinite on large values of argument X
 
-.. code-block:: ada
+- function ** returns +infinite on large values of arguments Left and Right
 
-  pragma Assert (X > 0  and Base > 1);
+- functions Cot of one argument, as well as functions Tan and Cot with
+  arguments X and Cycle, may return an infinite on values of X that are close
+  to their singularity points
 
-Even with such a guard certain elementary functions may raise a
-constraint error. The onus is on the user to ensure this does not
-happen or is handled in non-|SPARK| text in a manner compatible with
-|SPARK|.
+- functions Sinh and Cosh return an infinite on larges values of argument X
+
+- function Coth returns an infinite on small values of argument X close to zero
+
+- functions Arctanh and Arccoth return an infinite on values of argument X
+  close to one
+
+Interestingly, function Tan of one argument never returns an infinite result
+for any input value, both in 32-bits and 64-bits floating-points. This is due
+to all floating-point approximations of its singularity points being too far
+from the singularity (all values that are a multiple of :math:`\pi` away from
+:math:`\pi / 2`).
+
 
 Random Number Generation (A.5.2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

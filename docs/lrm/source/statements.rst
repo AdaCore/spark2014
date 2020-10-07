@@ -380,7 +380,7 @@ Attribute Loop_Entry
 
      loop
         pragma Assert
-          ((Var > Some_Function (Param => (for all I in T => F (I))))'Loop_Entry);
+          (Boolean'(Var > Some_Function (Param => (for all I in T => F (I))))'Loop_Entry);
 
    In this example the value of the inequality ">" that would have been
    evaluated on entry to the loop is obtained even if the value of Var has since
@@ -473,13 +473,6 @@ Attribute Loop_Entry
          P (Length_Is_Zero);
      end; -- ...]
 
-
-.. centered:: **Examples**
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/reverse_ord.adb
-   :language: ada
-   :lines: 4-27
-   :linenos:
 
 Block Statements
 ----------------

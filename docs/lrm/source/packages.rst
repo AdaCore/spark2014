@@ -556,10 +556,6 @@ be *compatible with respect to volatility* with E2 if
    :language: ada
    :linenos:
 
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/multiple_ports.ads
-   :language: ada
-   :linenos:
-
 .. index:: Abstract_State
            External
 
@@ -726,40 +722,13 @@ There are no verification rules associated with the Abstract_State aspect.
 
 .. centered:: **Examples**
 
-.. code-block:: ada
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/simple_abstract_state.ads
+   :language: ada
    :linenos:
 
-   package Q
-     with Abstract_State => State         -- Declaration of abstract state named State
-                                          -- representing internal state of Q.
-   is
-      function Is_Ready return Boolean    -- Function checking some property of the State.
-        with Global => State;             -- State may be used in a global aspect.
-
-      procedure Init                      -- Procedure to initialize the internal state of Q.
-        with Global => (Output => State), -- State may be used in a global aspect.
-             Post   => Is_Ready;
-
-      procedure Op_1 (V : Integer)     -- Another procedure providing some operation on State
-        with Global => (In_Out => State),
-             Pre    => Is_Ready,
-             Post   => Is_Ready;
-   end Q;
-
-.. code-block:: ada
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/complex_abstract_state.ads
+   :language: ada
    :linenos:
-
-   package X
-     with Abstract_State => (A,
-                             B,
-                             (C with External => (Async_Writers,
-                                                  Effective_Reads => False))
-     --  Three abstract state names are declared A, B & C.
-     --  A and B are internal abstract states.
-     --  C is specified as external state which is an external input.
-   is
-      ...
-   end X;
 
 .. index:: Initializes
 
@@ -1768,257 +1737,6 @@ were declared within a protected unit or task unit (see section
       ...
    end P.Pub;
 
-.. code-block:: ada
-   :linenos:
-
-   package Outer
-     with Abstract_State => (A1, A2)
-   is
-      procedure Init_A1
-        with Global  => (Output => A1),
-             Depends => (A1 => null);
-
-      procedure Init_A2
-        with Global  => (Output => A2),
-             Depends => (A2 => null);
-
-   private
-      --  A variable declared in the private part must have a Part_Of aspect
-      Hidden_State : Integer
-        with Part_Of => A2;
-
-      package Inner
-        with Abstract_state => (B1 with Part_Of => Outer.A1)
-        --  State abstraction declared in the private
-        --  part must have a Part_Of option.
-      is
-         --  B1 may be used in aspect specifications provided
-         --  Outer.A1 is not also used.
-         procedure Init_B1
-           with Global  => (Output => B1),
-                Depends => (B1 => null);
-
-         procedure Init_A2
-           --  We can only refer to Outer.Hidden_State which is a constituent
-           --  of Outer.A2 if the subprogram does not also refer to Outer.A2.
-           with Global  => (Output => Hidden_State),
-                Depends => (Hidden_State => null);
-      end Inner;
-   end Outer;
-
-   package body Outer
-     with Refined_State => (A1 => Inner.B1,
-                            A2 => (Hidden_State, State_In_Body))
-     --  A1 and A2 cannot be denoted in the body of Outer because their
-     --  refinements are visible.
-   is
-      State_In_Body : Integer;
-
-      package body Inner
-        with Refined_State => (B1 => null)  --  Oh, there isn't any state after all
-      is
-         procedure Init_B1
-           with Refined_Global  => null,  --  Refined_Global and
-                Refined_Depends => null   --  Refined_Depends of a null refinement
-         is
-         begin
-            null;
-         end Init_B1;
-
-         procedure Init_A2
-           --  The Global sparct is already in terms of the constituent
-           --  Hidden_State which is part of A2, so no refined
-           --  Global or Depends aspects are required.
-         is
-         begin
-            Outer.Hidden_State := 0;
-         end Init_A2;
-
-      end Inner;
-
-      procedure Init_A1
-        with Refined_Global  => (Output => Inner.B1),
-             Refined_Depends => (Inner.B1 => null)
-      is
-      begin
-         Inner.Init_B1;
-      end Init_A1;
-
-      procedure Init_A2
-        with Refined_Global  => (Output => (Hidden_State, State_In_Body)),
-             Refined_Depends => ((Hidden_State, State_In_Body) => null)
-      is
-      begin
-         State_In_Body := 42;
-         Inner.Init_A2;
-      end Init_A2;
-
-   end Outer;
-
-   package Outer.Public_Child is
-      --  Outer.A1 and Outer.A2 are visible but
-      --  Outer.Hidden_State is not (by the rules of Ada).
-      --  The Global and Depends Aspects are in terms
-      --  of the encapsulating state abstraction Outer.A2.
-      procedure Init_A2_With (Val : in Integer)
-        with Global  => (Output => Outer.A2),
-             Depends => (Outer.A2 => Val);
-   end Outer.Public_Child;
-
-   package body Outer.Public_Child is
-      --  Outer.Hidden is visible here but the
-      --  refinement of A2 is not so there are
-      --  no Refined_Global or Refined_Depends.
-      procedure Init_A2_With (Val : in Integer) is
-      begin
-         Outer.Init_A2;
-         Outer.Hidden_State := Val;
-      end Init_A2_With;
-   end Outer.Public_Child;
-
-.. code-block:: ada
-   :linenos:
-
-   package Q
-     with Abstract_State => (Q1, Q2)
-   is
-      --  Q1 and Q2 may be denoted here
-      procedure Init_Q1
-        with Global  => (Output => Q1),
-             Depends => (Q1 => null);
-
-      procedure Init_Q2
-        with Global  => (Output => Q2),
-             Depends => (Q2 => null);
-
-   private
-      Hidden_State : Integer
-        with Part_Of => Q2;
-   end Q;
-
-   private package Q.Child
-     with Abstract_State => (C1 with Part_Of => Q.Q1)
-   is
-      --  C1 rather than the encapsulating state abstraction
-      --  may be used in aspect specifications provided
-      --  Q.Q1 is not also denoted in the same aspect
-      --  specification.
-
-      --  Here C1 is used so Q1 cannot also be used in
-      --  the aspect specifications of this subprogram.
-      procedure Init_Q1
-        with Global  => (Output => C1),
-             Depends => (C1 => null);
-
-      --  Q.Hidden_State which is a constituent of Q.Q2
-      --  is visible here so it can be used in a aspect
-      --  specification provided Q.Q2 is not also used.
-      procedure Init_Q2
-         with Global  => (Output => Q.Hidden_State),
-              Depends => (Q.Hidden_State => null);
-   end Q.Child;
-
-   package body Q.Child
-     with Refined_State => (C1 => Actual_State)
-   is
-      --  C1 shall not be denoted here - only Actual_State
-      --  but Q.Q2 and Q.Hidden_State may be denoted.
-      Actual_State : Integer;
-
-      procedure Init_Q1
-        with Refined_Global  => (Output => Actual_State),
-             Refined_Depends => (Actual_State => null)
-      is
-      begin
-         Actual_State := 0;
-      end Init_Q1;
-
-      --  The refinement of Q2 is not visible and so Init_Q2
-      --  has no Refined_Global or Refined_Depends aspects.
-      procedure Init_Q2 is
-      begin
-         Q.Hidden_State := 0;
-      end Init_Q2;
-
-   end Q.Child;
-
-   with Q.Child;
-
-   package body Q
-     with Refined_State => (Q1 => Q.Child.C1,
-                            Q2 => (Hidden_State, State_In_Body))
-   is
-      --  Q1 and Q2 shall not be denoted here but the constituents
-      --  Q.Child.C1, State_In_Body and Hidden_State may be.
-      State_In_Body : Integer;
-
-      procedure Init_Q1
-        with Refined_Global  => (Output => Q.Child.C1),
-             Refined_Depends => (Q.Child.C1 => null)
-      is
-      begin
-         Q.Child.Init_Q1;
-      end Init_Q1;
-
-      procedure Init_Q2
-        with Refined_Global  => (Output => (Hidden_State, State_in_Body)),
-             Refined_Depends => ((Hidden_State, State_in_Body) => null)
-      is
-      begin
-         State_In_Body := 42;
-         Q.Child.Init_Q2;
-      end Init_Q2;
-   end Q;
-
-.. code-block:: ada
-   :linenos:
-
-   package R
-     with Abstract_State => R1
-   is
-      -- R1 may be denoted here
-      procedure Init_R1
-        with Global  => (Output => R1),
-             Depends => (R1 => null);
-
-      procedure Op_1 (I : in Integer)
-        with Global  => (In_Out => R1),
-             Depends => (R1 =>+ I);
-   end Q;
-
-   private package R.Child
-     with Abstract_State => (R2 with Part_Of => R.R1)
-   is
-      --  Both R.R1 and R2 are visible.
-
-      --  Here more than just the R2 constituent of R.R1
-      --  will be updated and so we use R.R1 in the
-      --  aspect specifications rather than R2.
-      --  R2 cannot also be used in the aspect
-      --  specifications of this subprogram.
-      procedure Private_Op (I, J : in Integer)
-        with Global  => (In_Out => R.R1),
-             Depends => (R.R1 =>+ (I, J));
-   end R.Child;
-
-   package body R.Child
-     with Refined_State => (R2 => Actual_State)
-   is
-      --  R2 shall not be denoted here - only Actual_State
-      --  but R.R1 may be denoted.
-      Actual_State : Integer;
-
-      --  The Global and Depends aspects of Private_Op
-      --  are in terms of R.R1 and the refinement of
-      --  R.R1 is not visible and so Refined_Global
-      --  and Refined_Depends are not required.
-      procedure Private_Op (I, J : in Integer) is
-      begin
-         R.Op_1 (I);
-         Actual_State := J;
-      end Private_Op;
-   end R.Child;
-
 .. index:: Refined_Post
 
 .. _refined-postcondition:
@@ -2132,38 +1850,6 @@ be a Boolean ``expression``.
    Refined_* aspect specifications are visible.]
 
 
-.. centered:: **Examples**
-
-These examples show the two ways in which the Refined_Post aspect is
-useful:
-
-1. To write a postcondition in terms of the full view of a private
-   type.
-
-2. To write a postcondition in terms of the constituents of a state
-   abstraction.
-
-In either case a postcondition may be strengthened by the Refined_Post
-aspect by adding further constraints. The combination of these two
-types of usage in a single package is not necessarily common but is
-used here for brevity of the example.
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/stacks_1.ads
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/stacks_1.adb
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/stacks_2.ads
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/stacks_2.adb
-   :language: ada
-   :linenos:
-
 .. index:: state refinement; external state
 
 .. _refined_external_states:
@@ -2219,18 +1905,7 @@ abstraction on to external states which are given in this section.
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/externals.adb
    :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/hal.ads
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/hal.adb
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/main_hal.adb
-   :language: ada
+   :lines: 1-36
    :linenos:
 
 Private Types and Private Extensions

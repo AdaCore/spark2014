@@ -1,116 +1,14 @@
-update_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
-update_examples.ads:27:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-update_examples.ads:35:19: info: postcondition proved (CVC4: 1 VC)
-update_examples.ads:37:69: info: index check proved (CVC4: 2 VC)
-update_examples.ads:49:08: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-update_examples.ads:54:54: info: index check proved (CVC4: 2 VC)
-loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:9:28: info: loop variant proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:11:14: info: range check proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:12:14: info: range check proved (CVC4: 1 VC)
-reverse_ord.adb:7:19: info: postcondition proved (CVC4: 2 VC)
-reverse_ord.adb:10:07: info: initialization of "Temp" proved
-reverse_ord.adb:18:13: info: loop invariant initialization proved (CVC4: 3 VC)
-reverse_ord.adb:18:13: info: loop invariant preservation proved (CVC4: 3 VC)
-reverse_ord.adb:19:19: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:19:49: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:20:30: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:20:51: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:24:21: info: index check proved (CVC4: 4 VC)
-reverse_ord.adb:24:40: info: index check proved (CVC4: 4 VC)
-up_timer.adb:14:36: info: overflow check proved (CVC4: 1 VC)
-f.adb:3:16: info: postcondition proved (CVC4: 2 VC)
-f.adb:10:16: info: range check proved (CVC4: 4 VC)
-f.adb:10:38: info: overflow check proved (CVC4: 1 VC)
-f.adb:11:10: info: initialization check proved (CVC4: 1 VC)
-f.adb:11:36: info: index check proved (CVC4: 2 VC)
-f.adb:11:36: info: overflow check proved (CVC4: 1 VC)
-f.adb:13:26: info: range check proved (CVC4: 1 VC)
-f.adb:13:37: info: index check proved (CVC4: 2 VC)
-f.adb:13:37: info: overflow check proved (CVC4: 1 VC)
-f.adb:21:07: info: initialization check proved (CVC4: 1 VC)
-f.adb:22:12: info: initialization check proved (CVC4: 3 VC)
-param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illegal"
-param_1_illegal.adb:9:10: info: index check proved (CVC4: 2 VC)
-param_1_legal.adb:7:10: info: index check proved (CVC4: 2 VC)
-anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
-gnatprove: error during generation of Global contracts
-multiple_ports.ads:18:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-multiple_ports.ads:27:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-multiple_ports.ads:36:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-multiple_ports.ads:42:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-multiple_ports.ads:55:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
-refined_global_examples.adb:14:40: info: initialization of "B" constituent of "S1" proved
-refined_global_examples.adb:23:40: info: initialization of "A" constituent of "S1" proved
-refined_global_examples.adb:41:41: info: initialization of "A" constituent of "S1" proved
-refined_global_examples.adb:41:44: info: initialization of "B" constituent of "S1" proved
-refined_global_examples.adb:54:40: info: initialization of "Z" constituent of "S2" proved
-refined_global_examples.adb:72:41: info: initialization of "X" constituent of "S2" proved
-refined_global_examples.adb:72:44: info: initialization of "Y" constituent of "S2" proved
-refined_global_examples.ads:3:31: warning: no procedure exists that can initialize abstract state "Refined_Global_Examples.S2"
-refined_global_examples.ads:4:08: info: flow dependencies proved
-refined_global_examples.ads:9:11: info: data dependencies proved
-refined_global_examples.ads:12:11: info: data dependencies proved
-refined_global_examples.ads:14:20: info: initialization of "Result" proved
-refined_global_examples.ads:15:11: info: data dependencies proved
-refined_global_examples.ads:18:11: info: data dependencies proved
-refined_global_examples.ads:21:11: info: data dependencies proved
-refined_global_examples.ads:25:11: info: data dependencies proved
-refined_global_examples.ads:25:32: info: initialization of "V1" proved
-refined_global_examples.ads:28:11: info: data dependencies proved
-refined_depends_examples.adb:14:41: info: initialization of "B" constituent of "S1" proved
-refined_depends_examples.adb:27:41: info: initialization of "A" constituent of "S1" proved
-refined_depends_examples.adb:48:42: info: initialization of "A" constituent of "S1" proved
-refined_depends_examples.adb:48:45: info: initialization of "B" constituent of "S1" proved
-refined_depends_examples.adb:61:41: info: initialization of "Z" constituent of "S2" proved
-refined_depends_examples.adb:80:42: info: initialization of "X" constituent of "S2" proved
-refined_depends_examples.adb:80:45: info: initialization of "Y" constituent of "S2" proved
-refined_depends_examples.ads:3:31: warning: no procedure exists that can initialize abstract state "Refined_Depends_Examples.S2"
-refined_depends_examples.ads:4:08: info: flow dependencies proved
-refined_depends_examples.ads:9:11: info: data dependencies proved
-refined_depends_examples.ads:10:11: info: flow dependencies proved
-refined_depends_examples.ads:13:11: info: data dependencies proved
-refined_depends_examples.ads:14:11: info: flow dependencies proved
-refined_depends_examples.ads:16:20: info: initialization of "Result" proved
-refined_depends_examples.ads:17:11: info: data dependencies proved
-refined_depends_examples.ads:18:11: info: flow dependencies proved
-refined_depends_examples.ads:21:11: info: data dependencies proved
-refined_depends_examples.ads:22:11: info: flow dependencies proved
-refined_depends_examples.ads:25:11: info: data dependencies proved
-refined_depends_examples.ads:27:11: info: flow dependencies proved
-refined_depends_examples.ads:30:11: info: data dependencies proved
-refined_depends_examples.ads:30:33: info: initialization of "V1" proved
-refined_depends_examples.ads:31:11: info: flow dependencies proved
-refined_depends_examples.ads:34:11: info: data dependencies proved
-refined_depends_examples.ads:36:11: info: flow dependencies proved
-stacks_1.adb:16:27: info: refined post proved (CVC4: 2 VC)
-stacks_1.adb:17:48: info: index check proved (CVC4: 2 VC)
-stacks_1.adb:17:48: info: range check proved (CVC4: 1 VC)
-stacks_1.adb:23:30: info: range check proved (CVC4: 1 VC)
-stacks_1.adb:24:18: info: index check proved (CVC4: 2 VC)
-stacks_1.adb:28:27: medium: refined postcondition might fail, cannot prove S.Pointer = S.Pointer'Old - 1
-stacks_1.adb:34:33: info: range check proved (CVC4: 1 VC)
-stacks_1.adb:38:64: info: index check proved (CVC4: 2 VC)
-stacks_1.ads:14:19: info: postcondition proved (CVC4: 1 VC)
-stacks_1.ads:17:19: info: postcondition proved (CVC4: 1 VC)
-stacks_2.adb:15:29: info: refined post proved (CVC4: 2 VC)
-stacks_2.adb:25:29: info: refined post proved (CVC4: 2 VC)
-stacks_2.adb:34:29: info: refined post proved (CVC4: 2 VC; Trivial: 1 VC)
-stacks_2.adb:35:65: info: range check proved (CVC4: 1 VC)
-stacks_2.adb:40:30: info: range check proved (CVC4: 1 VC)
-stacks_2.adb:41:17: info: index check proved (CVC4: 2 VC)
-stacks_2.adb:46:29: info: refined post proved (CVC4: 1 VC)
-stacks_2.adb:51:30: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at stacks_2.ads:19 should mention A_Pointer in a precondition]
-stacks_2.adb:54:46: info: index check proved (CVC4: 2 VC)
-stacks_2.ads:4:08: info: flow dependencies proved
-stacks_2.ads:7:11: info: data dependencies proved
-stacks_2.ads:11:11: info: data dependencies proved
-stacks_2.ads:15:11: info: data dependencies proved
-stacks_2.ads:17:21: info: postcondition proved (CVC4: 1 VC)
-stacks_2.ads:20:11: info: data dependencies proved
-stacks_2.ads:21:16: info: postcondition proved (CVC4: 1 VC)
-stacks_2.ads:24:11: info: data dependencies proved
+anti_aliasing.adb:15:14: info: add a contract to analyze it separately from calling contexts
+anti_aliasing.adb:15:14: info: local subprogram "One_In_One_Out" only analyzed in the context of calls
+anti_aliasing.adb:18:14: info: overflow check proved (CVC4: 1 VC), in call inlined at anti_aliasing.adb:40
+anti_aliasing.adb:21:54: info: data dependencies proved
+anti_aliasing.adb:23:07: info: initialization of "Temp" proved
+anti_aliasing.adb:26:14: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention X and Y in a precondition]
+anti_aliasing.adb:31:11: info: data dependencies proved
+anti_aliasing.adb:34:14: medium: overflow check might fail (e.g. when I = Integer'First and Local_1 = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 30 should mention Local_1 and I in a precondition]
+anti_aliasing.adb:44:21: info: non-aliasing of formal parameters "X" and "Y" proved
+anti_aliasing.adb:48:16: info: non-aliasing of formal parameters "X" and "Y" proved
+anti_aliasing.adb:51:20: high: formal parameter "I" and global "Local_1" are aliased (SPARK RM 6.4.2)
 externals.adb:27:04: high: "Out_Reg" constituent of "Complex_Device" is not written in "Externals"
 externals.adb:27:04: high: initialization of "Externals.Complex_Device" is specified at externals.ads:8
 externals.adb:27:04: info: object is suitable for aliasing via address clause (Trivial)
@@ -132,8 +30,23 @@ externals.ads:15:11: info: flow dependencies proved
 externals.ads:18:11: info: data dependencies proved
 externals.ads:22:11: info: flow dependencies proved
 externals.ads:26:11: info: data dependencies proved
-externals.ads:35:11: info: data dependencies proved
-externals.ads:36:11: info: flow dependencies proved
+externals.ads:32:11: info: data dependencies proved
+externals.ads:33:11: info: flow dependencies proved
+f.adb:3:16: info: postcondition proved (CVC4: 2 VC)
+f.adb:10:16: info: range check proved (CVC4: 4 VC)
+f.adb:10:38: info: overflow check proved (CVC4: 1 VC)
+f.adb:11:10: info: initialization check proved (CVC4: 1 VC)
+f.adb:11:36: info: index check proved (CVC4: 2 VC)
+f.adb:11:36: info: overflow check proved (CVC4: 1 VC)
+f.adb:13:26: info: range check proved (CVC4: 1 VC)
+f.adb:13:37: info: index check proved (CVC4: 2 VC)
+f.adb:13:37: info: overflow check proved (CVC4: 1 VC)
+f.adb:21:07: info: initialization check proved (CVC4: 1 VC)
+f.adb:22:12: info: initialization check proved (CVC4: 3 VC)
+global_and_generics.ads:7:09: info: data dependencies proved, in instantiation at global_and_generics.adb:10
+global_and_generics.ads:8:09: info: flow dependencies proved, in instantiation at global_and_generics.adb:10
+global_and_generics.ads:12:06: info: data dependencies proved
+global_and_generics.ads:13:06: info: flow dependencies proved
 hal.adb:13:04: info: object is suitable for aliasing via address clause (Trivial)
 hal.adb:21:04: info: object is suitable for aliasing via address clause (Trivial)
 hal.adb:30:04: info: object is suitable for aliasing via address clause (Trivial)
@@ -163,6 +76,14 @@ hal.ads:64:11: info: flow dependencies proved
 hal.ads:69:30: info: initialization of "Result" proved
 hal.ads:70:11: info: data dependencies proved
 hal.ads:71:11: info: flow dependencies proved
+initialization_and_elaboration-private_child.ads:4:08: info: flow dependencies proved
+initialization_and_elaboration-private_child.ads:5:08: medium: initial condition might fail
+initialization_and_elaboration-private_child.ads:5:29: high: "Private_Child.State" constituent of "Initialization_And_Elaboration.State" must be mentioned as an input of the Initializes aspect of "Private_Child" (SPARK RM 7.1.5(11))
+initialization_and_elaboration.ads:6:08: info: flow dependencies proved
+initialization_and_elaboration.ads:8:08: medium: initial condition might fail
+initialization_and_elaboration.ads:13:11: info: data dependencies proved
+initialization_and_elaboration.ads:16:11: info: data dependencies proved
+input_port.ads:6:04: info: object is suitable for aliasing via address clause (Trivial)
 inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
 intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:26 should mention I in a precondition]
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC4: 1 VC)
@@ -172,7 +93,126 @@ intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" pro
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
 intra_unit_elaboration_order_examples.ads:24:11: info: data dependencies proved
 intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 27 should mention J in a precondition]
-initialization_and_elaboration.ads:6:08: info: flow dependencies proved
-initialization_and_elaboration.ads:8:08: medium: initial condition might fail
-initialization_and_elaboration.ads:13:11: info: data dependencies proved
-initialization_and_elaboration.ads:16:11: info: data dependencies proved
+loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
+loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
+loop_var_loop_invar.adb:9:28: info: loop variant proved (CVC4: 1 VC)
+loop_var_loop_invar.adb:11:14: info: range check proved (CVC4: 1 VC)
+loop_var_loop_invar.adb:12:14: info: range check proved (CVC4: 1 VC)
+main_hal.adb:6:08: info: data dependencies proved
+main_hal.adb:9:34: info: initialization of "HAL.FIFO_Control" proved
+main_hal.adb:10:34: medium: "HAL.Serial_Out" might not be written
+main_hal.adb:16:20: medium: missing dependency "HAL.Wdog_State => HAL.Serial_In"
+main_hal.adb:19:04: info: initialization of "Wdog_Timed_Out" proved
+main_hal.adb:20:04: info: initialization of "A_Byte" proved
+main_hal.adb:35:07: medium: "Found" might not be initialized
+multiple_ports.ads:18:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:27:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:36:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:42:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:55:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+outer-public_child.adb:7:15: warning: "Hidden_State" constituent of "A2" is set by "Init_A2" but not used after the call
+outer-public_child.ads:6:17: info: initialization of "Hidden_State" constituent of "A2" proved
+outer-public_child.ads:7:14: info: data dependencies proved
+outer-public_child.ads:7:41: info: initialization of "Outer.A2" proved
+outer-public_child.ads:8:26: medium: missing self-dependency "Outer.A2 => Outer.A2"
+outer.adb:32:49: info: initialization of "Inner.B1" constituent of "Outer.A1" proved
+outer.adb:40:45: info: initialization of "Hidden_State" constituent of "A2" proved
+outer.adb:40:59: info: initialization of "State_In_Body" constituent of "A2" proved
+outer.ads:5:14: info: data dependencies proved
+outer.ads:6:14: info: flow dependencies proved
+outer.ads:9:14: info: data dependencies proved
+outer.ads:10:14: info: flow dependencies proved
+outer.ads:25:17: info: data dependencies proved
+outer.ads:26:17: info: flow dependencies proved
+outer.ads:31:17: info: data dependencies proved
+outer.ads:31:39: info: initialization of "Hidden_State" constituent of "A2" proved
+outer.ads:32:17: info: flow dependencies proved
+output_port.ads:6:04: info: object is suitable for aliasing via address clause (Trivial)
+p.ads:2:08: info: flow dependencies proved
+param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illegal"
+param_1_illegal.adb:9:10: info: index check proved (CVC4: 2 VC)
+param_1_legal.adb:7:10: info: index check proved (CVC4: 2 VC)
+q-child.adb:9:44: info: initialization of "Actual_State" constituent of "C1" proved
+q-child.ads:12:14: info: data dependencies proved
+q-child.ads:13:14: info: flow dependencies proved
+q-child.ads:19:15: info: data dependencies proved
+q-child.ads:19:38: info: initialization of "Hidden_State" constituent of "Q2" proved
+q-child.ads:20:15: info: flow dependencies proved
+q.adb:12:51: info: initialization of "Child.C1" constituent of "Q.Q1" proved
+q.adb:20:45: info: initialization of "Hidden_State" constituent of "Q2" proved
+q.adb:20:59: info: initialization of "State_In_Body" constituent of "Q2" proved
+q.ads:6:14: info: data dependencies proved
+q.ads:7:14: info: flow dependencies proved
+q.ads:10:14: info: data dependencies proved
+q.ads:11:14: info: flow dependencies proved
+r-child.adb:14:11: warning: "Actual_State" constituent of "R2" is set by "Op_1" but not used after the call
+r-child.ads:2:30: warning: no procedure exists that can initialize abstract state "Child.R2" constituent of "R.R1"
+r-child.ads:12:14: info: data dependencies proved
+r-child.ads:13:14: info: flow dependencies proved
+refined_depends_examples.adb:10:41: info: initialization of "B" constituent of "State" proved
+refined_depends_examples.adb:23:41: info: initialization of "A" constituent of "State" proved
+refined_depends_examples.adb:44:42: info: initialization of "A" constituent of "State" proved
+refined_depends_examples.adb:44:45: info: initialization of "B" constituent of "State" proved
+refined_depends_examples.ads:6:11: info: data dependencies proved
+refined_depends_examples.ads:7:11: info: flow dependencies proved
+refined_depends_examples.ads:10:11: info: data dependencies proved
+refined_depends_examples.ads:11:11: info: flow dependencies proved
+refined_depends_examples.ads:13:20: info: initialization of "Result" proved
+refined_depends_examples.ads:14:11: info: data dependencies proved
+refined_depends_examples.ads:15:11: info: flow dependencies proved
+refined_depends_examples.ads:18:11: info: data dependencies proved
+refined_depends_examples.ads:19:11: info: flow dependencies proved
+refined_global_examples.adb:10:40: info: initialization of "B" constituent of "State" proved
+refined_global_examples.adb:19:40: info: initialization of "A" constituent of "State" proved
+refined_global_examples.adb:37:41: info: initialization of "A" constituent of "State" proved
+refined_global_examples.adb:37:44: info: initialization of "B" constituent of "State" proved
+refined_global_examples.ads:6:11: info: data dependencies proved
+refined_global_examples.ads:9:11: info: data dependencies proved
+refined_global_examples.ads:11:20: info: initialization of "Result" proved
+refined_global_examples.ads:12:11: info: data dependencies proved
+refined_global_examples.ads:15:11: info: data dependencies proved
+reverse_ord.adb:7:19: info: postcondition proved (CVC4: 2 VC)
+reverse_ord.adb:10:07: info: initialization of "Temp" proved
+reverse_ord.adb:18:13: info: loop invariant initialization proved (CVC4: 3 VC)
+reverse_ord.adb:18:13: info: loop invariant preservation proved (CVC4: 3 VC)
+reverse_ord.adb:19:19: info: index check proved (CVC4: 4 VC)
+reverse_ord.adb:19:49: info: index check proved (CVC4: 4 VC)
+reverse_ord.adb:20:30: info: index check proved (CVC4: 4 VC)
+reverse_ord.adb:20:51: info: index check proved (CVC4: 4 VC)
+reverse_ord.adb:24:21: info: index check proved (CVC4: 4 VC)
+reverse_ord.adb:24:40: info: index check proved (CVC4: 4 VC)
+stacks_1.adb:16:27: info: refined post proved (CVC4: 2 VC)
+stacks_1.adb:17:48: info: index check proved (CVC4: 2 VC)
+stacks_1.adb:17:48: info: range check proved (CVC4: 1 VC)
+stacks_1.adb:23:30: info: range check proved (CVC4: 1 VC)
+stacks_1.adb:24:18: info: index check proved (CVC4: 2 VC)
+stacks_1.adb:28:27: medium: refined postcondition might fail, cannot prove S.Pointer = S.Pointer'Old - 1
+stacks_1.adb:34:33: info: range check proved (CVC4: 1 VC)
+stacks_1.adb:38:64: info: index check proved (CVC4: 2 VC)
+stacks_1.ads:14:19: info: postcondition proved (CVC4: 1 VC)
+stacks_1.ads:17:19: info: postcondition proved (CVC4: 1 VC)
+stacks_2.adb:15:29: info: refined post proved (CVC4: 2 VC)
+stacks_2.adb:25:29: info: refined post proved (CVC4: 2 VC)
+stacks_2.adb:34:29: info: refined post proved (CVC4: 2 VC; Trivial: 1 VC)
+stacks_2.adb:35:65: info: range check proved (CVC4: 1 VC)
+stacks_2.adb:40:30: info: range check proved (CVC4: 1 VC)
+stacks_2.adb:41:17: info: index check proved (CVC4: 2 VC)
+stacks_2.adb:46:29: info: refined post proved (CVC4: 1 VC)
+stacks_2.adb:51:30: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at stacks_2.ads:19 should mention A_Pointer in a precondition]
+stacks_2.adb:54:46: info: index check proved (CVC4: 2 VC)
+stacks_2.ads:4:08: info: flow dependencies proved
+stacks_2.ads:7:11: info: data dependencies proved
+stacks_2.ads:11:11: info: data dependencies proved
+stacks_2.ads:15:11: info: data dependencies proved
+stacks_2.ads:17:21: info: postcondition proved (CVC4: 1 VC)
+stacks_2.ads:20:11: info: data dependencies proved
+stacks_2.ads:21:16: info: postcondition proved (CVC4: 1 VC)
+stacks_2.ads:24:11: info: data dependencies proved
+times_2.adb:3:13: medium: overflow check might fail (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
+up_timer.adb:14:36: info: overflow check proved (CVC4: 1 VC)
+update_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
+update_examples.ads:27:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+update_examples.ads:35:19: info: postcondition proved (CVC4: 1 VC)
+update_examples.ads:37:69: info: index check proved (CVC4: 2 VC)
+update_examples.ads:49:08: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+update_examples.ads:54:54: info: index check proved (CVC4: 2 VC)
