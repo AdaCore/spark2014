@@ -803,10 +803,40 @@ package body Flow_Refinement is
       Visible_Views  : Flow_Id_Sets.Set;
       Projection_Map : Flow_Id_Surjection.Map;
 
+      function Is_Hidden_Constituent (F : Flow_Id) return Boolean;
+      --  Returns True iff F represents constituents of an abstract state that
+      --  are not visible in the body of the current subprogram.
+
       function Visible_View (F : Flow_Id) return Flow_Id
       with Pre  => Present (F),
            Post => Present (Visible_View'Result);
       --  Return the most precise representation of F visible from Scope
+
+      ---------------------------
+      -- Is_Hidden_Constituent --
+      ---------------------------
+
+      function Is_Hidden_Constituent (F : Flow_Id) return Boolean is
+      begin
+         --  The following condition mirrors Down_Project and its Expand
+         --  routine, which reuses the abstract state itself to represent
+         --  constituents that are not visible.
+
+         pragma Assert (if Present (F) then F.Kind = Direct_Mapping);
+         --  ??? The condition rightly assumes that we are dealing with objects
+         --  known by Entity_Id (or with the "null" dependency), because indeed
+         --  we are checking explicit Depends/Refined_Depends contracts.
+
+         return
+           Is_Abstract_State (F)
+             and then
+           Is_Visible
+             (Target_Scope =>
+                (Sinfo.Scope (F.Node), Private_Part),
+              Looking_From => Body_Scope (Scope))
+             and then
+           Down_Project (F, Body_Scope (Scope)).Contains (F);
+      end Is_Hidden_Constituent;
 
       ------------------
       -- Visible_View --
@@ -891,7 +921,9 @@ package body Flow_Refinement is
             Var : Flow_Id renames Dependency_Maps.Key (Clause);
 
          begin
-            if Is_Constituent (Var) then
+            if Is_Constituent (Var)
+              or else Is_Hidden_Constituent (Var)
+            then
                LHS_Constituents.Insert (Var);
             end if;
          end;
