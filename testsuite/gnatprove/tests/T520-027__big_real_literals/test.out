@@ -1,4 +1,5 @@
 test_literal.adb:8:14: info: call to "From_String" is not handled precisely
+test_literal.adb:8:14: info: predicate check proved (CVC4: 1 VC)
 test_literal.adb:8:14: medium: precondition might fail
 test_literal.adb:8:70: info: predicate check proved (CVC4: 1 VC)
 test_literal.adb:14:22: info: predicate check proved (CVC4: 1 VC)

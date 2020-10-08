@@ -5,8 +5,10 @@ test.adb:14:22: info: predicate check proved (CVC4: 1 VC)
 test.adb:14:22: medium: assertion might fail, cannot prove 0 <= Value
 test.adb:14:27: info: predicate check proved (CVC4: 1 VC)
 test.ads:9:14: info: call to "From_String" is not handled precisely
+test.ads:9:14: info: predicate check proved (CVC4: 1 VC)
 test.ads:9:14: medium: precondition might fail
 test.ads:9:68: info: predicate check proved (CVC4: 1 VC)
 test.ads:15:14: info: call to "From_String" is not handled precisely
+test.ads:15:14: info: predicate check proved (CVC4: 1 VC)
 test.ads:15:14: medium: precondition might fail
 test.ads:15:35: info: predicate check proved (CVC4: 1 VC)
