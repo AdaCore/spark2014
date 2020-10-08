@@ -196,10 +196,11 @@ package Gnat2Why.Util is
       GM_Node_Only, --  only the node ID is printed
       GM_All);      --  node ID and sloc of node are printed
 
-   type Old_Policy_Kind is (Ignore, As_Old, Use_Map);
+   type Old_Policy_Kind is (Ignore, As_Old, Use_Map, Raise_Error);
    --  Kind for policy with respect to encoding of 'Old attribute:
    --  Ignore if Old should be ignored, As_Old to use the 'old' keyword of
-   --  Why3 and Use_Map to use the map for old.
+   --  Why3, Use_Map to use the map for old, and Raise_Error to raise
+   --  Program_Error.
 
    type Transformation_Params is record
       Phase       : Transformation_Phase;

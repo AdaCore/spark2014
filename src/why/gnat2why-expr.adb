@@ -38,7 +38,6 @@ with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
-with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
@@ -1874,16 +1873,21 @@ package body Gnat2Why.Expr is
       As_Old : Boolean := False) return W_Expr_Id
    is
       Result : W_Expr_Id := Expr;
+      Cu     : Ada_To_Why_Ident.Cursor;
 
    begin
       for N of Subset loop
-         Result := Bind_From_Mapping_In_Expr
-           (Params => Params,
-            Expr   => Result,
-            N      => N,
-            Name   => Map.Element (N),
-            Domain => Domain,
-            As_Old => As_Old);
+         Cu := Map.Find (N);
+
+         if Ada_To_Why_Ident.Has_Element (Cu) then
+            Result := Bind_From_Mapping_In_Expr
+              (Params => Params,
+               Expr   => Result,
+               N      => N,
+               Name   => Ada_To_Why_Ident.Element (Cu),
+               Domain => Domain,
+               As_Old => As_Old);
+         end if;
       end loop;
 
       return Result;
@@ -9951,10 +9955,10 @@ package body Gnat2Why.Expr is
          --  Predicate used to define the aggregate/updated object
 
          Params_No_Ref : constant Transformation_Params :=
-                           (Phase       => Params.Phase,
-                            Gen_Marker  => GM_None,
-                            Ref_Allowed => False,
-                            Old_Policy  => Ignore);
+           (Phase       => Params.Phase,
+            Gen_Marker  => GM_None,
+            Ref_Allowed => False,
+            Old_Policy  => Raise_Error);
 
          --  Values used in calls to the aggregate function
 
@@ -12429,16 +12433,17 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Expr_Id
    is
    begin
-      --  Do not generate old when they are not allowed (eg in postconditions
-      --  of functions or inside prefixes of 'Old attributes). When the
-      --  expression contains no variables, we may still need to generate old
-      --  in special cases (pledge functions). In these cases, we will use the
-      --  map for old. When we create old why3 nodes, the expression should
-      --  contain variable (or Why3 will complain).
+      --  If no old attributes are expected here, raise an exception
 
-      if Params.Old_Policy = Ignore
-        or else (Params.Old_Policy = As_Old
-                 and then Get_Variables_For_Proof (Expr, Expr).Is_Empty)
+      if Params.Old_Policy = Raise_Error then
+         raise Program_Error;
+
+      --  Do not generate old when they are not allowed (eg in postconditions
+      --  of functions or inside prefixes of 'Old attributes) or when the
+      --  expression contains no variables.
+
+      elsif Params.Old_Policy = Ignore
+        or else Get_Variables_For_Proof (Expr, Expr).Is_Empty
       then
          return Transform_Expr (Expr, Domain, Params);
       end if;
