@@ -1,0 +1,1 @@
+ALL XFAIL broken handling of iterated_component_association in gnat (T909-033)
