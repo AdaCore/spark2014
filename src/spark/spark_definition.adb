@@ -2326,7 +2326,6 @@ package body SPARK_Definition is
             | N_Generic_Subprogram_Declaration
             | N_Implicit_Label_Declaration
             | N_Incomplete_Type_Declaration
-            | N_Itype_Reference
             | N_Null_Statement
             | N_Operator_Symbol
             | N_Others_Choice
@@ -2342,6 +2341,19 @@ package body SPARK_Definition is
             | N_Variable_Reference_Marker
          =>
             null;
+
+         --  Itype reference node may be needed to express the side-effects
+         --  associated to the creation of an Itype.
+
+         when N_Itype_Reference =>
+            declare
+               Assoc : constant Node_Id :=
+                 Associated_Node_For_Itype (Itype (N));
+            begin
+               if Nkind (Assoc) in N_Has_Etype then
+                  Mark (Assoc);
+               end if;
+            end;
 
          when N_Real_Literal
             | N_Integer_Literal
@@ -2683,10 +2695,11 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               --  Object renamings are not ignored, but simply checked for
-               --  absence of RTE in their name.
+               --  Object renamings and Itype references are not ignored, but
+               --  simply checked for absence of RTE.
 
                when N_Ignored_In_SPARK
+                  | N_Itype_Reference
                   | N_Object_Renaming_Declaration
                =>
                   null;

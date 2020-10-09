@@ -64,6 +64,7 @@ package body Why.Gen.Expr is
    function Args_For_Scalar_Dynamic_Property
      (Ty     : Entity_Id;
       Expr   : W_Expr_Id;
+      Domain : EW_Terms;
       Params : Transformation_Params := Body_Params) return W_Expr_Array;
    --  Computes the arguments to be used for a call to the dynamic property
    --  of a scalar type.
@@ -118,23 +119,24 @@ package body Why.Gen.Expr is
    function Args_For_Scalar_Dynamic_Property
      (Ty     : Entity_Id;
       Expr   : W_Expr_Id;
+      Domain : EW_Terms;
       Params : Transformation_Params := Body_Params) return W_Expr_Array
    is
    begin
       return (1 => New_Attribute_Expr
                  (Ty     => Ty,
-                  Domain => EW_Term,
+                  Domain => Domain,
                   Attr   => Attribute_First,
                   Params => Params),
               2 => New_Attribute_Expr
                    (Ty     => Ty,
-                    Domain => EW_Term,
+                    Domain => Domain,
                     Attr   => Attribute_Last,
                     Params => Params),
               3 =>
                 Insert_Simple_Conversion
                   (Ada_Node => Ty,
-                   Domain   => EW_Term,
+                   Domain   => Domain,
                    Expr     => Expr,
                    To       => Base_Why_Type (Ty)));
    end Args_For_Scalar_Dynamic_Property;
@@ -1522,7 +1524,7 @@ package body Why.Gen.Expr is
                declare
                   W_Tmp  : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
                   W_Args : constant W_Expr_Array :=
-                    Args_For_Scalar_Dynamic_Property (Ty, W_Tmp);
+                    Args_For_Scalar_Dynamic_Property (Ty, W_Tmp, EW_Pterm);
                begin
                   Result :=
                     +New_VC_Call (Domain   => EW_Prog,
@@ -1626,7 +1628,7 @@ package body Why.Gen.Expr is
             declare
                W_Tmp : constant W_Expr_Id := New_Temp_For_Expr (W_Expr);
                W_Args : constant W_Expr_Array :=
-                 Args_For_Scalar_Dynamic_Property (Ty, W_Tmp);
+                 Args_For_Scalar_Dynamic_Property (Ty, W_Tmp, EW_Pterm);
             begin
                Result := +New_VC_Call (Domain   => EW_Prog,
                                        Ada_Node => Ada_Node,
@@ -2877,7 +2879,7 @@ package body Why.Gen.Expr is
                           Name   => Dynamic_Prop_Name (Ty),
                           Args   =>
                             Args_For_Scalar_Dynamic_Property
-                              (Ty, Expr, Params),
+                              (Ty, Expr, Term_Domain (Domain), Params),
                           Typ    => EW_Bool_Type);
       elsif Is_Array_Type (Ty) and then not Is_Static_Array_Type (Ty) then
          declare

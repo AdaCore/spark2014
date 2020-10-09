@@ -50,6 +50,13 @@ package body SPARK_Atree.Entities is
 
    function Alignment (Ent : Entity_Id) return Uint renames Einfo.Alignment;
 
+   -------------------------------
+   -- Associated_Node_For_Itype --
+   -------------------------------
+
+   function Associated_Node_For_Itype (Id : Entity_Id) return Node_Id renames
+     Einfo.Associated_Node_For_Itype;
+
    ---------------
    -- Base_Type --
    ---------------

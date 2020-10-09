@@ -9167,6 +9167,22 @@ package body Gnat2Why.Expr is
             when N_Ignored_In_SPARK =>
                null;
 
+            --  For an Itype reference, simply check for possible RTE in
+            --  the program domain.
+
+            when N_Itype_Reference =>
+               if Domain = EW_Prog then
+                  declare
+                     Cut_Assertion_Expr : Node_Id;
+                     Cut_Assertion      : W_Pred_Id;
+                  begin
+                     T := +Sequence
+                       (Transform_Statement_Or_Declaration
+                          (N, Cut_Assertion_Expr, Cut_Assertion),
+                        +T);
+                  end;
+               end if;
+
             --  For an object renaming, simply check for possible RTE in
             --  the program domain.
 
@@ -9232,6 +9248,7 @@ package body Gnat2Why.Expr is
                end;
 
             when N_Ignored_In_SPARK
+               | N_Itype_Reference
                | N_Object_Renaming_Declaration
             =>
                null;
@@ -21247,6 +21264,19 @@ package body Gnat2Why.Expr is
 
             return Transform_Pragma (Stmt_Or_Decl, Force => False);
 
+         when N_Itype_Reference =>
+            declare
+               Assoc : constant Node_Id :=
+                 Associated_Node_For_Itype (Itype (Stmt_Or_Decl));
+            begin
+               if Nkind (Assoc) in N_Has_Etype then
+                  return New_Ignore
+                    (Prog => +Transform_Expr (Assoc, EW_Prog, Body_Params));
+               else
+                  return +Void;
+               end if;
+            end;
+
          when N_Raise_xxx_Error
             | N_Raise_Statement
          =>
@@ -21273,7 +21303,7 @@ package body Gnat2Why.Expr is
                              Params => Body_Params));
 
          when others =>
-            Ada.Text_IO.Put_Line ("[Transform_Statement] kind ="
+            Ada.Text_IO.Put_Line ("[Transform_Statement_Or_Declaration] kind ="
                                   & Node_Kind'Image (Nkind (Stmt_Or_Decl)));
             raise Not_Implemented;
       end case;

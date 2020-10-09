@@ -1751,6 +1751,8 @@ tokenreader.adb:283:46: info: range check proved (CVC4: 2 VC)
 tokenreader.adb:287:22: info: loop invariant initialization proved (CVC4: 2 VC)
 tokenreader.adb:287:22: info: loop invariant preservation proved (CVC4: 2 VC)
 tokenreader.adb:287:49: info: range check proved (CVC4: 2 VC)
+tokenreader.adb:290:55: info: index check proved (CVC4: 2 VC)
+tokenreader.adb:292:57: info: index check proved (CVC4: 2 VC)
 tokenreader.adb:300:24: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:311:24: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:322:21: info: precondition proved (CVC4: 1 VC)
@@ -1955,6 +1957,16 @@ usertoken.adb:678:07: info: initialization of "PrivValid" proved
 usertoken.adb:678:18: info: initialization of "IandAValid" proved
 usertoken.adb:690:16: info: add a contract to analyze it separately from calling contexts
 usertoken.adb:690:16: info: local subprogram "MakeDescription" only analyzed in the context of calls
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:740
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:743
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:746
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:849
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:852
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:855
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:958
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:961
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:964
+usertoken.adb:696:13: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:988
 usertoken.adb:698:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:740
 usertoken.adb:698:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:743
 usertoken.adb:698:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:746

@@ -245,6 +245,9 @@ package SPARK_Atree.Entities is
    --  For Types --
    ----------------
 
+   function Associated_Node_For_Itype (Id : Entity_Id) return Node_Id with
+     Pre => Is_Itype (Id);
+
    function Base_Type (Typ : Entity_Id) return Entity_Id with
      Pre => Is_Type (Typ);
 

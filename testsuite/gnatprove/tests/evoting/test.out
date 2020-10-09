@@ -2,6 +2,7 @@ evoting.adb:41:07: info: initialization of "file" proved
 evoting.adb:43:07: info: initialization of "last" proved
 evoting.adb:44:07: info: initialization of "item" proved
 evoting.adb:46:07: info: precondition proved (CVC4: 1 VC)
+evoting.adb:52:07: info: range check proved (CVC4: 4 VC)
 evoting.adb:53:07: info: precondition proved (CVC4: 1 VC)
 evoting.adb:55:17: info: precondition proved (CVC4: 4 VC)
 evoting.adb:58:49: info: range check proved (CVC4: 2 VC)

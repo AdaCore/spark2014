@@ -38,8 +38,10 @@ pack.adb:53:14: warning: subprogram "A3" has no effect
 pack.adb:54:34: info: range check proved (CVC4: 4 VC)
 pack.adb:59:04: warning: analyzing unreferenced procedure "A4"
 pack.adb:59:14: warning: subprogram "A4" has no effect
+pack.adb:63:07: info: range check proved (CVC4: 4 VC)
 pack.adb:64:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:65:22: medium: assertion might fail, cannot prove My_S4 (2) /= G (2) [possible fix: subprogram at line 59 should mention G in a precondition]
+pack.adb:66:07: info: range check proved (CVC4: 4 VC)
 pack.adb:66:25: info: range check proved (CVC4: 4 VC)
 pack.adb:69:04: warning: analyzing unreferenced procedure "A11"
 pack.adb:69:14: warning: subprogram "A11" has no effect

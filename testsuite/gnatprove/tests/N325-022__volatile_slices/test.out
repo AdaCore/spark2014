@@ -4,6 +4,9 @@ vs.adb:14:07: info: initialization of "Tmp" proved
 vs.adb:16:14: info: range check proved (CVC4: 4 VC)
 vs.adb:22:07: info: initialization of "Tmp" proved
 vs.adb:24:16: info: range check proved (CVC4: 4 VC)
+vs.adb:31:07: info: range check proved (CVC4: 4 VC)
+vs.adb:37:07: info: range check proved (CVC4: 4 VC)
+vs.adb:43:09: info: range check proved (CVC4: 4 VC)
 vs.ads:30:18: info: initialization of "A" proved
 vs.ads:31:11: info: data dependencies proved
 vs.ads:32:11: info: flow dependencies proved

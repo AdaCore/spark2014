@@ -1134,6 +1134,12 @@ package body SPARK_Atree is
    function Iterator_Specification (N : Node_Id) return Node_Id renames
      Sinfo.Iterator_Specification;
 
+   -----------
+   -- Itype --
+   -----------
+
+   function Itype (N : Node_Id) return Entity_Id renames Sinfo.Itype;
+
    --------------
    -- Last_Bit --
    --------------
