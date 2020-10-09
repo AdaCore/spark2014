@@ -179,7 +179,9 @@ free from side-effects only retrieves or computes a value.
 
     * an indexing expression of an indexed_component or the discrete_range of a
       slice in an object renaming declaration which renames part of that
-      indexed_component or slice (see :ref:`object_renaming_declarations`);
+      indexed_component or slice, or a prefix of a dereference (either
+      implicit or explicit) in an object renaming declaration which renames
+      part of the designated object (see :ref:`object_renaming_declarations`);
 
     * a generic actual parameter corresponding to a generic formal object
       having mode **in** (see :ref:`generic_instantiation`);
@@ -188,7 +190,10 @@ free from side-effects only retrieves or computes a value.
       borrowing operation, except for a single occurrence of the root object
       of the expression (see :ref:`access-types`).
 
-except when the context itself occurs within a declare expression.
+except when the context itself occurs within a declare expression. For purposes
+of the above rule, a generic actual parameter corresponding to a generic formal
+object of mode **in out** is considered to be an object renaming declaration
+which renames the named object.
 
 [An expression in one of these contexts may read a constant
 which is initialized with the value of a variable.]
