@@ -129,6 +129,14 @@ package body Flow.Analysis.Sanity is
       --  * the default expression of a component declaration
       --  * the default expression of a discriminant_specification
 
+      function Check_Name_Dereference (N : Node_Id) return Traverse_Result;
+      --  Check SPARK RM 4.4(2) rule about:
+      --  * a dereference in an object renaming declaration which renames
+      --    part of that dereference.
+
+      procedure Check_Name_Dereferences is new
+        Traverse_More_Proc (Check_Name_Dereference);
+
       function Check_Name_Index_And_Slice (N : Node_Id) return Traverse_Result;
       --  Check SPARK RM 4.4(2) rule about:
       --  * an indexing expression of an indexed component or the discrete
@@ -267,6 +275,29 @@ package body Flow.Analysis.Sanity is
                Err_Desc => "default initialization");
          end if;
       end Check_Default_Expression;
+
+      ----------------------------
+      -- Check_Name_Dereference --
+      ----------------------------
+
+      function Check_Name_Dereference (N : Node_Id) return Traverse_Result is
+      begin
+         if Nkind (N) = N_Explicit_Dereference then
+            Detect_Variable_Inputs
+              (N        => Prefix (N),
+               Err_Desc => "renamed dereference");
+
+            --  Detecting variable inputs in the prefix will detect them in
+            --  nested prefixes too, so don't traverse the child nodes.
+
+            return Skip;
+
+         --  Keep searching in sibling expressions
+
+         else
+            return OK;
+         end if;
+      end Check_Name_Dereference;
 
       --------------------------------
       -- Check_Name_Index_And_Slice --
@@ -931,14 +962,30 @@ package body Flow.Analysis.Sanity is
             when N_Loop_Statement =>
                Traverse_Declarations_Or_Statements (Statements (N));
 
-            --  Check that an indexing expression of an indexed component or
-            --  the discrete range of a slice in an object renaming
-            --  declaration which renames part of that index or slice is
-            --  without variable inputs.
-
             when N_Object_Renaming_Declaration =>
+               --  Check that an indexing expression of an indexed component
+               --  or the discrete range of a slice in an object renaming
+               --  declaration which renames part of that index or slice
+               --  is without variable inputs.
+
                if Comes_From_Source (N) then
                   Check_Name_Indexes_And_Slices (Name (N));
+               end if;
+
+               --  Check that the prefix of a dereference in an object renaming
+               --  declaration which renames part of that dereference is
+               --  without variable inputs. Contrary to indexing expressions
+               --  and slices whose side-effects are correctly hoisted in
+               --  GNATprove, we can't do the same for naming the memory
+               --  pointed to by a pointer before the pointer is reassigned.
+               --  Thus, extend that checking to generic in-out parameters
+               --  which are transformed into renamings by GNAT. SPARK RM
+               --  rule makes provisions for such checking.
+
+               if Comes_From_Source (N)
+                 or else Present (Corresponding_Generic_Association (N))
+               then
+                  Check_Name_Dereferences (Name (N));
                end if;
 
             --  Check that the constrained array definition of an object
