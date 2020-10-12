@@ -2347,17 +2347,7 @@ package body SPARK_Definition is
          when N_Real_Literal
             | N_Integer_Literal
          =>
-            --  If a literal is the result of the front-end
-            --  rewriting a static attribute, then we mark
-            --  the original node.
-            if not Comes_From_Source (N)
-              and then Is_Rewrite_Substitution (N)
-              and then Nkind (Original_Node (N)) = N_Attribute_Reference
-            then
-               Mark_Attribute_Reference (Original_Node (N));
-            else
-               Mark_Entity (Etype (N));
-            end if;
+            Mark_Entity (Etype (N));
 
          when N_Delta_Aggregate =>
             Mark (Expression (N));
@@ -2780,28 +2770,48 @@ package body SPARK_Definition is
       case Attr_Id is
 
          --  Support a subset of the attributes defined in Ada RM. These are
-         --  the attributes marked "Yes" in SPARK RM 15.2.
-         when Attribute_Adjacent
-            | Attribute_Aft
-            | Attribute_Callable
-            | Attribute_Caller
+         --  the attributes marked "Yes" in SPARK RM 15.2 for which we support
+         --  non-static values.
+         when Attribute_Callable
             | Attribute_Ceiling
             | Attribute_Class
             | Attribute_Constrained
             | Attribute_Copy_Sign
+            | Attribute_Enum_Rep
+            | Attribute_First
+            | Attribute_Floor
+            | Attribute_Last
+            | Attribute_Length
+            | Attribute_Max
+            | Attribute_Min
+            | Attribute_Mod
+            | Attribute_Modulus
+            | Attribute_Pos
+            | Attribute_Pred
+            | Attribute_Remainder
+            | Attribute_Result
+            | Attribute_Rounding
+            | Attribute_Succ
+            | Attribute_Terminated
+            | Attribute_Truncation
+            | Attribute_Update
+            | Attribute_Val
+            | Attribute_Value
+         =>
+            null;
+
+         --  These attributes are supported according to SPARM RM, but we
+         --  currently only support static values in GNATprove.
+         when Attribute_Adjacent
+            | Attribute_Aft
+            | Attribute_Caller
             | Attribute_Definite
             | Attribute_Delta
             | Attribute_Denorm
             | Attribute_Digits
-            | Attribute_Enum_Rep
-            | Attribute_Enum_Val
-            | Attribute_First
             | Attribute_First_Valid
-            | Attribute_Floor
             | Attribute_Fore
-            | Attribute_Last
             | Attribute_Last_Valid
-            | Attribute_Length
             | Attribute_Machine
             | Attribute_Machine_Emax
             | Attribute_Machine_Emin
@@ -2809,42 +2819,30 @@ package body SPARK_Definition is
             | Attribute_Machine_Overflows
             | Attribute_Machine_Radix
             | Attribute_Machine_Rounds
-            | Attribute_Max
-            | Attribute_Min
-            | Attribute_Mod
             | Attribute_Model
             | Attribute_Model_Emin
             | Attribute_Model_Epsilon
             | Attribute_Model_Mantissa
             | Attribute_Model_Small
-            | Attribute_Modulus
             | Attribute_Partition_ID
-            | Attribute_Pos
-            | Attribute_Pred
             | Attribute_Range
-            | Attribute_Remainder
-            | Attribute_Result
             | Attribute_Round
-            | Attribute_Rounding
             | Attribute_Safe_First
             | Attribute_Safe_Last
             | Attribute_Scale
             | Attribute_Scaling
             | Attribute_Small
-            | Attribute_Succ
-            | Attribute_Terminated
-            | Attribute_Truncation
             | Attribute_Unbiased_Rounding
-            | Attribute_Update
-            | Attribute_Val
-            | Attribute_Value
             | Attribute_Wide_Value
             | Attribute_Wide_Wide_Value
             | Attribute_Wide_Wide_Width
             | Attribute_Wide_Width
             | Attribute_Width
          =>
-            null;
+            Mark_Unsupported
+              ("non-static attribute """
+               & Standard_Ada_Case (Get_Name_String (Aname))
+               & """", N);
 
          --  We assume a maximal length for the image of any type. This length
          --  may be inaccurate for identifiers.
