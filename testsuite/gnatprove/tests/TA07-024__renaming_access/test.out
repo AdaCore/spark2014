@@ -1,0 +1,5 @@
+renam2.adb:4:24: renamed dereference cannot depend on variable input "X" (SPARK RM 4.4(2))
+renam4.adb:8:29: renamed dereference cannot depend on variable input "X" (SPARK RM 4.4(2)), in instantiation at renam4.adb:11
+renam4.adb:11:24: renamed dereference cannot depend on variable input "X" (SPARK RM 4.4(2))
+renam_deep.adb:6:26: renamed dereference cannot depend on variable input "Y" (SPARK RM 4.4(2))
+gnatprove: error during flow analysis and proof
