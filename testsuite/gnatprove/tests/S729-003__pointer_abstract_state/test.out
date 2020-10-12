@@ -14,12 +14,12 @@ insrc.adb:164:16: info: analyzing call to "AffGenericErr" in context
 insrc.adb:169:16: info: analyzing call to "AffChaineErr" in context
 insrc.adb:208:13: info: analyzing call to "AffGenericErr" in context
 insrc.adb:233:13: info: analyzing call to "AffGenericErr" in context
-insrc.ads:55:04: "Bytes" is not allowed in SPARK (due to attribute "Max_Size_In_Storage_Elements")
+insrc.ads:55:04: "AFCB_Ptr" is not allowed in SPARK (due to general access type)
 insrc.ads:55:04: "File_Type" is not allowed in SPARK (due to general access type)
-insrc.ads:55:04: attribute "Max_Size_In_Storage_Elements" is not allowed in SPARK
+insrc.ads:55:04: "File_Type" is not allowed in SPARK (due to general access type)
+insrc.ads:55:04: instantiation error at a-direio.adb:57
+insrc.ads:55:04: instantiation error at a-direio.adb:58
 insrc.ads:55:04: instantiation error at a-direio.ads:167
-insrc.ads:55:04: instantiation error at a-direio.ads:169
-insrc.ads:55:04: instantiation error at a-direio.ads:171
 insrc.ads:55:04: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: violation of aspect SPARK_Mode at line 25
