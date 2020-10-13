@@ -62,7 +62,6 @@ project GNAT2Why is
 
    package CodePeer is
       for Switches use ("-j0",
-                        "--no-infer",
                         "-level", "1",
                         "-gnatws");
 

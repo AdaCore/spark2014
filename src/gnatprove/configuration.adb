@@ -214,7 +214,7 @@ package body Configuration is
          Ada.Text_IO.Put_Line
            ("Try ""gnatprove --help"" for more information.");
       end if;
-      GNAT.OS_Lib.OS_Exit (1);
+      Fail ("");
    end Abort_Msg;
 
    --------------------------------
@@ -426,6 +426,15 @@ package body Configuration is
       Ada.Text_IO.Put_Line ("Usage: gnatprove " & Usage_Message);
       Ada.Text_IO.Put_Line (SPARK_Install.Help_Message);
    end Display_Help;
+
+   ----------
+   -- Fail --
+   ----------
+
+   procedure Fail (Msg : String) is
+   begin
+      raise GNATprove_Failure with Msg;
+   end Fail;
 
    -------------------------------------
    -- Handle_Project_Loading_Switches --
@@ -825,9 +834,9 @@ package body Configuration is
 
       exception
          when Invalid_Switch =>
-            GNAT.OS_Lib.OS_Exit (1);
+            Fail ("");
          when Exit_From_Command_Line =>
-            GNAT.OS_Lib.OS_Exit (0);
+            Succeed;
          when Invalid_Parameter =>
             Abort_Msg ("No parameter given to switch -" & Full_Switch (Parser),
                        With_Help => False);
@@ -1912,12 +1921,12 @@ package body Configuration is
 
       if CL_Switches.Version then
          Produce_Version_Output;
-         GNAT.OS_Lib.OS_Exit (0);
+         Succeed;
       end if;
 
       if CL_Switches.List_Categories then
          Produce_List_Categories_Output;
-         GNAT.OS_Lib.OS_Exit (0);
+         Succeed;
       end if;
 
       --  Before doing the actual second parsing, we read the project file in
@@ -1927,7 +1936,7 @@ package body Configuration is
 
       if Clean then
          Clean_Up (Tree);
-         GNAT.OS_Lib.OS_Exit (0);
+         Succeed;
       end if;
 
       if Prj_Attr.Prove.Switches /= null
@@ -2201,6 +2210,14 @@ package body Configuration is
       return Ada.Directories.Compose (Out_Dir, "gnatprove.out");
    end SPARK_Report_File;
 
+   -------------
+   -- Succeed --
+   -------------
+
+   procedure Succeed is
+   begin
+      raise GNATprove_Success with "";
+   end Succeed;
    -----------------------
    -- Compute_Why3_Args --
    -----------------------
@@ -2278,9 +2295,8 @@ package body Configuration is
             Ada.Text_IO.New_Line;
          end if;
          if not Res then
-            Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error,
-                                  "Failed to compile shared");
-            GNAT.OS_Lib.OS_Exit (1);
+            Abort_Msg ("error: failed to compile shared Coq library",
+                       With_Help => False);
          end if;
       end Prepare_Why3_Manual;
 
