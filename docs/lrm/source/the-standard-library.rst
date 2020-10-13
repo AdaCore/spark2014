@@ -284,8 +284,8 @@ occur. Thus, the onus is on the user to avoid such inputs:
 Interestingly, function Tan of one argument never returns an infinite result
 for any input value, both in 32-bits and 64-bits floating-points. This is due
 to all floating-point approximations of its singularity points being too far
-from the singularity (all values that are a multiple of pi away from
-pi / 2).
+from the singularity (all values that are a multiple of :math:`\pi` away from
+:math:`\pi / 2`).
 
 
 Random Number Generation (A.5.2)
