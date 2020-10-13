@@ -27,7 +27,7 @@ except ImportError:
 def setup(app):
     app.add_config_value('Display_Trace_Units',False,True)
     if use_adacore_parser:
-        app.add_lexer('ada', ada_pygments.AdaLexer())
+        app.add_lexer('ada', ada_pygments.AdaLexer)
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
