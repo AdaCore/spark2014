@@ -43,7 +43,7 @@ Attributes
 
 Many of the Ada language defined attributes are in |SPARK| but there
 are exclusions.  For a full list of attributes supported by |SPARK| see
-:ref:`language_defined_attributes`.
+:ref:`Language-Defined Attributes`.
 
 A |SPARK| implementation is permitted to support other attributes
 which are not Ada or |SPARK| language defined attributes and these
@@ -135,8 +135,6 @@ Aggregates
 scalar value or a composite value having an uninitialized scalar value as a
 subcomponent. Similarly for an ancestor subtype in an extension aggregate.]
 
-.. _expressions:
-
 Expressions
 -----------
 
@@ -163,32 +161,32 @@ free from side-effects only retrieves or computes a value.
    contexts include:
 
     * a constraint other than the range of a loop parameter
-      specification (see :ref:`subtype_declarations`);
+      specification (see :ref:`Subtype Declarations`);
 
     * the default_expression of a component declaration (see
-      :ref:`record_types`);
+      :ref:`Record Types`);
 
     * the default_expression of a discriminant_specification
-      (see :ref:`discriminants`);
+      (see :ref:`Discriminants`);
 
     * a Dynamic_Predicate aspect specification
-      (see :ref:`subtype_predicates`);
+      (see :ref:`Subtype Predicates`);
 
     * a Type_Invariant aspect specification
-      (see :ref:`type_invariants`);
+      (see :ref:`Type Invariants`);
 
     * an indexing expression of an indexed_component or the discrete_range of a
       slice in an object renaming declaration which renames part of that
       indexed_component or slice, or a prefix of a dereference (either
       implicit or explicit) in an object renaming declaration which renames
-      part of the designated object (see :ref:`object_renaming_declarations`);
+      part of the designated object (see :ref:`Object Renaming Declarations`);
 
     * a generic actual parameter corresponding to a generic formal object
-      having mode **in** (see :ref:`generic_instantiation`);
+      having mode **in** (see :ref:`Generic Instantiation`);
 
     * the borrowed name of the expression of an object declaration defining a
       borrowing operation, except for a single occurrence of the root object
-      of the expression (see :ref:`access-types`).
+      of the expression (see :ref:`Access Types`).
 
 except when the context itself occurs within a declare expression. For purposes
 of the above rule, a generic actual parameter corresponding to a generic formal

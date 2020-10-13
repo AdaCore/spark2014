@@ -112,8 +112,6 @@ Machine Code Insertions
 1. Machine code insertions are not in |SPARK|.
 
 
-.. _Unchecked Type Conversions:
-
 Unchecked Type Conversions
 --------------------------
 
@@ -140,8 +138,6 @@ could be misaligned (as GNAT ensures).
    shall have the same size.
 
 2. The source and target subtypes shall be suitable for unchecked conversion.
-
-.. _data_validity:
 
 Data Validity
 ~~~~~~~~~~~~~

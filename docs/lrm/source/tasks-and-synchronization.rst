@@ -1,7 +1,5 @@
 .. index:: tasking, Ravenscar profile, Jorvik profile
 
-.. _tasks-and-synchronization:
-
 Tasks and Synchronization
 =========================
 
@@ -56,7 +54,7 @@ are in |SPARK|.
    * an atomic object whose Async_Writers aspect is True; or
 
    * a variable which is "constant after elaboration" (see section
-     :ref:`object-declarations`); or
+     :ref:`Object Declarations`); or
 
    * a constant not of access-to-variable type.
 

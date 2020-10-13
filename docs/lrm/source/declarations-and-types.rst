@@ -3,8 +3,6 @@ Declarations and Types
 
 No extensions or restrictions.
 
-.. _declarations:
-
 Declarations
 ------------
 
@@ -60,8 +58,6 @@ Type Declarations
 No extensions or restrictions.
 
 
-.. _subtype_declarations:
-
 Subtype Declarations
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -84,7 +80,7 @@ function which (directly or indirectly) reads a variable.
 1. [A ``constraint``, excluding the ``range`` of a
    ``loop_parameter_specification``, shall not be defined using an
    expression with a variable input;
-   see :ref:`expressions` for the statement of this rule.]
+   see :ref:`Expressions` for the statement of this rule.]
 
 
 
@@ -95,8 +91,6 @@ No restrictions or extensions.
 
 .. index:: subtype predicate
 
-.. _subtype_predicates:
-
 Subtype Predicates
 ~~~~~~~~~~~~~~~~~~
 
@@ -106,7 +100,7 @@ Static predicates and dynamic predicates are both in
 .. centered:: **Legality Rules**
 
 1. [A Dynamic_Predicate expression shall not have a variable input;
-   see :ref:`expressions` for the statement of this rule.]
+   see :ref:`Expressions` for the statement of this rule.]
 
 .. index:: verification condition; for Dynamic_Predicate
 
@@ -148,8 +142,6 @@ Static predicates and dynamic predicates are both in
 Objects and Named Numbers
 -------------------------
 
-.. _object-declarations:
-
 Object Declarations
 ~~~~~~~~~~~~~~~~~~~
 
@@ -166,7 +158,7 @@ A variable whose Constant_After_Elaboration aspect is True, or any part
 thereof, is said to be *constant after elaboration*.
 [The Constant_After_Elaboration aspect indicates that the variable will not
 be modified after execution of the main subprogram begins
-(see section :ref:`tasks-and-synchronization`).]
+(see section :ref:`Tasks and Synchronization`).]
 
 .. index:: constant with variable inputs
 
@@ -185,7 +177,7 @@ Otherwise, a stand-alone constant is a *constant without variable inputs*.
 1. [The borrowed name of the expression of an object declaration defining a
    borrowing operation shall not have a variable input, except for a single
    occurrence of the root object of the expression;
-   see :ref:`expressions` for the statement of this rule.]
+   see :ref:`Expressions` for the statement of this rule.]
 
 .. centered:: **Verification Rules**
 
@@ -260,7 +252,6 @@ Array Types
 
 No extensions or restrictions.
 
-.. _discriminants:
 
 Discriminants
 -------------
@@ -279,10 +270,8 @@ The following rules apply to discriminants in |SPARK|.
 
 3. [The ``default_expression`` of a ``discriminant_specification``
    shall not have a variable input;
-   see :ref:`expressions` for the statement of this rule.]
+   see :ref:`Expressions` for the statement of this rule.]
 
-
-.. _record_types:
 
 Record Types
 ------------
@@ -295,7 +284,7 @@ Default initialization expressions must not have variable inputs in |SPARK|.
 1. [The ``default_expression`` of a ``component_declaration`` shall not
    have any variable inputs, nor shall it contain a name denoting
    the current instance of the enclosing type;
-   see :ref:`expressions` for the statement of this rule.]
+   see :ref:`Expressions` for the statement of this rule.]
 
 
 [The rule in this section applies to any ``component_declaration``; this
@@ -348,8 +337,6 @@ Interface Types
 No extensions or restrictions.
 
 .. index:: access type, ownership
-
-.. _access-types:
 
 Access Types
 ------------

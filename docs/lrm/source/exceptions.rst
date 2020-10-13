@@ -1,5 +1,3 @@
-.. _exceptions:
-
 Exceptions
 ==========
 
@@ -82,4 +80,3 @@ Pragmas Assert and Assertion_Policy
    An implementation may introduce further implementation defined
    *assertion_*\ ``aspect_marks`` some of which may apply to groups of
    these assertions.
-

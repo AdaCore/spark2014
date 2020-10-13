@@ -19,7 +19,7 @@ be immediately preceded by a pragma Assert to check that the actual
 parameters meet the requirements of the called subprogram.
 Alternatively the called subprogram may be wrapped in a user defined
 subprogram with a suitable precondition.  Examples of these approaches
-are given in :ref:`example_of_assert`.
+are given in :ref:`The Package Strings.Maps (A.4.2)`.
 
 No checks or warnings are given that this protocol is followed.  The
 onus is on the user to ensure that a library subprogram is called with
@@ -95,8 +95,6 @@ No additions or restrictions.
 
 The predefined exceptions are considered to be declared in Stings, but their use is
 constrained by other language restrictions.
-
-.. _example_of_assert:
 
 The Package Strings.Maps (A.4.2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -615,7 +613,7 @@ Real-Time Systems (Annex D)
 |SPARK| supports the parts of the real-time systems annex that comply with the
 Ravenscar profile (see Ada RM D.13) or the Extended Ravenscar profile
 (see docs.adacore.com/gnathie_ug-docs/html/gnathie_ug/gnathie_ug/the_predefined_profiles.html#the-extended-ravenscar-profiles). See section
-:ref:`tasks-and-synchronization`.
+:ref:`Tasks and Synchronization`.
 
 Distributed Systems (Annex E)
 -----------------------------

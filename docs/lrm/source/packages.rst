@@ -19,8 +19,6 @@ Packages
 Package Specifications and Declarations
 ---------------------------------------
 
-.. _abstract-state:
-
 Abstraction of State
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -46,9 +44,9 @@ declarations which are part of the hidden state of a package.
 |SPARK| extends the concept of state abstraction to provide hierarchical data
 abstraction whereby the state abstraction declared in a package may contain the
 persistent state of other packages given certain restrictions described in
-:ref:`package_hierarchy`. This provides data refinement similar to the
-refinement available to types whereby a record may contain fields which are
-themselves records.
+:ref:`Abstract_State, Package Hierarchy and Part_Of`. This provides data
+refinement similar to the refinement available to types whereby a record may
+contain fields which are themselves records.
 
 .. centered:: **Static Semantics**
 
@@ -75,12 +73,10 @@ themselves records.
 3. The preceding two rules notwithstanding, an object or state abstraction
    whose Part_Of aspect refers to a task or protected unit is not (directly)
    part of the visible state or hidden state of any package (see section
-   :ref:`tasks-and-synchronization`).
+   :ref:`Tasks and Synchronization`).
 
 
 .. index:: external state
-
-.. _external_state:
 
 External State
 ~~~~~~~~~~~~~~
@@ -170,7 +166,7 @@ exceptions to these rules:
 
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
-abstraction; see :ref:`abstract-state-aspect`). [The term "external" does
+abstraction; see :ref:`Abstract_State Aspects`). [The term "external" does
 not necessarily mean that this state is accessed outside of
 the SPARK portion of the program (although it might be); it refers to the
 state being potentially visible to multiple tasks (as well as to the outside
@@ -210,7 +206,7 @@ output other than its result still applies; in effect this bans
 a volatile function from reading an object with Effective_Reads => True.
 As a result, calling a volatile function is considered as having an effect,
 and such calls are only allowed in certain contexts
-(see :ref:`external_state-variables`).
+(see :ref:`External State - Variables and Types`).
 A protected function is also defined to be a *volatile function*, as is
 an instance of Unchecked_Conversion where one or both of the actual
 Source and Target types are effectively volatile types for reading.
@@ -319,8 +315,6 @@ False is said to be *nonvolatile for internal calls*.
     function.]
 
 
-.. _external_state-variables:
-
 External State - Variables and Types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -339,13 +333,13 @@ of a type declaration (including a formal_type_declaration).
 
 The new aspects are:
 
-  * Async_Readers - as described in :ref:`external_state`.
+  * Async_Readers - as described in :ref:`External State`.
 
-  * Async_Writers - as described in :ref:`external_state`.
+  * Async_Writers - as described in :ref:`External State`.
 
-  * Effective_Reads - as described in :ref:`external_state`.
+  * Effective_Reads - as described in :ref:`External State`.
 
-  * Effective_Writes - as described in :ref:`external_state`.
+  * Effective_Writes - as described in :ref:`External State`.
 
 These four aspects are said to be the *volatility refinement* aspects.
 Ada's notion of volatility corresponds to the case where all four
@@ -402,7 +396,7 @@ volatile object is determined as follows:
   * if the object is a reachable element of a stand-alone object or
     of a formal parameter but is not itself such an object, then it is
     the value of the given aspect of that enclosing or owning object
-    (see section :ref:`subprogram-declarations` for definitions of
+    (see section :ref:`Subprogram Declarations` for definitions of
     "reachable element" and "owning object").
 
   * otherwise, if the object is declared by an object declaration and the
@@ -472,7 +466,7 @@ be *compatible with respect to volatility* with E2 if
    function which is nonvolatile for internal calls, shall not be of
    an effectively volatile type for reading. [For a protected function, this rule
    does not apply to the notional parameter denoting the current instance of
-   the associated protected unit described in section :ref:`global-aspects`.]
+   the associated protected unit described in section :ref:`Global Aspects`.]
 
 .. index:: non-interfering context; for read of volatile object
 
@@ -531,7 +525,7 @@ be *compatible with respect to volatility* with E2 if
    and to the evaluation of any attribute which is defined to introduce
    an implicit dependency on a volatile state abstraction [(these are
    the Callable, Caller, Count, and Terminated attributes; see section
-   :ref:`tasks-and-synchronization`)]. [An internal call to a protected
+   :ref:`Tasks and Synchronization`)]. [An internal call to a protected
    function is treated like a call to a nonvolatile function if the
    function's Volatile_Function aspect is False.]
 
@@ -558,8 +552,6 @@ be *compatible with respect to volatility* with E2 if
 
 .. index:: Abstract_State
            External
-
-.. _abstract-state-aspect:
 
 Abstract_State Aspects
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -687,15 +679,15 @@ shall follow the grammar of ``abstract_state_list`` given below.
 
 
 7. An External state abstraction is one declared with an ``option_list``
-   that includes the External ``option`` (see :ref:`external_state`).
+   that includes the External ``option`` (see :ref:`External State`).
 
 
 8. If a state abstraction which is declared with an ``option_list`` that
    includes a Part_Of ``name_value_option`` whose ``name`` denote a state
    abstraction, this indicates that it is a constituent (see
-   :ref:`state_refinement`) of the denoted state abstraction.
+   :ref:`State Refinement`) of the denoted state abstraction.
    [Alternatively, the name may denote a task or protected unit (see section
-   :ref:`tasks-and-synchronization`).]
+   :ref:`Tasks and Synchronization`).]
 
 
 9. A state abstraction for which the ``simple_option`` Ghost is
@@ -731,8 +723,6 @@ There are no verification rules associated with the Abstract_State aspect.
    :linenos:
 
 .. index:: Initializes
-
-.. _initializes_aspect:
 
 Initializes Aspects
 ~~~~~~~~~~~~~~~~~~~
@@ -921,8 +911,6 @@ of the package.]
 
 .. index:: Initial_Condition
 
-.. _initial_condition_aspect:
-
 Initial_Condition Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1021,8 +1009,6 @@ Package Bodies
 
 .. index:: state refinement
 
-.. _state_refinement:
-
 State Refinement
 ~~~~~~~~~~~~~~~~
 
@@ -1052,8 +1038,6 @@ refinements of state abstractions declared by the package. Refined versions of
 aspects are provided to express the contracts of a refined view of a subprogram.
 
 .. index:: Refined_State
-
-.. _refined_state_aspect:
 
 Refined_State Aspects
 ~~~~~~~~~~~~~~~~~~~~~
@@ -1113,7 +1097,7 @@ where
    either an entity with no Part_Of ``option`` or aspect which is part
    of the hidden state of the package, or an entity whose declaration
    has a Part_Of ``option`` or aspect which denotes this state
-   abstraction (see :ref:`package_hierarchy`).
+   abstraction (see :ref:`Abstract_State, Package Hierarchy and Part_Of`).
 
 
 8. Each *abstract_*\ ``state_name`` declared in the package
@@ -1137,7 +1121,7 @@ where
 
 
 11. The legality rules related to a Refined_State aspect given in
-    :ref:`package_hierarchy` also apply.
+    :ref:`Abstract_State, Package Hierarchy and Part_Of` also apply.
 
 
 12. Each ``constituent`` of a ghost state abstraction shall be either
@@ -1244,15 +1228,13 @@ which reside in another package, initialization by their declaring package.
    * assumed pre-initialization (in the case of external states); or
 
    * for constituents which reside in another unit [and have a Part_Of
-     indicator associated with their declaration (see
-     :ref:`package_hierarchy`)] by their declaring package. [It follows
-     that such constituents will appear in the initialization clause
-     of the declaring unit unless they are external states.]
+     indicator associated with their declaration (see :ref:`Abstract_State,
+     Package Hierarchy and Part_Of`)] by their declaring package.  [It follows
+     that such constituents will appear in the initialization clause of the
+     declaring unit unless they are external states.]
 
 
 .. index:: Refined_Global
-
-.. _refined-global-aspect:
 
 Refined_Global Aspects
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -1272,17 +1254,17 @@ identify one or more constituents of the abstraction; such a state
 abstraction is said to be *optionally refinable* at the point of the
 subprogram body.
 
-See section :ref:`global-aspects` regarding how the rules given in this
+See section :ref:`Global Aspects` regarding how the rules given in this
 section apply to protected operations and to task bodies.
 
 The Refined_Global aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Refined_Global and the ``aspect_definition``
-shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
+shall follow the grammar of ``global_specification`` in :ref:`Global Aspects`.
 
 .. centered:: **Static Semantics**
 
 1. The static semantics are as for those of the Global aspect given in
-   :ref:`global-aspects`. [Differences between these two aspects for one
+   :ref:`Global Aspects`. [Differences between these two aspects for one
    subprogram stem from differences in state abstraction visibility
    between the points where the two aspects are specified.]
 
@@ -1376,8 +1358,8 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
    plays no role in determining the legality of the Refined_Global aspect.]
 
 
-6. The legality rules for :ref:`global-aspects` and External states described in
-   :ref:`refined_external_states` also apply.
+6. The legality rules for :ref:`Global Aspects` and External states described in
+   :ref:`Refined External States` also apply.
 
 
 .. centered:: **Dynamic Semantics**
@@ -1391,7 +1373,7 @@ There are no dynamic semantics associated with a Refined_Global aspect.
    subprogram body rather than its Global aspect.
 
 
-8. The verification rules given for :ref:`global-aspects` also apply.
+8. The verification rules given for :ref:`Global Aspects` also apply.
 
 
 .. centered:: **Examples**
@@ -1406,8 +1388,6 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 
 .. index:: Refined_Depends
 
-.. _refined-depends-aspect:
-
 Refined_Depends Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1419,17 +1399,17 @@ except that references to state abstractions, whose refinements are visible at
 the point of the subprogram_body, are replaced with references to [some or all of
 the] constituents of those abstractions.
 
-See section :ref:`global-aspects` regarding how the rules given in this
+See section :ref:`Global Aspects` regarding how the rules given in this
 section apply to protected operations and to task bodies.
 
 The Refined_Depends aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Refined_Depends and the ``aspect_definition``
-shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
+shall follow the grammar of ``dependency_relation`` in :ref:`Depends Aspects`.
 
 .. centered:: **Static Semantics**
 
 1. The static semantics are as for those of the Depends aspect given in
-   :ref:`depends-aspects`. [Differences between these two aspects for one
+   :ref:`Depends Aspects`. [Differences between these two aspects for one
    subprogram stem from differences in state abstraction visibility
    between the points where the two aspects are specified.]
 
@@ -1548,7 +1528,7 @@ shall follow the grammar of ``dependency_relation`` in :ref:`depends-aspects`.
    appears as an ``output`` in the Refined_Depends aspect.]
 
 
-7. The rules for :ref:`depends-aspects` also apply.
+7. The rules for :ref:`Depends Aspects` also apply.
 
 
 .. centered:: **Dynamic Semantics**
@@ -1563,7 +1543,7 @@ as it is used purely for static analysis purposes and is not executed.
    the subprogram body rather than its Depends aspect.
 
 
-9. The verification rules given for :ref:`depends-aspects` also apply.
+9. The verification rules given for :ref:`Depends Aspects` also apply.
 
 
 .. centered:: **Examples**
@@ -1578,12 +1558,10 @@ as it is used purely for static analysis purposes and is not executed.
 
 .. index:: Part_Of; in state refinement
 
-.. _package_hierarchy:
-
 Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to avoid aliasing-related problems (see :ref:`anti-aliasing`), |SPARK|
+In order to avoid aliasing-related problems (see :ref:`Anti-Aliasing`), |SPARK|
 must ensure that if a given piece of state (either an object or a state
 abstraction) is going to be a constituent of a given state abstraction, that
 relationship must be known at the point where the constituent is declared.
@@ -1615,7 +1593,7 @@ private child unit (or a public descendant thereof).
 The Part_Of aspect can also be used in a different way to indicate
 that an object or state abstraction is to be treated as though it
 were declared within a protected unit or task unit (see section
-:ref:`tasks-and-synchronization`).
+:ref:`Tasks and Synchronization`).
 
 .. centered:: **Static Semantics**
 
@@ -1626,7 +1604,7 @@ were declared within a protected unit or task unit (see section
    specification aspect applied to a generic package instantiation. The
    Part_Of indicator shall denote the *encapsulating* state abstraction
    of which the declaration is a constituent, or shall denote a
-   task or protected unit (see section :ref:`tasks-and-synchronization`).
+   task or protected unit (see section :ref:`Tasks and Synchronization`).
 
 
 .. centered:: **Legality Rules**
@@ -1659,7 +1637,7 @@ were declared within a protected unit or task unit (see section
 5. No other declarations shall have a Part_Of indicator which denotes
    a state abstraction. [Other declarations may have a Part_Of indicator
    which denotes a task or protected unit (see section
-   :ref:`tasks-and-synchronization`).]
+   :ref:`Tasks and Synchronization`).]
 
 
 6. The refinement of a state abstraction denoted in a Part_Of
@@ -1738,8 +1716,6 @@ were declared within a protected unit or task unit (see section
    end P.Pub;
 
 .. index:: Refined_Post
-
-.. _refined-postcondition:
 
 Refined Postcondition Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1852,8 +1828,6 @@ be a Boolean ``expression``.
 
 .. index:: state refinement; external state
 
-.. _refined_external_states:
-
 Refined External States
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1874,7 +1848,7 @@ abstraction on to external states which are given in this section.
 
 3. Refined_Global aspects must respect the rules related to external
    properties of constituents which are external states given in
-   :ref:`external_state` and :ref:`external_state-variables`.
+   :ref:`External State` and :ref:`External State - Variables and Types`.
 
 
 4. All other rules for Refined_State, Refined_Global and Refined_Depends aspect
@@ -1919,8 +1893,6 @@ Private Operations
 No extensions or restrictions.
 
 .. index:: Type_Invariant, Invariant
-
-.. _type_invariants:
 
 Type Invariants
 ~~~~~~~~~~~~~~~
@@ -1971,7 +1943,7 @@ language definition and what is not.]
    The aspect Type_Invariant'Class is not in SPARK.
 
 3. [A Type_Invariant expression shall not have a variable input;
-   see :ref:`expressions` for the statement of this rule.]
+   see :ref:`Expressions` for the statement of this rule.]
 
 4. A Type_Invariant shall not apply to an effectively volatile type for reading.
 
@@ -2063,8 +2035,6 @@ otherwise arise in the treatment of these hidden components.
 
 .. index:: Default_Initial_Condition
 
-.. _default_initial_condition_aspect:
-
 Default_Initial_Condition Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -2080,7 +2050,7 @@ equivalent to specifying a static *Boolean_*\ ``expression`` having the
 value True.
 
 An aspect specification of "null" indicates that the partial view of the
-type does not define full default initialization (see :ref:`declarations`).
+type does not define full default initialization (see :ref:`Declarations`).
 [The full view of the type might or might not define full default
 initialization.]
 
@@ -2144,8 +2114,6 @@ Assignment and Finalization
 
 
 .. index:: elaboration
-
-.. _elaboration_issues:
 
 Elaboration Issues
 ------------------
@@ -2453,7 +2421,7 @@ are imposed in |SPARK| which have the following consequences:
 
    a. the variable (or its state abstraction) is mentioned in the
       Initializes aspect of its enclosing package (from
-      :ref:`initializes_aspect`); and
+      :ref:`Initializes Aspects`); and
 
    b. either the variable is declared and initialized during the
       elaboration of the specification of its enclosing library unit package
@@ -2468,7 +2436,7 @@ are imposed in |SPARK| which have the following consequences:
    constituents of state abstractions declared in the package) remain
    unchanged. The Initial_Condition aspect is an assertion which is
    checked at the end of the elaboration of a package body (but occurs
-   textually in the package spec; see :ref:`initial_condition_aspect`).
+   textually in the package spec; see :ref:`Initial_Condition Aspects`).
    The initial condition of a library-level package will remain true
    from this point until the invocation of the main subprogram
    (because none of the inputs used in computing the condition can
@@ -2487,7 +2455,7 @@ are imposed in |SPARK| which have the following consequences:
    package, then the elaboration of bodies of the enclosing packages
    of those constituents will precede the elaboration of the body of
    the package declaring the abstraction (as a consequence of the
-   rules given in :ref:`elaboration_issues`). The idea here is that
+   rules given in :ref:`Elaboration Issues`). The idea here is that
    all constituents of a state abstraction whose initialization has
    been promised are in fact initialized by the end of the elaboration
    of the body of the abstraction's unit - we don't have to wait for

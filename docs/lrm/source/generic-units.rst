@@ -7,8 +7,6 @@ instance of the generic unit is analyzed.
 If an instance of a generic unit occurs within another generic unit,
 this principle is applied recursively.
 
-.. _generic_instantiation:
-
 Generic Instantiation
 ---------------------
 
@@ -23,7 +21,7 @@ Generic Instantiation
 
 2. [A generic actual parameter corresponding to a generic formal
    object having mode **in** shall not have a variable input;
-   see :ref:`expressions` for the statement of this rule.]
+   see :ref:`Expressions` for the statement of this rule.]
 
 
 [For example, a generic which takes a formal limited private type

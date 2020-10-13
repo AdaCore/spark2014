@@ -162,8 +162,6 @@ Generalized Loop Iteration
            Loop_Variant
            termination; of loop
 
-.. _loop_invariants:
-
 Loop Invariants, Variants and Entry Values
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -292,8 +290,6 @@ stating that ``I`` increases is enough to prove termination of this
 simple loop.
 
 .. index:: Loop_Entry
-
-.. _loop_entry:
 
 Attribute Loop_Entry
 ^^^^^^^^^^^^^^^^^^^^
@@ -497,8 +493,6 @@ Goto Statements
 
 
 .. index:: Assume, Assert_And_Cut
-
-.. _pragma_assume:
 
 Proof Pragmas
 -------------

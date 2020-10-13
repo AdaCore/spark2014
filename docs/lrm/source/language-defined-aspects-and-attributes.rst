@@ -113,8 +113,6 @@ Volatile_Function             Yes
 
 .. todo:: Complete this section
 
-.. _language_defined_attributes:
-
 Language-Defined Attributes
 ---------------------------
 
