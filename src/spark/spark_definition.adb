@@ -477,10 +477,14 @@ package body SPARK_Definition is
          Actual_Des_Ty := Directly_Designated_Type (Root_Retysp (Actual_Type));
          Expected_Des_Ty :=
            Directly_Designated_Type (Root_Retysp (Expected_Type));
-         if Is_Incomplete_Type (Actual_Des_Ty) then
+         if Is_Incomplete_Type (Actual_Des_Ty)
+           and then Present (Full_View (Actual_Des_Ty))
+         then
             Actual_Des_Ty := Full_View (Actual_Des_Ty);
          end if;
-         if Is_Incomplete_Type (Expected_Des_Ty) then
+         if Is_Incomplete_Type (Expected_Des_Ty)
+           and then Present (Full_View (Expected_Des_Ty))
+         then
             Expected_Des_Ty := Full_View (Expected_Des_Ty);
          end if;
 
