@@ -1,8 +1,8 @@
-a-ngelfu.ads:117:36: info: division check proved (CVC4: 1 VC), in instantiation at ff.ads:3
-a-ngelfu.ads:117:66: info: float overflow check proved (Trivial), in instantiation at ff.ads:3
-a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at ff.ads:3
-a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at ff.ads:3
-a-ngelfu.ads:127:64: info: float overflow check proved (Trivial), in instantiation at ff.ads:3
+a-ngelfu.ads:119:36: info: division check proved (CVC4: 1 VC), in instantiation at ff.ads:3
+a-ngelfu.ads:119:66: info: float overflow check proved (Trivial), in instantiation at ff.ads:3
+a-ngelfu.ads:128:32: info: division check proved (CVC4: 1 VC), in instantiation at ff.ads:3
+a-ngelfu.ads:129:36: info: division check proved (CVC4: 1 VC), in instantiation at ff.ads:3
+a-ngelfu.ads:129:64: info: float overflow check proved (Trivial), in instantiation at ff.ads:3
 a.adb:12:32: warning: assuming "Unit_Vector" has no effect on global items
 a.adb:12:32: warning: no Global contract available for "Unit_Vector"
 foo.adb:5:09: medium: precondition might fail, cannot prove X > 0.0 [possible fix: subprogram at line 3 should mention N in a precondition]
