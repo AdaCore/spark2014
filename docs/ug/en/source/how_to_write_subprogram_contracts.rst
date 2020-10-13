@@ -1,5 +1,3 @@
-.. _How to Write Subprogram Contracts:
-
 How to Write Subprogram Contracts
 =================================
 
@@ -44,8 +42,6 @@ objectives to achieve.
            Depends; automatic generation
            --no-global-generation
 
-.. _Generation of Dependency Contracts:
-
 Generation of Dependency Contracts
 ----------------------------------
 
@@ -82,8 +78,6 @@ Analysis of Subprograms Without Contracts`).
    the previous SPARK 2005 tools, which makes this switch attractive
    for project trying to migrate to the new |GNATprove| tools, or for
    projects that maintain dual annotations.
-
-.. _Auto Completion for Incomplete Contracts:
 
 Auto Completion for Incomplete Contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -178,8 +172,8 @@ The body of the unit is the same as before:
 subprograms, including ``Call_Add`` and ``Call_Swap``, based on the completed
 contracts for ``Add`` and ``Swap``.
 
-Precise Generation for |SPARK| Subprograms
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Precise Generation for SPARK Subprograms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When no data or flow dependencies are given on a |SPARK| subprogram,
 |GNATprove| generates precise data and flow dependencies by using
@@ -305,10 +299,8 @@ Note that although abstract and refined dependencies are the same here, this is
 not always the case, and |GNATprove| will use the more precise generated
 dependencies to analyze calls to subprograms inside the unit.
 
-.. _Coarse Generation for non-SPARK Subprograms:
-
-Coarse Generation for non-|SPARK| Subprograms
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Coarse Generation for non-SPARK Subprograms
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When no data or flow dependencies are given on a non-|SPARK| subprogram,
 |GNATprove| generates coarser data and flow dependencies based on the
@@ -390,8 +382,6 @@ manual contracts to avoid false alarms.
 
 .. index:: Silver level; writing contracts for integrity
            Gold level; writing contracts for integrity
-
-.. _Writing Contracts for Program Integrity:
 
 Writing Contracts for Program Integrity
 ---------------------------------------
@@ -482,8 +472,6 @@ Here is the result of running |GNATprove|:
 
 .. index:: Gold level; writing contracts for functional correctness
 
-.. _Writing Contracts for Functional Correctness:
-
 Writing Contracts for Functional Correctness
 --------------------------------------------
 
@@ -573,8 +561,6 @@ execution.
 
 .. index:: main subprograms; writing contracts
 
-.. _Writing Contracts on Main Subprograms:
-
 Writing Contracts on Main Subprograms
 -------------------------------------
 
@@ -591,8 +577,6 @@ other subprogram. They can be called from anywhere, and their preconditions
 need to be checked when they are called.
 
 .. index:: imported subprograms; writing contracts
-
-.. _Writing Contracts on Imported Subprograms:
 
 Writing Contracts on Imported Subprograms
 -----------------------------------------
@@ -685,8 +669,6 @@ As before, all contracts are proved by |GNATprove|:
 
 .. index:: contextual analysis, inlining for proof
 
-.. _Contextual Analysis of Subprograms Without Contracts:
-
 Contextual Analysis of Subprograms Without Contracts
 ----------------------------------------------------
 
@@ -769,8 +751,6 @@ more time and memory.
 .. index:: termination; proving termination
            Annotate; for subprogram termination
            Terminating
-
-.. _Subprogram Termination:
 
 Subprogram Termination
 ----------------------

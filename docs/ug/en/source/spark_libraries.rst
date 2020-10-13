@@ -1,11 +1,7 @@
-.. _SPARK Libraries:
-
-|SPARK| Libraries
-=================
+SPARK Libraries
+===============
 
 .. index:: Big_Numbers
-
-.. _Big Numbers Library:
 
 Big Numbers Library
 -------------------
@@ -126,8 +122,6 @@ computations on real numbers.
 
 .. index:: functional containers
 
-.. _Functional Containers Library:
-
 Functional Containers Library
 -----------------------------
 
@@ -224,8 +218,6 @@ available resources:
    retrieving them.
 
 .. index:: formal containers
-
-.. _Formal Containers Library:
 
 Formal Containers Library
 -------------------------
@@ -443,8 +435,6 @@ Reference Manual for details on aspect ``Iterable``.
 
 .. index:: lemma library
 
-.. _SPARK Lemma Library:
-
 SPARK Lemma Library
 -------------------
 
@@ -583,8 +573,6 @@ passed in arguments, as follows:
    --  the following assertion is proved automatically:
    pragma Assert (R1 <= R2);
 
-.. _Higher Order Function Library:
-
 Higher Order Function Library
 -----------------------------
 
@@ -683,8 +671,6 @@ Currently, the higher-order function library provides the following functions:
 
 .. index:: access types; SPARK.Heap
 
-.. _SPARK Heap Library:
-
 SPARK Heap Library
 ------------------
 
@@ -730,8 +716,6 @@ For example:
    end;
 
 .. index:: input-output
-
-.. _Input-Output Libraries:
 
 Input-Output Libraries
 ----------------------

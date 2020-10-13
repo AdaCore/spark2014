@@ -25,8 +25,6 @@ Here is an example of this view:
 
 .. index:: GNAT Studio integration; log file
 
-.. _The Analysis Results Summary File:
-
 The Analysis Results Summary File
 ---------------------------------
 
@@ -143,8 +141,6 @@ The next contents in the file are statistics describing:
   both)
 * the results of this analysis
 
-.. _Categories of Messages:
-
 Categories of Messages
 ----------------------
 
@@ -182,8 +178,6 @@ check messages and information messages.
   proved checks in some modes of |GNATprove|.
 
 .. index:: --mode; effect on output
-
-.. _Effect of Mode on Output:
 
 Effect of Mode on Output
 ------------------------
@@ -269,8 +263,6 @@ corresponding CWE, or "CWE 369" to get all messages related to division by zero
 vulnerability.
 
 .. index:: counterexample; understanding counterexamples
-
-.. _Understanding Counterexamples:
 
 Understanding Counterexamples
 -----------------------------

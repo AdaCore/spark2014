@@ -1,5 +1,3 @@
-.. _Command Line Invocation:
-
 Command Line Invocation
 =======================
 

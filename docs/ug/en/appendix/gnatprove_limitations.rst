@@ -1,11 +1,7 @@
 .. index:: limitations
 
-.. _GNATprove_Limitations:
-
-|GNATprove| Limitations
-=======================
-
-.. _Tool Limitations:
+GNATprove Limitations
+=====================
 
 Tool Limitations
 ----------------

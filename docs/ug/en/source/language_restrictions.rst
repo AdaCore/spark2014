@@ -1,9 +1,5 @@
-.. _Language Restrictions:
-
 Language Restrictions
 =====================
-
-.. _Excluded Ada Features:
 
 Excluded Ada Features
 ---------------------
@@ -85,8 +81,6 @@ features. But these features can be used in subprograms in Ada not identified
 as |SPARK| code, see :ref:`Identifying SPARK Code`.
 
 .. index:: Size, Object_Size
-
-.. _Sizes of Objects:
 
 Sizes of Objects
 ----------------
@@ -171,8 +165,6 @@ The following example shows some typical usages of unchecked conversions and
 .. index:: initialization
            Relaxed_Initialization; initialization policy
 
-.. _Data Initialization Policy:
-
 Data Initialization Policy
 --------------------------
 
@@ -255,8 +247,6 @@ user and the tool.
 
 .. index:: access types; ownership policy
            ownership
-
-.. _Memory Ownership Policy:
 
 Memory Ownership Policy
 -----------------------
@@ -341,8 +331,6 @@ null.
 
 .. index:: aliasing; absence of interference
 
-.. _Absence of Interferences:
-
 Absence of Interferences
 ------------------------
 
@@ -422,8 +410,6 @@ arises due to the use of Address clauses or aspects.
 .. index:: exceptions; raising exception
            No_Return; error signaling
 
-.. _Raising Exceptions and Other Error Signaling Mechanisms:
-
 Raising Exceptions and Other Error Signaling Mechanisms
 -------------------------------------------------------
 
@@ -485,8 +471,6 @@ forever on any input.
 .. index:: No_Return; nonreturning procedures
            Might_Not_Return
 
-.. _Nonreturning Procedures:
-
 Nonreturning Procedures
 -----------------------
 
@@ -537,8 +521,6 @@ terminates, in which case |GNATprove| will verify that it indeed terminates.
 See :ref:`Subprogram Termination`.
 
 .. index:: generics; analysis of instances
-
-.. _Analysis of Generics:
 
 Analysis of Generics
 --------------------

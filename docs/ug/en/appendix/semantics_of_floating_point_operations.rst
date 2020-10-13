@@ -1,5 +1,3 @@
-.. _Semantics of Floating Point Operations:
-
 Semantics of Floating Point Operations
 ======================================
 

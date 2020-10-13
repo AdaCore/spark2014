@@ -1,5 +1,3 @@
-.. _Specification Features:
-
 Specification Features
 ======================
 
@@ -213,8 +211,6 @@ apply attribute ``Old`` to the entity prefix ``A``:
 
 .. index:: Unevaluated_Use_Of_Old
 
-.. _In a Potentially Unevaluated Expression:
-
 In a Potentially Unevaluated Expression
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -377,8 +373,6 @@ pragma ``Unevaluated_Use_Of_Old``.
 
 .. index:: delta aggregate
 
-.. _Delta Aggregates:
-
 Delta Aggregates
 ----------------
 
@@ -464,8 +458,6 @@ limited.
    and an equivalent attribute named ``Update`` can be used instead.
 
 .. index:: if-expression, case-expression
-
-.. _Conditional Expressions:
 
 Conditional Expressions
 -----------------------
@@ -559,8 +551,6 @@ parenthesized.
 
 .. index:: quantified-expression
 
-.. _Quantified Expressions:
-
 Quantified Expressions
 ----------------------
 
@@ -620,8 +610,6 @@ message for a possible division by zero in this case.
 Quantified expressions should always be parenthesized.
 
 .. index:: declare-expression
-
-.. _Declare Expressions:
 
 Declare Expressions
 -------------------
@@ -694,8 +682,6 @@ the second bound:
 
 .. index:: expression function
            Gold level; expression function
-
-.. _Expression Functions:
 
 Expression Functions
 --------------------
@@ -807,8 +793,6 @@ expression function is declared in the unit spec and defined in the unit body.
            Gold level; ghost code
            Platinum level; ghost code
 
-.. _Ghost Code:
-
 Ghost Code
 ----------
 
@@ -854,8 +838,6 @@ follows:
 program. |GNAT Pro| compiler also performs some of these checks, although not
 all of them. Apart from these checks, |GNATprove| treats ghost code like normal
 code during its analyses.
-
-.. _Ghost Functions:
 
 Ghost Functions
 ^^^^^^^^^^^^^^^
@@ -918,8 +900,6 @@ efficient than in normal code, which may be useful to express rich
 properties. For example, the ghost functions defined in the :ref:`Formal
 Containers Library` in |GNAT Pro| typically copy the entire content of the
 argument container, which would not be acceptable for non-ghost functions.
-
-.. _Ghost Variables:
 
 Ghost Variables
 ^^^^^^^^^^^^^^^
@@ -1050,8 +1030,6 @@ to the other:
      end loop;
    end Permutation_Sort;
 
-.. _Ghost Types:
-
 Ghost Types
 ^^^^^^^^^^^
 
@@ -1098,8 +1076,6 @@ Then, this procedure can be called in ``Add_To_Total`` as follows:
       Total := Total + Incr;
       Append_To_Log (Incr);
    end Add_To_Total;
-
-.. _Ghost Packages:
 
 Ghost Packages
 ^^^^^^^^^^^^^^
@@ -1185,8 +1161,6 @@ A ghost imported subprogram cannot be executed, so calls to ``Append_To_Log``
 above should not be enabled during compilation, otherwise a compilation error
 is issued. Note also that |GNATprove| will not attempt proving the contract of
 a ghost imported subprogram, as it does not have its body.
-
-.. _Ghost Models:
 
 Ghost Models
 ^^^^^^^^^^^^
@@ -1358,8 +1332,6 @@ be stated as a postcondition of this function:
 
 More complex examples of models of data structure can be found in the
 :ref:`Formal Containers Library`.
-
-.. _Removal of Ghost Code:
 
 Removal of Ghost Code
 ^^^^^^^^^^^^^^^^^^^^^

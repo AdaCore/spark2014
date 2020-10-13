@@ -1,5 +1,3 @@
-.. _Uses_of_Pragma_Annotate_GNATprove:
-
 Aspects or Pragmas Specific to GNATprove
 ========================================
 
@@ -389,8 +387,6 @@ function such that it always return a model containing exactly the same elements
 as ``L``.
 
 .. index:: Annotate; Inline_For_Proof
-
-.. _Inlining_Functions_for_Proof:
 
 Inlining Functions for Proof
 ----------------------------

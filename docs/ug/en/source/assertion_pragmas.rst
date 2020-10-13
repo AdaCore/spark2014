@@ -1,5 +1,3 @@
-.. _Assertion Pragmas:
-
 Assertion Pragmas
 =================
 
@@ -101,8 +99,6 @@ compilable, typically because a given build environment does not define the
 necessary entities.
 
 .. index:: Loop_Invariant
-
-.. _Loop Invariants:
 
 Loop Invariants
 ---------------
@@ -236,8 +232,6 @@ useful to express complex loop invariants.
 
 .. index:: Loop_Variant
            termination; loop variant
-
-.. _Loop Variants:
 
 Loop Variants
 -------------

@@ -1,5 +1,3 @@
-.. _How to Write Package Contracts:
-
 How to Write Package Contracts
 ==============================
 

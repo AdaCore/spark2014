@@ -1,7 +1,5 @@
 .. index:: project file; project attributes
 
-.. _Project Attributes:
-
 Project Attributes
 ==================
 

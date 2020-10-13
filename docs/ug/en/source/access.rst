@@ -1,5 +1,3 @@
-.. _Pointer Support and Dynamic Memory Management:
-
 Pointer Support and Dynamic Memory Management
 =============================================
 
