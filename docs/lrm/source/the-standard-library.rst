@@ -93,86 +93,35 @@ The Package Strings (A.4.1)
 
 No additions or restrictions.
 
-The predefined exceptions are considered to be declared in Stings, but their use is
-constrained by other language restrictions.
+The predefined exceptions are considered to be declared in Strings,
+but their use is constrained by other language restrictions.
 
 The Package Strings.Maps (A.4.2)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-1. The type declaration Character_Mapping_Function is not in |SPARK| and
-   cannot be referenced within |SPARK| program text.
-
-
-The function To_Mapping may raise the exception Translation_Error if
-its actual parameters are inconsistent.  To guard against this
-exception each call of To_Mapping should be immediately preceded by an
-assert statement checking that the actual parameters are correct.
-
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-   --  From the Ada RM for To_Mapping: "To_Mapping produces a
-   --  Character_Mapping such that each element of From maps to the
-   --  corresponding element of To, and each other character maps to
-   --  itself. If From'Length /= To'Length, or if some character is
-   --  repeated in From, then Translation_Error is propagated".
-
-   --  Each call should be preceded with a pragma Assert, checking the
-   --  actual parameters, of the form:
-   pragma Assert (Actual_From'Length = Actual_To'Length and then
-                    (for all I in Actual_From'Range =>
-                       (for all J in Actual_From'Range =>
-                          (if I /= J then Actual_From (I) /= Actual_From (J)))));
-   CM := To_Mapping (From => Actual_From,
-                     To   => Actual_To);
-
-   --  Alternatively To_Mapping could be wrapped in a user defined
-   --  subprogram with a suitable precondition and used to call
-   --  To_Mapping indirectly.  For example:
-   function My_To_Mapping (From, To : in Character_Sequence)
-                          return Character_Mapping
-     with Pre => (From'Length = To'Length and then
-                    (for all I in From'Range =>
-                       (for all J in From'Range =>
-                          (if I /= J then From (I) /= From (J)))));
-   is
-   begin
-      return Ada.Strings.Maps.To_Mapping (From, To);
-   end My_To_Mapping;
+Preconditions and postconditions are added to
+subprograms. Preconditions prevent all exceptions specified in the
+corresponding part of the Ada RM to be raised.
 
 Fixed-Length String Handling (A.4.3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Preconditions and postconditions are added to
+subprograms. Preconditions on functions prevent all exceptions
+specified in the corresponding part of the Ada RM to be raised.
 
-1. Translate (with Maps.Character_Mapping_Function formal parameter)
-   is not callable from |SPARK| as it has a an access to function type
-   parameter.
-
-
-All other subprograms may be called but the subprograms Move, Index,
-Count (with a mapping formal parameter), Find_Token, Replace_Slice,
-Insert, Overwrite, Head (with Justify formal parameter), Tail (with
-Justify formal parameter) may raise an exception if they are called
-with inconsistent actual parameters. Each call of these subprograms
-should be preceded with a pragma Assert to check that the actual
-parameters are consistent.
+All procedures may be called but procedures Move, Replace_Slice,
+Insert, Overwrite, Head, Tail have incomplete contracts and may raise
+an exception if they are called with inconsistent actual
+parameters. Each call of these procedures should be preceded with a
+pragma Assert to check that the actual parameters are consistent.
 
 Bounded-Length String Handling (A.4.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-1. The subprograms Index, Count and Translate with
-   Maps.Character_Mapping_Function formal parameters are not callable
-   from |SPARK|.
-
-
-The other subprograms in Bounded-Length String Handling are callable
-from |SPARK| program texts but many of them may raise an exception if
-they are called with inconsistent actual parameters.  Each call of
-these subprograms should be preceded with a pragma Assert to check
-that the actual parameters are consistent.
+Global, preconditions and postconditions are added to
+subprograms. Preconditions prevent all exceptions specified in the
+corresponding part of the Ada RM to be raised.
 
 Unbounded-Length String Handling (A.4.5)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -183,20 +132,9 @@ Unbounded-Length String Handling (A.4.5)
    |SPARK| program text.
 
 
-2. The subprograms Index, Count and Translate with
-   Maps.Character_Mapping_Function formal parameters are not callable
-   from |SPARK|.
-
-
-The function and procedure Unbounded_Slice both may propagate
-Index_Error if Low > Length(Source)+1 or High > Length(Source) and so
-every call to each of these subprograms should be immediately preceded
-by a pragma Assert of the form:
-
-.. code-block:: ada
-
-   pragma Assert (Actual_Low  <= Length (Actual_Source) and
-                  Actual_High <= Length (Actual_Source));
+Global, preconditions and postconditions are added to
+subprograms. Preconditions prevent all exceptions specified in the
+corresponding part of the Ada RM to be raised.
 
 String-Handling Sets and Mappings (A.4.6)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
