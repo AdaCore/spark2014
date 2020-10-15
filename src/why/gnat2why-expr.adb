@@ -216,11 +216,12 @@ package body Gnat2Why.Expr is
    subtype Ref_Context is Ref_Type_Vectors.Vector;
 
    function Compute_Call_Args
-     (Call    : Node_Id;
-      Domain  : EW_Domain;
-      Context : in out Ref_Context;
-      Store   : W_Statement_Sequence_Unchecked_Id;
-      Params  : Transformation_Params) return W_Expr_Array;
+     (Call     : Node_Id;
+      Domain   : EW_Domain;
+      Context  : in out Ref_Context;
+      Store    : W_Statement_Sequence_Unchecked_Id;
+      Params   : Transformation_Params;
+      Use_Tmps : Boolean := False) return W_Expr_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
    --  Sometimes, because of type mismatch, or because the actual is a
@@ -229,7 +230,9 @@ package body Gnat2Why.Expr is
    --  case, Compute_Call_Args will also compute mappings for new parameters
    --  as well as some post processing to store them back into the actual
    --  parameters. The mappings are then stored in Context, and the post
-   --  processing is stored in Store.
+   --  processing is stored in Store. If Use_Tmps is True, then temporaries
+   --  are introduced in Context for parameters so that checks are not
+   --  duplicated if the returned array is used several times.
 
    procedure Compute_Store
      (Pattern        : Item_Type;
@@ -2818,11 +2821,12 @@ package body Gnat2Why.Expr is
    -----------------------
 
    function Compute_Call_Args
-     (Call    : Node_Id;
-      Domain  : EW_Domain;
-      Context : in out Ref_Context;
-      Store   : W_Statement_Sequence_Unchecked_Id;
-      Params  : Transformation_Params) return W_Expr_Array
+     (Call     : Node_Id;
+      Domain   : EW_Domain;
+      Context  : in out Ref_Context;
+      Store    : W_Statement_Sequence_Unchecked_Id;
+      Params   : Transformation_Params;
+      Use_Tmps : Boolean := False) return W_Expr_Array
    is
       Subp                : constant Entity_Id := Get_Called_Entity (Call);
       Binders             : constant Item_Array :=
@@ -2969,12 +2973,13 @@ package body Gnat2Why.Expr is
             --  computing it several times. It also ensures that checks are
             --  emitted even if the expression happens to not be used.
             --  If the formal is not mutable, we do not need a temporary for
-            --  the expression as it will be used exactly once.
+            --  the expression as it will be used exactly once, unless the
+            --  computed arguments will be reused (Use_Tmps is True).
             --  We don't need a temporary for the self reference of protected
             --  objects is the call is internal.
 
-            if Item_Is_Mutable (Pattern)
-              and then (not Is_Self or else Is_External_Call (Call))
+            if (Item_Is_Mutable (Pattern) or else Use_Tmps)
+                and then (not Is_Self or else Is_External_Call (Call))
             then
                declare
                   Tmp_Id : constant W_Identifier_Id :=
@@ -3062,9 +3067,13 @@ package body Gnat2Why.Expr is
                --  It is the first reference if there is one.
 
                if Pattern.Kind /= DRecord or else Pattern.Fields.Present then
-                  Why_Args (Arg_Cnt) := +Sequence
-                    (Left  => New_Havoc_Call (+Why_Args (Arg_Cnt)),
-                     Right => +Why_Args (Arg_Cnt));
+                  Context.Append
+                    (Ref_Type'(Mutable => False,
+                               Name    => New_Temp_Identifier
+                                 (Typ       => EW_Unit_Type,
+                                  Base_Name => "havoc"),
+                               Value   =>
+                                 +New_Havoc_Call (+Why_Args (Arg_Cnt))));
                end if;
             end if;
 
@@ -6388,7 +6397,7 @@ package body Gnat2Why.Expr is
          Toplevel : Boolean;
          Map      : in out Ada_To_Why_Ident.Map);
       --  Add in Map all moved objects from Expr. If Toplevel is True, this is
-      --  the outter toplevel call, for which the top-level object should not
+      --  the outer toplevel call, for which the top-level object should not
       --  be inserted in the map as it is handled specially.
 
       ------------------
@@ -14535,7 +14544,7 @@ package body Gnat2Why.Expr is
                        | N_Subprogram_Declaration
       then
          declare
-            Expr : Node_Id := Get_Address_Rep_Item (Decl);
+            Expr : Node_Id := Get_Address_Expr (Decl);
          begin
             if Present (Expr) then
 
@@ -16848,9 +16857,17 @@ package body Gnat2Why.Expr is
       --  Calls to dispatching function need the dispatching tag as an
       --  additional argument.
 
+      Use_Tmps : constant Boolean := Domain = EW_Prog
+        and then Subp_Needs_Invariant_Checks (Subp);
+      --  If we need to introduce an invariant check on call, arguments of
+      --  the call will be used twice (once for the actual code and once for
+      --  the call to Check_Invariants_On_Call). In this case, we want to
+      --  introduce let bindings for parameters so that we do not duplicate
+      --  checks.
+
       Args     : constant W_Expr_Array :=
         Tag_Arg &
-        Compute_Call_Args (Expr, Domain, Context, Store, Params);
+        Compute_Call_Args (Expr, Domain, Context, Store, Params, Use_Tmps);
 
       Why_Name : W_Identifier_Id;
 
@@ -17023,26 +17040,16 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      --  Volatile functions cannot have side-effects in SPARK, but translation
-      --  of a call to a volatile function may introduce references for
-      --  parameters of a volatile type. Insert these references here.
+      --  We may need a context if we have introduced constants for expressions
+      --  which mandate checks in parameters and possibly also a store for
+      --  volatile functions. This can only occur in the program domain.
 
-      if Has_Pragma_Volatile_Function (Subp) then
-         if Context.Length = 0 then
-            return T;
-         else
-            return +Insert_Ref_Context (Expr, +T, Context, Store);
-         end if;
-
-      --  SPARK function cannot have side-effects. Except for volatile
-      --  functions, this also means that no references should be
-      --  introduced for the call.
-
+      if Context.Length = 0 then
+         return T;
       else
-         pragma Assert (Context.Length = 0);
+         pragma Assert (Domain = EW_Prog);
+         return +Insert_Ref_Context (Expr, +T, Context, Store);
       end if;
-
-      return T;
    end Transform_Function_Call;
 
    --------------------------
@@ -18638,7 +18645,6 @@ package body Gnat2Why.Expr is
             | Pragma_Overriding_Renamings
             | Pragma_Passive
             | Pragma_Persistent_BSS
-            | Pragma_Polling
             | Pragma_Prefix_Exception_Messages
             | Pragma_Priority_Specific_Dispatching
             | Pragma_Profile_Warnings
@@ -20528,8 +20534,12 @@ package body Gnat2Why.Expr is
 
                Args     : constant W_Expr_Array :=
                  Compute_Call_Args
-                   (Stmt_Or_Decl, EW_Prog, Context, Store,
-                    Params => Body_Params);
+                   (Stmt_Or_Decl, EW_Prog, Context, Store, Body_Params,
+                    Use_Tmps => Subp_Needs_Invariant_Checks (Subp));
+               --  If we need to perform invariant checks for this call, Args
+               --  will be reused for the call to Check_Invariants_On_Call.
+               --  Force the use of temporary identifiers to avaoid duplicating
+               --  checks.
 
                Selector : constant Selection_Kind :=
                   --  When calling an error-signaling procedure from an

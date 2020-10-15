@@ -1,6 +1,7 @@
 with Ada.Containers.Formal_Ordered_Sets;
 with Ada.Containers; use Ada.Containers;
 package P is pragma SPARK_Mode (On);
+   pragma Unevaluated_Use_Of_Old (Allow);
 
    type Element_Type is new Integer range 1 .. 100;
 
@@ -17,11 +18,12 @@ package P is pragma SPARK_Mode (On);
 
    procedure Identity (L : in out Set; E : Element_Type) with
      Pre => Length (L) < L.Capacity and not Contains (L, E),
-     Post => L = L'Old and Positions (L) = Positions (L'Old);
+     Post => L = L'Old  and then Elements (L) = Elements (L)'Old and then
+     Positions (L) = Positions (L'Old);
 
    procedure Nearly_Identity (L : in out Set; Cu : in out Cursor) with
      Pre => Has_Element (L, Cu),
-     Post => L = L'Old and
-     (if Cu = Cu'Old then Positions (L) = Positions (L'Old));
+     Post => L = L'Old and then Elements (L) = Elements (L)'Old and then
+     (if Cu = Cu'Old then Positions (L) = Positions (L)'Old);
 
 end P;

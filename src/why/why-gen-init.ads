@@ -35,6 +35,17 @@ with Why.Sinfo;                use Why.Sinfo;
 package Why.Gen.Init is
    --  This package encapsulates the encoding of initialization by proof.
 
+   procedure Declare_Simple_Wrapper_Type
+     (P          : W_Section_Id;
+      W_Nam      : W_Name_Id;
+      Init_Val   : W_Identifier_Id;
+      Attr_Init  : W_Identifier_Id;
+      Of_Wrapper : W_Identifier_Id;
+      To_Wrapper : W_Identifier_Id);
+   --  Declare a wrapper type with name W_Nam, and fields Init_Val and
+   --  Attr_Init. Also generate conversion functions with names
+   --  Of_Wrapper and To_Wrapper.
+
    procedure Declare_Init_Wrapper (P : W_Section_Id; E : Entity_Id) with
      Pre => Is_Type (E);
    --  Add declarations for a wrapper type for E in P

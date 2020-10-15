@@ -61,9 +61,6 @@ package body SPARK_Rewrite is
    --  seems much more error-prone.
 
    procedure Rewrite_Call (N : Node_Id);
-   --  Replace renamings and inherited subprograms by the subprogram they
-   --  rename or inherit.
-   --
    --  Replace instantiations of unchecked conversions with
    --  N_Unchecked_Type_Conversion nodes.
 
@@ -78,6 +75,10 @@ package body SPARK_Rewrite is
    --  the original subprograms; we prefer the original names when outputting
    --  error messages and generating Why code. Also, decorate instances of
    --  Ada.Unchecked_Deallocation.
+
+   procedure Rewrite_Subprogram_Reference (N : Node_Id);
+   --  Replace renamings and inherited subprograms by the subprogram they
+   --  rename or inherit.
 
    procedure Rewrite_Wrapper_Package (N : Node_Id)
    with Pre => Nkind (N) = N_Package_Declaration;
@@ -177,31 +178,6 @@ package body SPARK_Rewrite is
 
    procedure Rewrite_Call (N : Node_Id) is
    begin
-      --  If the subprogram is a renaming or an inherited primitive operation,
-      --  replace it in the call with the name of the actual subprogram being
-      --  called. Both have an Alias component, that points to the immediate
-      --  renamed or inherited subprogram. The Ultimate_Alias function
-      --  retrieves the last subprogram in a chain of aliases. Note that
-      --  renamings and inherited primitive operations can be distinguished
-      --  by the kind of their parent node: the entity for a renaming has
-      --  the function or procedure specification node as parent, while an
-      --  inherited primitive operation has the derived type declaration as
-      --  parent.
-
-      if Nkind (Name (N)) in N_Has_Entity
-        and then Present (Entity (Name (N)))
-      then
-         declare
-            E : constant Entity_Id := Entity (Name (N));
-         begin
-            if (Is_Overloadable (E) or else Ekind (E) = E_Subprogram_Type)
-              and then Present (Alias (E))
-            then
-               Set_Entity (Name (N), Ultimate_Alias (E));
-            end if;
-         end;
-      end if;
-
       --  If the subprogram is actually an unchecked type conversion we
       --  rewrite the tree to use an N_Unchecked_Type_Conversion node
       --  instead, as documented in Sinfo. The original call to an instance
@@ -215,6 +191,11 @@ package body SPARK_Rewrite is
         and then Present (Entity (Name (N)))
         and then Is_Unchecked_Conversion_Instance (Entity (Name (N)))
       then
+         --  Rewrite the subprogram name as it will be used in the translation
+         --  to Why3.
+
+         Rewrite_Subprogram_Reference (Name (N));
+
          Rewrite (Old_Node => N,
                   New_Node => Unchecked_Convert_To
                     (Typ  => Etype (Etype (N)),
@@ -327,6 +308,31 @@ package body SPARK_Rewrite is
          Decorate_Unchecked_Deallocation (Subprogram_Instance);
       end if;
    end Rewrite_Subprogram_Instantiation;
+
+   ----------------------------------
+   -- Rewrite_Subprogram_Reference --
+   ----------------------------------
+
+   procedure Rewrite_Subprogram_Reference (N : Node_Id) is
+      E : constant Entity_Id := Entity (N);
+   begin
+      --  If the subprogram is a renaming or an inherited primitive operation,
+      --  replace it with the name of the actual subprogram being
+      --  called. Both have an Alias component, that points to the immediate
+      --  renamed or inherited subprogram. The Ultimate_Alias function
+      --  retrieves the last subprogram in a chain of aliases. Note that
+      --  renamings and inherited primitive operations can be distinguished
+      --  by the kind of their parent node: the entity for a renaming has
+      --  the function or procedure specification node as parent, while an
+      --  inherited primitive operation has the derived type declaration as
+      --  parent.
+
+      if (Is_Overloadable (E) or else Ekind (E) = E_Subprogram_Type)
+        and then Present (Alias (E))
+      then
+         Set_Entity (N, Ultimate_Alias (E));
+      end if;
+   end Rewrite_Subprogram_Reference;
 
    -----------------------------
    -- Rewrite_Wrapper_Package --
@@ -452,6 +458,19 @@ package body SPARK_Rewrite is
 
             when N_Subprogram_Call =>
                Rewrite_Call (N);
+
+            --  Replace renamings and inherited subprograms by the subprogram
+            --  they rename or inherit.
+
+            when N_Identifier
+               | N_Expanded_Name
+               | N_Operator_Symbol
+            =>
+               if Present (Entity (N))
+                 and then Is_Subprogram (Entity (N))
+               then
+                  Rewrite_Subprogram_Reference (N);
+               end if;
 
             --  Replace compiler-generated unchecked type conversions by the
             --  converted expression when required so that the translation of

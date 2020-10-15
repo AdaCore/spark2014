@@ -593,6 +593,7 @@ package body Flow_Error_Messages is
       VC_File     : String;
       VC_Loc      : Node_Id;
       Editor_Cmd  : String;
+      Explanation : String;
       E           : Entity_Id;
       How_Proved  : Prover_Category;
       SD_Id       : Session_Dir_Base_ID;
@@ -708,7 +709,9 @@ package body Flow_Error_Messages is
                Suppr := Info.Reason;
             else
                declare
-                  Expl : constant String := Get_Explanation (N, Tag);
+                  Expl : constant String :=
+                    (if Explanation = "" then Get_Explanation (N, Tag)
+                     else Explanation);
                   Msg4 : constant String :=
                     (if Expl = "" then Msg3
                      else Msg3 & " [possible explanation: " & Expl & "]");
@@ -1344,7 +1347,7 @@ package body Flow_Error_Messages is
          declare
             Obj    : constant Entity_Id := Defining_Identifier (N);
             Expr   : constant Node_Id :=
-              SPARK_Atree.Get_Address_Rep_Item (N);
+              SPARK_Atree.Get_Address_Expr (N);
             Common : constant String :=
               "should have an Alignment representation clause";
          begin

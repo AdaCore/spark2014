@@ -1227,12 +1227,15 @@ package body Why.Inter is
    -- New_Named_Type --
    --------------------
 
-   function New_Named_Type (Name : W_Name_Id) return W_Type_Id is
+   function New_Named_Type
+     (Name : W_Name_Id; Relaxed_Init : Boolean := False) return W_Type_Id
+   is
    begin
-      return New_Type (Ada_Node   => Empty,
-                       Is_Mutable => False,
-                       Type_Kind  => EW_Abstract,
-                       Name       => Name);
+      return New_Type (Ada_Node     => Empty,
+                       Is_Mutable   => False,
+                       Type_Kind    => EW_Abstract,
+                       Name         => Name,
+                       Relaxed_Init => Relaxed_Init);
    end New_Named_Type;
 
    function New_Named_Type (S : String) return W_Type_Id is

@@ -102,36 +102,53 @@ reading a temperature from a device or writing the same value to a
 lamp driver or display. |SPARK| provides a mechanism to indicate
 whether a read or write is always significant.
 
-A type is said to be *effectively volatile* if it is either
-a volatile type, an array type whose Volatile_Component
-aspect is True, an array type whose component type is
-effectively volatile, a protected type, or a descendant of
+A type is said to be *effectively volatile* if it is either a volatile type, an
+array type whose Volatile_Components aspect is True, an array type whose
+component type is effectively volatile, a protected type, or a descendant of
 the type Ada.Synchronous_Task_Control.Suspension_Object.
+
+A type is said to be *effectively volatile for reading* if it is either a
+volatile type with the properties Async_Writers or Effective_Reads set to True
+(as described below), an array type whose Volatile_Components aspect is True
+unless the array type has the properties Async_Writers and Effective_Reads set
+to False (as described below), an array type whose component type is
+effectively volatile for reading, a protected type, or a descendant of the type
+Ada.Synchronous_Task_Control.Suspension_Object. [An effectively volatile type
+for reading is also an effectively volatile type.]
 
 A nonvolatile protected type is said to be *nonvolatile during a protected
 action* if none of its subcomponent types are effectively volatile. [In other
 words, if the only reason that the protected type is effectively volatile
 is because it is protected.]
 
-An *effectively volatile object* is a volatile object for which
-the property No_Caching (see below) is False, or an object
-of an effectively volatile type. There are two exceptions to this rule:
+An *effectively volatile object* is a volatile object, or an object of an
+effectively volatile type. An *effectively volatile object for reading* is a
+volatile object with the properties Async_Writers or Effective_Reads set to
+True, or an object of an effectively volatile type for reading. [An effectively
+volatile object for reading is also an effectively volatile object.] There are three
+exceptions to these rules:
 
   * the current instance of a protected unit whose (protected) type is
-    nonvolatile during a protected action is, by definition, not an
-    effectively volatile object. [This exception reflects the fact that
+    nonvolatile during a protected action is, by definition, not an effectively
+    volatile object. [This exception reflects the fact that
     the current instance cannot be referenced in contexts where
     unsynchronized updates are possible. This means, for example, that the
     Global aspect of a nonvolatile function which is declared inside of a
     protected operation may reference the current instance of the protected
     unit.]
 
-  * a constant object associated with the evaluation of a function
-    call, an aggregate, or a type conversion is, by definition,
-    not an effectively volatile object. [See Ada RM 4.6 for the rules about
+  * a constant object associated with the evaluation of a function call, an
+    aggregate, or a type conversion is, by definition, not an effectively
+    volatile object. [See Ada RM 4.6 for the rules about
     when a type conversion introduces a new object; in cases where it is
     unspecified whether a new object is created, we assume (for purposes
     of the rules in this section) that no new object is created].
+
+  * the property No_Caching can be specified on a volatile object, to express
+    that such a variable can be analyzed as not volatile in SPARK, but that the
+    compiler should not cache its value between accesses to the object (e.g. as
+    a defense against fault injection). Such an object is not an effectively
+    volatile object.
 
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
@@ -157,16 +174,12 @@ defined:
 These properties may be specified for an effectively volatile object
 as Boolean aspects or as external properties of an external state abstraction.
 
-A fifth property No_Caching can be specified on a volatile object of a
-non-effectively volatile type, to express that such a variable can be analyzed
-as not volatile in SPARK, but that the compiler should not cache its value
-between accesses to the object (e.g. as a defense against fault injection).
-
 The Boolean aspect Volatile_Function may be specified as part of the
 (explicit) initial declaration of a function. A function whose
 Volatile_Function aspect is True is said to be a *volatile function*.
-Volatile functions can read volatile objects; nonvolatile functions
-cannot. However note that the rule that a function must not have any
+Volatile functions can read effectively volatile objects for reading; nonvolatile functions
+cannot [but they can read other effectively volatile objects].
+However note that the rule that a function must not have any
 output other than its result still applies; in effect this bans
 a volatile function from reading an object with Effective_Reads => True.
 As a result, calling a volatile function is considered as having an effect,
@@ -174,7 +187,7 @@ and such calls are only allowed in certain contexts
 (see :ref:`external_state-variables`).
 A protected function is also defined to be a *volatile function*, as is
 an instance of Unchecked_Conversion where one or both of the actual
-Source and Target types are effectively volatile types.
+Source and Target types are effectively volatile types for reading.
 [Unlike nonvolatile functions, two calls to a volatile function with all
 inputs equal need not return the same result.]
 
@@ -427,17 +440,16 @@ be *compatible with respect to volatility* with E2 if
 
 8. A ``global_item`` of a nonvolatile function, or of a function which
    is nonvolatile for internal calls, shall not denote either
-   an effectively volatile object or an external state abstraction.
+   an effectively volatile object for reading or an external state abstraction.
 
 9. A formal parameter (or result) of a nonvolatile function, or of a
    function which is nonvolatile for internal calls, shall not be of
-   an effectively volatile type. [For a protected function, this rule
+   an effectively volatile type for reading. [For a protected function, this rule
    does not apply to the notional parameter denoting the current instance of
    the associated protected unit described in section :ref:`global-aspects`.]
 
 10. Contrary to the general |SPARK| rule that expression evaluation
-    cannot have side effects, a read of an effectively volatile object with
-    the properties Async_Writers or Effective_Reads set to True is
+    cannot have side effects, a read of an effectively volatile object for reading is
     considered to have an effect when read. To reconcile this
     discrepancy, a name denoting such an object shall only occur in
     a *non-interfering context*. A name occurs in a non-interfering
@@ -456,7 +468,7 @@ be *compatible with respect to volatility* with E2 if
      whose result is renamed [in an object renaming declaration]; or
 
    * an actual parameter in a call for which the corresponding
-     formal parameter is of a non-scalar effectively volatile type; or
+     formal parameter is of a non-scalar effectively volatile type for reading; or
 
    * the (protected) prefix of a name denoting a protected operation; or
 
@@ -502,9 +514,9 @@ be *compatible with respect to volatility* with E2 if
 
 .. centered:: **Verification Rules**
 
-12. An effectively volatile formal parameter of mode **out** shall not be read,
-    even after it has been updated. [This is because the
-    Async_Writers aspect of the parameter is True].
+12. An effectively volatile for reading formal parameter of mode **out** whose
+    Async_Writers aspect is True shall not be read, even after it has been
+    updated.
 
 .. centered:: **Examples**
 
@@ -1125,7 +1137,7 @@ where
 13. A ``constituent`` of a synchronized state abstraction shall be
     either a synchronized object or another synchronized state abstraction.
     A ``constituent`` of a state abstraction which is neither external
-    nor synchronized shall be not be an effectively volatile object,
+    nor synchronized shall be not be an effectively volatile object for reading,
     a synchronized state abstraction, or an external state abstraction.
 
 
@@ -2286,8 +2298,7 @@ language definition and what is not.]
 3. [A Type_Invariant expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
-4. A Type_Invariant shall not apply to an effectively volatile type with the
-   properties Async_Writers or Effective_Reads set to True.
+4. A Type_Invariant shall not apply to an effectively volatile type for reading.
 
 .. centered:: **Verification Rules**
 

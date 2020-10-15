@@ -125,9 +125,8 @@ Static predicates and dynamic predicates are both in
   :ref:`update-expressions`).
   These are assignment operations but not assignment statements.]
 
-3. A Static_Predicate or Dynamic_Predicate shall not apply to an effectively
-   volatile type with the properties Async_Writers or Effective_Reads set to
-   True.
+3. A Static_Predicate or Dynamic_Predicate shall not apply to a subtype of a
+   type that is effectively volatile for reading.
 
 .. centered:: **Verification Rules**
 

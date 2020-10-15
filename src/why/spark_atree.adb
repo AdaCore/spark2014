@@ -461,20 +461,20 @@ package body SPARK_Atree is
    function From_Real_Range_Specification (N : Node_Id) return Boolean is
      (Nkind (Atree.Parent (N)) = Sinfo.N_Real_Range_Specification);
 
-   --------------------------
-   -- Get_Address_Rep_Item --
-   --------------------------
+   ----------------------
+   -- Get_Address_Expr --
+   ----------------------
 
-   function Get_Address_Rep_Item (N : Node_Id) return Node_Id is
+   function Get_Address_Expr (N : Node_Id) return Node_Id is
       Address : constant Node_Id :=
-        Sem_Aux.Get_Rep_Item (Sem_Util.Defining_Entity (N), Name_Address);
+        Einfo.Address_Clause (Sem_Util.Defining_Entity (N));
    begin
       if Present (Address) then
          return Sinfo.Expression (Address);
       else
          return Empty;
       end if;
-   end Get_Address_Rep_Item;
+   end Get_Address_Expr;
 
    -----------------------
    -- Get_Called_Entity --

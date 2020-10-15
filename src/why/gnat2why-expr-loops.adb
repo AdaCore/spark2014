@@ -1645,7 +1645,7 @@ package body Gnat2Why.Expr.Loops is
    --  won't be part of the frame condition of the inner loop, so the user
    --  won't need to mention them in the loop invariant (to state in general
    --  that their value is preserved). As the code in the exit path may itself
-   --  exit the loop, this try-catch block is nested inside the outter one.
+   --  exit the loop, this try-catch block is nested inside the outer one.
 
    function Wrap_Loop
      (Loop_Id            : Entity_Id;

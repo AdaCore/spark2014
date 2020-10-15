@@ -425,7 +425,7 @@ package SPARK_Atree is
      Pre => Nkind (N) in Sinfo.N_Subexpr;
    --  Return True if N is the bound of a Real_Range_Specification
 
-   function Get_Address_Rep_Item (N : Node_Id) return Node_Id with
+   function Get_Address_Expr (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Subprogram_Declaration | N_Object_Declaration;
    --  Return the expression associated to the address representation item for
    --  the defining entity of the declaration N if any.

@@ -2395,19 +2395,21 @@ package body Why.Atree.Modules is
 
       begin
          --  Insert symbols for the initialization wrapper if any. We need
-         --  extra fields to create the wrapper type for scalars, and
-         --  conversion functions to and from the wrapper types for scalars
-         --  and records. For array, conversion goes through the base array
-         --  type, so conversion functions are rather stored with other
-         --  array conversion theories.
+         --  extra fields to create the wrapper type for scalars and simple
+         --  private types, and conversion functions to and from the wrapper
+         --  types for scalars, private types, and records. For array,
+         --  conversion goes through the base array type, so conversion
+         --  functions are rather stored with other array conversion theories.
 
          if Might_Contain_Relaxed_Init (E)
-           and then (Is_Scalar_Type (E) or else Is_Record_Type (E))
+           and then (Is_Scalar_Type (E) or else Is_Record_Type_In_Why (E))
          then
             declare
                WM  : constant W_Module_Id := E_Init_Module (E);
             begin
-               if Has_Scalar_Type (E) then
+               if Has_Scalar_Type (E)
+                 or else Is_Simple_Private_Type (E)
+               then
                   Insert_Symbol
                     (E, WNE_Init_Value,
                      New_Identifier
@@ -2787,6 +2789,7 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
+
                if Root = E
                  and then Has_Discriminants (E)
                  and then not Is_Constrained (E)
@@ -2806,6 +2809,7 @@ package body Why.Atree.Modules is
                         Symb   => NID ("in_range"),
                         Typ    => EW_Bool_Type));
                end if;
+
                Insert_Symbol
                  (E, WNE_To_Base,
                   New_Identifier
@@ -2833,20 +2837,71 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term));
 
-               if Has_Private_Part (E) then
-                  Insert_Symbol
-                    (E, WNE_Private_Type,
-                     New_Identifier
-                       (Symb   => NID ("__main_type"),
-                        Module => M,
-                        Domain => EW_Term));
-                  Insert_Symbol
-                    (E, WNE_Private_Eq,
-                     New_Identifier
-                       (Symb   => NID ("__main_eq"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Bool_Type));
+               --  For types which have their own private part, introduce a
+               --  symbol for the type of the component modelling this part
+               --  and equality on it.
+
+               if Has_Private_Part (E)
+                 and then not Is_Simple_Private_Type (E)
+               then
+                  declare
+                     WM        : constant W_Module_Id := E_Init_Module (E);
+                     Main_Type : constant W_Identifier_Id :=
+                       New_Identifier
+                         (Symb   => NID ("__main_type"),
+                          Module => M,
+                          Domain => EW_Term);
+                  begin
+                     Insert_Symbol
+                       (E, WNE_Private_Type, Main_Type);
+                     Insert_Symbol
+                       (E, WNE_Private_Eq,
+                        New_Identifier
+                          (Symb   => NID ("__main_eq"),
+                           Module => M,
+                           Domain => EW_Term,
+                           Typ    => EW_Bool_Type));
+
+                     --  If the type needs a wrapper for relaxed
+                     --  initialization, introduce names for the components of
+                     --  this wrapper and for conversion functions.
+
+                     if Might_Contain_Relaxed_Init (E) then
+                        Insert_Symbol
+                          (E, WNE_Init_Value,
+                           New_Identifier
+                             (Symb   => NID ("rec__value"),
+                              Module => WM,
+                              Domain => EW_Term,
+                              Typ    => New_Named_Type
+                                (Name => Get_Name (Main_Type))));
+                        Insert_Symbol
+                          (E, WNE_Attr_Init,
+                           New_Identifier
+                             (Symb   => NID (To_String (WNE_Attr_Init)),
+                              Module => WM,
+                              Domain => EW_Term,
+                              Typ    => EW_Bool_Type));
+                        Insert_Symbol
+                          (E, WNE_Private_To_Wrapper,
+                           New_Identifier
+                             (Symb   => NID ("__main_to_wrapper"),
+                              Module => M,
+                              Domain => EW_Term,
+                              Typ    => New_Named_Type
+                                (Name         =>
+                                     Get_Name (To_Init_Module (Main_Type)),
+                                 Relaxed_Init => True)));
+                        Insert_Symbol
+                          (E, WNE_Private_Of_Wrapper,
+                           New_Identifier
+                             (Symb   => NID ("__main_of_wrapper"),
+                              Module => M,
+                              Domain => EW_Term,
+                              Typ    => New_Named_Type
+                                (Name => Get_Name (Main_Type))));
+                     end if;
+                  end;
                end if;
 
                if Is_Tagged_Type (E) then
@@ -3039,7 +3094,7 @@ package body Why.Atree.Modules is
 
          --  Symbols for access-to-subprogram types
 
-         elsif Is_Access_Subprogram_Type (Base_Type (Retysp (E))) then
+         elsif Is_Access_Subprogram_Type (Retysp (E)) then
             Insert_Symbol
               (E, WNE_Null_Pointer,
                New_Identifier

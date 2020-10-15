@@ -1,5 +1,2 @@
-lb.adb:15:13: "Init" is not allowed in SPARK (due to nonvolatile function with effectively volatile result)
-lb.adb:15:13: violation of aspect SPARK_Mode at line 5
-lb.ads:7:13: nonvolatile function with effectively volatile result is not allowed in SPARK
-lb.ads:7:13: violation of aspect SPARK_Mode at line 3
-gnatprove: error during flow analysis and proof
+lb.adb:10:14: info: initialization of "Result" proved
+lb.adb:15:04: info: object is suitable for aliasing via address clause (Trivial)

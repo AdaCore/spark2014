@@ -2840,8 +2840,8 @@ package body SPARK_Definition is
                   & """ outside an attribute definition clause", N);
             end if;
 
-          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
-          --  types.
+         --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
+         --  types.
 
          when Attribute_Loop_Entry
             | Attribute_Old
@@ -2868,7 +2868,18 @@ package body SPARK_Definition is
             end if;
 
          when Attribute_Access =>
-            if not Is_Access_Subprogram_Type (Base_Type (Etype (N))) then
+
+            --  If Etype (N) is not visibly an access type, raise a violation
+
+            if not Has_Access_Type (Etype (N)) then
+               Mark_Violation (N, From => Etype (N));
+
+            --  We do not support 'Access on objects
+
+            elsif Ekind
+              (Directly_Designated_Type (Retysp (Etype (N))))
+                /= E_Subprogram_Type
+            then
                Mark_Violation
                  ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
                   & """ on object", N);
@@ -3147,7 +3158,7 @@ package body SPARK_Definition is
          --  Special checks for effectively volatile calls and objects
          if Comes_From_Source (Actual)
            and then
-             (Is_Effectively_Volatile_Object (Actual)
+             (Is_Effectively_Volatile_Object_For_Reading (Actual)
               or else (Nkind (Actual) = N_Function_Call
                        and then Nkind (Name (Actual)) /= N_Explicit_Dereference
                          and then Is_Volatile_Call (Actual))
@@ -3158,7 +3169,7 @@ package body SPARK_Definition is
             --  type (SPARK RM 7.1.3(10)).
 
             if not Is_Scalar_Type (Etype (Formal))
-              and then Is_Effectively_Volatile (Etype (Formal))
+              and then Is_Effectively_Volatile_For_Reading (Etype (Formal))
             then
                null;
 
@@ -3704,8 +3715,9 @@ package body SPARK_Definition is
                            pragma Assert
                              (Is_Access_Type (Node_Maps.Element (Pos))
                               and then
-                                not Is_Access_Subprogram_Type
-                                  (Node_Maps.Element (Pos))
+                                Ekind (Directly_Designated_Type
+                                  (Node_Maps.Element (Pos))) /=
+                                E_Subprogram_Type
                               and then
                                 (Is_Incomplete_Type
                                      (Directly_Designated_Type
@@ -3952,7 +3964,9 @@ package body SPARK_Definition is
          --  rule is checked by the frontend for code with SPARK_Mode On, but
          --  needs to be checked here for code with SPARK_Mode Auto.
 
-         if Ekind (E) = E_Constant and then Is_Effectively_Volatile (T) then
+         if Ekind (E) = E_Constant
+           and then Is_Effectively_Volatile_For_Reading (T)
+         then
             Mark_Violation ("volatile constant", Def);
          end if;
 
@@ -4252,7 +4266,7 @@ package body SPARK_Definition is
             --  effectively volatile type (SPARK RM 7.1.3(9)).
 
             if not Is_Volatile_Func
-              and then Is_Effectively_Volatile (Etype (Id))
+              and then Is_Effectively_Volatile_For_Reading (Etype (Id))
             then
                Mark_Violation
                  ("nonvolatile function with effectively volatile result", Id);
@@ -4285,7 +4299,7 @@ package body SPARK_Definition is
                if not Is_Volatile_Func
                  and then (Ekind (Id) /= E_Function
                            or else not Is_Predicate_Function (Id))
-                 and then Is_Effectively_Volatile (Etype (Formal))
+                 and then Is_Effectively_Volatile_For_Reading (Etype (Formal))
                then
                   Mark_Violation
                     ("nonvolatile function with effectively volatile " &
@@ -5117,11 +5131,7 @@ package body SPARK_Definition is
                  ("type invariant on private_type_declaration or"
                   & " private_type_extension", E, "SPARK RM 7.3.2(2)");
 
-            elsif Is_Effectively_Volatile (E)
-              and then (Async_Writers_Enabled (E)
-                          or else
-                        Effective_Reads_Enabled (E))
-            then
+            elsif Is_Effectively_Volatile_For_Reading (E) then
                Mark_Violation
                  ("type invariant on effectively volatile type",
                   E, "SPARK RM 7.3.2(4)");
@@ -5205,19 +5215,16 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  An effectively volatile type with Async_Writers or Effective_Reads
-         --  cannot have a predicate. Here, we do not try to distinguish the
-         --  case where the predicate is inherited from a parent whose full
-         --  view is not in SPARK.
+         --  A subtype of a type that is effectively volatile for reading
+         --  cannot have a predicate (SPARK RM 3.2.4(3)). Here, we do not try
+         --  to distinguish the case where the predicate is inherited from a
+         --  parent whose full view is not in SPARK.
 
          if Has_Predicates (E)
-           and then Is_Effectively_Volatile (E)
-           and then (Async_Writers_Enabled (E)
-                       or else
-                     Effective_Reads_Enabled (E))
+           and then Is_Effectively_Volatile_For_Reading (E)
          then
             Mark_Violation
-              ("subtype predicate on effectively volatile type",
+              ("subtype predicate on effectively volatile type for reading",
                E, "SPARK RM 3.2.4(3)");
          end if;
 
@@ -5631,10 +5638,10 @@ package body SPARK_Definition is
 
             --  For access-to-subprogram types, mark the designated profile
 
-            if Is_Access_Subprogram_Type (Base_Type (E)) then
+            if Ekind (Directly_Designated_Type (E)) = E_Subprogram_Type then
                declare
                   Profile : constant Entity_Id :=
-                    Directly_Designated_Type  (Base_Type (E));
+                    Directly_Designated_Type  (E);
                   Wrapper : constant Entity_Id :=
                     Access_Subprogram_Wrapper (Profile);
 
@@ -7083,7 +7090,6 @@ package body SPARK_Definition is
             | Pragma_Overriding_Renamings
             | Pragma_Passive
             | Pragma_Persistent_BSS
-            | Pragma_Polling
             | Pragma_Prefix_Exception_Messages
             | Pragma_Priority_Specific_Dispatching
             | Pragma_Profile_Warnings

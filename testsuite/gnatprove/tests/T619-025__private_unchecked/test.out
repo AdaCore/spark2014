@@ -1,0 +1,3 @@
+p.ads:18:13: high: types used for unchecked conversion do not have the same size
+p.ads:19:32: info: type is suitable for unchecked conversion (Trivial)
+p.ads:19:45: info: type is suitable for unchecked conversion (Trivial)

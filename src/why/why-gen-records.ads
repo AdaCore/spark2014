@@ -301,6 +301,7 @@ package Why.Gen.Records is
       with function Build_Predicate_For_Field
         (F_Expr : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
          return W_Pred_Id;
+      Ignore_Private_State : Boolean := True;
    function Build_Predicate_For_Record
      (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
    --  Construct a predicate:
@@ -308,6 +309,10 @@ package Why.Gen.Records is
    --  /\ (check_for_f1 <Expr> -> Build_Predicate_For_Field <Expr>.rec__f1)
    --  /\ ..
    --  /\ (check_for_fn <Expr> -> Build_Predicate_For_Field <Expr>.rec__fn)
+   --
+   --  If Ignore_Private_State is True, only consider actual components and
+   --  Part_Of objects. Otherwise, Build_Predicate_For_Field is also called
+   --  on type entities of ancestors of Ty which have private components.
 
    generic
       with function Build_Predicate_For_Discr
@@ -316,6 +321,7 @@ package Why.Gen.Records is
       with function Build_Predicate_For_Field
         (F_Expr1, F_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
          return W_Pred_Id;
+      Ignore_Private_State : Boolean := True;
    function Build_Binary_Predicate_For_Record
      (Expr1, Expr2 : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
    --  Construct a predicate:
@@ -327,5 +333,9 @@ package Why.Gen.Records is
    --      Build_Predicate_For_Field <Expr1>.rec__fn <Expr2>.rec__fn)
    --  As visible above, this only makes sense if the discriminants for
    --  Expr1 and Expr2 are equal.
+   --
+   --  If Ignore_Private_State is True, only consider actual components and
+   --  Part_Of objects. Otherwise, Build_Predicate_For_Field is also called
+   --  on type entities of ancestors of Ty which have private components.
 
 end Why.Gen.Records;

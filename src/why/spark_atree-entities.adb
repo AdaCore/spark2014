@@ -452,7 +452,9 @@ package body SPARK_Atree.Entities is
    -------------------------------
 
    function Is_Access_Subprogram_Type (E : Entity_Id) return Boolean is
-     (Einfo.Is_Access_Subprogram_Type (Einfo.Base_Type (E)));
+     (Einfo.Is_Access_Type (E)
+      and then Atree.Ekind (Einfo.Directly_Designated_Type (E)) =
+        Einfo.E_Subprogram_Type);
 
    -----------------------
    -- Is_Actual_Subtype --

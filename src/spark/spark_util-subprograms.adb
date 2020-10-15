@@ -1181,8 +1181,9 @@ package body SPARK_Util.Subprograms is
         --  and the function's first parameter is of an access-to-object type.
 
         and then Is_Access_Type (Retysp (Etype (First_Formal (E))))
-        and then not Is_Access_Subprogram_Type
-          (Base_Type (Retysp (Etype (First_Formal (E)))));
+        and then
+          Ekind (Directly_Designated_Type (Retysp (Etype (First_Formal (E)))))
+            /= E_Subprogram_Type;
    end Is_Traversal_Function;
 
    ----------------------------------------
