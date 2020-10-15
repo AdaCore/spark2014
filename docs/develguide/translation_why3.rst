@@ -1991,13 +1991,13 @@ Consider the access-to-function type ``F`` below:
    type F is access function (X1 : T1) return T;
 
 The representative module will have the following form:
-   
+
 .. code-block:: whyml
 
   module Profile__In__T1__Return__T
-  
+
     val function __call (subp : __subprogram) (x1 : t1) : t
-  
+
     val predicate pred_call (result : t) (subp : __subprogram) (x1 : t1)
   end
 
@@ -2035,15 +2035,15 @@ the access-to-function type ``F`` below:
      Post => F_Post (F'Result, X1, ...);
 
 In the definition module for ``F`` a range predicate is declared:
-   
+
 .. code-block:: whyml
-  
+
   val predicate __in_range (subp : __subprogram)
 
 Its definition is deferred to the completion module:
-   
+
 .. code-block:: whyml
-  
+
    axiom post_axiom: forall subp : __subprogram.
      __in_range subp <->
        (forall x1 : t1 ... .
@@ -2062,9 +2062,9 @@ pre and postcondition of the access-to-subprogram type if any. For functions,
 the postcondition also states equality with the logic function ``__call``.
 As an example, here is the program function generated for the access-to-function
 type ``F`` above:
-   
+
 .. code-block:: whyml
-  
+
   val __call_ (subp : __subprogram) (x1 : t1) ... : t
     requires { f_pre x1 ... }
     ensures  { result = __call sub x1 ... /\
@@ -2512,7 +2512,7 @@ type ``Integer`` might be used for expressions with relaxed initialization,
 as we can access the value of an array object annotated with the aspect. Here
 is the wrapper module introduced for ``Integer``:
 
-.. code-block:: why3
+.. code-block:: whyml
 
   module Standard__integer__init_wrapper
 
@@ -2547,7 +2547,7 @@ initialized). As an example, let us consider the type ``Int_Array`` above. To
 declare its wrapper type, we first need an array theory module containing
 wrappers for integers:
 
-.. code-block:: why3
+.. code-block:: whyml
 
   module Array__Int__Standard__integer__init_wrapper
 
@@ -2562,7 +2562,7 @@ Then, we can use the array type declared in this theory to define the wrapper
 type. For this, we simply clone the usual array module, like for the normal
 translation:
 
-.. code-block:: why3
+.. code-block:: whyml
 
   module Init_by_proof__int_array__init_wrapper
 
@@ -2578,11 +2578,11 @@ They are handled using specific conversion modules, like regular array
 conversions involving arrays with different subtypes for components. Here is
 the module introduced for converting to the wrapper type of ``Int_Array``:
 
-.. code-block:: why3
+.. code-block:: whyml
 
   module Array__Int__Standard__integer__init_wrapper__to__Array__Int__Standard__integer
 
-    val function convert (a: Array__Int__Standard__integer__init_wrapper.map) : 
+    val function convert (a: Array__Int__Standard__integer__init_wrapper.map) :
       Array__Int__Standard__integer.map
 
     axiom convert__def:
@@ -2610,13 +2610,13 @@ of the initialization flag of all the scalars parts of the expression
 (see ``Compute_Is_Initialized``). For example, the failed initialization check
 at the end of the ``Init_By_Proof`` procedure is translated as:
 
-.. code-block:: why3
+.. code-block:: whyml
 
   assert { (get (map__content buf) 110).__attr__init }
 
 And the postcondition of ``Process_1`` becomes:
 
-.. code-block:: why3
+.. code-block:: whyml
 
   ensures { (forall i : int.
                  if buf__first <= i <= buf__first + size - 1
@@ -4301,7 +4301,6 @@ added as assumption in :code:`Transform_Loop_Statement`:
   that have not been modified yet in the loop.
 
 
-.. _Procedure Calls:
 Procedure Calls
 ^^^^^^^^^^^^^^^
 Parameter Passing
@@ -4733,11 +4732,11 @@ and axioms:
 .. code-block:: whyml
 
   val function attr__access : __subprogram
-  
+
   axiom def_axiom:
     forall x1 : t1 ... .
       f x1 ... = __call attr__access x1 ...
-  
+
   axiom def_axiom__function_guard:
     forall temp___result: t, x1: t1 ... .
       f__function_guard temp___result x1 ... <->

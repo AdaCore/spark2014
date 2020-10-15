@@ -46,8 +46,6 @@ targeted level starting with the initial design phase.
 This version of the document is based on the SPARK Pro 19 and GNAT Studio 19
 versions. Further references are given at the end of this document.
 
-.. _Levels of Software Assurance:
-
 Levels of Software Assurance
 ============================
 
@@ -527,8 +525,6 @@ the ``--warnings=off`` switch.
 
 .. index:: SPARK violations (how to handle)
 .. index:: GNATprove (dealing with SPARK violations)
-
-.. _Dealing with SPARK Violations:
 
 Dealing with SPARK Violations
 -----------------------------
@@ -1301,8 +1297,6 @@ As further optional steps at this level, critical parts of the program can
 be annotated to make sure they don't make unintended accesses to global
 data. This activity is explained in section :ref:`Global Annotations`.
 
-.. _Initialization Checks:
-
 Initialization Checks
 ---------------------
 
@@ -1657,8 +1651,6 @@ can be implemented through a variant record:
       Result := (Found => False);
    end Search;
 
-.. _Justifying Unproved Check Messages:
-
 Justifying Unproved Check Messages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1764,8 +1756,6 @@ unproved initialization check, it's important to understand why it's not
 proved and what are the assumptions conveyed to the tool when justifying
 it. The result of this analysis should then be specified in the Reason
 argument of ``pragma Annotate`` to simplify later reviews.
-
-.. _Aliasing:
 
 Aliasing
 --------
@@ -1957,8 +1947,6 @@ as output parameters to a subprogram. This can be justified as follows:
       String'("As I is equal to 2 prior to the call, A (1) and A (I) are"
               & " never aliased."));
 
-.. _Flow Analysis Warnings:
-
 Flow Analysis Warnings
 ----------------------
 
@@ -2120,14 +2108,10 @@ GNATprove:
       null;
    end Do_Nothing;
 
-.. _Global Annotations:
-
 Global Annotations
 ------------------
 
 .. index:: ! Global contract
-
-.. _Global Contract:
 
 Global Contract
 ^^^^^^^^^^^^^^^
@@ -2309,8 +2293,6 @@ independently, every private variable must be linked to an abstract state
 using the ``Part_Of`` aspect. You can find information about state abstraction
 in the SPARK User's Guide:
 http://docs.adacore.com/spark2014-docs/html/ug/en/source/package_contracts.html#state-abstraction.
-
-.. _Depends Annotations:
 
 Depends Annotations
 -------------------
@@ -2606,8 +2588,6 @@ the verifications successfully performed by GNATprove. It should only issue
 .. code-block:: none
 
   info: overflow check proved
-
-.. _Run-time Checks:
 
 Run-time Checks
 ---------------
@@ -2923,8 +2903,6 @@ type qualification where the target type is specified as not null:
       end case;
       Y := null;
    end Not_Null;
-
-.. _Investigating Unproved Run-time Checks:
 
 Investigating Unproved Run-time Checks
 --------------------------------------
@@ -3323,8 +3301,6 @@ where the internal array ``Data`` is indexed up to the value of component
 ``Name``, namely that ``Last`` will always be no greater than ``Size``.  This
 assures that ``Data(Last)`` will be in bounds.
 
-.. _Preconditions:
-
 Preconditions
 -------------
 
@@ -3371,8 +3347,6 @@ GNATprove. The third way is to express the constraint is as a precondition:
 
 This constraint is readable by humans and it can be verified at run time
 by testing or statically by GNATprove.
-
-.. _Postconditions:
 
 Postconditions
 --------------
@@ -3740,8 +3714,6 @@ For each unproved property in this subprogram, you should follow the following s
    runs of GNATprove will not report it again . See SPARK User's Guide at
    http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_use_gnatprove_in_a_team.html#justifying-check-messages.
 
-.. _Example:
-
 Example
 =======
 
@@ -4054,8 +4026,8 @@ certain bodies to the package declaration so we will not show the
 package body again. The full Platinum implementation is provided at the
 end of this section.
 
-Stone Level
------------
+Example - Stone Level
+---------------------
 
 .. index:: Stone level (of SPARK use)
 
@@ -4096,8 +4068,8 @@ The remaining code is also within the SPARK subset. We have reached
 the Stone level.
 
 
-Bronze Level
-------------
+Example - Bronze Level
+----------------------
 
 .. index:: Bronze level (of SPARK use)
 
@@ -4277,8 +4249,8 @@ properties, for example data flowing only between units at appropriate
 security levels. We are not doing so in this case.
 
 
-Silver Level
-------------
+Example - Silver Level
+----------------------
 
 .. index:: Silver level (of SPARK use)
 
@@ -4607,8 +4579,8 @@ no run-time check verification failures and the defensive preconditions
 are proven at their call sites.
 
 
-Gold Level
-----------
+Example - Gold Level
+--------------------
 
 .. index:: Gold level (of SPARK use)
 
@@ -5065,8 +5037,8 @@ Whenever ``Empty`` returns True, ``Top`` (i.e., ``Extent``) will be zero, otherw
 ``Top`` will not be zero.
 
 
-Platinum Level
---------------
+Example - Platinum Level
+------------------------
 
 .. index:: Platinum level (of SPARK use)
 
@@ -5239,9 +5211,6 @@ And the package body:
 
    end Sequential_Bounded_Stacks;
 
-
-
-.. _References:
 
 References
 ==========

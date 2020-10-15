@@ -81,7 +81,7 @@ else:
     master_doc = 'index'
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = None
 
 # Treat todo and todolist blocks specially
 todo_include_todos = True
