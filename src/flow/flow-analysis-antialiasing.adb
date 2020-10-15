@@ -714,19 +714,13 @@ package body Flow.Analysis.Antialiasing is
          B_Node := B;
       end if;
 
-      case Status is
-         when Possible_Aliasing =>
-            Append (Msg, " might be aliased");
-
-         when Definite_Aliasing =>
-            Append (Msg, " are aliased");
-
-         when No_Aliasing =>
-            Append (Msg, " proved");
-
-         when Impossible =>
-            raise Program_Error;
-      end case;
+      Append
+        (Msg,
+         (case Status is
+             when No_Aliasing       => " proved",
+             when Possible_Aliasing => " might be aliased",
+             when Definite_Aliasing => " are aliased",
+             when Impossible        => raise Program_Error));
 
       Error_Msg_Flow (FA       => FA,
                       Msg      => To_String (Msg),
