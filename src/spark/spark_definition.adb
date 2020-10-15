@@ -5537,6 +5537,16 @@ package body SPARK_Definition is
                Mark_Violation (E, From => Base_Type (E));
             end if;
 
+            --  A record subtype might share its components with the subtype
+            --  from which it is cloned. Mark the clone first before marking
+            --  the components, which expects the enclosing type to be marked.
+
+            if Ekind (E) in E_Record_Subtype | E_Class_Wide_Subtype
+              and then Present (Cloned_Subtype (E))
+            then
+               Mark_Entity (Cloned_Subtype (E));
+            end if;
+
             --  Components of a record type should be in SPARK for the record
             --  type to be in SPARK.
 
