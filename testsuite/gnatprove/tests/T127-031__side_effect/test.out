@@ -1,0 +1,13 @@
+pre_post_exercise.adb:20:39: info: range check proved (CVC4: 1 VC)
+pre_post_exercise.adb:21:15: info: index check proved (CVC4: 2 VC)
+pre_post_exercise.adb:25:20: info: index check proved (CVC4: 2 VC)
+pre_post_exercise.adb:26:39: info: range check proved (CVC4: 1 VC)
+pre_post_exercise.adb:30:08: info: range check proved (CVC4: 4 VC)
+pre_post_exercise.ads:4:15: info: postcondition proved (CVC4: 2 VC)
+pre_post_exercise.ads:6:15: info: postcondition proved (CVC4: 2 VC)
+pre_post_exercise.ads:10:15: info: postcondition proved (CVC4: 1 VC)
+pre_post_exercise.ads:10:33: info: range check proved (CVC4: 1 VC)
+pre_post_exercise.ads:12:20: info: initialization of "X" proved
+pre_post_exercise.ads:14:15: info: postcondition proved (CVC4: 1 VC)
+pre_post_exercise.ads:14:21: info: range check proved (CVC4: 1 VC)
+pre_post_exercise.ads:19:15: info: postcondition proved (CVC4: 1 VC)
