@@ -1,44 +1,17 @@
-machine_mantissa.adb:3:16: non-static attribute "Machine_Mantissa" is not yet supported
-gnatprove: error during flow analysis and proof
-machine_emin.adb:3:16: non-static attribute "Machine_Emin" is not yet supported
-gnatprove: error during flow analysis and proof
-machine_emax.adb:3:16: non-static attribute "Machine_Emax" is not yet supported
-gnatprove: error during flow analysis and proof
-exponent.adb:3:11: attribute "Exponent" is not allowed in SPARK
-exponent.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
-fraction.adb:3:11: attribute "Fraction" is not allowed in SPARK
-fraction.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
+adjacent.adb:3:16: non-static attribute "Adjacent" is not yet supported
 compose.adb:3:11: attribute "Compose" is not allowed in SPARK
 compose.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
-scaling.adb:3:16: non-static attribute "Scaling" is not yet supported
-gnatprove: error during flow analysis and proof
-unbiased_rounding.adb:3:16: non-static attribute "Unbiased_Rounding" is not yet supported
-gnatprove: error during flow analysis and proof
-machine_rounding.adb:3:11: attribute "Machine_Rounding" is not allowed in SPARK
-machine_rounding.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
-remainder.adb:3:16: medium: divide by zero might fail [possible fix: subprogram at remainder.ads:1 should mention X and Y in a precondition]
-adjacent.adb:3:16: non-static attribute "Adjacent" is not yet supported
-gnatprove: error during flow analysis and proof
+exponent.adb:3:11: attribute "Exponent" is not allowed in SPARK
+exponent.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
+fraction.adb:3:11: attribute "Fraction" is not allowed in SPARK
+fraction.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
 leading_part.adb:3:11: attribute "Leading_Part" is not allowed in SPARK
 leading_part.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
 machine.adb:3:16: non-static attribute "Machine" is not yet supported
-gnatprove: error during flow analysis and proof
-model_mantissa.adb:3:16: non-static attribute "Model_Mantissa" is not yet supported
-gnatprove: error during flow analysis and proof
-model_emin.adb:3:16: non-static attribute "Model_Emin" is not yet supported
-gnatprove: error during flow analysis and proof
-model_epsilon.adb:3:16: non-static attribute "Model_Epsilon" is not yet supported
-gnatprove: error during flow analysis and proof
-model_small.adb:3:16: non-static attribute "Model_Small" is not yet supported
-gnatprove: error during flow analysis and proof
+machine_rounding.adb:3:11: attribute "Machine_Rounding" is not allowed in SPARK
+machine_rounding.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
 model.adb:3:16: non-static attribute "Model" is not yet supported
-gnatprove: error during flow analysis and proof
-safe_first.adb:3:16: non-static attribute "Safe_First" is not yet supported
-gnatprove: error during flow analysis and proof
-safe_last.adb:3:16: non-static attribute "Safe_Last" is not yet supported
+remainder.adb:3:16: medium: divide by zero might fail [possible fix: subprogram at remainder.ads:1 should mention X and Y in a precondition]
+scaling.adb:3:16: non-static attribute "Scaling" is not yet supported
+unbiased_rounding.adb:3:16: non-static attribute "Unbiased_Rounding" is not yet supported
 gnatprove: error during flow analysis and proof
