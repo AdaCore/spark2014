@@ -1,36 +1,65 @@
-in_out_pledge.adb:9:26: warning: "L" is not modified, could be of access constant type
-in_out_pledge.adb:10:08: medium: "Length_Aux" is recursive, terminating annotation could be incorrect
-in_out_pledge.adb:16:22: warning: "L" is not modified, could be of access constant type
-in_out_pledge.adb:18:27: warning: "L" is not modified, could be of access constant type
-in_out_pledge.adb:19:08: medium: "Get_Nth_Val" is recursive, terminating annotation could be incorrect
-in_out_pledge.adb:23:21: warning: "T" is not modified, could be of access constant type
-in_out_pledge.adb:23:21: warning: unused variable "T"
-in_out_pledge.adb:45:12: info: data dependencies proved
-in_out_pledge.adb:68:13: "LL" was borrowed at line 39
-in_out_pledge.adb:69:13: "LL" was borrowed at line 39
-in_out_pledge.adb:88:12: info: data dependencies proved
-in_out_pledge.adb:111:13: "Y" was borrowed at line 82
-in_out_pledge.adb:112:13: "Y" was borrowed at line 82
-pledge_constraints.adb:15:21: warning: "T" is not modified, could be of access constant type
-pledge_constraints.adb:15:21: warning: unused variable "T"
-pledge_constraints.adb:19:41: info: pointer dereference check proved (CVC4: 2 VC)
-pledge_constraints.adb:19:61: info: pointer dereference check proved (CVC4: 1 VC)
-pledge_constraints.adb:19:66: info: index check proved (CVC4: 2 VC)
-pledge_constraints.adb:20:16: info: pointer dereference check proved (CVC4: 1 VC)
-pledge_constraints.adb:20:21: info: index check proved (CVC4: 2 VC)
-pledge_constraints.adb:20:23: info: discriminant check proved (CVC4: 1 VC)
-pledge_constraints.adb:22:30: info: pointer dereference check proved (CVC4: 1 VC)
-pledge_constraints.adb:22:35: info: index check proved (CVC4: 2 VC)
-pledge_constraints.adb:22:37: info: discriminant check proved (CVC4: 1 VC)
-pledge_constraints.adb:24:12: medium: memory leak might occur
-pledge_constraints.adb:25:09: info: pointer dereference check proved (CVC4: 1 VC)
-pledge_constraints.adb:26:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
-pledge_constraints.adb:26:34: info: pointer dereference check proved (CVC4: 1 VC)
-pledge_constraints.adb:26:39: info: index check proved (CVC4: 2 VC)
-pledge_constraints.adb:26:41: info: discriminant check proved (CVC4: 1 VC)
-pledge_constraints.adb:26:50: info: pointer dereference check proved (CVC4: 1 VC)
-pledge_constraints.adb:26:58: info: pointer dereference check proved (CVC4: 1 VC)
-pledge_constraints.adb:27:22: medium: assertion might fail
-pledge_constraints.adb:27:38: medium: pointer dereference check might fail
-pledge_constraints.adb:27:43: medium: array index check might fail [reason for check: value must be a valid index into the array]
+in_out_pledge.adb:11:14: info: implicit function contract might not be available on recursive calls
+in_out_pledge.adb:12:08: medium: "Length_Aux" is recursive, terminating annotation could be incorrect
+in_out_pledge.adb:13:27: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:15:15: info: overflow check proved (CVC4: 1 VC)
+in_out_pledge.adb:15:30: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:20:14: info: implicit function contract might not be available on recursive calls
+in_out_pledge.adb:21:08: medium: "Get_Nth_Val" is recursive, terminating annotation could be incorrect
+in_out_pledge.adb:21:23: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:21:35: info: precondition proved (CVC4: 1 VC)
+in_out_pledge.adb:21:49: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:21:58: info: range check proved (CVC4: 1 VC)
+in_out_pledge.adb:28:14: info: postcondition proved (CVC4: 3 VC)
+in_out_pledge.adb:29:57: info: index check proved (CVC4: 2 VC)
+in_out_pledge.adb:29:62: info: precondition proved (CVC4: 1 VC)
+in_out_pledge.adb:31:07: info: range check proved (CVC4: 2 VC)
+in_out_pledge.adb:34:15: info: index check proved (CVC4: 4 VC)
+in_out_pledge.adb:34:21: info: precondition proved (CVC4: 2 VC)
+in_out_pledge.adb:36:13: info: loop invariant initialization proved (CVC4: 1 VC)
+in_out_pledge.adb:36:13: info: loop invariant preservation proved (CVC4: 1 VC)
+in_out_pledge.adb:36:41: info: index check proved (CVC4: 4 VC)
+in_out_pledge.adb:38:13: info: loop invariant initialization proved (CVC4: 1 VC)
+in_out_pledge.adb:38:13: info: loop invariant preservation proved (CVC4: 1 VC)
+in_out_pledge.adb:38:36: info: initialization check proved (CVC4: 2 VC)
+in_out_pledge.adb:38:41: info: index check proved (CVC4: 4 VC)
+in_out_pledge.adb:38:46: info: precondition proved (CVC4: 2 VC)
+in_out_pledge.adb:40:14: info: initialization check proved (CVC4: 1 VC; Trivial: 1 VC)
+in_out_pledge.adb:40:14: info: range check proved (CVC4: 1 VC)
+in_out_pledge.adb:49:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+in_out_pledge.adb:50:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+in_out_pledge.adb:51:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+in_out_pledge.adb:52:04: medium: memory leak might occur at end of scope
+in_out_pledge.adb:61:12: info: data dependencies proved
+in_out_pledge.adb:63:20: info: postcondition proved (CVC4: 4 VC)
+in_out_pledge.adb:63:40: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:64:37: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:64:47: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:65:75: info: overflow check proved (CVC4: 1 VC)
+in_out_pledge.adb:66:72: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:69:19: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:72:25: info: assertion proved (CVC4: 1 VC)
+in_out_pledge.adb:72:25: info: precondition proved (CVC4: 1 VC)
+in_out_pledge.adb:73:25: info: assertion proved (CVC4: 1 VC)
+in_out_pledge.adb:73:25: info: precondition proved (CVC4: 1 VC)
+in_out_pledge.adb:74:25: info: assertion proved (CVC4: 1 VC)
+in_out_pledge.adb:74:25: info: precondition proved (CVC4: 1 VC)
+in_out_pledge.adb:76:13: info: precondition proved (CVC4: 1 VC)
+in_out_pledge.adb:77:13: info: precondition proved (CVC4: 1 VC)
+in_out_pledge.adb:78:14: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:81:22: info: assertion proved (CVC4: 1 VC)
+in_out_pledge.adb:82:22: info: assertion proved (CVC4: 1 VC)
+in_out_pledge.adb:82:27: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:83:22: info: assertion proved (Z3: 1 VC)
+in_out_pledge.adb:83:27: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:83:32: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:84:22: info: precondition proved (CVC4: 1 VC)
+in_out_pledge.adb:84:22: medium: assertion might fail, cannot prove Get_Nth_Val (LL.L1, 3) = 4
+in_out_pledge.adb:85:22: info: assertion proved (CVC4: 1 VC)
+in_out_pledge.adb:85:27: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:85:32: info: pointer dereference check proved (CVC4: 1 VC)
+in_out_pledge.adb:85:37: info: pointer dereference check proved (CVC4: 1 VC)
+pledge_constraints.adb:31:45: actual for a call to a function annotated with At_End_Borrow should not depend on a variable
+pledge_constraints_2.adb:30:42: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
+compilation abandoned due to previous error
+compilation abandoned due to previous error
 gnatprove: error during flow analysis and proof

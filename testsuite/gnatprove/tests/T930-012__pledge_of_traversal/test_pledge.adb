@@ -1,22 +1,27 @@
 procedure Test_Pledge with SPARK_Mode is
    type Int_Access is not null access Integer;
 
-   function Pledge (B : access constant Integer; P : Boolean) return Boolean is
-     (P)
+   function At_End_Borrow (I : access constant Integer) return access constant Integer is
+     (I)
    with Ghost,
-       Annotate => (GNATprove, Pledge);
+       Annotate => (GNATprove, At_End_Borrow);
 
    type R is record
       A, B : Int_Access;
    end record;
 
+   function At_End_Borrow (X : access constant R) return access constant R is
+     (X)
+   with Ghost,
+       Annotate => (GNATprove, At_End_Borrow);
+
    function Get_1 (X : not null access R; C : Boolean) return not null access Integer with
      Post => Get_1'Result.all = (if C then X.A.all else X.B.all),
      Contract_Cases =>
-       (C      => Pledge (Get_1'Result, X.A.all = Get_1'Result.all
-                                        and X.B.all = X.B.all'Old),
-        others => Pledge (Get_1'Result, X.B.all = Get_1'Result.all
-                                        and X.A.all = X.A.all'Old));
+       (C      => At_End_Borrow (X).A.all = At_End_Borrow (Get_1'Result).all
+          and At_End_Borrow (X).B.all = X.B.all,
+        others => At_End_Borrow (X).B.all = At_End_Borrow (Get_1'Result).all
+          and At_End_Borrow (X).A.all = X.A.all);
 
    function Get_1 (X : not null access R; C : Boolean) return not null access Integer is
    begin
@@ -32,10 +37,10 @@ procedure Test_Pledge with SPARK_Mode is
    function Get_2 (X : not null access R) return not null access Integer with
      Post => Get_2'Result.all = (if C_Glob then X.A.all else X.B.all),
      Contract_Cases =>
-       (C_Glob => Pledge (Get_2'Result, X.A.all = Get_2'Result.all
-                                        and X.B.all = X.B.all'Old),
-        others => Pledge (Get_2'Result, X.B.all = Get_2'Result.all
-                                        and X.A.all = X.A.all'Old));
+       (C_Glob => At_End_Borrow (X).A.all = At_End_Borrow (Get_2'Result).all
+          and At_End_Borrow (X).B.all = X.B.all,
+        others => At_End_Borrow (X).B.all = At_End_Borrow (Get_2'Result).all
+          and At_End_Borrow (X).A.all = X.A.all);
 
    function Get_2 (X : not null access R) return not null access Integer is
    begin

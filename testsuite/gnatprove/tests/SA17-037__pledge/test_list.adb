@@ -7,10 +7,10 @@ is
       Next : List;
    end record;
 
-   function Pledge (X : access constant List_Cell; P : Boolean) return Boolean is
-     (P)
+   function At_End_Borrow (X : access constant List_Cell) return access constant List_Cell is
+     (X)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
 
    function Length (X : access constant List_Cell) return Natural is
      (if X = null then 0
@@ -26,8 +26,8 @@ is
       Y.Next := null;
       Y := Y.Next;
       for I in 1 .. 1 loop
-         pragma Loop_Invariant (Pledge (Y, Length (X) = 1));            --  OK
-         pragma Loop_Invariant (Pledge (Y, Length (X)'Loop_Entry = 3)); --  Incorrect
+         pragma Loop_Invariant (Length (At_End_Borrow (X)) = 1);            --  OK
+         pragma Loop_Invariant (Length (At_End_Borrow (X))'Loop_Entry = 3); --  Incorrect
       end loop;
    end Wrong;
 

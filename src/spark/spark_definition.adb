@@ -2962,10 +2962,22 @@ package body SPARK_Definition is
          =>
             if Is_Deep (Etype (P)) then
                declare
+                  Par     : constant Node_Id := Parent (N);
                   Astring : constant String :=
                     Standard_Ada_Case (Get_Name_String (Aname));
+
                begin
-                  if Nkind (P) /= N_Function_Call then
+                  --  Special case: 'Old is allowed as the actual of a call to
+                  --  a function annotated with At_End_Borrow.
+
+                  if Attr_Id = Attribute_Old
+                    and then Present (Par)
+                    and then Nkind (Par) = N_Function_Call
+                    and then Has_At_End_Borrow_Annotation
+                      (Get_Called_Entity (Par))
+                  then
+                     null;
+                  elsif Nkind (P) /= N_Function_Call then
                      Mark_Violation
                        ("prefix of """ & Astring
                         & """ attribute which is not a function call",
@@ -3531,21 +3543,34 @@ package body SPARK_Definition is
            ("\\assuming & has no effect on global items", N, E);
       end if;
 
-      --  Check special rules for calls to pledge functions. The first
-      --  parameter should be a local borrower of the result of a traversal
-      --  function.
+      --  Check that the parameter of a function annotated with At_End_Borrow
+      --  is either the result of a traversal function or a path rooted at an
+      --  entity. The fact that this entity references a borrower or borrowed
+      --  object will be checked in the borrow checker where we keep a map
+      --  of the local borrowers in the scope of the call. We still check here
+      --  calls occuring in contracts, as those are not traversed in the borrow
+      --  checker. Their verification is simpler as referring to borrowed
+      --  entities is not allowed in nested subprograms, so the root should be
+      --  a local borrower.
 
-      if Has_Pledge_Annotation (E) then
+      if Has_At_End_Borrow_Annotation (E) then
          declare
-            function Check_Pledge_Context (Call : Node_Id) return Boolean;
-            --  Check that call occurs at top-level or in a positive position
-            --  inside an assertion.
+            In_Old_Attribute : Boolean := False;
+            In_Contracts     : Entity_Id := Empty;
 
-            --------------------------
-            -- Check_Pledge_Context --
-            --------------------------
+            function Check_Call_Context (Call : Node_Id) return Boolean;
+            --  Check whether Call occurs in a context where it can be handled.
+            --  If this context is the contract of a subprogram, set
+            --  In_Contracts to the entity of the related subprogram.
+            --  For now, only allow postconditions and assertions. We can
+            --  extend later if we see a need. Set In_Old_Attribute to True
+            --  if Call occurs inside a 'Loop_Entry or 'Old attribute.
 
-            function Check_Pledge_Context (Call : Node_Id) return Boolean is
+            ------------------------
+            -- Check_Call_Context --
+            ------------------------
+
+            function Check_Call_Context (Call : Node_Id) return Boolean is
                N : Node_Id := Call;
                P : Node_Id;
             begin
@@ -3559,107 +3584,133 @@ package body SPARK_Definition is
                              Get_Pragma_Id (Pragma_Name (Parent (P)));
                         begin
                            case Prag_Id is
-                              when Pragma_Precondition
-                                 | Pragma_Postcondition
-                                 | Pragma_Pre
-                                 | Pragma_Post
-                                 | Pragma_Check
+                              when Pragma_Postcondition
+                                 | Pragma_Post_Class
+                                 | Pragma_Contract_Cases
                               =>
+                                 In_Contracts := Unique_Defining_Entity
+                                   (Find_Related_Declaration_Or_Body
+                                      (Parent (P)));
                                  return True;
-                              when Pragma_Contract_Cases =>
-                                 raise Program_Error;
+                              when Pragma_Check =>
+                                 return True;
                               when others =>
                                  return False;
                            end case;
                         end;
-                     when N_Component_Association =>
-
-                        --  We are interested here in allowing contract cases.
-                        --  Guards are not allowed as they may occur negatively
-                        --  in others case (or completeness checking).
-
-                        declare
-                           CC_Aggr  : constant Node_Id := Parent (P);
-                           CC_Assoc : constant Node_Id := Parent (CC_Aggr);
-                           CC_Prag  : constant Node_Id := Parent (CC_Assoc);
-                        begin
-                           return Nkind (CC_Aggr) = N_Aggregate
-                             and then Nkind (CC_Assoc) =
-                               N_Pragma_Argument_Association
-                             and then Nkind (CC_Prag) = N_Pragma
-                             and then Get_Pragma_Id (Pragma_Name (CC_Prag)) =
-                               Pragma_Contract_Cases
-                             and then N = Expression (P);
-                        end;
-                     when N_Op_And | N_Op_Or | N_And_Then | N_Or_Else =>
-                        null;
-                     when N_If_Expression =>
-
-                        --  The condition of an if expression occurs negatively
-                        --  when proving the else case.
-
-                        if N = First (Expressions (P)) then
+                     when N_Subexpr
+                        | N_Loop_Parameter_Specification
+                        | N_Iterated_Component_Association
+                        | N_Iterator_Specification
+                        | N_Component_Association
+                     =>
+                        if Nkind (P) = N_Procedure_Call_Statement then
+                           return False;
+                        elsif Is_Attribute_Loop_Entry (P)
+                          or else Is_Attribute_Old (P)
+                        then
+                           In_Old_Attribute := True;
                            return False;
                         end if;
-                     when N_Case_Expression =>
-
-                        --  The condition of a case expression occurs
-                        --  negatively when proving the others case.
-
-                        if N = Expression (P) then
-                           return False;
-                        end if;
-                     when N_Case_Expression_Alternative =>
-                        null;
                      when others =>
                         return False;
                   end case;
                   N := P;
                end loop;
-            end Check_Pledge_Context;
+            end Check_Call_Context;
 
-            Fst_Act   : constant Node_Id := First_Actual (N);
-            Violation : Boolean := False;
-            Err_Msg   : Unbounded_String :=
-              To_Unbounded_String
-                ("first actual of a pledge function which is not a local"
-                 & " borrower");
+            Fst_Actual             : constant Node_Id := First_Actual (N);
+            Is_Result_Of_Traversal : constant Boolean :=
+              Nkind (Fst_Actual) = N_Attribute_Reference
+              and then Attribute_Name (Fst_Actual) = Name_Result
+              and then Is_Borrowing_Traversal_Function
+                (Entity (Prefix (Fst_Actual)));
+            --  Fst_Actual is the result of a traversal function
+
+            Is_Path_To_Object      : constant Boolean :=
+              Is_Path_Expression (Fst_Actual)
+              and then Present
+                (Get_Root_Object (Fst_Actual, Through_Traversal => False));
+            --  Fst_Actual is a path rooted at an object, with no calls
+
+            Is_Borrowed_Parameter  : constant Boolean :=
+              Nkind (Fst_Actual) in N_Identifier | N_Expanded_Name
+              and then Ekind (Entity (Fst_Actual)) = E_In_Parameter
+              and then Is_Borrowing_Traversal_Function
+                (Scope (Entity (Fst_Actual)))
+              and then Entity (Fst_Actual) =
+                First_Formal (Scope (Entity (Fst_Actual)));
+            --  Fst_Actual is the borrowed parameter of a traversal function
+
          begin
-            case Nkind (Fst_Act) is
-               when N_Expanded_Name | N_Identifier =>
-                  Violation := not Is_Local_Borrower (Entity (Fst_Act));
-               when N_Attribute_Reference =>
-                  declare
-                     Aname   : constant Name_Id := Attribute_Name (Fst_Act);
-                     Attr_Id : constant Attribute_Id :=
-                       Get_Attribute_Id (Aname);
-                     Var     : constant Node_Id := Prefix (Fst_Act);
-                  begin
-                     if Attr_Id /= Attribute_Result then
-                        Violation := True;
-                     elsif not Is_Traversal_Function (Entity (Var)) then
-                        Violation := True;
-                        Err_Msg := To_Unbounded_String
-                          ("first actual of a pledge function which is not the"
-                           & " result of a traversal function");
-                     elsif Is_Access_Constant (Etype (Entity (Var))) then
-                        Violation := True;
-                        Err_Msg := To_Unbounded_String
-                          ("first actual of a pledge function which is the"
-                           & " result of a traversal function returning an "
-                           & "access to constant type");
-                     end if;
-                  end;
-               when others =>
-                  Violation := True;
-            end case;
+            --  Check that the call occurs in a supported context. Normally,
+            --  we should allow all calls inside postconditions and assertions.
 
-            if Violation then
-               Mark_Violation (To_String (Err_Msg), N);
-            elsif not Check_Pledge_Context (N) then
+            if not Check_Call_Context (N) then
+               if In_Old_Attribute then
+                  Mark_Violation
+                    ("call to a function annotated with At_End_Borrow"
+                     & " occurring inside a reference to the 'Old or"
+                     & " 'Loop_Entry attributes",
+                     N);
+               else
+                  Mark_Violation
+                    ("call to a function annotated with At_End_Borrow"
+                     & " occurring outside of a postcondition, contract cases,"
+                     & " or assertion",
+                     N);
+               end if;
+
+            --  We are inside a contract. Check the root of the actual and
+            --  store the mapping here as the expression will not be traversed
+            --  in the borrow checker.
+
+            elsif In_Contracts /= Empty then
+
+               --  In postconditions of traversal functions, we expect a
+               --  reference to the 'Result attribute or the borrowed
+               --  parameter.
+
+               if Is_Result_Of_Traversal then
+                  Set_At_End_Borrow_Call (N, Entity (Prefix (Fst_Actual)));
+               elsif Is_Borrowed_Parameter
+                 and then In_Contracts = Scope (Get_Root_Object (Fst_Actual))
+               then
+                  Set_At_End_Borrow_Call
+                    (N, Scope (Get_Root_Object (Fst_Actual)));
+
+               --  In any subprograms, we allow a reference to local borrowers
+               --  defined globally to the subprogram, either directly or as
+               --  a prefix of the 'Old attribute.
+
+               elsif Nkind (Fst_Actual) in N_Identifier | N_Expanded_Name
+                 and then Is_Local_Borrower (Entity (Fst_Actual))
+               then
+                  Set_At_End_Borrow_Call (N, Entity (Fst_Actual));
+               elsif Is_Attribute_Old (Fst_Actual)
+                 and then Nkind (Prefix (Fst_Actual)) in
+                   N_Identifier | N_Expanded_Name
+                 and then Is_Local_Borrower (Entity (Prefix (Fst_Actual)))
+               then
+                  Set_At_End_Borrow_Call (N, Entity (Prefix (Fst_Actual)));
+
+               else
+                  Mark_Violation
+                    ("actual parameter of a function annotated with"
+                     & " At_End_Borrow in a contract which is not a"
+                     & " local borrower or the borrowed parameter of a"
+                     & " traversal function",
+                     Fst_Actual);
+               end if;
+
+            --  Otherwise, we only check that the actual is a path. The rest
+            --  will be checked by the borrow checker.
+
+            elsif not Is_Path_To_Object then
                Mark_Violation
-                 ("possibly negative occurrence of call to a Pledge function",
-                  N);
+                 ("actual parameter of a function annotated with At_End_Borrow"
+                  & " which is not a path",
+                  Fst_Actual);
             end if;
          end;
       end if;

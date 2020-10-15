@@ -1,4 +1,4 @@
-procedure Pledge_Constraints with SPARK_Mode is
+procedure Pledge_Constraints_2 with SPARK_Mode is
    type Int_Acc is access Integer;
    type Int_Acc_Option (Present : Boolean := False) is record
       case Present is
@@ -23,13 +23,12 @@ procedure Pledge_Constraints with SPARK_Mode is
      and then X.A1 (1).Content /= null
    is
       Y : access Integer := X.A1 (1).Content;
-      I : Integer := 1;
    begin
       X.A2 := new Int_Opt_Arr'(1 .. 3 => (Present => False));
       Y.all := 15;
       pragma Assert (At_End_Borrow (X.A1 (1).Content).all = At_End_Borrow (Y).all);
-      pragma Assert (At_End_Borrow (X.A1 (I).Content).all = At_End_Borrow (Y).all); --  rejected in borrow checker
+      pragma Assert (not At_End_Borrow (X.A2) (1).Present); --  rejected in borrow checker
    end Update;
 begin
    null;
-end Pledge_Constraints;
+end Pledge_Constraints_2;

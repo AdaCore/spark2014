@@ -28,6 +28,7 @@ with Einfo;                       use Einfo;
 with Errout;                      use Errout;
 with Flow_Types;                  use Flow_Types;
 with Flow_Utility;                use Flow_Utility;
+with Gnat2Why.Util;               use Gnat2Why.Util;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Sem_Util;                    use Sem_Util;
@@ -1459,6 +1460,11 @@ package body Gnat2Why.Borrow_Checker is
          Mode : Checking_Mode);
       --  Read or move an anonymous object
 
+      procedure Check_At_End_Borrow_Call (Expr : Node_Id);
+      --  Check that the parameter of a function annotated with At_End_Borrow
+      --  is rooted at a borrowed expression or at a borrower. Also fill
+      --  the At_End_Borrow map.
+
       procedure Check_Expression_List
         (L    : List_Id;
          Mode : Extended_Checking_Mode);
@@ -1477,51 +1483,6 @@ package body Gnat2Why.Borrow_Checker is
       procedure Read_Indexes (Expr : Node_Id);
       --  When processing a path, the index expressions and function call
       --  arguments occurring on the path should be analyzed in Read mode.
-
-      ---------------------------
-      -- Check_Expression_List --
-      ---------------------------
-
-      procedure Check_Expression_List
-        (L    : List_Id;
-         Mode : Extended_Checking_Mode)
-      is
-         N : Node_Id;
-      begin
-         N := First (L);
-         while Present (N) loop
-            Check_Expression (N, Mode);
-            Next (N);
-         end loop;
-      end Check_Expression_List;
-
-      ------------------
-      -- Is_Type_Name --
-      ------------------
-
-      function Is_Type_Name (Expr : Node_Id) return Boolean is
-      begin
-         return Nkind (Expr) in N_Expanded_Name | N_Identifier
-           and then Is_Type (Entity (Expr));
-      end Is_Type_Name;
-
-      ---------------------
-      -- Read_Expression --
-      ---------------------
-
-      procedure Read_Expression (Expr : Node_Id) is
-      begin
-         Check_Expression (Expr, Read);
-      end Read_Expression;
-
-      --------------------------
-      -- Read_Expression_List --
-      --------------------------
-
-      procedure Read_Expression_List (L : List_Id) is
-      begin
-         Check_Expression_List (L, Read);
-      end Read_Expression_List;
 
       ----------------------------
       -- Check_Anonymous_Object --
@@ -1654,6 +1615,154 @@ package body Gnat2Why.Borrow_Checker is
          end case;
       end Check_Anonymous_Object;
 
+      ------------------------------
+      -- Check_At_End_Borrow_Call --
+      ------------------------------
+
+      procedure Check_At_End_Borrow_Call (Expr : Node_Id) is
+         Actual : constant Node_Id := First_Actual (Expr);
+         Root   : constant Entity_Id := Get_Root_Object (Actual);
+         Key    : Variable_Maps.Key_Option;
+         Brower : Entity_Id := Empty;
+         Vars   : Flow_Id_Sets.Set := Get_Variables_For_Proof (Expr, Expr);
+
+      begin
+         --  Check that the call does not depend on any variable but its root.
+         --  ??? Should it be moved to flow analysis?
+
+         Vars.Delete (Direct_Mapping_Id (Root));
+         for Obj of Vars loop
+            if Obj.Kind /= Direct_Mapping
+              or else Is_Mutable_In_Why (Obj.Node)
+            then
+               Error_Msg_N
+                 ("actual for a call to a function annotated with"
+                  & " At_End_Borrow should not depend on a variable",
+                  Actual);
+               Permission_Error := True;
+               return;
+            end if;
+         end loop;
+
+         --  Go through the set of borrowers. Try to find either a
+         --  borrowed expression which is almost a prefix of Actual or
+         --  a borrower which is the root of the path. If we have both,
+         --  we want to consider the borrowed expression.
+
+         if No (Brower) then
+            Key := Get_First_Key (Current_Borrowers);
+            while Key.Present loop
+
+               --  Root is a local borrower. Keep searching in case Expr is
+               --  also a borrowed expression.
+
+               if Key.K = Root then
+                  Brower := Root;
+
+               --  A prefix of Expr is a borrowed expression. It cannot be the
+               --  prefix of any other borrowed expression, stop the search
+               --  here.
+
+               elsif Is_Prefix_Or_Almost
+                 (Pref => Get (Current_Borrowers, Key.K), Expr => +Actual)
+               then
+                  Brower := Key.K;
+                  exit;
+               end if;
+
+               Key := Get_Next_Key (Current_Borrowers);
+            end loop;
+         end if;
+
+         --  Inside traversal functions, constant borrowers are handled as
+         --  observers. Search similarly in the observers map.
+
+         if No (Brower) then
+            Key := Get_First_Key (Current_Observers);
+            while Key.Present loop
+
+               --  Only search for keys which are actually borrowers
+
+               if Is_Access_Constant (Etype (Key.K)) then
+                  null;
+
+               --  Root is a local borrower. Keep searching in case Expr is
+               --  also a borrowed expression.
+
+               elsif Key.K = Root then
+                  Brower := Root;
+
+               --  A prefix of Expr is a borrowed expression. It cannot be the
+               --  prefix of any other borrowed expression, stop the search
+               --  here.
+
+               elsif Is_Prefix_Or_Almost
+                 (Pref => Get (Current_Observers, Key.K), Expr => +Actual)
+               then
+                  Brower := Key.K;
+                  exit;
+               end if;
+
+               Key := Get_Next_Key (Current_Observers);
+            end loop;
+         end if;
+
+         if No (Brower) then
+            Error_Msg_N
+              ("actual for a call to a function annotated with At_End_Borrow"
+               & " should be rooted at a borrower or a borrowed expression",
+               Actual);
+            Permission_Error := True;
+         else
+            Set_At_End_Borrow_Call (Expr, Brower);
+         end if;
+      end Check_At_End_Borrow_Call;
+
+      ---------------------------
+      -- Check_Expression_List --
+      ---------------------------
+
+      procedure Check_Expression_List
+        (L    : List_Id;
+         Mode : Extended_Checking_Mode)
+      is
+         N : Node_Id;
+      begin
+         N := First (L);
+         while Present (N) loop
+            Check_Expression (N, Mode);
+            Next (N);
+         end loop;
+      end Check_Expression_List;
+
+      ------------------
+      -- Is_Type_Name --
+      ------------------
+
+      function Is_Type_Name (Expr : Node_Id) return Boolean is
+      begin
+         return Nkind (Expr) in N_Expanded_Name | N_Identifier
+           and then Is_Type (Entity (Expr));
+      end Is_Type_Name;
+
+      ---------------------
+      -- Read_Expression --
+      ---------------------
+
+      procedure Read_Expression (Expr : Node_Id) is
+      begin
+         Check_Expression (Expr, Read);
+      end Read_Expression;
+
+      --------------------------
+      -- Read_Expression_List --
+      --------------------------
+
+      procedure Read_Expression_List (L : List_Id) is
+      begin
+         Check_Expression_List (L, Read);
+      end Read_Expression_List;
+
       ------------------
       -- Read_Indexes --
       ------------------
@@ -1710,6 +1819,14 @@ package body Gnat2Why.Borrow_Checker is
                Read_Expression (Discrete_Range (Expr));
 
             when N_Function_Call =>
+               --  If the called entity is annotated with At_End_Borrow,
+               --  check that its parameter is rooted at a borrowed
+               --  expression or at a borrower.
+
+               if Has_At_End_Borrow_Annotation (Get_Called_Entity (Expr)) then
+                  Check_At_End_Borrow_Call (Expr);
+               end if;
+
                Read_Params (Expr);
                Check_Globals (Get_Called_Entity (Expr), Expr);
 
@@ -2809,36 +2926,27 @@ package body Gnat2Why.Borrow_Checker is
    begin
       if not Expr.Is_Ent then
 
-         --  Search for a call to a pledge function in the parents of
-         --  Expr.
+         --  Search for a call to a function annotated with At_End_Borrow
+         --  either in the parents of Expr or inside Expr (as the function is
+         --  a traversal function, it can be part of a path).
 
          declare
-            Call : Node_Id := Expr.Expr;
+            Call : Node_Id := Get_Observed_Or_Borrowed_Expr (Expr.Expr);
          begin
             while Present (Call)
               and then
                 (Nkind (Call) /= N_Function_Call
                  or else
-                   not Has_Pledge_Annotation (Get_Called_Entity (Call)))
+                   not Has_At_End_Borrow_Annotation (Get_Called_Entity (Call)))
             loop
-               --  If the entity is under an Old or 'Loop_Entry attribute,
-               --  it will not be quantified in the pledge expression, so
-               --  reading it is not allowed.
-
-               if Nkind (Call) = N_Attribute_Reference
-                 and then Get_Attribute_Id (Attribute_Name (Call)) in
-                   Attribute_Loop_Entry | Attribute_Old
-               then
-                  Call := Empty;
-               else
-                  Call := Parent (Call);
-               end if;
+               Call := Parent (Call);
             end loop;
 
-            if Present (Call)
-              and then Nkind (First_Actual (Call)) in N_Has_Entity
-            then
-               B_Pledge := Entity (First_Actual (Call));
+            --  If we have found such a call, it is allowed to refer to the
+            --  expression borrowed by the associated borrower in the call.
+
+            if Present (Call) then
+               B_Pledge := Borrower_For_At_End_Borrow_Call (Call);
             end if;
          end;
       end if;

@@ -126,14 +126,17 @@ package body SPARK_Util is
    --  class-wide type, and corresponding calls to primitive subprograms are
    --  dispatching calls.
 
-   ------------------------------
-   -- Set_Dispatching_Contract --
-   ------------------------------
+   At_End_Borrow_Call_Map : Node_Maps.Map;
+   --  Map from calls to functions annotated with At_End_Borrow to the related
+   --  borrower entity.
 
-   procedure Set_Dispatching_Contract (C, D : Node_Id) is
-   begin
-      Dispatching_Contracts.Insert (C, D);
-   end Set_Dispatching_Contract;
+   -------------------------------------
+   -- Borrower_For_At_End_Borrow_Call --
+   -------------------------------------
+
+   function Borrower_For_At_End_Borrow_Call
+     (Call : Node_Id) return Entity_Id
+   is (At_End_Borrow_Call_Map.Element (Call));
 
    --------------------------
    -- Dispatching_Contract --
@@ -148,6 +151,30 @@ package body SPARK_Util is
               then Element (Primitive)
               else Standard.Types.Empty);
    end Dispatching_Contract;
+
+   ----------------------------
+   -- Set_At_End_Borrow_Call --
+   ----------------------------
+
+   procedure Set_At_End_Borrow_Call
+     (Call     : Node_Id;
+      Borrower : Entity_Id)
+   is
+      Inserted : Boolean;
+      Position : Node_Maps.Cursor;
+   begin
+      At_End_Borrow_Call_Map.Insert (Call, Borrower, Position, Inserted);
+      pragma Assert (Inserted or else Node_Maps.Element (Position) = Borrower);
+   end Set_At_End_Borrow_Call;
+
+   ------------------------------
+   -- Set_Dispatching_Contract --
+   ------------------------------
+
+   procedure Set_Dispatching_Contract (C, D : Node_Id) is
+   begin
+      Dispatching_Contracts.Insert (C, D);
+   end Set_Dispatching_Contract;
 
    --------------------------------
    -- Aggregate_Is_In_Assignment --

@@ -65,9 +65,10 @@ package body My_Map with SPARK_Mode is
    begin
       while X /= null loop
          pragma Loop_Invariant (Model_Contains (X, K));
-      pragma Loop_Invariant
-        (Pledge (X, (if Model_Contains (X, K) then Model_Contains (M, K)
-         and then Model_Value (M, K) = Model_Value (X, K))));
+         pragma Loop_Invariant
+           (if Model_Contains (At_End_Borrow (X), K)
+            then Model_Contains (At_End_Borrow (M), K)
+            and then Model_Value (At_End_Borrow (M), K) = Model_Value (At_End_Borrow (X), K));
 
          if X.Key = K then
             X.Value.all := V;
@@ -119,16 +120,18 @@ package body My_Map with SPARK_Mode is
          --  Invariants at the time of pledge
 
          pragma Loop_Invariant
-           (Pledge (X, (for all K in X.all => Model_Contains (M, K))));
+           (for all K in At_End_Borrow (X).all => Model_Contains (At_End_Borrow (M), K));
          pragma Loop_Invariant
-           (Pledge (X, (if R /= null then
-              (for all K in R.all => Model_Contains (M, K)))));
+           (if R /= null then
+              (for all K in R.all => Model_Contains (At_End_Borrow (M), K)));
          pragma Loop_Invariant
-           (Pledge (X, (for all K in M.all => Model_Contains (R, K) or Model_Contains (X, K))));
+           (for all K in At_End_Borrow (M).all =>
+                Model_Contains (R, K) or Model_Contains (At_End_Borrow (X), K));
          pragma Loop_Invariant
-           (Pledge (X, (for all K in M.all =>
-                          (if Model_Contains (R, K) then Model_Value (M, K) = Model_Value (R, K)
-                           else Model_Value (M, K) = Model_Value (X, K)))));
+           (for all K in At_End_Borrow (M).all =>
+                (if Model_Contains (R, K)
+                 then Model_Value (At_End_Borrow (M), K) = Model_Value (R, K)
+                 else Model_Value (At_End_Borrow (M), K) = Model_Value (At_End_Borrow (X), K)));
 
          --  Invariants at current time
 
@@ -176,8 +179,9 @@ package body My_Map with SPARK_Mode is
          pragma Loop_Invariant (Model_Contains (X, K));
          pragma Loop_Invariant (Model_Value (X, K) = Model_Value (M, K));
          pragma Loop_Invariant
-           (Pledge (X, (if Model_Contains (X, K) then Model_Contains (M, K)
-            and then Model_Value (M, K) = Model_Value (X, K))));
+           (if Model_Contains (At_End_Borrow (X), K)
+            then Model_Contains (At_End_Borrow (M), K)
+            and then Model_Value (At_End_Borrow (M), K) = Model_Value (At_End_Borrow (X), K));
 
          if X.Key = K then
             return X.Value;

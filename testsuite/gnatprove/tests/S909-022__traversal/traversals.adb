@@ -12,10 +12,14 @@ procedure Traversals with SPARK_Mode is
       N : List1_Acc;
    end record;
 
-   function Pledge (Borrower : access constant List2; Prop : Boolean) return Boolean is
-     (Prop)
+   function At_End_Borrow (L : access constant List2) return access constant List2 is
+     (L)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
+   function At_End_Borrow (L : access constant List1) return access constant List1 is
+     (L)
+   with Ghost,
+     Annotate => (GNATprove, At_End_Borrow);
 
    function Length (L : access constant List1) return Natural is
      (if L = null then 0
@@ -36,9 +40,9 @@ procedure Traversals with SPARK_Mode is
    function Next (X : access List1) return access List2 with
      Pre => Length (X) < Natural'Last,
      Contract_Cases =>
-       (X = null => Next'Result = null and then Pledge (Next'Result, X = null),
+       (X = null => Next'Result = null and then At_End_Borrow (X) = null,
         others   => Length (Next'Result) = Length (X) - 1
-              and then Pledge (Next'Result, Length (X) = Integer'Min (Natural'Last - 1, Length (Next'Result)) + 1))
+              and then Length (At_End_Borrow (X)) = Integer'Min (Natural'Last - 1, Length (At_End_Borrow (Next'Result))) + 1)
    is
       Y : access List1 := X;
    begin

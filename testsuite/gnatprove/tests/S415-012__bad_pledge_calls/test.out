@@ -1,7 +1,22 @@
-bad_pledge_calls.adb:12:27: first actual of a pledge function which is not a local borrower is not allowed in SPARK
-bad_pledge_calls.adb:12:27: violation of aspect SPARK_Mode at line 1
-bad_pledge_calls.adb:15:27: first actual of a pledge function which is not a local borrower is not allowed in SPARK
-bad_pledge_calls.adb:15:27: violation of aspect SPARK_Mode at line 1
-bad_pledge_calls.adb:18:27: possibly negative occurrence of call to a Pledge function is not allowed in SPARK
-bad_pledge_calls.adb:18:27: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls.adb:19:17: call to a function annotated with At_End_Borrow occurring inside a reference to the Old or Loop_Entry attributes is not allowed in SPARK
+bad_pledge_calls.adb:19:17: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls.adb:24:32: actual parameter of a function annotated with At_End_Borrow in a contract which is not a local borrower or the borrowed parameter of a traversal function is not allowed in SPARK
+bad_pledge_calls.adb:24:32: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls.adb:33:59: call to a function annotated with At_End_Borrow occurring inside a reference to the Old or Loop_Entry attributes is not allowed in SPARK
+bad_pledge_calls.adb:33:59: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls.adb:42:29: actual parameter of a function annotated with At_End_Borrow in a contract which is not a local borrower or the borrowed parameter of a traversal function is not allowed in SPARK
+bad_pledge_calls.adb:42:29: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls.adb:47:53: actual parameter of a function annotated with At_End_Borrow in a contract which is not a local borrower or the borrowed parameter of a traversal function is not allowed in SPARK
+bad_pledge_calls.adb:47:53: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls.adb:59:25: actual parameter of a function annotated with At_End_Borrow which is not a path is not allowed in SPARK
+bad_pledge_calls.adb:59:25: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls.adb:60:36: call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, or assertion is not allowed in SPARK
+bad_pledge_calls.adb:60:36: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls_2.adb:11:04: info: initialization of "Y" proved
+bad_pledge_calls_2.adb:12:29: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
+bad_pledge_calls_3.adb:11:04: info: initialization of "X" proved
+bad_pledge_calls_3.adb:12:32: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
+bad_pledge_calls_4.adb:11:30: borrowed expression cannot depend on variable input "I" (SPARK RM 4.4(2))
+compilation abandoned due to previous error
+compilation abandoned due to previous error
 gnatprove: error during flow analysis and proof

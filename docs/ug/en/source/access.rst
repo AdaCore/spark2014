@@ -302,7 +302,7 @@ standalone object.
 Borrowers essentially are statically known aliases of their borrowed objects.
 As a consequence, verifying programs involving borrowers sometimes requires
 describing the relation between the borrowed object and the borrower. This can
-be done by :ref:`Supplying a Pledge for a Borrower`.
+be done by :ref:`Referring to a value at the end of a local borrow`.
 
 .. index:: traversal function
 
@@ -395,7 +395,7 @@ in scope.
 
 Note that it is possible to use pledges to describe the relation between the
 result of a borrowing traversal function and its parameter in a postcondition,
-see :ref:`Supplying a Pledge for a Borrower`.
+see :ref:`Referring to a value at the end of a local borrow`.
 
 .. index:: access types; access to subprogram
 
