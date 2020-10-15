@@ -12651,6 +12651,52 @@ package body Gnat2Why.Expr is
                                     Params);
             end;
 
+         when Attribute_Enum_Val =>
+            declare
+               Val_Type : constant Entity_Id :=
+                 Retysp (Base_Type (Entity (Var)));
+               Args     : constant List_Id := Expressions (Expr);
+               pragma Assert (List_Length (Args) = 1);
+               Arg      : constant Node_Id := First (Args);
+            begin
+               if Is_Enumeration_Type (Val_Type)
+                 and then Has_Enumeration_Rep_Clause (Val_Type)
+               then
+                  --  In the program domain, emit a range check
+
+                  if Domain = EW_Prog then
+                     T := New_VC_Call
+                       (Ada_Node => Arg,
+                        Domain   => Domain,
+                        Reason   => VC_Range_Check,
+                        Name     => To_Program_Space
+                          (E_Symb (Val_Type, WNE_Rep_To_Pos)),
+                        Progs    => (1 => Transform_Expr
+                                     (Arg,
+                                      EW_Int_Type,
+                                      Domain,
+                                      Params)),
+                        Typ      => EW_Int_Type);
+                  else
+                     T := New_Call
+                       (Ada_Node => Arg,
+                        Domain   => Domain,
+                        Name     => E_Symb (Val_Type, WNE_Rep_To_Pos),
+                        Args     => (1 => Transform_Expr
+                                     (Arg,
+                                      EW_Int_Type,
+                                      Domain,
+                                      Params)),
+                        Typ      => EW_Int_Type);
+                  end if;
+               else
+                  T := Transform_Expr (Arg,
+                                       Type_Of_Node (Val_Type),
+                                       Domain,
+                                       Params);
+               end if;
+            end;
+
          when Attribute_First
             | Attribute_Last
             | Attribute_Length

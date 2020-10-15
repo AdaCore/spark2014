@@ -1076,6 +1076,7 @@ package body Why.Gen.Names is
             | WNE_Range_Pred
             | WNE_Range_Pred_BV_Int
             | WNE_Rec_Extension
+            | WNE_Rep_To_Pos
             | WNE_Small_Den
             | WNE_Small_Num
             | WNE_Specific_Post

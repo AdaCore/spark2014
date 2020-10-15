@@ -2789,6 +2789,7 @@ package body SPARK_Definition is
             | Attribute_Denorm
             | Attribute_Digits
             | Attribute_Enum_Rep
+            | Attribute_Enum_Val
             | Attribute_First
             | Attribute_First_Valid
             | Attribute_Floor
