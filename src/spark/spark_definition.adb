@@ -2790,6 +2790,7 @@ package body SPARK_Definition is
             | Attribute_Constrained
             | Attribute_Copy_Sign
             | Attribute_Enum_Rep
+            | Attribute_Enum_Val
             | Attribute_First
             | Attribute_Floor
             | Attribute_Last

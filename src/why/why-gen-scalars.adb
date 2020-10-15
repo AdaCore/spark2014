@@ -52,6 +52,14 @@ package body Why.Gen.Scalars is
    --  one such theory is created for each value of small. The symbols for
    --  these theories are stored in the M_Fixed_Points map.
 
+   procedure Define_Enumeration_Rep_Convertions
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   with Pre => Is_Enumeration_Type (Retysp (E))
+     and then Has_Enumeration_Rep_Clause (Retysp (E));
+   --  For enumeration types with a representation clause, define conversion
+   --  functions from position to representation and reverse.
+
    procedure Define_Scalar_Attributes
      (Th         : Theory_UC;
       E          : Entity_Id;
@@ -844,6 +852,209 @@ package body Why.Gen.Scalars is
                                    Substitutions => Compute_Clone_Subst));
    end Declare_Scalar_Type;
 
+   ----------------------------------------
+   -- Define_Enumeration_Rep_Convertions --
+   ----------------------------------------
+
+   procedure Define_Enumeration_Rep_Convertions
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   is
+      --  For a type:
+      --
+      --  type My_Enum is (Lit1, Lit2, ..., Litn);
+      --  for My_Enum use (Rep1, Rep2, ..., Repn);
+      --
+      --  We generate:
+      --
+      --  function pos_to_rep (x : int) : int =
+      --    (if x = 1 then rep2
+      --     else ...
+      --       (if x = n - 1 then repn
+      --        else rep1) ... )
+      --
+      --  function rep_to_pos (x : int) : int =
+      --    (if x = rep2 then 1
+      --     else ...
+      --       (if x = repn then n - 1
+      --        else 0) ... )
+      --
+      --  val rep_to_pos_ (x : int) : int
+      --    requires { x = rep1 \/ ... \/ x = repn }
+      --    ensures  { result = rep_to_pos x }
+
+      X_Ident            : constant W_Identifier_Id :=
+        New_Identifier (Domain => EW_Term,
+                        Name   => "x",
+                        Typ    => EW_Int_Type);
+
+      function X_Is_Lit_Rep
+        (Lit : Entity_Id; Domain : EW_Domain) return W_Expr_Id
+      is
+        (New_Comparison
+           (Symbol => Why_Eq,
+            Left   => +X_Ident,
+            Right  => New_Integer_Constant
+              (Value => Enumeration_Rep (Lit)),
+            Domain => Domain));
+
+      function X_Is_Lit_Pos (Lit : Entity_Id) return W_Expr_Id is
+        (New_Comparison
+           (Symbol => Why_Eq,
+            Left   => +X_Ident,
+            Right  => New_Integer_Constant
+              (Value => Enumeration_Pos (Lit)),
+            Domain => EW_Term));
+
+      To_Rep_Cond        : W_Expr_Id;
+      To_Rep_Then_Part   : W_Expr_Id;
+      To_Rep_Elsif_Parts : W_Expr_Array
+        (1 .. Integer (Num_Literals (Retysp (E))) - 2);
+      To_Rep_Else_Part   : W_Expr_Id;
+      To_Rep_Def         : W_Expr_Id;
+
+      To_Pos_Cond        : W_Expr_Id;
+      To_Pos_Then_Part   : W_Expr_Id;
+      To_Pos_Elsif_Parts : W_Expr_Array
+        (1 .. Integer (Num_Literals (Retysp (E))) - 2);
+      To_Pos_Else_Part   : W_Expr_Id;
+      To_Pos_Def         : W_Expr_Id;
+      To_Pos_Guard       : W_Expr_Array
+        (1 .. Integer (Num_Literals (Retysp (E))));
+
+      Lit                : Entity_Id := First_Literal (Retysp (E));
+      Index              : Positive := 1;
+   begin
+      --  First value of enumeration covered by the else branch
+
+      To_Rep_Else_Part :=
+        New_Integer_Constant (Value => Enumeration_Rep (Lit));
+      To_Pos_Else_Part :=
+        New_Integer_Constant (Value => Enumeration_Pos (Lit));
+      To_Pos_Guard (1) := X_Is_Lit_Rep (Lit, EW_Pred);
+
+      Next_Literal (Lit);
+
+      --  If there is only one value, the "Else_Part", which is just an
+      --  integer constant, is the result.
+
+      if No (Lit) then
+         To_Rep_Def := To_Rep_Else_Part;
+         To_Pos_Def := To_Pos_Else_Part;
+
+      --  Second value of enumeration covered by top-level if
+
+      else
+
+         To_Rep_Cond := X_Is_Lit_Pos (Lit);
+         To_Rep_Then_Part :=
+           New_Integer_Constant (Value => Enumeration_Rep (Lit));
+         To_Pos_Cond := X_Is_Lit_Rep (Lit, EW_Term);
+         To_Pos_Then_Part :=
+           New_Integer_Constant (Value => Enumeration_Pos (Lit));
+         To_Pos_Guard (2) := X_Is_Lit_Rep (Lit, EW_Pred);
+
+         --  Remaining values covered by elsif parts
+
+         loop
+            Next_Literal (Lit);
+            exit when No (Lit);
+            To_Rep_Elsif_Parts (Index) :=
+              New_Elsif
+                (Domain    => EW_Term,
+                 Condition => X_Is_Lit_Pos (Lit),
+                 Then_Part =>
+                   New_Integer_Constant
+                     (Value => Enumeration_Rep (Lit)));
+            To_Pos_Elsif_Parts (Index) :=
+              New_Elsif
+                (Domain    => EW_Term,
+                 Condition => X_Is_Lit_Rep (Lit, EW_Term),
+                 Then_Part =>
+                   New_Integer_Constant
+                     (Value => Enumeration_Pos (Lit)));
+            To_Pos_Guard (Index + 2) := X_Is_Lit_Rep (Lit, EW_Pred);
+            Index := Index + 1;
+         end loop;
+
+         --  Reconstruct the conditional
+
+         To_Rep_Def :=
+           New_Conditional
+             (Domain      => EW_Term,
+              Condition   => To_Rep_Cond,
+              Then_Part   => To_Rep_Then_Part,
+              Elsif_Parts => To_Rep_Elsif_Parts,
+              Else_Part   => To_Rep_Else_Part);
+         To_Pos_Def :=
+           New_Conditional
+             (Domain      => EW_Term,
+              Condition   => To_Pos_Cond,
+              Then_Part   => To_Pos_Then_Part,
+              Elsif_Parts => To_Pos_Elsif_Parts,
+              Else_Part   => To_Pos_Else_Part);
+
+      end if;
+
+      --  Emit a declaration for the pos_to_rep function
+
+      Emit (Th,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        =>
+                 To_Local (E_Symb (E, WNE_Pos_To_Rep)),
+               Binders     =>
+                 (1 => Binder_Type'(B_Name => X_Ident,
+                                    others => <>)),
+               Return_Type => EW_Int_Type,
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Def         => To_Rep_Def));
+
+      --  Emit a declaration for the rep_to_pos function
+
+      Emit (Th,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        =>
+                 To_Local (E_Symb (E, WNE_Rep_To_Pos)),
+               Binders     =>
+                 (1 => Binder_Type'(B_Name => X_Ident,
+                                    others => <>)),
+               Return_Type => EW_Int_Type,
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Def         => To_Pos_Def));
+
+      --  Emit a program declaration for the rep_to_pos_ function which has
+      --  the set of possible input values as a precondition.
+
+      Emit (Th,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain      => EW_Prog,
+               Name        =>
+                 To_Program_Space
+                   (To_Local (E_Symb (E, WNE_Rep_To_Pos))),
+               Binders     =>
+                 (1 => Binder_Type'(B_Name => X_Ident,
+                                    others => <>)),
+               Return_Type => EW_Int_Type,
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Pre         => +New_Or_Expr
+                 (Conjuncts => To_Pos_Guard,
+                  Domain    => EW_Pred),
+               Post        => +New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => +New_Result_Ident (EW_Int_Type),
+                  Right  => New_Call
+                    (Domain => EW_Term,
+                     Name   => To_Local (E_Symb (E, WNE_Rep_To_Pos)),
+                     Args   => (1 => +X_Ident),
+                     Typ    => EW_Int_Type),
+                  Domain => EW_Pred)));
+   end Define_Enumeration_Rep_Convertions;
+
    ------------------------------
    -- Define_Scalar_Attributes --
    ------------------------------
@@ -958,104 +1169,13 @@ package body Why.Gen.Scalars is
          end;
 
       --  For enumeration types with an enumeration representation clause, we
-      --  need a function to translate the Enum_Rep attribute. For a type:
-      --
-      --  type My_Enum is (Lit1, Lit2, ..., Litn);
-      --  for My_Enum use (Rep1, Rep2, ..., Repn);
-      --
-      --  We generate:
-      --
-      --  function pos_to_rep (x : int) : int =
-      --    (if X = n - 1 then Repn
-      --     else ...
-      --       (if X = 1 then Rep2
-      --        else Rep1) ... )
+      --  need conversion functions to translate the Enum_Rep and Enum_Val
+      --  attributes.
 
       elsif Is_Enumeration_Type (Retysp (E))
         and then Has_Enumeration_Rep_Clause (Retysp (E))
       then
-         declare
-            X_Ident : constant W_Identifier_Id :=
-              New_Identifier (Domain => EW_Term,
-                              Name   => "x",
-                              Typ    => EW_Int_Type);
-            Lit         : Entity_Id;
-            Else_Part   : W_Expr_Id;
-            Cond        : W_Expr_Id;
-            Then_Part   : W_Expr_Id;
-            Expr        : W_Expr_Id;
-            Elsif_Parts : W_Expr_Array
-              (1 .. Integer (Num_Literals (Retysp (E))) - 2);
-            Index : Positive := 1;
-         begin
-            --  First value of enumeration covered by the else branch
-            Lit := First_Literal (Retysp (E));
-            Else_Part :=
-              New_Integer_Constant (Value => Enumeration_Rep (Lit));
-
-            --  Second value of enumeration covered by top-level if
-
-            Next_Literal (Lit);
-
-            --  If there is no second value, the "Else_Part", which is just an
-            --  integer constant, can be returned.
-
-            if No (Lit) then
-               Expr := Else_Part;
-            else
-
-               Cond :=
-                 New_Comparison
-                   (Domain => EW_Term,
-                    Symbol => Why_Eq,
-                    Left   => +X_Ident,
-                    Right  => New_Integer_Constant
-                      (Value => Enumeration_Pos (Lit)));
-               Then_Part :=
-                 New_Integer_Constant (Value => Enumeration_Rep (Lit));
-
-               --  Remaining values covered by elsif parts
-               loop
-                  Next_Literal (Lit);
-                  exit when No (Lit);
-                  Elsif_Parts (Index) :=
-                    New_Elsif
-                      (Domain => EW_Term,
-                       Condition =>
-                         New_Comparison
-                           (Domain => EW_Term,
-                            Symbol => Why_Eq,
-                            Left   => +X_Ident,
-                            Right  => New_Integer_Constant
-                              (Value => Enumeration_Pos (Lit))),
-                       Then_Part =>
-                         New_Integer_Constant
-                           (Value => Enumeration_Rep (Lit)));
-                  Index := Index + 1;
-               end loop;
-
-               Expr :=
-                 New_Conditional
-                   (Domain      => EW_Term,
-                    Condition   => Cond,
-                    Then_Part   => Then_Part,
-                    Elsif_Parts => Elsif_Parts,
-                    Else_Part   => Else_Part);
-
-            end if;
-            Emit (Th,
-                  Why.Gen.Binders.New_Function_Decl
-                    (Domain      => EW_Pterm,
-                     Name        =>
-                       To_Local (E_Symb (E, WNE_Pos_To_Rep)),
-                     Binders     =>
-                       (1 => Binder_Type'(B_Name => X_Ident,
-                                          others => <>)),
-                     Return_Type => EW_Int_Type,
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Location    => No_Location,
-                     Def         => Expr));
-         end;
+         Define_Enumeration_Rep_Convertions (Th, E);
       end if;
 
       --  Compute and declare the first and last attributes of E

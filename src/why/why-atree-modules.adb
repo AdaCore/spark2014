@@ -2903,6 +2903,13 @@ package body Why.Atree.Modules is
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Int_Type));
+                  Insert_Symbol
+                    (E, WNE_Rep_To_Pos,
+                     New_Identifier
+                       (Symb   => NID ("rep_to_pos"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
                end if;
             end;
 

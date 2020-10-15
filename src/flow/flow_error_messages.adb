@@ -1115,6 +1115,9 @@ package body Flow_Error_Messages is
                         return "value cannot be maximum value of the type";
                      when Attribute_Val =>
                         return "value must correspond to position in the type";
+                     when Attribute_Enum_Val =>
+                        return "value must correspond to representation"
+                          & " in the type";
                      when others =>
                         return "";
                   end case;
