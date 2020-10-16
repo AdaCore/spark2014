@@ -23,7 +23,7 @@ subty.adb:8:23: info: discriminant check proved (CVC4: 1 VC)
 subty.adb:9:22: info: assertion proved (CVC4: 1 VC)
 subty.adb:11:08: info: discriminant check proved (CVC4: 1 VC)
 subty.adb:11:21: info: discriminant check proved (CVC4: 1 VC)
-subty.adb:11:30: medium: overflow check might fail (e.g. when V = (X => A, Base => Integer'Last, A_Field => Integer'Last)) [possible explanation: subprogram at subty.ads:7 should mention V in a precondition]
+subty.adb:11:30: medium: overflow check might fail (e.g. when V = (X => A, Base => Integer'Last, A_Field => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at subty.ads:7 should mention V in a precondition]
 subty.adb:12:22: info: assertion proved (CVC4: 1 VC)
 subty.adb:12:23: info: discriminant check proved (CVC4: 1 VC)
 subty.adb:12:35: info: discriminant check proved (CVC4: 1 VC)

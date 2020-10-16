@@ -1,4 +1,4 @@
-semaphores1.adb:17:31: medium: overflow check might fail
+semaphores1.adb:17:31: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 semaphores1.adb:26:14: info: add a contract to analyze it separately from calling contexts
 semaphores1.adb:26:14: info: local subprogram "Initialize_Shared_Data" only analyzed in the context of calls
 semaphores1.adb:45:13: warning: initialization of "Tmp" has no effect

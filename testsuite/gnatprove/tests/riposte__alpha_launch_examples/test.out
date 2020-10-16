@@ -1,6 +1,6 @@
 alpha_launch_examples.adb:17:19: info: postcondition proved (CVC4: 1 VC)
 alpha_launch_examples.adb:17:38: info: overflow check proved (CVC4: 1 VC)
-alpha_launch_examples.adb:20:14: medium: overflow check might fail (e.g. when X = Integer'First) [possible explanation: subprogram at line 16 should mention X in a precondition]
+alpha_launch_examples.adb:20:14: medium: overflow check might fail (e.g. when X = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible explanation: subprogram at line 16 should mention X in a precondition]
 alpha_launch_examples.adb:24:11: info: flow dependencies proved
 alpha_launch_examples.adb:27:28: medium: postcondition might fail, cannot prove R /= R'old
 alpha_launch_examples.adb:29:07: info: initialization of "Tmp" proved

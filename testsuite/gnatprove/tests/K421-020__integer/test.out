@@ -1,4 +1,4 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:15:12: medium: range check might fail [possible explanation: subprogram at line 1 should mention X in a precondition]
-p.adb:16:15: medium: range check might fail (e.g. when Y = 0) [possible explanation: subprogram at line 1 should mention Y in a precondition]
+p.adb:15:12: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible explanation: subprogram at line 1 should mention X in a precondition]
+p.adb:16:15: medium: range check might fail (e.g. when Y = 0) [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at line 1 should mention Y in a precondition]
 p.adb:22:35: info: unrolling loop

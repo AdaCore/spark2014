@@ -1,8 +1,8 @@
-arrays.ads:15:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
+arrays.ads:15:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Tarr_2S doesn't have an Object_Size representation clause or aspect]
 arrays.ads:15:04: info: alignment of overlaid objects is compatible (Trivial)
-arrays.ads:16:26: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
-arrays.ads:16:26: high: types of aliased objects do not have the same size
-arrays.ads:20:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type should have an Object_Size representation clause or aspect]
-arrays.ads:20:04: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: overlaid object should have an Alignment representation clause]
-arrays.ads:21:26: high: types of aliased objects do not have the same size
+arrays.ads:16:26: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Tarr_1S doesn't have an Object_Size representation clause or aspect]
+arrays.ads:16:26: high: types of aliased objects do not have the same size [possible explanation: type Tarr_2S doesn't have an Object_Size representation clause or aspect]
+arrays.ads:20:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Tarr_3S doesn't have an Object_Size representation clause or aspect]
+arrays.ads:20:04: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: unknown alignment for object]
+arrays.ads:21:26: high: types of aliased objects do not have the same size [possible explanation: type Tarr_3S doesn't have an Object_Size representation clause or aspect]
 arrays.ads:21:26: info: object is suitable for aliasing via address clause (Trivial)

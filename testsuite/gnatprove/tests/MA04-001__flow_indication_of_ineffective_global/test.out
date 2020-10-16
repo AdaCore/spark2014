@@ -24,9 +24,9 @@ foo.adb:60:29: info: initialization of "B" proved
 foo.adb:62:10: info: data dependencies proved
 foo.adb:63:31: info: initialization of "B" proved
 foo.adb:64:10: info: flow dependencies proved
-foo.adb:68:17: medium: range check might fail [possible explanation: subprogram at line 61 should mention A in a precondition]
+foo.adb:68:17: medium: range check might fail [reason for check: input value must fit in parameter type] [possible explanation: subprogram at line 61 should mention A in a precondition]
 foo.adb:76:26: info: initialization of "A" proved
 foo.adb:76:29: info: initialization of "B" proved
 foo.adb:78:10: info: data dependencies proved
 foo.adb:79:31: info: initialization of "B" proved
-foo.adb:82:17: medium: range check might fail [possible explanation: subprogram at line 77 should mention A in a precondition]
+foo.adb:82:17: medium: range check might fail [reason for check: input value must fit in parameter type] [possible explanation: subprogram at line 77 should mention A in a precondition]

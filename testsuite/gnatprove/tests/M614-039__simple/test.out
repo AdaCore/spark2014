@@ -1,6 +1,6 @@
 incr_loop.adb:7:14: info: loop invariant initialization proved (CVC4: 2 VC)
 incr_loop.adb:7:14: info: loop invariant preservation proved (CVC4: 2 VC)
-incr_loop.adb:7:41: medium: overflow check might fail (e.g. when I = -2147483648)
+incr_loop.adb:7:41: medium: overflow check might fail (e.g. when I = -2147483648) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 incr_loop.adb:8:19: info: index check proved (CVC4: 4 VC)
 incr_loop.adb:8:38: info: index check proved (CVC4: 4 VC)
 incr_loop.adb:8:41: info: overflow check proved (CVC4: 2 VC)

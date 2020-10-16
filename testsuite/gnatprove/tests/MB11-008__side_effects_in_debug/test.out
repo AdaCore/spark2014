@@ -1,8 +1,8 @@
-p.adb:16:14: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at p.ads:4 should mention X in a precondition]
-p.adb:24:14: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at p.ads:6 should mention X in a precondition]
+p.adb:16:14: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p.ads:4 should mention X in a precondition]
+p.adb:24:14: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p.ads:6 should mention X in a precondition]
 p.adb:31:07: info: initialization of "L" proved
 p.adb:40:07: info: initialization of "L" proved
-p2.adb:9:14: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at p2.ads:4 should mention X in a precondition]
-p2.adb:17:14: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at p2.ads:6 should mention X in a precondition]
+p2.adb:9:14: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p2.ads:4 should mention X in a precondition]
+p2.adb:17:14: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p2.ads:6 should mention X in a precondition]
 p2.adb:24:07: info: initialization of "L" proved
 p2.adb:33:07: info: initialization of "L" proved

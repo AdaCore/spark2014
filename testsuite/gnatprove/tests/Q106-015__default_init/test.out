@@ -1,4 +1,4 @@
 private_types.ads:7:33: info: range check proved (CVC4: 1 VC)
 private_types.ads:8:15: info: range check proved (CVC4: 2 VC)
 private_types.ads:10:56: info: range check proved (CVC4: 1 VC)
-private_types.ads:10:56: medium: range check might fail
+private_types.ads:10:56: medium: range check might fail [reason for check: default value must fit in the type]

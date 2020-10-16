@@ -1,5 +1,5 @@
 
 raised CONSTRAINT_ERROR : sub.adb:2 overflow check failed
-sub.adb:2:13: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First)
-sub.adb:2:17: medium: overflow check might fail (e.g. when X = 0 and Y = Integer'First)
+sub.adb:2:13: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer]
+sub.adb:2:17: medium: overflow check might fail (e.g. when X = 0 and Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 sub.adb:3:11: medium: postcondition might fail, cannot prove X = Integer'last (e.g. when X = 1)

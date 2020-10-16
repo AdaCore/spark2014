@@ -1,0 +1,33 @@
+global_access_in.adb:5:04: info: initialization of "My_Int_Ptr" proved
+global_access_in.adb:5:04: medium: memory leak might occur at end of scope
+global_access_in.adb:8:04: medium: memory leak might occur at end of scope
+global_access_in.adb:11:04: medium: memory leak might occur at end of scope
+global_access_in.adb:19:11: info: data dependencies proved
+global_access_in.adb:22:17: medium: pointer dereference check might fail [possible explanation: subprogram at line 18 should mention My_Global in a precondition]
+global_access_in.adb:26:11: info: data dependencies proved
+global_access_in.adb:30:17: medium: pointer dereference check might fail [possible explanation: subprogram at line 25 should mention My_Global in a precondition]
+global_access_in.adb:30:37: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:35:11: info: data dependencies proved
+global_access_in.adb:37:17: medium: pointer dereference check might fail [possible explanation: precondition of subprogram at line 33 should mention My_Global]
+global_access_in.adb:37:26: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:41:11: info: data dependencies proved
+global_access_in.adb:43:20: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:50:17: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:55:32: info: range check proved (CVC4: 1 VC)
+global_access_in.adb:55:47: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:57:35: info: range check proved (CVC4: 1 VC)
+global_access_in.adb:57:50: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:59:35: info: range check proved (CVC4: 1 VC)
+global_access_in.adb:59:50: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:61:29: info: range check proved (CVC4: 1 VC)
+global_access_in.adb:61:41: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:64:25: info: range check proved (CVC4: 1 VC)
+global_access_in.adb:64:37: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:66:15: info: absence of memory leak proved (CVC4: 1 VC)
+global_access_in.adb:69:04: info: precondition proved (CVC4: 1 VC)
+global_access_in.adb:70:29: info: range check proved (CVC4: 1 VC)
+global_access_in.adb:70:41: info: pointer dereference check proved (CVC4: 1 VC)
+global_access_in.adb:74:04: info: precondition proved (CVC4: 1 VC)
+global_access_in.adb:74:29: high: formal parameter "X" and global "My_Global" are aliased (SPARK RM 6.4.2)
+global_access_in.adb:75:45: info: range check proved (CVC4: 1 VC)
+global_access_in.adb:75:57: info: pointer dereference check proved (CVC4: 1 VC)

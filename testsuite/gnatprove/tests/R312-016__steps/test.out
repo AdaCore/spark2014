@@ -149,7 +149,7 @@ ethernet_dissector.adb:57:54: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:79: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:84: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:58:28: info: range check proved (CVC4: 4 VC)
-ethernet_dissector.adb:58:65: medium: overflow check might fail (e.g. when Buffer = (others => 0) and Buffer'First = 2147482128 and Buffer'Last = 2147483647)
+ethernet_dissector.adb:58:65: medium: overflow check might fail (e.g. when Buffer = (others => 0) and Buffer'First = 2147482128 and Buffer'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer]
 ethernet_dissector.adb:58:73: info: range check proved (CVC4: 1 VC)
 ethernet_dissector.adb:58:81: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:58:86: info: overflow check proved (CVC4: 1 VC)

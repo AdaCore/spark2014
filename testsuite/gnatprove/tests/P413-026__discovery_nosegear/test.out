@@ -16,10 +16,10 @@ ng.adb:50:07: info: initialization of "T1" proved
 ng.adb:50:11: info: initialization of "T2" proved
 ng.adb:51:07: info: initialization of "D1" proved
 ng.adb:51:11: info: initialization of "D2" proved
-ng.adb:62:17: medium: overflow check might fail
+ng.adb:62:17: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 ng.adb:62:23: medium: divide by zero might fail
-ng.adb:65:23: medium: overflow check might fail
-ng.adb:65:29: medium: overflow check might fail
+ng.adb:65:23: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+ng.adb:65:29: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 ng.adb:65:37: medium: divide by zero might fail
 ng.adb:65:43: info: overflow check proved (altergo: 1 VC)
 ng.adb:78:07: medium: precondition might fail, cannot prove ThisCount /= PrevCount [possible explanation: subprogram at ng.ads:26 should mention PrevCount and PrevTime in a precondition]

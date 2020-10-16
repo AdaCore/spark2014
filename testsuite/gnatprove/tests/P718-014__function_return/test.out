@@ -1,2 +1,2 @@
-ex.adb:6:17: medium: overflow check might fail (e.g. when I = Integer'Last) [possible explanation: subprogram at ex.ads:3 should mention I in a precondition]
-ex.adb:11:14: medium: overflow check might fail (e.g. when X = -1) [possible explanation: subprogram at ex.ads:5 should mention X in a precondition]
+ex.adb:6:17: medium: overflow check might fail (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at ex.ads:3 should mention I in a precondition]
+ex.adb:11:14: medium: overflow check might fail (e.g. when X = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at ex.ads:5 should mention X in a precondition]

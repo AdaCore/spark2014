@@ -24,18 +24,18 @@ dynamic_preds.adb:84:07: info: initialization of "Result" proved
 dynamic_preds.adb:86:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds.adb:87:22: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:89:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:89:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds.ads:39 should mention Above in a precondition]
+dynamic_preds.adb:89:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds.ads:39 should mention Above in a precondition]
 dynamic_preds.adb:92:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:92:28: medium: overflow check might fail (e.g. when Result = (A => Even'Last-1, B => Even'Last))
+dynamic_preds.adb:92:28: medium: overflow check might fail (e.g. when Result = (A => Even'Last-1, B => Even'Last)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds.adb:94:14: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:98:07: warning: initialization of "Result" has no effect
 dynamic_preds.adb:100:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds.adb:101:28: info: overflow check proved (CVC4: 1 VC)
 dynamic_preds.adb:101:28: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible explanation: subprogram at dynamic_preds.ads:40 should mention Above in a precondition]
 dynamic_preds.adb:103:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:103:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds.ads:40 should mention Above in a precondition]
+dynamic_preds.adb:103:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds.ads:40 should mention Above in a precondition]
 dynamic_preds.adb:106:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:106:28: medium: overflow check might fail (e.g. when Result = (A => Even'Last-3, B => 0))
+dynamic_preds.adb:106:28: medium: overflow check might fail (e.g. when Result = (A => Even'Last-3, B => 0)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds.adb:108:14: medium: predicate check might fail (e.g. when Result = (A => 0, B => 4))
 dynamic_preds.adb:112:07: info: initialization of "Result" proved
 dynamic_preds.adb:114:16: info: division check proved (CVC4: 1 VC)
@@ -43,7 +43,7 @@ dynamic_preds.adb:115:16: medium: predicate check might fail
 dynamic_preds.adb:115:22: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:117:16: medium: predicate check might fail (e.g. when Above = -1 and Result = (A => 0, B => 0))
 dynamic_preds.adb:117:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:117:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds.ads:41 should mention Above in a precondition]
+dynamic_preds.adb:117:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds.ads:41 should mention Above in a precondition]
 dynamic_preds.adb:120:13: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:120:28: info: overflow check proved (CVC4: 1 VC)
 dynamic_preds.adb:120:28: info: predicate check proved (CVC4: 1 VC)
@@ -62,7 +62,7 @@ dynamic_preds.ads:16:25: warning: unused initial value of "X"
 dynamic_preds.ads:17:28: warning: unused initial value of "X"
 dynamic_preds.ads:18:19: info: postcondition proved (CVC4: 2 VC)
 dynamic_preds.ads:21:20: info: division check proved (CVC4: 1 VC)
-dynamic_preds.ads:26:70: medium: overflow check might fail
+dynamic_preds.ads:26:70: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds.ads:28:30: info: initialization of "X" proved
 dynamic_preds.ads:29:39: info: initialization of "X" proved
 dynamic_preds.ads:30:36: info: initialization of "X" proved
@@ -95,25 +95,25 @@ dynamic_preds_array.adb:81:14: medium: "Result" might not be initialized
 dynamic_preds_array.adb:87:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:88:23: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:90:29: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:90:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds_array.ads:34 should mention Above in a precondition]
+dynamic_preds_array.adb:90:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds_array.ads:34 should mention Above in a precondition]
 dynamic_preds_array.adb:93:20: medium: "Result" might not be initialized
 dynamic_preds_array.adb:93:30: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:93:30: medium: overflow check might fail (e.g. when Result = (others => Even'Last-1))
+dynamic_preds_array.adb:93:30: medium: overflow check might fail (e.g. when Result = (others => Even'Last-1)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds_array.adb:95:14: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:101:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:102:29: info: overflow check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:102:29: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible explanation: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
 dynamic_preds_array.adb:104:29: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:104:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
+dynamic_preds_array.adb:104:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
 dynamic_preds_array.adb:107:30: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:107:30: medium: overflow check might fail (e.g. when Result = (1 => Even'Last-3, others => 0))
+dynamic_preds_array.adb:107:30: medium: overflow check might fail (e.g. when Result = (1 => Even'Last-3, others => 0)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds_array.adb:109:14: medium: predicate check might fail (e.g. when Result = (2 => 4, others => 0))
 dynamic_preds_array.adb:115:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:116:10: medium: predicate check might fail
 dynamic_preds_array.adb:116:23: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:118:10: medium: predicate check might fail (e.g. when Above = -1 and Result = (others => 0))
 dynamic_preds_array.adb:118:29: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:118:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds_array.ads:36 should mention Above in a precondition]
+dynamic_preds_array.adb:118:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds_array.ads:36 should mention Above in a precondition]
 dynamic_preds_array.adb:121:07: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:121:20: medium: "Result" might not be initialized
 dynamic_preds_array.adb:121:30: info: overflow check proved (CVC4: 1 VC)
@@ -133,19 +133,19 @@ dynamic_preds_array.ads:11:25: warning: unused initial value of "X"
 dynamic_preds_array.ads:12:28: warning: unused initial value of "X"
 dynamic_preds_array.ads:13:19: info: postcondition proved (CVC4: 2 VC)
 dynamic_preds_array.ads:16:20: info: division check proved (CVC4: 1 VC)
-dynamic_preds_array.ads:21:72: medium: overflow check might fail
+dynamic_preds_array.ads:21:72: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds_array.ads:23:30: info: initialization of "X" proved
 dynamic_preds_array.ads:24:39: info: initialization of "X" proved
 dynamic_preds_array.ads:25:36: info: initialization of "X" proved
 dynamic_preds_array.ads:31:19: info: postcondition proved (CVC4: 2 VC)
 dynamic_preds_array.ads:40:19: info: postcondition proved (CVC4: 2 VC)
 dynamic_preds_rte.adb:6:14: medium: predicate check might fail, cannot prove 2 * Small < 100000 (e.g. when Y = 50000) [possible explanation: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
-dynamic_preds_rte.adb:6:14: medium: range check might fail (e.g. when Y = -1) [possible explanation: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
+dynamic_preds_rte.adb:6:14: medium: range check might fail (e.g. when Y = -1) [reason for check: value must fit in the target type of the assignment] [possible explanation: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
 dynamic_preds_rte.adb:7:14: info: range check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:7:14: medium: predicate check might fail, cannot prove Very_Small ** 2 < 100000 (e.g. when Y = 3) [possible explanation: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
 dynamic_preds_rte.adb:12:18: info: overflow check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:17:15: medium: predicate check might fail, cannot prove 2 * Small < 100000 (e.g. when Y = 50000) [possible explanation: subprogram at dynamic_preds_rte.ads:24 should mention Y in a precondition]
-dynamic_preds_rte.adb:17:15: medium: range check might fail (e.g. when Y = -1) [possible explanation: subprogram at dynamic_preds_rte.ads:24 should mention Y in a precondition]
+dynamic_preds_rte.adb:17:15: medium: range check might fail (e.g. when Y = -1) [reason for check: value must fit in the target type of the assignment] [possible explanation: subprogram at dynamic_preds_rte.ads:24 should mention Y in a precondition]
 dynamic_preds_rte.adb:18:15: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:18:15: info: range check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:23:19: info: overflow check proved (CVC4: 1 VC)
@@ -155,8 +155,8 @@ dynamic_preds_rte.adb:28:16: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:33:12: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:33:13: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:33:16: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_rte.ads:4:57: medium: overflow check might fail
-dynamic_preds_rte.ads:5:71: medium: overflow check might fail
+dynamic_preds_rte.ads:4:57: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
+dynamic_preds_rte.ads:5:71: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer]
 dynamic_preds_rte.ads:16:29: medium: divide by zero might fail
 dynamic_preds_rte.ads:19:31: medium: divide by zero might fail
 dynamic_preds_rte.ads:21:33: info: initialization of "X" proved

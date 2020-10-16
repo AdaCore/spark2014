@@ -1,3 +1,3 @@
 ov_pre.ads:3:14: warning: subprogram "P" has no effect
 ov_pre.ads:3:14: warning: subprogram "P" has no effect
-ov_pre.ads:4:21: medium: overflow check might fail (e.g. when X = -2)
+ov_pre.ads:4:21: medium: overflow check might fail (e.g. when X = -2) [reason for check: result of multiplication must fit in a 32-bits machine integer]

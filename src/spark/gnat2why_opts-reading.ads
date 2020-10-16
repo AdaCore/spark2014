@@ -121,6 +121,10 @@ package Gnat2Why_Opts.Reading is
 
    CWE : Boolean;
 
+   --  Output mode for check messages (oneline or pretty)
+
+   Output_Mode : Output_Mode_Type;
+
    --  Set the report mode (only failing VCs, all VCs, details)
 
    Report_Mode : Report_Mode_Type;

@@ -1,6 +1,6 @@
 q.adb:12:09: high: "G" must be a global output of "Test_01" (SPARK RM 6.1.4(17))
-q.adb:12:14: medium: overflow check might fail [possible explanation: subprogram at line 5 should mention G in a precondition]
+q.adb:12:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 5 should mention G in a precondition]
 q.adb:20:09: high: "G" must be a global output of "Test_02" (SPARK RM 6.1.4(17))
-q.adb:20:14: medium: overflow check might fail [possible explanation: subprogram at line 15 should mention G in a precondition]
+q.adb:20:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 15 should mention G in a precondition]
 q.adb:28:09: high: "G" must be a global output of "Test_03" (SPARK RM 6.1.4(17))
-q.adb:28:14: medium: overflow check might fail [possible explanation: subprogram at line 23 should mention G in a precondition]
+q.adb:28:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 23 should mention G in a precondition]

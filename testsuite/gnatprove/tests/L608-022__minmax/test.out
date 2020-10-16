@@ -15,7 +15,7 @@ minmax.adb:51:28: info: initialization of "MinT" proved
 minmax.adb:51:34: info: initialization of "MaxT" proved
 minmax.adb:58:22: info: assertion proved (CVC4: 1 VC)
 minmax.adb:59:22: info: assertion proved (CVC4: 1 VC)
-minmax.adb:64:27: medium: overflow check might fail (e.g. when X = 1 and Y = T'Last)
+minmax.adb:64:27: medium: overflow check might fail (e.g. when X = 1 and Y = T'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
 minmax.adb:65:24: info: overflow check proved (CVC4: 1 VC)
 minmax.adb:66:22: info: assertion proved (CVC4: 1 VC)
 minmax.adb:67:22: info: assertion proved (CVC4: 1 VC)

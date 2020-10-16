@@ -522,10 +522,18 @@ package body VC_Kinds is
          return CEE_Error_Msg;
       elsif S = "old" then
          return CEE_Old;
+      elsif S = "before_loop" then
+         return CEE_Other; -- CEE_Before_Loop;
+      elsif S = "current_iteration" then
+         return CEE_Other; -- CEE_Current_Iteration;
+      elsif S = "previous_iteration" then
+         return CEE_Other; -- CEE_Previous_Iteration
       elsif S = "result" then
          return CEE_Result;
       elsif S = "other" then
          return CEE_Other;
+      elsif S'Length > 1 and then S (0) = '@' then
+         return CEE_Other; -- CEE_At
       end if;
       raise Program_Error;
    end From_JSON;

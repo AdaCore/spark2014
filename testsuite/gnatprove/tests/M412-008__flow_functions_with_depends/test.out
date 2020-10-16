@@ -21,17 +21,17 @@ foo.adb:82:09: info: flow dependencies proved
 foo.adb:92:26: info: initialization of "R" proved
 foo.adb:93:09: info: data dependencies proved
 foo.adb:94:09: info: flow dependencies proved
-foo.adb:100:21: medium: overflow check might fail [possible explanation: loop at line 99 should mention Tmp in a loop invariant]
+foo.adb:100:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 99 should mention Tmp in a loop invariant]
 foo.adb:108:26: info: initialization of "R" proved
 foo.adb:109:09: info: data dependencies proved
 foo.adb:110:09: info: flow dependencies proved
 foo.adb:114:12: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 106 should mention G2 in a precondition]
-foo.adb:115:40: medium: overflow check might fail [possible explanation: subprogram at line 106 should mention A in a precondition]
+foo.adb:115:40: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 106 should mention A in a precondition]
 foo.adb:116:29: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 106 should mention G2 and B in a precondition]
 foo.adb:122:25: info: initialization of "R" proved
 foo.adb:123:09: info: data dependencies proved
 foo.adb:126:12: medium: precondition might fail, cannot prove Y = G2
-foo.adb:127:40: medium: overflow check might fail
+foo.adb:127:40: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:128:29: high: "G1" is not an input in the Global contract of subprogram "Test_07_E" at line 120
 foo.adb:128:29: high: "G1" is not initialized
 foo.adb:128:29: high: "G2" is not an input in the Global contract of subprogram "Test_07_E" at line 120

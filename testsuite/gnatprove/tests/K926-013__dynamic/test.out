@@ -14,7 +14,7 @@ dynamic.adb:17:17: info: range check proved (CodePeer)
 dynamic.adb:19:07: warning: initialization of "OE" has no effect
 dynamic.adb:19:17: info: range check proved (CodePeer)
 dynamic.adb:20:07: warning: initialization of "OF_O" has no effect
-dynamic.adb:20:19: medium: range check might fail
+dynamic.adb:20:19: medium: range check might fail [reason for check: default component value must fit in the type]
 dynamic.adb:21:17: info: range check proved (CodePeer)
 dynamic.adb:24:09: warning: unused assignment
 dynamic.adb:24:14: info: overflow check proved (CodePeer)

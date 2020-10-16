@@ -1,9 +1,9 @@
 proc.adb:1:17: warning: unused initial value of "X"
 proc.adb:4:09: high: "Tmp" is not initialized
-proc.adb:4:13: medium: overflow check might fail (e.g. when Tmp = Integer'Last)
+proc.adb:4:13: medium: overflow check might fail (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 proc.adb:1:17: warning: unused initial value of "X"
 proc.adb:4:09: high: "Tmp" is not initialized
-proc.adb:4:13: medium: overflow check might fail (e.g. when Tmp = Integer'Last)
+proc.adb:4:13: medium: overflow check might fail (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 proc.adb:1:17: warning: unused initial value of "X"
 proc.adb:4:09: high: "Tmp" is not initialized
-proc.adb:4:13: medium: overflow check might fail (e.g. when Tmp = Integer'Last)
+proc.adb:4:13: medium: overflow check might fail (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]

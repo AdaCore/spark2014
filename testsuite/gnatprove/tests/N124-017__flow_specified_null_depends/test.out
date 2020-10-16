@@ -4,15 +4,15 @@ foo.adb:20:09: info: data dependencies proved
 foo.adb:21:09: info: flow dependencies proved
 foo.adb:30:09: info: data dependencies proved
 foo.adb:31:09: info: flow dependencies proved
-foo.adb:35:18: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention G in a precondition]
+foo.adb:35:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 29 should mention G in a precondition]
 foo.adb:39:09: info: data dependencies proved
 foo.adb:40:09: info: flow dependencies proved
 foo.adb:46:11: info: range check proved (CVC4: 2 VC)
 foo.adb:46:37: info: cannot unroll loop (too many loop iterations)
 foo.adb:46:37: warning: statement has no effect
 foo.adb:47:14: warning: unused assignment
-foo.adb:51:18: medium: overflow check might fail [possible explanation: subprogram at line 38 should mention G in a precondition]
+foo.adb:51:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 38 should mention G in a precondition]
 foo.adb:55:09: info: data dependencies proved
 foo.adb:56:21: medium: missing dependency "G => X"
 foo.adb:57:30: medium: incorrect dependency "null => X"
-foo.adb:60:18: medium: overflow check might fail [possible explanation: subprogram at line 54 should mention G and X in a precondition]
+foo.adb:60:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 54 should mention G and X in a precondition]

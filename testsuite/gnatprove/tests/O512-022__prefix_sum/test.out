@@ -200,15 +200,15 @@ prefixsum_general.adb:80:07: info: initialization of "Right" proved
 prefixsum_general.adb:81:07: info: initialization of "Temp" proved
 prefixsum_general.adb:84:27: info: division check proved (CVC4: 1 VC)
 prefixsum_general.adb:87:31: info: loop variant proved (CVC4: 1 VC)
-prefixsum_general.adb:89:25: medium: overflow check might fail
+prefixsum_general.adb:89:25: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 prefixsum_general.adb:89:29: info: range check proved (CVC4: 1 VC)
 prefixsum_general.adb:91:34: info: loop variant proved (CVC4: 1 VC)
 prefixsum_general.adb:93:32: info: overflow check proved (CVC4: 1 VC)
-prefixsum_general.adb:93:32: medium: range check might fail
+prefixsum_general.adb:93:32: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
 prefixsum_general.adb:94:29: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:95:16: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:95:29: info: index check proved (CVC4: 2 VC)
-prefixsum_general.adb:95:35: medium: overflow check might fail [possible explanation: loop at line 90 should mention A and Left in a loop invariant]
+prefixsum_general.adb:95:35: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 90 should mention A and Left in a loop invariant]
 prefixsum_general.adb:95:40: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:96:16: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:97:32: info: overflow check proved (CVC4: 1 VC)
@@ -217,7 +217,7 @@ prefixsum_general.adb:99:25: info: division check proved (CVC4: 1 VC)
 prefixsum_general.adb:108:16: info: function contract might not be available on recursive calls
 prefixsum_general.adb:108:16: medium: subprogram "Rec_Summation" might not terminate, terminating annotation could be incorrect
 prefixsum_general.adb:114:17: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-prefixsum_general.adb:123:27: medium: overflow check might fail [possible explanation: precondition of subprogram at line 108 should mention A]
+prefixsum_general.adb:123:27: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: precondition of subprogram at line 108 should mention A]
 prefixsum_general.adb:123:29: info: precondition proved (CVC4: 1 VC)
 prefixsum_general.adb:123:66: info: range check proved (CVC4: 1 VC)
 prefixsum_general.adb:126:14: info: precondition proved (CVC4: 1 VC)

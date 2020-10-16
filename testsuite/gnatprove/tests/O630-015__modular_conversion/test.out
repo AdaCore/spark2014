@@ -10,4 +10,4 @@ main.adb:7:29: info: initialization of "Foo.State" proved
 main.adb:11:04: info: initialization of "Value" proved
 main.adb:15:32: info: range check proved (CVC4: 1 VC)
 main.adb:15:46: info: range check proved (CVC4: 1 VC)
-main.adb:15:46: medium: range check might fail
+main.adb:15:46: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]

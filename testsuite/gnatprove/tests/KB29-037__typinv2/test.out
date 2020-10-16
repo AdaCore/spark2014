@@ -1,6 +1,6 @@
 main.adb:3:04: info: initialization of "Var" proved
 main.adb:3:04: info: predicate check proved on default value (CVC4: 1 VC)
 p.adb:4:08: medium: predicate check might fail (e.g. when V = (Access_Count => 3, Locked => False)) [possible explanation: subprogram at p.ads:3 should mention V in a precondition]
-p.adb:4:40: medium: overflow check might fail (e.g. when V = (Access_Count => Natural'Last, Locked => True)) [possible explanation: subprogram at p.ads:3 should mention V in a precondition]
+p.adb:4:40: medium: overflow check might fail (e.g. when V = (Access_Count => Natural'Last, Locked => True)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p.ads:3 should mention V in a precondition]
 p.adb:5:08: medium: predicate check might fail (e.g. when V = (Access_Count => 1, Locked => False)) [possible explanation: subprogram at p.ads:3 should mention V in a precondition]
 p.ads:2:09: info: predicate check proved on default value (CVC4: 1 VC)

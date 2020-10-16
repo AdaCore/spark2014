@@ -86,7 +86,7 @@ records.adb:439:13: info: add a contract to analyze it separately from calling c
 records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the context of calls
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:448:07: info: initialization of "R" proved
-records.adb:453:24: medium: range check might fail (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last))
+records.adb:453:24: medium: range check might fail (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)) [reason for check: result of addition must fit in the target type of the assignment]
 records.adb:465:11: info: flow dependencies proved
 records.adb:466:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:474:30: info: assertion proved (CVC4: 1 VC)

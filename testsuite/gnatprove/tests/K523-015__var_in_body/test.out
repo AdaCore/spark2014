@@ -1,2 +1,2 @@
-tctouch.adb:8:22: medium: overflow check might fail (e.g. when Finger = Natural'Last) [possible explanation: subprogram at tctouch.ads:2 should mention Finger in a precondition]
-tctouch.adb:9:17: medium: array index check might fail (e.g. when A_Tag = 'NUL' and Finger = 11) [possible explanation: subprogram at tctouch.ads:2 should mention Finger in a precondition]
+tctouch.adb:8:22: medium: overflow check might fail (e.g. when Finger = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at tctouch.ads:2 should mention Finger in a precondition]
+tctouch.adb:9:17: medium: array index check might fail (e.g. when A_Tag = 'NUL' and Finger = 11) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at tctouch.ads:2 should mention Finger in a precondition]

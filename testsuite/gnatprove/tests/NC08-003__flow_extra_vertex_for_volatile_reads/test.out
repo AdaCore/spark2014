@@ -1,9 +1,9 @@
 foo.adb:16:06: info: data dependencies proved
 foo.adb:19:18: medium: missing dependency "Log_In => Log"
 foo.adb:19:18: medium: missing dependency "Log_In => Log_Size"
-foo.adb:22:28: medium: overflow check might fail [possible explanation: subprogram at line 15 should mention Log_Size in a precondition]
-foo.adb:23:12: medium: array index check might fail [possible explanation: subprogram at line 15 should mention Log_Size in a precondition]
+foo.adb:22:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 15 should mention Log_Size in a precondition]
+foo.adb:23:12: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 15 should mention Log_Size in a precondition]
 foo.adb:27:06: info: data dependencies proved
 foo.adb:28:06: info: flow dependencies proved
-foo.adb:34:28: medium: overflow check might fail [possible explanation: subprogram at line 26 should mention Log_Size in a precondition]
-foo.adb:35:12: medium: array index check might fail [possible explanation: subprogram at line 26 should mention Log_Size in a precondition]
+foo.adb:34:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 26 should mention Log_Size in a precondition]
+foo.adb:35:12: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 26 should mention Log_Size in a precondition]

@@ -1,5 +1,5 @@
 types.adb:7:42: info: overflow check proved (CVC4: 1 VC)
 types.adb:7:52: info: division check proved (CVC4: 1 VC)
 types.adb:25:22: info: assertion proved (CVC4: 1 VC)
-types.adb:25:24: medium: overflow check might fail
+types.adb:25:24: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer]
 types.ads:6:14: warning: subprogram "Convert_To_U13" has no effect

@@ -42,9 +42,9 @@ Generated contracts for f_4
       Input =>
          G
 Generated contracts for a
-a.adb:10:14: medium: overflow check might fail [possible explanation: subprogram at a.ads:5 should mention G in a precondition]
+a.adb:10:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at a.ads:5 should mention G in a precondition]
 a.adb:12:22: medium: assertion might fail, cannot prove Priv.I > 0 [possible explanation: subprogram at a.ads:5 should mention Priv.I in a precondition]
-a.adb:15:38: medium: overflow check might fail [possible explanation: subprogram at a.ads:7 should mention G and H and Priv.I in a precondition]
+a.adb:15:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at a.ads:7 should mention G and H and Priv.I in a precondition]
 a.ads:2:22: warning: no procedure exists that can initialize abstract state "A.State_A"
 a.ads:5:19: info: initialization of "X" proved
 Generated contracts for f_5

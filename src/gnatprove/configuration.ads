@@ -75,7 +75,6 @@ package Configuration is
       Cargs_List           : String_Lists.List;
       Checks_As_Errors     : aliased Boolean;
       CodePeer             : aliased GNAT.Strings.String_Access;
-      Coverage             : aliased Boolean;
       CWE                  : aliased Boolean;
       D                    : aliased Boolean;
       Dbg_No_Sem           : aliased Boolean;
@@ -109,6 +108,7 @@ package Configuration is
       No_Loop_Unrolling    : aliased Boolean;
       No_Global_Generation : aliased Boolean;
       No_Subprojects       : aliased Boolean;
+      Output               : aliased GNAT.Strings.String_Access;
       Output_Header        : aliased Boolean;
       Output_Msg_Only      : aliased Boolean;
       P                    : aliased GNAT.Strings.String_Access;
@@ -185,6 +185,7 @@ package Configuration is
    Mode           : GP_Mode;
    Use_Semaphores : Boolean;
    Only_Given     : Boolean;
+   Output         : Output_Mode_Type;
    Parallel       : Integer;
    Report         : Report_Mode_Type;
    Warning_Mode   : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
@@ -264,10 +265,6 @@ package Configuration is
            Compose (Share_Spark_Config, "frames");
          Gpr_Translation_DB : constant String :=
            Compose (Share_Spark_Config, "gnat2why");
-         Gpr_Frames_Cov_DB        : constant String :=
-           Compose (Share_Spark_Config, "frames_coverage");
-         Gpr_Gnat2why_Cov_DB     : constant String :=
-           Compose (Share_Spark_Config, "gnat2why_coverage");
          Gnatprove_Conf           : constant String :=
            Compose (Share_Spark_Config, "gnatprove.conf");
          Z3_Present               : Boolean;

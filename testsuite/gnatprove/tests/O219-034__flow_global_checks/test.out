@@ -1,10 +1,10 @@
-foo.adb:20:14: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention X in a precondition]
+foo.adb:20:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 16 should mention X in a precondition]
 foo.adb:20:16: high: "Y" must be listed in the Global aspect of "Test_SRM_6_1_4_Rule_12" (SPARK RM 6.1.4(14))
 foo.adb:24:38: info: initialization of "N" proved
 foo.adb:25:09: info: data dependencies proved
 foo.adb:25:23: low: unused global "Y"
 foo.adb:40:09: high: "X" must be a global output of "Test_SRM_6_1_4_Rule_15_A" (SPARK RM 6.1.4(17))
-foo.adb:40:14: medium: overflow check might fail [possible explanation: subprogram at line 36 should mention X in a precondition]
+foo.adb:40:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 36 should mention X in a precondition]
 foo.adb:41:09: high: "Y" must be a global output of "Test_SRM_6_1_4_Rule_15_A" (SPARK RM 6.1.4(17))
 foo.adb:46:40: info: initialization of "N" proved
 foo.adb:47:40: info: initialization of "M" proved
@@ -19,7 +19,7 @@ foo.adb:52:12: high: either make "X" an input in the Global contract or initiali
 foo.adb:53:12: high: "Y" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:53:12: high: "Y" is not initialized
 foo.adb:53:12: high: either make "Y" an input in the Global contract or initialize it before use
-foo.adb:53:14: medium: overflow check might fail
+foo.adb:53:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:56:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 foo.adb:63:40: info: initialization of "N" proved
 foo.adb:64:09: info: data dependencies proved

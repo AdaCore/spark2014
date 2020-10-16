@@ -1,6 +1,6 @@
 u.adb:6:09: info: data dependencies proved
 u.adb:6:30: info: initialization of "X" proved
 u.adb:7:09: info: flow dependencies proved
-u.adb:10:14: medium: overflow check might fail [possible explanation: subprogram at line 5 should mention Z in a precondition]
+u.adb:10:14: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 5 should mention Z in a precondition]
 u.adb:14:04: warning: "X" is set by "A" but not used after the call
 u.adb:15:04: warning: "X" is set by "A" but not used after the call

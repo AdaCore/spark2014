@@ -34,7 +34,7 @@ find_map.adb:37:41: info: precondition proved (CVC4: 1 VC)
 find_map.adb:40:34: info: precondition proved (CVC4: 1 VC)
 find_map.adb:41:18: medium: range check might fail (e.g. when E = 0)
 find_map.adb:41:46: medium: precondition might fail, cannot prove Contains (Container, Key) (e.g. when E = 0) [possible explanation: precondition of subprogram at find_map.ads:36 should mention E]
-find_map.adb:42:17: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 1 and A'Last = 1)
+find_map.adb:42:17: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 1 and A'Last = 1) [reason for check: value must be a valid index into the array]
 find_map.adb:43:17: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 find_map.adb:44:29: info: range check proved (CVC4: 2 VC)
 find_map.adb:44:68: info: index check proved (CVC4: 2 VC)

@@ -1,6 +1,6 @@
 p1-p2.ads:3:03: info: flow dependencies proved
 p1-p2.ads:5:36: info: data dependencies proved
 p1.adb:10:14: high: "X1" constituent of "S1" must be listed in the Global aspect of "F1" (SPARK RM 6.1.4(14))
-p1.adb:10:17: medium: overflow check might fail
+p1.adb:10:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 p1.adb:10:24: high: "P2.S2" constituent of "P1.S1" must be listed in the Global aspect of "F1" (SPARK RM 6.1.4(14))
 p1.ads:3:03: info: flow dependencies proved

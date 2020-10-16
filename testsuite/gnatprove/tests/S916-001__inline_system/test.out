@@ -2,4 +2,4 @@ s-inline.adb:3:14: info: add a contract to analyze it separately from calling co
 s-inline.adb:3:14: info: local subprogram "Lemma" only analyzed in the context of calls
 s-inline.adb:3:14: warning: subprogram "Lemma" has no effect
 s-inline.adb:5:22: info: assertion proved (CVC4: 1 VC), in call inlined at s-inline.adb:9
-s-inline.adb:5:24: medium: overflow check might fail, in call inlined at s-inline.adb:9
+s-inline.adb:5:24: medium: overflow check might fail, in call inlined at s-inline.adb:9 [reason for check: result of addition must fit in a 32-bits machine integer]

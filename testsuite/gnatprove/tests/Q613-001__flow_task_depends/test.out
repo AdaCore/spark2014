@@ -14,7 +14,7 @@ single_implicit.ads:6:11: info: data dependencies proved
 single_implicit.ads:7:11: info: flow dependencies proved
 tasking.adb:9:28: info: range check proved (CVC4: 1 VC)
 tasking.adb:15:35: info: range check proved (CVC4: 1 VC)
-tasking.adb:24:25: medium: range check might fail
+tasking.adb:24:25: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
 tasking.adb:32:34: info: range check proved (CVC4: 1 VC)
 tasking.ads:13:25: info: initialization of "M" proved
 type_explicit.adb:4:07: info: initialization of "Message" proved

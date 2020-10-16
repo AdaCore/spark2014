@@ -1,4 +1,4 @@
 init.adb:12:10: info: initialization of "A" proved, in instantiation at init.adb:20
-init.adb:15:23: medium: range check might fail, in instantiation at init.adb:20
+init.adb:15:23: medium: range check might fail, in instantiation at init.adb:20 [reason for check: result of addition must fit in the target type of the assignment]
 init.adb:20:04: info: in instantiation at line 14
 init.adb:20:04: info: unrolling loop

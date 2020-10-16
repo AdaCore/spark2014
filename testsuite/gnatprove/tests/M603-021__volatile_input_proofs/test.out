@@ -3,17 +3,17 @@ port.adb:5:48: info: type is suitable for unchecked conversion (Trivial)
 port.adb:5:53: info: type is suitable for unchecked conversion (Trivial)
 port.adb:7:13: info: types in unchecked conversion have the same size (Trivial)
 port.adb:7:49: info: type is suitable for unchecked conversion (Trivial)
-port.adb:7:53: high: type with constraints on bit representation is unsuitable for unchecked conversion
+port.adb:7:53: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type boolean has 2 values but has bit size 8]
 port.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 port.adb:9:49: info: type is suitable for unchecked conversion (Trivial)
-port.adb:9:53: high: type with constraints on bit representation is unsuitable for unchecked conversion
+port.adb:9:53: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type E has 3 values but has bit size 8]
 port.adb:22:07: info: initialization of "Tmp" proved
-port.adb:29:16: medium: range check might fail
+port.adb:29:16: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 port.adb:35:07: info: initialization of "T" proved
 port.adb:39:10: warning: attribute Valid is assumed to return True
 port.adb:48:07: info: initialization of "T" proved
 port.adb:49:07: info: initialization of "Tmp" proved
-port.adb:54:16: medium: range check might fail
+port.adb:54:16: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 port.adb:55:10: warning: attribute Valid is assumed to return True
 port.adb:74:07: info: initialization of "Tmp" proved
 port.adb:95:07: info: initialization of "Tmp" proved

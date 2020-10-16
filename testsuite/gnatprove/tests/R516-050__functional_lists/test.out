@@ -12,8 +12,8 @@ conts-lists.ads:526:19: info: precondition proved (CVC4: 1 VC), in instantiation
 conts.ads:145:31: warning: unused variable "E", in instantiation at conts-lists-indefinite_unbounded_spark.ads:15, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 functional_sequences.ads:14:13: medium: user-defined equality might not terminate (SPARK RM 6.6(2)), in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5
 functional_sequences.ads:14:13: medium: user-defined equality might not terminate (SPARK RM 6.6(2)), in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5
-functional_sequences.ads:16:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 14 should mention S1 in a precondition]
-functional_sequences.ads:16:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 14 should mention S1 in a precondition]
+functional_sequences.ads:16:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5 [reason for check: result of subtraction must be convertible to the target type of the conversion] [possible explanation: subprogram at line 14 should mention S1 in a precondition]
+functional_sequences.ads:16:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5 [reason for check: result of subtraction must be convertible to the target type of the conversion] [possible explanation: subprogram at line 14 should mention S1 in a precondition]
 functional_sequences.ads:18:09: info: data dependencies proved, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5
 functional_sequences.ads:18:09: info: data dependencies proved, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5
 use_lists.adb:3:22: side effects of function "First" are not modeled in SPARK
@@ -34,7 +34,7 @@ use_lists.adb:13:13: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:14:13: medium: precondition might fail, cannot prove Length (L) <= Capacity (L) - 1
 use_lists.adb:14:25: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
 use_lists.adb:14:25: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:14:42: medium: overflow check might fail
+use_lists.adb:14:42: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 use_lists.adb:16:13: medium: precondition might fail, cannot prove Length (L) <= Capacity (L) - 1
 use_lists.adb:16:25: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
 use_lists.adb:16:25: side effects of function "Element" are not modeled in SPARK

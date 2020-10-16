@@ -11,11 +11,11 @@ main.adb:17:14: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:9:33: info: loop invariant initialization proved (CVC4: 2 VC)
 power_and_sum.adb:9:33: info: loop invariant preservation proved (CVC4: 2 VC)
 power_and_sum.adb:9:47: info: range check proved (CVC4: 2 VC)
-power_and_sum.adb:10:27: medium: overflow check might fail
+power_and_sum.adb:10:27: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 power_and_sum.adb:11:17: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:20:33: info: loop invariant initialization proved (CVC4: 1 VC)
 power_and_sum.adb:20:33: info: loop invariant preservation proved (CVC4: 1 VC)
-power_and_sum.adb:22:31: medium: overflow check might fail
+power_and_sum.adb:22:31: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 power_and_sum.adb:23:17: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:25:22: info: assertion proved (CVC4: 1 VC)
 power_and_sum.adb:26:17: info: range check proved (CVC4: 1 VC)
@@ -25,11 +25,11 @@ power_and_sum.adb:36:33: info: loop invariant initialization proved (CVC4: 1 VC)
 power_and_sum.adb:36:33: info: loop invariant preservation proved (CVC4: 1 VC)
 power_and_sum.adb:41:36: info: loop invariant initialization proved (CVC4: 1 VC)
 power_and_sum.adb:41:36: info: loop invariant preservation proved (CVC4: 1 VC)
-power_and_sum.adb:43:34: medium: overflow check might fail
+power_and_sum.adb:43:34: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 power_and_sum.adb:44:20: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:46:25: info: assertion proved (CVC4: 1 VC)
 power_and_sum.adb:47:25: info: assertion proved (CVC4: 1 VC)
-power_and_sum.adb:48:31: medium: overflow check might fail
+power_and_sum.adb:48:31: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 power_and_sum.adb:49:17: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:51:22: info: assertion proved (CVC4: 1 VC)
 power_and_sum.adb:52:17: info: range check proved (CVC4: 1 VC)

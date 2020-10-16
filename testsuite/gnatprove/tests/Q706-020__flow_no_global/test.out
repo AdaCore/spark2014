@@ -1,1 +1,1 @@
-prot.adb:9:25: medium: overflow check might fail
+prot.adb:9:25: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]

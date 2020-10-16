@@ -44,6 +44,15 @@ package Gnat2Why_Opts is
    --  compiler. We duplicate this type here to avoid a dependency on compiler
    --  units.
 
+   type Output_Mode_Type is (GPO_Oneline, GPO_Pretty);
+   --  Output mode for check messages:
+   --  * GPO_Oneline : Output all information on one line, to be used for
+   --                  regression tests and inside the IDE which is responsible
+   --                  for breaking the messages in relevant chunks
+   --  * GPO_Pretty  : Output information relevant for command-line usage,
+   --                  which may be less detailed than with Oneline, and split
+   --                  here over multiple lines.
+
    type Report_Mode_Type is (GPR_Fail,
                              GPR_All,
                              GPR_Provers,
@@ -90,6 +99,7 @@ private
    Limit_Units_Name             : constant String := "limit_units";
    No_Inlining_Name             : constant String := "no_inlining";
    No_Loop_Unrolling_Name       : constant String := "no_loop_unrolling";
+   Output_Mode_Name             : constant String := "output_mode";
    Pedantic_Name                : constant String := "pedantic";
    Proof_Generate_Guards_Name   : constant String :=
      "proof_generate_axiom_guards";

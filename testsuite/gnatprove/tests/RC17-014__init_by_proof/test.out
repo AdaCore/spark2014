@@ -8,7 +8,7 @@ empty_type.adb:2:09: info: range check proved (CVC4: 2 VC)
 empty_type.adb:16:22: medium: assertion might fail, cannot prove C > 0
 empty_type.adb:17:15: info: initialization check proved (CVC4: 1 VC)
 empty_type.adb:17:18: info: division check proved (CVC4: 1 VC)
-empty_type.adb:25:15: medium: range check might fail
+empty_type.adb:25:15: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
 empty_type.adb:32:04: info: precondition proved (CVC4: 1 VC)
 init_by_proof.adb:11:44: info: initialization of "Error" proved
 init_by_proof.adb:13:14: info: postcondition proved (CVC4: 1 VC; Trivial: 2 VC)

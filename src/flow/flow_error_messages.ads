@@ -176,9 +176,13 @@ package Flow_Error_Messages is
    --      - field "kind" can have one of the following values:
    --        - "result": Result of a function call
    --        - "old": Old value of function argument
+   --        - "@X": Value at label X
    --        - "error_message": The model element represents error message, not
    --          source-code element. The error message is saved in the name of
    --          the model element.
+   --        - "before_loop": Value of the reference before entering the loop
+   --        - "current_iteration": Value in the current iteration
+   --        - "previous_iteration": Value in the previous iteration
    --        - "other"
    --  @param VC_File if the VC is a manual proof, the VC file for manual proof
    --  @param VC_Loc is the location of the verification check as opposed to

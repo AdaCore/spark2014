@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Atree;
 with Debug;
 with Errout;                         use Errout;
@@ -4246,21 +4247,26 @@ package body Gnat2Why.Subprograms is
             Get_Unchecked_Conversion_Args (E, Source, Target);
             Src_Ty := Retysp (Entity (Source));
             Tar_Ty := Retysp (Entity (Target));
-            Emit_Static_Proof_Result
-              (Source,
-               VC_UC_No_Holes,
-               Is_Valid_Bitpattern_No_Holes (Src_Ty),
-               E);
-            Emit_Static_Proof_Result
-              (Target,
-               VC_UC_No_Holes,
-               Is_Valid_Bitpattern_No_Holes (Tar_Ty),
-               E);
-            Emit_Static_Proof_Result
-              (E,
-               VC_UC_Same_Size,
-               Types_Have_Same_Known_Esize (Src_Ty, Tar_Ty),
-               E);
+            declare
+               Valid       : Boolean;
+               Explanation : Unbounded_String;
+            begin
+               Is_Valid_Bitpattern_No_Holes (Src_Ty, Valid, Explanation);
+               Emit_Static_Proof_Result
+                 (Source, VC_UC_No_Holes, Valid, E,
+                  Explanation => To_String (Explanation));
+
+               Is_Valid_Bitpattern_No_Holes (Tar_Ty, Valid, Explanation);
+               Emit_Static_Proof_Result
+                 (Target, VC_UC_No_Holes, Valid, E,
+                  Explanation => To_String (Explanation));
+
+               Types_Have_Same_Known_Esize
+                 (Src_Ty, Tar_Ty, Valid, Explanation);
+               Emit_Static_Proof_Result
+                 (E, VC_UC_Same_Size, Valid, E,
+                  Explanation => To_String (Explanation));
+            end;
          end;
       end if;
    end Generate_VCs_For_Subprogram;

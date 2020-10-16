@@ -142,6 +142,9 @@ package body Gnat2Why_Opts.Writing is
          Set_Field (Obj, Limit_Line_Name,   CL_Switches.Limit_Line.all);
          Set_Field (Obj, Limit_Region_Name, CL_Switches.Limit_Region.all);
 
+         Set_Field (Obj, Output_Mode_Name,
+                    Gnat2Why_Opts.Output_Mode_Type'Image (Output));
+
          Set_Field (Obj, Report_Mode_Name,
                     Gnat2Why_Opts.Report_Mode_Type'Image (Report));
 

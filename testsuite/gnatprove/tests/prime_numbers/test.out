@@ -57,12 +57,12 @@ prime_and_coprime_numbers.adb:198:16: medium: postcondition might fail, cannot p
 prime_and_coprime_numbers.adb:200:07: info: initialization of "Index_1" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:201:07: info: initialization of "Index_3" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:209:39: info: precondition proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:209:39: medium: range check might fail, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:209:39: medium: range check might fail, in instantiation at test_prime_and_coprime_numbers.adb:6 [reason for check: value must be convertible to the target type of the conversion]
 prime_and_coprime_numbers.adb:211:33: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:211:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Index_2 in 2 .. Max_Value, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:213:13: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:213:42: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Set.Is_Prime (V) = Is_Prime (V), in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:213:56: medium: array index check might fail, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:213:56: medium: array index check might fail, in instantiation at test_prime_and_coprime_numbers.adb:6 [reason for check: value must be a valid index into the array]
 prime_and_coprime_numbers.adb:215:13: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:215:13: medium: loop invariant might not be preserved by an arbitrary iteration, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:216:29: info: index check proved (CVC4: 4 VC), in instantiation at test_prime_and_coprime_numbers.adb:6

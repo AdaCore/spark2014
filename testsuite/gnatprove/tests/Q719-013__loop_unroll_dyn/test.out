@@ -1,5 +1,5 @@
 loops_static.adb:5:23: info: cannot unroll loop (local non-scalar declaration at line 8)
-loops_static.adb:6:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1)
+loops_static.adb:6:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:8:46: info: range check proved (CVC4: 4 VC)
 loops_static.adb:11:47: medium: assertion might fail, cannot prove A_Begins (I) = 0 (e.g. when A_Begins = (1 => 1, others => 0) and A_Begins'First = 0 and A_Begins'Last = 2 and I = 1) [possible explanation: loop at line 5 should mention A_Begins in a loop invariant]
 loops_static.adb:11:57: info: index check proved (CVC4: 2 VC)
@@ -9,29 +9,29 @@ loops_static.adb:17:14: high: all paths in "Loop11" raise exceptions or do not t
 loops_static.adb:17:22: warning: "A" is not modified, could be IN
 loops_static.adb:19:23: info: cannot unroll loop (local non-scalar declaration at line 23)
 loops_static.adb:20:25: info: cannot unroll loop (local non-scalar declaration at line 23)
-loops_static.adb:21:16: medium: array index check might fail (e.g. when A'First = 2 and I = 1)
+loops_static.adb:21:16: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:23:49: info: range check proved (CVC4: 4 VC)
 loops_static.adb:26:50: medium: assertion might fail, cannot prove A_Begins (I) = 0 (e.g. when A_Begins = (2 => 0, others => 1) and A_Begins'First = 0 and A_Begins'Last = 2 and I = 1) [possible explanation: loop at line 20 should mention A_Begins in a loop invariant]
 loops_static.adb:26:60: info: index check proved (CVC4: 2 VC)
 loops_static.adb:30:07: medium: assertion might fail (e.g. when A = (others => 0))
 loops_static.adb:35:23: info: unrolling loop
-loops_static.adb:36:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1)
-loops_static.adb:38:46: medium: overflow check might fail (e.g. when A'First = -2147483647 and I = 1)
+loops_static.adb:36:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
+loops_static.adb:38:46: medium: overflow check might fail (e.g. when A'First = -2147483647 and I = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 loops_static.adb:38:56: info: range check proved (CVC4: 2 VC)
-loops_static.adb:38:56: medium: overflow check might fail (e.g. when A'First = -2147483646 and I = 1)
+loops_static.adb:38:56: medium: overflow check might fail (e.g. when A'First = -2147483646 and I = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 loops_static.adb:41:46: medium: assertion might fail, cannot prove A (A'First + I) = 0 (e.g. when A = (0 => 1, others => 0) and A'First = -1 and I = 1) [possible explanation: subprogram at loops_static.ads:6 should mention A in a precondition]
 loops_static.adb:41:57: info: overflow check proved (CVC4: 2 VC)
-loops_static.adb:41:57: medium: array index check might fail (e.g. when A'First = 0 and A'Last = 1)
+loops_static.adb:41:57: medium: array index check might fail (e.g. when A'First = 0 and A'Last = 1) [reason for check: result of addition must be a valid index into the array]
 loops_static.adb:44:07: medium: assertion might fail (e.g. when A = (others => 0) and A'First = 0 and A_Length = 3)
 loops_static.adb:50:23: info: unrolling loop
-loops_static.adb:51:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1)
+loops_static.adb:51:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:52:32: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:53:19: info: index check proved (CVC4: 4 VC)
 loops_static.adb:58:42: medium: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, others => 0) and J = 0) [possible explanation: subprogram at loops_static.ads:8 should mention A in a precondition]
 loops_static.adb:58:45: info: index check proved (CVC4: 4 VC)
 loops_static.adb:60:07: medium: assertion might fail (e.g. when A = (others => 0) and A'First = 0 and I = 2)
 loops_static.adb:65:23: info: cannot unroll loop (local non-scalar declaration at line 70)
-loops_static.adb:66:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1)
+loops_static.adb:66:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:68:42: medium: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (1 => 1, others => 0) and J = 1) [possible explanation: loop at line 65 should mention A in a loop invariant]
 loops_static.adb:68:45: info: index check proved (CVC4: 2 VC)
 loops_static.adb:70:46: info: range check proved (CVC4: 4 VC)
@@ -39,35 +39,35 @@ loops_static.adb:72:37: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:73:22: info: index check proved (CVC4: 2 VC)
 loops_static.adb:79:07: medium: assertion might fail (e.g. when A = (others => 0))
 loops_static.adb:85:23: info: unrolling loop
-loops_static.adb:86:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1)
+loops_static.adb:86:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:88:35: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:89:22: info: index check proved (CVC4: 4 VC)
 loops_static.adb:95:42: medium: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, others => 0) and J = 0) [possible explanation: subprogram at loops_static.ads:12 should mention A in a precondition]
 loops_static.adb:95:45: info: index check proved (CVC4: 4 VC)
 loops_static.adb:97:07: medium: assertion might fail (e.g. when A = (others => 0) and A'First = 0 and I = 2)
 loops_static.adb:103:23: info: unrolling loop
-loops_static.adb:104:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1)
+loops_static.adb:104:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:108:35: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:109:22: info: index check proved (CVC4: 4 VC)
 loops_static.adb:115:42: medium: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, others => 0) and J = 0) [possible explanation: subprogram at loops_static.ads:14 should mention A in a precondition]
 loops_static.adb:115:45: info: index check proved (CVC4: 4 VC)
 loops_static.adb:117:07: medium: assertion might fail (e.g. when A = (others => 0) and A'First = 1 and I = 2)
 loops_static.adb:123:23: info: unrolling loop
-loops_static.adb:124:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1)
+loops_static.adb:124:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:128:35: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:129:22: info: index check proved (CVC4: 4 VC)
 loops_static.adb:135:42: medium: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, others => 0) and J = 0) [possible explanation: subprogram at loops_static.ads:16 should mention A in a precondition]
 loops_static.adb:135:45: info: index check proved (CVC4: 4 VC)
 loops_static.adb:137:07: medium: assertion might fail (e.g. when A = (others => 0) and A'First = 1 and I = 2)
 loops_static.adb:143:23: info: unrolling loop
-loops_static.adb:144:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1)
+loops_static.adb:144:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:148:38: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:149:25: info: index check proved (CVC4: 4 VC)
 loops_static.adb:155:42: medium: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, others => 0) and J = 0) [possible explanation: subprogram at loops_static.ads:18 should mention A in a precondition]
 loops_static.adb:155:45: info: index check proved (CVC4: 4 VC)
 loops_static.adb:157:07: medium: assertion might fail (e.g. when A = (others => 0) and A'First = 0 and I = 2)
 loops_static.adb:163:23: info: unrolling loop
-loops_static.adb:164:13: medium: array index check might fail (e.g. when I = 1 and R'First = 2)
+loops_static.adb:164:13: medium: array index check might fail (e.g. when I = 1 and R'First = 2) [reason for check: value must be a valid index into the array]
 loops_static.adb:166:20: info: initialization of "Bad" proved
 loops_static.adb:168:38: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:169:25: info: index check proved (CVC4: 4 VC)
@@ -75,7 +75,7 @@ loops_static.adb:176:42: medium: assertion might fail, cannot prove R (J) = 0 (e
 loops_static.adb:176:45: info: index check proved (CVC4: 4 VC)
 loops_static.adb:178:07: medium: assertion might fail (e.g. when A = (others => 0) and A'First = 1 and A'Last = 3 and I = 2 and R = (others => 0))
 loops_static.adb:186:23: info: cannot unroll loop (local non-scalar declaration at line 189)
-loops_static.adb:187:13: medium: array index check might fail (e.g. when I = 1 and R'First = 2)
+loops_static.adb:187:13: medium: array index check might fail (e.g. when I = 1 and R'First = 2) [reason for check: value must be a valid index into the array]
 loops_static.adb:189:20: info: initialization of "Res" proved
 loops_static.adb:189:20: info: range check proved (CVC4: 2 VC)
 loops_static.adb:190:20: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

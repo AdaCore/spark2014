@@ -31,7 +31,7 @@ discr.adb:71:17: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 discr.adb:72:22: info: assertion proved (Trivial: 1 VC)
 discr.adb:73:22: info: assertion proved (CVC4: 1 VC)
 discr.adb:77:48: info: range check proved (CVC4: 1 VC)
-discr.adb:77:48: medium: overflow check might fail (e.g. when C = Natural'Last) [possible explanation: subprogram at discr.ads:18 should mention C in a precondition]
+discr.adb:77:48: medium: overflow check might fail (e.g. when C = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at discr.ads:18 should mention C in a precondition]
 discr.adb:80:53: info: range check proved (CVC4: 1 VC)
 discr.adb:83:46: medium: precondition might fail, cannot prove X > 0 (e.g. when C = 0) [possible explanation: subprogram at discr.ads:18 should mention C in a precondition]
 discr.adb:92:09: info: discriminant check proved (CVC4: 1 VC)

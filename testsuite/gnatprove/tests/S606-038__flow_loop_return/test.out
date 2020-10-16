@@ -3,9 +3,9 @@ p.adb:1:14: warning: unused variable "Y"
 p.adb:9:07: info: data dependencies proved
 p.adb:9:28: info: initialization of "Y" proved
 p.adb:16:16: info: data dependencies proved
-p.adb:25:17: medium: overflow check might fail [possible explanation: loop at line 13 should mention J in a loop invariant]
+p.adb:25:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 13 should mention J in a loop invariant]
 p.adb:28:12: warning: unreachable code (CVC4: 1 VC)
 p.adb:32:07: info: data dependencies proved
 p.adb:32:28: info: initialization of "Y" proved
-p.adb:39:17: medium: overflow check might fail [possible explanation: loop at line 36 should mention J in a loop invariant]
+p.adb:39:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 36 should mention J in a loop invariant]
 p.adb:42:12: warning: unreachable code (CVC4: 1 VC)

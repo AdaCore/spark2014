@@ -73,14 +73,14 @@ very_longs-divide.adb:157:11: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:157:58: info: cannot unroll loop (dynamic loop bounds)
 very_longs-divide.adb:158:56: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:162:43: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:162:59: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 3 and U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [possible explanation: subprogram at line 145 should mention J in a precondition]
+very_longs-divide.adb:162:59: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 3 and U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 145 should mention J in a precondition]
 very_longs-divide.adb:169:26: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:169:42: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:170:49: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:170:65: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:170:108: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:175:39: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:175:39: medium: array index check might fail (e.g. when J = 1 and N = 2 and U = (Length => ?, Long_Digits => (others => 214)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [possible explanation: subprogram at line 145 should mention J and N in a precondition]
+very_longs-divide.adb:175:39: medium: array index check might fail (e.g. when J = 1 and N = 2 and U = (Length => ?, Long_Digits => (others => 214)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 145 should mention J and N in a precondition]
 very_longs-divide.adb:180:23: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:180:23: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:181:46: info: index check proved (CVC4: 2 VC)
@@ -90,26 +90,26 @@ very_longs-divide.adb:187:08: info: data dependencies proved
 very_longs-divide.adb:188:08: info: flow dependencies proved
 very_longs-divide.adb:191:07: info: initialization of "Carry" proved
 very_longs-divide.adb:192:07: info: initialization of "Sum" proved
-very_longs-divide.adb:194:28: medium: array index check might fail (e.g. when J = 2 and Q_Hat = 0 and Quotient = (Length => ?, Long_Digits => (others => 0)) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1) [possible explanation: subprogram at line 185 should mention J in a precondition]
-very_longs-divide.adb:194:40: medium: range check might fail (e.g. when Q_Hat = 256) [possible explanation: subprogram at line 185 should mention Q_Hat in a precondition]
+very_longs-divide.adb:194:28: medium: array index check might fail (e.g. when J = 2 and Q_Hat = 0 and Quotient = (Length => ?, Long_Digits => (others => 0)) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 185 should mention J in a precondition]
+very_longs-divide.adb:194:40: medium: range check might fail (e.g. when Q_Hat = 256) [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at line 185 should mention Q_Hat in a precondition]
 very_longs-divide.adb:198:31: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:198:58: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:200:14: info: range check proved (CVC4: 2 VC)
 very_longs-divide.adb:200:61: info: cannot unroll loop (dynamic loop bounds)
 very_longs-divide.adb:201:49: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:201:65: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 3 and U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2 and V = (Length => ?, Long_Digits => (others => 0))) [possible explanation: subprogram at line 185 should mention J in a precondition]
+very_longs-divide.adb:201:65: medium: array index check might fail (e.g. when Divisor_Index = 1 and J = 3 and U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2 and V = (Length => ?, Long_Digits => (others => 0))) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 185 should mention J in a precondition]
 very_longs-divide.adb:202:47: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:203:29: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:203:45: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:206:26: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:206:26: info: overflow check proved (CVC4: 1 VC)
 very_longs-divide.adb:206:50: info: overflow check proved (CVC4: 1 VC)
-very_longs-divide.adb:206:50: medium: array index check might fail (e.g. when Carry = 1 and J = 1 and N = 2 and U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [possible explanation: subprogram at line 185 should mention J and N in a precondition]
+very_longs-divide.adb:206:50: medium: array index check might fail (e.g. when Carry = 1 and J = 1 and N = 2 and U = (Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 2) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at line 185 should mention J and N in a precondition]
 very_longs-divide.adb:211:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:211:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:212:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:212:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-very_longs-divide.adb:215:09: medium: range check might fail (e.g. when Divisor = (Length => 1, Long_Digits => (others => 1)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1)
+very_longs-divide.adb:215:09: medium: range check might fail (e.g. when Divisor = (Length => 1, Long_Digits => (others => 1)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1) [reason for check: value must fit in the target type of the assignment]
 very_longs-divide.adb:216:25: info: range check proved (CVC4: 1 VC)
 very_longs-divide.adb:219:22: info: precondition proved (CVC4: 1 VC)
 very_longs-divide.adb:219:61: info: index check proved (CVC4: 2 VC)
@@ -180,7 +180,7 @@ very_longs.adb:140:37: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:140:37: info: range check proved (CVC4: 2 VC)
 very_longs.adb:140:63: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:140:73: info: overflow check proved (CVC4: 2 VC)
-very_longs.adb:142:31: medium: array index check might fail (e.g. when Number = (others => 'NUL') and Number'First = 3 and Number'Last = 4 and String_Index = 1)
+very_longs.adb:142:31: medium: array index check might fail (e.g. when Number = (others => 'NUL') and Number'First = 3 and Number'Last = 4 and String_Index = 1) [reason for check: value must be a valid index into the array]
 very_longs.adb:143:44: info: index check proved (CVC4: 2 VC)
 very_longs.adb:143:44: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:148:29: info: index check proved (CVC4: 2 VC)
@@ -195,7 +195,7 @@ very_longs.adb:180:17: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:186:21: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:192:21: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:200:13: medium: refined postcondition might fail, cannot prove Number.Long_Digits(Number_Of_Digits'Result) /= 0 (e.g. when Number = (Length => 2, Long_Digits => (2 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 2 and Number_Of_Digits'Result = 3)
-very_longs.adb:200:48: medium: array index check might fail (e.g. when Number = (Length => 2, Long_Digits => (2 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 2 and Number_Of_Digits'Result = 3)
+very_longs.adb:200:48: medium: array index check might fail (e.g. when Number = (Length => 2, Long_Digits => (2 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 2 and Number_Of_Digits'Result = 3) [reason for check: value must be a valid index into the array]
 very_longs.adb:202:32: info: index check proved (CVC4: 2 VC)
 very_longs.adb:208:36: info: index check proved (CVC4: 4 VC)
 very_longs.adb:209:31: info: range check proved (CVC4: 2 VC)

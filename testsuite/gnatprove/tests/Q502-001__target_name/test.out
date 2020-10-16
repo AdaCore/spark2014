@@ -1,7 +1,7 @@
 inc.adb:1:16: warning: unused initial value of "x"
 inc.adb:2:11: info: postcondition proved (CVC4: 1 VC)
 inc.adb:2:21: info: overflow check proved (CVC4: 1 VC)
-inc.adb:5:11: medium: overflow check might fail (e.g. when x = Integer'Last)
+inc.adb:5:11: medium: overflow check might fail (e.g. when x = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 test_array.adb:5:18: warning: unused initial value of "X"
 test_array.adb:9:07: info: range check proved (CVC4: 4 VC)
 test_array.adb:9:18: warning: unused assignment

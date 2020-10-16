@@ -2,8 +2,8 @@ test.adb:8:07: info: initialization of "Temp" proved, in instantiation at test.a
 test.adb:8:07: info: initialization of "Temp" proved, in instantiation at test.adb:16
 test.adb:18:04: warning: analyzing unreferenced procedure "Call_Both"
 test.adb:35:16: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:42
-test.adb:35:28: medium: overflow check might fail, in instantiation at test.adb:42 [possible explanation: precondition of subprogram at test.ads:21 should mention A and B]
-test.adb:35:35: medium: overflow check might fail, in instantiation at test.adb:42
+test.adb:35:28: medium: overflow check might fail, in instantiation at test.adb:42 [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: precondition of subprogram at test.ads:21 should mention A and B]
+test.adb:35:35: medium: overflow check might fail, in instantiation at test.adb:42 [reason for check: result of addition must fit in a 32-bits machine integer]
 test.adb:35:45: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:42
 test.adb:35:45: info: overflow check proved (CVC4: 1 VC), in instantiation at test.adb:42
 test.adb:42:04: info: cannot unroll loop (too many loop iterations)
@@ -16,7 +16,7 @@ test.adb:54:30: info: range check proved (CVC4: 1 VC)
 test.adb:55:34: info: division check proved (CVC4: 1 VC)
 test.adb:55:38: info: cannot unroll loop (too many loop iterations)
 test.adb:57:13: info: initialization of "Temp" proved
-test.adb:59:25: medium: array index check might fail
+test.adb:59:25: medium: array index check might fail [reason for check: value must be a valid index into the array]
 test.adb:60:16: info: index check proved (CVC4: 2 VC)
 test.adb:60:32: info: overflow check proved (CVC4: 1 VC)
 test.adb:60:36: info: index check proved (CVC4: 2 VC)

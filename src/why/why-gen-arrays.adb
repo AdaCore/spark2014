@@ -522,7 +522,6 @@ package body Why.Gen.Arrays is
       T_Comp     : W_Expr_Id;
       Tmp        : W_Identifier_Id;
       Q_Expr     : W_Pred_Id;
-      T          : W_Pred_Id := True_Pred;
    begin
       while Present (Index) loop
          Tmp := New_Temp_Identifier
@@ -562,15 +561,10 @@ package body Why.Gen.Arrays is
            (Binders => Vars,
             Pred    => +T_Comp);
 
-         if T = True_Pred then
-            T := Q_Expr;
-         else
-            T := +New_And_Then_Expr (Left   => +T,
-                                     Right  => +Q_Expr,
-                                     Domain => EW_Pred);
-         end if;
+         return Q_Expr;
+      else
+         return True_Pred;
       end if;
-      return T;
    end Build_Binary_Predicate_For_Array;
 
    -----------------------
@@ -1905,7 +1899,6 @@ package body Why.Gen.Arrays is
       Module  : W_Module_Id;
       Symbols : M_Array_Type)
    is
-      Arr_Symbs     : M_Array_Type := Symbols;
       Component_Typ : constant Entity_Id := Component_Type (E);
 
    begin
@@ -1920,52 +1913,9 @@ package body Why.Gen.Arrays is
            else "")
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      --  If components have wrappers, we cannot use Get symbol as is.
-      --  Generate a new Get symbol for this case.
-
-      if Has_Relaxed_Init (Component_Typ) then
-         declare
-            A_Ident : constant W_Identifier_Id :=
-              New_Identifier (Name => "a",
-                              Typ  => Arr_Symbs.Ty);
-            I_Ident : constant W_Identifier_Id :=
-              New_Identifier
-                (Name => "i",
-                 Typ  => Base_Why_Type_No_Bool (Etype (First_Index (E))));
-            Binders : constant Binder_Array :=
-              (1 => (B_Name => A_Ident,
-                     others => <>),
-               2 => (B_Name => I_Ident,
-                     others => <>));
-         begin
-            Emit (File,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Local (Arr_Symbs.Get),
-                     Binders     => Binders,
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Location    => No_Location,
-                     Return_Type => EW_Abstract (Component_Typ),
-                     Def         => Insert_Simple_Conversion
-                       (Ada_Node       => Empty,
-                        Domain         => EW_Term,
-                        Expr           => New_Call
-                          (Domain  => EW_Term,
-                           Name    => Arr_Symbs.Get,
-                           Args    => (1 => +A_Ident, 2 => +I_Ident),
-                           Typ     => EW_Abstract
-                             (Component_Typ, Relaxed_Init => True)),
-                        To             => EW_Abstract (Component_Typ),
-                        Force_No_Slide => True)));
-
-            Arr_Symbs.Get := To_Local (Arr_Symbs.Get);
-            Arr_Symbs.Comp_Ty := EW_Abstract (Component_Typ);
-         end;
-      end if;
+      --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
 
       if Is_Standard_Boolean_Type (Component_Typ) then
-
-         --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
 
          Emit (File,
                New_Clone_Declaration
@@ -1975,12 +1925,110 @@ package body Why.Gen.Arrays is
                   As_Name       => No_Symbol,
                   Substitutions =>
                     Prepare_Standard_Array_Logical_Substitutions
-                      (File, E, Arr_Symbs)));
+                      (File, E, Symbols)));
+
+      --  Otherwise, clone the specific module Subtype_Array_Logical_Op_Axioms
+      --  which needs additional parameters to_int and of_int.
+      --  If Component_Typ has relaxed initialization, we need to declare
+      --  these conversion functions first.
+
+      elsif Has_Relaxed_Init (Component_Typ) then
+         declare
+            Comp_Ty : constant W_Type_Id := EW_Abstract
+              (Component_Typ, Relaxed_Init => True);
+            A_Ident : constant W_Identifier_Id :=
+              New_Identifier
+                (Name => "a",
+                 Typ  => Comp_Ty);
+            I_Ident : constant W_Identifier_Id :=
+              New_Identifier
+                (Name => "i",
+                 Typ  => EW_Int_Type);
+            To_Int  : constant W_Name_Id :=
+              New_Name (Symb => NID ("to_int"));
+            Of_Int  : constant W_Name_Id :=
+              New_Name (Symb => NID ("of_int"));
+
+         begin
+            --  Declare to_int and of_int functions which convert the wrapper
+            --  type to a mathematical integer and backward.
+
+            Emit (File,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => New_Identifier
+                       (Name   => To_Int,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type),
+                     Binders     =>
+                       Binder_Array'(1 => (B_Name => A_Ident,
+                                           others => <>)),
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Location    => No_Location,
+                     Return_Type => EW_Int_Type,
+                     Def         => Insert_Simple_Conversion
+                       (Ada_Node       => Empty,
+                        Domain         => EW_Term,
+                        Expr           => +A_Ident,
+                        To             => EW_Int_Type,
+                        Force_No_Slide => True)));
+            Emit (File,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => New_Identifier
+                       (Name   => Of_Int,
+                        Domain => EW_Term,
+                        Typ    => Comp_Ty),
+                     Binders     =>
+                       Binder_Array'(1 => (B_Name => I_Ident,
+                                           others => <>)),
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Location    => No_Location,
+                     Return_Type => Comp_Ty,
+                     Def         => Insert_Simple_Conversion
+                       (Ada_Node       => Empty,
+                        Domain         => EW_Term,
+                        Expr           => +I_Ident,
+                        To             => Comp_Ty,
+                        Force_No_Slide => True)));
+
+            --  Clone the module with the new of_int and to_int wrappers. This
+            --  generates the following axioms for each logical operation:
+            --    forall i : index_typ.
+            --       get result i =
+            --         to_wrapper (op (of_wrapper (get a i))
+            --                        (of_wrapper (get b i)))
+
+            Emit (File,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Module,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Subtype_Array_Logical_Ax,
+                     As_Name       => No_Symbol,
+                     Substitutions =>
+                       (Prepare_Standard_Array_Logical_Substitutions
+                            (File, E, Symbols)
+                        & (1 =>
+                               New_Clone_Substitution
+                             (Kind      => EW_Type_Subst,
+                              Orig_Name => To_Name (WNE_Array_Component_Type),
+                              Image     => Get_Name (Symbols.Comp_Ty)),
+                           2 =>
+                             New_Clone_Substitution
+                               (Kind      => EW_Function,
+                                Orig_Name => To_Int,
+                                Image     => To_Int),
+                           3 =>
+                             New_Clone_Substitution
+                               (Kind      => EW_Function,
+                                Orig_Name => Of_Int,
+                                Image     => Of_Int)))));
+         end;
+
+      --  Otherwise, we can use the component type conversion functions
+      --  directly.
+
       else
-
-         --  We clone a specific module Subtype_Array_Logical_Op_Axioms
-         --  which needs an additional parameter to_int.
-
          Emit (File,
                New_Clone_Declaration
                  (Theory_Kind   => EW_Module,
@@ -1989,7 +2037,7 @@ package body Why.Gen.Arrays is
                   As_Name       => No_Symbol,
                   Substitutions =>
                     Prepare_Subtype_Array_Logical_Substitutions
-                      (File, E, Arr_Symbs)));
+                      (File, E, Symbols)));
       end if;
 
       Close_Theory (File, Kind => Definition_Theory);

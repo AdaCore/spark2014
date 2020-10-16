@@ -1,6 +1,6 @@
 protectedfloat.adb:12:29: info: division check proved (CVC4: 1 VC)
 protectedfloat.adb:12:29: info: float overflow check proved (Trivial)
 protectedfloat.adb:15:24: info: division check proved (CVC4: 1 VC)
-protectedfloat.adb:15:24: medium: float overflow check might fail
+protectedfloat.adb:15:24: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 protectedfloat.adb:18:21: info: division check proved (CVC4: 1 VC)
 protectedfloat.adb:18:21: info: float overflow check proved (CVC4: 1 VC)

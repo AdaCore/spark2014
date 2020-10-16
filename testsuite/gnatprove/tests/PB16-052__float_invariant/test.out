@@ -16,11 +16,11 @@ attempt_1.adb:34:31: info: float overflow check proved (CodePeer)
 attempt_1.adb:34:44: info: division check proved (CodePeer)
 attempt_1.adb:34:44: info: float overflow check proved (Trivial)
 attempt_2.adb:16:18: info: range check proved (Trivial)
-attempt_2.adb:16:18: medium: overflow check might fail [possible explanation: subprogram at line 15 should mention N in a precondition]
+attempt_2.adb:16:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible explanation: subprogram at line 15 should mention N in a precondition]
 attempt_2.adb:16:22: info: float overflow check proved (Trivial)
 attempt_2.adb:16:37: info: float overflow check proved (Trivial)
 attempt_2.adb:19:18: info: range check proved (Trivial)
-attempt_2.adb:19:18: medium: overflow check might fail [possible explanation: subprogram at line 18 should mention N in a precondition]
+attempt_2.adb:19:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible explanation: subprogram at line 18 should mention N in a precondition]
 attempt_2.adb:19:22: info: float overflow check proved (Trivial)
 attempt_2.adb:19:36: info: float overflow check proved (Trivial)
 attempt_2.adb:27:33: info: initialization of "New_Speed" proved
@@ -68,13 +68,13 @@ attempt_3.adb:60:53: info: range check proved (Trivial)
 attempt_3.adb:62:25: info: assertion proved (CodePeer)
 attempt_3.adb:62:27: info: overflow check proved (CVC4: 1 VC)
 attempt_3.adb:62:32: info: overflow check proved (CVC4: 1 VC)
-attempt_3.adb:62:45: medium: overflow check might fail
+attempt_3.adb:62:45: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
 attempt_3.adb:63:25: medium: assertion might fail, cannot prove Float64(N * 65 + 1) <= Float64((N+1) * 65)
 attempt_3.adb:63:35: info: overflow check proved (CodePeer)
 attempt_3.adb:63:40: info: overflow check proved (CVC4: 1 VC)
 attempt_3.adb:63:40: info: range check proved (Trivial)
 attempt_3.adb:63:62: info: range check proved (Trivial)
-attempt_3.adb:63:62: medium: overflow check might fail
+attempt_3.adb:63:62: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
 attempt_3.adb:64:25: medium: assertion might fail, cannot prove FNT65 + 1.0 = Float64(N * 65 + 1)
 attempt_3.adb:64:31: info: float overflow check proved (CodePeer)
 attempt_3.adb:64:49: info: overflow check proved (CodePeer)
@@ -82,7 +82,7 @@ attempt_3.adb:64:54: info: overflow check proved (CVC4: 1 VC)
 attempt_3.adb:64:54: info: range check proved (Trivial)
 attempt_3.adb:65:25: medium: assertion might fail, cannot prove FNP1T65 = Float64((N+1) * 65)
 attempt_3.adb:65:49: info: range check proved (Trivial)
-attempt_3.adb:65:49: medium: overflow check might fail
+attempt_3.adb:65:49: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
 attempt_3.adb:66:25: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:66:31: info: float overflow check proved (CodePeer)
 attempt_3.adb:69:22: info: assertion proved (CodePeer)

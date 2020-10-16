@@ -1,4 +1,4 @@
-bytes.adb:5:20: medium: array index check might fail (e.g. when A_Record = (id => 0, length => 0, Payload => (others => 0)) and output'First = 1 and output'Last = 0)
+bytes.adb:5:20: medium: array index check might fail (e.g. when A_Record = (id => 0, length => 0, Payload => (others => 0)) and output'First = 1 and output'Last = 0) [reason for check: value must be a valid index into the array]
 bytes.ads:14:57: medium: "output" might not be initialized in "To_Byte_Array"
 bytes.ads:14:81: high: "length" is not initialized in "To_Byte_Array"
 bytes.ads:14:81: warning: unused variable "length"

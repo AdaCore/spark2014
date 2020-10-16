@@ -1,4 +1,4 @@
 p.adb:5:04: warning: pragma Overflow_Mode in code is ignored
 p.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:9:24: medium: overflow check might fail
+p.adb:9:24: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]

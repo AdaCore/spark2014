@@ -31,7 +31,7 @@ foo.adb:94:41: info: index check proved (CVC4: 4 VC)
 foo.adb:98:04: warning: analyzing unreferenced procedure "Test_08_E"
 foo.adb:101:24: info: unrolling loop
 foo.adb:103:19: medium: "A" might not be initialized
-foo.adb:103:24: medium: array index check might fail
+foo.adb:103:24: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 foo.adb:107:25: medium: "A" might not be initialized in "Test_09_E"
 foo.adb:110:24: info: unrolling loop
 foo.adb:118:04: warning: analyzing unreferenced procedure "Test_10_Ok"
@@ -53,7 +53,7 @@ foo.adb:158:25: medium: "A" might not be initialized in "Test_14_E"
 foo.adb:159:25: info: initialization of "B" proved
 foo.adb:162:24: info: unrolling loop
 foo.adb:164:19: medium: "A" might not be initialized
-foo.adb:164:24: medium: array index check might fail
+foo.adb:164:24: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 foo.adb:168:04: warning: analyzing unreferenced procedure "Test_15_Ok_Hard"
 foo.adb:168:31: medium: "A" might not be initialized in "Test_15_Ok_Hard"
 foo.adb:169:31: info: initialization of "B" proved

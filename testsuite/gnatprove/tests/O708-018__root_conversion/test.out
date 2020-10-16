@@ -1,9 +1,9 @@
 fxp_false_check_1a.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) >= 1.0 or Duration (MS) >= 1.0
 fxp_false_check_1b.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) < 0.0 or Duration (MS) < 0.0
 fxp_false_check_2.adb:4:04: info: initialization of "MD" proved
-fxp_false_check_2.adb:8:25: medium: range check might fail (e.g. when MD = 20)
+fxp_false_check_2.adb:8:25: medium: range check might fail (e.g. when MD = 20) [reason for check: value must be convertible to the target type of the conversion]
 fxp_false_check_3.adb:6:19: info: assertion proved (CVC4: 1 VC)
-fxp_false_check_3.adb:6:35: medium: range check might fail (e.g. when M = 9223372036854775807/1000000000)
+fxp_false_check_3.adb:6:35: medium: range check might fail (e.g. when M = 9223372036854775807/1000000000) [reason for check: value must be convertible to the target type of the conversion]
 fxp_true_check_1.adb:7:19: info: assertion proved (CVC4: 1 VC)
 fxp_true_check_1.adb:8:19: info: assertion proved (CVC4: 1 VC)
 fxp_true_check_1.adb:9:19: info: assertion proved (CVC4: 1 VC)

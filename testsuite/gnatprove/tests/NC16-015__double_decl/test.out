@@ -1,4 +1,4 @@
-controller.adb:28:40: medium: range check might fail (e.g. when Piece_count = Piece_count_type'Last) [possible explanation: subprogram at controller.ads:6 should mention Piece_count in a precondition]
+controller.adb:28:40: medium: range check might fail (e.g. when Piece_count = Piece_count_type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at controller.ads:6 should mention Piece_count in a precondition]
 tetris.adb:42:28: info: range check proved (CVC4: 1 VC)
 tetris.adb:46:28: info: range check proved (CVC4: 1 VC)
 tetris.adb:48:36: info: range check proved (CVC4: 1 VC)

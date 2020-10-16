@@ -1,3 +1,3 @@
-gene.adb:5:14: medium: overflow check might fail, in instantiation at main.adb:5 (e.g. when Y = Integer'Last)
-gene2.adb:5:14: medium: overflow check might fail, in instantiation at main.adb:6 (e.g. when Y = Integer'Last)
-gene.adb:5:14: medium: overflow check might fail, in instantiation at main.adb:5 (e.g. when Y = Integer'Last)
+gene.adb:5:14: medium: overflow check might fail, in instantiation at main.adb:5 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+gene2.adb:5:14: medium: overflow check might fail, in instantiation at main.adb:6 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+gene.adb:5:14: medium: overflow check might fail, in instantiation at main.adb:5 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]

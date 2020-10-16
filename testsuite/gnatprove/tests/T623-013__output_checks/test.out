@@ -1,0 +1,16 @@
+default command-line output
+---------------------------
+incr.adb:3:11: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
+
+pretty output
+-------------
+incr.adb:3:11: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 1 should mention X in a precondition]
+
+one-line output
+---------------
+incr.adb:3:11: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
+
+incorrect output value
+----------------------
+Try "gnatprove --help" for more information.
+error: wrong argument for --output

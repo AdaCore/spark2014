@@ -15,15 +15,15 @@ streamable_types.adb:35:07: info: initialization of "Last" proved
 streamable_types.adb:45:13: info: pointer dereference check proved (CVC4: 1 VC)
 streamable_types.adb:50:30: info: initialization of "Len" proved
 streamable_types.adb:53:13: medium: exception might be raised
-streamable_types.adb:58:24: medium: overflow check might fail (e.g. when Len = -214748365) [possible explanation: loop at line 57 should mention Len in a loop invariant]
-streamable_types.adb:58:29: medium: overflow check might fail (e.g. when Buffer = (others => 47) and Len = 214748340) [possible explanation: loop at line 57 should mention Buffer and Len in a loop invariant]
+streamable_types.adb:58:24: medium: overflow check might fail (e.g. when Len = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: loop at line 57 should mention Len in a loop invariant]
+streamable_types.adb:58:29: medium: overflow check might fail (e.g. when Buffer = (others => 47) and Len = 214748340) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 57 should mention Buffer and Len in a loop invariant]
 streamable_types.adb:59:13: info: pointer dereference check proved (CVC4: 1 VC)
 streamable_types.adb:65:29: info: initialization of "Item" proved
 streamable_types.adb:69:28: info: cannot unroll loop (too many loop iterations)
 streamable_types.adb:70:13: info: pointer dereference check proved (CVC4: 1 VC)
 streamable_types.adb:73:16: medium: exception might be raised
-streamable_types.adb:76:24: medium: overflow check might fail (e.g. when Item = -214748365) [possible explanation: loop at line 69 should mention Item in a loop invariant]
-streamable_types.adb:76:31: medium: overflow check might fail (e.g. when Buffer = (others => 57) and Item = 214748364) [possible explanation: call at line 70 should mention Item (for argument Buffer) in a postcondition]
+streamable_types.adb:76:24: medium: overflow check might fail (e.g. when Item = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: loop at line 69 should mention Item in a loop invariant]
+streamable_types.adb:76:31: medium: overflow check might fail (e.g. when Buffer = (others => 57) and Item = 214748364) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: call at line 70 should mention Item (for argument Buffer) in a postcondition]
 streamable_types.adb:80:07: warning: initialization of "Len" has no effect
 streamable_types.adb:82:07: info: precondition proved (Trivial: 1 VC)
 streamable_types.adb:82:07: warning: "Last" is set by "Skip_Spaces" but not used after the call

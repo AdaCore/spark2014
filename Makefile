@@ -133,7 +133,7 @@ gnat2why:
 	# (The timestamp of) src/why/xgen/gnat_ast.ml is updated every time `make` is called in
 	# `gnat2why`, causing a recompilation of why3 every time because Why3's makefile is
 	# based on timestamps not file content. So we check if anything changed before copying.
-	SOURCE=src/why/xgen/gnat_ast.ml; TARGET=why3/src/gnat/gnat_ast.ml; \
+	SOURCE=src/why/xgen/gnat_ast.ml; TARGET=why3/plugins/gnat_json/gnat_ast.ml; \
 	cmp "$$SOURCE" "$$TARGET" || $(CP) $$SOURCE $$TARGET
 
 coverage:

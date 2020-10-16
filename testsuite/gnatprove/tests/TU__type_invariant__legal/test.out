@@ -3,7 +3,7 @@ external_6.ads:7:21: info: initialization of "X" proved
 type_invariant_legal.adb:3:14: warning: subprogram "Priv_In" has no effect
 type_invariant_legal.adb:4:24: info: initialization of "X" proved
 type_invariant_legal.adb:41:14: info: range check proved (CVC4: 1 VC)
-type_invariant_legal.adb:47:14: medium: range check might fail [possible explanation: precondition of subprogram at line 5 should mention X]
+type_invariant_legal.adb:47:14: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: precondition of subprogram at line 5 should mention X]
 type_invariant_legal.ads:7:13: medium: invariant check might fail
 type_invariant_legal.ads:8:13: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal.ads:10:14: warning: subprogram "Pub_In" has no effect
@@ -45,7 +45,7 @@ type_invariant_legal_2.adb:66:11: warning: unused assignment
 type_invariant_legal_2.adb:66:14: medium: invariant check might fail (e.g. when X = 0) [possible explanation: call at line 65 should mention X (for argument X) in a postcondition]
 type_invariant_legal_2.adb:67:11: warning: unused assignment
 type_invariant_legal_2.adb:74:09: warning: unused assignment
-type_invariant_legal_2.adb:74:14: medium: range check might fail [possible explanation: precondition of subprogram at line 5 should mention X]
+type_invariant_legal_2.adb:74:14: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_2.adb:75:11: warning: unused assignment
 type_invariant_legal_2.adb:75:14: medium: invariant check might fail (e.g. when X = 0) [possible explanation: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_2.adb:76:11: warning: unused assignment

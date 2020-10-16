@@ -1,13 +1,13 @@
-logger.adb:38:61: medium: range check might fail [possible explanation: subprogram at logger.ads:47 should mention Event_Log in a precondition]
+logger.adb:38:61: medium: range check might fail [reason for check: result of subtraction must be convertible to the target type of the conversion] [possible explanation: subprogram at logger.ads:47 should mention Event_Log in a precondition]
 logger.adb:39:13: info: initialization of "Result" proved
 logger.adb:39:13: info: range check proved (CVC4: 2 VC)
 logger.adb:42:23: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 logger.adb:42:35: info: range check proved (CVC4: 4 VC)
-logger.adb:42:35: medium: length check might fail [possible explanation: subprogram at logger.ads:47 should mention Event_Log in a precondition]
+logger.adb:42:35: medium: length check might fail [reason for check: array must be of the appropriate length] [possible explanation: subprogram at logger.ads:47 should mention Event_Log in a precondition]
 logger.adb:44:23: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 logger.adb:45:27: info: range check proved (CVC4: 4 VC)
-logger.adb:46:20: medium: length check might fail [possible explanation: subprogram at logger.ads:47 should mention Event_Log in a precondition]
-logger.adb:46:20: medium: range check might fail [possible explanation: subprogram at logger.ads:47 should mention Event_Log in a precondition]
+logger.adb:46:20: medium: length check might fail [reason for check: array must be of the appropriate length] [possible explanation: subprogram at logger.ads:47 should mention Event_Log in a precondition]
+logger.adb:46:20: medium: range check might fail [reason for check: result of concatenation must fit in the target type of the assignment] [possible explanation: subprogram at logger.ads:47 should mention Event_Log in a precondition]
 logger.adb:46:31: info: range check proved (CVC4: 4 VC)
 logger.ads:50:09: medium: postcondition might fail, cannot prove Log_Content'Result'Last = Log_Index (Log_Size - 1)
-logger.ads:50:55: medium: range check might fail
+logger.ads:50:55: medium: range check might fail [reason for check: result of subtraction must be convertible to the target type of the conversion]

@@ -1,18 +1,18 @@
-init.adb:8:44: medium: overflow check might fail [possible explanation: subprogram at init.ads:9 should mention B and C in a precondition]
-init.adb:8:48: medium: overflow check might fail [possible explanation: subprogram at init.ads:9 should mention B and C and D in a precondition]
-init.adb:11:42: medium: overflow check might fail [possible explanation: subprogram at init.ads:12 should mention A and B in a precondition]
-init.adb:11:46: medium: overflow check might fail [possible explanation: subprogram at init.ads:12 should mention A and B and C in a precondition]
-init.adb:11:50: medium: overflow check might fail [possible explanation: subprogram at init.ads:12 should mention A and B and C and D in a precondition]
+init.adb:8:44: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at init.ads:9 should mention B and C in a precondition]
+init.adb:8:48: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at init.ads:9 should mention B and C and D in a precondition]
+init.adb:11:42: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at init.ads:12 should mention A and B in a precondition]
+init.adb:11:46: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at init.ads:12 should mention A and B and C in a precondition]
+init.adb:11:50: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at init.ads:12 should mention A and B and C and D in a precondition]
 init.ads:4:08: info: flow dependencies proved
 init.ads:5:08: info: initial condition proved (CVC4: 1 VC)
 init.ads:10:11: info: data dependencies proved
 init.ads:13:11: info: data dependencies proved
 init_2.ads:6:08: info: flow dependencies proved
 init_2.ads:8:08: medium: initial condition might fail
-init_2.ads:8:31: medium: overflow check might fail
+init_2.ads:8:31: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 initializes_legal.adb:6:04: info: initialization of "Z" constituent of "AS" proved
 initializes_legal.adb:9:04: info: initialization of "M" constituent of "AS2" proved
-initializes_legal.adb:11:55: medium: overflow check might fail [possible explanation: subprogram at initializes_legal.ads:19 should mention X and Y in a precondition]
+initializes_legal.adb:11:55: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at initializes_legal.ads:19 should mention X and Y in a precondition]
 initializes_legal.ads:7:27: medium: initialization of V must not depend on A (SPARK RM 7.1.5(11))
 initializes_legal.ads:7:27: medium: initialization of V must not depend on Init.State (SPARK RM 7.1.5(11))
 initializes_legal.ads:17:04: info: initialization of "X" proved
@@ -25,7 +25,7 @@ initializes_illegal.ads:9:27: medium: initialization of Initializes_Illegal.SA m
 initializes_illegal.ads:12:04: low: initialization of "W" must be mentioned in the Initializes contract of "Initializes_Illegal" (SPARK RM 7.1.5(9))
 initializes_illegal.ads:15:14: warning: subprogram "Does_Nothing" has no effect
 initializes_illegal_2.adb:7:04: info: initialization of "C" constituent of "AS2" proved
-initializes_illegal_2.adb:9:11: medium: overflow check might fail
+initializes_illegal_2.adb:9:11: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 initializes_illegal_2.ads:7:27: medium: initialization of Initializes_Illegal_2.AS2 must not depend on X (SPARK RM 7.1.5(11))
 initializes_illegal_2.ads:9:27: medium: initialization of Y must not depend on X (SPARK RM 7.1.5(11))
 initializes_illegal_2.ads:14:28: info: overflow check proved (CVC4: 1 VC)

@@ -1,8 +1,8 @@
-prot.adb:10:25: medium: overflow check might fail [possible explanation: subprogram at prot.ads:7 should mention Visible in a precondition]
-prot.adb:15:33: medium: overflow check might fail
-prot.adb:15:37: medium: overflow check might fail
-prot.adb:25:29: medium: overflow check might fail
-prot.adb:35:27: medium: overflow check might fail
+prot.adb:10:25: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at prot.ads:7 should mention Visible in a precondition]
+prot.adb:15:33: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+prot.adb:15:37: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
+prot.adb:25:29: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+prot.adb:35:27: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 prot.ads:8:14: info: data dependencies proved
 prot.ads:11:14: info: data dependencies proved
 prot.ads:17:09: medium: the task might terminate, which is not allowed in SPARK

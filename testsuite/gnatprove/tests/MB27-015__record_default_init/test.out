@@ -1,9 +1,9 @@
-fsb.adb:10:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at fsb.ads:9 should mention X and Y in a precondition]
-fsb.adb:17:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at fsb.ads:12 should mention X and Y in a precondition]
-fsb.adb:17:20: medium: overflow check might fail (e.g. when S = Integer'First and X = -1 and Y = 0) [possible explanation: subprogram at fsb.ads:12 should mention X and Y and S in a precondition]
-fsb.adb:24:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at fsb.ads:15 should mention X and Y in a precondition]
-fsb.adb:31:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at fsb.ads:19 should mention X and Y in a precondition]
-fsb.adb:31:20: medium: overflow check might fail (e.g. when S = Integer'First and X = -1 and Y = 0) [possible explanation: subprogram at fsb.ads:19 should mention X and Y and S in a precondition]
+fsb.adb:10:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at fsb.ads:9 should mention X and Y in a precondition]
+fsb.adb:17:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at fsb.ads:12 should mention X and Y in a precondition]
+fsb.adb:17:20: medium: overflow check might fail (e.g. when S = Integer'First and X = -1 and Y = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at fsb.ads:12 should mention X and Y and S in a precondition]
+fsb.adb:24:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at fsb.ads:15 should mention X and Y in a precondition]
+fsb.adb:31:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at fsb.ads:19 should mention X and Y in a precondition]
+fsb.adb:31:20: medium: overflow check might fail (e.g. when S = Integer'First and X = -1 and Y = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at fsb.ads:19 should mention X and Y and S in a precondition]
 fsb.ads:16:11: info: data dependencies proved
 fsb.ads:20:11: info: data dependencies proved
 p.adb:15:26: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))

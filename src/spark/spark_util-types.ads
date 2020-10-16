@@ -279,13 +279,17 @@ package SPARK_Util.Types is
    --  Go over the items linked from Rep_Item to search for a predicate
    --  pragma or aspect applying to Ty.
 
-   function Is_Valid_Bitpattern_No_Holes (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
+   procedure Is_Valid_Bitpattern_No_Holes (Typ         : Entity_Id;
+                                           Result      : out Boolean;
+                                           Explanation : out Unbounded_String)
+     with Pre => Is_Type (Typ);
    --  Returns True if, for the type passed as argument, any bit pattern of the
    --  right size is a valid value, and the type has no holes. See comments in
    --  the function for more details.
 
-   function Types_Have_Same_Known_Esize (A, B : Entity_Id) return Boolean
+   procedure Types_Have_Same_Known_Esize (A, B        : Entity_Id;
+                                          Result      : out Boolean;
+                                          Explanation : out Unbounded_String)
      with Pre => Is_Type (A) and then Is_Type (B);
    --  Returns True if the two types in argument have the same Esize
 

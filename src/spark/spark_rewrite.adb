@@ -177,6 +177,7 @@ package body SPARK_Rewrite is
    ------------------
 
    procedure Rewrite_Call (N : Node_Id) is
+      Nam : constant Node_Id := Name (N);
    begin
       --  If the subprogram is actually an unchecked type conversion we
       --  rewrite the tree to use an N_Unchecked_Type_Conversion node
@@ -187,14 +188,13 @@ package body SPARK_Rewrite is
       --  it can be distinguished from compiler-generated unchecked type
       --  conversion nodes, which are translated differently into Why.
 
-      if Nkind (Name (N)) in N_Has_Entity
-        and then Present (Entity (Name (N)))
-        and then Is_Unchecked_Conversion_Instance (Entity (Name (N)))
+      if Is_Entity_Name (Nam)
+        and then Is_Unchecked_Conversion_Instance (Entity (Nam))
       then
          --  Rewrite the subprogram name as it will be used in the translation
          --  to Why3.
 
-         Rewrite_Subprogram_Reference (Name (N));
+         Rewrite_Subprogram_Reference (Nam);
 
          Rewrite (Old_Node => N,
                   New_Node => Unchecked_Convert_To
@@ -370,14 +370,6 @@ package body SPARK_Rewrite is
       procedure Rewrite_Nodes is
         new Traverse_More_Proc (Rewrite_Node, Process_Itypes => True);
 
-      procedure Rewrite_Unchecked_Type_Conversion (N : Node_Id);
-      --  Remove compiler-generated unchecked type conversions, which should
-      --  be transparent with our translation, when Do_Range_Check flag is
-      --  set on the node. Replace these nodes with the converted expression
-      --  where Do_Range_Check is set. This ensures that when translating
-      --  the expression, we can effectively ignore the compiler-generated
-      --  unchecked type conversion.
-
       ------------------
       -- Rewrite_Node --
       ------------------
@@ -456,7 +448,7 @@ package body SPARK_Rewrite is
             --  N_Unchecked_Type_Conversion, which are marked as coming
             --  from source.
 
-            when N_Subprogram_Call =>
+            when N_Function_Call =>
                Rewrite_Call (N);
 
             --  Replace renamings and inherited subprograms by the subprogram
@@ -471,15 +463,6 @@ package body SPARK_Rewrite is
                then
                   Rewrite_Subprogram_Reference (N);
                end if;
-
-            --  Replace compiler-generated unchecked type conversions by the
-            --  converted expression when required so that the translation of
-            --  expressions into Why3 can rely on correct flag placement as
-            --  specified in sinfo.ads. We do that here in order to set the
-            --  appropriate range check flag on the rewritten expression.
-
-            when N_Unchecked_Type_Conversion =>
-               Rewrite_Unchecked_Type_Conversion (N);
 
             when N_Subprogram_Instantiation =>
                Rewrite_Subprogram_Instantiation (N);
@@ -570,29 +553,6 @@ package body SPARK_Rewrite is
 
          return OK;
       end Rewrite_Node;
-
-      ---------------------------------------
-      -- Rewrite_Unchecked_Type_Conversion --
-      ---------------------------------------
-
-      procedure Rewrite_Unchecked_Type_Conversion (N : Node_Id) is
-         Expr : constant Node_Id := Expression (N);
-         Typ  : constant Entity_Id := Etype (N);
-
-      begin
-         if not Comes_From_Source (N)
-           and then Do_Range_Check (N)
-         then
-            declare
-               Ignore : constant Traverse_Result := Rewrite_Node (Expr);
-            begin
-               Rewrite (Old_Node => N,
-                        New_Node => Expr);
-               Set_Do_Range_Check (N, True);
-               Set_Etype (N, Typ);
-            end;
-         end if;
-      end Rewrite_Unchecked_Type_Conversion;
 
    --   Start of processing for Rewrite_Compilation_Unit
 

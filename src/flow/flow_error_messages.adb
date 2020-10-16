@@ -26,7 +26,7 @@ with Ada.Characters.Handling;   use Ada.Characters.Handling;
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-
+with Aspects;                   use Aspects;
 with Assumption_Types;          use Assumption_Types;
 with Atree;                     use Atree;
 with Common_Containers;         use Common_Containers;
@@ -52,9 +52,11 @@ with SPARK_Atree;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with SPARK_Util.Types;          use SPARK_Util.Types;
 with SPARK_Xrefs;               use SPARK_Xrefs;
 with Stringt;                   use Stringt;
 with String_Utils;
+with Uintp;                     use Uintp;
 
 package body Flow_Error_Messages is
 
@@ -66,6 +68,11 @@ package body Flow_Error_Messages is
 
    Session_File_Map : Session_File_Maps.Vector;
    --  The list of session files that belong to this gnat2why invocation
+
+   function Get_Details (N : Node_Id; Tag : VC_Kind) return String;
+   --  Given the node N associated to an unproved check of kind Tag, return a
+   --  detailed message explaining why this check is issued (typically in the
+   --  case of a length/range/overflow/index check), or the empty string.
 
    function Get_Explanation (N : Node_Id; Tag : VC_Kind) return String;
    --  @param N node associated to an unproved check
@@ -600,7 +607,6 @@ package body Flow_Error_Messages is
       Stats       : Prover_Stat_Maps.Map;
       Place_First : Boolean)
    is
-
       function Get_Severity
         (N         : Node_Id;
          Is_Proved : Boolean;
@@ -652,9 +658,12 @@ package body Flow_Error_Messages is
          return Result;
       end Get_Severity;
 
-      Msg2   : constant String     := Compute_Message (Msg, N);
-      Slc    : constant Source_Ptr := Compute_Sloc (N, Place_First);
-      VC_Slc : constant Source_Ptr := Compute_Sloc (VC_Loc, Place_First);
+      --  Local variables
+
+      Message : Unbounded_String    :=
+        To_Unbounded_String (Compute_Message (Msg, N));
+      Slc     : constant Source_Ptr := Compute_Sloc (N, Place_First);
+      VC_Slc  : constant Source_Ptr := Compute_Sloc (VC_Loc, Place_First);
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc);
@@ -672,10 +681,6 @@ package body Flow_Error_Messages is
 
          else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
 
-      Msg3     : constant String :=
-        (if One_Liner = "" then Msg2
-         else (Msg2 & " (e.g. when " & One_Liner & ")"));
-
       Severity : constant Msg_Severity := Get_Severity (N, Is_Proved, Tag);
       Suppr    : String_Id := No_String;
       Msg_Id   : Message_Id := No_Message_Id;
@@ -685,6 +690,9 @@ package body Flow_Error_Messages is
    --  Start of processing for Error_Msg_Proof
 
    begin
+      if One_Liner /= "" then
+         Message := Message & " (e.g. when " & One_Liner & ")";
+      end if;
 
       --  Proof (why3) will only report messages that are relevant wrt
       --  limit-line option, but Interval and CodePeer messages will be
@@ -709,22 +717,41 @@ package body Flow_Error_Messages is
                Suppr := Info.Reason;
             else
                declare
-                  Expl : constant String :=
+                  Details : constant String := Get_Details (N, Tag);
+                  Expl    : constant String :=
                     (if Explanation = "" then Get_Explanation (N, Tag)
                      else Explanation);
-                  Msg4 : constant String :=
-                    (if Expl = "" then Msg3
-                     else Msg3 & " [possible explanation: " & Expl & "]");
                begin
-                  Msg_Id := Print_Regular_Msg (Msg4, Slc, Severity);
+                  --  Only display message details when outputting on one line,
+                  --  either as part of automatic testing or inside an IDE, to
+                  --  avoid long unreadable messages for command-line use.
+
+                  if Gnat2Why_Args.Output_Mode = GPO_Oneline
+                    and then Details /= ""
+                  then
+                     Message :=
+                       Message & " [reason for check: " & Details & "]";
+                  end if;
+
+                  if Expl /= "" then
+                     Message :=
+                       Message & " [possible explanation: " & Expl & "]";
+                  end if;
+
+                  Msg_Id :=
+                    Print_Regular_Msg (To_String (Message), Slc, Severity);
                end;
             end if;
+
          when Info_Kind =>
             if Report_Mode /= GPR_Fail then
-               Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity);
+               Msg_Id :=
+                 Print_Regular_Msg (To_String (Message), Slc, Severity);
             end if;
+
          when Warning_Kind =>
-            Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity);
+            Msg_Id := Print_Regular_Msg (To_String (Message), Slc, Severity);
+
          when Error_Kind =>
             --  cannot happen
             raise Program_Error;
@@ -783,6 +810,280 @@ package body Flow_Error_Messages is
       File_Counter := File_Counter + 1;
       return Result;
    end Fresh_Trace_File;
+
+   -----------------
+   -- Get_Details --
+   -----------------
+
+   function Get_Details (N : Node_Id; Tag : VC_Kind) return String is
+
+      Par : Node_Id := Atree.Parent (N);
+      --  Enclosing expression to inform on contect for the check
+
+      --  Name of the operation to use in more detailed message
+      Oper : constant String :=
+        (case Nkind (N) is
+            when N_Op_Add      => "addition",
+            when N_Op_Subtract => "subtraction",
+            when N_Op_Multiply => "multiplication",
+            when N_Op_Divide   => "division",
+            when N_Op_Abs      => "absolute value",
+            when N_Op_Minus    => "negation",
+            when N_Op_Expon    => "exponentiation",
+            when N_Op_Concat   => "concatenation",
+            when others        => "operation");
+
+      --  Name of value to use in more detailed message
+      Value : constant String :=
+        (if Nkind (N) not in N_Op then
+            "value"
+         elsif Tag = VC_FP_Overflow_Check then
+            "result of floating-point " & Oper
+         elsif Nkind (N) in N_Has_Etype
+           and then Is_Fixed_Point_Type (Retysp (Etype (N)))
+         then
+            "result of fixed-point " & Oper
+         else
+            "result of " & Oper);
+
+   --  Start of processing for Get_Details
+
+   begin
+      --  The structure of the code is taken from
+      --  SPARK_Atree.Get_Range_Check_Info, in particular regarding
+      --  the division of cases for range checks.
+
+      --  For uninitialized allocators, N is not a scalar expression but
+      --  the allocator itself.
+
+      if Nkind (N) = N_Allocator then
+         Par := N;
+      end if;
+
+      --  In proof, we use the original node for unchecked conversions
+      --  coming from source.
+
+      if Nkind (Par) = N_Unchecked_Type_Conversion
+        and then Comes_From_Source (Par)
+      then
+         Par := Original_Node (Par);
+      end if;
+
+      case Tag is
+         when VC_Index_Check =>
+            return Value & " must be a valid index into the array";
+
+         when VC_Length_Check =>
+
+            --  Length check is put on the interesting node itself in various
+            --  cases.
+
+            case Nkind (N) is
+            when N_Assignment_Statement =>
+               return "source and destination arrays for the assignment"
+                 & " must have the same length";
+
+            when N_Op_Boolean =>
+               return "both array operands must have the same length";
+
+            when others =>
+               null;
+            end case;
+
+            --  In the remaining cases, look for the parent node as interesting
+            --  node.
+
+            case Nkind (Par) is
+
+            when N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               if Comes_From_Source (Par) then
+                  return
+                    Value & " must have same length as the target array type"
+                    & " of the conversion";
+               else
+                  return "";
+               end if;
+
+            when N_Qualified_Expression =>
+               return Value & " must have the same length as the array type"
+                 & " of the qualification";
+
+            when N_Parameter_Association
+               | N_Function_Call
+               | N_Procedure_Call_Statement
+               | N_Entry_Call_Statement
+            =>
+               return "argument array must have the same length"
+                 & " as the parameter array type";
+
+            when others =>
+               return "array must be of the appropriate length";
+            end case;
+
+         when VC_FP_Overflow_Check
+            | VC_Overflow_Check
+         =>
+            Overflow_Case : declare
+
+               --  Generate a suitable detailed message for a check on value
+               --  Val having size Siz bits.
+               function Insert_Value_Size (Val, Siz : String) return String is
+                 --  A floating-point overflow check is improbable in practice.
+                 --  The user should be notified that values should be bounded,
+                 --  rather than reminding her of the absurdly high bound of
+                 --  floats that may be violated only in theory.
+                 (if Tag = VC_FP_Overflow_Check then
+                     Val & " must be bounded"
+
+                  --  Overflow on fixed-point operation is really against the
+                  --  the underlying machine integer. Spell that out.
+                  elsif Nkind (N) in N_Has_Etype
+                    and then Is_Fixed_Point_Type (Retysp (Etype (N)))
+                  then
+                     Val & " must fit in the underlying " &
+                     Siz & "-bits machine integer"
+
+                  --  Remind the user of the size of the machine integer used
+                  else
+                     Val & " must fit in a " & Siz & "-bits machine integer");
+
+               Size : constant String := UI_Image (Esize (Etype (N)));
+
+            begin
+               return Insert_Value_Size (Value, Size);
+            end Overflow_Case;
+
+         --  For range check, follow the division of cases from
+         --  SPARK_Atree.Get_Range_Check_Info, based on the kind of
+         --  the enclosing expression.
+
+         when VC_Range_Check =>
+
+            --  Range check is put on the node itself for slices
+
+            if Nkind (N) = N_Slice then
+               return "slice bounds must fit in the underlying array";
+            end if;
+
+            --  In the remaining cases, look for the parent node as interesting
+            --  node.
+
+            case Nkind (Par) is
+
+            when N_Assignment_Statement =>
+               return Value & " must fit in the target type of the assignment";
+
+            when N_Indexed_Component =>
+               return Value & " must be a valid index into the array";
+
+            when N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               if Comes_From_Source (Par) then
+                  return
+                    Value & " must be convertible to the target type"
+                    & " of the conversion";
+               else
+                  return "";
+               end if;
+
+            when N_Qualified_Expression =>
+               return Value & " must fit in the type of the qualification";
+
+            when N_Simple_Return_Statement =>
+               return
+                 "returned value must fit in the result type of the function";
+
+            when N_Parameter_Association
+               | N_Function_Call
+               | N_Procedure_Call_Statement
+               | N_Entry_Call_Statement
+            =>
+               declare
+                  Param : constant Entity_Id := Get_Formal_From_Actual (N);
+               begin
+                  case Formal_Kind'(Ekind (Param)) is
+                     when E_In_Parameter =>
+                        return "input value must fit in parameter type";
+                     when E_Out_Parameter =>
+                        return "output value must fit in argument type";
+                     when E_In_Out_Parameter =>
+                        return "input value must fit in parameter type and "
+                          & "output value must fit in argument type";
+                  end case;
+               end;
+
+            when N_Attribute_Reference =>
+               Attribute : declare
+                  Aname   : constant Name_Id := Attribute_Name (Par);
+                  Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
+               begin
+                  case Attr_Id is
+                     when Attribute_Pred =>
+                        return "value cannot be minimum value of the type";
+                     when Attribute_Succ =>
+                        return "value cannot be maximum value of the type";
+                     when Attribute_Val =>
+                        return "value must correspond to position in the type";
+                     when others =>
+                        return "";
+                  end case;
+               end Attribute;
+
+            when N_Op_Expon =>
+               return "exponent value must fit in type Natural";
+
+            when N_Component_Association =>
+               return Value & " must fit in component type";
+
+            when N_Range =>
+               return
+                 "bounds of non-empty range must fit in the underlying type";
+
+            when N_Aggregate =>
+               return "";
+
+            --  We only expect range checks on aspects for default values
+
+            when N_Aspect_Specification =>
+               case Aspects.Get_Aspect_Id (Par) is
+                  when Aspects.Aspect_Default_Component_Value =>
+                     return "default component value must fit" &
+                       " in the component type";
+                  when Aspects.Aspect_Default_Value =>
+                     return "default value must fit in the type";
+                  when others =>
+                     raise Program_Error;
+               end case;
+
+            --  We expect range checks on defaults of record fields and
+            --  discriminants.
+
+            when N_Object_Declaration
+               | N_Component_Declaration
+               | N_Discriminant_Specification
+            =>
+               return "default component value must fit in the type";
+
+            when N_If_Expression =>
+               return "value must fit in the type of the expression";
+
+            when N_Case_Expression_Alternative =>
+               return "value must fit in the type of the expression";
+
+            when N_Allocator =>
+               return "value must fit in the designated type of the allocator";
+
+            when others =>
+               return "";
+            end case;
+
+         when others =>
+            return "";
+      end case;
+   end Get_Details;
 
    ---------------------
    -- Get_Explanation --
@@ -1317,32 +1618,7 @@ package body Flow_Error_Messages is
 
    begin
 
-      if Tag = VC_UC_No_Holes then
-         pragma Assert
-           (Nkind (N) in N_Identifier
-                       | N_Expanded_Name
-                       | N_Object_Declaration
-                       | N_Attribute_Reference);
-         declare
-            Ty : constant Entity_Id :=
-              (if Nkind (N) = N_Object_Declaration then
-                    Etype (Defining_Identifier (N))
-               elsif Nkind (N) = N_Attribute_Reference then
-                    Etype (Prefix (N))
-               else Entity (N));
-         begin
-            if not Is_Scalar_Type (Ty) and then not Known_Esize (Ty) then
-               return
-                 "type should have an Object_Size representation clause" &
-                 " or aspect";
-            end if;
-            if Is_Floating_Point_Type (Ty) then
-               return "floating-point types have invalid bit patterns" &
-                 " for SPARK";
-            end if;
-         end;
-         return "";
-      elsif Tag = VC_UC_Alignment then
+      if Tag = VC_UC_Alignment then
          pragma Assert (Nkind (N) = N_Object_Declaration);
          declare
             Obj    : constant Entity_Id := Defining_Identifier (N);

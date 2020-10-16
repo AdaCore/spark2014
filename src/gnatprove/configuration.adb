@@ -620,10 +620,6 @@ package body Configuration is
             Long_Switch => "--codepeer=");
          Define_Switch
            (Config,
-            CL_Switches.Coverage'Access,
-            Long_Switch => "--coverage");
-         Define_Switch
-           (Config,
             CL_Switches.CWE'Access,
             Long_Switch => "--cwe");
          Define_Switch
@@ -713,6 +709,10 @@ package body Configuration is
            (Config,
             CL_Switches.No_Subprojects'Access,
             Long_Switch => "--no-subprojects");
+         Define_Switch
+           (Config,
+            CL_Switches.Output'Access,
+            Long_Switch => "--output=");
          Define_Switch
            (Config,
             CL_Switches.Output_Header'Access,
@@ -1140,6 +1140,7 @@ package body Configuration is
       --  Set the variables of the Prj_Attr package
 
       procedure Set_Mode;
+      procedure Set_Output_Mode;
       procedure Set_Warning_Mode;
       procedure Set_Report_Mode;
 
@@ -1384,6 +1385,7 @@ package body Configuration is
          Set_CodePeer_Mode (CL_Switches.CodePeer.all);
          GnateT_Switch := new String'(Check_gnateT_Switch (Tree));
          Set_Mode;
+         Set_Output_Mode;
          Set_Warning_Mode;
          Set_Report_Mode;
          Set_Proof_Dir;
@@ -1617,6 +1619,24 @@ package body Configuration is
                        With_Help => False);
          end if;
       end Set_Mode;
+
+      ---------------------
+      -- Set_Output_Mode --
+      ---------------------
+
+      procedure Set_Output_Mode is
+      begin
+         if CL_Switches.Output.all = "" then
+            Output := GPO_Pretty;
+         elsif CL_Switches.Output.all = "oneline" then
+            Output := GPO_Oneline;
+         elsif CL_Switches.Output.all = "pretty" then
+            Output := GPO_Pretty;
+         else
+            Abort_Msg ("error: wrong argument for --output",
+                       With_Help => False);
+         end if;
+      end Set_Output_Mode;
 
       ----------------------
       -- Set_Project_Vars --

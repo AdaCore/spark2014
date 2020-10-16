@@ -19,16 +19,16 @@ infoflow.adb:97:10: info: initialization of "M_V1" proved
 infoflow.adb:99:28: info: division check proved (CVC4: 1 VC)
 infoflow.adb:103:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove H_V1 (K) = H_V1'Loop_Entry (K + M_V1)
 infoflow.adb:103:40: info: index check proved (CVC4: 4 VC)
-infoflow.adb:103:64: medium: array index check might fail
+infoflow.adb:103:64: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 infoflow.adb:105:34: medium: loop invariant might fail in first iteration, cannot prove H_V1 (K) = H_V1'Loop_Entry (K - M_V1)
 infoflow.adb:105:40: info: index check proved (CVC4: 4 VC)
-infoflow.adb:105:64: medium: array index check might fail
+infoflow.adb:105:64: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
 infoflow.adb:106:42: info: index check proved (CVC4: 4 VC)
 infoflow.adb:106:64: info: index check proved (CVC4: 4 VC)
-infoflow.adb:107:27: medium: array index check might fail
+infoflow.adb:107:27: medium: array index check might fail [reason for check: value must be a valid index into the array]
 infoflow.adb:108:19: info: index check proved (CVC4: 2 VC)
-infoflow.adb:108:39: medium: array index check might fail
-infoflow.adb:108:39: medium: overflow check might fail
+infoflow.adb:108:39: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+infoflow.adb:108:39: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 infoflow.adb:109:24: info: index check proved (CVC4: 2 VC)
 infoflow.adb:109:24: info: overflow check proved (CVC4: 1 VC)
 infoflow.adb:113:30: info: assertion proved (Trivial: 1 VC)
@@ -37,16 +37,16 @@ infoflow.adb:119:10: info: initialization of "M_V2" proved
 infoflow.adb:121:28: info: division check proved (CVC4: 1 VC)
 infoflow.adb:125:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove H_V2 (K) = H_V2'Loop_Entry (K + M_V2)
 infoflow.adb:125:40: info: index check proved (CVC4: 4 VC)
-infoflow.adb:125:64: medium: array index check might fail
+infoflow.adb:125:64: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 infoflow.adb:127:34: medium: loop invariant might fail in first iteration, cannot prove H_V2 (K) = H_V2'Loop_Entry (K - M_V2)
 infoflow.adb:127:40: info: index check proved (CVC4: 4 VC)
-infoflow.adb:127:64: medium: array index check might fail
+infoflow.adb:127:64: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
 infoflow.adb:128:42: info: index check proved (CVC4: 4 VC)
 infoflow.adb:128:64: info: index check proved (CVC4: 4 VC)
-infoflow.adb:129:27: medium: array index check might fail
+infoflow.adb:129:27: medium: array index check might fail [reason for check: value must be a valid index into the array]
 infoflow.adb:130:19: info: index check proved (CVC4: 2 VC)
-infoflow.adb:130:39: medium: array index check might fail
-infoflow.adb:130:39: medium: overflow check might fail
+infoflow.adb:130:39: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+infoflow.adb:130:39: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 infoflow.adb:131:24: info: index check proved (CVC4: 2 VC)
 infoflow.adb:131:24: info: overflow check proved (CVC4: 1 VC)
 infoflow.adb:140:35: info: division check proved (CVC4: 1 VC)
@@ -87,7 +87,7 @@ infoflow.adb:178:10: info: assertion proved (CVC4: 1 VC)
 infoflow.adb:178:23: medium: "A_V1" might not be initialized
 infoflow.adb:179:18: info: index check proved (CVC4: 2 VC)
 infoflow.adb:179:29: info: index check proved (CVC4: 2 VC)
-infoflow.adb:181:22: medium: overflow check might fail
+infoflow.adb:181:22: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 infoflow.adb:182:33: info: loop invariant initialization proved (CVC4: 2 VC)
 infoflow.adb:182:33: info: loop invariant preservation proved (CVC4: 2 VC)
 infoflow.adb:182:47: medium: "A_V1" might not be initialized
@@ -120,7 +120,7 @@ infoflow.adb:210:32: info: index check proved (CVC4: 2 VC)
 infoflow.adb:212:24: medium: "A_V2" might not be initialized
 infoflow.adb:213:19: info: index check proved (CVC4: 2 VC)
 infoflow.adb:213:30: info: index check proved (CVC4: 2 VC)
-infoflow.adb:215:22: medium: overflow check might fail
+infoflow.adb:215:22: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 infoflow.adb:216:33: info: loop invariant initialization proved (CVC4: 2 VC)
 infoflow.adb:216:33: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
 infoflow.adb:216:47: medium: "A_V2" might not be initialized

@@ -1,145 +1,145 @@
-a-cfdlli.ads:469:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:610:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:700:57: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:766:57: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:853:28: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:853:39: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1029:43: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1210:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1349:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1364:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1379:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1394:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1416:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1422:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1471:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1478:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1577:54: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:6
-a-cfhama.ads:681:39: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
-a-cfhama.ads:681:39: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
-a-cfhama.ads:690:17: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
-a-cfhama.ads:690:17: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
-a-cfhama.ads:720:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
-a-cfhama.ads:720:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
-a-cfhama.ads:735:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
-a-cfhama.ads:735:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
-a-cfhase.ads:497:18: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:497:18: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:813:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:813:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:822:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:822:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:843:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:843:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:844:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:844:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:892:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:892:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1069:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1069:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1070:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1070:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1070:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1070:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1110:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1110:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1202:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1202:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1223:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1223:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfdlli.ads:469:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:610:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:700:57: info: overflow check proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:766:57: info: overflow check proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:853:28: info: overflow check proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:853:39: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1029:43: info: overflow check proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1210:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1349:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1364:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1379:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1394:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1416:14: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1422:23: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1471:14: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1478:23: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1577:54: info: overflow check proved (CVC4: 1 VC), in instantiation at my_lists.ads:6
+a-cfhama.ads:681:39: info: precondition proved (CVC4: 1 VC), in instantiation at my_maps.ads:25
+a-cfhama.ads:681:39: info: precondition proved (CVC4: 1 VC), in instantiation at my_maps.ads:8
+a-cfhama.ads:690:17: info: precondition proved (CVC4: 1 VC), in instantiation at my_maps.ads:25
+a-cfhama.ads:690:17: info: precondition proved (CVC4: 1 VC), in instantiation at my_maps.ads:8
+a-cfhama.ads:720:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_maps.ads:25
+a-cfhama.ads:720:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_maps.ads:8
+a-cfhama.ads:735:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_maps.ads:25
+a-cfhama.ads:735:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_maps.ads:8
+a-cfhase.ads:497:18: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:497:18: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:813:39: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:813:39: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:822:17: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:822:17: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:843:24: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:843:24: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:844:26: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:844:26: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:892:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:892:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1069:24: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1069:24: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1070:26: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1070:26: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1070:44: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1070:44: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1110:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1110:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1202:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1202:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1223:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1223:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_sets.ads:8
 a-cfhase.ads:1430:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_sets.ads:33
-a-cfinve.ads:602:57: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cfinve.ads:730:23: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cfinve.ads:733:38: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cfinve.ads:766:14: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cfinve.ads:770:35: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cforma.ads:745:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:745:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:754:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:754:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:789:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:789:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:797:21: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:797:21: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:824:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:824:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:832:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:832:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:902:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:902:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:917:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:917:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:932:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:932:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:947:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:947:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:987:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:987:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforma.ads:1002:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
-a-cforma.ads:1002:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
-a-cforse.ads:511:18: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:511:18: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:870:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:870:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:879:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:879:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:914:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:914:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:922:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:922:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:949:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:949:42: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:957:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:957:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:974:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:974:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:975:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:975:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1023:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1023:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1193:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1193:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1194:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1194:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1194:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1194:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1233:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1233:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1337:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1337:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1352:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1352:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1367:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1367:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1382:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1382:20: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1416:47: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1416:47: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1431:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
-a-cforse.ads:1431:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cfinve.ads:602:57: info: range check proved (CVC4: 1 VC), in instantiation at my_vectors.ads:5
+a-cfinve.ads:730:23: info: precondition proved (CVC4: 1 VC), in instantiation at my_vectors.ads:5
+a-cfinve.ads:733:38: info: range check proved (CVC4: 1 VC), in instantiation at my_vectors.ads:5
+a-cfinve.ads:766:14: info: precondition proved (CVC4: 1 VC), in instantiation at my_vectors.ads:5
+a-cfinve.ads:770:35: info: range check proved (CVC4: 1 VC), in instantiation at my_vectors.ads:5
+a-cforma.ads:745:39: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:745:39: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:754:17: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:754:17: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:789:42: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:789:42: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:797:21: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:797:21: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:824:42: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:824:42: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:832:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:832:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:902:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:902:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:917:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:917:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:932:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:932:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:947:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:947:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:987:46: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:987:46: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforma.ads:1002:40: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:20
+a-cforma.ads:1002:40: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_maps.ads:6
+a-cforse.ads:511:18: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:511:18: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:870:39: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:870:39: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:879:17: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:879:17: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:914:42: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:914:42: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:922:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:922:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:949:42: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:949:42: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:957:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:957:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:974:24: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:974:24: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:975:26: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:975:26: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1023:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1023:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1193:24: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1193:24: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1194:26: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1194:26: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1194:44: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1194:44: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1233:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1233:49: info: overflow check proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1337:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1337:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1352:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1352:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1367:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1367:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1382:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1382:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1416:47: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1416:47: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1431:40: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:18
+a-cforse.ads:1431:40: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:6
 a-cforse.ads:1698:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_ordered_sets.ads:26
-a-cforse.ads:1719:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
-a-cforse.ads:1737:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
-a-cofove.ads:295:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:337:73: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:370:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:405:59: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:451:59: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:475:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:516:59: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:581:28: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:581:57: info: range check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:709:23: info: precondition proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:745:14: info: precondition proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:843:56: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:7
-a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:24
-a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:8
-a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at my_ordered_sets.ads:18
-a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at my_ordered_sets.ads:6
-a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:24
-a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:8
-a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at my_ordered_sets.ads:18
-a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at my_ordered_sets.ads:6
+a-cforse.ads:1719:46: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cforse.ads:1737:40: info: precondition proved (CVC4: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cofove.ads:295:51: info: overflow check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:337:73: info: overflow check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:370:51: info: overflow check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:405:59: info: overflow check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:451:59: info: overflow check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:475:51: info: overflow check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:516:59: info: overflow check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:581:28: info: overflow check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:581:57: info: range check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:709:23: info: precondition proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:745:14: info: precondition proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:843:56: info: overflow check proved (CVC4: 1 VC), in instantiation at my_bounded_vectors.ads:7
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:24
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:8
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at my_ordered_sets.ads:18
+a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at my_ordered_sets.ads:6
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:24
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:8
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at my_ordered_sets.ads:18
+a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at my_ordered_sets.ads:6
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
@@ -151,189 +151,189 @@ a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at my_lists.ads:4
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:25
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at my_maps.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at my_vectors.ads:5
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:20
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at my_ordered_maps.ads:6
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at my_bounded_vectors.ads:4
 my_bounded_vectors.adb:9:07: info: initialization of "L" proved
 my_bounded_vectors.adb:9:10: info: initialization of "K" proved
-my_bounded_vectors.adb:9:22: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:12:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:13:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:14:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:15:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:16:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:18:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:23:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:26:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:28:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:34:07: info: precondition proved (Z3: 3 VC)
-my_bounded_vectors.adb:34:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:35:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:35:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:37:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:38:27: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:40:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:41:07: info: precondition proved (Z3: 3 VC)
-my_bounded_vectors.adb:41:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:42:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:42:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:45:24: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
-my_bounded_vectors.adb:47:10: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
-my_bounded_vectors.adb:50:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:50:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:51:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:51:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:52:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:52:24: info: overflow check proved (Z3: 1 VC)
-my_bounded_vectors.adb:53:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:53:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:54:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:54:24: info: overflow check proved (Z3: 1 VC)
-my_bounded_vectors.adb:55:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:55:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:61:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:61:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:62:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:62:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:63:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:63:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:65:27: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:67:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:69:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:69:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:74:07: info: precondition proved (Z3: 3 VC)
-my_bounded_vectors.adb:74:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:75:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:75:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:77:27: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:79:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:80:07: info: precondition proved (Z3: 3 VC)
-my_bounded_vectors.adb:80:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:81:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:81:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:82:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:82:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:84:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:84:27: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:85:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:85:29: info: overflow check proved (Z3: 1 VC)
-my_bounded_vectors.adb:85:29: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:87:22: info: assertion proved (Z3: 1 VC)
+my_bounded_vectors.adb:9:22: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:12:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:13:07: info: precondition proved (CVC4: 1 VC)
+my_bounded_vectors.adb:14:07: info: precondition proved (CVC4: 1 VC)
+my_bounded_vectors.adb:15:07: info: precondition proved (CVC4: 1 VC)
+my_bounded_vectors.adb:16:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:18:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:23:07: info: precondition proved (CVC4: 1 VC)
+my_bounded_vectors.adb:24:07: info: precondition proved (CVC4: 1 VC)
+my_bounded_vectors.adb:25:07: info: precondition proved (CVC4: 1 VC)
+my_bounded_vectors.adb:26:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:28:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:34:07: info: precondition proved (CVC4: 3 VC)
+my_bounded_vectors.adb:34:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:35:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:35:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:37:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:38:27: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:40:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:41:07: info: precondition proved (CVC4: 3 VC)
+my_bounded_vectors.adb:41:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:42:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:42:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:45:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+my_bounded_vectors.adb:47:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+my_bounded_vectors.adb:50:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:50:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:51:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:51:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:52:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:52:24: info: overflow check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:53:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:53:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:54:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:54:24: info: overflow check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:55:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:55:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:61:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:61:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:62:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:62:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:63:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:63:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:65:27: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:67:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:69:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:69:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:74:07: info: precondition proved (CVC4: 3 VC)
+my_bounded_vectors.adb:74:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:75:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:75:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:77:27: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:79:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:80:07: info: precondition proved (CVC4: 3 VC)
+my_bounded_vectors.adb:80:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:81:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:81:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:82:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:82:18: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:84:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:84:27: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:85:07: info: precondition proved (CVC4: 2 VC)
+my_bounded_vectors.adb:85:29: info: overflow check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:85:29: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:87:22: info: assertion proved (CVC4: 1 VC)
 my_bounded_vectors.adb:88:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:88:53: info: overflow check proved (Z3: 1 VC)
+my_bounded_vectors.adb:88:53: info: overflow check proved (CVC4: 1 VC)
 my_bounded_vectors.adb:89:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:90:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:93:07: info: precondition proved (Z3: 4 VC)
-my_bounded_vectors.adb:93:19: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:95:30: info: assertion proved (Z3: 2 VC)
-my_bounded_vectors.adb:96:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
-my_bounded_vectors.adb:101:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:103:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:106:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
-my_bounded_vectors.adb:109:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:110:22: info: assertion proved (Z3: 1 VC)
+my_bounded_vectors.adb:90:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:93:07: info: precondition proved (CVC4: 4 VC)
+my_bounded_vectors.adb:93:19: info: range check proved (CVC4: 1 VC)
+my_bounded_vectors.adb:95:30: info: assertion proved (CVC4: 2 VC)
+my_bounded_vectors.adb:96:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+my_bounded_vectors.adb:101:07: info: precondition proved (CVC4: 1 VC)
+my_bounded_vectors.adb:103:22: info: assertion proved (CVC4: 1 VC)
+my_bounded_vectors.adb:106:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+my_bounded_vectors.adb:109:07: info: precondition proved (CVC4: 1 VC)
+my_bounded_vectors.adb:110:22: info: assertion proved (CVC4: 1 VC)
 my_bounded_vectors.ads:9:14: warning: subprogram "Test_Bounded_Vectors" has no effect
 my_lists.adb:7:07: info: initialization of "L" proved
 my_lists.adb:7:10: info: initialization of "K" proved
-my_lists.adb:7:20: info: range check proved (Z3: 1 VC)
+my_lists.adb:7:20: info: range check proved (CVC4: 1 VC)
 my_lists.adb:8:07: info: initialization of "C" proved
 my_lists.adb:8:10: info: initialization of "D" proved
-my_lists.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:13:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:14:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:17:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:18:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:19:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:21:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:26:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:29:22: info: assertion proved (Z3: 1 VC)
+my_lists.adb:10:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:13:12: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:14:12: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:16:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:17:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:18:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:19:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:21:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:24:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:25:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:26:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:27:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:29:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:32:07: medium: assertion might fail
-my_lists.adb:34:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:35:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:37:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:39:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:41:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:43:22: info: assertion proved (Z3: 2 VC)
-my_lists.adb:44:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:45:22: info: assertion proved (Z3: 2 VC)
-my_lists.adb:46:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:47:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:49:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:50:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:51:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:53:12: info: discriminant check proved (Z3: 1 VC)
-my_lists.adb:53:12: info: precondition proved (Z3: 1 VC)
+my_lists.adb:34:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:35:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:37:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:39:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:41:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:43:22: info: assertion proved (CVC4: 2 VC)
+my_lists.adb:44:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:45:22: info: assertion proved (CVC4: 2 VC)
+my_lists.adb:46:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:47:12: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:49:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:50:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:51:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:53:12: info: discriminant check proved (CVC4: 1 VC)
+my_lists.adb:53:12: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:55:12: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:56:07: info: precondition proved (Z3: 1 VC)
+my_lists.adb:56:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:57:12: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:58:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:59:12: info: precondition proved (CVC4: 1 VC)
@@ -347,581 +347,581 @@ my_lists.adb:65:26: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:65:65: info: overflow check proved (CVC4: 1 VC)
 my_lists.adb:66:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:71:07: medium: assertion might fail
-my_lists.adb:73:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:74:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:76:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:78:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:79:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:80:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:81:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
-my_lists.adb:83:22: info: assertion proved (Z3: 1 VC)
+my_lists.adb:73:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:74:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:76:12: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:78:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:79:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:80:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:81:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:83:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:86:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:87:07: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:87:27: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:89:22: info: assertion proved (CVC4: 1 VC)
-my_lists.adb:89:22: info: precondition proved (Z3: 1 VC)
+my_lists.adb:89:22: info: precondition proved (CVC4: 1 VC)
 my_lists.adb:90:22: info: assertion proved (CVC4: 1 VC)
-my_lists.adb:90:22: info: precondition proved (Z3: 1 VC)
-my_lists.adb:90:45: info: precondition proved (Z3: 1 VC)
-my_lists.adb:91:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:91:22: info: precondition proved (Z3: 1 VC)
-my_lists.adb:92:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:92:22: info: precondition proved (Z3: 1 VC)
-my_lists.adb:95:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:96:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:98:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:101:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:103:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:105:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:111:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:112:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:113:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:115:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:117:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:118:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:120:07: info: precondition proved (Z3: 3 VC)
-my_lists.adb:121:07: info: precondition proved (Z3: 3 VC)
+my_lists.adb:90:22: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:90:45: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:91:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:91:22: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:92:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:92:22: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:95:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:96:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:98:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:101:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:103:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:105:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:111:12: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:112:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:113:07: info: precondition proved (CVC4: 2 VC)
+my_lists.adb:115:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:117:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:118:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:120:07: info: precondition proved (CVC4: 3 VC)
+my_lists.adb:121:07: info: precondition proved (CVC4: 3 VC)
 my_lists.adb:123:07: medium: assertion might fail
-my_lists.adb:127:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:132:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:134:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:137:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:140:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:141:22: info: assertion proved (Z3: 1 VC)
+my_lists.adb:127:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:132:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:134:22: info: assertion proved (CVC4: 1 VC)
+my_lists.adb:137:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:140:07: info: precondition proved (CVC4: 1 VC)
+my_lists.adb:141:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:142:07: medium: assertion might fail
 my_lists.ads:8:14: warning: subprogram "Test_List" has no effect
 my_maps.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
 my_maps.adb:6:07: info: initialization of "L" proved
 my_maps.adb:6:10: info: initialization of "K" proved
-my_maps.adb:6:19: info: range check proved (Z3: 1 VC)
-my_maps.adb:6:23: info: range check proved (Z3: 1 VC)
+my_maps.adb:6:19: info: range check proved (CVC4: 1 VC)
+my_maps.adb:6:23: info: range check proved (CVC4: 1 VC)
 my_maps.adb:7:07: info: initialization of "C" proved
 my_maps.adb:8:07: info: initialization of "B" proved
-my_maps.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:12:12: info: precondition proved (Z3: 1 VC)
-my_maps.adb:14:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:15:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:17:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:18:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:18:22: info: precondition proved (Z3: 1 VC)
-my_maps.adb:20:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:21:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:28:07: info: precondition proved (Z3: 1 VC)
+my_maps.adb:10:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:12:12: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:14:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_maps.adb:15:07: info: precondition proved (CVC4: 2 VC)
+my_maps.adb:16:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:17:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:18:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:18:22: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:20:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:21:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:24:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:25:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:27:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:28:07: info: precondition proved (CVC4: 1 VC)
 my_maps.adb:29:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:30:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:32:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:34:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:35:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:38:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:40:22: info: assertion proved (Z3: 1 VC)
+my_maps.adb:30:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:32:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:34:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:35:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:38:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:40:22: info: assertion proved (CVC4: 1 VC)
 my_maps.adb:41:07: medium: assertion might fail
 my_maps.adb:44:14: warning: subprogram "Test_Map_Rec" has no effect
 my_maps.adb:46:07: info: initialization of "L" proved
 my_maps.adb:46:10: info: initialization of "K" proved
-my_maps.adb:46:19: info: range check proved (Z3: 1 VC)
-my_maps.adb:46:23: info: range check proved (Z3: 1 VC)
+my_maps.adb:46:19: info: range check proved (CVC4: 1 VC)
+my_maps.adb:46:23: info: range check proved (CVC4: 1 VC)
 my_maps.adb:47:07: info: initialization of "C" proved
 my_maps.adb:48:07: info: initialization of "B" proved
-my_maps.adb:50:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:52:12: info: precondition proved (Z3: 1 VC)
-my_maps.adb:54:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:55:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:56:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:56:22: info: precondition proved (Z3: 1 VC)
-my_maps.adb:57:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:58:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:59:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:60:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:60:22: info: precondition proved (Z3: 1 VC)
-my_maps.adb:62:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:63:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:66:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:67:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:69:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:70:07: info: precondition proved (Z3: 1 VC)
+my_maps.adb:50:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:52:12: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:54:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_maps.adb:55:07: info: precondition proved (CVC4: 2 VC)
+my_maps.adb:56:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:56:22: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:57:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:58:22: info: assertion proved (altergo: 1 VC)
+my_maps.adb:59:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:60:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:60:22: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:62:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:63:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:66:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:67:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:69:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:70:07: info: precondition proved (CVC4: 1 VC)
 my_maps.adb:71:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:72:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:74:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:76:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:77:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:80:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:82:22: info: assertion proved (Z3: 1 VC)
+my_maps.adb:72:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:74:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:76:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:77:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:80:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:82:22: info: assertion proved (CVC4: 1 VC)
 my_maps.adb:83:07: medium: assertion might fail
 my_maps.adb:86:14: warning: subprogram "Test_Map_Rec_2" has no effect
 my_maps.adb:88:07: info: initialization of "L" proved
 my_maps.adb:88:10: info: initialization of "K" proved
-my_maps.adb:88:19: info: range check proved (Z3: 1 VC)
-my_maps.adb:88:23: info: range check proved (Z3: 1 VC)
+my_maps.adb:88:19: info: range check proved (CVC4: 1 VC)
+my_maps.adb:88:23: info: range check proved (CVC4: 1 VC)
 my_maps.adb:89:07: info: initialization of "C" proved
 my_maps.adb:90:07: info: initialization of "B" proved
-my_maps.adb:92:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:94:12: info: precondition proved (Z3: 1 VC)
-my_maps.adb:96:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:97:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:98:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:99:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:100:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:101:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:101:22: info: precondition proved (Z3: 1 VC)
-my_maps.adb:103:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:104:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:107:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:108:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:110:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:111:07: info: precondition proved (Z3: 1 VC)
+my_maps.adb:92:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:94:12: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:96:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_maps.adb:97:07: info: precondition proved (CVC4: 2 VC)
+my_maps.adb:98:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:99:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:100:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:101:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:101:22: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:103:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:104:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:107:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:108:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:110:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:111:07: info: precondition proved (CVC4: 1 VC)
 my_maps.adb:112:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:113:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:115:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:117:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
+my_maps.adb:113:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:115:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:117:07: info: precondition proved (CVC4: 1 VC)
+my_maps.adb:118:22: info: assertion proved (altergo: 1 VC)
 my_maps.adb:121:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:123:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:124:07: medium: assertion might fail
 my_maps.adb:129:07: info: precondition proved (Trivial: 1 VC)
 my_maps.adb:130:07: info: precondition proved (Trivial: 1 VC)
 my_maps.adb:131:07: info: precondition proved (Trivial: 1 VC)
-my_maps.ads:20:17: info: postcondition proved (Z3: 2 VC)
+my_maps.ads:20:17: info: postcondition proved (CVC4: 2 VC)
 my_maps.ads:31:14: warning: subprogram "Test_Map" has no effect
 my_ordered_maps.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
 my_ordered_maps.adb:6:07: info: initialization of "L" proved
 my_ordered_maps.adb:6:10: info: initialization of "K" proved
-my_ordered_maps.adb:6:19: info: range check proved (Z3: 1 VC)
+my_ordered_maps.adb:6:19: info: range check proved (CVC4: 1 VC)
 my_ordered_maps.adb:7:07: info: initialization of "C" proved
 my_ordered_maps.adb:8:07: info: initialization of "B" proved
-my_ordered_maps.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:12:12: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:14:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:15:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:17:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:18:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:18:22: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:20:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:21:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:28:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:29:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:31:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:31:36: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:32:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:32:36: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:33:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:34:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:34:36: info: precondition proved (Z3: 1 VC)
+my_ordered_maps.adb:10:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:12:12: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:14:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_ordered_maps.adb:15:07: info: precondition proved (CVC4: 2 VC)
+my_ordered_maps.adb:16:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:17:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:18:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:18:22: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:20:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:21:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:24:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:25:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:27:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:28:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:29:07: info: precondition proved (CVC4: 2 VC)
+my_ordered_maps.adb:31:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:31:36: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:32:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:32:36: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:33:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:34:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:34:36: info: precondition proved (CVC4: 1 VC)
 my_ordered_maps.adb:35:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:35:36: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:36:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:38:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:39:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:40:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:41:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:46:07: info: precondition proved (Z3: 1 VC)
+my_ordered_maps.adb:35:36: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:36:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:38:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:39:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:40:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+my_ordered_maps.adb:41:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:46:07: info: precondition proved (CVC4: 1 VC)
 my_ordered_maps.adb:48:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:49:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:49:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_maps.adb:52:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:54:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:54:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_maps.adb:57:07: medium: assertion might fail
 my_ordered_maps.adb:60:14: warning: subprogram "Test_Map_Rec" has no effect
 my_ordered_maps.adb:62:07: info: initialization of "L" proved
 my_ordered_maps.adb:62:10: info: initialization of "K" proved
-my_ordered_maps.adb:62:19: info: range check proved (Z3: 1 VC)
+my_ordered_maps.adb:62:19: info: range check proved (CVC4: 1 VC)
 my_ordered_maps.adb:63:07: info: initialization of "C" proved
 my_ordered_maps.adb:64:07: info: initialization of "B" proved
-my_ordered_maps.adb:66:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:68:12: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:70:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:71:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:72:07: info: precondition proved (Z3: 1 VC)
+my_ordered_maps.adb:66:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:68:12: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:70:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_ordered_maps.adb:71:07: info: precondition proved (CVC4: 2 VC)
+my_ordered_maps.adb:72:07: info: precondition proved (CVC4: 1 VC)
 my_ordered_maps.adb:73:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:74:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:75:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:75:22: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:77:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:78:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:81:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:82:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:84:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:85:07: info: precondition proved (Z3: 1 VC)
+my_ordered_maps.adb:74:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:75:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:75:22: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:77:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:78:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:81:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:82:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:84:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:85:07: info: precondition proved (CVC4: 1 VC)
 my_ordered_maps.adb:86:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:87:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:89:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:91:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:92:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:93:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:96:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:98:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:87:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:89:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:91:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:92:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:93:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:96:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:98:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_maps.adb:99:07: medium: assertion might fail
 my_ordered_maps.adb:102:14: warning: subprogram "Test_Map_Rec_2" has no effect
 my_ordered_maps.adb:104:07: info: initialization of "L" proved
 my_ordered_maps.adb:104:10: info: initialization of "K" proved
-my_ordered_maps.adb:104:19: info: range check proved (Z3: 1 VC)
+my_ordered_maps.adb:104:19: info: range check proved (CVC4: 1 VC)
 my_ordered_maps.adb:105:07: info: initialization of "C" proved
 my_ordered_maps.adb:106:07: info: initialization of "B" proved
-my_ordered_maps.adb:108:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:110:12: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:112:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:113:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:114:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:114:22: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:115:07: info: precondition proved (Z3: 1 VC)
+my_ordered_maps.adb:108:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:110:12: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:112:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_ordered_maps.adb:113:07: info: precondition proved (CVC4: 2 VC)
+my_ordered_maps.adb:114:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:114:22: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:115:07: info: precondition proved (CVC4: 1 VC)
 my_ordered_maps.adb:116:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:117:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:118:22: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:120:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:121:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:124:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:125:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:127:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:128:07: info: precondition proved (Z3: 1 VC)
+my_ordered_maps.adb:117:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:118:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:118:22: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:120:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:121:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:124:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:125:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:127:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:128:07: info: precondition proved (CVC4: 1 VC)
 my_ordered_maps.adb:129:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:130:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:132:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:134:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:135:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:136:22: info: assertion proved (Z3: 1 VC)
+my_ordered_maps.adb:130:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:132:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:134:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_maps.adb:135:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_maps.adb:136:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_maps.adb:139:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:141:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:142:07: medium: assertion might fail
 my_ordered_maps.adb:147:07: info: precondition proved (Trivial: 1 VC)
 my_ordered_maps.adb:148:07: info: precondition proved (Trivial: 1 VC)
 my_ordered_maps.adb:149:07: info: precondition proved (Trivial: 1 VC)
-my_ordered_maps.ads:17:12: info: postcondition proved (Z3: 2 VC)
+my_ordered_maps.ads:17:12: info: postcondition proved (CVC4: 2 VC)
 my_ordered_maps.ads:25:14: warning: subprogram "Test_Ordered_Map" has no effect
 my_ordered_sets.adb:4:14: warning: subprogram "Test_Set_Pos" has no effect
 my_ordered_sets.adb:6:07: info: initialization of "L" proved
 my_ordered_sets.adb:6:10: info: initialization of "K" proved
-my_ordered_sets.adb:6:19: info: range check proved (Z3: 1 VC)
+my_ordered_sets.adb:6:19: info: range check proved (CVC4: 1 VC)
 my_ordered_sets.adb:7:07: info: initialization of "C" proved
 my_ordered_sets.adb:8:07: info: initialization of "B" proved
-my_ordered_sets.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:12:12: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:14:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:15:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:17:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:19:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:20:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:23:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:28:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:29:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:31:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:31:36: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:32:22: info: assertion proved (CVC4: 1 VC)
-my_ordered_sets.adb:32:36: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:33:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:34:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:34:36: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:10:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:12:12: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:14:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_ordered_sets.adb:15:07: info: precondition proved (CVC4: 2 VC)
+my_ordered_sets.adb:16:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:17:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:19:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:20:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:23:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:24:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:25:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:27:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:28:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:29:07: info: precondition proved (CVC4: 2 VC)
+my_ordered_sets.adb:31:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:31:36: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:32:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:32:36: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:33:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:34:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:34:36: info: precondition proved (CVC4: 1 VC)
 my_ordered_sets.adb:35:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:35:36: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:36:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:38:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:39:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:40:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:41:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:43:07: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:35:36: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:36:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:38:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:39:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:40:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+my_ordered_sets.adb:41:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:43:07: info: precondition proved (CVC4: 1 VC)
 my_ordered_sets.adb:45:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:46:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:47:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:48:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:53:10: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:47:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:48:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:53:10: info: precondition proved (CVC4: 1 VC)
 my_ordered_sets.adb:54:25: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:58:23: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:60:10: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:61:25: medium: assertion might fail, cannot prove (M or L) = (K or L)
-my_ordered_sets.adb:61:28: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:61:39: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:62:25: info: assertion proved (CVC4: 1 VC)
-my_ordered_sets.adb:63:10: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:69:10: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:58:23: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:60:10: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:61:25: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:61:28: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:61:39: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:62:25: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:63:10: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:69:10: info: precondition proved (CVC4: 1 VC)
 my_ordered_sets.adb:70:25: medium: assertion might fail, cannot prove (M - L) = (K - L)
-my_ordered_sets.adb:74:23: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:76:10: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:74:23: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:76:10: info: precondition proved (CVC4: 1 VC)
 my_ordered_sets.adb:77:25: medium: assertion might fail, cannot prove (M xor L) = (K xor L)
-my_ordered_sets.adb:77:28: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:77:40: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:78:10: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:77:28: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:77:40: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:78:10: info: precondition proved (CVC4: 1 VC)
 my_ordered_sets.adb:85:07: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible explanation: call at line 82 should mention Container (for argument L) in a postcondition]
-my_ordered_sets.adb:86:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:86:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_sets.adb:89:22: medium: assertion might fail, cannot prove Contains (L, 4)
-my_ordered_sets.adb:91:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:91:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_sets.adb:92:07: medium: assertion might fail
 my_ordered_sets.adb:95:14: warning: subprogram "Test_Set_Rec" has no effect
 my_ordered_sets.adb:98:07: info: initialization of "L" proved
 my_ordered_sets.adb:98:10: info: initialization of "K" proved
-my_ordered_sets.adb:98:19: info: range check proved (Z3: 1 VC)
+my_ordered_sets.adb:98:19: info: range check proved (CVC4: 1 VC)
 my_ordered_sets.adb:99:07: info: initialization of "C" proved
 my_ordered_sets.adb:100:07: info: initialization of "B" proved
-my_ordered_sets.adb:102:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:104:12: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:106:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:107:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:108:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:109:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:110:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:112:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:113:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:116:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:117:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:118:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:119:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:120:22: medium: assertion might fail, cannot prove not Contains (L, (F => 4, G => 4))
-my_ordered_sets.adb:121:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:123:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:125:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:127:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:128:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:102:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:104:12: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:106:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_ordered_sets.adb:107:07: info: precondition proved (CVC4: 2 VC)
+my_ordered_sets.adb:108:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:109:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:110:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:112:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:113:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:116:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:117:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:118:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:119:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:120:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:121:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:123:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:125:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:127:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:128:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_sets.adb:131:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:133:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:133:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_sets.adb:135:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:136:07: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:136:07: info: precondition proved (CVC4: 1 VC)
 my_ordered_sets.adb:138:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:139:07: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:139:07: info: precondition proved (CVC4: 1 VC)
 my_ordered_sets.adb:140:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:143:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:145:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:143:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:145:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_sets.adb:146:07: medium: assertion might fail
 my_ordered_sets.adb:149:14: warning: subprogram "Test_Set_Rec_2" has no effect
 my_ordered_sets.adb:151:07: info: initialization of "L" proved
 my_ordered_sets.adb:151:10: info: initialization of "K" proved
-my_ordered_sets.adb:151:19: info: range check proved (Z3: 1 VC)
+my_ordered_sets.adb:151:19: info: range check proved (CVC4: 1 VC)
 my_ordered_sets.adb:152:07: info: initialization of "C" proved
 my_ordered_sets.adb:153:07: info: initialization of "B" proved
-my_ordered_sets.adb:155:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:157:12: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:159:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:160:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:161:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:162:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:163:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:165:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:166:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:169:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:170:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:172:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:173:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:174:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:175:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:177:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:179:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:180:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:155:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:157:12: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:159:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_ordered_sets.adb:160:07: info: precondition proved (CVC4: 2 VC)
+my_ordered_sets.adb:161:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:162:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:163:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:165:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:166:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:169:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:170:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:172:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:173:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:174:22: info: assertion proved (CVC4: 1 VC)
+my_ordered_sets.adb:175:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:177:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:179:07: info: precondition proved (CVC4: 1 VC)
+my_ordered_sets.adb:180:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_sets.adb:183:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:185:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:186:07: medium: assertion might fail
 my_ordered_sets.adb:191:07: info: precondition proved (Trivial: 1 VC)
 my_ordered_sets.adb:192:07: info: precondition proved (Trivial: 1 VC)
 my_ordered_sets.adb:193:07: info: precondition proved (Trivial: 1 VC)
-my_ordered_sets.ads:15:12: info: postcondition proved (Z3: 2 VC)
-my_ordered_sets.ads:22:53: medium: range check might fail [possible explanation: subprogram at line 22 should mention X in a precondition]
-my_ordered_sets.ads:23:17: info: postcondition proved (Z3: 1 VC)
+my_ordered_sets.ads:15:12: info: postcondition proved (CVC4: 2 VC)
+my_ordered_sets.ads:22:53: medium: range check might fail [reason for check: returned value must fit in the result type of the function] [possible explanation: subprogram at line 22 should mention X in a precondition]
+my_ordered_sets.ads:23:17: info: postcondition proved (CVC4: 1 VC)
 my_ordered_sets.ads:31:14: warning: subprogram "Test_Ordered_Set" has no effect
 my_sets.adb:4:14: warning: subprogram "Test_Set_Pos" has no effect
 my_sets.adb:6:07: info: initialization of "L" proved
 my_sets.adb:6:10: info: initialization of "K" proved
-my_sets.adb:6:19: info: range check proved (Z3: 1 VC)
-my_sets.adb:6:23: info: range check proved (Z3: 1 VC)
+my_sets.adb:6:19: info: range check proved (CVC4: 1 VC)
+my_sets.adb:6:23: info: range check proved (CVC4: 1 VC)
 my_sets.adb:7:07: info: initialization of "C" proved
 my_sets.adb:8:07: info: initialization of "B" proved
-my_sets.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:12:12: info: precondition proved (Z3: 1 VC)
-my_sets.adb:14:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:15:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:17:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:19:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:20:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:23:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:28:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:10:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:12:12: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:14:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_sets.adb:15:07: info: precondition proved (CVC4: 2 VC)
+my_sets.adb:16:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:17:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:19:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:20:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:23:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:24:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:25:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:27:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:28:07: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:29:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:30:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:32:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:34:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:35:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:36:22: info: assertion proved (Z3: 1 VC)
+my_sets.adb:30:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:32:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:34:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:35:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:36:22: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:37:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:43:10: info: precondition proved (Z3: 1 VC)
+my_sets.adb:43:10: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:44:25: info: assertion proved (Z3: 1 VC)
-my_sets.adb:48:23: info: precondition proved (Z3: 1 VC)
-my_sets.adb:50:10: info: precondition proved (Z3: 1 VC)
+my_sets.adb:48:23: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:50:10: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:51:25: info: assertion proved (Z3: 1 VC)
-my_sets.adb:51:28: info: precondition proved (Z3: 1 VC)
-my_sets.adb:51:39: info: precondition proved (Z3: 1 VC)
+my_sets.adb:51:28: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:51:39: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:52:25: info: assertion proved (Z3: 1 VC)
-my_sets.adb:53:10: info: precondition proved (Z3: 1 VC)
-my_sets.adb:59:10: info: precondition proved (Z3: 1 VC)
+my_sets.adb:53:10: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:59:10: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:60:25: info: assertion proved (Z3: 1 VC)
-my_sets.adb:64:23: info: precondition proved (Z3: 1 VC)
-my_sets.adb:66:10: info: precondition proved (Z3: 1 VC)
+my_sets.adb:64:23: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:66:10: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:67:25: info: assertion proved (Z3: 1 VC)
-my_sets.adb:67:28: info: precondition proved (Z3: 1 VC)
-my_sets.adb:67:40: info: precondition proved (Z3: 1 VC)
-my_sets.adb:68:10: info: precondition proved (Z3: 1 VC)
-my_sets.adb:72:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:73:22: info: assertion proved (Z3: 1 VC)
+my_sets.adb:67:28: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:67:40: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:68:10: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:72:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:73:22: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:76:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:78:22: info: assertion proved (Z3: 1 VC)
+my_sets.adb:78:22: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:79:07: medium: assertion might fail
 my_sets.adb:82:14: warning: subprogram "Test_Set_Rec" has no effect
 my_sets.adb:85:07: info: initialization of "L" proved
 my_sets.adb:85:10: info: initialization of "K" proved
-my_sets.adb:85:19: info: range check proved (Z3: 1 VC)
-my_sets.adb:85:23: info: range check proved (Z3: 1 VC)
+my_sets.adb:85:19: info: range check proved (CVC4: 1 VC)
+my_sets.adb:85:23: info: range check proved (CVC4: 1 VC)
 my_sets.adb:86:07: info: initialization of "C" proved
 my_sets.adb:87:07: info: initialization of "B" proved
-my_sets.adb:89:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:91:12: info: precondition proved (Z3: 1 VC)
-my_sets.adb:93:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:94:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:95:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:96:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:97:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:99:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:100:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:103:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:104:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:106:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:107:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:89:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:91:12: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:93:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_sets.adb:94:07: info: precondition proved (CVC4: 2 VC)
+my_sets.adb:95:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:96:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:97:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:99:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:100:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:103:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:104:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:106:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:107:07: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:108:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:109:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:111:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:113:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:109:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:111:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:113:07: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:115:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:116:22: info: assertion proved (Z3: 1 VC)
+my_sets.adb:116:22: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:119:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:121:22: info: assertion proved (Z3: 1 VC)
+my_sets.adb:121:22: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:123:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:124:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:124:07: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:126:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:127:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:127:07: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:128:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:131:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:133:22: info: assertion proved (Z3: 1 VC)
+my_sets.adb:133:22: info: assertion proved (CVC4: 1 VC)
 my_sets.adb:134:07: medium: assertion might fail
 my_sets.adb:137:14: warning: subprogram "Test_Set_Rec_2" has no effect
 my_sets.adb:139:07: info: initialization of "L" proved
 my_sets.adb:139:10: info: initialization of "K" proved
-my_sets.adb:139:19: info: range check proved (Z3: 1 VC)
-my_sets.adb:139:23: info: range check proved (Z3: 1 VC)
+my_sets.adb:139:19: info: range check proved (CVC4: 1 VC)
+my_sets.adb:139:23: info: range check proved (CVC4: 1 VC)
 my_sets.adb:140:07: info: initialization of "C" proved
 my_sets.adb:141:07: info: initialization of "B" proved
-my_sets.adb:143:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:145:12: info: precondition proved (Z3: 1 VC)
-my_sets.adb:147:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:148:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:149:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:143:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:145:12: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:147:07: info: precondition proved (CVC4: 1 VC; altergo: 1 VC)
+my_sets.adb:148:07: info: precondition proved (CVC4: 2 VC)
+my_sets.adb:149:07: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:150:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:151:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:153:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:154:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:157:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:158:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:160:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:161:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:151:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:153:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:154:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:157:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:158:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:160:22: info: assertion proved (CVC4: 1 VC)
+my_sets.adb:161:07: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:162:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:163:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:165:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:163:07: info: precondition proved (CVC4: 1 VC)
+my_sets.adb:165:07: info: precondition proved (CVC4: 1 VC)
 my_sets.adb:167:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:168:22: info: assertion proved (Z3: 1 VC)
+my_sets.adb:168:22: info: assertion proved (altergo: 1 VC)
 my_sets.adb:171:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:173:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:174:07: medium: assertion might fail
 my_sets.adb:179:07: info: precondition proved (Trivial: 1 VC)
 my_sets.adb:180:07: info: precondition proved (Trivial: 1 VC)
 my_sets.adb:181:07: info: precondition proved (Trivial: 1 VC)
-my_sets.ads:19:17: info: postcondition proved (Z3: 2 VC)
-my_sets.ads:30:17: info: postcondition proved (Z3: 1 VC)
+my_sets.ads:19:17: info: postcondition proved (CVC4: 2 VC)
+my_sets.ads:30:17: info: postcondition proved (CVC4: 1 VC)
 my_sets.ads:39:14: warning: subprogram "Test_Set" has no effect
 my_vectors.adb:7:07: info: initialization of "L" proved
 my_vectors.adb:7:10: info: initialization of "K" proved
-my_vectors.adb:7:22: info: range check proved (Z3: 1 VC)
-my_vectors.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:11:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:12:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:13:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:14:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:16:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:21:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:22:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:23:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:24:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:26:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:32:07: info: precondition proved (Z3: 3 VC)
-my_vectors.adb:32:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:33:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:33:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:35:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:36:27: info: range check proved (Z3: 1 VC)
-my_vectors.adb:38:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:39:07: info: precondition proved (Z3: 3 VC)
-my_vectors.adb:39:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:40:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:40:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:43:24: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
-my_vectors.adb:45:10: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
-my_vectors.adb:48:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:48:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:49:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:49:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:50:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:50:24: info: overflow check proved (Z3: 1 VC)
-my_vectors.adb:51:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:51:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:52:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:52:24: info: overflow check proved (Z3: 1 VC)
-my_vectors.adb:53:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:53:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:59:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:59:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:60:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:60:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:61:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:61:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:63:27: info: range check proved (Z3: 1 VC)
-my_vectors.adb:65:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:67:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:67:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:72:07: info: precondition proved (Z3: 3 VC)
-my_vectors.adb:72:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:73:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:73:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:75:27: info: range check proved (Z3: 1 VC)
-my_vectors.adb:77:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:78:07: info: precondition proved (Z3: 3 VC)
-my_vectors.adb:78:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:79:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:79:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:80:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:80:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:82:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:82:27: info: range check proved (Z3: 1 VC)
-my_vectors.adb:83:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:83:29: info: overflow check proved (Z3: 1 VC)
-my_vectors.adb:83:29: info: range check proved (Z3: 1 VC)
-my_vectors.adb:85:22: info: assertion proved (Z3: 1 VC)
+my_vectors.adb:7:22: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:10:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:11:07: info: precondition proved (CVC4: 1 VC)
+my_vectors.adb:12:07: info: precondition proved (CVC4: 1 VC)
+my_vectors.adb:13:07: info: precondition proved (CVC4: 1 VC)
+my_vectors.adb:14:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:16:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:21:07: info: precondition proved (CVC4: 1 VC)
+my_vectors.adb:22:07: info: precondition proved (CVC4: 1 VC)
+my_vectors.adb:23:07: info: precondition proved (CVC4: 1 VC)
+my_vectors.adb:24:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:26:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:32:07: info: precondition proved (CVC4: 3 VC)
+my_vectors.adb:32:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:33:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:33:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:35:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:36:27: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:38:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:39:07: info: precondition proved (CVC4: 3 VC)
+my_vectors.adb:39:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:40:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:40:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:43:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+my_vectors.adb:45:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+my_vectors.adb:48:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:48:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:49:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:49:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:50:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:50:24: info: overflow check proved (CVC4: 1 VC)
+my_vectors.adb:51:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:51:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:52:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:52:24: info: overflow check proved (CVC4: 1 VC)
+my_vectors.adb:53:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:53:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:59:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:59:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:60:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:60:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:61:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:61:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:63:27: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:65:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:67:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:67:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:72:07: info: precondition proved (CVC4: 3 VC)
+my_vectors.adb:72:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:73:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:73:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:75:27: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:77:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:78:07: info: precondition proved (CVC4: 3 VC)
+my_vectors.adb:78:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:79:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:79:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:80:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:80:18: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:82:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:82:27: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:83:07: info: precondition proved (CVC4: 2 VC)
+my_vectors.adb:83:29: info: overflow check proved (CVC4: 1 VC)
+my_vectors.adb:83:29: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:85:22: info: assertion proved (CVC4: 1 VC)
 my_vectors.adb:86:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:86:53: info: overflow check proved (Z3: 1 VC)
-my_vectors.adb:87:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:88:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:91:07: info: precondition proved (Z3: 4 VC)
-my_vectors.adb:91:19: info: range check proved (Z3: 1 VC)
-my_vectors.adb:93:30: info: assertion proved (Z3: 2 VC)
-my_vectors.adb:94:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
-my_vectors.adb:99:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:101:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:104:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
-my_vectors.adb:107:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:108:22: info: assertion proved (Z3: 1 VC)
+my_vectors.adb:86:53: info: overflow check proved (CVC4: 1 VC)
+my_vectors.adb:87:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:88:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:91:07: info: precondition proved (CVC4: 4 VC)
+my_vectors.adb:91:19: info: range check proved (CVC4: 1 VC)
+my_vectors.adb:93:30: info: assertion proved (CVC4: 2 VC)
+my_vectors.adb:94:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+my_vectors.adb:99:07: info: precondition proved (CVC4: 1 VC)
+my_vectors.adb:101:22: info: assertion proved (CVC4: 1 VC)
+my_vectors.adb:104:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+my_vectors.adb:107:07: info: precondition proved (CVC4: 1 VC)
+my_vectors.adb:108:22: info: assertion proved (CVC4: 1 VC)
 my_vectors.adb:111:07: medium: assertion might fail
 my_vectors.ads:10:14: warning: subprogram "Test_Vectors" has no effect

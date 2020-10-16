@@ -174,16 +174,6 @@ package Why.Gen.Records is
    --  Generate a Why3 expression that corresponds to an access to the
    --  top-level field for discriminants.
 
-   function New_Discriminants_Update
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : W_Expr_Id;
-      Value    : W_Expr_Id;
-      Ty       : Entity_Id)
-      return W_Expr_Id;
-   --  Generate a Why3 expression that corresponds to an update of the
-   --  top-level field for discriminants.
-
    function New_Fields_Access
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
@@ -234,7 +224,9 @@ package Why.Gen.Records is
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
       Expr     : W_Prog_Id)
-      return W_Prog_Id;
+      return W_Prog_Id
+   with Pre => Count_Discriminants (Check_Ty) > 0
+     and then Is_Constrained (Check_Ty);
    --  Given a record subtype and an expression, add a call to the subtype
    --  discriminant check function, to generate a discriminant check.
 
@@ -337,5 +329,11 @@ package Why.Gen.Records is
    --  If Ignore_Private_State is True, only consider actual components and
    --  Part_Of objects. Otherwise, Build_Predicate_For_Field is also called
    --  on type entities of ancestors of Ty which have private components.
+
+   function Get_Discriminants_Of_Subtype (Ty : Entity_Id) return W_Expr_Array
+   with
+     Pre  => Count_Discriminants (Ty) > 0 and Is_Constrained (Ty),
+     Post => Get_Discriminants_Of_Subtype'Result'Length =
+       Count_Discriminants (Ty);
 
 end Why.Gen.Records;

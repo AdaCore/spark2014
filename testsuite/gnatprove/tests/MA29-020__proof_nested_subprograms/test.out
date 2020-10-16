@@ -1,7 +1,7 @@
 skein.adb:27:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:27:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
 skein.adb:34:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:139
-skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash'First = 9 and Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => U6'Last, First_Block => True, Final_Block => True), Hash_Bit_Len => 9223372036854776312, Byte_Count => 0), X => (0 => 0, others => 0), B => (others => 0)) and N = 7)
+skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash'First = 9 and Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => U6'Last, First_Block => True, Final_Block => True), Hash_Bit_Len => 9223372036854776312, Byte_Count => 0), X => (0 => 0, others => 0), B => (others => 0)) and N = 7) [reason for check: result of addition must be a valid index into the array]
 skein.adb:36:77: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:139
 skein.adb:36:77: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:139
 skein.adb:37:57: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:139
@@ -49,7 +49,7 @@ skein.adb:111:10: info: analyzing call to "Zero_Pad_B" in context
 skein.adb:111:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:111:10: info: in inlined body at line 87
 skein.adb:115:52: info: division check proved (CVC4: 1 VC)
-skein.adb:115:52: medium: range check might fail (e.g. when Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => 0, First_Block => False, Final_Block => True), Hash_Bit_Len => 0, Byte_Count => 0), X => (others => 0), B => (others => 0)))
+skein.adb:115:52: medium: range check might fail (e.g. when Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => 0, First_Block => False, Final_Block => True), Hash_Bit_Len => 0, Byte_Count => 0), X => (others => 0), B => (others => 0))) [reason for check: result of division must fit in the target type of the assignment]
 skein.adb:118:19: warning: unused assignment
 skein.adb:121:44: info: division check proved (CVC4: 1 VC)
 skein.adb:125:10: info: analyzing call to "Set_B_Counter" in context
@@ -57,7 +57,7 @@ skein.adb:127:10: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:139:10: info: analyzing call to "Put_64_LSB_First" in context
 skein.adb:139:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:139:10: info: in inlined body at line 34
-skein.adb:146:37: medium: range check might fail (e.g. when Blocks_Done = Output_Block_Count_T'Last) [possible explanation: loop at line 124 should mention Blocks_Done in a loop invariant]
+skein.adb:146:37: medium: range check might fail (e.g. when Blocks_Done = Output_Block_Count_T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: loop at line 124 should mention Blocks_Done in a loop invariant]
 skein.ads:132:31: info: initialization of "Hash" proved
 Summary of SPARK analysis
 =========================

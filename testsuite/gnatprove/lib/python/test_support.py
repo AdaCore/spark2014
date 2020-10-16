@@ -50,22 +50,9 @@ is_msg = re.compile(r"([\w-]*\.ad.?):(\d*):\d*:" +
 is_mark = re.compile(r"@(\w*):(\w*)")
 
 
-def debug_mode():
-    return "debug" in os.environ and os.environ["debug"] == "true"
-
-
-def verbose_mode():
-    return "verbose" in os.environ and os.environ["verbose"] == "true"
-
-
 def inverse_prover():
     return "inverse_prover" in os.environ and\
         os.environ["inverse_prover"] == "true"
-
-
-def z3_counterexample():
-    return "z3_counterexample" in os.environ and\
-        os.environ["z3_counterexample"] == "true"
 
 
 def benchmark_mode():
@@ -76,26 +63,11 @@ def cache_mode():
     return "cache" in os.environ and os.environ["cache"] == "true"
 
 
-def coverage_mode():
-    return "coverage" in os.environ and os.environ["coverage"] == "true"
-
-
 def get_default_timeout():
     if "vc_timeout" in os.environ:
         return int(os.environ["vc_timeout"])
     else:
         return default_vc_timeout
-
-
-def xfail_test():
-    if os.path.exists("test.opt"):
-        p = re.compile("XFAIL")
-        with open("test.opt", 'r') as f:
-            for line in f:
-                m = re.search(p, line)
-                if m:
-                    return True
-    return False
 
 
 def print_sorted(strlist):
@@ -405,11 +377,18 @@ def check_marks(strlist):
         """Returns the tag for a given message text, or None if no tag is
         recognized."""
 
+        # ??? simple string matching doesn't quite work when the message
+        # contains several tags at once (e.g. 'global "xxx" is aliased')
+        # or when the tag appears in an object name
+        # (e.g. '"aliased" is missing from the Global contract')
+
         # flow analysis tags
 
         # When adding a tag in this section, you need also to update the
         # function is_flow_tag below.
-        if 'dependency' in text:
+        if 'aliased' in text:
+            return 'ALIASING'
+        elif 'dependency' in text:
             return 'DEPENDS'
         elif 'global' in text:
             return 'GLOBAL'
@@ -417,8 +396,6 @@ def check_marks(strlist):
             return 'INITIALIZED'
         elif 'initializes' in text:
             return 'INITIALIZES'
-        elif 'aliased' in text:
-            return 'ALIASING'
 
         # proof tags
 
@@ -710,17 +687,9 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     cmd += ["--info"]
     if benchmark_mode():
         cmd += ["--benchmark"]
-    if debug_mode():
-        cmd += ["--debug"]
-    if verbose_mode():
-        cmd += ["--verbose"]
     if cache_allowed and cache_mode():
         cmd += ["--memcached-server=localhost:11211"]
-    if coverage_mode():
-        cmd += ["--coverage"]
     cmd += to_list(opt)
-    if verbose_mode():
-        print(' '.join(cmd))
     process = Run(cmd)
     # Replace line above by the one below for testing the scripts without
     # running the tool:
@@ -783,7 +752,7 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
        no_fail, subdue_flow and filter_output are passed directly to
        gnatprove().
     """
-    fullopt = ["--warnings=continue"]
+    fullopt  = ["--warnings=continue", "--output=oneline"]
     fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]
@@ -822,8 +791,6 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
         fullopt += ["--benchmark"]
     if not counterexample:
         fullopt += ["--no-counterexample"]
-    if z3_counterexample():
-        fullopt += ["--z3-counterexample"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt

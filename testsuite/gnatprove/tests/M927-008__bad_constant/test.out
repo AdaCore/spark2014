@@ -1,2 +1,2 @@
 bad_constant.adb:4:49: info: range check proved (CVC4: 1 VC)
-bad_constant.adb:4:49: medium: overflow check might fail
+bad_constant.adb:4:49: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]

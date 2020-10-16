@@ -1,4 +1,4 @@
-account.adb:6:39: medium: overflow check might fail [possible explanation: loop at line 5 should mention Num_Accounts in a loop invariant]
+account.adb:6:39: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 5 should mention Num_Accounts in a loop invariant]
 account.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)
 account.ads:6:06: info: data dependencies proved
 account.ads:7:06: info: flow dependencies proved

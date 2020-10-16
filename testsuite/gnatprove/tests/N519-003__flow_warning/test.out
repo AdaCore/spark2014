@@ -1,4 +1,4 @@
 warn.adb:2:04: warning: unused variable "Y"
-warn.adb:4:11: medium: overflow check might fail [possible explanation: subprogram at line 1 should mention X in a precondition]
+warn.adb:4:11: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
 warn.adb:2:04: warning: unused variable "Y"
-warn.adb:4:11: medium: overflow check might fail [possible explanation: subprogram at line 1 should mention X in a precondition]
+warn.adb:4:11: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]

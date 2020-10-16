@@ -23,30 +23,30 @@ array_applications.adb:47:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:60:09: info: data dependencies proved
 array_applications.adb:61:09: info: flow dependencies proved
 array_applications.adb:62:20: medium: postcondition might fail, cannot prove A(30) /= 832040
-array_applications.adb:69:27: medium: overflow check might fail
+array_applications.adb:69:27: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 array_applications.adb:71:13: info: loop invariant initialization proved (CVC4: 5 VC)
 array_applications.adb:71:13: info: loop invariant preservation proved (CVC4: 5 VC)
 array_applications.adb:73:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:74:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:74:27: info: index check proved (CVC4: 4 VC)
-array_applications.adb:74:32: medium: overflow check might fail
+array_applications.adb:74:32: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 array_applications.adb:74:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:75:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:76:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:76:32: info: index check proved (CVC4: 4 VC)
-array_applications.adb:76:38: medium: overflow check might fail
+array_applications.adb:76:38: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer]
 array_applications.adb:81:09: info: data dependencies proved
 array_applications.adb:82:09: info: flow dependencies proved
 array_applications.adb:83:20: medium: postcondition might fail, cannot prove A(30) = 832040
-array_applications.adb:90:27: medium: overflow check might fail
+array_applications.adb:90:27: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 array_applications.adb:92:13: info: loop invariant initialization proved (CVC4: 5 VC)
 array_applications.adb:92:13: info: loop invariant preservation proved (CVC4: 5 VC)
 array_applications.adb:94:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:95:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:95:27: info: index check proved (CVC4: 4 VC)
-array_applications.adb:95:32: medium: overflow check might fail
+array_applications.adb:95:32: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 array_applications.adb:95:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:96:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:97:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:97:32: info: index check proved (CVC4: 4 VC)
-array_applications.adb:97:38: medium: overflow check might fail
+array_applications.adb:97:38: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer]

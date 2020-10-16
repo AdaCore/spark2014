@@ -9,8 +9,8 @@ nested_pkg.adb:57:11: info: data dependencies proved
 nested_pkg.adb:60:22: info: assertion proved (CVC4: 1 VC)
 nested_pkg.adb:62:22: info: assertion proved (CVC4: 1 VC)
 nested_pkg.adb:64:08: medium: precondition might fail, cannot prove (Z.h) [possible explanation: subprogram at line 56 should mention Bar and Foo in a precondition]
-stack_asm.adb:26:24: medium: array index check might fail
-stack_asm.adb:33:25: medium: range check might fail [possible explanation: subprogram at stack_asm.ads:14 should mention The_Ptr in a precondition]
+stack_asm.adb:26:24: medium: array index check might fail [reason for check: value must be a valid index into the array]
+stack_asm.adb:33:25: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at stack_asm.ads:14 should mention The_Ptr in a precondition]
 stack_asm.adb:34:17: info: index check proved (CVC4: 2 VC)
 stack_asm.adb:38:40: high: "The_Stack" constituent of "State" is not initialized
 stack_asm.adb:38:40: low: unused global "The_Stack" constituent of "State"
