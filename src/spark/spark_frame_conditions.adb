@@ -52,9 +52,9 @@ package body SPARK_Frame_Conditions is
    -- Local Variables --
    ---------------------
 
-   Writes  : Node_Graphs.Map;  --  Entities written in each scope
-   Reads   : Node_Graphs.Map;  --  Entities read in each scope
-   Calls   : Node_Graphs.Map;  --  Subprograms called in each subprogram
+   Writes : Node_Graphs.Map;  --  Entities written in each scope
+   Reads  : Node_Graphs.Map;  --  Entities read in each scope
+   Calls  : Node_Graphs.Map;  --  Subprograms called in each subprogram
 
    -----------------------
    -- Local Subprograms --
@@ -260,7 +260,9 @@ package body SPARK_Frame_Conditions is
                   Add_To_Map (Writes, Ref_Scope, Ref_Entity);
                end if;
             when 's' =>
-               Add_To_Map (Calls,  Ref_Scope, Ref_Entity);
+               if not In_Generic_Scope (Ref_Entity) then
+                  Add_To_Map (Calls,  Ref_Scope, Ref_Entity);
+               end if;
             when others =>
                raise Program_Error;
          end case;
