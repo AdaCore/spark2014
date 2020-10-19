@@ -162,10 +162,12 @@ package body Gnat2Why.Borrow_Checker is
                Get_All : Perm_Tree_Access;
 
             --  Unfolded path of array type. The permission of elements is
-            --  given in Get_Elem.
+            --  given in Get_Elem, permission of bounds is given in
+            --  Bounds_Permission.
 
             when Array_Component =>
-               Get_Elem : Perm_Tree_Access;
+               Bounds_Permission : Perm_Kind;
+               Get_Elem          : Perm_Tree_Access;
 
             --  Unfolded path of record type. The permission of the components
             --  is given in Component.
@@ -222,6 +224,7 @@ package body Gnat2Why.Borrow_Checker is
       --  that's only for the top access, as otherwise this reverses the order
       --  in accesses visually.
 
+      function Bounds_Permission (T : Perm_Tree_Access) return Perm_Kind;
       function Children_Permission (T : Perm_Tree_Access) return Perm_Kind;
       function Component (T : Perm_Tree_Access) return Perm_Tree_Maps.Instance;
       function Explanation (T : Perm_Tree_Access) return Node_Id;
@@ -260,6 +263,15 @@ package body Gnat2Why.Borrow_Checker is
    end Permissions;
 
    package body Permissions is
+
+      -----------------------
+      -- Bounds_Permission --
+      -----------------------
+
+      function Bounds_Permission (T : Perm_Tree_Access) return Perm_Kind is
+      begin
+         return T.all.Tree.Bounds_Permission;
+      end Bounds_Permission;
 
       -------------------------
       -- Children_Permission --
@@ -1738,22 +1750,21 @@ package body Gnat2Why.Borrow_Checker is
 
             when N_Attribute_Reference =>
                pragma Assert
-                 (Get_Attribute_Id (Attribute_Name (Expr)) =
+                 (Get_Attribute_Id (Attribute_Name (Expr)) in
                     Attribute_Loop_Entry
-                  or else
-                  Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
-                  or else
-                  Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Image
-                  or else
-                  Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Img);
+                  | Attribute_Update
+                  | Attribute_Image
+                  | Attribute_Img
+                  | Attribute_First
+                  | Attribute_Last
+                  | Attribute_Length);
 
-               Read_Expression (Prefix (Expr));
-
-               if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
-                 or else (Get_Attribute_Id (Attribute_Name (Expr)) in
-                            Attribute_Image | Attribute_Img
-                          and then Is_Type_Name (Prefix (Expr)))
+               if Get_Attribute_Id (Attribute_Name (Expr)) in
+                 Attribute_First | Attribute_Last | Attribute_Length
                then
+                  Read_Indexes (Prefix (Expr));
+               else
+                  Read_Expression (Prefix (Expr));
                   Read_Expression_List (Expressions (Expr));
                end if;
 
@@ -2228,6 +2239,12 @@ package body Gnat2Why.Borrow_Checker is
                     (Get_All (Tree), Perm, E);
 
                when Array_Component =>
+                  if Bounds_Permission (Tree) < Perm then
+                     Perm_Error_Loop_Exit
+                       (E, Stmt, Bounds_Permission (Tree), Perm,
+                        Explanation (Tree));
+                  end if;
+
                   Check_Is_Less_Restrictive_Tree_Than
                     (Get_Elem (Tree), Perm, E);
 
@@ -2273,6 +2290,12 @@ package body Gnat2Why.Borrow_Checker is
                     (Get_All (Tree), Perm, E);
 
                when Array_Component =>
+                  if Perm < Bounds_Permission (Tree) then
+                     Perm_Error_Loop_Exit
+                       (E, Stmt, Bounds_Permission (Tree), Perm,
+                        Explanation (Tree));
+                  end if;
+
                   Check_Is_More_Restrictive_Tree_Than
                     (Get_Elem (Tree), Perm, E);
 
@@ -2328,6 +2351,16 @@ package body Gnat2Why.Borrow_Checker is
                     (Get_All (Orig_Tree), Children_Permission (New_Tree), E);
 
                when Array_Component =>
+                  if Children_Permission (New_Tree) <
+                     Bounds_Permission (Orig_Tree)
+                  then
+                     Perm_Error_Loop_Exit
+                       (E, Stmt,
+                        Children_Permission (New_Tree),
+                        Bounds_Permission (Orig_Tree),
+                        Explanation (New_Tree));
+                  end if;
+
                   Check_Is_More_Restrictive_Tree_Than
                     (Get_Elem (Orig_Tree), Children_Permission (New_Tree), E);
 
@@ -2363,10 +2396,30 @@ package body Gnat2Why.Borrow_Checker is
             when Array_Component =>
                case Kind (Orig_Tree) is
                when Entire_Object =>
+                  if Bounds_Permission (New_Tree) <
+                     Children_Permission (Orig_Tree)
+                  then
+                     Perm_Error_Loop_Exit
+                       (E, Stmt,
+                        Bounds_Permission (New_Tree),
+                        Children_Permission (Orig_Tree),
+                        Explanation (New_Tree));
+                  end if;
+
                   Check_Is_Less_Restrictive_Tree_Than
                     (Get_Elem (New_Tree), Children_Permission (Orig_Tree), E);
 
                when Array_Component =>
+                  if Bounds_Permission (New_Tree) <
+                     Bounds_Permission (Orig_Tree)
+                  then
+                     Perm_Error_Loop_Exit
+                       (E, Stmt,
+                        Bounds_Permission (New_Tree),
+                        Bounds_Permission (Orig_Tree),
+                        Explanation (New_Tree));
+                  end if;
+
                   Check_Is_Less_Restrictive_Tree
                     (Get_Elem (New_Tree), Get_Elem (Orig_Tree), E);
 
@@ -3583,7 +3636,13 @@ package body Gnat2Why.Borrow_Checker is
             | N_Indexed_Component
             | N_Selected_Component
             | N_Slice
+            | N_Attribute_Reference
          =>
+            pragma Assert
+              (if Nkind (N.Expr) = N_Attribute_Reference
+               then Get_Attribute_Id (Attribute_Name (N.Expr))
+                 in Attribute_First | Attribute_Last | Attribute_Length);
+
             declare
                C : constant Perm_Or_Tree :=
                  Get_Perm_Or_Tree (+Prefix (N.Expr));
@@ -3632,12 +3691,24 @@ package body Gnat2Why.Borrow_Checker is
                            end;
 
                         when Array_Component =>
-                           pragma Assert (Nkind (N.Expr) = N_Indexed_Component
-                                            or else
-                                          Nkind (N.Expr) = N_Slice);
-                           pragma Assert (Get_Elem (C.Tree_Access) /= null);
-                           return (R => Unfolded,
-                                   Tree_Access => Get_Elem (C.Tree_Access));
+                           pragma Assert
+                             (Nkind (N.Expr) = N_Indexed_Component
+                              or else
+                              Nkind (N.Expr) = N_Slice
+                              or else
+                              Nkind (N.Expr) = N_Attribute_Reference);
+
+                           if Nkind (N.Expr) = N_Attribute_Reference then
+                              return (R                => Folded,
+                                      Found_Permission =>
+                                        Bounds_Permission (C.Tree_Access),
+                                      Explanation      =>
+                                        Explanation (C.Tree_Access));
+                           else
+                              pragma Assert (Get_Elem (C.Tree_Access) /= null);
+                              return (R           => Unfolded,
+                                      Tree_Access => Get_Elem (C.Tree_Access));
+                           end if;
                      end case;
                end case;
             end;
@@ -3806,6 +3877,7 @@ package body Gnat2Why.Borrow_Checker is
                | N_Indexed_Component
                | N_Selected_Component
                | N_Slice
+               | N_Attribute_Reference
             =>
                return Get_Expr_Array (Prefix (Expr)) & Expr;
 
@@ -3851,6 +3923,13 @@ package body Gnat2Why.Borrow_Checker is
                      return False;
                   end if;
 
+               when N_Attribute_Reference =>
+                  --  Prefix and Expr cannot be attribute references together
+                  --  as one or the other necessarily is a borrowed expression.
+
+                  pragma Assert (Nkind (Expr_Elt) /= N_Attribute_Reference);
+                  return False;
+
                when N_Selected_Component =>
                   if Nkind (Expr_Elt) /= N_Selected_Component
                     or else Original_Record_Component
@@ -3877,7 +3956,7 @@ package body Gnat2Why.Borrow_Checker is
       --  If the expression path is longer than the prefix one, then at this
       --  point the prefix property holds.
 
-      if Expr_Path'Length > Prefix_Path'Length then
+      if Expr_Path'Length >= Prefix_Path'Length then
          return True;
 
       --  Otherwise check if none of the remaining path elements in the
@@ -4006,6 +4085,8 @@ package body Gnat2Why.Borrow_Checker is
 
             when Array_Component =>
                Apply_Glb_Tree (Get_Elem (A), P);
+               A.all.Tree.Bounds_Permission :=
+                 Glb (Bounds_Permission (A), P);
 
             when Record_Component =>
                declare
@@ -4054,6 +4135,8 @@ package body Gnat2Why.Borrow_Checker is
 
                   when Array_Component =>
                      Copy_Tree (Source, Target);
+                     Target.all.Tree.Bounds_Permission :=
+                       Glb (Child_Perm, Bounds_Permission (Source));
                      Target.all.Tree.Permission := Perm;
                      Apply_Glb_Tree (Get_Elem (Target), Child_Perm);
 
@@ -4094,10 +4177,16 @@ package body Gnat2Why.Borrow_Checker is
             when Array_Component =>
                case Kind (Source) is
                when Entire_Object =>
+                  Target.all.Tree.Bounds_Permission :=
+                    Glb (Bounds_Permission (Target),
+                         Children_Permission (Source));
                   Apply_Glb_Tree (Get_Elem (Target),
                                   Children_Permission (Source));
 
                when Array_Component =>
+                  Target.all.Tree.Bounds_Permission :=
+                    Glb (Bounds_Permission (Target),
+                         Bounds_Permission (Source));
                   Merge_Trees (Get_Elem (Target), Get_Elem (Source));
 
                when others =>
@@ -4258,6 +4347,7 @@ package body Gnat2Why.Borrow_Checker is
             when N_Indexed_Component
                | N_Selected_Component
                | N_Slice
+               | N_Attribute_Reference
             =>
                Set_Root_Object (Prefix (Path), Obj, Part, Deref);
                Part := True;
@@ -4827,11 +4917,12 @@ package body Gnat2Why.Borrow_Checker is
                   begin
                      Set_Perm_Extensions_Move
                        (C, Component_Type (Check_Ty), Expl);
-                     T.all.Tree := (Kind         => Array_Component,
-                                    Is_Node_Deep => Is_Node_Deep (T),
-                                    Explanation  => Expl,
-                                    Permission   => Write_Only,
-                                    Get_Elem     => C);
+                     T.all.Tree := (Kind              => Array_Component,
+                                    Is_Node_Deep      => Is_Node_Deep (T),
+                                    Explanation       => Expl,
+                                    Permission        => Write_Only,
+                                    Bounds_Permission => Read_Write,
+                                    Get_Elem          => C);
                   end;
 
                when Record_Kind =>
@@ -4894,6 +4985,7 @@ package body Gnat2Why.Borrow_Checker is
          when Array_Component =>
             Set_Perm_Extensions_Move
               (Get_Elem (T), Component_Type (Check_Ty), Expl);
+            T.Tree.Bounds_Permission := Read_Write;
 
          when Record_Component =>
             declare
@@ -5168,11 +5260,12 @@ package body Gnat2Why.Borrow_Checker is
                         D.all.Tree.Permission := Perm;
                      end if;
 
-                     C.all.Tree := (Kind         => Array_Component,
-                                    Is_Node_Deep => Is_Node_Deep (C),
-                                    Explanation  => Expl,
-                                    Permission   => Permission (C),
-                                    Get_Elem     => D);
+                     C.all.Tree := (Kind              => Array_Component,
+                                    Is_Node_Deep      => Is_Node_Deep (C),
+                                    Explanation       => Expl,
+                                    Permission        => Permission (C),
+                                    Bounds_Permission => Child_P,
+                                    Get_Elem          => D);
                      return D;
                   end;
                end if;
