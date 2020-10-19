@@ -2,22 +2,22 @@ vectors.adb:5:14: info: add a contract to analyze it separately from calling con
 vectors.adb:5:14: info: local subprogram "Set_Id" only analyzed in the context of calls
 vectors.adb:13:14: info: add a contract to analyze it separately from calling contexts
 vectors.adb:13:14: info: local subprogram "Bump_Sig" only analyzed in the context of calls
-vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:108 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 103 should mention Container in a loop invariant]
-vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:120 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 0)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 116 should mention Container in a loop invariant]
+vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:108 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 103 should mention Container in a loop invariant]
+vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:120 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 0)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 116 should mention Container in a loop invariant]
 vectors.adb:32:07: info: initialization of "Position" proved
-vectors.adb:37:56: medium: range check might fail (e.g. when Container = (Id => 0, Sig => ?, Elements => (others => 0), Last_Index => 0)) [possible explanation: subprogram at vectors.ads:21 should mention Container in a precondition]
+vectors.adb:37:56: medium: range check might fail (e.g. when Container = (Id => 0, Sig => ?, Elements => (others => 0), Last_Index => 0)) [possible fix: subprogram at vectors.ads:21 should mention Container in a precondition]
 vectors.adb:46:07: info: initialization of "Position" proved
 vectors.adb:51:56: info: range check proved (CVC4: 1 VC)
-vectors.adb:52:56: medium: range check might fail (e.g. when Container = (Id => 0, Sig => ?, Elements => (others => 0), Last_Index => 0)) [possible explanation: subprogram at vectors.ads:23 should mention Container in a precondition]
+vectors.adb:52:56: medium: range check might fail (e.g. when Container = (Id => 0, Sig => ?, Elements => (others => 0), Last_Index => 0)) [possible fix: subprogram at vectors.ads:23 should mention Container in a precondition]
 vectors.adb:83:43: info: range check proved (CVC4: 1 VC)
 vectors.adb:102:11: info: range check proved (CVC4: 2 VC)
 vectors.adb:103:07: info: cannot unroll loop (too many loop iterations)
 vectors.adb:104:32: info: overflow check proved (CVC4: 1 VC)
 vectors.adb:104:32: medium: array index check might fail (e.g. when J = 10000) [reason for check: result of addition must be a valid index into the array]
-vectors.adb:107:52: medium: range check might fail (e.g. when Container = (Id => 0, Sig => ?, Elements => (others => 0), Last_Index => Extended_Index'Last)) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: loop at line 103 should mention Container in a loop invariant]
+vectors.adb:107:52: medium: range check might fail (e.g. when Container = (Id => 0, Sig => ?, Elements => (others => 0), Last_Index => Extended_Index'Last)) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 103 should mention Container in a loop invariant]
 vectors.adb:115:11: info: range check proved (CVC4: 2 VC)
 vectors.adb:116:07: info: cannot unroll loop (too many loop iterations)
 vectors.adb:117:58: info: overflow check proved (CVC4: 1 VC)
 vectors.adb:117:58: medium: array index check might fail (e.g. when J = 10000) [reason for check: result of addition must be a valid index into the array]
-vectors.adb:119:52: medium: range check might fail (e.g. when Container = (Id => 0, Sig => ?, Elements => (others => 0), Last_Index => 0)) [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: loop at line 116 should mention Container in a loop invariant]
+vectors.adb:119:52: medium: range check might fail (e.g. when Container = (Id => 0, Sig => ?, Elements => (others => 0), Last_Index => 0)) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 116 should mention Container in a loop invariant]
 vectors.ads:16:27: info: initialization of "Container" proved

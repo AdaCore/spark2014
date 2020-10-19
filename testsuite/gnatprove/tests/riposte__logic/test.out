@@ -27,13 +27,13 @@ logic.adb:63:22: info: assertion proved (CVC4: 3 VC)
 logic.adb:65:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:66:22: info: assertion proved (CVC4: 2 VC)
 logic.adb:70:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:71:22: medium: assertion might fail, cannot prove (not (A and B)) = (not A and not B) (e.g. when A = True) [possible explanation: subprogram at line 59 should mention A and B in a precondition]
+logic.adb:71:22: medium: assertion might fail, cannot prove (not (A and B)) = (not A and not B) (e.g. when A = True) [possible fix: subprogram at line 59 should mention A and B in a precondition]
 logic.adb:73:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:74:22: medium: assertion might fail, cannot prove (A or B) = (not A and not B) (e.g. when A = True) [possible explanation: subprogram at line 59 should mention A and B in a precondition]
+logic.adb:74:22: medium: assertion might fail, cannot prove (A or B) = (not A and not B) (e.g. when A = True) [possible fix: subprogram at line 59 should mention A and B in a precondition]
 logic.adb:76:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:77:22: medium: assertion might fail, cannot prove not (A or B) = (A and not B) [possible explanation: subprogram at line 59 should mention A and B in a precondition]
+logic.adb:77:22: medium: assertion might fail, cannot prove not (A or B) = (A and not B) [possible fix: subprogram at line 59 should mention A and B in a precondition]
 logic.adb:79:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:80:22: medium: assertion might fail, cannot prove not (A or B) = (not A and B) [possible explanation: subprogram at line 59 should mention A and B in a precondition]
+logic.adb:80:22: medium: assertion might fail, cannot prove not (A or B) = (not A and B) [possible fix: subprogram at line 59 should mention A and B in a precondition]
 logic.adb:83:04: warning: analyzing unreferenced procedure "Contraposition"
 logic.adb:86:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:87:22: info: assertion proved (CVC4: 1 VC; Trivial: 2 VC)
@@ -48,4 +48,4 @@ logic.adb:119:11: info: flow dependencies proved
 logic.adb:121:22: info: postcondition proved (CVC4: 2 VC)
 logic.adb:128:19: info: postcondition proved (CVC4: 4 VC)
 logic.adb:135:04: warning: analyzing unreferenced procedure "Implies_Test_1"
-logic.adb:138:22: medium: assertion might fail [possible explanation: subprogram at line 135 should mention A and B and C in a precondition]
+logic.adb:138:22: medium: assertion might fail [possible fix: subprogram at line 135 should mention A and B and C in a precondition]

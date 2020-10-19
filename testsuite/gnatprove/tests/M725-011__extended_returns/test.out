@@ -1,7 +1,7 @@
 extended_returns.adb:7:07: medium: "Result.B" might not be initialized
 extended_returns.adb:7:07: medium: "Result.C" might not be initialized
 extended_returns.adb:7:07: medium: "Result.D" might not be initialized
-extended_returns.adb:7:33: medium: range check might fail (e.g. when Discr = -1) [possible explanation: subprogram at extended_returns.ads:15 should mention Discr in a precondition]
+extended_returns.adb:7:33: medium: range check might fail (e.g. when Discr = -1) [possible fix: subprogram at extended_returns.ads:15 should mention Discr in a precondition]
 extended_returns.adb:11:19: info: discriminant check proved (CVC4: 1 VC)
 extended_returns.adb:13:19: info: discriminant check proved (CVC4: 1 VC)
 extended_returns.adb:14:19: info: discriminant check proved (CVC4: 1 VC)

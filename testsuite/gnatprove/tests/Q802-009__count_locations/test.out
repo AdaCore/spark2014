@@ -15,9 +15,9 @@ count_locations.adb:23:34: info: range check proved (CVC4: 1 VC)
 count_locations.adb:31:22: info: assertion proved (CVC4: 1 VC)
 count_locations.adb:32:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 count_locations.ads:12:13: info: function contract might not be available on recursive calls
-count_locations.ads:12:13: medium: subprogram "Partial_Count_Selected_Locations" might not terminate, terminating annotation could be incorrect
 count_locations.ads:13:37: info: overflow check proved (CVC4: 1 VC)
 count_locations.ads:13:37: info: range check proved (CVC4: 1 VC)
+count_locations.ads:13:37: medium: "Partial_Count_Selected_Locations" is recursive, terminating annotation could be incorrect
 count_locations.ads:13:115: info: range check proved (CVC4: 1 VC)
 count_locations.ads:15:17: info: postcondition proved (CVC4: 1 VC)
 count_locations.ads:26:06: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)

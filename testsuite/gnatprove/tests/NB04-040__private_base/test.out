@@ -1,7 +1,7 @@
-base-ext.ads:10:48: medium: overflow check might fail (e.g. when X = (C => -1, D => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 10 should mention X in a precondition]
+base-ext.ads:10:48: medium: overflow check might fail (e.g. when X = (C => -1, D => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 10 should mention X in a precondition]
 base.ads:9:14: info: postcondition proved (CVC4: 1 VC)
 ext.adb:8:22: medium: assertion might fail, cannot prove T(A).Sum = T(B).Sum (e.g. when A = (C => 1, D => 0) and B = (C => 2, D => 0))
-ext.ads:13:53: medium: overflow check might fail (e.g. when X = (C => -1, D => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 13 should mention X in a precondition]
+ext.ads:13:53: medium: overflow check might fail (e.g. when X = (C => -1, D => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 13 should mention X in a precondition]
 ext.ads:17:14: warning: subprogram "Test" has no effect
 notag_base.ads:9:14: info: postcondition proved (CVC4: 1 VC)
 notag_ext.adb:8:22: info: assertion proved (CVC4: 1 VC)

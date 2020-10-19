@@ -1628,6 +1628,8 @@ package body Configuration is
       begin
          if CL_Switches.Output.all = "" then
             Output := GPO_Pretty;
+         elsif CL_Switches.Output.all = "brief" then
+            Output := GPO_Brief;
          elsif CL_Switches.Output.all = "oneline" then
             Output := GPO_Oneline;
          elsif CL_Switches.Output.all = "pretty" then

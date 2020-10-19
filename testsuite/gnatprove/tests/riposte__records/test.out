@@ -74,11 +74,11 @@ records.adb:384:07: info: initialization of "R" proved
 records.adb:394:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:398:07: info: initialization of "R" proved
 records.adb:406:11: info: flow dependencies proved
-records.adb:410:22: medium: assertion might fail, cannot prove X.The_Pair.A = 0 (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 1))) [possible explanation: subprogram at line 405 should mention X in a precondition]
+records.adb:410:22: medium: assertion might fail, cannot prove X.The_Pair.A = 0 (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 1))) [possible fix: subprogram at line 405 should mention X in a precondition]
 records.adb:414:11: info: flow dependencies proved
-records.adb:418:22: medium: assertion might fail, cannot prove X.The_Pair.A = X.The_Pair.B (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 0))) [possible explanation: subprogram at line 413 should mention X in a precondition]
+records.adb:418:22: medium: assertion might fail, cannot prove X.The_Pair.A = X.The_Pair.B (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 0))) [possible fix: subprogram at line 413 should mention X in a precondition]
 records.adb:422:11: info: flow dependencies proved
-records.adb:426:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X.The_Pair.B [possible explanation: subprogram at line 421 should mention X in a precondition]
+records.adb:426:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X.The_Pair.B [possible fix: subprogram at line 421 should mention X in a precondition]
 records.adb:429:22: info: initialization of "X" proved
 records.adb:430:11: info: flow dependencies proved
 records.adb:436:22: medium: assertion might fail, cannot prove not X.Exists (e.g. when X = (Exists => True, The_Pair => (A => 5, B => 10)))
@@ -94,7 +94,7 @@ records.adb:482:11: info: flow dependencies proved
 records.adb:483:22: medium: postcondition might fail, cannot prove R = R'Old'update (e.g. when R = (Exists => True, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = 1)
 records.adb:491:30: info: assertion proved (CVC4: 1 VC)
 records.adb:501:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-records.adb:504:22: medium: assertion might fail, cannot prove R.Exists [possible explanation: subprogram at line 498 should mention R in a precondition]
+records.adb:504:22: medium: assertion might fail, cannot prove R.Exists [possible fix: subprogram at line 498 should mention R in a precondition]
 records.adb:513:11: info: flow dependencies proved
 records.adb:514:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 records.adb:523:19: info: postcondition proved (CVC4: 2 VC)

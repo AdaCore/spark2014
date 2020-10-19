@@ -5,14 +5,7 @@ test.adb:20:42: info: cannot unroll loop (too many loop iterations)
 test.adb:21:15: info: division check proved (CVC4: 1 VC)
 test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
 test.adb:30:14: info: initialization of "R" proved
-test.adb:31:17: medium: overflow check might fail (e.g. when N = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 28 should mention N in a precondition]
+test.adb:31:17: medium: overflow check might fail (e.g. when N = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 28 should mention N in a precondition]
 test.adb:44:07: medium: exception might be raised
-test.adb:3:04: warning: analyzing unreferenced function "Random_Number"
-test.adb:20:11: info: range check proved (CVC4: 2 VC)
-test.adb:20:38: info: division check proved (CVC4: 1 VC)
-test.adb:20:42: info: cannot unroll loop (too many loop iterations)
-test.adb:21:15: info: division check proved (CVC4: 1 VC)
-test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
-test.adb:30:14: info: initialization of "R" proved
-test.adb:31:17: medium: overflow check might fail (e.g. when N = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 28 should mention N in a precondition]
-test.adb:44:07: medium: exception might be raised
+Corrupted ali file detected (test.ali): missing end marker. Call gnatprove with "--clean".
+gnatprove: error during flow analysis and proof

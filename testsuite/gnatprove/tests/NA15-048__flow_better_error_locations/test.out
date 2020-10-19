@@ -1,6 +1,6 @@
 a.ads:3:08: info: flow dependencies proved
 b.ads:3:08: info: flow dependencies proved
-better_error_locations.adb:4:27: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at better_error_locations.ads:4 should mention A.State and B.State in a precondition]
+better_error_locations.adb:4:27: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at better_error_locations.ads:4 should mention A.State and B.State in a precondition]
 better_error_locations.ads:4:17: info: initialization of "X" proved
 better_error_locations.ads:5:11: info: data dependencies proved
 better_error_locations.ads:5:42: low: unused global "C.State"

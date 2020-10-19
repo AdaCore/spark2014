@@ -1,0 +1,9 @@
+u.adb:3:27: info: initialization of "Y" proved
+u.adb:5:13: info: types in unchecked conversion have the same size (Trivial)
+u.adb:6:17: info: type is suitable for unchecked conversion (Trivial)
+u.adb:6:36: info: type is suitable for unchecked conversion (Trivial)
+w.adb:3:27: info: initialization of "Y" proved
+w.adb:4:09: info: data dependencies proved
+w.adb:6:13: info: types in unchecked conversion have the same size (Trivial)
+w.adb:7:17: info: type is suitable for unchecked conversion (Trivial)
+w.adb:7:36: info: type is suitable for unchecked conversion (Trivial)

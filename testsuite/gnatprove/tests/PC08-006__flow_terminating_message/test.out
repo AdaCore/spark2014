@@ -1,9 +1,9 @@
+terminating_annotations.adb:8:10: medium: "F_Rec" is recursive, terminating annotation could be incorrect
 terminating_annotations.adb:8:26: info: range check proved (CVC4: 1 VC)
+terminating_annotations.adb:15:19: medium: loop might be nonterminating, terminating annotation on "F_While" could be incorrect
 terminating_annotations.adb:16:17: info: range check proved (CVC4: 1 VC)
+terminating_annotations.adb:37:07: medium: call to "Not_SPARK" might be nonterminating, terminating annotation on "F_Call" could be incorrect
 terminating_annotations.adb:50:31: info: loop variant proved (CVC4: 1 VC)
 terminating_annotations.adb:51:17: info: range check proved (CVC4: 1 VC)
 terminating_annotations.ads:3:13: info: implicit function contract might not be available on recursive calls
-terminating_annotations.ads:3:13: medium: subprogram "F_Rec" might not terminate, terminating annotation could be incorrect
-terminating_annotations.ads:6:13: medium: subprogram "F_While" might not terminate, terminating annotation could be incorrect
-terminating_annotations.ads:13:13: medium: subprogram "F_Call" might not terminate, terminating annotation could be incorrect
 terminating_annotations.ads:16:13: info: subprogram "F_Term" will terminate, terminating annotation has been proved

@@ -1,3 +1,3 @@
 used.adb:3:07: info: initialization of "Res" proved
-used.adb:6:17: medium: overflow check might fail (e.g. when x = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer] [possible explanation: subprogram at used.ads:2 should mention x in a precondition]
+used.adb:6:17: medium: overflow check might fail (e.g. when x = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: subprogram at used.ads:2 should mention x in a precondition]
 user.ads:2:36: info: initialization of "res" proved

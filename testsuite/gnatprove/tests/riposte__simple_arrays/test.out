@@ -21,7 +21,7 @@ simple_arrays.adb:79:11: info: flow dependencies proved
 simple_arrays.adb:81:13: info: postcondition proved (CVC4: 2 VC; Trivial: 5 VC; Z3: 1 VC)
 simple_arrays.adb:85:54: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:86:50: info: index check proved (CVC4: 2 VC)
-simple_arrays.adb:89:22: medium: assertion might fail, cannot prove (A with delta 1 => 5,  N => 6) = ... (e.g. when A = (others => 5) and N = 0) [possible explanation: subprogram at line 77 should mention A and N in a precondition]
+simple_arrays.adb:89:22: medium: assertion might fail, cannot prove (A with delta 1 => 5,  N => 6) = ... (e.g. when A = (others => 5) and N = 0) [possible fix: subprogram at line 77 should mention A and N in a precondition]
 simple_arrays.adb:89:36: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:90:32: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:90:56: info: index check proved (CVC4: 2 VC)
@@ -118,9 +118,9 @@ simple_arrays.adb:391:11: info: flow dependencies proved
 simple_arrays.adb:393:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 simple_arrays.adb:394:48: info: index check proved (CVC4: 2 VC)
 simple_arrays.adb:402:09: info: flow dependencies proved
-simple_arrays.adb:405:22: medium: assertion might fail, cannot prove A(Elem_0) = Elem_0 (e.g. when A = (others => Elem_1)) [possible explanation: subprogram at line 401 should mention A in a precondition]
+simple_arrays.adb:405:22: medium: assertion might fail, cannot prove A(Elem_0) = Elem_0 (e.g. when A = (others => Elem_1)) [possible fix: subprogram at line 401 should mention A in a precondition]
 simple_arrays.adb:409:11: info: flow dependencies proved
-simple_arrays.adb:412:22: medium: assertion might fail, cannot prove A(I) = Elem_0 (e.g. when A = (others => Elem_1) and I = Elem_0) [possible explanation: subprogram at line 408 should mention A and I in a precondition]
+simple_arrays.adb:412:22: medium: assertion might fail, cannot prove A(I) = Elem_0 (e.g. when A = (others => Elem_1) and I = Elem_0) [possible fix: subprogram at line 408 should mention A and I in a precondition]
 simple_arrays.adb:417:11: info: flow dependencies proved
 simple_arrays.adb:418:22: medium: postcondition might fail, cannot prove A(Elem_0) = Elem_0 (e.g. when A = (others => Elem_1))
 simple_arrays.adb:427:11: info: flow dependencies proved
@@ -146,9 +146,9 @@ simple_arrays.adb:517:11: info: flow dependencies proved
 simple_arrays.adb:518:22: medium: postcondition might fail, cannot prove A /= A'old
 simple_arrays.adb:520:07: info: initialization of "Tmp" proved
 simple_arrays.adb:532:11: info: flow dependencies proved
-simple_arrays.adb:535:22: medium: assertion might fail, cannot prove A(42) = Elem_0 (e.g. when A = (others => Elem_1)) [possible explanation: subprogram at line 531 should mention A in a precondition]
+simple_arrays.adb:535:22: medium: assertion might fail, cannot prove A(42) = Elem_0 (e.g. when A = (others => Elem_1)) [possible fix: subprogram at line 531 should mention A in a precondition]
 simple_arrays.adb:540:11: info: flow dependencies proved
-simple_arrays.adb:543:22: medium: assertion might fail, cannot prove A(I) = Elem_0 (e.g. when A = (others => Elem_1) and I = 0) [possible explanation: subprogram at line 539 should mention A and I in a precondition]
+simple_arrays.adb:543:22: medium: assertion might fail, cannot prove A(I) = Elem_0 (e.g. when A = (others => Elem_1) and I = 0) [possible fix: subprogram at line 539 should mention A and I in a precondition]
 simple_arrays.adb:548:11: info: flow dependencies proved
 simple_arrays.adb:549:22: medium: postcondition might fail, cannot prove A(42) = Elem_0 (e.g. when A = (others => Elem_1))
 simple_arrays.adb:558:11: info: flow dependencies proved
@@ -174,9 +174,9 @@ simple_arrays.adb:648:11: info: flow dependencies proved
 simple_arrays.adb:649:22: medium: postcondition might fail, cannot prove A /= A'old
 simple_arrays.adb:651:07: info: initialization of "Tmp" proved
 simple_arrays.adb:663:11: info: flow dependencies proved
-simple_arrays.adb:666:22: medium: assertion might fail, cannot prove A(Elem_0) = 69 [possible explanation: subprogram at line 662 should mention A in a precondition]
+simple_arrays.adb:666:22: medium: assertion might fail, cannot prove A(Elem_0) = 69 [possible fix: subprogram at line 662 should mention A in a precondition]
 simple_arrays.adb:671:11: info: flow dependencies proved
-simple_arrays.adb:674:22: medium: assertion might fail, cannot prove A(I) = 69 [possible explanation: subprogram at line 670 should mention A and I in a precondition]
+simple_arrays.adb:674:22: medium: assertion might fail, cannot prove A(I) = 69 [possible fix: subprogram at line 670 should mention A and I in a precondition]
 simple_arrays.adb:679:11: info: flow dependencies proved
 simple_arrays.adb:680:22: medium: postcondition might fail, cannot prove A(Elem_0) = 69 (e.g. when A = (others => 1337))
 simple_arrays.adb:688:11: info: flow dependencies proved
@@ -202,9 +202,9 @@ simple_arrays.adb:778:11: info: flow dependencies proved
 simple_arrays.adb:779:22: medium: postcondition might fail, cannot prove A /= A'old
 simple_arrays.adb:781:07: info: initialization of "Tmp" proved
 simple_arrays.adb:793:11: info: flow dependencies proved
-simple_arrays.adb:796:22: medium: assertion might fail, cannot prove A(42) = 69 [possible explanation: subprogram at line 792 should mention A in a precondition]
+simple_arrays.adb:796:22: medium: assertion might fail, cannot prove A(42) = 69 [possible fix: subprogram at line 792 should mention A in a precondition]
 simple_arrays.adb:801:11: info: flow dependencies proved
-simple_arrays.adb:804:22: medium: assertion might fail, cannot prove A(I) = 69 [possible explanation: subprogram at line 800 should mention A and I in a precondition]
+simple_arrays.adb:804:22: medium: assertion might fail, cannot prove A(I) = 69 [possible fix: subprogram at line 800 should mention A and I in a precondition]
 simple_arrays.adb:809:11: info: flow dependencies proved
 simple_arrays.adb:810:22: medium: postcondition might fail, cannot prove A(42) = 69 (e.g. when A = (others => 1337))
 simple_arrays.adb:819:11: info: flow dependencies proved

@@ -1,14 +1,14 @@
 warns3.adb:8:04: warning: no warning suppressed by this pragma
 warns3.adb:10:04: warning: possibly useless assignment to "Tmp", value might not be referenced
 warns.adb:4:04: info: initialization of "Tmp" proved
-warns.adb:6:13: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
+warns.adb:6:13: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 warns.adb:10:15: medium: overflow check might fail (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 warns2.adb:4:04: info: initialization of "Tmp" proved
-warns2.adb:6:13: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
+warns2.adb:6:13: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 warns2.adb:9:08: warning: unused assignment
 warns2.adb:9:15: medium: overflow check might fail (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 warns3.adb:4:04: info: initialization of "Tmp" proved
-warns3.adb:6:13: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
+warns3.adb:6:13: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 warns3.adb:9:04: warning: no warning suppressed by this pragma
 warns3.adb:10:04: warning: possibly useless assignment to "Tmp", value might not be referenced
 warns3.adb:10:08: warning: unused assignment

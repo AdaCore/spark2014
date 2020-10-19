@@ -16,11 +16,11 @@ attempt_1.adb:34:31: info: float overflow check proved (CodePeer)
 attempt_1.adb:34:44: info: division check proved (CodePeer)
 attempt_1.adb:34:44: info: float overflow check proved (Trivial)
 attempt_2.adb:16:18: info: range check proved (Trivial)
-attempt_2.adb:16:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible explanation: subprogram at line 15 should mention N in a precondition]
+attempt_2.adb:16:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at line 15 should mention N in a precondition]
 attempt_2.adb:16:22: info: float overflow check proved (Trivial)
 attempt_2.adb:16:37: info: float overflow check proved (Trivial)
 attempt_2.adb:19:18: info: range check proved (Trivial)
-attempt_2.adb:19:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible explanation: subprogram at line 18 should mention N in a precondition]
+attempt_2.adb:19:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at line 18 should mention N in a precondition]
 attempt_2.adb:19:22: info: float overflow check proved (Trivial)
 attempt_2.adb:19:36: info: float overflow check proved (Trivial)
 attempt_2.adb:27:33: info: initialization of "New_Speed" proved

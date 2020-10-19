@@ -6,11 +6,11 @@ foo.adb:24:09: info: flow dependencies proved
 foo.adb:29:26: info: initialization of "R" proved
 foo.adb:30:09: info: data dependencies proved
 foo.adb:31:09: info: flow dependencies proved
-foo.adb:35:10: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 27 should mention G2 and B in a precondition]
+foo.adb:35:10: medium: precondition might fail, cannot prove Y = G2 [possible fix: subprogram at line 27 should mention G2 and B in a precondition]
 foo.adb:44:25: info: initialization of "R" proved
 foo.adb:45:09: info: data dependencies proved
 foo.adb:46:09: info: flow dependencies proved
-foo.adb:51:10: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 42 should mention G2 in a precondition]
+foo.adb:51:10: medium: precondition might fail, cannot prove Y = G2 [possible fix: subprogram at line 42 should mention G2 in a precondition]
 foo.adb:51:26: high: "B" is not initialized
 foo.adb:62:26: info: initialization of "R" proved
 foo.adb:63:09: info: data dependencies proved
@@ -21,13 +21,13 @@ foo.adb:82:09: info: flow dependencies proved
 foo.adb:92:26: info: initialization of "R" proved
 foo.adb:93:09: info: data dependencies proved
 foo.adb:94:09: info: flow dependencies proved
-foo.adb:100:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 99 should mention Tmp in a loop invariant]
+foo.adb:100:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 99 should mention Tmp in a loop invariant]
 foo.adb:108:26: info: initialization of "R" proved
 foo.adb:109:09: info: data dependencies proved
 foo.adb:110:09: info: flow dependencies proved
-foo.adb:114:12: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 106 should mention G2 in a precondition]
-foo.adb:115:40: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 106 should mention A in a precondition]
-foo.adb:116:29: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 106 should mention G2 and B in a precondition]
+foo.adb:114:12: medium: precondition might fail, cannot prove Y = G2 [possible fix: subprogram at line 106 should mention G2 in a precondition]
+foo.adb:115:40: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 106 should mention A in a precondition]
+foo.adb:116:29: medium: precondition might fail, cannot prove Y = G2 [possible fix: subprogram at line 106 should mention G2 and B in a precondition]
 foo.adb:122:25: info: initialization of "R" proved
 foo.adb:123:09: info: data dependencies proved
 foo.adb:126:12: medium: precondition might fail, cannot prove Y = G2
@@ -48,7 +48,7 @@ foo.adb:150:09: info: flow dependencies proved
 foo.adb:154:21: high: "B" is not initialized
 function_depends_on_state.adb:23:34: medium: "B" constituent of "S" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 function_depends_on_state.adb:23:40: medium: "D" constituent of "S2" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
-function_depends_on_state.adb:28:22: medium: assertion might fail, cannot prove B = D [possible explanation: subprogram at function_depends_on_state.ads:14 should mention B and D in a precondition]
+function_depends_on_state.adb:28:22: medium: assertion might fail, cannot prove B = D [possible fix: subprogram at function_depends_on_state.ads:14 should mention B and D in a precondition]
 function_depends_on_state.ads:4:08: info: flow dependencies proved
 function_depends_on_state.ads:7:11: info: data dependencies proved
 function_depends_on_state.ads:8:11: info: flow dependencies proved

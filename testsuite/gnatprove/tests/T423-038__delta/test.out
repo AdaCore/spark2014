@@ -1,6 +1,6 @@
 test_delta_checks.adb:7:25: info: data dependencies proved
 test_delta_checks.adb:10:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 2 VC)
-test_delta_checks.adb:10:26: medium: array index check might fail (e.g. when Y = 6 and Z = (others => 1) and Z'First = 1 and Z'Last = 5) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 7 should mention Y in a precondition]
+test_delta_checks.adb:10:26: medium: array index check might fail (e.g. when Y = 6 and Z = (others => 1) and Z'First = 1 and Z'Last = 5) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 7 should mention Y in a precondition]
 test_delta_checks.adb:10:34: info: index check proved (CVC4: 2 VC)
 test_delta_checks.adb:10:42: info: index check proved (CVC4: 2 VC)
 test_delta_checks.adb:10:50: info: index check proved (CVC4: 2 VC)
@@ -8,13 +8,13 @@ test_delta_checks.adb:10:58: info: index check proved (CVC4: 2 VC)
 test_delta_checks.adb:11:22: info: assertion proved (CVC4: 1 VC)
 test_delta_checks.adb:14:25: info: data dependencies proved
 test_delta_checks.adb:17:09: info: length check proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 2 VC)
-test_delta_checks.adb:17:22: medium: array index check might fail (e.g. when Y = 6 and Z = (others => 1) and Z'First = 1 and Z'Last = 5) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 14 should mention Y in a precondition]
+test_delta_checks.adb:17:22: medium: array index check might fail (e.g. when Y = 6 and Z = (others => 1) and Z'First = 1 and Z'Last = 5) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 14 should mention Y in a precondition]
 test_delta_checks.adb:17:30: info: index check proved (CVC4: 2 VC)
 test_delta_checks.adb:17:38: info: index check proved (CVC4: 2 VC)
 test_delta_checks.adb:17:46: info: index check proved (CVC4: 2 VC)
 test_delta_checks.adb:17:54: info: index check proved (CVC4: 2 VC)
 test_delta_checks.adb:18:22: info: assertion proved (CVC4: 1 VC)
 test_delta_checks.adb:21:25: info: data dependencies proved
-test_delta_checks.adb:27:23: medium: array index check might fail (e.g. when Y = 6) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 21 should mention Y in a precondition]
-test_delta_checks.adb:27:23: medium: range check might fail (e.g. when Y = 6) [possible explanation: subprogram at line 21 should mention Y in a precondition]
+test_delta_checks.adb:27:23: medium: array index check might fail (e.g. when Y = 6) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 21 should mention Y in a precondition]
+test_delta_checks.adb:27:23: medium: range check might fail (e.g. when Y = 6) [possible fix: subprogram at line 21 should mention Y in a precondition]
 test_delta_checks.adb:27:26: info: index check proved (CVC4: 2 VC)

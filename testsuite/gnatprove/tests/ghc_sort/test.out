@@ -182,8 +182,8 @@ ghc_sort.adb:111:17: info: overflow check proved (Z3: 1 VC)
 ghc_sort.adb:112:10: info: predicate check proved (Z3: 1 VC)
 ghc_sort.adb:112:22: info: index check proved (Z3: 2 VC)
 ghc_sort.adb:122:07: info: range check proved (Z3: 2 VC)
-ghc_sort.adb:130:13: medium: subprogram "All_Sorted" might not terminate, terminating annotation could be incorrect
 ghc_sort.adb:130:25: warning: "L" is not modified, could be of access constant type
+ghc_sort.adb:131:07: medium: "All_Sorted" is recursive, terminating annotation could be incorrect
 ghc_sort.adb:132:32: info: pointer dereference check proved (Z3: 1 VC)
 ghc_sort.adb:132:39: info: pointer dereference check proved (Z3: 1 VC)
 ghc_sort.adb:132:49: info: index check proved (Z3: 2 VC)
@@ -191,8 +191,8 @@ ghc_sort.adb:132:58: info: pointer dereference check proved (Z3: 1 VC)
 ghc_sort.adb:132:66: info: index check proved (Z3: 2 VC)
 ghc_sort.adb:133:29: info: pointer dereference check proved (Z3: 1 VC)
 ghc_sort.adb:139:13: info: implicit function contract might not be available on recursive calls
-ghc_sort.adb:139:13: medium: subprogram "Sum_Length_Aux" might not terminate, terminating annotation could be incorrect
 ghc_sort.adb:139:29: warning: "L" is not modified, could be of access constant type
+ghc_sort.adb:140:07: medium: "Sum_Length_Aux" is recursive, terminating annotation could be incorrect
 ghc_sort.adb:141:14: info: pointer dereference check proved (Z3: 1 VC)
 ghc_sort.adb:141:33: info: overflow check proved (Z3: 1 VC)
 ghc_sort.adb:141:52: info: pointer dereference check proved (Z3: 1 VC)

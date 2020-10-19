@@ -14,9 +14,9 @@ package body Test_Callback_Bad with SPARK_Mode is
 
    procedure Prim (X : Root) is null;
 
-   function F_Vol (X : Integer) return Integer is (X) with Volatile_Function;
+   function F_Vol (X : Wrap) return Integer is (X.C) with Volatile_Function;
 
-   function F_Relaxed (X : Integer) return Integer is (X) with Relaxed_Initialization => X;
+   function F_Relaxed (X : Wrap) return Integer is (X.C) with Relaxed_Initialization => X;
 
    procedure Test is
       type Proc is access procedure (X : Root);

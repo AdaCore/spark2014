@@ -1,6 +1,6 @@
 addr.adb:4:23: info: unrolling loop
 addr.adb:6:10: info: object is suitable for aliasing via address clause (Trivial)
-addr.adb:6:10: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: unknown alignment for object]
+addr.adb:6:10: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
 addr.adb:6:42: info: object is suitable for aliasing via address clause (Trivial)
 addr.adb:6:42: info: types of aliased objects have the same size (Trivial)
 addr.adb:8:33: high: "Val" is not initialized

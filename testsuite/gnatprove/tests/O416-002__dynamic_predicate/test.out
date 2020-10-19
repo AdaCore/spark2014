@@ -1,21 +1,21 @@
-dynamic_preds.adb:16:18: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible explanation: subprogram at dynamic_preds.ads:19 should mention X in a precondition]
+dynamic_preds.adb:16:18: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible fix: subprogram at dynamic_preds.ads:19 should mention X in a precondition]
 dynamic_preds.adb:17:21: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:22:23: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:23:23: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:28:19: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible explanation: subprogram at dynamic_preds.ads:22 should mention X in a precondition]
+dynamic_preds.adb:28:19: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible fix: subprogram at dynamic_preds.ads:22 should mention X in a precondition]
 dynamic_preds.adb:29:22: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:34:19: medium: predicate check might fail [possible explanation: subprogram at dynamic_preds.ads:23 should mention X in a precondition]
+dynamic_preds.adb:34:19: medium: predicate check might fail [possible fix: subprogram at dynamic_preds.ads:23 should mention X in a precondition]
 dynamic_preds.adb:35:22: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:39:27: info: range check proved (CVC4: 1 VC)
-dynamic_preds.adb:39:27: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when A = -1 and B = 0) [possible explanation: subprogram at dynamic_preds.ads:28 should mention A in a precondition]
+dynamic_preds.adb:39:27: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when A = -1 and B = 0) [possible fix: subprogram at dynamic_preds.ads:28 should mention A in a precondition]
 dynamic_preds.adb:39:30: info: range check proved (CVC4: 1 VC)
-dynamic_preds.adb:39:30: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible explanation: subprogram at dynamic_preds.ads:28 should mention B in a precondition]
+dynamic_preds.adb:39:30: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible fix: subprogram at dynamic_preds.ads:28 should mention B in a precondition]
 dynamic_preds.adb:45:27: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:45:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:51:32: medium: predicate check might fail
 dynamic_preds.adb:57:07: info: initialization of "Result" proved
 dynamic_preds.adb:59:19: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:60:19: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible explanation: precondition of subprogram at dynamic_preds.ads:32 should mention B]
+dynamic_preds.adb:60:19: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible fix: precondition of subprogram at dynamic_preds.ads:32 should mention B]
 dynamic_preds.adb:66:07: info: initialization of "Result" proved
 dynamic_preds.adb:75:07: info: initialization of "Result" proved
 dynamic_preds.adb:77:19: info: predicate check proved (CVC4: 1 VC)
@@ -24,16 +24,16 @@ dynamic_preds.adb:84:07: info: initialization of "Result" proved
 dynamic_preds.adb:86:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds.adb:87:22: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:89:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:89:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds.ads:39 should mention Above in a precondition]
+dynamic_preds.adb:89:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dynamic_preds.ads:39 should mention Above in a precondition]
 dynamic_preds.adb:92:28: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:92:28: medium: overflow check might fail (e.g. when Result = (A => Even'Last-1, B => Even'Last)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds.adb:94:14: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:98:07: warning: initialization of "Result" has no effect
 dynamic_preds.adb:100:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds.adb:101:28: info: overflow check proved (CVC4: 1 VC)
-dynamic_preds.adb:101:28: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible explanation: subprogram at dynamic_preds.ads:40 should mention Above in a precondition]
+dynamic_preds.adb:101:28: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible fix: subprogram at dynamic_preds.ads:40 should mention Above in a precondition]
 dynamic_preds.adb:103:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:103:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds.ads:40 should mention Above in a precondition]
+dynamic_preds.adb:103:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dynamic_preds.ads:40 should mention Above in a precondition]
 dynamic_preds.adb:106:28: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:106:28: medium: overflow check might fail (e.g. when Result = (A => Even'Last-3, B => 0)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds.adb:108:14: medium: predicate check might fail (e.g. when Result = (A => 0, B => 4))
@@ -43,19 +43,19 @@ dynamic_preds.adb:115:16: medium: predicate check might fail
 dynamic_preds.adb:115:22: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:117:16: medium: predicate check might fail (e.g. when Above = -1 and Result = (A => 0, B => 0))
 dynamic_preds.adb:117:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:117:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds.ads:41 should mention Above in a precondition]
+dynamic_preds.adb:117:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dynamic_preds.ads:41 should mention Above in a precondition]
 dynamic_preds.adb:120:13: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:120:28: info: overflow check proved (CVC4: 1 VC)
 dynamic_preds.adb:120:28: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:127:14: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when A = -1) [possible explanation: subprogram at dynamic_preds.ads:43 should mention A in a precondition]
-dynamic_preds.adb:128:14: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible explanation: subprogram at dynamic_preds.ads:43 should mention B in a precondition]
+dynamic_preds.adb:127:14: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when A = -1) [possible fix: subprogram at dynamic_preds.ads:43 should mention A in a precondition]
+dynamic_preds.adb:128:14: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible fix: subprogram at dynamic_preds.ads:43 should mention B in a precondition]
 dynamic_preds.adb:133:14: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:134:14: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:139:25: medium: predicate check might fail (e.g. when X = (A => 0, B => 0)) [possible explanation: subprogram at dynamic_preds.ads:46 should mention X in a precondition]
+dynamic_preds.adb:139:25: medium: predicate check might fail (e.g. when X = (A => 0, B => 0)) [possible fix: subprogram at dynamic_preds.ads:46 should mention X in a precondition]
 dynamic_preds.adb:140:34: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:150:31: medium: predicate check might fail [possible explanation: subprogram at dynamic_preds.ads:48 should mention X in a precondition]
+dynamic_preds.adb:150:31: medium: predicate check might fail [possible fix: subprogram at dynamic_preds.ads:48 should mention X in a precondition]
 dynamic_preds.adb:151:31: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:156:33: medium: predicate check might fail [possible explanation: subprogram at dynamic_preds.ads:49 should mention X in a precondition]
+dynamic_preds.adb:156:33: medium: predicate check might fail [possible fix: subprogram at dynamic_preds.ads:49 should mention X in a precondition]
 dynamic_preds.adb:157:33: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.ads:4:59: info: division check proved (CVC4: 1 VC)
 dynamic_preds.ads:16:25: warning: unused initial value of "X"
@@ -70,23 +70,23 @@ dynamic_preds.ads:36:19: info: postcondition proved (CVC4: 2 VC)
 dynamic_preds.ads:43:32: warning: unused initial value of "X"
 dynamic_preds.ads:44:41: warning: unused initial value of "X"
 dynamic_preds.ads:45:19: info: postcondition proved (CVC4: 2 VC)
-dynamic_preds_array.adb:16:18: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible explanation: subprogram at dynamic_preds_array.ads:14 should mention X in a precondition]
+dynamic_preds_array.adb:16:18: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible fix: subprogram at dynamic_preds_array.ads:14 should mention X in a precondition]
 dynamic_preds_array.adb:17:21: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:22:23: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:23:23: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:28:18: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible explanation: subprogram at dynamic_preds_array.ads:17 should mention X in a precondition]
+dynamic_preds_array.adb:28:18: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible fix: subprogram at dynamic_preds_array.ads:17 should mention X in a precondition]
 dynamic_preds_array.adb:29:21: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:34:18: medium: predicate check might fail (e.g. when X = (1 => 0, 2 => 0, others => -1)) [possible explanation: subprogram at dynamic_preds_array.ads:18 should mention X in a precondition]
+dynamic_preds_array.adb:34:18: medium: predicate check might fail (e.g. when X = (1 => 0, 2 => 0, others => -1)) [possible fix: subprogram at dynamic_preds_array.ads:18 should mention X in a precondition]
 dynamic_preds_array.adb:35:21: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:40:27: info: range check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:40:27: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when A = -1 and B = 0) [possible explanation: subprogram at dynamic_preds_array.ads:23 should mention A in a precondition]
+dynamic_preds_array.adb:40:27: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when A = -1 and B = 0) [possible fix: subprogram at dynamic_preds_array.ads:23 should mention A in a precondition]
 dynamic_preds_array.adb:40:30: info: range check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:40:30: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible explanation: subprogram at dynamic_preds_array.ads:23 should mention B in a precondition]
+dynamic_preds_array.adb:40:30: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible fix: subprogram at dynamic_preds_array.ads:23 should mention B in a precondition]
 dynamic_preds_array.adb:46:27: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:46:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:52:32: medium: predicate check might fail
 dynamic_preds_array.adb:60:20: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:61:20: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible explanation: precondition of subprogram at dynamic_preds_array.ads:27 should mention B]
+dynamic_preds_array.adb:61:20: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible fix: precondition of subprogram at dynamic_preds_array.ads:27 should mention B]
 dynamic_preds_array.adb:63:14: medium: "Result" might not be initialized
 dynamic_preds_array.adb:72:14: medium: "Result" might not be initialized
 dynamic_preds_array.adb:78:20: info: predicate check proved (CVC4: 1 VC)
@@ -95,16 +95,16 @@ dynamic_preds_array.adb:81:14: medium: "Result" might not be initialized
 dynamic_preds_array.adb:87:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:88:23: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:90:29: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:90:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds_array.ads:34 should mention Above in a precondition]
+dynamic_preds_array.adb:90:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dynamic_preds_array.ads:34 should mention Above in a precondition]
 dynamic_preds_array.adb:93:20: medium: "Result" might not be initialized
 dynamic_preds_array.adb:93:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:93:30: medium: overflow check might fail (e.g. when Result = (others => Even'Last-1)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds_array.adb:95:14: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:101:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:102:29: info: overflow check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:102:29: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible explanation: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
+dynamic_preds_array.adb:102:29: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible fix: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
 dynamic_preds_array.adb:104:29: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:104:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
+dynamic_preds_array.adb:104:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
 dynamic_preds_array.adb:107:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:107:30: medium: overflow check might fail (e.g. when Result = (1 => Even'Last-3, others => 0)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds_array.adb:109:14: medium: predicate check might fail (e.g. when Result = (2 => 4, others => 0))
@@ -113,20 +113,20 @@ dynamic_preds_array.adb:116:10: medium: predicate check might fail
 dynamic_preds_array.adb:116:23: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:118:10: medium: predicate check might fail (e.g. when Above = -1 and Result = (others => 0))
 dynamic_preds_array.adb:118:29: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:118:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dynamic_preds_array.ads:36 should mention Above in a precondition]
+dynamic_preds_array.adb:118:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dynamic_preds_array.ads:36 should mention Above in a precondition]
 dynamic_preds_array.adb:121:07: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:121:20: medium: "Result" might not be initialized
 dynamic_preds_array.adb:121:30: info: overflow check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:121:30: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:128:15: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when A = -1) [possible explanation: subprogram at dynamic_preds_array.ads:38 should mention A in a precondition]
-dynamic_preds_array.adb:129:15: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible explanation: subprogram at dynamic_preds_array.ads:38 should mention B in a precondition]
+dynamic_preds_array.adb:128:15: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when A = -1) [possible fix: subprogram at dynamic_preds_array.ads:38 should mention A in a precondition]
+dynamic_preds_array.adb:129:15: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = -1) [possible fix: subprogram at dynamic_preds_array.ads:38 should mention B in a precondition]
 dynamic_preds_array.adb:134:15: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:135:15: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:140:25: medium: predicate check might fail (e.g. when X = (1 => 0, 2 => 0, others => -2)) [possible explanation: subprogram at dynamic_preds_array.ads:41 should mention X in a precondition]
+dynamic_preds_array.adb:140:25: medium: predicate check might fail (e.g. when X = (1 => 0, 2 => 0, others => -2)) [possible fix: subprogram at dynamic_preds_array.ads:41 should mention X in a precondition]
 dynamic_preds_array.adb:141:34: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:151:31: medium: predicate check might fail [possible explanation: subprogram at dynamic_preds_array.ads:43 should mention X in a precondition]
+dynamic_preds_array.adb:151:31: medium: predicate check might fail [possible fix: subprogram at dynamic_preds_array.ads:43 should mention X in a precondition]
 dynamic_preds_array.adb:152:31: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:157:33: medium: predicate check might fail [possible explanation: subprogram at dynamic_preds_array.ads:44 should mention X in a precondition]
+dynamic_preds_array.adb:157:33: medium: predicate check might fail [possible fix: subprogram at dynamic_preds_array.ads:44 should mention X in a precondition]
 dynamic_preds_array.adb:158:33: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.ads:4:59: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.ads:11:25: warning: unused initial value of "X"
@@ -139,13 +139,13 @@ dynamic_preds_array.ads:24:39: info: initialization of "X" proved
 dynamic_preds_array.ads:25:36: info: initialization of "X" proved
 dynamic_preds_array.ads:31:19: info: postcondition proved (CVC4: 2 VC)
 dynamic_preds_array.ads:40:19: info: postcondition proved (CVC4: 2 VC)
-dynamic_preds_rte.adb:6:14: medium: predicate check might fail, cannot prove 2 * Small < 100000 (e.g. when Y = 50000) [possible explanation: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
-dynamic_preds_rte.adb:6:14: medium: range check might fail (e.g. when Y = -1) [reason for check: value must fit in the target type of the assignment] [possible explanation: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
+dynamic_preds_rte.adb:6:14: medium: predicate check might fail, cannot prove 2 * Small < 100000 (e.g. when Y = 50000) [possible fix: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
+dynamic_preds_rte.adb:6:14: medium: range check might fail (e.g. when Y = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
 dynamic_preds_rte.adb:7:14: info: range check proved (CVC4: 1 VC)
-dynamic_preds_rte.adb:7:14: medium: predicate check might fail, cannot prove Very_Small ** 2 < 100000 (e.g. when Y = 3) [possible explanation: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
+dynamic_preds_rte.adb:7:14: medium: predicate check might fail, cannot prove Very_Small ** 2 < 100000 (e.g. when Y = 3) [possible fix: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
 dynamic_preds_rte.adb:12:18: info: overflow check proved (CVC4: 1 VC)
-dynamic_preds_rte.adb:17:15: medium: predicate check might fail, cannot prove 2 * Small < 100000 (e.g. when Y = 50000) [possible explanation: subprogram at dynamic_preds_rte.ads:24 should mention Y in a precondition]
-dynamic_preds_rte.adb:17:15: medium: range check might fail (e.g. when Y = -1) [reason for check: value must fit in the target type of the assignment] [possible explanation: subprogram at dynamic_preds_rte.ads:24 should mention Y in a precondition]
+dynamic_preds_rte.adb:17:15: medium: predicate check might fail, cannot prove 2 * Small < 100000 (e.g. when Y = 50000) [possible fix: subprogram at dynamic_preds_rte.ads:24 should mention Y in a precondition]
+dynamic_preds_rte.adb:17:15: medium: range check might fail (e.g. when Y = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at dynamic_preds_rte.ads:24 should mention Y in a precondition]
 dynamic_preds_rte.adb:18:15: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:18:15: info: range check proved (CVC4: 1 VC)
 dynamic_preds_rte.adb:23:19: info: overflow check proved (CVC4: 1 VC)

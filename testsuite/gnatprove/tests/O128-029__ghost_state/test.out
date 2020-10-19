@@ -1,5 +1,5 @@
 account.adb:11:35: info: initialization of "Last_Incr" constituent of "Prev_State" proved
-account.adb:14:22: medium: overflow check might fail (e.g. when Incr = -1 and Total = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at account.ads:5 should mention Incr and Total in a precondition]
+account.adb:14:22: medium: overflow check might fail (e.g. when Incr = -1 and Total = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at account.ads:5 should mention Incr and Total in a precondition]
 account.ads:3:27: warning: no procedure exists that can initialize abstract state "Account.State"
 account.ads:6:11: info: data dependencies proved
 bad_account.ads:3:27: warning: no procedure exists that can initialize abstract state "Bad_Account.State"

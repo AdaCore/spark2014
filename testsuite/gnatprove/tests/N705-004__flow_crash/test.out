@@ -4,7 +4,7 @@ very_longs.adb:35:08: info: flow dependencies proved
 very_longs.adb:51:52: info: initialization of "Result" proved
 very_longs.adb:51:76: info: initialization of "Carry" proved
 very_longs.adb:53:08: info: flow dependencies proved
-very_longs.adb:55:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length [possible explanation: loop at line 63 should mention Result in a loop invariant]
+very_longs.adb:55:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length [possible fix: loop at line 63 should mention Result in a loop invariant]
 very_longs.adb:57:07: info: initialization of "L_Digit" proved
 very_longs.adb:58:07: info: initialization of "R_Digit" proved
 very_longs.adb:59:07: info: initialization of "Sum" proved
@@ -17,7 +17,7 @@ very_longs.adb:68:29: medium: array index check might fail [reason for check: va
 very_longs.adb:74:58: info: initialization of "Result" proved
 very_longs.adb:74:82: info: initialization of "Borrow" proved
 very_longs.adb:76:08: info: flow dependencies proved
-very_longs.adb:78:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length [possible explanation: loop at line 86 should mention Result in a loop invariant]
+very_longs.adb:78:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length [possible fix: loop at line 86 should mention Result in a loop invariant]
 very_longs.adb:80:07: info: initialization of "L_Digit" proved
 very_longs.adb:81:07: info: initialization of "R_Digit" proved
 very_longs.adb:82:07: info: initialization of "Difference" proved
@@ -112,7 +112,7 @@ very_longs.adb:264:41: info: index check proved (CVC4: 2 VC)
 very_longs.adb:274:07: info: initialization of "Result" proved
 very_longs.adb:274:42: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:274:42: info: range check proved (CVC4: 1 VC)
-very_longs.adb:274:42: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at very_longs.ads:59 should mention L and R in a precondition]
+very_longs.adb:274:42: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at very_longs.ads:59 should mention L and R in a precondition]
 very_longs.adb:275:07: info: initialization of "L_Digit" proved
 very_longs.adb:276:07: info: initialization of "R_Digit" proved
 very_longs.adb:277:07: info: initialization of "T_Digit" proved
@@ -198,16 +198,16 @@ very_longs.adb:421:11: info: flow dependencies proved
 very_longs.adb:423:10: info: initialization of "Temporary_Digit" proved
 very_longs.adb:424:10: info: initialization of "R_Hat" proved
 very_longs.adb:426:64: info: overflow check proved (CVC4: 1 VC)
-very_longs.adb:426:68: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 418 should mention J and N in a precondition]
-very_longs.adb:426:106: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 418 should mention J and N in a precondition]
-very_longs.adb:426:111: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 418 should mention J and N in a precondition]
-very_longs.adb:427:35: medium: divide by zero might fail [possible explanation: subprogram at line 418 should mention N and V in a precondition]
-very_longs.adb:427:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 418 should mention N in a precondition]
-very_longs.adb:428:35: medium: divide by zero might fail [possible explanation: subprogram at line 418 should mention N and V in a precondition]
+very_longs.adb:426:68: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 418 should mention J and N in a precondition]
+very_longs.adb:426:106: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 418 should mention J and N in a precondition]
+very_longs.adb:426:111: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 418 should mention J and N in a precondition]
+very_longs.adb:427:35: medium: divide by zero might fail [possible fix: subprogram at line 418 should mention N and V in a precondition]
+very_longs.adb:427:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 418 should mention N in a precondition]
+very_longs.adb:428:35: medium: divide by zero might fail [possible fix: subprogram at line 418 should mention N and V in a precondition]
 very_longs.adb:428:68: info: index check proved (CVC4: 2 VC)
-very_longs.adb:434:65: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 418 should mention N in a precondition]
+very_longs.adb:434:65: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 418 should mention N in a precondition]
 very_longs.adb:434:117: info: overflow check proved (CVC4: 1 VC)
-very_longs.adb:434:122: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 418 should mention J and N in a precondition]
+very_longs.adb:434:122: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 418 should mention J and N in a precondition]
 very_longs.adb:436:59: info: index check proved (CVC4: 2 VC)
 very_longs.adb:440:68: info: index check proved (CVC4: 2 VC)
 very_longs.adb:440:120: info: overflow check proved (CVC4: 1 VC)
@@ -222,8 +222,8 @@ very_longs.adb:455:10: info: initialization of "Future_Borrow" proved
 very_longs.adb:459:14: info: range check proved (CVC4: 2 VC)
 very_longs.adb:459:61: info: cannot unroll loop (dynamic loop bounds)
 very_longs.adb:460:59: info: index check proved (CVC4: 2 VC)
-very_longs.adb:464:45: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 447 should mention J in a precondition]
-very_longs.adb:464:61: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 447 should mention J in a precondition]
+very_longs.adb:464:45: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 447 should mention J in a precondition]
+very_longs.adb:464:61: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 447 should mention J in a precondition]
 very_longs.adb:469:29: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:469:45: info: index check proved (CVC4: 2 VC)
 very_longs.adb:470:52: info: overflow check proved (CVC4: 1 VC)
@@ -240,14 +240,14 @@ very_longs.adb:486:11: info: data dependencies proved
 very_longs.adb:487:11: info: flow dependencies proved
 very_longs.adb:489:10: info: initialization of "Carry" proved
 very_longs.adb:490:10: info: initialization of "Sum" proved
-very_longs.adb:492:31: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 484 should mention J in a precondition]
-very_longs.adb:492:43: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at line 484 should mention Q_Hat in a precondition]
+very_longs.adb:492:31: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 484 should mention J in a precondition]
+very_longs.adb:492:43: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 484 should mention Q_Hat in a precondition]
 very_longs.adb:496:34: info: index check proved (CVC4: 2 VC)
 very_longs.adb:496:61: info: index check proved (CVC4: 2 VC)
 very_longs.adb:498:17: info: range check proved (CVC4: 2 VC)
 very_longs.adb:498:64: info: cannot unroll loop (dynamic loop bounds)
-very_longs.adb:499:52: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 484 should mention J in a precondition]
-very_longs.adb:499:68: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at line 484 should mention J in a precondition]
+very_longs.adb:499:52: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 484 should mention J in a precondition]
+very_longs.adb:499:68: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 484 should mention J in a precondition]
 very_longs.adb:499:103: info: index check proved (CVC4: 2 VC)
 very_longs.adb:500:32: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:500:48: info: index check proved (CVC4: 2 VC)

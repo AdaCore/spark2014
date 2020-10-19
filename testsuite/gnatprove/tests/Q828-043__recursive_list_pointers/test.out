@@ -1,5 +1,5 @@
 update_lists.adb:3:22: warning: unused initial value of "Target"
-update_lists.adb:5:14: medium: memory leak might occur [possible explanation: precondition of subprogram at line 3 should mention Target]
+update_lists.adb:5:14: medium: memory leak might occur [possible fix: precondition of subprogram at line 3 should mention Target]
 update_lists.adb:6:14: info: absence of memory leak proved (CVC4: 1 VC)
 update_lists.adb:9:04: medium: memory leak might occur at end of scope
 update_lists.adb:10:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
@@ -22,19 +22,19 @@ update_lists.adb:34:13: info: precondition proved (Trivial: 1 VC)
 update_lists.adb:34:28: warning: "Next_Rover" is set by "Assign" but not used after the call
 update_lists.adb:37:10: info: precondition proved (Trivial: 1 VC)
 update_lists.adb:38:10: info: precondition proved (Trivial: 1 VC)
-update_lists.adb:38:29: medium: pointer dereference check might fail (e.g. when Prev = null) [possible explanation: call at line 37 should mention Target (for argument Prev) in a postcondition]
+update_lists.adb:38:29: medium: pointer dereference check might fail (e.g. when Prev = null) [possible fix: call at line 37 should mention Target (for argument Prev) in a postcondition]
 update_lists_inlined.adb:3:04: medium: memory leak might occur at end of scope
 update_lists_inlined.adb:4:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 update_lists_inlined.adb:4:04: info: initialization of "Rover" proved
 update_lists_inlined.adb:6:10: info: absence of memory leak proved (CVC4: 1 VC)
 update_lists_inlined.adb:7:11: info: absence of memory leak proved (CVC4: 1 VC)
 update_lists_inlined.adb:9:15: info: pointer dereference check proved (CVC4: 1 VC)
-update_lists_inlined.adb:13:20: medium: memory leak might occur [possible explanation: loop at line 8 should mention Source in a loop invariant]
+update_lists_inlined.adb:13:20: medium: memory leak might occur [possible fix: loop at line 8 should mention Source in a loop invariant]
 update_lists_inlined.adb:13:28: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists_inlined.adb:14:18: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists_inlined.adb:14:24: info: absence of memory leak proved (CVC4: 1 VC)
 update_lists_inlined.adb:17:17: info: pointer dereference check proved (CVC4: 1 VC)
-update_lists_inlined.adb:17:23: medium: memory leak might occur [possible explanation: loop at line 8 should mention Prev in a loop invariant]
+update_lists_inlined.adb:17:23: medium: memory leak might occur [possible fix: loop at line 8 should mention Prev in a loop invariant]
 update_lists_inlined.adb:17:31: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists_inlined.adb:18:18: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists_inlined.adb:18:24: info: absence of memory leak proved (CVC4: 1 VC)
@@ -54,7 +54,7 @@ update_lists_inlined.adb:31:19: warning: unused assignment
 update_lists_inlined.adb:34:19: info: absence of memory leak proved (CVC4: 1 VC)
 update_lists_inlined.adb:35:24: info: absence of memory leak proved (CVC4: 1 VC)
 update_lists_inlined.adb:35:24: warning: unused assignment
-update_lists_inlined.adb:38:15: medium: memory leak might occur [possible explanation: loop at line 8 should mention Prev in a loop invariant]
+update_lists_inlined.adb:38:15: medium: memory leak might occur [possible fix: loop at line 8 should mention Prev in a loop invariant]
 update_lists_inlined.adb:39:16: info: absence of memory leak proved (CVC4: 1 VC)
 update_lists_inlined.adb:39:16: warning: unused assignment
 update_lists_inlined.adb:40:16: info: absence of memory leak proved (CVC4: 1 VC)

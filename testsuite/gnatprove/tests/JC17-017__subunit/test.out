@@ -9,5 +9,5 @@ main.adb:20:23: info: initialization of "X" proved
 main.adb:21:22: info: postcondition proved (CVC4: 1 VC)
 main.adb:27:19: info: assertion proved (CVC4: 1 VC)
 main.adb:29:19: info: assertion proved (CVC4: 1 VC)
-main.adb:31:19: medium: assertion might fail, cannot prove not B (e.g. when B = True) [possible explanation: call at line 30 should mention X (for argument B) in a postcondition]
+main.adb:31:19: medium: assertion might fail, cannot prove not B (e.g. when B = True) [possible fix: call at line 30 should mention X (for argument B) in a postcondition]
 main.adb:33:19: info: assertion proved (CVC4: 1 VC)

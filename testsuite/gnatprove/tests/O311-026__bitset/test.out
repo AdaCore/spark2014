@@ -1,6 +1,6 @@
-foo.adb:12:21: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 0 and A'Last = 0 and A_First = 0 and I = 18446744073709551584) [reason for check: result of addition must be a valid index into the array] [possible explanation: subprogram at foo.ads:10 should mention A_First and I in a precondition]
-foo.adb:12:21: medium: overflow check might fail (e.g. when A_First = 0 and I = 18446744073709551584) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at foo.ads:10 should mention A_First and I in a precondition]
+foo.adb:12:21: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 0 and A'Last = 0 and A_First = 0 and I = 18446744073709551584) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at foo.ads:10 should mention A_First and I in a precondition]
+foo.adb:12:21: medium: overflow check might fail (e.g. when A_First = 0 and I = 18446744073709551584) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at foo.ads:10 should mention A_First and I in a precondition]
 foo.adb:12:34: info: division check proved (CVC4: 1 VC)
-foo.adb:12:34: medium: range check might fail (e.g. when I = Word64'Last) [reason for check: result of division must be convertible to the target type of the conversion] [possible explanation: subprogram at foo.ads:10 should mention I in a precondition]
+foo.adb:12:34: medium: range check might fail (e.g. when I = Word64'Last) [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: subprogram at foo.ads:10 should mention I in a precondition]
 foo.adb:13:27: info: division check proved (CVC4: 1 VC)
 foo.adb:13:27: info: range check proved (CVC4: 1 VC)

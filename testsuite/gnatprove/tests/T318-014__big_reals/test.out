@@ -4,7 +4,7 @@ big_reals_test.adb:11:04: warning: analyzing unreferenced procedure "Divide_Divi
 big_reals_test.adb:11:14: warning: subprogram "Divide_Division_Check_Fail" has no effect
 big_reals_test.adb:16:22: info: assertion proved (CVC4: 1 VC)
 big_reals_test.adb:17:12: info: predicate check proved (CVC4: 1 VC)
-big_reals_test.adb:17:14: medium: divide by zero might fail [possible explanation: subprogram at line 11 should mention R in a precondition]
+big_reals_test.adb:17:14: medium: divide by zero might fail [possible fix: subprogram at line 11 should mention R in a precondition]
 big_reals_test.adb:20:14: warning: subprogram "Check_Conv" has no effect
 big_reals_test.adb:23:07: info: initialization of "D" proved
 big_reals_test.adb:27:22: info: assertion proved (CVC4: 1 VC)

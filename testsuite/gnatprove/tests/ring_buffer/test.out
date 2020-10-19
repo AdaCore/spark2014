@@ -4,12 +4,12 @@ harness.adb:7:04: info: initialization of "H" proved
 harness.adb:10:04: info: precondition proved (CVC4: 1 VC)
 harness.adb:11:04: info: precondition proved (CVC4: 1 VC)
 harness.adb:12:04: info: precondition proved (CVC4: 1 VC)
-harness.adb:13:19: medium: assertion might fail, cannot prove H = X (e.g. when H = 1 and X = 0) [possible explanation: subprogram at line 3 should mention X in a precondition]
+harness.adb:13:19: medium: assertion might fail, cannot prove H = X (e.g. when H = 1 and X = 0) [possible fix: subprogram at line 3 should mention X in a precondition]
 harness.adb:14:04: info: precondition proved (CVC4: 1 VC)
 harness.adb:15:04: info: precondition proved (CVC4: 1 VC)
-harness.adb:16:19: medium: assertion might fail, cannot prove H = Y (e.g. when H = 1 and Y = 0) [possible explanation: subprogram at line 3 should mention Y in a precondition]
+harness.adb:16:19: medium: assertion might fail, cannot prove H = Y (e.g. when H = 1 and Y = 0) [possible fix: subprogram at line 3 should mention Y in a precondition]
 harness.adb:17:04: info: precondition proved (CVC4: 1 VC)
-harness.adb:18:19: medium: assertion might fail, cannot prove H = Z (e.g. when H = 1 and Z = 0) [possible explanation: subprogram at line 3 should mention Z in a precondition]
+harness.adb:18:19: medium: assertion might fail, cannot prove H = Z (e.g. when H = 1 and Z = 0) [possible fix: subprogram at line 3 should mention Z in a precondition]
 ring_buf.adb:15:36: info: division check proved (CVC4: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC4: 1 VC)
 ring_buf.adb:23:32: info: division check proved (CVC4: 1 VC)

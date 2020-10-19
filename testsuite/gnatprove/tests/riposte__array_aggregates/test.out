@@ -72,16 +72,16 @@ array_aggregates.adb:291:11: info: flow dependencies proved
 array_aggregates.adb:297:22: medium: assertion might fail, cannot prove X (1000) = Elem_1 (e.g. when X = (others => Elem_2))
 array_aggregates.adb:300:32: info: initialization of "X" proved
 array_aggregates.adb:302:11: info: flow dependencies proved
-array_aggregates.adb:309:22: medium: assertion might fail, cannot prove X (N) = Elem_0 (e.g. when N = Small_Index_T'Last and X = (others => Elem_2)) [possible explanation: subprogram at line 300 should mention N in a precondition]
+array_aggregates.adb:309:22: medium: assertion might fail, cannot prove X (N) = Elem_0 (e.g. when N = Small_Index_T'Last and X = (others => Elem_2)) [possible fix: subprogram at line 300 should mention N in a precondition]
 array_aggregates.adb:312:32: info: initialization of "X" proved
 array_aggregates.adb:314:11: info: flow dependencies proved
-array_aggregates.adb:321:22: medium: assertion might fail, cannot prove X (N) = Elem_1 (e.g. when N = Small_Index_T'Last and X = (others => Elem_2)) [possible explanation: subprogram at line 312 should mention N in a precondition]
+array_aggregates.adb:321:22: medium: assertion might fail, cannot prove X (N) = Elem_1 (e.g. when N = Small_Index_T'Last and X = (others => Elem_2)) [possible fix: subprogram at line 312 should mention N in a precondition]
 array_aggregates.adb:324:33: info: initialization of "X" proved
 array_aggregates.adb:326:11: info: flow dependencies proved
-array_aggregates.adb:333:22: medium: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when N = 2 and X = (Small_Index_T'Last => Elem_2, others => Elem_0)) [possible explanation: subprogram at line 324 should mention N in a precondition]
+array_aggregates.adb:333:22: medium: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when N = 2 and X = (Small_Index_T'Last => Elem_2, others => Elem_0)) [possible fix: subprogram at line 324 should mention N in a precondition]
 array_aggregates.adb:336:33: info: initialization of "X" proved
 array_aggregates.adb:338:11: info: flow dependencies proved
-array_aggregates.adb:345:46: medium: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when N = 2 and X = (Small_Index_T'Last => Elem_2, others => Elem_0)) [possible explanation: subprogram at line 336 should mention N in a precondition]
+array_aggregates.adb:345:46: medium: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when N = 2 and X = (Small_Index_T'Last => Elem_2, others => Elem_0)) [possible fix: subprogram at line 336 should mention N in a precondition]
 array_aggregates.adb:348:33: info: initialization of "X" proved
 array_aggregates.adb:349:11: info: flow dependencies proved
 array_aggregates.adb:353:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (others => 5))

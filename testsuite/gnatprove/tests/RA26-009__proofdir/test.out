@@ -1,4 +1,4 @@
 main.adb:1:11: warning: subprogram "Main" has no effect
-main.adb:3:19: medium: assertion might fail, cannot prove X = 1 [possible explanation: subprogram at line 1 should mention X in a precondition]
+main.adb:3:19: medium: assertion might fail, cannot prove X = 1 [possible fix: subprogram at line 1 should mention X in a precondition]
 main.adb:1:11: warning: subprogram "Main" has no effect
-main.adb:3:19: medium: assertion might fail, cannot prove X = 1 [possible explanation: subprogram at line 1 should mention X in a precondition]
+main.adb:3:19: medium: assertion might fail, cannot prove X = 1 [possible fix: subprogram at line 1 should mention X in a precondition]

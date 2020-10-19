@@ -6,8 +6,8 @@ example.adb:29:14: medium: range check might fail [reason for check: result of s
 example.adb:30:14: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
 example.adb:30:14: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment]
 example.adb:39:19: medium: postcondition might fail, cannot prove Is_Id'Result = (M (C) = C)
-example.adb:39:38: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 36 should mention C in a precondition]
-example.adb:42:17: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 36 should mention C in a precondition]
+example.adb:39:38: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 36 should mention C in a precondition]
+example.adb:42:17: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 36 should mention C in a precondition]
 example.adb:59:24: warning: unused initial value of "A"
 example.adb:59:27: warning: unused initial value of "B"
 example.adb:62:17: medium: postcondition might fail, cannot prove B.I = 1

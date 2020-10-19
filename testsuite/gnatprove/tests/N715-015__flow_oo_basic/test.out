@@ -151,6 +151,6 @@ tests.adb:629:33: info: initialization of "W2" proved
 tests.adb:632:30: medium: tag check might fail
 untangle.adb:35:09: info: data dependencies proved
 untangle.adb:40:09: info: data dependencies proved
-untangle.adb:43:08: medium: discriminant check might fail [possible explanation: subprogram at line 38 should mention X in a precondition]
-untangle.adb:43:14: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at line 38 should mention G and N in a precondition]
-untangle.adb:43:14: medium: precondition might fail, cannot prove G [possible explanation: subprogram at line 38 should mention G in a precondition]
+untangle.adb:43:08: medium: discriminant check might fail [possible fix: subprogram at line 38 should mention X in a precondition]
+untangle.adb:43:14: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 38 should mention G and N in a precondition]
+untangle.adb:43:14: medium: precondition might fail, cannot prove G [possible fix: subprogram at line 38 should mention G in a precondition]

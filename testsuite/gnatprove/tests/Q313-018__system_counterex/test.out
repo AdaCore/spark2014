@@ -1,6 +1,6 @@
 incr.adb:3:11: medium: postcondition might fail, cannot prove X = X'Old + 1 (e.g. when X = -1 and X'Old = 0)
-incr.adb:3:21: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
-incr.adb:6:11: medium: overflow check might fail (e.g. when X = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
+incr.adb:3:21: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
+incr.adb:6:11: medium: overflow check might fail (e.g. when X = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 counterexample expected for check at incr.adb:3
   trace at incr.adb:1 --> X = 0
   trace at incr.adb:3 --> X = -1 and X'Old = 0

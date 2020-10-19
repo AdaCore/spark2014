@@ -9,11 +9,11 @@ test.adb:26:11: info: data dependencies proved
 test.adb:26:33: high: "G" is not initialized
 test.adb:26:33: low: unused global "G"
 test.adb:27:11: info: flow dependencies proved
-test.adb:33:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 25 should mention X in a precondition]
+test.adb:33:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 25 should mention X in a precondition]
 test.adb:37:11: info: data dependencies proved
 test.adb:37:32: low: unused global "G"
 test.adb:38:11: info: flow dependencies proved
-test.adb:44:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 36 should mention X in a precondition]
+test.adb:44:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 36 should mention X in a precondition]
 test.adb:47:14: low: unused global "G"
 test.adb:48:11: info: flow dependencies proved
-test.adb:54:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 47 should mention X in a precondition]
+test.adb:54:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 47 should mention X in a precondition]

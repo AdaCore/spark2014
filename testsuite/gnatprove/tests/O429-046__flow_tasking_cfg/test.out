@@ -17,14 +17,14 @@ p2.ads:16:25: info: initialization of "X" proved
 p2.ads:24:30: info: initialization of "X" proved
 p2.ads:26:27: info: initialization of "Y" proved
 prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
-prot.adb:19:35: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at prot.ads:10 should mention Visible in a precondition]
-prot.adb:19:45: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at prot.ads:10 should mention X and Visible in a precondition]
+prot.adb:19:35: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:10 should mention Visible in a precondition]
+prot.adb:19:45: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:10 should mention X and Visible in a precondition]
 prot.adb:25:33: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 prot.adb:25:37: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
 prot.ads:3:08: info: flow dependencies proved
 prot.ads:8:22: info: initialization of "X" proved
 q.ads:7:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
-support.adb:5:29: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at support.ads:4 should mention X in a precondition]
+support.adb:5:29: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at support.ads:4 should mention X in a precondition]
 support.ads:11:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 support.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved

@@ -1,12 +1,23 @@
+analysis of good.gpr
+--------------------------
 Phase 1 of 2: generation of Global contracts ...
 Phase 2 of 2: fast partial checking of SPARK legality rules ...
+
+analysis of bad_profile.gpr
+--------------------------
+Phase 1 of 2: generation of Global contracts ...
+Phase 2 of 2: fast partial checking of SPARK legality rules ...
+
 p.ads:3:09: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
-p.ads:3:09: violation of pragma SPARK_Mode at bad_profile.adc:1
+  violation of pragma SPARK_Mode at bad_profile.adc:1
+gnatprove: error during fast partial checking of SPARK legality rules
+
+analysis of bad_pep.gpr
+--------------------------
 Phase 1 of 2: generation of Global contracts ...
 Phase 2 of 2: fast partial checking of SPARK legality rules ...
-gnatprove: error during fast partial checking of SPARK legality rules
+
 p.ads:3:09: tasking in SPARK requires sequential elaboration (SPARK RM 9(2))
-p.ads:3:09: violation of pragma SPARK_Mode at bad_pep.adc:1
-Phase 1 of 2: generation of Global contracts ...
-Phase 2 of 2: fast partial checking of SPARK legality rules ...
+  violation of pragma SPARK_Mode at bad_pep.adc:1
 gnatprove: error during fast partial checking of SPARK legality rules
+

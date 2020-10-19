@@ -137,8 +137,8 @@ ada_real_time.ads:253:23: info: range check proved (Z3: 1 VC)
 ada_real_time.ads:256:08: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:256:25: info: overflow check proved (Z3: 1 VC)
 ada_real_time.ads:256:37: info: implicit function contract not available for proof ("TS_SC" might not return)
-ada_real_time.ads:256:37: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible explanation: subprogram at line 255 should mention TS in a precondition]
-ada_real_time.ads:259:35: medium: overflow check might fail (e.g. when SC = -1) [reason for check: result of addition must fit in a 64-bits machine integer] [possible explanation: subprogram at line 258 should mention SC and TS in a precondition]
+ada_real_time.ads:256:37: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 255 should mention TS in a precondition]
+ada_real_time.ads:259:35: medium: overflow check might fail (e.g. when SC = -1) [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: subprogram at line 258 should mention SC and TS in a precondition]
 ada_real_time.ads:259:37: info: implicit function contract not available for proof ("TS_SC" might not return)
 ada_real_time.ads:268:21: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:268:34: info: overflow check proved (CVC4: 1 VC)

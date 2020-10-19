@@ -74,11 +74,9 @@ with Why.Atree.Accessors;            use Why.Atree.Accessors;
 with Why.Atree.Mutators;             use Why.Atree.Mutators;
 with Why.Atree.Modules;              use Why.Atree.Modules;
 with Why.Atree.Tables;               use Why.Atree.Tables;
-with Why.Conversions;                use Why.Conversions;
 with Why.Gen.Arrays;                 use Why.Gen.Arrays;
 with Why.Gen.Binders;                use Why.Gen.Binders;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
-with Why.Gen.Expr;                   use Why.Gen.Expr;
 with Why.Gen.Hardcoded;              use Why.Gen.Hardcoded;
 with Why.Gen.Init;                   use Why.Gen.Init;
 with Why.Gen.Names;                  use Why.Gen.Names;
@@ -310,13 +308,10 @@ package body Gnat2Why.Expr is
      (Pattern     : in out Item_Type;
       Var         : Item_Type;
       Expr        : W_Expr_Id;
-      Constr_Expr : W_Expr_Id := Why_Empty;
       Context     : in out Ref_Context;
       Args        : out W_Expr_Array;
       Need_Store  : out Boolean)
    with Pre => Item_Is_Mutable (Pattern)
-     and (if Pattern.Kind = DRecord and then Pattern.Constr.Present
-            then Constr_Expr /= Why_Empty)
      and Args'Length >=
        Item_Array_Length ((1 => Pattern), Ignore_Init => True),
      Post => Need_Store or Context.Length = Context.Length'Old;
@@ -652,7 +647,9 @@ package body Gnat2Why.Expr is
      (Expr     : W_Expr_Id;
       Inv_Subp : Entity_Id;
       Domain   : EW_Domain;
-      Params   : Transformation_Params) return W_Expr_Id;
+      Params   : Transformation_Params) return W_Expr_Id
+   with Pre => Get_Type_Kind (Get_Type (Expr)) /= EW_Split
+     or else not Has_Array_Type (Get_Ada_Node (+Get_Type (Expr)));
    --  Transform the expression of a type_invariant
    --  @param Expr expression on which the invariant is called
    --  @param Inv_Subp entity of the invariant procedure
@@ -3037,13 +3034,12 @@ package body Gnat2Why.Expr is
                        (Symbol_Table, Entity (Actual)));
                begin
                   Get_Item_From_Var
-                    (Pattern     => Pattern,
-                     Var         => Actual_Binder,
-                     Expr        => Actual_Tmp,
-                     Context     => Context,
-                     Args        => Why_Args (Arg_Cnt .. Why_Args'Length),
-                     Constr_Expr => Constr_Expr,
-                     Need_Store  => Need_Store);
+                    (Pattern    => Pattern,
+                     Var        => Actual_Binder,
+                     Expr       => Actual_Tmp,
+                     Context    => Context,
+                     Args       => Why_Args (Arg_Cnt .. Why_Args'Length),
+                     Need_Store => Need_Store);
                end;
 
             --  Otherwise, we create new references and initialize them from
@@ -5334,13 +5330,9 @@ package body Gnat2Why.Expr is
       if Has_Invariants_In_SPARK (Rep_Ty) then
 
             --  If Use_Pred is true, then we already have generated a predicate
-            --  for the type invariant of elements of type Ty. We also avoid
-            --  using the predicate for objects in split form as it would
-            --  introduce an unnecessary conversion harmful to provers.
+            --  for the type invariant of elements of type Ty.
 
-            if Use_Pred
-              and then Eq_Base (Type_Of_Node (Rep_Ty), Get_Type (+Expr))
-            then
+            if Use_Pred then
                return New_Type_Invariant_Call (Rep_Ty, Expr, Params);
             else
                return
@@ -5913,7 +5905,6 @@ package body Gnat2Why.Expr is
      (Pattern     : in out Item_Type;
       Var         : Item_Type;
       Expr        : W_Expr_Id;
-      Constr_Expr : W_Expr_Id := Why_Empty;
       Context     : in out Ref_Context;
       Args        : out W_Expr_Array;
       Need_Store  : out Boolean)
@@ -5947,12 +5938,11 @@ package body Gnat2Why.Expr is
 
             else
                Get_Item_From_Expr
-                 (Pattern     => Pattern,
-                  Expr        => Expr,
-                  Constr_Expr => Constr_Expr,
-                  Context     => Context,
-                  Args        => Args,
-                  Need_Store  => Need_Store);
+                 (Pattern    => Pattern,
+                  Expr       => Expr,
+                  Context    => Context,
+                  Args       => Args,
+                  Need_Store => Need_Store);
                return;
             end if;
 
@@ -5992,7 +5982,9 @@ package body Gnat2Why.Expr is
                      Expr        => Expr,
                      Context     => Context,
                      Args        => Args,
-                     Constr_Expr => Constr_Expr,
+                     Constr_Expr =>
+                       (if Var.Constr.Present then +Var.Constr.Id
+                        else Why_Empty),
                      Reuse_Discr => True,
                      Need_Store  => Need_Store);
                   return;
@@ -6002,7 +5994,9 @@ package body Gnat2Why.Expr is
                      Expr        => Expr,
                      Context     => Context,
                      Args        => Args,
-                     Constr_Expr => Constr_Expr,
+                     Constr_Expr =>
+                       (if Var.Constr.Present then +Var.Constr.Id
+                        else Why_Empty),
                      Need_Store  => Need_Store);
                   return;
                end if;
@@ -6044,17 +6038,13 @@ package body Gnat2Why.Expr is
                Count := Count + 1;
             end if;
 
-            --  Take the Constr field of Var if present
+            --  Take the Constr field of Var. It should always be present as
+            --  all variable objects of a type with default discriminants have
+            --  this field (even when their subtype is constrained).
 
-            if Pattern.Constr.Present and Var.Constr.Present then
+            if Pattern.Constr.Present then
+               pragma Assert (Var.Constr.Present);
                Args (Count) := +Var.Constr.Id;
-
-               Count := Count + 1;
-
-            --  Otherwise, use Constr_Expr
-
-            elsif Pattern.Constr.Present then
-               Args (Count) := Constr_Expr;
 
                Count := Count + 1;
             end if;
@@ -6078,7 +6068,7 @@ package body Gnat2Why.Expr is
                 (not Needs_Slide (Get_Ada_Type_From_Item (Pattern),
                                   Get_Ada_Type_From_Item (Var))
                  and then Get_Relaxed_Init (Get_Typ (Pattern.Content.B_Name)) =
-                     Get_Relaxed_Init (Get_Typ (Var.Content.B_Name)))
+                     Get_Relaxed_Init (Get_Why_Type_From_Item (Var)))
             then
 
                --  The actual can be either an array in split form or a
@@ -6144,12 +6134,11 @@ package body Gnat2Why.Expr is
 
             else
                Get_Item_From_Expr
-                 (Pattern     => Pattern,
-                  Expr        => Expr,
-                  Constr_Expr => Constr_Expr,
-                  Context     => Context,
-                  Args        => Args,
-                  Need_Store  => Need_Store);
+                 (Pattern    => Pattern,
+                  Expr       => Expr,
+                  Context    => Context,
+                  Args       => Args,
+                  Need_Store => Need_Store);
                return;
             end if;
 
@@ -6909,13 +6898,12 @@ package body Gnat2Why.Expr is
                   pragma Assert (Binder.Kind in UCArray | DRecord | Regular);
 
                   Get_Item_From_Var
-                    (Pattern     => Pattern,
-                     Var         => Binder,
-                     Expr        => +Tmp,
-                     Context     => Context,
-                     Args        => Args,
-                     Constr_Expr => Why_Empty,
-                     Need_Store  => Need_Store);
+                    (Pattern    => Pattern,
+                     Var        => Binder,
+                     Expr       => +Tmp,
+                     Context    => Context,
+                     Args       => Args,
+                     Need_Store => Need_Store);
                end;
 
             --  Otherwise, compute new references from Tmp directly
@@ -6926,7 +6914,6 @@ package body Gnat2Why.Expr is
                   Expr        => +Tmp,
                   Context     => Context,
                   Args        => Args,
-                  Constr_Expr => Why_Empty,
                   Need_Store  => Need_Store);
             end if;
 
@@ -16808,16 +16795,6 @@ package body Gnat2Why.Expr is
       return T;
    end Transform_Expr_With_Actions;
 
-   function Transform_Expr_With_Actions
-     (Expr    : Node_Id;
-      Actions : List_Id;
-      Domain  : EW_Domain;
-      Params  : Transformation_Params) return W_Expr_Id is
-   begin
-      return Transform_Expr_With_Actions
-        (Expr, Actions, Type_Of_Node (Expr), Domain, Params);
-   end Transform_Expr_With_Actions;
-
    -----------------------------
    -- Transform_Function_Call --
    -----------------------------
@@ -21203,28 +21180,7 @@ package body Gnat2Why.Expr is
       --  time (preventing name capture), and that the type of Expr is used as
       --  the type used to represent Inv_Param (avoiding type conversion).
 
-      if Get_Type_Kind (Get_Type (+Expr)) = EW_Split
-        and then Has_Array_Type (Get_Ada_Node (+Get_Type (+Expr)))
-      then
-         declare
-            E : constant Item_Type :=
-              Ada_Ent_To_Why.Element
-                (Symbol_Table, Get_Entity_Of_Variable (+Expr));
-         begin
-            Insert_Item
-              (I => Item_Type'(Kind    => UCArray,
-                               Local   => E.Local,
-                               Init    => <>,
-                               Content =>
-                                 Binder_Type'(B_Name => Inv_Id,
-                                              others => <>),
-                               Dim     => E.Dim,
-                               Bounds  => E.Bounds),
-               E => Inv_Param);
-         end;
-      else
-         Insert_Entity (Inv_Param, Inv_Id);
-      end if;
+      Insert_Entity (Inv_Param, Inv_Id);
 
       --  Transform the invariant expression into Why3
 

@@ -4,7 +4,7 @@ main.adb:17:04: info: initialization of "Complex_One" proved
 main.adb:17:17: info: initialization of "Complex_Two" proved
 main.adb:33:18: medium: precondition might fail, cannot prove false
 main.adb:43:18: medium: precondition might fail, cannot prove false
-parent-child.adb:7:27: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [reason for check: result of addition must fit in a 8-bits machine integer] [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
-parent-child.adb:7:27: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
-parent-child.adb:7:51: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [reason for check: result of addition must fit in a 8-bits machine integer] [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
-parent-child.adb:7:51: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible explanation: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
+parent-child.adb:7:27: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
+parent-child.adb:7:27: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible fix: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
+parent-child.adb:7:51: medium: overflow check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]
+parent-child.adb:7:51: medium: range check might fail, in instantiation at parent.adb:11, in instantiation at main.adb:11 [possible fix: subprogram at parent-child.ads:14 should mention Left and Right in a precondition]

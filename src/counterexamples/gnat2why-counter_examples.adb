@@ -36,6 +36,8 @@ with Flow_Types;                  use Flow_Types;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT;                        use GNAT;
 with GNAT.String_Split;           use GNAT.String_Split;
+with Gnat2Why_Args;
+with Gnat2Why_Opts;               use Gnat2Why_Opts;
 with Gnat2Why.CE_Utils;           use Gnat2Why.CE_Utils;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
@@ -1730,6 +1732,13 @@ package body Gnat2Why.Counter_Examples is
       begin
          for Elt of Cntexmp_Line loop
             if Cntexmp_Line_Str /= "" then
+               --  When outputting counterexamples on the command-line in
+               --  pretty mode, display each value on a separate line.
+
+               if Gnat2Why_Args.Output_Mode = GPO_Pretty then
+                  Append (Cntexmp_Line_Str, ASCII.LF & "     ");
+               end if;
+
                Append (Cntexmp_Line_Str, " and ");
             end if;
             Append (Cntexmp_Line_Str, Elt.Name);

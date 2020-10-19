@@ -1,3 +1,3 @@
 test_float.adb:1:11: warning: subprogram "Test_Float" has no effect
-test_float.adb:5:19: medium: assertion might fail, cannot prove X in -1.0 .. 1.0 [possible explanation: subprogram at line 1 should mention X in a precondition]
-test_float.adb:6:19: medium: assertion might fail, cannot prove Y in -1 .. 1 [possible explanation: subprogram at line 1 should mention Y in a precondition]
+test_float.adb:5:19: medium: assertion might fail, cannot prove X in -1.0 .. 1.0 [possible fix: subprogram at line 1 should mention X in a precondition]
+test_float.adb:6:19: medium: assertion might fail, cannot prove Y in -1 .. 1 [possible fix: subprogram at line 1 should mention Y in a precondition]

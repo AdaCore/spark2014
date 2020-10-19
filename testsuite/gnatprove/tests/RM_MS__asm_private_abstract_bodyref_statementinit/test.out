@@ -1,8 +1,8 @@
 stack_14.adb:10:04: info: initialization of "S" constituent of "State" proved
 stack_14.adb:11:04: info: initialization of "Pointer" constituent of "State" proved
-stack_14.adb:17:26: medium: range check might fail (e.g. when Pointer = Pointer_Range'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at stack_14.ads:6 should mention Pointer in a precondition]
+stack_14.adb:17:26: medium: range check might fail (e.g. when Pointer = Pointer_Range'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack_14.ads:6 should mention Pointer in a precondition]
 stack_14.adb:18:10: info: index check proved (CVC4: 2 VC)
-stack_14.adb:26:15: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at stack_14.ads:9 should mention Pointer in a precondition]
+stack_14.adb:26:15: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack_14.ads:9 should mention Pointer in a precondition]
 stack_14.adb:27:26: info: range check proved (CVC4: 1 VC)
 stack_14.ads:4:08: info: flow dependencies proved
 stack_14.ads:7:11: info: data dependencies proved

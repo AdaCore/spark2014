@@ -1,4 +1,4 @@
-assume_call.adb:4:15: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at assume_call.ads:3 should mention X in a precondition]
+assume_call.adb:4:15: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at assume_call.ads:3 should mention X in a precondition]
 assume_call.adb:7:14: warning: subprogram "Wrong_Pre" has no effect
 assume_call.adb:14:04: warning: analyzing unreferenced procedure "Caller"
 assume_call.adb:14:14: warning: subprogram "Caller" has no effect

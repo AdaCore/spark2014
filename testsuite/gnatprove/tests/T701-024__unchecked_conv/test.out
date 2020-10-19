@@ -2,4 +2,4 @@ prover_crash.adb:8:16: info: types in unchecked conversion have the same size (T
 prover_crash.adb:8:54: info: type is suitable for unchecked conversion (Trivial)
 prover_crash.adb:8:61: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
 prover_crash.adb:11:27: info: range check proved (CVC4: 1 VC)
-prover_crash.adb:11:42: medium: range check might fail (e.g. when X = 1 and Y = Myint'Last) [reason for check: input value must fit in parameter type] [possible explanation: subprogram at prover_crash.ads:11 should mention X and Y in a precondition]
+prover_crash.adb:11:42: medium: range check might fail (e.g. when X = 1 and Y = Myint'Last) [reason for check: input value must fit in parameter type] [possible fix: subprogram at prover_crash.ads:11 should mention X and Y in a precondition]

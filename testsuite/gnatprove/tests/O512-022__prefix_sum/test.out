@@ -208,16 +208,16 @@ prefixsum_general.adb:93:32: medium: range check might fail [reason for check: r
 prefixsum_general.adb:94:29: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:95:16: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:95:29: info: index check proved (CVC4: 2 VC)
-prefixsum_general.adb:95:35: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 90 should mention A and Left in a loop invariant]
+prefixsum_general.adb:95:35: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 90 should mention A and Left in a loop invariant]
 prefixsum_general.adb:95:40: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:96:16: info: index check proved (CVC4: 2 VC)
 prefixsum_general.adb:97:32: info: overflow check proved (CVC4: 1 VC)
 prefixsum_general.adb:97:40: info: overflow check proved (CVC4: 1 VC)
 prefixsum_general.adb:99:25: info: division check proved (CVC4: 1 VC)
 prefixsum_general.adb:108:16: info: function contract might not be available on recursive calls
-prefixsum_general.adb:108:16: medium: subprogram "Rec_Summation" might not terminate, terminating annotation could be incorrect
 prefixsum_general.adb:114:17: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-prefixsum_general.adb:123:27: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: precondition of subprogram at line 108 should mention A]
+prefixsum_general.adb:122:10: medium: "Rec_Summation" is recursive, terminating annotation could be incorrect
+prefixsum_general.adb:123:27: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 108 should mention A]
 prefixsum_general.adb:123:29: info: precondition proved (CVC4: 1 VC)
 prefixsum_general.adb:123:66: info: range check proved (CVC4: 1 VC)
 prefixsum_general.adb:126:14: info: precondition proved (CVC4: 1 VC)

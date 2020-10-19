@@ -1,15 +1,15 @@
-a.adb:5:22: medium: assertion might fail, cannot prove X < Y [possible explanation: subprogram at a.ads:3 should mention X and Y in a precondition]
-a.adb:6:22: medium: assertion might fail, cannot prove X + 1 < Y (e.g. when X = -1 and Y = 0) [possible explanation: subprogram at a.ads:3 should mention X and Y in a precondition]
+a.adb:5:22: medium: assertion might fail, cannot prove X < Y [possible fix: subprogram at a.ads:3 should mention X and Y in a precondition]
+a.adb:6:22: medium: assertion might fail, cannot prove X + 1 < Y (e.g. when X = -1 and Y = 0) [possible fix: subprogram at a.ads:3 should mention X and Y in a precondition]
 a.adb:6:24: info: overflow check proved (CVC4: 1 VC)
 a.ads:3:14: warning: subprogram "P" has no effect
-a.adb:5:22: medium: assertion might fail, cannot prove X < Y [possible explanation: subprogram at a.ads:3 should mention X and Y in a precondition]
-a.adb:6:22: medium: assertion might fail, cannot prove X + 1 < Y (e.g. when X = -1 and Y = 0) [possible explanation: subprogram at a.ads:3 should mention X and Y in a precondition]
+a.adb:5:22: medium: assertion might fail, cannot prove X < Y [possible fix: subprogram at a.ads:3 should mention X and Y in a precondition]
+a.adb:6:22: medium: assertion might fail, cannot prove X + 1 < Y (e.g. when X = -1 and Y = 0) [possible fix: subprogram at a.ads:3 should mention X and Y in a precondition]
 a.adb:6:24: info: overflow check proved (CVC4: 1 VC)
-a.adb:7:22: medium: assertion might fail, cannot prove X + 2 < Y (e.g. when X = -2 and Y = 0) [possible explanation: subprogram at a.ads:3 should mention X and Y in a precondition]
+a.adb:7:22: medium: assertion might fail, cannot prove X + 2 < Y (e.g. when X = -2 and Y = 0) [possible fix: subprogram at a.ads:3 should mention X and Y in a precondition]
 a.adb:7:24: info: overflow check proved (CVC4: 1 VC)
 a.adb:10:04: warning: analyzing unreferenced procedure "Q"
 a.adb:10:14: warning: subprogram "Q" has no effect
-a.adb:12:22: medium: assertion might fail, cannot prove X < Y [possible explanation: subprogram at line 10 should mention X and Y in a precondition]
-a.adb:13:22: medium: assertion might fail, cannot prove X + 1 < Y (e.g. when X = -1 and Y = 0) [possible explanation: subprogram at line 10 should mention X and Y in a precondition]
+a.adb:12:22: medium: assertion might fail, cannot prove X < Y [possible fix: subprogram at line 10 should mention X and Y in a precondition]
+a.adb:13:22: medium: assertion might fail, cannot prove X + 1 < Y (e.g. when X = -1 and Y = 0) [possible fix: subprogram at line 10 should mention X and Y in a precondition]
 a.adb:13:24: info: overflow check proved (CVC4: 1 VC)
 a.ads:3:14: warning: subprogram "P" has no effect

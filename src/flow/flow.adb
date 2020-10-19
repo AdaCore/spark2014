@@ -302,6 +302,7 @@ package body Flow is
                    Boolean'Image (A.Is_Discr_Or_Bounds_Parameter));
       Format_Item ("Is_Global_Parameter",
                    Boolean'Image (A.Is_Global_Parameter));
+      Format_Item ("Is_Neverending", Boolean'Image (A.Is_Neverending));
       Format_Item ("Execution", Execution_Kind_T'Image (A.Execution));
       Format_Item ("Perform_IPFA", Boolean'Image (A.Perform_IPFA));
 
@@ -1437,6 +1438,9 @@ package body Flow is
                         end if;
                      end if;
                      Analysis.Check_Aliasing (FA);
+                     if not Is_Library_Level_Entity (FA.Spec_Entity) then
+                        Analysis.Check_Terminating_Annotation (FA);
+                     end if;
                      Analysis.Find_Non_Elaborated_State_Abstractions (FA);
                      Analysis.Check_Consistent_AS_For_Private_Child (FA);
                      if Have_Full_Package_Code then

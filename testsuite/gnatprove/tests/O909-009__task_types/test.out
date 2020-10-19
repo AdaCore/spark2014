@@ -1,8 +1,8 @@
 task_types.adb:4:07: warning: initialization of "X" has no effect
 task_types.adb:6:18: warning: statement has no effect
 task_types.adb:7:12: warning: unused assignment
-task_types.adb:7:17: medium: overflow check might fail (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 6 should mention X in a loop invariant]
-task_types.adb:18:17: medium: overflow check might fail (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 17 should mention X in a loop invariant]
+task_types.adb:7:17: medium: overflow check might fail (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 6 should mention X in a loop invariant]
+task_types.adb:18:17: medium: overflow check might fail (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 17 should mention X in a loop invariant]
 task_types.ads:6:14: info: nontermination of task proved (CVC4: 1 VC)
 task_types.ads:6:43: info: range check proved (CVC4: 1 VC)
 task_types.ads:9:23: info: range check proved (CVC4: 1 VC)

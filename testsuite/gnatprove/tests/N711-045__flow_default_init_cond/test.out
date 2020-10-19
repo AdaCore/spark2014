@@ -4,9 +4,9 @@ callers_caller.adb:8:22: medium: assertion might fail, cannot prove Add3 (R) = 0
 callers_caller.ads:8:14: warning: subprogram "Test2" has no effect
 dic.adb:3:04: high: "G" is not initialized
 dic.adb:3:04: info: initialization of "B" proved
-dic.adb:11:58: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dic.ads:22 should mention R in a precondition]
-dic.adb:13:63: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dic.ads:24 should mention Par in a precondition]
-dic.adb:17:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at dic.ads:26 should mention A in a precondition]
+dic.adb:11:58: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dic.ads:22 should mention R in a precondition]
+dic.adb:13:63: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dic.ads:24 should mention Par in a precondition]
+dic.adb:17:14: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dic.ads:26 should mention A in a precondition]
 dic.ads:9:09: medium: default initial condition might fail
 dic.ads:45:04: medium: type "Pr_Liar_T" is not fully initialized
 dic2.adb:7:07: info: initialization of "T_Var" proved

@@ -878,3 +878,8 @@ preconditions when working with two files or more. Since
 ``Line_Length`` etc. attributes are stored in the ``File_System``, it
 is not posible to prove that the ``Line_Length`` of ``File_2`` has not
 been modified when running any procedure that do input-output on ``File_1``.
+
+Finally, ``Layout_Error`` may be raised when calling ``Put`` to display the
+value of a real number (floating-point or fixed-point) in a string output
+parameter, which is not reflected currently in the precondition of ``Put`` as
+no simple precondition can describe the required length in such a case.

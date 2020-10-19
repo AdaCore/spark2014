@@ -1,4 +1,4 @@
-account3.adb:18:33: medium: overflow check might fail (e.g. when Tmp = Natural'Last) [possible explanation: loop at line 13 should mention Tmp in a loop invariant]
+account3.adb:18:33: medium: overflow check might fail (e.g. when Tmp = Natural'Last) [possible fix: loop at line 13 should mention Tmp in a loop invariant]
 account3.ads:6:14: info: nontermination of task proved
 account3.ads:7:06: info: data dependencies proved
 account3.ads:8:06: info: flow dependencies proved

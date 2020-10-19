@@ -1,6 +1,6 @@
 default.adb:2:13: info: add a contract to analyze it separately from calling contexts
 default.adb:2:13: info: local subprogram "Sub" only analyzed in the context of calls
-default.adb:11:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at default.ads:2 should mention X and Y in a precondition]
+default.adb:11:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at default.ads:2 should mention X and Y in a precondition]
 default.adb:14:04: warning: analyzing unreferenced function "Use_Sub"
 default.adb:19:04: warning: analyzing unreferenced function "Use_Add"
 default.adb:21:25: info: overflow check proved (CodePeer)

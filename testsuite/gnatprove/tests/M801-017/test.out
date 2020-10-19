@@ -1,6 +1,6 @@
 foo.adb:1:16: info: initialization of "X" proved
 foo.adb:5:11: info: data dependencies proved
-foo.adb:8:14: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 4 should mention X in a precondition]
+foo.adb:8:14: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention X in a precondition]
 foo.adb:12:11: info: data dependencies proved
 foo.adb:13:11: info: flow dependencies proved
-foo.adb:16:14: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 11 should mention X in a precondition]
+foo.adb:16:14: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 11 should mention X in a precondition]

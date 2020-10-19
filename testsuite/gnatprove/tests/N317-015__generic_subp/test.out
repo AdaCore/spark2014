@@ -1,1 +1,1 @@
-opers.adb:7:16: medium: overflow check might fail, in instantiation at opers.adb:10 (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at opers.ads:8 should mention X in a precondition]
+opers.adb:7:16: medium: overflow check might fail, in instantiation at opers.adb:10 (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at opers.ads:8 should mention X in a precondition]

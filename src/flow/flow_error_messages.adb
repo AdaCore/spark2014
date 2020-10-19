@@ -74,10 +74,10 @@ package body Flow_Error_Messages is
    --  detailed message explaining why this check is issued (typically in the
    --  case of a length/range/overflow/index check), or the empty string.
 
-   function Get_Explanation (N : Node_Id; Tag : VC_Kind) return String;
+   function Get_Fix (N : Node_Id; Tag : VC_Kind) return String;
    --  @param N node associated to an unproved check
    --  @param Tag associated unproved check
-   --  @result message part explaining why the check was not proved
+   --  @result message part suggesting a fix to make the unproved check proved
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
    --  Transform the msg kind into a string, for the JSON output
@@ -668,32 +668,16 @@ package body Flow_Error_Messages is
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc);
 
-      One_Liner : constant String :=
-        (if Pretty_Cntexmp.Is_Empty then ""
-
-         --  Do not include a one-liner in the message for memory leak checks,
-         --  as the exact values of variables seldom plays a role in that case.
-         --  Keep the counterexample though as the path is relevant.
-
-         elsif Tag in VC_Memory_Leak
-                    | VC_Memory_Leak_At_End_Of_Scope
-         then ""
-
-         else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
-
-      Severity : constant Msg_Severity := Get_Severity (N, Is_Proved, Tag);
-      Suppr    : String_Id := No_String;
-      Msg_Id   : Message_Id := No_Message_Id;
-      Is_Annot : Boolean;
-      Info     : Annotated_Range;
+      Severity  : constant Msg_Severity := Get_Severity (N, Is_Proved, Tag);
+      Suppr     : String_Id := No_String;
+      Msg_Id    : Message_Id := No_Message_Id;
+      Is_Annot  : Boolean;
+      Info      : Annotated_Range;
+      Ignore_Id : Message_Id;
 
    --  Start of processing for Error_Msg_Proof
 
    begin
-      if One_Liner /= "" then
-         Message := Message & " (e.g. when " & One_Liner & ")";
-      end if;
-
       --  Proof (why3) will only report messages that are relevant wrt
       --  limit-line option, but Interval and CodePeer messages will be
       --  issued for all lines. So we add this extra filter here.
@@ -717,29 +701,102 @@ package body Flow_Error_Messages is
                Suppr := Info.Reason;
             else
                declare
-                  Details : constant String := Get_Details (N, Tag);
-                  Expl    : constant String :=
-                    (if Explanation = "" then Get_Explanation (N, Tag)
-                     else Explanation);
+                  One_Liner : constant String :=
+                    (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
+
+                     elsif Pretty_Cntexmp.Is_Empty then ""
+
+                     --  Do not include a one-liner in the message for memory
+                     --  leak checks, as the exact values of variables seldom
+                     --  plays a role in that case. Keep the counterexample
+                     --  though as the path is relevant.
+
+                     elsif Tag in VC_Memory_Leak
+                                | VC_Memory_Leak_At_End_Of_Scope
+                     then ""
+
+                     else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
+
+                  Details : constant String :=
+                    (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
+                     else Get_Details (N, Tag));
+                  Fix     : constant String :=
+                    (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
+                     else Get_Fix (N, Tag));
                begin
                   --  Only display message details when outputting on one line,
                   --  either as part of automatic testing or inside an IDE, to
                   --  avoid long unreadable messages for command-line use.
 
-                  if Gnat2Why_Args.Output_Mode = GPO_Oneline
-                    and then Details /= ""
-                  then
-                     Message :=
-                       Message & " [reason for check: " & Details & "]";
-                  end if;
+                  case Gnat2Why_Args.Output_Mode is
 
-                  if Expl /= "" then
-                     Message :=
-                       Message & " [possible explanation: " & Expl & "]";
-                  end if;
+                  --  In brief mode, just print the check message
 
-                  Msg_Id :=
-                    Print_Regular_Msg (To_String (Message), Slc, Severity);
+                  when GPO_Brief =>
+                     Msg_Id :=
+                       Print_Regular_Msg (To_String (Message), Slc, Severity);
+
+                  --  In oneline mode, append all the extra information to the
+                  --  main message and print it.
+
+                  when GPO_Oneline =>
+                     if One_Liner /= "" then
+                        Message := Message & " (e.g. when " & One_Liner & ")";
+                     end if;
+
+                     if Details /= "" then
+                        Message :=
+                          Message & " [reason for check: " & Details & "]";
+                     end if;
+
+                     if Explanation /= "" then
+                        Message := Message
+                          & " [possible explanation: " & Explanation & "]";
+                     end if;
+
+                     if Fix /= "" then
+                        Message := Message & " [possible fix: " & Fix & "]";
+                     end if;
+
+                     Msg_Id :=
+                       Print_Regular_Msg (To_String (Message), Slc, Severity);
+
+                  --  In pretty mode, print the message, then print all the
+                  --  extra information as continuation messages. The mechanism
+                  --  to display messages in Errout is adapted in that
+                  --  case to display continuation messages on newlines,
+                  --  with a suitable indentation and no repetion of the
+                  --  file:line:column: prefix and info/warning/error
+                  --  information.
+
+                  when GPO_Pretty =>
+                     Msg_Id :=
+                       Print_Regular_Msg (To_String (Message), Slc, Severity);
+
+                     if One_Liner /= "" then
+                        Ignore_Id := Print_Regular_Msg
+                          ("e.g. when " & One_Liner,
+                           Slc, Severity, Continuation => True);
+                     end if;
+
+                     if Details /= "" then
+                        Ignore_Id := Print_Regular_Msg
+                          ("reason for check: " & Details,
+                           Slc, Severity, Continuation => True);
+                     end if;
+
+                     if Explanation /= "" then
+                        Ignore_Id := Print_Regular_Msg
+                          ("possible explanation: " & Explanation,
+                           Slc, Severity, Continuation => True);
+                     end if;
+
+                     if Fix /= "" then
+                        Ignore_Id := Print_Regular_Msg
+                          ("possible fix: " & Fix,
+                           Slc, Severity, Continuation => True);
+                     end if;
+                  end case;
                end;
             end if;
 
@@ -1085,11 +1142,11 @@ package body Flow_Error_Messages is
       end case;
    end Get_Details;
 
-   ---------------------
-   -- Get_Explanation --
-   ---------------------
+   -------------
+   -- Get_Fix --
+   -------------
 
-   function Get_Explanation (N : Node_Id; Tag : VC_Kind) return String is
+   function Get_Fix (N : Node_Id; Tag : VC_Kind) return String is
 
       -----------------------
       -- Local subprograms --
@@ -1614,7 +1671,7 @@ package body Flow_Error_Messages is
       --  It is fine to use this function here even if not always correct, as
       --  it's only used for adding or not an explanation.
 
-   --  Start of processing for Get_Explanation
+   --  Start of processing for Get_Fix
 
    begin
 
@@ -1642,6 +1699,14 @@ package body Flow_Error_Messages is
             end if;
             return "";
          end;
+
+      --  Do not try to generate a fix message for static checks on validity of
+      --  Unchecked_Conversion, as these already have a sufficient explanation
+      --  and Flow_Utility.Get_Variables_For_Proof cannot be called on such
+      --  nodes.
+
+      elsif Tag in VC_UC_No_Holes | VC_UC_Same_Size then
+         return "";
       end if;
 
       --  Adjust the enclosing subprogram entity
@@ -2225,7 +2290,7 @@ package body Flow_Error_Messages is
             return "";
          end;
       end if;
-   end Get_Explanation;
+   end Get_Fix;
 
    -------------------
    -- Get_Flow_JSON --
@@ -2425,13 +2490,22 @@ package body Flow_Error_Messages is
       Id         : constant Message_Id := Message_Id_Counter;
       Prefix     : constant String :=
         (if Continuation then "\" else "") &
-        (case Severity is
-            when Info_Kind         => "info: ",
-            when Low_Check_Kind    => "low: ",
-            when Medium_Check_Kind => "medium: ",
-            when High_Check_Kind   => "high: ",
-            when Warning_Kind      => "?",
-            when Error_Kind        => "");
+
+        --  In pretty output mode, continuation messages follow the main
+        --  message with only an indentation of two space characters,
+        --  without repeating severity prefix.
+
+        (if Continuation
+           and then Gnat2Why_Args.Output_Mode = GPO_Pretty
+         then ""
+         else
+           (case Severity is
+               when Info_Kind         => "info: ",
+               when Low_Check_Kind    => "low: ",
+               when Medium_Check_Kind => "medium: ",
+               when High_Check_Kind   => "high: ",
+               when Warning_Kind      => "?",
+               when Error_Kind        => ""));
       Actual_Msg : constant String :=
         Prefix & Escape (Msg) & "!!" &
         (if Ide_Mode

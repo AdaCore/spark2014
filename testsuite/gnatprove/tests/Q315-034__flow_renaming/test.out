@@ -1,1 +1,1 @@
-main.adb:8:19: medium: assertion might fail, cannot prove State.x [possible explanation: call at line 7 should mention X in a postcondition]
+main.adb:8:19: medium: assertion might fail, cannot prove State.x [possible fix: call at line 7 should mention X in a postcondition]

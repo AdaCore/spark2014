@@ -105,7 +105,7 @@ stacks_2.adb:35:61: info: range check proved (CVC4: 1 VC)
 stacks_2.adb:40:30: info: range check proved (CVC4: 1 VC)
 stacks_2.adb:41:17: info: index check proved (CVC4: 2 VC)
 stacks_2.adb:46:29: info: refined post proved (CVC4: 1 VC)
-stacks_2.adb:51:30: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible explanation: subprogram at stacks_2.ads:19 should mention A_Pointer in a precondition]
+stacks_2.adb:51:30: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at stacks_2.ads:19 should mention A_Pointer in a precondition]
 stacks_2.adb:54:46: info: index check proved (CVC4: 2 VC)
 stacks_2.ads:4:08: info: flow dependencies proved
 stacks_2.ads:7:11: info: data dependencies proved
@@ -121,8 +121,8 @@ externals.adb:27:04: info: object is suitable for aliasing via address clause (T
 externals.adb:33:04: info: object is suitable for aliasing via address clause (Trivial)
 externals.adb:43:07: info: initialization of "Temp" proved
 externals.adb:44:07: info: initialization of "Press" proved
-externals.adb:49:31: medium: overflow check might fail (e.g. when Press = -341 and Temp = -1740262) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: call at line 48 should mention Press (for argument Press) in a postcondition]
-externals.adb:49:38: medium: overflow check might fail (e.g. when Temp = -1740263) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: call at line 47 should mention Temp (for argument Temp) in a postcondition]
+externals.adb:49:31: medium: overflow check might fail (e.g. when Press = -341 and Temp = -1740262) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 48 should mention Press (for argument Press) in a postcondition]
+externals.adb:49:38: medium: overflow check might fail (e.g. when Temp = -1740263) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 47 should mention Temp (for argument Temp) in a postcondition]
 externals.adb:53:54: info: initialization of "Main_Display.State" constituent of "Externals.Displays" proved
 externals.adb:54:59: info: initialization of "Secondary_Display.State" constituent of "Externals.Displays" proved
 externals.adb:74:41: medium: "Out_Reg" constituent of "Complex_Device" might not be written
@@ -167,15 +167,15 @@ hal.ads:64:11: info: flow dependencies proved
 hal.ads:69:30: info: initialization of "Result" proved
 hal.ads:70:11: info: data dependencies proved
 hal.ads:71:11: info: flow dependencies proved
-inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
-intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at intra_unit_elaboration_order_examples.ads:26 should mention I in a precondition]
+inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
+intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:26 should mention I in a precondition]
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC4: 1 VC)
-intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail (e.g. when A = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at intra_unit_elaboration_order_examples.ads:23 should mention A and Y in a precondition]
+intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail (e.g. when A = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:23 should mention A and Y in a precondition]
 intra_unit_elaboration_order_examples.ads:4:08: info: flow dependencies proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
 intra_unit_elaboration_order_examples.ads:24:11: info: data dependencies proved
-intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 27 should mention J in a precondition]
+intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 27 should mention J in a precondition]
 initialization_and_elaboration.ads:6:08: info: flow dependencies proved
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:13:11: info: data dependencies proved

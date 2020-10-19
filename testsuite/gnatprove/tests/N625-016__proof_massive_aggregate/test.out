@@ -1,4 +1,4 @@
 foo.adb:6:16: info: initialization of "B" proved
 foo.adb:2063:45: info: range check proved (CVC4: 1 VC)
 foo.adb:2066:30: info: division check proved (CVC4: 1 VC)
-foo.adb:2066:45: medium: assertion might fail, cannot prove A = B [possible explanation: subprogram at line 5 should mention A in a precondition]
+foo.adb:2066:45: medium: assertion might fail, cannot prove A = B [possible fix: subprogram at line 5 should mention A in a precondition]

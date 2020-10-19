@@ -1,4 +1,4 @@
-depends_exercise.adb:11:38: medium: range check might fail (e.g. when Stack_Pointer = Pointer_Range'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at depends_exercise.ads:13 should mention Stack_Pointer in a precondition]
+depends_exercise.adb:11:38: medium: range check might fail (e.g. when Stack_Pointer = Pointer_Range'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at depends_exercise.ads:13 should mention Stack_Pointer in a precondition]
 depends_exercise.adb:12:14: info: index check proved (CVC4: 2 VC)
 depends_exercise.adb:23:11: info: range check proved (CVC4: 2 VC)
 depends_exercise.adb:23:37: info: cannot unroll loop (too many loop iterations)

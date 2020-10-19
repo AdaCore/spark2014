@@ -3,7 +3,7 @@ main.adb:17:33: info: overflow check proved (CVC4: 1 VC)
 main.adb:18:30: info: overflow check proved (CVC4: 1 VC)
 main.adb:18:40: info: overflow check proved (CVC4: 1 VC)
 main.adb:18:50: info: overflow check proved (CVC4: 1 VC)
-main.adb:25:20: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 14 should mention Long_Side in a precondition]
-main.adb:25:42: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 14 should mention Side_2 in a precondition]
-main.adb:25:52: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 14 should mention Side_2 and Side_3 in a precondition]
-main.adb:25:62: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 14 should mention Side_3 in a precondition]
+main.adb:25:20: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 14 should mention Long_Side in a precondition]
+main.adb:25:42: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 14 should mention Side_2 in a precondition]
+main.adb:25:52: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 14 should mention Side_2 and Side_3 in a precondition]
+main.adb:25:62: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 14 should mention Side_3 in a precondition]

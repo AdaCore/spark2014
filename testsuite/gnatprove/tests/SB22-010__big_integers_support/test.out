@@ -13,40 +13,40 @@ big_integers_test.adb:30:36: info: initialization of "Big_Int" proved
 big_integers_test.adb:30:63: info: initialization of "Int" proved
 big_integers_test.adb:33:18: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:34:11: warning: unused assignment
-big_integers_test.adb:34:14: medium: range check might fail
+big_integers_test.adb:34:14: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
 big_integers_test.adb:34:26: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:38:04: warning: analyzing unreferenced procedure "MSC_Range_Check_Fail"
 big_integers_test.adb:38:37: info: initialization of "Big_Int" proved
 big_integers_test.adb:38:64: info: initialization of "LL_Int" proved
 big_integers_test.adb:41:18: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:42:14: warning: unused assignment
-big_integers_test.adb:42:20: medium: range check might fail
+big_integers_test.adb:42:20: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
 big_integers_test.adb:42:39: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:46:04: warning: analyzing unreferenced procedure "MUC_Range_Check_Fail"
 big_integers_test.adb:46:36: info: initialization of "Big_Int" proved
 big_integers_test.adb:46:63: info: initialization of "Uns" proved
 big_integers_test.adb:49:18: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:50:11: warning: unused assignment
-big_integers_test.adb:50:17: medium: range check might fail
+big_integers_test.adb:50:17: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
 big_integers_test.adb:50:36: info: predicate check proved (CVC4: 2 VC)
 big_integers_test.adb:54:04: warning: analyzing unreferenced procedure "Divide_Division_Check_Fail"
 big_integers_test.adb:54:14: warning: subprogram "Divide_Division_Check_Fail" has no effect
 big_integers_test.adb:57:12: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:57:20: medium: divide by zero might fail [possible explanation: subprogram at line 54 should mention Big_Int in a precondition]
+big_integers_test.adb:57:20: medium: divide by zero might fail [possible fix: subprogram at line 54 should mention Big_Int in a precondition]
 big_integers_test.adb:57:22: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:60:04: warning: analyzing unreferenced procedure "Mod_Division_Check_Fail"
 big_integers_test.adb:60:14: warning: subprogram "Mod_Division_Check_Fail" has no effect
 big_integers_test.adb:63:12: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:63:20: medium: divide by zero might fail [possible explanation: subprogram at line 60 should mention Big_Int in a precondition]
+big_integers_test.adb:63:20: medium: divide by zero might fail [possible fix: subprogram at line 60 should mention Big_Int in a precondition]
 big_integers_test.adb:63:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:66:04: warning: analyzing unreferenced procedure "Rem_Division_Check_Fail"
 big_integers_test.adb:66:14: warning: subprogram "Rem_Division_Check_Fail" has no effect
 big_integers_test.adb:69:12: info: predicate check proved (CVC4: 1 VC)
-big_integers_test.adb:69:20: medium: divide by zero might fail [possible explanation: subprogram at line 66 should mention Big_Int in a precondition]
+big_integers_test.adb:69:20: medium: divide by zero might fail [possible fix: subprogram at line 66 should mention Big_Int in a precondition]
 big_integers_test.adb:69:24: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:72:04: warning: analyzing unreferenced procedure "Gcd_Precondition_Fail"
 big_integers_test.adb:72:14: warning: subprogram "Gcd_Precondition_Fail" has no effect
-big_integers_test.adb:75:12: medium: precondition might fail [possible explanation: subprogram at line 72 should mention Big_Int in a precondition]
+big_integers_test.adb:75:12: medium: precondition might fail [possible fix: subprogram at line 72 should mention Big_Int in a precondition]
 big_integers_test.adb:75:37: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:75:46: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:80:26: info: predicate check proved (CVC4: 1 VC)
@@ -161,7 +161,7 @@ big_integers_test.adb:142:19: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:142:44: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:142:47: info: predicate check proved (CVC4: 1 VC)
 big_integers_test.adb:144:11: info: precondition proved (CVC4: 4 VC)
-conversion.ads:10:13: medium: subprogram "Partial_Conversion_Rec" might not terminate, terminating annotation could be incorrect
+conversion.ads:15:07: medium: "Partial_Conversion_Rec" is recursive, terminating annotation could be incorrect
 conversion.ads:15:26: info: index check proved (CVC4: 2 VC)
 conversion.ads:15:32: info: predicate check proved (CVC4: 1 VC)
 conversion.ads:17:10: info: precondition proved (CVC4: 4 VC)
@@ -227,3 +227,5 @@ curve25519.ads:19:26: info: predicate check proved (CVC4: 1 VC)
 curve25519.ads:20:29: info: predicate check proved (CVC4: 1 VC)
 curve25519.ads:20:50: info: predicate check proved (CVC4: 1 VC)
 types.ads:19:08: info: predicate check proved (CVC4: 1 VC)
+
+

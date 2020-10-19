@@ -17,18 +17,18 @@ test_raise.adb:45:14: warning: subprogram "KO2" has no effect
 test_raise.adb:50:25: info: assertion proved (CVC4: 1 VC)
 test_raise.adb:50:25: medium: exception might be raised
 test_raise.adb:52:34: medium: exception might be raised
-test_raise.adb:54:25: medium: assertion might fail, cannot prove not ((X = Y) and then ...) [possible explanation: precondition of subprogram at line 45 should mention X and Y]
+test_raise.adb:54:25: medium: assertion might fail, cannot prove not ((X = Y) and then ...) [possible fix: precondition of subprogram at line 45 should mention X and Y]
 test_raise.adb:54:47: medium: exception might be raised
 test_raise.adb:56:25: info: assertion proved (Trivial: 2 VC)
 test_raise.adb:56:51: medium: exception might be raised
 test_raise.adb:59:47: medium: exception might be raised
-test_raise.adb:60:30: medium: assertion might fail, cannot prove Y = Integer'(...) [possible explanation: precondition of subprogram at line 45 should mention Y]
+test_raise.adb:60:30: medium: assertion might fail, cannot prove Y = Integer'(...) [possible fix: precondition of subprogram at line 45 should mention Y]
 test_raise.adb:60:42: medium: exception might be raised
-test_raise.adb:62:25: medium: assertion might fail, cannot prove Y /= (X + Integer'(...)) [possible explanation: precondition of subprogram at line 45 should mention X and Y]
+test_raise.adb:62:25: medium: assertion might fail, cannot prove Y /= (X + Integer'(...)) [possible fix: precondition of subprogram at line 45 should mention X and Y]
 test_raise.adb:62:43: medium: exception might be raised
-test_raise.adb:69:07: medium: precondition might fail, cannot prove (X /= Y) or else ... (e.g. when X = -3 and Y = -3) [possible explanation: subprogram at line 2 should mention X and Y in a precondition]
-test_raise.adb:71:07: medium: precondition might fail (e.g. when X = 1) [possible explanation: subprogram at line 2 should mention X and Y in a precondition]
-test_raise.adb:73:07: medium: precondition might fail (e.g. when X = -1) [possible explanation: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:69:07: medium: precondition might fail, cannot prove (X /= Y) or else ... (e.g. when X = -3 and Y = -3) [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:71:07: medium: precondition might fail (e.g. when X = 1) [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+test_raise.adb:73:07: medium: precondition might fail (e.g. when X = -1) [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 test_raise.adb:75:07: info: precondition proved (CVC4: 5 VC; Trivial: 3 VC)
 test_raise.adb:78:19: medium: assertion might fail, cannot prove Float_Conv.From_Big_Real (Z) = 0.0
 test_raise.adb:78:29: info: precondition proved (CVC4: 1 VC)

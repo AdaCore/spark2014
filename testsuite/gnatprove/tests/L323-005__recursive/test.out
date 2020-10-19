@@ -9,9 +9,9 @@ p.ads:5:54: info: expression function body not available for proof ("Bad" might 
 p.ads:7:15: warning: subprogram "Use_Bad" has no effect
 p.ads:7:36: medium: postcondition might fail, cannot prove false
 p.ads:9:14: info: implicit function contract might not be available on recursive calls
-p.ads:9:14: medium: subprogram "Down" might not terminate, terminating annotation could be incorrect
+p.ads:10:09: medium: "Down" is recursive, terminating annotation could be incorrect
 p.ads:10:38: info: range check proved (CVC4: 1 VC)
-p.ads:10:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention X in a precondition]
+p.ads:10:43: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention X in a precondition]
 p.ads:13:15: warning: subprogram "Use_Down" has no effect
 p.ads:15:15: info: postcondition proved (CVC4: 1 VC)
 p.ads:15:34: info: range check proved (CVC4: 1 VC)

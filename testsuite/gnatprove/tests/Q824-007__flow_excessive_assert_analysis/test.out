@@ -1,2 +1,2 @@
-foo.adb:28:22: medium: assertion might fail, cannot prove Invariant (A => Red.C1, B => Red.C2, C => Red.C3) [possible explanation: call at line 27 should mention Red in a postcondition]
-foo.adb:32:22: medium: assertion might fail, cannot prove Invariant (A => Black.C1, B => Black.C2, C => Black.C3) [possible explanation: call at line 31 should mention Black in a postcondition]
+foo.adb:28:22: medium: assertion might fail, cannot prove Invariant (A => Red.C1, B => Red.C2, C => Red.C3) [possible fix: call at line 27 should mention Red in a postcondition]
+foo.adb:32:22: medium: assertion might fail, cannot prove Invariant (A => Black.C1, B => Black.C2, C => Black.C3) [possible fix: call at line 31 should mention Black in a postcondition]

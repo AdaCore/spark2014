@@ -1,3 +1,3 @@
-concat_string.adb:4:21: low: range check might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 2147483647 and S1'First = 1 and S1'Last = 1) [reason for check: default component value must fit in the type] [possible explanation: subprogram at line 1 should mention S in a precondition]
+concat_string.adb:4:21: low: range check might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 2147483647 and S1'First = 1 and S1'Last = 1) [reason for check: default component value must fit in the type] [possible fix: subprogram at line 1 should mention S in a precondition]
 concat_string.adb:5:31: info: range check proved (CVC4: 1 VC)
 concat_string.adb:7:14: low: range check might fail (e.g. when S1'First = 2147483637 and S1'Last = 2147483638 and S2'First = 1 and S2'Last = 10) [reason for check: returned value must fit in the result type of the function]

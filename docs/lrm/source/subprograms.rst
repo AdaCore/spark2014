@@ -1856,6 +1856,13 @@ The prefix of an Initialized attribute reference shall denote an object.
      Result attribute reference does not occur within a postcondition
      expression).
 
+   * A parameter or function result named in the aspect_specification shall not
+     be of an elementary type. [It is a bounded error to pass an uninitialized
+     scalar parameter as input for an input parameter or as output for an
+     output parameter or function result, so there is no benefit of marking
+     such a parameter or result as having relaxed initialization. An object of
+     access type is always initialized.]
+
    * A Boolean value of True is implicitly specified if no aspect_definition
      is provided, as per Ada RM 13.1.1's rules for Boolean-valued aspects.
      A Boolean value of False is implicitly specified if a given parameter

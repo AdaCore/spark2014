@@ -14,12 +14,12 @@ discr.adb:30:12: info: discriminant check proved (CVC4: 1 VC)
 discr.adb:31:12: medium: discriminant check might fail (e.g. when C = 1)
 discr.adb:36:26: info: range check proved (CVC4: 1 VC)
 discr.adb:36:32: info: discriminant check proved (CVC4: 1 VC)
-discr.adb:43:12: medium: discriminant check might fail (e.g. when D = (C => 1)) [possible explanation: precondition of subprogram at line 38 should mention D]
+discr.adb:43:12: medium: discriminant check might fail (e.g. when D = (C => 1)) [possible fix: precondition of subprogram at line 38 should mention D]
 discr.adb:51:12: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 discr.adb:55:07: info: precondition proved (Trivial: 1 VC)
 discr.adb:56:07: info: precondition proved (Trivial: 1 VC)
 discr.adb:57:07: info: precondition proved (CVC4: 1 VC)
-discr.adb:58:07: medium: precondition might fail, cannot prove not D'constrained (e.g. when D2'Constrained = True) [possible explanation: call at line 56 should mention D (for argument D2) in a postcondition]
+discr.adb:58:07: medium: precondition might fail, cannot prove not D'constrained (e.g. when D2'Constrained = True) [possible fix: call at line 56 should mention D (for argument D2) in a postcondition]
 discr.adb:62:26: info: range check proved (CVC4: 1 VC)
 discr.adb:62:32: info: discriminant check proved (CVC4: 1 VC)
 discr.adb:66:22: info: assertion proved (CVC4: 1 VC)
@@ -31,9 +31,9 @@ discr.adb:71:17: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 discr.adb:72:22: info: assertion proved (Trivial: 1 VC)
 discr.adb:73:22: info: assertion proved (CVC4: 1 VC)
 discr.adb:77:48: info: range check proved (CVC4: 1 VC)
-discr.adb:77:48: medium: overflow check might fail (e.g. when C = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at discr.ads:18 should mention C in a precondition]
+discr.adb:77:48: medium: overflow check might fail (e.g. when C = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at discr.ads:18 should mention C in a precondition]
 discr.adb:80:53: info: range check proved (CVC4: 1 VC)
-discr.adb:83:46: medium: precondition might fail, cannot prove X > 0 (e.g. when C = 0) [possible explanation: subprogram at discr.ads:18 should mention C in a precondition]
+discr.adb:83:46: medium: precondition might fail, cannot prove X > 0 (e.g. when C = 0) [possible fix: subprogram at discr.ads:18 should mention C in a precondition]
 discr.adb:92:09: info: discriminant check proved (CVC4: 1 VC)
 discr.adb:93:09: medium: discriminant check might fail
 discr.adb:99:28: info: range check proved (CVC4: 1 VC)
@@ -50,7 +50,7 @@ discr.adb:115:12: medium: discriminant check might fail (e.g. when C = 1)
 discr.adb:120:28: info: range check proved (CVC4: 1 VC)
 discr.adb:120:34: info: discriminant check proved (CVC4: 1 VC)
 discr.adb:122:26: info: initialization of "D" proved
-discr.adb:127:12: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 122 should mention D'Constrained or D.C]
+discr.adb:127:12: medium: discriminant check might fail [possible fix: precondition of subprogram at line 122 should mention D'Constrained or D.C]
 discr.adb:130:26: info: initialization of "D" proved
 discr.adb:135:12: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 discr.adb:139:07: info: precondition proved (Trivial: 1 VC)

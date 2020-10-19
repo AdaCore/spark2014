@@ -21,7 +21,7 @@ a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at p.ads:15
 a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at p.ads:15
 p.adb:23:08: info: initialization of "C" proved
-p.adb:27:22: medium: overflow check might fail (e.g. when C = (Node => 2) and Sum = -1) [possible explanation: loop at line 26 should mention Sum in a loop invariant]
+p.adb:27:22: medium: overflow check might fail (e.g. when C = (Node => 2) and Sum = -1) [possible fix: loop at line 26 should mention Sum in a loop invariant]
 p.adb:27:32: medium: precondition might fail, cannot prove Has_Element (Container, Position) (e.g. when C = (Node => 2))
 p.adb:28:19: medium: precondition might fail, cannot prove Has_Element (Container, Position) or else Position = No_Element (e.g. when C = (Node => 2))
 p.ads:18:14: warning: subprogram "Iter_Over_Lists" has no effect

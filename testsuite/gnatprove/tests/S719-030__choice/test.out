@@ -1,1 +1,1 @@
-choice.adb:4:14: medium: overflow check might fail (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention Y in a precondition]
+choice.adb:4:14: medium: overflow check might fail (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention Y in a precondition]

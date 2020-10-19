@@ -2,7 +2,7 @@ p.adb:20:10: info: assertion proved (CVC4: 1 VC)
 p.adb:20:10: info: range check proved (CVC4: 4 VC)
 p.adb:20:31: info: range check proved (CVC4: 4 VC)
 p_bad.adb:20:10: info: range check proved (CVC4: 4 VC)
-p_bad.adb:20:10: medium: assertion might fail, cannot prove X (I3 .. Last) = Y (I3..3) (e.g. when I3 = 3) [possible explanation: loop at line 12 should mention X in a loop invariant]
+p_bad.adb:20:10: medium: assertion might fail, cannot prove X (I3 .. Last) = Y (I3..3) (e.g. when I3 = 3) [possible fix: loop at line 12 should mention X in a loop invariant]
 p_bad.adb:20:27: info: range check proved (CVC4: 4 VC)
 p_bv.adb:23:22: info: assertion proved (CVC4: 1 VC)
 p_bv.adb:23:22: info: range check proved (CVC4: 4 VC)

@@ -32,6 +32,8 @@ with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Types;                      use Types;
+with Why.Conversions;            use Why.Conversions;
+with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Preds;              use Why.Gen.Preds;
 with Why.Gen.Terms;              use Why.Gen.Terms;
 with Why.Ids;                    use Why.Ids;
@@ -288,7 +290,8 @@ package Gnat2Why.Expr is
      (Expr     : W_Term_Id;
       Ty       : Entity_Id;
       Params   : Transformation_Params := Body_Params;
-      Use_Pred : Boolean := True) return W_Pred_Id;
+      Use_Pred : Boolean := True) return W_Pred_Id
+   with Pre => Eq_Base (Type_Of_Node (Retysp (Ty)), Get_Type (+Expr));
    --  @param Expr Why3 term expression on which to express the type invariant
    --  @param Ty type with the type invariant
    --  @param Params transformation parameters
@@ -460,13 +463,6 @@ package Gnat2Why.Expr is
    --  Same as Transform_Expr, but takes into account the declarations of
    --  constants in Actions, to create a suitable variable map for translating
    --  Expr.
-
-   function Transform_Expr_With_Actions
-     (Expr          : Node_Id;
-      Actions       : List_Id;
-      Domain        : EW_Domain;
-      Params        : Transformation_Params) return W_Expr_Id;
-   --  Same as above, but derive the Expected_Type from the Ada Expr
 
    function Transform_Identifier
      (Params   : Transformation_Params;

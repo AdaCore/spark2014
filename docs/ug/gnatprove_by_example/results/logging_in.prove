@@ -1,4 +1,4 @@
-logging_in.adb:6:28: medium: overflow check might fail (e.g. when Log_Size = Natural'Last) [possible explanation: subprogram at logging_in.ads:10 should mention Log_Size in a precondition]
-logging_in.adb:7:12: medium: array index check might fail (e.g. when Log_In = 0 and Log_Size = 101) [possible explanation: subprogram at logging_in.ads:10 should mention Log_Size in a precondition]
+logging_in.adb:6:28: medium: overflow check might fail (e.g. when Log_Size = Natural'Last) [possible fix: subprogram at logging_in.ads:10 should mention Log_Size in a precondition]
+logging_in.adb:7:12: medium: array index check might fail (e.g. when Log_In = 0 and Log_Size = 101) [possible fix: subprogram at logging_in.ads:10 should mention Log_Size in a precondition]
 logging_in.ads:11:06: info: data dependencies proved
 logging_in.ads:12:06: info: flow dependencies proved

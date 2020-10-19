@@ -5,5 +5,8 @@ from test_support import *
 configs = ["good.gpr", "bad_profile.gpr", "bad_pep.gpr"]
 
 for i in configs:
-	gnatprove(opt=["-P", i, "--mode=check"])
-	clean()
+        print("analysis of " + i)
+        print("--------------------------")
+        gnatprove(opt=["-P", i, "--mode=check"], sort_output=False)
+        print("")
+        clean()

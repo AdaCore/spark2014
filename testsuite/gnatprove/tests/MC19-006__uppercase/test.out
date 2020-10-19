@@ -1,1 +1,1 @@
-base.adb:5:50: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 5 should mention X in a precondition]
+base.adb:5:50: medium: overflow check might fail (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 5 should mention X in a precondition]

@@ -4,7 +4,7 @@ types.ads:6:12: info: range check proved (CVC4: 1 VC)
 types.ads:10:12: info: division check proved (CVC4: 1 VC)
 types.ads:10:12: info: overflow check proved (CVC4: 1 VC)
 types.ads:10:12: info: range check proved (CVC4: 1 VC)
-types.ads:10:12: medium: range check might fail (e.g. when X = 2 and Y = 1/128) [reason for check: result of division must be convertible to the target type of the conversion] [possible explanation: precondition of subprogram at line 9 should mention X]
+types.ads:10:12: medium: range check might fail (e.g. when X = 2 and Y = 1/128) [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at line 9 should mention X]
 types.ads:16:13: info: division check proved (CVC4: 1 VC)
 types.ads:16:13: info: overflow check proved (CVC4: 1 VC)
 types.ads:16:13: info: range check proved (CVC4: 1 VC)

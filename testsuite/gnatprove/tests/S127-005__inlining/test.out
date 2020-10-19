@@ -1,5 +1,5 @@
 inline_in_expr.adb:6:25: info: cannot unroll loop (too many loop iterations)
-inline_in_expr.adb:7:21: medium: overflow check might fail (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 6 should mention Tmp in a loop invariant]
+inline_in_expr.adb:7:21: medium: overflow check might fail (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 6 should mention Tmp in a loop invariant]
 inline_in_expr.adb:12:19: info: analyzing call to "Dummy" in context
 inline_in_expr.adb:15:18: warning: unused variable "Y"
 inline_in_expr.adb:15:28: info: no contextual analysis of "Dummy" (in quantified expression)

@@ -432,8 +432,8 @@ package SPARK_Atree is
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id with
      Pre  => Nkind (N) in N_Subprogram_Call
-                       | N_Entry_Call_Statement
-                       | N_Op,
+                        | N_Entry_Call_Statement
+                        | N_Op,
      Post => (if Nkind (N) in N_Op
               then Einfo.Is_Intrinsic_Subprogram (Get_Called_Entity'Result)
               else Get_Called_Entity'Result =

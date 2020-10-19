@@ -8,7 +8,7 @@ pi_euler.adb:12:36: info: range check proved (Trivial)
 pi_euler.adb:13:23: info: division check proved (CVC4: 1 VC)
 pi_euler.adb:13:23: info: float overflow check proved (Trivial)
 pi_euler.adb:13:35: info: range check proved (Trivial)
-pi_euler.adb:14:18: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible explanation: loop invariant at line 11 should mention Pi]
+pi_euler.adb:14:18: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop invariant at line 11 should mention Pi]
 pi_euler.adb:15:24: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 pi_euler_2.adb:3:04: info: initialization of "Index" proved
 pi_euler_2.adb:4:04: info: initialization of "Pi" proved
@@ -22,8 +22,8 @@ pi_euler_2.adb:17:23: info: division check proved (CVC4: 1 VC)
 pi_euler_2.adb:17:23: info: float overflow check proved (Trivial)
 pi_euler_2.adb:17:35: info: division check proved (CVC4: 1 VC)
 pi_euler_2.adb:17:35: info: float overflow check proved (Trivial)
-pi_euler_2.adb:18:18: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible explanation: loop invariant at line 15 should mention Pi]
+pi_euler_2.adb:18:18: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop invariant at line 15 should mention Pi]
 pi_euler_2.adb:19:16: warning: unused assignment
-pi_euler_2.adb:19:24: medium: overflow check might fail [reason for check: result of addition must fit in a 64-bits machine integer] [possible explanation: loop invariant at line 15 should mention Index]
+pi_euler_2.adb:19:24: medium: overflow check might fail [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: loop invariant at line 15 should mention Index]
 pi_euler_2.adb:20:37: info: range check proved (Trivial)
 pi_euler_2.adb:20:37: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]

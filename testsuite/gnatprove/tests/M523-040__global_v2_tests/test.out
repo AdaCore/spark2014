@@ -1,11 +1,11 @@
 main.adb:3:17: info: initialization of "Sum" proved
-misc.adb:17:22: medium: assertion might fail, cannot prove G2 [possible explanation: subprogram at misc.ads:5 should mention G2 in a precondition]
-p.adb:21:19: medium: overflow check might fail (e.g. when GN = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention GN in a precondition]
-p.adb:21:25: medium: overflow check might fail (e.g. when GN = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention GN in a precondition]
-p.adb:21:30: medium: overflow check might fail (e.g. when GN = -1073741825) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention GN in a precondition]
-p.adb:33:22: medium: assertion might fail, cannot prove G = Nest(Nest.foo) (e.g. when G = 0 and GN = Integer'First) [possible explanation: subprogram at p.ads:4 should mention G and GN in a precondition]
-p.adb:34:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at p.ads:4 should mention X and Y in a precondition]
+misc.adb:17:22: medium: assertion might fail, cannot prove G2 [possible fix: subprogram at misc.ads:5 should mention G2 in a precondition]
+p.adb:21:19: medium: overflow check might fail (e.g. when GN = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention GN in a precondition]
+p.adb:21:25: medium: overflow check might fail (e.g. when GN = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention GN in a precondition]
+p.adb:21:30: medium: overflow check might fail (e.g. when GN = -1073741825) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention GN in a precondition]
+p.adb:33:22: medium: assertion might fail, cannot prove G = Nest(Nest.foo) (e.g. when G = 0 and GN = Integer'First) [possible fix: subprogram at p.ads:4 should mention G and GN in a precondition]
+p.adb:34:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:4 should mention X and Y in a precondition]
 p.ads:2:26: warning: no procedure exists that can initialize abstract state "P.State"
 pr_01.adb:10:14: info: overflow check proved (CVC4: 1 VC)
-pr_02.adb:7:14: medium: overflow check might fail (e.g. when X = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at pr_02.ads:2 should mention X in a precondition]
-pr_03.adb:9:17: medium: overflow check might fail (e.g. when X = 2147483638) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at pr_03.ads:2 should mention X in a precondition]
+pr_02.adb:7:14: medium: overflow check might fail (e.g. when X = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at pr_02.ads:2 should mention X in a precondition]
+pr_03.adb:9:17: medium: overflow check might fail (e.g. when X = 2147483638) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at pr_03.ads:2 should mention X in a precondition]

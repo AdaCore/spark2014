@@ -1,1 +1,1 @@
-pack.adb:5:30: medium: overflow check might fail (e.g. when C = Positive_Count'Last and Col_Count = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at pack.ads:5 should mention Col_Count and C in a precondition]
+pack.adb:5:30: medium: overflow check might fail (e.g. when C = Positive_Count'Last and Col_Count = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at pack.ads:5 should mention Col_Count and C in a precondition]

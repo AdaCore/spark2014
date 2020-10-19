@@ -21,7 +21,7 @@ text_io_warnings.adb:28:04: info: precondition proved (CVC4: 1 VC)
 text_io_warnings.adb:29:04: info: precondition proved (CVC4: 2 VC; Trivial: 1 VC)
 text_io_warnings.adb:30:04: info: precondition proved (CVC4: 2 VC)
 text_io_warnings.adb:31:04: info: precondition proved (CVC4: 2 VC; Trivial: 1 VC)
-text_io_warnings.adb:32:04: medium: precondition might fail, cannot prove Line_Length (File) = 0 or else To <= Line_Length (File) [possible explanation: call at line 31 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
+text_io_warnings.adb:32:04: medium: precondition might fail, cannot prove Line_Length (File) = 0 or else To <= Line_Length (File) [possible fix: call at line 31 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
 text_io_warnings.adb:34:07: info: precondition proved (CVC4: 2 VC)
 text_io_warnings.adb:34:28: info: range check proved (CVC4: 1 VC)
 text_io_warnings.adb:36:04: info: precondition proved (CVC4: 2 VC)
@@ -57,9 +57,9 @@ text_io_warnings.adb:77:37: info: precondition proved (CVC4: 2 VC)
 text_io_warnings.adb:80:04: info: precondition proved (CVC4: 2 VC)
 text_io_warnings.adb:80:37: info: precondition proved (CVC4: 2 VC)
 text_io_warnings.adb:83:04: medium: precondition might fail, cannot prove Line_Length (File) = 0 or else To <= Line_Length (File)
-text_io_warnings.adb:84:04: medium: precondition might fail, cannot prove Line_Length = 0 or To <= (Line_Length) [possible explanation: call at line 83 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
+text_io_warnings.adb:84:04: medium: precondition might fail, cannot prove Line_Length = 0 or To <= (Line_Length) [possible fix: call at line 83 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
 text_io_warnings.adb:86:04: medium: precondition might fail, cannot prove Page_Length (File) = 0 or else To <= Page_Length (File)
-text_io_warnings.adb:87:04: medium: precondition might fail, cannot prove Page_Length = 0 or To <= (Page_Length) [possible explanation: call at line 86 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
+text_io_warnings.adb:87:04: medium: precondition might fail, cannot prove Page_Length = 0 or To <= (Page_Length) [possible fix: call at line 86 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
 text_io_warnings.adb:89:04: info: precondition proved (CVC4: 2 VC)
 text_io_warnings.adb:89:35: info: precondition proved (CVC4: 1 VC)
 text_io_warnings.adb:91:04: info: precondition proved (CVC4: 2 VC)

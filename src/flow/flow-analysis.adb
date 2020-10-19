@@ -5819,32 +5819,136 @@ package body Flow.Analysis is
    ----------------------------------
 
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
+
+      function Enclosing_Subprogram (E : Entity_Id) return Entity_Id;
+      --  This function returns the first enclosing subprogram of entity E, in
+      --  the case where E represents a nested package.
+
+      --------------------------
+      -- Enclosing_Subprogram --
+      --------------------------
+
+      function Enclosing_Subprogram (E : Entity_Id) return Entity_Id is
+         Context : Entity_Id := E;
+      begin
+         while Ekind (Context) in E_Package | E_Block loop
+            Context := Scope (Context);
+         end loop;
+         pragma Assert (Ekind (Context) in E_Entry
+                                         | E_Function
+                                         | E_Procedure
+                                         | E_Task_Type);
+         return Context;
+      end Enclosing_Subprogram;
+
+      Spec_Entity_Id : constant Flow_Id :=
+        Direct_Mapping_Id (Enclosing_Subprogram (FA.Spec_Entity));
+
+      Proved : Boolean := True;
+
    begin
-      if Has_Terminate_Annotation (FA.Spec_Entity) then
-         declare
-            Not_Proved : constant Boolean :=
-              Is_Potentially_Nonreturning_Internal (FA.Spec_Entity);
+      if Has_Terminate_Annotation (Enclosing_Subprogram (FA.Spec_Entity)) then
+         for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            declare
+               Atr : V_Attributes renames FA.Atr (V);
+            begin
+               --  Ignore vertices coming from elaboration of nested packages
 
-            Msg : constant String :=
-              (if Not_Proved
-               then "subprogram & might not terminate, " &
-                    "terminating annotation could be incorrect"
-               else "subprogram & will terminate, " &
-                    "terminating annotation has been proved");
+               if not (for some P of Atr.Loops => Ekind (P) = E_Package) then
+                  if Atr.Is_Neverending then
+                     Proved := False;
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "loop might be nonterminating, " &
+                                    "terminating annotation on & could be " &
+                                    "incorrect",
+                        Severity => Medium_Check_Kind,
+                        N        => Atr.Error_Location,
+                        F1       => Spec_Entity_Id,
+                        Tag      => Subprogram_Termination,
+                        Vertex   => V);
+                  end if;
 
-            Severity : constant Msg_Severity :=
-              (if Not_Proved
-               then Medium_Check_Kind
-               else Info_Kind);
+                  for E of Atr.Subprograms_Called loop
 
-         begin
+                     --  If elaboration of the nested package is nonterminating
+                     --  then the current unit is nonterminating as well.
+                     --  We will complain when analysing the nested package
+                     --  itself.
+
+                     if Ekind (E) = E_Package then
+                        if Is_Potentially_Nonreturning (E) then
+                           Proved := False;
+                        end if;
+
+                     --  If the analyzed subprogram, its terminating annotation
+                     --  cannot be trusted.
+
+                     elsif E = FA.Spec_Entity then
+                        Proved := False;
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "& is recursive, " &
+                                       "terminating annotation could " &
+                                       "be incorrect",
+                           Severity => Medium_Check_Kind,
+                           N        => Atr.Error_Location,
+                           F1       => Direct_Mapping_Id (E),
+                           Tag      => Subprogram_Termination,
+                           Vertex   => V);
+
+                     --  If the analyzed subprogram and the called subprogram
+                     --  are mutually recursive, both Terminating annotations
+                     --  cannot be trusted.
+
+                     elsif Mutually_Recursive (FA.Spec_Entity, E) then
+                        Proved := False;
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "& and & are mutually recursive, " &
+                                       "terminating annotation on & could " &
+                                       "be incorrect",
+                           Severity => Medium_Check_Kind,
+                           N        => Atr.Error_Location,
+                           F1       => Direct_Mapping_Id (FA.Spec_Entity),
+                           F2       => Direct_Mapping_Id (E),
+                           F3       => Spec_Entity_Id,
+                           Tag      => Subprogram_Termination,
+                           Vertex   => V);
+
+                     --  Otherwise, the Terminating annotation can be trusted
+
+                     elsif Is_Potentially_Nonreturning (E) then
+                        Proved := False;
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "call to & might be nonterminating, " &
+                                       "terminating annotation on & could " &
+                                       "be incorrect",
+                           Severity => Medium_Check_Kind,
+                           N        => Atr.Error_Location,
+                           F1       => Direct_Mapping_Id (E),
+                           F2       => Spec_Entity_Id,
+                           Tag      => Subprogram_Termination,
+                           Vertex   => V);
+                     end if;
+                  end loop;
+               end if;
+            end;
+         end loop;
+
+         if Proved
+           and then Is_Subprogram_Or_Entry (FA.Spec_Entity)
+         then
             Error_Msg_Flow (FA       => FA,
-                            Msg      => Msg,
-                            Severity => Severity,
+                            Msg      => "subprogram & will terminate, " &
+                                        "terminating annotation has been " &
+                                        "proved",
+                            Severity => Info_Kind,
                             N        => FA.Spec_Entity,
-                            F1       => Direct_Mapping_Id (FA.Spec_Entity),
+                            F1       => Spec_Entity_Id,
                             Tag      => Subprogram_Termination);
-         end;
+         end if;
       end if;
    end Check_Terminating_Annotation;
 

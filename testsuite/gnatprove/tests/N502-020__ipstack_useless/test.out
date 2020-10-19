@@ -1,14 +1,14 @@
 cascade.adb:1:20: warning: unused initial value of "X"
 cascade.adb:3:57: info: initialization of "Err" proved
 cascade.adb:4:11: info: data dependencies proved
-cascade.adb:7:18: medium: overflow check might fail (e.g. when Buf = Integer'First and Nid = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 3 should mention Buf and Nid in a precondition]
+cascade.adb:7:18: medium: overflow check might fail (e.g. when Buf = Integer'First and Nid = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 3 should mention Buf and Nid in a precondition]
 cascade.adb:10:04: info: initialization of "T1" proved
 cascade.adb:10:08: info: initialization of "T2" proved
 cascade.adb:10:12: info: initialization of "T3" proved
 cascade.adb:10:16: info: initialization of "T4" proved
 cascade.adb:10:20: info: initialization of "T5" proved
 cascade.adb:13:07: warning: unused assignment
-cascade.adb:13:12: medium: overflow check might fail (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
+cascade.adb:13:12: medium: overflow check might fail (e.g. when X = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 cascade.adb:14:04: warning: statement has no effect
 cascade.adb:15:10: warning: unused assignment
 cascade.adb:17:10: warning: unused assignment

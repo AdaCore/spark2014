@@ -1,7 +1,7 @@
 arrays_in_records.adb:20:11: info: flow dependencies proved
-arrays_in_records.adb:23:22: medium: assertion might fail, cannot prove A.First_Array(17) = 23 [possible explanation: subprogram at line 19 should mention A in a precondition]
+arrays_in_records.adb:23:22: medium: assertion might fail, cannot prove A.First_Array(17) = 23 [possible fix: subprogram at line 19 should mention A in a precondition]
 arrays_in_records.adb:27:11: info: flow dependencies proved
-arrays_in_records.adb:30:22: medium: assertion might fail, cannot prove A.First_Array(I) = 23 [possible explanation: subprogram at line 26 should mention A and I in a precondition]
+arrays_in_records.adb:30:22: medium: assertion might fail, cannot prove A.First_Array(I) = 23 [possible fix: subprogram at line 26 should mention A and I in a precondition]
 arrays_in_records.adb:36:11: info: flow dependencies proved
 arrays_in_records.adb:37:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 23 (e.g. when A = (Counter => 0, First_Array => (others => 42), Second_Array => (others => 42)))
 arrays_in_records.adb:45:11: info: flow dependencies proved

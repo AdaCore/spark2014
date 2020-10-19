@@ -9,7 +9,7 @@ for_loop_iterable.adb:12:11: info: precondition proved (Trivial: 1 VC)
 for_loop_iterable.adb:14:25: info: assertion proved (CVC4: 1 VC)
 for_loop_iterable.adb:18:14: warning: subprogram "P2" has no effect
 for_loop_iterable.adb:21:18: info: cannot unroll loop (too many loop iterations)
-for_loop_iterable.adb:23:25: medium: assertion might fail, cannot prove E = 0 (e.g. when A = (2 => 1, others => 0)) [possible explanation: loop at line 21 should mention A in a loop invariant]
+for_loop_iterable.adb:23:25: medium: assertion might fail, cannot prove E = 0 (e.g. when A = (2 => 1, others => 0)) [possible fix: loop at line 21 should mention A in a loop invariant]
 for_loop_iterable.adb:27:14: warning: subprogram "P3" has no effect
 for_loop_iterable.adb:31:11: info: precondition proved (CVC4: 1 VC)
 for_loop_iterable.adb:31:11: info: precondition proved (Trivial: 1 VC)

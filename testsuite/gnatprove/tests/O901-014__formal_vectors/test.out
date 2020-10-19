@@ -19,7 +19,7 @@ a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 aida-containers-formal_vectors.adb:7:68: info: discriminant check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:16:41: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:16:62: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.adb:24:68: medium: discriminant check might fail, in instantiation at hnco-test2.ads:8 (e.g. when Length = 0 and New_Item = Element_Type'First) [possible explanation: subprogram at aida-containers-formal_vectors.ads:41 should mention Length and New_Item in a precondition]
+aida-containers-formal_vectors.adb:24:68: medium: discriminant check might fail, in instantiation at hnco-test2.ads:8 (e.g. when Length = 0 and New_Item = Element_Type'First) [possible fix: subprogram at aida-containers-formal_vectors.ads:41 should mention Length and New_Item in a precondition]
 aida-containers-formal_vectors.adb:42:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:42:52: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:48:49: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
@@ -40,7 +40,7 @@ aida-containers-formal_vectors.adb:99:42: info: range check proved (CVC4: 1 VC),
 aida-containers-formal_vectors.adb:100:41: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:106:24: medium: precondition might fail, cannot prove Length (Container) < Capacity (Container), in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => 1, Hidden_Vector => ?))
 aida-containers-formal_vectors.adb:106:42: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.adb:112:24: medium: precondition might fail, cannot prove Length (Container) > 0, in instantiation at hnco-test2.ads:8 [possible explanation: subprogram at aida-containers-formal_vectors.ads:111 should mention Container in a precondition]
+aida-containers-formal_vectors.adb:112:24: medium: precondition might fail, cannot prove Length (Container) > 0, in instantiation at hnco-test2.ads:8 [possible fix: subprogram at aida-containers-formal_vectors.ads:111 should mention Container in a precondition]
 aida-containers-formal_vectors.adb:112:47: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:117:52: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:123:24: medium: precondition might fail, cannot prove I in First_Index (Container) .. Last_Index (Container), in instantiation at hnco-test2.ads:8 (e.g. when Container = (Capacity => 0, Hidden_Vector => ?) and I = 1)
@@ -83,9 +83,9 @@ aida-containers-formal_vectors.ads:150:06: info: data dependencies proved, in in
 aida-containers-formal_vectors.ads:156:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:162:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:185:52: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
-hnco-test2.adb:7:08: medium: precondition might fail, cannot prove Length (Container) < Container.Capacity (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible explanation: subprogram at hnco-test2.ads:13 should mention V in a precondition]
-hnco-test2.adb:8:08: medium: precondition might fail, cannot prove Length (Container) < Container.Capacity (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible explanation: call at line 7 should mention Container (for argument V) in a postcondition]
-hnco-test2.adb:10:22: medium: assertion might fail, cannot prove V.Contains (1) (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible explanation: call at line 8 should mention Container (for argument V) in a postcondition]
-hnco-test2.adb:11:22: medium: assertion might fail, cannot prove V.Contains (2) (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible explanation: call at line 8 should mention Container (for argument V) in a postcondition]
+hnco-test2.adb:7:08: medium: precondition might fail, cannot prove Length (Container) < Container.Capacity (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible fix: subprogram at hnco-test2.ads:13 should mention V in a precondition]
+hnco-test2.adb:8:08: medium: precondition might fail, cannot prove Length (Container) < Container.Capacity (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible fix: call at line 7 should mention Container (for argument V) in a postcondition]
+hnco-test2.adb:10:22: medium: assertion might fail, cannot prove V.Contains (1) (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible fix: call at line 8 should mention Container (for argument V) in a postcondition]
+hnco-test2.adb:11:22: medium: assertion might fail, cannot prove V.Contains (2) (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible fix: call at line 8 should mention Container (for argument V) in a postcondition]
 hnco-test2.ads:11:04: info: initialization of "V" proved
 hnco-test2.ads:11:34: info: range check proved (CVC4: 1 VC)

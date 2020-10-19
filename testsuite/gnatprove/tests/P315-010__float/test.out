@@ -25,9 +25,9 @@ original_sample.adb:17:34: info: range check proved (Trivial)
 original_sample.adb:17:44: info: float overflow check proved (Trivial)
 original_sample.adb:27:19: info: float overflow check proved (CodePeer)
 original_sample.adb:27:25: info: float overflow check proved (Trivial)
-original_sample.ads:15:128: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible explanation: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
+original_sample.ads:15:128: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
 original_sample.ads:15:140: info: division check proved (CVC4: 1 VC)
-original_sample.ads:15:140: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
+original_sample.ads:15:140: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
 original_sample.ads:34:06: info: data dependencies proved
 original_sample.ads:35:06: info: flow dependencies proved
 original_sample.ads:37:29: info: float overflow check proved (Trivial)
@@ -63,9 +63,9 @@ sample.adb:21:19: info: float overflow check proved (CodePeer)
 sample.adb:29:43: info: float overflow check proved (Trivial)
 sample.adb:29:43: info: range check proved (Trivial)
 sample.adb:32:19: info: float overflow check proved (CodePeer)
-sample.ads:13:128: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible explanation: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
+sample.ads:13:128: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
 sample.ads:13:140: info: division check proved (CVC4: 1 VC)
-sample.ads:13:140: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible explanation: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
+sample.ads:13:140: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
 sample.ads:32:06: info: data dependencies proved
 sample.ads:33:06: info: flow dependencies proved
 sample.ads:35:29: info: float overflow check proved (Trivial)

@@ -1,8 +1,8 @@
-in_out_pledge.adb:9:14: medium: subprogram "Length_Aux" might not terminate, terminating annotation could be incorrect
 in_out_pledge.adb:9:26: warning: "L" is not modified, could be of access constant type
+in_out_pledge.adb:10:08: medium: "Length_Aux" is recursive, terminating annotation could be incorrect
 in_out_pledge.adb:16:22: warning: "L" is not modified, could be of access constant type
-in_out_pledge.adb:18:14: medium: subprogram "Get_Nth_Val" might not terminate, terminating annotation could be incorrect
 in_out_pledge.adb:18:27: warning: "L" is not modified, could be of access constant type
+in_out_pledge.adb:19:08: medium: "Get_Nth_Val" is recursive, terminating annotation could be incorrect
 in_out_pledge.adb:23:21: warning: "T" is not modified, could be of access constant type
 in_out_pledge.adb:23:21: warning: unused variable "T"
 in_out_pledge.adb:45:12: info: data dependencies proved

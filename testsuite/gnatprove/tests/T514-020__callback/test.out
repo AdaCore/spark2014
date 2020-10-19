@@ -19,7 +19,7 @@ test_callback.adb:45:14: medium: precondition might fail, cannot prove X < 100 (
 test_callback.adb:48:29: warning: "F" is not modified, could be of access constant type
 test_callback.adb:48:29: warning: unused variable "F"
 test_callback.adb:50:14: medium: postcondition might fail, cannot prove Call_Incr_Bad2'Result >= X (e.g. when Call_Incr_Bad2'Result = Integer'First and X = 0)
-test_callback.adb:53:14: medium: pointer dereference check might fail [possible explanation: precondition of subprogram at line 48 should mention F]
+test_callback.adb:53:14: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 48 should mention F]
 test_callback.adb:53:14: medium: precondition might fail, cannot prove X < 50 (e.g. when X = 50)
 test_callback.adb:56:33: warning: "F" is not modified, could be of access constant type
 test_callback.adb:56:33: warning: unused variable "F"

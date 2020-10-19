@@ -1,0 +1,4 @@
+callback.adb:8:10: info: raise statement or expression proved unreachable (CVC4: 1 VC), in call inlined at callback.adb:18
+callback.adb:8:10: medium: exception might be raised
+callback.adb:19:19: info: assertion proved (CVC4: 1 VC)
+callback.adb:21:04: info: pointer dereference check proved (CVC4: 1 VC)

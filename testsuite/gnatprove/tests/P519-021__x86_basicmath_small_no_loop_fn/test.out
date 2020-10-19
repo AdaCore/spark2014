@@ -148,7 +148,7 @@ basicmath_small.adb:904:07: warning: "OverflowFlag" is set by "loop_6" but not u
 basicmath_small.adb:904:07: warning: "RSI" is set by "loop_6" but not used after the call
 basicmath_small.adb:904:07: warning: "SignFlag" is set by "loop_6" but not used after the call
 basicmath_small.adb:904:07: warning: "ZeroFlag" is set by "loop_6" but not used after the call
-basicmath_small.adb:918:07: medium: precondition might fail, cannot prove not X86.InRange64(X86.RSI,X86.RSP-7,15) [possible explanation: postcondition of call at line 904 should mention RSI]
+basicmath_small.adb:918:07: medium: precondition might fail, cannot prove not X86.InRange64(X86.RSI,X86.RSP-7,15) [possible fix: postcondition of call at line 904 should mention RSI]
 basicmath_small.adb:918:07: warning: "ZeroFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:948:07: warning: "XMM0" is set by "loop_7" but not used after the call
 basicmath_small.adb:948:07: warning: "XMM1" is set by "loop_7" but not used after the call

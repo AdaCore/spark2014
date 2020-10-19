@@ -2339,6 +2339,10 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      Potentially_Neverending_Vertex : Flow_Graphs.Vertex_Id;
+      --  Stores the vertex id that will be flagged as neverending if
+      --  necessary.
+
       function Is_For_Loop (N : Node_Id) return Boolean
       is (Nkind (N) = N_Loop_Statement
             and then Present (Iteration_Scheme (N))
@@ -2562,6 +2566,9 @@ package body Flow.Control_Flow_Graph is
          --  Entry point for the loop is V
          CM (Union_Id (N)).Standard_Entry := V;
 
+         --  Set Potentially_Neverending_Vertex to the added vertex
+         Potentially_Neverending_Vertex := V;
+
          --  Exit from the loop is at the end of the loop, i.e. we are
          --  always going round at least once.
          if Contains_Return then
@@ -2596,9 +2603,14 @@ package body Flow.Control_Flow_Graph is
             CM (Union_Id (Statements (N))).Standard_Exits :=
               Vertex_Sets.To_Set (Faux_Exit_V);
 
-            --  Finally we add a mark the faux exit vertex as a
-            --  possible exit of this loop.
+            --  We add a mark the faux exit vertex as a possible
+            --  exit of this loop.
             CM (Union_Id (N)).Standard_Exits.Insert (Faux_Exit_V);
+
+            --  Finally, we set Potentially_Neverending_Vertex to the faux exit
+            --  vertex, because vertex V could be removed in Simplify_CFG if it
+            --  is null.
+            Potentially_Neverending_Vertex := Faux_Exit_V;
          end if;
 
          --  Loop the loop: V -> body -> V
@@ -2644,6 +2656,9 @@ package body Flow.Control_Flow_Graph is
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
          Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+         --  Set Potentially_Neverending_Vertex to the added vertex
+         Potentially_Neverending_Vertex := V;
       end Do_While_Loop;
 
       -----------------
@@ -2776,6 +2791,9 @@ package body Flow.Control_Flow_Graph is
 
             Fully_Initialized := Variables_Initialized_By_Loop (N);
          end if;
+
+         --  Set Potentially_Neverending_Vertex to the added vertex
+         Potentially_Neverending_Vertex := V;
       end Do_For_Loop;
 
       ---------------------------
@@ -3370,6 +3388,9 @@ package body Flow.Control_Flow_Graph is
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
          Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+         --  Set Potentially_Neverending_Vertex to the added vertex
+         Potentially_Neverending_Vertex := V;
       end Do_Iterator_Loop;
 
       I_Scheme          : constant Node_Id   := Iteration_Scheme (N);
@@ -3439,6 +3460,9 @@ package body Flow.Control_Flow_Graph is
         and then not Ctx.Termination_Proved
       then
          FA.Has_Potentially_Nonterminating_Loops := True;
+         FA.Atr
+           (Potentially_Neverending_Vertex).Is_Neverending := True;
+
       end if;
 
       --  If we need an init vertex, we add it before the loop itself
@@ -4309,6 +4333,11 @@ package body Flow.Control_Flow_Graph is
 
       --  Traverse visible and private part of the specs and link them up
 
+      --  ??? We could rename the container to Current_Scopes. We insert the
+      --  entity to Current_Loops to be able to filter subprograms that are
+      --  declared in a nested package from those that are not.
+      Ctx.Current_Loops.Insert (Spec_E);
+
       declare
          Spec : constant Node_Id := Specification (N);
 
@@ -4389,6 +4418,8 @@ package body Flow.Control_Flow_Graph is
          end if;
       end;
 
+      Ctx.Current_Loops.Delete (Spec_E);
+
    end Do_Package_Declaration;
 
    -----------------------------
@@ -4433,6 +4464,8 @@ package body Flow.Control_Flow_Graph is
          Add_Dummy_Vertex (N, FA, CM);
 
       else
+         Ctx.Current_Loops.Insert (Package_Spec);
+
          if Elaboration_Has_Effect then
             --  Traverse package body declarations
             Process_Statement_List (Pkg_Body_Declarations, FA, CM, Ctx);
@@ -4514,6 +4547,8 @@ package body Flow.Control_Flow_Graph is
                end if;
             end;
          end if;
+
+         Ctx.Current_Loops.Delete (Package_Spec);
       end if;
    end Do_Package_Body_Or_Stub;
 
@@ -6926,7 +6961,12 @@ package body Flow.Control_Flow_Graph is
       if FA.Generating_Globals then
          --  Assemble the set of directly called subprograms
          for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            FA.Direct_Calls.Union (FA.Atr (V).Subprograms_Called);
+            if (for some L of FA.Atr (V).Loops => Ekind (L) = E_Package) then
+               --  This vertex comes from a nested package, ignore it
+               null;
+            else
+               FA.Direct_Calls.Union (FA.Atr (V).Subprograms_Called);
+            end if;
          end loop;
 
          --  Direct calls might only contain callable entities and nested

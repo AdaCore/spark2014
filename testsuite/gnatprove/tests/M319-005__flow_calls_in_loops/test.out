@@ -1,7 +1,7 @@
 broken.adb:4:14: info: add a contract to analyze it separately from calling contexts
 broken.adb:4:14: info: local subprogram "Do_Stuff" only analyzed in the context of calls
-broken.adb:7:14: medium: overflow check might fail, in call inlined at broken.adb:14 [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 10 should mention I in a precondition]
-broken.adb:7:14: medium: overflow check might fail, in call inlined at broken.adb:22 [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 21 should mention I in a loop invariant]
+broken.adb:7:14: medium: overflow check might fail, in call inlined at broken.adb:14 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 10 should mention I in a precondition]
+broken.adb:7:14: medium: overflow check might fail, in call inlined at broken.adb:22 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 21 should mention I in a loop invariant]
 broken.adb:10:04: warning: analyzing unreferenced procedure "Test_01"
 broken.adb:13:24: info: unrolling loop
 broken.adb:18:04: warning: analyzing unreferenced procedure "Test_02"

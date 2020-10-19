@@ -3,15 +3,15 @@ escape.adb:8:24: info: cannot unroll loop (too many loop iterations)
 escape.adb:8:24: warning: statement has no effect
 escape.adb:9:10: warning: statement has no effect
 escape.adb:10:22: warning: unused assignment
-escape.adb:10:34: medium: overflow check might fail (e.g. when Count_Bs = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 8 should mention Count_Bs in a loop invariant]
+escape.adb:10:34: medium: overflow check might fail (e.g. when Count_Bs = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention Count_Bs in a loop invariant]
 escape.adb:14:40: info: range check proved (CVC4: 1 VC)
 escape.adb:14:48: info: range check proved (CVC4: 1 VC)
-escape.adb:14:48: medium: overflow check might fail (e.g. when Count_Bs = 1 and Len = 0 and S = (others => '[') and S'First = 1 and S'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 8 should mention Count_Bs in a loop invariant]
+escape.adb:14:48: medium: overflow check might fail (e.g. when Count_Bs = 1 and Len = 0 and S = (others => '[') and S'First = 1 and S'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention Count_Bs in a loop invariant]
 escape.adb:15:10: info: range check proved (CVC4: 2 VC)
 escape.adb:18:27: info: cannot unroll loop (too many loop iterations)
-escape.adb:19:21: medium: array index check might fail (e.g. when I = 1 and Result'Last = 1 and TI = 2) [reason for check: value must be a valid index into the array] [possible explanation: loop at line 18 should mention TI in a loop invariant]
-escape.adb:20:22: medium: overflow check might fail (e.g. when TI = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 18 should mention TI in a loop invariant]
-escape.adb:22:24: medium: array index check might fail (e.g. when Result'Last = 2 and TI = 3) [reason for check: value must be a valid index into the array] [possible explanation: loop at line 18 should mention TI in a loop invariant]
-escape.adb:23:25: medium: overflow check might fail (e.g. when TI = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 18 should mention TI in a loop invariant]
+escape.adb:19:21: medium: array index check might fail (e.g. when I = 1 and Result'Last = 1 and TI = 2) [reason for check: value must be a valid index into the array] [possible fix: loop at line 18 should mention TI in a loop invariant]
+escape.adb:20:22: medium: overflow check might fail (e.g. when TI = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 18 should mention TI in a loop invariant]
+escape.adb:22:24: medium: array index check might fail (e.g. when Result'Last = 2 and TI = 3) [reason for check: value must be a valid index into the array] [possible fix: loop at line 18 should mention TI in a loop invariant]
+escape.adb:23:25: medium: overflow check might fail (e.g. when TI = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 18 should mention TI in a loop invariant]
 escape.adb:26:17: medium: "Result" might not be initialized
 escape.ads:6:20: info: postcondition proved (CVC4: 1 VC)

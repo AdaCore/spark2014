@@ -1,4 +1,4 @@
-dummy.adb:3:13: medium: divide by zero might fail, vc file: gnatprove/dummy/../Dummy__return__div1.v [possible explanation: subprogram at line 1 should mention X and Y in a precondition]
-dummy.adb:3:13: medium: overflow check might fail, vc file: gnatprove/dummy/../Dummy__return__div.v [possible explanation: subprogram at line 1 should mention X and Y in a precondition]
-dummy.adb:3:13: medium: divide by zero might fail, vc file: gnatprove/dummy/../Dummy__return__div1.v [possible explanation: subprogram at line 1 should mention X and Y in a precondition]
-dummy.adb:3:13: medium: overflow check might fail, vc file: gnatprove/dummy/../Dummy__return__div.v [possible explanation: subprogram at line 1 should mention X and Y in a precondition]
+dummy.adb:3:13: medium: divide by zero might fail, vc file: gnatprove/dummy/../Dummy__return__div1.v [possible fix: subprogram at line 1 should mention X and Y in a precondition]
+dummy.adb:3:13: medium: overflow check might fail, vc file: gnatprove/dummy/../Dummy__return__div.v [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X and Y in a precondition]
+dummy.adb:3:13: medium: divide by zero might fail, vc file: gnatprove/dummy/../Dummy__return__div1.v [possible fix: subprogram at line 1 should mention X and Y in a precondition]
+dummy.adb:3:13: medium: overflow check might fail, vc file: gnatprove/dummy/../Dummy__return__div.v [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X and Y in a precondition]

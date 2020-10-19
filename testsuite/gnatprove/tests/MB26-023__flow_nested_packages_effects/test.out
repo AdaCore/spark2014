@@ -11,7 +11,7 @@ outer.adb:32:14: info: data dependencies proved
 outer.adb:36:11: info: flow dependencies proved
 outer.adb:42:11: info: flow dependencies proved
 outer.adb:48:11: info: flow dependencies proved
-outer.adb:50:58: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 50 should mention X and Y in a precondition]
+outer.adb:50:58: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 50 should mention X and Y in a precondition]
 outer.adb:60:32: info: initialization of "Nested_In_Body.Deep_State" constituent of "Inner.Inner_State" proved
 outer.adb:61:14: info: flow dependencies proved
 outer.adb:67:17: info: data dependencies proved

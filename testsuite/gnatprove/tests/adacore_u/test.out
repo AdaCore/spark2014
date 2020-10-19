@@ -1,9 +1,9 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: info: index check proved (CVC4: 2 VC)
-aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at aliasing.ads:17 should mention I in a precondition]
+aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at aliasing.ads:17 should mention I in a precondition]
 aliasing.adb:26:23: info: index check proved (CVC4: 2 VC)
-aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 1 and J = 0) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at aliasing.ads:17 should mention J in a precondition]
+aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 1 and J = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at aliasing.ads:17 should mention J in a precondition]
 global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations)
@@ -11,7 +11,7 @@ search_array.adb:9:20: info: range check proved (CVC4: 1 VC)
 search_array.adb:12:07: medium: exception might be raised (e.g. when A = (others => 0))
 stack.ads:7:13: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
-use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 'NUL' and W = (others => 'NUL') and W'First = 1 and W'Last = 1) [reason for check: default component value must fit in the type] [possible explanation: subprogram at use_access.ads:4 should mention W in a precondition]
+use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 'NUL' and W = (others => 'NUL') and W'First = 1 and W'Last = 1) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition]
 use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 'NUL' and W = (others => 'NUL') and W'First = 1 and W'Last = 0) [reason for check: value must be a valid index into the array]
 gnatprove: error during flow analysis and proof
 p.adb:8:09: info: data dependencies proved
@@ -102,18 +102,18 @@ stacks.adb:8:22: info: range check proved (CVC4: 1 VC)
 stacks.adb:9:19: info: index check proved (CVC4: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC4: 1 VC)
 stacks.ads:27:52: info: index check proved (CVC4: 2 VC)
-communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 'NUL') and Address'First = 1 and Address'Last = 1 and Port = 0) [reason for check: array must be of the appropriate length] [possible explanation: subprogram at communication.ads:9 should mention Address in a precondition]
-communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0 and E = 0) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:20:32: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:21:24: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => 1) and B.Content'First = 1 and B.Content'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 'NUL') and Address'First = 1 and Address'Last = 1 and Port = 0) [reason for check: array must be of the appropriate length] [possible fix: subprogram at communication.ads:9 should mention Address in a precondition]
+communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0 and E = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:20:32: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:21:24: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => 1) and B.Content'First = 1 and B.Content'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:22:32: info: overflow check proved (CVC4: 1 VC)
 communication.adb:22:43: info: overflow check proved (CVC4: 1 VC)
-communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1 and E = 0 and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1 and E = 0 and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:23:34: info: overflow check proved (CVC4: 1 VC)
 communication.adb:25:32: info: index check proved (CVC4: 2 VC)
 communication.adb:25:32: info: overflow check proved (CVC4: 1 VC)
 communication.adb:26:34: info: overflow check proved (CVC4: 1 VC)
-communication.adb:35:30: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 1) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible explanation: subprogram at communication.ads:18 should mention B in a precondition]
+communication.adb:35:30: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 1) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:18 should mention B in a precondition]
 communication.adb:36:34: info: range check proved (CVC4: 1 VC)
 communication.adb:39:30: info: index check proved (CVC4: 2 VC)
 communication.adb:40:34: info: range check proved (CVC4: 1 VC)
@@ -146,13 +146,13 @@ data_package.ads:6:04: info: initialization of "Data_1" proved
 data_package.ads:7:04: info: initialization of "Data_2" proved
 data_package.ads:8:04: info: initialization of "Data_3" proved
 external_interface.ads:2:49: info: flow dependencies proved
-stack.adb:9:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at stack.ads:12 should mention Top in a precondition]
+stack.adb:9:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:12 should mention Top in a precondition]
 stack.adb:10:18: info: range check proved (CVC4: 1 VC)
-stack.adb:14:18: medium: range check might fail (e.g. when Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at stack.ads:17 should mention Top in a precondition]
+stack.adb:14:18: medium: range check might fail (e.g. when Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:17 should mention Top in a precondition]
 stack.adb:15:16: info: index check proved (CVC4: 2 VC)
-stack.adb:24:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible explanation: subprogram at stack.ads:22 should mention B_Top in a precondition]
+stack.adb:24:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:22 should mention B_Top in a precondition]
 stack.adb:25:22: info: range check proved (CVC4: 1 VC)
-stack.adb:32:22: medium: range check might fail (e.g. when B_Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: subprogram at stack.ads:25 should mention B_Top in a precondition]
+stack.adb:32:22: medium: range check might fail (e.g. when B_Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:25 should mention B_Top in a precondition]
 stack.adb:33:18: info: index check proved (CVC4: 2 VC)
 stack.adb:41:22: info: range check proved (CVC4: 1 VC)
 stack.adb:42:18: info: index check proved (CVC4: 2 VC)
@@ -365,15 +365,15 @@ rendezvous.adb:4:07: violation of restriction "Max_Task_Entries = 0"
 gnatprove: error during generation of Global contracts
 abstract_ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
 abstract_ints.adb:29:10: info: precondition proved (CVC4: 1 VC)
-abstract_ints.adb:33:08: medium: overflow check might fail (e.g. when Arg1 = (Min => -1, Max => -1, Value => -1, Precision => 0) and Arg2 = (Min => -1, Max => -1, Value => Integer'Last, Precision => 0)) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible explanation: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
-abstract_ints.adb:33:24: medium: overflow check might fail (e.g. when Arg1 = (Min => -2, Max => -2, Value => -2, Precision => 0) and Arg2 = (Min => -2, Max => -2, Value => Integer'Last, Precision => 0)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
-abstract_ints.adb:33:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
+abstract_ints.adb:33:08: medium: overflow check might fail (e.g. when Arg1 = (Min => -1, Max => -1, Value => -1, Precision => 0) and Arg2 = (Min => -1, Max => -1, Value => Integer'Last, Precision => 0)) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
+abstract_ints.adb:33:24: medium: overflow check might fail (e.g. when Arg1 = (Min => -2, Max => -2, Value => -2, Precision => 0) and Arg2 = (Min => -2, Max => -2, Value => Integer'Last, Precision => 0)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
+abstract_ints.adb:33:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
 abstract_ints.adb:37:30: info: overflow check proved (CVC4: 1 VC)
-abstract_ints.adb:55:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at abstract_ints.ads:28 should mention Arg in a precondition]
+abstract_ints.adb:55:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at abstract_ints.ads:28 should mention Arg in a precondition]
 abstract_ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
 abstract_ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 abstract_ints.ads:23:25: info: postcondition proved (CVC4: 1 VC)
-abstract_ints.ads:40:70: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention Arg in a precondition]
+abstract_ints.ads:40:70: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention Arg in a precondition]
 distributed_file_system.ads:9:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:12:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:13:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
@@ -386,11 +386,11 @@ ints.adb:29:10: info: precondition proved (CVC4: 1 VC)
 ints.adb:34:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 ints.adb:35:14: info: postcondition proved (CVC4: 1 VC)
 ints.adb:38:21: info: precondition proved (CVC4: 1 VC)
-ints.adb:42:08: medium: overflow check might fail (e.g. when Arg1 = (Min => -1, Max => -1, Value => -1, Precision => 0) and Arg2 = (Min => -1, Max => -1, Value => Integer'Last, Precision => 0)) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible explanation: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
-ints.adb:42:24: medium: overflow check might fail (e.g. when Arg1 = (Min => -2, Max => -2, Value => -2, Precision => 0) and Arg2 = (Min => -2, Max => -2, Value => Integer'Last, Precision => 0)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
-ints.adb:42:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
+ints.adb:42:08: medium: overflow check might fail (e.g. when Arg1 = (Min => -1, Max => -1, Value => -1, Precision => 0) and Arg2 = (Min => -1, Max => -1, Value => Integer'Last, Precision => 0)) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
+ints.adb:42:24: medium: overflow check might fail (e.g. when Arg1 = (Min => -2, Max => -2, Value => -2, Precision => 0) and Arg2 = (Min => -2, Max => -2, Value => Integer'Last, Precision => 0)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
+ints.adb:42:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
 ints.adb:46:30: info: overflow check proved (CVC4: 1 VC)
-ints.adb:64:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at ints.ads:29 should mention Arg in a precondition]
+ints.adb:64:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at ints.ads:29 should mention Arg in a precondition]
 ints.ads:11:40: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
 ints.ads:16:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
@@ -402,12 +402,12 @@ predicate_ints.adb:43:10: info: precondition proved (CVC4: 1 VC)
 predicate_ints.adb:48:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 predicate_ints.adb:49:14: info: postcondition proved (CVC4: 1 VC)
 predicate_ints.adb:52:21: info: precondition proved (CVC4: 1 VC)
-predicate_ints.adb:56:08: medium: overflow check might fail (e.g. when Arg1 = (Min => -1, Max => -1, Value => -1, Precision => 0) and Arg2 = (Min => -1, Max => -1, Value => Integer'Last, Precision => 0)) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
-predicate_ints.adb:56:24: medium: overflow check might fail (e.g. when Arg1 = (Min => -2, Max => -2, Value => -2, Precision => 0) and Arg2 = (Min => -2, Max => -2, Value => Integer'Last, Precision => 0)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
-predicate_ints.adb:56:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
+predicate_ints.adb:56:08: medium: overflow check might fail (e.g. when Arg1 = (Min => -1, Max => -1, Value => -1, Precision => 0) and Arg2 = (Min => -1, Max => -1, Value => Integer'Last, Precision => 0)) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
+predicate_ints.adb:56:24: medium: overflow check might fail (e.g. when Arg1 = (Min => -2, Max => -2, Value => -2, Precision => 0) and Arg2 = (Min => -2, Max => -2, Value => Integer'Last, Precision => 0)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
+predicate_ints.adb:56:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
 predicate_ints.adb:60:30: info: overflow check proved (CVC4: 1 VC)
 predicate_ints.adb:78:25: info: precondition proved (CVC4: 2 VC)
-predicate_ints.adb:86:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at predicate_ints.ads:36 should mention Arg in a precondition]
+predicate_ints.adb:86:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at predicate_ints.ads:36 should mention Arg in a precondition]
 predicate_ints.ads:12:40: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 predicate_ints.ads:13:20: info: postcondition proved (CVC4: 1 VC)
 predicate_ints.ads:17:21: info: initialization of "Arg" proved
@@ -436,7 +436,7 @@ a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
 fixed_mem.adb:6:04: warning: variable "Data" is never read and never assigned
-fixed_mem.adb:9:55: medium: range check might fail (e.g. when Free = 1002) [reason for check: returned value must fit in the result type of the function] [possible explanation: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
+fixed_mem.adb:9:55: medium: range check might fail (e.g. when Free = 1002) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
 fixed_mem.adb:14:17: info: add a contract to analyze it separately from calling contexts
 fixed_mem.adb:14:17: info: local subprogram "Check" only analyzed in the context of calls
@@ -446,7 +446,7 @@ fixed_mem.adb:25:07: info: analyzing call to "Check" in context
 fixed_mem.ads:6:14: info: postcondition proved (CVC4: 1 VC)
 mem.adb:7:04: warning: variable "Data" is read but never assigned
 mem.adb:9:04: warning: variable "High" is read but never assigned
-mem.adb:11:55: medium: range check might fail (e.g. when Free = 1002) [reason for check: returned value must fit in the result type of the function] [possible explanation: subprogram at mem.ads:9 should mention Free in a precondition]
+mem.adb:11:55: medium: range check might fail (e.g. when Free = 1002) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at mem.ads:9 should mention Free in a precondition]
 mem.adb:13:14: info: add a contract to analyze it separately from calling contexts
 mem.adb:13:14: info: local subprogram "Assign" only analyzed in the context of calls
 mem.adb:13:41: info: initialization of "To" proved
@@ -459,9 +459,9 @@ mem.ads:3:21: warning: no procedure exists that can initialize abstract state "M
 mem.ads:7:14: info: postcondition proved (CVC4: 1 VC)
 resources.adb:6:24: info: unrolling loop
 resources.ads:9:13: info: implicit function contract might not be available on recursive calls
-resources.ads:9:13: medium: subprogram "Sum" might not terminate, terminating annotation could be incorrect
+resources.ads:10:08: medium: "Sum" is recursive, terminating annotation could be incorrect
 resources.ads:10:32: info: index check proved (CVC4: 2 VC)
-resources.ads:10:36: medium: overflow check might fail (e.g. when To = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 9 should mention D and To in a precondition]
+resources.ads:10:36: medium: overflow check might fail (e.g. when To = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention D and To in a precondition]
 resources.ads:10:46: info: range check proved (CVC4: 1 VC)
 resources.ads:14:22: info: initialization of "D" proved
 resources.ads:15:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, others => 6))

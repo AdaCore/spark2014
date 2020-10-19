@@ -1,3 +1,3 @@
 p.adb:7:03: warning: analyzing unreferenced procedure "Q"
 p.adb:7:13: warning: subprogram "Q" has no effect
-p.adb:8:17: medium: length check might fail [reason for check: value must have same length as the target array type of the conversion] [possible explanation: subprogram at line 7 should mention X in a precondition]
+p.adb:8:17: medium: length check might fail [reason for check: value must have same length as the target array type of the conversion] [possible fix: subprogram at line 7 should mention X in a precondition]

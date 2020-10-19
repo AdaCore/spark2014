@@ -2,8 +2,8 @@ predicates.ads:17:31: info: division check proved
 predicates.ads:20:32: info: division check proved
 predicates.ads:23:58: info: division check proved
 predicates.ads:23:71: info: division check proved
-predicates.ads:32:19: medium: overflow check might fail (e.g. when X = Integer'First and Y = 0) [possible explanation: subprogram at line 30 should mention X in a precondition]
-predicates.ads:32:28: medium: overflow check might fail (e.g. when Y = Integer'First) [possible explanation: subprogram at line 30 should mention Y in a precondition]
+predicates.ads:32:19: medium: overflow check might fail (e.g. when X = Integer'First and Y = 0) [possible fix: subprogram at line 30 should mention X in a precondition]
+predicates.ads:32:28: medium: overflow check might fail (e.g. when Y = Integer'First) [possible fix: subprogram at line 30 should mention Y in a precondition]
 predicates.ads:34:17: info: range check proved
 predicates.ads:36:24: info: overflow check proved
 predicates.ads:38:24: info: overflow check proved

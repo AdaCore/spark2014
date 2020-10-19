@@ -1,5 +1,5 @@
 basic.adb:8:17: info: discriminant check proved (CVC4: 1 VC)
-basic.adb:13:17: medium: discriminant check might fail (e.g. when V = (X => B, Base => 0, A_Field => 0, C_Field1 => False, C_Field2 => 0)) [possible explanation: subprogram at basic.ads:45 should mention V in a precondition]
+basic.adb:13:17: medium: discriminant check might fail (e.g. when V = (X => B, Base => 0, A_Field => 0, C_Field1 => False, C_Field2 => 0)) [possible fix: subprogram at basic.ads:45 should mention V in a precondition]
 basic.adb:17:17: info: discriminant check proved (CVC4: 1 VC)
 basic.adb:18:22: info: discriminant check proved (CVC4: 1 VC)
 basic.ads:45:14: warning: subprogram "P" has no effect
@@ -23,7 +23,7 @@ subty.adb:8:23: info: discriminant check proved (CVC4: 1 VC)
 subty.adb:9:22: info: assertion proved (CVC4: 1 VC)
 subty.adb:11:08: info: discriminant check proved (CVC4: 1 VC)
 subty.adb:11:21: info: discriminant check proved (CVC4: 1 VC)
-subty.adb:11:30: medium: overflow check might fail (e.g. when V = (X => A, Base => Integer'Last, A_Field => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at subty.ads:7 should mention V in a precondition]
+subty.adb:11:30: medium: overflow check might fail (e.g. when V = (X => A, Base => Integer'Last, A_Field => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at subty.ads:7 should mention V in a precondition]
 subty.adb:12:22: info: assertion proved (CVC4: 1 VC)
 subty.adb:12:23: info: discriminant check proved (CVC4: 1 VC)
 subty.adb:12:35: info: discriminant check proved (CVC4: 1 VC)

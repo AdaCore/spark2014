@@ -1,6 +1,6 @@
 fxp_div_int_res.adb:4:20: info: division check proved (CVC4: 1 VC)
 fxp_div_int_res.adb:4:20: info: range check proved (CVC4: 1 VC)
-fxp_div_int_res.adb:4:20: medium: overflow check might fail (e.g. when D1 = 2147483649/1000000000 and D2 = -1/1000000000) [reason for check: result of division must fit in a 32-bits machine integer] [possible explanation: precondition of subprogram at line 3 should mention D1]
+fxp_div_int_res.adb:4:20: medium: overflow check might fail (e.g. when D1 = 2147483649/1000000000 and D2 = -1/1000000000) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 3 should mention D1]
 fxp_div_int_res.adb:7:04: info: initialization of "D1" proved
 fxp_div_int_res.adb:7:08: info: initialization of "D2" proved
 fxp_div_int_res.adb:9:04: info: initialization of "R" proved

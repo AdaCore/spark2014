@@ -15,7 +15,7 @@ container.adb:26:14: info: local subprogram "Test3" only analyzed in the context
 container.adb:26:14: warning: subprogram "Test3" might not terminate
 container.adb:30:11: info: precondition proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
-container.adb:33:20: medium: range check might fail, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: loop at line 32 should mention Int in a loop invariant]
+container.adb:33:20: medium: range check might fail, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
 container.adb:34:34: info: loop variant proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:54:17: info: range check proved (CVC4: 1 VC)
 container.adb:59:17: warning: unreachable code (CVC4: 1 VC)
@@ -195,8 +195,8 @@ nest_in_proc.adb:5:17: info: subprogram "Nothing" will terminate, terminating an
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: info: subprogram "Nothing2" will terminate
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
+nest_in_proc.adb:20:21: medium: loop might be nonterminating, terminating annotation on "Nest_In_Proc" could be incorrect
 nest_in_proc.adb:20:21: warning: statement has no effect
-nest_in_proc.ads:1:11: medium: subprogram "Nest_In_Proc" might not terminate, terminating annotation could be incorrect
 nested_blocks.adb:10:37: warning: statement has no effect
 nested_loops.adb:3:04: warning: analyzing unreferenced procedure "Proc"
 nested_loops.adb:3:14: info: subprogram "Proc" will terminate

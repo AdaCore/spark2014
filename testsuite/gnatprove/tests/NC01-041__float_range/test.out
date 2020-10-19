@@ -9,6 +9,6 @@ q.adb:21:14: info: float overflow check proved (CVC4: 1 VC)
 q.adb:28:31: info: range check proved (CVC4: 1 VC)
 q.ads:11:17: info: initialization of "Value" proved
 test.adb:10:04: info: initialization of "Value" proved
-test.adb:16:19: medium: assertion might fail, cannot prove Value in -0.0001 .. +1.0E-4 (e.g. when Value = -1.0000001E+0) [possible explanation: call at line 12 should mention Value (for argument Value) in a postcondition]
-test.adb:22:19: medium: assertion might fail, cannot prove Value in -0.0015 .. -1.0E-3 (e.g. when Value = -1.0000001E+0) [possible explanation: call at line 18 should mention Value (for argument Value) in a postcondition]
-test.adb:28:19: medium: assertion might fail, cannot prove Value >= 3.1999E1 (e.g. when Value = 1.0000001E+0) [possible explanation: call at line 24 should mention Value (for argument Value) in a postcondition]
+test.adb:16:19: medium: assertion might fail, cannot prove Value in -0.0001 .. +1.0E-4 (e.g. when Value = -1.0000001E+0) [possible fix: call at line 12 should mention Value (for argument Value) in a postcondition]
+test.adb:22:19: medium: assertion might fail, cannot prove Value in -0.0015 .. -1.0E-3 (e.g. when Value = -1.0000001E+0) [possible fix: call at line 18 should mention Value (for argument Value) in a postcondition]
+test.adb:28:19: medium: assertion might fail, cannot prove Value >= 3.1999E1 (e.g. when Value = 1.0000001E+0) [possible fix: call at line 24 should mention Value (for argument Value) in a postcondition]

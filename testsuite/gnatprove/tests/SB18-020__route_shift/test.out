@@ -19,11 +19,11 @@ test_route.adb:17:08: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:17:15: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:17:18: info: overflow check proved (CVC4: 1 VC)
 test_route.adb:28:13: info: implicit function contract might not be available on recursive calls
-test_route.adb:28:13: medium: subprogram "Length" might not terminate, terminating annotation could be incorrect
+test_route.adb:29:07: medium: "Length" is recursive, terminating annotation could be incorrect
 test_route.adb:30:52: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:30:60: info: overflow check proved (CVC4: 1 VC)
 test_route.adb:33:13: info: implicit function contract might not be available on recursive calls
-test_route.adb:33:13: medium: subprogram "Nth_X" might not terminate, terminating annotation could be incorrect
+test_route.adb:34:07: medium: "Nth_X" is recursive, terminating annotation could be incorrect
 test_route.adb:34:22: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:34:30: info: pointer dereference check proved (CVC4: 1 VC)
 test_route.adb:34:38: info: precondition proved (CVC4: 1 VC)

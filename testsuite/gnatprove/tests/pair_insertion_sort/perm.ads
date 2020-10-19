@@ -16,7 +16,7 @@ is
       else Occ_Def (Remove_Last (A), E))
    with Post => Occ_Def'Result <= A'Length;
    pragma Annotate (GNATprove, Terminating, Occ_Def);
-   pragma Annotate (GNATprove, False_Positive, "terminate",
+   pragma Annotate (GNATprove, False_Positive, "recursive",
                     "Occ_Def is called recursively on a strictly smaller array");
 
    function Occ (A : Arr; E : Integer) return Nb_Occ is (Occ_Def (A, E))

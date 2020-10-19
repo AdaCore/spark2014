@@ -57,7 +57,7 @@ skein.adb:127:10: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:139:10: info: analyzing call to "Put_64_LSB_First" in context
 skein.adb:139:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:139:10: info: in inlined body at line 34
-skein.adb:146:37: medium: range check might fail (e.g. when Blocks_Done = Output_Block_Count_T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible explanation: loop at line 124 should mention Blocks_Done in a loop invariant]
+skein.adb:146:37: medium: range check might fail (e.g. when Blocks_Done = Output_Block_Count_T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 124 should mention Blocks_Done in a loop invariant]
 skein.ads:132:31: info: initialization of "Hash" proved
 Summary of SPARK analysis
 =========================

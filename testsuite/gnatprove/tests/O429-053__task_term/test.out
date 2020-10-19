@@ -4,14 +4,14 @@ task_non_term.adb:6:07: info: initialization of "Tmp" proved
 task_non_term.adb:8:22: warning: statement has no effect
 task_non_term.adb:9:14: warning: unused assignment
 task_non_term.adb:10:12: warning: unused assignment
-task_non_term.adb:10:17: medium: overflow check might fail (e.g. when A = -1 and F = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 8 should mention A in a loop invariant]
+task_non_term.adb:10:17: medium: overflow check might fail (e.g. when A = -1 and F = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention A in a loop invariant]
 task_non_term.adb:11:12: warning: unused assignment
 task_non_term.adb:16:07: warning: initialization of "A" has no effect
 task_non_term.adb:17:07: warning: initialization of "F" has no effect
 task_non_term.adb:18:07: info: initialization of "Tmp" proved
 task_non_term.adb:21:14: warning: unused assignment
 task_non_term.adb:22:12: warning: unused assignment
-task_non_term.adb:22:17: medium: overflow check might fail (e.g. when A = -1 and F = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: loop at line 20 should mention A and F in a loop invariant]
+task_non_term.adb:22:17: medium: overflow check might fail (e.g. when A = -1 and F = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 20 should mention A and F in a loop invariant]
 task_non_term.adb:23:12: warning: unused assignment
 task_non_term.ads:2:09: medium: the task might terminate, which is not allowed in SPARK
 task_non_term.ads:3:09: info: nontermination of task proved (CVC4: 1 VC)

@@ -3,7 +3,7 @@ foo.adb:15:09: info: flow dependencies proved
 foo.adb:18:13: info: range check proved (CVC4: 1 VC)
 foo.adb:22:26: info: initialization of "B" proved
 foo.adb:23:09: info: flow dependencies proved
-foo.adb:25:25: low: range check might fail [reason for check: default component value must fit in the type] [possible explanation: subprogram at line 21 should mention A in a precondition]
+foo.adb:25:25: low: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 21 should mention A in a precondition]
 foo.adb:27:20: info: initialization of "X" proved
 foo.adb:28:12: info: data dependencies proved
 foo.adb:29:12: info: flow dependencies proved

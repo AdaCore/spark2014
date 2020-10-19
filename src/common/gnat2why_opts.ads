@@ -44,14 +44,14 @@ package Gnat2Why_Opts is
    --  compiler. We duplicate this type here to avoid a dependency on compiler
    --  units.
 
-   type Output_Mode_Type is (GPO_Oneline, GPO_Pretty);
+   type Output_Mode_Type is (GPO_Brief, GPO_Oneline, GPO_Pretty);
    --  Output mode for check messages:
+   --  * GPO_Brief   : Output minimal information on one line
    --  * GPO_Oneline : Output all information on one line, to be used for
    --                  regression tests and inside the IDE which is responsible
    --                  for breaking the messages in relevant chunks
    --  * GPO_Pretty  : Output information relevant for command-line usage,
-   --                  which may be less detailed than with Oneline, and split
-   --                  here over multiple lines.
+   --                  split here over multiple lines.
 
    type Report_Mode_Type is (GPR_Fail,
                              GPR_All,

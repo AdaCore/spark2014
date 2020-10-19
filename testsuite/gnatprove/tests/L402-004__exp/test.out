@@ -1,6 +1,6 @@
-p.adb:3:07: medium: overflow check might fail (e.g. when X = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
+p.adb:3:07: medium: overflow check might fail (e.g. when X = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 p.adb:4:14: info: overflow check proved (CVC4: 1 VC)
 p.adb:5:14: info: float overflow check proved (CVC4: 1 VC)
-p.adb:6:12: medium: overflow check might fail (e.g. when X = -1000) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible explanation: subprogram at line 1 should mention X in a precondition]
+p.adb:6:12: medium: overflow check might fail (e.g. when X = -1000) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 p.adb:7:14: info: overflow check proved (CVC4: 1 VC)
-p.adb:8:14: medium: float overflow check might fail (e.g. when Y = 7.9073774E+28) [reason for check: result of floating-point exponentiation must be bounded] [possible explanation: subprogram at line 1 should mention Y in a precondition]
+p.adb:8:14: medium: float overflow check might fail (e.g. when Y = 7.9073774E+28) [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 1 should mention Y in a precondition]

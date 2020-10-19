@@ -1,4 +1,4 @@
-p.adb:8:28: medium: assertion might fail, cannot prove X [possible explanation: subprogram at p.ads:7 should mention X in a precondition]
+p.adb:8:28: medium: assertion might fail, cannot prove X [possible fix: subprogram at p.ads:7 should mention X in a precondition]
 p.ads:1:38: info: flow dependencies proved
 p.ads:3:38: info: initialization of "Q.SQ" constituent of "P.SP" proved
 p.ads:3:62: info: flow dependencies proved

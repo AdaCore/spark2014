@@ -2,11 +2,11 @@ p1.adb:1:15: info: initialization of "Arg" proved
 p1.adb:5:07: info: initialization of "Visible_Var" proved
 p1.adb:9:07: low: initialization of "Private_Var" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
 p1.adb:13:07: low: initialization of "Body_Var" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
-p1.adb:15:49: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 7 should mention Private_Var and Visible_Var in a precondition]
-p1.adb:15:63: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 7 should mention Body_Var and Private_Var and Visible_Var in a precondition]
+p1.adb:15:49: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention Private_Var and Visible_Var in a precondition]
+p1.adb:15:63: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention Body_Var and Private_Var and Visible_Var in a precondition]
 p2.adb:1:15: info: initialization of "Arg" proved
 p2.adb:3:30: info: initialization of "Nested.Private_State" proved
 p2.adb:3:45: info: initialization of "Nested.Body_State" proved
 p2.adb:5:07: info: initialization of "Visible_Var" proved
-p2.adb:17:49: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 7 should mention Private_Var and Visible_Var in a precondition]
-p2.adb:17:63: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible explanation: subprogram at line 7 should mention Body_Var and Private_Var and Visible_Var in a precondition]
+p2.adb:17:49: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention Private_Var and Visible_Var in a precondition]
+p2.adb:17:63: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention Body_Var and Private_Var and Visible_Var in a precondition]
