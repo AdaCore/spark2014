@@ -1543,6 +1543,7 @@ package body SPARK_Util is
                | N_Indexed_Component
                | N_Selected_Component
                | N_Slice
+               | N_Attribute_Reference
             =>
                return Find_Func_Call (Prefix (Expr));
 
@@ -1742,11 +1743,16 @@ package body SPARK_Util is
             return GRO (Expression (Expr));
 
          when N_Attribute_Reference =>
-            pragma Assert
-              (Attribute_Name (Expr) in Name_Loop_Entry
-                                      | Name_Old
-                                      | Name_Update);
-            return Empty;
+            if Attribute_Name (Expr) in Name_First | Name_Last | Name_Length
+            then
+               return GRO (Prefix (Expr));
+            else
+               pragma Assert
+                 (Attribute_Name (Expr) in Name_Loop_Entry
+                                         | Name_Old
+                                         | Name_Update);
+               return Empty;
+            end if;
 
          when others =>
             raise Program_Error;
@@ -2486,13 +2492,19 @@ package body SPARK_Util is
          =>
             return True;
 
-         --  Old and Loop_Entry attributes can only be called on new objects.
-         --  Update attribute is similar to delta aggregates.
-
          when N_Attribute_Reference =>
-            return Attribute_Name (Expr) in Name_Loop_Entry
-                                          | Name_Old
-                                          | Name_Update;
+            if Attribute_Name (Expr) in Name_First | Name_Last | Name_Length
+            then
+               return Is_Path_Expression (Prefix (Expr));
+
+            --  Old and Loop_Entry attributes can only be called on new
+            --  objects. Update attribute is similar to delta aggregates.
+
+            else
+               return Attribute_Name (Expr) in Name_Loop_Entry
+                                             | Name_Old
+                                             | Name_Update;
+            end if;
 
          when N_Qualified_Expression
             | N_Type_Conversion
