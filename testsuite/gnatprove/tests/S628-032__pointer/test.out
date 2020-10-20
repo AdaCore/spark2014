@@ -2,6 +2,6 @@ traverse_list.adb:14:46: medium: pointer dereference check might fail (e.g. when
 traverse_list.adb:14:55: medium: pointer dereference check might fail [possible fix: subprogram at line 13 should mention X in a precondition]
 traverse_list.adb:14:64: medium: pointer dereference check might fail [possible fix: subprogram at line 13 should mention X in a precondition]
 traverse_list.adb:16:32: medium: pointer dereference check might fail (e.g. when B = null)
-traverse_list.adb:16:41: medium: pointer dereference check might fail [possible fix: you should consider adding a postcondition to function Get_Nth or turning it into an expression function]
-traverse_list.adb:16:50: medium: pointer dereference check might fail [possible fix: you should consider adding a postcondition to function Get_Nth or turning it into an expression function]
+traverse_list.adb:16:41: medium: pointer dereference check might fail [possible fix: you should consider adding a postcondition to function Get_Nth or turning it into an expression function in its unit spec]
+traverse_list.adb:16:50: medium: pointer dereference check might fail [possible fix: you should consider adding a postcondition to function Get_Nth or turning it into an expression function in its unit spec]
 traverse_list.adb:17:09: medium: pointer dereference check might fail (e.g. when B = null)

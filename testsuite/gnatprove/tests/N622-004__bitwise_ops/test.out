@@ -312,7 +312,7 @@ aco-math-very_longs.ads:72:16: info: postcondition proved (CVC4: 1 VC)
 aco-math-very_longs.ads:72:57: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.ads:75:70: info: initialization of "Quotient" proved
 aco-math-very_longs.ads:75:96: info: initialization of "Remainder" proved
-aco-math-very_longs.ads:81:45: medium: overflow check might fail (e.g. when Divisor = (Octet_Length => 1073741824, Long_Digits => (others => 0)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+aco-math-very_longs.ads:81:45: medium: overflow check might fail (e.g. when Divisor = (Octet_Length => 1073741824, Long_Digits => (others => 0)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 aco-math-very_longs.ads:90:16: info: postcondition proved (CVC4: 1 VC)
 aco-math-very_longs.ads:96:16: info: postcondition proved (CVC4: 1 VC)
 aco-math-very_longs.ads:102:08: info: flow dependencies proved

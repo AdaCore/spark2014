@@ -59,7 +59,7 @@ arrays.adb:242:07: info: initialization of "A" proved
 arrays.adb:245:22: info: assertion proved (CVC4: 1 VC)
 arrays.adb:249:11: info: flow dependencies proved
 arrays.adb:251:07: info: initialization of "A" proved
-arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function]
+arrays.adb:254:22: medium: assertion might fail, cannot prove A = Random_Array (5) [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec]
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> S = ('NUL' => False, 'a' => True, others => False)
   trace at arrays.adb:58 --> C = 'NUL'

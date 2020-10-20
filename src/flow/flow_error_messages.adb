@@ -1467,7 +1467,20 @@ package body Flow_Error_Messages is
                  (if Regular_Callees.Length = 1 then
                     "it into an expression function"
                   else
-                    "them into expression functions"));
+                    "them into expression functions") &
+                 --  If at least one of the callees has no body, that means
+                 --  it comes from a different unit. It might already be
+                 --  be defined as an expression function in the unit body,
+                 --  so emphasize that what matters here is that it is so in
+                 --  the unit spec.
+                 (if (for some Callee of Regular_Callees =>
+                         No (Get_Body_Entity (Callee)))
+                  then
+                    (if Regular_Callees.Length = 1 then
+                       " in its unit spec"
+                     else
+                       " in their unit spec")
+                   else ""));
          end if;
 
          if not Dispatching_Callees.Is_Empty then
@@ -1945,7 +1958,6 @@ package body Flow_Error_Messages is
    --  Start of processing for Get_Fix
 
    begin
-
       if Tag = VC_UC_Alignment then
          pragma Assert (Nkind (N) = N_Object_Declaration);
          declare
@@ -2563,6 +2575,45 @@ package body Flow_Error_Messages is
             end loop;
 
             << END_OF_SEARCH >>
+
+            --  Special case of a check inside a precondition, which might not
+            --  be provable simply because the conjuncts are joined with "and"
+            --  instead of "and then".
+
+            if Is_Pragma
+              (Enclosing_Stmt_Or_Prag_Or_Decl (N), Pragma_Precondition)
+            then
+               declare
+                  function Is_Conjunct (N : Node_Id) return Boolean is
+                    (Nkind (Parent (N)) in N_Pragma | N_Op_And);
+
+                  function Get_Conjunct is new
+                    First_Parent_With_Property (Is_Conjunct);
+
+                  Conjunct   : constant Node_Id :=
+                    (if Is_Conjunct (N) then N else Get_Conjunct (N));
+                  Par        : constant Node_Id := Parent (Conjunct);
+                  Previous   : Node_Id;
+
+                  Check_Vars : Flow_Id_Sets.Set :=
+                    Get_Variables_From_Node (N, Tag);
+                  Vars       : Flow_Id_Sets.Set;
+
+               begin
+                  if Nkind (Par) = N_Op_And
+                    and then Right_Opnd (Par) = Conjunct
+                  then
+                     Previous := Left_Opnd (Par);
+                     Vars := Get_Variables_For_Proof (Previous, Previous);
+                     Check_Vars.Intersection (Vars);
+
+                     if not Check_Vars.Is_Empty then
+                        return "use ""and then"" instead of ""and"""
+                          & " in precondition";
+                     end if;
+                  end if;
+               end;
+            end if;
 
             --  No explanation was found based on the variables referenced in
             --  the node associated to the check. Look for function calls in

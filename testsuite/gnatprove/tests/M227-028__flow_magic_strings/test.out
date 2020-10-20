@@ -16,5 +16,5 @@ test.adb:57:17: high: "other.x" must be listed in the Depends aspect of "Test_05
 test.adb:65:12: high: "other.x" must be listed in the Global aspect of "Test_06" (SPARK RM 6.1.4(14))
 test.adb:65:12: high: "other.y" must be listed in the Global aspect of "Test_06" (SPARK RM 6.1.4(14))
 test.adb:73:17: high: "other.x" must be listed in the Global aspect of "Test_07" (SPARK RM 6.1.4(14))
-test.adb:73:24: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Get_X or turning it into an expression function]
-test.adb:73:38: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Get_X or turning it into an expression function]
+test.adb:73:24: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Get_X or turning it into an expression function in its unit spec]
+test.adb:73:38: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Get_X or turning it into an expression function in its unit spec]

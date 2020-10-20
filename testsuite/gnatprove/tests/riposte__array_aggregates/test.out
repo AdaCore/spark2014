@@ -99,7 +99,7 @@ array_aggregates.adb:384:11: info: flow dependencies proved
 array_aggregates.adb:389:22: medium: assertion might fail, cannot prove X (2) = 3 (e.g. when X = (others => 2))
 array_aggregates.adb:392:33: info: initialization of "X" proved
 array_aggregates.adb:393:11: info: flow dependencies proved
-array_aggregates.adb:397:22: medium: assertion might fail, cannot prove Stack.Get_Length (X (2)) = 2 [possible fix: you should consider adding a postcondition to function Get_Length or turning it into an expression function]
+array_aggregates.adb:397:22: medium: assertion might fail, cannot prove Stack.Get_Length (X (2)) = 2 [possible fix: you should consider adding a postcondition to function Get_Length or turning it into an expression function in its unit spec]
 array_aggregates.adb:400:33: info: initialization of "X" proved
 array_aggregates.adb:401:11: info: flow dependencies proved
 array_aggregates.adb:408:22: info: assertion proved (CVC4: 1 VC)

@@ -1,5 +1,5 @@
 main.adb:5:19: info: implicit function contract not available for proof ("Proxy" might not return)
 main.adb:5:19: medium: assertion might fail, cannot prove Proxy = 0 [possible fix: subprogram at line 2 should mention P.D in a precondition]
-main.adb:6:19: medium: assertion might fail, cannot prove P.Unit.F (1) = 0 [possible fix: you should consider adding a postcondition to function F or turning it into an expression function]
+main.adb:6:19: medium: assertion might fail, cannot prove P.Unit.F (1) = 0 [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
 main.adb:6:25: info: implicit function contract not available for proof ("F" might not return)
 p.adb:7:14: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:3

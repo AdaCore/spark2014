@@ -1,0 +1,4 @@
+precond.adb:16:14: warning: subprogram "P" has no effect
+precond.adb:16:56: medium: precondition might fail, cannot prove Valid (X) [possible fix: use "and then" instead of "and" in precondition]
+precond.adb:23:07: info: precondition proved (CVC4: 2 VC)
+precond.adb:26:19: medium: assertion might fail, cannot prove (Bla) [possible fix: you should consider adding a postcondition to function Bla or turning it into an expression function in its unit spec]

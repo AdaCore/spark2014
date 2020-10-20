@@ -4,8 +4,8 @@ foo.adb:7:22: medium: assertion might fail, cannot prove (Float (Y) = X) = (Long
 foo.adb:7:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 4 should mention Y in a precondition]
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:14:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:22:22: medium: assertion might fail, cannot prove Magic (A) = Magic (B), in instantiation at foo.ads:10 [possible fix: you should consider adding a postcondition to function Magic or turning it into an expression function]
-generic_float_tests.adb:22:22: medium: assertion might fail, cannot prove Magic (A) = Magic (B), in instantiation at foo.ads:15 [possible fix: you should consider adding a postcondition to function Magic or turning it into an expression function]
+generic_float_tests.adb:22:22: medium: assertion might fail, cannot prove Magic (A) = Magic (B), in instantiation at foo.ads:10 [possible fix: you should consider adding a postcondition to function Magic or turning it into an expression function in its unit spec]
+generic_float_tests.adb:22:22: medium: assertion might fail, cannot prove Magic (A) = Magic (B), in instantiation at foo.ads:15 [possible fix: you should consider adding a postcondition to function Magic or turning it into an expression function in its unit spec]
 generic_float_tests.adb:25:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:25:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:35:22: medium: assertion might fail, cannot prove Magic (FT'Min (A, B)) = Magic (FT'min), in instantiation at foo.ads:10 [possible fix: subprogram at line 25 should mention A and B in a precondition]

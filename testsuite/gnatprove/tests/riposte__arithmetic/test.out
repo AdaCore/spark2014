@@ -91,7 +91,7 @@ arithmetic.adb:244:45: medium: overflow check might fail (e.g. when A = Byte'Fir
 arithmetic.adb:244:50: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:244:55: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:247:16: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:254:41: medium: overflow check might fail (e.g. when A = -1 and B = Byte'First) [reason for check: result of addition must fit in a 8-bits machine integer]
+arithmetic.adb:254:41: medium: overflow check might fail (e.g. when A = -1 and B = Byte'First) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 arithmetic.adb:257:17: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:257:22: medium: divide by zero might fail (e.g. when A = -1 and B = -2 and C = 1)
 arithmetic.adb:257:30: info: division check proved (CVC4: 1 VC)
