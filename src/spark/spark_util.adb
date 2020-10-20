@@ -1547,6 +1547,16 @@ package body SPARK_Util is
             =>
                return Find_Func_Call (Prefix (Expr));
 
+            when N_Op_Eq
+               | N_Op_Ne
+            =>
+               if Nkind (Left_Opnd (Expr)) = N_Null then
+                  return Find_Func_Call (Right_Opnd (Expr));
+               else
+                  pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
+                  return Find_Func_Call (Left_Opnd (Expr));
+               end if;
+
             when N_Qualified_Expression
                | N_Type_Conversion
                | N_Unchecked_Type_Conversion
@@ -1752,6 +1762,16 @@ package body SPARK_Util is
                                          | Name_Old
                                          | Name_Update);
                return Empty;
+            end if;
+
+         when N_Op_Eq
+            | N_Op_Ne
+         =>
+            if Nkind (Left_Opnd (Expr)) = N_Null then
+               return GRO (Right_Opnd (Expr));
+            else
+               pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
+               return GRO (Left_Opnd (Expr));
             end if;
 
          when others =>
@@ -2505,6 +2525,14 @@ package body SPARK_Util is
                                              | Name_Old
                                              | Name_Update;
             end if;
+
+         --  Path op null or null op Path is a path
+
+         when N_Op_Eq | N_Op_Ne =>
+            return (Nkind (Left_Opnd (Expr)) = N_Null
+                    and then Is_Path_Expression (Right_Opnd (Expr)))
+              or else (Nkind (Right_Opnd (Expr)) = N_Null
+                       and then Is_Path_Expression (Left_Opnd (Expr)));
 
          when N_Qualified_Expression
             | N_Type_Conversion
