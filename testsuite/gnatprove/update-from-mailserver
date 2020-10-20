@@ -31,9 +31,20 @@ for result_file in glob("out/*.result"):
         old_out_dir = result_file\
             .replace("out/", "tests/")\
             .replace(".result", "")
+
+        # If not a test in the public testsuite, it must be from internal one
         if not os.path.exists(old_out_dir):
-            print("Ignore output %s" % old_out_file)
+            old_out_file = result_file\
+                .replace("out/", "internal/")\
+                .replace(".result", "/test.out")
+            old_out_dir = result_file\
+                .replace("out/", "internal/")\
+                .replace(".result", "")
+
+        if not os.path.exists(old_out_dir):
+            print("IGNORE OUTPUT %s" % old_out_file)
             continue
+
         elif os.path.exists(new_out_file):
             if not os.path.exists(old_out_file):
                 shutil.copyfile(new_out_file, old_out_file)
