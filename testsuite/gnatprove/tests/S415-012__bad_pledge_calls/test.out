@@ -17,6 +17,4 @@ bad_pledge_calls_2.adb:12:29: actual for a call to a function annotated with At_
 bad_pledge_calls_3.adb:11:04: info: initialization of "X" proved
 bad_pledge_calls_3.adb:12:32: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
 bad_pledge_calls_4.adb:11:30: borrowed expression cannot depend on variable input "I" (SPARK RM 4.4(2))
-compilation abandoned due to previous error
-compilation abandoned due to previous error
 gnatprove: error during flow analysis and proof

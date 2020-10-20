@@ -136,7 +136,15 @@ package body SPARK_Util is
 
    function Borrower_For_At_End_Borrow_Call
      (Call : Node_Id) return Entity_Id
-   is (At_End_Borrow_Call_Map.Element (Call));
+   is
+      Cu : constant Node_Maps.Cursor := At_End_Borrow_Call_Map.Find (Call);
+   begin
+      if Node_Maps.Has_Element (Cu) then
+         return Node_Maps.Element (Cu);
+      else
+         return Empty;
+      end if;
+   end Borrower_For_At_End_Borrow_Call;
 
    --------------------------
    -- Dispatching_Contract --
