@@ -1,4 +1,3 @@
-illegal_assign.adb:27:23: object was borrowed at line 23
 illegal_assign.adb:28:13: object was borrowed at line 23
 illegal_assign.adb:29:08: object was borrowed at line 23
 illegal_assign.adb:37:08: object was observed at line 33

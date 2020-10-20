@@ -1,0 +1,9 @@
+test_borrow.adb:26:23: object was borrowed at line 21
+test_borrow.adb:34:26: object was borrowed at line 32
+test_borrow.adb:42:26: object was borrowed at line 40
+test_borrow.adb:48:07: warning: initialization of "Z" has no effect
+test_borrow.adb:59:26: object was moved at line 57
+test_borrow.adb:59:26: part of dereference from "X" is not readable
+test_borrow.adb:68:26: object was moved at line 66
+test_borrow.adb:68:26: part of dereference from "X" is not readable
+gnatprove: error during flow analysis and proof
