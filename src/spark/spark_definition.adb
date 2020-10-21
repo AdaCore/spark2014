@@ -2995,35 +2995,18 @@ package body SPARK_Definition is
 
          when Attribute_Access =>
 
-            --  If Etype (N) is not visibly an access type, raise a violation
-
-            if not Has_Access_Type (Etype (N)) then
-               Mark_Violation (N, From => Etype (N));
-
-            --  We do not support 'Access on objects
-
-            elsif Ekind
-              (Directly_Designated_Type (Retysp (Etype (N))))
-                /= E_Subprogram_Type
-            then
-               Mark_Violation
-                 ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
-                  & """ on object", N);
-
-            --  We only support 'Access if it is directly called on a
+            --  We only support 'Access if it is directly prefixed by a
             --  subprogram name. Otherwise, we return early to avoid trying
             --  to mark the prefix.
 
-            elsif Nkind (P) not in N_Identifier | N_Expanded_Name then
-               Mark_Unsupported
-                 ("Access attribute on a complex expression", N);
-               return;
-            else
-               pragma Assert (Nkind (P) in N_Identifier | N_Expanded_Name);
+            if Nkind (P) in N_Identifier | N_Expanded_Name then
                declare
                   Subp : constant Entity_Id := Entity (P);
                begin
-                  if not In_SPARK (Subp) then
+                  if not Is_Subprogram (Subp) then
+                     Mark_Violation ("attribute ""Access"" on object", N);
+
+                  elsif not In_SPARK (Subp) then
                      Mark_Violation (N, From => P);
 
                   --  Dispatching operations need a specialised version that is
@@ -3056,6 +3039,10 @@ package body SPARK_Definition is
                         & " Relaxed_Initialization", N);
                   end if;
                end;
+            else
+               Mark_Unsupported
+                 ("Access attribute on a complex expression", N);
+               return;
             end if;
 
          when others =>
