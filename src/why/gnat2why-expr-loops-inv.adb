@@ -337,6 +337,14 @@ package body Gnat2Why.Expr.Loops.Inv is
       --  Generate the appropriate equality if the field is preserved and call
       --  Equality_Of_Preserved_Components recursively otherwise.
 
+      function Preserve_Bounds_Or_Discriminants return W_Pred_Id;
+      --  Return a predicate which assumes the preservation of array bounds if
+      --  Expr_Ty is an array type or of discriminants if it has any.
+
+      -----------------------------
+      -- Build_Array_Constraints --
+      -----------------------------
+
       function Build_Array_Constraints
         (Updates : Array_Constraints_Maps.Map;
          Indices : W_Expr_Array)
@@ -625,6 +633,10 @@ package body Gnat2Why.Expr.Loops.Inv is
          return Constraints;
       end Build_Array_Constraints;
 
+      -----------------------------
+      -- Handle_Record_Component --
+      -----------------------------
+
       procedure Handle_Record_Component (Component : Entity_Id) is
          F_Expr_Ty  : constant Entity_Id :=
            Retysp (Etype (Component));
@@ -681,6 +693,39 @@ package body Gnat2Why.Expr.Loops.Inv is
                           Domain => EW_Pred);
       end Handle_Record_Component;
 
+      --------------------------------------
+      -- Preserve_Bounds_Or_Discriminants --
+      --------------------------------------
+
+      function Preserve_Bounds_Or_Discriminants return W_Pred_Id is
+      begin
+         --  Don't include bounds and discriminants of constrained types as
+         --  they are constrained by the dynamic invariant of the type.
+
+         if Is_Array_Type (Expr_Ty)
+           and then not Is_Constrained (Expr_Ty)
+         then
+            return New_Bounds_Equality
+              (Left_Arr  => Expr,
+               Right_Arr => At_Entry,
+               Dim       => Positive (Number_Dimensions (Expr_Ty)));
+         elsif Has_Discriminants (Expr_Ty)
+           and then not Is_Constrained (Expr_Ty)
+         then
+            return +New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Discriminants_Access (Domain => EW_Term,
+                                                   Name   => Expr,
+                                                   Ty     => Expr_Ty),
+               Right  => New_Discriminants_Access (Domain => EW_Term,
+                                                   Name   => At_Entry,
+                                                   Ty     => Expr_Ty),
+               Domain => EW_Pred);
+         else
+            return True_Pred;
+         end if;
+      end Preserve_Bounds_Or_Discriminants;
+
    --  Start of processing for Equality_Of_Preserved_Components
 
    begin
@@ -689,7 +734,19 @@ package body Gnat2Why.Expr.Loops.Inv is
             raise Program_Error;
 
          when Entire_Object =>
-            Preserved_Components := True_Pred;
+
+            --  Even when the entire object is written, the bounds of arrays
+            --  and the values of immutable discriminants are preserved.
+            --  Assume it if Only_Vars is False.
+
+            if not Only_Vars
+              and then (not Has_Discriminants (Expr_Ty)
+                        or else not Has_Defaulted_Discriminants (Expr_Ty))
+            then
+               Preserved_Components := Preserve_Bounds_Or_Discriminants;
+            else
+               Preserved_Components := True_Pred;
+            end if;
 
          when Record_Components =>
 
@@ -716,14 +773,6 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                   Insert_Entity (Discr, Tmps (I));
 
-                  --  Only consider fields which are mutable, hence not
-                  --  discriminants of types without default discriminants
-                  --  or of constrained types.
-
-                  if not Is_Constrained (Expr_Ty) then
-                     Handle_Record_Component (Discr);
-                  end if;
-
                   Next_Discriminant (Discr);
                   I := I + 1;
                end loop;
@@ -749,6 +798,21 @@ package body Gnat2Why.Expr.Loops.Inv is
                         Def     => Binds (I),
                         Context => +Preserved_Components);
                   end loop;
+               end if;
+
+               --  Discriminants, mutable or not, cannot be modified
+               --  independently. So here we can assume that they are all
+               --  preserved. If the discriminants are not mutable, only add
+               --  the equality if Only_Vars is False.
+
+               if Has_Discriminants (Expr_Ty)
+                 and then (not Only_Vars
+                           or else Has_Defaulted_Discriminants (Expr_Ty))
+               then
+                  Preserved_Components := +New_And_Expr
+                    (Left   => +Preserve_Bounds_Or_Discriminants,
+                     Right  => +Preserved_Components,
+                     Domain => EW_Pred);
                end if;
             end;
 
@@ -837,12 +901,9 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                --  If needed, also assume preservation of bounds
 
-               if not Is_Constrained (Expr_Ty) and then not Only_Vars then
+               if not Only_Vars then
                   Preserved_Components := +New_And_Expr
-                    (Left   => +New_Bounds_Equality
-                       (Left_Arr  => Expr,
-                        Right_Arr => At_Entry,
-                        Dim       => Positive (Number_Dimensions (Expr_Ty))),
+                    (Left   => +Preserve_Bounds_Or_Discriminants,
                      Right  => +Preserved_Components,
                      Domain => EW_Pred);
                end if;
