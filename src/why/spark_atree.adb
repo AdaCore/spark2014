@@ -814,6 +814,12 @@ package body SPARK_Atree is
                then Einfo.Full_View (Etype (Par))
                else Etype (Par));
 
+            if Einfo.Is_Incomplete_Type (Check_Type)
+              and then Present (Einfo.Full_View (Check_Type))
+            then
+               Check_Type := Einfo.Full_View (Check_Type);
+            end if;
+
          when others =>
             Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
                                   & Node_Kind'Image (Nkind (Par)));
