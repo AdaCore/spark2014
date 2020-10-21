@@ -54,7 +54,7 @@ expression, as follows (absolute and relative delays, respectively):
 Tasks and Data Races
 --------------------
 
-[Ravenscar]
+[Ravenscar/Jorvik]
 
 Concurrent Ada programs are made of several `tasks`, that is, separate threads
 of control which share the same address space. In Ravenscar, only
@@ -148,7 +148,7 @@ definition of the ``Account_Management`` task type was not in |SPARK|. Indeed,
 data races could occur when accessing the global variable ``Num_Accounts``, as
 detected by |GNATprove|:
 
-.. literalinclude:: /gnatprove_by_example/results/bank1.flow
+.. literalinclude:: /examples/tests/bank1/test.out
    :language: none
 
 To avoid this problem, shared variable ``Num_Account`` can be declared atomic:
@@ -166,7 +166,7 @@ With this modification, |GNATprove| now alerts us that the increment of
 atomic variables) cannot be read as a subexpression of a larger expression in
 |SPARK|:
 
-.. literalinclude:: /gnatprove_by_example/results/account2.flow
+.. literalinclude:: /examples/tests/account2/test.out
    :language: none
 
 This can be fixed by copying the current value of ``Num_Account`` in a
@@ -318,7 +318,7 @@ The dependency of the task on itself can be left implicit as well, as follows:
 Protected Objects and Deadlocks
 -------------------------------
 
-[Ravenscar]
+[Ravenscar/Jorvik]
 
 In Ada, protected objects are used to encapsulate shared data and protect it
 against data races (low-level unprotected concurrent access to data) and race
@@ -636,7 +636,7 @@ used by ``Account_Management``, its ceiling priority should be no lower than 5:
 Suspension Objects
 ------------------
 
-[Ravenscar]
+[Ravenscar/Jorvik]
 
 The language-defined package ``Ada.Synchronous_Task_Control`` provides a type
 for semaphores called `suspension objects`. They allow lighter synchronization

@@ -1,8 +1,8 @@
 badconcat.adb:8:31: warning: unused variable "Value"
 badconcat.adb:17:06: info: precondition proved (Trivial: 1 VC)
-badconcat.adb:17:27: medium: range check might fail
+badconcat.adb:17:27: medium: range check might fail [possible fix: you should consider adding a postcondition to function Put_Integer_Value or turning it into an expression function]
 badconcat.adb:18:06: info: precondition proved (Trivial: 1 VC)
-badconcat.adb:18:27: medium: range check might fail
+badconcat.adb:18:27: medium: range check might fail [possible fix: you should consider adding a postcondition to function Put_Integer_Value or turning it into an expression function]
 badconcat.adb:19:06: info: precondition proved (Trivial: 1 VC)
-badconcat.adb:19:27: medium: range check might fail [reason for check: default component value must fit in the type]
+badconcat.adb:19:27: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function Put_Integer_Value or turning it into an expression function]
 badconcat.adb:20:06: info: precondition proved (Trivial: 1 VC)

@@ -42,9 +42,9 @@ x.adb:193:29: info: overflow check proved (CVC4: 1 VC)
 x.adb:198:19: medium: loop might be nonterminating, terminating annotation on overriding operator "**" could be incorrect
 x.adb:198:19: warning: statement has no effect
 x.adb:201:29: info: overflow check proved (CVC4: 1 VC)
-x.adb:207:19: medium: assertion might fail, cannot prove A = B
+x.adb:207:19: medium: assertion might fail, cannot prove A = B [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]
 x.adb:207:21: info: precondition proved (Trivial: 1 VC)
-x.adb:208:19: medium: assertion might fail, cannot prove A /= B
+x.adb:208:19: medium: assertion might fail, cannot prove A /= B [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]
 x.adb:208:21: info: precondition proved (Trivial: 1 VC)
 x.adb:209:19: info: assertion proved (CVC4: 1 VC)
 x.adb:209:21: info: precondition proved (Trivial: 1 VC)

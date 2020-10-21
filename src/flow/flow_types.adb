@@ -623,7 +623,7 @@ package body Flow_Types is
          when Null_Value =>
             raise Program_Error;
          when others =>
-            return F'Update (Variant => Variant);
+            return (F with delta Variant => Variant);
       end case;
    end Change_Variant;
 
@@ -662,7 +662,7 @@ package body Flow_Types is
             end return;
          end if;
       else
-         return F'Update (Facet => Normal_Part);
+         return (F with delta Facet => Normal_Part);
       end if;
    end Parent_Record;
 
@@ -767,11 +767,6 @@ package body Flow_Types is
       --  single dot and converting strings to mixed case, e.g. "pkg__a_state"
       --  will become "Pkg.A_State".
 
-      function Get_Operator_Symbol (N : Node_Id) return String
-         with Pre => Is_Operator_Symbol_Name (Chars (N));
-      --  Lookup function (based on the contents of the Snames package) to
-      --  convert "operator symbol" to a user-meaningful operator.
-
       ------------------------
       -- Get_Unmangled_Name --
       ------------------------
@@ -854,34 +849,7 @@ package body Flow_Types is
          return Pretty (1 .. Last);
       end Pretty_Print;
 
-      -------------------------
-      -- Get_Operator_Symbol --
-      -------------------------
-      function Get_Operator_Symbol (N : Node_Id) return String is
-         subtype Operator_Name_Id is Name_Id range
-            First_Operator_Name .. Last_Operator_Name;
-      begin
-         return (case Operator_Name_Id'(Chars (N)) is
-                    when Name_Op_Abs      => "abs",
-                    when Name_Op_And      => "and",
-                    when Name_Op_Mod      => "mod",
-                    when Name_Op_Not      => "not",
-                    when Name_Op_Or       => "or",
-                    when Name_Op_Rem      => "rem",
-                    when Name_Op_Xor      => "xor",
-                    when Name_Op_Eq       => "=",
-                    when Name_Op_Ne       => "/=",
-                    when Name_Op_Lt       => "<",
-                    when Name_Op_Le       => "<=",
-                    when Name_Op_Gt       => ">",
-                    when Name_Op_Ge       => ">=",
-                    when Name_Op_Add      => "+",
-                    when Name_Op_Subtract => "-",
-                    when Name_Op_Concat   => "&",
-                    when Name_Op_Multiply => "*",
-                    when Name_Op_Divide   => "/",
-                    when Name_Op_Expon    => "**");
-      end Get_Operator_Symbol;
+      --  Local variables
 
       R : Unbounded_String := Null_Unbounded_String;
 

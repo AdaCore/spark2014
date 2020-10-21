@@ -1,0 +1,11 @@
+recursive_subprograms-multiple.ads:6:16: info: index check proved
+recursive_subprograms-multiple.ads:6:24: info: index check proved
+recursive_subprograms-multiple.ads:6:32: info: precondition proved
+recursive_subprograms-multiple.ads:6:32: info: subprogram variant proved
+recursive_subprograms-multiple.ads:6:45: info: range check proved
+recursive_subprograms-multiple.ads:7:12: info: precondition proved
+recursive_subprograms-multiple.ads:7:12: info: subprogram variant proved
+recursive_subprograms-multiple.ads:7:22: info: overflow check proved
+recursive_subprograms-multiple.ads:9:17: info: postcondition proved
+recursive_subprograms-multiple.ads:10:46: info: index check proved
+recursive_subprograms-multiple.ads:10:58: info: index check proved

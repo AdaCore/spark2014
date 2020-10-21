@@ -1,4 +1,4 @@
 broken.adb:18:04: info: in instantiation at broken.ads:6
 broken.adb:18:04: info: no contextual analysis of "Found_None" (in assertion expression)
 broken.ads:5:17: warning: subprogram "Fill_Empty_Slots" has no effect, in instantiation at broken.adb:18
-broken.ads:6:17: medium: postcondition might fail, cannot prove (Found_None), in instantiation at broken.adb:18
+broken.ads:6:17: medium: postcondition might fail, cannot prove (Found_None), in instantiation at broken.adb:18 [possible fix: you should consider adding a postcondition to function Found_None or turning it into an expression function]

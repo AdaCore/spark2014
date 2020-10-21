@@ -52,12 +52,12 @@ Example
 For example, let us consider the following package, stored in a file sum.ads,
 providing a summation function for slices of arrays of integers:
 
-.. literalinclude:: /gnatprove_by_example/examples/sums.ads
+.. literalinclude:: /examples/tests/sums/sums.ads
    :language: ada
    :linenos:
 
 We can provide the following Why3 translation for it, that we should store in a
 file named sum.mlw:
 
-.. literalinclude:: /gnatprove_by_example/examples/proof/_theories/sums.mlw
+.. literalinclude:: /examples/tests/sums/proof/_theories/sums.mlw
    :language: none

@@ -1,11 +1,10 @@
 a.adb:6:18: warning: statement has no effect
 a.adb:9:07: warning: unreachable code (CVC4: 1 VC)
-a.ads:2:13: warning: subprogram "R" might not terminate
 types.ads:2:09: info: invariant check proved (CVC4: 1 VC)
-types.ads:5:13: warning: subprogram "Func" might not terminate
+types.ads:5:37: medium: call to "R" might be nonterminating, terminating annotation on "Func" could be incorrect
 types.ads:12:09: medium: invariant check might fail on default value
 types.ads:19:16: medium: predicate check might fail, cannot prove not Boolean (t2)
 types.ads:20:04: info: default initial condition proved (CVC4: 2 VC)
-types.ads:22:14: info: subprogram "Proc1" will terminate
-types.ads:23:14: info: subprogram "Proc2" will terminate
-types.ads:24:14: info: subprogram "Proc3" will terminate
+types.ads:22:14: info: subprogram "Proc1" will terminate, terminating annotation has been proved
+types.ads:23:14: info: subprogram "Proc2" will terminate, terminating annotation has been proved
+types.ads:24:14: info: subprogram "Proc3" will terminate, terminating annotation has been proved

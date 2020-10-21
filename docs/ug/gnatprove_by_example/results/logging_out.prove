@@ -1,4 +1,0 @@
-logging_out.adb:6:22: medium: overflow check might fail (e.g. when Incr = -1 and Total = Integer'First) [possible fix: subprogram at logging_out.ads:7 should mention Incr and Total in a precondition]
-logging_out.ads:8:06: info: data dependencies proved
-logging_out.ads:8:45: info: initialization of "Log_Out" proved
-logging_out.ads:9:06: info: flow dependencies proved

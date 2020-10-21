@@ -1,8 +1,8 @@
-package Nested_Packages is
+package Nested_Packages with Annotate => (GNATprove, Terminating) is
 
    procedure Contains_Packages;
 
-   package Nested is
+   package Nested with Annotate => (GNATprove, Terminating) is
       procedure Do_Nothing;
       package Nested2 is
          procedure Do_Nothing2;

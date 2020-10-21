@@ -1,0 +1,12 @@
+exprfun.ads:5:17: info: initialization of "X" proved
+exprfun.ads:6:14: medium: postcondition might fail, cannot prove F(X) (e.g. when X = 42) [possible fix: you should consider adding a postcondition to function F or turning it into an expression function]
+exprfun.ads:12:18: warning: "Func" is not modified, could be of access constant type
+exprfun.ads:12:18: warning: unused variable "Func"
+exprfun.ads:12:30: info: initialization of "X" proved
+exprfun.ads:13:14: medium: pointer dereference check might fail
+exprfun.ads:13:14: medium: postcondition might fail, cannot prove Func(X) (e.g. when X = 42) [possible fix: you should consider adding a postcondition to type Ptr]
+exprfun.ads:15:18: warning: "Func" is not modified, could be of access constant type
+exprfun.ads:15:18: warning: unused variable "Func"
+exprfun.ads:15:30: info: initialization of "X" proved
+exprfun.ads:16:14: medium: pointer dereference check might fail
+exprfun.ads:16:14: medium: postcondition might fail, cannot prove G(X) (e.g. when X = 42) [possible fix: you should consider adding a postcondition to type Ptr]

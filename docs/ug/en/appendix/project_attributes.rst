@@ -26,6 +26,9 @@ is allowed to contain the following attributes:
          for Proof_Switches ("file.adb") use ("--timeout=10");
       end Prove;
 
+    Note that, if a unit has both a body and specification file, the body file
+    should be used for this attribute.
+
   Switches given on the command line have priority over switches given in the
   project file, and file-specific switches have priority over switches that
   apply to all files. A special case is the ``--level`` switch: the values for

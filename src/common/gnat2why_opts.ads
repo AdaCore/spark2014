@@ -89,7 +89,6 @@ private
    Flow_Analysis_Mode_Name      : constant String := "flow_analysis_mode";
    Flow_Generate_Contracts_Name : constant String := "flow_generate_contracts";
    Flow_Show_GG_Name            : constant String := "flow_show_gg";
-   Flow_Termination_Name        : constant String := "flow_termination_proof";
    Global_Gen_Mode_Name         : constant String := "global_gen_mode";
    Ide_Mode_Name                : constant String := "ide_mode";
    Info_Messages_Name           : constant String := "info_messages";

@@ -39,15 +39,15 @@ private package SPARK_Definition.Violations is
         "="             => "=");
    use Violation_Root_Causes;
 
-   Current_SPARK_Pragma : Node_Id := Empty;
+   Current_SPARK_Pragma : Node_Id := Types.Empty;
    --  The current applicable SPARK_Mode pragma, if any, to reference in error
    --  messages when a violation is encountered.
 
-   Current_Delayed_Aspect_Type : Entity_Id := Empty;
+   Current_Delayed_Aspect_Type : Entity_Id := Types.Empty;
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
    --  delayed type itself; used to reference the type in the error message.
 
-   Current_Incomplete_Type : Entity_Id := Empty;
+   Current_Incomplete_Type : Entity_Id := Types.Empty;
    --  When processing incomplete types, this is set to the access type to the
    --  incomplete type; used to reference the type in the error message.
 
@@ -62,7 +62,7 @@ private package SPARK_Definition.Violations is
    --  of the underlying violation. This is used in error messages when the
    --  violation originates in that node.
 
-   Last_Violation_Root_Cause_Node : Node_Id := Empty;
+   Last_Violation_Root_Cause_Node : Node_Id := Types.Empty;
    --  Last node which had a corresponding root cause for which a violation
    --  was detected. This node is used for the analysis of entities, and is
    --  saved/restored around Mark_Entity. Its value is not relevant outside

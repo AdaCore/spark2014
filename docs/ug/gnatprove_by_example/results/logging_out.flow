@@ -1,3 +1,0 @@
-logging_out.ads:8:06: info: data dependencies proved
-logging_out.ads:8:45: info: initialization of "Log_Out" proved
-logging_out.ads:9:06: info: flow dependencies proved

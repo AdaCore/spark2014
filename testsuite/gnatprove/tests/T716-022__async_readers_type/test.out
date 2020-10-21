@@ -1,0 +1,3 @@
+repro.adb:8:22: info: assertion proved (CVC4: 1 VC)
+repro.ads:13:19: info: initialization of "I" proved
+repro.ads:17:15: info: postcondition proved (CVC4: 1 VC)

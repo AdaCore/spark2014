@@ -80,13 +80,14 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------
 
    function Make_Basic_Attributes
-     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Sub_Called : Node_Sets.Set       := Node_Sets.Empty_Set;
-      Loops      : Node_Sets.Set       := Node_Sets.Empty_Set;
-      E_Loc      : Node_Or_Entity_Id   := Empty;
-      Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
+     (Var_Def       : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Ex_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Var_Im_Use    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Sub_Called    : Node_Sets.Set       := Node_Sets.Empty_Set;
+      Loops         : Node_Sets.Set       := Node_Sets.Empty_Set;
+      In_Nested_Pkg : Boolean;
+      E_Loc         : Node_Or_Entity_Id   := Empty;
+      Print_Hint    : Pretty_Print_Kind_T := Pretty_Print_Null)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -97,6 +98,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Explicitly_Used := Var_Ex_Use;
       A.Subprograms_Called        := Sub_Called;
       A.Loops                     := Loops;
+      A.In_Nested_Package         := In_Nested_Pkg;
       A.Error_Location            := E_Loc;
       A.Pretty_Print_Kind         := Print_Hint;
 
@@ -142,6 +144,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Is_Loop_Entry : Boolean           := False;
       Is_Fold_Check : Boolean           := False;
       Is_Type_Decl  : Boolean           := False;
+      In_Nested_Pkg : Boolean;
       E_Loc         : Node_Or_Entity_Id := Empty;
       Execution     : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
@@ -158,6 +161,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Subprograms_Called := Sub_Called;
       A.Is_Assertion       := Is_Assertion;
       A.Is_Loop_Entry      := Is_Loop_Entry;
+      A.In_Nested_Package  := In_Nested_Pkg;
       A.Error_Location     := E_Loc;
       A.Execution          := Execution;
 
@@ -214,10 +218,11 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------
 
    function Make_Call_Attributes
-     (Callsite   : Node_Id;
-      Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc      : Node_Or_Entity_Id := Empty)
+     (Callsite      : Node_Id;
+      Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Loops         : Node_Sets.Set     := Node_Sets.Empty_Set;
+      In_Nested_Pkg : Boolean;
+      E_Loc         : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -226,6 +231,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Subprograms_Called := Sub_Called;
       A.Is_Program_Node    := True;
       A.Loops              := Loops;
+      A.In_Nested_Package  := In_Nested_Pkg;
       A.Is_Callsite        := True;
       A.Error_Location     := E_Loc;
 
@@ -264,6 +270,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Discriminants_Or_Bounds_Only : Boolean;
       Sub_Called                   : Node_Sets.Set := Node_Sets.Empty_Set;
       Loops                        : Node_Sets.Set;
+      In_Nested_Pkg                : Boolean;
       E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
    is
@@ -284,6 +291,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Parameter_Actual             := Direct_Mapping_Id (Actual);
       A.Parameter_Formal             := Direct_Mapping_Id (Formal);
       A.Loops                        := Loops;
+      A.In_Nested_Package            := In_Nested_Pkg;
       A.Error_Location               := E_Loc;
 
       if In_Vertex then
@@ -303,7 +311,8 @@ package body Flow.Control_Flow_Graph.Utility is
                   A.Variables_Used.Include (F);
                end if;
                if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                  A.Variables_Used.Include (F'Update (Facet => The_Bounds));
+                  A.Variables_Used.Include
+                    ((F with delta Facet => The_Bounds));
                end if;
             end loop;
 
@@ -342,7 +351,7 @@ package body Flow.Control_Flow_Graph.Utility is
               and then Extensions_Visible (Map_Root, Scope)
             then
                A.Variables_Defined.Include
-                 (Map_Root'Update (Facet => Extension_Part));
+                 ((Map_Root with delta Facet => Extension_Part));
             end if;
 
             A.Variables_Used := A.Variables_Explicitly_Used;
@@ -368,6 +377,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Scope                        : Flow_Scope;
       Discriminants_Or_Bounds_Only : Boolean;
       Loops                        : Node_Sets.Set;
+      In_Nested_Pkg                : Boolean;
       Is_Assertion                 : Boolean := False;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -382,6 +392,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
       A.Parameter_Formal             := Global;
       A.Loops                        := Loops;
+      A.In_Nested_Package            := In_Nested_Pkg;
       A.Error_Location               := E_Loc;
       A.Is_Assertion                 := Is_Assertion;
 
@@ -389,8 +400,8 @@ package body Flow.Control_Flow_Graph.Utility is
          when In_View =>
             Tmp := Flatten_Variable (G, Scope);
             if Extensions_Visible (G, Scope) then
-               --  Tmp.Include (G'Update (Facet => The_Tag));
-               Tmp.Include (G'Update (Facet => Extension_Part));
+               --  Tmp.Include ((G with delta Facet => The_Tag));
+               Tmp.Include ((G with delta Facet => Extension_Part));
             end if;
 
             for F of Tmp loop
@@ -401,7 +412,8 @@ package body Flow.Control_Flow_Graph.Utility is
                end if;
 
                if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                  A.Variables_Used.Include (F'Update (Facet => The_Bounds));
+                  A.Variables_Used.Include
+                    ((F with delta Facet => The_Bounds));
                end if;
             end loop;
 
@@ -413,7 +425,7 @@ package body Flow.Control_Flow_Graph.Utility is
             Tmp := Flatten_Variable (G, Scope);
             if Extensions_Visible (G, Scope) then
                --  We can't actually modify the tag, so this is not an omission
-               Tmp.Include (G'Update (Facet => Extension_Part));
+               Tmp.Include ((G with delta Facet => Extension_Part));
             end if;
             A.Variables_Defined := Tmp;
 
@@ -430,13 +442,14 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------------------
 
    function Make_Implicit_Parameter_Attributes
-     (FA          : Flow_Analysis_Graphs;
-      Call_Vertex : Node_Id;
-      In_Vertex   : Boolean;
-      Scope       : Flow_Scope;
-      Sub_Called  : Node_Sets.Set := Node_Sets.Empty_Set;
-      Loops       : Node_Sets.Set;
-      E_Loc       : Node_Or_Entity_Id)
+     (FA            : Flow_Analysis_Graphs;
+      Call_Vertex   : Node_Id;
+      In_Vertex     : Boolean;
+      Scope         : Flow_Scope;
+      Sub_Called    : Node_Sets.Set := Node_Sets.Empty_Set;
+      Loops         : Node_Sets.Set;
+      In_Nested_Pkg : Boolean;
+      E_Loc         : Node_Or_Entity_Id)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
@@ -480,7 +493,8 @@ package body Flow.Control_Flow_Graph.Utility is
                A.Variables_Used := Used;
                for F of Used loop
                   if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                     A.Variables_Used.Include (F'Update (Facet => The_Bounds));
+                     A.Variables_Used.Include
+                       ((F with delta Facet => The_Bounds));
                   end if;
                end loop;
 
@@ -545,6 +559,7 @@ package body Flow.Control_Flow_Graph.Utility is
               Change_Variant (Implicit,
                               (if In_Vertex then In_View else Out_View));
             A.Loops                 := Loops;
+            A.In_Nested_Package     := In_Nested_Pkg;
             A.Error_Location        := E_Loc;
 
             if In_Vertex then
@@ -728,10 +743,11 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------------------------
 
    function Make_Default_Initialization_Attributes
-     (FA    : Flow_Analysis_Graphs;
-      Scope : Flow_Scope;
-      F     : Flow_Id;
-      Loops : Node_Sets.Set := Node_Sets.Empty_Set)
+     (FA            : Flow_Analysis_Graphs;
+      Scope         : Flow_Scope;
+      F             : Flow_Id;
+      Loops         : Node_Sets.Set := Node_Sets.Empty_Set;
+      In_Nested_Pkg : Boolean)
       return V_Attributes
    is
       A  : V_Attributes     := Null_Attributes;
@@ -739,6 +755,7 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       A.Is_Default_Init   := True;
       A.Loops             := Loops;
+      A.In_Nested_Package := In_Nested_Pkg;
       if Present (DI) then
          A.Error_Location := DI;
       else
@@ -788,15 +805,16 @@ package body Flow.Control_Flow_Graph.Utility is
       end loop;
 
       A := Make_Basic_Attributes
-        (Var_Def    => Split_State,
-         Var_Ex_Use => Split_Inputs,
-         Var_Im_Use =>
+        (Var_Def       => Split_State,
+         Var_Ex_Use    => Split_Inputs,
+         Var_Im_Use    =>
            (if Is_Initialized_At_Elaboration (The_State, Scope)
               and then Is_Initialized_In_Specification (The_State, Scope)
             then Split_State
             else Flow_Id_Sets.Empty_Set),
-         Loops      => Loops,
-         E_Loc      => E_Loc);
+         Loops         => Loops,
+         In_Nested_Pkg => True,
+         E_Loc         => E_Loc);
       A.Is_Package_Initialization := True;
       return A;
    end Make_Package_Initialization_Attributes;

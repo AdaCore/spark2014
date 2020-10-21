@@ -6,7 +6,7 @@ from test_support import *
 # baz depends on nothing.
 
 basic_options = ["-P", "test.gpr", "-f", "-q",
-                 "--report=all", "--prover=altergo"]
+                 "--report=all", "--prover=altergo", "--output=brief"]
 
 print("--- Messages on foo and bar should appear")
 gnatprove(opt=basic_options)

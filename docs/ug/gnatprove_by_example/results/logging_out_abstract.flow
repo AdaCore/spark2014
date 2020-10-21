@@ -1,4 +1,0 @@
-logging_out_abstract.adb:9:53: info: initialization of "Log_Out" constituent of "State" proved
-logging_out_abstract.ads:4:03: info: flow dependencies proved
-logging_out_abstract.ads:7:06: info: data dependencies proved
-logging_out_abstract.ads:8:06: info: flow dependencies proved

@@ -1,4 +1,0 @@
-volatile_or_not.adb:9:09: warning: unused assignment
-volatile_or_not.ads:3:03: info: flow dependencies proved
-volatile_or_not.ads:9:06: info: data dependencies proved
-volatile_or_not.ads:10:06: info: flow dependencies proved

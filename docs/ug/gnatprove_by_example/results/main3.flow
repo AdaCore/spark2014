@@ -1,6 +1,0 @@
-main3.adb:6:08: info: data dependencies proved
-main3.adb:7:35: info: initialization of "Lights.State" proved
-main3.adb:8:08: info: flow dependencies proved
-main3.adb:13:07: info: data dependencies proved
-main3.adb:15:07: info: flow dependencies proved
-main3.adb:19:07: info: initialization of "V" proved

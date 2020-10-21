@@ -1,0 +1,70 @@
+with "roadrunner_flags.gpr";
+with "ahven.gpr";
+
+project Pixy is
+
+   for Object_Dir  use Roadrunner_Flags'Object_Dir;
+   for Target      use Roadrunner_Flags'Target;
+   for Exec_Dir    use "../bin";
+
+   case Roadrunner_Flags.Mode is
+      when "Analyze" =>
+         for Source_Dirs use ("pixy", "pixy/autogen",
+                              "control", "control/config",
+                              Roadrunner_Flags.Map_Src,
+                              "robotcontrol", "robotcontrol/autogen");
+
+         for Excluded_Source_Files  use ("sigint_handler.ads", "sigint_handler.adb", "pixy_test.adb");
+      when "Compile" =>
+         case Roadrunner_Flags.Build_Target is
+            when "native" =>
+               for Source_Dirs use ("pixy", "pixy/test", "control",
+                                    Roadrunner_Flags.Map_Src,
+                                    "control/democonfig");
+               for Main use ("test_lines.adb");
+            when "rr-debian9" | "rr-debian10" =>
+               for Source_Dirs use ("pixy", "pixy/autogen", "control", "control/config",
+                                    Roadrunner_Flags.Map_Src,
+                                    "robotcontrol", "robotcontrol/autogen");
+               for Main use ("pixy_test.adb");
+         end case;
+
+      when "Unit_Test" =>
+         for Source_Dirs use ("pixy", "pixy/test", "control", "control/democonfig");
+         for Main use ("pixy_test_runner.adb");
+   end case;
+
+   for Languages use ("Ada");
+
+   package Builder renames Roadrunner_Flags.Builder;
+
+   package Compiler renames Roadrunner_Flags.Compiler;
+   package Ide renames Roadrunner_Flags.Ide;
+
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Naming is
+      for Casing use "lowercase";
+   end Naming;
+
+   package Linker is
+      case Roadrunner_Flags.Mode is
+         when "Analyze" =>
+         when "Compile" =>
+            case Roadrunner_Flags.Build_Target is
+               when "native" =>
+                  for Default_Switches ("ada") use ("-Wl,--gc-sections");
+               when "rr-debian9" | "rr-debian10" =>
+                  for Default_Switches ("Ada") use ("-Wl,--gc-sections," & Roadrunner_Flags.Robot_lib & "," & "-lpixyusb," & "-ludev,-lusb-1.0," & "-lboost_thread,-lboost_system,-lboost_chrono");
+            end case;
+         when "Unit_Test" =>
+            for Default_Switches ("ada") use ("-Wl,--gc-sections", "-fprofile-arcs");
+
+      end case;
+   end Linker;
+
+end Pixy;
+

@@ -329,6 +329,23 @@ package Gnat2Why.Expr is
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
 
+   function Get_Variants_Exprs
+     (E      : Entity_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Array
+   with
+     Pre  => Is_Subprogram_Or_Entry (E),
+     Post => Get_Variants_Exprs'Result'Length = Number_Of_Variants (E);
+   --  Translate the expressions of variants of a subprogram
+
+   function Get_Variants_Ids (E : Entity_Id) return W_Expr_Array with
+     Pre  => Is_Subprogram_Or_Entry (E),
+     Post => Get_Variants_Ids'Result'Length = Number_Of_Variants (E);
+   --  Compute the names to be used for initial values of variants of a
+   --  subprogram or entry. The returned array only contains identifiers, we
+   --  use the type W_Expr_Array to be able to share the handling whether we
+   --  use ids or the expressions directly.
+
    function Havoc_Borrowed_Expression (Brower : Entity_Id) return W_Prog_Id;
    --  Construct a program which havocs a borrowed expression. After the havoc,
    --  we get information about potential updates from the borrower by
@@ -339,6 +356,12 @@ package Gnat2Why.Expr is
    function Havoc_Borrowed_From_Block
      (N : Node_Id) return W_Statement_Sequence_Id;
    --  Havoc all entities borrowed in the block
+
+   procedure Initialize_Tables_Nth_Roots;
+   --  This initializing procedure is called after initializing the module
+   --  Uintp to fill in the tabled values for nth roots of the modulus of
+   --  machine integers, and check in ghost code that the tabled values are
+   --  correct.
 
    function Insert_Predicate_Check
      (Ada_Node : Node_Id;
@@ -388,6 +411,10 @@ package Gnat2Why.Expr is
    --  @param On_Default_Value True iff this predicate check applies to the
    --    default value for a type
    --  @return Why3 program that performs the check
+
+   function Number_Of_Variants (E : Entity_Id) return Natural with
+     Pre => Is_Subprogram_Or_Entry (E);
+   --  Compute the number of variants of a subprogram or entry if any
 
    function Range_Expr
      (N           : Node_Id;

@@ -1,0 +1,19 @@
+
+semaphores1.adb:17:31: medium: overflow check might fail
+   17 |         The_Data := The_Data + 1;
+      |                              ^ here
+  reason for check: result of addition must fit in a 32-bits machine integer
+
+semaphores1.adb:45:13: warning: initialization of "Tmp" has no effect
+   45 |            Tmp : Natural := Protected_Natural.Get;
+      |            ^ here
+
+semaphores1.ads:6:09: medium: ceiling priority protocol might not be respected
+    6 |   task T1;
+      |        ^ here
+semaphores1.ads:6:09: info: nontermination of task proved
+
+semaphores1.ads:7:09: medium: ceiling priority protocol might not be respected
+    7 |   task T2;
+      |        ^ here
+semaphores1.ads:7:09: info: nontermination of task proved

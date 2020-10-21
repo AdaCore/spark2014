@@ -85,13 +85,13 @@ copy.adb:281:13: info: precondition proved (CVC4: 2 VC)
 copy.adb:281:32: info: discriminant check proved (CVC4: 1 VC)
 copy.adb:284:34: info: overflow check proved (CVC4: 1 VC)
 copy.adb:291:16: info: precondition proved (CVC4: 1 VC)
-copy.adb:292:73: low: range check might fail [reason for check: input value must fit in parameter type]
+copy.adb:292:73: low: range check might fail [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Name or turning it into an expression function]
 copy.adb:293:19: info: precondition proved (CVC4: 1 VC)
 copy.adb:296:16: info: precondition proved (CVC4: 2 VC)
 copy.adb:298:16: info: precondition proved (CVC4: 2 VC)
 copy.adb:299:16: info: precondition proved (CVC4: 2 VC)
 copy.adb:305:13: info: precondition proved (CVC4: 1 VC)
-copy.adb:305:55: low: range check might fail [reason for check: input value must fit in parameter type]
+copy.adb:305:55: low: range check might fail [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Name or turning it into an expression function]
 copy.adb:306:23: info: precondition proved (CVC4: 1 VC)
 copy.adb:309:13: info: precondition proved (CVC4: 2 VC)
 copy.adb:311:13: info: precondition proved (CVC4: 2 VC)

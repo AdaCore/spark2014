@@ -120,4 +120,4 @@ sum_all_arr.adb:5:21: info: unrolling loop
 sum_all_arr.adb:6:18: medium: overflow check might fail [CWE 190] (e.g. when J = 2 and Sum = -1 and X = (1 => -1, others => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]
 top_down.adb:2:21: info: initialization of "Y" proved
 top_down.adb:6:13: medium: array index check might fail [CWE 120] [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 4 should mention X in a precondition]
-top_down.adb:13:12: medium: array index check might fail [CWE 120] (e.g. when A = (others => 1)) [reason for check: value must be a valid index into the array]
+top_down.adb:13:12: medium: array index check might fail [CWE 120] (e.g. when A = (others => 1)) [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Ident or turning it into an expression function]

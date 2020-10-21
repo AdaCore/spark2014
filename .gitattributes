@@ -27,6 +27,7 @@ testsuite/gnatmerge/tests/*/*/* no-precommit-check
 testsuite/gnatmerge/tests/*/*/*/* no-precommit-check
 testsuite/gnatmerge/tests/*/*/*/*/* no-precommit-check
 docs/ug/gnatprove_by_example/examples/* no-precommit-check
+docs/ug/examples/*/*/* no-precommit-check
 docs/ug/examples/*/* no-precommit-check
 docs/ug/loop_patterns/*/* no-precommit-check
 docs/ug/linear_search/*/* no-precommit-check

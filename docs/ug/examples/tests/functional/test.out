@@ -1,0 +1,6 @@
+
+functional.ads:31:14: medium: postcondition might fail, cannot prove Max_Value_Seen /= (Second_Max_Value_Seen)
+   31 |             Max_Value_Seen /= Second_Max_Value_Seen;
+      |             ^ here
+  e.g. when Max1 = Natural'Last
+        and Max2 = Natural'Last

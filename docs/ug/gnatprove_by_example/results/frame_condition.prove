@@ -1,4 +1,0 @@
-frame_condition.ads:8:14: info: postcondition proved
-frame_condition.ads:8:14: info: range check proved
-frame_condition.ads:8:37: info: range check proved
-frame_condition.ads:16:14: info: postcondition proved

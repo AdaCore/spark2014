@@ -1,4 +1,0 @@
-assert_enabled.adb:6:11: medium: postcondition might fail, cannot prove X > 2 (e.g. when X = 0)
-assert_enabled.adb:9:19: info: assertion proved
-assert_enabled.adb:12:19: info: assertion proved
-assert_enabled.adb:14:11: info: overflow check proved

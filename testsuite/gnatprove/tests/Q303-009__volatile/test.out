@@ -1,7 +1,7 @@
-vol.adb:6:03: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type TaT4b doesn't have an Object_Size representation clause or aspect]
+vol.adb:6:03: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: anonymous type doesn't have an Object_Size representation clause or aspect]
 vol.adb:6:03: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: a doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
-vol.adb:8:21: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type TbT1b doesn't have an Object_Size representation clause or aspect]
-vol.adb:8:21: high: types of aliased objects do not have the same size [possible explanation: type TaT4b doesn't have an Object_Size representation clause or aspect]
+vol.adb:8:21: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: anonymous type doesn't have an Object_Size representation clause or aspect]
+vol.adb:8:21: high: types of aliased objects do not have the same size [possible explanation: anonymous type doesn't have an Object_Size representation clause or aspect]
 vol.adb:14:07: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at vol.ads:4 should mention idx in a precondition]
 vol.adb:21:14: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at vol.ads:7 should mention idx in a precondition]
 vol.ads:8:20: info: initialization of "val" proved

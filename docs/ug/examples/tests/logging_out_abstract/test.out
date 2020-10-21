@@ -1,0 +1,14 @@
+logging_out_abstract.adb:9:53: info: initialization of "Log_Out" constituent of "State" proved
+
+logging_out_abstract.adb:13:22: medium: overflow check might fail
+   13 |      Total := Total + Incr;
+      |                     ^ here
+  e.g. when Incr = -1
+        and Total = Integer'First
+  reason for check: result of addition must fit in a 32-bits machine integer
+  possible fix: subprogram at logging_out_abstract.ads:6 should mention Incr and Total in a precondition
+    6 |   procedure Add_To_Total (Incr : in Integer) with
+      |   ^ here
+logging_out_abstract.ads:4:03: info: flow dependencies proved
+logging_out_abstract.ads:7:06: info: data dependencies proved
+logging_out_abstract.ads:8:06: info: flow dependencies proved

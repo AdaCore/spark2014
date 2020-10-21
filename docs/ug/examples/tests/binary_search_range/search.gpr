@@ -1,0 +1,5 @@
+project Search is
+   package Prove is
+      for Proof_Switches("Ada") use ("--proof=progressive");
+   end Prove;
+end Search;

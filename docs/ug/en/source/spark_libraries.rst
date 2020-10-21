@@ -351,7 +351,7 @@ For example, consider a variant of the ``List.Find`` function defined in the
 API of formal containers, which returns a cursor holding the value searched if
 there is one, and the special cursor ``No_Element`` otherwise:
 
-.. literalinclude:: /gnatprove_by_example/examples/my_find.ads
+.. literalinclude:: /examples/tests/my_find/my_find.ads
    :language: ada
    :linenos:
 
@@ -362,13 +362,13 @@ query the position of the current cursor in the list, and ``Model`` is used to
 specify that the value searched is not contained in the part of the container
 already traversed (otherwise the loop would have exited):
 
-.. literalinclude:: /gnatprove_by_example/examples/my_find.adb
+.. literalinclude:: /examples/tests/my_find/my_find.adb
    :language: ada
    :linenos:
 
 |GNATprove| proves that function ``My_Find`` implements its specification:
 
-.. literalinclude:: /gnatprove_by_example/results/my_find.prove
+.. literalinclude:: /examples/tests/my_find/test.out
    :language: none
 
 .. note::
@@ -585,9 +585,9 @@ array, returning an array of results in the same order.
    function Map (A : Array_In) return Array_Out with
      Pre  => (for all I in A'Range => Init_Prop (A (I))),
      Post => Map'Result'First = A'First
-     and then Map'Result'Last = A'Last
-     and then (for all I in A'Range =>
-                 Map'Result (I) = F (A (I)));
+       and then Map'Result'Last = A'Last
+       and then (for all I in A'Range =>
+                   Map'Result (I) = F (A (I)));
 
 This function can be instantiated by providing two unconstrained array types
 ranging over the same index type and a function ``F`` mapping a component of the

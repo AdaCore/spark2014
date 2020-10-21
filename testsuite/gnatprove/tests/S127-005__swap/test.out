@@ -8,5 +8,5 @@ problem_4.adb:34:25: info: index check proved (CVC4: 2 VC)
 problem_4.adb:35:13: info: index check proved (CVC4: 2 VC)
 problem_4.adb:35:25: info: index check proved (CVC4: 2 VC)
 problem_4.adb:36:13: info: index check proved (CVC4: 2 VC)
-problem_4.ads:13:16: medium: postcondition might fail, cannot prove Same_Elements (List'Old, List)
+problem_4.ads:13:16: medium: postcondition might fail, cannot prove Same_Elements (List'Old, List) [possible fix: you should consider adding a postcondition to function Same_Elements or turning it into an expression function]
 problem_4.ads:13:17: info: precondition proved (CVC4: 2 VC)

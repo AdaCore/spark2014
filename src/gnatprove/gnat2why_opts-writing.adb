@@ -154,7 +154,6 @@ package body Gnat2Why_Opts.Writing is
                       (Warning_Mode));
 
          Set_Field (Obj, Pedantic_Name,         CL_Switches.Pedantic);
-         Set_Field (Obj, Flow_Termination_Name, CL_Switches.Flow_Termination);
          Set_Field (Obj, Flow_Show_GG_Name,     CL_Switches.Flow_Show_GG);
          Set_Field (Obj, Proof_Generate_Guards_Name,
                     not CL_Switches.No_Axiom_Guard);

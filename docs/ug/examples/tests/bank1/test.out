@@ -1,0 +1,15 @@
+
+bank1.ads:5:04: high: possible data race when accessing variable "account1.num_accounts"
+    5 |   Special_Accounts : Account_Management;
+      |   ^ here
+  with task "bank1.special_accounts"
+  with task "bank1.all_accounts"
+
+account1.adb:15:39: medium: overflow check might fail
+   15 |         Num_Accounts := Num_Accounts + 1;
+      |                                      ^ here
+  e.g. when Num_Accounts = Natural'Last
+  reason for check: result of addition must fit in a 32-bits machine integer
+  possible fix: loop at line 13 should mention Num_Accounts in a loop invariant
+   13 |      loop
+      |      ^ here

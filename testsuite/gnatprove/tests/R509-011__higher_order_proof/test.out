@@ -18,7 +18,7 @@ spark-higher_order-fold.adb:53:33: info: index check proved (CVC4: 4 VC), in ins
 
 spark-higher_order-fold.adb:71:17: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:14
 
-spark-higher_order-fold.adb:71:17: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at test_higher_order3.ads:14
+spark-higher_order-fold.adb:71:17: info: loop invariant preservation proved (CVC4: 1 VC; altergo: 1 VC), in instantiation at test_higher_order3.ads:14
 
 spark-higher_order-fold.adb:71:31: info: precondition proved (CVC4: 4 VC), in instantiation at test_higher_order3.ads:14
 
@@ -2558,7 +2558,7 @@ spark-higher_order-fold.ads:57:17: info: precondition proved (CVC4: 2 VC), in in
 
 spark-higher_order-fold.ads:57:17: info: precondition proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:104, in instantiation at test_higher_order.ads:37
 
-spark-higher_order-fold.ads:57:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I), X), I + 1), in instantiation at spark-higher_order-fold.ads:104, in instantiation at test_higher_order.ads:37
+spark-higher_order-fold.ads:57:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I), X), I + 1), in instantiation at spark-higher_order-fold.ads:104, in instantiation at test_higher_order.ads:37 [possible fix: you should consider adding a postcondition to function Ind_Prop and function F or turning them into expression functions]
 
 spark-higher_order-fold.ads:57:27: info: range check proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:104, in instantiation at spark-higher_order-fold.ads:339, in instantiation at test_higher_order2.ads:25
 
@@ -2610,7 +2610,7 @@ spark-higher_order-fold.ads:63:17: info: postcondition proved (CVC4: 1 VC), in i
 
 spark-higher_order-fold.ads:63:17: info: precondition proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:104, in instantiation at test_higher_order.ads:37
 
-spark-higher_order-fold.ads:63:17: medium: postcondition might fail, cannot prove Final_Prop (A, F (A (A'Last), X)), in instantiation at spark-higher_order-fold.ads:104, in instantiation at test_higher_order.ads:37
+spark-higher_order-fold.ads:63:17: medium: postcondition might fail, cannot prove Final_Prop (A, F (A (A'Last), X)), in instantiation at spark-higher_order-fold.ads:104, in instantiation at test_higher_order.ads:37 [possible fix: you should consider adding a postcondition to function Final_Prop and function F or turning them into expression functions]
 
 spark-higher_order-fold.ads:63:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:104, in instantiation at spark-higher_order-fold.ads:339, in instantiation at test_higher_order2.ads:25
 
@@ -2806,7 +2806,7 @@ spark-higher_order-fold.ads:149:39: info: precondition proved (CVC4: 2 VC), in i
 
 spark-higher_order-fold.ads:150:17: info: precondition proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:200, in instantiation at test_higher_order2.ads:36
 
-spark-higher_order-fold.ads:150:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I), I, X), I + 1), in instantiation at spark-higher_order-fold.ads:200, in instantiation at test_higher_order2.ads:36
+spark-higher_order-fold.ads:150:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I), I, X), I + 1), in instantiation at spark-higher_order-fold.ads:200, in instantiation at test_higher_order2.ads:36 [possible fix: you should consider adding a postcondition to function Ind_Prop and function F or turning them into expression functions]
 
 spark-higher_order-fold.ads:150:36: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:200, in instantiation at test_higher_order2.ads:36
 
@@ -2822,7 +2822,7 @@ spark-higher_order-fold.ads:155:56: info: range check proved (CVC4: 1 VC), in in
 
 spark-higher_order-fold.ads:156:17: info: precondition proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:200, in instantiation at test_higher_order2.ads:36
 
-spark-higher_order-fold.ads:156:17: medium: postcondition might fail, cannot prove Final_Prop (A, F (A (A'Last), A'Last, X)), in instantiation at spark-higher_order-fold.ads:200, in instantiation at test_higher_order2.ads:36
+spark-higher_order-fold.ads:156:17: medium: postcondition might fail, cannot prove Final_Prop (A, F (A (A'Last), A'Last, X)), in instantiation at spark-higher_order-fold.ads:200, in instantiation at test_higher_order2.ads:36 [possible fix: you should consider adding a postcondition to function Final_Prop and function F or turning them into expression functions]
 
 spark-higher_order-fold.ads:156:39: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:200, in instantiation at test_higher_order2.ads:36
 
@@ -2888,7 +2888,7 @@ spark-higher_order-fold.ads:242:61: info: precondition proved (CVC4: 2 VC), in i
 
 spark-higher_order-fold.ads:243:17: info: precondition proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:290, in instantiation at test_higher_order.ads:28
 
-spark-higher_order-fold.ads:243:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I), X), I - 1), in instantiation at spark-higher_order-fold.ads:290, in instantiation at test_higher_order.ads:28
+spark-higher_order-fold.ads:243:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I), X), I - 1), in instantiation at spark-higher_order-fold.ads:290, in instantiation at test_higher_order.ads:28 [possible fix: you should consider adding a postcondition to function Ind_Prop and function F or turning them into expression functions]
 
 spark-higher_order-fold.ads:243:36: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:290, in instantiation at test_higher_order.ads:28
 
@@ -2904,7 +2904,7 @@ spark-higher_order-fold.ads:248:56: info: range check proved (CVC4: 1 VC), in in
 
 spark-higher_order-fold.ads:249:17: info: precondition proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:290, in instantiation at test_higher_order.ads:28
 
-spark-higher_order-fold.ads:249:17: medium: postcondition might fail, cannot prove Final_Prop (A, F (A (A'First), X)), in instantiation at spark-higher_order-fold.ads:290, in instantiation at test_higher_order.ads:28
+spark-higher_order-fold.ads:249:17: medium: postcondition might fail, cannot prove Final_Prop (A, F (A (A'First), X)), in instantiation at spark-higher_order-fold.ads:290, in instantiation at test_higher_order.ads:28 [possible fix: you should consider adding a postcondition to function Final_Prop and function F or turning them into expression functions]
 
 spark-higher_order-fold.ads:249:39: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:290, in instantiation at test_higher_order.ads:28
 
@@ -3100,7 +3100,7 @@ spark-higher_order-fold.ads:462:17: info: precondition proved (CVC4: 4 VC), in i
 
 spark-higher_order-fold.ads:462:17: info: precondition proved (CVC4: 4 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22
 
-spark-higher_order-fold.ads:462:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I, J), X), I, J + 1), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22
+spark-higher_order-fold.ads:462:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I, J), X), I, J + 1), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22 [possible fix: you should consider adding a postcondition to function Ind_Prop and function F_2 or turning them into expression functions]
 
 spark-higher_order-fold.ads:462:27: info: range check proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at spark-higher_order-fold.ads:602, in instantiation at test_higher_order3.ads:20
 
@@ -3162,7 +3162,7 @@ spark-higher_order-fold.ads:470:17: info: precondition proved (CVC4: 4 VC), in i
 
 spark-higher_order-fold.ads:470:17: info: precondition proved (CVC4: 4 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22
 
-spark-higher_order-fold.ads:470:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I, A'Last (2)), X), I + 1, A'first), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22
+spark-higher_order-fold.ads:470:17: medium: postcondition might fail, cannot prove Ind_Prop (A, F (A (I, A'Last (2)), X), I + 1, A'first), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22 [possible fix: you should consider adding a postcondition to function Ind_Prop and function F_2 or turning them into expression functions]
 
 spark-higher_order-fold.ads:470:27: info: range check proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at spark-higher_order-fold.ads:602, in instantiation at test_higher_order3.ads:20
 
@@ -3232,7 +3232,7 @@ spark-higher_order-fold.ads:477:17: info: postcondition proved (CVC4: 1 VC), in 
 
 spark-higher_order-fold.ads:477:17: info: precondition proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22
 
-spark-higher_order-fold.ads:477:17: medium: postcondition might fail, cannot prove Final_Prop (A, F (A (A'Last (1), A'Last (2)), X)), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22
+spark-higher_order-fold.ads:477:17: medium: postcondition might fail, cannot prove Final_Prop (A, F (A (A'Last (1), A'Last (2)), X)), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22 [possible fix: you should consider adding a postcondition to function Final_Prop and function F_2 or turning them into expression functions]
 
 spark-higher_order-fold.ads:477:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at spark-higher_order-fold.ads:602, in instantiation at test_higher_order3.ads:20
 

@@ -98,6 +98,10 @@ procedure Gnatprove with SPARK_Mode is
    --  Call gprbuild with the given arguments. DB_Dir is the directory
    --  which contains the information to configure gprbuild correctly.
 
+   procedure Create_Dir_And_Parents (Dir : Virtual_File);
+   --  Create the directory and necessary parent directories. Do nothing if the
+   --  directory already exists. Check if the directory exists.
+
    procedure Compute_ALI_Information
      (Project_File : String;
       Proj         : Project_Tree;
@@ -386,6 +390,25 @@ procedure Gnatprove with SPARK_Mode is
          end;
       end loop;
    end Copy_ALI_Files;
+
+   ----------------------------
+   -- Create_Dir_And_Parents --
+   ----------------------------
+
+   procedure Create_Dir_And_Parents (Dir : Virtual_File) is
+   begin
+      if Exists (Dir.Display_Full_Name) then
+         return;
+      end if;
+      declare
+         Par : constant Virtual_File := Get_Parent (Dir);
+      begin
+         if Par /= No_File then
+            Create_Dir_And_Parents (Par);
+         end if;
+      end;
+      Create_Directory (Dir.Display_Full_Name);
+   end Create_Dir_And_Parents;
 
    ------------------
    -- Execute_Step --
@@ -1156,12 +1179,12 @@ begin
    end if;
 
    declare
-      Object_Dir : constant String :=
-        Tree.Root_Project.Artifacts_Dir.Display_Full_Name;
+      Obj_Path : constant File_Array :=
+        Object_Path (Tree.Root_Project, Recursive => True);
    begin
-      if not Exists (Object_Dir) then
-         Create_Directory (Object_Dir);
-      end if;
+      for Dir of Obj_Path loop
+         Create_Dir_And_Parents (Dir);
+      end loop;
    end;
 
    declare

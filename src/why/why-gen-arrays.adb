@@ -705,13 +705,13 @@ package body Why.Gen.Arrays is
                         Module    => Module,
                         Typ       => To_Symb.Ty);
       A_Binder   : constant Binder_Type :=
-        (Ada_Node => Empty,
+        (Ada_Node => Standard.Types.Empty,
          B_Name   => New_Identifier (Name => "a", Typ => From_Symb.Ty),
          B_Ent    => Null_Entity_Name,
          Mutable  => False,
          Labels   => <>);
       B_Binder   : constant Binder_Type :=
-        (Ada_Node => Empty,
+        (Ada_Node => Standard.Types.Empty,
          B_Name   => New_Identifier (Name => "b", Typ => To_Symb.Ty),
          B_Ent    => Null_Entity_Name,
          Mutable  => False,
@@ -801,7 +801,7 @@ package body Why.Gen.Arrays is
          while Present (Index) loop
             Tmp := New_Temp_Identifier
               (Typ => Base_Why_Type_No_Bool (Index));
-            Indexes (I) := Binder_Type'(Ada_Node => Empty,
+            Indexes (I) := Binder_Type'(Ada_Node => Standard.Types.Empty,
                                         B_Name   => Tmp,
                                         B_Ent    => Null_Entity_Name,
                                         Mutable  => False,

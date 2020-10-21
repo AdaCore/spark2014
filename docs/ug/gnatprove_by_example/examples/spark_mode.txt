@@ -1,3 +1,0 @@
---  list of files to analyze with a default configuration pragma of SPARK_Mode (On)
-exclude_selected_parts.ads
-exclude_selected_parts.adb

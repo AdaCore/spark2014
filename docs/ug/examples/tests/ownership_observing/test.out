@@ -1,0 +1,9 @@
+
+ownership_observing.adb:13:09: object was observed at line 9
+   13 |      X.all := X.all + 1;  --  illegal
+      |        ^ here
+
+ownership_observing.adb:14:09: object was observed at line 9
+   14 |      X.all := 1;          --  illegal
+      |        ^ here
+gnatprove: error during flow analysis and proof

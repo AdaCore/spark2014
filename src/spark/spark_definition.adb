@@ -284,6 +284,9 @@ package body SPARK_Definition is
    --  Check that a borrow has a valid source (stand-alone object or call to a
    --  traversal function).
 
+   procedure Check_Source_Of_Move (Expr : Node_Id);
+   --  Check that a move has a valid source
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -473,8 +476,35 @@ package body SPARK_Definition is
                   & "stand-alone object or parameter"),
             Expr,
             SRM_Reference => "SPARK RM 3.10(3))");
+
+      --  The root object should not be effectively volatile
+
+      elsif Is_Effectively_Volatile (Root) then
+         Mark_Violation
+           ("borrow or observe of a volatile object", Expr);
       end if;
    end Check_Source_Of_Borrow_Or_Observe;
+
+   --------------------------
+   -- Check_Source_Of_Move --
+   --------------------------
+
+   procedure Check_Source_Of_Move (Expr : Node_Id) is
+   begin
+      if not Is_Path_Expression (Expr) then
+         Mark_Violation ("expression as source of move", Expr);
+      else
+         declare
+            Root : constant Entity_Id := Get_Root_Object (Expr);
+         begin
+            if Present (Root)
+              and then Is_Effectively_Volatile (Root)
+            then
+               Mark_Violation ("move of a volatile object", Expr);
+            end if;
+         end;
+      end if;
+   end Check_Source_Of_Move;
 
    -----------------------------
    -- Discard_Underlying_Type --
@@ -1351,10 +1381,8 @@ package body SPARK_Definition is
                --  If we are performing a move operation, check that we are
                --  moving a path.
 
-               elsif Is_Deep (Etype (Var))
-                 and then not Is_Path_Expression (Expr)
-               then
-                  Mark_Violation ("expression as source of move", Expr);
+               elsif Is_Deep (Etype (Var)) then
+                  Check_Source_Of_Move (Expr);
                end if;
             end;
 
@@ -1657,7 +1685,7 @@ package body SPARK_Definition is
                   while Present (Prag) loop
                      exit when Nkind (Prag) = N_Pragma_Argument_Association
                        and then Get_Pragma_Id (Pragma_Name (Parent (Prag))) in
-                       Pragma_Precondition | Pragma_Pre;
+                       Pragma_Precondition | Pragma_Pre | Pragma_Pre_Class;
                      Prag := Parent (Prag);
                   end loop;
 
@@ -3206,10 +3234,21 @@ package body SPARK_Definition is
          then
             Check_Source_Of_Borrow_Or_Observe (Actual);
 
+         --  In and in out parameters of an access type are considered to be
+         --  moved.
+
+         elsif Is_Access_Type (Etype (Formal))
+           and then Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+           and then Ekind (Directly_Designated_Type (Etype (Formal))) /=
+           E_Subprogram_Type
+         then
+            Check_Source_Of_Move (Actual);
+         end if;
+
          --  Parts of constant objects should not appear as out or in out
          --  parameters in procedure calls.
 
-         elsif Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter then
+         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter then
             declare
                Mode : constant String :=
                  (if Ekind (Formal) = E_In_Out_Parameter
@@ -4064,10 +4103,8 @@ package body SPARK_Definition is
             --  If we are performing a move operation, check that we are
             --  moving a path.
 
-            elsif Is_Deep (T)
-              and then not Is_Path_Expression (Expr)
-            then
-               Mark_Violation ("expression as source of move", Expr);
+            elsif Is_Deep (T) then
+               Check_Source_Of_Move (Expr);
             end if;
          end if;
 
@@ -4409,6 +4446,24 @@ package body SPARK_Definition is
                      Mark (Conseq);
 
                      Next (Contract_Case);
+                  end loop;
+               end;
+            end if;
+
+            Prag := Get_Pragma (E, Pragma_Subprogram_Variant);
+            if Present (Prag) then
+               declare
+                  Aggr : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (Prag)));
+                  pragma Assert (Nkind (Aggr) = N_Aggregate);
+
+                  Variant : Node_Id :=
+                    First (Component_Associations (Aggr));
+               begin
+                  while Present (Variant) loop
+                     pragma Assert (Nkind (Variant) = N_Component_Association);
+                     Mark (Expression (Variant));
+                     Next (Variant);
                   end loop;
                end;
             end if;
@@ -6985,6 +7040,7 @@ package body SPARK_Definition is
             | Pragma_Restriction_Warnings
             | Pragma_Secondary_Stack_Size
             | Pragma_Style_Checks
+            | Pragma_Subprogram_Variant
             | Pragma_Test_Case
             | Pragma_Type_Invariant
             | Pragma_Type_Invariant_Class
@@ -7289,9 +7345,7 @@ package body SPARK_Definition is
             elsif Retysp_In_SPARK (Return_Typ)
               and then Is_Deep (Return_Typ)
             then
-               if not Is_Path_Expression (Expr) then
-                  Mark_Violation ("expression as source of move", Expr);
-               end if;
+               Check_Source_Of_Move (Expr);
             end if;
          end;
       end if;
@@ -7318,35 +7372,36 @@ package body SPARK_Definition is
       --  Standard types which are in SPARK are associated to True
 
       Standard_Type_Is_In_SPARK : constant array (S_Types) of Boolean :=
-        (S_Boolean             => True,
+        (S_Boolean                => True,
 
-         S_Short_Short_Integer => True,
-         S_Short_Integer       => True,
-         S_Integer             => True,
-         S_Long_Integer        => True,
-         S_Long_Long_Integer   => True,
+         S_Short_Short_Integer    => True,
+         S_Short_Integer          => True,
+         S_Integer                => True,
+         S_Long_Integer           => True,
+         S_Long_Long_Integer      => True,
+         S_Long_Long_Long_Integer => True,
 
-         S_Natural             => True,
-         S_Positive            => True,
+         S_Natural                => True,
+         S_Positive               => True,
 
-         S_Short_Float         =>
+         S_Short_Float            =>
            Is_Single_Precision_Floating_Point_Type
              (Standard_Entity (S_Short_Float)),
-         S_Float               => True,
-         S_Long_Float          => True,
-         S_Long_Long_Float     =>
+         S_Float                  => True,
+         S_Long_Float             => True,
+         S_Long_Long_Float        =>
            Is_Double_Precision_Floating_Point_Type
              (Standard_Entity (S_Long_Long_Float)),
 
-         S_Character           => True,
-         S_Wide_Character      => True,
-         S_Wide_Wide_Character => True,
+         S_Character              => True,
+         S_Wide_Character         => True,
+         S_Wide_Wide_Character    => True,
 
-         S_String              => True,
-         S_Wide_String         => True,
-         S_Wide_Wide_String    => True,
+         S_String                 => True,
+         S_Wide_String            => True,
+         S_Wide_Wide_String       => True,
 
-         S_Duration            => True);
+         S_Duration               => True);
 
    --  Start of processing for Mark_Standard_Package
 

@@ -1,0 +1,6 @@
+Phase 1 of 2: generation of Global contracts ...
+Phase 2 of 2: flow analysis and proof ...
+enable analysis of a non-generic body using SPARK_Mode
+warning: no bodies have been analyzed by GNATprove
+Try "gnatprove --help" for more information.
+filename file1.ads is not unique in aggregate project

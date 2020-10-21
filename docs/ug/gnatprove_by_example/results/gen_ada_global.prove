@@ -1,5 +1,0 @@
-gen_ada_global.adb:20:06: info: data dependencies proved
-gen_ada_global.adb:21:06: info: flow dependencies proved
-gen_ada_global.adb:25:10: high: "V" is not an input in the Global contract of subprogram "Set_Global_Conditionally" at line 19
-gen_ada_global.adb:25:10: high: "V" is not initialized
-gen_ada_global.adb:25:10: high: either make "V" an input in the Global contract or initialize it before use

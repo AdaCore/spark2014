@@ -1,0 +1,14 @@
+
+linear_search.adb:23:14: high: "Res.At_Index" is not initialized
+   23 |      return Res;
+      |             ^ here
+
+linear_search.ads:29:20: medium: contract case might fail
+   29 |       (A(1) = Val =>
+      |                   ^ here
+  e.g. when Search'Result = (Found => False, At_Index => 2)
+
+linear_search.ads:31:67: medium: contract case might fail
+   31 |        A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
+      |                                                                  ^ here
+  e.g. when Search'Result = (Found => False, At_Index => 1)

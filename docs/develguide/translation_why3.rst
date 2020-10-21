@@ -2735,6 +2735,25 @@ as an assignment at the location of the object declaration:
 
  P__b.b.bool__content <- True;
 
+In fact, even for constants code might be generated at the location of the
+object declaration to specify the value of the constant. This can have several
+reasons:
+
+ * No axiom can be generated for the constant, or the axiom might be
+   incomplete. For example, we can't currently generate axioms for non-static
+   constants in protected objects, and axioms for constants that are defined
+   using a recursive call might be incomplete.
+ * Repeating the value of the constant in a different form might help provers.
+
+The relevant subprograms for the handling of constant values are:
+
+ * Gnat2why.Decls.Translate_Constant_Value for the generation of the axiom for
+   the constant, if possible.
+ * Gnat2why.Expr.Assignment_Of_Obj_Decl for the insertion of assumptions in
+   some cases
+ * Gnat2why.Expr.Assume_Value_Of_Constants for the insertion of assumptions for
+   constants
+
 Scalar Objects
 ^^^^^^^^^^^^^^
 For some Ada types, expressions, and in particular objects, can be either in a
@@ -4282,10 +4301,90 @@ added as assumption in :code:`Transform_Loop_Statement`:
   that have not been modified yet in the loop.
 
 
+.. _Procedure Calls:
 Procedure Calls
 ^^^^^^^^^^^^^^^
+Parameter Passing
+"""""""""""""""""
+Computing actual parameters to be passed to a procedure call can be relatively
+complex, in particular if the paremeters are mutable (`out` or `in out`).
+Indeed, the callee will expect a reference, while the parameter might be
+a part of a bigger object, itself stored in a reference, or a view conversion.
+When computing the parameters of a call, we try, as much as possible to reuse
+the reference of the actual object if it is possible (basically, if it is
+a simple object, and if the types match). This is done in ``Get_Item_From_Var``
+from ``Gnat2Why.Expr``. If the reference (or references if the object is split)
+of the actual cannot be reused, a new one is created and is initialized to the
+actual value (see ``Get_Item_From_Expr``). In this case, additional instructions
+need to be inserted after the call to store the value back inside the initial
+data structure. This is done in ``Compute_Store``.
+If the formal and the actual have different subtypes, checks need to be
+inserted either before or after the call. This is done while computing the
+parameter for checks on input, and while computing the store for checks on
+output.
 
-Context, checks on parameters
+Additional Checks
+"""""""""""""""""
+When a subprogram call is translated in the program domain, the precondition is
+checked as part of calling the Why3 translation of the callee. Other checks
+may need to be generated depending on the call (checks for recursive
+subprogram variants or for the invariant of inputs on calls to boundary
+subprograms). Those are introduced calling specific Why3 program functions.
+These functions have no
+effects, only a precondition which contains the check (see
+``WNE_Check_Invariants_On_Call`` and ``WNE_Check_Subprogram_Variants``). For
+example, let us consider the following definition of the ``Fibonacci``
+function:
+
+.. code-block:: ada
+
+   function Fibonacci (N : Nat) return Nat is
+     (if N = 0 then 0
+      elsif N = 1 then 1
+      else Fibonacci (N - 1) + Fibonacci (N - 2))
+   with Subprogram_Variant => (Decreases => N);
+
+The first recursive call in ``Fibonacci`` is translated as follows:
+
+.. code-block:: whyml
+
+  let temp_for_n_param = n - 1 in
+  let temp_call_result =
+        fibonacci__check_subprogram_variants
+            recursive_subprograms__fibonacci__variant temp_for_n_param;
+        fibonacci temp_for_n_param
+
+Where the call to ``fibonacci__check_subprogram_variants`` is used to insert
+the variant check. This function is defined in the axiom module for
+``Fibonacci`` as follows:
+
+.. code-block:: whyml
+
+  val fibonacci__check_subprogram_variants (variant: int) (n: int) : unit
+    requires { n < variant }
+
+As we can see, in addition to the parameters of the call which are used to
+compute the value
+of the variant at the time of call, the function for variant checks takes as a
+parameter the values of the variant at the beginning of the enclosing scope.
+If the enclosing scope is a subprogram, then these values are computed and
+stored at the beginning of the subprogram. In our example,
+``recursive_subprograms__fibonacci__variant`` is a constant introduced at the
+beginning of the program function used to check absence of runtime errors in
+``Fibonacci``:
+
+.. code-block:: whyml
+
+     let recursive_subprograms__fibonacci__variant =
+        Recursive_subprograms__fibonacci__n.n in
+
+If the enclosing scope is a nested
+package, no such copies can be introduced. For packages declared in the
+initial declarations of a subprogram, the initial values of the variant can be
+computed from the variant expression of the enclosing subprogram as the
+variables it might contain cannot have been modified since the beginning of the
+subprogram. Recursive calls in nested packages declared anywhere else in the
+subprogram are not supported, and an unprovable check is generated instead.
 
 Expressions
 -----------
@@ -4335,6 +4434,8 @@ Quantifiers
 
 Function Calls
 ^^^^^^^^^^^^^^
+In the program domain, function calls are translated in a similar way as
+:ref:`Procedure Calls`.
 
 Pledge Function Calls
 ^^^^^^^^^^^^^^^^^^^^^

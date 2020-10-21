@@ -167,8 +167,9 @@ package SPARK_Definition is
    --  marking as a JSON record.
 
    function Has_Relaxed_Init (E : Entity_Id) return Boolean with
+     Pre  => Is_Type (E),
      Post => (if Has_Relaxed_Init'Result then In_Relaxed_Init (E));
-   --  True is E is annotated with relaxed initialization
+   --  True if type E is annotated with relaxed initialization
 
    function In_Relaxed_Init (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);

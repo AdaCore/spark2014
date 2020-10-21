@@ -51,6 +51,7 @@ with Namet;                            use Namet;
 with Opt;                              use Opt;
 with Osint;                            use Osint;
 with Output;                           use Output;
+with Sem_Aux;                          use Sem_Aux;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
 with Sinfo;                            use Sinfo;
@@ -1401,12 +1402,6 @@ package body Flow is
                   Analysis.Check_Function_For_Volatile_Effects (FA);
                   Analysis.Check_Output_Constant_After_Elaboration (FA);
 
-                  if FA.Kind = Kind_Subprogram
-                    and then Gnat2Why_Args.Flow_Termination_Proof
-                  then
-                     Analysis.Check_Termination (FA);
-                  end if;
-
                   --  If no errors or warnings were found during flow
                   --  analysis of the subprogram then emit the
                   --  relevant claim.
@@ -1439,6 +1434,7 @@ package body Flow is
                      end if;
                      Analysis.Check_Aliasing (FA);
                      if not Is_Library_Level_Entity (FA.Spec_Entity) then
+                        Analysis.Check_Potentially_Blocking (FA);
                         Analysis.Check_Terminating_Annotation (FA);
                      end if;
                      Analysis.Find_Non_Elaborated_State_Abstractions (FA);
@@ -1468,14 +1464,12 @@ package body Flow is
 
          --  Check for potentially blocking operations in protected actions and
          --  for calls to Current_Task from entry body.
-         if FA.Kind = Kind_Subprogram
-           and then Convention (FA.Spec_Entity) in Convention_Entry
-                                                 | Convention_Protected
-         then
+         if Is_Protected_Operation (FA.Spec_Entity) then
             Flow.Analysis.Check_Potentially_Blocking (FA);
 
-            --  We issue a high error message in case the Current_Task function
-            --  is called from an entry body.
+            --  Detect calls to Current_Task from entry bodies and interrupt
+            --  handlers.
+
             if Ekind (FA.Spec_Entity) = E_Entry
               and then Calls_Current_Task (FA.Spec_Entity)
             then
@@ -1489,8 +1483,6 @@ package body Flow is
                   Severity => High_Check_Kind);
             end if;
 
-            --  We issue a high error message in case the Current_Task function
-            --  is called from an interrupt handler.
             if Ekind (FA.Spec_Entity) = E_Procedure
               and then Is_Interrupt_Handler (FA.Spec_Entity)
               and then Calls_Current_Task (FA.Spec_Entity)

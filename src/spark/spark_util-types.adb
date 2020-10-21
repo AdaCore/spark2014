@@ -32,6 +32,13 @@ with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
 package body SPARK_Util.Types is
 
+   function Type_Name_For_Explanation (Typ : Entity_Id) return String
+     is (if not Is_Itype (Typ) then "type " & Source_Name (Typ)
+         else "anonymous type")
+     with Pre => Is_Type (Typ);
+   --  This function computes a user-visible string to represent the type in
+   --  argument.
+
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
@@ -388,7 +395,7 @@ package body SPARK_Util.Types is
             return False;
          else
             declare
-               Comp : Node_Id := First_Component (Rep_Ty);
+               Comp : Entity_Id := First_Component (Rep_Ty);
             begin
                while Present (Comp) loop
                   if Component_Is_Visible_In_SPARK (Comp)
@@ -670,16 +677,6 @@ package body SPARK_Util.Types is
       return Node (Elmt);
    end Get_Constraint_For_Discr;
 
-   --------------------------------------
-   -- Get_Type_With_Predicate_Function --
-   --------------------------------------
-
-   function Get_Type_With_Predicate_Function (E : Entity_Id) return Entity_Id
-   is
-     (if Present (Predicate_Function (E)) then E
-      elsif Is_Itype (E) then Predicated_Parent (E)
-      else Partial_View (E));
-
    -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
@@ -924,7 +921,13 @@ package body SPARK_Util.Types is
          Result      : out Boolean;
          Explanation : out Unbounded_String)
       is
+
+         function Typ_Name return String is (Type_Name_For_Explanation (Typ));
+
          Typ_Size : Uint;
+
+      --  Start of processing for Is_Valid_Bitpattern_No_Holes_Internal
+
       begin
          --  Some valid IEEE 754 values are not allowed in SPARK, such as NaN
 
@@ -939,7 +942,7 @@ package body SPARK_Util.Types is
          if Use_RM_Size and then not Known_RM_Size (Typ) then
             Result := False;
             Explanation :=
-              To_Unbounded_String ("type " & Source_Name (Typ) & " doesn't "
+              To_Unbounded_String (Typ_Name & " doesn't "
                                    & "have a Size representation clause or "
                                    & "aspect");
             return;
@@ -948,7 +951,7 @@ package body SPARK_Util.Types is
          then
             Result := False;
             Explanation :=
-              To_Unbounded_String ("type " & Source_Name (Typ) & " doesn't "
+              To_Unbounded_String (Typ_Name & " doesn't "
                                    & "have an Object_Size representation "
                                    & "clause or aspect");
             return;
@@ -962,40 +965,35 @@ package body SPARK_Util.Types is
          then
             Result := False;
             Explanation :=
-              To_Unbounded_String ("type " & Source_Name (Typ) & " has "
-                                   & "invariants or predicates");
+              To_Unbounded_String (Typ_Name & " has invariants or predicates");
             return;
          end if;
 
          if Has_Discriminants (Typ) then
             Result := False;
             Explanation :=
-              To_Unbounded_String ("type " & Source_Name (Typ) & " has " &
-                                     "discriminants");
+              To_Unbounded_String (Typ_Name & " has discriminants");
             return;
          end if;
 
          if Is_Tagged_Type (Typ) then
             Result := False;
             Explanation :=
-              To_Unbounded_String ("type " & Source_Name (Typ) & " is a " &
-                                     "tagged type");
+              To_Unbounded_String (Typ_Name & " is a tagged type");
             return;
          end if;
 
          if Is_Private_Type (Typ) then
             Result := False;
             Explanation :=
-              To_Unbounded_String ("type " & Source_Name (Typ) & " is a " &
-                                     "private type");
+              To_Unbounded_String (Typ_Name & " is a private type");
             return;
          end if;
 
          if Is_Concurrent_Type (Typ) then
             Result := False;
             Explanation :=
-              To_Unbounded_String ("type " & Source_Name (Typ) & " is a " &
-                                     "concurrent type");
+              To_Unbounded_String (Typ_Name & " is a concurrent type");
             return;
          end if;
 
@@ -1024,7 +1022,7 @@ package body SPARK_Util.Types is
                      Result := False;
                      Explanation :=
                        To_Unbounded_String
-                         ("type " & Source_Name (Typ) & " has "
+                         (Typ_Name & " has "
                           & UI_Image (Num_Values) & " values but has bit size "
                           & UI_Image (Typ_Size));
                   end if;
@@ -1468,7 +1466,7 @@ package body SPARK_Util.Types is
       if not Known_Esize (A) then
          Result := False;
          Explanation :=
-           To_Unbounded_String ("type " & Source_Name (A) & " doesn't "
+           To_Unbounded_String (Type_Name_For_Explanation (A) & " doesn't "
                                 & "have an Object_Size representation "
                                 & "clause or aspect");
          return;
@@ -1476,7 +1474,7 @@ package body SPARK_Util.Types is
       if not Known_Esize (B) then
          Result := False;
          Explanation :=
-           To_Unbounded_String ("type " & Source_Name (B) & " doesn't "
+           To_Unbounded_String (Type_Name_For_Explanation (B) & " doesn't "
                                 & "have an Object_Size representation "
                                 & "clause or aspect");
          return;
@@ -1484,8 +1482,10 @@ package body SPARK_Util.Types is
       if not UI_Eq (Esize (A), Esize (B)) then
          Result := False;
          Explanation :=
-           To_Unbounded_String ("Object_Sizes of type " & Source_Name (A) &
-                                " and " & Source_Name (B) & " differ");
+           To_Unbounded_String ("Object_Sizes of "
+                                & Type_Name_For_Explanation (A)
+                                & " and " & Type_Name_For_Explanation (B)
+                                & " differ");
          return;
       end if;
       Result := True;

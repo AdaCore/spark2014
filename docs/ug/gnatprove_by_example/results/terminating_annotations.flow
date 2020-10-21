@@ -1,4 +1,0 @@
-terminating_annotations.ads:3:13: medium: subprogram "F_Rec" might not terminate, terminating annotation could be incorrect
-terminating_annotations.ads:6:13: medium: subprogram "F_While" might not terminate, terminating annotation could be incorrect
-terminating_annotations.ads:13:13: medium: subprogram "F_Call" might not terminate, terminating annotation could be incorrect
-terminating_annotations.ads:16:13: info: subprogram "F_Term" will terminate, terminating annotation has been proved

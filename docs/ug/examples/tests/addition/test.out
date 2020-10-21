@@ -1,0 +1,7 @@
+
+addition.adb:4:16: medium: overflow check might fail
+    4 |  Pre     => X + Y in Integer,
+      |               ^ here
+  e.g. when X = -1
+        and Y = Integer'First
+  reason for check: result of addition must fit in a 32-bits machine integer

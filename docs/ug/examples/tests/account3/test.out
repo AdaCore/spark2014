@@ -1,0 +1,12 @@
+
+account3.adb:18:33: medium: overflow check might fail
+   18 |            Num_Accounts := Tmp + 1;
+      |                                ^ here
+  e.g. when Tmp = Natural'Last
+  reason for check: result of addition must fit in a 32-bits machine integer
+  possible fix: loop at line 13 should mention Tmp in a loop invariant
+   13 |      loop
+      |      ^ here
+account3.ads:6:14: info: nontermination of task proved
+account3.ads:7:06: info: data dependencies proved
+account3.ads:8:06: info: flow dependencies proved

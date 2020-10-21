@@ -55,6 +55,7 @@ with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
 with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;
 with Gnat2Why.External_Axioms;        use Gnat2Why.External_Axioms;
 with Gnat2Why.Subprograms;            use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                 use Gnat2Why.Tables;
@@ -627,6 +628,11 @@ package body Gnat2Why.Driver is
       Nlists.Unlock;
       Sem.Scope_Stack.Locked := False;
       Lib.Unlock;
+
+      --  Initialize and check statically (in ghost code) tabled values for the
+      --  nth roots of the modulus of machine integers.
+
+      Gnat2Why.Expr.Initialize_Tables_Nth_Roots;
 
       --  Create an implicit state for memory (de)allocation. It needs to be
       --  before rewriting, where we might refer to this abstract state.

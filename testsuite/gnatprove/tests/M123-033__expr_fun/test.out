@@ -1,10 +1,10 @@
 main.adb:8:25: info: assertion proved (CVC4: 1 VC)
 main.adb:10:25: info: assertion proved (CVC4: 1 VC)
-main.adb:12:25: medium: assertion might fail, cannot prove F3 = 1
+main.adb:12:25: medium: assertion might fail, cannot prove F3 = 1 [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function]
 main.adb:14:25: medium: assertion might fail, cannot prove F4 = 1
 main.adb:16:25: info: assertion proved (CVC4: 1 VC)
-main.adb:18:25: medium: assertion might fail, cannot prove G2 = 1
-main.adb:20:25: medium: assertion might fail, cannot prove G3 = 1
+main.adb:18:25: medium: assertion might fail, cannot prove G2 = 1 [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function]
+main.adb:20:25: medium: assertion might fail, cannot prove G3 = 1 [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 main.adb:22:25: medium: assertion might fail, cannot prove G4 = 1
 p.adb:3:04: warning: analyzing unreferenced procedure "P1"
 p.adb:3:14: warning: subprogram "P1" has no effect
@@ -13,8 +13,8 @@ p.adb:9:28: info: assertion proved (CVC4: 1 VC)
 p.adb:11:28: info: assertion proved (CVC4: 1 VC)
 p.adb:13:28: medium: assertion might fail, cannot prove F4 = 1
 p.adb:15:28: info: assertion proved (CVC4: 1 VC)
-p.adb:17:28: medium: assertion might fail, cannot prove G2 = 1
-p.adb:19:28: medium: assertion might fail, cannot prove G3 = 1
+p.adb:17:28: medium: assertion might fail, cannot prove G2 = 1 [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function]
+p.adb:19:28: medium: assertion might fail, cannot prove G3 = 1 [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 p.adb:21:28: medium: assertion might fail, cannot prove G4 = 1
 p.adb:29:04: warning: analyzing unreferenced procedure "P2"
 p.adb:29:14: warning: subprogram "P2" has no effect
@@ -23,20 +23,20 @@ p.adb:35:28: info: assertion proved (CVC4: 1 VC)
 p.adb:37:28: info: assertion proved (CVC4: 1 VC)
 p.adb:39:28: medium: assertion might fail, cannot prove F4 = 1
 p.adb:41:28: info: assertion proved (CVC4: 1 VC)
-p.adb:43:28: medium: assertion might fail, cannot prove G2 = 1
-p.adb:45:28: medium: assertion might fail, cannot prove G3 = 1
+p.adb:43:28: medium: assertion might fail, cannot prove G2 = 1 [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function]
+p.adb:45:28: medium: assertion might fail, cannot prove G3 = 1 [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 p.adb:47:28: medium: assertion might fail, cannot prove G4 = 1
 p.ads:4:38: info: overflow check proved (CVC4: 1 VC)
 p.ads:4:43: info: overflow check proved (CVC4: 1 VC)
-p.ads:6:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+p.ads:6:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 p.ads:6:43: info: overflow check proved (CVC4: 1 VC)
 private_main.adb:8:25: info: assertion proved (CVC4: 1 VC)
 private_main.adb:10:25: info: assertion proved (CVC4: 1 VC)
-private_main.adb:12:25: medium: assertion might fail, cannot prove F3 = 1
+private_main.adb:12:25: medium: assertion might fail, cannot prove F3 = 1 [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function]
 private_main.adb:14:25: medium: assertion might fail, cannot prove F4 = 1
 private_main.adb:16:25: info: assertion proved (CVC4: 1 VC)
-private_main.adb:18:25: medium: assertion might fail, cannot prove G2 = 1
-private_main.adb:20:25: medium: assertion might fail, cannot prove G3 = 1
+private_main.adb:18:25: medium: assertion might fail, cannot prove G2 = 1 [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function]
+private_main.adb:20:25: medium: assertion might fail, cannot prove G3 = 1 [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 private_main.adb:22:25: medium: assertion might fail, cannot prove G4 = 1
 private_p.adb:3:04: warning: analyzing unreferenced procedure "P1"
 private_p.adb:3:14: warning: subprogram "P1" has no effect
@@ -45,8 +45,8 @@ private_p.adb:9:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:11:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:13:28: medium: assertion might fail, cannot prove F4 = 1
 private_p.adb:15:28: info: assertion proved (CVC4: 1 VC)
-private_p.adb:17:28: medium: assertion might fail, cannot prove G2 = 1
-private_p.adb:19:28: medium: assertion might fail, cannot prove G3 = 1
+private_p.adb:17:28: medium: assertion might fail, cannot prove G2 = 1 [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function]
+private_p.adb:19:28: medium: assertion might fail, cannot prove G3 = 1 [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 private_p.adb:21:28: medium: assertion might fail, cannot prove G4 = 1
 private_p.adb:27:04: warning: analyzing unreferenced procedure "P2"
 private_p.adb:27:14: warning: subprogram "P2" has no effect
@@ -55,10 +55,10 @@ private_p.adb:33:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:35:28: info: assertion proved (CVC4: 1 VC)
 private_p.adb:37:28: medium: assertion might fail, cannot prove F4 = 1
 private_p.adb:39:28: info: assertion proved (CVC4: 1 VC)
-private_p.adb:41:28: medium: assertion might fail, cannot prove G2 = 1
-private_p.adb:43:28: medium: assertion might fail, cannot prove G3 = 1
+private_p.adb:41:28: medium: assertion might fail, cannot prove G2 = 1 [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function]
+private_p.adb:43:28: medium: assertion might fail, cannot prove G3 = 1 [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 private_p.adb:45:28: medium: assertion might fail, cannot prove G4 = 1
-private_p.ads:8:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+private_p.ads:8:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 private_p.ads:8:43: info: overflow check proved (CVC4: 1 VC)
 private_p.ads:9:38: info: overflow check proved (CVC4: 1 VC)
 private_p.ads:9:43: info: overflow check proved (CVC4: 1 VC)
@@ -66,7 +66,7 @@ private_q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 private_q.adb:4:14: warning: subprogram "Q1" has no effect
 private_q.adb:8:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:10:28: info: assertion proved (CVC4: 1 VC)
-private_q.adb:12:28: medium: assertion might fail, cannot prove F3 = 1
+private_q.adb:12:28: medium: assertion might fail, cannot prove F3 = 1 [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function]
 private_q.adb:14:28: medium: assertion might fail, cannot prove F4 = 1
 private_q.adb:16:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:18:28: info: assertion proved (CVC4: 1 VC)
@@ -76,7 +76,7 @@ private_q.adb:28:04: warning: analyzing unreferenced procedure "Q2"
 private_q.adb:28:14: warning: subprogram "Q2" has no effect
 private_q.adb:32:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:34:28: info: assertion proved (CVC4: 1 VC)
-private_q.adb:36:28: medium: assertion might fail, cannot prove F3 = 1
+private_q.adb:36:28: medium: assertion might fail, cannot prove F3 = 1 [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function]
 private_q.adb:38:28: medium: assertion might fail, cannot prove F4 = 1
 private_q.adb:40:28: info: assertion proved (CVC4: 1 VC)
 private_q.adb:42:28: info: assertion proved (CVC4: 1 VC)
@@ -90,7 +90,7 @@ q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 q.adb:4:14: warning: subprogram "Q1" has no effect
 q.adb:8:28: info: assertion proved (CVC4: 1 VC)
 q.adb:10:28: info: assertion proved (CVC4: 1 VC)
-q.adb:12:28: medium: assertion might fail, cannot prove F3 = 1
+q.adb:12:28: medium: assertion might fail, cannot prove F3 = 1 [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function]
 q.adb:14:28: medium: assertion might fail, cannot prove F4 = 1
 q.adb:16:28: info: assertion proved (CVC4: 1 VC)
 q.adb:18:28: info: assertion proved (CVC4: 1 VC)
@@ -102,7 +102,7 @@ q.adb:31:04: warning: analyzing unreferenced procedure "Q2"
 q.adb:31:14: warning: subprogram "Q2" has no effect
 q.adb:35:28: info: assertion proved (CVC4: 1 VC)
 q.adb:37:28: info: assertion proved (CVC4: 1 VC)
-q.adb:39:28: medium: assertion might fail, cannot prove F3 = 1
+q.adb:39:28: medium: assertion might fail, cannot prove F3 = 1 [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function]
 q.adb:41:28: medium: assertion might fail, cannot prove F4 = 1
 q.adb:43:28: info: assertion proved (CVC4: 1 VC)
 q.adb:45:28: info: assertion proved (CVC4: 1 VC)
@@ -112,11 +112,11 @@ q.ads:5:38: info: overflow check proved (CVC4: 1 VC)
 q.ads:5:43: info: overflow check proved (CVC4: 1 VC)
 reorder_main.adb:8:25: info: assertion proved (CVC4: 1 VC)
 reorder_main.adb:10:25: info: assertion proved (CVC4: 1 VC)
-reorder_main.adb:12:25: medium: assertion might fail, cannot prove F3 = 1
+reorder_main.adb:12:25: medium: assertion might fail, cannot prove F3 = 1 [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function]
 reorder_main.adb:14:25: medium: assertion might fail, cannot prove F4 = 1
 reorder_main.adb:16:25: info: assertion proved (CVC4: 1 VC)
-reorder_main.adb:18:25: medium: assertion might fail, cannot prove G2 = 1
-reorder_main.adb:20:25: medium: assertion might fail, cannot prove G3 = 1
+reorder_main.adb:18:25: medium: assertion might fail, cannot prove G2 = 1 [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function]
+reorder_main.adb:20:25: medium: assertion might fail, cannot prove G3 = 1 [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 reorder_main.adb:22:25: medium: assertion might fail, cannot prove G4 = 1
 reorder_p.adb:3:04: warning: analyzing unreferenced procedure "P1"
 reorder_p.adb:3:14: warning: subprogram "P1" has no effect
@@ -125,8 +125,8 @@ reorder_p.adb:9:28: info: assertion proved (CVC4: 1 VC)
 reorder_p.adb:11:28: info: assertion proved (CVC4: 1 VC)
 reorder_p.adb:13:28: medium: assertion might fail, cannot prove F4 = 1
 reorder_p.adb:15:28: info: assertion proved (CVC4: 1 VC)
-reorder_p.adb:17:28: medium: assertion might fail, cannot prove G2 = 1
-reorder_p.adb:19:28: medium: assertion might fail, cannot prove G3 = 1
+reorder_p.adb:17:28: medium: assertion might fail, cannot prove G2 = 1 [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function]
+reorder_p.adb:19:28: medium: assertion might fail, cannot prove G3 = 1 [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 reorder_p.adb:21:28: medium: assertion might fail, cannot prove G4 = 1
 reorder_p.adb:27:04: warning: analyzing unreferenced procedure "P2"
 reorder_p.adb:27:14: warning: subprogram "P2" has no effect
@@ -135,18 +135,18 @@ reorder_p.adb:33:28: info: assertion proved (CVC4: 1 VC)
 reorder_p.adb:35:28: info: assertion proved (CVC4: 1 VC)
 reorder_p.adb:37:28: medium: assertion might fail, cannot prove F4 = 1
 reorder_p.adb:39:28: info: assertion proved (CVC4: 1 VC)
-reorder_p.adb:41:28: medium: assertion might fail, cannot prove G2 = 1
-reorder_p.adb:43:28: medium: assertion might fail, cannot prove G3 = 1
+reorder_p.adb:41:28: medium: assertion might fail, cannot prove G2 = 1 [possible fix: you should consider adding a postcondition to function G2 or turning it into an expression function]
+reorder_p.adb:43:28: medium: assertion might fail, cannot prove G3 = 1 [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 reorder_p.adb:45:28: medium: assertion might fail, cannot prove G4 = 1
 reorder_p.ads:4:38: info: overflow check proved (CVC4: 1 VC)
 reorder_p.ads:4:43: info: overflow check proved (CVC4: 1 VC)
-reorder_p.ads:6:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+reorder_p.ads:6:38: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function G3 or turning it into an expression function]
 reorder_p.ads:6:43: info: overflow check proved (CVC4: 1 VC)
 reorder_q.adb:4:04: warning: analyzing unreferenced procedure "Q1"
 reorder_q.adb:4:14: warning: subprogram "Q1" has no effect
 reorder_q.adb:8:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:10:28: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:12:28: medium: assertion might fail, cannot prove F3 = 1
+reorder_q.adb:12:28: medium: assertion might fail, cannot prove F3 = 1 [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function]
 reorder_q.adb:14:28: medium: assertion might fail, cannot prove F4 = 1
 reorder_q.adb:16:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:18:28: info: assertion proved (CVC4: 1 VC)
@@ -156,7 +156,7 @@ reorder_q.adb:28:04: warning: analyzing unreferenced procedure "Q2"
 reorder_q.adb:28:14: warning: subprogram "Q2" has no effect
 reorder_q.adb:32:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:34:28: info: assertion proved (CVC4: 1 VC)
-reorder_q.adb:36:28: medium: assertion might fail, cannot prove F3 = 1
+reorder_q.adb:36:28: medium: assertion might fail, cannot prove F3 = 1 [possible fix: you should consider adding a postcondition to function F3 or turning it into an expression function]
 reorder_q.adb:38:28: medium: assertion might fail, cannot prove F4 = 1
 reorder_q.adb:40:28: info: assertion proved (CVC4: 1 VC)
 reorder_q.adb:42:28: info: assertion proved (CVC4: 1 VC)

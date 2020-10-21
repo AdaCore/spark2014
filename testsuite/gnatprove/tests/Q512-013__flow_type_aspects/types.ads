@@ -1,6 +1,6 @@
 with A; use A;
 package Types
-  with Elaborate_Body
+  with Elaborate_Body, Annotate => (GNATprove, Terminating)
 is
    function Func return Boolean is (R);
 
@@ -22,6 +22,5 @@ private
    procedure Proc1 (Obj : in out T1);
    procedure Proc2 (Obj : in out T2);
    procedure Proc3 (Obj : in out T3);
-
 
 end;

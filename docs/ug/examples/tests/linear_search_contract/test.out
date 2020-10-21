@@ -1,0 +1,14 @@
+
+linear_search.ads:28:06: medium: contract cases might not be disjoint
+   28 |     Contract_Cases =>
+      |     ^ here
+
+linear_search.ads:29:20: medium: contract case might fail
+   29 |       (A(1) = Val =>
+      |                   ^ here
+  e.g. when Search'Result = (Found => True, At_Index => 2)
+
+linear_search.ads:31:46: medium: contract case might fail
+   31 |        Value_Found_In_Range (A, Val, 2, 10) =>
+      |                                             ^ here
+  e.g. when Search'Result = (Found => False, At_Index => 1)

@@ -1,0 +1,15 @@
+project Test is
+
+   package Builder is
+      for Global_Configuration_Pragmas use "test.adc";
+   end Builder;
+   
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2020");
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=fail", "--prover=altergo");
+   end Prove;
+
+end Test;

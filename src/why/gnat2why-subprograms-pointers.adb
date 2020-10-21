@@ -95,7 +95,7 @@ package body Gnat2Why.Subprograms.Pointers is
    is
       Need_Post_Check  : constant Boolean :=
         not Find_Contracts (To, Pragma_Postcondition).Is_Empty
-        and then No (Get_Pragma (To, Pragma_Contract_Cases));
+        or else Present (Get_Pragma (To, Pragma_Contract_Cases));
       --  True if we need to check the compatibility of postconditions
 
       Need_Pre_Check   : constant Boolean :=

@@ -87,7 +87,7 @@ between two variants of the record for logging either only the minimum and
 maximum entries or the last entries, and a discriminant ``Capacity`` specifying
 the maximum number of entries logged:
 
-.. literalinclude:: /gnatprove_by_example/examples/logging_discr.ads
+.. literalinclude:: /examples/tests/logging_discr/logging_discr.ads
    :language: ada
    :linenos:
 
@@ -95,7 +95,7 @@ Subtypes of ``Log_Type`` can specify fixed values for ``Kind`` and
 ``Capacity``, like in ``Min_Max_Log`` and ``Ten_Values_Log``. The discriminants
 ``Kind`` and ``Capacity`` are accessed like regular components, for example:
 
-.. literalinclude:: /gnatprove_by_example/examples/logging_discr.adb
+.. literalinclude:: /examples/tests/logging_discr/logging_discr.adb
    :language: ada
    :linenos:
 
@@ -105,7 +105,7 @@ in raising an exception at run time. During analysis, |GNATprove| checks that
 components accessed are present, and that array components are accessed within
 bounds:
 
-.. literalinclude:: /gnatprove_by_example/results/logging_discr.prove
+.. literalinclude:: /examples/tests/logging_discr/test.out
    :language: none
 
 .. _Predicates:
@@ -161,7 +161,7 @@ predicate. |GNATprove| also uses the predicate information for proving
 properties about the program.
 
 ..  examples in this section are expanded in the example code predicates.ads
-    under gnatprove_by_example, and should be kept in synch with this code.
+    and should be kept in synch with this code.
 
 Static Predicates
 ^^^^^^^^^^^^^^^^^
@@ -320,7 +320,7 @@ on global variables that are modified by a subprogram. |GNATprove| also uses
 the invariant information for proving properties about the program.
 
 ..  examples in this section are expanded in the example code invariants.ads/b
-    under gnatprove_by_example, and should be kept in synch with this code.
+    and should be kept in synch with this code.
 
 As an example, let us consider a stack, which can be queried for the maximum of
 the elements stored in it:
@@ -390,15 +390,11 @@ object declared in the scope of ``Stack`` after it has been initialized:
 .. code-block:: ada
 
    package body P is
-
       The_Stack : Stack := (Content => (others => 1),
                             Size    => 5,
                             Max     => 0);
-
    begin
-
       The_Stack.Max := 1;
-
    end P;
 
 Here the global variable ``The_Stack`` is allowed to break its invariant during
@@ -517,7 +513,7 @@ condition specifying that the size of the log is initially zero, where uses of
 the name of the private type ``Log_Type`` in the argument refer to variables of
 this type:
 
-.. literalinclude:: /gnatprove_by_example/examples/logging_priv.ads
+.. literalinclude:: /examples/tests/logging_priv/logging_priv.ads
    :language: ada
    :linenos:
 
@@ -540,7 +536,7 @@ definition of the private type is in |SPARK|, |GNATprove| also checks that the
 type is indeed fully default initialized, and if not issues a message like
 here:
 
-.. literalinclude:: /gnatprove_by_example/results/logging_priv.flow
+.. literalinclude:: /examples/tests/logging_priv/test.out
    :language: none
 
 If partial default initialization of the type is intended, in general for

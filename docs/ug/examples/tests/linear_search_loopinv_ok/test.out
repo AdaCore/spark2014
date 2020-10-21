@@ -1,0 +1,5 @@
+
+linear_search.ads:35:67: medium: contract case might fail
+   35 |        A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
+      |                                                                  ^ here
+  e.g. when Search'Result = (Found => False, At_Index => 10)

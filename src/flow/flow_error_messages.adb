@@ -51,6 +51,7 @@ with Snames;                    use Snames;
 with SPARK_Atree;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util;                use SPARK_Util;
+with SPARK_Util.Hardcoded;      use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 with SPARK_Util.Types;          use SPARK_Util.Types;
 with SPARK_Xrefs;               use SPARK_Xrefs;
@@ -59,6 +60,11 @@ with String_Utils;
 with Uintp;                     use Uintp;
 
 package body Flow_Error_Messages is
+
+   At_Line_Placeholder : constant String := "###AT_LINE_PLACEHOLDER###";
+   --  Placeholder for the line insertion character # for Errout. It is used so
+   --  that other occurrences of character # are properly escaped in function
+   --  Escape, while the placeholder is turned into # at the same time.
 
    Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
@@ -74,9 +80,12 @@ package body Flow_Error_Messages is
    --  detailed message explaining why this check is issued (typically in the
    --  case of a length/range/overflow/index check), or the empty string.
 
-   function Get_Fix (N : Node_Id; Tag : VC_Kind) return String;
+   function Get_Fix (N          : Node_Id;
+                     Tag        : VC_Kind;
+                     How_Proved : Prover_Category) return String;
    --  @param N node associated to an unproved check
    --  @param Tag associated unproved check
+   --  @param How_Proved should be PC_Trivial if the check is static
    --  @result message part suggesting a fix to make the unproved check proved
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
@@ -181,8 +190,9 @@ package body Flow_Error_Messages is
 
    function Escape (S : String) return String;
    --  Escape any special characters used in the error message (for example
-   --  transforms "=>" into "='>" as > is a special insertion character. We
-   --  also escape capital letters.
+   --  transforms "=>" into "='>" as > is a special insertion character.
+   --  We also escape capital letters. Also turn the placeholder for line
+   --  insertion character # into the character itself.
 
    function Substitute
      (S    : Unbounded_String;
@@ -720,9 +730,7 @@ package body Flow_Error_Messages is
                   Details : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
                      else Get_Details (N, Tag));
-                  Fix     : constant String :=
-                    (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
-                     else Get_Fix (N, Tag));
+
                begin
                   --  Only display message details when outputting on one line,
                   --  either as part of automatic testing or inside an IDE, to
@@ -754,9 +762,13 @@ package body Flow_Error_Messages is
                           & " [possible explanation: " & Explanation & "]";
                      end if;
 
-                     if Fix /= "" then
-                        Message := Message & " [possible fix: " & Fix & "]";
-                     end if;
+                     declare
+                        Fix : constant String := Get_Fix (N, Tag, How_Proved);
+                     begin
+                        if Fix /= "" then
+                           Message := Message & " [possible fix: " & Fix & "]";
+                        end if;
+                     end;
 
                      Msg_Id :=
                        Print_Regular_Msg (To_String (Message), Slc, Severity);
@@ -791,11 +803,15 @@ package body Flow_Error_Messages is
                            Slc, Severity, Continuation => True);
                      end if;
 
-                     if Fix /= "" then
-                        Ignore_Id := Print_Regular_Msg
-                          ("possible fix: " & Fix,
-                           Slc, Severity, Continuation => True);
-                     end if;
+                     declare
+                        Fix : constant String := Get_Fix (N, Tag, How_Proved);
+                     begin
+                        if Fix /= "" then
+                           Ignore_Id := Print_Regular_Msg
+                             ("possible fix: " & Fix,
+                              Slc, Severity, Continuation => True);
+                        end if;
+                     end;
                   end case;
                end;
             end if;
@@ -839,15 +855,30 @@ package body Flow_Error_Messages is
 
    function Escape (S : String) return String is
       R : Unbounded_String := Null_Unbounded_String;
+      J : Integer := S'First;
+      C : Character;
    begin
-      for C of S loop
-         if C in '%' | '$' | '{' | '*' | '&' | '#' |
-                 '}' | '@' | '^' | '>' | '!' | '?' |
-                 '<' | '`' | ''' | '\' | '|' | '[' |
-                 ']'
-           or else Is_Upper (C)
+      while J <= S'Last loop
+         C := S (J);
+
+         if C = '#'
+           and then S'Length - J + 1 >= At_Line_Placeholder'Length
+           and then S (J .. J + At_Line_Placeholder'Length - 1) =
+                    At_Line_Placeholder
          then
-            Append (R, "'");
+            J := J + At_Line_Placeholder'Length;
+
+         else
+            if C in '%' | '$' | '{' | '*' | '&' | '#'
+                  | '}' | '@' | '^' | '>' | '!' | '?'
+                  | '<' | '`' | ''' | '\' | '|' | '['
+                  | ']'
+              or else Is_Upper (C)
+            then
+               Append (R, "'");
+            end if;
+
+            J := J + 1;
          end if;
 
          Append (R, C);
@@ -1146,7 +1177,11 @@ package body Flow_Error_Messages is
    -- Get_Fix --
    -------------
 
-   function Get_Fix (N : Node_Id; Tag : VC_Kind) return String is
+   function Get_Fix
+     (N          : Node_Id;
+      Tag        : VC_Kind;
+      How_Proved : Prover_Category) return String
+   is
 
       -----------------------
       -- Local subprograms --
@@ -1162,6 +1197,10 @@ package body Flow_Error_Messages is
 
       function Enclosing_Stmt_Or_Prag_Or_Decl is new
         First_Parent_With_Property (Is_Stmt_Or_Prag_Or_Decl);
+
+      function Explain_Calls (Calls : Node_Lists.List) return Unbounded_String;
+      --  Return part of the explanation listing the functions or
+      --  access-to-function types in [Calls].
 
       subtype Explain_Node_Kind is Node_Kind
         with Static_Predicate =>
@@ -1243,12 +1282,204 @@ package body Flow_Error_Messages is
       --  Return the set of flow ids to consider for the check of kind Tag
       --  associated to node N.
 
+      function Get_Calls_From_Node (N : Node_Id) return Node_Lists.List;
+      --  Return the list of calls nodes to consider for the check of kind Tag
+      --  associated to node N.
+
       function Has_Attribute_Result (N : Node_Id) return Boolean;
       --  Return whether N refers to some attribute Func'Result
 
       function Has_Post_State (N : Node_Id) return Boolean;
       --  Return whether N as a node inside a postcondition possibly refers to
       --  some post state of the subprogram.
+
+      -------------------
+      -- Explain_Calls --
+      -------------------
+
+      function Explain_Calls (Calls : Node_Lists.List) return Unbounded_String
+      is
+         procedure Add (Expl : in out Unbounded_String; More : String);
+         --  Append More to explanation Expl
+
+         function Callee_Name (Subp : Entity_Id) return String is
+           (if Nkind (Subp) = N_Defining_Operator_Symbol then
+               "operator " & Source_Name (Subp)
+            elsif Ekind (Subp) = E_Function then
+               "function " & Source_Name (Subp)
+            else
+               "type " & Source_Name (Subp))
+         with Pre => Ekind (Subp) in E_Function | Type_Kind;
+
+         function Callee_Names (Callees : Entity_Sets.Set) return String;
+         --  Returns the and'ed names of callees in the set
+
+         ---------
+         -- Add --
+         ---------
+
+         procedure Add (Expl : in out Unbounded_String; More : String) is
+         begin
+            if Expl = "" then
+               Append (Expl, More);
+            else
+               Append (Expl, ", and " & More);
+            end if;
+         end Add;
+
+         ------------------
+         -- Callee_Names --
+         ------------------
+
+         function Callee_Names (Callees : Entity_Sets.Set) return String is
+            Names : Unbounded_String;
+         begin
+            for Subp of Callees loop
+               if Names /= "" then
+                  Append (Names, " and ");
+               end if;
+               Append (Names, Callee_Name (Subp));
+            end loop;
+            return To_String (Names);
+         end Callee_Names;
+
+         --  Local variables
+
+         Expl                 : Unbounded_String;
+         Regular_Callees,
+         Dispatching_Callees,
+         Indirect_Callees     : Entity_Sets.Set;
+
+         use type Ada.Containers.Count_Type;
+
+      --  Start of processing for Explain_Calls
+
+      begin
+         for Call of Calls loop
+            declare
+               Subp     : Entity_Id := Get_Called_Entity (Call);
+               Dispatch : constant Boolean :=
+                 Present (Controlling_Argument (Call));
+               Wrapper  : constant Entity_Id :=
+                 (if Ekind (Subp) = E_Subprogram_Type
+                    and then Present (Access_Subprogram_Wrapper (Subp))
+                  then Access_Subprogram_Wrapper (Subp)
+                  else Subp);
+
+            begin
+               --  Adjust to the source access type for Itypes
+
+               if Is_Itype (Subp)
+                 and then Nkind (Associated_Node_For_Itype (Subp))
+                   = N_Full_Type_Declaration
+               then
+                  Subp :=
+                    Defining_Identifier (Associated_Node_For_Itype (Subp));
+               end if;
+
+               --  If function or type already seen, skip a redundant
+               --  explanation.
+
+               if Regular_Callees.Contains (Subp)
+                 or else Dispatching_Callees.Contains (Subp)
+                 or else Indirect_Callees.Contains (Subp)
+               then
+                  null;
+
+               --  Hardcoded entities, including instances of
+               --  Ada.Unchecked_Conversion, are handled specially and
+               --  should not be taken into account here.
+
+               elsif Is_Hardcoded_Entity (Subp)
+                 or else Is_Unchecked_Conversion_Instance (Subp)
+               then
+                  null;
+
+               --  This is a dispatching call with Post'Class specified
+
+               elsif Dispatch
+                 and then Has_Contracts (Wrapper, Pragma_Postcondition,
+                                         Classwide => True)
+               then
+                  null;
+
+               --  This is a non-dispatching call with Post or Contract_Cases
+               --  specified.
+
+               elsif not Dispatch
+                 and then (Has_Contracts (Wrapper, Pragma_Postcondition)
+                            or else
+                           Has_Contracts (Wrapper, Pragma_Contract_Cases))
+               then
+                  null;
+
+               --  This is a call to an expression function
+
+               elsif Ekind (Subp) = E_Function
+                 and then Is_Expression_Function_Or_Completion (Subp)
+               then
+                  null;
+
+               --  The called function or type is defined in the standard
+               --  library. There is no value in suggesting to the user
+               --  adding a contract here.
+
+               elsif Lib.In_Predefined_Unit (Subp) then
+                  null;
+
+               --  We want to suggest a fix in the remaining cases
+
+               --  Case 1: regular function call
+
+               elsif Ekind (Subp) = E_Function
+                 and then not Dispatch
+               then
+                  Regular_Callees.Include (Subp);
+
+               --  Case 2: dispatching function call
+
+               elsif Ekind (Subp) = E_Function then
+                  Dispatching_Callees.Include (Subp);
+
+               --  Case 3: indirect function call
+
+               else
+                  pragma Assert (Ekind (Subp) in E_Subprogram_Type
+                                               | E_Access_Subprogram_Type);
+                  Indirect_Callees.Include (Subp);
+               end if;
+            end;
+         end loop;
+
+         if not Regular_Callees.Is_Empty then
+            Add (Expl,
+                 "adding a postcondition to " &
+                 Callee_Names (Regular_Callees) &
+                 " or turning " &
+                 (if Regular_Callees.Length = 1 then
+                    "it into an expression function"
+                  else
+                    "them into expression functions"));
+         end if;
+
+         if not Dispatching_Callees.Is_Empty then
+            Add (Expl,
+                 "adding a classwide postcondition to " &
+                 Callee_Names (Dispatching_Callees));
+         end if;
+
+         if not Indirect_Callees.Is_Empty then
+            Add (Expl,
+                 "adding a postcondition to " &
+                 Callee_Names (Indirect_Callees));
+         end if;
+
+         if Expl /= "" then
+            Expl := "you should consider " & Expl;
+         end if;
+
+         return Expl;
+      end Explain_Calls;
 
       ------------------------------
       -- Explain_Output_Variables --
@@ -1331,6 +1562,34 @@ package body Flow_Error_Messages is
          return Expl;
       end Explain_Variables;
 
+      -------------------------
+      -- Get_Calls_From_Node --
+      -------------------------
+
+      function Get_Calls_From_Node (N : Node_Id) return Node_Lists.List is
+
+         Calls : Node_Lists.List;
+
+         function Add_Call (N : Node_Id) return Traverse_Result;
+         --  Add call inside N to Calls
+
+         function Add_Call (N : Node_Id) return Traverse_Result is
+         begin
+            if Nkind (N) = N_Function_Call then
+               Calls.Append (N);
+            end if;
+            return OK;
+         end Add_Call;
+
+         procedure Get_All_Calls is new Traverse_More_Proc (Add_Call);
+
+      --  Start of processing for Get_Calls_From_Node
+
+      begin
+         Get_All_Calls (N);
+         return Calls;
+      end Get_Calls_From_Node;
+
       ---------------------
       -- Get_Line_Number --
       ---------------------
@@ -1350,13 +1609,17 @@ package body Flow_Error_Messages is
            String_Utils.Trimi (Get_Physical_Line_Number (Flag)'Img, ' ');
 
       begin
+         if Gnat2Why_Args.Output_Mode = GPO_Pretty then
+            Error_Msg_Sloc := Flag;
+            return At_Line_Placeholder;
+
          --  Use "at file-name:line-num" if reference is to other than the
          --  source file in which the unproved check message is placed.
          --  Note that we check full file names, rather than just the source
          --  indexes, to deal with generic instantiations from the current
          --  file.
 
-         if Full_File_Name (Sindex_Loc) /= Full_File_Name (Sindex_Flag) then
+         elsif Full_File_Name (Sindex_Loc) /= Full_File_Name (Sindex_Flag) then
             Fname := Reference_Name (Get_Source_File_Index (Flag));
             return "at " & Get_Name_String (Fname) & ":" & Line;
 
@@ -1707,6 +1970,12 @@ package body Flow_Error_Messages is
 
       elsif Tag in VC_UC_No_Holes | VC_UC_Same_Size then
          return "";
+
+      --  Do not try to generate a fix message for static checks on subprogram
+      --  variants.
+
+      elsif Tag = VC_Subprogram_Variant and then How_Proved = PC_Trivial then
+         return "";
       end if;
 
       --  Adjust the enclosing subprogram entity
@@ -1797,7 +2066,7 @@ package body Flow_Error_Messages is
             --  Nothing to propagate if the set of checked variables is empty
 
             if Check_Vars.Is_Empty then
-               return "";
+               goto END_OF_SEARCH;
             end if;
 
             --  Start looking for an explanation
@@ -1809,7 +2078,7 @@ package body Flow_Error_Messages is
             end if;
 
             if No (Stmt) then
-               return "";
+               goto END_OF_SEARCH;
             end if;
 
             Stmt := Get_Previous_Explain_Node (Stmt);
@@ -2058,7 +2327,7 @@ package body Flow_Error_Messages is
                      --  loop itself.
 
                      elsif Check_Vars.Overlap (Write_Vars) then
-                        return "";
+                        goto END_OF_SEARCH;
                      end if;
                   end if;
 
@@ -2144,7 +2413,7 @@ package body Flow_Error_Messages is
                              | VC_Refined_Post
                              | VC_Contract_Case
                      then
-                        return "";
+                        goto END_OF_SEARCH;
                      end if;
 
                      --  For a check inside a postcondition, only explain
@@ -2161,7 +2430,7 @@ package body Flow_Error_Messages is
                                 | Pragma_Refined_Post
                        and then Has_Post_State (N)
                      then
-                        return "";
+                        goto END_OF_SEARCH;
                      end if;
 
                      --  Get the variables read in the subprogram, both global
@@ -2274,7 +2543,7 @@ package body Flow_Error_Messages is
                      --  subprograms.
 
                      else
-                        return "";
+                        goto END_OF_SEARCH;
                      end if;
                   end;
                end case;
@@ -2285,9 +2554,22 @@ package body Flow_Error_Messages is
 
             end loop;
 
-            --  No explanation was found
+            << END_OF_SEARCH >>
 
-            return "";
+            --  No explanation was found based on the variables referenced in
+            --  the node associated to the check. Look for function calls in
+            --  that node with no contract (including no implicit contract,
+            --  that is, not an expression function), unless it is a
+            --  precondition check (for which the call itself would need to be
+            --  skipped, and in general we don't expect such an explanation to
+            --  be relevant).
+
+            if Tag not in VC_Precondition | VC_Precondition_Main then
+               return To_String (Explain_Calls (Get_Calls_From_Node (N)));
+
+            else
+               return "";
+            end if;
          end;
       end if;
    end Get_Fix;
@@ -2577,17 +2859,17 @@ package body Flow_Error_Messages is
                      Append (R, "private part of ");
                      Append_Quote;
                      Append (R, Flow_Id_To_String
-                               (F'Update (Facet => Normal_Part)));
+                               ((F with delta Facet => Normal_Part)));
                   elsif Is_Extension (F) then
                      Append (R, "extension of ");
                      Append_Quote;
                      Append (R, Flow_Id_To_String
-                               (F'Update (Facet => Normal_Part)));
+                               ((F with delta Facet => Normal_Part)));
                   elsif Is_Bound (F) then
                      Append (R, "bounds of ");
                      Append_Quote;
                      Append (R, Flow_Id_To_String
-                               (F'Update (Facet => Normal_Part)));
+                               ((F with delta Facet => Normal_Part)));
                   elsif Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
                     and then Ekind (Get_Direct_Mapping_Id (F)) = E_Constant
                     and then not Is_Access_Type

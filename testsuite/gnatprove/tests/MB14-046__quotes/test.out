@@ -1,3 +1,3 @@
-bug5.adb:11:21: medium: assertion might fail, cannot prove P ("abcd")
+bug5.adb:11:21: medium: assertion might fail, cannot prove P ("abcd") [possible fix: you should consider adding a postcondition to function P or turning it into an expression function]
 bug5.ads:3:14: warning: subprogram "Test" has no effect
 bug5.ads:4:16: warning: unused variable "X"

@@ -1,0 +1,8 @@
+
+use_logging_classwide.adb:8:04: high: extension of "Log" is not initialized
+    8 |   Log.Append_To_Log (2);
+      |   ^ here
+
+use_logging_classwide.adb:8:07: medium: precondition might fail, cannot prove Log_Size < 10000
+    8 |   Log.Append_To_Log (2);
+      |      ^ here

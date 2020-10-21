@@ -1,0 +1,11 @@
+geometry.ads:34:20: info: class-wide postcondition is stronger than overridden one
+geometry.ads:37:20: info: class-wide postcondition is stronger than overridden one
+use_geometry.adb:8:05: info: precondition proved
+use_geometry.adb:11:05: info: precondition proved
+
+use_geometry.adb:14:05: medium: precondition might fail, cannot prove Valid (S)
+   14 |   S.Operate;
+      |    ^ here
+  possible fix: call at line 13 should mention S (for argument S) in a postcondition
+   13 |   S.Set_Default_No_Post;
+      |    ^ here

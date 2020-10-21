@@ -155,12 +155,14 @@ package body Gnat2Why.Decls is
       --  allocators which we can't handle in axioms.
       --  Finally we check if we are in a protected object, as in that case the
       --  expression may require the "self" object, but it's not set up here.
+      --  Static expressions can't reference "self", so they are fine.
 
       if Present (Expr)
         and then not Expression_Contains_Old_Or_Loop_Entry (Expr)
         and then not Contains_Volatile_Function_Call (Expr)
         and then not Contains_Allocator (Expr)
-        and then not Within_Protected_Type (E)
+        and then (not Within_Protected_Type (E)
+                  or else Is_Static_Expression (Expr))
       then
          declare
             Typ : constant W_Type_Id := Type_Of_Node (E);

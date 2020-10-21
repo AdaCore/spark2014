@@ -2339,6 +2339,7 @@ package body Why.Atree.Modules is
                Module => M_Ax,
                Domain => EW_Prog,
                Typ    => EW_Unit_Type));
+
          if Ekind (E) = E_Function then
             Insert_Symbol
               (E, WNE_Func_Guard,
@@ -2380,6 +2381,16 @@ package body Why.Atree.Modules is
                   Namespace => NID (To_String (WNE_Dispatch_Module)),
                   Domain    => EW_Pred,
                   Typ       => EW_Unit_Type));
+         end if;
+
+         if Present (Get_Pragma (E, Pragma_Subprogram_Variant)) then
+            Insert_Symbol
+              (E, WNE_Check_Subprogram_Variants,
+               New_Identifier
+                 (Symb   => NID (Name & "__check_subprogram_variants"),
+                  Module => M_Ax,
+                  Domain => EW_Prog,
+                  Typ    => EW_Unit_Type));
          end if;
       end Insert_Subprogram_Symbols;
 

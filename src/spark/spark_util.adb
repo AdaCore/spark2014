@@ -78,7 +78,7 @@ package body SPARK_Util is
    begin
       return (if Has_Element (C)
               then Element (C)
-              else Empty);
+              else Standard.Types.Empty);
    end Partial_View;
 
    ------------------
@@ -146,7 +146,7 @@ package body SPARK_Util is
    begin
       return (if Has_Element (Primitive)
               then Element (Primitive)
-              else Empty);
+              else Standard.Types.Empty);
    end Dispatching_Contract;
 
    --------------------------------
@@ -1596,6 +1596,36 @@ package body SPARK_Util is
       return B_Ty;
    end Get_Observed_Or_Borrowed_Ty;
 
+   -------------------------
+   -- Get_Operator_Symbol --
+   -------------------------
+
+   function Get_Operator_Symbol (N : Node_Id) return String is
+      subtype Operator_Name_Id is Name_Id range
+        First_Operator_Name .. Last_Operator_Name;
+   begin
+      return (case Operator_Name_Id'(Chars (N)) is
+                 when Name_Op_Abs      => "abs",
+                 when Name_Op_And      => "and",
+                 when Name_Op_Mod      => "mod",
+                 when Name_Op_Not      => "not",
+                 when Name_Op_Or       => "or",
+                 when Name_Op_Rem      => "rem",
+                 when Name_Op_Xor      => "xor",
+                 when Name_Op_Eq       => "=",
+                 when Name_Op_Ne       => "/=",
+                 when Name_Op_Lt       => "<",
+                 when Name_Op_Le       => "<=",
+                 when Name_Op_Gt       => ">",
+                 when Name_Op_Ge       => ">=",
+                 when Name_Op_Add      => "+",
+                 when Name_Op_Subtract => "-",
+                 when Name_Op_Concat   => "&",
+                 when Name_Op_Multiply => "*",
+                 when Name_Op_Divide   => "/",
+                 when Name_Op_Expon    => "**");
+   end Get_Operator_Symbol;
+
    ---------------
    -- Get_Range --
    ---------------
@@ -1783,7 +1813,12 @@ package body SPARK_Util is
       --  silent side effects, so...
 
       case Ekind (E) is
-         when E_Abstract_State | E_Variable | E_Component | Type_Kind =>
+         when E_Abstract_State
+            | E_Variable
+            | E_Component
+            | Type_Kind
+            | E_In_Out_Parameter
+         =>
             return
               (case P is
                when Pragma_Async_Readers    => Async_Readers_Enabled (E),
@@ -1791,23 +1826,25 @@ package body SPARK_Util is
                when Pragma_Effective_Reads  => Effective_Reads_Enabled (E),
                when Pragma_Effective_Writes => Effective_Writes_Enabled (E));
 
+         --  All volatile in parameters have only async_writers set. In
+         --  particular reads cannot be effective and the absence of AR
+         --  is irrelevant since we are not allowed to write to it anyway.
+
          when E_In_Parameter  =>
-            --  All volatile in parameters have only async_writers set. In
-            --  particular reads cannot be effective and the absence of AR is
-            --  irrelevant since we are not allowed to write to it anyway.
-            return P = Pragma_Async_Writers;
+            return P = Pragma_Async_Writers
+              and then Async_Writers_Enabled (E);
+
+         --  Out parameters we assume that writes are effective (worst case).
+         --  We do not assume reads are effective because (a - it may be
+         --  illegal to read anyway, b - we ban passing a fully volatile
+         --  object as an argument to an out parameter).
 
          when E_Out_Parameter =>
-            --  Out parameters we assume that writes are effective (worst
-            --  case). We do not assume reads are effective because (a - it may
-            --  be illegal to read anyway, b - we ban passing a fully volatile
-            --  object as an argument to an out parameter).
-            return P in Pragma_Async_Readers | Pragma_Effective_Writes;
-
-         when E_In_Out_Parameter =>
-            --  For in out we just assume the absolute worst case (fully
-            --  volatile).
-            return True;
+            return
+              (case P is
+                  when Pragma_Async_Readers    => Async_Readers_Enabled (E),
+                  when Pragma_Effective_Writes => Effective_Writes_Enabled (E),
+                  when others                  => False);
 
          when others =>
             raise Program_Error;
@@ -3354,44 +3391,50 @@ package body SPARK_Util is
    -----------------
 
    function Source_Name (E : Entity_Id) return String is
-
-      function Short_Name (E : Entity_Id) return String;
-      --  @return the uncapitalized unqualified name for E
-
-      ----------------
-      -- Short_Name --
-      ----------------
-
-      function Short_Name (E : Entity_Id) return String is
-      begin
-         Get_Unqualified_Name_String (Chars (E));
-         return Name_Buffer (1 .. Name_Len);
-      end Short_Name;
-
-      --  Local variables
-
-      Name : String := Short_Name (E);
-      Loc  : Source_Ptr := Sloc (E);
-      Buf  : Source_Buffer_Ptr;
-
-   --  Start of processing for Source_Name
-
    begin
-      if Name /= "" and then Loc >= First_Source_Ptr then
-         Buf := Source_Text (Get_Source_File_Index (Loc));
+      if Nkind (E) = N_Defining_Operator_Symbol then
+         return """" & Get_Operator_Symbol (E) & """";
 
-         --  Copy characters from source while they match (modulo
-         --  capitalization) the name of the entity.
+      else
+         declare
+            function Short_Name (E : Entity_Id) return String
+            with Post => Short_Name'Result /= "";
+            --  @return the uncapitalized unqualified name for E
 
-         for Idx in Name'Range loop
-            exit when not Identifier_Char (Buf (Loc))
-              or else Fold_Lower (Buf (Loc)) /= Name (Idx);
-            Name (Idx) := Buf (Loc);
-            Loc := Loc + 1;
-         end loop;
+            ----------------
+            -- Short_Name --
+            ----------------
+
+            function Short_Name (E : Entity_Id) return String is
+            begin
+               Get_Unqualified_Name_String (Chars (E));
+               return Name_Buffer (1 .. Name_Len);
+            end Short_Name;
+
+            --  Local variables
+
+            Name : String := Short_Name (E);
+            Loc  : Source_Ptr := Sloc (E);
+            Buf  : Source_Buffer_Ptr;
+
+         begin
+            if Loc >= First_Source_Ptr then
+               Buf := Source_Text (Get_Source_File_Index (Loc));
+
+               --  Copy characters from source while they match (modulo
+               --  capitalization) the name of the entity.
+
+               for Idx in Name'Range loop
+                  exit when not Identifier_Char (Buf (Loc))
+                    or else Fold_Lower (Buf (Loc)) /= Name (Idx);
+                  Name (Idx) := Buf (Loc);
+                  Loc := Loc + 1;
+               end loop;
+            end if;
+
+            return Name;
+         end;
       end if;
-
-      return Name;
    end Source_Name;
 
    --------------------

@@ -1,0 +1,15 @@
+
+linear_search.ads:33:20: medium: contract case might fail
+   33 |       (A(1) = Val =>
+      |                   ^ here
+  e.g. when Search'Result = (Found => False, At_Index => 2)
+
+linear_search.ads:34:24: medium: discriminant check might fail
+   34 |          Search'Result.At_Index = 1,
+      |                       ^ here
+  e.g. when Search'Result = (Found => False, At_Index => 2)
+
+linear_search.ads:35:67: medium: contract case might fail
+   35 |        A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
+      |                                                                  ^ here
+  e.g. when Search'Result = (Found => False, At_Index => 1)

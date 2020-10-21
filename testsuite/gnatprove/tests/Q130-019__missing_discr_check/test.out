@@ -9,7 +9,7 @@ run.adb:14:20: info: discriminant check proved (CVC4: 1 VC)
 run.adb:15:12: info: range check proved (CVC4: 1 VC)
 run.adb:15:20: info: discriminant check proved (CVC4: 1 VC)
 run.adb:20:10: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
-run.adb:22:13: medium: discriminant check might fail
+run.adb:22:13: medium: discriminant check might fail [possible fix: you should consider adding a postcondition to function Init or turning it into an expression function]
 run.adb:24:10: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 run.adb:26:10: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
-run.adb:28:13: medium: discriminant check might fail
+run.adb:28:13: medium: discriminant check might fail [possible fix: you should consider adding a postcondition to function Init or turning it into an expression function]

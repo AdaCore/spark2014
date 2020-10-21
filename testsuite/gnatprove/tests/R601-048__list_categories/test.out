@@ -69,6 +69,7 @@ VC_LOOP_INVARIANT - loop invariant - Check that the loop invariant evaluates to 
 VC_LOOP_INVARIANT_INIT - loop invariant in first iteration - Check that the loop invariant evaluates to True on the first iteration of the loop.
 VC_LOOP_INVARIANT_PRESERV - loop invariant after first iteration - Check that the loop invariant evaluates to True at each further iteration of the loop.
 VC_LOOP_VARIANT - loop variant - Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop.
+VC_SUBPROGRAM_VARIANT - subprogram variant - Check that the given subprogram variant decreases/increases as specified during each recursive call. This implies there will be no infinite recursion.
 VC_ASSERT - assertion - Check that the given assertion evaluates to True.
 VC_RAISE - raised exception - Check that the raise statement or expression can never be reached.
 VC_INLINE_CHECK - Inline_For_Proof annotation - Check that an Annotate pragma with the Inline_For_Proof identifier is correct.

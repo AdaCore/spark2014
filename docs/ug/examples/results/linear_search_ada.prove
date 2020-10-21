@@ -1,2 +1,0 @@
-linear_search.ads:10:13: function with "out" parameter is not allowed in SPARK
-linear_search.ads:10:13: violation of aspect SPARK_Mode at line 2

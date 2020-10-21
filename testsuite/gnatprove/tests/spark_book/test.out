@@ -74,12 +74,12 @@ bounded_queue.adb:47:33: medium: array index check might fail, in instantiation 
 bounded_queue.adb:48:34: info: division check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:48:53: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:49:34: medium: range check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: result of subtraction must fit in the target type of the assignment]
-bounded_queue.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue), in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue), in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:32:50: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer]
+bounded_queue.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
+bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
+bounded_queue.ads:32:50: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
 bounded_queue.ads:33:18: info: precondition proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old), in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
 bounded_queue.ads:39:24: info: precondition proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:50:10: info: range check proved (CVC4: 2 VC), in instantiation at bounded_queue_example.adb:7
@@ -121,12 +121,12 @@ bounded_queue_v1.adb:48:34: info: division check proved (CVC4: 1 VC)
 bounded_queue_v1.adb:48:53: info: overflow check proved (CVC4: 1 VC)
 bounded_queue_v1.adb:49:34: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
 bounded_queue_v1.ads:12:09: info: range check proved (CVC4: 2 VC)
-bounded_queue_v1.ads:31:18: medium: postcondition might fail, cannot prove Empty (Queue)
-bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not Empty (Queue)
-bounded_queue_v1.ads:38:50: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+bounded_queue_v1.ads:31:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
+bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
+bounded_queue_v1.ads:38:50: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
 bounded_queue_v1.ads:39:18: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
-bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old)
+bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
 bounded_queue_v1.ads:45:25: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v2.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
 bounded_queue_v2.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
@@ -138,12 +138,12 @@ bounded_queue_v2.adb:47:33: medium: array index check might fail [reason for che
 bounded_queue_v2.adb:48:34: info: division check proved (CVC4: 1 VC)
 bounded_queue_v2.adb:48:53: info: overflow check proved (CVC4: 1 VC)
 bounded_queue_v2.adb:49:34: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment]
-bounded_queue_v2.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue)
-bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue)
-bounded_queue_v2.ads:32:50: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+bounded_queue_v2.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
+bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function]
+bounded_queue_v2.ads:32:50: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function]
 bounded_queue_v2.ads:33:18: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
-bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old)
+bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function]
 bounded_queue_v2.ads:39:24: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
 bounded_queue_v2.ads:50:10: info: range check proved (CVC4: 2 VC)

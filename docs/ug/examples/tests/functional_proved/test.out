@@ -1,0 +1,13 @@
+functional_proved.adb:17:14: info: postcondition proved
+functional_proved.adb:37:10: info: precondition proved
+functional_proved.adb:37:18: info: range check proved
+functional_proved.adb:47:10: info: precondition proved
+functional_proved.adb:48:10: info: precondition proved
+functional_proved.adb:50:10: info: precondition proved
+functional_proved.ads:9:14: info: postcondition proved
+functional_proved.ads:10:06: info: disjoint contract cases proved
+functional_proved.ads:10:06: info: complete contract cases proved
+functional_proved.ads:11:28: info: contract case proved
+functional_proved.ads:16:28: info: contract case proved
+functional_proved.ads:21:36: info: contract case proved
+functional_proved.ads:29:14: info: postcondition proved

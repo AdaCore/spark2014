@@ -1,0 +1,19 @@
+
+account7.adb:30:10: high: call to potentially blocking subprogram "Incr_Num_Accounts" in protected operation "Bad_E"
+   30 |         Incr_Num_Accounts;
+      |         ^ here
+
+account7.adb:35:10: high: call to potentially blocking subprogram "Incr_Num_Accounts" in protected operation "Bad_P"
+   35 |         Incr_Num_Accounts;
+      |         ^ here
+
+account7.adb:40:10: high: call to potentially blocking subprogram "Incr_Num_Accounts" in protected operation "Bad_F"
+   40 |         Incr_Num_Accounts;
+      |         ^ here
+
+account7.ads:20:16: function with output global "Num_Accounts" is not allowed in SPARK
+   20 |      function Bad_F return Natural;
+      |               ^ here
+account7.ads:25:06: info: data dependencies proved
+account7.ads:26:06: info: flow dependencies proved
+gnatprove: error during flow analysis and proof

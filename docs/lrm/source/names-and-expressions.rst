@@ -54,11 +54,34 @@ should be documented in the User Guide for the tool.
 
 .. centered:: **Legality Rules**
 
+1. The prefix of the attribute Access shall be the name of a subprogram.
 
-1. The prefix of a '*Access* ``attribute_reference`` shall be a constant
-   without variable input. [This ensures that information flows through such
-   access values only depend on assignments to the access objects, not
-   assignments to the accessed objects. See :ref:`object-declarations`.]
+2. A subprogram used as the prefix of a reference to the attribute Access:
+
+   - shall not be declared within a protected type or object;
+
+   - shall not be a dispatching operation of a tagged type; and
+
+   - shall not be a declared in the scope of a type with an invariant
+     if this type is mentioned in the subprogram's profile unless it is
+     a boundary subprogram (see section 7.3.2 for the definition of a
+     boundary subprogram).
+
+3. The Volatile_Function aspect of a subprogram used as the prefix of a
+   reference to the attribute Access, if specified, shall not be True
+   (see section 7.1.2 for the definition of Volatile_Function).
+
+.. centered:: **Verification Rules**
+
+4. The prefix of the Access attribute shall have no global inputs and outputs
+   (see section 6.1 for inputs and outputs of subprograms).
+
+5. On a reference to the Access attribute, a verification condition is
+   introduced to ensure that the precondition of the prefix of the attribute
+   is implied by the precondition of its expected type. Similarly,
+   a verification condition is introduced to ensure that the postcondition of
+   the expected type is implied by the postcondition of the prefix of the
+   attribute.
 
 
 User-Defined References
@@ -177,239 +200,6 @@ value of the variable might have changed.]
 not considered to be a variable input in the case of a Dynamic_Predicate
 or Type_Invariant condition, but is considered to be a variable
 input in the case of the default_expression of a component declaration.]
-
-.. _update-expressions:
-
-Update Expressions
-~~~~~~~~~~~~~~~~~~
-
-The Update attribute provides a way of overwriting specified
-components of a copy of a given composite value.
-
-For a prefix ``X``
-that denotes an object of a nonlimited record type or record extension
-``T``, the attribute
-
-::
-
-     X'Update ( record_component_association_list )
-
-is defined and yields a value of type ``T`` and is a *record update
-expression*.
-
-For a prefix ``X`` that denotes an object of a nonlimited one
-dimensional array type ``T``, the attribute
-
-::
-
-     X'Update ( array_component_association {, array_component_association} )
-
-is defined and yields a value of type ``T`` and is an *array update
-expression*.
-
-For a prefix ``X`` that denotes an object of a nonlimited
-multidimensional array type ``T``, the attribute
-
-::
-
-    X'Update ( multidimensional_array_component_association
-            {, multidimensional_array_component_association} )
-
-is defined and yields a value of type ``T`` and is a
-*multi-dimensional array update*.  Where
-``multidimensional_array_component_association`` has the following
-syntax:
-
-.. centered:: **Syntax**
-
-::
-
-  multidimensional_array_component_association ::=
-    index_expression_list_list => expression
-  index_expression_list_list ::=
-    index_expression_list { | index_expression_list }
-  index_expression_list ::=
-    ( expression {, expression} )
-
-.. centered:: **Legality Rules**
-
-
-1. The box symbol, <>, may not appear in any ``expression`` appearing
-   in an *update expression*.
-
-.. centered:: **Dynamic Semantics**
-
-
-2. In all cases (i.e., whether ``T`` is a record type, a record
-   extension type, or an array type - see below), evaluation of
-   ``X'Update`` begins with the creation of an anonymous object of
-   type ``T`` which is initialized to the value of ``X`` in the same
-   way as for an occurrence of ``X'Old`` (except that the object is
-   constrained by its initial value but not constant).
-
-
-3. Next, components of this object are updated as described in the
-   following subsections. The attribute reference then denotes a
-   constant view of this updated object. The master and accessibility
-   level of this object are defined as for the anonymous object of an
-   aggregate.
-
-
-4. The assignments to components of the result object described in the
-   following subsections are assignment operations and include
-   performance of any checks associated with evaluation of the target
-   component name or with implicit conversion of the source value to
-   the component subtype.
-
-
-
-Record Update Expressions
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-For a record update expression of type ``T`` the following are
-required.
-
-.. centered:: **Legality Rules**
-
-
-5. The ``record_component_association_list`` shall have one or more
-   ``record_component_associations``, each of which shall have a
-   non-**others** ``component_choice_list`` and an expression.
-
-
-6. Each ``selector_name`` of each ``record_component_name`` shall denote a
-   distinct non discriminant component of ``T``.
-
-
-7. Each ``record_component_association``'s associated components shall
-   all be of the same type. The expected type and applicable index
-   constraint of the expression is defined as for a
-   ``record_component_association`` occurring within a record
-   aggregate.
-
-
-8. Each selector of all ``component_choice_lists`` of a record
-   update expression shall denote a distinct component.
-
-
-
-.. centered:: **Dynamic Semantics**
-
-
-9. For each component for which an expression is provided, the
-   expression value is assigned to the corresponding component of the
-   result object. The order in which the components are updated is
-   unspecified.
-
-
-[Components in a record update expression must be distinct.  The following is illegal
-
-::
-
-  Some_Record'Update
-    (Field_1 => ... ,
-     Field_2 => ... ,
-     Field_1 => ... ); -- illegal; components not distinct
-
-because the order of component updates is unspecified.]
-
-Array Update Expressions
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-For an array update expression of type ``T`` the following are
-required.
-
-.. centered:: **Legality Rules**
-
-
-10. Each ``array_component_association`` of the attribute reference
-    shall have one or more ``array_component_associations``, each of
-    which shall have an expression.
-
-
-11. The expected type and applicable index constraint of the
-    expression is defined as for an ``array_component_association``
-    occurring within an array aggregate of type ``T``. The expected
-    type for each ``discrete_choice`` is the index type of ``T``.
-
-
-12. The reserved word **others** shall not occur as a
-    ``discrete_choice`` of an ``array_component_association`` of the
-    ``attribute_reference``.
-
-
-.. centered:: **Dynamic Semantics**
-
-
-13. The discrete choices and array component expressions are
-    evaluated. Each array component expression is evaluated once for
-    each associated component, as for an array aggregate. For each
-    such associated component of the result object, the expression
-    value is assigned to the component.
-
-
-14. Evaluations and updates are performed in the order in which the
-    ``array_component_associations`` are given; within a single
-    ``array_component_association``, in the order of the
-    ``discrete_choice_list``; and within the range of a single
-    ``discrete_choice``, in ascending order.
-
-
-[Note: the ``Update`` attribute for an array object allows multiple
-assignments to the same component, as in either
-
-::
-
-  Some_Array'Update (1 .. 10 => True, 5 => False)
-
-or
-
-::
-
-  Some_Array'Update (Param_1'Range => True, Param_2'Range => False)
-  -- ok even if the two ranges overlap]
-
-
-Multi-dimensional Array Update Expressions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-For a multi-dimensional array update expression of type ``T`` the
-following are required.
-
-.. centered:: **Legality Rules**
-
-
-15. The expected type and applicable index constraint of the
-    expression of a ``multidimensional_array_component_association``
-    are defined as for the expression of an
-    ``array_component_association`` occurring within an array
-    aggregate of type ``T``.
-
-
-16. The length of each ``index_expression_list`` shall equal the
-    dimensionality of ``T``. The expected type for each expression in
-    an ``index_expression_list`` is the corresponding index type of
-    ``T``.
-
-
-.. centered:: **Dynamic Semantics**
-
-
-17. For each ``multidimensional_array_component`` association (in the
-    order in which they are given) and for each
-    ``index_expression_list`` (in the order in which they are given),
-    the index values of the ``index_expression_list`` and the
-    expression are evaluated (in unspecified order) and the expression
-    value is assigned to the component of the result object indexed by
-    the given index values. Each array component expression is
-    evaluated once for each associated ``index_expression_list``.
-
-
-.. centered:: **Examples**
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/update_examples.ads
-   :language: ada
-   :linenos:
 
 Operators and Expression Evaluation
 -----------------------------------

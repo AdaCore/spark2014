@@ -1,2 +1,0 @@
-terminating_loops.adb:1:11: warning: subprogram "Terminating_Loops" has no effect
-terminating_loops.adb:4:04: info: initialization of "Y" proved

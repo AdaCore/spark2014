@@ -1,13 +1,13 @@
 package Generic_Bounded_String is
 
-   type Bounded_String_Base is private;
+   type A is private;
 
-   subtype Bounded_String is Bounded_String_Base
+   subtype B is A
    with Dynamic_Predicate => True;
 
 private
 
-   type Bounded_String_Base is record
+   type A is record
       Dummy : Integer;
    end record;
 

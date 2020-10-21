@@ -1,0 +1,10 @@
+
+account1.adb:15:39: medium: overflow check might fail
+   15 |         Num_Accounts := Num_Accounts + 1;
+      |                                      ^ here
+  e.g. when Num_Accounts = Natural'Last
+  reason for check: result of addition must fit in a 32-bits machine integer
+  possible fix: loop at line 13 should mention Num_Accounts in a loop invariant
+   13 |      loop
+      |      ^ here
+account1.ads:6:14: info: nontermination of task proved

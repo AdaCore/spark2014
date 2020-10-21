@@ -576,6 +576,9 @@ package Flow_Types is
       --  It should be noted that most vertices we construct will have this set
       --  to true.
 
+      In_Nested_Package            : Boolean;
+      --  True for vertices created for constructs in nested packages
+
       Is_Exceptional_Branch        : Boolean;
       --  True for nodes which lead *into* an exceptional path (see below), but
       --  are not part of the path itself.
@@ -713,6 +716,7 @@ package Flow_Types is
 
    Null_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node                    => False,
+                   In_Nested_Package               => False,
                    Is_Program_Node                 => False,
                    Is_Exceptional_Branch           => False,
                    Is_Exceptional_Path             => False,
@@ -755,8 +759,8 @@ package Flow_Types is
                    Pretty_Print_Kind               => Pretty_Print_Null);
 
    Null_Node_Attributes : constant V_Attributes :=
-     Null_Attributes'Update (Is_Null_Node    => True,
-                             Is_Program_Node => True);
+     (Null_Attributes with delta Is_Null_Node    => True,
+                                 Is_Program_Node => True);
 
    type Reference_Kind is (Inputs, Proof_Ins, Null_Deps);
    --  Modes for queries about variables referenced in a given expression. For

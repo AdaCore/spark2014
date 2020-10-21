@@ -59,12 +59,9 @@ simplifications to Ada. The most notable simplifications are:
   subprogram parameter. Instead, instantiations of generic code are analyzed in
   |SPARK|. See :ref:`Analysis of Generics`.
 
-The features listed above are excluded from |SPARK| because, currently, they
-defy formal verification. As formal verification technology advances the list
+As formal verification technology advances the list
 will be revisited and it may be possible to relax some of these
-restrictions. There are other features which are technically feasible to
-formally verify but which are currently not supported in |SPARK|, such as
-access-to-subprogram types.
+restrictions.
 
 Uses of these features in |SPARK| code are detected by |GNATprove| and reported
 as errors. Formal verification is not possible on subprograms using these
@@ -96,7 +93,7 @@ type can be any value.
 The following code example shows some simple representation clauses using the
 aspect syntax:
 
-.. literalinclude:: /gnatprove_by_example/examples/uc.ads
+.. literalinclude:: /examples/tests/uc/uc.ads
    :language: ada
    :lines: 5-22
 
@@ -118,11 +115,11 @@ always return True.
 
 This is illustrated in the following example:
 
-.. literalinclude:: /gnatprove_by_example/examples/validity.ads
+.. literalinclude:: /examples/tests/validity/validity.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/validity.adb
+.. literalinclude:: /examples/tests/validity/validity.adb
    :language: ada
    :linenos:
 
@@ -133,7 +130,7 @@ a "high" unproved check that the unchecked conversion to ``Float`` may produce
 invalid values (for example, if an ``Integer`` is converted whose bit
 representation corresponds to a ``NaN`` float, which is not allowed in SPARK).
 
-.. literalinclude:: /gnatprove_by_example/results/validity.prove
+.. literalinclude:: /examples/tests/validity/test.out
    :language: none
 
 When checking an instance of ``Unchecked_Conversion``, |GNATprove| also checks
@@ -147,7 +144,7 @@ Address clause or aspect that refers to the ``'Address`` of another object,
 The following example shows some typical usages of unchecked conversions and
 ``Object_Size`` clauses:
 
-.. literalinclude:: /gnatprove_by_example/examples/uc.ads
+.. literalinclude:: /examples/tests/uc/uc.ads
    :language: ada
    :linenos:
 
@@ -194,7 +191,7 @@ variable) is `read` when returning from the subprogram.
 aforementioned data initialization policy. For example, consider a procedure
 ``Proc`` which has a parameter and a global item of each mode:
 
-.. literalinclude:: /gnatprove_by_example/examples/data_initialization.ads
+.. literalinclude:: /examples/tests/data_initialization/data_initialization.ads
    :language: ada
    :linenos:
 
@@ -203,14 +200,14 @@ but it only initalizes them partially. Similarly, procedure ``Call_Proc`` which
 calls ``Proc`` should completely initalize all of ``Proc``'s inputs prior to
 the call, but it only initalizes ``G1`` completely.
 
-.. literalinclude:: /gnatprove_by_example/examples/data_initialization.adb
+.. literalinclude:: /examples/tests/data_initialization/data_initialization.adb
    :language: ada
    :linenos:
 
 On this program, |GNATprove| issues 6 high check messages, corresponding to
 the violations of the data initialization policy:
 
-.. literalinclude:: /gnatprove_by_example/results/data_initialization.flow
+.. literalinclude:: /examples/tests/data_initialization/test.out
    :language: none
 
 While a user can justify individually such messages with pragma ``Annotate``
@@ -219,9 +216,9 @@ to then ensure correct initialization of subcomponents that are read, as
 |GNATprove| relies during proof on the property that data is properly
 initialized before being read.
 
-Note also the various warnings that |GNATprove| issues on unused parameters,
-global items and assignments, also based on the stricter |SPARK| interpretation
-of parameter and global modes.
+Note also the various low check messages and warnings that |GNATprove| issues
+on unused parameters, global items and assignments, also based on the stricter
+|SPARK| interpretation of parameter and global modes.
 
 It is possible to opt out of the strong data initialization
 policy of |SPARK| on a case by case basis using the aspect
@@ -249,14 +246,14 @@ underlying allocated memory.
 
 For example, in the following example:
 
-.. literalinclude:: /gnatprove_by_example/examples/ownership_transfer.adb
+.. literalinclude:: /examples/tests/ownership_transfer/ownership_transfer.adb
    :language: ada
    :linenos:
 
 GNATprove correctly detects that ``X.all`` can neither be read nor written
 after the assignment of ``X`` to ``Y`` and issues corresponding messages:
 
-.. literalinclude:: /gnatprove_by_example/results/ownership_transfer.flow
+.. literalinclude:: /examples/tests/ownership_transfer/test.out
    :language: none
 
 At call site, ownership is similarly transferred to the callee's parameters for
@@ -265,15 +262,16 @@ arguments) when returning from the call.
 
 For example, in the following example:
 
-.. literalinclude:: /gnatprove_by_example/examples/ownership_transfer_at_call.adb
+.. literalinclude:: /examples/tests/ownership_transfer_at_call/ownership_transfer_at_call.adb
    :language: ada
    :linenos:
 
 GNATprove correctly detects that the call to ``Proc`` cannot take ``X`` in
 argument as ``X`` is already accessed as a global variable by ``Proc``.
 
-.. literalinclude:: /gnatprove_by_example/results/ownership_transfer_at_call.flow
+.. literalinclude:: /examples/tests/ownership_transfer_at_call/test.out
    :language: none
+   :lines: 56-58
 
 It is also possible to transfer the ownership of an object temporarily, for
 the duration of the lifetime of a local object. This can be achieved by
@@ -281,7 +279,7 @@ declaring a local object of an anonymous access type and initializing it with
 a part of an existing object. In the following example, ``B`` temporarily
 borrows the ownership of ``X``:
 
-.. literalinclude:: /gnatprove_by_example/examples/ownership_borrowing.adb
+.. literalinclude:: /examples/tests/ownership_borrowing/ownership_borrowing.adb
    :language: ada
    :linenos:
 
@@ -290,14 +288,14 @@ but complete ownership is restored to ``X`` when ``B`` goes out of scope.
 GNATprove correctly detects that reading or assigning to ``X`` in the scope of
 ``B`` is incorrect.
 
-.. literalinclude:: /gnatprove_by_example/results/ownership_borrowing.flow
+.. literalinclude:: /examples/tests/ownership_borrowing/test.out
    :language: none
 
 It is also possible to only transfer read access to a local variable. This
 happens when the variable has an anonymous access-to-constant type, as in the
 following example:
 
-.. literalinclude:: /gnatprove_by_example/examples/ownership_observing.adb
+.. literalinclude:: /examples/tests/ownership_observing/ownership_observing.adb
    :language: ada
    :linenos:
 
@@ -306,7 +304,7 @@ lifetime of an observer, it is illegal to move or modify the observed object.
 GNATprove correctly flags the write inside ``X`` in the scope of ``B`` as
 illegal. Note that reading ``X`` is still possible in the scope of ``B``:
 
-.. literalinclude:: /gnatprove_by_example/results/ownership_observing.flow
+.. literalinclude:: /examples/tests/ownership_observing/test.out
    :language: none
 
 Only pool-specific access types are allowed in SPARK, so it is not possible to
@@ -349,7 +347,7 @@ object` (a notion formally defined in Ada RM).
 
 For example, in the following example:
 
-.. literalinclude:: /gnatprove_by_example/examples/aliasing.ads
+.. literalinclude:: /examples/tests/aliasing/aliasing.ads
    :language: ada
    :linenos:
 
@@ -366,29 +364,29 @@ the case if these input parameters were of a record or array type.
 For example, here are examples of correct and illegal (according to Ada and
 SPARK rules) calls to procedure ``Whatever``:
 
-.. literalinclude:: /gnatprove_by_example/examples/check_param_aliasing.adb
+.. literalinclude:: /examples/tests/check_param_aliasing/check_param_aliasing.adb
    :language: ada
    :linenos:
 
 |GNATprove| (like |GNAT Pro| compiler, since these are also Ada rules)
 correctly detects the two illegal calls and issues errors:
 
-.. literalinclude:: /gnatprove_by_example/results/check_param_aliasing.flow
+.. literalinclude:: /examples/tests/check_param_aliasing/test.out
    :language: none
 
 Here are other examples of correct and incorrect calls (according to SPARK
 rules) to procedure ``Whatever``:
 
-.. literalinclude:: /gnatprove_by_example/examples/check_aliasing.adb
+.. literalinclude:: /examples/tests/check_aliasing/check_aliasing.adb
    :language: ada
    :linenos:
 
 |GNATprove| correctly detects the two incorrect calls and issues high check
 messages:
 
-.. literalinclude:: /gnatprove_by_example/results/check_aliasing.flow
+.. literalinclude:: /examples/tests/check_aliasing/test.out
    :language: none
-   :lines: 3,5
+   :lines: 10-12,18-20
 
 Note that |SPARK| currently does not detect aliasing between objects that
 arises due to the use of Address clauses or aspects.
@@ -426,11 +424,11 @@ Multiple error signaling mechanisms are treated the same way:
 For example, consider the artificial subprogram ``Check_OK`` which raises an
 exception when parameter ``OK`` is ``False``:
 
-.. literalinclude:: /gnatprove_by_example/examples/abnormal_terminations.ads
+.. literalinclude:: /examples/tests/abnormal_terminations/abnormal_terminations.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/abnormal_terminations.adb
+.. literalinclude:: /examples/tests/abnormal_terminations/abnormal_terminations.adb
    :language: ada
    :linenos:
 
@@ -446,7 +444,7 @@ During proof, |GNATprove| generates a check that the
 thanks to the precondition of ``Check_OK`` which states that parameter
 ``OK`` should always be ``True`` on entry:
 
-.. literalinclude:: /gnatprove_by_example/results/abnormal_terminations.prove
+.. literalinclude:: /examples/tests/abnormal_terminations/test.out
    :language: none
 
 |GNATprove| also checks that procedures that are marked with aspect or pragma
@@ -481,18 +479,18 @@ Such a call is in effect interpreted as an error signaling mechanism
 For example, consider the procedure ``Conditional_Exit`` which conditionally
 calls the nonterminating ``Always_Exit`` procedure:
 
-.. literalinclude:: /gnatprove_by_example/examples/possibly_nonreturning.ads
+.. literalinclude:: /examples/tests/possibly_nonreturning/possibly_nonreturning.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/possibly_nonreturning.adb
+.. literalinclude:: /examples/tests/possibly_nonreturning/possibly_nonreturning.adb
    :language: ada
    :linenos:
 
 |GNATprove| issues an error here on the call to the possibly nonreturning
 procedure ``Conditional_Exit`` in procedure ``Regular``:
 
-.. literalinclude:: /gnatprove_by_example/results/possibly_nonreturning.flow
+.. literalinclude:: /examples/tests/possibly_nonreturning/test.out
    :language: none
 
 It would be legal to call the nonreturning procedure ``Always_Exit`` from
@@ -522,25 +520,25 @@ either through a pragma or aspect.
 
 For example, consider the following generic increment procedure:
 
-.. literalinclude:: /gnatprove_by_example/examples/generic_increment.ads
+.. literalinclude:: /examples/tests/instance_increment/generic_increment.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/generic_increment.adb
+.. literalinclude:: /examples/tests/instance_increment/generic_increment.adb
    :language: ada
    :linenos:
 
 Procedure ``Instance_Increment`` is a specific instance of
 ``Generic_Increment`` for the type ``Integer``:
 
-.. literalinclude:: /gnatprove_by_example/examples/instance_increment.ads
+.. literalinclude:: /examples/tests/instance_increment/instance_increment.ads
    :language: ada
    :linenos:
 
 |GNATprove| analyzes this instantiation and reports messages on the generic
 code, always stating to which instantiation the messages correspond to:
 
-.. literalinclude:: /gnatprove_by_example/results/generic_increment.prove
+.. literalinclude:: /examples/tests/instance_increment/test.out
    :language: none
 
 Thus, it is possible that some checks are proved on an instance and not on

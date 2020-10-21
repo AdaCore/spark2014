@@ -1,0 +1,11 @@
+my_find.adb:8:30: info: loop invariant initialization proved
+my_find.adb:8:30: info: loop invariant preservation proved
+my_find.adb:8:49: info: precondition proved
+my_find.adb:9:33: info: precondition proved
+my_find.adb:11:10: info: precondition proved
+my_find.adb:15:07: info: precondition proved
+my_find.ads:6:03: info: disjoint contract cases proved
+my_find.ads:6:03: info: complete contract cases proved
+my_find.ads:7:26: info: contract case proved
+my_find.ads:8:29: info: precondition proved
+my_find.ads:9:26: info: contract case proved

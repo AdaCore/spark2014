@@ -1,3 +1,3 @@
 main.adb:5:19: info: implicit function contract not available for proof ("Proxy" might not return)
-main.adb:5:19: medium: assertion might fail, cannot prove Proxy = 0
+main.adb:5:19: medium: assertion might fail, cannot prove Proxy = 0 [possible fix: you should consider adding a postcondition to function Proxy or turning it into an expression function]
 p.ads:1:46: warning: no procedure exists that can initialize abstract state "P.State"

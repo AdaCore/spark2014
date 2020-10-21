@@ -1,2 +1,0 @@
-use_logging_classwide.adb:8:04: high: extension of "Log" is not initialized
-use_logging_classwide.adb:8:07: medium: precondition might fail, cannot prove Log_Size < 10000

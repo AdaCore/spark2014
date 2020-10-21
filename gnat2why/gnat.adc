@@ -8,3 +8,6 @@ pragma Restrictions (No_Implicit_Dynamic_Code);
 --  Dependency on Ada.Real_Time forces the use of GNAT tasking runtime,
 --  which adds extra checks for each memory allocation and deallocation.
 pragma Restrictions (No_Dependence => Ada.Real_Time);
+
+--  Attribute Update is soon to be obsoleted and then deconstructed
+pragma Restrictions (No_Use_Of_Attribute => Update);

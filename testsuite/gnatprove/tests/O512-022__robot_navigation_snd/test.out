@@ -47,7 +47,7 @@ algorithm.adb:184:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:195:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:195:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 algorithm.adb:195:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:195:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
+algorithm.adb:195:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: you should consider adding a postcondition to function ccwDiff or turning it into an expression function]
 algorithm.adb:195:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:195:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 algorithm.adb:195:121: info: float overflow check proved (CVC4: 1 VC)

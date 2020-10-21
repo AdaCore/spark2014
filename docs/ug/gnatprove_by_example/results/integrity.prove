@@ -1,5 +1,0 @@
-integrity.adb:26:10: medium: precondition might fail, cannot prove (Invariant) (e.g. when Max1 = 0 and Max2 = 1 and X = 2) [possible fix: precondition of subprogram at integrity.ads:6 should mention Max1 and Max2]
-integrity.adb:26:18: info: range check proved
-integrity.adb:36:10: info: precondition proved
-integrity.adb:37:10: info: precondition proved
-integrity.adb:39:10: info: precondition proved

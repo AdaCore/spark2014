@@ -390,14 +390,10 @@ package body SPARK_Definition.Annotate is
       ---------------------------
 
       procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean) is
-         Params  : constant List_Id :=
-                    Parameter_Specifications (Subprogram_Specification (E));
-         C_Param : constant Node_Id := First (Params);
+         Params : constant List_Id :=
+           Parameter_Specifications (Subprogram_Specification (E));
       begin
-         if No (C_Param)
-           or else No (Next (C_Param))
-           or else Present (Next (Next (C_Param)))
-         then
+         if List_Length (Params) /= 2 then
             Error_Msg_N
               ("Contains function must have exactly two parameters", E);
          elsif not Is_Standard_Boolean_Type (Etype (E)) then
@@ -405,6 +401,7 @@ package body SPARK_Definition.Annotate is
               ("Contains function must return Booleans", E);
          else
             declare
+               C_Param        : constant Node_Id := First (Params);
                E_Param        : constant Node_Id := Next (C_Param);
                Container_Type : constant Entity_Id :=
                  Entity (Parameter_Type (C_Param));
@@ -441,13 +438,13 @@ package body SPARK_Definition.Annotate is
       procedure Check_Model_Entity (E : Entity_Id; Ok : in out Boolean) is
          Params : constant List_Id :=
            Parameter_Specifications (Subprogram_Specification (E));
-         Param  : constant Node_Id := First (Params);
       begin
-         if No (Param) or else Present (Next (Param)) then
+         if List_Length (Params) /= 1 then
             Error_Msg_N
               ("Model function must have exactly one parameter", E);
          else
             declare
+               Param          : constant Node_Id := First (Params);
                Container_Type : constant Entity_Id :=
                  Entity (Parameter_Type (Param));
                --  Type of the first Argument of the model function
@@ -522,11 +519,18 @@ package body SPARK_Definition.Annotate is
             New_Prim);
       end if;
 
-      String_To_Name_Buffer (Args_Str);
-      if Name_Len = 5 and then Name_Buffer (1 .. 5) = "Model" then
+      --  Pull function specified by the annotation for translation (and report
+      --  a violation this function is not in SPARK).
+
+      if not In_SPARK (New_Prim) then
+         Mark_Violation (Arg4_Exp, From => New_Prim);
+         return;
+      end if;
+
+      if To_String (Args_Str) = "Model" then
          Kind := Model;
          Check_Model_Entity (New_Prim, Ok);
-      elsif Name_Len = 8 and then Name_Buffer (1 .. 8) = "Contains" then
+      elsif To_String (Args_Str) = "Contains" then
          Kind := Contains;
          Check_Contains_Entity (New_Prim, Ok);
       else

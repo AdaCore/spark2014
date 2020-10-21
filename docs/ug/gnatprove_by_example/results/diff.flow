@@ -1,4 +1,0 @@
-diff.adb:1:20: warning: unused variable "Y"
-diff.adb:1:36: info: initialization of "Z" proved
-diff.adb:3:03: medium: missing dependency "null => Y"
-diff.adb:3:24: medium: incorrect dependency "Z => Y"

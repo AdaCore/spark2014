@@ -1,4 +1,0 @@
-counterex.adb:1:58: info: initialization of "R" proved
-counterex.adb:8:14: info: overflow check proved
-counterex.adb:10:17: medium: overflow check might fail (e.g. when In2 = -1 and R = Integer'First)
-counterex.adb:11:25: medium: assertion might fail, cannot prove R < 42 (e.g. when R = 42)

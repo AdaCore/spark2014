@@ -24,6 +24,6 @@ menu item.
 .. toctree::
    :maxdepth: 1
 
-   /gnatprove_by_example/basic
-   /gnatprove_by_example/loop
-   /gnatprove_by_example/manual_proof
+   basic
+   loop
+   manual_proof

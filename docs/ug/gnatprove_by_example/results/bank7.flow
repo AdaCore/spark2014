@@ -1,3 +1,0 @@
-bank7.ads:5:04: high: more tasks than allowed might queue on protected entry "account7.num_accounts.incr" (restriction No_Entry_Queue active) (SPARK RM 9(11))
-bank7.ads:5:04: high: task "bank7.all_accounts" is queueing
-bank7.ads:5:04: high: task "bank7.special_accounts" is queueing

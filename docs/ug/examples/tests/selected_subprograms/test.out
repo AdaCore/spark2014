@@ -1,0 +1,4 @@
+selected_subprograms.adb:7:07: info: initialization of "X" proved
+selected_subprograms.adb:10:22: info: assertion proved
+selected_subprograms.ads:6:26: info: initialization of "X" proved
+selected_subprograms.ads:7:14: info: postcondition proved

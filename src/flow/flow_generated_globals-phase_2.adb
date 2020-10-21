@@ -684,11 +684,11 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  ??? A generic subprogram is never a main program
                   --  ??? If it is a child unit, get its simple name
                else
-                  S := Empty;
+                  S := Types.Empty;
                end if;
 
             when others =>
-               S := Empty;
+               S := Types.Empty;
 
             end case;
 
@@ -2898,7 +2898,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          end loop;
 
-         return Empty;
+         return Types.Empty;
       end Calls_Same_Target_Type;
 
    --  Start of processing for Potentially_Blocking_External_Call
@@ -2917,7 +2917,7 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             --  Check for external calls to a protected subprogram with
             --  the same target type as that of the protected action.
-            if Callee_E = Empty
+            if Callee_E = Types.Empty
               or else not Scope_Within_Or_Same (Scope (Callee_E),
                                                 Context)
             then
@@ -2936,7 +2936,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
       end loop;
 
-      return (Protected_Subprogram => Empty,
+      return (Protected_Subprogram => Types.Empty,
               External_Callee      => Null_Entity_Name);
    end Potentially_Blocking_External_Call;
 

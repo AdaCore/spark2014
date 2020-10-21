@@ -1,4 +1,0 @@
-ownership_borrowing.adb:12:09: object was borrowed at line 9
-ownership_borrowing.adb:12:18: object was borrowed at line 9
-ownership_borrowing.adb:13:09: object was borrowed at line 9
-ownership_borrowing.adb:14:18: object was borrowed at line 9

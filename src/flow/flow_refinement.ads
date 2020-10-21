@@ -58,12 +58,12 @@ package Flow_Refinement is
    --  Returns True iff S is Null_Flow_Scope
 
    function Private_Scope (S : Flow_Scope) return Flow_Scope
-   is (S'Update (Part => Private_Part))
+   is ((S with delta Part => Private_Part))
    with Pre => Present (S);
    --  Returns the private scope for a valid scope
 
    function Body_Scope (S : Flow_Scope) return Flow_Scope
-   is (S'Update (Part => Body_Part))
+   is ((S with delta Part => Body_Part))
    with Pre => Present (S);
    --  Returns the body scope for a valid scope
 

@@ -32,7 +32,7 @@ is
    procedure Push (I : Integer)
      with Refined_Global => (In_Out => (A_Pointer, A_Vector)),
           Refined_Post   => A_Pointer = A_Pointer'Old + 1 and
-                            A_Vector = A_Vector'Old'Update (A_Pointer => I)
+                            A_Vector = (A_Vector'Old with delta A_Pointer => I)
      --  Refined_Post in terms of constituents A_Pointer and A_Vector and a further
      --  constraint added specifying what is required by the implementation.
    is

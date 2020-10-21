@@ -42,7 +42,7 @@ The new aspects defined for |SPARK| all have equivalent pragmas which
 allows a |SPARK| program to be compiled by and executed by any Ada
 implementation; for instance an Ada 95 compiler provided that the use
 of Ada 2005 and Ada 2012 specific features is avoided. The |SPARK|
-attributes Update and Loop_Entry can be used only if the Ada
+attributes Initialized and Loop_Entry can be used only if the Ada
 implementation supports them.
 
 The direct use of the new aspects requires an Ada 2012 compiler which
@@ -390,7 +390,7 @@ proof that all variables are initialized before use.
 defined in the Ada 2012 reference manual. Ada 2012 explicitly permits
 implementations to provide implementation-defined aspects, attributes and
 pragmas. If a |SPARK| program uses one of these aspects (e.g., Global), or
-attributes (e.g., Update) then it can only be compiled and executed by an
+attributes (e.g., Initialized) then it can only be compiled and executed by an
 implementation which supports the construct in a way consistent with the
 definition given here in the |SPARK| reference manual.
 

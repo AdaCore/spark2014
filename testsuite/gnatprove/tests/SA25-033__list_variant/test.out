@@ -1,0 +1,21 @@
+list_variant.adb:10:13: info: function contract might not be available on recursive calls
+list_variant.adb:13:14: info: postcondition proved (CVC4: 1 VC)
+list_variant.adb:16:07: medium: "Length_Ann" is recursive, terminating annotation could be incorrect
+list_variant.adb:16:52: info: subprogram variant proved (CVC4: 1 VC)
+list_variant.adb:16:65: info: pointer dereference check proved (CVC4: 1 VC)
+list_variant.adb:16:73: info: range check proved (CVC4: 1 VC)
+list_variant.adb:16:78: info: overflow check proved (CVC4: 1 VC)
+list_variant.adb:19:06: info: data dependencies proved
+list_variant.adb:22:16: info: postcondition proved (CVC4: 1 VC)
+list_variant.adb:26:10: info: precondition proved (CVC4: 1 VC)
+list_variant.adb:26:10: info: subprogram variant proved (CVC4: 1 VC)
+list_variant.adb:26:29: info: pointer dereference check proved (CVC4: 1 VC)
+list_variant.adb:26:38: info: range check proved (CVC4: 1 VC)
+list_variant.adb:26:48: info: range check proved (CVC4: 1 VC)
+list_variant.adb:31:06: info: data dependencies proved
+list_variant.adb:32:16: info: postcondition proved (CVC4: 1 VC)
+list_variant.adb:34:28: info: pointer dereference check proved (CVC4: 1 VC)
+list_variant.adb:35:27: info: pointer dereference check proved (CVC4: 1 VC)
+list_variant.adb:35:31: info: overflow check proved (CVC4: 1 VC)
+list_variant.adb:39:10: info: precondition proved (CVC4: 1 VC)
+list_variant.adb:39:29: info: pointer dereference check proved (CVC4: 1 VC)

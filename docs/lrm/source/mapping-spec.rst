@@ -69,7 +69,7 @@ pre               precondition      - see Ada RM 6.1.1     :ref:`6.1.1 <precondi
 proof functions   Ghost functions                          :ref:`6.9 <ghost-functions>`                     :ref:`A.5.3 <ms-proof_types_and_proof_functions-label>`
 proof types       Ada types                                                                                 :ref:`A.5.5 <ms-quote_own_variable_in_contract-label>`
 return            'Result attribute - see Ada RM 6.1.1                                                      :ref:`A.2.2 <ms-pre_post_return-label>`
-update            'Update attribute                        :ref:`4.4.1 <update-expressions>`                :ref:`A.6 <ms-quote_own_variable_in_contract-label>`
+update            delta aggregate                                                                           :ref:`A.6 <ms-quote_own_variable_in_contract-label>`
 ================= ======================================== ================================================ ========
 
 Subprogram patterns
@@ -1641,7 +1641,7 @@ Update Expressions
 SPARK 2005 has update expressions for updating records and arrays.
 They can only be used in SPARK 2005 proof contexts.
 
-The equivalent in |SPARK| is the '*Update* attribute.  This can be
+The equivalent in |SPARK| is a delta aggregate.  This can be
 used in any Ada expression.
 
 Specification in SPARK 2005:

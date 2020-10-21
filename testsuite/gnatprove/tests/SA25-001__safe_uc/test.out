@@ -40,7 +40,7 @@ safe.adb:107:67: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:121:13: high: types used for unchecked conversion do not have the same size [possible explanation: type My_Rec doesn't have an Object_Size representation clause or aspect]
 safe.adb:121:55: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type My_Rec doesn't have an Object_Size representation clause or aspect]
 safe.adb:121:63: info: type is suitable for unchecked conversion (Trivial)
-safe.adb:123:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type integer and U8 differ]
+safe.adb:123:13: high: types used for unchecked conversion do not have the same size [possible explanation: Object_Sizes of type integer and type U8 differ]
 safe.adb:123:54: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:123:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:132:13: info: types in unchecked conversion have the same size (Trivial)

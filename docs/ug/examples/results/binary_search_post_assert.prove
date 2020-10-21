@@ -1,1 +1,0 @@
-binary_search.adb:36:50: medium: assertion might fail, cannot prove A (Index) /= I (e.g. when A = (1 => -1, others => 0) and A'First = 1 and A'Last = 2 and I = 0 and Index = 2) [possible fix: precondition of subprogram at binary_search.ads:18 should mention I]

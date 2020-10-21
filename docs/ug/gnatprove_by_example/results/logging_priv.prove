@@ -1,4 +1,0 @@
-logging_priv.adb:6:36: info: overflow check proved
-logging_priv.adb:7:24: info: index check proved
-logging_priv.ads:6:09: info: default initial condition proved
-logging_priv.ads:18:04: medium: type "Log_Type" is not fully initialized

@@ -1,2 +1,2 @@
-regpat.adb:23:22: medium: assertion might fail, cannot prove not (Left /= Right)
+regpat.adb:23:22: medium: assertion might fail, cannot prove not (Left /= Right) [possible fix: you should consider adding a postcondition to function Oeq or turning it into an expression function]
 regpat.ads:3:25: info: data dependencies proved

@@ -31,11 +31,11 @@ unrolling may lead to complex formulas that provers cannot prove.
 
 For example, consider the subprograms ``Init`` and ``Sum`` below:
 
-.. literalinclude:: /gnatprove_by_example/examples/loop_unrolling.ads
+.. literalinclude:: /examples/tests/loop_unrolling/loop_unrolling.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/loop_unrolling.adb
+.. literalinclude:: /examples/tests/loop_unrolling/loop_unrolling.adb
    :language: ada
    :linenos:
 
@@ -43,7 +43,7 @@ As the loops in both subprograms are simple for-loops, |GNATprove| unrolls them
 and manages to prove the postconditions of ``Init`` and ``Sum`` without
 requiring a loop invariant:
 
-.. literalinclude:: /gnatprove_by_example/results/loop_unrolling.prove
+.. literalinclude:: /examples/tests/loop_unrolling/test.out
    :language: none
    :linenos:
 
@@ -84,11 +84,11 @@ conditions in some cases. As examples of use of such generated frame
 conditions, consider the code of procedures ``Update_Arr`` and ``Update_Rec``
 below:
 
-.. literalinclude:: /gnatprove_by_example/examples/frame_condition.ads
+.. literalinclude:: /examples/tests/frame_condition/frame_condition.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /gnatprove_by_example/examples/frame_condition.adb
+.. literalinclude:: /examples/tests/frame_condition/frame_condition.adb
    :language: ada
    :linenos:
 
@@ -103,7 +103,7 @@ of either procedure because:
 Thanks to this feature, |GNATprove| automatically proves the postconditions of
 both procedures, without the need for loop invariants:
 
-.. literalinclude:: /gnatprove_by_example/results/frame_condition.prove
+.. literalinclude:: /examples/tests/frame_condition/test.out
    :language: none
    :linenos:
 
@@ -113,7 +113,7 @@ array variables as long as they are preserved at every index in the array.
 As an example, consider the following loop which only updates some record
 component of a nested data structure:
 
-.. literalinclude:: /gnatprove_by_example/examples/preserved_fields.adb
+.. literalinclude:: /examples/tests/preserved_fields/preserved_fields.adb
    :language: ada
    :linenos:
 
@@ -122,7 +122,7 @@ Despite the absence of a loop invariant in the above code,
 ``D`` which is modified in the loop are proved, thanks to the generated loop
 invariants:
 
-.. literalinclude:: /gnatprove_by_example/results/preserved_fields.prove
+.. literalinclude:: /examples/tests/preserved_fields/test.out
    :language: none
    :linenos:
 
@@ -136,7 +136,7 @@ that are only updated at constant indexes or at indexes equal to the loop index.
 As an example, consider the following loops, only updating some cells of a
 matrix of arrays:
 
-.. literalinclude:: /gnatprove_by_example/examples/preserved_components.adb
+.. literalinclude:: /examples/tests/preserved_components/preserved_components.adb
    :language: ada
    :linenos:
 
@@ -150,7 +150,7 @@ assertion on line 22. |GNATprove| does not either handle dependences between
 indexes in an update, resulting in the failed attempt to verify the
 assertion on line 33:
 
-.. literalinclude:: /gnatprove_by_example/results/preserved_components.prove
+.. literalinclude:: /examples/tests/preserved_components/test.out
    :language: none
    :linenos:
 
@@ -182,7 +182,7 @@ The postcondition of ``Search`` expresses that, either the search returns a
 result within the array bounds, in which case it is the desired index,
 otherwise the array does not contain the value searched.
 
-.. literalinclude:: /examples/linear_search_final/linear_search.ads
+.. literalinclude:: /examples/tests/linear_search_final/linear_search.ads
    :language: ada
    :linenos:
 
@@ -192,7 +192,7 @@ if the loop has not been exited before, then the value searched is not in the
 range of indexes between the start of the array ``A'First`` and the current
 index ``Pos``.
 
-.. literalinclude:: /examples/linear_search_final/linear_search.adb
+.. literalinclude:: /examples/tests/linear_search_final/linear_search.adb
    :language: ada
    :linenos:
 
@@ -200,20 +200,20 @@ With this loop invariant, |GNATprove| is able to prove all checks in
 ``Linear_Search``, both those related to absence of run-time errors and those
 related to verification of contracts:
 
-.. literalinclude:: /examples/results/linear_search_final.prove
+.. literalinclude:: /examples/tests/linear_search_final/test.out
    :language: none
    :linenos:
 
 In particular, the loop invariant fulfills all four properties that we listed
 above:
 
-#. [INIT] It is proved in the first iteration (message on line 2).
+#. [INIT] It is proved in the first iteration (message on line 3).
 #. [INSIDE] It allows proving absence of run-time errors inside the loop
    (messages on lines 1 and 4).
 #. [AFTER] It allows proving absence of run-time errors after the loop
    (messages on lines 6 and 7) and the subprogram postcondition (message on
    line 5).
-#. [PRESERVE] It is proved after the first iteration (message on line 3).
+#. [PRESERVE] It is proved after the first iteration (message on line 2).
 
 Note that the loop invariant closely resembles the second line in the
 postcondition of the subprogram, except with a different range of values in the
@@ -247,13 +247,13 @@ collection is also implemented as an array.
 
 The specification of this ``Binary_Search`` is given in file ``binary_search.ads``:
 
-.. literalinclude:: /examples/binary_search_no_loopinv/binary_search.ads
+.. literalinclude:: /examples/tests/binary_search_no_loopinv/binary_search.ads
    :language: ada
    :linenos:
 
 The implementation of ``Binary_Search`` is given in file ``binary_search.adb``:
 
-.. literalinclude:: /examples/binary_search_no_loopinv/binary_search.adb
+.. literalinclude:: /examples/tests/binary_search_no_loopinv/binary_search.adb
    :language: ada
    :linenos:
 
@@ -281,7 +281,7 @@ invariant. It generates two medium messages, one corresponding to a possible
 run-time check failure, and one corresponding to a possible failure of
 the postcondition:
 
-.. literalinclude:: /examples/results/binary_search_no_loopinv.prove
+.. literalinclude:: /examples/tests/binary_search_no_loopinv/test.out
    :language: none
 
 We will focus here on the message inside the loop, which corresponds to
@@ -299,7 +299,7 @@ hence the message on index check.
 What is needed here is a loop invariant that states that the values of ``Left``
 and ``Right`` stay within the bounds of ``A`` inside the loop:
 
-.. literalinclude:: /examples/binary_search_range/binary_search.adb
+.. literalinclude:: /examples/tests/binary_search_range/binary_search.adb
    :language: ada
    :lines: 23-26
 
@@ -317,7 +317,7 @@ instructing |GNATprove| to prove checks progressively, as seens in
 :ref:`proving spark programs`, we even get a precise message pointing to the
 part of the postcondition that could not be proved:
 
-.. literalinclude:: /examples/results/binary_search_range.prove
+.. literalinclude:: /examples/tests/binary_search_range/test.out
    :language: none
 
 Here, the message shows that the second line of the postcondition could not be
@@ -329,14 +329,14 @@ One can very easily check that, if |GNATprove| can prove this property, it can
 also prove the postcondition. Simply insert a pragma Assert after the loop
 stating this property:
 
-.. literalinclude:: /examples/binary_search_post_assert/binary_search.adb
+.. literalinclude:: /examples/tests/binary_search_post_assert/binary_search.adb
    :language: ada
    :lines: 35-38
 
 |GNATprove| now succeeds in proving the postcondition, but it fails to prove
 the assertion:
 
-.. literalinclude:: /examples/results/binary_search_post_assert.prove
+.. literalinclude:: /examples/tests/binary_search_post_assert/test.out
    :language: none
 
 The problem is that |GNATprove| only knows what the user specified about ``A``
@@ -356,7 +356,7 @@ index ``Left - 1`` is less than ``I``, while the value of ``A`` at index
 there are no such indexes in ``A`` if either ``Left`` or ``Right`` are at the
 boundaries of the array, we can express it as follows:
 
-.. literalinclude:: /examples/binary_search_naive/binary_search.adb
+.. literalinclude:: /examples/tests/binary_search_naive/binary_search.adb
    :language: ada
    :lines: 23-28
 
@@ -368,7 +368,7 @@ additional work for the prover to reach the same conclusion, which may prevent
 automatic proof in the allocated time. In that case, it is better to express
 the equivalent but more explicit property directly, as follows:
 
-.. literalinclude:: /examples/binary_search_precise/binary_search.adb
+.. literalinclude:: /examples/tests/binary_search_precise/binary_search.adb
    :language: ada
    :lines: 23-31
 

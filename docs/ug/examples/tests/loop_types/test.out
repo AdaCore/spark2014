@@ -1,0 +1,35 @@
+a-cfdlli.ads:469:49: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:610:49: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:700:57: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:766:57: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:853:28: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:853:39: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1029:43: info: overflow check proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1210:06: info: disjoint contract cases proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1349:20: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1364:20: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1379:20: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1394:20: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1416:14: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1422:23: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1471:14: info: precondition proved, in instantiation at loop_types.ads:16
+a-cfdlli.ads:1478:23: info: precondition proved, in instantiation at loop_types.ads:16
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
+a-cofuve.ads:232:54: info: overflow check proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
+a-cofuve.ads:232:54: info: overflow check proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
+a-cofuve.ads:237:63: info: range check proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
+a-cofuve.ads:237:63: info: range check proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
+a-cofuve.ads:238:59: info: overflow check proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
+a-cofuve.ads:238:59: info: overflow check proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
+a-cofuve.ads:238:76: info: overflow check proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
+a-cofuve.ads:238:76: info: overflow check proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
+a-cofuve.ads:239:30: info: range check proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
+a-cofuve.ads:239:30: info: range check proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
+a-cofuve.ads:300:52: info: overflow check proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
+a-cofuve.ads:300:52: info: overflow check proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
+a-cofove.ads:581:57: info: range check proved, in instantiation at loop_types.ads:13
+a-cofove.ads:709:23: info: precondition proved, in instantiation at loop_types.ads:13
+a-cofove.ads:712:38: info: range check proved, in instantiation at loop_types.ads:13
+a-cofove.ads:745:14: info: precondition proved, in instantiation at loop_types.ads:13
+a-cofove.ads:749:35: info: range check proved, in instantiation at loop_types.ads:13

@@ -1,4 +1,0 @@
-sort.adb:22:07: info: initialization of "Temp" proved
-sort.adb:26:07: info: initialization of "Interm" proved
-sort.adb:69:07: info: initialization of "Min" proved
-sort.adb:85:07: info: initialization of "Smallest" proved

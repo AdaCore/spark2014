@@ -1,26 +1,26 @@
 ada_real_time.ads:63:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:64:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:64:48: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:64:48: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:64:50: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:66:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:67:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:67:47: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:67:47: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:67:49: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:72:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:73:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:73:48: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:73:48: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:73:50: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:75:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:76:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:76:47: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:76:47: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:76:49: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:81:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:82:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:82:47: medium: overflow check might fail [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:82:47: medium: overflow check might fail [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:82:49: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:84:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:85:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:85:48: medium: overflow check might fail [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:85:48: medium: overflow check might fail [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:85:50: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:89:17: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:90:16: info: implicit function contract not available for proof ("To_Duration" might not return)
@@ -32,19 +32,19 @@ ada_real_time.ads:94:33: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:94:35: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:108:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:109:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:109:48: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:109:48: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:109:50: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:111:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:112:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:112:47: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:112:47: medium: overflow check might fail [reason for check: result of fixed-point subtraction must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:112:49: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:117:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:118:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:118:47: medium: overflow check might fail [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:118:47: medium: overflow check might fail [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:118:49: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:120:16: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:121:18: info: implicit function contract not available for proof ("To_Duration" might not return)
-ada_real_time.ads:121:48: medium: overflow check might fail [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer]
+ada_real_time.ads:121:48: medium: overflow check might fail [reason for check: result of fixed-point addition must fit in the underlying 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:121:50: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:132:27: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:132:46: info: division check proved (CVC4: 1 VC)
@@ -86,7 +86,7 @@ ada_real_time.ads:152:58: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:152:58: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:152:58: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:153:56: info: division check proved (CVC4: 1 VC)
-ada_real_time.ads:153:56: medium: overflow check might fail (e.g. when Right = -1) [reason for check: result of division must fit in a 64-bits machine integer]
+ada_real_time.ads:153:56: medium: overflow check might fail (e.g. when Right = -1) [reason for check: result of division must fit in a 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:161:27: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:161:47: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:161:47: info: overflow check proved (CVC4: 1 VC)
@@ -125,12 +125,12 @@ ada_real_time.ads:181:58: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:181:58: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:181:58: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:182:56: info: division check proved (CVC4: 1 VC)
-ada_real_time.ads:182:56: medium: overflow check might fail (e.g. when Left = -1) [reason for check: result of division must fit in a 64-bits machine integer]
+ada_real_time.ads:182:56: medium: overflow check might fail (e.g. when Left = -1) [reason for check: result of division must fit in a 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:188:25: medium: precondition might fail, cannot prove Right /= Time_Span_First
 ada_real_time.ads:192:31: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:192:50: info: range check proved (CVC4: 1 VC)
-ada_real_time.ads:192:50: medium: divide by zero might fail
-ada_real_time.ads:192:50: medium: overflow check might fail [reason for check: result of division must fit in a 64-bits machine integer]
+ada_real_time.ads:192:50: medium: divide by zero might fail [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
+ada_real_time.ads:192:50: medium: overflow check might fail [reason for check: result of division must fit in a 64-bits machine integer] [possible fix: you should consider adding a postcondition to function To_Duration or turning it into an expression function]
 ada_real_time.ads:192:52: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:253:23: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:253:23: info: range check proved (Z3: 1 VC)

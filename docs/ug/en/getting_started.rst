@@ -59,7 +59,7 @@ To begin with, launch GNAT Studio with a new default project and check that the
 Now open a new file in GNAT Studio and type the following short program into it.
 Save this file as ``diff.adb``.
 
-.. literalinclude:: /gnatprove_by_example/examples/diff.adb
+.. literalinclude:: /examples/tests/diff/diff.adb
    :language: ada
    :linenos:
 
@@ -71,16 +71,16 @@ as you may have noticed, there is a bug in the code. Note the use of aspect
 tools.  To analyze this program, select :menuselection:`SPARK --> Examine File`
 from the menu in GNAT Studio. |GNATprove| executes in flow analysis mode and reports:
 
-.. literalinclude:: /gnatprove_by_example/results/diff.flow
+.. literalinclude:: /examples/tests/diff/test.out
    :language: none
 
-These warnings are informing us that there is a discrepancy between the
+These messages are informing us that there is a discrepancy between the
 program's contract (which says that the value of ``Z`` is obtained from the
 values of ``X`` and ``Y``) and its implementation (in which the value of ``Z``
 is derived only from the value of ``X``, and ``Y`` is unused). In this case the
 contract is correct and the code is wrong, so fix the code by changing the
 assignment statement to ``Z := X - Y;`` and re-run the analysis. This time it
-should report no warnings or errors.
+should report no messages.
 
 Having established that the program is free from flow errors, now let's run the
 tools in proof mode to check for run-time errors.  Select :menuselection:`SPARK
@@ -89,10 +89,7 @@ dialog box.  |GNATprove| now attempts to show, using formal verification, that
 the program is free from run-time errors. But it finds a problem and highlights
 the assignment statement in red, reporting:
 
-..  correction version of diff.adb written in diff2.adb (to be able to use
-..  automatic generation of output)
-
-.. literalinclude:: /gnatprove_by_example/results/diff2.prove
+.. literalinclude:: /examples/tests/diff2/test.out
    :language: none
 
 This means that the tools are unable to show that the result of subtracting one
@@ -101,7 +98,7 @@ This means that the tools are unable to show that the result of subtracting one
 which this could be addressed depending on what the requirements are for this
 subprogram, but for now let's change the type of parameter ``Z`` from
 ``Natural`` to ``Integer``.  If the analysis is re-run with this change in
-place then |GNATprove| will report no errors or warnings. All checks are proved
+place then |GNATprove| will report no issues. All checks are proved
 so we can be confident that no exceptions will be raised by the execution of
 this code.
 

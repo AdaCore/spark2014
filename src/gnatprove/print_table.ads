@@ -160,7 +160,8 @@ package Print_Table with SPARK_Mode is
    with
      Global => null,
      Pre    => T.Cur_Col = T.C + 1 and then T.Cur_Line <= T.L,
-     Post   => T = T'Old'Update (Cur_Col => 1, Cur_Line => T.Cur_Line'Old + 1);
+     Post   => T =
+       (T'Old with delta Cur_Col => 1, Cur_Line => T.Cur_Line'Old + 1);
 
    procedure Dump_Table (H : Ada.Text_IO.File_Type; T : Table)
    with

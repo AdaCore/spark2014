@@ -135,7 +135,7 @@ bitwalker.adb:214:07: info: precondition proved (CVC4: 5 VC)
 bitwalker.adb:216:22: info: assertion proved (CVC4: 1 VC)
 bitwalker.adb:218:17: info: precondition proved (CVC4: 4 VC)
 bitwalker.adb:220:22: info: precondition proved (Trivial: 1 VC)
-bitwalker.adb:220:22: medium: assertion might fail, cannot prove Eq (Result, Value)
+bitwalker.adb:220:22: medium: assertion might fail, cannot prove Eq (Result, Value) [possible fix: you should consider adding a postcondition to function Eq or turning it into an expression function]
 bitwalker.ads:12:14: info: postcondition proved (CVC4: 2 VC)
 bitwalker.ads:12:32: info: precondition proved (Trivial: 1 VC)
 bitwalker.ads:12:45: info: range check proved (CVC4: 1 VC)

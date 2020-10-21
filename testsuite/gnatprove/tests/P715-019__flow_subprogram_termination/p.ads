@@ -1,2 +1,2 @@
-package P with Elaborate_Body Is
+package P with Elaborate_Body is
 end P;

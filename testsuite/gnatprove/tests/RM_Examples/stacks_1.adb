@@ -14,7 +14,7 @@ is
 
    procedure Push (S : in out Stack_Type; I : in Integer)
      with Refined_Post => S.Pointer = S.Pointer'Old + 1 and
-          S.Vector = S.Vector'Old'Update (S.Pointer => I)
+          S.Vector = (S.Vector'Old with delta S.Pointer => I)
      --  Refined_Post in terms of full view of Stack_Type and a
      --  further constraint added specifying what is required by the
      --  implementation.

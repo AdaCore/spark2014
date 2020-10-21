@@ -121,8 +121,7 @@ Static predicates and dynamic predicates are both in
 
   [No such proof obligations are generated for assignments
   to subcomponents of the result object of an aggregate,
-  an extension aggregate, or an update expression (see section
-  :ref:`update-expressions`).
+  an extension aggregate, or a delta aggregate.
   These are assignment operations but not assignment statements.]
 
 3. A Static_Predicate or Dynamic_Predicate shall not apply to a subtype of a
@@ -870,6 +869,12 @@ be an owning type).]
     in the private part of a package then its completion shall also occur
     in that private part.]
 
+15. The name of an effectively volatile managed object shall not be moved,
+    borrowed, or observed. [This rule is meant to avoid introducing aliases
+    between volatile variables used by another task or thread. Borrowers can
+    also break the invariant on the borrowed object for the time of the
+    borrow.]
+
 .. centered:: **Verification Rules**
 
 
@@ -895,48 +900,6 @@ be an owning type).]
     condition is introduced to ensure that the postcondition of the target
     is implied by the postcondition of the converted access-to-subprogram
     expression.
-
-Incomplete Type Declarations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-No extensions or restrictions.
-
-Operations of Access Types
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-As general access types are not allowed in |SPARK|, the prefix of a reference to
-the Access attribute is necessarily a subprogram.
-
-.. centered:: **Legality Rules**
-
-1. The prefix of the attribute Access shall be the name of a subprogram.
-
-2. A subprogram used as the prefix of a reference to the attribute Access:
-
-   - shall not be declared within a protected type or object;
-
-   - shall not be a dispatching operation of a tagged type; and
-
-   - shall not be a declared in the scope of a type with an invariant
-     if this type is mentioned in the subprogram's profile unless it is
-     a boundary subprogram (see section 7.3.2 for the definition of a
-     boundary subprogram).
-
-3. The Volatile_Function aspect of a subprogram used as the prefix of a
-   reference to the attribute Access, if specified, shall not be True
-   (see section 7.1.2 for the definition of Volatile_Function).
-
-.. centered:: **Verification Rules**
-
-4. The prefix of the Access attribute shall have no global inputs and outputs
-   (see section 6.1 for inputs and outputs of subprograms).
-
-5. On a reference to the Access attribute, a verification condition is
-   introduced to ensure that the precondition of the prefix of the attribute
-   is implied by the precondition of its expected type. Similarly,
-   a verification condition is introduced to ensure that the postcondition of
-   the expected type is implied by the postcondition of the prefix of the
-   attribute.
 
 Declarative Parts
 -----------------

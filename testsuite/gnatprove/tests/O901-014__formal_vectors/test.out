@@ -69,7 +69,7 @@ aida-containers-formal_vectors.ads:78:06: info: data dependencies proved, in ins
 aida-containers-formal_vectors.ads:84:08: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:92:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:99:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.ads:101:37: medium: overflow check might fail, in instantiation at hnco-test2.ads:8 [reason for check: result of addition must fit in a 32-bits machine integer]
+aida-containers-formal_vectors.ads:101:37: medium: overflow check might fail, in instantiation at hnco-test2.ads:8 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
 aida-containers-formal_vectors.ads:107:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:114:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:117:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8

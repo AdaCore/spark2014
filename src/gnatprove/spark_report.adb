@@ -1036,7 +1036,9 @@ procedure SPARK_Report is
          =>
             return Assertions;
 
-         when VC_Loop_Variant =>
+         when VC_Loop_Variant
+            | VC_Subprogram_Variant
+         =>
             return Termination;
 
          when VC_Initial_Condition
