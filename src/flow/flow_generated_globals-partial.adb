@@ -461,7 +461,15 @@ package body Flow_Generated_Globals.Partial is
       --  not appear in proof, definite or conditional.
       --  ??? not sure about protected types
       if Ekind (E) /= E_Protected_Type then
-         Contr.Direct_Calls := FA.Direct_Calls;
+
+         --  Ignore calls via access-to-subprogram, because we can't know the
+         --  actual subprogram and thus we assume it to be pure.
+
+         for Call of FA.Direct_Calls loop
+            if Ekind (Call) /= E_Subprogram_Type then
+               Contr.Direct_Calls.Insert (Call);
+            end if;
+         end loop;
       end if;
 
       --  Register abstract state components for packages whose body has

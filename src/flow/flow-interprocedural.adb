@@ -171,7 +171,8 @@ package body Flow.Interprocedural is
    --  Start of processing for Add_Simple_Procedure_Dependency
 
    begin
-      if Has_Depends (Called_Thing)
+      if Ekind (Called_Thing) /= E_Subprogram_Type
+        and then Has_Depends (Called_Thing)
         and then (not FA.Generating_Globals
                     or else not Rely_On_Generated_Global (Called_Thing,
                                                           FA.B_Scope))
@@ -251,14 +252,16 @@ package body Flow.Interprocedural is
 
          begin
             --  Collect all the globals first
-            Get_Globals (Subprogram          => Called_Thing,
-                         Scope               => FA.B_Scope,
-                         Classwide           =>
-                           Flow_Classwide.Is_Dispatching_Call (N),
-                         Globals             => Globals,
-                         Use_Deduced_Globals => not FA.Generating_Globals);
+            if Ekind (Called_Thing) /= E_Subprogram_Type then
+               Get_Globals (Subprogram          => Called_Thing,
+                            Scope               => FA.B_Scope,
+                            Classwide           =>
+                              Flow_Classwide.Is_Dispatching_Call (N),
+                            Globals             => Globals,
+                            Use_Deduced_Globals => not FA.Generating_Globals);
 
-            Remove_Constants (Globals.Inputs);
+               Remove_Constants (Globals.Inputs);
+            end if;
 
             --  Add parameters
             for E of Get_Explicit_Formals (Called_Thing) loop

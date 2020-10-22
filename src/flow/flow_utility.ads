@@ -542,7 +542,10 @@ package Flow_Utility is
    --    view.
 
    function Get_Explicit_Formals (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Ekind (E) in E_Entry | E_Function | E_Procedure,
+   with Pre  => Ekind (E) in E_Entry
+                           | E_Function
+                           | E_Procedure
+                           | E_Subprogram_Type,
         Post => (for all F of Get_Explicit_Formals'Result => Is_Formal (F));
    --  Returns explicit formals of a subprogram or entry
 

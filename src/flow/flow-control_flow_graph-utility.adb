@@ -219,6 +219,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Call_Attributes
      (Callsite      : Node_Id;
+      Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops         : Node_Sets.Set     := Node_Sets.Empty_Set;
       In_Nested_Pkg : Boolean;
@@ -228,12 +229,14 @@ package body Flow.Control_Flow_Graph.Utility is
       A : V_Attributes := Null_Attributes;
       pragma Unreferenced (Callsite);
    begin
-      A.Subprograms_Called := Sub_Called;
-      A.Is_Program_Node    := True;
-      A.Loops              := Loops;
-      A.In_Nested_Package  := In_Nested_Pkg;
-      A.Is_Callsite        := True;
-      A.Error_Location     := E_Loc;
+      A.Variables_Explicitly_Used := Var_Use;
+      A.Variables_Used            := Var_Use;
+      A.Subprograms_Called        := Sub_Called;
+      A.Is_Program_Node           := True;
+      A.Loops                     := Loops;
+      A.In_Nested_Package         := In_Nested_Pkg;
+      A.Is_Callsite               := True;
+      A.Error_Location            := E_Loc;
 
       --  ??? The below is the logic for doing IPFA within a
       --  compilation unit. To be enabled by M227-027.
