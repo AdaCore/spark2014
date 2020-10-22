@@ -3471,7 +3471,7 @@ package body SPARK_Definition is
                                  | Pragma_Pre
                                  | Pragma_Post
                                  | Pragma_Check
-                                 =>
+                              =>
                                  return True;
                               when Pragma_Contract_Cases =>
                                  raise Program_Error;
@@ -5365,10 +5365,10 @@ package body SPARK_Definition is
 
          elsif Is_Scalar_Type (E) then
 
-            --  Modular types with modulus greater than 2 ** 64 are not
+            --  Modular types with modulus greater than 2 ** 128 are not
             --  supported in GNAT, so no need to support them in GNATprove for
             --  now. Supporting them would require either extending the support
-            --  in Why3 and provers for bitvectors greater than 64 bits, or
+            --  in Why3 and provers for bitvectors greater than 128 bits, or
             --  else having a default theory for handling these modular types
             --  too large for bitvectors.
             --  In addition, GNATprove only support single and double ieee
@@ -5377,9 +5377,9 @@ package body SPARK_Definition is
             --  long_long_float should not pose any fundamental problem.
 
             if Is_Modular_Integer_Type (E)
-              and then Modulus (E) > UI_Expon (2, 64)
+              and then Modulus (E) > UI_Expon (2, 128)
             then
-               Mark_Unsupported ("modulus greater than 2 ** 64", E);
+               Mark_Unsupported ("modulus greater than 2 '*'* 128", E);
                return;
 
             elsif Is_Floating_Point_Type (E) then

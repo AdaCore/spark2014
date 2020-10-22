@@ -583,7 +583,11 @@ package body Why.Gen.Scalars is
               or else
                 (Ty = EW_BitVector_64_Type
                  and then Modulus (E)
-                        = UI_Expon (Uint_2, Uint_64)))
+                        = UI_Expon (Uint_2, Uint_64))
+              or else
+                (Ty = EW_BitVector_128_Type
+                 and then Modulus (E)
+                        = UI_Expon (Uint_2, Uint_128)))
            and then Nkind (Type_Low_Bound (E)) = N_Integer_Literal
            and then Intval (Type_Low_Bound (E)) = Uint_0
            and then Nkind (Type_High_Bound (E)) = N_Integer_Literal
@@ -751,6 +755,11 @@ package body Why.Gen.Scalars is
                                   Static_Modular_lt64
                              else
                                 Static_Modular_64)
+                          elsif Typ = EW_BitVector_128_Type then
+                            (if UI_Lt (Modulus_Val, UI_Expon (2, 128)) then
+                                  Static_Modular_lt128
+                             else
+                                Static_Modular_128)
                           else
                              raise Program_Error);
                end;
@@ -928,6 +937,13 @@ package body Why.Gen.Scalars is
                               New_Modular_Constant
                            (Value => Modulus_Val,
                             Typ => EW_BitVector_64_Type)
+                         else
+                            Why_Empty)
+                      elsif Typ = EW_BitVector_128_Type then
+                        (if UI_Lt (Modulus_Val, UI_Expon (2, 128)) then
+                              New_Modular_Constant
+                           (Value => Modulus_Val,
+                            Typ => EW_BitVector_128_Type)
                          else
                             Why_Empty)
                       else
@@ -1117,6 +1133,11 @@ package body Why.Gen.Scalars is
                              Rep_Proj_Lt64
                           else
                              Rep_Proj_64)
+                       elsif Rep_Type = EW_BitVector_128_Type then
+                         (if UI_Lt (Modulus_Val, UI_Expon (2, 128)) then
+                             Rep_Proj_Lt128
+                          else
+                             Rep_Proj_128)
                        else
                           raise Program_Error);
             end;

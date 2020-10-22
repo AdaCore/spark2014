@@ -2600,7 +2600,8 @@ package body Why.Gen.Expr is
       if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
         Base = EW_BitVector_32_Type or else
-        Base = EW_BitVector_64_Type
+        Base = EW_BitVector_64_Type or else
+        Base = EW_BitVector_128_Type
       then
          return
            New_Call (Domain => Domain,
@@ -2714,33 +2715,6 @@ package body Why.Gen.Expr is
                              Typ      => BT);
          end;
 
-      elsif Attr in Attribute_First | Attribute_Last | Attribute_Length
-        and then Ekind (Ty) = E_String_Literal_Subtype
-      then
-         declare
-            BT : constant W_Type_Id := Nth_Index_Rep_Type_No_Bool
-              (Ty, 1);
-         begin
-            case Attr is
-            when Attribute_First =>
-               return New_Discrete_Constant
-                 (Value => Expr_Value (String_Literal_Low_Bound (Ty)),
-                  Typ   => BT);
-
-            when Attribute_Length =>
-               return New_Integer_Constant
-                 (Value => String_Literal_Length (Ty));
-
-            when Attribute_Last =>
-               return New_Discrete_Constant
-                 (Value => Expr_Value (String_Literal_Low_Bound (Ty)) +
-                    String_Literal_Length (Ty) - 1,
-                  Typ   => BT);
-
-            when others =>
-               raise Program_Error;
-            end case;
-         end;
       elsif Is_Standard_Boolean_Type (Ty) then
          case Attr is
             when Attribute_First => return +M_Boolean.First;
@@ -2927,7 +2901,7 @@ package body Why.Gen.Expr is
          then Int_Infix_Add
          else MF_BVs (Rep_Type).Add);
    begin
-      pragma Assert (Rep_Type = EW_Int_Type or eLse
+      pragma Assert (Rep_Type = EW_Int_Type or else
                      Why_Type_Is_BitVector (Rep_Type));
 
       return
@@ -2966,7 +2940,7 @@ package body Why.Gen.Expr is
          then Int_Infix_Subtr
          else MF_BVs (Rep_Type).Sub);
    begin
-      pragma Assert (Rep_Type = EW_Int_Type or eLse
+      pragma Assert (Rep_Type = EW_Int_Type or else
                      Why_Type_Is_BitVector (Rep_Type));
 
       return
@@ -3254,7 +3228,8 @@ package body Why.Gen.Expr is
       if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
         Base = EW_BitVector_32_Type or else
-        Base = EW_BitVector_64_Type
+        Base = EW_BitVector_64_Type or else
+        Base = EW_BitVector_128_Type
       then
          return
            New_Call (Domain => Domain,
@@ -3650,7 +3625,8 @@ package body Why.Gen.Expr is
       if Base = EW_BitVector_8_Type or else
         Base = EW_BitVector_16_Type or else
         Base = EW_BitVector_32_Type or else
-        Base = EW_BitVector_64_Type
+        Base = EW_BitVector_64_Type or else
+        Base = EW_BitVector_128_Type
       then
          return
            New_Call (Domain => Domain,

@@ -1499,6 +1499,8 @@ package body Why.Gen.Arrays is
                            Array_BV32_Rep_Comparison_Ax
                         elsif Base = EW_BitVector_64_Type then
                            Array_BV64_Rep_Comparison_Ax
+                        elsif Base = EW_BitVector_128_Type then
+                           Array_BV128_Rep_Comparison_Ax
                         else raise Program_Error),
                      As_Name       => No_Symbol,
                      Substitutions => Sbst));
@@ -2521,8 +2523,7 @@ package body Why.Gen.Arrays is
       Ty        : constant Entity_Id := Retysp (E);
       Type_Name : Unbounded_String;
       Index     : Node_Id := First_Index (Ty);
-      Dim       : constant Positive :=
-        Positive (Number_Dimensions (Ty));
+      Dim       : constant Positive := Positive (Number_Dimensions (Ty));
    begin
       if Ekind (Ty) = E_String_Literal_Subtype then
          return Get_Array_Theory_Name (Etype (Ty), Init_Wrapper);

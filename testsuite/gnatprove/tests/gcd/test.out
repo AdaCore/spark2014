@@ -51,7 +51,7 @@ math_simple.ads:6:14: info: postcondition proved (Z3: 3 VC)
 math_simple.ads:9:34: info: range check proved (Z3: 1 VC)
 math_simple.ads:9:53: info: range check proved (Z3: 1 VC)
 math_simple_abstract.adb:5:06: info: data dependencies proved
-math_simple_abstract.adb:6:14: info: postcondition proved (altergo: 1 VC)
+math_simple_abstract.adb:6:14: info: postcondition proved (CVC4: 1 VC)
 math_simple_abstract.adb:6:28: info: division check proved (Z3: 1 VC)
 math_simple_abstract.adb:14:06: info: data dependencies proved
 math_simple_abstract.adb:15:19: info: division check proved (Z3: 1 VC)

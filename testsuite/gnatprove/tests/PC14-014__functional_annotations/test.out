@@ -960,7 +960,7 @@ use_ordered_sets.adb:166:33: info: loop invariant preservation proved (CVC4: 1 V
 use_ordered_sets.adb:166:34: info: precondition proved (CVC4: 2 VC)
 use_ordered_sets.adb:166:63: info: overflow check proved (CVC4: 2 VC)
 use_ordered_sets.adb:166:67: info: overflow check proved (CVC4: 2 VC)
-use_ordered_sets.adb:167:25: info: assertion proved (altergo: 1 VC)
+use_ordered_sets.adb:167:25: info: assertion proved (Z3: 1 VC)
 use_ordered_sets.adb:167:42: info: precondition proved (CVC4: 1 VC)
 use_ordered_sets.adb:167:58: info: overflow check proved (altergo: 1 VC)
 use_ordered_sets.adb:168:10: info: precondition proved (CVC4: 1 VC)

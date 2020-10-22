@@ -4596,13 +4596,7 @@ these conditions is done in :file:`gnat_config.ml`, see the use of
 At the location where a warning could be issued, ``gnat2why`` generates an
 assertion of the suitable kind, checking for the bad condition against which we
 want to defend. For example, it's checking ``False`` for the warning on
-unreachable branches. The assertion is isolated in an ignore block.
-
-In fact, the case of unreachable branches and code is treated specially, as
-it's necessary to generate a call to ``absurd`` instead of an assertion of
-``False``, for the VCgen to correctly handle this case. It turns out that
-putting this call inside an ignore block is also not enough for its effects to
-be ignored, so we additionally isolate it in an if-expression (see
+unreachable branches. The assertion is isolated in an ignore block (see
 ``Warn_On_Dead_Branch`` in :file:`gnat2why-expr.adb`).
 
 The decision to ignore unproved VCs that correspond to warnings is done in

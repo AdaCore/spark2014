@@ -452,6 +452,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Static_Modular_lt64");
+      Static_Modular_lt128 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Static_Modular_lt128");
       Static_Modular_8 :=
         New_Module
           (File => Ada_Model_File,
@@ -468,6 +472,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Static_Modular_64");
+      Static_Modular_128 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Static_Modular_128");
       Static_Discrete :=
         New_Module
           (File => Ada_Model_File,
@@ -540,6 +548,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Rep_Proj_ltBV64");
+      Rep_Proj_Lt128 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_ltBV128");
       Rep_Proj_8 :=
         New_Module
           (File => Ada_Model_File,
@@ -556,6 +568,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Rep_Proj_BV64");
+      Rep_Proj_128 :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_BV128");
       Access_To_Incomp_Ty :=
         New_Module
           (File => Ada_Model_File,
@@ -613,6 +629,11 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Array_BV64_Rep_Comparison_Axiom");
+
+      Array_BV128_Rep_Comparison_Ax :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Array_BV128_Rep_Comparison_Axiom");
 
       Standard_Array_Logical_Ax :=
         New_Module
@@ -1097,6 +1118,26 @@ package body Why.Atree.Modules is
       M : W_Module_Id;
    begin
       M := New_Module (File => Gnatprove_Standard_File,
+                       Name => "BVConv_128_256");
+      M_BV_Conv_128_256 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("toBig"),
+                                          Typ    => EW_BitVector_256_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("toSmall"),
+                                          Typ    => EW_BitVector_128_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("range_check_"),
+                                          Typ    => EW_BitVector_256_Type));
+
+      M := New_Module (File => Gnatprove_Standard_File,
                        Name => "BVConv_64_128");
       M_BV_Conv_64_128 :=
         M_BV_Conv_Type'(Module => M,
@@ -1110,6 +1151,66 @@ package body Why.Atree.Modules is
                                           Domain => EW_Term,
                                           Symb   => NID ("toSmall"),
                                           Typ    => EW_BitVector_64_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("range_check_"),
+                                          Typ    => EW_BitVector_128_Type));
+
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => "BVConv_32_128");
+      M_BV_Conv_32_128 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("toBig"),
+                                          Typ    => EW_BitVector_128_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("toSmall"),
+                                          Typ    => EW_BitVector_32_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("range_check_"),
+                                          Typ    => EW_BitVector_128_Type));
+
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => "BVConv_16_128");
+      M_BV_Conv_16_128 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("toBig"),
+                                          Typ    => EW_BitVector_128_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("toSmall"),
+                                          Typ    => EW_BitVector_16_Type),
+                        Range_Check =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("range_check_"),
+                                          Typ    => EW_BitVector_128_Type));
+
+      M := New_Module (File => Gnatprove_Standard_File,
+                       Name => "BVConv_8_128");
+      M_BV_Conv_8_128 :=
+        M_BV_Conv_Type'(Module => M,
+                        To_Big =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("toBig"),
+                                          Typ    => EW_BitVector_128_Type),
+                        To_Small =>
+                          New_Identifier (Module => M,
+                                          Domain => EW_Term,
+                                          Symb   => NID ("toSmall"),
+                                          Typ    => EW_BitVector_8_Type),
                         Range_Check =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
@@ -1259,6 +1360,9 @@ package body Why.Atree.Modules is
       M_BVs (BV128).Module :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => "BV128");
+      M_BVs (BV256).Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "BV256");
 
       for BV in BV_Kind loop
          M_BVs (BV).T :=
@@ -1453,6 +1557,7 @@ package body Why.Atree.Modules is
       EW_BitVector_32_Type  := M_BVs (BV32).T;
       EW_BitVector_64_Type  := M_BVs (BV64).T;
       EW_BitVector_128_Type := M_BVs (BV128).T;
+      EW_BitVector_256_Type := M_BVs (BV256).T;
    end Init_BV_Modules;
 
    -----------------------------
@@ -3324,6 +3429,8 @@ package body Why.Atree.Modules is
          return M_BVs (BV64);
       elsif T = EW_BitVector_128_Type then
          return M_BVs (BV128);
+      elsif T = EW_BitVector_256_Type then
+         return M_BVs (BV256);
       else
          raise Program_Error;
       end if;

@@ -262,6 +262,8 @@ package body Why.Inter is
             State.S.Include (+M_BVs (BV64).Module);
          elsif Typ = EW_BitVector_128_Type then
             State.S.Include (+M_BVs (BV128).Module);
+         elsif Typ = EW_BitVector_256_Type then
+            State.S.Include (+M_BVs (BV256).Module);
          else
             raise Unexpected_Node;
          end if;
@@ -978,6 +980,8 @@ package body Why.Inter is
                      return EW_BitVector_32_Type;
                   elsif Uintp.UI_Le (Size, 64) then
                      return EW_BitVector_64_Type;
+                  elsif Uintp.UI_Le (Size, 128) then
+                     return EW_BitVector_128_Type;
                   else
                      return EW_Int_Type;
                   end if;
@@ -1118,6 +1122,10 @@ package body Why.Inter is
         Right_Base = EW_BitVector_64_Type
       then
          return EW_BitVector_64_Type;
+      elsif Left_Base = EW_BitVector_128_Type or else
+        Right_Base = EW_BitVector_128_Type
+      then
+         return EW_BitVector_128_Type;
       end if;
 
       --  There are no other uses of this subprogram for now

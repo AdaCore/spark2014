@@ -169,6 +169,57 @@ module Rep_Proj_BVGen
     forall x : t [to_int x]. in_range_int (to_int x)
 end
 
+(* ---- Modular with modulus lower or equal to 128 ---- *)
+
+module Static_Modular_lt128
+  use _gnatprove_standard.BV128 as BV128
+  type rep_type = BV128.t
+
+  function rep_to_int (x : rep_type) : int = BV128.t'int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+
+  function attr__ATTRIBUTE_MODULUS : rep_type
+end
+
+module Rep_Proj_ltBV128
+  use _gnatprove_standard.BV128
+  type rep_type = t
+
+  function rep_to_int (x : rep_type) : int = t'int x
+
+  clone export Rep_Proj_ltBVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int,
+    function urem = urem
+
+  (* need to specify modulus when cloning this *)
+end
+
+module Static_Modular_128
+  use _gnatprove_standard.BV128 as BV128
+  type rep_type = BV128.t
+
+  function rep_to_int (x : rep_type) : int = BV128.t'int x
+
+  clone export Static_Modular_Base with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+end
+
+module Rep_Proj_BV128
+  use _gnatprove_standard.BV128
+  type rep_type = t
+
+  function rep_to_int (x : rep_type) : int = t'int x
+
+  clone export Rep_Proj_BVGen with
+    type rep_type = rep_type,
+    function rep_to_int = rep_to_int
+end
+
 (* ---- Modular with modulus lower or equal to 64 ---- *)
 
 module Static_Modular_lt64
@@ -1136,6 +1187,15 @@ end
 
 module Array_BV64_Rep_Comparison_Axiom
   use bv.BV64
+
+  clone export Array_Comparison_Axiom with
+  type rep_type = t,
+  predicate rep_lt = ult,
+  predicate rep_gt = ugt
+end
+
+module Array_BV128_Rep_Comparison_Axiom
+  use bv.BV128
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,

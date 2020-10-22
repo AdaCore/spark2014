@@ -72,6 +72,7 @@ package Why.Atree.Modules is
    EW_BitVector_32_Type  : W_Type_Id;
    EW_BitVector_64_Type  : W_Type_Id;
    EW_BitVector_128_Type : W_Type_Id;
+   EW_BitVector_256_Type : W_Type_Id;
    EW_Unit_Type          : W_Type_Id;
 
    --  Modules of file "ada__model.mlw"
@@ -81,10 +82,12 @@ package Why.Atree.Modules is
    Static_Modular_16      : W_Module_Id;
    Static_Modular_32      : W_Module_Id;
    Static_Modular_64      : W_Module_Id;
+   Static_Modular_128     : W_Module_Id;
    Static_Modular_lt8     : W_Module_Id;
    Static_Modular_lt16    : W_Module_Id;
    Static_Modular_lt32    : W_Module_Id;
    Static_Modular_lt64    : W_Module_Id;
+   Static_Modular_lt128   : W_Module_Id;
    Dynamic_Modular        : W_Module_Id;
    Dynamic_Discrete       : W_Module_Id;
    Static_Fixed_Point     : W_Module_Id;
@@ -103,23 +106,26 @@ package Why.Atree.Modules is
    Rep_Proj_Lt16          : W_Module_Id;
    Rep_Proj_Lt32          : W_Module_Id;
    Rep_Proj_Lt64          : W_Module_Id;
+   Rep_Proj_Lt128         : W_Module_Id;
    Rep_Proj_8             : W_Module_Id;
    Rep_Proj_16            : W_Module_Id;
    Rep_Proj_32            : W_Module_Id;
    Rep_Proj_64            : W_Module_Id;
+   Rep_Proj_128           : W_Module_Id;
    Access_To_Incomp_Ty    : W_Module_Id;
    Pledge                 : W_Module_Id;
 
-   Constr_Arrays                : W_Module_Array (1 .. Max_Array_Dimensions);
-   Unconstr_Arrays              : W_Module_Array (1 .. Max_Array_Dimensions);
-   Array_Concat_Axioms          : W_Module_Id;
-   Array_Int_Rep_Comparison_Ax  : W_Module_Id;
-   Array_BV8_Rep_Comparison_Ax  : W_Module_Id;
-   Array_BV16_Rep_Comparison_Ax : W_Module_Id;
-   Array_BV32_Rep_Comparison_Ax : W_Module_Id;
-   Array_BV64_Rep_Comparison_Ax : W_Module_Id;
-   Standard_Array_Logical_Ax    : W_Module_Id;
-   Subtype_Array_Logical_Ax     : W_Module_Id;
+   Constr_Arrays                 : W_Module_Array (1 .. Max_Array_Dimensions);
+   Unconstr_Arrays               : W_Module_Array (1 .. Max_Array_Dimensions);
+   Array_Concat_Axioms           : W_Module_Id;
+   Array_Int_Rep_Comparison_Ax   : W_Module_Id;
+   Array_BV8_Rep_Comparison_Ax   : W_Module_Id;
+   Array_BV16_Rep_Comparison_Ax  : W_Module_Id;
+   Array_BV32_Rep_Comparison_Ax  : W_Module_Id;
+   Array_BV64_Rep_Comparison_Ax  : W_Module_Id;
+   Array_BV128_Rep_Comparison_Ax : W_Module_Id;
+   Standard_Array_Logical_Ax     : W_Module_Id;
+   Subtype_Array_Logical_Ax      : W_Module_Id;
 
    --  Modules of the _gnatprove_standard.mlw file
 
@@ -531,15 +537,19 @@ package Why.Atree.Modules is
 
    M_Subprogram_Profiles : Name_Id_Profile_Map.Map;
 
-   M_BV_Conv_64_128 : M_BV_Conv_Type;
-   M_BV_Conv_32_64  : M_BV_Conv_Type;
-   M_BV_Conv_16_64  : M_BV_Conv_Type;
-   M_BV_Conv_8_64   : M_BV_Conv_Type;
-   M_BV_Conv_16_32  : M_BV_Conv_Type;
-   M_BV_Conv_8_32   : M_BV_Conv_Type;
-   M_BV_Conv_8_16   : M_BV_Conv_Type;
+   M_BV_Conv_128_256 : M_BV_Conv_Type;
+   M_BV_Conv_64_128  : M_BV_Conv_Type;
+   M_BV_Conv_32_128  : M_BV_Conv_Type;
+   M_BV_Conv_16_128  : M_BV_Conv_Type;
+   M_BV_Conv_8_128   : M_BV_Conv_Type;
+   M_BV_Conv_32_64   : M_BV_Conv_Type;
+   M_BV_Conv_16_64   : M_BV_Conv_Type;
+   M_BV_Conv_8_64    : M_BV_Conv_Type;
+   M_BV_Conv_16_32   : M_BV_Conv_Type;
+   M_BV_Conv_8_32    : M_BV_Conv_Type;
+   M_BV_Conv_8_16    : M_BV_Conv_Type;
 
-   type BV_Kind is (BV8, BV16, BV32, BV64, BV128);
+   type BV_Kind is (BV8, BV16, BV32, BV64, BV128, BV256);
 
    M_BVs : array (BV_Kind) of M_BV_Type;
 

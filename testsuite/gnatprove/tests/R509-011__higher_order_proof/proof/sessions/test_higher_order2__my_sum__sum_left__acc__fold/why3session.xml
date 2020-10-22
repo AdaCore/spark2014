@@ -363,11 +363,11 @@
   <proof prover="1"><result status="valid" steps="55"/></proof>
   </goal>
   <goal name="def&#39;vc.112" proved="true">
-  <proof prover="0"><result status="valid" steps="5271"/></proof>
+  <proof prover="0"><result status="valid" steps="4839"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.113" proved="true">
-  <proof prover="0"><result status="valid" steps="7097"/></proof>
+  <proof prover="0"><result status="valid" steps="6641"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.114" proved="true">

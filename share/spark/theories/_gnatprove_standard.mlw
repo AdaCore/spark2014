@@ -1381,12 +1381,44 @@ module BV128
     ensures { result = t'int x }
 end
 
-(* For conversion to bv 128 bits, only need version from 64 bits, as part
-   of checking of overflows on some 64 bits modular operations. There are no
-   user-defined conversions to bv 128 bits otherwise.
+(* For conversion to bv 256 bits, only need version from 128 bits, as part
+   of checking of overflows on some 128 bits modular operations. There are no
+   user-defined conversions to bv 256 bits otherwise.
  *)
+module BVConv_128_256
+  use export bv.BVConverter_128_256
+
+  val range_check_ (f l x : BV256.t) : BV256.t
+    requires { (BV256.ule f x) /\ (BV256.ule x l) }
+    ensures { result = x }
+end
+
 module BVConv_64_128
   use export bv.BVConverter_64_128
+
+  val range_check_ (f l x : BV128.t) : BV128.t
+    requires { (BV128.ule f x) /\ (BV128.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_32_128
+  use export bv.BVConverter_32_128
+
+  val range_check_ (f l x : BV128.t) : BV128.t
+    requires { (BV128.ule f x) /\ (BV128.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_16_128
+  use export bv.BVConverter_16_128
+
+  val range_check_ (f l x : BV128.t) : BV128.t
+    requires { (BV128.ule f x) /\ (BV128.ule x l) }
+    ensures { result = x }
+end
+
+module BVConv_8_128
+  use export bv.BVConverter_8_128
 
   val range_check_ (f l x : BV128.t) : BV128.t
     requires { (BV128.ule f x) /\ (BV128.ule x l) }
@@ -1449,27 +1481,27 @@ module Subprogram_Pointer_Rep
   type __rep =
     { __is_null_pointer : bool;
       __pointer_value   : __subprogram }
-  
+
   type __rep__ref = {
     mutable __rep__content : __rep
   }
-  
+
   val __rep__havoc (x: __rep__ref) : unit writes { x }
-  
+
   function bool_eq (a: __rep) (b: __rep) : bool =
     a.__is_null_pointer = b.__is_null_pointer &&
      (if not a.__is_null_pointer
       then a.__pointer_value = b.__pointer_value
       else true)
-  
+
   val bool_eq (a: __rep) (b: __rep) : bool
     ensures { result = bool_eq a b }
-  
+
   val function __null_pointer : __rep
-  
+
   axiom __null_pointer__def_axiom:
     __null_pointer.__is_null_pointer
-  
+
   val __pointer_value_ (a: __rep) : __subprogram
     requires { not a.__is_null_pointer }
     ensures { result = a.__pointer_value }

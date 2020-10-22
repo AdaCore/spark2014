@@ -140,5 +140,5 @@ test_prime_and_coprime_numbers.adb:9:04: info: initialization of "Coprimes" prov
 test_prime_and_coprime_numbers.adb:12:15: info: precondition proved (CVC4: 5 VC; altergo: 1 VC)
 test_prime_and_coprime_numbers.adb:12:15: info: range check proved (CVC4: 1 VC)
 test_prime_and_coprime_numbers.adb:13:17: info: precondition proved (CVC4: 1 VC)
+test_prime_and_coprime_numbers.adb:14:15: info: precondition proved (CVC4: 4 VC; Z3: 1 VC)
 test_prime_and_coprime_numbers.adb:14:15: info: range check proved (CVC4: 1 VC)
-test_prime_and_coprime_numbers.adb:14:15: medium: precondition might fail

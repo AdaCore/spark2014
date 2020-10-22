@@ -891,7 +891,10 @@ package body Gnat2Why.Expr is
       Right_Opnd : W_Expr_Id;
       Rep_Type   : W_Type_Id;
       Modulus    : Uint) return W_Expr_Id
-     with Pre => Modulus < UI_Expon (2, 32);
+   with
+     --  GNAT does not support non-binary modulus greater than 2**32, we can
+     --  use that limit to simplify treatment here.
+     Pre => Modulus < UI_Expon (2, 32);
    --  For non binary modular types, it is incorrect to apply the arithmetic
    --  operations - + * on the base type and then apply the modulus on the
    --  result. The special treatment needed in this case is implemented here.
@@ -9821,8 +9824,7 @@ package body Gnat2Why.Expr is
       In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
       Expr_Typ           : constant Entity_Id := Type_Of_Node (Expr);
       Nb_Dim             : constant Positive :=
-        (if Ekind (Expr_Typ) = E_String_Literal_Subtype then 1
-         else Integer (Number_Dimensions (Expr_Typ)));
+        Positive (Number_Dimensions (Expr_Typ));
       Needs_Bounds       : constant Boolean :=
         not In_Delta_Aggregate and then not Is_Static_Array_Type (Expr_Typ);
       --  We do not need to give the array bounds as additional arguments to
@@ -16973,7 +16975,6 @@ package body Gnat2Why.Expr is
          when N_Target_Name =>
             pragma Assert (Target_Name /= Why_Empty);
             T := +Target_Name;
-            Target_Used := True;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Expr] kind ="
@@ -18452,10 +18453,14 @@ package body Gnat2Why.Expr is
                     (if Modular_Size (Ada_Type) < 16 then EW_BitVector_16_Type
                      else Rep_Type)
                   elsif Modulus < UI_Expon (2, 16) then
-                     (if Modular_Size (Ada_Type) < 32 then EW_BitVector_32_Type
+                    (if Modular_Size (Ada_Type) < 32 then EW_BitVector_32_Type
                      else Rep_Type)
+                  elsif Modulus < UI_Expon (2, 32) then
+                    EW_BitVector_64_Type
                   else
-                     EW_BitVector_64_Type);
+                    --  GNAT does not support non-binary modulus greater than
+                    --  2**32, which we check conservatively here.
+                    raise Program_Error);
                Modulus_Expr : constant W_Expr_Id :=
                  New_Modular_Constant (Value => Modulus,
                                        Typ   => Next_Bv);
@@ -20382,6 +20387,8 @@ package body Gnat2Why.Expr is
                                         32
                                      elsif Modulus_Val = UI_Expon (2, 64) then
                                         64
+                                     elsif Modulus_Val = UI_Expon (2, 128) then
+                                        128
                                      else
                                         raise Program_Error);
       Typ         : constant W_Type_Id := (if Nb_Of_Bits = 8 then
@@ -20392,12 +20399,14 @@ package body Gnat2Why.Expr is
                                               EW_BitVector_32_Type
                                            elsif Nb_Of_Bits = 64 then
                                               EW_BitVector_64_Type
+                                           elsif Nb_Of_Bits = 128 then
+                                              EW_BitVector_128_Type
                                            else raise Program_Error);
       T           : W_Expr_Id;
 
    begin
       --  ??? it is assumed that rotate calls are only valid on actual
-      --  unsigned_8/16/32/64 types with the corresponding 'Size
+      --  unsigned_8/16/32/64/128 types with the corresponding 'Size
 
       Get_Unqualified_Decoded_Name_String (Chars (Subp));
 
@@ -20737,7 +20746,6 @@ package body Gnat2Why.Expr is
             begin
                --  Sanity checking, the global state should be clean
 
-               pragma Assert (Target_Used = False);
                pragma Assert (Target_Name = Why_Empty);
 
                --  Create an identifier for references to the target name in
@@ -20760,8 +20768,7 @@ package body Gnat2Why.Expr is
 
                --  Only introduce a binding for Target_Name if it was actually
                --  used in the assignment.
-
-               if Target_Used then
+               if Has_Target_Names (Stmt_Or_Decl) then
                   T := New_Binding
                     (Ada_Node => Stmt_Or_Decl,
                      Name     => Target_Name,
@@ -20777,7 +20784,6 @@ package body Gnat2Why.Expr is
                --  Clean up global state
 
                Target_Name := Why_Empty;
-               Target_Used := False;
 
                return T;
             end;

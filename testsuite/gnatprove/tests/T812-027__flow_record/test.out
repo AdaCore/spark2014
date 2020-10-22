@@ -1,0 +1,5 @@
+swap.adb:1:17: warning: unused initial value of "X"
+swap.adb:2:08: medium: missing dependency "null => X"
+swap.adb:2:28: medium: missing self-dependency "Y => Y"
+swap.adb:2:33: medium: incorrect dependency "Y => X"
+swap.adb:3:19: info: postcondition proved (CVC4: 2 VC)
