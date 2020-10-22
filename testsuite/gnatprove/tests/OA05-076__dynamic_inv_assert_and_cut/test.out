@@ -48,7 +48,7 @@ lsc-bignum.adb:126:07: info: initialization of "J" proved
 lsc-bignum.adb:127:07: info: initialization of "New_Carry" proved
 lsc-bignum.adb:131:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:134:13: info: loop invariant preservation proved (Z3: 2 VC)
-lsc-bignum.adb:134:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, I - A_First) - Num_Of_Big_Int (B, B_First, I - A_First) = Num_Of_Big_Int (A, A_First, I - A_First) - Base ** (I - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions]
+lsc-bignum.adb:134:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, I - A_First) - Num_Of_Big_Int (B, B_First, I - A_First) = Num_Of_Big_Int (A, A_First, I - A_First) - Base ** (I - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
 lsc-bignum.adb:134:54: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:134:54: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:135:43: info: overflow check proved (Z3: 2 VC)
@@ -70,7 +70,7 @@ lsc-bignum.adb:142:57: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:143:13: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:143:23: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:143:31: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:147:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, (I + 1) - A_First) - Num_Of_Big_Int (B, B_First, (I + 1) - A_First) = Num_Of_Big_Int (A, A_First, (I + 1) - A_First) - Base ** ((I + 1) - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions]
+lsc-bignum.adb:147:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, (I + 1) - A_First) - Num_Of_Big_Int (B, B_First, (I + 1) - A_First) = Num_Of_Big_Int (A, A_First, (I + 1) - A_First) - Base ** ((I + 1) - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
 lsc-bignum.adb:147:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:147:60: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:147:60: info: range check proved (Z3: 1 VC)
@@ -110,7 +110,7 @@ lsc-bignum.adb:180:24: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:185:23: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:185:31: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:202:08: info: flow dependencies proved
-lsc-bignum.adb:206:10: medium: postcondition might fail, cannot prove Math_Int.From_Word32 (A'Old) + Math_Int.From_Word32 (V) * Math_Int.From_Word32 (W) + Math_Int.From_Word32 (X) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Old) + Base * Math_Int.From_Word32 (Carry2'Old) = Math_Int.From_Word32 (A) + Base * (Mat...) [possible fix: you should consider adding a postcondition to operator "+" and operator "*" and operator "=" and function From_Word32 or turning them into expression functions]
+lsc-bignum.adb:206:10: medium: postcondition might fail, cannot prove Math_Int.From_Word32 (A'Old) + Math_Int.From_Word32 (V) * Math_Int.From_Word32 (W) + Math_Int.From_Word32 (X) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Old) + Base * Math_Int.From_Word32 (Carry2'Old) = Math_Int.From_Word32 (A) + Base * (Mat...) [possible fix: you should consider adding a postcondition to operator "+" and operator "*" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:215:07: info: initialization of "Mult1" proved
 lsc-bignum.adb:215:14: info: initialization of "Mult2" proved
 lsc-bignum.adb:215:21: info: initialization of "Temp" proved
@@ -119,9 +119,9 @@ lsc-bignum.adb:230:36: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:231:41: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:249:08: info: flow dependencies proved
 lsc-bignum.adb:254:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
-lsc-bignum.adb:257:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+lsc-bignum.adb:257:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.adb:257:28: info: overflow check proved (Z3: 1 VC)
-lsc-bignum.adb:259:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+lsc-bignum.adb:259:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.adb:259:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:261:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.adb:261:41: info: overflow check proved (Z3: 1 VC)
@@ -143,7 +143,7 @@ lsc-bignum.adb:269:36: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:272:07: info: initialization of "Temp" proved
 lsc-bignum.adb:274:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:277:13: info: loop invariant preservation proved (Z3: 2 VC)
-lsc-bignum.adb:277:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First + 1, I - A_First) + Num_Of_Big_Int (B, B_First, I - A_First) * Math_Int.From_Word32 (X) + Num_Of_Big_Int (C, C_First, I - A_First) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Loop_Entry) + Base * Math_Int... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions]
+lsc-bignum.adb:277:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First + 1, I - A_First) + Num_Of_Big_Int (B, B_First, I - A_First) * Math_Int.From_Word32 (X) + Num_Of_Big_Int (C, C_First, I - A_First) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Loop_Entry) + Base * Math_Int... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:277:51: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:277:58: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:277:58: info: range check proved (Z3: 2 VC)
@@ -168,7 +168,7 @@ lsc-bignum.adb:294:24: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:294:24: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:294:29: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:296:13: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:299:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First + 1, (I + 1) - A_First) + Num_Of_Big_Int (B, B_First, (I + 1) - A_First) * Math_Int.From_Word32 (X) + Num_Of_Big_Int (C, C_First, (I + 1) - A_First) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Loop_Entry)... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions]
+lsc-bignum.adb:299:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First + 1, (I + 1) - A_First) + Num_Of_Big_Int (B, B_First, (I + 1) - A_First) * Math_Int.From_Word32 (X) + Num_Of_Big_Int (C, C_First, (I + 1) - A_First) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Loop_Entry)... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:299:51: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:299:59: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:299:64: info: overflow check proved (Z3: 1 VC)
@@ -198,7 +198,7 @@ lsc-bignum.adb:329:34: info: initialization of "U" proved
 lsc-bignum.adb:331:07: info: precondition proved (Z3: 5 VC)
 lsc-bignum.adb:334:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:337:13: info: loop invariant preservation proved (Z3: 2 VC)
-lsc-bignum.adb:337:13: medium: loop invariant might fail in first iteration, cannot prove (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) + Base ** (A_Last - A_First + 1) * Math_Int.From_Word32 (A_MSW)) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, I - A_First) * Num_Of_Big_Int (C, C_First, A_Last - A_Fi...)) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "+" and operator "*" and operator "mod" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions]
+lsc-bignum.adb:337:13: medium: loop invariant might fail in first iteration, cannot prove (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) + Base ** (A_Last - A_First + 1) * Math_Int.From_Word32 (A_MSW)) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, I - A_First) * Num_Of_Big_Int (C, C_First, A_Last - A_Fi...)) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "+" and operator "*" and operator "mod" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:337:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:337:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:337:59: info: range check proved (Z3: 2 VC)
@@ -244,7 +244,7 @@ lsc-bignum.adb:359:24: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:359:40: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:361:13: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:362:48: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:365:13: medium: assertion might fail, cannot prove (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) + Base ** (A_Last - A_First + 1) * Math_Int.From_Word32 (A_MSW)) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, (I + 1) - A_First) * Num_Of_Big_Int (C, C_First, A_Last ...)) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "+" and operator "*" and operator "mod" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions]
+lsc-bignum.adb:365:13: medium: assertion might fail, cannot prove (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) + Base ** (A_Last - A_First + 1) * Math_Int.From_Word32 (A_MSW)) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, (I + 1) - A_First) * Num_Of_Big_Int (C, C_First, A_Last ...)) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "+" and operator "*" and operator "mod" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:365:49: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:365:59: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:365:59: info: range check proved (Z3: 1 VC)
@@ -314,7 +314,7 @@ lsc-bignum.adb:452:39: medium: overflow check might fail [reason for check: resu
 lsc-bignum.adb:456:07: medium: precondition might fail
 lsc-bignum.adb:457:39: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:462:21: info: overflow check proved (Z3: 1 VC)
-lsc-bignum.adb:463:10: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux1, Aux1_First, L + 1) = Math_Int.From_Word32 (1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "=" and function From_Word32 or turning them into expression functions]
+lsc-bignum.adb:463:10: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux1, Aux1_First, L + 1) = Math_Int.From_Word32 (1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:463:46: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:465:46: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:466:40: info: overflow check proved (Z3: 1 VC)
@@ -343,7 +343,7 @@ lsc-bignum.adb:489:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:490:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:491:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:492:22: info: range check proved (Z3: 4 VC)
-lsc-bignum.adb:493:16: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux4, Aux4_First + N * (L + 1), L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (2 * N + 1) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions]
+lsc-bignum.adb:493:16: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux4, Aux4_First + N * (L + 1), L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (2 * N + 1) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
 lsc-bignum.adb:493:50: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 lsc-bignum.adb:493:54: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 lsc-bignum.adb:493:59: info: overflow check proved (Z3: 2 VC)
@@ -391,8 +391,8 @@ lsc-bignum.adb:532:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:533:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:534:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:535:43: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:536:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M...) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions]
-lsc-bignum.adb:536:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M...) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions]
+lsc-bignum.adb:536:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M...) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:536:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M...) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:536:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:537:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:538:49: info: overflow check proved (Z3: 2 VC)
@@ -441,8 +441,8 @@ lsc-bignum.adb:574:64: medium: overflow check might fail [reason for check: resu
 lsc-bignum.adb:574:68: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:575:34: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:576:53: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:577:19: medium: loop invariant might fail in first iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "-" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Integer and function From_Word32 and function From_Word64 or turning them into expression functions]
-lsc-bignum.adb:577:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "-" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Integer and function From_Word32 and function From_Word64 or turning them into expression functions]
+lsc-bignum.adb:577:19: medium: loop invariant might fail in first iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "-" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Integer and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:577:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "-" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Integer and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:577:77: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
 lsc-bignum.adb:577:81: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:577:81: info: range check proved (Z3: 2 VC)
@@ -467,7 +467,7 @@ lsc-bignum.adb:607:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:608:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:609:30: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:610:49: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:611:19: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** (H - 1)) *... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions]
+lsc-bignum.adb:611:19: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** (H - 1)) *... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:611:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:612:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:613:55: info: overflow check proved (Z3: 2 VC)
@@ -503,7 +503,7 @@ lsc-bignum.adb:646:49: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:647:49: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:648:30: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:649:49: info: overflow check proved (Z3: 1 VC)
-lsc-bignum.adb:650:19: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** H) * Base ... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions]
+lsc-bignum.adb:650:19: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** H) * Base ... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:650:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:651:49: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:652:55: info: overflow check proved (Z3: 1 VC)
@@ -573,7 +573,7 @@ lsc-bignum.ads:74:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.ads:74:19: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:74:63: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:83:08: info: flow dependencies proved
-lsc-bignum.ads:90:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+lsc-bignum.ads:90:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:90:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:92:10: info: postcondition proved (Trivial: 2 VC; Z3: 2 VC)
 lsc-bignum.ads:92:19: info: range check proved (Z3: 2 VC)
@@ -589,7 +589,7 @@ lsc-bignum.ads:96:20: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:96:32: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:104:07: info: initialization of "Carry" proved
 lsc-bignum.ads:106:08: info: flow dependencies proved
-lsc-bignum.ads:112:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+lsc-bignum.ads:112:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:112:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:115:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.ads:115:49: info: overflow check proved (Z3: 1 VC)
@@ -604,7 +604,7 @@ lsc-bignum.ads:117:55: info: range check proved (Z3: 1 VC)
 lsc-bignum.ads:118:26: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:118:36: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:118:36: info: range check proved (Z3: 1 VC)
-lsc-bignum.ads:132:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+lsc-bignum.ads:132:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:132:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:135:10: medium: postcondition might fail, cannot prove Less'Result = (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) < Num_Of_Big_Int (B, B_First, A_Last - A_First + 1))
 lsc-bignum.ads:136:46: info: overflow check proved (Z3: 1 VC)
@@ -631,7 +631,7 @@ lsc-bignum.ads:166:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:166:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:166:55: info: range check proved (Z3: 1 VC)
 lsc-bignum.ads:167:25: info: index check proved (Z3: 2 VC)
-lsc-bignum.ads:169:10: medium: postcondition might fail, cannot prove Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, A_Last - A_First + 1) * Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) * Inverse (Num_Of_Big_Int (M, M_First, A_Last - A_First + 1), Base) ** (A_Last - A_First + 1)) mod Nu... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions]
+lsc-bignum.ads:169:10: medium: postcondition might fail, cannot prove Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, A_Last - A_First + 1) * Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) * Inverse (Num_Of_Big_Int (M, M_First, A_Last - A_First + 1), Base) ** (A_Last - A_First + 1)) mod Nu... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
 lsc-bignum.ads:169:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:169:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:169:55: info: range check proved (Z3: 1 VC)
@@ -686,7 +686,7 @@ lsc-bignum.ads:246:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:246:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:246:55: info: range check proved (Z3: 1 VC)
 lsc-bignum.ads:247:25: info: index check proved (Z3: 2 VC)
-lsc-bignum.ads:249:10: medium: postcondition might fail, cannot prove Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) = Num_Of_Big_Int (X, X_First, A_Last - A_First + 1) ** Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "mod" and operator "**" and operator "=" or turning them into expression functions]
+lsc-bignum.ads:249:10: medium: postcondition might fail, cannot prove Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) = Num_Of_Big_Int (X, X_First, A_Last - A_First + 1) ** Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
 lsc-bignum.ads:249:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:249:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:249:55: info: range check proved (Z3: 1 VC)
