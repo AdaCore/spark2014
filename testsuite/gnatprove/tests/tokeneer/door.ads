@@ -205,11 +205,11 @@ is
           -- After each call to LockDoor, the security property --
           -- holds.                                             --
           --------------------------------------------------------
-          Post    => (Latch.IsLocked and
-                      TheCurrentDoor = Open and
-                      Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
-                                               Alarm_Timeout)) =
-                        (TheDoorAlarm = AlarmTypes.Alarming) and
+          Post    => ((Latch.IsLocked and
+                       TheCurrentDoor = Open and
+                       Clock.GreaterThanOrEqual(Clock.TheCurrentTime,
+                                                Alarm_Timeout)) =
+                         (TheDoorAlarm = AlarmTypes.Alarming)) and
                         Latch.IsLocked;
 
    ------------------------------------------------------------------

@@ -128,7 +128,7 @@ is
                                                State),
                       (Output,
                        SystemFault)        => State),
-          Post    => IsLocked = LatchisLocked or SystemFault;
+          Post    => (IsLocked = LatchisLocked) or SystemFault;
 
    ------------------------------------------------------------------
    -- SetTimeout
