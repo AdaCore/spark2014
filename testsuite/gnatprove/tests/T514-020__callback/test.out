@@ -4,52 +4,32 @@ test_callback.adb:11:19: info: precondition proved (CVC4: 1 VC)
 test_callback.adb:20:04: warning: analyzing unreferenced procedure "Junk"
 test_callback.adb:20:14: warning: subprogram "Junk" has no effect
 test_callback.adb:25:58: info: overflow check proved (CVC4: 1 VC)
-test_callback.adb:32:28: warning: "F" is not modified, could be of access constant type
-test_callback.adb:32:28: warning: unused variable "F"
-test_callback.adb:32:42: warning: "G" is not modified, could be of access constant type
-test_callback.adb:32:42: warning: unused variable "G"
 test_callback.adb:34:14: info: postcondition proved (CVC4: 1 VC)
 test_callback.adb:37:48: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:37:48: info: precondition proved (CVC4: 1 VC)
-test_callback.adb:40:28: warning: "F" is not modified, could be of access constant type
-test_callback.adb:40:28: warning: unused variable "F"
 test_callback.adb:42:14: medium: postcondition might fail, cannot prove Call_Incr_Bad'Result > X (e.g. when Call_Incr_Bad'Result = 100 and X = 100)
 test_callback.adb:45:14: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:45:14: medium: precondition might fail, cannot prove X < 100 (e.g. when X = 100)
-test_callback.adb:48:29: warning: "F" is not modified, could be of access constant type
-test_callback.adb:48:29: warning: unused variable "F"
 test_callback.adb:50:14: medium: postcondition might fail, cannot prove Call_Incr_Bad2'Result >= X (e.g. when Call_Incr_Bad2'Result = Integer'First and X = 0)
 test_callback.adb:53:14: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 48 should mention F]
 test_callback.adb:53:14: medium: precondition might fail, cannot prove X < 50 (e.g. when X = 50)
-test_callback.adb:56:33: warning: "F" is not modified, could be of access constant type
-test_callback.adb:56:33: warning: unused variable "F"
 test_callback.adb:58:14: info: postcondition proved (CVC4: 1 VC)
 test_callback.adb:61:26: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
 test_callback.adb:61:29: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:61:29: info: precondition proved (CVC4: 1 VC)
-test_callback.adb:64:37: warning: "F" is not modified, could be of access constant type
-test_callback.adb:64:37: warning: unused variable "F"
 test_callback.adb:66:14: info: postcondition proved (CVC4: 1 VC)
 test_callback.adb:69:26: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
 test_callback.adb:69:29: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:69:29: medium: precondition might fail, cannot prove X < 50 (e.g. when X = 50)
-test_callback.adb:72:38: warning: "F" is not modified, could be of access constant type
 test_callback.adb:76:24: info: null exclusion check proved (CVC4: 1 VC)
 test_callback.adb:76:24: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove 'Result >= x
 test_callback.adb:76:24: medium: precondition of target might not be strong enough to imply precondition of source, cannot prove X < 50
 test_callback.adb:76:27: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:76:27: info: precondition proved (CVC4: 1 VC)
-test_callback.adb:82:30: warning: "P" is not modified, could be of access constant type
-test_callback.adb:82:30: warning: unused variable "P"
+test_callback.adb:82:14: warning: subprogram "Call_Null_Proc" has no effect
 test_callback.adb:86:09: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:86:09: medium: precondition might fail, cannot prove false
-test_callback.adb:89:21: warning: "F" is not modified, could be of access constant type
-test_callback.adb:90:21: warning: "G" is not modified, could be of access constant type
-test_callback.adb:94:23: warning: "F" is not modified, could be of access constant type
-test_callback.adb:95:23: warning: "G" is not modified, could be of access constant type
 test_callback.adb:97:36: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
-test_callback.adb:99:23: warning: "F" is not modified, could be of access constant type
-test_callback.adb:100:23: warning: "G" is not modified, could be of access constant type
 test_callback.adb:104:30: info: initialization of "F" proved
 test_callback.adb:106:14: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:106:14: info: postcondition proved (CVC4: 1 VC)

@@ -626,6 +626,11 @@ package body Flow.Analysis is
       elsif Present (First_Formal (E)) then
          return False;
 
+      --  Globals on access-to-subprogram are not allowed
+
+      elsif Ekind (E) = E_Subprogram_Type then
+         return True;
+
       --  Any global parameter is an effect
 
       else
@@ -5133,7 +5138,7 @@ package body Flow.Analysis is
                Atr : V_Attributes renames FA.Atr (V);
             begin
                for E of Atr.Subprograms_Called loop
-                  if Ekind (E) /= E_Package then
+                  if Ekind (E) not in E_Package | E_Subprogram_Type then
                      Check_Subprogram (E, Atr.Error_Location);
                   end if;
                end loop;

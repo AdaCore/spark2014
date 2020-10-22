@@ -213,6 +213,8 @@ package body Flow_Utility is
             when N_Function_Call =>
                declare
                   Called_Func : constant Entity_Id := Get_Called_Entity (N);
+                  pragma Assert
+                    (Ekind (Called_Func) in E_Function | E_Subprogram_Type);
 
                begin
                   --  For predicate functions descend into the predicate
@@ -241,6 +243,14 @@ package body Flow_Utility is
                     and then
                       Is_Visible (Unit_Declaration_Node (Called_Func), Scop)
                   then
+                     Functions_Called.Include (Called_Func);
+                  end if;
+
+                  --  Include access-to-functions, as they affect the
+                  --  potentially non-returning status of the caller.
+
+                  if Ekind (Called_Func) = E_Subprogram_Type then
+                     pragma Assert (Etype (Called_Func) /= Standard_Void_Type);
                      Functions_Called.Include (Called_Func);
                   end if;
 
@@ -2421,6 +2431,7 @@ package body Flow_Utility is
          Handle_Parameters (Callsite);
 
          --  Determine the global effects of the called program
+
          if Ekind (Subprogram) /= E_Subprogram_Type then
             Get_Globals (Subprogram          => Subprogram,
                          Scope               => Ctx.Scope,
@@ -2428,10 +2439,10 @@ package body Flow_Utility is
                            Flow_Classwide.Is_Dispatching_Call (Callsite),
                          Globals             => Globals,
                          Use_Deduced_Globals => Ctx.Use_Computed_Globals);
-         end if;
 
-         Remove_Constants (Globals.Proof_Ins);
-         Remove_Constants (Globals.Inputs);
+            Remove_Constants (Globals.Proof_Ins);
+            Remove_Constants (Globals.Inputs);
+         end if;
 
          --  Handle globals; very much like in Handle_Parameter
 
@@ -2475,6 +2486,12 @@ package body Flow_Utility is
                   end if;
                end loop;
          end case;
+
+         --  For calls via access-to-subprogram recurse into their prefix
+
+         if Ekind (Subprogram) = E_Subprogram_Type then
+            V.Union (Recurse (Prefix (Name (Callsite))));
+         end if;
 
          --  Apply sanity check for functions
          --  ??? we should not emit errors from an utility routine like this,

@@ -490,7 +490,8 @@ package body Flow.Slice is
                pragma Assert (Ekind (E) in Entry_Kind
                                          | E_Function
                                          | E_Procedure
-                                         | E_Package);
+                                         | E_Package
+                                         | E_Subprogram_Type);
 
                --  We don't expect calls to predicate functions in the CFG
 
@@ -506,6 +507,12 @@ package body Flow.Slice is
                   if No (Get_Pragma (E, Pragma_Initializes)) then
                      Unresolved.Insert (E);
                   end if;
+
+               --  Ignore calls via access-to-subprogram, because we assume
+               --  them to be pure.
+
+               elsif Ekind (E) = E_Subprogram_Type then
+                  null;
 
                --  For ordinary subprograms, check if their flow effects
                --  have been already "inlined" in CFG; see the call
