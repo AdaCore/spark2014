@@ -31,7 +31,6 @@ with Assumption_Types;                use Assumption_Types;
 with Common_Iterators;                use Common_Iterators;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
-with Exp_Util;                        use Exp_Util;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Gnat2Why_Args;
@@ -46,10 +45,10 @@ with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Snames;                          use Snames;
+with SPARK_Atree.Entities;
 with SPARK_Util;                      use SPARK_Util;
 with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Definition.Violations;     use SPARK_Definition.Violations;
-with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Hardcoded;            use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
@@ -1998,23 +1997,35 @@ package body SPARK_Definition is
                end;
 
             else
-               declare
-                  From_Type  : constant Entity_Id := Etype (Expression (N));
-                  To_Type    : constant Entity_Id := Etype (N);
-                  From_Float : constant Boolean :=
+               Scalar_Conversion : declare
+                  From_Type        : constant Entity_Id :=
+                    Etype (Expression (N));
+                  To_Type          : constant Entity_Id := Etype (N);
+                  From_Float       : constant Boolean :=
                     Has_Floating_Point_Type (From_Type);
-                  From_Fixed : constant Boolean :=
+                  From_Fixed       : constant Boolean :=
                     Has_Fixed_Point_Type (From_Type);
-                  From_Int   : constant Boolean :=
+                  From_Int         : constant Boolean :=
                     Has_Signed_Integer_Type (From_Type)
                       or else Has_Modular_Integer_Type (From_Type);
-                  To_Float : constant Boolean :=
+                  From_Modular_128 : constant Boolean :=
+                    Has_Modular_Integer_Type (From_Type)
+                      and then SPARK_Atree.Entities.Modular_Size
+                        (Retysp (From_Type))
+                        = Uintp.UI_From_Int (128);
+
+                  To_Float       : constant Boolean :=
                     Has_Floating_Point_Type (To_Type);
-                  To_Fixed   : constant Boolean :=
+                  To_Fixed       : constant Boolean :=
                     Has_Fixed_Point_Type (To_Type);
-                  To_Int   : constant Boolean :=
+                  To_Int         : constant Boolean :=
                     Has_Signed_Integer_Type (To_Type)
                       or else Has_Modular_Integer_Type (To_Type);
+                  To_Modular_128 : constant Boolean :=
+                    Has_Modular_Integer_Type (To_Type)
+                      and then SPARK_Atree.Entities.Modular_Size
+                        (Retysp (To_Type))
+                        = Uintp.UI_From_Int (128);
 
                begin
                   if (From_Float and To_Fixed)
@@ -2066,8 +2077,15 @@ package body SPARK_Definition is
                               & "leads to imprecise conversion");
                         end if;
                      end;
+
+                  elsif (From_Modular_128 and To_Float)
+                    or (From_Float and To_Modular_128)
+                  then
+                     Mark_Unsupported
+                       ("conversion between floating-point "
+                        & "and 128-bits modular types", N);
                   end if;
-               end;
+               end Scalar_Conversion;
             end if;
 
          when N_Unary_Op =>
@@ -3937,13 +3955,6 @@ package body SPARK_Definition is
       procedure Mark_Number_Entity     (E : Entity_Id);
       procedure Mark_Object_Entity     (E : Entity_Id) with
         Pre => Ekind (E) in E_Variable | E_Constant;
-      procedure Mark_Package_Entity    (E : Entity_Id) with
-        Pre =>
-          Entity_In_Ext_Axioms (E)
-            and then Present (Current_SPARK_Pragma)
-            and then Current_SPARK_Pragma = SPARK_Pragma (E)
-            and then
-              Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = On;
 
       procedure Mark_Subprogram_Entity (E : Entity_Id)
       with Pre => (if Is_Subprogram (E)
@@ -4121,126 +4132,6 @@ package body SPARK_Definition is
                Own => False);
          end if;
       end Mark_Object_Entity;
-
-      -------------------------
-      -- Mark_Package_Entity --
-      -------------------------
-
-      procedure Mark_Package_Entity (E : Entity_Id) is
-
-         procedure Declare_In_Package_With_External_Axioms (Decls : List_Id);
-         --  Mark types, subprograms and objects from a package with external
-         --  axioms.
-
-         ---------------------------------------------
-         -- Declare_In_Package_With_External_Axioms --
-         ---------------------------------------------
-
-         procedure Declare_In_Package_With_External_Axioms (Decls : List_Id) is
-            Decl : Node_Id := First (Decls);
-            Id   : Entity_Id;
-
-         begin
-            --  Declare entities for types
-
-            while Present (Decl) and then not Comes_From_Source (Decl) loop
-               if Nkind (Decl) in N_Subtype_Declaration then
-                  Id := Defining_Entity (Decl);
-
-                  if Is_Type (Id) then
-                     Mark_Entity (Id);
-                  end if;
-               end if;
-               Next (Decl);
-            end loop;
-
-            while Present (Decl) loop
-               if Nkind (Decl) in N_Package_Declaration then
-
-                  --  Mark elements of sub-packages
-
-                  Declare_In_Package_With_External_Axioms
-                    (Visible_Declarations (Specification (Decl)));
-               elsif Nkind (Decl) in N_Full_Type_Declaration
-                                   | N_Private_Type_Declaration
-                                   | N_Private_Extension_Declaration
-                                   | N_Subtype_Declaration
-                                   | N_Subprogram_Declaration
-                                   | N_Object_Declaration
-               then
-                  Id := Defining_Entity (Decl);
-
-                  if (Is_Type (Id)
-                      or else Is_Object (Id)
-                      or else Is_Subprogram (Id))
-                    and then not Is_Hidden (Id)
-                  then
-
-                     --  Should only mark entities that are public.
-                     --  Others are simply ignored.
-
-                     Mark_Entity (Id);
-                  end if;
-               end if;
-
-               Next (Decl);
-            end loop;
-         end Declare_In_Package_With_External_Axioms;
-
-         --  Local variables
-
-         Spec     : constant Node_Id := Package_Specification (E);
-         G_Parent : constant Node_Id := Generic_Parent (Spec);
-
-      --  Start of processing for Mark_Package_Entity
-
-      begin
-         --  Do not analyze specs for instantiations of the formal containers.
-         --  Only mark types in SPARK or not, and mark all subprograms in
-         --  SPARK, but none should be scheduled for translation into Why3.
-
-         --  Packages with external axioms should have SPARK_Mode On;
-         --  this is enforced by Entity_In_Ext_Axioms (E).
-
-         --  External_Axiomatization can be given only for non-generic packages
-
-         if Present (G_Parent) then
-            Mark_Violation
-              ("generic package with External_Axiomatization", G_Parent);
-         end if;
-
-         --  Mark types and subprograms from packages with external
-         --  axioms as in SPARK or not.
-
-         Declare_In_Package_With_External_Axioms (Visible_Declarations (Spec));
-
-         --  Check that the private part (if any) of a package with
-         --  External_Axiomatization has SPARK_Mode => Off.
-
-         if Present (Private_Declarations (Spec)) then
-            declare
-               Private_Pragma : constant Node_Id := SPARK_Aux_Pragma (E);
-
-            begin
-               if Present (Private_Pragma)
-                 and then
-                   Get_SPARK_Mode_From_Annotation (Private_Pragma) /= Off
-               then
-                  Mark_Violation
-                    ("private part of package with External_Axiomatization",
-                     E);
-               end if;
-            end;
-         end if;
-
-         if not Violation_Detected then
-
-            --  Explicitly add the package declaration to the entities to
-            --  translate into Why3.
-
-            Entity_List.Append (E);
-         end if;
-      end Mark_Package_Entity;
 
       ---------------------------
       -- Mark_Parameter_Entity --
@@ -4679,11 +4570,6 @@ package body SPARK_Definition is
                  and then
                    (Was_Expression_Function (My_Body)
                     or else Is_Predicate_Function (E))
-
-                 --  ??? Exclude functions from external axioms, that check
-                 --  could certainly be moved higher up.
-
-                 and then not Entity_In_Ext_Axioms (E)
                then
                   Mark_Subprogram_Body (My_Body);
                end if;
@@ -5126,16 +5012,13 @@ package body SPARK_Definition is
 
          elsif Is_Private_Type (E) and then not Violation_Detected then
 
-            --  When a private type is defined in a package with external
-            --  axiomatization or whose private part has SPARK_Mode => Off, we
-            --  do not need to mark its underlying type. Indeed, either it is
-            --  shared with an ancestor of E and was already handled or it will
-            --  not be used.
+            --  When a private type is defined in a package whose private part
+            --  has SPARK_Mode => Off, we do not need to mark its underlying
+            --  type. Indeed, either it is shared with an ancestor of E and
+            --  was already handled or it will not be used.
 
             if Is_Nouveau_Type (E)
-              and then (Entity_In_Ext_Axioms (E)
-                          or else
-                        Is_Private_Entity_Mode_Off (E))
+              and then Is_Private_Entity_Mode_Off (E)
             then
                Full_Views_Not_In_SPARK.Insert (E);
                Discard_Underlying_Type (E);
@@ -6059,18 +5942,6 @@ package body SPARK_Definition is
    --  Start of processing for Mark_Entity
 
    begin
-      --  For entities in external axioms, mark the package entity
-
-      if Entity_In_Ext_Axioms (E) then
-         declare
-            Pack : constant Entity_Id :=
-              Containing_Package_With_Ext_Axioms (E);
-         begin
-            if Pack /= E and then not In_SPARK (Pack) then
-               Mark_Violation (E, From => Pack);
-            end if;
-         end;
-      end if;
 
       --  Ignore functions generated by the frontend for aspects Type_Invariant
       --  and Default_Initial_Condition. This does not include the functions
@@ -6195,7 +6066,6 @@ package body SPARK_Definition is
               Formal_Kind      => Mark_Parameter_Entity (E);
 
          when Named_Kind       => Mark_Number_Entity (E);
-         when E_Package        => Mark_Package_Entity (E);
 
          --  The identifier of a loop is used to generate the needed
          --  exception declarations in the translation phase.
@@ -6283,26 +6153,23 @@ package body SPARK_Definition is
       --  Otherwise, add entity to appropriate list
 
       else
-         --  Entities from packages with external axioms are handled by a
-         --  specific mechanism and thus should not be translated.
-         if not Entity_In_Ext_Axioms (E) then
 
-            case Ekind (E) is
-               --  Concurrent types go before their visible declarations
-               --  (because declarations reference them as implicit inputs).
-               when E_Protected_Type | E_Task_Type =>
-                  pragma Assert
-                    (Current_Concurrent_Insert_Pos /= Node_Lists.No_Element);
+         case Ekind (E) is
+            --  Concurrent types go before their visible declarations
+            --  (because declarations reference them as implicit inputs).
+            when E_Protected_Type | E_Task_Type =>
+               pragma Assert
+                 (Current_Concurrent_Insert_Pos /= Node_Lists.No_Element);
 
-                  Node_Lists.Next (Current_Concurrent_Insert_Pos);
+               Node_Lists.Next (Current_Concurrent_Insert_Pos);
 
-                  --  If there were no entities defined within concurrent types
-                  --  then Next will advance the cursor to No_Element and
-                  --  Insert will be equivalent to Append. This is precisely
-                  --  what we need.
-                  Entity_List.Insert
-                    (Before   => Current_Concurrent_Insert_Pos,
-                     New_Item => E);
+               --  If there were no entities defined within concurrent types
+               --  then Next will advance the cursor to No_Element and
+               --  Insert will be equivalent to Append. This is precisely
+               --  what we need.
+               Entity_List.Insert
+                 (Before   => Current_Concurrent_Insert_Pos,
+                  New_Item => E);
 
                --  Abstract states are not translated like other entities; they
                --  are either fully expanded into constituents (if their
@@ -6311,19 +6178,18 @@ package body SPARK_Definition is
                --
                --  Named numbers also do not require any translation.
 
-               when E_Abstract_State | Named_Kind =>
-                  null;
+            when E_Abstract_State | Named_Kind =>
+               null;
 
-               when others =>
+            when others =>
 
-                  --  Do not translate objects from declare expressions. They
-                  --  are handled as local objects.
+               --  Do not translate objects from declare expressions. They
+               --  are handled as local objects.
 
-                  if not Comes_From_Declare_Expr (E) then
-                     Entity_List.Append (E);
-                  end if;
-            end case;
-         end if;
+               if not Comes_From_Declare_Expr (E) then
+                  Entity_List.Append (E);
+               end if;
+         end case;
 
          --  Mark predicate function, if any Predicate functions should be
          --  marked after the subtype, that's why we need to do this here,
@@ -6635,63 +6501,42 @@ package body SPARK_Definition is
          return;
       end if;
 
-      --  Do not analyze bodies for packages with external axioms. Only check
-      --  that their SPARK_Mode is Off.
+      Current_SPARK_Pragma := SPARK_Pragma (Body_E);
 
-      if Entity_In_Ext_Axioms (Spec_E) then
+      --  Only analyze package body when SPARK_Mode /= Off. In particular,
+      --  we still analyze a package body with no SPARK_Mode set, as it may
+      --  contain subprograms or packages with SPARK_Mode => On.
 
-         if Present (SPARK_Pragma (Body_E))
-           and then
-             Get_SPARK_Mode_From_Annotation (SPARK_Pragma (Body_E)) /= Off
-         then
-            --  Call to Mark_Violation will only emit a message if
-            --  Current_SPARK_Pragma is points to On. Here we know that pragma
-            --  on the body entity is not Off, so it must be On.
+      if not SPARK_Pragma_Is (Opt.Off) then
+         Violation_Detected := False;
+         Mark_Stmt_Or_Decl_List (Declarations (N));
+         Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
 
-            Current_SPARK_Pragma := SPARK_Pragma (Body_E);
-            Mark_Violation ("Body of package with External_Axiomatization", N);
-            Violation_Detected := Save_Violation_Detected;
-            Current_SPARK_Pragma := Save_SPARK_Pragma;
-         end if;
-
-      else
-         Current_SPARK_Pragma := SPARK_Pragma (Body_E);
-
-         --  Only analyze package body when SPARK_Mode /= Off. In particular,
-         --  we still analyze a package body with no SPARK_Mode set, as it may
-         --  contain subprograms or packages with SPARK_Mode => On.
+         --  Only analyze package body statements when SPARK_Mode /= Off.
+         --  In particular, we still analyze a package body with no
+         --  SPARK_Mode set, as it may contain subprograms or packages
+         --  with SPARK_Mode => On.
 
          if not SPARK_Pragma_Is (Opt.Off) then
-            Violation_Detected := False;
-            Mark_Stmt_Or_Decl_List (Declarations (N));
-            Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
-
-            --  Only analyze package body statements when SPARK_Mode /= Off.
-            --  In particular, we still analyze a package body with no
-            --  SPARK_Mode set, as it may contain subprograms or packages
-            --  with SPARK_Mode => On.
-
-            if not SPARK_Pragma_Is (Opt.Off) then
-               declare
-                  HSS : constant Node_Id := Handled_Statement_Sequence (N);
-               begin
-                  if Present (HSS) then
-                     Mark (HSS);
-                  end if;
-               end;
-            end if;
-
-            if SPARK_Pragma_Is (Opt.On)
-              and then not Violation_Detected
-            then
-               Bodies_In_SPARK.Insert (Spec_E);
-            end if;
-
-            Violation_Detected := Save_Violation_Detected;
+            declare
+               HSS : constant Node_Id := Handled_Statement_Sequence (N);
+            begin
+               if Present (HSS) then
+                  Mark (HSS);
+               end if;
+            end;
          end if;
 
-         Current_SPARK_Pragma := Save_SPARK_Pragma;
+         if SPARK_Pragma_Is (Opt.On)
+           and then not Violation_Detected
+         then
+            Bodies_In_SPARK.Insert (Spec_E);
+         end if;
+
+         Violation_Detected := Save_Violation_Detected;
       end if;
+
+      Current_SPARK_Pragma := Save_SPARK_Pragma;
 
    end Mark_Package_Body;
 
@@ -6701,112 +6546,98 @@ package body SPARK_Definition is
 
    procedure Mark_Package_Declaration (N : Node_Id) is
       Id : constant Entity_Id := Defining_Entity (N);
+      Spec       : constant Node_Id := Specification (N);
+      Vis_Decls  : constant List_Id := Visible_Declarations (Spec);
+      Priv_Decls : constant List_Id := Private_Declarations (Spec);
+
+      Save_SPARK_Pragma       : constant Node_Id := Current_SPARK_Pragma;
+      Save_Violation_Detected : constant Boolean := Violation_Detected;
 
    begin
-      if Entity_In_Ext_Axioms (Id) then
+      Current_SPARK_Pragma := SPARK_Pragma (Id);
 
-         --  Mark the package entity
+      --  Record the package as an entity to translate iff it is
+      --  explicitly marked with SPARK_Mode => On.
 
-         Mark_Entity (Id);
-
-      else
-         declare
-            Spec       : constant Node_Id := Specification (N);
-            Vis_Decls  : constant List_Id := Visible_Declarations (Spec);
-            Priv_Decls : constant List_Id := Private_Declarations (Spec);
-
-            Save_SPARK_Pragma       : constant Node_Id := Current_SPARK_Pragma;
-            Save_Violation_Detected : constant Boolean := Violation_Detected;
-
-         begin
-            Current_SPARK_Pragma := SPARK_Pragma (Id);
-
-            --  Record the package as an entity to translate iff it is
-            --  explicitly marked with SPARK_Mode => On.
-
-            if SPARK_Pragma_Is (Opt.On) then
-               Entity_List.Append (Id);
-            end if;
-
-            --  Reset violation status to determine if there are any violations
-            --  in the package declaration itself.
-
-            Violation_Detected := False;
-
-            --  Mark abstract state entities, since they may be referenced from
-            --  the outside. Iff SPARK_Mode is On | None then they will be in
-            --  SPARK; if SPARK_Mode is Off then they will be not. Same for
-            --  visible declarations.
-
-            if Has_Non_Null_Abstract_State (Id) then
-               for State of Iter (Abstract_States (Id)) loop
-                  Mark_Entity (State);
-               end loop;
-            end if;
-
-            --  Mark the initial condition if present
-
-            declare
-               Init_Cond : constant Node_Id :=
-                 Get_Pragma (Id, Pragma_Initial_Condition);
-
-            begin
-               if Present (Init_Cond) then
-                  declare
-                     Expr : constant Node_Id :=
-                       Expression (First (Pragma_Argument_Associations
-                                   (Init_Cond)));
-                  begin
-                     Mark (Expr);
-                  end;
-               end if;
-            end;
-
-            Mark_Stmt_Or_Decl_List (Vis_Decls);
-
-            Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
-
-            --  Private declarations cannot be referenced from the outside; if
-            --  SPARK_Mode is Off then we should just skip them, but the Retysp
-            --  magic relies on their marking status (which most likely hides
-            --  some underlying problem).
-
-            declare
-               Violation_Detected_In_Vis_Decls : constant Boolean :=
-                 Violation_Detected;
-
-            begin
-               Mark_Stmt_Or_Decl_List (Priv_Decls);
-
-               --  This is to workaround the fact that for now we cannot guard
-               --  the marking of the private declarations as explained above.
-               --  So, in case the private part is not in SPARK, we restore the
-               --  status of Violation_Detected to before the marking of the
-               --  private part happened. The proper fix would be to mark the
-               --  private declarations only if the private part is in SPARK.
-
-               if SPARK_Pragma_Is (Opt.Off) then
-                  Violation_Detected := Violation_Detected_In_Vis_Decls;
-               end if;
-            end;
-
-            --  Finally, if the package has SPARK_Mode On | None and there are
-            --  no violations then record it as in SPARK.
-
-            Current_SPARK_Pragma := SPARK_Pragma (Id);
-
-            if not SPARK_Pragma_Is (Opt.Off)
-              and then not Violation_Detected
-            then
-               Entities_In_SPARK.Include (Id);
-            end if;
-
-            Violation_Detected := Save_Violation_Detected;
-            Current_SPARK_Pragma := Save_SPARK_Pragma;
-         end;
-
+      if SPARK_Pragma_Is (Opt.On) then
+         Entity_List.Append (Id);
       end if;
 
+      --  Reset violation status to determine if there are any violations
+      --  in the package declaration itself.
+
+      Violation_Detected := False;
+
+      --  Mark abstract state entities, since they may be referenced from
+      --  the outside. Iff SPARK_Mode is On | None then they will be in
+      --  SPARK; if SPARK_Mode is Off then they will be not. Same for
+      --  visible declarations.
+
+      if Has_Non_Null_Abstract_State (Id) then
+         for State of Iter (Abstract_States (Id)) loop
+            Mark_Entity (State);
+         end loop;
+      end if;
+
+      --  Mark the initial condition if present
+
+      declare
+         Init_Cond : constant Node_Id :=
+           Get_Pragma (Id, Pragma_Initial_Condition);
+
+      begin
+         if Present (Init_Cond) then
+            declare
+               Expr : constant Node_Id :=
+                 Expression (First (Pragma_Argument_Associations
+                             (Init_Cond)));
+            begin
+               Mark (Expr);
+            end;
+         end if;
+      end;
+
+      Mark_Stmt_Or_Decl_List (Vis_Decls);
+
+      Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
+
+      --  Private declarations cannot be referenced from the outside; if
+      --  SPARK_Mode is Off then we should just skip them, but the Retysp
+      --  magic relies on their marking status (which most likely hides
+      --  some underlying problem).
+
+      declare
+         Violation_Detected_In_Vis_Decls : constant Boolean :=
+           Violation_Detected;
+
+      begin
+         Mark_Stmt_Or_Decl_List (Priv_Decls);
+
+         --  This is to workaround the fact that for now we cannot guard
+         --  the marking of the private declarations as explained above.
+         --  So, in case the private part is not in SPARK, we restore the
+         --  status of Violation_Detected to before the marking of the
+         --  private part happened. The proper fix would be to mark the
+         --  private declarations only if the private part is in SPARK.
+
+         if SPARK_Pragma_Is (Opt.Off) then
+            Violation_Detected := Violation_Detected_In_Vis_Decls;
+         end if;
+      end;
+
+      --  Finally, if the package has SPARK_Mode On | None and there are
+      --  no violations then record it as in SPARK.
+
+      Current_SPARK_Pragma := SPARK_Pragma (Id);
+
+      if not SPARK_Pragma_Is (Opt.Off)
+        and then not Violation_Detected
+      then
+         Entities_In_SPARK.Include (Id);
+      end if;
+
+      Violation_Detected := Save_Violation_Detected;
+      Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Package_Declaration;
 
    -----------------

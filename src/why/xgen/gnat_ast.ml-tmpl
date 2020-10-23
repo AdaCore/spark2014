@@ -38,7 +38,7 @@ and 'a why_node_list = 'a why_node nonempty
 
 _@Declare_OCaml_Opaque_Ids@_
 
-type file = { theory_declarations: generic_theory_olist }
+type file = { theory_declarations: theory_declaration_olist }
 
 _@Declare_OCaml_Coercions@_
 
@@ -158,7 +158,7 @@ module From_json = struct
     | `Assoc fields when
         List.length fields = 1 && List.mem_assoc "theory_declarations" fields  ->
       let ast_json = List.assoc "theory_declarations" fields in
-      let theory_declarations = generic_theory_opaque_olist_from_json ast_json in
+      let theory_declarations = theory_declaration_opaque_olist_from_json ast_json in
       { theory_declarations }
     | json -> unexpected_json "file_from_json" json
 end

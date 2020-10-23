@@ -9,27 +9,27 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="bar__double_tests__test_03.gnat-json"/>
 <theory name="Bar__double_tests__test_03__subprogram_def">
- <goal name="def&#39;vc" expl="VC for def">
+ <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="precondition">
+  <goal name="def&#39;vc.0">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450100"/></proof>
   <proof prover="2"><result status="unknown" steps="4768"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.1" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.3" expl="postcondition">
+  <goal name="def&#39;vc.3">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="249270"/></proof>
   <proof prover="2"><result status="unknown" steps="4700"/></proof>
   </goal>
-  <goal name="def&#39;vc.4" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.4" proved="true">
   <proof prover="2"><result status="valid" steps="11535"/></proof>
   </goal>
  </transf>

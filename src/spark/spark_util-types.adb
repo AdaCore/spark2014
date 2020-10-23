@@ -1176,94 +1176,70 @@ package body SPARK_Util.Types is
    --------------------------------
 
    function Might_Contain_Relaxed_Init (Typ : Entity_Id) return Boolean is
-      Seen : Node_Sets.Set;
-
-      function Might_Contain_Relaxed (Typ : Entity_Id) return Boolean;
-      --  Recursive annex function using a set of seen types to avoid looping
-      --  on recursive types.
-      --  The Seen set also allows memoizing the result for component types
-      --  of tagged types which might be traversed several times.
-
-      ---------------------------
-      -- Might_Contain_Relaxed --
-      ---------------------------
-
-      function Might_Contain_Relaxed (Typ : Entity_Id) return Boolean is
-         Rep_Ty   : constant Entity_Id := Base_Retysp (Typ);
-         Inserted : Boolean;
-         Pos      : Node_Sets.Cursor;
-      begin
-         Seen.Insert (Rep_Ty, Pos, Inserted);
-
-         if not Inserted then
-            return False;
-         elsif In_Relaxed_Init (Typ) then
-            return True;
-         elsif Is_Concurrent_Type (Rep_Ty) then
-            return False;
-         elsif Is_Scalar_Type (Rep_Ty) then
-            return False;
-         end if;
-
-         --  If the type can be converted to a type which might contain
-         --  components with relaxed initialization, we need relaxed
-         --  initialization for it too.
-
-         if Base_Retysp (Etype (Rep_Ty)) /= Rep_Ty
-           and then Might_Contain_Relaxed (Etype (Rep_Ty))
-         then
-            return True;
-         elsif Is_Array_Type (Rep_Ty) then
-            return Might_Contain_Relaxed (Component_Type (Rep_Ty));
-         elsif Is_Access_Type (Rep_Ty)
-           and then Ekind (Directly_Designated_Type (Rep_Ty)) /=
-             E_Subprogram_Type
-         then
-            declare
-               Des_Ty   : constant Entity_Id :=
-                 Directly_Designated_Type (Rep_Ty);
-               F_Des_Ty : constant Entity_Id :=
-                 (if Is_Incomplete_Type (Des_Ty) then Full_View (Des_Ty)
-                  else Des_Ty);
-            begin
-
-               return Might_Contain_Relaxed (F_Des_Ty);
-            end;
-         elsif Is_Record_Type (Rep_Ty) then
-
-            --  On tagged types, some components may have been hidden by
-            --  successive derivations. Check ancestors to find them.
-
-            if Is_Tagged_Type (Rep_Ty)
-              and then Retysp (Etype (Rep_Ty)) /= Rep_Ty
-              and then Might_Contain_Relaxed (Retysp (Etype (Rep_Ty)))
-            then
-               return True;
-            else
-               declare
-                  Comp : Entity_Id := First_Component (Rep_Ty);
-               begin
-                  while Present (Comp) loop
-                     if Component_Is_Visible_In_SPARK (Comp)
-                       and then Might_Contain_Relaxed (Etype (Comp))
-                     then
-                        return True;
-                     end if;
-                     Next_Component (Comp);
-                  end loop;
-               end;
-               return False;
-            end if;
-         else
-            return False;
-         end if;
-
-      end Might_Contain_Relaxed;
-
-   --  Start of processing for Might_Contain_Relaxed_Init
-
+      Rep_Ty : constant Entity_Id := Base_Retysp (Typ);
    begin
-      return Might_Contain_Relaxed (Typ);
+      if In_Relaxed_Init (Typ) then
+         return True;
+      elsif Is_Concurrent_Type (Rep_Ty) then
+         return False;
+      elsif Is_Scalar_Type (Rep_Ty) then
+         return False;
+
+      --  Expressions of tagged types and access types might contain relaxed
+      --  init parts, as expressions partially initialized might be used
+      --  inside aggregates or allocators. However, such expressions cannot be
+      --  stored inside objects (as parts of tagged objects and types
+      --  designated by access are not allowed to have relaxed initialization).
+      --  So we prefer to consider that they should be always initialized, even
+      --  if it can result in unnecessary initialization checks in corner
+      --  cases.
+
+      elsif Is_Tagged_Type (Rep_Ty) then
+         return False;
+      elsif Is_Access_Type (Rep_Ty) then
+         return False;
+      end if;
+
+      --  If the type can be converted to a type which might contain
+      --  components with relaxed initialization, we need relaxed
+      --  initialization for it too.
+
+      if Base_Retysp (Etype (Rep_Ty)) /= Rep_Ty
+        and then Might_Contain_Relaxed_Init (Etype (Rep_Ty))
+      then
+         return True;
+
+      --  Go over components composite types to know if they might contain
+      --  relaxed init parts.
+
+      elsif Is_Array_Type (Rep_Ty) then
+         return Might_Contain_Relaxed_Init (Component_Type (Rep_Ty));
+      elsif Is_Record_Type (Rep_Ty) then
+         declare
+            Comp : Entity_Id := First_Component (Rep_Ty);
+         begin
+
+            --  If it is a scalar type, a component of a record can only
+            --  contain relaxed initialization if its type is annotated
+            --  with relaxed initialization. Note that the same does not
+            --  hold for arrays and access types which can be converted
+            --  to types which are not of the same hierarchy.
+
+            while Present (Comp) loop
+               if Component_Is_Visible_In_SPARK (Comp)
+                 and then (if Has_Scalar_Type (Etype (Comp))
+                           then Has_Relaxed_Init (Etype (Comp))
+                           else Might_Contain_Relaxed_Init (Etype (Comp)))
+               then
+                  return True;
+               end if;
+               Next_Component (Comp);
+            end loop;
+         end;
+         return False;
+      else
+         return False;
+      end if;
    end Might_Contain_Relaxed_Init;
 
    --------------------
@@ -1287,6 +1263,22 @@ package body SPARK_Util.Types is
 
       return Etype (Index);
    end Nth_Index_Type;
+
+   ------------------
+   -- Num_Literals --
+   ------------------
+
+   function Num_Literals (Ty : Entity_Id) return Positive is
+      Lit : Entity_Id := First_Literal (Ty);
+      Count : Positive := 1;
+   begin
+      loop
+         Next_Literal (Lit);
+         exit when No (Lit);
+         Count := Count + 1;
+      end loop;
+      return Count;
+   end Num_Literals;
 
    ---------------------------------------
    -- Private_Declarations_Of_Prot_Type --

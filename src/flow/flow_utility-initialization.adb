@@ -24,7 +24,6 @@
 with Aspects;                    use Aspects;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
-with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with Sem_Type;                   use Sem_Type;
 
 package body Flow_Utility.Initialization is
@@ -486,21 +485,7 @@ package body Flow_Utility.Initialization is
       --  mixed initialization (which is not allowed).
 
       if Result = Mixed_Initialization then
-
-         --  If the type is one for which an external axiomatization
-         --  is provided, it is fine if the implementation uses mixed
-         --  initialization. This is the case for formal containers in
-         --  particular.
-
-         if Type_Based_On_Ext_Axioms (Typ) then
-            Result := No_Default_Initialization;
-
-         --  If the type is private or class wide, it is fine if the
-         --  implementation uses mixed initialization. An error will be issued
-         --  when analyzing the implementation if it is in a SPARK part of the
-         --  code.
-
-         elsif Is_Private_Type (Typ) or else Is_Class_Wide_Type (Typ) then
+         if Is_Private_Type (Typ) or else Is_Class_Wide_Type (Typ) then
             Result := No_Default_Initialization;
          end if;
       end if;

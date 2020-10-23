@@ -154,20 +154,16 @@ package Why.Gen.Arrays is
    with Pre => Is_Constrained (Ty);
    --  This variant of Add_Attr_Arg will only work for constrained types
 
-   procedure Declare_Ada_Array
-     (File : W_Section_Id;
-      E    : Entity_Id);
+   procedure Declare_Ada_Array (Th : Theory_UC; E : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration;
    --  E is the entity which contains the relevant type information (the
    --  underlying type).
 
-   procedure Declare_Init_Wrapper_For_Array
-     (File : W_Section_Id;
-      E    : Entity_Id) with
-     Pre => Has_Array_Type (E) and then Might_Contain_Relaxed_Init (E);
+   procedure Declare_Init_Wrapper_For_Array (Th : Theory_UC; E  : Entity_Id)
+     with Pre => Has_Array_Type (E) and then Might_Contain_Relaxed_Init (E);
    --  Introduce necessary declarations for the wrapper type for E
 
-   procedure Declare_Additional_Symbols_For_String (Section : W_Section_Id);
+   procedure Declare_Additional_Symbols_For_String (Th : Theory_UC);
    --  Declare to_string and of_string functions used for 'Image and 'Value
    --  attributes.
 
@@ -440,10 +436,7 @@ package Why.Gen.Arrays is
    --          of the theory associated to the array type E.
    --          The name is the key to this theory in M_Array(_1) hash maps.
 
-   procedure Create_Rep_Array_Theory_If_Needed
-     (File          : W_Section_Id;
-      E             : Entity_Id;
-      Register_Only : Boolean := False);
+   procedure Create_Rep_Array_Theory_If_Needed (E : Entity_Id);
    --  Check if the Array theory of the representation type of E has already
    --  been created. If not create it.
    --  @param File the current why file
@@ -452,8 +445,7 @@ package Why.Gen.Arrays is
    --         emited.
 
    procedure Create_Array_Conversion_Theory_If_Needed
-     (Current_File : W_Section_Id;
-      From         : Entity_Id;
+     (From         : Entity_Id;
       To           : Entity_Id;
       Init_Wrapper : Boolean := False);
    --  Check if the conversion theory for converting from From to To has

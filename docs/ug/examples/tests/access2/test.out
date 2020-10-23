@@ -1,0 +1,4 @@
+
+test.adb:4:04: medium: memory leak might occur at end of scope
+    4 |   Y : Int_Ptr;                --  Y is null by default
+      |   ^ here

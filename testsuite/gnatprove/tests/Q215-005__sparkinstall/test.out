@@ -8,7 +8,6 @@ codepeer-gnatls
 codepeer-gprbuild
 codepeer-gprls
 codepeer_be
-cppcheck_wrapper
 cvc4
 gcc
 gnat2why
@@ -38,7 +37,6 @@ z3
 libexec/spark/share dir
 alt-ergo
 codepeer
-config
 doc
 gcc-9.3.1
 gpr

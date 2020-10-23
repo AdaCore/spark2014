@@ -9,21 +9,21 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__double_tests__i_like_to_commute_to_work.gnat-json"/>
 <theory name="Foo__double_tests__i_like_to_commute_to_work__subprogram_def">
- <goal name="def&#39;vc" expl="VC for def">
+ <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="precondition">
+  <goal name="def&#39;vc.0">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="78186"/></proof>
   <proof prover="2"><result status="unknown" steps="8815"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="precondition" proved="true">
+  <goal name="def&#39;vc.1" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.3" expl="assertion" proved="true">
+  <goal name="def&#39;vc.3" proved="true">
   <proof prover="2"><result status="valid" steps="3384"/></proof>
   </goal>
  </transf>

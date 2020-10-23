@@ -47,4 +47,5 @@ pragmarc-b_strings.ads:46:21: medium: postcondition might fail, cannot prove To 
 pragmarc-b_strings.ads:46:26: info: function contract not available for proof ("+" might not return)
 pragmarc-b_strings.ads:57:07: info: range check proved (CVC4: 2 VC)
 pragmarc-b_strings.ads:57:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+pragmarc-b_strings.ads:57:43: info: range check proved (CVC4: 2 VC)
 pragmarc-b_strings.ads:57:46: info: range check proved (CVC4: 2 VC)

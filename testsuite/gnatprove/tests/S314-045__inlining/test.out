@@ -2,113 +2,9 @@ compiler.adb:27:40: info: data dependencies proved
 compiler.adb:46:10: info: data dependencies proved
 compiler.adb:49:24: info: cannot unroll loop (too many loop iterations)
 compiler.adb:50:18: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
-compiler.adb:103:10: info: add a contract to analyze it separately from calling contexts
-compiler.adb:103:10: info: local subprogram "To_String80" only analyzed in the context of calls
-compiler.adb:109:14: info: index check proved (CVC4: 10 VC), in call inlined at compiler.adb:1037, in call inlined at compiler.adb:1163
-compiler.adb:109:14: info: index check proved (CVC4: 10 VC), in call inlined at compiler.adb:1126
-compiler.adb:109:14: info: index check proved (CVC4: 10 VC), in call inlined at compiler.adb:1149
-compiler.adb:109:14: info: index check proved (CVC4: 10 VC), in call inlined at compiler.adb:1248
-compiler.adb:109:14: info: index check proved (CVC4: 10 VC), in call inlined at compiler.adb:856, in call inlined at compiler.adb:1157
-compiler.adb:109:14: info: index check proved (CVC4: 12 VC), in call inlined at compiler.adb:788
-compiler.adb:109:14: info: index check proved (CVC4: 12 VC), in call inlined at compiler.adb:849, in call inlined at compiler.adb:1157
-compiler.adb:109:14: info: index check proved (CVC4: 12 VC), in call inlined at compiler.adb:982, in call inlined at compiler.adb:1161
-compiler.adb:109:14: info: index check proved (CVC4: 14 VC), in call inlined at compiler.adb:1013, in call inlined at compiler.adb:1163
-compiler.adb:109:14: info: index check proved (CVC4: 14 VC), in call inlined at compiler.adb:1154
-compiler.adb:109:14: info: index check proved (CVC4: 26 VC), in call inlined at compiler.adb:679
-compiler.adb:109:14: info: index check proved (CVC4: 4 VC), in call inlined at compiler.adb:799
-compiler.adb:109:14: info: index check proved (CVC4: 4 VC), in call inlined at compiler.adb:817, in call inlined at compiler.adb:1138
-compiler.adb:109:14: info: index check proved (CVC4: 4 VC), in call inlined at compiler.adb:915, in call inlined at compiler.adb:1159
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:1250
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:698
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:699
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:768, in call inlined at compiler.adb:786
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:768, in call inlined at compiler.adb:791
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:768, in call inlined at compiler.adb:796
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:769, in call inlined at compiler.adb:786
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:769, in call inlined at compiler.adb:791
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:769, in call inlined at compiler.adb:796
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:770, in call inlined at compiler.adb:786
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:770, in call inlined at compiler.adb:791
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:770, in call inlined at compiler.adb:796
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:797
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:798
-compiler.adb:109:14: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:877, in call inlined at compiler.adb:1159
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:639, in call inlined at compiler.adb:1129
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:639, in call inlined at compiler.adb:690
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:639, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:639, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:907, in call inlined at compiler.adb:1159
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:908, in call inlined at compiler.adb:1159
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:916, in call inlined at compiler.adb:1159
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:925, in call inlined at compiler.adb:1159
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:952, in call inlined at compiler.adb:1161
-compiler.adb:109:14: info: index check proved (CVC4: 8 VC), in call inlined at compiler.adb:995, in call inlined at compiler.adb:1161
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163 [reason for check: value must be a valid index into the array]
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163 [reason for check: value must be a valid index into the array]
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:312 [reason for check: value must be a valid index into the array]
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161 [reason for check: value must be a valid index into the array]
-compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161 [reason for check: value must be a valid index into the array]
-compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
-compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
-compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
-compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:312
-compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:110:14: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:110:14: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
-compiler.adb:110:14: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:312
-compiler.adb:110:14: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:110:14: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:110:14: info: overflow check proved (CVC4: 13 VC), in call inlined at compiler.adb:679
-compiler.adb:110:14: info: overflow check proved (CVC4: 2 VC), in call inlined at compiler.adb:799
-compiler.adb:110:14: info: overflow check proved (CVC4: 2 VC), in call inlined at compiler.adb:817, in call inlined at compiler.adb:1138
-compiler.adb:110:14: info: overflow check proved (CVC4: 2 VC), in call inlined at compiler.adb:915, in call inlined at compiler.adb:1159
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:1250
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:698
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:699
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:768, in call inlined at compiler.adb:786
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:768, in call inlined at compiler.adb:791
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:768, in call inlined at compiler.adb:796
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:769, in call inlined at compiler.adb:786
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:769, in call inlined at compiler.adb:791
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:769, in call inlined at compiler.adb:796
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:770, in call inlined at compiler.adb:786
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:770, in call inlined at compiler.adb:791
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:770, in call inlined at compiler.adb:796
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:797
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:798
-compiler.adb:110:14: info: overflow check proved (CVC4: 3 VC), in call inlined at compiler.adb:877, in call inlined at compiler.adb:1159
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:639, in call inlined at compiler.adb:1129
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:639, in call inlined at compiler.adb:690
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:639, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:639, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:907, in call inlined at compiler.adb:1159
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:908, in call inlined at compiler.adb:1159
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:916, in call inlined at compiler.adb:1159
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:925, in call inlined at compiler.adb:1159
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:952, in call inlined at compiler.adb:1161
-compiler.adb:110:14: info: overflow check proved (CVC4: 4 VC), in call inlined at compiler.adb:995, in call inlined at compiler.adb:1161
-compiler.adb:110:14: info: overflow check proved (CVC4: 5 VC), in call inlined at compiler.adb:1037, in call inlined at compiler.adb:1163
-compiler.adb:110:14: info: overflow check proved (CVC4: 5 VC), in call inlined at compiler.adb:1126
-compiler.adb:110:14: info: overflow check proved (CVC4: 5 VC), in call inlined at compiler.adb:1149
-compiler.adb:110:14: info: overflow check proved (CVC4: 5 VC), in call inlined at compiler.adb:1248
-compiler.adb:110:14: info: overflow check proved (CVC4: 5 VC), in call inlined at compiler.adb:856, in call inlined at compiler.adb:1157
-compiler.adb:110:14: info: overflow check proved (CVC4: 6 VC), in call inlined at compiler.adb:788
-compiler.adb:110:14: info: overflow check proved (CVC4: 6 VC), in call inlined at compiler.adb:849, in call inlined at compiler.adb:1157
-compiler.adb:110:14: info: overflow check proved (CVC4: 6 VC), in call inlined at compiler.adb:982, in call inlined at compiler.adb:1161
-compiler.adb:110:14: info: overflow check proved (CVC4: 7 VC), in call inlined at compiler.adb:1013, in call inlined at compiler.adb:1163
-compiler.adb:110:14: info: overflow check proved (CVC4: 7 VC), in call inlined at compiler.adb:1154
+compiler.adb:108:32: info: cannot unroll loop (too many loop iterations)
+compiler.adb:109:14: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 108 should mention J in a loop invariant]
+compiler.adb:110:14: info: overflow check proved (CVC4: 1 VC)
 compiler.adb:159:13: info: add a contract to analyze it separately from calling contexts
 compiler.adb:159:13: info: local subprogram "Error" only analyzed in the context of calls
 compiler.adb:159:13: warning: subprogram "Error" has no effect
@@ -116,8 +12,7 @@ compiler.adb:276:10: info: add a contract to analyze it separately from calling 
 compiler.adb:276:10: info: local subprogram "Char_Type" only analyzed in the context of calls
 compiler.adb:300:20: info: initialization of "ch" proved
 compiler.adb:302:03: info: data dependencies proved
-compiler.adb:312:22: info: cannot unroll loop (too many loop iterations)
-compiler.adb:312:22: info: in inlined body at line 108
+compiler.adb:302:23: medium: constant without variable input "error_strings" cannot appear in Globals
 compiler.adb:313:29: medium: range check might fail
 compiler.adb:323:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 300 should mention char_pos in a precondition]
 compiler.adb:324:26: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at line 300 should mention char_pos in a precondition]
@@ -218,18 +113,6 @@ compiler.adb:653:41: info: index check proved (CVC4: 2 VC), in call inlined at c
 compiler.adb:653:41: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
 compiler.adb:653:41: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
 compiler.adb:672:03: info: initialization of "i" proved
-compiler.adb:679:28: info: in inlined body at line 108
-compiler.adb:679:28: info: unrolling loop
-compiler.adb:690:07: info: in inlined body at line 108
-compiler.adb:690:07: info: in inlined body at line 108
-compiler.adb:690:07: info: in inlined body at line 639
-compiler.adb:690:07: info: in inlined body at line 653
-compiler.adb:690:07: info: unrolling loop
-compiler.adb:690:07: info: unrolling loop
-compiler.adb:698:28: info: in inlined body at line 108
-compiler.adb:698:28: info: unrolling loop
-compiler.adb:699:28: info: in inlined body at line 108
-compiler.adb:699:28: info: unrolling loop
 compiler.adb:718:19: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 666 should mention level and symbol_table in a precondition]
 compiler.adb:733:19: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 666 should mention level and symbol_table in a precondition]
 compiler.adb:755:11: info: add a contract to analyze it separately from calling contexts
@@ -239,41 +122,6 @@ compiler.adb:761:03: info: initialization of "prev_sym" proved, in call inlined 
 compiler.adb:761:03: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:791
 compiler.adb:761:03: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:796
 compiler.adb:781:03: info: initialization of "prev_sym" proved
-compiler.adb:786:05: info: in inlined body at line 108
-compiler.adb:786:05: info: in inlined body at line 108
-compiler.adb:786:05: info: in inlined body at line 108
-compiler.adb:786:05: info: in inlined body at line 768
-compiler.adb:786:05: info: in inlined body at line 769
-compiler.adb:786:05: info: in inlined body at line 770
-compiler.adb:786:05: info: unrolling loop
-compiler.adb:786:05: info: unrolling loop
-compiler.adb:786:05: info: unrolling loop
-compiler.adb:788:28: info: in inlined body at line 108
-compiler.adb:788:28: info: unrolling loop
-compiler.adb:791:05: info: in inlined body at line 108
-compiler.adb:791:05: info: in inlined body at line 108
-compiler.adb:791:05: info: in inlined body at line 108
-compiler.adb:791:05: info: in inlined body at line 768
-compiler.adb:791:05: info: in inlined body at line 769
-compiler.adb:791:05: info: in inlined body at line 770
-compiler.adb:791:05: info: unrolling loop
-compiler.adb:791:05: info: unrolling loop
-compiler.adb:791:05: info: unrolling loop
-compiler.adb:796:05: info: in inlined body at line 108
-compiler.adb:796:05: info: in inlined body at line 108
-compiler.adb:796:05: info: in inlined body at line 108
-compiler.adb:796:05: info: in inlined body at line 768
-compiler.adb:796:05: info: in inlined body at line 769
-compiler.adb:796:05: info: in inlined body at line 770
-compiler.adb:796:05: info: unrolling loop
-compiler.adb:796:05: info: unrolling loop
-compiler.adb:796:05: info: unrolling loop
-compiler.adb:797:51: info: in inlined body at line 108
-compiler.adb:797:51: info: unrolling loop
-compiler.adb:798:53: info: in inlined body at line 108
-compiler.adb:798:53: info: unrolling loop
-compiler.adb:799:31: info: in inlined body at line 108
-compiler.adb:799:31: info: unrolling loop
 compiler.adb:809:11: info: add a contract to analyze it separately from calling contexts
 compiler.adb:809:11: info: local subprogram "Process_If" only analyzed in the context of calls
 compiler.adb:811:03: info: initialization of "sym" proved
@@ -310,104 +158,22 @@ compiler.adb:950:03: info: initialization of "cx0" proved
 compiler.adb:950:03: info: initialization of "cx0" proved, in call inlined at compiler.adb:1161
 compiler.adb:950:08: info: initialization of "cx1" proved
 compiler.adb:950:08: info: initialization of "cx1" proved, in call inlined at compiler.adb:1161
-compiler.adb:971:11: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1161
-compiler.adb:979:11: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1161
+compiler.adb:971:31: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1161
+compiler.adb:979:31: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1161
 compiler.adb:1004:11: info: add a contract to analyze it separately from calling contexts
 compiler.adb:1004:11: info: local subprogram "Process_Cobegin" only analyzed in the context of calls
 compiler.adb:1006:03: info: initialization of "sym" proved
 compiler.adb:1011:03: info: initialization of "cx1" proved
 compiler.adb:1011:03: info: initialization of "cx1" proved, in call inlined at compiler.adb:1163
 compiler.adb:1016:34: medium: overflow check might fail, in call inlined at compiler.adb:1163 [reason for check: result of addition must fit in a 32-bits machine integer]
-compiler.adb:1023:09: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1163
-compiler.adb:1031:09: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1163
+compiler.adb:1023:30: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1163
+compiler.adb:1031:29: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1163
 compiler.adb:1047:03: info: initialization of "i" proved
 compiler.adb:1048:03: info: initialization of "cx1" proved
 compiler.adb:1048:08: info: initialization of "cx2" proved
 compiler.adb:1069:21: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 602 should mention level and symbol_table in a precondition]
 compiler.adb:1088:21: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 602 should mention level and symbol_table in a precondition]
 compiler.adb:1108:17: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 602 should mention level and symbol_table in a precondition]
-compiler.adb:1126:28: info: in inlined body at line 108
-compiler.adb:1126:28: info: unrolling loop
-compiler.adb:1129:07: info: in inlined body at line 108
-compiler.adb:1129:07: info: in inlined body at line 108
-compiler.adb:1129:07: info: in inlined body at line 639
-compiler.adb:1129:07: info: in inlined body at line 653
-compiler.adb:1129:07: info: unrolling loop
-compiler.adb:1129:07: info: unrolling loop
-compiler.adb:1138:19: info: in inlined body at line 108
-compiler.adb:1138:19: info: in inlined body at line 108
-compiler.adb:1138:19: info: in inlined body at line 108
-compiler.adb:1138:19: info: in inlined body at line 639
-compiler.adb:1138:19: info: in inlined body at line 653
-compiler.adb:1138:19: info: in inlined body at line 817
-compiler.adb:1138:19: info: in inlined body at line 819
-compiler.adb:1138:19: info: in inlined body at line 819
-compiler.adb:1138:19: info: unrolling loop
-compiler.adb:1138:19: info: unrolling loop
-compiler.adb:1138:19: info: unrolling loop
-compiler.adb:1149:33: info: in inlined body at line 108
-compiler.adb:1149:33: info: unrolling loop
-compiler.adb:1154:45: info: in inlined body at line 108
-compiler.adb:1154:45: info: unrolling loop
-compiler.adb:1157:24: info: in inlined body at line 108
-compiler.adb:1157:24: info: in inlined body at line 108
-compiler.adb:1157:24: info: in inlined body at line 108
-compiler.adb:1157:24: info: in inlined body at line 108
-compiler.adb:1157:24: info: in inlined body at line 639
-compiler.adb:1157:24: info: in inlined body at line 653
-compiler.adb:1157:24: info: in inlined body at line 849
-compiler.adb:1157:24: info: in inlined body at line 856
-compiler.adb:1157:24: info: in inlined body at line 858
-compiler.adb:1157:24: info: in inlined body at line 858
-compiler.adb:1157:24: info: unrolling loop
-compiler.adb:1157:24: info: unrolling loop
-compiler.adb:1157:24: info: unrolling loop
-compiler.adb:1157:24: info: unrolling loop
-compiler.adb:1159:24: info: in inlined body at line 108
-compiler.adb:1159:24: info: in inlined body at line 108
-compiler.adb:1159:24: info: in inlined body at line 108
-compiler.adb:1159:24: info: in inlined body at line 108
-compiler.adb:1159:24: info: in inlined body at line 108
-compiler.adb:1159:24: info: in inlined body at line 108
-compiler.adb:1159:24: info: in inlined body at line 877
-compiler.adb:1159:24: info: in inlined body at line 907
-compiler.adb:1159:24: info: in inlined body at line 908
-compiler.adb:1159:24: info: in inlined body at line 915
-compiler.adb:1159:24: info: in inlined body at line 916
-compiler.adb:1159:24: info: in inlined body at line 925
-compiler.adb:1159:24: info: unrolling loop
-compiler.adb:1159:24: info: unrolling loop
-compiler.adb:1159:24: info: unrolling loop
-compiler.adb:1159:24: info: unrolling loop
-compiler.adb:1159:24: info: unrolling loop
-compiler.adb:1159:24: info: unrolling loop
-compiler.adb:1161:24: info: cannot unroll loop (too many loop iterations)
-compiler.adb:1161:24: info: cannot unroll loop (too many loop iterations)
-compiler.adb:1161:24: info: in inlined body at line 108
-compiler.adb:1161:24: info: in inlined body at line 108
-compiler.adb:1161:24: info: in inlined body at line 108
-compiler.adb:1161:24: info: in inlined body at line 108
-compiler.adb:1161:24: info: in inlined body at line 108
-compiler.adb:1161:24: info: in inlined body at line 952
-compiler.adb:1161:24: info: in inlined body at line 971
-compiler.adb:1161:24: info: in inlined body at line 979
-compiler.adb:1161:24: info: in inlined body at line 982
-compiler.adb:1161:24: info: in inlined body at line 995
-compiler.adb:1161:24: info: unrolling loop
-compiler.adb:1161:24: info: unrolling loop
-compiler.adb:1161:24: info: unrolling loop
-compiler.adb:1163:24: info: cannot unroll loop (too many loop iterations)
-compiler.adb:1163:24: info: cannot unroll loop (too many loop iterations)
-compiler.adb:1163:24: info: in inlined body at line 1013
-compiler.adb:1163:24: info: in inlined body at line 1023
-compiler.adb:1163:24: info: in inlined body at line 1031
-compiler.adb:1163:24: info: in inlined body at line 1037
-compiler.adb:1163:24: info: in inlined body at line 108
-compiler.adb:1163:24: info: in inlined body at line 108
-compiler.adb:1163:24: info: in inlined body at line 108
-compiler.adb:1163:24: info: in inlined body at line 108
-compiler.adb:1163:24: info: unrolling loop
-compiler.adb:1163:24: info: unrolling loop
 compiler.adb:1182:03: info: initialization of "varcount" proved
 compiler.adb:1183:03: info: initialization of "size" proved
 compiler.adb:1184:03: info: initialization of "start_table_index" proved
@@ -419,10 +185,6 @@ compiler.adb:1219:19: high: formal parameter "name" and global "line" are aliase
 compiler.adb:1221:30: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1176 should mention level in a precondition]
 compiler.adb:1234:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: call at line 1232 should mention number in a postcondition]
 compiler.adb:1237:20: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
-compiler.adb:1248:31: info: in inlined body at line 108
-compiler.adb:1248:31: info: unrolling loop
-compiler.adb:1250:24: info: in inlined body at line 108
-compiler.adb:1250:24: info: unrolling loop
 compiler.adb:1253:49: info: range check proved (CVC4: 1 VC)
 compiler.adb:1263:03: warning: initialization of "sym" has no effect
 compiler.adb:1268:15: warning: "sym" is set by "Block" but not used after the call

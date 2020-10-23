@@ -18,6 +18,7 @@ update_checks_1.adb:62:10: medium: array index check might fail (e.g. when A'Fir
 update_checks_1.adb:69:07: medium: range check might fail (e.g. when A'First = 3 and I = 2) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at update_checks_1.ads:26 should mention A and I in a precondition]
 update_checks_1.adb:69:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:69:21: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+update_checks_1.adb:69:21: info: range check proved (CVC4: 2 VC)
 update_checks_1.adb:69:24: info: range check proved (CVC4: 2 VC)
 update_checks_1.adb:76:21: medium: array index check might fail (e.g. when I = 6) [reason for check: value must be a valid index into the array] [possible fix: subprogram at update_checks_1.ads:29 should mention I in a precondition]
 update_checks_1.adb:76:21: medium: range check might fail (e.g. when I = 6) [reason for check: value must fit in component type] [possible fix: subprogram at update_checks_1.ads:29 should mention I in a precondition]
@@ -32,6 +33,7 @@ update_checks_1.ads:24:19: info: postcondition proved (CVC4: 1 VC)
 update_checks_1.ads:24:22: info: index check proved (CVC4: 2 VC)
 update_checks_1.ads:27:19: medium: postcondition might fail, cannot prove A (1 .. I) = (1 .. I => New_Val) (e.g. when A = (others => 0) and I = 8 and New_Val = 0)
 update_checks_1.ads:27:19: medium: range check might fail (e.g. when A'First = 2 and I = 2) [reason for check: slice bounds must fit in the underlying array]
+update_checks_1.ads:27:32: info: range check proved (CVC4: 2 VC)
 update_checks_1.ads:27:35: info: range check proved (CVC4: 2 VC)
 update_checks_1.ads:30:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 update_checks_1.ads:30:37: info: range check proved (CVC4: 1 VC)

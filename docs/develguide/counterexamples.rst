@@ -525,9 +525,9 @@ enough to get counterexamples working. All of this should be done in function
 Get_Model_Trace_Label from
 :download:`gnat2why-util.adb <../../src/why/gnat2why-util.ads>`.
 
-.. warning:: Note that theories and external axiomatization should also contain
-             model_trace attributes. Otherwise, the stuff relying on those will
-             not have counterexamples.
+.. warning:: Note that theories should also contain model_trace attributes.
+             Otherwise, the stuff relying on those will not have
+             counterexamples.
 
 
 Gnat2why: From Why3 counterex to Ada counterex

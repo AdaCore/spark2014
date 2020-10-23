@@ -1,0 +1,186 @@
+spark-floating_point_arithmetic_lemmas.ads:184:13: info: subprogram "Is_Integer_64" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:184:13: info: subprogram "Is_Integer_64" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:188:21: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:188:21: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:188:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:188:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:192:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:192:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:196:21: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:196:21: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:196:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:196:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:201:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:201:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:203:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:203:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:205:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:205:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:205:33: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:205:33: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:210:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:210:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:212:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:212:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:214:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:214:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:214:33: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:214:33: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:218:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:218:13: info: subprogram "Is_Integer" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:225:19: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:225:19: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:225:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:225:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+test_arith.adb:12:57: info: initialization of "R1" proved
+test_arith.adb:12:61: info: initialization of "R2" proved
+test_arith.adb:14:14: info: postcondition proved (CVC4: 1 VC)
+test_arith.adb:17:16: info: float overflow check proved (Trivial)
+test_arith.adb:18:16: info: float overflow check proved (Trivial)
+test_arith.adb:19:07: info: precondition proved (CVC4: 7 VC)
+test_arith.adb:24:57: info: initialization of "R1" proved
+test_arith.adb:24:61: info: initialization of "R2" proved
+test_arith.adb:26:14: info: postcondition proved (CVC4: 1 VC)
+test_arith.adb:29:16: info: float overflow check proved (Trivial)
+test_arith.adb:30:16: info: float overflow check proved (Trivial)
+test_arith.adb:31:07: info: precondition proved (CVC4: 7 VC)
+test_arith.adb:36:39: info: initialization of "R" proved
+test_arith.adb:38:14: info: postcondition proved (CVC4: 1 VC)
+test_arith.adb:41:14: info: float overflow check proved (CVC4: 1 VC)
+test_arith.adb:44:76: info: initialization of "R1" proved
+test_arith.adb:44:80: info: initialization of "R2" proved
+test_arith.adb:46:14: info: postcondition proved (CVC4: 1 VC)
+test_arith.adb:49:16: info: float overflow check proved (Trivial)
+test_arith.adb:50:16: info: float overflow check proved (Trivial)
+test_arith.adb:51:07: info: precondition proved (CVC4: 7 VC)
+test_arith.adb:54:80: info: initialization of "R1" proved
+test_arith.adb:54:84: info: initialization of "R2" proved
+test_arith.adb:56:14: info: postcondition proved (CVC4: 1 VC)
+test_arith.adb:59:16: info: float overflow check proved (Trivial)
+test_arith.adb:60:16: info: float overflow check proved (Trivial)
+test_arith.adb:61:07: info: precondition proved (CVC4: 7 VC)
+test_arith.adb:66:75: info: initialization of "R1" proved
+test_arith.adb:66:79: info: initialization of "R2" proved
+test_arith.adb:68:14: info: postcondition proved (CVC4: 1 VC)
+test_arith.adb:71:16: info: division check proved (CVC4: 1 VC)
+test_arith.adb:71:16: info: float overflow check proved (Trivial)
+test_arith.adb:72:16: info: division check proved (CVC4: 1 VC)
+test_arith.adb:72:16: info: float overflow check proved (Trivial)
+test_arith.adb:73:07: info: precondition proved (CVC4: 7 VC)
+test_arith.adb:76:79: info: initialization of "R1" proved
+test_arith.adb:76:83: info: initialization of "R2" proved
+test_arith.adb:78:14: info: postcondition proved (CVC4: 1 VC)
+test_arith.adb:81:16: info: division check proved (CVC4: 1 VC)
+test_arith.adb:81:16: info: float overflow check proved (Trivial)
+test_arith.adb:82:16: info: division check proved (CVC4: 1 VC)
+test_arith.adb:82:16: info: float overflow check proved (Trivial)
+test_arith.adb:83:07: info: precondition proved (CVC4: 7 VC)
+test_arith.adb:86:04: info: initialization of "X" proved
+test_arith.adb:86:07: info: initialization of "Y" proved
+test_arith.adb:86:10: info: initialization of "Z" proved
+test_arith.adb:94:04: info: precondition proved (CVC4: 1 VC)
+test_arith.adb:94:22: info: range check proved (CVC4: 1 VC)
+test_arith.adb:94:25: info: range check proved (CVC4: 1 VC)
+test_arith.adb:94:28: info: range check proved (CVC4: 1 VC)
+test_arith.adb:95:04: info: precondition proved (CVC4: 1 VC)
+test_arith.adb:95:22: info: range check proved (CVC4: 1 VC)
+test_arith.adb:95:25: info: range check proved (CVC4: 1 VC)
+test_arith.adb:95:28: info: range check proved (CVC4: 1 VC)
+test_arith.adb:96:04: info: precondition proved (CVC4: 1 VC)
+test_arith.adb:97:04: info: precondition proved (CVC4: 1 VC)
+test_arith.adb:97:23: info: range check proved (CVC4: 1 VC)
+test_arith.adb:97:26: info: range check proved (CVC4: 1 VC)
+test_arith.adb:97:29: info: range check proved (CVC4: 1 VC)
+test_arith.adb:98:04: info: precondition proved (CVC4: 1 VC)
+test_arith.adb:98:27: info: range check proved (CVC4: 1 VC)
+test_arith.adb:98:30: info: range check proved (CVC4: 1 VC)
+test_arith.adb:98:33: info: range check proved (CVC4: 1 VC)
+test_arith.adb:99:04: info: precondition proved (CVC4: 1 VC)
+test_arith.adb:99:22: info: range check proved (CVC4: 1 VC)
+test_arith.adb:99:25: info: range check proved (CVC4: 1 VC)
+test_arith.adb:99:28: info: range check proved (CVC4: 1 VC)
+test_arith.adb:100:04: info: precondition proved (CVC4: 1 VC)
+test_arith.adb:100:26: info: range check proved (CVC4: 1 VC)
+test_arith.adb:100:29: info: range check proved (CVC4: 1 VC)
+test_arith.adb:100:32: info: range check proved (CVC4: 1 VC)
+test_arith.adb:102:19: medium: assertion might fail, cannot prove Is_Integer_64 (Z) (e.g. when Z = 42.0)
+test_arith.adb:103:19: info: assertion proved (Z3: 1 VC)
+test_arith.adb:104:19: info: assertion proved (altergo: 1 VC)
+test_arith.adb:106:19: info: assertion proved (Z3: 1 VC)
+test_arith.adb:107:19: info: assertion proved (altergo: 1 VC)
+test_arith64.adb:12:57: info: initialization of "R1" proved
+test_arith64.adb:12:61: info: initialization of "R2" proved
+test_arith64.adb:14:14: info: postcondition proved (CVC4: 1 VC)
+test_arith64.adb:17:16: info: float overflow check proved (Trivial)
+test_arith64.adb:18:16: info: float overflow check proved (Trivial)
+test_arith64.adb:19:07: info: precondition proved (CVC4: 7 VC)
+test_arith64.adb:24:57: info: initialization of "R1" proved
+test_arith64.adb:24:61: info: initialization of "R2" proved
+test_arith64.adb:26:14: info: postcondition proved (CVC4: 1 VC)
+test_arith64.adb:29:16: info: float overflow check proved (Trivial)
+test_arith64.adb:30:16: info: float overflow check proved (Trivial)
+test_arith64.adb:31:07: info: precondition proved (CVC4: 7 VC)
+test_arith64.adb:36:44: info: initialization of "R" proved
+test_arith64.adb:38:14: info: postcondition proved (CVC4: 1 VC)
+test_arith64.adb:41:14: info: float overflow check proved (CVC4: 1 VC)
+test_arith64.adb:44:76: info: initialization of "R1" proved
+test_arith64.adb:44:80: info: initialization of "R2" proved
+test_arith64.adb:46:14: info: postcondition proved (CVC4: 1 VC)
+test_arith64.adb:49:16: info: float overflow check proved (Trivial)
+test_arith64.adb:50:16: info: float overflow check proved (Trivial)
+test_arith64.adb:51:07: info: precondition proved (CVC4: 7 VC)
+test_arith64.adb:54:80: info: initialization of "R1" proved
+test_arith64.adb:54:84: info: initialization of "R2" proved
+test_arith64.adb:56:14: info: postcondition proved (CVC4: 1 VC)
+test_arith64.adb:59:16: info: float overflow check proved (Trivial)
+test_arith64.adb:60:16: info: float overflow check proved (Trivial)
+test_arith64.adb:61:07: info: precondition proved (CVC4: 7 VC)
+test_arith64.adb:66:75: info: initialization of "R1" proved
+test_arith64.adb:66:79: info: initialization of "R2" proved
+test_arith64.adb:68:14: info: postcondition proved (CVC4: 1 VC)
+test_arith64.adb:71:16: info: division check proved (CVC4: 1 VC)
+test_arith64.adb:71:16: info: float overflow check proved (Trivial)
+test_arith64.adb:72:16: info: division check proved (CVC4: 1 VC)
+test_arith64.adb:72:16: info: float overflow check proved (Trivial)
+test_arith64.adb:73:07: info: precondition proved (CVC4: 7 VC)
+test_arith64.adb:76:79: info: initialization of "R1" proved
+test_arith64.adb:76:83: info: initialization of "R2" proved
+test_arith64.adb:78:14: info: postcondition proved (CVC4: 1 VC)
+test_arith64.adb:81:16: info: division check proved (CVC4: 1 VC)
+test_arith64.adb:81:16: info: float overflow check proved (Trivial)
+test_arith64.adb:82:16: info: division check proved (CVC4: 1 VC)
+test_arith64.adb:82:16: info: float overflow check proved (Trivial)
+test_arith64.adb:83:07: info: precondition proved (CVC4: 7 VC)
+test_arith64.adb:86:04: info: initialization of "X" proved
+test_arith64.adb:86:07: info: initialization of "Y" proved
+test_arith64.adb:86:10: info: initialization of "Z" proved
+test_arith64.adb:94:04: info: precondition proved (CVC4: 1 VC)
+test_arith64.adb:94:22: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:94:25: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:94:28: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:95:04: info: precondition proved (CVC4: 1 VC)
+test_arith64.adb:95:22: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:95:25: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:95:28: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:96:04: info: precondition proved (CVC4: 1 VC)
+test_arith64.adb:97:04: info: precondition proved (CVC4: 1 VC)
+test_arith64.adb:97:23: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:97:26: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:97:29: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:98:04: info: precondition proved (CVC4: 1 VC)
+test_arith64.adb:98:27: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:98:30: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:98:33: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:99:04: info: precondition proved (CVC4: 1 VC)
+test_arith64.adb:99:22: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:99:25: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:99:28: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:100:04: info: precondition proved (CVC4: 1 VC)
+test_arith64.adb:100:26: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:100:29: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:100:32: info: range check proved (CVC4: 1 VC)
+test_arith64.adb:102:19: medium: assertion might fail, cannot prove Is_Integer_64 (Z) (e.g. when Z = 42.0)
+test_arith64.adb:103:19: info: assertion proved (Z3: 1 VC)
+test_arith64.adb:104:19: info: assertion proved (altergo: 1 VC)
+test_arith64.adb:106:19: info: assertion proved (Z3: 1 VC)
+test_arith64.adb:107:19: info: assertion proved (altergo: 1 VC)

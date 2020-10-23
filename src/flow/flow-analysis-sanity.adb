@@ -117,6 +117,10 @@ package body Flow.Analysis.Sanity is
       --  Check both the default expression of a component declaration and
       --  its subtype constraint.
 
+      procedure Check_Component_Definition (N : Node_Id)
+      with Pre => Nkind (N) = N_Component_Definition;
+      --  Check array/record/protected component definition
+
       procedure Check_Default_Expression (N : Node_Id)
       with Pre => Nkind (N) in N_Component_Declaration
                              | N_Discriminant_Specification;
@@ -223,14 +227,30 @@ package body Flow.Analysis.Sanity is
 
       procedure Check_Component_Declaration (N : Node_Id) is
       begin
+         Check_Component_Definition (Component_Definition (N));
          Check_Default_Expression (N);
-
-         --  Check that the subtype constraint for the component, if present,
-         --  does not depend on variable inputs.
-
-         Check_Subtype_Indication
-           (Subtype_Indication (Component_Definition (N)));
       end Check_Component_Declaration;
+
+      --------------------------------
+      -- Check_Component_Definition --
+      --------------------------------
+
+      procedure Check_Component_Definition (N : Node_Id) is
+      begin
+         --  Component definition is given either as a subtype_indication
+         --  (whose constraints need to be checked) or as an access_definition
+         --  (which cannot depend on variable inputs).
+
+         pragma Assert
+           (Present (Subtype_Indication (N))
+              xor
+            Present (Access_Definition (N)));
+
+         if Present (Subtype_Indication (N)) then
+            Check_Subtype_Indication (Subtype_Indication (N));
+         end if;
+
+      end Check_Component_Definition;
 
       ------------------------------
       -- Check_Default_Expression --
@@ -813,11 +833,9 @@ package body Flow.Analysis.Sanity is
                            end if;
 
                         when N_Array_Type_Definition =>
-                           Check_Subtype_Indication
-                             (Subtype_Indication
-                                (Component_Definition (Typ_Def)));
-
                            Check_Subtype_Indication (Typ_Def);
+                           Check_Component_Definition
+                             (Component_Definition (Typ_Def));
 
                         --  The following are either enumeration literals,
                         --  static expressions, or access to subprogram

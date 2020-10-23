@@ -541,7 +541,7 @@ package body Flow.Control_Flow_Graph is
    --  we also have the protected object as an implicit volatile input
    --  and/or output.
    --
-   --  Each of these vertices will also have call_vertex set in its
+   --  Each of these vertices will also have Call_Vertex set in its
    --  attributes so that we can fiddle the CDG to look like this:
    --
    --                     call P
@@ -1564,10 +1564,46 @@ package body Flow.Control_Flow_Graph is
       --  does not bleed all over the place) and the default case.
 
       if not Partial and then RHS_Split_Useful (N, FA.B_Scope) then
+
+         --  Deal with record self-assignments like we deal with calls to
+         --  procedures with parameters of mode IN OUT, i.e. create separate
+         --  vertices for each use and definition.
+         --
+         --  For a record self-assignment
+         --
+         --    Tmp := (A => Tmp.B, B => Tmp.A);
+         --
+         --  we produce the following CFG:
+         --
+         --     use {Tmp.B}
+         --     |
+         --     use {Tmp.A}
+         --     |
+         --     define {Tmp.A}
+         --     |
+         --     define {Tmp.B}
+         --
+         --  Each of the 'defined' vertices will also have Record_RHS set in
+         --  its attributes so that we can fiddle the DDG to look like this:
+         --
+         --     use {Tmp.B} ------+
+         --                       |
+         --     use {Tmp.A} ------|--+
+         --                       |  |
+         --     define {Tmp.A} <--+  |
+         --                          |
+         --     define {Tmp.B} <-----+
+         --
+         --  Note that dependencies between the parameters are NOT set up here;
+         --  this is done in Flow.Data_Depence_Graph.Create.
+
          declare
             All_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
             Missing      : Flow_Id_Sets.Set;
             Verts        : Vertex_Lists.List;
+
+            Verts_Defined : Vertex_Lists.List;
+            --  Dedicated list with vertices for component definitions
 
             RHS_Map : constant Flow_Id_Maps.Map :=
               Untangle_Record_Assignment
@@ -1593,22 +1629,53 @@ package body Flow.Control_Flow_Graph is
                   Output : Flow_Id          renames Flow_Id_Maps.Key (C);
                   Inputs : Flow_Id_Sets.Set renames RHS_Map (C);
 
+                  V_Used, V_Defined : Flow_Graphs.Vertex_Id;
+                  --  Vertices for variables used and defined in a single
+                  --  component assignment.
+
                begin
                   Missing.Delete (Output);
+
+                  --  Create separate vertices with variables used and defined.
+                  --  All variable uses happen first; then happen all variable
+                  --  definitions. This is essential when representing record
+                  --  self-assignments where several components are read and
+                  --  then redefined.
 
                   Add_Vertex
                     (FA,
                      Make_Basic_Attributes
-                       (Var_Def       => Flow_Id_Sets.To_Set (Output),
-                        Var_Ex_Use    => Inputs,
+                       (Var_Ex_Use    => Inputs,
                         Sub_Called    => Funcs,
                         Loops         => Ctx.Current_Loops,
                         In_Nested_Pkg => Ctx.In_Nested_Package,
                         E_Loc         => N,
                         Print_Hint    => Pretty_Print_Record_Field),
-                     V);
-                  Verts.Append (V);
-                  All_Vertices.Insert (V);
+                     V_Used);
+                  Verts.Append (V_Used);
+
+                  All_Vertices.Insert (V_Used);
+
+                  Add_Vertex
+                    (FA,
+                     Make_Basic_Attributes
+                       (Var_Def       => Flow_Id_Sets.To_Set (Output),
+                        Sub_Called    => Funcs,
+                        Loops         => Ctx.Current_Loops,
+                        In_Nested_Pkg => Ctx.In_Nested_Package,
+                        E_Loc         => N,
+                        Print_Hint    => Pretty_Print_Record_Field),
+                     V_Defined);
+                  Verts_Defined.Append (V_Defined);
+
+                  All_Vertices.Insert (V_Defined);
+
+                  --  Link variable use with variable definition. We will add
+                  --  a data dependency edge when building DDG.
+                  --  ??? This could be set in Make_Basic_Attributes to avoid
+                  --  explicit manipulation of vertex attributes, but then this
+                  --  routine would no longer be "Basic".
+                  FA.Atr (V_Defined).Record_RHS := V_Used;
                end;
             end loop;
 
@@ -1629,7 +1696,7 @@ package body Flow.Control_Flow_Graph is
                         E_Loc         => N,
                         Print_Hint    => Pretty_Print_Record_Field),
                      V);
-                  Verts.Append (V);
+                  Verts_Defined.Append (V);
                   All_Vertices.Insert (V);
                end loop;
             end if;
@@ -1647,6 +1714,10 @@ package body Flow.Control_Flow_Graph is
                   end loop;
                end;
             end if;
+
+            --  Move vertices with variables defined to the end of list
+            Verts.Splice (Before => Vertex_Lists.No_Element,
+                          Source => Verts_Defined);
 
             --  Assigning null records does not produce any assignments, so we
             --  create a null vertex instead.
@@ -4928,7 +4999,7 @@ package body Flow.Control_Flow_Graph is
          --  Pointer to the previous vertex, initialized to V which goes first
 
       begin
-         --  Destructivelly append outs at the end of Ins
+         --  Destructivelly append Outs at the end of Ins
          Ins.Splice (Before => Vertex_Lists.No_Element,
                      Source => Outs);
 

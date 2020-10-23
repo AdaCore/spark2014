@@ -50,11 +50,11 @@ with Why.Types;           use Why.Types;
 
 package body Why.Gen.Pointers is
 
-   procedure Declare_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id)
+   procedure Declare_Rep_Pointer_Type (Th : Theory_UC; E : Entity_Id)
    with Pre => Is_Access_Type (E);
    --  Similar to Declare_Rep_Record_Type but for pointer types.
 
-   procedure Complete_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id)
+   procedure Complete_Rep_Pointer_Type (Th : Theory_UC; E : Entity_Id)
    with Pre => Is_Access_Type (E);
    --  Declares everything for a representative access type but the type and
    --  predefined equality.
@@ -63,7 +63,7 @@ package body Why.Gen.Pointers is
    --  Return the name of a record's representative module.
 
    procedure Clone_Pledge_Module
-     (File          : W_Section_Id;
+     (Th            : Theory_UC;
       Brower_Ent    : Entity_Id;
       Borrowed_Ent  : Entity_Id;
       Borrowed_Expr : Entity_Id;
@@ -116,7 +116,7 @@ package body Why.Gen.Pointers is
    -------------------------
 
    procedure Clone_Pledge_Module
-     (File          : W_Section_Id;
+     (Th            : Theory_UC;
       Brower_Ent    : Entity_Id;
       Borrowed_Ent  : Entity_Id;
       Borrowed_Expr : Entity_Id;
@@ -135,7 +135,7 @@ package body Why.Gen.Pointers is
       --  Clone the pledge module. It creates a pledge function relating the
       --  borrowed entity and the borrower.
 
-      Emit (File,
+      Emit (Th,
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
@@ -185,7 +185,7 @@ package body Why.Gen.Pointers is
    -- Complete_Rep_Pointer_Type --
    -------------------------------
 
-   procedure Complete_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id) is
+   procedure Complete_Rep_Pointer_Type (Th : Theory_UC; E : Entity_Id) is
 
       procedure Declare_Conversion_Check_Function;
       --  Generate a range predicate and a range check function for E
@@ -252,7 +252,7 @@ package body Why.Gen.Pointers is
          --  the designated value. Otherwise, the record field is enough.
 
          if Designates_Incomplete_Type (E) then
-            Emit (P,
+            Emit (Th,
                   New_Function_Decl
                     (Domain      => EW_Pterm,
                      Name        => To_Local (E_Symb (E, WNE_Pointer_Value)),
@@ -276,7 +276,7 @@ package body Why.Gen.Pointers is
                           EW_Abstract (Directly_Designated_Type (E)))));
          end if;
 
-         Emit (P,
+         Emit (Th,
                New_Function_Decl
                  (Domain   => EW_Pred,
                   Name     => +New_Identifier (Name => Null_Access_Name),
@@ -287,7 +287,7 @@ package body Why.Gen.Pointers is
                                        Right  => +New_Pointer_Is_Null_Access
                                          (E, +A_Ident, Local => True))));
 
-         Emit (P,
+         Emit (Th,
                Why.Atree.Builders.New_Function_Decl
                  (Domain      => EW_Pterm,
                   Name        => +To_Local (E_Symb (Ty, WNE_Null_Pointer)),
@@ -300,7 +300,7 @@ package body Why.Gen.Pointers is
                                 Args => (1 => +Top_Field, 2 => +True_Term),
                                 Typ  => EW_Bool_Type);
 
-         Emit (P,
+         Emit (Th,
                New_Axiom (Ada_Node => E,
                           Name     => NID (Axiom_Name),
                           Def      => Condition));
@@ -329,7 +329,7 @@ package body Why.Gen.Pointers is
                           2 => +A_Ident));
 
          begin
-            Emit (P,
+            Emit (Th,
                   New_Function_Decl
                     (Domain      => EW_Prog,
                      Name        => To_Program_Space
@@ -341,7 +341,7 @@ package body Why.Gen.Pointers is
                      Pre         => Precond,
                      Post        => Post));
 
-            Emit (P,
+            Emit (Th,
                   New_Function_Decl
                     (Domain      => EW_Prog,
                      Name        => To_Program_Space (Assign_Pointer),
@@ -436,14 +436,14 @@ package body Why.Gen.Pointers is
 
          --  Counter for abstract pointer addresses as global variable
          --  ??? should be incremented
-         Emit (P,
+         Emit (Th,
                New_Global_Ref_Declaration
                  (Name     => Next_Address,
                   Labels   => Symbol_Sets.Empty_Set,
                   Ref_Type => EW_Int_Type,
                   Location => No_Location));
 
-         Emit (P,
+         Emit (Th,
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => New_Uninitialized_Name,
@@ -454,7 +454,7 @@ package body Why.Gen.Pointers is
                   Post        => Uninitialized_Post,
                   Effects     => Address_Effects));
 
-         Emit (P,
+         Emit (Th,
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => New_Initialized_Name,
@@ -588,7 +588,7 @@ package body Why.Gen.Pointers is
               Then_Part => +Check_Pred,
               Typ       => EW_Bool_Type);
 
-         Emit (P,
+         Emit (Th,
                New_Function_Decl
                  (Domain   => EW_Pred,
                   Name     => To_Local (E_Symb (E, WNE_Range_Pred)),
@@ -599,7 +599,7 @@ package body Why.Gen.Pointers is
          Pre_Cond :=
            New_Call (Name => To_Local (E_Symb (E, WNE_Range_Pred)),
                      Args => Args);
-         Emit (P,
+         Emit (Th,
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),
@@ -659,7 +659,7 @@ package body Why.Gen.Pointers is
 
          begin
             Emit
-              (P,
+              (Th,
                New_Function_Decl
                  (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_To_Base)),
@@ -702,7 +702,7 @@ package body Why.Gen.Pointers is
 
          begin
             Emit
-              (P,
+              (Th,
                New_Function_Decl
                  (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Of_Base)),
@@ -729,7 +729,7 @@ package body Why.Gen.Pointers is
          --  other types which use E as a representative type.
 
          Emit
-           (P,
+           (Th,
             New_Function_Decl
               (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_To_Base)),
@@ -739,7 +739,7 @@ package body Why.Gen.Pointers is
                Return_Type => Abstr_Ty,
                Def         => +A_Ident));
          Emit
-           (P,
+           (Th,
             New_Function_Decl
               (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Of_Base)),
@@ -755,12 +755,10 @@ package body Why.Gen.Pointers is
    -- Create_Rep_Pointer_Theory_If_Needed --
    -----------------------------------------
 
-   procedure Create_Rep_Pointer_Theory_If_Needed
-     (P : W_Section_Id;
-      E : Entity_Id)
+   procedure Create_Rep_Pointer_Theory_If_Needed (E : Entity_Id)
    is
       Ancestor : constant Entity_Id := Repr_Pointer_Type (E);
-
+      Th : Theory_UC;
    begin
       if Ancestor /= Empty then
          return;
@@ -768,40 +766,41 @@ package body Why.Gen.Pointers is
 
       Pointer_Typ_To_Root.Insert (Retysp (Directly_Designated_Type (E)), E);
 
-      Open_Theory
-        (P, Get_Rep_Pointer_Module (E),
-         Comment =>
-           "Module for axiomatizing the pointer theory associated to type "
-         & """" & Get_Name_String (Chars (E)) & """"
-         & (if Sloc (E) > 0 then
-              " defined at " & Build_Location_String (Sloc (E))
-           else "")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context, Get_Rep_Pointer_Module (E),
+           Comment =>
+             "Module for axiomatizing the pointer theory associated to type "
+           & """" & Get_Name_String (Chars (E)) & """"
+           & (if Sloc (E) > 0 then
+                " defined at " & Build_Location_String (Sloc (E))
+             else "")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Declare_Rep_Pointer_Type (P, E);
+      Declare_Rep_Pointer_Type (Th, E);
 
-      Close_Theory (P, Kind => Definition_Theory, Defined_Entity => E);
+      Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
    end Create_Rep_Pointer_Theory_If_Needed;
 
    -------------------------
    -- Declare_Ada_Pointer --
    -------------------------
 
-   procedure Declare_Ada_Pointer (P : W_Section_Id; E : Entity_Id) is
+   procedure Declare_Ada_Pointer (Th : Theory_UC; E : Entity_Id) is
       Rep_Module : constant W_Module_Id := Get_Rep_Pointer_Module (E);
 
    begin
       --  Export the theory containing the pointer record definition.
 
-      Add_With_Clause (P, Rep_Module, EW_Export);
+      Add_With_Clause (Th, Rep_Module, EW_Export);
 
       --  Rename the representative record type as expected.
 
-      Emit (P, New_Type_Decl (Name  => To_Why_Type (E, Local => True),
-                              Alias => +New_Named_Type
-                                (Name => To_Name (WNE_Rec_Rep))));
+      Emit (Th, New_Type_Decl (Name  => To_Why_Type (E, Local => True),
+                               Alias => +New_Named_Type
+                                 (Name => To_Name (WNE_Rec_Rep))));
       Emit
-        (P,
+        (Th,
          Why.Atree.Builders.New_Function_Decl
            (Domain      => EW_Pterm,
             Name        => To_Local (E_Symb (E, WNE_Dummy)),
@@ -817,7 +816,7 @@ package body Why.Gen.Pointers is
    -----------------------------
 
    procedure Declare_Pledge_Function
-     (File    : W_Section_Id;
+     (File    : Theory_UC;
       E       : Entity_Id;
       Binders : Binder_Array)
    is
@@ -826,7 +825,7 @@ package body Why.Gen.Pointers is
 
    begin
       Clone_Pledge_Module
-        (File          => File,
+        (Th          => File,
          Brower_Ent    => E,
          Borrowed_Ent  => Borrowed_Entity,
          Borrowed_Expr => Empty,
@@ -846,7 +845,7 @@ package body Why.Gen.Pointers is
    -- Declare_Pledge_Ref --
    ------------------------
 
-   procedure Declare_Pledge_Ref (File : W_Section_Id; E : Entity_Id) is
+   procedure Declare_Pledge_Ref (Th : Theory_UC; E : Entity_Id) is
       Borrowed_Expr   : Node_Id;
       Borrowed_Ty     : Entity_Id := Etype (E);
       Borrowed_Entity : Entity_Id;
@@ -872,14 +871,14 @@ package body Why.Gen.Pointers is
       --  pledge annotation.
 
       Clone_Pledge_Module
-        (File          => File,
+        (Th            => Th,
          Brower_Ent    => E,
          Borrowed_Ent  => Borrowed_Entity,
          Borrowed_Expr => Borrowed_Expr,
          Borrowed_Ty   => Borrowed_Ty,
          Loc_Pledge_Id => Loc_Pledge_Id);
 
-      Emit (File,
+      Emit (Th,
             New_Global_Ref_Declaration (Name     => Loc_Pledge_Id,
                                         Ref_Type => Get_Typ (Loc_Pledge_Id),
                                         Labels   => Symbol_Sets.Empty_Set,
@@ -890,12 +889,11 @@ package body Why.Gen.Pointers is
    -- Declare_Rep_Pointer_Compl --
    -------------------------------
 
-   procedure Declare_Rep_Pointer_Compl_If_Needed
-     (P : W_Section_Id; E : Entity_Id)
+   procedure Declare_Rep_Pointer_Compl_If_Needed (E : Entity_Id)
    is
       Inserted : Boolean;
       Position : Node_Sets.Cursor;
-
+      Th : Theory_UC;
    begin
       --  Use the Completed_Types set to make sure that we do not complete the
       --  same type twice.
@@ -903,8 +901,9 @@ package body Why.Gen.Pointers is
       Completed_Types.Insert (E, Position, Inserted);
 
       if Inserted then
-         Open_Theory
-           (P, E_Compl_Module (E),
+         Th := Open_Theory
+           (WF_Context,
+            E_Compl_Module (E),
             Comment =>
               "Module for completing the pointer theory associated to type "
             & """" & Get_Name_String (Chars (E)) & """"
@@ -913,9 +912,9 @@ package body Why.Gen.Pointers is
               else "")
             & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-         Add_With_Clause (P, Get_Rep_Pointer_Module (E), EW_Import);
+         Add_With_Clause (Th, Get_Rep_Pointer_Module (E), EW_Import);
 
-         Emit (P,
+         Emit (Th,
                New_Clone_Declaration
                  (Theory_Kind   => EW_Module,
                   Clone_Kind    => EW_Export,
@@ -936,9 +935,9 @@ package body Why.Gen.Pointers is
                           Get_Name
                             (EW_Abstract (Directly_Designated_Type (E)))))));
 
-         Complete_Rep_Pointer_Type (P, E);
+         Complete_Rep_Pointer_Type (Th, E);
 
-         Close_Theory (P, Kind => Definition_Theory, Defined_Entity => E);
+         Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
       end if;
    end Declare_Rep_Pointer_Compl_If_Needed;
 
@@ -946,7 +945,7 @@ package body Why.Gen.Pointers is
    -- Declare_Rep_Pointer_Type --
    ------------------------------
 
-   procedure Declare_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id) is
+   procedure Declare_Rep_Pointer_Type (Th : Theory_UC; E : Entity_Id) is
 
       procedure Declare_Equality_Function;
       --  Generate the boolean equality function for the pointer type
@@ -1007,16 +1006,16 @@ package body Why.Gen.Pointers is
             Labels => Get_Model_Trace_Label ("'" & All_Label),
             others => <>);
 
-         Emit_Record_Declaration (Section      => P,
+         Emit_Record_Declaration (Th           => Th,
                                   Name         => Ty_Name,
                                   Binders      => Binders_F,
                                   SPARK_Record => True);
 
          Emit_Ref_Type_Definition
-           (File => P,
+           (Th => Th,
             Name => Ty_Name);
 
-         Emit (P, New_Havoc_Declaration (Ty_Name));
+         Emit (Th, New_Havoc_Declaration (Ty_Name));
       end Declare_Pointer_Type;
 
       -------------------------------
@@ -1073,7 +1072,7 @@ package body Why.Gen.Pointers is
                                         Domain => EW_Pred));
 
          Emit
-           (P,
+           (Th,
             New_Function_Decl
               (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
@@ -1095,7 +1094,7 @@ package body Why.Gen.Pointers is
       --  type for the value component.
 
       if Designates_Incomplete_Type (E) then
-         Emit (P,
+         Emit (Th,
                New_Type_Decl
                  (Name => Img
                     (Get_Symb (To_Local (E_Symb (E, WNE_Private_Type)))))
@@ -1106,7 +1105,7 @@ package body Why.Gen.Pointers is
       Declare_Equality_Function;
 
       if not Designates_Incomplete_Type (E) then
-         Complete_Rep_Pointer_Type (P, E);
+         Complete_Rep_Pointer_Type (Th, E);
       end if;
    end Declare_Rep_Pointer_Type;
 

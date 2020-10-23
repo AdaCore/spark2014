@@ -7,8 +7,8 @@ import sys
 
 
 def run(cmd):
-    print ""
-    print "run: " + cmd
+    print("")
+    print("run: " + cmd)
     os.system(cmd)
 
 
@@ -73,12 +73,14 @@ def diff_file(f_ctx, g_v):
     with open(f_ctx, 'r') as file1:
         with open(g_v, 'r') as file2:
             # Removing spaces because cpp introduce extra spaces as diff.
-            lines1 = map(lambda y:
-                         filter(lambda x:
-                                x not in ' \t', y), file1.readlines())
-            lines2 = map(lambda y:
-                         filter(lambda x:
-                                x not in ' \t', y), file2.readlines())
+            lines1 = list(map(lambda y:
+                              str(filter(lambda x:
+                                         x not in ' \t', y)),
+                              file1.readlines()))
+            lines2 = list(map(lambda y:
+                              str(filter(lambda x:
+                                         x not in ' \t', y)),
+                              file2.readlines()))
             diff = difflib.unified_diff(
                 lines1,
                 lines2,
@@ -121,10 +123,10 @@ def kill_and_regenerate(check):
         with open("manual_proof.in") as f:
             for i in f:
                 list_of_check.append(i)
-    print ""
-    print "--------------------------"
-    print "Cleanup previous artifacts"
-    print "--------------------------"
+    print("")
+    print("--------------------------")
+    print("Cleanup previous artifacts")
+    print("--------------------------")
     if os.path.isdir("./proof/sessions"):
         print("The folder proof/sessions still exists.")
         print("Please, move it to be able to regenerate session.")
@@ -135,10 +137,10 @@ def kill_and_regenerate(check):
     else:
         os.makedirs("./temp")
     os.system("make clean")
-    print ""
-    print "----------------------------"
-    print "Generate the Coq proof files"
-    print "----------------------------"
+    print("")
+    print("----------------------------")
+    print("Generate the Coq proof files")
+    print("----------------------------")
 #   Force regeneration of coq files where necessary.
 #   This step is used to generate the fake coq files and put the names of
 #   coq files inside the session. This cannot be done in one step because
@@ -149,10 +151,10 @@ def kill_and_regenerate(check):
 #   Make the diff between generated .v and .ctx files. If there are differences
 #   between them not in the proof, you are sure to fail
     diff_all(False)
-    print ""
-    print "-----------------------------"
-    print "Check and register Coq proofs"
-    print "-----------------------------"
+    print("")
+    print("-----------------------------")
+    print("Check and register Coq proofs")
+    print("-----------------------------")
 #   cleaning and regeneration of *.v
     os.system("make clean")
     os.system("make generate")
@@ -162,29 +164,29 @@ def kill_and_regenerate(check):
 #   as there is no way to extend a session in gnatprove.
     for i in list_of_check:
         run_manual(i)
-    print ""
-    print "---------------------------------------------"
-    print "Prove remaining checks with automatic provers"
-    print "---------------------------------------------"
-    print ""
-    print "---------------"
-    print "Start with CVC4"
-    print "---------------"
+    print("")
+    print("---------------------------------------------")
+    print("Prove remaining checks with automatic provers")
+    print("---------------------------------------------")
+    print("")
+    print("---------------")
+    print("Start with CVC4")
+    print("---------------")
     run_automatic("cvc4", level=2)
-    print ""
-    print "------------"
-    print "Then with Z3"
-    print "------------"
+    print("")
+    print("------------")
+    print("Then with Z3")
+    print("------------")
     run_automatic_timeout("z3", level=2, timeout=100)
-    print ""
-    print "-----------------"
-    print "End with Alt-Ergo"
-    print "-----------------"
+    print("")
+    print("-----------------")
+    print("End with Alt-Ergo")
+    print("-----------------")
     run_automatic_timeout("altergo", level=2)
-    print ""
-    print "---------------------------"
-    print "Summarize all proved checks"
-    print "---------------------------"
+    print("")
+    print("---------------------------")
+    print("Summarize all proved checks")
+    print("---------------------------")
     run_options(opt="--output-msg-only --report=provers")
 
 

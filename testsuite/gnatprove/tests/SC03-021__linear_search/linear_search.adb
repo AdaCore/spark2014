@@ -49,7 +49,7 @@ procedure Linear_Search with SPARK_Mode is
          pragma Loop_Invariant
            (for all K in I .. Length (L) => Nth (L, K) = Nth (X, K - I + 1));
          if X.Data.all = V then
-           -- pragma Assert (Nth (L, I) = V);
+            pragma Assert (Nth (L, I) = V);
             return I;
          end if;
          X := X.Next;

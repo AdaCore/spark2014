@@ -157,10 +157,9 @@ package SPARK_Definition is
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);
-   --  Returns True if the underlying type of the type E is not in SPARK,
-   --  declared in a private part with SPARK_Mode => Off or in a private part
-   --  of a package with external axioms. Also returns True if E is a subtype
-   --  or derived type of such an entity.
+   --  Returns True if the underlying type of the type E is not in SPARK or
+   --  declared in a private part with SPARK_Mode => Off. Also returns True
+   --  if E is a subtype or derived type of such an entity.
 
    function Get_SPARK_JSON return JSON_Array;
    --  Should be called after marking is finished. Returns the result of

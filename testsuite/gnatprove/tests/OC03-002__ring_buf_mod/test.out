@@ -26,8 +26,8 @@ ring_buf.ads:58:21: info: initialization of "R" proved
 ring_buf.ads:59:19: medium: postcondition might fail, cannot prove To_Model (R) = Model'(1 .. 0 => 0)
 ring_buf.ads:63:17: medium: postcondition might fail, cannot prove Head'Result = Func_Head (To_Model (R))
 ring_buf.ads:63:31: medium: precondition might fail, cannot prove M'Length > 0
-ring_buf.ads:67:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Push (To_Model(R)'Old, X) (e.g. when R = (Data => (others => 0), First => 0, Length => Length_Type'Last) and R'Old = (Data => (others => 0), First => 0, Length => Length_Type'Last-1) and X = 0)
+ring_buf.ads:67:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Push (To_Model(R)'Old, X) (e.g. when R = (Data => (others => 0), First => 14367, Length => 0) and R'Old = (Data => (others => 0), First => 14367, Length => 0) and X = 0)
 ring_buf.ads:69:43: info: initialization of "Element" proved
-ring_buf.ads:71:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Pop (To_Model (R)'old) (e.g. when R = (Data => (others => 0), First => 1, Length => 0) and R'Old = (Data => (others => 0), First => 0, Length => 1))
+ring_buf.ads:71:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Pop (To_Model (R)'old) (e.g. when R = (Data => (others => 0), First => 14367, Length => 0) and R'Old = (Data => (others => 0), First => 14367, Length => 0))
 ring_buf.ads:71:34: medium: precondition might fail, cannot prove M'Length > 0
 ring_buf.ads:72:24: medium: precondition might fail, cannot prove M'Length > 0

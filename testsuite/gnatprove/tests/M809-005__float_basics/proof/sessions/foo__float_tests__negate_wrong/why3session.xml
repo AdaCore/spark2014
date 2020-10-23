@@ -7,16 +7,16 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__float_tests__negate_wrong.gnat-json"/>
 <theory name="Foo__float_tests__negate_wrong__subprogram_def" proved="true">
- <goal name="def&#39;vc" expl="VC for def" proved="true">
+ <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="def&#39;vc.0" expl="precondition" proved="true">
+  <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="1986"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.1" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" proved="true">
   <proof prover="0"><result status="valid" steps="5460"/></proof>
   </goal>
  </transf>

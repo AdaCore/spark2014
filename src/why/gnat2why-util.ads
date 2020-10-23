@@ -183,12 +183,9 @@ package Gnat2Why.Util is
    --  @return the program or term domain corresponding to the [Domain]
    --     parameter, which means essentially converting predicate to term.
 
-   type W_Section_Id is
-     (WF_Pure,
-      WF_Variables,
-      WF_Context,
-      WF_Axioms,
-      WF_Main);
+   type W_Section_Id is (WF_Context, WF_Main);
+   --  WF_Context is used for all theories except the ones that contain VCs
+   --  WF_Main is used for all theories that contain VCs
 
    --  Type used to control which marker information is included in the node.
    --  This is for pretty-printing part of a possibly large assertion.
@@ -203,9 +200,6 @@ package Gnat2Why.Util is
    --  Why3 and Use_Map to use the map for old.
 
    type Transformation_Params is record
-      File        : W_Section_Id;
-      --  Identity of the current Why3 file. If needed, new theories and
-      --  modules will be created in this file (e.g. for string literals).
       Phase       : Transformation_Phase;
       --  Current transformation phase, which impacts the way code is
       --  transformed from Ada to Why3.
@@ -220,15 +214,15 @@ package Gnat2Why.Util is
    end record;
    --  Set of parameters for the transformation phase
 
-   type Why_Section is limited
-      record
-         Kind       : W_Section_Id;
-         Theories   : Why_Node_Lists.List;
-         Cur_Theory : W_Theory_Declaration_Id;
-      end record;
-   --  Making this type limited is a way to force by-reference passing
-   --  of objects of this type. This is needed because we have aliasing between
-   --  parameters of many functions and the global variable Why_Sections below.
+   subtype Why_Section is Why_Node_Lists.List;
+
+   type Theory_UC is record
+      Th      : W_Theory_Declaration_Id;
+      Section : W_Section_Id;
+      Finished : Boolean;
+   end record;
+   --  Used to construct a new theory by adding declarations one by one to it.
+   --  Adding is only allowed if "Finished" is False.
 
    procedure Init_Why_Sections;
    --  Call this procedure to initialize the predefined sections of the Why
@@ -239,12 +233,10 @@ package Gnat2Why.Util is
    Why_File_Suffix : constant String := ".mlw";
 
    function Usual_Params
-     (Phase : Transformation_Phase;
-      Kind  : W_Section_Id := WF_Axioms) return Transformation_Params
+     (Phase : Transformation_Phase) return Transformation_Params
    is
      (Transformation_Params'
-        (File        => Kind,
-         Phase       => Phase,
+        (Phase       => Phase,
          Gen_Marker  => GM_None,
          Ref_Allowed => (if Phase = Generate_Logic then False else True),
          Old_Policy  => (if Phase = Generate_Logic then As_Old else Use_Map)));
@@ -260,9 +252,8 @@ package Gnat2Why.Util is
    function Assert_Params return Transformation_Params is
      (Usual_Params (Generate_VCs_For_Assert));
 
-   function Logic_Params
-     (Kind : W_Section_Id := WF_Axioms) return Transformation_Params
-   is (Usual_Params (Generate_Logic, Kind));
+   function Logic_Params return Transformation_Params
+   is (Usual_Params (Generate_Logic));
 
    --------------
    -- Builders --
@@ -512,6 +503,15 @@ package Gnat2Why.Util is
      Pre => Is_Subprogram_Or_Entry (E);
    --  Returns True if we may produce an axiom for the post of E
 
+   procedure Collect_Old_Parts (N : Node_Id; Old_Parts : in out Node_Sets.Set);
+   --  Add to Old_Parts the set of prefixes of references to the 'Old attribute
+   --  in N.
+
+   procedure Collect_Old_Parts
+     (L         : Node_Lists.List;
+      Old_Parts : in out Node_Sets.Set);
+   --  Call Collect_Old_Parts on all elements of L
+
    ------------------------------
    -- Symbol table subprograms --
    ------------------------------
@@ -605,7 +605,5 @@ package Gnat2Why.Util is
    function Build_Printing_Plan return Why_Node_Lists.List;
    --  Return a list of Theory Declarations which contains all theories of the
    --  WF_Main section and all their dependencies, topologically sorted.
-   --  Returns empty if such a list cannot be constructed (e.g. in the presence
-   --  of external axioms modules).
 
 end Gnat2Why.Util;

@@ -654,24 +654,6 @@ package Why.Sinfo is
    --  modules. The node contains the list of Declarations, its kind (theory
    --  or module) and name, and the list of includes of other modules and
    --  theories. A special comment can be given.
-   --
-   --  ---------------------------
-   --  -- W_Custom_Substitution --
-   --  ---------------------------
-   --  From          Name_Id
-   --  To            W_Any_Node_Id
-
-   --  --------------------------
-   --  -- W_Custom_Declaration --
-   --  --------------------------
-   --  File_Name     Name_Id
-   --  Subst         W_Custom_Substitution_List
-   --
-   --  This node stands for an existing piece of Why3 code which will be
-   --  inserted in the generated file. It contains the name of the file where
-   --  the code can be found as well as a substitution from Name_Ids to Why3
-   --  nodes which will be applied to the content of the file before the
-   --  insertion.
 
    type Why_Node_Kind is
      (
@@ -786,8 +768,6 @@ package Why.Sinfo is
       W_Clone_Declaration,
       W_Clone_Substitution,
       W_Theory_Declaration,
-      W_Custom_Substitution,
-      W_Custom_Declaration,
 
       -----------------
       -- Input files --

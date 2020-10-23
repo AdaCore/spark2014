@@ -2,4 +2,4 @@
 *.labels
 *.xpl
 *.rgo
-out
+out/

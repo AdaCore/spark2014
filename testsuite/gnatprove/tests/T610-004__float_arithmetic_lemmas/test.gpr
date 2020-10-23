@@ -1,0 +1,11 @@
+with "spark_lemmas";
+
+project Test is
+
+   for Main use ("test_arith.adb", "test_arith64.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnata", "-gnateDSPARK_BODY_MODE=Off"); -- define SPARK_BODY_MODE as workaround
+   end Compiler;
+
+end Test;

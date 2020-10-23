@@ -13,7 +13,7 @@ bounded_stacks.ads:18:20: info: postcondition proved (CVC4: 2 VC), in instantiat
 bounded_stacks.ads:20:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:21:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:26:20: info: postcondition proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.ads:27:54: medium: overflow check might fail, in instantiation at integer_stacks.ads:4 [reason for check: result of addition must fit in a 32-bits machine integer]
+bounded_stacks.ads:27:54: medium: overflow check might fail, in instantiation at integer_stacks.ads:4 (e.g. when This = (Capacity => ?, Values => (others => 0), Top => Natural'Last) and This.Values'First = 1 and This.Values'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 bounded_stacks.ads:28:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:29:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:31:41: info: initialization of "Item" proved, in instantiation at integer_stacks.ads:4

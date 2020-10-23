@@ -1373,11 +1373,11 @@ There are no dynamic semantics associated with a Refined_Global aspect.
 .. centered:: **Verification Rules**
 
 
-8. If a subprogram has a Refined_Global aspect it is used in the analysis of the
+7. If a subprogram has a Refined_Global aspect it is used in the analysis of the
    subprogram body rather than its Global aspect.
 
 
-9. The verification rules given for :ref:`global-aspects` also apply.
+8. The verification rules given for :ref:`global-aspects` also apply.
 
 
 .. centered:: **Examples**

@@ -23,6 +23,7 @@ ar.adb:52:21: info: initialization of "A" proved
 ar.adb:55:45: medium: range check might fail (e.g. when E = 0) [possible fix: subprogram at line 52 should mention E in a precondition]
 ar.adb:64:04: warning: analyzing unreferenced procedure "Test6"
 ar.adb:68:20: medium: array index check might fail (e.g. when E = 1 and I = 1) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 64 should mention E and I in a precondition]
+ar.adb:68:21: info: range check proved (CVC4: 2 VC)
 ar.adb:68:24: info: range check proved (CVC4: 1 VC)
 ar.adb:68:33: info: range check proved (CVC4: 1 VC)
 ar.adb:76:04: warning: analyzing unreferenced procedure "Test7"

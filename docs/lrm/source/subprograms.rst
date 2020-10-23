@@ -1214,8 +1214,8 @@ Extensions_Visible Aspects
    can safely assume that any components of the actual parameter which are not
    components of T will be neither read nor written by the call.]
 
-Subprogram_Variant Aspect
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Subprogram_Variant Aspects
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The aspect Subprogram_Variant is defined for subprograms. It is intended for
 use in ensuring termination of recursive subprograms.
@@ -1239,7 +1239,7 @@ discrete_expression.
 Two subprograms are said to be `statically mutually recursive`, if they are
 mutually recursive ignoring indirect calls (dispatching calls and calls
 through access-to-subprogram values). In the following, a direct recursive call
-is considered as a special case of a statically mutually recursive call. 
+is considered as a special case of a statically mutually recursive call.
 
 The variant of a (mutually) recursive call to a subprogram which
 has an aspect

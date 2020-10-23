@@ -25,7 +25,6 @@
 
 with Aspects;
 with Einfo;      use Einfo;
-with Exp_Util;
 with Sem_Aux;
 with SPARK_Util;
 
@@ -110,9 +109,6 @@ package SPARK_Atree.Entities is
    E_Void                        : Entity_Kind renames Einfo.E_Void;
 
    function "=" (L, R : Entity_Kind) return Boolean renames Einfo."=";
-
-   function Containing_Package_With_Ext_Axioms (E : Entity_Id) return Entity_Id
-    renames Exp_Util.Containing_Package_With_Ext_Axioms;
 
    function Ekind (E : Entity_Id) return Entity_Kind renames Atree.Ekind;
 
@@ -389,6 +385,9 @@ package SPARK_Atree.Entities is
    function Next_Literal (E : Entity_Id) return Entity_Id renames
      Einfo.Next_Literal;
 
+   procedure Next_Literal (E : in out Entity_Id) renames
+     Einfo.Next_Literal;
+
    function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
    with
      Pre  => Is_Enumeration_Type (Typ),
@@ -403,7 +402,7 @@ package SPARK_Atree.Entities is
 
    function Modular_Size (Typ : Entity_Id) return Uint with
      Pre => Is_Modular_Integer_Type (Typ);
-   --  Out of 8, 16, 32 and 64, return the smallest X such that 2 ** X is
+   --  Out of 8, 16, 32, 64 and 128, return the smallest X such that 2 ** X is
    --  greater or equal to the modulus of the type. This is basically used to
    --  determine the bitvector used for proof. Note that this can be different
    --  from the Ada RM Size of the type, which can be changed via a Size

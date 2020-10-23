@@ -25,19 +25,18 @@
 
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
+with Atree;
 with Flow_Generated_Globals.Phase_2;
 with Flow_Types;
 with Flow_Utility;
 with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
 with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
-with Gnat2Why.External_Axioms;   use Gnat2Why.External_Axioms;
 with Lib;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Definition.Annotate;
-with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with String_Utils;               use String_Utils;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Atree.Modules;          use Why.Atree.Modules;
@@ -52,10 +51,7 @@ package body Gnat2Why.Util is
 
    Why3_Keywords : String_Utils.String_Sets.Set;
 
-   procedure Make_Empty_Why_Section
-     (Kind : W_Section_Id; Section : out Why_Section)
-     with Post => (Section.Cur_Theory = Why.Types.Why_Empty);
-   --  Return an empty Why_Section with the given kind
+   procedure Make_Empty_Why_Section (Section : out Why_Section);
 
    --------------------
    -- Ada_Ent_To_Why --
@@ -459,8 +455,6 @@ package body Gnat2Why.Util is
       Seen : Symbol_Set;
       Plan : Why_Node_Lists.List;
 
-      External_Axioms_Found : exception;
-
       procedure Recurse (Th : W_Theory_Declaration_Id);
 
       -------------
@@ -480,9 +474,6 @@ package body Gnat2Why.Util is
                M : constant W_Module_Id :=
                  Get_Module (W_Include_Declaration_Id (Incl));
             begin
-               if Is_External_Axiom_Module (M) then
-                  raise External_Axioms_Found;
-               end if;
                if Get_File (M) = No_Symbol then
                   Recurse (Find_Decl (Get_Name (M)));
                end if;
@@ -494,14 +485,52 @@ package body Gnat2Why.Util is
    --  Start of processing for Build_Printing_Plan
 
    begin
-      for Th of Why_Sections (WF_Main).Theories loop
+      for Th of Why_Sections (WF_Main) loop
          Recurse (+Th);
       end loop;
       return Plan;
-   exception
-      when External_Axioms_Found =>
-         return Why_Node_Lists.Empty_List;
    end Build_Printing_Plan;
+
+   -----------------------
+   -- Collect_Old_Parts --
+   -----------------------
+
+   procedure Collect_Old_Parts (N : Node_Id; Old_Parts : in out Node_Sets.Set)
+   is
+      function Is_Old_Attribute (N : Node_Id) return Atree.Traverse_Result;
+      --  Search for attribute Old and enter its prefix in the map
+
+      ----------------------
+      -- Is_Old_Attribute --
+      ----------------------
+
+      function Is_Old_Attribute (N : Node_Id) return Atree.Traverse_Result is
+      begin
+         if Nkind (N) = N_Attribute_Reference
+             and then Attribute_Name (N) in Name_Old
+         then
+            Old_Parts.Include (Prefix (N));
+            return Atree.Skip;
+         else
+            return Atree.OK;
+         end if;
+      end Is_Old_Attribute;
+
+      procedure Search_Old_Attributes is new Traverse_More_Proc
+        (Is_Old_Attribute);
+   begin
+      Search_Old_Attributes (N);
+   end Collect_Old_Parts;
+
+   procedure Collect_Old_Parts
+     (L         : Node_Lists.List;
+      Old_Parts : in out Node_Sets.Set)
+   is
+   begin
+      for N of L loop
+         Collect_Old_Parts (N, Old_Parts);
+      end loop;
+   end Collect_Old_Parts;
 
    ------------------
    -- Compute_Spec --
@@ -856,7 +885,7 @@ package body Gnat2Why.Util is
    procedure Init_Why_Sections is
    begin
       for Kind in W_Section_Id loop
-         Make_Empty_Why_Section (Kind => Kind, Section => Why_Sections (Kind));
+         Make_Empty_Why_Section (Section => Why_Sections (Kind));
       end loop;
    end Init_Why_Sections;
 
@@ -1066,11 +1095,9 @@ package body Gnat2Why.Util is
    ----------------------------
 
    procedure Make_Empty_Why_Section
-     (Kind : W_Section_Id; Section : out Why_Section) is
+     (Section : out Why_Section) is
    begin
-      Section.Kind := Kind;
-      Section.Theories := Why_Node_Lists.Empty_List;
-      Section.Cur_Theory := Why.Types.Why_Empty;
+      Section := Why_Node_Lists.Empty_List;
    end Make_Empty_Why_Section;
 
    -----------------------------
@@ -1356,11 +1383,7 @@ package body Gnat2Why.Util is
 
         --  Functions from predefined units should be safe
 
-        and then not Lib.In_Predefined_Unit (E)
-
-        --  No axioms are generated for functions with external axiomatizations
-
-        and then not Entity_In_Ext_Axioms (E);
+        and then not Lib.In_Predefined_Unit (E);
    end Use_Guard_For_Function;
 
    -----------------------------

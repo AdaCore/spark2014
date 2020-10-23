@@ -1,11 +1,9 @@
 for_loops.adb:14:24: info: implicit function contract not available for proof ("Sum_Of" might not return)
-for_loops.adb:16:33: info: implicit function contract not available for proof ("Sum_Of" might not return)
 for_loops.adb:16:33: info: loop invariant preservation proved (CVC4: 1 VC)
-for_loops.adb:16:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test1) > 0 (e.g. when Counter = 1) [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function]
+for_loops.adb:16:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test1) > 0 [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function]
 for_loops.adb:25:29: info: implicit function contract not available for proof ("Sum_Of" might not return)
-for_loops.adb:29:33: info: implicit function contract not available for proof ("Sum_Of" might not return)
 for_loops.adb:29:33: info: loop invariant preservation proved (CVC4: 1 VC)
-for_loops.adb:29:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test2) < 0 (e.g. when Counter = 1) [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function]
+for_loops.adb:29:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test2) < 0 [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function]
 for_loops.adb:40:30: info: implicit function contract not available for proof ("Sum_Of" might not return)
 for_loops.adb:40:47: info: cannot unroll loop (too many loop iterations)
 for_loops.adb:42:28: info: implicit function contract not available for proof ("Sum_Of" might not return)
@@ -23,14 +21,12 @@ optional.adb:31:36: medium: loop invariant might not be preserved by an arbitrar
 utils.adb:10:29: info: range check proved (CodePeer)
 utils.adb:10:34: medium: overflow check might fail (e.g. when Val = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at utils.ads:2 should mention Val in a precondition]
 while_loops.adb:14:21: info: implicit function contract not available for proof ("Sum_Of" might not return)
-while_loops.adb:18:33: info: implicit function contract not available for proof ("Sum_Of" might not return)
 while_loops.adb:18:33: info: loop invariant initialization proved (CVC4: 1 VC)
 while_loops.adb:18:33: info: loop invariant preservation proved (CVC4: 1 VC)
 while_loops.adb:20:29: medium: overflow check might fail (e.g. when Counter = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 while_loops.adb:27:21: info: implicit function contract not available for proof ("Sum_Of" might not return)
-while_loops.adb:32:33: info: implicit function contract not available for proof ("Sum_Of" might not return)
 while_loops.adb:32:33: info: loop invariant preservation proved (CVC4: 1 VC)
-while_loops.adb:32:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test2) < 0 (e.g. when Counter = 2) [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function]
+while_loops.adb:32:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test2) < 0 [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function]
 while_loops.adb:36:29: info: overflow check proved (CVC4: 1 VC)
 while_loops.adb:44:22: info: implicit function contract not available for proof ("Sum_Of" might not return)
 while_loops.adb:46:25: info: implicit function contract not available for proof ("Sum_Of" might not return)

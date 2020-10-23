@@ -56,6 +56,12 @@ class ExamplesTestDriver(DiffTestDriver):
                "--level=2",
                "--steps=100",
                "--timeout=60"]
+
+        # test access6 requires use of lemma library SPARK.Heap, which in turn
+        # requires defining env var SPARK_HEAP_OBJECT_DIR
+        if self.test_env["test_name"] == "access6":
+            cmd += ["-XSPARK_HEAP_OBJECT_DIR=."]
+
         self.shell(cmd, catch_error=False)
 
 

@@ -115,20 +115,24 @@ is
                          Nth8_Stream (Addr, I)
                    = Nth8_Stream (Addr'Old ,I)));
 
-   function LemmaFunction (X : Unsigned_64; Len : Integer) return Unit
+   procedure Lemma_Less_Than_Max (X : Unsigned_64; Len : Integer)
      with
        Ghost,
        Pre  => Len in 0 .. 63 and then
                (for all I in Len .. 63 => not Nth (X, I)),
-       Post => LemmaFunction'Result = Void and then
-               X < MaxValue (Len);
+       Post => X < MaxValue (Len);
 
-   function LemmaFunction2 (X : Unsigned_64; Len : Integer) return Unit
+   procedure Lemma_Less_Than_Max2 (X : Unsigned_64; Len : Integer)
      with
        Ghost,
        Pre  => Len in 0 .. 63 and then X < MaxValue (Len),
-       Post => LemmaFunction2'Result = Void and then
-               (for all I in Len .. 63 => not Nth (X, I));
+       Post => (for all I in Len .. 63 => not Nth (X, I));
+
+   procedure Lemma_Nth_Eq (X, Y : Unsigned_64)
+     with
+       Ghost,
+       Pre  => (for all I in 0 .. 63 => Nth (X, I) = Nth (Y, I)),
+       Post => X = Y;
 
    procedure PeekThenPoke (Start, Len : Natural;
                            Addr       : in out Byte_Sequence;

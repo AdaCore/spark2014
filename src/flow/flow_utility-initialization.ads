@@ -82,10 +82,8 @@ package Flow_Utility.Initialization is
                                     return Default_Initialization_Kind
    with Pre => Is_Type (Typ) and then Entity_In_SPARK (Typ);
    --  Determine default initialization kind that applies to a particular type.
-   --  Types defined in units with external axiomatization (such as formal
-   --  containers) and private types are treated specially, so that they are
-   --  either considered as having full default initialization, or no default
-   --  initialization.
+   --  Private types are treated specially, so that they are either considered
+   --  as having full default initialization, or no default initialization.
    --  @param Typ any type
    --  @param Ignore_DIC If True then do not consider attribute Has_DIC for
    --     this type.

@@ -89,7 +89,7 @@ infoflow.adb:179:18: info: index check proved (CVC4: 2 VC)
 infoflow.adb:179:29: info: index check proved (CVC4: 2 VC)
 infoflow.adb:181:22: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 infoflow.adb:182:33: info: loop invariant initialization proved (CVC4: 2 VC)
-infoflow.adb:182:33: info: loop invariant preservation proved (CVC4: 2 VC)
+infoflow.adb:182:33: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
 infoflow.adb:182:47: medium: "A_V1" might not be initialized
 infoflow.adb:183:42: info: index check proved (CVC4: 4 VC)
 infoflow.adb:183:53: info: index check proved (CVC4: 4 VC)
@@ -98,7 +98,7 @@ infoflow.adb:186:55: info: index check proved (CVC4: 4 VC)
 infoflow.adb:187:16: info: index check proved (CVC4: 2 VC)
 infoflow.adb:187:36: info: index check proved (CVC4: 2 VC)
 infoflow.adb:187:36: info: overflow check proved (CVC4: 1 VC)
-infoflow.adb:191:10: info: assertion proved (CVC4: 2 VC)
+infoflow.adb:191:10: info: assertion proved (CVC4: 1 VC; Z3: 1 VC)
 infoflow.adb:191:24: medium: "A_V1" might not be initialized
 infoflow.adb:192:19: info: index check proved (CVC4: 2 VC)
 infoflow.adb:192:30: info: index check proved (CVC4: 2 VC)
@@ -147,7 +147,7 @@ infoflow.ads:49:54: medium: "Cache_V2" might not be initialized
 infoflow.ads:60:07: medium: "OutKeys_V1" might not be initialized in "CopyKeys"
 infoflow.ads:60:19: medium: "OutKeys_V2" might not be initialized in "CopyKeys"
 infoflow.ads:63:06: medium: contract cases might not be complete
-infoflow.ads:64:27: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+infoflow.ads:64:27: info: contract case proved (Trivial: 1 VC; Z3: 1 VC)
 infoflow.ads:64:30: medium: "OutKeys_V1" might not be initialized
 infoflow.ads:64:47: medium: "OutKeys_V2" might not be initialized
 infoflow.ads:74:06: info: disjoint contract cases proved (CVC4: 1 VC)

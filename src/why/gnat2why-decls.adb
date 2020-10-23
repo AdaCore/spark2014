@@ -25,23 +25,24 @@
 
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;
-with Gnat2Why.Expr;                use Gnat2Why.Expr;
-with Namet;                        use Namet;
-with Sinput;                       use Sinput;
-with Ada.Strings;                  use Ada.Strings;
-with Ada.Strings.Fixed;            use Ada.Strings.Fixed;
-with Why.Atree.Accessors;          use Why.Atree.Accessors;
-with Why.Atree.Builders;           use Why.Atree.Builders;
-with Why.Atree.Modules;            use Why.Atree.Modules;
-with Why.Gen.Binders;              use Why.Gen.Binders;
-with Why.Gen.Decl;                 use Why.Gen.Decl;
-with Why.Gen.Expr;                 use Why.Gen.Expr;
-with Why.Gen.Names;                use Why.Gen.Names;
-with Why.Gen.Pointers;             use Why.Gen.Pointers;
-with Why.Ids;                      use Why.Ids;
-with Why.Inter;                    use Why.Inter;
-with Why.Sinfo;                    use Why.Sinfo;
-with Why.Types;                    use Why.Types;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
+with Gnat2Why.Util;       use Gnat2Why.Util;
+with Namet;               use Namet;
+with Sinput;              use Sinput;
+with Ada.Strings;         use Ada.Strings;
+with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Pointers;    use Why.Gen.Pointers;
+with Why.Ids;             use Why.Ids;
+with Why.Inter;           use Why.Inter;
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Types;           use Why.Types;
 
 package body Gnat2Why.Decls is
 
@@ -49,24 +50,24 @@ package body Gnat2Why.Decls is
    -- Translate_Constant --
    ------------------------
 
-   procedure Translate_Constant
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Translate_Constant (E : Entity_Id)
    is
       Typ : constant W_Type_Id := Type_Of_Node (E);
+      Th : Theory_UC;
    begin
       --  Start with opening the theory to define, as the creation of a
       --  function for the logic term needs the current theory to insert an
       --  include declaration.
 
-      Open_Theory (File, E_Module (E),
-                   Comment =>
-                     "Module for defining the constant "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th := Open_Theory
+        (WF_Context, E_Module (E),
+         Comment =>
+           "Module for defining the constant "
+         & """" & Get_Name_String (Chars (E)) & """"
+         & (if Sloc (E) > 0 then
+              " defined at " & Build_Location_String (Sloc (E))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  We generate a "logic", whose axiom will be given in a completion
 
@@ -77,7 +78,7 @@ package body Gnat2Why.Decls is
 
       pragma Assert (not Is_Protected_Component_Or_Discr_Or_Part_Of (E));
 
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Pterm,
                Name        => To_Why_Id
@@ -89,7 +90,7 @@ package body Gnat2Why.Decls is
 
       --  Define a logic function to return the address of a constant object
 
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
@@ -98,7 +99,7 @@ package body Gnat2Why.Decls is
                Location    => No_Location,
                Return_Type => EW_Int_Type));
 
-      Close_Theory (File,
+      Close_Theory (Th,
                     Kind           => Definition_Theory,
                     Defined_Entity => E);
    end Translate_Constant;
@@ -107,9 +108,7 @@ package body Gnat2Why.Decls is
    -- Translate_Constant_Value --
    ------------------------------
 
-   procedure Translate_Constant_Value
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Translate_Constant_Value (E : Entity_Id)
    is
 
       Decl : constant Node_Id := Enclosing_Declaration (E);
@@ -132,19 +131,22 @@ package body Gnat2Why.Decls is
       --    axiom c__def:
       --      c = of_int (to_int(largest_int) + 1)
 
+      Th : Theory_UC;
    begin
       --  Start with opening the theory to define, as the creation of a
       --  function for the logic term needs the current theory to insert an
       --  include declaration.
 
-      Open_Theory (File, E_Axiom_Module (E),
-                   Comment =>
-                     "Module for defining the value of constant "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th := Open_Theory
+        (WF_Context,
+         E_Axiom_Module (E),
+         Comment =>
+           "Module for defining the value of constant "
+         & """" & Get_Name_String (Chars (E)) & """"
+         & (if Sloc (E) > 0 then
+              " defined at " & Build_Location_String (Sloc (E))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  Default values of parameters are not considered as the value of the
       --  constant representing the parameter. We do not generate an axiom
@@ -169,7 +171,7 @@ package body Gnat2Why.Decls is
             Def : W_Term_Id;
 
          begin
-            Def := Get_Pure_Logic_Term_If_Possible (File, Expr, Typ);
+            Def := Get_Pure_Logic_Term_If_Possible (Expr, Typ);
 
             if Def /= Why_Empty then
 
@@ -200,7 +202,7 @@ package body Gnat2Why.Decls is
                end if;
 
                Emit
-                 (File,
+                 (Th,
                   New_Defining_Axiom
                     (Ada_Node => E,
                      Name     =>
@@ -218,7 +220,7 @@ package body Gnat2Why.Decls is
       --  view. Attach the newly created theory as a completion of the
       --  existing one.
 
-      Close_Theory (File,
+      Close_Theory (Th,
                     Kind           => Axiom_Theory,
                     Defined_Entity =>
                       (if Is_Full_View (E) then Partial_View (E) else E));
@@ -230,32 +232,31 @@ package body Gnat2Why.Decls is
    -------------------------------
 
    procedure Translate_External_Object (E : Entity_Name) is
-      File : constant W_Section_Id := WF_Variables;
-
       Object_Name : constant String := To_String (E);
-
+      Th : Theory_UC;
    begin
-      Open_Theory
-        (File,
-         Module =>
-           New_Module (Name => Object_Name,
-                       File => GNATCOLL.Symbols.No_Symbol),
-         Comment =>
-           "Module declaring the external object """ & Object_Name &
-           ","" created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context,
+           Module =>
+             New_Module (Name => Object_Name,
+                         File => GNATCOLL.Symbols.No_Symbol),
+           Comment =>
+             "Module declaring the external object """ & Object_Name &
+             ","" created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  Do not set a location as counterexample values for external objects
       --  are not meaningful.
 
       Emit
-        (File,
+        (Th,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Labels   => Symbol_Sets.Empty_Set,
             Location => No_Location,
             Ref_Type => EW_Private_Type));
 
-      Close_Theory (File,
+      Close_Theory (Th,
                     Kind => Standalone_Theory);
    end Translate_External_Object;
 
@@ -263,27 +264,27 @@ package body Gnat2Why.Decls is
    -- Translate_Loop_Entity --
    ---------------------------
 
-   procedure Translate_Loop_Entity
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Translate_Loop_Entity (E : Entity_Id)
    is
+      Th : Theory_UC;
    begin
-      Open_Theory (File, E_Module (E),
-                   Comment =>
-                     "Module for defining "
-                   & "the loop exit exception for the loop "
-                   & """" & Get_Name_String (Chars (E)) & """"
-                   & (if Sloc (E) > 0 then
-                     " defined at " & Build_Location_String (Sloc (E))
-                     else "")
-                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th := Open_Theory
+        (WF_Context, E_Module (E),
+         Comment =>
+           "Module for defining "
+         & "the loop exit exception for the loop "
+         & """" & Get_Name_String (Chars (E)) & """"
+         & (if Sloc (E) > 0 then
+              " defined at " & Build_Location_String (Sloc (E))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Emit (File,
+      Emit (Th,
             New_Exception_Declaration
               (Name => Loop_Exception_Name (E, Local => True),
                Arg  => Why_Empty));
 
-      Close_Theory (File,
+      Close_Theory (Th,
                     Kind => Standalone_Theory);
    end Translate_Loop_Entity;
 
@@ -291,20 +292,21 @@ package body Gnat2Why.Decls is
    -- Translate_Variable --
    ------------------------
 
-   procedure Translate_Variable
-     (File : W_Section_Id;
-      E    : Entity_Id)
+   procedure Translate_Variable (E : Entity_Id)
    is
       Var : constant Item_Type := Mk_Item_Of_Entity (E);
+      Th : Theory_UC;
    begin
-      Open_Theory (File, E_Module (E),
-                   Comment =>
-                     "Module for defining a ref holding the value of variable "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th := Open_Theory
+        (WF_Context,
+         E_Module (E),
+         Comment =>
+           "Module for defining a ref holding the value of variable "
+         & """" & Get_Name_String (Chars (E)) & """"
+         & (if Sloc (E) > 0 then
+              " defined at " & Build_Location_String (Sloc (E))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       --  If E is not in SPARK, only declare an object of type __private for
       --  use in effects of program functions in Why3.
@@ -316,7 +318,7 @@ package body Gnat2Why.Decls is
                --  Generate a global ref for the fields
 
                Emit
-                 (File,
+                 (Th,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Fields.Binder.B_Name),
                      Labels   => Get_Counterexample_Labels (E),
@@ -330,7 +332,7 @@ package body Gnat2Why.Decls is
 
                if Var.Discrs.Binder.Mutable then
                   Emit
-                    (File,
+                    (Th,
                      New_Global_Ref_Declaration
                        (Name     => To_Local (Var.Discrs.Binder.B_Name),
                         Labels   => Get_Counterexample_Labels (E),
@@ -338,7 +340,7 @@ package body Gnat2Why.Decls is
                         Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                else
                   Emit
-                    (File,
+                    (Th,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Pterm,
                         Name        =>
@@ -355,7 +357,7 @@ package body Gnat2Why.Decls is
                --  Generate a constant for 'Constrained attribute
 
                Emit
-                 (File,
+                 (Th,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Constr.Id),
@@ -371,7 +373,7 @@ package body Gnat2Why.Decls is
                --  Generate a constant for 'Tag attribute
 
                Emit
-                 (File,
+                 (Th,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Tag.Id),
@@ -386,7 +388,7 @@ package body Gnat2Why.Decls is
             --  Generate a global ref for the content
 
             Emit
-              (File,
+              (Th,
                New_Global_Ref_Declaration
                  (Name     => To_Local (Var.Content.B_Name),
                   Labels   => Get_Counterexample_Labels (E),
@@ -413,7 +415,7 @@ package body Gnat2Why.Decls is
                   --  Generate constants for bounds
 
                   Emit
-                    (File,
+                    (Th,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Pterm,
                         Name        => To_Local (Var.Bounds (D).First),
@@ -425,7 +427,7 @@ package body Gnat2Why.Decls is
                         Return_Type => Ty_First));
 
                   Emit
-                    (File,
+                    (Th,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Pterm,
                         Name        => To_Local (Var.Bounds (D).Last),
@@ -443,7 +445,7 @@ package body Gnat2Why.Decls is
             --  Generate a global ref for the value
 
             Emit
-              (File,
+              (Th,
                New_Global_Ref_Declaration
                  (Name     => To_Local (Var.Value.B_Name),
                   Location => Safe_First_Sloc (E),
@@ -456,7 +458,7 @@ package body Gnat2Why.Decls is
             if Var.Mutable then
 
                Emit
-                 (File,
+                 (Th,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Address),
                      Labels   => Symbol_Sets.Empty_Set,
@@ -464,7 +466,7 @@ package body Gnat2Why.Decls is
                      Ref_Type => Get_Typ (Var.Address)));
 
                Emit
-                 (File,
+                 (Th,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Is_Null),
                      Location => Safe_First_Sloc (E),
@@ -476,7 +478,7 @@ package body Gnat2Why.Decls is
 
             else
                Emit
-                 (File,
+                 (Th,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Address),
@@ -486,7 +488,7 @@ package body Gnat2Why.Decls is
                      Return_Type => Get_Typ (Var.Address)));
 
                Emit
-                 (File,
+                 (Th,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Is_Null),
@@ -497,7 +499,7 @@ package body Gnat2Why.Decls is
             end if;
 
             Emit
-              (File,
+              (Th,
                New_Global_Ref_Declaration
                  (Name     => To_Local (Var.Is_Moved),
                   Location => Safe_First_Sloc (E),
@@ -512,7 +514,7 @@ package body Gnat2Why.Decls is
                --  generate a global ref
 
                Emit
-                 (File,
+                 (Th,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Main.B_Name),
                      Labels   => Get_Counterexample_Labels (E),
@@ -528,7 +530,7 @@ package body Gnat2Why.Decls is
 
       if Var.Init.Present then
          Emit
-           (File,
+           (Th,
             New_Global_Ref_Declaration
               (Name     => To_Local (Var.Init.Id),
                Labels   => Symbol_Sets.Empty_Set,
@@ -536,7 +538,7 @@ package body Gnat2Why.Decls is
                Ref_Type => EW_Bool_Type));
       end if;
 
-      Emit (File,
+      Emit (Th,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
@@ -548,10 +550,10 @@ package body Gnat2Why.Decls is
       --  Declare the variable for the pledge of E
 
       if Is_Local_Borrower (E) then
-         Declare_Pledge_Ref (File, E);
+         Declare_Pledge_Ref (Th, E);
       end if;
 
-      Close_Theory (File,
+      Close_Theory (Th,
                     Kind           => Definition_Theory,
                     Defined_Entity => E);
    end Translate_Variable;

@@ -1,3 +1,4 @@
+member.adb:8:07: info: range check proved (CVC4: 2 VC)
 member.adb:8:10: info: range check proved (CVC4: 2 VC)
 member.adb:10:14: warning: subprogram "Bad_1" has no effect
 member.adb:11:22: medium: assertion might fail

@@ -39,19 +39,11 @@ package SPARK_Util.Types is
    --  be found on the chain of type derivation and subtyping from the most
    --  underlying type to the current type.
 
-   --  Even when the most underlying type of a type T is in SPARK, we may not
-   --  want to use it for translating T into Why3, when it is defined in a unit
-   --  which is externally axiomatized. In such a case, we also want to stop at
-   --  the first type in the chain of type derivation and subtyping that is
-   --  externally axiomatized.
-
    --  The "Representative Type in SPARK" (Retysp for short) of a type T is
    --  the type that represents T in the translation into Why3. It is the most
-   --  underlying type of T when it is in SPARK and not externally axiomatized,
-   --  or the first private type on the chain of Underlying_Type links at the
-   --  boundary between SPARK and non-SPARK, or the first private type on the
-   --  chain of Underlying_Type links inside an externally axiomatized unit.
-   --  For non-private types, Retysp is the identity.
+   --  underlying type of T when it is in SPARK, or the first private type on
+   --  the chain of Underlying_Type links at the boundary between SPARK and
+   --  non-SPARK. For non-private types, Retysp is the identity.s
 
    function Retysp (T : Entity_Id) return Entity_Id
    with Pre  => Is_Type (T),
@@ -313,6 +305,10 @@ package SPARK_Util.Types is
    function Get_Access_Type_From_Profile (Ty : Entity_Id) return Entity_Id with
      Pre  => Ekind (Ty) = E_Subprogram_Type,
      Post => Is_Access_Subprogram_Type (Get_Access_Type_From_Profile'Result);
+
+   function Num_Literals (Ty : Entity_Id) return Positive
+     with Pre => Is_Enumeration_Type (Ty);
+   --  Returns the number of literals for an enumeration type
 
    --------------------------------
    -- Queries related to records --

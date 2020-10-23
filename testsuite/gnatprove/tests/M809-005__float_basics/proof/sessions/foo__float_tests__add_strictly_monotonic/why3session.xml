@@ -9,22 +9,22 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__float_tests__add_strictly_monotonic.gnat-json"/>
 <theory name="Foo__float_tests__add_strictly_monotonic__subprogram_def">
- <goal name="def&#39;vc" expl="VC for def">
+ <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.0" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.1" expl="precondition">
+  <goal name="def&#39;vc.1">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="50634"/></proof>
   <proof prover="2"><result status="unknown" steps="6000"/></proof>
   </goal>
-  <goal name="def&#39;vc.2" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.2" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.3" expl="assertion">
+  <goal name="def&#39;vc.3">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="146111"/></proof>
   <proof prover="2"><result status="unknown" steps="6228"/></proof>

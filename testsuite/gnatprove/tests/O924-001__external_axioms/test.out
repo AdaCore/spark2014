@@ -1,0 +1,6 @@
+ext_ax.ads:3:04: warning: External Axiomatizations are not supported anymore, ignored
+ext_ax.ads:7:04: warning: External Axiomatizations are not supported anymore, ignored
+ext_ax.ads:7:04: warning: in instantiation at g_ext_ax.ads:3
+use_ext_ax.ads:10:07: warning: External Axiomatizations are not supported anymore, ignored
+use_ext_ax.ads:14:07: warning: External Axiomatizations are not supported anymore, ignored
+use_ext_ax.ads:14:07: warning: in instantiation at g_ext_ax.ads:3

@@ -1,18 +1,18 @@
 array_aggr.adb:3:15: info: range check proved (CVC4: 2 VC)
 array_aggr.adb:6:07: info: range check proved (CVC4: 2 VC)
 array_aggr.adb:7:07: info: range check proved (CVC4: 2 VC)
-array_aggr.adb:7:56: info: range check proved (CVC4: 2 VC)
-array_aggr.adb:8:41: info: range check proved (CVC4: 2 VC)
+array_aggr.adb:7:53: info: range check proved (CVC4: 2 VC)
+array_aggr.adb:8:38: info: range check proved (CVC4: 2 VC)
 array_aggr.adb:10:17: warning: subprogram "Aggregate_KO1" has no effect
 array_aggr.adb:11:10: info: range check proved (CVC4: 2 VC)
-array_aggr.adb:11:59: info: range check proved (CVC4: 2 VC)
+array_aggr.adb:11:56: info: range check proved (CVC4: 2 VC)
 array_aggr.adb:12:10: info: range check proved (CVC4: 2 VC)
-array_aggr.adb:12:59: medium: range check might fail [reason for check: value must fit in component type]
+array_aggr.adb:12:56: medium: range check might fail
 array_aggr.adb:17:17: warning: subprogram "Aggregate_KO2" has no effect
 array_aggr.adb:18:10: info: range check proved (CVC4: 2 VC)
-array_aggr.adb:18:48: info: range check proved (CVC4: 2 VC)
+array_aggr.adb:18:45: info: range check proved (CVC4: 2 VC)
 array_aggr.adb:19:10: info: range check proved (CVC4: 2 VC)
-array_aggr.adb:19:48: medium: range check might fail [reason for check: value must fit in component type]
+array_aggr.adb:19:45: medium: range check might fail
 array_aggr.adb:24:07: info: precondition proved (CVC4: 1 VC)
 array_aggr.adb:25:07: info: precondition proved (CVC4: 1 VC)
 array_aggr.adb:28:15: info: range check proved (CVC4: 2 VC)
@@ -20,7 +20,7 @@ array_aggr.adb:32:17: warning: subprogram "Subtype_KO" has no effect
 array_aggr.adb:33:10: medium: range check might fail
 array_aggr.adb:38:17: warning: subprogram "Aggregate_KO" has no effect
 array_aggr.adb:39:10: medium: range check might fail
-array_aggr.adb:39:59: medium: range check might fail [reason for check: value must fit in component type]
+array_aggr.adb:39:56: medium: range check might fail
 array_aggr.adb:44:07: info: precondition proved (Trivial: 1 VC)
 array_aggr.adb:45:07: info: precondition proved (Trivial: 1 VC)
 array_aggr.ads:2:14: warning: subprogram "Bi_Dim_Aggr_OK" has no effect

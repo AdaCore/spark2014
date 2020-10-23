@@ -1,0 +1,4 @@
+test.adb:8:04: info: absence of memory leak at end of scope proved
+test.adb:9:04: info: initialization of "Y" proved
+test.adb:9:04: info: absence of memory leak at end of scope proved
+test.adb:11:06: info: absence of memory leak proved

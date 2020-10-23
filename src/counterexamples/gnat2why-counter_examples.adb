@@ -32,7 +32,6 @@ with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Ce_Interval_Sets;
 with Ce_Pretty_Printing;          use Ce_Pretty_Printing;
 with Common_Containers;           use Common_Containers;
-with Flow_Types;                  use Flow_Types;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT;                        use GNAT;
 with GNAT.String_Split;           use GNAT.String_Split;

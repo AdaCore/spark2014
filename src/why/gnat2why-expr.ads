@@ -323,8 +323,7 @@ package Gnat2Why.Expr is
    --          of all its parts and ancestors over [Expr].
 
    function Get_Pure_Logic_Term_If_Possible
-     (File          : W_Section_Id;
-      Expr          : Node_Id;
+     (Expr          : Node_Id;
       Expected_Type : W_Type_Id) return W_Term_Id;
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
@@ -641,23 +640,24 @@ package Gnat2Why.Expr is
       "="             => Ada_To_Why_Ident."=");
 
    function Bind_From_Mapping_In_Expr
-     (Params                 : Transformation_Params;
-      Map                    : Ada_To_Why_Ident.Map;
-      Expr                   : W_Prog_Id;
-      Guard_Map              : Ada_To_Why_Ident.Map :=
-        Ada_To_Why_Ident.Empty_Map;
-      Others_Guard_Ident     : W_Identifier_Id := Why_Empty;
-      Do_Runtime_Error_Check : Boolean := True;
-      Bind_Value_Of_Old      : Boolean := False) return W_Prog_Id;
+     (Params : Transformation_Params;
+      Map    : Ada_To_Why_Ident.Map;
+      Expr   : W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id;
    --  Bind names from Map to their corresponding values, obtained by
    --  transforming the expression node associated to the name in Map, in
-   --  Expr. Do_Runtime_Error_Check is True if the returned Why program
-   --  should check for absence of run-time errors in the expressions bound.
-   --  Bind_Value_Of_Old is True when binding the value of references to Old in
-   --  postcondition and contract-cases, as a special treatment is requested to
-   --  only check absence of run-time error when the corresponding guard of a
-   --  contract-case is enabled. Guard_Map and Others_Guard_Ident are used to
-   --  retrieve the identifier for the corresponding guard in that case.
+   --  Expr.
+
+   function Bind_From_Mapping_In_Expr
+     (Params : Transformation_Params;
+      Map    : Ada_To_Why_Ident.Map;
+      Expr   : W_Expr_Id;
+      Domain : EW_Domain;
+      Subset : Node_Sets.Set;
+      As_Old : Boolean := False) return W_Expr_Id
+   with Pre => (for all N of Subset => Map.Contains (N));
+   --  Same as above but only bind the nodes from Subset. If As_Old is True,
+   --  the expressions in Map should be evaluated in the pre state.
 
    function Name_For_Loop_Entry
      (Expr    : Node_Id;
@@ -672,13 +672,6 @@ package Gnat2Why.Expr is
    function Map_For_Old return Ada_To_Why_Ident.Map;
    --  Returns the map of identifiers to use for Old attribute references in
    --  the current subprogram.
-
-   procedure Reset_Map_For_Old;
-   --  Empty the map of identifiers to use for Old attribute references
-
-   procedure Restore_Map_For_Old (Saved_Map : Ada_To_Why_Ident.Map) with
-     Pre => Map_For_Old.Is_Empty;
-   --  Restore previously saved value of the map for old
 
    function Name_For_Old (N : Node_Id) return W_Identifier_Id;
    --  During the generation of code for detecting run-time errors in the

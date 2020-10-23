@@ -48,22 +48,14 @@ package Why.Gen.Decl is
    --  @return Definition of a val havocing its only argument of type name__ref
 
    procedure Emit
-     (Theory : W_Theory_Declaration_Id;
-      Decl   : W_Declaration_Id);
-   --  Append Decl to the list of declarations from Theory
-   --  @param Theory the theory where the declaration will be emitted
-   --  @param Decl declaration to emit
-
-   procedure Emit
-     (S    : W_Section_Id;
-      Decl : W_Declaration_Id);
+     (Th   : Theory_UC;
+      Decl : W_Declaration_Id)
+   with Pre => not Th.Finished;
    --  Append Decl to the list of declarations from the current theory in S
    --  @param S section of the Why file where the declaration will be emitted
    --  @param Decl declaration to emit
 
-   procedure Emit_Projection_Metas
-     (Section        : W_Section_Id;
-      Projection_Fun : String);
+   procedure Emit_Projection_Metas (Th : Theory_UC; Projection_Fun : String);
    --  Emit metas that mark a function as a projection function and disables
    --  inlining of this function in Why3.
    --  @param Section section of the Why file where the declaration will be
@@ -72,7 +64,7 @@ package Why.Gen.Decl is
    --      projection.
 
    procedure Emit_Record_Declaration
-     (Section      : W_Section_Id;
+     (Th           : Theory_UC;
       Name         : W_Name_Id;
       Binders      : Binder_Array;
       SPARK_Record : Boolean := False);
@@ -90,7 +82,7 @@ package Why.Gen.Decl is
    --      name of the field to the variable being projected.
 
    procedure Emit_Ref_Type_Definition
-     (File : W_Section_Id;
+     (Th   : Theory_UC;
       Name : W_Name_Id);
    --  Emit definition of a record type with one mutable field of type Name and
    --  counterexample projection from this type to this field.

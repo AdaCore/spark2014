@@ -19,28 +19,18 @@ statement, the ownership of the pointer is transferred to the left hand side of
 the assignment. As a result, the right hand side loses the ownership of the
 object, and therefore loses the right to access it, both for writing and
 reading. In the example below, the assignment from ``X`` to ``Y`` causes ``X``
-to lose ownership on the value it references. As a result, the last assertion,
-which reads the value of ``X``, is illegal in |SPARK|, leading to an error
-message from |GNATprove|:
+to lose ownership on the value it references:
 
-.. code-block:: ada
-  :linenos:
-     
-  procedure Test is
-    type Int_Ptr is access Integer;
-    X : Int_Ptr := new Integer'(10);
-    Y : Int_Ptr;                --  Y is null by default
-  begin
-    Y := X;                     --  ownership of X is transferred to Y
-    pragma Assert (Y.all = 10); --  Y can be accessed
-    Y.all := 11;                --  both for reading and writing
-    pragma Assert (X.all = 11); --  but X cannot, or we would have an alias
-  end Test;
+.. literalinclude:: /examples/tests/access1/test.adb
+   :language: ada
+   :linenos:
 
-.. code-block:: none
+As a result, the last assertion, which reads the value of ``X``, is illegal in
+|SPARK|, leading to an error message from |GNATprove|:
 
-  test.adb:9:20: insufficient permission on dereference from "X"
-  test.adb:9:20: object was moved at line 6
+.. literalinclude:: /examples/tests/access1/test.out
+   :language: none
+   :linenos:
 
 In this example, we can see the point of these ownership rules. To correctly
 reason about the semantics of a program, |SPARK| needs to know, when a change is
@@ -60,39 +50,92 @@ Note that a variable which has been moved is not necessarily lost for the rest
 of the program. Indeed, it is possible to assign it again, restoring ownership.
 For example, here is a piece of code that swaps the pointers ``X`` and ``Y``:
 
-.. code-block:: ada
-
-  declare
-    Tmp : Int_Ptr := X; --  ownership of X is moved to Tmp
-                        --  X cannot be accessed.
-  begin
-    X := Y; --  ownership of Y is moved to X
-            --  Y cannot be accessed
-            --  X has full ownership.
-    Y := Tmp; --  ownership of Tmp is moved to Y
-              --  Tmp cannot be accessed
-              --  Y has fullownership.
-  end;
+.. literalinclude:: /examples/tests/access2/test.adb
+   :language: ada
+   :linenos:
 
 This code is accepted by |GNATprove|. Intuitively, we can see that writing
 at top-level into ``X`` after it has been moved is OK, since it will not modify
 the actual owner of the moved value (here ``Tmp``). However, writing in
-``X.all`` is forbidden, as it would affect ``Tmp``. For example, the following
-variant is rejected:
+``X.all`` is forbidden, as it would affect ``Tmp``:
 
-.. code-block:: ada
-  :linenos:
-     
-  declare
-    Tmp : Int_Ptr := X; --  ownership of X is moved to Tmp
-                        --  X cannot be accessed.
-  begin
-    X.all := Y.all;
+.. literalinclude:: /examples/tests/access3/test.adb
+   :language: ada
+   :linenos:
 
-.. code-block:: none
+The above variant is rejected by |GNATprove|:
 
-  insufficient permission on dereference from "X"
-  object was moved at line 2
+.. literalinclude:: /examples/tests/access3/test.out
+   :language: none
+   :linenos:
+
+Deallocation
+------------
+
+At the end of its lifetime, unless the memory it points to is transferred to
+another owner, an owning pointer should be deallocated. This is typically
+achieved by instantiating the standard generic procedure
+``Ada.Unchecked_Deallocation`` with the type of the underlying ``Object`` and
+the type ``Name`` of the access type:
+
+.. literalinclude:: /examples/tests/access4/test.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| guarantees the absence of memory leak in the above code:
+
+.. literalinclude:: /examples/tests/access4/test.out
+   :language: none
+   :linenos:
+
+Notice that there are three kinds of checks for memory leaks:
+
+1. On each assignment, |GNATprove| checks that the left-hand side is not
+   leaking memory. That's the case on the assignment to ``Y`` above on line 11.
+
+2. On each declaration, |GNATprove| checks that the object is not leaking
+   memory at the end of its lifetime. That's the case for the declarations of
+   ``X`` and ``Y`` above on lines 8 and 9.
+
+3. On each call to an instance of ``Ada.Unchecked_Deallocation``, |GNATprove|
+   checks that the underlying memory is not itself owning memory. Above, the
+   object pointed to is an integer, so this holds trivially.
+
+Here is an example of code with all three cases of memory leaks:
+
+.. literalinclude:: /examples/tests/access5/test.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| detects all three memory leaks in the above code:
+
+.. literalinclude:: /examples/tests/access5/test.out
+   :language: none
+   :linenos:
+
+Finally, in a case like above where a data structure manipulated through
+pointers also contains pointers, it is customary to define deallocation
+procedures to take care of deallocating the complete subtree of allocated
+memory. This is done in the following code by defining a higher-level ``Free``
+procedure applying to arguments of type ``Int_Ptr_Ptr``, which is based on
+instances of ``Ada.Unchecked_Deallocation`` for deallocating individual memory
+chunks:
+
+.. literalinclude:: /examples/tests/access6/test.adb
+   :language: ada
+   :linenos:
+
+Note the contract of the higher-level ``Free`` procedure, with a postcondition
+stating that ``X`` is null on exit, and correct dependences taking into account
+the internal abstract state ``SPARK.Heap.Dynamic_Memory`` representing the
+state of the standard dynamic allocator (as presented in :ref:`SPARK Heap
+Library`), similar to what is defined for the standard
+``Ada.Unchecked_Deallocation`` procedure in SPARK RM 3.10. |GNATprove|
+guarantees that the above code is correctly deallocating memory:
+
+.. literalinclude:: /examples/tests/access6/test.out
+   :language: none
+   :linenos:
 
 Observing
 ---------
@@ -180,7 +223,7 @@ procedures that move some of their parameters away, as in the following example:
 
 .. code-block:: ada
    :linenos:
-      
+
    type Int_Ptr_Holder is record
       Content : Int_Ptr;
    end record;
