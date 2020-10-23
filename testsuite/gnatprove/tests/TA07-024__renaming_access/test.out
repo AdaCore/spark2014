@@ -1,5 +1,12 @@
 renam2.adb:4:24: renamed dereference cannot depend on variable input "X" (SPARK RM 4.4(2))
 renam4.adb:8:29: renamed dereference cannot depend on variable input "X" (SPARK RM 4.4(2)), in instantiation at renam4.adb:11
 renam4.adb:11:24: renamed dereference cannot depend on variable input "X" (SPARK RM 4.4(2))
+renam5.adb:7:21: info: data dependencies proved, in instantiation at renam5.adb:11
+renam5.adb:11:26: renamed dereference cannot depend on variable input "X" (SPARK RM 4.4(2))
+renam6.adb:2:04: warning: initialization of "X" has no effect
+renam6.adb:2:21: medium: range check might fail (e.g. when S'First = 0) [reason for check: default component value must fit in the type]
+renam6.adb:6:21: info: data dependencies proved, in instantiation at renam6.adb:10
+renam6.adb:10:29: medium: array index check might fail (e.g. when S'First = 2) [reason for check: value must be a valid index into the array]
+renam6.adb:12:06: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 renam_deep.adb:6:26: renamed dereference cannot depend on variable input "Y" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof
