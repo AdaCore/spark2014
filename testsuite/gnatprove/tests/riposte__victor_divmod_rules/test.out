@@ -50,7 +50,7 @@ victor_divmod_rules.adb:155:34: info: overflow check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:155:39: info: division check proved (CVC4: 1 VC)
 victor_divmod_rules.adb:163:11: info: flow dependencies proved
 victor_divmod_rules.adb:164:24: medium: divide by zero might fail
-victor_divmod_rules.adb:165:22: medium: postcondition might fail, cannot prove X mod Y = 0 (e.g. when X = -1 and Y = 0)
+victor_divmod_rules.adb:165:22: medium: postcondition might fail, cannot prove X mod Y = 0 (e.g. when X = -5 and Y = 2)
 victor_divmod_rules.adb:165:24: medium: divide by zero might fail (e.g. when Y = 0)
 victor_divmod_rules.adb:173:11: info: flow dependencies proved
 victor_divmod_rules.adb:175:22: info: postcondition proved (CVC4: 1 VC)

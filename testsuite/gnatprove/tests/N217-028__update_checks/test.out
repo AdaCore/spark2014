@@ -57,7 +57,7 @@ ar.ads:19:47: info: range check proved (CVC4: 1 VC)
 ar.ads:19:54: info: range check proved (CVC4: 1 VC)
 ar.ads:19:63: info: range check proved (CVC4: 1 VC)
 ar.ads:22:10: info: flow dependencies proved
-ar.ads:24:06: medium: postcondition might fail (e.g. when A = (others => 2) and A'Old = (others => 2) and E = 0 and I = 1 and J = 1)
+ar.ads:24:06: medium: postcondition might fail (e.g. when A = (3 => 1, others => 2) and A'Old = (3 => 1, others => 2) and E = 0 and I = 3 and J = 1)
 ar.ads:24:26: medium: range check might fail (e.g. when I = 1) [reason for check: result of subtraction must fit in component type] [possible fix: subprogram at line 21 should mention I in a precondition]
 ar.ads:24:48: medium: range check might fail (e.g. when E = 0) [reason for check: result of subtraction must fit in component type] [possible fix: subprogram at line 21 should mention E in a precondition]
 ar.ads:24:55: medium: range check might fail (e.g. when J = 10) [reason for check: result of addition must fit in component type] [possible fix: subprogram at line 21 should mention J in a precondition]

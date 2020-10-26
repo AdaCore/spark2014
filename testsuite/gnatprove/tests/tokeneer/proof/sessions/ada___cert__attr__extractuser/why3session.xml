@@ -7,57 +7,57 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="ada___cert__attr__extractuser.gnat-json"/>
 <theory name="Ada___cert__attr__extractuser__subprogram_def" proved="true">
- <goal name="def&#39;vc" expl="VC for def" proved="true">
+ <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="def&#39;vc.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="88"/></proof>
+  <goal name="def&#39;vc.0" proved="true">
+  <proof prover="0"><result status="valid" steps="72"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="125"/></proof>
+  <goal name="def&#39;vc.1" proved="true">
+  <proof prover="0"><result status="valid" steps="161"/></proof>
   </goal>
-  <goal name="def&#39;vc.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="245"/></proof>
+  <goal name="def&#39;vc.2" proved="true">
+  <proof prover="0"><result status="valid" steps="297"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="assertion" proved="true">
+  <goal name="def&#39;vc.3" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.4" expl="assertion" proved="true">
+  <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.5" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="310"/></proof>
+  <goal name="def&#39;vc.5" proved="true">
+  <proof prover="0"><result status="valid" steps="344"/></proof>
   </goal>
-  <goal name="def&#39;vc.6" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="307"/></proof>
+  <goal name="def&#39;vc.6" proved="true">
+  <proof prover="0"><result status="valid" steps="359"/></proof>
   </goal>
-  <goal name="def&#39;vc.7" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.7" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.8" expl="assertion" proved="true">
+  <goal name="def&#39;vc.8" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.9" expl="assertion" proved="true">
+  <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.10" expl="assertion" proved="true">
+  <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.11" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="336"/></proof>
+  <goal name="def&#39;vc.11" proved="true">
+  <proof prover="0"><result status="valid" steps="380"/></proof>
   </goal>
-  <goal name="def&#39;vc.12" expl="assertion" proved="true">
+  <goal name="def&#39;vc.12" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.13" expl="assertion" proved="true">
+  <goal name="def&#39;vc.13" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.14" expl="assertion" proved="true">
+  <goal name="def&#39;vc.14" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.15" expl="assertion" proved="true">
+  <goal name="def&#39;vc.15" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
  </transf>

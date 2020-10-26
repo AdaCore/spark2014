@@ -2530,6 +2530,10 @@ package body Why.Gen.Arrays is
             end;
 
          when W_Label =>
+            if Get_Ada_Node (+E) /= Empty then
+               return Get_Ada_Node (+E);
+            end if;
+
             declare
                Expr : constant W_Expr_Id := Get_Def (W_Label_Id (E));
             begin

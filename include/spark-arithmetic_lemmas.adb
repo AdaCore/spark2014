@@ -95,9 +95,9 @@ is
    is
    begin
       if Res >= 0 then
-         pragma Assert (abs (Res) <= abs (Val));
+         pragma Assert (abs (Big (Res)) <= abs (Big (Val)));
       else
-         pragma Assert (abs (Res) <= abs (Val));
+         pragma Assert (abs (Big (Res)) <= abs (Big (Val)));
       end if;
    end Lemma_Mult_Scale;
 

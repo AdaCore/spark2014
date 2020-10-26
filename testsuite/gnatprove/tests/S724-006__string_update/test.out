@@ -1,13 +1,13 @@
 p.adb:4:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.adb:8:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.ads:1:16: info: flow dependencies proved
-p.ads:5:17: medium: postcondition might fail, cannot prove S(S'First .. 1)'Old'Update (X => 'X') = "123" (e.g. when S'First = 2 and S'Last = 2 and S'Old = (others => 'NUL') and X = 0)
+p.ads:5:17: medium: postcondition might fail, cannot prove S(S'First .. 1)'Old'Update (X => 'X') = "123" (e.g. when S'First = 2 and S'Last = 2 and S'Old = (others => 'X') and X = 0)
 p.ads:5:17: medium: range check might fail (e.g. when S'First = 1 and S'Last = 0) [reason for check: slice bounds must fit in the underlying array]
 p.ads:5:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.ads:5:45: medium: array index check might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 1 and X = 0) [reason for check: value must be a valid index into the array]
 p.ads:5:45: medium: range check might fail (e.g. when S'First = 1 and S'Last = 1 and X = 0) [reason for check: value must fit in component type]
 p.ads:6:09: info: data dependencies proved
-p.ads:9:17: medium: postcondition might fail, cannot prove S(S'First .. X)'Old'Update (1 => 'X') = "123" (e.g. when S'First = 1 and S'Last = 1 and S'Old = (others => 'NUL') and X = Integer'First)
+p.ads:9:17: medium: postcondition might fail, cannot prove S(S'First .. X)'Old'Update (1 => 'X') = "123" (e.g. when S'First = 1 and S'Last = 1 and S'Old = (others => 'X') and X = Integer'First)
 p.ads:9:17: medium: range check might fail (e.g. when S'First = 1 and S'Last = 0 and X = 1) [reason for check: slice bounds must fit in the underlying array]
 p.ads:9:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.ads:9:45: medium: array index check might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 2147483647 and X = Integer'Last) [reason for check: value must be a valid index into the array]

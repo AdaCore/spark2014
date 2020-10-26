@@ -147,12 +147,6 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Call graph rooted at analyzed subprograms for detecting if a subprogram
    --  is recursive.
 
-   Termination_Call_Graph : Entity_Name_Graphs.Graph :=
-     Entity_Name_Graphs.Create;
-   --  Call graph rooted at analyzed subprograms which are relevant for proving
-   --  termination. This is used to determine calls to potentially nonreturning
-   --  subprograms.
-
    Tasking_Call_Graph : Entity_Name_Graphs.Graph := Entity_Name_Graphs.Create;
    --  Call graph for detecting ownership conflicts between tasks
    --
@@ -315,6 +309,11 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Calls from constants to subprograms in their initialization expressions
    --  ??? this should be map from Entity_Name to Name_Lists.List
 
+   function Calls_Potentially_Nonreturning_Subprogram (EN : Entity_Name)
+                                                       return Boolean;
+   --  See comment for Calls_Potentially_Nonreturning_Subprogram with
+   --  Entity_Id as an input.
+
    function Categorize_Calls
      (EN        : Entity_Name;
       Contracts : Entity_Contract_Maps.Map)
@@ -353,16 +352,11 @@ package body Flow_Generated_Globals.Phase_2 is
    --  connects EN1 to EN2.
 
    function Is_Directly_Nonreturning (EN : Entity_Name) return Boolean is
-     ((Phase_1_Info.Contains (EN) and then Phase_1_Info (EN).Nonreturning)
-      or else Is_Recursive (EN));
-   --  Returns True iff subprogram EN does not return directly because of a
-   --  non-returning statement or a (possibly indirect) recursive call.
-   --
-   --  It should be used only after the call graph for detecting recursive
-   --  subprograms has been created and closed. ??? perhaps add Pre for this
-   --
-   --  Note: subprogram may still not return because of a call to non-returning
-   --  subprogram.
+     (Phase_1_Info.Contains (EN) and then Phase_1_Info (EN).Nonreturning);
+   --  See comment for Is_Directly_Nonreturning with Entity_Id as an input
+
+   function Is_Directly_Nonreturning (E : Entity_Id) return Boolean is
+      (Is_Directly_Nonreturning (To_Entity_Name (E)));
 
    function Down_Project
      (Var    : Entity_Name;
@@ -905,83 +899,6 @@ package body Flow_Generated_Globals.Phase_2 is
             Call_Graph.Close;
          end Add_Subprogram_Edges;
 
-         Add_Termination_Edges : declare
-            Stack : Name_Sets.Set;
-            --  We collect called subprograms and use them as seeds to grow the
-            --  graph.
-
-            Call_Graph : Entity_Name_Graphs.Graph renames
-              Termination_Call_Graph;
-            --  A short alias for a long name
-
-         begin
-            for E of Entities_To_Translate loop
-               if Is_Subprogram_Or_Entry (E) then
-                  declare
-                     E_Name : constant Entity_Name := To_Entity_Name (E);
-                  begin
-                     Stack.Insert (E_Name);
-                     Call_Graph.Add_Vertex (E_Name);
-                  end;
-               end if;
-            end loop;
-
-            --  Then create a call graph for them
-            while not Stack.Is_Empty loop
-
-               declare
-                  Caller : constant Entity_Name := Stack (Stack.First);
-                  --  Name of the caller
-
-                  V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
-                    Call_Graph.Get_Vertex (Caller);
-
-                  V_Callee : Entity_Name_Graphs.Vertex_Id;
-                  --  Call graph vertices for the caller and the callee
-
-               begin
-                  --  Add callees of the caller into the graph, but do nothing
-                  --  if the caller itself is nonreturning. The caller can be
-                  --  a subprogram annotated with the Terminating annotation.
-                  if not Is_Directly_Nonreturning (Caller) then
-                     for Callee of Generated_Calls (Caller) loop
-                        --  If the Callee is predefined then it has been
-                        --  already taken into account in phase 1; if it is
-                        --  annotated with the Terminating annotation do not
-                        --  create an edge between the caller and the callee.
-                        if Is_Predefined (Callee)
-                            or else
-                          (Phase_1_Info.Contains (Callee)
-                           and then Phase_1_Info (Callee).Has_Terminate)
-                        then
-                           null;
-
-                        else
-                           --  Get vertex for the callee
-                           V_Callee := Call_Graph.Get_Vertex (Callee);
-
-                           --  If there is no vertex for the callee then create
-                           --  one and put the callee on the stack.
-                           if V_Callee = Entity_Name_Graphs.Null_Vertex then
-                              Call_Graph.Add_Vertex (Callee, V_Callee);
-                              Stack.Insert (Callee);
-                           end if;
-
-                           Call_Graph.Add_Edge (V_Caller, V_Callee);
-                        end if;
-                     end loop;
-                  end if;
-
-                  --  Pop the caller from the stack
-                  Stack.Delete (Caller);
-               end;
-            end loop;
-
-            --  Close the call graph
-            Call_Graph.Close;
-
-         end Add_Termination_Edges;
-
          Add_Ceiling_Priority_Edges : declare
             Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
@@ -1193,6 +1110,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  ??? use Is_Proper_Callee here
                   if V.Kind /= E_Task_Type then
                      Serialize (V.Has_Terminate);
+                     Serialize (V.Has_Subp_Variant);
                      Serialize (V.Nonreturning);
                      Serialize (V.Nonblocking);
                   end if;
@@ -2940,6 +2858,108 @@ package body Flow_Generated_Globals.Phase_2 is
               External_Callee      => Null_Entity_Name);
    end Potentially_Blocking_External_Call;
 
+   -----------------------------------------------
+   -- Calls_Potentially_Nonreturning_Subprogram --
+   -----------------------------------------------
+
+   function Calls_Potentially_Nonreturning_Subprogram (EN : Entity_Name)
+                                                       return Boolean
+   is
+
+      ----------------------------
+      -- Has_Subprogram_Variant --
+      ----------------------------
+
+      function Has_Subprogram_Variant (Callee : Entity_Name) return Boolean
+      is
+        (Phase_1_Info.Contains (Callee)
+         and then Phase_1_Info (Callee).Has_Subp_Variant);
+
+      --  Calls_Potentially_Nonreturning_Subprogram explores the call graph
+      --  of EN. It maintains a stack of entities to analyze. For each entity
+      --  in the stack, the different called entity, named callees, are
+      --  analyzed.
+      --  If the callee is a predefined unit or has the Terminating annotation,
+      --  it is not further analyzed.
+      --  Otherwise,
+      --  * If the callee is directly nonreturning or is recursive
+      --    without the aspect Subprogram_Variant, this function returns True.
+      --    In flow, package entities inherit the Subprogram_Variant aspect
+      --    from their enclosing subprograms. These two cases are the two first
+      --    cases of Is_Potentially_Nonreturning_Internal.
+      --  * If it has not been already analyzed, the callee is pushed onto the
+      --    stack. When it will be analyzed, all its callees will be checked.
+      --    This mimics a call to Calls_Potentially_Nonreturning_Subprogram,
+      --    the third case of Is_Potentially_Nonreturning_Internal.
+
+      Explored : Name_Sets.Set;
+      --  Visited call graph nodes
+      Stack    : Name_Sets.Set;
+      --  Call graph nodes to visit
+
+   --  Start of processing of Calls_Potentially_Nonreturning_Subprogram
+
+   begin
+      --  Insert the analyzed entity in the sets
+      Stack.Insert (EN);
+      Explored.Insert (EN);
+
+      while not Stack.Is_Empty loop
+
+         declare
+            Caller : constant Entity_Name := Stack (Stack.First);
+         begin
+
+            for Callee of Generated_Calls (Caller) loop
+
+               --  If the callee is predefined or has a Terminating annotation,
+               --  do not analyze it.
+
+               if not Is_Predefined (Callee)
+                 and then (Phase_1_Info.Contains (Callee)
+                           and then not Phase_1_Info (Callee).Has_Terminate)
+               then
+
+                  --  Two first cases of Is_Potentially_Nonreturning_Internal
+                  if Is_Directly_Nonreturning (Callee)
+                    or else
+                      (Is_Recursive (Callee)
+                       and then not Has_Subprogram_Variant (Callee))
+                  then
+                     return True;
+                  end if;
+
+                  --  Insert Callee on the stack if it has not
+                  --  already been visited. When it will be visited, this
+                  --  mimics a call to
+                  --  Calls_Potentially_Nonreturning_Subprogram, the third
+                  --  case of Is_Potentially_Nonreturning_Internal.
+
+                  declare
+                     Inserted : Boolean;
+                     Position : Name_Sets.Cursor;
+                  begin
+                     Name_Sets.Insert (Explored, Callee, Position, Inserted);
+
+                     if Inserted then
+                        Stack.Insert (Callee);
+                     end if;
+                  end;
+               end if;
+            end loop;
+
+            --  Pop Caller from the stack
+            Stack.Delete (Caller);
+         end;
+      end loop;
+      return False;
+   end Calls_Potentially_Nonreturning_Subprogram;
+
+   function Calls_Potentially_Nonreturning_Subprogram (E : Entity_Id)
+                                                       return Boolean
+   is
+     (Calls_Potentially_Nonreturning_Subprogram (To_Entity_Name (E)));
+
    ------------------------------------------
    -- Is_Potentially_Nonreturning_Internal --
    ------------------------------------------
@@ -2947,60 +2967,25 @@ package body Flow_Generated_Globals.Phase_2 is
    function Is_Potentially_Nonreturning_Internal (EN : Entity_Name)
                                                   return Boolean
    is
-
-      function Calls_Potentially_Nonreturning_Subprogram return Boolean;
-      --  Returns True iff the called subprogram, the callee, is potentially
-      --  nonreturning.
-
-      -----------------------------------------------
-      -- Calls_Potentially_Nonreturning_Subprogram --
-      -----------------------------------------------
-
-      function Calls_Potentially_Nonreturning_Subprogram return Boolean is
-         use Entity_Name_Graphs;
-
-         Caller : constant Vertex_Id :=
-           Termination_Call_Graph.Get_Vertex (EN);
-         --  Vertex that represents the analyzed subprogram
-
-      begin
-         for V of Termination_Call_Graph.
-           Get_Collection (Caller, Out_Neighbours)
-         loop
-            declare
-               Callee : constant Entity_Name :=
-                 Termination_Call_Graph.Get_Key (V);
-            begin
-               --  We say that the caller calls a potentially nonreturning
-               --  subprogram if the callee does not have the Terminating
-               --  annotation and:
-               --  * has already been detected as potentially nonreturning
-               --    in phase 1 (is contained in Nonreturning_Subprograms)
-               --  * is recursive.
-               if not (Phase_1_Info.Contains (Callee)
-                       and then Phase_1_Info (Callee).Has_Terminate)
-                 and then Is_Directly_Nonreturning (Callee)
-               then
-                  return True;
-               end if;
-            end;
-         end loop;
-         return False;
-      end Calls_Potentially_Nonreturning_Subprogram;
-
-   --  Start of processing for Is_Potentially_Nonreturning
-
    begin
       --  Returns True if it has been registered as nonreturning in phase 1
-      --  (see usage of GG_Register_Nonreturning in flow.adb), is recursive or
-      --  calls a potentially nonreturning subprogram. The latter is checked
-      --  using a call graph where vertexes are subprograms and edges
-      --  represents subprogram calls.
+      --  (see usage of GG_Register_Nonreturning in flow.adb), is recursive
+      --  without a Subprogram_Variant or calls a potentially nonreturning
+      --  subprogram. The latter is checked by exploring the call graph of
+      --  the callee, and trusting Terminating annotations.
+      --  In flow, package entities inherit the Subprogram_Variant aspect
+      --  from their enclosing subprograms.
+      --
       --  Always returns False if the subprogram has been annotated with the
       --  Terminating annotation, which is also detected in phase 1 (see
       --  GG_Register_Terminating).
-      return Is_Directly_Nonreturning (EN)
-        or else Calls_Potentially_Nonreturning_Subprogram;
+      return
+        Is_Directly_Nonreturning (EN)
+          or else
+        (Is_Recursive (EN)
+         and then not Phase_1_Info (EN).Has_Subp_Variant)
+          or else
+        Calls_Potentially_Nonreturning_Subprogram (EN);
    end Is_Potentially_Nonreturning_Internal;
 
    function Is_Potentially_Nonreturning_Internal (E : Entity_Id)

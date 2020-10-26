@@ -36,4 +36,4 @@ memcpy.ads:21:61: warning: "R15" is not modified, could be INPUT
 memcpy.ads:22:30: low: unused global "StackAddressSize"
 memcpy.ads:22:52: low: unused global "FS"
 memcpy.ads:22:60: low: unused global "GS"
-memcpy.ads:27:08: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC; cvc4_cbqi: 10 VC)
+memcpy.ads:27:08: info: postcondition proved (Trivial: 1 VC; cvc4_cbqi: 11 VC)

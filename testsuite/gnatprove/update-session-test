@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import glob
 import os
 import os.path
@@ -7,12 +8,23 @@ import shutil
 import subprocess
 import sys
 
-"""
-This script will update the session information of a test, if the
-output does not change. It will run the test twice, so it takes some time.
-"""
+descr = """This script will update the session information of a test, and then
+rerun the test. It will run the test twice, so it takes some time.  """
 
 curdir = os.getcwd()
+
+
+def parse_options():
+    args = None
+    parser = argparse.ArgumentParser(description=descr)
+    parser.add_argument('testname', metavar='T', nargs='+',
+                        help='session of this test will be updated')
+    parser.add_argument('--rewrite', dest='rewrite', action='store_true',
+                        help='Use rewrite option ')
+    args = parser.parse_args()
+    return args
+
+
 test_name = sys.argv[1]
 
 sys.path.insert(0, os.path.join(curdir, 'tests', test_name))
@@ -21,6 +33,7 @@ import test  # noqa This import is required to be here because of change of pyth
 
 
 def main():
+    args = parse_options()
     dir = os.path.join("tests", test_name)
     print("switching to", dir)
     os.chdir(dir)
@@ -47,8 +60,10 @@ def main():
 
     os.chdir(curdir)
     print("running test again")
-    out = subprocess.check_output(["./run-tests", "--disc", "large", "--diffs",
-                                   test_name])
+    run_tests_cmd = ["./run-tests", "--disc", "large", "--diffs", test_name]
+    if args.rewrite:
+        run_tests_cmd.append("--rewrite")
+    out = subprocess.check_output(run_tests_cmd)
     print(out)
 
 

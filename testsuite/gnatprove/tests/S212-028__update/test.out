@@ -6,15 +6,15 @@ generic_ring_buffer.adb:50:14: info: discriminant check proved (Trivial: 1 VC), 
 generic_ring_buffer.adb:50:23: info: predicate check proved (CVC4: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.adb:51:76: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.adb:52:31: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:9
-generic_ring_buffer.adb:62:16: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => Small_Positive'Last, Tail => Small_Positive'Last, Items => (others => 0)) and Buffer.Items'First = 1 and Buffer.Items'Last = 1073741823)
-generic_ring_buffer.adb:64:16: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => Small_Positive'Last, Tail => Small_Positive'Last-1, Items => (others => 0)) and Buffer.Items'First = 1 and Buffer.Items'Last = 1073741823)
+generic_ring_buffer.adb:62:16: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => Small_Positive'Last, Tail => Small_Positive'Last, Items => (others => 1)) and Buffer.Items'First = 1 and Buffer.Items'Last = 1073741823)
+generic_ring_buffer.adb:64:16: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => Small_Positive'Last, Tail => Small_Positive'Last-1, Items => (others => 1)) and Buffer.Items'First = 1 and Buffer.Items'Last = 1073741823)
 generic_ring_buffer.adb:64:37: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.adb:67:13: info: predicate check proved (CVC4: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.adb:67:27: info: index check proved (CVC4: 2 VC), in instantiation at tester.adb:9
 generic_ring_buffer.adb:68:13: info: predicate check proved (CVC4: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.adb:68:36: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:9
-generic_ring_buffer.adb:76:13: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => 2, Tail => 2, Items => (others => 0)) and Buffer.Items'First = 1 and Buffer.Items'Last = 2) [possible fix: subprogram at generic_ring_buffer.ads:81 should mention Buffer in a precondition]
-generic_ring_buffer.adb:77:13: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => 1, Tail => 1, Items => (others => 0)) and Buffer.Items'First = 1 and Buffer.Items'Last = 2) [possible fix: subprogram at generic_ring_buffer.ads:81 should mention Buffer in a precondition]
+generic_ring_buffer.adb:76:13: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => 2, Tail => 2, Items => (others => 1)) and Buffer.Items'First = 1 and Buffer.Items'Last = 2) [possible fix: subprogram at generic_ring_buffer.ads:81 should mention Buffer in a precondition]
+generic_ring_buffer.adb:77:13: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => 1, Tail => 1, Items => (others => 1)) and Buffer.Items'First = 1 and Buffer.Items'Last = 2) [possible fix: subprogram at generic_ring_buffer.ads:81 should mention Buffer in a precondition]
 generic_ring_buffer.adb:78:13: info: predicate check proved (CVC4: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.ads:19:09: info: default initial condition proved (CVC4: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.ads:19:09: info: predicate check proved on default value (CVC4: 1 VC), in instantiation at tester.adb:9

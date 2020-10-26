@@ -1068,28 +1068,38 @@ package body Why.Gen.Scalars is
       --  them.
 
       if not (Type_Is_Modeled_As_Base (E) and then Is_Itype (E)) then
-         Emit (Th,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        =>
-                    To_Local (E_Symb (E, WNE_Attr_First)),
-                  Items       => Get_Binders_From_Expression
-                    (Low_Bound (Rng), Compute => True),
-                  Return_Type => Base_Type,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Def         => +First));
-         Emit (Th,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        =>
-                    To_Local (E_Symb (E, WNE_Attr_Last)),
-                  Items       => Get_Binders_From_Expression
-                    (High_Bound (Rng), Compute => True),
-                  Return_Type => Base_Type,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Def         => +Last));
+         declare
+            Binders : Item_Array := Get_Binders_From_Expression
+              (Low_Bound (Rng), Compute => True);
+         begin
+            Localize_Binders (Binders, Only_Variables => False);
+            Emit (Th,
+                  New_Function_Decl
+                    (Domain      => EW_Pterm,
+                     Name        =>
+                       To_Local (E_Symb (E, WNE_Attr_First)),
+                     Items       => Binders,
+                     Return_Type => Base_Type,
+                     Location    => No_Location,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Def         => +First));
+         end;
+         declare
+            Binders : Item_Array := Get_Binders_From_Expression
+              (High_Bound (Rng), Compute => True);
+         begin
+            Localize_Binders (Binders, Only_Variables => False);
+            Emit (Th,
+                  New_Function_Decl
+                    (Domain      => EW_Pterm,
+                     Name        =>
+                       To_Local (E_Symb (E, WNE_Attr_Last)),
+                     Items       => Binders,
+                     Return_Type => Base_Type,
+                     Location    => No_Location,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Def         => +Last));
+         end;
       end if;
    end Define_Scalar_Attributes;
 

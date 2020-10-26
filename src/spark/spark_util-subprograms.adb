@@ -233,6 +233,19 @@ package body SPARK_Util.Subprograms is
       raise Program_Error;
    end Corresponding_Primitive;
 
+   --------------------------
+   -- Enclosing_Subprogram --
+   --------------------------
+
+   function Enclosing_Subprogram (E : Entity_Id) return Entity_Id is
+      Context : Entity_Id := E;
+   begin
+      while Ekind (Context) in E_Package | E_Block loop
+         Context := Scope (Context);
+      end loop;
+      return Context;
+   end Enclosing_Subprogram;
+
    ----------------
    -- Entry_Body --
    ----------------
@@ -370,7 +383,6 @@ package body SPARK_Util.Subprograms is
          when Pragma_Precondition
             | Pragma_Postcondition
             | Pragma_Refined_Post
-            | Pragma_Contract_Cases
             | Pragma_Initial_Condition
          =>
             if Name = Pragma_Refined_Post then
@@ -406,9 +418,6 @@ package body SPARK_Util.Subprograms is
 
                      when Pragma_Initial_Condition =>
                         Classifications (Contr),
-
-                     when Pragma_Contract_Cases =>
-                        Contract_Test_Cases (Contr),
 
                      when others =>
                         raise Program_Error);
@@ -781,6 +790,13 @@ package body SPARK_Util.Subprograms is
 
    function Has_Extensions_Visible (E : Entity_Id) return Boolean is
      (Present (Get_Pragma (E, Pragma_Extensions_Visible)));
+
+   ----------------------------
+   -- Has_Subprogram_Variant --
+   ----------------------------
+
+   function Has_Subprogram_Variant (E : Entity_Id) return Boolean is
+      (Present (Get_Pragma (E, Pragma_Subprogram_Variant)));
 
    -------------------------------
    -- Has_User_Supplied_Globals --
@@ -1250,7 +1266,7 @@ package body SPARK_Util.Subprograms is
            --  without functional contract
            and then not Has_Contracts (E, Pragma_Precondition)
            and then not Has_Contracts (E, Pragma_Postcondition)
-           and then not Has_Contracts (E, Pragma_Contract_Cases)
+           and then No (Get_Pragma (E, Pragma_Contract_Cases))
 
            --  which corresponds to a shift or rotate
            and then

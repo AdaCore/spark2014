@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
 with Debug;
 with Gnat2Why_Args;
 with Gnat2Why.Expr.Loops.Exits;

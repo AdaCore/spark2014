@@ -12,10 +12,10 @@ math.adb:17:51: info: index check proved (CVC4: 4 VC)
 math.adb:17:69: info: index check proved (CVC4: 4 VC)
 math.adb:23:22: info: cannot unroll loop (too many loop iterations)
 math.adb:24:25: info: assertion proved (CVC4: 1 VC)
-math.adb:25:10: medium: predicate check might fail (e.g. when J = 1) [possible fix: loop at line 23 should mention V in a loop invariant]
+math.adb:25:10: medium: predicate check might fail (e.g. when J = 1 and V = (others => 0)) [possible fix: loop at line 23 should mention V in a loop invariant]
 math.adb:25:23: info: division check proved (CVC4: 1 VC)
 math.adb:32:25: info: assertion proved (CVC4: 2 VC)
-math.adb:33:10: medium: predicate check might fail (e.g. when J = Index'Last and V = (others => 0)) [possible fix: loop invariant at line 34 should mention V]
+math.adb:33:10: medium: predicate check might fail (e.g. when J = 2) [possible fix: loop invariant at line 34 should mention V]
 math.adb:33:23: info: division check proved (CVC4: 2 VC)
 math.adb:34:33: info: loop invariant initialization proved (Trivial: 1 VC)
 math.adb:34:33: info: loop invariant preservation proved (Trivial: 1 VC)

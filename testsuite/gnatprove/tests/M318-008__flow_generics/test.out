@@ -10,9 +10,6 @@ test.adb:42:04: info: cannot unroll loop (too many loop iterations)
 test.adb:42:04: info: in instantiation at line 34
 test.adb:48:11: info: flow dependencies proved
 test.adb:54:18: info: precondition proved (CVC4: 3 VC)
-test.adb:54:24: info: range check proved (CVC4: 1 VC)
-test.adb:54:27: info: range check proved (CVC4: 1 VC)
-test.adb:54:30: info: range check proved (CVC4: 1 VC)
 test.adb:55:34: info: division check proved (CVC4: 1 VC)
 test.adb:55:38: info: cannot unroll loop (too many loop iterations)
 test.adb:57:13: info: initialization of "Temp" proved
@@ -48,10 +45,7 @@ test.adb:188:11: info: flow dependencies proved
 test.adb:194:07: info: cannot unroll loop (too many loop iterations)
 test.adb:194:07: info: in instantiation at line 159
 test.adb:200:07: medium: precondition might fail, cannot prove Inventory'First < Inventory'last
-test.adb:200:25: info: range check proved (CVC4: 1 VC)
 test.adb:201:07: info: precondition proved (CVC4: 2 VC)
-test.adb:201:22: info: range check proved (CVC4: 1 VC)
-test.adb:201:37: info: range check proved (CVC4: 1 VC)
 test.ads:23:14: info: flow dependencies proved, in instantiation at test.adb:42
 test.ads:49:14: info: flow dependencies proved, in instantiation at test.adb:91
 test.ads:62:14: info: flow dependencies proved, in instantiation at test.adb:179

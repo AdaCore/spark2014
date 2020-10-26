@@ -31,7 +31,6 @@ bounded_dynamic_arrays.adb:76:49: info: range check proved (CVC4: 1 VC), in inst
 bounded_dynamic_arrays.adb:77:35: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:86:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:87:26: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.adb:88:27: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:88:27: low: range check might fail, in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Left = (others => 'NUL') and Left'First = 2147483647 and Left'Last = 2147483647 and Right = (Capacity => 1, Current_Length => 1, Content => (others => 'NUL')) and Right.Content'First = 1 and Right.Content'Last = 1) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at bounded_dynamic_arrays.ads:95 should mention Left]
 bounded_dynamic_arrays.adb:97:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:99:35: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
@@ -112,21 +111,21 @@ bounded_dynamic_arrays.ads:52:26: info: range check proved (CVC4: 1 VC), in inst
 bounded_dynamic_arrays.ads:66:13: info: postcondition proved (CVC4: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:69:21: info: initialization of "This" proved, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:70:14: info: postcondition proved (CVC4: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:85:14: info: postcondition proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:85:14: info: postcondition proved (CVC4: 2 VC; altergo: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:85:48: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:90:35: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:91:14: info: postcondition proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:91:14: info: postcondition proved (CVC4: 2 VC; altergo: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:91:48: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:92:57: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:93:57: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:96:18: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:97:14: info: postcondition proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:97:14: info: postcondition proved (CVC4: 2 VC; altergo: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:97:40: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:98:40: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:99:40: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:103:14: info: postcondition proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:103:48: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:109:14: info: postcondition proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:109:14: info: postcondition proved (CVC4: 3 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:109:40: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:115:14: info: postcondition proved (CVC4: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:122:35: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
@@ -156,7 +155,6 @@ bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prov
 bounded_dynamic_arrays.ads:194:14: info: postcondition proved (CVC4: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:07: info: range check proved (CVC4: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:48: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:228:11: info: range check proved (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:228:11: info: range check proved (CVC4: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:235:21: info: index check proved (CVC4: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:257:25: info: index check proved (CVC4: 2 VC), in instantiation at bounded_dynamic_strings.ads:5

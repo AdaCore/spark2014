@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2016, AdaCore                        --
+--                     Copyright (C) 2016-2020, AdaCore                     --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -47,8 +47,8 @@ is
       Res  : Uint)
    is
    begin
-      pragma Assert (Res <= Arg1);  --  proved by altergo now
-      pragma Assert (Arg1 - Res < Arg2); -- proved by altergo now
+      pragma Assert (Res <= Arg1);
+      pragma Assert (Arg1 - Res < Arg2);
    end Lemma_Div_Then_Mult_Bounds;
 
    procedure Lemma_Mult_Is_Monotonic

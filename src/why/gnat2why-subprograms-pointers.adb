@@ -284,7 +284,7 @@ package body Gnat2Why.Subprograms.Pointers is
       pragma Assert (Same_Globals (From_Profile, To_Profile));
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-      Localize_Variable_Parts (Effects);
+      Localize_Binders (Effects);
       Push_Binders_To_Symbol_Table (Formals);
       Push_Binders_To_Symbol_Table (Effects);
 

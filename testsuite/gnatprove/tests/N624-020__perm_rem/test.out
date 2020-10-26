@@ -293,7 +293,7 @@ perm.adb:280:25: info: precondition proved (CVC4: 4 VC)
 perm.adb:280:34: info: precondition proved (CVC4: 6 VC)
 perm.adb:280:45: info: range check proved (CVC4: 2 VC)
 perm.adb:280:50: info: precondition proved (CVC4: 6 VC)
-perm.adb:284:19: medium: assertion might fail
+perm.adb:284:19: info: assertion proved (CVC4: 2 VC)
 perm.adb:284:48: info: index check proved (CVC4: 4 VC)
 perm.adb:284:57: info: index check proved (CVC4: 4 VC)
 perm.adb:285:19: info: precondition proved (CVC4: 4 VC)

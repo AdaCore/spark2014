@@ -1813,6 +1813,7 @@ package body Gnat2Why.Counter_Examples is
          --  Uninitialized variable
 
            or else (Ekind (Element_Decl) = E_Variable
+                    and then not Is_Quantified_Loop_Param (Element_Decl)
                     and then Nkind (Enclosing_Declaration (Element_Decl)) =
                       N_Object_Declaration
                     and then

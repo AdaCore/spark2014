@@ -5,7 +5,7 @@ test.adb:29:17: medium: postcondition might fail, cannot prove Test_3'Result = 2
 test.adb:36:17: medium: postcondition might fail, cannot prove Test_4'Result = 5 (e.g. when Test_4'Result = 0)
 test.adb:40:14: medium: overflow check might fail (e.g. when B = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 test.adb:47:17: medium: postcondition might fail, cannot prove Test_5'Result = 5 (e.g. when Test_5'Result = 1)
-test.adb:56:17: medium: postcondition might fail, cannot prove Test_6'Result = 0.1 (e.g. when Test_6'Result = 1.1000041E+0)
+test.adb:56:17: medium: postcondition might fail, cannot prove Test_6'Result = 0.1 (e.g. when Test_6'Result = 1.5937500E+0)
 test.adb:60:14: info: float overflow check proved (CVC4: 1 VC)
 test.adb:69:17: medium: postcondition might fail, cannot prove Test_7'Result = 1
 test.adb:81:16: medium: postcondition might fail, cannot prove (X ** 3 - X) mod 3 = 0 (e.g. when X = 2)

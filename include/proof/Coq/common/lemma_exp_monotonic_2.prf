@@ -1,9 +1,0 @@
-unfold dynamic_invariant, dynamic_invariant1, in_range, in_range1.
-intros ((val_pos, _),((exp1_pos, _),(_, exp1_le_exp2))).
-
-(* apply theorem about monotonicity of power *)
-apply Power.Power_monotonic.
-
-(* remaining goals can be proved automatically *)
-auto with zarith.
-Qed.

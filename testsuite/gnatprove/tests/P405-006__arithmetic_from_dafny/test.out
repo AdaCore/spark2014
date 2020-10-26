@@ -11,7 +11,7 @@ div_lemmas.adb:37:16: info: division check proved (CVC4: 1 VC)
 div_lemmas.adb:40:42: info: initialization of "Res" proved
 div_lemmas.adb:42:14: info: postcondition proved (CVC4: 1 VC)
 div_lemmas.adb:45:16: info: division check proved (CVC4: 1 VC)
-div_lemmas.adb:45:16: medium: float overflow check might fail (e.g. when X = 1.0312459E+0 and Y = 2.9595424E-42) [reason for check: result of floating-point division must be bounded]
+div_lemmas.adb:45:16: medium: float overflow check might fail (e.g. when X = 1.9999619E+0 and Y = 8.9683102E-44) [reason for check: result of floating-point division must be bounded]
 div_lemmas.adb:48:04: info: initialization of "X" proved
 div_lemmas.adb:48:07: info: initialization of "Y" proved
 div_lemmas.adb:53:04: info: precondition proved (CVC4: 1 VC)
@@ -24,7 +24,7 @@ mod_lemmas.adb:16:49: info: initialization of "Res" proved
 mod_lemmas.adb:17:14: info: postcondition proved (CVC4: 1 VC)
 mod_lemmas.adb:20:16: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:23:61: info: initialization of "Res" proved
-mod_lemmas.adb:26:14: medium: postcondition might fail, cannot prove X = Res (e.g. when Res = -32 and X = -32)
+mod_lemmas.adb:26:14: medium: postcondition might fail, cannot prove X = Res (e.g. when Res = -3 and X = -5)
 mod_lemmas.adb:29:16: info: overflow check proved (CVC4: 1 VC)
 mod_lemmas.adb:29:21: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:29:21: info: overflow check proved (CVC4: 1 VC)
@@ -48,14 +48,14 @@ mod_lemmas.adb:59:17: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:60:20: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:63:65: info: initialization of "Res1" proved
 mod_lemmas.adb:63:71: info: initialization of "Res2" proved
-mod_lemmas.adb:64:32: medium: postcondition might fail, cannot prove Res2 = Res1 (e.g. when M = 2 and Res1 = 0 and Res2 = 0)
+mod_lemmas.adb:64:32: medium: postcondition might fail, cannot prove Res2 = Res1 (e.g. when M = 2 and Res1 = 0 and Res2 = 1)
 mod_lemmas.adb:64:61: info: overflow check proved (CVC4: 1 VC)
 mod_lemmas.adb:67:18: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:67:30: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:68:23: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:71:59: info: initialization of "Res1" proved
 mod_lemmas.adb:71:65: info: initialization of "Res2" proved
-mod_lemmas.adb:72:33: medium: postcondition might fail, cannot prove Res2 = Res1 (e.g. when Res1 = -1 and Res2 = 1)
+mod_lemmas.adb:72:33: medium: postcondition might fail, cannot prove Res2 = Res1 (e.g. when Res1 = 0 and Res2 = 1)
 mod_lemmas.adb:72:62: info: overflow check proved (CVC4: 1 VC)
 mod_lemmas.adb:75:18: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:75:30: info: division check proved (CVC4: 1 VC)
@@ -191,5 +191,5 @@ mul_lemmas.adb:254:25: info: range check proved (CVC4: 1 VC)
 mul_lemmas.adb:254:28: info: range check proved (CVC4: 1 VC)
 mul_lemmas.adb:258:27: info: range check proved (CVC4: 1 VC)
 mul_lemmas.adb:258:30: info: range check proved (CVC4: 1 VC)
-spark-arithmetic_lemmas.ads:112:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:123:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:116:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:36
+spark-arithmetic_lemmas.ads:127:56: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:36

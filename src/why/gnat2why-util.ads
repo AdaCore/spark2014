@@ -27,6 +27,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Common_Containers;           use Common_Containers;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
+with Namet;                       use Namet;
 with Snames;                      use Snames;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
@@ -41,6 +42,7 @@ with Why.Atree.Tables;            use Why.Atree.Tables;
 with Why.Gen.Binders;             use Why.Gen.Binders;
 with Why.Ids;                     use Why.Ids;
 with Why.Sinfo;                   use Why.Sinfo;
+with Why.Types;                   use Why.Types;
 
 package Gnat2Why.Util is
 
@@ -314,12 +316,18 @@ package Gnat2Why.Util is
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain) return W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
 
    function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Pragma_Id) return W_Pred_Id;
+      Kind   : Pragma_Id) return W_Pred_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  dispatching call.
 
@@ -327,12 +335,14 @@ package Gnat2Why.Util is
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain) return W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   with Pre => Kind in Pragma_Precondition | Pragma_Postcondition;
 
    function Get_Dispatching_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Pragma_Id) return W_Pred_Id;
+      Kind   : Pragma_Id) return W_Pred_Id
+   with Pre => Kind in Pragma_Precondition | Pragma_Postcondition;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  dispatching call.
 
@@ -340,12 +350,18 @@ package Gnat2Why.Util is
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain) return W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
 
    function Get_Static_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
-      Kind   : Pragma_Id) return W_Pred_Id;
+      Kind   : Pragma_Id) return W_Pred_Id
+   with Pre => Kind in Pragma_Precondition
+                     | Pragma_Postcondition
+                     | Pragma_Refined_Post;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
 
@@ -503,6 +519,13 @@ package Gnat2Why.Util is
      Pre => Is_Subprogram_Or_Entry (E);
    --  Returns True if we may produce an axiom for the post of E
 
+   function Collect_Contextual_Nodes (N : Node_Id) return Node_Sets.Set with
+     Post => (for all E of Collect_Contextual_Nodes'Result =>
+                E in Contextual_Node);
+   --  @param N any node
+   --  @return the set of contextual nodes in N (objects from declare
+   --  expressions, old and loop_entry attributes and target name).
+
    procedure Collect_Old_Parts (N : Node_Id; Old_Parts : in out Node_Sets.Set);
    --  Add to Old_Parts the set of prefixes of references to the 'Old attribute
    --  in N.
@@ -605,5 +628,72 @@ package Gnat2Why.Util is
    function Build_Printing_Plan return Why_Node_Lists.List;
    --  Return a list of Theory Declarations which contains all theories of the
    --  WF_Main section and all their dependencies, topologically sorted.
+
+   --  Context for the translation of expressions
+
+   package Ada_To_Why_Ident is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => W_Identifier_Id,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   function Name_For_Loop_Entry
+     (Attr : Node_Id) return W_Identifier_Id
+   with Pre => Nkind (Attr) = N_Attribute_Reference
+     and then Attribute_Name (Attr) = Name_Loop_Entry;
+   --  Returns the identifier to use for Attr
+
+   function Name_For_Loop_Entry
+     (Expr    : Node_Id;
+      Loop_Id : Node_Id) return W_Identifier_Id;
+   --  Returns the identifier to use for a Expr'Loop_Entry(Loop_Id)
+   --  Can be called both on expressions and on identifiers.
+
+   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map;
+   --  Returns the map of identifiers to use for Loop_Entry attribute
+   --  references applying to loop Loop_Id.
+
+   function Map_For_Old return Ada_To_Why_Ident.Map;
+   --  Returns the map of identifiers to use for Old attribute references in
+   --  the current subprogram.
+
+   function Name_For_Old (N : Node_Id) return W_Identifier_Id;
+   --  During the generation of code for detecting run-time errors in the
+   --  postcondition, return the name to use for occurrences of N'Old.
+
+   --  Register a node that appears with attribute 'Old; return a fresh Name_Id
+   --  for this Node. This function is intended to be called by the code that
+   --  translates expressions to Why (Gnat2why.Expr), which itself is called by
+   --  Transform_Subprogram. For each call to this function, a declaration at
+   --  the beginning of the Why program is generated.
+
+   Target_Name : W_Identifier_Id := Why_Empty;
+   --  Name to use for occurrences of target names @ in assignments. It should
+   --  be equal to Why_Empty when we are not translating an assignment.
+
+private
+
+   package Loop_Entry_Nodes is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Ada_To_Why_Ident.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Ada_To_Why_Ident."=");
+
+   --  Mapping of all expressions whose 'Old attribute is used in the current
+   --  postcondition to the translation of the corresponding expression in
+   --  Why. Until 'Old is forbidden in the body, this is also used to translate
+   --  occurrences of 'Old that are left by the frontend (for example, inside
+   --  quantified expressions that are only preanalyzed).
+   --
+   --  The mapping is cleared before generating Why code for VC generation for
+   --  the body and postcondition, filled during the translation, and used
+   --  afterwards to generate the necessary copy instructions.
+
+   Old_Map        : Ada_To_Why_Ident.Map;
+   Loop_Entry_Map : Loop_Entry_Nodes.Map;
+
+   function Map_For_Old return Ada_To_Why_Ident.Map is (Old_Map);
 
 end Gnat2Why.Util;

@@ -25,7 +25,7 @@ power_and_sum.adb:36:33: info: loop invariant initialization proved (CVC4: 1 VC)
 power_and_sum.adb:36:33: info: loop invariant preservation proved (CVC4: 1 VC)
 power_and_sum.adb:41:36: info: loop invariant initialization proved (CVC4: 1 VC)
 power_and_sum.adb:41:36: info: loop invariant preservation proved (CVC4: 1 VC)
-power_and_sum.adb:43:34: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+power_and_sum.adb:43:34: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:44:20: info: overflow check proved (CVC4: 1 VC)
 power_and_sum.adb:46:25: info: assertion proved (CVC4: 1 VC)
 power_and_sum.adb:47:25: info: assertion proved (CVC4: 1 VC)

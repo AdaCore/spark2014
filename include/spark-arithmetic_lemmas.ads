@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2016-2019, AdaCore                     --
+--                     Copyright (C) 2016-2020, AdaCore                     --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -36,11 +36,14 @@
 --  these instances instead of instantiating your own version of the generic,
 --  in order to benefit from the proofs already done on the existing instances.
 
+with Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
+
 generic
    type Int is range <>;
+   with function Big (V : Int) return Big_Integer is <>;
 package SPARK.Arithmetic_Lemmas
   with SPARK_Mode,
-       Pure,
        Ghost
 is
    pragma Annotate (GNATprove, Terminating, Arithmetic_Lemmas);
@@ -58,7 +61,7 @@ is
    with
      Global => null,
      Pre  => Val1 <= Val2,
-     Post => Val1 / Denom <= Val2 / Denom;  --  MANUAL PROOF
+     Post => Val1 / Denom <= Val2 / Denom;
 
    procedure Lemma_Div_Is_Antimonotonic
      (Num    : Int;
@@ -83,7 +86,8 @@ is
    with
      Global => null,
      Pre  => Arg2 /= 0,
-     Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);  --  MANUAL PROOF
+     Post => (-Big (Arg1)) mod (-Big (Arg2)) = -(Big (Arg1 mod Arg2));
+     --  MANUAL PROOF
 
    procedure Lemma_Mult_Is_Monotonic
      (Val1   : Int;
@@ -92,7 +96,7 @@ is
    with
      Global => null,
      Pre  => Val1 <= Val2,
-     Post => Val1 * Factor <= Val2 * Factor;  --  MANUAL PROOF
+     Post => Big (Val1) * Big (Factor) <= Big (Val2) * Big (Factor);
 
    procedure Lemma_Mult_Is_Strictly_Monotonic
      (Val1   : Int;
@@ -101,7 +105,7 @@ is
    with
      Global => null,
      Pre  => Val1 < Val2,
-     Post => Val1 * Factor < Val2 * Factor;  --  MANUAL PROOF
+     Post => Big (Val1) * Big (Factor) < Big (Val2) * Big (Factor);
 
    procedure Lemma_Mult_Protect
      (Arg1        : Int;
@@ -110,7 +114,7 @@ is
    with
      Global => null,
      Pre  => Arg2 = 0 or else Arg1 <= Upper_Bound / Arg2,
-     Post => Arg1 * Arg2 <= Upper_Bound;
+     Post => Big (Arg1) * Big (Arg2) <= Big (Upper_Bound);
 
    procedure Lemma_Mult_Scale
      (Val         : Int;
@@ -120,8 +124,8 @@ is
    with
      Global => null,
      Pre  => Scale_Num <= Scale_Denom and then
-             Res = (Val * Scale_Num) / Scale_Denom,
-     Post => abs (Res) <= abs (Val) and then
+             Big (Res) = (Big (Val) * Big (Scale_Num)) / Big (Scale_Denom),
+     Post => abs (Big (Res)) <= abs (Big (Val)) and then
              (if Val >= 0 then Res >= 0 else Res <= 0);
 
    procedure Lemma_Mult_Then_Div_Is_Ident
@@ -129,14 +133,14 @@ is
       Val2 : Pos)
    with
      Global => null,
-     Post => (Val1 * Val2) / Val2 = Val1;
+     Post => (Big (Val1) * Big (Val2)) / Big (Val2) = Big (Val1);
 
    procedure Lemma_Mult_Then_Mod_Is_Zero
      (Arg1 : Int;
       Arg2 : Pos)
    with
      Global => null,
-     Post => (Arg1 * Arg2) mod Arg2 = 0;
+     Post => (Big (Arg1) * Big (Arg2)) mod Big (Arg2) = Big (0);
 
    procedure Lemma_Exp_Is_Monotonic
      (Val1 : Nat;
@@ -145,7 +149,7 @@ is
    with
      Global => null,
      Pre  => Val1 <= Val2,
-     Post => Val1 ** Exp <= Val2 ** Exp; --  MANUAL PROOF
+     Post => Big (Val1) ** Exp <= Big (Val2) ** Exp; --  MANUAL PROOF
 
    procedure Lemma_Exp_Is_Monotonic_2
      (Val  : Pos;
@@ -154,6 +158,6 @@ is
    with
      Global => null,
      Pre  => Exp1 <= Exp2,
-     Post => Val ** Exp1 <= Val ** Exp2; --  MANUAL PROOF
+     Post => Big (Val) ** Exp1 <= Big (Val) ** Exp2;
 
 end SPARK.Arithmetic_Lemmas;

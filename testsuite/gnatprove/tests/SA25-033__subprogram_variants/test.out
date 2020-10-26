@@ -1,14 +1,15 @@
-fibo_variant.adb:3:44: medium: overflow check might fail (e.g. when Z = -2147483650) [reason for check: result of addition must fit in a 32-bits machine integer]
+fibo_variant.adb:2:13: info: implicit function contract might not be available on recursive calls
+fibo_variant.adb:3:44: medium: overflow check might fail (e.g. when Z = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention Z in a precondition]
 fibo_variant.adb:11:17: info: subprogram variant proved (CVC4: 1 VC)
 fibo_variant.adb:11:25: info: range check proved (CVC4: 1 VC)
-fibo_variant.adb:12:12: medium: overflow check might fail (e.g. when N = 3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention N in a precondition]
+fibo_variant.adb:12:12: medium: overflow check might fail (e.g. when N = 3 and Z = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention N and Z in a precondition]
 fibo_variant.adb:12:14: info: subprogram variant proved (CVC4: 1 VC)
 fibo_variant.adb:12:22: info: range check proved (CVC4: 1 VC)
 test_bad_variant.adb:6:27: medium: precondition might fail, cannot prove X = 0 or else Bad_1 (X - 1) (e.g. when X = 2)
 test_bad_variant.adb:6:27: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a precondition]
 test_bad_variant.adb:6:36: info: range check proved (CVC4: 1 VC)
+test_bad_variant.adb:10:13: info: function contract might not be available on recursive calls
 test_bad_variant.adb:12:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-test_bad_variant.adb:18:19: info: function contract not available for proof ("Bad_2" might not return)
 test_bad_variant.adb:40:37: medium: subprogram variant might fail [possible explanation: mutually recursive call should be located directly inside a subprogram]
 test_bad_variant.adb:40:46: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at line 29 should mention X in a precondition]
 test_bad_variant.adb:52:59: info: subprogram variant proved (CVC4: 1 VC)
@@ -30,36 +31,28 @@ test_bad_variant.adb:144:30: info: range check proved (CVC4: 1 VC)
 test_bad_variant.adb:153:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 test_bad_variant.adb:153:31: info: range check proved (CVC4: 1 VC)
 test_bad_variant.adb:158:06: medium: subprogram variant might fail (e.g. when X = -1)
-test_bad_variant.adb:158:07: info: expression function body not available for proof ("Infinite" might not return)
 test_bad_variant.adb:158:07: info: precondition proved (CVC4: 1 VC)
 test_bad_variant.adb:158:17: info: overflow check proved (CVC4: 1 VC)
 test_bad_variant.adb:160:58: info: overflow check proved (CVC4: 1 VC)
-test_bad_variant.adb:163:17: info: expression function body not available for proof ("Bad_4" might not return)
 test_bad_variant.adb:163:17: medium: subprogram variant might fail (e.g. when B = True and X = 0 and Y = 0) [possible fix: subprogram at line 162 should mention B and X and Y in a precondition]
 test_bad_variant.adb:163:26: medium: overflow check might fail (e.g. when B = True and X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 162 should mention X in a precondition]
 test_bad_variant.adb:163:33: medium: overflow check might fail (e.g. when B = True and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 162 should mention Y in a precondition]
-test_bad_variant.adb:164:12: info: expression function body not available for proof ("Bad_4" might not return)
 test_bad_variant.adb:164:12: info: subprogram variant proved (CVC4: 1 VC)
 test_bad_variant.adb:164:24: medium: overflow check might fail (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 162 should mention Y in a precondition]
-test_bad_variant.adb:168:17: info: expression function body not available for proof ("OK_2" might not return)
 test_bad_variant.adb:168:17: info: subprogram variant proved (CVC4: 1 VC)
 test_bad_variant.adb:168:25: medium: overflow check might fail (e.g. when B = True and X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 167 should mention X in a precondition]
 test_bad_variant.adb:168:32: medium: overflow check might fail (e.g. when B = True and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 167 should mention Y in a precondition]
-test_bad_variant.adb:169:12: info: expression function body not available for proof ("OK_2" might not return)
 test_bad_variant.adb:169:12: info: subprogram variant proved (CVC4: 1 VC)
 test_bad_variant.adb:169:23: medium: overflow check might fail (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 167 should mention Y in a precondition]
-test_bad_variant.adb:173:17: info: expression function body not available for proof ("OK_2" might not return)
 test_bad_variant.adb:173:25: medium: overflow check might fail (e.g. when B = True and X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 172 should mention X in a precondition]
 test_bad_variant.adb:173:32: medium: overflow check might fail (e.g. when B = True and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at line 172 should mention Y in a precondition]
-test_bad_variant.adb:174:12: info: expression function body not available for proof ("OK_3" might not return)
 test_bad_variant.adb:174:12: info: subprogram variant proved (CVC4: 1 VC)
 test_bad_variant.adb:174:23: medium: overflow check might fail (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 172 should mention Y in a precondition]
-test_bad_variant.adb:177:19: warning: unused variable "X"
 test_bad_variant.adb:179:11: warning: no recursive call visible
 test_bad_variant.adb:188:13: info: implicit function contract might not be available on recursive calls
+test_bad_variant.adb:188:13: info: subprogram "Length" will terminate, terminating annotation has been proved
 test_bad_variant.adb:189:67: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a subprogram variant]
 test_bad_variant.adb:189:76: info: pointer dereference check proved (CVC4: 1 VC)
-test_bad_variant.adb:193:07: medium: "Length" is recursive, terminating annotation could be incorrect
 test_bad_variant.adb:193:32: medium: subprogram variant might fail [possible fix: subprogram at line 188 should mention L in a precondition]
 test_bad_variant.adb:193:41: info: pointer dereference check proved (CVC4: 1 VC)
 test_bad_variant.adb:193:83: medium: subprogram variant might fail [possible fix: subprogram at line 188 should mention L in a precondition]

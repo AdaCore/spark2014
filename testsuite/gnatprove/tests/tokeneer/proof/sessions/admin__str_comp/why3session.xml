@@ -7,42 +7,42 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="admin__str_comp.gnat-json"/>
 <theory name="Admin__str_comp__subprogram_def">
- <goal name="def&#39;vc" expl="VC for def">
+ <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="check">
+  <goal name="def&#39;vc.0">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1400"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.1" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.2" expl="check">
+  <goal name="def&#39;vc.2">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1429"/></proof>
   </goal>
-  <goal name="def&#39;vc.3" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.3" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.4" expl="check">
+  <goal name="def&#39;vc.4">
   <proof prover="0" timelimit="1"><result status="unknown" steps="2233"/></proof>
   </goal>
-  <goal name="def&#39;vc.5" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.5" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.6" expl="assertion" proved="true">
+  <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.7" expl="assertion" proved="true">
+  <goal name="def&#39;vc.7" proved="true">
   <proof prover="0"><result status="valid" steps="252"/></proof>
   </goal>
-  <goal name="def&#39;vc.8" expl="assertion" proved="true">
+  <goal name="def&#39;vc.8" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="def&#39;vc.9" expl="assertion" proved="true">
+  <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="valid" steps="252"/></proof>
   </goal>
-  <goal name="def&#39;vc.10" expl="postcondition" proved="true">
+  <goal name="def&#39;vc.10" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>

@@ -19,7 +19,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><path name=".."/><path name=".."/><path name="Coq"/><path name="Ada___spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic__pragargs__cmp.v"/><result status="valid"/></proof>
+  <proof prover="0"><path name=".."/><path name=".."/><path name="Coq"/><path name="Ada___spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic__pragargs__call_Ole.v"/><result status="valid"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>

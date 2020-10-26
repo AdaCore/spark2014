@@ -544,9 +544,6 @@ generic_examples.adb:70:30: medium: overflow check might fail, in instantiation 
 generic_examples.adb:77:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:77:04: info: in instantiation at line 68
 generic_examples.adb:84:04: info: initialization of "The_Count" proved
-generic_examples.adb:95:40: info: range check proved (CVC4: 1 VC)
-generic_examples.adb:100:43: info: range check proved (CVC4: 1 VC)
-generic_examples.adb:106:31: info: range check proved (CVC4: 1 VC)
 generic_searchers.adb:9:07: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:9:07: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:21:48: info: division check proved (CVC4: 2 VC), in instantiation at prime_search.adb:15

@@ -111,6 +111,8 @@ package SPARK_Atree is
      Sinfo.N_Indexed_Component;
    N_Integer_Literal                : Node_Kind renames
      Sinfo.N_Integer_Literal;
+   N_Iterated_Component_Association : Node_Kind renames
+     Sinfo.N_Iterated_Component_Association;
    N_Label                          : Node_Kind renames Sinfo.N_Label;
    N_Loop_Statement                 : Node_Kind renames Sinfo.N_Loop_Statement;
    N_Not_In                         : Node_Kind renames Sinfo.N_Not_In;
@@ -267,8 +269,9 @@ package SPARK_Atree is
    function Chars (N : Node_Id) return Name_Id with
      Pre => Nkind (N) in Sinfo.N_Has_Chars;
 
-   function Choices (N : Node_Id) return List_Id with
-     Pre => Nkind (N) = N_Component_Association;
+   function Choice_List (N : Node_Id) return List_Id with
+     Pre =>
+       Nkind (N) in N_Component_Association | N_Iterated_Component_Association;
 
    function Component_Associations (N : Node_Id) return List_Id with
      Pre => Nkind (N) in N_Aggregate

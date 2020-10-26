@@ -1,6 +1,6 @@
 list_variant.adb:10:13: info: function contract might not be available on recursive calls
+list_variant.adb:10:13: info: subprogram "Length_Ann" will terminate, terminating annotation has been proved
 list_variant.adb:13:14: info: postcondition proved (CVC4: 1 VC)
-list_variant.adb:16:07: medium: "Length_Ann" is recursive, terminating annotation could be incorrect
 list_variant.adb:16:52: info: subprogram variant proved (CVC4: 1 VC)
 list_variant.adb:16:65: info: pointer dereference check proved (CVC4: 1 VC)
 list_variant.adb:16:73: info: range check proved (CVC4: 1 VC)

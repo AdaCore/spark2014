@@ -14,17 +14,17 @@
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="1174581"/></proof>
-  <proof prover="2"><result status="unknown" steps="24190"/></proof>
+  <proof prover="2"><result status="unknown" steps="20408"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450173"/></proof>
-  <proof prover="2"><result status="unknown" steps="59344"/></proof>
+  <proof prover="2"><result status="unknown" steps="66605"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450192"/></proof>
-  <proof prover="2"><result status="unknown" steps="98084"/></proof>
+  <proof prover="2"><result status="unknown" steps="83371"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="failure"/></proof>
@@ -43,7 +43,7 @@
   <goal name="def&#39;vc.6">
   <proof prover="0"><result status="failure"/></proof>
   <proof prover="1"><result status="unknown" steps="8450148"/></proof>
-  <proof prover="2"><result status="unknown" steps="80541"/></proof>
+  <proof prover="2"><result status="unknown" steps="45462"/></proof>
   </goal>
  </transf>
  </goal>

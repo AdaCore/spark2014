@@ -16,7 +16,7 @@ arr_aggregate.ads:16:41: info: index check proved (CVC4: 2 VC)
 arr_aggregate.ads:19:38: info: index check proved (CVC4: 2 VC)
 arr_aggregate.ads:20:43: info: index check proved (CVC4: 2 VC)
 arr_aggregate.ads:22:18: warning: unused initial value of "A"
-arr_aggregate.ads:24:14: medium: postcondition might fail (e.g. when A = (1 => (2 => 2, others => 1), 2 => (1 => 2, 2 => 1, others => 2), others => (others => 2)) and B = 0 and J = 2 and One = 1)
+arr_aggregate.ads:24:14: medium: postcondition might fail (e.g. when A = (1 => (1 => 1, 2 => 2, others => 2), 2 => (1 => 2, 2 => 1, others => 2), others => (others => 1)) and B = 0 and J = 2 and One = 1)
 arr_aggregate.ads:24:69: info: index check proved (CVC4: 2 VC)
 arr_aggregate.ads:27:69: info: index check proved (CVC4: 2 VC)
 arr_aggregate.ads:28:77: info: index check proved (CVC4: 2 VC)

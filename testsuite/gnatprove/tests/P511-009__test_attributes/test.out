@@ -5,7 +5,7 @@ alignment_attribute.adb:47:14: high: all paths in "Q" raise exceptions or do not
 alignment_attribute.adb:47:14: warning: subprogram "Q" has no effect
 alignment_attribute.adb:50:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 alignment_attribute.adb:53:22: info: assertion proved (Trivial)
-alignment_attribute.adb:54:07: medium: assertion might fail (e.g. when A1'Last = 0 and A2 = (others => (others => 1)))
+alignment_attribute.adb:54:07: medium: assertion might fail (e.g. when A2 = (others => (others => 1)) and X = 0)
 alignment_attribute.adb:60:19: info: assertion proved (Trivial)
 alignment_attribute.adb:61:19: info: assertion proved (Trivial)
 alignment_attribute.adb:62:19: info: assertion proved (Trivial)

@@ -166,7 +166,7 @@ update_logic_fn.ads:64:30: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:64:33: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:68:24: info: initialization of "A" proved
 update_logic_fn.ads:74:11: info: flow dependencies proved
-update_logic_fn.ads:75:14: medium: postcondition might fail, cannot prove A = A3'(others => (others => (others => 1000 ))) 'update (e.g. when V1 = Integer'First and V2 = 1001 and X = 5 and Y = 7)
+update_logic_fn.ads:75:14: medium: postcondition might fail, cannot prove A = A3'(others => (others => (others => 1000 ))) 'update (e.g. when V1 = 0 and V2 = 1001 and X = 5 and Y = 7)
 update_logic_fn.ads:76:27: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:76:30: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:76:33: info: index check proved (CVC4: 2 VC)
@@ -175,7 +175,7 @@ update_logic_fn.ads:77:30: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:77:33: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:83:18: info: initialization of "A" proved
 update_logic_fn.ads:88:11: info: flow dependencies proved
-update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000)) (e.g. when V2 = 99 and X = 5)
+update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000)) (e.g. when V2 = Integer'First and X = 5)
 update_logic_fn.ads:97:18: info: initialization of "A" proved
 update_logic_fn.ads:102:11: info: flow dependencies proved
 update_logic_fn.ads:103:14: info: postcondition proved (CVC4: 7 VC; Trivial: 4 VC)

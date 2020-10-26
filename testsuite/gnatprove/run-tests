@@ -71,8 +71,9 @@ class SPARKTestFinder(TestFinder):
         """
         parent_name = os.path.dirname(dirpath)
         testname = os.path.basename(dirpath)
+        allowed_testdirs = ["tests", "internal"]
         # If the dir is not a direct subdir of <root_dir/tests>, skip it
-        if (os.path.basename(parent_name) != "tests" or
+        if (os.path.basename(parent_name) not in allowed_testdirs or
                 os.path.dirname(parent_name) != self.root_dir):
             return None
         # If testlist was passed and the dir is not in testlist, skip it
@@ -119,6 +120,9 @@ class SPARKTestsuite(Testsuite):
             "--inverse-prover", action="store_true",
             help="run testsuite in inverse-prover mode")
         parser.add_argument(
+            "--benchmarks", action="store_true",
+            help="run testsuite and collect VCs")
+        parser.add_argument(
             "--no-gaia-output", action="store_true",
             help="The opposite of --gaia-output (which is on by default).")
         parser.add_argument(
@@ -144,6 +148,8 @@ class SPARKTestsuite(Testsuite):
             os.environ["cache"] = "true"
         if self.main.args.inverse_prover:
             os.environ["inverse_prover"] = "true"
+        if self.main.args.benchmarks:
+            os.environ["benchmarks"] = "true"
         return dict(os.environ)
 
     def set_up(self):

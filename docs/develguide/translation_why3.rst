@@ -4392,6 +4392,324 @@ Expressions
 Aggregates
 ^^^^^^^^^^
 
+Array aggregates are translated in two parts. First we generate a logic
+symbol for the aggregate and we give its definition in an axiom, then we
+call this symbol at the place of use and add the necessary checks.
+Since the values of the aggregate might depend on local symbols, we give them
+as parameters to the logic function. For example, let us consider the two
+aggregates below:
+
+.. code-block:: ada
+
+   X : Int_Array := (1 | 5 => F (0), 2 .. 4 => F (1));
+   Y : Int_Array (1 .. 4) := (others => 0);
+
+The logic function for the initial value of ``X`` takes two parameters, one
+for each component value supplied in the aggregate. Its defining axiom gives
+the value of the aggregate for each valid index in the array:
+
+.. code-block:: whyml
+
+   module Test_aggregates__x__aggregate_def
+     use  Array__Int__Standard__integer
+
+     val function test_aggregates__x__aggregate_def (v_1: int) (v_2: int) : map
+   end
+
+   module Test_aggregates__x__aggregate_def___axiom
+     use  Array__Int__Standard__integer
+     use  Test_aggregates__x__aggregate_def
+
+     axiom def_axiom:
+       forall v_1 v_2 : int.
+         let result = test_aggregates__x__aggregate_def v_1 v_2 in
+           forall i : int.
+                if 2 <= i <= 4 then
+		  (if dynamic_invariant v_1 then
+                     to_rep (get result i) = v_1
+		   else true)
+                else if i = 1 \/ i = (5 : int))) then
+		  (if dynamic_invariant v_2 then
+                     to_rep (get result i) = v_2
+		   else true)
+                else true
+   end
+
+We see that each component association is protected by a guard checking that
+the value supplied for the parameter is in the bounds of the type. Indeed, this
+is necessary for the axiom to be sound when the parameters are of the base Why3
+type (like here).
+
+The logic function generated for the aggregate used as the initial value of
+``Y`` has only one parameter. It stands for the value of the ``others`` case. As
+this value is a statically known integer value of a statically constrained
+subtype, its type is translated as a range type in Why and we can give its value
+directly using a literal. In this case we do not need the guard as the axiom
+cannot be unsound.
+
+.. code-block:: whyml
+
+   module Test_aggregates__y__aggregate_def
+     use  Array__Int__Standard__integer
+
+     val function test_aggregates__y__aggregate_def (v: int) : map
+   end
+
+   module Test_aggregates__y__aggregate_def___axiom
+     use  Array__Int__Standard__integer
+     use  Test_aggregates__y__aggregate_def
+
+     axiom def_axiom:
+       forall v : int.
+         let result = test_aggregates__y__aggregate_def v in
+           forall i : int.
+                get result i = 0
+   end
+
+Note that when the aggregate has an ``others`` case, the supplied value is used
+as a default value in Why3. In particular, we also give the definition for
+indexes out of the array bound. Also note that, even if the value ``v`` is not
+used in the axiom, we still give it as a parameter to the logic function. This
+is probably not needed since there should be no checks necessary for static
+values of statically constrained integer types.
+
+The logic functions above are used to intialize the Why3 objects introduced
+for ``X`` and ``Y`` (see ``Complete_Translation``):
+
+.. code-block:: whyml
+
+    (let test_aggregates__x__assume =
+          test_aggregates__x__aggregate_def (f 0) (f 1) in
+       x.map__content <- test_aggregates__x__assume);
+    (let test_aggregates__y__assume = test_aggregates__y__aggregate_def 0 in
+       y.map__content <- test_aggregates__y__assume);
+
+Run-time checks for aggregate values are introduced automatically as the
+argument of the logic function are computed in the expected domain. For example,
+if ``F`` has a precondition, it will be checked as part of the computation of
+the parameters of ``test_aggregates__x__aggregate_def``. In some cases,
+additional checks are necessary to make sure that the aggregate is well formed.
+In particular, we need to check that the aggregate subtype is compatible with
+its expected type, as the bounds of the aggregate
+subtype might be computed from the choices, and not from the context. These
+checks are computed in ``Insert_Check_For_Choices``. For example, the type of
+the aggregate below will range from ``2`` to ``15``, and so, even if ``15`` is
+strictly more than ``F (10)``:
+
+.. code-block:: ada
+
+   subtype Small_Pos is Positive range 1 .. F (10);
+   type Small_Array is array (Small_Pos range <>) of Integer;
+
+   Z : Small_Array := (2 .. 15 => 0);
+
+The necessary range check is emitted at the point of use as follows:
+
+.. code-block:: whyml
+
+    (let test_aggregates__z__assume =
+         (let _f = any (result : unit)
+                     requires { 2 >= Small_pos.first /\ 15  <= Small_pos.last }
+                     ensures  { true } in
+            _f);
+	  test_aggregates__z__aggregate_def 0 in
+        z.map__content <- test_aggregates__z__assume)
+
+As opposed to component values, the choice values can in general be used
+directly in the axiom, as they are necessarily static. There are two exceptions
+to this rule: aggregates with a single choice and delta aggregates. For example,
+the following aggregate is valid Ada, even though its single choice does not
+have static bounds:
+
+.. code-block:: ada
+
+   W : Int_Array := (F (1) .. F (10) => 0);
+
+Here is the logic function generated for the initial value of ``W``:
+
+.. code-block:: whyml
+
+   module Test_aggregates__w__aggregate_def
+     use  Test_aggregates__T15b
+
+     val function test_aggregates__w__aggregate_def (v: int) (v_first: int) (v_last: int) : t15b
+   end
+
+As the bounds of the aggregate are not static, they are given
+to the logic function as additional parameters. Their value is then used in the
+defining axiom to provide the bounds of the returned array. Note that here
+again, to avoid soundness issues, we need to guard the assumption with the
+dynamic property of the array.
+
+.. code-block:: whyml
+
+    module Test_aggregates__w__aggregate_def___axiom
+      use  Test_aggregates__w__aggregate_def
+
+      axiom def_axiom:
+        forall v : int, v_first : int, v_last : int.
+          let result = test_aggregates__w__aggregate_def v first last in
+              (if dynamic_property Positive.first Positive.last v_first v_last
+	       then
+                 first result = v_first /\
+                 last result = v_last
+               else true) /\
+               (forall i : int. get (to_array result) i = 0)
+    end
+
+We see on this example, that the choice of an aggregate association is not
+translated in the axiom if it might not be static. This amounts to translating
+single choices as if the ``others`` keyword was used.
+Checks for dynamic bounds are introduced while translating the
+constants created by the frontend for them.
+
+For delta aggregates, the expressions used inside choices (index values, bounds
+of ranges ...) are given as additional parameters to the logic function.
+Checks for them are introduced as part of the computation of the parameters at
+the point of call. For example, let's consider the following aggregate:
+
+.. code-block:: ada
+
+   V : Int_Array := (X with delta 2 .. 4 => 2, F (3) => 3);
+
+Its logic function has a parameter for the expression of the aggregate, here
+``X``, for its component values ``2`` and ``3`` and for values occurring in
+its choices, here ``2``, ``4``, and ``F (3)``. We do not need parameters for the
+bounds as they are retrieved from the parameter for ``X``:
+
+.. code-block:: whyml
+
+   module Test_aggregates__v__aggregate_def
+     use  Test_aggregates__int_array
+
+     val function test_aggregates__v__aggregate_def (arr: int_array)
+       (v_1: int) (v_2: int) (v_3: int) (v_4: int) (v_5: int) : int_array
+   end
+
+   module Test_aggregates__v__aggregate_def___axiom
+     use  Test_aggregates__v__aggregate_def
+
+     axiom def_axiom:
+       forall arr : int_array.
+       forall v_1 v_2 v_3 v_4 v_5 : int.
+         let result =
+	    test_aggregates__v__aggregate_def arr v_1 v_2 v_3 v_4 v_5 in
+               first result = first arr /\
+               last result = last arr /\
+               (forall i : int.
+                   if i = v_4 then
+                      get (to_array result) i = 3
+                   else if v_2 <= i <= v_3 then
+                      get (to_array result) i = 2
+                   else
+                      get (to_array result) i = get (to_array arr) i)
+   end
+
+As we are in a delta aggregate, the defining axiom uses components from the
+parameter for ``X`` as the default choice in the aggregate.
+Note that the component associations are translated
+in reverse order with respect to the Ada code. It does not change anything for
+regular aggregates as choices must be distinct. However, delta aggregates allow
+dynamic choices which might overlap. In this case, the last value given for
+an index is the right one. For example, in the aggregate above, if ``F (3)``
+happens to be in the range ``2 .. 4`` then we want its value to be set to ``3``
+not ``2``.
+
+Component expressions occuring inside iterated component associations are
+handled specifically. Indeed, as they might refer to the index parameter,
+they cannot be given as parameters to the function call. So we need to
+give their values inside the defining axiom of the logic function. To be able to
+do that, we abstract away global input (both variable and constant) and
+contextual parts (see ``Collect_Contextual_Nodes`` in ``Gnat2why.Util``) and
+give them as parameters to the logic function. For example, let us consider
+the aggregate used in the following declaration:
+
+.. code-block:: ada
+
+   U : Int_Array (1 .. 6) :=
+     (declare
+      C : constant Integer := F (1);
+      begin
+        (for I in 1 | 5  => V (I),
+         for I in 2 .. 4 => I + C,
+         for I in others => I));
+
+It references the global variable ``V`` and it mentions the
+local constant ``C`` which depends on the context. Both need to be given as
+parameters to the logic function generated for the aggregate.
+
+.. code-block:: whyml
+
+    module Temp_____aggregate_def_264
+      use  Array__Int__Standard__integer
+
+      val function temp_____aggregate_def_264
+          (v : map) (v__first: integer) (v__last: integer) (c: int) : map
+    end
+
+    module Temp_____aggregate_def_264___axiom
+      use  Temp_____aggregate_def_264
+
+      axiom def_axiom:
+        forall v : map.
+        forall v__first v__last : integer.
+        forall c : int.
+          let result = temp_____aggregate_def_264 v v__first v__last c in
+            forall i : int.
+               if 2 <= i <= 4 then
+                 let value = i + c in
+                    (if dynamic_invariant value then
+                       to_rep (get result i) = value
+                     else true)
+               else if i = 1 \/ i = 5 then
+                 let value = to_rep (get v i) in
+                    (if dynamic_invariant value then
+                       to_rep (get result i) = value
+                     else true)
+              else
+                 let value = i in
+                    (if dynamic_invariant value then
+                       to_rep (get result i) = value
+                     else true)
+    end
+
+We see that, just like for normal aggregates, we need to use the dynamic
+invariant of the component values as guards to avoid generating unsound
+axioms.
+At the point of use, we generate checks for absence of run-time errors
+in expressions occuring inside iterated component associations as they are
+not given as parameters to the call. This is done in
+``Insert_Check_For_Choices``. These checks are handled like checks for
+quantified expression. A local object is created for the index parameter, and
+its exact value is not given, so that checks are done for any value of the
+parameter which fits its constraints.
+
+.. code-block:: whyml
+
+     u.map__content <-
+        let c = f 1 in
+          (let i = any (result : int)
+             ensures { result = 1 \/ result = 5 } in
+             begin
+               ensures { true }
+               let _ = to_rep
+	         (get v.map__content
+	             (assert { to_rep v__first <= i <= to_rep v__last };
+                      i)) in ()
+             end);
+          (let i = any (result : int)
+             ensures { 2 <= result <= 4 } in
+             begin
+               ensures { true }
+               let _ = range_check_ (i + c) in ()
+             end);
+          (let i = any (result : int)
+             ensures { 1 <= result <= 6 /\
+                       not (result = 1 \/ result = 5) /\
+                       not (2 <= result <= 4) } in
+             ());
+           temp_____aggregate_def_264 v.map__content v__first v__last c;
+
 Access Attribute on Subprograms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

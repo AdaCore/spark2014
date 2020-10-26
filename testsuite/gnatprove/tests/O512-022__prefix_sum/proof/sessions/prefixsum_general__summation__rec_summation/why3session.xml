@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<file format="gnat-json">
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
+<path name="prefixsum_general__summation__rec_summation.gnat-json"/>
+<theory name="Prefixsum_general__summation__rec_summation__subprogram_def">
+ <goal name="def&#39;vc">
+ <transf name="split_goal_wp_conj" >
+  <goal name="def&#39;vc.0" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.1">
+  <proof prover="2" timelimit="1"><result status="unknown" steps="14"/></proof>
+  </goal>
+  <goal name="def&#39;vc.2" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.3">
+  <proof prover="2" timelimit="1"><result status="unknown" steps="14"/></proof>
+  </goal>
+  <goal name="def&#39;vc.4" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.5">
+  <proof prover="2" timelimit="1"><result status="unknown" steps="14"/></proof>
+  </goal>
+  <goal name="def&#39;vc.6" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.7" proved="true">
+  <proof prover="2"><result status="valid" steps="13"/></proof>
+  </goal>
+  <goal name="def&#39;vc.8" proved="true">
+  <proof prover="2"><result status="valid" steps="13"/></proof>
+  </goal>
+  <goal name="def&#39;vc.9">
+  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="1"><result status="unknown" steps="20844"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  </goal>
+  <goal name="def&#39;vc.10">
+  <proof prover="2" timelimit="1"><result status="unknown" steps="14"/></proof>
+  </goal>
+  <goal name="def&#39;vc.11" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.12" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.13" proved="true">
+  <proof prover="2"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="def&#39;vc.14" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

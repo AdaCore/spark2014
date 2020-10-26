@@ -176,6 +176,7 @@ package body Gnat2Why.Assumptions is
 
       --  ??? Add proper handling of Initial_Condition
       --  (for E whose Ekind = E_Package), currently ignored.
+      --  ??? Add proper handling of Contract_Cases
 
       if Ekind (E) in E_Function
                     | E_Procedure

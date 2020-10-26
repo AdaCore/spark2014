@@ -1,5 +1,5 @@
 
-Copyright (c) 2009-2019 by the authors and their institutional
+Copyright (c) 2009-2020 by the authors and their institutional
 affiliations listed at http://cvc4.cs.stanford.edu/authors
 
 CVC4 is open-source and is covered by the BSD license (modified).
@@ -27,13 +27,12 @@ See the file COPYING (distributed with the source code, and with
 all binaries) for the full CVC4 copyright, licensing, and (lack of)
 warranty information.
 
-version       : 1.8-prerelease
+version       : 1.8
 
 library       : 1.8.0
 
 debug code    : no
 statistics    : yes
-replay        : no
 tracing       : no
 dumping       : yes
 muzzled       : no
@@ -53,6 +52,7 @@ cadical       : no
 cryptominisat : no
 drat2er       : no
 gmp           : yes
+kissat        : no
 lfsc          : no
 readline      : no
 symfpu        : yes

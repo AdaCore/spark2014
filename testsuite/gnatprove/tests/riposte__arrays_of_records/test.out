@@ -36,7 +36,7 @@ arrays_of_records.adb:181:11: info: flow dependencies proved
 arrays_of_records.adb:182:22: medium: postcondition might fail, cannot prove A /= A'old
 arrays_of_records.adb:184:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:192:11: info: flow dependencies proved
-arrays_of_records.adb:193:22: medium: postcondition might fail, cannot prove A = A'old (e.g. when A = (5 => (Flag => True, First_Value => 0, Second_Value => 0), 17 => (Flag => False, First_Value => 1, Second_Value => 1), others => (Flag => False, First_Value => 1, Second_Value => 1)) and A'Old = (5 => (Flag => True, First_Value => 1, Second_Value => 0), 17 => (Flag => False, First_Value => 0, Second_Value => 1), others => (Flag => False, First_Value => 1, Second_Value => 1)))
+arrays_of_records.adb:193:22: medium: postcondition might fail, cannot prove A = A'old (e.g. when A = (5 => (Flag => True, First_Value => -1, Second_Value => 0), 17 => (Flag => False, First_Value => 0, Second_Value => -1), others => (Flag => False, First_Value => -1, Second_Value => -1)) and A'Old = (5 => (Flag => True, First_Value => 0, Second_Value => 0), 17 => (Flag => False, First_Value => -1, Second_Value => -1), others => (Flag => False, First_Value => -1, Second_Value => -1)))
 arrays_of_records.adb:195:07: info: initialization of "Tmp" proved
 arrays_of_records.adb:204:11: info: flow dependencies proved
 arrays_of_records.adb:206:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (Flag => False, First_Value => 0, Second_Value => 0)) and A'Old = (others => (Flag => False, First_Value => 0, Second_Value => 0)))

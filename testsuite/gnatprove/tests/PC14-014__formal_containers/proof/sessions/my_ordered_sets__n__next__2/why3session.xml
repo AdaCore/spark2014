@@ -32,10 +32,6 @@
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.6" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
-  </goal>
  </transf>
  </goal>
 </theory>

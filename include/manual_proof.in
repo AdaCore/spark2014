@@ -1,11 +1,5 @@
-spark-arithmetic_lemmas.ads:61:14:VC_POSTCONDITION
-spark-arithmetic_lemmas.ads:86:15:VC_POSTCONDITION
-spark-arithmetic_lemmas.ads:95:14:VC_POSTCONDITION
-spark-arithmetic_lemmas.ads:104:14:VC_POSTCONDITION
-spark-arithmetic_lemmas.ads:148:14:VC_POSTCONDITION
-spark-arithmetic_lemmas.ads:157:14:VC_POSTCONDITION
-spark-mod_arithmetic_lemmas.adb:50:22:VC_ASSERT
-spark-mod_arithmetic_lemmas.adb:51:22:VC_ASSERT
+spark-arithmetic_lemmas.ads:89:15:VC_POSTCONDITION
+spark-arithmetic_lemmas.ads:152:14:VC_POSTCONDITION
 spark-mod_arithmetic_lemmas.ads:61:14:VC_POSTCONDITION
 spark-mod_arithmetic_lemmas.ads:81:14:VC_POSTCONDITION
 spark-mod_arithmetic_lemmas.ads:91:14:VC_POSTCONDITION

@@ -83,21 +83,6 @@ package body Flow.Analysis is
    --  for Inputs with any vertex that defines a variable from Outputs. Returns
    --  the vertices in this path (Inputs and Outputs excluded).
 
-   function Enclosing_Subprogram (E : Entity_Id) return Entity_Id
-   with Pre  => Ekind (E) in E_Entry
-                           | E_Function
-                           | E_Package
-                           | E_Procedure
-                           | E_Task_Type,
-        Post => Ekind (Enclosing_Subprogram'Result) in E_Entry
-                                                     | E_Function
-                                                     | E_Procedure
-                                                     | E_Task_Type;
-   --  Returns the first enclosing subprogram or task of entity E. In
-   --  particular, if given a nested (non-library-level) package, it
-   --  returns its enclosing subprogram where a property like Terminating
-   --  or Nonblocking would be attached.
-
    function Find_Global
      (S : Entity_Id;
       F : Flow_Id) return Node_Or_Entity_Id
@@ -253,19 +238,6 @@ package body Flow.Analysis is
 
       return Vertex_Sets.Empty_Set;
    end Dependency_Path;
-
-   --------------------------
-   -- Enclosing_Subprogram --
-   --------------------------
-
-   function Enclosing_Subprogram (E : Entity_Id) return Entity_Id is
-      Context : Entity_Id := E;
-   begin
-      while Ekind (Context) in E_Package | E_Block loop
-         Context := Scope (Context);
-      end loop;
-      return Context;
-   end Enclosing_Subprogram;
 
    -----------------
    -- Find_Global --
@@ -4743,7 +4715,7 @@ package body Flow.Analysis is
       --  Local variables
 
       Protected_Subp : constant Entity_Id :=
-        Enclosing_Subprogram (FA.Spec_Entity);
+        Subprograms.Enclosing_Subprogram (FA.Spec_Entity);
 
       Protected_Type : Entity_Id;
       --  For detecting external calls to the same object
@@ -5881,12 +5853,14 @@ package body Flow.Analysis is
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
 
       Spec_Entity_Id : constant Flow_Id :=
-        Direct_Mapping_Id (Enclosing_Subprogram (FA.Spec_Entity));
+        Direct_Mapping_Id (Subprograms.Enclosing_Subprogram (FA.Spec_Entity));
 
       Proved : Boolean := True;
 
    begin
-      if Has_Terminate_Annotation (Enclosing_Subprogram (FA.Spec_Entity)) then
+      if Has_Terminate_Annotation
+        (Subprograms.Enclosing_Subprogram (FA.Spec_Entity))
+      then
 
          --  If all paths in subprogram raise exceptions or, more importantly,
          --  call procedures with No_Return, then the CFG will be pruned. We
@@ -5926,60 +5900,92 @@ package body Flow.Analysis is
                      --  itself.
 
                      if Ekind (E) = E_Package then
+
                         if Is_Potentially_Nonreturning (E) then
                            Proved := False;
                         end if;
 
                      --  If the analyzed subprogram, its terminating annotation
-                     --  cannot be trusted.
+                     --  cannot be trusted. A message is emitted if the
+                     --  subprogram has no Subprogram_Variant aspect.
 
                      elsif E = FA.Spec_Entity then
-                        Proved := False;
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "& is recursive, " &
-                                       "terminating annotation could " &
-                                       "be incorrect",
-                           Severity => Medium_Check_Kind,
-                           N        => Atr.Error_Location,
-                           F1       => Direct_Mapping_Id (E),
-                           Tag      => Subprogram_Termination,
-                           Vertex   => V);
 
-                     --  If the analyzed subprogram and the called subprogram
-                     --  are mutually recursive, both Terminating annotations
-                     --  cannot be trusted.
+                        if not Has_Subprogram_Variant (E) then
+                           Proved := False;
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      => "& is recursive, " &
+                                          "terminating annotation could " &
+                                          "be incorrect",
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              F1       => Direct_Mapping_Id (E),
+                              Tag      => Subprogram_Termination,
+                              Vertex   => V);
+                        end if;
 
-                     elsif Mutually_Recursive (FA.Spec_Entity, E) then
-                        Proved := False;
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "& and & are mutually recursive, " &
-                                       "terminating annotation on & could " &
-                                       "be incorrect",
-                           Severity => Medium_Check_Kind,
-                           N        => Atr.Error_Location,
-                           F1       => Direct_Mapping_Id (FA.Spec_Entity),
-                           F2       => Direct_Mapping_Id (E),
-                           F3       => Spec_Entity_Id,
-                           Tag      => Subprogram_Termination,
-                           Vertex   => V);
+                     else
 
-                     --  Otherwise, the Terminating annotation can be trusted
+                        --  If the analyzed subprogram and the called
+                        --  subprogram are mutually recursive, both Terminating
+                        --  annotations cannot be trusted. A message is
+                        --  emitted if both subprograms have no
+                        --  Subprogram_Variant aspect. In case where
+                        --  FA.Spec_Entity is a nested package, we check
+                        --  the Subprogram_Variant of its enclosing
+                        --  subprogram.
 
-                     elsif Is_Potentially_Nonreturning (E) then
-                        Proved := False;
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "call to & might be nonterminating, " &
-                                       "terminating annotation on & could " &
-                                       "be incorrect",
-                           Severity => Medium_Check_Kind,
-                           N        => Atr.Error_Location,
-                           F1       => Direct_Mapping_Id (E),
-                           F2       => Spec_Entity_Id,
-                           Tag      => Subprogram_Termination,
-                           Vertex   => V);
+                        if Mutually_Recursive (FA.Spec_Entity, E)
+                          and then
+                            not Has_Subprogram_Variant (E)
+                          and then
+                            not Has_Subprogram_Variant
+                              (Subprograms.Enclosing_Subprogram
+                                 (FA.Spec_Entity))
+                        then
+
+                           Proved := False;
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      => "& and & are mutually recursive, " &
+                                          "terminating annotation on & " &
+                                          "could be incorrect",
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              F1       => Direct_Mapping_Id
+                                (FA.Spec_Entity),
+                              F2       => Direct_Mapping_Id (E),
+                              F3       => Spec_Entity_Id,
+                              Tag      => Subprogram_Termination,
+                              Vertex   => V);
+                        end if;
+
+                        --  If the called subprogram is potentially
+                        --  nonreturning for a reason that is not recursion,
+                        --  a message is emitted. In this case, the
+                        --  Terminating annotation is trusted. This is why
+                        --  Is_Potentially_Nonreturning is called in the first
+                        --  place.
+
+                        if Is_Potentially_Nonreturning (E)
+                          and then
+                            (Calls_Potentially_Nonreturning_Subprogram (E)
+                             or else Is_Directly_Nonreturning (E))
+                        then
+                           Proved := False;
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      => "call to & might be nonterminating" &
+                                          ", terminating annotation on & " &
+                                          "could be incorrect",
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              F1       => Direct_Mapping_Id (E),
+                              F2       => Spec_Entity_Id,
+                              Tag      => Subprogram_Termination,
+                              Vertex   => V);
+                        end if;
                      end if;
                   end loop;
                end if;

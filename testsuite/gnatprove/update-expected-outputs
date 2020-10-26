@@ -1,19 +1,47 @@
 #!/usr/bin/env python3
 
+import argparse
 from e3.testsuite.report.index import ReportIndex
 from e3.testsuite.result import TestStatus
 import os.path
 
+descr = """This script updates the outputs from a previous run of the
+testsuite."""
+
+
+def parse_options():
+    args = None
+    parser = argparse.ArgumentParser(description=descr)
+    parser.add_argument('-o', '--output-dir', dest="outputdir",
+                        help="Specify the output dir to read outputs from")
+    args = parser.parse_args()
+    return args
+
 
 def update_baseline(testname, out):
-    fn = os.path.join("tests", testname, "test.out")
+    testdir = os.path.join("tests", testname)
+    if not os.path.exists(testdir):
+        testdir = os.path.join("internal", testname)
+    if not os.path.exists(testdir):
+        print("can't find test with name " + testname)
+        exit(1)
+    fn = os.path.join(testdir, "test.out")
     print("Update output " + fn)
     with open(fn, "w") as f:
         f.write(out)
 
 
-index = ReportIndex.read("out/new")
-for entry in index.entries.values():
-    if entry.status == TestStatus.FAIL:
-        result = entry.load()
-        update_baseline(result.env['test_name'], result.out)
+def main():
+    args = parse_options()
+    if not args.outputdir:
+        outputdir = "out"
+    else:
+        outputdir = args.outputdir
+    index = ReportIndex.read(os.path.join(outputdir, "new"))
+    for entry in index.entries.values():
+        if entry.status == TestStatus.FAIL:
+            result = entry.load()
+            update_baseline(result.env['test_name'], result.out)
+
+
+main()

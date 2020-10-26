@@ -72,6 +72,7 @@ package Flow_Generated_Globals.Phase_1 is
       Tasking          : Tasking_Info;
 
       Has_Terminate    : Boolean;
+      Has_Subp_Variant : Boolean;
       Nonreturning     : Boolean;
       Nonblocking      : Boolean)
    with Pre  => GG_Mode = GG_Write_Mode,

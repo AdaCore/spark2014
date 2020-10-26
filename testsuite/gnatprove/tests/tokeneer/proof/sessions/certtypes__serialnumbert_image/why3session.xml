@@ -10,15 +10,15 @@
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="certtypes__serialnumbert_image.gnat-json"/>
 <theory name="Certtypes__serialnumbert_image__subprogram_def">
- <goal name="def&#39;vc" expl="VC for def">
+ <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
-  <goal name="def&#39;vc.0" expl="assertion">
+  <goal name="def&#39;vc.0">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="17213"/></proof>
-  <proof prover="2"><result status="unknown" steps="138"/></proof>
-  <proof prover="3"><result status="unknown" steps="162"/></proof>
+  <proof prover="2"><result status="unknown" steps="168"/></proof>
+  <proof prover="3"><result status="unknown" steps="229"/></proof>
   </goal>
-  <goal name="def&#39;vc.1" expl="assertion" proved="true">
+  <goal name="def&#39;vc.1" proved="true">
   <proof prover="2"><result status="valid" steps="106"/></proof>
   </goal>
  </transf>

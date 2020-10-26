@@ -1,4 +1,4 @@
-typeinv.adb:6:14: medium: invariant check might fail [possible fix: subprogram at typeinv.ads:4 should mention X in a precondition]
+typeinv.adb:6:14: medium: invariant check might fail (e.g. when X = 1) [possible fix: subprogram at typeinv.ads:4 should mention X in a precondition]
 typeinv.adb:6:17: medium: range check might fail (e.g. when X = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at typeinv.ads:4 should mention X in a precondition]
 typeinv.adb:12:14: info: division check proved (CVC4: 1 VC)
 typeinv.ads:4:13: info: invariant check proved (CVC4: 1 VC)

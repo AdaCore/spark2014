@@ -1,8 +1,0 @@
-intros (val1_type,(val2_type,(factor_type,pre))).
-
-(* extract 1 <= factor *)
-unfold dynamic_invariant1, in_range1 in factor_type; destruct factor_type.
-
-(* apply arithmetic theorem *)
-apply Zmult_lt_compat_r; auto with zarith.
-Qed.
