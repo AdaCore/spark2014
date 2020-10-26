@@ -1,0 +1,4 @@
+project Support is
+  for Externally_Built use "True";
+  for Source_Dirs use ("lib");
+end Support;
