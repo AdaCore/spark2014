@@ -148,6 +148,7 @@ package Flow_Generated_Globals.Phase_2 is
    function GG_Get_Initializes (E : Entity_Id) return Dependency_Maps.Map
    with Pre => GG_Has_Been_Generated and then
                Ekind (E) = E_Package and then
+               not Is_Wrapper_Package (E) and then
                No (Get_Pragma (E, Pragma_Initializes));
    --  @param E is the package whose generated Initializes aspect we want
 

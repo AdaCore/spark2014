@@ -1,0 +1,2 @@
+c392a01.adb:5:19: medium: assertion might fail, cannot prove Accounts.Bank_Reserve = 0.0 [possible fix: subprogram at line 3 should mention Bank_Reserve in a precondition]
+c392a01.adb:5:27: medium: "Bank_Reserve" might not be initialized after elaboration of main program "C392A01"

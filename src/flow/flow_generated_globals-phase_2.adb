@@ -584,11 +584,12 @@ package body Flow_Generated_Globals.Phase_2 is
             return DM;
          end;
 
-      --  ??? proof asks for generated initializes on wrapper packages;
-      --  to be fixed in a separate commit.
+      --  Packages from externally built projects will have no generated
+      --  Initializes. We pretend such contract to be empty, so none of the
+      --  package objects will be considered as initialized.
 
       else
-         pragma Assert (Is_Wrapper_Package (E));
+         pragma Assert (not Is_In_Analyzed_Files (E));
          return Dependency_Maps.Empty_Map;
       end if;
    end GG_Get_Initializes;
