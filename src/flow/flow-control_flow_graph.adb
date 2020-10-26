@@ -4762,10 +4762,7 @@ package body Flow.Control_Flow_Graph is
       function Add_Loop_Entry_Reference (N : Node_Id) return Traverse_Result is
          Loop_Name : Node_Id;
       begin
-         if Nkind (N) = N_Attribute_Reference
-           and then
-             Get_Attribute_Id (Attribute_Name (N)) = Attribute_Loop_Entry
-         then
+         if Is_Attribute_Loop_Entry (N) then
             pragma Assert (Present (Ctx.Active_Loop));
 
             --  This is a named loop entry reference, e.g. "X'Loop_Entry (Foo)"
