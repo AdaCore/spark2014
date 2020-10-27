@@ -339,7 +339,7 @@
   <proof prover="0"><result status="valid" steps="16737"/></proof>
   </goal>
   <goal name="def&#39;vc.93" proved="true">
-  <proof prover="0"><result status="valid" steps="17549"/></proof>
+  <proof prover="0"><result status="valid" steps="20336"/></proof>
   </goal>
   <goal name="def&#39;vc.94" proved="true">
   <proof prover="0"><result status="valid" steps="11590"/></proof>
