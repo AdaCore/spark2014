@@ -1350,19 +1350,28 @@ package body SPARK_Definition is
                   --  have an uninitialized allocator.
 
                   else
-                     --  In non-interfering contexts the subtype indicator
-                     --  is always a subtype name, because frontend creates
-                     --  an itype for each constrained subtype indicator.
+                     declare
+                        --  In non-interfering contexts the subtype indicator
+                        --  is always a subtype name, because frontend creates
+                        --  an itype for each constrained subtype indicator.
+                        Expr : constant Node_Id := Expression (N);
+                        pragma Assert (Is_Entity_Name (Expr));
 
-                     pragma Assert (Is_Entity_Name (Expression (N)));
+                        Typ  : constant Entity_Id := Entity (Expr);
+                        pragma Assert (Is_Type (Typ));
 
-                     if Default_Initialization (Entity (Expression (N)))
-                       not in Full_Default_Initialization
-                            | No_Possible_Initialization
-                     then
-                        Mark_Violation ("uninitialized allocator without"
-                                        & " default initialization", N);
-                     end if;
+                     begin
+                        if not In_SPARK (Typ) then
+                           Mark_Violation (Expr, Typ);
+
+                        elsif Default_Initialization (Typ)
+                                not in Full_Default_Initialization
+                                     | No_Possible_Initialization
+                        then
+                           Mark_Violation ("uninitialized allocator without"
+                                           & " default initialization", N);
+                        end if;
+                     end;
                   end if;
                else
                   Mark_Violation (N, Etype (N));
