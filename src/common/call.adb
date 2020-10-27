@@ -143,6 +143,7 @@ package body Call is
       end;
 
       Free (Region);
+      Close (File);
       return Result.Value;
    end Read_File_Into_JSON;
 

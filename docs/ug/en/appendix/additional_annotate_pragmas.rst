@@ -39,6 +39,9 @@ or
 
 In the following, we use the aspect form whenever possible.
 
+.. index:: Annotate; False_Positive
+           Annotate; Intentional
+
 Using Annotations to Justify Check Messages
 -------------------------------------------
 
@@ -52,6 +55,8 @@ You can use annotations of the form
 to justify an unproved check message that cannot be proved by other means. See
 the section :ref:`Direct Justification with Pragma Annotate` for more details
 about this use of pragma ``Annotate``.
+
+.. index:: Annotate; Might_Not_Return
 
 Using Annotations to Specify Possibly Nonreturning Procedures
 -------------------------------------------------------------
@@ -67,6 +72,8 @@ to specify that a procedure might not return. See the section
 :ref:`Nonreturning Procedures` for more details about this use of
 annotations.
 
+.. index:: Annotate; Terminating
+
 Using Annotations to Request Proof of Termination
 -------------------------------------------------
 
@@ -80,6 +87,8 @@ instruct it to do so using annotations of the form:
 
 See the section :ref:`Subprogram Termination` about details of this use of
 annotations.
+
+.. index:: Annotate; No_Wrap_Around
 
 Using Annotations to Request Overflow Checking on Modular Types
 ---------------------------------------------------------------
@@ -107,6 +116,8 @@ arithmetic operations + - * \*\* are checked for possible overflows. Division
 cannot lead to overflow. Unary negation is checked for possible non-nullity of
 its argument, which leads to overflow. The predecessor attribute ``'Pred`` and
 successor attribute ``'Succ`` are also checked for possible overflows.
+
+.. index:: Annotate; Iterable
 
 Customize Quantification over Types with the Iterable Aspect
 ------------------------------------------------------------
@@ -248,6 +259,8 @@ Using the postcondition of ``Mem``, this can be refined further into:
       then (for some C : Cursor =>  Has_Element (Intersection'Result, C)
                and Element (Intersection'Result, C) = Element (S1, C1))))))
 
+.. index:: Annotate; Iterable_For_Proof
+
 Though perfectly valid, this translation may produce complicated proofs,
 especially when verifying complex properties over sets. The |GNATprove|
 annotation ``Iterable_For_Proof`` can be used to change the way ``for ... of``
@@ -375,6 +388,8 @@ Like with the previous annotation, care should be taken to define the model
 function such that it always return a model containing exactly the same elements
 as ``L``.
 
+.. index:: Annotate; Inline_For_Proof
+
 .. _Inlining_Functions_for_Proof:
 
 Inlining Functions for Proof
@@ -447,6 +462,8 @@ Note that, since the translation through axioms is necessary for ordering
 issues, this annotation can sometimes lead to a crash in GNATprove. It is the
 case for example when the definition of the function uses quantification over a
 container using the ``Iterable`` aspect.
+
+.. index:: Annotate; Pledge
 
 .. _Supplying a Pledge for a Borrower:
 

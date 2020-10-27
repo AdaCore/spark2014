@@ -1,5 +1,5 @@
 port.adb:5:13: info: types in unchecked conversion have the same size (Trivial)
-port.adb:5:48: info: type is suitable for unchecked conversion (Trivial)
+port.adb:5:48: info: type is suitable as source for unchecked conversion (Trivial)
 port.adb:5:53: info: type is suitable for unchecked conversion (Trivial)
 port.adb:7:04: warning: analyzing unreferenced procedure "Read_V1_Bad2"
 port.adb:7:28: info: initialization of "X" proved

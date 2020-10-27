@@ -3,6 +3,9 @@
 Pointer Support and Dynamic Memory Management
 =============================================
 
+.. index:: ownership; analysis of
+           access types; access to object
+
 Access to Objects and Ownership
 -------------------------------
 
@@ -68,6 +71,10 @@ The above variant is rejected by |GNATprove|:
 .. literalinclude:: /examples/tests/access3/test.out
    :language: none
    :linenos:
+
+.. index:: deallocation
+           Unchecked_Deallocation
+           access types; deallocation
 
 Deallocation
 ------------
@@ -299,6 +306,8 @@ As a consequence, verifying programs involving borrowers sometimes requires
 describing the relation between the borrowed object and the borrower. This can
 be done by :ref:`Supplying a Pledge for a Borrower`.
 
+.. index:: traversal function
+
 Traversal Functions
 -------------------
 
@@ -390,6 +399,8 @@ Note that it is possible to use pledges to describe the relation between the
 result of a borrowing traversal function and its parameter in a postcondition,
 see :ref:`Supplying a Pledge for a Borrower`.
 
+.. index:: access types; access to subprogram
+
 Supprogram Pointers
 -------------------
 
@@ -445,6 +456,9 @@ For postconditions, it is the opposite. No postconditions will be assumed when
 verifying ``Update_All``, so it is perfectly OK if ``Update_One`` has any
 postconditions. However, it will not be possible to use this postcondition to
 prove anything on the effect of ``Update_All``.
+
+.. index:: precondition; for subprogram pointer
+           postcondition; for subprogram pointer
 
 Contracts for Supprogram Pointers
 ---------------------------------

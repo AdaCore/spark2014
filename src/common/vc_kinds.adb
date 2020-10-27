@@ -110,7 +110,8 @@ package body VC_Kinds is
          --  CWE-843 Access of Resource Using Incompatible Type ('Type
          --  Confusion')
 
-         when VC_UC_No_Holes
+         when VC_UC_Source
+            | VC_UC_Target
             | VC_UC_Same_Size              => "843",
 
          --  We did not find a relevant CWE for the following yet
@@ -342,10 +343,15 @@ package body VC_Kinds is
          when VC_Inline_Check                     =>
             return "Check that an Annotate pragma with the Inline_For_Proof " &
               "identifier is correct.";
-         when VC_UC_No_Holes                      =>
-            return "Check that a type in an unchecked conversion can safely " &
-              "be used for such conversions. This means that the memory " &
-              "occupied by objects of this type is fully used by the " &
+         when VC_UC_Source                      =>
+            return "Check that a source type in an unchecked conversion can " &
+              "safely be used for such conversions. This means that the " &
+              "memory occupied by objects of this type is fully used by the " &
+              "object.";
+         when VC_UC_Target                      =>
+            return "Check that a target type in an unchecked conversion can " &
+              "safely be used for such conversions. This means that the " &
+              "memory occupied by objects of this type is fully used by the " &
               "object, and no invalid bitpatterns occur.";
          when VC_UC_Same_Size                     =>
             return "Check that the two types in an unchecked conversion " &
@@ -903,7 +909,8 @@ package body VC_Kinds is
              when VC_Assert => "assertion",
              when VC_Raise => "raised exception",
              when VC_Inline_Check => "Inline_For_Proof annotation",
-             when VC_UC_No_Holes => "unchecked conversion check",
+             when VC_UC_Source => "unchecked conversion source check",
+             when VC_UC_Target => "unchecked conversion target check",
              when VC_UC_Same_Size => "unchecked conversion size check",
              when VC_UC_Alignment => "alignment check",
              when VC_Weaker_Pre =>

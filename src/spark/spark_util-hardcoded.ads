@@ -36,13 +36,14 @@ package SPARK_Util.Hardcoded is
       Min                      : constant String := "min";
       Max                      : constant String := "max";
       Gcd                      : constant String := "greatest_common_divisor";
+      From_String              : constant String := "from_string";
       Generic_To_Big_Integer   : constant String := "to_big_integer";
       Generic_From_Big_Integer : constant String := "from_big_integer";
    end Big_Integers_Names;
    --  Names of entities that will be considered as hardcoded in the
    --  Big_Integers unit.
-   --  Currently, functions to read or write a big integer from or to a string
-   --  are left uninterpreted. The In_Range expression function is
+   --  Currently, the function to write a big integer to a string
+   --  is left uninterpreted. The In_Range expression function is
    --  translated using the normal mechanism.
 
    package Big_Reals_Names is
@@ -50,11 +51,12 @@ package SPARK_Util.Hardcoded is
       Is_Valid              : constant String := "is_valid";
       Min                   : constant String := "min";
       Max                   : constant String := "max";
+      From_String           : constant String := "from_string";
       Generic_To_Big_Real   : constant String := "to_big_real";
    end Big_Reals_Names;
    --  Names of entities that will be considered as hardcoded in the
    --  Big_Reals unit.
-   --  Currently, functions to read or write a big real from or to a string,
+   --  Currently, the function to write a big real to a string,
    --  as well as the numerator and denominator functions are left
    --  uninterpreted. Expression functions To_Real and To_Big_Real as well as
    --  In_Range are translated using the normal mechanism.

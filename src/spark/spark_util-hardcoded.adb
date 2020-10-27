@@ -178,7 +178,8 @@ package body SPARK_Util.Hardcoded is
                                              | BIN.To_Big_Integer
                                              | BIN.Is_Valid
                                              | BIN.To_Integer
-                                             | BIN.Gcd;
+                                             | BIN.Gcd
+                                             | BIN.From_String;
       elsif Is_From_Hardcoded_Unit (E, Big_Reals) then
          return Chars (E) in Name_Op_Abs
                            | Name_Op_Eq
@@ -188,7 +189,8 @@ package body SPARK_Util.Hardcoded is
                 Get_Name_String (Chars (E)) in BRN.Big_Real
                                              | BRN.Min
                                              | BRN.Max
-                                             | BRN.Is_Valid;
+                                             | BRN.Is_Valid
+                                             | BRN.From_String;
 
       elsif Is_From_Hardcoded_Generic_Unit (E, Big_Integers) then
          return Get_Name_String (Chars (E)) in BIN.Generic_To_Big_Integer

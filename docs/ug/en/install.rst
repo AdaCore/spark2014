@@ -15,6 +15,8 @@ GNATbench plug-in for Eclipse instead of GNAT Studio, using the Eclipse installa
 mechanism. The same version of GNAT Studio or GNATbench can support both native and
 cross compilations, as well as |SPARK| analysis.
 
+.. index:: GPR_PROJECT_PATH; at installation
+
 If you choose to install |GNATprove| in a different location, you should also
 modify the environment variables ``GPR_PROJECT_PATH`` (if you installed GNAT).
 On Windows, edit the value of ``GPR_PROJECT_PATH`` under the Environnement

@@ -1,0 +1,44 @@
+(* proof shared by the two lemmas dealing 32/64-bit mul by less than 1 *)
+intros val1_finite val2_finite ((h3,h4),h5).
+unfold dynamic_invariant in *.
+assert (Hdumb: true = true \/ le (neg fliteral1) fliteral1); auto.
+specialize (val1_finite Hdumb).
+specialize (val2_finite Hdumb).
+destruct fliteral_axiom1 as [fliteral1_finite l_real1].
+destruct fliteral_axiom2 as [fliteral2_finite l_real2].
+destruct fliteral_axiom3 as [fliteral3_finite l_real3].
+
+rewrite le_finite in h3, h4, h5; auto.
+rewrite l_real3 in h4.
+rewrite l_real2 in h3, h5.
+
+(* Check that the mutiplication do not overflow. *)
+assert (no_overflow RNE (t'real val1 * t'real val2)) as no_ov_v1v2.
+{ apply Bounded_real_no_overflow; split.
+  * apply Rle_trans with (r2:=0%R); auto.
+    + (* go to Z to prove the obvious goal *)
+      rewrite <- mult_IZR; rewrite <- opp_IZR;
+      now apply IZR_le.
+    + rewrite <- Rmult_0_l with 0%R.
+      apply Rmult_le_compat; auto; apply Rle_refl.
+  * destruct (t'axiom val2 val2_finite) as [_ h6].
+    apply Rle_trans with (r2:=(1 * t'real fliteral1)%R); auto.
+    + apply Rmult_le_compat; auto.
+      rewrite l_real1; auto.
+    + (* go to Z to prove the obvious goal *)
+      rewrite <- mult_IZR.
+      rewrite l_real1; rewrite <- mult_IZR.
+      now apply IZR_le.
+}
+
+(* Unfold the definition of mul on finite floats *)
+destruct (mul_finite RNE _ _ val1_finite val2_finite no_ov_v1v2) as (v1v3_finite, v1v3_real).
+rewrite le_finite; auto.
+rewrite v1v3_real.
+rewrite <- (Round_to_real RNE val2) at 2; auto.
+(* Apply monotonicity of rounding *)
+apply Round_monotonic.
+(* Prove the lemma on reals *)
+destruct (Rmult_ne (t'real val2)) as (_, val2_mult_1).
+rewrite <- val2_mult_1 at 2.
+apply Rmult_le_compat_r; auto.

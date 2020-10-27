@@ -12439,7 +12439,10 @@ package body Gnat2Why.Expr is
               Name     => Why_Eq,
               Args     =>
                 (1 => +Transform_Attribute_Old (Expr, EW_Term, Params),
-                 2 => +True_Term));
+                 2 => Insert_Simple_Conversion
+                   (Domain => EW_Term,
+                    Expr   => +True_Term,
+                    To     => Type_Of_Node (Expr))));
 
       --  Use the map for old when references are not allowed
 
@@ -12958,14 +12961,14 @@ package body Gnat2Why.Expr is
          when Attribute_Value =>
             declare
                Why_Str : constant W_Type_Id :=
-                           EW_Abstract (Standard_String);
+                 EW_Abstract (Standard_String);
                Arg     : constant W_Expr_Id :=
-                           Transform_Expr (First (Expressions (Expr)),
-                                           Why_Str,
-                                           Domain,
-                                           Params);
+                 Transform_Expr (First (Expressions (Expr)),
+                                 Why_Str,
+                                 Domain,
+                                 Params);
                Func    : constant W_Identifier_Id :=
-                           +New_Attribute_Expr (Etype (Var), Domain, Attr_Id);
+                 +New_Attribute_Expr (Etype (Var), Domain, Attr_Id);
             begin
                T :=
                  New_Call
@@ -13306,6 +13309,24 @@ package body Gnat2Why.Expr is
               (Expr   => Expr,
                Domain => Domain,
                Params => Params);
+
+         when Attribute_Copy_Sign =>
+            declare
+               Ty   : constant W_Type_Id := Base_Why_Type (Etype (Expr));
+               Arg1 : constant Node_Id := First (Expressions (Expr));
+               Arg2 : constant Node_Id := Next (Arg1);
+               Mag  : constant W_Expr_Id :=
+                 Transform_Expr (Arg1, Ty, Domain, Params);
+               Sign : constant W_Expr_Id :=
+                 Transform_Expr (Arg2, Ty, Domain, Params);
+            begin
+               T := New_Call
+                 (Domain   => Domain,
+                  Ada_Node => Expr,
+                  Name     => MF_Floats (Ty).Copy_Sign,
+                  Args     => (1 => Mag, 2 => Sign),
+                  Typ      => Ty);
+            end;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] not implemented: "
@@ -15024,7 +15045,7 @@ package body Gnat2Why.Expr is
                        (Retysp (Etype (Defining_Identifier (Decl))),
                         Valid, Explanation);
                      Emit_Static_Proof_Result
-                       (Decl, VC_UC_No_Holes, Valid, Current_Subp,
+                       (Decl, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
                   end;
                end if;
@@ -15045,7 +15066,7 @@ package body Gnat2Why.Expr is
                         Is_Valid_Bitpattern_No_Holes
                           (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
                         Emit_Static_Proof_Result
-                          (Expr, VC_UC_No_Holes, Valid, Current_Subp,
+                          (Expr, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
 
                         Types_Have_Same_Known_Esize
@@ -17366,6 +17387,44 @@ package body Gnat2Why.Expr is
       --  Hardcoded function calls are transformed in a specific function
 
       if Is_Hardcoded_Entity (Subp) then
+
+         --  If we are translating a call to the parameter of a ***_Literal
+         --  aspect, try to get a precise value from the ada actual of the
+         --  expression if it is a string literal.
+
+         if Is_Integer_Literal_Aspect_Parameter (Subp)
+           or else Is_Real_Literal_Aspect_Parameter (Subp)
+         then
+            pragma Assert
+              (Present (First_Actual (Expr))
+               and then No (Next (First_Actual (Expr))));
+
+            if Nkind (First_Actual (Expr)) /= N_String_Literal then
+               T := Why_Empty;
+            elsif Is_Integer_Literal_Aspect_Parameter (Subp) then
+               T := Transform_Hardcoded_Integer_Literal
+                 (First_Actual (Expr), Etype (Subp), Domain);
+            else
+               pragma Assert (Is_Real_Literal_Aspect_Parameter (Subp));
+               T := Transform_Hardcoded_Real_Literal
+                 (First_Actual (Expr), Etype (Subp), Domain);
+            end if;
+
+            --  If the precise transformation was succesful, return it
+
+            if T /= Why_Empty then
+               return T;
+
+            --  Otherwise raise a warning if --info is given and default to
+            --  imprecise translation.
+
+            elsif Debug.Debug_Flag_Underscore_F then
+               Error_Msg_NE
+                 ("info: ?" & "call to & is not handled precisely",
+                  Expr, Subp);
+            end if;
+         end if;
+
          T := Transform_Hardcoded_Function_Call
            (Subp, Args, Domain, Expr);
          return T;

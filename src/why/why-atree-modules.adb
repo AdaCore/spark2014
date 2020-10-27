@@ -49,6 +49,7 @@ package body Why.Atree.Modules is
 
    --  procedures to initialize the various modules
    procedure Init_Boolean_Module;
+   procedure Init_Builtin_From_Image_Module;
    procedure Init_BV_Conv_Modules;
    procedure Init_BV_Modules;
    procedure Init_Compat_Tags_Module;
@@ -431,6 +432,7 @@ package body Why.Atree.Modules is
       Init_Real_Minmax_Module;
       Init_Subprogram_Access_Module;
       Init_Labels;
+      Init_Builtin_From_Image_Module;
       --  modules of "ada__model" file
 
       Static_Modular_lt8 :=
@@ -1106,6 +1108,28 @@ package body Why.Atree.Modules is
            Domain => EW_Term,
            Typ    => EW_Bool_Type);
    end Init_Boolean_Module;
+
+   ------------------------------------
+   -- Init_Builtin_From_Image_Module --
+   ------------------------------------
+
+   procedure Init_Builtin_From_Image_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Builtin_from_image");
+   begin
+      M_Builtin_From_Image.Int_Value :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symb   => NID ("int__attr__ATTRIBUTE_VALUE"),
+                        Typ    => EW_Int_Type);
+
+      M_Builtin_From_Image.Real_Value :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symb   => NID ("real__attr__ATTRIBUTE_VALUE"),
+                        Typ    => EW_Real_Type);
+   end Init_Builtin_From_Image_Module;
 
    --------------------------
    -- Init_BV_Conv_Modules --
@@ -1935,6 +1959,11 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symb   => NID ("to_real"),
                            Typ    => EW_Int_Type);
+         M_Floats (Fl).Copy_Sign :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symb   => NID ("copy_sign"),
+                           Typ    => M_Floats (Fl).T);
       end loop;
 
       EW_Float_32_Type := M_Floats (Float32).T;
@@ -2268,6 +2297,11 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symb   => NID ("bool_gt"),
                         Typ    => EW_Bool_Type);
+      M_Real.Div :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("div"),
+                        Typ    => EW_Real_Type);
    end Init_Real_Module;
 
    ----------------------------

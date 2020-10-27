@@ -11,7 +11,7 @@ is
    begin
       if A = B then  -- watch carefully
          if Magic (B) /= 0 then
-            X := 100 / Magic (A);
+            X := 100 / Magic (A);  --@DIVISION_CHECK:FAIL
          end if;
       end if;
    end Crash;

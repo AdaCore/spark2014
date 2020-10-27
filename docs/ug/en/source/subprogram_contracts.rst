@@ -35,6 +35,12 @@ marked with aspect ``No_Return`` that has some outputs (this is typically the
 case of a non-terminating subprogram implementing the main loop of a
 controller).
 
+.. index:: precondition
+           see: Pre; precondition
+           seealso: Gold level; precondition
+           Assertion_Policy; for precondition
+           exceptions; in precondition
+
 .. _Preconditions:
 
 Preconditions
@@ -153,6 +159,10 @@ failure of the precondition. So, for |GNATprove|, the precondition with
 the raise expressions above is effectively equivalent to the precondition of
 the previous example.
 
+.. index:: postcondition
+           see: Post; postcondition
+           seealso: Gold level; postcondition
+
 .. _Postconditions:
 
 Postconditions
@@ -234,6 +244,9 @@ while the correct postcondition uses :ref:`Attribute Result`:
 
 Both |GNAT Pro| compiler and |GNATprove| issue a warning on the semantically
 correct but likely functionally wrong postcondition.
+
+.. index:: Contract_Cases
+           seealso: Gold level; Contract_Cases
 
 .. _Contract Cases:
 
@@ -318,6 +331,10 @@ be written:
 When ``others`` is used as a guard, there is no need for verification (both at
 run-time and using |GNATprove|) that the set of contract cases covers all
 possible inputs. Only disjointness of contract cases is checked in that case.
+
+.. index:: Global; in subprogram contract
+           global variables; in Global contract
+           seealso: Bronze level; Global
 
 .. _Data Dependencies:
 
@@ -418,6 +435,10 @@ Global data that is partially written in the subprogram should also be
 mentioned with the ``In_Out`` mode, and not as an output. See :ref:`Data
 Initialization Policy`.
 
+.. index:: Depends; in subprogram contract
+           global variables; in Depends contract
+           seealso: Bronze level; Depends
+
 .. _Flow Dependencies:
 
 Flow Dependencies
@@ -493,6 +514,8 @@ corresponding flow dependency should use the ``null`` input list:
    procedure Init_Total with
      Depends => (Total => null);
 
+.. index:: state abstraction; in subprogram contract
+
 .. _State Abstraction and Contracts:
 
 State Abstraction and Contracts
@@ -507,6 +530,8 @@ the private part of a package specification, or in a package
 implementation). The notion of abstract state in |SPARK| can be used in that
 case (see :ref:`State Abstraction`) to name in contracts global data that is
 not visible.
+
+.. index:: Refined_Global, Refined_Depends
 
 .. _State Abstraction and Dependencies:
 
@@ -589,6 +614,8 @@ Refined dependencies can be specified on both subprograms and tasks for which
 data and/or flow dependencies that are specified include abstract states which
 are refined in the current unit.
 
+.. index:: expression function; in refinement
+
 .. _State Abstraction and Functional Contracts:
 
 State Abstraction and Functional Contracts
@@ -644,6 +671,10 @@ postcondition of ``True`` is used implicitly on the subprogram declaration.
 ``Add_To_Total`` when analyzing calls outside package ``Account`` and the more
 precise refined contract (precondition and refined postcondition) of
 ``Add_To_Total`` when analyzing calls inside package ``Account``.
+
+.. index:: termination; subprogram variant
+           recursion; subprogram variant
+           Subprogram_Variant
 
 .. _Subprogram Variant:
 

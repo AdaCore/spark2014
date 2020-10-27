@@ -1,3 +1,6 @@
+.. index:: Silver level; investigate unproved checks
+           Gold level; investigate unproved checks
+
 .. _How to Investigate Unproved Checks:
 
 How to Investigate Unproved Checks
@@ -17,6 +20,8 @@ run-time check or an assertion holds, there might be various reasons:
   timeouts.
 * [PROVER] The check or assertion is not proved because the prover is not
   smart enough.
+
+.. index:: executable contracts; investigate unproved checks
 
 Investigating Incorrect Code or Assertion
 -----------------------------------------
@@ -46,6 +51,8 @@ missing:
 * a loop invariant for an enclosing loop might be too weak; or
 * a loop invariant for a loop before the check or assertion might be too weak.
 
+.. index:: tool interaction; possible fix
+
 In particular, |GNATprove| does not look into subprogram bodies, so all the
 necessary information for calls should be explicit in the subprogram
 contracts. |GNATprove| may emit a tentative fix for the unprovable
@@ -68,6 +75,8 @@ cannot prove, which can help figuring out the problem. It may useful to
 simplify the code during this investigation, for example by adding a
 simpler assertion and trying to prove it.
 
+.. index:: counterexample; investigate unproved checks
+
 |GNATprove| provides path information that might help the code review. You can
 display inside the editor the path on which the proof failed, as described in
 :ref:`Running GNATprove from GNAT Studio`. In some cases, a counterexample is also
@@ -89,6 +98,8 @@ To use |CodePeer| integration, pass the switch ``--codepeer=on`` to
 |GNATprove|. In those cases where no prover, including |CodePeer|, can prove
 the check, the missing information can usually be added using ``pragma Assume``.
 
+.. index:: ghost code; investigate unproved checks
+
 It may be difficult sometimes to distinguish between unprovable properties and
 prover shortcomings (the next section). The most generally useful action to
 narrow down the issue to its core is to insert assertions in the code that
@@ -105,6 +116,8 @@ help distinguish between the two cases:
   in the code only those assertions that help getting automatic proof, and to
   remove other assertions that were inserted during interaction.
 
+.. index:: --info; investigate unproved checks
+
 When using switch ``--info``, |GNATprove| issues information messages regarding
 internal decisions that could influence provability:
 
@@ -114,6 +127,8 @@ internal decisions that could influence provability:
   Without Contracts` are effectively inlined for proof or not;
 * whether possible subprogram nontermination impacts the proof of calls to that
   subprogram (see the note in the section on :ref:`Subprogram Termination`)
+
+.. index:: --level; investigate unproved checks
 
 .. _Investigating Prover Shortcomings:
 
@@ -135,6 +150,8 @@ level switches like ``--timeout``, ``--prover``, and ``--proof``. Hence, one
 can also set more powerful (and thus leading to longer proof time) values
 for the individual switches rather than using the predefined combinations
 set through ``--level``.
+
+.. index:: tool interaction; prove line or subprogram
 
 Note that for the above experiments, it is quite convenient to use the
 :menuselection:`SPARK --> Prove Line` or :menuselection:`SPARK --> Prove
@@ -163,13 +180,10 @@ In that case, a user may either:
   with Pragma Assume`), or
 * add a justification in the code (see details in :ref:`Direct Justification
   with Pragma Annotate`), or
+* get a `user view` of the formula passed to the prover, and complete the proof
+  interactively (see details in :ref:`Manual Proof Within GNAT Studio`), or
 * manually review the unproved checks and record that they can be trusted
   (for example by storing the result of |GNATprove| under version control).
-
-In the future, |GNATprove| may provide a `user view` of the formula passed to
-the prover, for advanced users to inspect. This view would express in an
-Ada-like syntax the actual formula whose proof failed, to make it easier for
-users to interpret it. This format is yet to be defined.
 
 For advanced users, in particular those who would like to do manual
 proof, we will provide a description of the format of the proof files
@@ -211,6 +225,8 @@ To be able to inspect these files, you should instruct |GNATprove| to keep them
 around by adding the switch ``-d`` to |GNATprove|'s command line. You can also
 use the switch ``-v`` to get a detailed log of which proof files |GNATprove| is
 producing and attempting to prove.
+
+.. index:: .spark files
 
 Looking at Machine-Parsable |GNATprove| Output
 ----------------------------------------------
@@ -303,6 +319,8 @@ Entries for proof are of the following form::
 Flow entries are of the same form as for proof. Differences are in the
 possible values for "rule", which can only be the ones for flow messages.
 Also "how_proved" field is never set.
+
+.. index:: --proof; proof strategies
 
 Understanding Proof Strategies
 ------------------------------

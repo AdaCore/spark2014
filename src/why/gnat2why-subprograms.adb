@@ -2036,8 +2036,10 @@ package body Gnat2Why.Subprograms is
                     Condition   => Enabled,
                     Then_Part   => WP_Consequence,
                     Else_Part   =>
-                      New_Literal (Domain => EW_Prog,
-                                   Value  => EW_True)))),
+                      Insert_Simple_Conversion
+                        (Domain => EW_Prog,
+                         Expr   => +True_Prog,
+                         To     => Type_Of_Node (Consequence))))),
             New_Assert
               (Pred => +New_VC_Expr
                  (Contract_Case,
@@ -4393,14 +4395,14 @@ package body Gnat2Why.Subprograms is
                Valid       : Boolean;
                Explanation : Unbounded_String;
             begin
-               Is_Valid_Bitpattern_No_Holes (Src_Ty, Valid, Explanation);
+               Type_Has_No_Holes (Src_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
-                 (Source, VC_UC_No_Holes, Valid, E,
+                 (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));
 
                Is_Valid_Bitpattern_No_Holes (Tar_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
-                 (Target, VC_UC_No_Holes, Valid, E,
+                 (Target, VC_UC_Target, Valid, E,
                   Explanation => To_String (Explanation));
 
                Types_Have_Same_Known_Esize

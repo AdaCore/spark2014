@@ -1,3 +1,8 @@
+.. index:: distributed examples
+           Bronze level; distributed examples
+           Silver level; distributed examples
+           Gold level; distributed examples
+
 .. _Examples in the Toolset Distribution:
 
 Examples in the Toolset Distribution
@@ -12,11 +17,16 @@ These examples range from single subprograms to demo programs with dozens of
 units. In this section, we describe briefly the code in each example, the
 properties specified, and the results of |GNATprove|'s analysis.
 
+.. index:: Platinum level; distributed examples - individual subprograms
+
+.. _Individual Subprograms:
+
 Individual Subprograms
 ----------------------
 
 These examples contain usually a single subprogram, and are typically very
-small (a few dozens slocs).
+small (a few dozens slocs). Most of them have been proved up to Platinum level,
+that is, against a contract giving a complete specification of their behavior.
 
 .. rubric:: ``binary_search`` and ``binary_search_unconstrained``
 
@@ -133,6 +143,8 @@ on the computed speed are proved by using a combination of provers. A dozen
 intermediate assertions are needed to benefit from this combination, so that
 different provers can prove different parts of the property.
 
+.. _Single Units:
+
 Single Units
 ------------
 
@@ -150,6 +162,8 @@ checks.
 
 Opening the example in GNAT Studio or GNATbench opens an aggregate project, with
 separate sub-projects for each lecture.
+
+.. index:: Platinum level; distributed examples - Allocators
 
 .. rubric:: ``allocators``
 
@@ -204,6 +218,8 @@ automatically using |GNATprove|.
 
 See the relevant sections for more details on :ref:`Ghost Code` and
 :ref:`Manual Proof Using Ghost Code`.
+
+.. index:: Platinum level; distributed examples - Cartesian Trees
 
 .. rubric:: ``cartesian_trees``
 
@@ -288,6 +304,8 @@ presented as an idiomatic way to support selective delays in SPARK in a blog
 post on `"Selective Delays in SPARK and Ravenscar"` (see
 https://two-wrongs.com/selective-delay-in-spark-and-ravenscar.html).
 
+.. index:: Platinum level; distributed examples - N-Queens
+
 .. rubric:: ``n_queens``
 
 This program implements the solution to the N queens problem, to place N queens
@@ -296,6 +314,8 @@ move. The API is annotated with full functional contracts. |GNATprove| proves
 all checks on this program. This program was proposed as a formal verification
 challenge during VSTTE Verification Competition in 2010 (see
 https://sites.google.com/a/vscomp.org/main/).
+
+.. index:: Gold level; distributed examples - Patience
 
 .. rubric:: ``patience``
 
@@ -346,6 +366,8 @@ This program offers a nice display of many |SPARK| features in a simple setting:
 
 The original code was contributed by Guillaume Foliard.
 
+.. index:: Platinum level; distributed examples - Red Back Trees
+
 .. rubric:: ``red_black_trees``
 
 This example demonstrates :ref:`Type Invariants` and :ref:`Manual Proof Using Ghost Code` on an implementation of red black trees. It features a minimalist library of trees providing only membership test and insertion. The complexity of this example lies in the invariants that are maintained on the data-structure. Namely, it implements a balanced binary search tree, balancing being enforced by red black coloring.
@@ -377,6 +399,8 @@ This program and the verification activities associated to it are described in
 `"Auto-Active Proof of Red-Black Trees in SPARK"`, presented at NFM 2017 (at
 https://blog.adacore.com/uploads/Auto-Active-Proof-of-Red-Black-Trees-in-SPARK.pdf).
 
+.. index:: Gold level; distributed examples - Railway Signaling
+
 .. rubric:: ``railway_signaling``
 
 This program implements a simple signaling algorithm to avoid collision of
@@ -393,6 +417,8 @@ of the signaling. :ref:`Pragma Assume` is used to express an essential property
 of the railroad on which correctness depends, namely that no track precedes
 itself. |GNATprove| proves all checks on this program, when using provers
 CVC4, Alt-Ergo and Z3.
+
+.. index:: Platinum level; distributed examples - Ring Buffer
 
 .. rubric:: ``ring_buffer``
 
@@ -468,6 +494,8 @@ Also note that we did not provide any loop invariants on the loops of
 
 |GNATprove| proves all checks on this program.
 
+.. index:: Gold level; distributed examples - Tetris
+
 .. rubric:: ``tetris``
 
 This program implements a simple version of the game of Tetris. An invariant of
@@ -525,6 +553,8 @@ Multi-Units Demos
 These examples contain larger demo programs (of a few hundreds or thousands
 slocs).
 
+.. index:: Bronze level; distributed examples - Autopilot
+
 .. rubric:: ``autopilot``
 
 This program was originally a case study written in SPARK 2005 by John Barnes,
@@ -552,6 +582,8 @@ Data and flow dependency contracts are given for all subprograms. |GNATprove|
 proves all checks on this program, except for 4 runtime checks related to
 scaling quantities using a division (a known limitation of automatic provers).
 
+.. index:: Platinum level; distributed examples - Bitwalker
+
 .. rubric:: ``bitwalker``
 
 This program was originally a case study in C from Siemens rewritten by the
@@ -577,6 +609,8 @@ modular value is set or not. Note that while such a function could be
 easily implemented in |SPARK|, using the one defined in the Why3 theory
 leads to more automatic proofs because it
 lets the provers use the associated axioms and lemmas.
+
+.. index:: Silver level; distributed examples - Crazyflie
 
 .. rubric:: ``crazyflie``
 
@@ -605,6 +639,8 @@ and the current mode of operation. Interfaces to the physical world are
 modelled as :ref:`External State Abstraction` for sensors and actuators. Data
 and flow dependency contracts are given for all subprograms. |GNATprove| proves
 all checks on this program.
+
+.. index:: Bronze level; distributed examples - IPstack
 
 .. rubric:: ``ipstack``
 
@@ -648,6 +684,8 @@ for example speed restrictions against distance. Full functional contracts are
 given for all the services of this package. |GNATprove| proves all checks on
 this part of the program, except the more complex postcondition of procedure
 ``Restrictive_Merge``.
+
+.. index:: Silver level; distributed examples - SPARKSkein
 
 .. rubric:: ``sparkskein``
 
@@ -751,6 +789,8 @@ code instrumentation) and that subprogram bodies respect their functional
 contracts. The story behind this work was presented in a post on the AdaCore
 Blog: http://blog.adacore.com/formal-verification-of-legacy-code
 
+.. index:: Silver level; distributed examples - Thumper
+
 .. rubric:: ``thumper``
 
 This program is a secure time stamp client/server system that implements
@@ -775,6 +815,8 @@ The verification objectives pursued in both projects are currently to
 :ref:`Address Data and Control Coupling` with a focus on ensuring secure
 information flows (especially important for a cryptographic application) and to
 :ref:`Prove Absence of Run-Time Errors (AoRTE)`.
+
+.. index:: Gold level; distributed examples - Tokeneer
 
 .. rubric:: ``tokeneer``
 

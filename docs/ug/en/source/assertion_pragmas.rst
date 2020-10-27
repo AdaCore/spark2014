@@ -11,6 +11,8 @@ raised at run time when the property asserted does not hold, if the program was
 compiled with assertions. The real difference between assertion pragmas is how
 they are used by |GNATprove| during proof.
 
+.. index:: Assert
+
 .. _Pragma Assert:
 
 Pragma ``Assert``
@@ -41,6 +43,8 @@ not if assertions are discarded during compilation. In the latter case,
 unproved assertions should be inspected carefully to ensure that the property
 asserted will indeed hold at run time. This is true of all assertion pragmas,
 which |GNATprove| analyzes like pragma ``Assert`` in that respect.
+
+.. index:: Assertion_Policy
 
 .. _Pragma Assertion_Policy:
 
@@ -95,6 +99,8 @@ assertion, and it does not issue corresponding messages:
 The policy of ``Disable`` should thus be reserved for assertions that are not
 compilable, typically because a given build environment does not define the
 necessary entities.
+
+.. index:: Loop_Invariant
 
 .. _Loop Invariants:
 
@@ -228,6 +234,9 @@ useful to express complex loop invariants.
    execution reaches the corresponding pragma inside the loop. Hence, it needs
    not hold when the loop is never entered, or when exiting the loop.
 
+.. index:: Loop_Variant
+           termination; loop variant
+
 .. _Loop Variants:
 
 Loop Variants
@@ -269,6 +278,8 @@ decreasing or increasing values (possibly a mix of both). In that case, the
 order of the list defines the lexicographic order of progress. See |SPARK| RM
 5.5.3 for details.
 
+.. index:: Assume
+
 .. _Pragma Assume:
 
 Pragma ``Assume``
@@ -303,6 +314,8 @@ but not if assertions are discarded during compilation. In the latter case,
 assumptions should be inspected carefully to ensure that the property assumed
 will indeed hold at run time. This inspection may be facilitated by passing a
 justification string as the second argument to pragma ``Assume``.
+
+.. index:: Assert_And_Cut
 
 .. _Pragma Assert_And_Cut:
 

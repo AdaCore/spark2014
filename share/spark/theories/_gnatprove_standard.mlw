@@ -82,6 +82,32 @@ module Main
   val spark__branch [@model_trace:0000]: bool__ref
 end
 
+(* Functions reading built-in values from __image *)
+
+module Builtin_from_image
+  use Main
+
+  (* function reading an integer from an image *)
+
+  function int__attr__ATTRIBUTE_VALUE __image : int
+
+  predicate int__attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  val int__attr__ATTRIBUTE_VALUE_ (x : __image) : int
+    requires { int__attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures { result = int__attr__ATTRIBUTE_VALUE x }
+
+  (* function reading a real from an image *)
+
+  function real__attr__ATTRIBUTE_VALUE __image : real
+
+  predicate real__attr__ATTRIBUTE_VALUE__pre_check (x : __image)
+
+  val real__attr__ATTRIBUTE_VALUE_ (x : __image) : real
+    requires { real__attr__ATTRIBUTE_VALUE__pre_check x }
+    ensures {  result = real__attr__ATTRIBUTE_VALUE x }
+end
+
 module Compatible_Tags
   (* A prediacte to check compatibility between tags *)
   val predicate __compatible_tags (from_tag : int) (to_tag : int)
@@ -195,6 +221,7 @@ module Int_Division
 end
 
 module Real
+  use        real.RealInfix
   use export "_gnatprove_standard_th".Real
 
   val bool_eq (x y : real) : bool
@@ -209,6 +236,14 @@ module Real
   ensures { result = bool_gt x y }
   val bool_ge (x y : real) : bool
   ensures { result = bool_ge x y }
+
+  (* Division operators with no preconditions, to use when no checks are
+   * necessary. *)
+
+  function div (x y:real) : real = x /. y
+
+  val div (x y:real) : real
+    ensures  { y <> 0.0 -> result = div x y }
 end
 
 module Real_Power
@@ -421,6 +456,12 @@ module Float32RNE
   function to_real (x : t) : real = t'real x
   val to_real (x:t) : real
     ensures { result = t'real x }
+
+  function copy_sign (x : t) (y : t) : t =
+    if same_sign x y then x else neg x
+  val copy_sign (x : t) (y : t) : t
+    ensures { result = (if same_sign x y then x else neg x) }
+
 end
 
 module Float64RNE

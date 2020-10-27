@@ -1,0 +1,7 @@
+conv.adb:3:13: info: add a contract to analyze it separately from calling contexts
+conv.adb:3:13: info: local subprogram "Has_Neg_Sign" only analyzed in the context of calls
+conv.adb:16:19: medium: assertion might fail, cannot prove Z1_Sign = Z2_Sign (e.g. when Z1_Sign = False)
+conv2.adb:11:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Float_Bytes doesn't have an Object_Size representation clause or aspect]
+conv2.adb:11:51: info: type is suitable as source for unchecked conversion (Trivial)
+conv2.adb:11:58: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Float_Bytes doesn't have an Object_Size representation clause or aspect]
+conv2.adb:21:19: medium: assertion might fail, cannot prove Z1_Bytes = Z2_Bytes (e.g. when Z1_Bytes = (others => 0) and Z2_Bytes = (others => 0))

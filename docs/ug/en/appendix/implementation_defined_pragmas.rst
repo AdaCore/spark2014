@@ -1,6 +1,8 @@
 Implementation Defined Pragmas
 ==============================
 
+.. index:: SPARK_Mode; rules
+
 .. _Pragma_SPARK_Mode:
 
 Pragma ``SPARK_Mode``

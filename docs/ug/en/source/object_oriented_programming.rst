@@ -9,6 +9,11 @@ Principle: every overriding operation of the derived type should behave so that
 it can be substituted for the corresponding overridden operation of the parent
 type anywhere.
 
+.. index:: Pre'Class
+           Post'Class
+           precondition; on dispatching operation
+           postcondition; on dispatching operation
+
 .. _Class-Wide Subprogram Contracts:
 
 Class-Wide Subprogram Contracts
@@ -166,6 +171,8 @@ call either ``Logging.Append_To_Log`` or ``Range_Logging.Append_To_Log``:
 Because |GNATprove| separately checks Liskov Substitution Principle for
 procedure ``Append_To_Log``, it can use the class-wide contract of
 ``Logging.Append_To_Log`` for analyzing procedure ``Add_To_Total``.
+
+.. index:: Extensions_Visible
 
 Dynamic Types and Invisible Components
 --------------------------------------

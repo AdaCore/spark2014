@@ -8,6 +8,8 @@ that contain loops may require the addition of explicit loop
 invariant contracts. This section describes a systematic approach
 for writing loop invariants.
 
+.. index:: loop; automatic unrolling
+
 .. _Automatic Unrolling of Simple For-Loops:
 
 Automatic Unrolling of Simple For-Loops
@@ -58,6 +60,8 @@ loop invariant at the start of the loop:
    end loop;
 
 It can also be disabled globally by using the switch ``--no-loop-unrolling``.
+
+.. index:: Loop_Invariant; automatic generation
 
 .. _Automatically Generated Loop Invariants:
 
@@ -153,6 +157,8 @@ assertion on line 33:
 .. literalinclude:: /examples/tests/preserved_components/test.out
    :language: none
    :linenos:
+
+.. index:: Loop_Invariant; guidelines
 
 The Four Properties of a Good Loop Invariant
 --------------------------------------------

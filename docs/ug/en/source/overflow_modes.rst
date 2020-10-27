@@ -1,3 +1,7 @@
+.. index:: Overflow_Mode
+           Big_Numbers; as alternative to overflow modes
+           -gnato
+
 .. _Overflow Modes:
 
 Overflow Modes

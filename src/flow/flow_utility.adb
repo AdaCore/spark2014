@@ -2873,6 +2873,7 @@ package body Flow_Utility is
             pragma Assert (The_Attribute in Attribute_Alignment
                                           | Attribute_Ceiling
                                           | Attribute_Component_Size
+                                          | Attribute_Copy_Sign
                                           | Attribute_Enum_Rep
                                           | Attribute_Enum_Val
                                           | Attribute_Floor

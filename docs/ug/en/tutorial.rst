@@ -62,6 +62,8 @@ index.
 We can check that the above code is valid Ada by using the ``Build > Check
 Semantic`` menu, which completes without any errors or warnings:
 
+.. index:: Stone level; tutorial
+
 .. image:: /static/search_check_semantic.png
 
 Checking SPARK Legality Rules
@@ -98,6 +100,8 @@ this type:
 .. literalinclude:: /examples/tests/linear_search_spark/linear_search.adb
    :language: ada
    :linenos:
+
+.. index:: Bronze level; tutorial
 
 .. _Checking SPARK Initialization Policy:
 
@@ -211,6 +215,8 @@ hold on exit.
 
 The program obtained so far is a valid |SPARK| program, which |GNAT Pro|
 analyzes semantically without errors or warnings.
+
+.. index:: executable contracts; tutorial
 
 Testing |SPARK| Programs
 ========================
@@ -327,6 +333,9 @@ that achieves 100% coverage for all the common coverage criteria, once
 impossible paths have been ruled out: statement coverage, condition coverage,
 the MC/DC coverage used in avionics, and even the full static path coverage.
 
+.. index:: Silver level; tutorial
+           Gold level; tutorial
+
 .. _proving spark programs:
 
 Proving |SPARK| Programs
@@ -391,6 +400,8 @@ Note that there is no such message on the postcondition of ``Search``,
 which means that it was proved. Likewise, there are no such messages on the
 body of ``Search``, which means that no run-time errors can be raised
 when executing the function.
+
+.. index:: Loop_Invariant; tutorial
 
 These messages correspond to checks done when exiting from ``Search``. It is
 expected that not much can be proved at this point, given that the body of

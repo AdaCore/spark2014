@@ -27,9 +27,12 @@ check failure on ``X + 1``:
 .. literalinclude:: /examples/tests/increment/test.out
    :language: none
 
+.. index:: precondition; example of use
+           possible fix; example of use
+
 The counterexample displayed tells us that ``Increment`` could be called on
 value ``Integer'Last`` for parameter ``X``, which would cause the increment to
-raise a run-time error. As suggested by the possible explanation in the message
+raise a run-time error. As suggested by the possible fix in the message
 issued by |GNATprove|, one way to eliminate this vulnerability is to add a
 precondition to ``Increment`` specifying that ``X`` should be less than
 ``Integer'Last`` when calling the procedure:
@@ -47,6 +50,11 @@ overflow check failure on ``X + 1``:
 .. literalinclude:: /examples/tests/increment_guarded/test.out
    :language: none
 
+.. index:: Global; example of use
+           Depends; example of use
+           precondition; example of use
+           postcondition; example of use
+
 The precondition is usually the first contract added to a subprogram, but there
 are other :ref:`Subprogram Contracts`. Here is a version of ``Increment``
 with:
@@ -63,6 +71,8 @@ with:
 .. literalinclude:: /examples/tests/increment_full/increment_full.adb
    :language: ada
    :linenos:
+
+.. index:: --report; example of use
 
 |GNATprove| checks that ``Increment_Full`` implements its contract, and that it
 cannot raise run-time errors or read uninitialized data. By default,
@@ -88,7 +98,7 @@ consider a procedure ``Increment_Calls`` that calls the different versions of
 
 ``Increment`` has no precondition, so there is nothing to check here except the
 initialization of ``X`` when calling ``Increment`` on lines 11 and 12. But
-remember that |GNATprove| did issue a message about a true vulnaribility on
+remember that |GNATprove| did issue a message about a true vulnerability on
 ``Increment``'s implementation.
 
 This vulnerability was corrected by adding a precondition to
@@ -101,11 +111,14 @@ by the call to ``Increment_Guarded`` on line 15, and the contract of
 ``Increment_Guarded`` does not say anything about the possible values of ``X``
 on exit.
 
-As suggested by the possible explanation in the message issued by |GNATprove|,
+As suggested by the possible fix in the message issued by |GNATprove|,
 a postcondition like the one on ``Increment_Full`` is needed so that
 |GNATprove| can check the second call to increment ``X``. As expected,
 |GNATprove| proves that both calls to ``Increment_Full`` on lines 19 and 20
 satisfy their precondition.
+
+.. index:: contextual analysis; example of use
+           inlining for proof; example of use
 
 In some cases, the user is not interested in specifying and verifying a
 complete contract like the one on ``Increment_Full``, typically for helper
@@ -271,35 +284,46 @@ treated differently (``Constraint_Error`` in the case of an overflow,
 One way to avoid this vulnerability is to rewrite the precondition so that no
 overflow can occur:
 
-.. literalinclude:: /examples/tests/addition_rewrite/addition_rewrite.adb
+.. literalinclude:: /examples/tests/addition_rewrite/addition.adb
    :language: ada
    :linenos:
 
-Although |GNATprove| proves that ``Addition_Rewrite`` implements its contract
+Although |GNATprove| proves that ``Addition`` implements its contract
 and is free from run-time errors, the rewritten precondition is not so readable
 anymore:
 
 .. literalinclude:: /examples/tests/addition_rewrite/test.out
    :language: none
 
-A better way to achieve the same goal without losing in readability is to
-execute and analyze contracts in a special mode where overflows cannot occur,
-as explained in :ref:`Overflow Modes`. In that case, |GNATprove| proves that
-there are no run-time errors in function ``Addition``, and that it implements
-its contract.
+.. index:: Big_Numbers; example of use
 
-Finally, we can choose to expand the range of applicability of the function, by
-accepting any values of inputs ``X`` and ``Y``, and saturating when the
-addition would overflow the bounds of machine integers. That's what function
-``Addition_Saturated`` does, and its saturating behavior is expressed in
-:ref:`Contract Cases`:
+A better way to achieve the same goal without losing in readability is to use
+the :ref:`Big Numbers Library` for arithmetic operations which could overflow:
 
-.. literalinclude:: /examples/tests/addition_saturated/addition_saturated.adb
+.. literalinclude:: /examples/tests/addition_bignum/addition.adb
    :language: ada
    :linenos:
 
-|GNATprove| proves that ``Addition_Saturated`` implements its contract and is
-free from run-time errors:
+In that case, |GNATprove| proves that there are no run-time errors in function
+``Addition``, and that it implements its contract:
+
+.. literalinclude:: /examples/tests/addition_bignum/test.out
+   :language: none
+
+.. index:: Contract_Cases; example of use
+
+Finally, we can choose to expand the range of applicability of the function, by
+accepting any values of inputs ``X`` and ``Y``, and saturating when the
+addition would overflow the bounds of machine integers. That's what the
+rewritten function ``Addition`` does, and its saturating behavior is expressed
+in :ref:`Contract Cases`:
+
+.. literalinclude:: /examples/tests/addition_saturated/addition.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| proves that ``Addition`` implements its contract and is free from
+run-time errors:
 
 .. literalinclude:: /examples/tests/addition_saturated/test.out
    :language: none

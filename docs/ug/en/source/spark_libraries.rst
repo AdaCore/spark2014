@@ -3,6 +3,8 @@
 |SPARK| Libraries
 =================
 
+.. index:: Big_Numbers
+
 .. _Big Numbers Library:
 
 Big Numbers Library
@@ -122,6 +124,8 @@ computations on real numbers.
       --  are not too big.
    end;
 
+.. index:: functional containers
+
 .. _Functional Containers Library:
 
 Functional Containers Library
@@ -218,6 +222,8 @@ available resources:
    element or key types are ownership types. Care should be taken to do the
    required copies when storing these elements/keys inside the container or
    retrieving them.
+
+.. index:: formal containers
 
 .. _Formal Containers Library:
 
@@ -398,6 +404,8 @@ already traversed (otherwise the loop would have exited):
    required copies when storing these elements/keys inside the container or
    retrieving them.
 
+.. index:: quantified-expression; over container
+
 Quantification over Formal Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -433,6 +441,8 @@ quantified expression above is equivalent to:
 where ``Result`` is the value of the quantified expression. See |GNAT Pro|
 Reference Manual for details on aspect ``Iterable``.
 
+.. index:: lemma library
+
 .. _SPARK Lemma Library:
 
 SPARK Lemma Library
@@ -450,6 +460,8 @@ add a corresponding dependency in your project file, for example:
   project My_Project is
      ...
   end My_Project;
+
+.. index:: GPR_PROJECT_PATH; for lemma library
 
 You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
 lemma library project to be found by GNAT compiler, as described in
@@ -669,6 +681,8 @@ Currently, the higher-order function library provides the following functions:
    provided at each instance. As a result, each instance should be verified by
    running the SPARK tools.
 
+.. index:: access types; SPARK.Heap
+
 .. _SPARK Heap Library:
 
 SPARK Heap Library
@@ -714,6 +728,8 @@ For example:
    begin
       return Result;
    end;
+
+.. index:: input-output
 
 .. _Input-Output Libraries:
 

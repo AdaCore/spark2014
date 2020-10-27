@@ -1,0 +1,7 @@
+addition.adb:6:03: info: flow dependencies proved
+addition.adb:7:14: info: postcondition proved
+addition.adb:7:22: info: predicate check proved
+addition.adb:7:32: info: predicate check proved
+addition.adb:7:36: info: predicate check proved
+addition.adb:10:11: info: predicate check proved
+addition.adb:10:15: info: predicate check proved
