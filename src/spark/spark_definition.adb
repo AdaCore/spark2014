@@ -3230,7 +3230,7 @@ package body SPARK_Definition is
    ---------------
 
    procedure Mark_Call (N : Node_Id) is
-      E : Entity_Id;
+      E : constant Entity_Id := Get_Called_Entity (N);
       --  Entity of the called subprogram or entry
 
       function Is_Volatile_Call (Call_Node : Node_Id) return Boolean;
@@ -3316,6 +3316,7 @@ package body SPARK_Definition is
 
          if Is_Anonymous_Access_Object_Type (Etype (Formal))
            and then Ekind (E) /= E_Function
+           and then not Is_Function_Type (E)
          then
             Check_Source_Of_Borrow_Or_Observe (Actual);
 
@@ -3370,7 +3371,6 @@ package body SPARK_Definition is
          return;
 
       else
-         E := Get_Called_Entity (N);
 
          --  Calls to aliases, i.e. subprograms created by the frontend
          --  that operate on derived types, are rewritten with calls to
