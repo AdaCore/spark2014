@@ -30,6 +30,7 @@ with Sem_Ch12;
 with Sem_Disp;
 with SPARK_Util.Types;
 with Stand;              use Stand;
+with Stringt;            use Stringt;
 
 package body SPARK_Atree is
 
@@ -905,6 +906,49 @@ package body SPARK_Atree is
 
    function Has_Target_Names (N : Node_Id) return Boolean renames
      Sinfo.Has_Target_Names;
+
+   ------------------------
+   -- Has_Wide_Character --
+   ------------------------
+
+   --  We cannot use directly Sinfo.Has_Wide_Character which is not set for
+   --  string literals not from source, say created as a result of inlining.
+   function Has_Wide_Character (N : Node_Id) return Boolean is
+   begin
+      for J in  1 .. String_Length (Strval (N)) loop
+         declare
+            Code : constant Char_Code := Get_String_Char (Strval (N), J);
+         begin
+            if not In_Character_Range (Code)
+              and then In_Wide_Character_Range (Code)
+            then
+               return True;
+            end if;
+         end;
+      end loop;
+      return False;
+   end Has_Wide_Character;
+
+   -----------------------------
+   -- Has_Wide_Wide_Character --
+   -----------------------------
+
+   --  We cannot use directly Sinfo.Has_Wide_Wide_Character which is not
+   --  set for string literals not from source, say created as a result
+   --  of inlining.
+   function Has_Wide_Wide_Character (N : Node_Id) return Boolean is
+   begin
+      for J in  1 .. String_Length (Strval (N)) loop
+         declare
+            Code : constant Char_Code := Get_String_Char (Strval (N), J);
+         begin
+            if not In_Wide_Character_Range (Code) then
+               return True;
+            end if;
+         end;
+      end loop;
+      return False;
+   end Has_Wide_Wide_Character;
 
    ----------------
    -- High_Bound --

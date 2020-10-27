@@ -21339,81 +21339,89 @@ package body Gnat2Why.Expr is
             Binders     => Binders,
             Return_Type => Why_Type));
 
-      --  We now generate an axiom which gives the values stored in Id
+      --  We now generate an axiom which gives the values stored in Id,
+      --  when the literal contains only plain Character as expected by
+      --  String_To_Name_Buffer.
 
-      declare
-         Call         : constant W_Term_Id :=
-           +New_Call (Domain  => EW_Term,
-                      Name    => Id,
-                      Binders => Binders,
-                      Typ     => Why_Type);
-         Axiom_Name   : constant String := Name & "__" & Def_Axiom;
-         Str_Value    : constant String_Id := Strval (N);
-         Len          : constant Nat := String_Length (Str_Value);
-         Low_Bound    : constant Int :=
-           UI_To_Int (Expr_Value (String_Literal_Low_Bound (Ty)));
-         Value_String : String (1 .. Natural (Len));
-         B_Ty         : constant W_Type_Id :=
-           Nth_Index_Rep_Type_No_Bool (Ty, 1);
-         Def          : W_Pred_Id := True_Pred;
+      if not (Has_Wide_Character (N)
+                or else
+              Has_Wide_Wide_Character (N))
+      then
+         declare
+            Call         : constant W_Term_Id :=
+              +New_Call (Domain  => EW_Term,
+                         Name    => Id,
+                         Binders => Binders,
+                         Typ     => Why_Type);
+            Axiom_Name   : constant String := Name & "__" & Def_Axiom;
+            Str_Value    : constant String_Id := Strval (N);
+            Len          : constant Nat := String_Length (Str_Value);
+            Low_Bound    : constant Int :=
+              UI_To_Int (Expr_Value (String_Literal_Low_Bound (Ty)));
+            Value_String : String (1 .. Natural (Len));
+            B_Ty         : constant W_Type_Id :=
+              Nth_Index_Rep_Type_No_Bool (Ty, 1);
+            Def          : W_Pred_Id := True_Pred;
 
-      begin
-         --  Fetch the value of the string literal
+         begin
+            --  Fetch the value of the string literal
 
-         String_To_Name_Buffer (Str_Value);
-         Value_String := Name_Buffer (1 .. Natural (Len));
+            String_To_Name_Buffer (Str_Value);
+            Value_String := Name_Buffer (1 .. Natural (Len));
 
-         --  For each index in the string, add an assumption specifying the
-         --  value stored in Id at this index.
+            --  For each index in the string, add an assumption specifying the
+            --  value stored in Id at this index.
 
-         if Len > 0 then
-            declare
-               Expr_Ar : W_Expr_Array (1 .. Positive (Len));
-            begin
-               for I in 1 .. Len loop
-                  declare
-                     Arr_Val : constant W_Expr_Id :=
-                       New_Array_Access
-                         (Ada_Node => Empty,
-                          Ar       => +Call,
-                          Index    =>
-                            (1 => New_Discrete_Constant
-                               (Value => UI_From_Int (I - 1 + Low_Bound),
-                                Typ   => B_Ty)),
-                          Domain   => EW_Term);
-                     Char   : constant W_Expr_Id :=
-                       New_Integer_Constant
-                         (Value => UI_From_CC
-                            (Get_Char_Code (Value_String (Positive (I)))));
-                  begin
-                     Expr_Ar (Positive (I)) :=
-                       New_Comparison
-                         (Symbol => Why_Eq,
-                          Left   => Insert_Simple_Conversion
-                            (Domain => EW_Term,
-                             Expr   => Arr_Val,
-                             To     => EW_Int_Type),
-                          Right  => Char,
-                          Domain => EW_Pred);
-                  end;
-               end loop;
-               Def := +New_And_Expr (Expr_Ar, EW_Pred);
-            end;
-         end if;
+            if Len > 0 then
+               declare
+                  Expr_Ar : W_Expr_Array (1 .. Positive (Len));
+               begin
+                  for I in 1 .. Len loop
+                     declare
+                        Arr_Val : constant W_Expr_Id :=
+                          New_Array_Access
+                            (Ada_Node => Empty,
+                             Ar       => +Call,
+                             Index    =>
+                               (1 => New_Discrete_Constant
+                                  (Value => UI_From_Int (I - 1 + Low_Bound),
+                                   Typ   => B_Ty)),
+                             Domain   => EW_Term);
+                        Char   : constant W_Expr_Id :=
+                          New_Integer_Constant
+                            (Value => UI_From_CC
+                               (Get_Char_Code (Value_String (Positive (I)))));
+                     begin
+                        Expr_Ar (Positive (I)) :=
+                          New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   => Insert_Simple_Conversion
+                               (Domain => EW_Term,
+                                Expr   => Arr_Val,
+                                To     => EW_Int_Type),
+                             Right  => Char,
+                             Domain => EW_Pred);
+                     end;
+                  end loop;
+                  Def := +New_And_Expr (Expr_Ar, EW_Pred);
+               end;
+            end if;
 
-         --  Emit an axiom containing all the assumptions
+            --  Emit an axiom containing all the assumptions
 
-         Emit
-           (Th,
-            New_Axiom
-              (Ada_Node => N,
-               Name     => NID (Axiom_Name),
-               Def      => New_Universal_Quantif
-                 (Binders  => Binders,
-                  Triggers => New_Triggers
-                    (Triggers => (1 => New_Trigger (Terms => (1 => +Call)))),
-                  Pred     => Def)));
-      end;
+            Emit
+              (Th,
+               New_Axiom
+                 (Ada_Node => N,
+                  Name     => NID (Axiom_Name),
+                  Def      => New_Universal_Quantif
+                    (Binders  => Binders,
+                     Triggers => New_Triggers
+                       (Triggers =>
+                          (1 => New_Trigger (Terms => (1 => +Call)))),
+                     Pred     => Def)));
+         end;
+      end if;
 
       Close_Theory (Th,
                     Kind => Definition_Theory,
