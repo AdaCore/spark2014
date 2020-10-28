@@ -33,6 +33,7 @@ with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
+with Flow_Types;                      use Flow_Types;
 with Gnat2Why_Args;
 with Lib;                             use Lib;
 with Namet;                           use Namet;
@@ -3046,6 +3047,32 @@ package body SPARK_Definition is
                      Mark_Unsupported
                        ("access to subprogram annotated with"
                         & " Relaxed_Initialization", N);
+
+                  --  Subprogram with non-null Global contract (either explicit
+                  --  or generated).
+
+                  else
+                     declare
+                        Globals : Global_Flow_Ids;
+                     begin
+                        Get_Globals
+                          (Subprogram          => Subp,
+                           Scope               =>
+                             (Ent => Subp, Part => Visible_Part),
+                           Classwide           => False,
+                           Globals             => Globals,
+                           Use_Deduced_Globals =>
+                              not Gnat2Why_Args.Global_Gen_Mode,
+                           Ignore_Depends      => False);
+
+                        if not Globals.Proof_Ins.Is_Empty
+                          or else not Globals.Inputs.Is_Empty
+                          or else not Globals.Outputs.Is_Empty
+                        then
+                           Mark_Violation
+                             ("access to subprogram with global effects", N);
+                        end if;
+                     end;
                   end if;
                end;
             else
