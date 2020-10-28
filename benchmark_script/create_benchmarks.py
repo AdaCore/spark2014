@@ -65,6 +65,7 @@ def collate_benchmarks(datadir, benchdir):
         "cvc4_16": "smt2",
         "z3_gnatprove": "smt2",
         "z3_gnatprove_ce":  "smt2",
+        "colibri":  "smt2",
     }
 
     for p in PROVERS:
