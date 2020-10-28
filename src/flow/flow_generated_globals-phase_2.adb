@@ -607,30 +607,21 @@ package body Flow_Generated_Globals.Phase_2 is
    function Is_Predefined (EN : Entity_Name) return Boolean is
      (Match (Predefined, Strip_Child_Prefixes (To_String (EN))));
 
-   -------------
-   -- GG_Read --
-   -------------
+   -----------------
+   -- GG_Complete --
+   -----------------
 
-   procedure GG_Read (GNAT_Root : Node_Id) is
-      Timing : Time_Token;
-      --  In case we print timing information
-
+   procedure GG_Complete (GNAT_Root : Node_Id) is
       procedure Add_Edges;
-      --  Creates edges for (conditional and unconditional) subprogram calls in
-      --  the tasking-related call graphs.
+      --  Add edges for subprogram calls in tasking-related call graphs
 
-      procedure Load_GG_Info_From_ALI
-        (ALI_File_Name     : File_Name_Type;
-         For_Current_CUnit : Boolean);
-      --  Loads the GG info from an ALI file and stores them in the
-      --  Subprogram_Info_List, State_Comp_Map and volatile info sets.
-
-      procedure Note_Time (Message : String);
-      --  Record timing statistics (but only in timing debug mode)
+      procedure Detect_Main_Subprogram (GNAT_Root : Node_Id);
+      --  If the current compilation unit is a main task of a partition, then
+      --  add register it as a yet another task for tasking-related checks.
 
       procedure Process_Tasking_Graph;
       --  Do transitive closure of the tasking graph and put the resulting
-      --  information back to bag with tasking-related information.
+      --  information back to the bag with tasking-related information.
 
       ---------------
       -- Add_Edges --
@@ -642,71 +633,9 @@ package body Flow_Generated_Globals.Phase_2 is
          -- Create tasking-related call graphs --
          ----------------------------------------
 
-         --  If it is a library-level subprogram with no parameters then it may
-         --  be the main subprogram of a partition and thus be executed by the
-         --  environment task.
-         --
-         --  Such a subprogram might be given either as a spec, body or
-         --  instance of a generic procedure, in which case front end wraps it
-         --  inside a package body. Currently GNAT does not allow subprogram
-         --  renaming to be main, but this choice is implementation-specific
-         --  (see AA RM 10.2(29.b)).
-         --
-         --  The following code mirrors front end tests in
-         --  Lib.Writ.Write_ALI.Output_Main_Program_Line, but also detects
-         --  main-like subprogram declaration, which we want to analyze even
-         --  if there is yet no a subprogram body or it is not in SPARK.
-
-         Detect_Main_Subprogram : declare
-            U : constant Node_Id := Unit (GNAT_Root);
-            S : Entity_Id;
-
-         begin
-            case Nkind (U) is
-            when N_Subprogram_Body =>
-               S := Unique_Defining_Entity (U);
-
-            when N_Subprogram_Declaration =>
-               S := Defining_Entity (U);
-
-            when N_Package_Body =>
-               if Nkind (Original_Node (U)) in N_Subprogram_Instantiation then
-
-                  S := Alias (Related_Instance
-                              (Defining_Unit_Name (Specification
-                                 (Unit (Library_Unit (GNAT_Root))))));
-
-                  --  ??? A generic subprogram is never a main program
-                  --  ??? If it is a child unit, get its simple name
-               else
-                  S := Types.Empty;
-               end if;
-
-            when others =>
-               S := Types.Empty;
-
-            end case;
-
-            if Present (S) and then Might_Be_Main (S) then
-               declare
-                  Main_Entity_Name : constant Entity_Name :=
-                    To_Entity_Name (S);
-               begin
-                  Register_Task_Object (Type_Name => Main_Entity_Name,
-                                        Object    =>
-                                          (Name      => Main_Entity_Name,
-                                           Instances => 1,
-                                           Node      => S));
-                  --  Register the main-like subprogram as a task, but use the
-                  --  same entity name for type and object name.
-               end;
-            end if;
-
-         end Detect_Main_Subprogram;
-
          --  For task ownership checks we create a call graph rooted at
-         --  tasks and main-like subprograms. Vertices correspond to callable
-         --  entities (i.e. entries, functions and procedures).
+         --  tasks and main-like subprograms. Vertices correspond to
+         --  callable entities (i.e. entries, functions and procedures).
 
          Add_Tasking_Edges : declare
             Stack : Name_Sets.Set;
@@ -978,6 +907,180 @@ package body Flow_Generated_Globals.Phase_2 is
             Call_Graph.Close;
          end Add_Ceiling_Priority_Edges;
       end Add_Edges;
+
+      ----------------------------
+      -- Detect_Main_Subprogram --
+      ----------------------------
+
+      procedure Detect_Main_Subprogram (GNAT_Root : Node_Id) is
+         U : constant Node_Id := Unit (GNAT_Root);
+         S : Entity_Id;
+
+      begin
+         --  If it is a library-level subprogram with no parameters then it may
+         --  be the main subprogram of a partition and thus be executed by the
+         --  environment task.
+         --
+         --  Such a subprogram might be given either as a spec, body or
+         --  instance of a generic procedure, in which case front end wraps it
+         --  inside a package body. Currently GNAT does not allow subprogram
+         --  renaming to be main, but this choice is implementation-specific
+         --  (see AA RM 10.2(29.b)).
+         --
+         --  The following code mirrors front end tests in
+         --  Lib.Writ.Write_ALI.Output_Main_Program_Line, but also detects
+         --  main-like subprogram declaration, which we want to analyze even if
+         --  there is yet no a subprogram body or it is not in SPARK.
+
+         case Nkind (U) is
+            when N_Subprogram_Body =>
+               S := Unique_Defining_Entity (U);
+
+            when N_Subprogram_Declaration =>
+               S := Defining_Entity (U);
+
+            when N_Package_Body =>
+               if Nkind (Original_Node (U)) in N_Subprogram_Instantiation then
+
+                  S := Alias (Related_Instance
+                              (Defining_Unit_Name (Specification
+                                 (Unit (Library_Unit (GNAT_Root))))));
+
+                  --  ??? A generic subprogram is never a main program
+                  --  ??? If it is a child unit, get its simple name
+               else
+                  S := Types.Empty;
+               end if;
+
+            when others =>
+               S := Types.Empty;
+         end case;
+
+         if Present (S) and then Might_Be_Main (S) then
+            declare
+               Main_Entity_Name : constant Entity_Name := To_Entity_Name (S);
+            begin
+               Register_Task_Object (Type_Name => Main_Entity_Name,
+                                     Object    =>
+                                       (Name      => Main_Entity_Name,
+                                        Instances => 1,
+                                        Node      => S));
+               --  Register the main-like subprogram as a task, but use the
+               --  same entity name for type and object name.
+            end;
+         end if;
+      end Detect_Main_Subprogram;
+
+      ---------------------------
+      -- Process_Tasking_Graph --
+      ---------------------------
+
+      procedure Process_Tasking_Graph is
+         use Entity_Name_Graphs;
+         G : Entity_Name_Graphs.Graph := Tasking_Call_Graph;
+      begin
+         --  Do the transitive closure
+         G.Close;
+
+         --  Collect information for each main-like subprogram
+         for TC in Task_Instances.Iterate loop
+            declare
+               TN : constant Entity_Name := Task_Instances_Maps.Key (TC);
+               --  Name of task or main-like subprogram
+
+               TV : constant Vertex_Id := Tasking_Call_Graph.Get_Vertex (TN);
+               --  Corresponding vertex in tasking call graph
+
+               procedure Collect_From (S : Entity_Name);
+               --  Collect tasking objects accessed by subprogram S as if they
+               --  were accessed by task TN.
+
+               ------------------
+               -- Collect_From --
+               ------------------
+
+               procedure Collect_From (S : Entity_Name) is
+               begin
+                  for Kind in Tasking_Info_Kind loop
+                     declare
+
+                        Phase_1_Info : Name_Graphs.Map renames
+                          Tasking_Info_Bag (GG_Phase_1, Kind);
+
+                        S_C : constant Name_Graphs.Cursor :=
+                          Phase_1_Info.Find (S);
+                        --  Pointer to objects accessed by subprogram S
+
+                        T_C : Name_Graphs.Cursor;
+                        --  Pointer to objects accessed by task T
+
+                        Inserted : Boolean;
+                        --  Flag that indicates if a key was inserted or if it
+                        --  already existed in a map. It is required by the
+                        --  hashed-maps API, but not used here.
+
+                     begin
+                        --  Only do something if S accesses any objects
+                        if Name_Graphs.Has_Element (S_C) then
+                           Tasking_Info_Bag (GG_Phase_2, Kind).Insert
+                             (Key      => TN,
+                              Position => T_C,
+                              Inserted => Inserted);
+
+                           for Var of Phase_1_Info (S_C) loop
+                              Tasking_Info_Bag (GG_Phase_2, Kind) (T_C).
+                                Union (GG_Expand_Abstract_State (Var));
+                           end loop;
+                        end if;
+                     end;
+                  end loop;
+               end Collect_From;
+
+            begin
+               --  Now graph G is a transitive (but not reflexive!) closure. We
+               --  need to explicitly collect objects accessed by the task
+               --  itself, and then all subprogram called it calls (directly or
+               --  indirectly).
+
+               Collect_From (TN);
+               for SV of G.Get_Collection (TV, Out_Neighbours) loop
+                  declare
+                     S : constant Entity_Name := G.Get_Key (SV);
+                  begin
+                     Collect_From (S);
+                  end;
+               end loop;
+            end;
+         end loop;
+      end Process_Tasking_Graph;
+
+   --  Start of processing for GG_Complete
+
+   begin
+      Detect_Main_Subprogram (GNAT_Root);
+
+      --  Compute and put tasking-related information back into the bag
+      Add_Edges;
+      Process_Tasking_Graph;
+      Print_Tasking_Info_Bag (GG_Phase_2);
+   end GG_Complete;
+
+   ----------------
+   -- GG_Resolve --
+   ----------------
+
+   procedure GG_Resolve is
+      Timing : Time_Token;
+      --  In case we print timing information
+
+      procedure Load_GG_Info_From_ALI
+        (ALI_File_Name     : File_Name_Type;
+         For_Current_CUnit : Boolean);
+      --  Loads the GG info from an ALI file and stores them in the
+      --  Subprogram_Info_List, State_Comp_Map and volatile info sets.
+
+      procedure Note_Time (Message : String);
+      --  Record timing statistics (but only in timing debug mode)
 
       ---------------------------
       -- Load_GG_Info_From_ALI --
@@ -1455,7 +1558,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      Register_Name_Scope (Entity, Info);
                   end;
-
             end case;
 
             Terminate_GG_Line;
@@ -1521,90 +1623,7 @@ package body Flow_Generated_Globals.Phase_2 is
          end if;
       end Note_Time;
 
-      ---------------------------
-      -- Process_Tasking_Graph --
-      ---------------------------
-
-      procedure Process_Tasking_Graph is
-         use Entity_Name_Graphs;
-         G : Entity_Name_Graphs.Graph := Tasking_Call_Graph;
-      begin
-         --  Do the transitive closure
-         G.Close;
-
-         --  Collect information for each main-like subprogram
-         for TC in Task_Instances.Iterate loop
-            declare
-               TN : constant Entity_Name := Task_Instances_Maps.Key (TC);
-               --  Name of task or main-like subprogram
-
-               TV : constant Vertex_Id := Tasking_Call_Graph.Get_Vertex (TN);
-               --  Corresponding vertex in tasking call graph
-
-               procedure Collect_From (S : Entity_Name);
-               --  Collect tasking objects accessed by subprogram S as if they
-               --  were accessed by task TN.
-
-               ------------------
-               -- Collect_From --
-               ------------------
-
-               procedure Collect_From (S : Entity_Name) is
-               begin
-                  for Kind in Tasking_Info_Kind loop
-                     declare
-
-                        Phase_1_Info : Name_Graphs.Map renames
-                          Tasking_Info_Bag (GG_Phase_1, Kind);
-
-                        S_C : constant Name_Graphs.Cursor :=
-                          Phase_1_Info.Find (S);
-                        --  Pointer to objects accessed by subprogram S
-
-                        T_C : Name_Graphs.Cursor;
-                        --  Pointer to objects accessed by task T
-
-                        Inserted : Boolean;
-                        --  Flag that indicates if a key was inserted or if it
-                        --  already existed in a map. It is required by the
-                        --  hashed-maps API, but not used here.
-
-                     begin
-                        --  Only do something if S accesses any objects
-                        if Name_Graphs.Has_Element (S_C) then
-                           Tasking_Info_Bag (GG_Phase_2, Kind).Insert
-                             (Key      => TN,
-                              Position => T_C,
-                              Inserted => Inserted);
-
-                           for Var of Phase_1_Info (S_C) loop
-                              Tasking_Info_Bag (GG_Phase_2, Kind) (T_C).
-                                Union (GG_Expand_Abstract_State (Var));
-                           end loop;
-                        end if;
-                     end;
-                  end loop;
-               end Collect_From;
-
-            begin
-               --  Now graph G is a transitive (but not reflexive!) closure. We
-               --  need to explicitly collect objects accessed by the task
-               --  itself, and then all subprogram called it calls (directly or
-               --  indirectly).
-
-               Collect_From (TN);
-               for SV of G.Get_Collection (TV, Out_Neighbours) loop
-                  declare
-                     S : constant Entity_Name := G.Get_Key (SV);
-                  begin
-                     Collect_From (S);
-                  end;
-               end loop;
-            end;
-         end loop;
-      end Process_Tasking_Graph;
-
-   --  Start of processing for GG_Read
+   --  Start of processing for GG_Resolve
 
    begin
       Current_Mode := GG_Read_Mode;
@@ -1630,8 +1649,6 @@ package body Flow_Generated_Globals.Phase_2 is
       GG_State_Constituents := True;
 
       Note_Time ("gg_read - ALI files read");
-
-      Add_Edges;
 
       Note_Time ("gg_read - edges added");
 
@@ -2482,12 +2499,8 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Get_Globals from within Has_Variable_Input.
       GG_Generated := True;
 
-      --  Put tasking-related information back to the bag
-      Process_Tasking_Graph;
-      Print_Tasking_Info_Bag (GG_Phase_2);
-
       Note_Time ("gg_read - end");
-   end GG_Read;
+   end GG_Resolve;
 
    --------------------------------------------------------------------------
    --  Queries

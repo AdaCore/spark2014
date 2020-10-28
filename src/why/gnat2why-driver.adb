@@ -497,9 +497,6 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-      E         : constant Entity_Id :=
-        Unique_Defining_Entity (Unit (GNAT_Root));
-
       generic
          with procedure Action (N : Node_Id);
       procedure Process_All_Units;
@@ -573,9 +570,13 @@ package body Gnat2Why.Driver is
       procedure Register_All_Flow_Scopes is new Process_All_Units
         (Action => Register_Flow_Scopes);
 
-      --  This Boolean indicates whether proof have been attempted anywhere in
-      --  the unit.
+      --  Local variables
+
+      E : constant Entity_Id := Unique_Defining_Entity (Unit (GNAT_Root));
+      --  Unique entity of the current compilation unit
+
       Proof_Done : Boolean := False;
+      --  Indicates whether proof have been attempted anywhere in the unit
 
    --  Start of processing for GNAT_To_Why
 
@@ -638,29 +639,35 @@ package body Gnat2Why.Driver is
       Register_All_Flow_Scopes;
       Connect_Flow_Scopes;
 
-      Mark_Standard_Package;
-
-      --  Mark the current compilation unit as "in SPARK / not in SPARK".
-
-      Mark_Current_Unit;
-
-      Timing_Phase_Completed (Timing, "marking");
-
-      --  Finalize has to be called before we call Compilation_Errors.
-      Finalize (Last_Call => False);
-
-      if Compilation_Errors
-        or else Gnat2Why_Args.Check_Mode
-      then
-         return;
-      end if;
-
-      --  Build hierarchical representation of scopes in the current
-      --  compilation unit. This may require two traversals: for spec and body.
-
-      Build_Flow_Tree;
+      --  The remaining steps depend on phase. In particular, in phase 1
+      --  marking is done before flow, while in phase 2 it is done after flow.
+      --  Common steps are intentionally duplicated to keep the sequence clear.
 
       if Gnat2Why_Args.Global_Gen_Mode then
+
+         --  Mark the current compilation unit as "in SPARK / not in SPARK"
+         Mark_Standard_Package;
+         Mark_Current_Unit;
+
+         Timing_Phase_Completed (Timing, "marking");
+
+         --  Finalize has to be called before we call Compilation_Errors
+         Finalize (Last_Call => False);
+
+         if Compilation_Errors
+           or else Gnat2Why_Args.Check_Mode
+         then
+            return;
+         end if;
+
+         --  Build hierarchical representation of scopes in the current
+         --  compilation unit.
+         --
+         --  Also, pick constants with variable inputs. This is affected by the
+         --  SPARK status of expressions in their initial values, so must be
+         --  done after marking.
+
+         Build_Flow_Tree;
 
          Generate_Globals (GNAT_Root);
          Timing_Phase_Completed (Timing, "globals (partial)");
@@ -707,9 +714,33 @@ package body Gnat2Why.Driver is
          Prescan_ALI_Files;
          Timing_Phase_Completed (Timing, "globals (basic)");
 
+         --  Build hierarchical representation of scopes in the current
+         --  compilation unit.
+
+         Build_Flow_Tree;
+
          --  Read the generated globals from the ALI files
-         GG_Read (GNAT_Root);
-         Timing_Phase_Completed (Timing, "globals/properties (advanced)");
+
+         GG_Resolve;
+         Timing_Phase_Completed (Timing, "globals (advanced)");
+
+         --  Mark the current compilation unit as "in SPARK / not in SPARK"
+         Mark_Standard_Package;
+         Mark_Current_Unit;
+
+         Timing_Phase_Completed (Timing, "marking");
+
+         --  Finalize has to be called before we call Compilation_Errors
+         Finalize (Last_Call => False);
+
+         if Compilation_Errors
+           or else Gnat2Why_Args.Check_Mode
+         then
+            return;
+         end if;
+
+         GG_Complete (GNAT_Root);
+         Timing_Phase_Completed (Timing, "properties (advanced)");
 
          --  Do some flow analysis
 
@@ -717,8 +748,8 @@ package body Gnat2Why.Driver is
          Generate_Assumptions;
          Timing_Phase_Completed (Timing, "flow analysis");
 
-         --  Perform the new SPARK checking rules for pointer aliasing. This is
-         --  only activated on SPARK code.
+         --  Check SPARK rules for pointer aliasing. This is only activated on
+         --  SPARK code.
 
          Do_Ownership_Checking;
 
