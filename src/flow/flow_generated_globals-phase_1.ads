@@ -113,8 +113,8 @@ package Flow_Generated_Globals.Phase_1 is
    --  GG_Write_Package_Info.
 
    procedure GG_Write_Finalize
-   with Pre => GG_Mode = GG_Write_Mode;
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_No_Mode;
    --  Appends all collected information to the ALI file
-   --  ??? add a Post to prevent re-opening the ALI file for writing
 
 end Flow_Generated_Globals.Phase_1;
