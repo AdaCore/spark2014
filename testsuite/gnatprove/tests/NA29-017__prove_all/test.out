@@ -108,7 +108,7 @@ sorting.adb:127:37: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:49: info: range check proved (CVC4: 2 VC)
 sorting.adb:127:65: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:69: info: overflow check proved (CVC4: 2 VC)
-sorting.adb:134:13: info: loop invariant initialization proved (CVC4: 5 VC; Trivial: 3 VC; altergo: 1 VC)
+sorting.adb:134:13: info: loop invariant initialization proved (CVC4: 4 VC; Trivial: 3 VC; altergo: 2 VC)
 sorting.adb:135:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I mod (L * 2) = 0
 sorting.adb:135:35: info: division check proved (CVC4: 2 VC)
 sorting.adb:135:42: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
