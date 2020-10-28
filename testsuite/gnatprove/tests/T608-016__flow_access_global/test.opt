@@ -1,0 +1,1 @@
+ALL XFAIL access-to-subprogram with globals (T608-016)
