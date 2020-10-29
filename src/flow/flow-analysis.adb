@@ -4772,6 +4772,13 @@ package body Flow.Analysis is
                   if Ekind (E) = E_Package then
                      null;
 
+                  --  Calls via access-to-subprogram are not potentially
+                  --  blocking, because attribute Access is only allowed on
+                  --  subprograms with null globals.
+
+                  elsif Ekind (E) = E_Subprogram_Type then
+                     null;
+
                   --  Calls to entries are trivially potentially blocking
 
                   elsif Is_Entry (E) then
