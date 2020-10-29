@@ -5908,6 +5908,19 @@ package body Flow.Analysis is
                            Proved := False;
                         end if;
 
+                     elsif Ekind (E) = E_Subprogram_Type then
+
+                        Proved := False;
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "call via access-to-subprogram, " &
+                                       "terminating annotation could " &
+                                       "be incorrect",
+                           Severity => Medium_Check_Kind,
+                           N        => Atr.Error_Location,
+                           Tag      => Subprogram_Termination,
+                           Vertex   => V);
+
                      --  If the analyzed subprogram, its terminating annotation
                      --  cannot be trusted. A message is emitted if the
                      --  subprogram has no Subprogram_Variant aspect.
