@@ -572,6 +572,10 @@ package SPARK_Atree is
    function Iteration_Scheme (N : Node_Id) return Node_Id with
      Pre => Nkind (N) = N_Loop_Statement;
 
+   function Iterator_Filter (N : Node_Id) return Node_Id with
+     Pre => Nkind (N) in N_Iterator_Specification
+                       | N_Loop_Parameter_Specification;
+
    function Iterator_Specification (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Iteration_Scheme
                        | N_Quantified_Expression;

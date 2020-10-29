@@ -1557,6 +1557,12 @@ package body SPARK_Definition is
 
          when N_Iterator_Specification =>
 
+            --  Mark the iterator filter if any
+
+            if Present (Iterator_Filter (N)) then
+               Mark (Iterator_Filter (N));
+            end if;
+
             --  Retrieve Iterable aspect specification if any
 
             declare
@@ -1627,7 +1633,24 @@ package body SPARK_Definition is
 
             if Present (Iteration_Scheme (N)) then
                Mark_Iteration_Scheme (Iteration_Scheme (N));
+
+               --  We cannot precisely support iterator filters on loops over
+               --  containers in proof, as we don't know how to define what the
+               --  "next" valid element is. Reject them.
+               --  Note that the same problem does not occur in quantified
+               --  expressions.
+
+               if Present (Iterator_Specification (Iteration_Scheme (N)))
+                 and then Present
+                   (Iterator_Filter
+                      (Iterator_Specification (Iteration_Scheme (N))))
+               then
+                  Mark_Unsupported
+                    ("loop on an iterator specification with an iterator"
+                     & " filter", N);
+               end if;
             end if;
+
             Mark_Stmt_Or_Decl_List (Statements (N));
 
          when N_Membership_Test =>
@@ -6602,6 +6625,10 @@ package body SPARK_Definition is
          pragma Assert (No (Condition_Actions (N)));
          Mark (Discrete_Subtype_Definition
                  (Loop_Parameter_Specification (N)));
+
+         if Present (Iterator_Filter (Loop_Parameter_Specification (N))) then
+            Mark (Iterator_Filter (Loop_Parameter_Specification (N)));
+         end if;
 
          --  The loop parameter shall be added to the entities in SPARK
          declare

@@ -2154,6 +2154,9 @@ package body Gnat2Why.Borrow_Checker is
             begin
                if Present (For_In_Spec) then
                   Read_Expression (Discrete_Subtype_Definition (For_In_Spec));
+                  if Present (Iterator_Filter (For_In_Spec)) then
+                     Read_Expression (Iterator_Filter (For_In_Spec));
+                  end if;
                else
                   Read_Expression (Name (For_Of_Spec));
                   For_Of_Spec_Typ := Subtype_Indication (For_Of_Spec);
@@ -2179,6 +2182,10 @@ package body Gnat2Why.Borrow_Checker is
                      begin
                         Set (Current_Perm_Env, Target, Tree);
                      end;
+                  end if;
+
+                  if Present (Iterator_Filter (For_Of_Spec)) then
+                     Read_Expression (Iterator_Filter (For_Of_Spec));
                   end if;
                end if;
 
@@ -2722,6 +2729,10 @@ package body Gnat2Why.Borrow_Checker is
                if Present (Param_Spec) then
                   Check_Expression
                     (Discrete_Subtype_Definition (Param_Spec), Read);
+
+                  if Present (Iterator_Filter (Param_Spec)) then
+                     Check_Expression (Iterator_Filter (Param_Spec), Read);
+                  end if;
                else
                   Check_Expression (Name (Iter_Spec), Read);
                   if Present (Subtype_Indication (Iter_Spec)) then
@@ -2746,6 +2757,10 @@ package body Gnat2Why.Borrow_Checker is
                      begin
                         Set (Current_Perm_Env, Target, Tree);
                      end;
+                  end if;
+
+                  if Present (Iterator_Filter (Iter_Spec)) then
+                     Check_Expression (Iterator_Filter (Iter_Spec), Read);
                   end if;
                end if;
             end;

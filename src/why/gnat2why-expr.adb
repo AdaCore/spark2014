@@ -19841,6 +19841,37 @@ package body Gnat2Why.Expr is
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
       Insert_Entity (Quant_Var, W_Quant_Var);
       Result := Transform_Expr (Condition (Expr), Domain, Params);
+
+      --  If there is a filter, add it as an additional condition on the
+      --  iterated values.
+
+      declare
+         Filter : constant Node_Id :=
+           (if Over_Range
+            then Iterator_Filter (Loop_Parameter_Specification (Expr))
+            else Iterator_Filter (Iterator_Specification (Expr)));
+      begin
+         if Present (Filter) then
+            if All_Present (Expr) then
+               Result := New_Conditional
+                 (Domain    => Domain,
+                  Condition => Transform_Expr (Filter, Domain, Params),
+                  Then_Part => Result,
+                  Else_Part => Insert_Simple_Conversion
+                    (Domain => Domain,
+                     Expr   => New_Literal
+                       (Value => EW_True, Domain => Domain),
+                     To     => Type_Of_Node (Condition (Expr))),
+                  Typ       => Type_Of_Node (Condition (Expr)));
+            else
+               Result := New_And_Then_Expr
+                 (Left   => Transform_Expr (Filter, Domain, Params),
+                  Right  => Result,
+                  Domain => Domain);
+            end if;
+         end if;
+      end;
+
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
       --  Step 6: in those cases where the quantified variable and the index

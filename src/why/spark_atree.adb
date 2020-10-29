@@ -1177,6 +1177,13 @@ package body SPARK_Atree is
    function Iteration_Scheme (N : Node_Id) return Node_Id renames
      Sinfo.Iteration_Scheme;
 
+   ---------------------
+   -- Iterator_Filter --
+   ---------------------
+
+   function Iterator_Filter (N : Node_Id) return Node_Id renames
+     Sinfo.Iterator_Filter;
+
    ----------------------------
    -- Iterator_Specification --
    ----------------------------
