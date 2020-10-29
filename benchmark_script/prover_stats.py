@@ -68,9 +68,12 @@ class Z3(Prover):
                 mysteps = int(Prover.regex_get(self.limit_reg, output, 1))
             except TypeError:
                 mysteps = 0
+            status = Prover.regex_get(Prover.status_reg, output)
+            if status is None:
+                raise ValueError
             return\
                 {"filename": fn,
-                 "status": Prover.regex_get(Prover.status_reg, output),
+                 "status": status,
                  "steps": mysteps,
                  "time": mytime }
         except ValueError:
