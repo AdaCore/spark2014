@@ -3,14 +3,15 @@
 import os
 import shutil
 import subprocess
+import sys
 
-def create_benchmarks(datadir, limit):
+def create_benchmarks(testsuitedir, datadir, extra_args):
     os.mkdir(datadir)
     olddir = os.getcwd()
     try:
-        os.chdir("../testsuite/gnatprove")
+        os.chdir(testsuitedir)
         p = subprocess.run(["./run-tests", "--benchmarks",
-                            "--temp-dir=" + datadir, "--disable-cleanup"] + limit)
+                            "--temp-dir=" + datadir, "--disable-cleanup"] + extra_args)
         if os.path.exists("internal"):
             print("warning: collected VCs include internal tests")
     finally:
@@ -33,7 +34,7 @@ def collate_benchmarks(datadir, benchdir):
                 else:
                     vc_index = int(vc_index)
 
-                test_name = path.split("/")[2]
+                test_name = path.split("/")[4]
                 name = test_name + "__" + vc_name
                 name = name.replace(" ", "_")
 
@@ -83,17 +84,24 @@ def collate_benchmarks(datadir, benchdir):
                     assert (not os.path.exists(dst))
                     shutil.copyfile(the_test, dst)
 
-def create_collated_benchs(benchdir="bench", limit=[]):
+def create_collated_benchs(testsuitedir="../testsuite/gnatprove",
+                           benchdir="bench",
+                           extra_args=[]):
     datadir = os.path.join("/tmp", "sparkbench")
     if os.path.exists(datadir):
         shutil.rmtree(datadir)
     if os.path.exists(benchdir):
         shutil.rmtree(benchdir)
-    create_benchmarks(datadir, limit)
+    create_benchmarks(testsuitedir, datadir, extra_args)
     collate_benchmarks(datadir, benchdir)
 
 def main():
-    create_collated_benchs()
+    if len(sys.argv) < 3:
+        print("usage: create_benchmarks.py <testsuitedir> <targetdir>")
+    testsuitedir = sys.argv[1]
+    targetdir = sys.argv[2]
+    create_collated_benchs(testsuitedir=testsuitedir,
+                           benchdir=targetdir)
 
 if __name__ == "__main__":
     # execute only if run as a script

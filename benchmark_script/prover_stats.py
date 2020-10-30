@@ -3,6 +3,7 @@
 import argparse
 import glob
 import json
+import multiprocessing
 import os
 import os.path
 import random
@@ -172,7 +173,10 @@ class CVC4(Prover):
         try:
             status = Prover.regex_get(Prover.status_reg, output)
             steps = int(Prover.regex_get(self.limit_reg, output, 1))
-            time = float(Prover.regex_get(self.time_reg, output, 1))
+            try:
+                time = float(Prover.regex_get(self.time_reg, output, 1))
+            except:
+                pass
             return\
                 {"filename": fn,
                  "status": status,
@@ -218,6 +222,8 @@ def parse_arguments():
     if args.format != "json" and args.format != "csv":
         print("output format " + args.format + " not supported, exiting.")
         exit(1)
+    if args.parallel == 0:
+        args.parallel = multiprocessing.cpu_count() / 2
     return args
 
 
