@@ -1,0 +1,59 @@
+convert.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+convert.adb:10:07: info: type is suitable as source for unchecked conversion (Trivial)
+convert.adb:10:20: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+convert.adb:13:07: info: initialization of "Res_Hi" proved
+convert.adb:13:15: info: initialization of "Res_Mid" proved
+convert.adb:13:24: info: initialization of "Res_Lo" proved
+convert.adb:14:07: info: initialization of "Res" proved
+convert.adb:23:22: medium: assertion might fail, cannot prove To_Binary32 (Res_Lo) = 2.0**23
+convert.adb:26:42: info: range check proved (Z3: 2 VC)
+convert.adb:28:22: medium: assertion might fail, cannot prove To_Binary32 (Res_Lo) = 2.0**23 + Binary32 (Unsigned_32 (V and 16#3FFF_FF#)) [possible fix: subprogram at convert.ads:59 should mention V in a precondition]
+convert.adb:28:53: info: float overflow check proved (Trivial)
+convert.adb:29:34: info: range check proved (Trivial)
+convert.adb:29:49: info: range check proved (Z3: 2 VC)
+convert.adb:33:62: info: range check proved (Z3: 2 VC)
+convert.adb:35:22: medium: assertion might fail, cannot prove To_Binary32 (Res_Mid) = 2.0**45 + 2.0**22 * Binary32 (Unsigned_32 (Shift_Right (V, 22) and 16#3FFF_FF#)) [possible fix: subprogram at convert.ads:59 should mention V in a precondition]
+convert.adb:35:54: info: float overflow check proved (Trivial)
+convert.adb:36:32: info: float overflow check proved (Trivial)
+convert.adb:36:44: info: range check proved (Trivial)
+convert.adb:37:47: info: range check proved (Z3: 2 VC)
+convert.adb:41:60: info: range check proved (Z3: 2 VC)
+convert.adb:43:22: medium: assertion might fail, cannot prove To_Binary32 (Res_Hi) = 2.0**67 + 2.0**44 * Binary32 (Unsigned_32 (Shift_Right (V, 44) and 16#FFFF_F#)) [possible fix: subprogram at convert.ads:59 should mention V in a precondition]
+convert.adb:43:53: info: float overflow check proved (Trivial)
+convert.adb:44:32: info: float overflow check proved (Trivial)
+convert.adb:44:44: info: range check proved (Trivial)
+convert.adb:45:47: info: range check proved (Z3: 2 VC)
+convert.adb:48:35: info: float overflow check proved (CVC4: 1 VC)
+convert.adb:48:45: info: float overflow check proved (Z3: 1 VC)
+convert.adb:49:18: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+convert.adb:49:42: info: float overflow check proved (Z3: 1 VC)
+convert.adb:50:18: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+convert.ads:42:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+convert.ads:45:45: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+convert.ads:47:29: info: overflow check proved (Z3: 1 VC)
+convert.ads:49:18: info: predicate check proved (Z3: 1 VC)
+convert.ads:49:24: info: predicate check proved (Z3: 1 VC)
+convert.ads:50:18: info: predicate check proved (Z3: 1 VC)
+convert.ads:50:24: info: predicate check proved (Z3: 1 VC)
+convert.ads:51:35: info: predicate check proved (Z3: 1 VC)
+convert.ads:51:40: info: predicate check proved (Z3: 1 VC)
+convert.ads:51:48: info: predicate check proved (Z3: 1 VC)
+convert.ads:51:54: info: predicate check proved (Z3: 1 VC)
+convert.ads:52:35: info: predicate check proved (Z3: 1 VC)
+convert.ads:52:40: info: predicate check proved (Z3: 1 VC)
+convert.ads:52:48: info: predicate check proved (Z3: 1 VC)
+convert.ads:52:54: info: predicate check proved (Z3: 1 VC)
+convert.ads:61:11: medium: postcondition might fail, cannot prove if V <= 16#1000_000# then Res = V else if V >= 18446742974197923840 then (Correct_Rounding (V, Res, Last_Float_As_Uns64, ...)) else if V < ResU then ... else ...
+convert.ads:65:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+convert.ads:67:17: info: precondition proved (Z3: 2 VC)
+convert.ads:72:64: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+convert.ads:75:23: medium: precondition might fail, cannot prove Low <= Last_Float_As_Uns64
+convert.ads:76:63: info: overflow check proved (Z3: 1 VC)
+convert.ads:79:23: medium: precondition might fail, cannot prove Hi = 2.0**64 or else Hi <= Last_Float_As_Uns64
+convert.ads:81:63: info: overflow check proved (Z3: 1 VC)
+test_convert.adb:9:08: info: range check proved (Z3: 2 VC)
+test_convert.adb:9:44: info: cannot unroll loop (too many loop iterations)
+test_convert.adb:9:44: warning: statement has no effect
+test_convert.adb:10:09: warning: unused assignment
+test_convert.adb:12:35: info: range check proved (Z3: 1 VC)
+test_convert.adb:13:06: warning: unused assignment
