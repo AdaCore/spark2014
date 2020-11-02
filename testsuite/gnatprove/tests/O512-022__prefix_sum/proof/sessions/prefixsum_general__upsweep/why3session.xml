@@ -900,9 +900,7 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.260" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="124147"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="2"><result status="valid" steps="136371"/></proof>
   </goal>
   <goal name="def&#39;vc.261" proved="true">
   <proof prover="2"><result status="valid" steps="2593"/></proof>
@@ -994,7 +992,7 @@
   </goal>
   <goal name="def&#39;vc.285">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="497144"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>
