@@ -23,7 +23,7 @@ convert.adb:43:53: info: float overflow check proved (Trivial)
 convert.adb:44:32: info: float overflow check proved (Trivial)
 convert.adb:44:44: info: range check proved (Trivial)
 convert.adb:45:47: info: range check proved (Z3: 2 VC)
-convert.adb:48:35: info: float overflow check proved (CVC4: 1 VC)
+convert.adb:48:35: info: float overflow check proved (Z3: 1 VC)
 convert.adb:48:45: info: float overflow check proved (Z3: 1 VC)
 convert.adb:49:18: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 convert.adb:49:42: info: float overflow check proved (Z3: 1 VC)

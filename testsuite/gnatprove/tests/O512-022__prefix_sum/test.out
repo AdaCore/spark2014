@@ -1,7 +1,7 @@
 prefixsum.adb:5:07: info: initialization of "Left" proved
 prefixsum.adb:6:07: info: initialization of "Right" proved
 prefixsum.adb:10:14: info: loop invariant initialization proved (CVC4: 6 VC)
-prefixsum.adb:10:14: info: loop invariant preservation proved (CVC4: 2 VC; altergo: 4 VC)
+prefixsum.adb:10:14: info: loop invariant preservation proved (CVC4: 2 VC; Z3: 1 VC; altergo: 3 VC)
 prefixsum.adb:15:27: info: division check proved (CVC4: 2 VC)
 prefixsum.adb:18:18: warning: unreachable branch (CVC4: 2 VC)
 prefixsum.adb:22:30: info: division check proved (CVC4: 2 VC)

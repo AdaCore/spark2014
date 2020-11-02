@@ -6,7 +6,7 @@ succ_floats.adb:6:19: medium: assertion might fail, cannot prove Float'Succ (X) 
 succ_floats.adb:6:31: info: overflow check proved (CVC4: 1 VC)
 succ_floats.adb:7:19: info: assertion proved (CVC4: 1 VC)
 succ_floats.adb:7:31: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:8:19: medium: assertion might fail, cannot prove Float'Pred (X) > -1.0
+succ_floats.adb:8:19: info: assertion proved (Z3: 1 VC)
 succ_floats.adb:8:31: info: overflow check proved (CVC4: 1 VC)
 succ_floats.adb:11:19: info: assertion proved (CVC4: 1 VC)
 succ_floats.adb:11:31: info: overflow check proved (CVC4: 1 VC)
@@ -14,15 +14,15 @@ succ_floats.adb:12:19: info: assertion proved (Z3: 1 VC)
 succ_floats.adb:12:31: info: overflow check proved (CVC4: 1 VC)
 succ_floats.adb:13:19: info: assertion proved (CVC4: 1 VC)
 succ_floats.adb:13:31: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:14:19: medium: assertion might fail, cannot prove Float'Pred (X) > 0.9 (e.g. when X = 1.0)
+succ_floats.adb:14:19: medium: assertion might fail, cannot prove Float'Pred (X) > 0.9
 succ_floats.adb:14:31: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:18:24: medium: overflow check might fail (e.g. when X = 3.4028235E+38) [reason for check: value must fit in a 32-bits machine integer]
+succ_floats.adb:18:24: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
 succ_floats.adb:20:22: info: assertion proved (CVC4: 1 VC)
 succ_floats.adb:20:34: info: overflow check proved (CVC4: 1 VC)
 succ_floats.adb:22:19: medium: assertion might fail, cannot prove Float'Pred (X) > 0.0
 succ_floats.adb:22:31: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:26:24: medium: overflow check might fail (e.g. when X = -3.4028235E+38) [reason for check: value must fit in a 32-bits machine integer]
+succ_floats.adb:26:24: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
 succ_floats.adb:28:22: info: assertion proved (CVC4: 1 VC)
 succ_floats.adb:28:34: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:30:19: medium: assertion might fail, cannot prove Float'Succ (X) < 0.0 (e.g. when X = -3.4028235E+38)
+succ_floats.adb:30:19: medium: assertion might fail, cannot prove Float'Succ (X) < 0.0
 succ_floats.adb:30:31: info: overflow check proved (CVC4: 1 VC)
