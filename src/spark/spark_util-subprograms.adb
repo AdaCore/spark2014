@@ -632,22 +632,18 @@ package body SPARK_Util.Subprograms is
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id is
       Body_N : constant Node_Id := Subprogram_Body (E);
+      Stmts  : constant List_Id :=
+        Statements (Handled_Statement_Sequence (Body_N));
       Stmt   : Node_Id;
       Arg    : Node_Id;
 
    begin
-      --  If there is no associated body, return Empty
-
-      if No (Body_N) then
-         return Empty;
-      end if;
-
-      Stmt := First (Statements (Handled_Statement_Sequence (Body_N)));
+      Stmt := First (Stmts);
 
       while Present (Stmt) loop
 
          --  Return the second argument of the first pragma Check in the
-         --  statement list if any.
+         --  statement list.
 
          if Nkind (Stmt) = N_Pragma
            and then Get_Pragma_Id (Pragma_Name (Stmt)) = Pragma_Check
@@ -662,6 +658,16 @@ package body SPARK_Util.Subprograms is
 
          Next (Stmt);
       end loop;
+
+      --  If there is no pragma Check, there must be a call to the partial
+      --  invariant procedure.
+
+      pragma Assert
+        (Is_Invariant_Procedure (E)
+           and then
+         Nkind (Last (Stmts)) = N_Procedure_Call_Statement
+           and then
+         Is_Partial_Invariant_Procedure (Entity (Name (Last (Stmts)))));
 
       --  Otherwise return Empty
 
