@@ -17,7 +17,7 @@ package Test_Fixed_Points is
      Pre  => Val1 <= Val2,
      Post => Val1 / Denom <= Val2 / Denom;
 
-   procedure Test_Div_Is_Antimonotonic
+   procedure Test_Div_Right_Is_Monotonic
      (Num    : Fix;
       Denom1 : Positive;
       Denom2 : Positive)

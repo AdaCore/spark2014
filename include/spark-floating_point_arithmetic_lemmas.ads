@@ -78,7 +78,7 @@ is
          Val1 <= Val2,
        Post => Val1 - Val3 <= Val2 - Val3;
 
-   procedure Lemma_Mul_Is_Monotonic
+   procedure Lemma_Mult_Is_Monotonic
      (Val1 : Fl;
       Val2 : Fl;
       Val3 : Fl)
@@ -91,7 +91,7 @@ is
          Val1 <= Val2,
        Post => Val1 * Val3 <= Val2 * Val3;  --  MANUAL PROOF
 
-   procedure Lemma_Mul_Is_Antimonotonic
+   procedure Lemma_Mult_Right_Negative_Is_Monotonic
      (Val1 : Fl;
       Val2 : Fl;
       Val3 : Fl)
@@ -104,7 +104,7 @@ is
          Val1 <= Val2,
        Post => Val2 * Val3 <= Val1 * Val3;  --  MANUAL PROOF
 
-   procedure Lemma_Mul_By_Less_Than_One
+   procedure Lemma_Mult_By_Less_Than_One
      (Val1 : Fl;
       Val2 : Fl)
      with
@@ -125,7 +125,7 @@ is
          Val1 <= Val2,
        Post => Val1 / Val3 <= Val2 / Val3;  --  MANUAL PROOF
 
-   procedure Lemma_Div_Is_Antimonotonic
+   procedure Lemma_Div_Right_Negative_Is_Monotonic
      (Val1 : Fl;
       Val2 : Fl;
       Val3 : Fl)

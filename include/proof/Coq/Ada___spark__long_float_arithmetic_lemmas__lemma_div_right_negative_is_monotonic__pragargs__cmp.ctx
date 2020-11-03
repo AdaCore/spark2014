@@ -1045,30 +1045,61 @@ Definition dynamic_invariant (temp___expr_74:t)
   (temp___is_init_70 = Init.Datatypes.true) \/ le (neg fliteral1) fliteral1 ->
   t'isFinite temp___expr_74.
 
-Parameter val1: t.
+Parameter fl_last_sqrt: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS: Numbers.BinNums.Z.
 
-Parameter val2: t.
+Parameter val1: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS1: Numbers.BinNums.Z.
 
+Parameter val2: t.
+
+Parameter attr__ATTRIBUTE_ADDRESS2: Numbers.BinNums.Z.
+
+Parameter val3: t.
+
+Parameter attr__ATTRIBUTE_ADDRESS3: Numbers.BinNums.Z.
+
 Parameter fliteral2: t.
 
-Axiom fliteral_axiom2 : t'isFinite fliteral2 /\ ((t'real fliteral2) = 0%R).
+Axiom fliteral_axiom2 :
+  t'isFinite fliteral2 /\
+  ((t'real fliteral2) =
+   6703903964971298549787012499102923063739682910296196688861780721860882015036773488400937149083451713845015929093243025426876941405973284973216824503042048%R).
+
+Axiom fl_last_sqrt__def_axiom : (fl_last_sqrt = fliteral2).
 
 Parameter fliteral3: t.
 
-Axiom fliteral_axiom3 : t'isFinite fliteral3 /\ ((t'real fliteral3) = 1%R).
+Axiom fliteral_axiom3 :
+  t'isFinite fliteral3 /\
+  ((t'real fliteral3) =
+   (1491668146240041348658193063092586767475294306920081378854303666641255677014023660987234978080085560672302320651167220290682545619045060532097232965918416938296252158463756275499040814853287052588289310873012782953082843452117701424006337364600644548459512739853070043067441211667303325729200722585486710369393731465299801630663978357915766537189483642578125 / 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)%R).
 
 (* Why3 goal *)
 Theorem def'vc :
+  dynamic_invariant fl_last_sqrt Init.Datatypes.true Init.Datatypes.false
+  Init.Datatypes.true Init.Datatypes.true -> (fliteral2 = fl_last_sqrt) ->
   dynamic_invariant val1 Init.Datatypes.true Init.Datatypes.false
   Init.Datatypes.true Init.Datatypes.true ->
   dynamic_invariant val2 Init.Datatypes.true Init.Datatypes.false
   Init.Datatypes.true Init.Datatypes.true ->
-  (le fliteral2 val1 /\ le val1 fliteral3) /\ le fliteral2 val2 ->
-  le (mul RNE val1 val2) val2.
+  dynamic_invariant val3 Init.Datatypes.true Init.Datatypes.false
+  Init.Datatypes.true Init.Datatypes.true ->
+  (((le (neg fliteral2) val1 /\ le val1 fl_last_sqrt) /\
+    le (neg fliteral2) val2 /\ le val2 fl_last_sqrt) /\
+   le (neg fliteral1) val3 /\ le val3 (neg fliteral3)) /\
+  le val1 val2 -> le (div RNE val2 val3) (div RNE val1 val3).
 Proof.
-#include "float_mul_by_less_than_one.prf"
-Qed.
+intros h1 h2 h3 h4 h5 ((((h6, h7), (h8, h9)), (h10, h11)), h12).
+unfold dynamic_invariant in *.
+assert (Hdumb: true = true \/ le (neg fliteral1) fliteral1). auto.
+specialize (h1 Hdumb).
+specialize (h3 Hdumb).
+specialize (h4 Hdumb).
+specialize (h5 Hdumb).
+(* file shared by the two lemmas dealing with 64-bit division *)
+#include "float64_div_common.prf"
+(* file shared by the two lemmas dealing 32/64-bit div right monotonicity *)
+#include "float_div_right_negative_is_monotonic.prf"

@@ -135,8 +135,10 @@ Parameter t'isFinite: t -> Prop.
 
 Axiom t'axiom :
   forall (x:t), t'isFinite x ->
-  ((-340282346638528859811704183484516925440%R)%R <= (t'real x))%R /\
-  ((t'real x) <= 340282346638528859811704183484516925440%R)%R.
+  ((-179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368%R)%R
+   <= (t'real x))%R /\
+  ((t'real x) <=
+   179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368%R)%R.
 
 Parameter truncate: Reals.Rdefinitions.R -> Numbers.BinNums.Z.
 
@@ -291,12 +293,15 @@ Parameter round: mode -> Reals.Rdefinitions.R -> Reals.Rdefinitions.R.
 Parameter max_int: Numbers.BinNums.Z.
 
 Axiom max_real_int :
-  ((33554430 * 10141204801825835211973625643008)%R = (BuiltIn.IZR max_int)).
+  ((9007199254740991 * 19958403095347198116563727130368385660674512604354575415025472424372118918689640657849579654926357010893424468441924952439724379883935936607391717982848314203200056729510856765175377214443629871826533567445439239933308104551208703888888552684480441575071209068757560416423584952303440099278848)%R
+   = (BuiltIn.IZR max_int)).
 
 (* Why3 assumption *)
 Definition in_range (x:Reals.Rdefinitions.R) : Prop :=
-  ((-(33554430 * 10141204801825835211973625643008)%R)%R <= x)%R /\
-  (x <= (33554430 * 10141204801825835211973625643008)%R)%R.
+  ((-(9007199254740991 * 19958403095347198116563727130368385660674512604354575415025472424372118918689640657849579654926357010893424468441924952439724379883935936607391717982848314203200056729510856765175377214443629871826533567445439239933308104551208703888888552684480441575071209068757560416423584952303440099278848)%R)%R
+   <= x)%R /\
+  (x <=
+   (9007199254740991 * 19958403095347198116563727130368385660674512604354575415025472424372118918689640657849579654926357010893424468441924952439724379883935936607391717982848314203200056729510856765175377214443629871826533567445439239933308104551208703888888552684480441575071209068757560416423584952303440099278848)%R)%R.
 
 (* Why3 assumption *)
 Definition in_int_range (i:Numbers.BinNums.Z) : Prop :=
@@ -335,7 +340,7 @@ Axiom Round_up_neg :
 
 (* Why3 assumption *)
 Definition in_safe_int_range (i:Numbers.BinNums.Z) : Prop :=
-  ((-16777216%Z)%Z <= i)%Z /\ (i <= 16777216%Z)%Z.
+  ((-9007199254740992%Z)%Z <= i)%Z /\ (i <= 9007199254740992%Z)%Z.
 
 Axiom Exact_rounding_for_integers :
   forall (m:mode) (i:Numbers.BinNums.Z), in_safe_int_range i ->
@@ -449,20 +454,24 @@ Definition overflow_value (m:mode) (x:t) : Prop :=
   | RTN =>
       (is_positive x ->
        t'isFinite x /\
-       ((t'real x) = (33554430 * 10141204801825835211973625643008)%R)) /\
+       ((t'real x) =
+        (9007199254740991 * 19958403095347198116563727130368385660674512604354575415025472424372118918689640657849579654926357010893424468441924952439724379883935936607391717982848314203200056729510856765175377214443629871826533567445439239933308104551208703888888552684480441575071209068757560416423584952303440099278848)%R)) /\
       (~ is_positive x -> is_infinite x)
   | RTP =>
       (is_positive x -> is_infinite x) /\
       (~ is_positive x ->
        t'isFinite x /\
-       ((t'real x) = (-(33554430 * 10141204801825835211973625643008)%R)%R))
+       ((t'real x) =
+        (-(9007199254740991 * 19958403095347198116563727130368385660674512604354575415025472424372118918689640657849579654926357010893424468441924952439724379883935936607391717982848314203200056729510856765175377214443629871826533567445439239933308104551208703888888552684480441575071209068757560416423584952303440099278848)%R)%R))
   | RTZ =>
       (is_positive x ->
        t'isFinite x /\
-       ((t'real x) = (33554430 * 10141204801825835211973625643008)%R)) /\
+       ((t'real x) =
+        (9007199254740991 * 19958403095347198116563727130368385660674512604354575415025472424372118918689640657849579654926357010893424468441924952439724379883935936607391717982848314203200056729510856765175377214443629871826533567445439239933308104551208703888888552684480441575071209068757560416423584952303440099278848)%R)) /\
       (~ is_positive x ->
        t'isFinite x /\
-       ((t'real x) = (-(33554430 * 10141204801825835211973625643008)%R)%R))
+       ((t'real x) =
+        (-(9007199254740991 * 19958403095347198116563727130368385660674512604354575415025472424372118918689640657849579654926357010893424468441924952439724379883935936607391717982848314203200056729510856765175377214443629871826533567445439239933308104551208703888888552684480441575071209068757560416423584952303440099278848)%R)%R))
   | RNA|RNE => is_infinite x
   end.
 
@@ -741,7 +750,8 @@ Axiom of_int_is_int :
 
 Axiom big_float_is_int :
   forall (m:mode) (i:t), t'isFinite i ->
-  le i (neg (of_int m 16777216%Z)) \/ le (of_int m 16777216%Z) i -> is_int i.
+  le i (neg (of_int m 9007199254740992%Z)) \/
+  le (of_int m 9007199254740992%Z) i -> is_int i.
 
 Axiom roundToIntegral_is_int :
   forall (m:mode) (x:t), t'isFinite x -> is_int (roundToIntegral m x).
@@ -860,21 +870,21 @@ Axiom roundToIntegral_is_finite :
 
 Axiom round_bound_ne :
   forall (x:Reals.Rdefinitions.R), no_overflow RNE x ->
-  (((x - ((1 / 16777216)%R * (Reals.Rbasic_fun.Rabs x))%R)%R -
-    (1 / 1427247692705959881058285969449495136382746624)%R)%R
+  (((x - ((1 / 9007199254740992)%R * (Reals.Rbasic_fun.Rabs x))%R)%R -
+    (1 / 404804506614621236704990693437834614099113299528284236713802716054860679135990693783920767402874248990374155728633623822779617474771586953734026799881477019843034848553132722728933815484186432682479535356945490137124014966849385397236206711298319112681620113024717539104666829230461005064372655017292012526615415482186989568)%R)%R
    <= (round RNE x))%R /\
   ((round RNE x) <=
-   ((x + ((1 / 16777216)%R * (Reals.Rbasic_fun.Rabs x))%R)%R +
-    (1 / 1427247692705959881058285969449495136382746624)%R)%R)%R.
+   ((x + ((1 / 9007199254740992)%R * (Reals.Rbasic_fun.Rabs x))%R)%R +
+    (1 / 404804506614621236704990693437834614099113299528284236713802716054860679135990693783920767402874248990374155728633623822779617474771586953734026799881477019843034848553132722728933815484186432682479535356945490137124014966849385397236206711298319112681620113024717539104666829230461005064372655017292012526615415482186989568)%R)%R)%R.
 
 Axiom round_bound :
   forall (m:mode) (x:Reals.Rdefinitions.R), no_overflow m x ->
-  (((x - ((1 / 8388608)%R * (Reals.Rbasic_fun.Rabs x))%R)%R -
-    (1 / 713623846352979940529142984724747568191373312)%R)%R
+  (((x - ((1 / 4503599627370496)%R * (Reals.Rbasic_fun.Rabs x))%R)%R -
+    (1 / 202402253307310618352495346718917307049556649764142118356901358027430339567995346891960383701437124495187077864316811911389808737385793476867013399940738509921517424276566361364466907742093216341239767678472745068562007483424692698618103355649159556340810056512358769552333414615230502532186327508646006263307707741093494784)%R)%R
    <= (round m x))%R /\
   ((round m x) <=
-   ((x + ((1 / 8388608)%R * (Reals.Rbasic_fun.Rabs x))%R)%R +
-    (1 / 713623846352979940529142984724747568191373312)%R)%R)%R.
+   ((x + ((1 / 4503599627370496)%R * (Reals.Rbasic_fun.Rabs x))%R)%R +
+    (1 / 202402253307310618352495346718917307049556649764142118356901358027430339567995346891960383701437124495187077864316811911389808737385793476867013399940738509921517424276566361364466907742093216341239767678472745068562007483424692698618103355649159556340810056512358769552333414615230502532186327508646006263307707741093494784)%R)%R)%R.
 
 (* Why3 assumption *)
 Definition neq (x:t) (y:t) : Prop := ~ eq x y.
@@ -981,9 +991,9 @@ Parameter attr__ATTRIBUTE_VALUE__pre_check: us_image -> Prop.
 
 Parameter attr__ATTRIBUTE_VALUE: us_image -> Init.Datatypes.bool.
 
-Axiom float__ : Type.
-Parameter float___WhyType : WhyType float__.
-Existing Instance float___WhyType.
+Axiom long_float : Type.
+Parameter long_float_WhyType : WhyType long_float.
+Existing Instance long_float_WhyType.
 
 Parameter bool_eq2: t -> t -> Init.Datatypes.bool.
 
@@ -992,7 +1002,7 @@ Axiom bool_eq'def2 :
   (eq x y -> ((bool_eq2 x y) = Init.Datatypes.true)) /\
   (~ eq x y -> ((bool_eq2 x y) = Init.Datatypes.false)).
 
-Parameter user_eq: float__ -> float__ -> Init.Datatypes.bool.
+Parameter user_eq: long_float -> long_float -> Init.Datatypes.bool.
 
 Parameter attr__ATTRIBUTE_IMAGE1: t -> us_image.
 
@@ -1000,90 +1010,65 @@ Parameter attr__ATTRIBUTE_VALUE__pre_check1: us_image -> Prop.
 
 Parameter attr__ATTRIBUTE_VALUE1: us_image -> t.
 
-Parameter dummy: float__.
+Parameter dummy: long_float.
 
 (* Why3 assumption *)
-Inductive float____ref :=
-  | float____ref'mk : float__ -> float____ref.
-Axiom float____ref_WhyType : WhyType float____ref.
-Existing Instance float____ref_WhyType.
+Inductive long_float__ref :=
+  | long_float__ref'mk : long_float -> long_float__ref.
+Axiom long_float__ref_WhyType : WhyType long_float__ref.
+Existing Instance long_float__ref_WhyType.
 
 (* Why3 assumption *)
-Definition float____content (v:float____ref) : float__ :=
+Definition long_float__content (v:long_float__ref) : long_float :=
   match v with
-  | float____ref'mk x => x
+  | long_float__ref'mk x => x
   end.
 
 (* Why3 assumption *)
-Definition float____ref_float____content__projection (a:float____ref) :
-    float__ :=
-  float____content a.
+Definition long_float__ref_long_float__content__projection
+    (a:long_float__ref) : long_float :=
+  long_float__content a.
 
 Parameter fliteral1: t.
 
 Axiom fliteral_axiom1 :
   t'isFinite fliteral1 /\
-  ((t'real fliteral1) = 340282346638528859811704183484516925440%R).
+  ((t'real fliteral1) =
+   179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368%R).
 
 (* Why3 assumption *)
-Definition dynamic_invariant (temp___expr_67:t)
-    (temp___is_init_63:Init.Datatypes.bool)
-    (temp___skip_constant_64:Init.Datatypes.bool)
-    (temp___do_toplevel_65:Init.Datatypes.bool)
-    (temp___do_typ_inv_66:Init.Datatypes.bool) : Prop :=
-  (temp___is_init_63 = Init.Datatypes.true) \/ le (neg fliteral1) fliteral1 ->
-  t'isFinite temp___expr_67.
-
-Parameter fl_last_sqrt: t.
-
-Parameter attr__ATTRIBUTE_ADDRESS: Numbers.BinNums.Z.
+Definition dynamic_invariant (temp___expr_74:t)
+    (temp___is_init_70:Init.Datatypes.bool)
+    (temp___skip_constant_71:Init.Datatypes.bool)
+    (temp___do_toplevel_72:Init.Datatypes.bool)
+    (temp___do_typ_inv_73:Init.Datatypes.bool) : Prop :=
+  (temp___is_init_70 = Init.Datatypes.true) \/ le (neg fliteral1) fliteral1 ->
+  t'isFinite temp___expr_74.
 
 Parameter val1: t.
 
-Parameter attr__ATTRIBUTE_ADDRESS1: Numbers.BinNums.Z.
+Parameter attr__ATTRIBUTE_ADDRESS: Numbers.BinNums.Z.
 
 Parameter val2: t.
 
-Parameter attr__ATTRIBUTE_ADDRESS2: Numbers.BinNums.Z.
-
-Parameter val3: t.
-
-Parameter attr__ATTRIBUTE_ADDRESS3: Numbers.BinNums.Z.
+Parameter attr__ATTRIBUTE_ADDRESS1: Numbers.BinNums.Z.
 
 Parameter fliteral2: t.
 
-Axiom fliteral_axiom2 :
-  t'isFinite fliteral2 /\ ((t'real fliteral2) = 9223372036854775808%R).
-
-Axiom fl_last_sqrt__def_axiom : (fl_last_sqrt = fliteral2).
+Axiom fliteral_axiom2 : t'isFinite fliteral2 /\ ((t'real fliteral2) = 0%R).
 
 Parameter fliteral3: t.
 
-Axiom fliteral_axiom3 : t'isFinite fliteral3 /\ ((t'real fliteral3) = 0%R).
+Axiom fliteral_axiom3 : t'isFinite fliteral3 /\ ((t'real fliteral3) = 1%R).
 
 (* Why3 goal *)
 Theorem def'vc :
-  dynamic_invariant fl_last_sqrt Init.Datatypes.true Init.Datatypes.false
-  Init.Datatypes.true Init.Datatypes.true -> (fliteral2 = fl_last_sqrt) ->
   dynamic_invariant val1 Init.Datatypes.true Init.Datatypes.false
   Init.Datatypes.true Init.Datatypes.true ->
   dynamic_invariant val2 Init.Datatypes.true Init.Datatypes.false
   Init.Datatypes.true Init.Datatypes.true ->
-  dynamic_invariant val3 Init.Datatypes.true Init.Datatypes.false
-  Init.Datatypes.true Init.Datatypes.true ->
-  (((le (neg fliteral2) val1 /\ le val1 fl_last_sqrt) /\
-    le (neg fliteral2) val2 /\ le val2 fl_last_sqrt) /\
-   le fliteral3 val3 /\ le val3 fl_last_sqrt) /\
-  le val1 val2 -> le (mul RNE val1 val3) (mul RNE val2 val3).
+  (le fliteral2 val1 /\ le val1 fliteral3) /\ le fliteral2 val2 ->
+  le (mul RNE val1 val2) val2.
 Proof.
-intros h1 h2 h3 h4 h5 ((((h6,h7),(h8,h9)),(h10,h11)),h12).
-unfold dynamic_invariant in *.
-assert (Hdumb: true = true \/ le (neg fliteral1) fliteral1). auto.
-specialize (h1 Hdumb).
-specialize (h3 Hdumb).
-specialize (h4 Hdumb).
-specialize (h5 Hdumb).
-(* file shared by the two lemmas dealing with 32-bit multiplication *)
-#include "float32_mul_common.prf"
-(* file shared by the two lemmas dealing 32/64-bit mul monotonicity *)
-#include "float_mul_is_monotonic.prf"
+#include "float_mult_by_less_than_one.prf"
+Qed.

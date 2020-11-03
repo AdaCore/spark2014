@@ -1034,59 +1034,30 @@ Definition dynamic_invariant (temp___expr_67:t)
   (temp___is_init_63 = Init.Datatypes.true) \/ le (neg fliteral1) fliteral1 ->
   t'isFinite temp___expr_67.
 
-Parameter fl_last_sqrt: t.
+Parameter val1: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS: Numbers.BinNums.Z.
 
-Parameter val1: t.
+Parameter val2: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS1: Numbers.BinNums.Z.
 
-Parameter val2: t.
-
-Parameter attr__ATTRIBUTE_ADDRESS2: Numbers.BinNums.Z.
-
-Parameter val3: t.
-
-Parameter attr__ATTRIBUTE_ADDRESS3: Numbers.BinNums.Z.
-
 Parameter fliteral2: t.
 
-Axiom fliteral_axiom2 :
-  t'isFinite fliteral2 /\ ((t'real fliteral2) = 9223372036854775808%R).
-
-Axiom fl_last_sqrt__def_axiom : (fl_last_sqrt = fliteral2).
+Axiom fliteral_axiom2 : t'isFinite fliteral2 /\ ((t'real fliteral2) = 0%R).
 
 Parameter fliteral3: t.
 
-Axiom fliteral_axiom3 :
-  t'isFinite fliteral3 /\
-  ((t'real fliteral3) =
-   (108420217248550443400745280086994171142578125 / 1000000000000000000000000000000000000000000000000000000000000000)%R).
+Axiom fliteral_axiom3 : t'isFinite fliteral3 /\ ((t'real fliteral3) = 1%R).
 
 (* Why3 goal *)
 Theorem def'vc :
-  dynamic_invariant fl_last_sqrt Init.Datatypes.true Init.Datatypes.false
-  Init.Datatypes.true Init.Datatypes.true -> (fliteral2 = fl_last_sqrt) ->
   dynamic_invariant val1 Init.Datatypes.true Init.Datatypes.false
   Init.Datatypes.true Init.Datatypes.true ->
   dynamic_invariant val2 Init.Datatypes.true Init.Datatypes.false
   Init.Datatypes.true Init.Datatypes.true ->
-  dynamic_invariant val3 Init.Datatypes.true Init.Datatypes.false
-  Init.Datatypes.true Init.Datatypes.true ->
-  (((le (neg fliteral2) val1 /\ le val1 fl_last_sqrt) /\
-    le (neg fliteral2) val2 /\ le val2 fl_last_sqrt) /\
-   le (neg fliteral1) val3 /\ le val3 (neg fliteral3)) /\
-  le val1 val2 -> le (div RNE val2 val3) (div RNE val1 val3).
+  (le fliteral2 val1 /\ le val1 fliteral3) /\ le fliteral2 val2 ->
+  le (mul RNE val1 val2) val2.
 Proof.
-intros h1 h2 h3 h4 h5 ((((h6,h7),(h8,h9)),(h10,h11)),h12).
-unfold dynamic_invariant in *.
-assert (Hdumb: true = true \/ le (neg fliteral1) fliteral1). auto.
-specialize (h1 Hdumb).
-specialize (h3 Hdumb).
-specialize (h4 Hdumb).
-specialize (h5 Hdumb).
-(* file shared by the two lemmas dealing with 32-bit division *)
-#include "float32_div_common.prf"
-(* file shared by the two lemmas dealing 32/64-bit div antimonotonicity *)
-#include "float_div_is_antimonotonic.prf"
+#include "float_mult_by_less_than_one.prf"
+Qed.
