@@ -938,8 +938,7 @@ package body Gnat2Why.Subprograms is
    function Compute_Dynamic_Property_For_Inputs
      (E              : Entity_Id;
       Params         : Transformation_Params;
-      Pred_Fun_Param : Entity_Id := Empty;
-      Initialized    : Boolean   := False) return W_Prog_Id
+      Pred_Fun_Param : Entity_Id := Empty) return W_Prog_Id
    is
       Includes : Node_Sets.Set;
 
@@ -1007,7 +1006,7 @@ package body Gnat2Why.Subprograms is
          Params           => Params,
          Scope            => E,
          Exclude_Top_Pred => Pred_Fun_Param,
-         Initialized      => Initialized);
+         Initialized      => False);
    end Compute_Dynamic_Property_For_Inputs;
 
    ------------------------------------------

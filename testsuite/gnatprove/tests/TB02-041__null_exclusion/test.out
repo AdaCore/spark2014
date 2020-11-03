@@ -1,0 +1,7 @@
+test_not_null_out.adb:4:14: high: all paths in "P" raise exceptions or do not terminate normally
+test_not_null_out.adb:8:07: medium: assertion might fail (e.g. when X = null)
+test_not_null_out.adb:13:26: info: initialization of "My_Int_Acc" proved
+test_not_null_out.adb:15:18: info: absence of memory leak proved (CVC4: 1 VC)
+test_not_null_out.adb:15:21: info: null exclusion check proved (CVC4: 1 VC)
+test_not_null_out.adb:18:04: medium: memory leak might occur at end of scope
+test_not_null_out.adb:20:16: info: absence of memory leak proved (CVC4: 1 VC)
