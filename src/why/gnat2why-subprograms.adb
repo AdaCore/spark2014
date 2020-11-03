@@ -291,7 +291,7 @@ package body Gnat2Why.Subprograms is
 
    function Number_Of_Func_Args (E : Entity_Id) return Natural is
      (Number_Formals (E)
-       + (if Within_Protected_Type (E) then 1 else 0));
+       + (if Need_Self_Binder (E) then 1 else 0));
 
    function Procedure_Logic_Binders (E : Entity_Id) return Binder_Array;
    --  Return binders that should be used for specific_post of a procedure E
@@ -968,7 +968,7 @@ package body Gnat2Why.Subprograms is
                --  If E is a protected subprogram, add the type itself to stand
                --  for the self reference.
 
-               if Within_Protected_Type (E)
+               if Need_Self_Binder (E)
                  and then Entity_Body_In_SPARK (E)
                then
                   Includes.Include (Containing_Protected_Type (E));
@@ -1687,7 +1687,7 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Raw_Binders (E : Entity_Id) return Item_Array is
       Binder_Len    : constant Natural :=
-        Number_Formals (E) + (if Within_Protected_Type (E) then 1 else 0);
+        Number_Formals (E) + (if Need_Self_Binder (E) then 1 else 0);
       Result        : Item_Array (1 .. Binder_Len);
       Formal        : Entity_Id;
       Count         : Positive;
@@ -1696,7 +1696,7 @@ package body Gnat2Why.Subprograms is
       Formal := First_Formal (E);
       Count := 1;
 
-      if Within_Protected_Type (E) then
+      if Need_Self_Binder (E) then
          declare
             Prot : constant Entity_Id := Containing_Protected_Type (E);
          begin
@@ -6159,6 +6159,13 @@ package body Gnat2Why.Subprograms is
    begin
       Subprogram_Exceptions.Insert (+Exc);
    end Insert_Exception;
+
+   ----------------------
+   -- Need_Self_Binder --
+   ----------------------
+
+   function Need_Self_Binder (E : Entity_Id) return Boolean is
+     (Is_Subprogram_Or_Entry (E) and then Within_Protected_Type (E));
 
    -----------------------------
    -- Procedure_Logic_Binders --

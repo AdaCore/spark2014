@@ -134,6 +134,9 @@ package Gnat2Why.Subprograms is
    procedure Insert_Exception (Exc : W_Name_Id);
    --  Add a new exception that should be declared before the unit
 
+   function Need_Self_Binder (E : Entity_Id) return Boolean;
+   --  Return True on entries and subprograms located within a protected object
+
 private
 
    procedure Declare_Logic_Functions

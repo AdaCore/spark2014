@@ -3301,7 +3301,7 @@ package body Gnat2Why.Expr is
          --  parameter, the protected object itself. We call "Compute_Arg" with
          --  empty arguments to process this case.
 
-         if Within_Protected_Type (Subp) then
+         if Need_Self_Binder (Subp) then
             Compute_Param (Empty, Empty);
          end if;
 
