@@ -3099,15 +3099,15 @@ package body Gnat2Why.Expr is
                elsif Is_Self then +Self_Name
 
                --  Do not check initialization of out parameters. If the
-               --  parameter is a scalar, no checks are introduced.
-               --  ??? Should we check predicates if the type has a
-               --  Default_Value?
+               --  parameter is a scalar or an access type, no checks are
+               --  introduced.
 
                elsif Ekind (Formal) = E_Out_Parameter
                then Insert_Checked_Conversion
                  (Ada_Node => Actual,
                   Domain   =>
-                    (if Is_Scalar_Type (Retysp (Etype (Formal)))
+                    (if (Is_Scalar_Type (Retysp (Etype (Formal)))
+                     or else Is_Access_Type (Retysp (Etype (Formal))))
                        and then Domain = EW_Prog
                      then EW_Pterm else Domain),
                   Expr     => Transform_Expr
@@ -4590,21 +4590,41 @@ package body Gnat2Why.Expr is
             Expr   => +Expr,
             Params => Params);
 
+         --  Only assume that an object with null exclusion is not null if it
+         --  is initialized. This is the case in most cases, since access types
+         --  are initialized by default. However, out parameters might not be
+         --  valid values of the type.
+
          if Can_Never_Be_Null (Ty_Ext) then
             T := +New_And_Expr
-              (Left   => New_Not
-                 (Right  => New_Record_Access
-                      (Name  => +Expr,
-                       Field => M_Subprogram_Access.Rec_Is_Null,
-                       Typ   => EW_Bool_Type),
-                  Domain => EW_Pred),
+              (Left   => New_Conditional
+                 (Domain    => EW_Pred,
+                  Condition => +Initialized,
+                  Then_Part => New_Not
+                    (Right  => New_Record_Access
+                         (Name  => +Expr,
+                          Field => M_Subprogram_Access.Rec_Is_Null,
+                          Typ   => EW_Bool_Type),
+                     Domain => EW_Pred),
+                  Typ       => EW_Bool_Type),
                Right  => +T,
                Domain => EW_Pred);
          end if;
 
       elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
-         T := New_Not (Right => New_Pointer_Is_Null_Access (E    => Ty_Ext,
-                                                            Name => +Expr));
+
+         --  Only assume that an object with null exclusion is not null if it
+         --  is initialized. This is the case in most cases, since access types
+         --  are initialized by default. However, out parameters might not be
+         --  valid values of the type.
+
+         T := New_Conditional
+           (Condition => +Initialized,
+            Then_Part => New_Not
+              (Domain => EW_Pred,
+               Right  => New_Pointer_Is_Null_Access (E    => Ty_Ext,
+                                                     Name => +Expr)),
+            Typ       => EW_Bool_Type);
 
       --  Do not assume bounds of arrays and discriminants if Only_Var is
       --  statically True.

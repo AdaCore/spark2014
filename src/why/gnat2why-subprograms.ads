@@ -194,8 +194,7 @@ private
    function Compute_Dynamic_Property_For_Inputs
      (E              : Entity_Id;
       Params         : Transformation_Params;
-      Pred_Fun_Param : Entity_Id := Empty;
-      Initialized    : Boolean := False) return W_Prog_Id
+      Pred_Fun_Param : Entity_Id := Empty) return W_Prog_Id
    with
        Pre => Ekind (E) in E_Procedure |
                            E_Function  |
