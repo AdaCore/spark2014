@@ -11,7 +11,7 @@ package body Bounded_Stacks is
    -- Empty --
    -----------
 
-   function Empty (This : Stack) return Boolean is
+   function Empty (This : Stack'Class) return Boolean is
      (This.Top = 0);
 
    ----------

@@ -167,13 +167,6 @@ package body SPARK_Atree.Entities is
      (Einfo.Is_Incomplete_Type (Einfo.Directly_Designated_Type (E))
       or else SPARK_Util.Is_Partial_View (Einfo.Directly_Designated_Type (E)));
 
-   -------------------
-   -- DIC_Procedure --
-   -------------------
-
-   function DIC_Procedure (Typ : Entity_Id) return Entity_Id renames
-     Einfo.DIC_Procedure;
-
    ------------------------------
    -- Directly_Designated_Type --
    ------------------------------
@@ -813,6 +806,13 @@ package body SPARK_Atree.Entities is
 
    function Package_Spec (Pack : Entity_Id) return Node_Id renames
      Sem_Aux.Package_Spec;
+
+   ---------------------------
+   -- Partial_DIC_Procedure --
+   ---------------------------
+
+   function Partial_DIC_Procedure (Typ : Entity_Id) return Entity_Id renames
+     Einfo.Partial_DIC_Procedure;
 
    ------------------------
    -- Predicate_Function --

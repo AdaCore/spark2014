@@ -10,7 +10,7 @@ package Bounded_Stacks is
 
    function Extent (This : Stack) return Natural;
 
-   function Empty (This : Stack) return Boolean;
+   function Empty (This : Stack'Class) return Boolean;
 
    function Full (This : Stack) return Boolean;
 

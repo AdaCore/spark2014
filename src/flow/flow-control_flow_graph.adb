@@ -3733,10 +3733,14 @@ package body Flow.Control_Flow_Graph is
       --  This procedure mirrors Count_Tasks from
       --  Sem_Ch3.Analyze_Object_Declaration.
 
-      procedure Add_Vertex_For_DIC (DIC_Proc : Entity_Id)
-      with Pre => Is_DIC_Procedure (DIC_Proc);
-      --  Add a sink vertex for a Default_Initial_Condition aspect. DIC_Proc is
-      --  the DIC procedure evaluated at the vertex.
+      procedure Add_Vertex_For_DIC
+        (Default_Init_Param : Entity_Id;
+         Default_Init_Expr  : Node_Id)
+      with Pre => Ekind (Default_Init_Param) = E_In_Parameter
+        and then Nkind (Default_Init_Expr) in N_Subexpr;
+      --  Add a sink vertex for a Default_Initial_Condition aspect.
+      --  Default_Init_Param is the entity for the current type instance and
+      --  Default_Init_Expr is the expression of the DIC.
 
       function Constraint (T : Entity_Id; D : Entity_Id) return Node_Id
       with Pre  => Has_Discriminants (T) and then Ekind (D) = E_Discriminant,
@@ -3894,15 +3898,15 @@ package body Flow.Control_Flow_Graph is
       -- Add_Vertex_For_DIC --
       ------------------------
 
-      procedure Add_Vertex_For_DIC (DIC_Proc : Entity_Id) is
-         Expr : constant Node_Id :=
-           Get_Expr_From_Check_Only_Proc (DIC_Proc);
-
+      procedure Add_Vertex_For_DIC
+        (Default_Init_Param : Entity_Id;
+         Default_Init_Expr  : Node_Id)
+      is
          Funcs          : Node_Sets.Set;
          Variables_Used : Flow_Id_Sets.Set;
 
          DIC_Param_Components : Flow_Id_Sets.Set :=
-           Flatten_Variable (First_Formal (DIC_Proc), FA.B_Scope);
+           Flatten_Variable (Default_Init_Param, FA.B_Scope);
          --  Flattened view of the DIC procedure parameter
 
       begin
@@ -3960,7 +3964,7 @@ package body Flow.Control_Flow_Graph is
          end;
 
          Variables_Used := Get_Variables
-           (Expr,
+           (Default_Init_Expr,
             Scope                => FA.B_Scope,
             Target_Name          => Null_Flow_Id,
             Fold_Functions       => Inputs,
@@ -3975,7 +3979,7 @@ package body Flow.Control_Flow_Graph is
          end if;
 
          Collect_Functions_And_Read_Locked_POs
-           (Expr,
+           (Default_Init_Expr,
             FA.B_Scope,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
@@ -3994,7 +3998,7 @@ package body Flow.Control_Flow_Graph is
          Inits.Append (V);
 
          --  Check for folded functions
-         Ctx.Folded_Function_Checks.Append (Expr);
+         Ctx.Folded_Function_Checks.Append (Default_Init_Expr);
       end Add_Vertex_For_DIC;
 
       ----------------
@@ -4311,13 +4315,10 @@ package body Flow.Control_Flow_Graph is
            and then Has_DIC (Typ)
          then
             declare
-               DIC_Proc : constant Entity_Id :=
-                 Get_Initial_DIC_Procedure (Typ);
-
+               procedure Add_Vertex_For_All_DIC is new
+                 Iterate_Applicable_DIC (Add_Vertex_For_DIC);
             begin
-               if Present (DIC_Proc) then
-                  Add_Vertex_For_DIC (DIC_Proc);
-               end if;
+               Add_Vertex_For_All_DIC (Typ);
             end;
          end if;
 

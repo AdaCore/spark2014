@@ -138,7 +138,8 @@ package Gnat2Why.Expr is
 
    function Check_Type_With_DIC
      (Params : Transformation_Params;
-      N      : Entity_Id) return W_Prog_Id;
+      Ty     : Entity_Id) return W_Prog_Id
+   with Pre => May_Need_DIC_Checking (Ty);
    --  Generate checks for absence of runtime errors in the default initial
    --  condition. It also checks that the DIC holds for default values of the
    --  type.

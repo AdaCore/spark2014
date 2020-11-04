@@ -156,13 +156,6 @@ package SPARK_Util.Types is
    --     of type From to type To. Currently a very coarse approximation
    --     to rule out obvious cases.
 
-   function Get_Initial_DIC_Procedure (E : Entity_Id) return Entity_Id with
-     Pre => Is_Type (E) and then Has_DIC (E);
-   --  @param E a type with a DIC
-   --  @return the DIC procedure defined on the ancestor of E which has a body
-   --     which has been marked if any. This is necessary as inherited DIC
-   --     procedures may not have a body, or may not be marked.
-
    function Unchecked_Full_Type (E : Entity_Id) return Entity_Id
    with Pre  => Is_Type (E),
         Post => Is_Type (Unchecked_Full_Type'Result)
@@ -207,7 +200,7 @@ package SPARK_Util.Types is
    --     is a tagged type which inherits a DIC which requires rechecking.
 
    function Check_DIC_At_Declaration (E : Entity_Id) return Boolean with
-     Pre => Present (Get_Initial_DIC_Procedure (E));
+     Pre => Present (Partial_DIC_Procedure (E));
    --  @param E type entity with a DIC (inherited or not)
    --  @return True if the DIC expression depends on the current type instance.
    --        If it depends on the type instance, it is considered as a
@@ -314,6 +307,21 @@ package SPARK_Util.Types is
    function Num_Literals (Ty : Entity_Id) return Positive
      with Pre => Is_Enumeration_Type (Ty);
    --  Returns the number of literals for an enumeration type
+
+   function Parent_Type (Ty : Entity_Id) return Entity_Id with
+     Pre  => Is_Type (Ty),
+     Post => No (Parent_Type'Result) or else Is_Type (Parent_Type'Result);
+   --  Compute the first parent in the derivation tree of Ty if any. Otherwise
+   --  return Empty. This also takes into account subtypes, and only considers
+   --  derivations visible from SPARK code (using Retysp).
+
+   generic
+      with procedure Process_DIC_Expression
+        (Type_Instance  : Entity_Id;
+         DIC_Expression : Node_Id);
+   procedure Iterate_Applicable_DIC (Ty : Entity_Id) with
+     Pre => Is_Type (Ty);
+   --  Traverse all default initial conditions associated to the type Ty
 
    --------------------------------
    -- Queries related to records --

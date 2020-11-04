@@ -260,7 +260,7 @@ package body SPARK_Register is
               and then N = Base_Type (N)
             then
                declare
-                  DIC_Proc : constant Node_Id := DIC_Procedure (N);
+                  DIC_Proc : constant Node_Id := Partial_DIC_Procedure (N);
                   DIC_Expr : Node_Id;
 
                begin

@@ -254,12 +254,6 @@ package SPARK_Atree.Entities is
    function Cloned_Subtype (Typ : Entity_Id) return Entity_Id with
      Pre => Is_Type (Typ);
 
-   function DIC_Procedure (Typ : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (Typ),
-     Post => (if Present (DIC_Procedure'Result) then
-                  Ekind (DIC_Procedure'Result) = E_Procedure
-                  and then Einfo.Number_Formals (DIC_Procedure'Result) = 1);
-
    function First_Subtype (Typ : Entity_Id) return Entity_Id with
      Pre  => Is_Type (Typ),
      Post => Einfo.Is_First_Subtype (First_Subtype'Result);
@@ -335,6 +329,13 @@ package SPARK_Atree.Entities is
    function Object_Size (Typ : Entity_Id) return Uint with
      Pre => Is_Type (Typ) and then Known_Object_Size (Typ);
    --  Renaming of Einfo.Esize
+
+   function Partial_DIC_Procedure (Typ : Entity_Id) return Entity_Id with
+     Pre  => Is_Type (Typ),
+     Post => (if Present (Partial_DIC_Procedure'Result) then
+                  Ekind (Partial_DIC_Procedure'Result) = E_Procedure
+                  and then
+                     Einfo.Number_Formals (Partial_DIC_Procedure'Result) = 1);
 
    function Predicate_Function (Typ : Entity_Id) return Entity_Id with
      Pre  => Is_Type (Typ),

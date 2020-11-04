@@ -892,7 +892,7 @@ package body Gnat2Why.Types is
            (New_Ignore (Ada_Node => E,
                         Prog     => Why_Body),
             Check_Type_With_DIC (Params => Params,
-                                 N      => E));
+                                 Ty     => E));
       end if;
 
       --  Assume values of constants
