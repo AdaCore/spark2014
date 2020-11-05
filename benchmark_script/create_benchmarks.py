@@ -6,11 +6,28 @@ import subprocess
 import sys
 
 def create_benchmarks(testsuitedir, datadir, extra_args):
+    """ Call the testsuite with the --benchmark switch for all provers. This
+    switch runs the testsuite in benchmark mode, which forces the use of the
+    given prover, and also substitutes the prover for the prover with "fake_"
+    prefix. The "fake" prover proves all goals, so that gnatprove generates all
+    goals for this prover.  Due to how "run-tests" works, running the testsuite
+    creates separate build spaces, so all runs start from scratch.
+    Arguments:
+        testsuitedir: path to the testsuite
+        datadir:      path to store VC files
+        extra_args:   extra arguments passed to testsuite, can be used to reduce
+                      the number of tests by passing a filter
+    """
+
     os.mkdir(datadir)
     olddir = os.getcwd()
     try:
         os.chdir(testsuitedir)
-        p = subprocess.run(["./run-tests", "--benchmarks",
+        p = subprocess.run(["./run-tests", "--benchmark=cvc4",
+                            "--temp-dir=" + datadir, "--disable-cleanup"] + extra_args)
+        p = subprocess.run(["./run-tests", "--benchmark=altergo",
+                            "--temp-dir=" + datadir, "--disable-cleanup"] + extra_args)
+        p = subprocess.run(["./run-tests", "--benchmark=z3",
                             "--temp-dir=" + datadir, "--disable-cleanup"] + extra_args)
         if os.path.exists("internal"):
             print("warning: collected VCs include internal tests")
@@ -18,6 +35,8 @@ def create_benchmarks(testsuitedir, datadir, extra_args):
         os.chdir(olddir)
 
 def collate_benchmarks(datadir, benchdir):
+    """Copy all VCs from the temp dirs inside [datadir] of the testsuite into
+    folders for each prover."""
     bm = {}
 
     smt2_driver_prefix = ";; produced by "

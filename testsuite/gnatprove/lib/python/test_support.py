@@ -56,7 +56,10 @@ def inverse_prover():
 
 
 def benchmark_mode():
-    return "benchmarks" in os.environ and os.environ["benchmarks"] == "true"
+    if "benchmark" in os.environ:
+        return os.environ["benchmark"]
+    else:
+        return None
 
 
 def cache_mode():
@@ -684,7 +687,7 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     cmd += ["-k"]
     # Issue all information messages for tests
     cmd += ["--info"]
-    if benchmark_mode():
+    if benchmark_mode() is not None:
         cmd += ["--benchmark", "--debug-save-vcs"]
     if cache_allowed and cache_mode():
         cmd += ["--memcached-server=localhost:11211"]
@@ -782,11 +785,13 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
         if inverse_prover():
             inverse = prover[:]
             inverse.reverse()
-            fullopt += build_prover_switch(inverse)
+            prover_arg = build_prover_switch(inverse)
         else:
-            fullopt += build_prover_switch(prover)
+            prover_arg = build_prover_switch(prover)
     if benchmark_mode():
         fullopt += ["--benchmark"]
+        prover_arg = build_prover_switch([benchmark_mode()])
+    fullopt += prover_arg
     if not counterexample or benchmark_mode():
         fullopt += ["--no-counterexample"]
     # Add opt last, so that it may include switch -cargs
