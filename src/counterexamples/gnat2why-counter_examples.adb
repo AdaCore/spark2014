@@ -460,24 +460,30 @@ package body Gnat2Why.Counter_Examples is
          if UI_From_Int (Int (S_Array.Length)) >= Lst - Fst + 1 then
             Value.Other := null;
 
-         --  Replace "others" by the actual index if it corresponds to the last
-         --  index of the range.
+         --  Replace "others" by the actual index if it corresponds to the
+         --  first or last index of the range.
 
          elsif UI_From_Int (Int (S_Array.Length)) = Lst - Fst
-           and then not S_Array.Contains (Lst)
+           and then (not S_Array.Contains (Fst)
+                       or else
+                     not S_Array.Contains (Lst))
          then
             declare
+               Missing_Ind  : constant Uint :=
+                 (if not S_Array.Contains (Fst) then Fst else Lst);
                Ind_Val      : constant Cntexmp_Value_Ptr :=
-                 new Cntexmp_Value'(T => Cnt_Integer,
-                                    I => To_Unbounded_String (UI_Image (Lst)));
+                 new Cntexmp_Value'
+                   (T => Cnt_Integer,
+                    I => To_Unbounded_String (UI_Image (Missing_Ind)));
                Ind_Printed  : constant CNT_Unbounded_String :=
                  Refine_Value (Ind_Val, Index_Type, True);
                Elem_Printed : constant CNT_Unbounded_String :=
                  Refine (Value.Other);
             begin
                if Elem_Printed /= Dont_Display then
-                  S_Array.Include (Lst, (Ind_Printedt  => Ind_Printed,
-                                         Elem_Printedt => Elem_Printed));
+                  S_Array.Include (Missing_Ind,
+                                   Array_Elem'(Ind_Printedt  => Ind_Printed,
+                                               Elem_Printedt => Elem_Printed));
                   Value.Other := null;
                end if;
             end;
