@@ -354,10 +354,34 @@ package body Gnat2Why.Counter_Examples is
             Element_Type => Array_Elem,
             "<"          => "<");
 
+      function Get_Bound (Name : String) return Uint;
+      --  Return the "First" or "Last" bound of the array from its attributes
+
       procedure Reorder_Indices
         (S_Array : out Sorted_Array.Map;
          Nul     : in out Boolean;
          Value   : CNT_Element_Ptr);
+
+      ---------------
+      -- Get_Bound --
+      ---------------
+
+      function Get_Bound (Name : String) return Uint is
+         Bound : Cntexmp_Value_Ptr;
+      begin
+         if Value.Attrs.Contains (Name) then
+            Bound := Value.Attrs (Name);
+            case Bound.T is
+               when Cnt_Integer =>
+                  return UI_From_String (To_String (Bound.I));
+               when Cnt_Bitvector =>
+                  return UI_From_String (To_String (Bound.B));
+               when others =>
+                  return No_Uint;
+            end case;
+         end if;
+         return No_Uint;
+      end Get_Bound;
 
       ---------------------
       -- Reorder_Indices --
@@ -373,9 +397,27 @@ package body Gnat2Why.Counter_Examples is
 
          Fst : Uint;
          Lst : Uint;
+         Attr_First : constant Uint := Get_Bound ("First");
+         Attr_Last  : constant Uint := Get_Bound ("Last");
 
       begin
+         --  Use static array type bounds or index type bounds as default
+
          Find_First_Static_Range (Fst_Index, Fst, Lst);
+
+         --  Update bounds from the attribute values if any
+
+         if Attr_First /= No_Uint
+           and then Attr_First > Fst
+         then
+            Fst := Attr_First;
+         end if;
+
+         if Attr_Last /= No_Uint
+           and then Attr_Last < Lst
+         then
+            Lst := Attr_Last;
+         end if;
 
          for C in Value.Indices.Iterate loop
             --  Reorder the elements inside S_Array
@@ -411,6 +453,35 @@ package body Gnat2Why.Counter_Examples is
                end if;
             end;
          end loop;
+
+         --  No need for "others" if the array is empty or indexes already
+         --  cover the full range.
+
+         if UI_From_Int (Int (S_Array.Length)) >= Lst - Fst + 1 then
+            Value.Other := null;
+
+         --  Replace "others" by the actual index if it corresponds to the last
+         --  index of the range.
+
+         elsif UI_From_Int (Int (S_Array.Length)) = Lst - Fst
+           and then not S_Array.Contains (Lst)
+         then
+            declare
+               Ind_Val      : constant Cntexmp_Value_Ptr :=
+                 new Cntexmp_Value'(T => Cnt_Integer,
+                                    I => To_Unbounded_String (UI_Image (Lst)));
+               Ind_Printed  : constant CNT_Unbounded_String :=
+                 Refine_Value (Ind_Val, Index_Type, True);
+               Elem_Printed : constant CNT_Unbounded_String :=
+                 Refine (Value.Other);
+            begin
+               if Elem_Printed /= Dont_Display then
+                  S_Array.Include (Lst, (Ind_Printedt  => Ind_Printed,
+                                         Elem_Printedt => Elem_Printed));
+                  Value.Other := null;
+               end if;
+            end;
+         end if;
       end Reorder_Indices;
 
       --  Local variables
@@ -427,6 +498,7 @@ package body Gnat2Why.Counter_Examples is
       end if;
 
       Reorder_Indices (S_Array, Nul, Value);
+
       for C in S_Array.Iterate loop
          declare
             Ind_Printed : constant CNT_Unbounded_String :=
@@ -434,7 +506,10 @@ package body Gnat2Why.Counter_Examples is
             Elem_Printed : constant CNT_Unbounded_String :=
                             S_Array (C).Elem_Printedt;
          begin
-            Append (S, Ind_Printed.Str & " => " & Elem_Printed.Str & ", ");
+            if S /= "" then
+               Append (S, ", ");
+            end if;
+            Append (S, Ind_Printed.Str & " => " & Elem_Printed.Str);
          end;
       end loop;
 
@@ -444,6 +519,9 @@ package body Gnat2Why.Counter_Examples is
          begin
             Nul := Nul and then V.Nul;
             if V /= Dont_Display then
+               if S /= "" then
+                  Append (S, ", ");
+               end if;
                Append (S, "others => " & V.Str);
             end if;
          end;
@@ -894,8 +972,28 @@ package body Gnat2Why.Counter_Examples is
             --  Insert attributes of Val
 
             for C in Val.Attrs.Iterate loop
-               Attributes.Append
-                 ((Name & "'" & Key (C), Refine_Attribute (Element (C))));
+               declare
+                  Attr_Name : constant String := Key (C);
+                  Attr_CNT  : CNT_Unbounded_String;
+               begin
+                  --  Use better printing provided by Print_Cntexmp_Value for
+                  --  array bounds, with suitable base type for the index, so
+                  --  that e.g. Integer'Last is printed instead of 2147483647.
+
+                  if Attr_Name in "First" | "Last" then
+                     declare
+                        Attr_Type : constant Entity_Id :=
+                          Base_Type (Etype (First_Index (Val.Ent_Ty)));
+                     begin
+                        Attr_CNT :=
+                          Print_Cntexmp_Value (Element (C), Attr_Type);
+                     end;
+                  else
+                     Attr_CNT := Refine_Attribute (Element (C));
+                  end if;
+
+                  Attributes.Append ((Name & "'" & Key (C), Attr_CNT));
+               end;
             end loop;
 
             --  Also insert attributes of components for records and
@@ -1008,7 +1106,6 @@ package body Gnat2Why.Counter_Examples is
                   for Att of Attributes loop
                      Add_CNT (Att.Name, Att.Value);
                   end loop;
-
                end;
             end if;
          end;

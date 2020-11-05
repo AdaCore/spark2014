@@ -69,9 +69,9 @@ do_checks.adb:305:24: info: range check proved (CVC4: 1 VC)
 do_checks.adb:306:25: info: range check proved (CVC4: 1 VC)
 do_checks.adb:312:32: warning: "Y" is not modified, could be IN
 do_checks.adb:314:20: medium: discriminant check might fail [possible fix: precondition of subprogram at line 312 should mention X]
-do_checks.adb:314:25: medium: array index check might fail (e.g. when X = (J => ?, Arr => (others => False)) and X.Arr'First = 2 and X.Arr'Last = 0 and Y = (J => ?, Arr => (others => False))) [reason for check: value must be a valid index into the array]
+do_checks.adb:314:25: medium: array index check might fail (e.g. when X.Arr'First = 2 and X.Arr'Last = 0 and Y = (J => ?, Arr => (others => False))) [reason for check: value must be a valid index into the array]
 do_checks.adb:314:32: medium: discriminant check might fail [possible fix: precondition of subprogram at line 312 should mention Y]
-do_checks.adb:314:37: medium: array index check might fail (e.g. when Y = (J => ?, Arr => (others => False)) and Y.Arr'First = 11 and Y.Arr'Last = 0) [reason for check: value must be a valid index into the array]
+do_checks.adb:314:37: medium: array index check might fail (e.g. when Y.Arr'First = 11 and Y.Arr'Last = 0) [reason for check: value must be a valid index into the array]
 do_checks.adb:316:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:316:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:317:23: info: range check proved (CVC4: 1 VC)

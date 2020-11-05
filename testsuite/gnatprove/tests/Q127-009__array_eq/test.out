@@ -1,2 +1,2 @@
 test_array_eq.adb:14:19: info: assertion proved (CVC4: 1 VC)
-test_array_eq_bad.adb:14:19: medium: assertion might fail, cannot prove A /= B (e.g. when A = (1 => (F1 => 1, F2 => 2), 2 => (F1 => 3, F2 => 4), others => (F1 => 3, F2 => 3)) and B = (1 => (F1 => 1, F2 => 1), 2 => (F1 => 3, F2 => 3), others => (F1 => 3, F2 => 4)))
+test_array_eq_bad.adb:14:19: medium: assertion might fail, cannot prove A /= B (e.g. when A = (1 => (F1 => 1, F2 => 2), 2 => (F1 => 3, F2 => 4)) and B = (1 => (F1 => 1, F2 => 1), 2 => (F1 => 3, F2 => 3)))

@@ -11,8 +11,8 @@ search_array.adb:9:20: info: range check proved (CVC4: 1 VC)
 search_array.adb:12:07: medium: exception might be raised (e.g. when A = (others => 0))
 stack.ads:7:13: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
-use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 'NUL' and W = (others => 'NUL') and W'First = 1 and W'Last = 1) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition]
-use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 'NUL' and W = (others => 'NUL') and W'First = 1 and W'Last = 0) [reason for check: value must be a valid index into the array]
+use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 'NUL' and W = (1 => 'NUL') and W'First = 1 and W'Last = 1) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition]
+use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 'NUL' and W'First = 1 and W'Last = 0) [reason for check: value must be a valid index into the array]
 gnatprove: error during flow analysis and proof
 p.adb:8:09: info: data dependencies proved
 p.adb:13:41: info: index check proved (CVC4: 2 VC)
@@ -33,13 +33,13 @@ p.adb:63:24: info: cannot unroll loop (too many loop iterations)
 p.adb:65:20: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:70:14: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:76:07: info: initialization of "End_Of_Seq" proved
-p.adb:78:38: medium: overflow check might fail (e.g. when A'First = -2147483648 and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+p.adb:78:38: medium: overflow check might fail (e.g. when A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 p.adb:81:09: info: data dependencies proved
 p.adb:82:31: info: initialization of "End_Of_Seq" proved
 p.adb:84:09: info: flow dependencies proved
 p.adb:88:30: medium: overflow check might fail (e.g. when Beginning = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 p.adb:89:20: info: postcondition proved (CVC4: 2 VC)
-p.adb:89:41: medium: overflow check might fail (e.g. when A = (others => 1) and A'First = -2147483648 and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+p.adb:89:41: medium: overflow check might fail (e.g. when A = (others => 1) and A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 p.adb:93:16: info: index check proved (CVC4: 2 VC)
 p.adb:94:23: info: index check proved (CVC4: 2 VC)
 p.adb:99:42: info: range check proved (CVC4: 1 VC)
@@ -102,18 +102,18 @@ stacks.adb:8:22: info: range check proved (CVC4: 1 VC)
 stacks.adb:9:19: info: index check proved (CVC4: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC4: 1 VC)
 stacks.ads:27:52: info: index check proved (CVC4: 2 VC)
-communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 'NUL') and Address'First = 1 and Address'Last = 1 and Port = 0) [reason for check: array must be of the appropriate length] [possible fix: subprogram at communication.ads:9 should mention Address in a precondition]
-communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0 and E = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:20:32: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:5:15: medium: length check might fail (e.g. when Address = (1 => 'NUL') and Address'First = 1 and Address'Last = 1 and Port = 0) [reason for check: array must be of the appropriate length] [possible fix: subprogram at communication.ads:9 should mention Address in a precondition]
+communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => ?, First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0 and E = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:20:32: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:21:24: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => 1) and B.Content'First = 1 and B.Content'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:22:32: info: overflow check proved (CVC4: 1 VC)
 communication.adb:22:43: info: overflow check proved (CVC4: 1 VC)
-communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1 and E = 0 and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (1 => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1 and E = 0 and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:23:34: info: overflow check proved (CVC4: 1 VC)
 communication.adb:25:32: info: index check proved (CVC4: 2 VC)
 communication.adb:25:32: info: overflow check proved (CVC4: 1 VC)
 communication.adb:26:34: info: overflow check proved (CVC4: 1 VC)
-communication.adb:35:30: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 1) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:18 should mention B in a precondition]
+communication.adb:35:30: medium: array index check might fail (e.g. when B = (Content => ?, First => 1, Length => 1) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:18 should mention B in a precondition]
 communication.adb:36:34: info: range check proved (CVC4: 1 VC)
 communication.adb:39:30: info: index check proved (CVC4: 2 VC)
 communication.adb:40:34: info: range check proved (CVC4: 1 VC)
@@ -468,8 +468,8 @@ resources.ads:10:32: info: index check proved (CVC4: 2 VC)
 resources.ads:10:36: medium: overflow check might fail (e.g. when To = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 9 should mention D and To in a precondition]
 resources.ads:10:46: info: range check proved (CVC4: 1 VC)
 resources.ads:14:22: info: initialization of "D" proved
-resources.ads:15:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, others => 6))
-resources.ads:19:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, others => 1))
+resources.ads:15:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6))
+resources.ads:19:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 1))
 use_vectors.adb:5:07: info: initialization of "S" proved
 use_vectors.adb:8:15: info: precondition proved (CVC4: 4 VC)
 use_vectors.adb:9:33: info: loop invariant initialization proved (CVC4: 1 VC)

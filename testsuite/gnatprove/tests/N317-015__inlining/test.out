@@ -37,7 +37,7 @@ array_arith.ads:12:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:12:35: medium: "X" might not be initialized
 array_arith.ads:14:21: medium: "X" might not be initialized in "Init3"
 array_arith.ads:15:35: medium: "X" might not be initialized
-array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 3 and X = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, others => 0))
+array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 3 and X = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0))
 array_arith.ads:17:20: medium: "X" might not be initialized in "Zero"
 array_arith.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:18:35: medium: "X" might not be initialized

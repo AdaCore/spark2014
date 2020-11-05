@@ -964,8 +964,11 @@ package body SPARK_Util.Types is
    -- Is_Standard_Type --
    ----------------------
 
+   --  E might be a standard type or the implicit base type of such a standard
+   --  type.
    function Is_Standard_Type (E : Entity_Id) return Boolean is
-     (for some S_Type in S_Types => Standard_Entity (S_Type) = E);
+     (for some S_Type in S_Types =>
+         E = Standard_Entity (S_Type) or E = Etype (Standard_Entity (S_Type)));
 
    ------------------------------
    -- Is_Standard_Boolean_Type --

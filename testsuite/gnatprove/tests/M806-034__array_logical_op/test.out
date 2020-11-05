@@ -33,7 +33,7 @@ array_logical_ops.adb:58:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 array_logical_ops.adb:59:57: info: index check proved (CVC4: 2 VC)
 array_logical_ops.adb:60:22: info: assertion proved (CVC4: 1 VC)
 array_logical_ops.adb:60:55: info: index check proved (CVC4: 2 VC)
-array_logical_ops.adb:65:36: medium: length check might fail (e.g. when R = (others => False) and R'First = 1 and R'Last = 20 and Z = (others => False) and Z'First = 1 and Z'Last = 0) [reason for check: both array operands must have the same length] [possible fix: subprogram at array_logical_ops.ads:22 should mention Z in a precondition]
+array_logical_ops.adb:65:36: medium: length check might fail (e.g. when R = (others => False) and R'First = 1 and R'Last = 20 and Z'First = 1 and Z'Last = 0) [reason for check: both array operands must have the same length] [possible fix: subprogram at array_logical_ops.ads:22 should mention Z in a precondition]
 array_logical_ops.adb:73:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 array_logical_ops.adb:73:37: medium: range check might fail (e.g. when R1 = (others => False) and R1'First = 6 and R1'Last = 25) [reason for check: default component value must fit in the type]
 array_logical_ops.adb:74:35: medium: range check might fail (e.g. when R2 = (others => False) and R2'First = 6 and R2'Last = 25) [reason for check: default component value must fit in the type]

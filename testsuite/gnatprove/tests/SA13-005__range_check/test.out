@@ -1,4 +1,4 @@
 bug1.adb:8:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bug1.ads:9:17: info: initialization of "C" proved
 bug1.ads:11:11: info: data dependencies proved
-bug1.ads:16:21: medium: range check might fail (e.g. when M = (others => 1) and M'First = 1 and M'Last = 0) [reason for check: slice bounds must fit in the underlying array]
+bug1.ads:16:21: medium: range check might fail (e.g. when M'First = 1 and M'Last = 0) [reason for check: slice bounds must fit in the underlying array]
