@@ -915,7 +915,7 @@ package body SPARK_Atree is
    --  string literals not from source, say created as a result of inlining.
    function Has_Wide_Character (N : Node_Id) return Boolean is
    begin
-      for J in  1 .. String_Length (Strval (N)) loop
+      for J in 1 .. String_Length (Strval (N)) loop
          declare
             Code : constant Char_Code := Get_String_Char (Strval (N), J);
          begin
@@ -938,7 +938,7 @@ package body SPARK_Atree is
    --  of inlining.
    function Has_Wide_Wide_Character (N : Node_Id) return Boolean is
    begin
-      for J in  1 .. String_Length (Strval (N)) loop
+      for J in 1 .. String_Length (Strval (N)) loop
          declare
             Code : constant Char_Code := Get_String_Char (Strval (N), J);
          begin

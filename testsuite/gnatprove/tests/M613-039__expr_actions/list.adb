@@ -26,7 +26,7 @@ package body List is
             (for all J in First .. I => Model.To (S)(J) = Element (L, J)));
       end loop;
 
-      for I in  First .. Last loop
+      for I in First .. Last loop
          Append (Res, Top (S));
          Pop (S);
          pragma Loop_Invariant

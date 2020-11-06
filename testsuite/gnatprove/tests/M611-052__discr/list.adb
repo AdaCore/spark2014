@@ -16,7 +16,7 @@ package body List is
          Push (S, Element (L, I));
       end loop;
 
-      for I in  First_Index (L) .. Last_Index (L) loop
+      for I in First_Index (L) .. Last_Index (L) loop
          Append (Res, Top (S));
          Pop (S);
          pragma Loop_Invariant (for all J in 1..I => Element (Res, J) = Element (L, Last_Index (L) - J + 1));
