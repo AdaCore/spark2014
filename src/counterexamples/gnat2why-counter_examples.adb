@@ -202,6 +202,11 @@ package body Gnat2Why.Counter_Examples is
    --    and or attributes of variables at a single source code
    --    location.
 
+   function Prefix_Elements
+     (Elems : S_String_List.List;
+      Pref  : String) return S_String_List.List;
+   --  Return a copy of Elems where every string has been prefixed with Pref
+
    function Print_CNT_Element_Debug (El : CNT_Element) return String;
    --  Debug function, print a CNT_Element without any processing
 
@@ -253,6 +258,22 @@ package body Gnat2Why.Counter_Examples is
    --  This function takes a value from Why3 CNT_Element and converts it into a
    --  suitable string for an entity of type AST_Type.
    --  Example: (97, Character_entity) -> "'a'"
+
+   ---------------------
+   -- Prefix_Elements --
+   ---------------------
+
+   function Prefix_Elements
+     (Elems : S_String_List.List;
+      Pref  : String) return S_String_List.List
+   is
+      L : S_String_List.List;
+   begin
+      for E of Elems loop
+         L.Append_One (Pref & E);
+      end loop;
+      return L;
+   end Prefix_Elements;
 
    ------------
    -- Refine --
@@ -309,7 +330,7 @@ package body Gnat2Why.Counter_Examples is
    begin
       if Value.Is_Null then
          Value.Val_Str :=
-           (Nul => False, Str => To_Unbounded_String ("null"));
+           Make_Trivial (Nul => False, Str => To_Unbounded_String ("null"));
 
       elsif Value.Ptr_Val = null then
          Value.Val_Str := Dont_Display;
@@ -324,12 +345,16 @@ package body Gnat2Why.Counter_Examples is
       else
          declare
             V : constant CNT_Unbounded_String := Refine (Value.Ptr_Val);
+            Elems : S_String_List.List;
          begin
             if V = Dont_Display then
                Value.Val_Str := Dont_Display;
             else
+               Elems := Prefix_Elements (V.Elems, ".all");
                Value.Val_Str :=
-                 Make_Trivial (Nul => V.Nul, Str => "(all => " & V.Str & ")");
+                 Make_Trivial (Nul => V.Nul, Str => "(all => " & V.Str & ")",
+                               Cnt => V.Count, Els => Elems);
+
             end if;
          end;
       end if;
@@ -495,6 +520,10 @@ package body Gnat2Why.Counter_Examples is
       S       : Unbounded_String;
       Nul     : Boolean := True;
       S_Array : Sorted_Array.Map := Sorted_Array.Empty_Map;
+      Count   : Natural := 0;
+      Elems   : S_String_List.List;
+
+      use S_String_List;
 
    --  Start of processing for Refine_Array_Components
 
@@ -511,11 +540,17 @@ package body Gnat2Why.Counter_Examples is
                             S_Array (C).Ind_Printedt;
             Elem_Printed : constant CNT_Unbounded_String :=
                             S_Array (C).Elem_Printedt;
+            C_Elems : S_String_List.List :=
+              Prefix_Elements (Elem_Printed.Elems,
+                               To_String ("(" & Ind_Printed.Str & ")"));
          begin
             if S /= "" then
                Append (S, ", ");
             end if;
             Append (S, Ind_Printed.Str & " => " & Elem_Printed.Str);
+            Count := Count + Elem_Printed.Count;
+            Elems.Splice (Before => No_Element,
+                          Source => C_Elems);
          end;
       end loop;
 
@@ -529,6 +564,8 @@ package body Gnat2Why.Counter_Examples is
                   Append (S, ", ");
                end if;
                Append (S, "others => " & V.Str);
+               Count := Count + V.Count;
+               --  Do not insert a value for "others" in Elems
             end if;
          end;
       end if;
@@ -536,7 +573,8 @@ package body Gnat2Why.Counter_Examples is
       if S = "" then
          return Dont_Display;
       else
-         return Make_Trivial (Nul => Nul, Str => "(" & S & ")");
+         return Make_Trivial (Nul => Nul, Str => "(" & S & ")",
+                              Cnt => Count, Els => Elems);
       end if;
    end Refine_Array_Components;
 
@@ -596,7 +634,7 @@ package body Gnat2Why.Counter_Examples is
       --
       --  It will refine CNT_Element to T's cursor type giving a value <value>
       --  and will return My_Element (Container_Name, <value>).
-      --  If the type has an Iterable_For_Prrof of a model kind, it will be
+      --  If the type has an Iterable_For_Proof of a model kind, it will be
       --  taken into account, for example, if we add:
       --
       --     type T2 is private
@@ -742,7 +780,10 @@ package body Gnat2Why.Counter_Examples is
          Ordered_Values.Insert
            (Get_Loc_Info (Comp),
             Make_Trivial (Nul => Val.Nul,
-                          Str => Comp_Name & " => " & Val.Str & Expl));
+                          Str => Comp_Name & " => " & Val.Str & Expl,
+                          Cnt => Val.Count,
+                          Els => Prefix_Elements
+                                   (Val.Elems, '.' & Comp_Name)));
          Fields_Discrs_With_Value :=
            Fields_Discrs_With_Value + 1;
       end Get_Value_Of_Component;
@@ -832,8 +873,9 @@ package body Gnat2Why.Counter_Examples is
          --  First component for which we are missing a value
 
          Nul          : Boolean := True;
-         Value        : Unbounded_String :=
-           To_Unbounded_String ("(");
+         Value        : Unbounded_String := To_Unbounded_String ("(");
+         Count        : Natural := 0;
+         Elems        : S_String_List.List;
       begin
          for C in Visibility_Map.Iterate loop
             declare
@@ -873,6 +915,9 @@ package body Gnat2Why.Counter_Examples is
             Append (Value,
                     (if Is_Before then ", " else "") & V.Str);
             Is_Before := True;
+            Count := Count + V.Count;
+            Elems.Splice (Before => S_String_List.No_Element,
+                          Source => V.Elems);
          end loop;
 
          --  If there are more than one fields that are not
@@ -883,10 +928,12 @@ package body Gnat2Why.Counter_Examples is
             Append (Value,
                     (if Is_Before then ", " else "") &
                       "others => ?");
+            Count := Count + 1;
          end if;
          Append (Value, ")");
 
-         return Make_Trivial (Nul => Nul, Str => Value);
+         return Make_Trivial (Nul => Nul, Str => Value,
+                              Cnt => Count, Els => Elems);
       end;
    end Refine_Record_Components;
 
@@ -899,14 +946,11 @@ package body Gnat2Why.Counter_Examples is
       AST_Type  : Entity_Id;
       Is_Index  : Boolean := False) return CNT_Unbounded_String
    is
-
       Res : constant CNT_Unbounded_String :=
         Print_Cntexmp_Value (Cnt_Value, AST_Type, Is_Index);
-
-   --  Start of processing for Refine_Value
-
+      Str : constant Unbounded_String := Trim (Res.Str, Both);
    begin
-      return Make_Trivial (Nul => Res.Nul, Str => Trim (Res.Str, Both));
+      return Make_Trivial (Nul => Res.Nul, Str => Str);
    end Refine_Value;
 
    -----------------------
@@ -1828,24 +1872,77 @@ package body Gnat2Why.Counter_Examples is
       function Get_Cntexmp_Line_Str
         (Cntexmp_Line : Cntexample_Elt_Lists.List) return String
       is
-         Cntexmp_Line_Str : Unbounded_String;
+         procedure Before_Next_Element (Str : in out Unbounded_String);
+         --  Action on Str before printing the next element
 
-      begin
-         for Elt of Cntexmp_Line loop
-            if Cntexmp_Line_Str /= "" then
+         -------------------------
+         -- Before_Next_Element --
+         -------------------------
+
+         procedure Before_Next_Element (Str : in out Unbounded_String) is
+         begin
+            if Str /= "" then
                --  When outputting counterexamples on the command-line in
                --  pretty mode, display each value on a separate line.
 
                if Gnat2Why_Args.Output_Mode = GPO_Pretty then
-                  Append (Cntexmp_Line_Str, ASCII.LF & "     ");
+                  Append (Str, ASCII.LF & "     ");
                end if;
 
-               Append (Cntexmp_Line_Str, " and ");
+               Append (Str, " and ");
             end if;
-            Append (Cntexmp_Line_Str, Elt.Name);
+         end Before_Next_Element;
+
+         --  Local variables
+
+         Cntexmp_Line_Str : Unbounded_String;
+
+      --  Start of processing for Get_Cntexmp_Line_Str
+
+      begin
+         for Elt of Cntexmp_Line loop
             if Elt.Kind /= CEE_Error_Msg then
-               Append (Cntexmp_Line_Str, " = ");
-               Append (Cntexmp_Line_Str, Elt.Val_Str.Str);
+               declare
+                  Num_Elems : Natural := Elt.Val_Str.Count;
+                  Cur_Elems : S_String_List.Cursor := Elt.Val_Str.Elems.First;
+
+                  --  Maximum number of elements to print for a single
+                  --  variable, whose value can be set arbitrarily. It should
+                  --  be small enough that even with multiple variables being
+                  --  printed, the output remains small enough that (1) it can
+                  --  be output by Errout without truncation, and (2) it is not
+                  --  so long as to be confusing to users.
+                  Max_Elems : constant := 5;
+
+                  use S_String_List;
+               begin
+                  --  If the normal display of counterexample values
+                  --  would include more than Max_Elems for this variable,
+                  --  then display at most Max_Elems values of individual
+                  --  subcomponents of the variable. In such a case, simply
+                  --  prepend Elt.Name to the string in Cur_Elems, as Cur_Elems
+                  --  already contains the rest of the path to the subcomponent
+                  --  if any, the equality symbol and the value.
+
+                  if Num_Elems > Max_Elems then
+                     Num_Elems := Max_Elems;
+                     while Num_Elems > 0
+                       and then Has_Element (Cur_Elems)
+                     loop
+                        Before_Next_Element (Cntexmp_Line_Str);
+                        Append (Cntexmp_Line_Str, Elt.Name);
+                        Append (Cntexmp_Line_Str, Element (Cur_Elems));
+                        Num_Elems := Num_Elems - 1;
+                        Next (Cur_Elems);
+                     end loop;
+
+                  else
+                     Before_Next_Element (Cntexmp_Line_Str);
+                     Append (Cntexmp_Line_Str, Elt.Name);
+                     Append (Cntexmp_Line_Str, " = ");
+                     Append (Cntexmp_Line_Str, Elt.Val_Str.Str);
+                  end if;
+               end;
             end if;
          end loop;
          return To_String (Cntexmp_Line_Str);

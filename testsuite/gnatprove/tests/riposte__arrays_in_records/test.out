@@ -16,7 +16,7 @@ arrays_in_records.adb:83:22: medium: postcondition might fail, cannot prove A.Fi
 arrays_in_records.adb:92:11: info: flow dependencies proved
 arrays_in_records.adb:93:22: medium: postcondition might fail, cannot prove A.First_Array(I) = 42 (e.g. when A = (Counter => 0, First_Array => (0 => 23, others => 42), Second_Array => (0 => 23, others => 42)) and I = 0)
 arrays_in_records.adb:104:11: info: flow dependencies proved
-arrays_in_records.adb:105:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 42 (e.g. when A = (Counter => 100, First_Array => (17 => 23, 23 => Value'Last, others => 42), Second_Array => (17 => 23, 23 => Value'Last, others => 42)))
+arrays_in_records.adb:105:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 42 (e.g. when A.Counter = 100 and A.First_Array(17) = 23 and A.First_Array(23) = Value'Last and A.Second_Array(17) = 23 and A.Second_Array(23) = Value'Last)
 arrays_in_records.adb:112:22: info: assertion proved (CVC4: 1 VC)
 arrays_in_records.adb:118:11: info: flow dependencies proved
 arrays_in_records.adb:119:22: medium: postcondition might fail, cannot prove A.First_Array(I) = 42 (e.g. when A = (Counter => 100, First_Array => (0 => 23, others => Value'Last), Second_Array => (others => Value'Last)) and I = 0)
@@ -26,10 +26,10 @@ arrays_in_records.adb:133:22: medium: postcondition might fail, cannot prove A.F
 arrays_in_records.adb:142:11: info: flow dependencies proved
 arrays_in_records.adb:144:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A = (Counter => 0, First_Array => (0 => 42, others => 23), Second_Array => (0 => 42, others => 23)) and I = 1)
 arrays_in_records.adb:155:11: info: flow dependencies proved
-arrays_in_records.adb:156:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A = (Counter => 100, First_Array => (17 => 23, 23 => Value'Last, others => 42), Second_Array => (17 => 23, 23 => Value'Last, others => 42)))
+arrays_in_records.adb:156:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A.Counter = 100 and A.First_Array(17) = 23 and A.First_Array(23) = Value'Last and A.Second_Array(17) = 23 and A.Second_Array(23) = Value'Last)
 arrays_in_records.adb:163:22: info: assertion proved (CVC4: 1 VC)
 arrays_in_records.adb:169:11: info: flow dependencies proved
-arrays_in_records.adb:171:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A = (Counter => 100, First_Array => (0 => 42, 1 => 23, others => Value'Last), Second_Array => (0 => 42, others => Value'Last)) and I = 1)
+arrays_in_records.adb:171:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A.Counter = 100 and A.First_Array(0) = 42 and A.First_Array(1) = 23 and A.Second_Array(0) = 42 and I = 1)
 arrays_in_records.adb:178:22: info: assertion proved (CVC4: 1 VC)
 arrays_in_records.adb:184:11: info: flow dependencies proved
 arrays_in_records.adb:185:22: medium: postcondition might fail, cannot prove A /= A'old

@@ -479,11 +479,18 @@ package VC_Kinds is
         "="          => "=");
 
    type CNT_Unbounded_String is record
-      Nul : Boolean;
-      Str : Unbounded_String;
-   end record;
-   --  Pair of a string for a counterexample value, and boolean Nul to denote
-   --  that the string is actually for a "nul" value.
+      Nul   : Boolean := True;
+      Str   : Unbounded_String;
+      Count : Natural := 0;
+      Elems : S_String_List.List;
+   end record
+     with Predicate => Nul = Elems.Is_Empty
+       and then Count >= Natural (Elems.Length);
+   --  Mostly a string for a counterexample value, and boolean Nul to denote
+   --  that the string is actually for a "nul" value. A third component Count
+   --  gives the number of individual subcomponents being printed in Str, and a
+   --  fourth component Elems gives the value of individual non-others non-nul
+   --  subcomponents, to be used if the Count is too large for printing Str.
 
    type Cntexample_Elt is record
       Kind    : CEE_Kind;

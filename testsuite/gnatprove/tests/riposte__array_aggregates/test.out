@@ -39,7 +39,7 @@ array_aggregates.adb:168:11: info: flow dependencies proved
 array_aggregates.adb:173:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:176:32: info: initialization of "X" proved
 array_aggregates.adb:177:11: info: flow dependencies proved
-array_aggregates.adb:186:22: medium: assertion might fail, cannot prove X (3).C = Elem_2 (e.g. when X = (3 => (A => 10, B => True, C => Elem_1), others => (A => 10, B => False, C => Elem_0)))
+array_aggregates.adb:186:22: medium: assertion might fail, cannot prove X (3).C = Elem_2 (e.g. when X(3).A = 10 and X(3).B = True and X(3).C = Elem_1)
 array_aggregates.adb:189:32: info: initialization of "X" proved
 array_aggregates.adb:190:11: info: flow dependencies proved
 array_aggregates.adb:199:22: info: assertion proved (CVC4: 1 VC)
@@ -63,7 +63,7 @@ array_aggregates.adb:255:11: info: flow dependencies proved
 array_aggregates.adb:259:22: info: assertion proved (CVC4: 1 VC)
 array_aggregates.adb:262:32: info: initialization of "X" proved
 array_aggregates.adb:263:12: info: flow dependencies proved
-array_aggregates.adb:273:22: medium: assertion might fail, cannot prove X (3).Len = 3 (e.g. when X = (3 => (Len => 5, Elem => (1 => 'H', 2 => 'e', 5 => 'o', others => 'l')), others => (Len => 5, Elem => (others => 'l'))))
+array_aggregates.adb:273:22: medium: assertion might fail, cannot prove X (3).Len = 3 (e.g. when X(3).Len = 5 and X(3).Elem(1) = 'H' and X(3).Elem(2) = 'e' and X(3).Elem(5) = 'o')
 array_aggregates.adb:276:32: info: initialization of "X" proved
 array_aggregates.adb:277:12: info: flow dependencies proved
 array_aggregates.adb:287:22: info: assertion proved (CVC4: 1 VC)

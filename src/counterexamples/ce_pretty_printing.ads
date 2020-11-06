@@ -28,12 +28,12 @@ with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
 with Types;                 use Types;
 with Urealp;                use Urealp;
 with VC_Kinds;              use VC_Kinds;
-with Gnat2Why_Args;
 
 package Ce_Pretty_Printing is
 
    Dont_Display : constant CNT_Unbounded_String :=
-     (Nul => True, Str => To_Unbounded_String ("@not_display"));
+     (Nul => True, Str => To_Unbounded_String ("@not_display"),
+      Count => 0, Elems => S_String_List.Empty);
    --  Value in a counterexample that should not be displayed
 
    function StringBits_To_Approx (Sign, Significand, Exp : String)
@@ -52,11 +52,13 @@ package Ce_Pretty_Printing is
      with Pre => Cnt_Value.T = Cnt_Float;
    --  Print a counterexample value as a float
 
-   function Make_Trivial (Nul : Boolean;
-                          Str : Unbounded_String)
-                          return CNT_Unbounded_String is
-     (Nul => Nul and not Gnat2Why_Args.Debug_Trivial,
-      Str => Str);
+   function Make_Trivial
+     (Nul : Boolean;
+      Str : Unbounded_String;
+      Cnt : Natural := 1;
+      Els : S_String_List.List := S_String_List.Empty)
+      return CNT_Unbounded_String
+   with Pre => Cnt >= Natural (Els.Length);
    --  Used to remove "trivial" counterexamples
 
    function Print_Cntexmp_Value (Cnt_Value : Cntexmp_Value_Ptr;

@@ -656,8 +656,10 @@ package body VC_Kinds is
                         Labels      =>
                           From_JSON_Labels (Get (Get (V, "attrs"))),
                         Value       => Cnt_Value,
-                        Val_Str     => (Nul => False,
-                                        Str => Null_Unbounded_String));
+                        Val_Str     => (Nul   => True,
+                                        Str   => Null_Unbounded_String,
+                                        Count => 1,
+                                        Elems => S_String_List.Empty));
    end From_JSON;
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is

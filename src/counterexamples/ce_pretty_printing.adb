@@ -28,6 +28,7 @@ with Ada.Text_IO;
 with Ada.Unchecked_Conversion;
 with Casing;                   use Casing;
 with Gnat2Why.CE_Utils;        use Gnat2Why.CE_Utils;
+with Gnat2Why_Args;
 with Interfaces;               use Interfaces;
 with Namet;                    use Namet;
 with SPARK_Atree;              use SPARK_Atree;
@@ -37,6 +38,47 @@ with String_Utils;             use String_Utils;
 with Uintp;                    use Uintp;
 
 package body Ce_Pretty_Printing is
+
+   ------------------
+   -- Make_Trivial --
+   ------------------
+
+   function Make_Trivial
+     (Nul : Boolean;
+      Str : Unbounded_String;
+      Cnt : Natural := 1;
+      Els : S_String_List.List := S_String_List.Empty)
+      return CNT_Unbounded_String
+   is
+      Nul_Internal : constant Boolean :=
+        Nul and not Gnat2Why_Args.Debug_Trivial;
+      Elems : S_String_List.List;
+
+   begin
+      --  Leave Elems empty for a nul value
+      if Nul_Internal then
+         null;
+
+      --  Otherwise if Els is empty, use the singleton " = Str " for the value
+
+      elsif Els.Is_Empty then
+         Elems.Append_One (" = " & Str);
+
+      --  Otherwise use Els
+
+      else
+         Elems := Els;
+      end if;
+
+      return (Nul   => Nul_Internal,
+              Str   => Str,
+              Count => Cnt,
+              Elems => Elems);
+   end Make_Trivial;
+
+   ----------
+   -- Size --
+   ----------
 
    function Size (S : String) return Integer is
      (if S (S'First + 1) = 'x' then
@@ -48,6 +90,11 @@ package body Ce_Pretty_Printing is
 
    --  This package is generic so that part of the work done can be shared
    --  between 32bit and 64 bits float numbers.
+
+   ----------------------
+   -- Print_Conversion --
+   ----------------------
+
    generic
       type T_Unsigned is mod <>;
       type T_Float is digits <>;
