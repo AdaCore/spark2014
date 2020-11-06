@@ -976,7 +976,7 @@ package body Gnat2Why.Counter_Examples is
                   Attr_Name : constant String := Key (C);
                   Attr_CNT  : CNT_Unbounded_String;
                begin
-                  --  Use better printing provided by Print_Cntexmp_Value for
+                  --  Use better printing provided by Refine_Value for
                   --  array bounds, with suitable base type for the index, so
                   --  that e.g. Integer'Last is printed instead of 2147483647.
 
@@ -985,8 +985,7 @@ package body Gnat2Why.Counter_Examples is
                         Attr_Type : constant Entity_Id :=
                           Base_Type (Etype (First_Index (Val.Ent_Ty)));
                      begin
-                        Attr_CNT :=
-                          Print_Cntexmp_Value (Element (C), Attr_Type);
+                        Attr_CNT := Refine_Value (Element (C), Attr_Type);
                      end;
                   else
                      Attr_CNT := Refine_Attribute (Element (C));
