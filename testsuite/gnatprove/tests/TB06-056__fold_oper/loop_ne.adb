@@ -6,6 +6,6 @@ begin
    while C /= 0 loop
       exit when Cond;
       pragma Loop_Invariant (C /= 0);
-      C := 1 / C;  --@DIVISION_CHECK:FAIL  ??? this should be provable!
+      C := 1 / C;  --@DIVISION_CHECK:PASS
    end loop;
 end;
