@@ -5457,7 +5457,11 @@ package body SPARK_Definition is
                      Low  : constant Node_Id := Type_Low_Bound (E);
                      High : constant Node_Id := Type_High_Bound (E);
                   begin
-                     if Has_Fixed_Point_Type (Etype (Low))
+                     if not In_SPARK (Etype (Low)) then
+                        Mark_Violation (E, From => Etype (Low));
+                     elsif not In_SPARK (Etype (High)) then
+                        Mark_Violation (E, From => Etype (High));
+                     elsif Has_Fixed_Point_Type (Etype (Low))
                        or else Has_Fixed_Point_Type (Etype (High))
                      then
                         Mark_Unsupported ("conversion between fixed-point and "
