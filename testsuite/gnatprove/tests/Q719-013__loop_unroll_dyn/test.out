@@ -1,7 +1,7 @@
 loops_static.adb:5:23: info: cannot unroll loop (local non-scalar declaration at line 8)
 loops_static.adb:6:13: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:8:46: info: range check proved (CVC4: 4 VC)
-loops_static.adb:11:47: medium: assertion might fail, cannot prove A_Begins (I) = 0 (e.g. when A_Begins = (1 => 1, others => 0) and A_Begins'First = 0 and A_Begins'Last = 2 and I = 1) [possible fix: loop at line 5 should mention A_Begins in a loop invariant]
+loops_static.adb:11:47: medium: assertion might fail, cannot prove A_Begins (I) = 0 (e.g. when A_Begins = (1 => 1, others => 0) and A_Begins'First = 0 and A_Begins'Last = 2 and I = 1) [possible fix: loop at line 5 should mention A in a loop invariant]
 loops_static.adb:11:57: info: index check proved (CVC4: 2 VC)
 loops_static.adb:14:07: medium: assertion might fail (e.g. when A = (others => 0))
 loops_static.adb:17:04: warning: analyzing unreferenced procedure "Loop11"
@@ -11,7 +11,7 @@ loops_static.adb:19:23: info: cannot unroll loop (local non-scalar declaration a
 loops_static.adb:20:25: info: cannot unroll loop (local non-scalar declaration at line 23)
 loops_static.adb:21:16: medium: array index check might fail (e.g. when A'First = 2 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:23:49: info: range check proved (CVC4: 4 VC)
-loops_static.adb:26:50: medium: assertion might fail, cannot prove A_Begins (I) = 0 (e.g. when A_Begins = (2 => 0, others => 1) and A_Begins'First = 0 and A_Begins'Last = 2 and I = 1) [possible fix: loop at line 20 should mention A_Begins in a loop invariant]
+loops_static.adb:26:50: medium: assertion might fail, cannot prove A_Begins (I) = 0 (e.g. when A_Begins = (2 => 0, others => 1) and A_Begins'First = 0 and A_Begins'Last = 2 and I = 1) [possible fix: loop at line 20 should mention A in a loop invariant]
 loops_static.adb:26:60: info: index check proved (CVC4: 2 VC)
 loops_static.adb:30:07: medium: assertion might fail (e.g. when A = (others => 0))
 loops_static.adb:35:23: info: unrolling loop

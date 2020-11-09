@@ -31,7 +31,7 @@ bad_assign_all_arr.adb:4:21: info: unrolling loop
 bad_assign_all_arr.adb:5:21: medium: array index check might fail [CWE 120] (e.g. when J = 10 and X = (others => 0)) [reason for check: result of addition must be a valid index into the array]
 bad_assign_all_arr_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
 bad_assign_all_arr_unk.adb:5:21: medium: array index check might fail [CWE 120] [reason for check: result of addition must be a valid index into the array]
-bad_assign_all_arr_unk.adb:5:21: medium: overflow check might fail [CWE 190] (e.g. when J = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer]
+bad_assign_all_arr_unk.adb:5:21: medium: overflow check might fail [CWE 190] (e.g. when J = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 bad_assign_arr.adb:2:27: medium: "X" might not be initialized in "Bad_Assign_Arr" [CWE 457]
 bad_assign_arr.adb:4:07: medium: array index check might fail [CWE 120] [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 2 should mention Y in a precondition]
 bad_assign_arr.adb:5:09: info: overflow check proved (CVC4: 1 VC)

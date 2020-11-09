@@ -73,8 +73,8 @@ package Ce_Pretty_Printing is
    generic
       Bound_Type  : Int;
       Bound_Value : Int;
-   function Print_Discrete (Nb : String; Nb_Type : Entity_Id) return String
-     with Pre => Is_Discrete_Type (Nb_Type);
+   function Print_Discrete (Nb : String; Ty : Entity_Id) return String
+     with Pre => Is_Discrete_Type (Ty);
    --  This routine is used to alter printing for values of Discrete_Type.
    --  When a value is close enough to the bounds of its type (Bound_Value
    --  close) and the type is not too small (Range greater than Bound_Type)

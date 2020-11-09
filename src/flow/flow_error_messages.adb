@@ -35,6 +35,7 @@ with Errout;                    use Errout;
 with Erroutc;                   use Erroutc;
 with Flow_Refinement;           use Flow_Refinement;
 with Flow_Utility;              use Flow_Utility;
+with Flow.Dynamic_Memory;
 with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
 with Gnat2Why.Expr.Loops;
 with Gnat2Why_Args;             use Gnat2Why_Args;
@@ -79,6 +80,14 @@ package body Flow_Error_Messages is
    --  Given the node N associated to an unproved check of kind Tag, return a
    --  detailed message explaining why this check is issued (typically in the
    --  case of a length/range/overflow/index check), or the empty string.
+
+   function Get_Filtered_Variables_For_Proof
+     (Expr    : Node_Id;
+      Context : Node_Id)
+      return Flow_Id_Sets.Set;
+   --  Wrapper on Flow_Utility.Get_Variables_For_Proof that excludes the
+   --  special variables __HEAP and SPARK.Heap.Dynamic_Memory used to model
+   --  (de)allocation.
 
    function Get_Fix (N          : Node_Id;
                      Tag        : VC_Kind;
@@ -1176,6 +1185,36 @@ package body Flow_Error_Messages is
       end case;
    end Get_Details;
 
+   --------------------------------------
+   -- Get_Filtered_Variables_For_Proof --
+   --------------------------------------
+
+   function Get_Filtered_Variables_For_Proof
+     (Expr    : Node_Id;
+      Context : Node_Id)
+      return Flow_Id_Sets.Set
+   is
+      Expr_Vars : Flow_Id_Sets.Set :=
+        Get_Variables_For_Proof (Expr, Context);
+   begin
+      --  Exclude the special abstract state __HEAP
+      Expr_Vars.Exclude
+        (Magic_String_Id (To_Entity_Name
+         (SPARK_Xrefs.Name_Of_Heap_Variable)));
+
+      --  Exclude the special abstract state SPARK.Heap.Dynamic_Memory,
+      --  in both direct mapping and magic string versions. ??? Ideally we
+      --  would only exclude the direct mapping, but flow analysis does not
+      --  always link the two (only when there is an allocator or a call to
+      --  Unchecked_Conversion, see spark_register.adb).
+      Expr_Vars.Exclude
+        (Direct_Mapping_Id (Flow.Dynamic_Memory.Heap_State));
+      Expr_Vars.Exclude
+        (Magic_String_Id (To_Entity_Name (Flow.Dynamic_Memory.Heap_State)));
+
+      return Expr_Vars;
+   end Get_Filtered_Variables_For_Proof;
+
    -------------
    -- Get_Fix --
    -------------
@@ -1209,6 +1248,7 @@ package body Flow_Error_Messages is
         with Static_Predicate =>
           Explain_Node_Kind in N_Empty
                              | N_Assignment_Statement
+                             | N_Object_Declaration
                              | N_Procedure_Call_Statement
                              | N_Loop_Statement
                              | N_Subprogram_Body
@@ -1259,6 +1299,8 @@ package body Flow_Error_Messages is
       --    - an assignment statement, as it may assign a value to a variable,
       --      in a way that enough is known to prove the property regarding
       --      this variable.
+      --    - an object declaration, as it means this variable is not relevant
+      --      upper in the traversal, but its initializing expression might be.
       --    - a procedure call, as it may modify the value of a variable
       --      without stating how this variable was modified in its
       --      postcondition.
@@ -1725,6 +1767,26 @@ package body Flow_Error_Messages is
          if Nkind (M) in Explain_Node_Kind then
             return M;
 
+         --  From the statements of a declare-block, go to the last declaration
+         --  of the same block to traverse corresponding object declarations.
+
+         elsif Nkind (M) = N_Block_Statement
+           and then Nkind (N) = N_Handled_Sequence_Of_Statements
+           and then Parent (N) = M
+           and then Present (Declarations (M))
+         then
+            declare
+               Decl : constant Node_Id := Last (Declarations (M));
+            begin
+               if Nkind (Decl) in Explain_Node_Kind then
+                  return Decl;
+               elsif Is_Stmt_Or_Prag_Or_Decl (Decl) then
+                  return Get_Previous_Explain_Node (Decl);
+               else
+                  return Get_Previous_Explain_Node (M);
+               end if;
+            end;
+
          --  If not done yet, continue looking from the parent node of [N] if
          --  possible.
 
@@ -1749,7 +1811,7 @@ package body Flow_Error_Messages is
          return Flow_Id_Sets.Set
       is
          Expr_Vars : constant Flow_Id_Sets.Set :=
-           Get_Variables_For_Proof (Expr, Context);
+           Get_Filtered_Variables_For_Proof (Expr, Context);
          Mapped_Vars : Flow_Id_Sets.Set;
 
          use type Flow_Id_Sets.Set;
@@ -1843,9 +1905,9 @@ package body Flow_Error_Messages is
                Vars := Flow_Id_Sets.To_Set (Direct_Mapping_Id (V));
             end;
 
-         --  As Get_Variables_For_Proof only apply to expressions, we do not
-         --  try to get an explanation for other cases of procedure calls,
-         --  i.e. when the check is not a precondition.
+         --  As Get_Filtered_Variables_For_Proof only apply to expressions,
+         --  we do not try to get an explanation for other cases of procedure
+         --  calls, i.e. when the check is not a precondition.
 
          elsif Nkind (N) = N_Procedure_Call_Statement then
             pragma Assert (Tag /= VC_Precondition);
@@ -1854,7 +1916,7 @@ package body Flow_Error_Messages is
             pragma Assert (Nkind (N) in N_Subexpr
                            and then Nkind (N) /= N_Procedure_Call_Statement);
 
-            Vars := Get_Variables_For_Proof (N, N);
+            Vars := Get_Filtered_Variables_For_Proof (N, N);
          end if;
 
          return Vars;
@@ -1986,7 +2048,7 @@ package body Flow_Error_Messages is
       --  Do not try to generate a fix message for static checks on validity of
       --  Unchecked_Conversion, as these already have a sufficient explanation
       --  and Flow_Utility.Get_Variables_For_Proof cannot be called on such
-      --  nodes.
+      --  nodes (through Get_Filtered_Variables_For_Proof).
 
       elsif Tag in VC_UC_Source | VC_UC_Target | VC_UC_Same_Size then
          return "";
@@ -2108,6 +2170,31 @@ package body Flow_Error_Messages is
                when N_Empty =>
                   null;
 
+               --  If we bump into an object declaration, remove the declared
+               --  variable and replace it with the variables it is assigned
+               --  from.
+
+               when N_Object_Declaration =>
+                  declare
+                     Var       : constant Entity_Id :=
+                       Defining_Identifier (Stmt);
+                     Expr      : constant Node_Id := Expression (Stmt);
+                     Id        : constant Flow_Id := Direct_Mapping_Id (Var);
+                     Expr_Vars : Flow_Id_Sets.Set;
+                  begin
+                     --  If this variable is currently tracked, replace it with
+                     --  the variables in its initializing expression.
+
+                     if Check_Vars.Contains (Id)
+                       and then Present (Expr)
+                     then
+                        Expr_Vars :=
+                          Get_Filtered_Variables_For_Proof (Expr, N);
+                        Check_Vars.Delete (Id);
+                        Check_Vars.Union (Expr_Vars);
+                     end if;
+                  end;
+
                --  If we bump into an assignment to some entire variable, where
                --  the value assigned does not depend on any variable, then
                --  it's likely that the prover has all the relevant information
@@ -2131,7 +2218,8 @@ package body Flow_Error_Messages is
                         --  and this variable is currently tracked...
 
                         if Check_Vars.Contains (Id) then
-                           Expr_Vars := Get_Variables_For_Proof (Expr, N);
+                           Expr_Vars :=
+                             Get_Filtered_Variables_For_Proof (Expr, N);
 
                            --  and it is assigned a value that does not depend
                            --  on any variable. In that case, remove the
@@ -2604,7 +2692,8 @@ package body Flow_Error_Messages is
                     and then Right_Opnd (Par) = Conjunct
                   then
                      Previous := Left_Opnd (Par);
-                     Vars := Get_Variables_For_Proof (Previous, Previous);
+                     Vars :=
+                       Get_Filtered_Variables_For_Proof (Previous, Previous);
                      Check_Vars.Intersection (Vars);
 
                      if not Check_Vars.Is_Empty then

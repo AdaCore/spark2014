@@ -119,7 +119,7 @@ textio.adb:192:31: info: assertion proved (CVC4: 1 VC)
 textio.adb:199:19: info: range check proved (CVC4: 4 VC)
 textio.adb:199:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 textio.adb:199:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-textio.adb:202:19: medium: precondition might fail, cannot prove S (Idx) = The_File (Idx - S'First + Cur_Position_At_Start) [possible fix: call at line 178 should mention Cur_Position and File (for argument File) in a postcondition]
+textio.adb:202:19: medium: precondition might fail, cannot prove S (Idx) = The_File (Idx - S'First + Cur_Position_At_Start) [possible fix: call at line 178 should mention Cur_Position and File (for argument File) and Item (for argument Buffer) and Last (for argument Last) in a postcondition]
 textio.adb:211:07: info: precondition proved (CVC4: 5 VC)
 textio.ads:6:21: warning: no procedure exists that can initialize abstract state "TextIO.Current_Input_File"
 textio.ads:12:07: warning: "File" is not modified, could be IN

@@ -123,7 +123,7 @@ package body Ce_Pretty_Printing is
    -- Print_Discrete --
    --------------------
 
-   function Print_Discrete (Nb : String; Nb_Type : Entity_Id) return String is
+   function Print_Discrete (Nb : String; Ty : Entity_Id) return String is
 
       function Beautiful_Source_Name (Ty : Entity_Id) return String
         with Pre => Is_Discrete_Type (Ty);
@@ -150,7 +150,10 @@ package body Ce_Pretty_Printing is
          end if;
       end Beautiful_Source_Name;
 
+      --  Local variables
+
       Nb_Value : Uint;
+      Nb_Type  : Entity_Id := Ty;
 
    --  Start of processing for Print_Discrete
 
@@ -176,12 +179,12 @@ package body Ce_Pretty_Printing is
          return "";
       end if;
 
-      --  If one of the bound is not known, we cannot evaluate the type range
-      --  so we cannot decide if we alter printing.
+      --  If one of the bounds is not known, use the base type for evaluating
+      --  the type range to decide if we alter printing.
       if not Compile_Time_Known_Value (Type_Low_Bound (Nb_Type)) or else
          not Compile_Time_Known_Value (Type_High_Bound (Nb_Type))
       then
-         return Nb;
+         Nb_Type := Base_Type (Nb_Type);
       end if;
 
       --  Beginning of safe computations
