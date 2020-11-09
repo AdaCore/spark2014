@@ -1,8 +1,8 @@
 basic.adb:6:19: info: postcondition proved (CVC4: 1 VC)
-basic.adb:9:16: medium: range check might fail (e.g. when A = 1 and B = Unsigned_Byte'Last) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 5 should mention A and B in a precondition]
+basic.adb:9:16: medium: range check might fail (e.g. when A = Unsigned_Byte'Last and B = 1) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 5 should mention A and B in a precondition]
 basic.adb:13:19: info: postcondition proved (CVC4: 1 VC)
 basic.adb:13:36: info: overflow check proved (CVC4: 1 VC)
-basic.adb:16:16: medium: overflow check might fail (e.g. when A = 1 and B = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention A and B in a precondition]
+basic.adb:16:16: medium: overflow check might fail (e.g. when A = Integer'Last and B = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention A and B in a precondition]
 basic.adb:20:19: info: postcondition proved (CVC4: 3 VC)
 basic.adb:24:07: info: initialization of "R" proved
 basic.adb:31:30: info: assertion proved (CVC4: 2 VC; Trivial: 2 VC)
@@ -41,11 +41,11 @@ basic.adb:117:22: info: postcondition proved (CVC4: 1 VC)
 basic.adb:120:22: info: assertion proved (Trivial)
 basic.adb:121:22: info: assertion proved (CVC4: 1 VC)
 counterexample expected for check at basic.adb:9
-  trace at basic.adb:5 --> A = 1 and B = Unsigned_Byte'Last
-  trace at basic.adb:9 --> A = 1 and B = Unsigned_Byte'Last
+  trace at basic.adb:5 --> A = Unsigned_Byte'Last and B = 1
+  trace at basic.adb:9 --> A = Unsigned_Byte'Last and B = 1
 counterexample expected for check at basic.adb:16
-  trace at basic.adb:12 --> A = 1 and B = Integer'Last
-  trace at basic.adb:16 --> A = 1 and B = Integer'Last
+  trace at basic.adb:12 --> A = Integer'Last and B = 1
+  trace at basic.adb:16 --> A = Integer'Last and B = 1
 counterexample expected for check at basic.adb:65
   trace at basic.adb:62 --> X = 1
   trace at basic.adb:65 --> X = 7 and X'Old = 1
