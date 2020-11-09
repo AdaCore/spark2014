@@ -12,6 +12,4 @@ aalias.adb:34:29: info: range check proved (CVC4: 4 VC)
 aconv.adb:22:04: error in inlined body at line 15
 aconv.adb:22:04: this conversion between array types is not yet supported
 aconv.adb:22:04: this conversion between array types is not yet supported
-aconv.adb:22:04: this conversion between array types is not yet supported
-aslice.adb:11:04: info: range check proved (CVC4: 4 VC)
 gnatprove: error during flow analysis and proof
