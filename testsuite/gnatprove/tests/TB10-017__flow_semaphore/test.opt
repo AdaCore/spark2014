@@ -1,0 +1,1 @@
+ALL XFAIL call to internal procedure in protected subprogram (TB10-017)
