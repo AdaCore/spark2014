@@ -1,0 +1,3 @@
+comment: disable z3 for cross-platform stability
+prove_all:
+  prover: ["cvc4"]

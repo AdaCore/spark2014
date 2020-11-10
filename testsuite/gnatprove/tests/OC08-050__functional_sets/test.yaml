@@ -1,0 +1,4 @@
+prove_all:
+  steps: null
+  level: 3
+  no_fail: True

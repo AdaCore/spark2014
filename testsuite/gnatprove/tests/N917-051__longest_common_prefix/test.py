@@ -1,3 +1,0 @@
-from test_support import *
-
-prove_all(prover=["cvc4","z3","altergo"],opt=["-P","test.gpr"], steps=2000)

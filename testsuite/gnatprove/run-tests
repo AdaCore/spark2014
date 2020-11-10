@@ -3,22 +3,37 @@
 from e3.fs import find
 from e3.testsuite import Testsuite
 from e3.testsuite.testcase_finder import TestFinder, ParsedTest
+from e3.testsuite.driver.classic import TestAbortWithError
 from e3.testsuite.driver.adacore import AdaCoreLegacyTestDriver
 import os
 import os.path
 import re
 import sys
+import yaml
 
 
 class ProofTestDriver(AdaCoreLegacyTestDriver):
 
     copy_test_directory = True
 
-    default_testpy = ["from test_support import *", "prove_all()"]
+    default_testpy = ["from test_support import *", "prove_all(**args)"]
+    default_yaml_entry = "prove_all"
 
     def get_script_command_line(self):
         script_file = self.working_dir('src', 'test.py')
+        yaml_file = self.working_dir('src', 'test.yaml')
+        argdict = {}
+        if os.path.isfile(yaml_file):
+            with open(yaml_file, 'r') as fn:
+                y = yaml.safe_load(fn)
+                if self.default_yaml_entry in y:
+                    argdict = y[self.default_yaml_entry]
+                else:
+                    raise TestAbortWithError(
+                        "expected yaml file to contain key " +
+                        self.default_yaml_entry)
         with open(script_file, "w") as fn:
+            fn.write("args = " + str(argdict) + '\n')
             for line in self.default_testpy:
                 fn.write(line + '\n')
         self.test_control.opt_results["CMD"] = script_file
@@ -27,7 +42,8 @@ class ProofTestDriver(AdaCoreLegacyTestDriver):
 
 class FlowTestDriver(ProofTestDriver):
 
-    default_testpy = ["from test_support import *", "do_flow()"]
+    default_testpy = ["from test_support import *", "do_flow(**args)"]
+    default_yaml_entry = "do_flow"
 
 
 class SPARKTestFinder(TestFinder):

@@ -1,0 +1,3 @@
+prove_all:
+  opt: ["-XTARGET=SPARK"]
+  counterexample: False

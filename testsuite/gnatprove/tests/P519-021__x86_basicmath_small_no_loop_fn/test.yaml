@@ -1,0 +1,6 @@
+comment: All VCs here are provable in theory (probably), but there are various encoding issues making these very difficult problems.
+
+prove_all:
+  prover: ["cvc4"]
+  opt: ["--no-axiom-guard"]
+  counterexample: False
