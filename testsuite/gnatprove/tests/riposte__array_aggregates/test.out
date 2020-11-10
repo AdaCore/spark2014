@@ -87,10 +87,10 @@ array_aggregates.adb:349:11: info: flow dependencies proved
 array_aggregates.adb:353:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (others => 5))
 array_aggregates.adb:356:33: info: initialization of "X" proved
 array_aggregates.adb:357:11: info: flow dependencies proved
-array_aggregates.adb:362:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (True => 5, others => 10))
+array_aggregates.adb:362:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (False => 10, True => 5))
 array_aggregates.adb:365:33: info: initialization of "X" proved
 array_aggregates.adb:366:11: info: flow dependencies proved
-array_aggregates.adb:371:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (True => 5, others => 10))
+array_aggregates.adb:371:22: medium: assertion might fail, cannot prove X (True) = 4 (e.g. when X = (False => 10, True => 5))
 array_aggregates.adb:374:33: info: initialization of "X" proved
 array_aggregates.adb:375:11: info: flow dependencies proved
 array_aggregates.adb:380:22: medium: assertion might fail, cannot prove X (2) = 3 (e.g. when X = (2 => 2, others => 0))

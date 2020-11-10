@@ -146,7 +146,7 @@ aco-math-very_longs.adb:318:07: info: initialization of "J" proved
 aco-math-very_longs.adb:319:07: info: initialization of "Q_Hat" proved
 aco-math-very_longs.adb:320:07: info: initialization of "Current_Borrow" proved
 aco-math-very_longs.adb:326:19: info: postcondition proved (CVC4: 2 VC)
-aco-math-very_longs.adb:326:45: medium: array index check might fail (e.g. when Get_MSD'Result = 3 and Number = (Octet_Length => 2, Long_Digits => (2 => 1, others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 2) [reason for check: value must be a valid index into the array]
+aco-math-very_longs.adb:326:45: medium: array index check might fail (e.g. when Get_MSD'Result = 3 and Number = (Octet_Length => 2, Long_Digits => (1 => 0, 2 => 1)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 2) [reason for check: value must be a valid index into the array]
 aco-math-very_longs.adb:327:47: medium: overflow check might fail (e.g. when Get_MSD'Result = Digit_Index_Type'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 aco-math-very_longs.adb:327:100: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:332:35: info: index check proved (CVC4: 4 VC)
