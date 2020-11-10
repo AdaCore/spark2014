@@ -1,0 +1,4 @@
+repro.adb:13:04: "others" choice not allowed here
+repro.adb:13:04: error in inlined body at line 9
+repro.adb:13:04: qualify the aggregate with a constrained subtype to provide bounds for it
+gnatprove: error during generation of Global contracts
