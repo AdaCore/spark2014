@@ -2724,7 +2724,23 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Has_Potentially_Blocking_Statement (E : Entity_Id) return Boolean
    is
-     (not Phase_1_Info (To_Entity_Name (E)).Nonblocking);
+      C : constant Phase_1_Info_Maps.Cursor :=
+        Phase_1_Info.Find (To_Entity_Name (E));
+   begin
+      --  If we have a recorded information in the ALI file for this
+      --  subprogram, then use it.
+
+      if Phase_1_Info_Maps.Has_Element (C) then
+         return not Phase_1_Info (C).Nonblocking;
+
+      --  Otherwise, conservatively assume the subprogram to be potentially
+      --  blocking. This happens for example for subprograms from the GNAT.*
+      --  hierarchy, for which we don't have the phase 1 ALI files.
+
+      else
+         return True;
+      end if;
+   end Has_Potentially_Blocking_Statement;
 
    ---------------------------------
    -- Potentially_Blocking_Callee --
