@@ -44,7 +44,7 @@
   </goal>
   <goal name="def&#39;vc.9">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="24932"/></proof>
+  <proof prover="1"><result status="unknown" steps="22141"/></proof>
   <proof prover="2"><result status="unknown" steps="98"/></proof>
   <proof prover="3"><result status="unknown" steps="145"/></proof>
   </goal>
