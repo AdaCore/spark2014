@@ -248,7 +248,7 @@ package body Flow_Generated_Globals.Partial is
                           | E_Function
                           | E_Procedure,
         Post => (for all Call of Contract_Calls'Result =>
-                    Ekind (Call) = E_Function);
+                    Ekind (Call) in E_Function | E_Subprogram_Type);
    --  Return direct calls in the contract of E, i.e. in its Pre, Post and
    --  Contract_Cases.
 
@@ -632,7 +632,15 @@ package body Flow_Generated_Globals.Partial is
 
       if Entity_In_SPARK (E) then
          if Is_Callable (E) then
-            Contr.Direct_Calls := Contract_Calls (E);
+
+            --  Ignore calls via access-to-subprogram, because we can't know
+            --  the actual subprogram and thus we assume it to be pure.
+
+            for Call of Contract_Calls (E) loop
+               if Ekind (Call) /= E_Subprogram_Type then
+                  Contr.Direct_Calls.Insert (Call);
+               end if;
+            end loop;
          end if;
 
          --  For subprograms in a generic predefined unit with its body not
