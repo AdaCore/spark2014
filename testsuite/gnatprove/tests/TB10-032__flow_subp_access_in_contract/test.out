@@ -1,0 +1,1 @@
+foo.ads:7:18: medium: pointer dereference check might fail
