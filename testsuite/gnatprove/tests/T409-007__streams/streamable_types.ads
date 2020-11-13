@@ -3,7 +3,7 @@ with Ada.Streams;
 package Streamable_Types with SPARK_Mode is
    use Ada;
 
-   type Int is new  Integer;
+   type Int is new Integer;
 
    procedure Print (Stream : not null access Streams.Root_Stream_Type'Class;
                     Item   : Int);

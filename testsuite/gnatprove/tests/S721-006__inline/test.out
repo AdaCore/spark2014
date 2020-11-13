@@ -2,4 +2,3 @@ bindo.adb:24:32: medium: pointer dereference check might fail (e.g. when G = nul
 bindo.adb:27:07: medium: pointer dereference check might fail (e.g. when G = null) [possible fix: subprogram at line 20 should mention G in a precondition]
 bindo.adb:27:16: medium: pointer dereference check might fail (e.g. when G = null) [possible fix: subprogram at line 20 should mention G in a precondition]
 bindo.adb:27:22: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at line 20 should mention G and Kind in a precondition]
-bindo.ads:44:07: warning: "G" is not modified, could be of access constant type

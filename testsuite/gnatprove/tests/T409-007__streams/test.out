@@ -35,7 +35,5 @@ streamable_types.adb:90:07: warning: "Last" is set by "Read_Value" but not used 
 streamable_types.ads:12:21: info: initialization of "Item" proved
 streamable_types.ads:14:04: info: initialization of "V" proved
 streamable_types.ads:14:04: medium: null exclusion check might fail
-streamable_types.ads:14:04: warning: "S" is not modified, could be of access constant type
 streamable_types.ads:15:04: medium: null exclusion check might fail
-streamable_types.ads:15:04: warning: "S" is not modified, could be of access constant type
 gnatprove: error during flow analysis and proof

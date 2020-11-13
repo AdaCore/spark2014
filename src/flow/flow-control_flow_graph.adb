@@ -5631,7 +5631,9 @@ package body Flow.Control_Flow_Graph is
          Ins.Append (V);
 
          --  Build an out vertex
-         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter then
+         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+           or else Is_Writable_Parameter (Formal)
+         then
             Add_Vertex
               (FA,
                Direct_Mapping_Id (Actual, Out_View),
