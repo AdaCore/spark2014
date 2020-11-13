@@ -1038,6 +1038,11 @@ module Dynamic_Floating_Point
   function to_rep (x : t) : rep_type = base_to_rep x
   function of_rep (x : rep_type) : t = base_of_rep x
 
+  val to_rep (x : t) : rep_type
+  ensures { result = base_to_rep x }
+  val of_rep (x : rep_type) : t
+  ensures { result = base_of_rep x }
+
   predicate dynamic_property (first last n : rep_type)
 
   val check_not_last (first last n : rep_type) : rep_type
