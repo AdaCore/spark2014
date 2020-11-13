@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-SPARK 2014 Reference Manual
-===========================
+SPARK Reference Manual
+======================
 
 .. Copyright notice for latex is in gfdl.tex. It is included specifically
    before the table of contents in LaTeX output (see conf.py), to avoid having
