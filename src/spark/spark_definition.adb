@@ -3452,6 +3452,12 @@ package body SPARK_Definition is
                   when E_Variable =>
                      Mark (Prefix (Name (N)));
 
+                  when E_Component =>
+                     Mark_Unsupported
+                       ("call to operation of a component of a protected type",
+                        N);
+                     return;
+
                   when others =>
                      raise Program_Error;
                end case;
