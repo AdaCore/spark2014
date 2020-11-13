@@ -622,6 +622,10 @@ package body Flow_Generated_Globals.Partial is
             Contr.Tasking (Unsynch_Accesses) :=
               Unsynchronized_Globals (Contr.Globals.Refined);
 
+            --  Frontend calls only include static subprogram calls, i.e. we
+            --  don't expect calls via access-to-subprogram and dispatching
+            --  calls.
+
             Contr.Globals.Calls.Conditional_Calls := Frontend_Calls (E);
          end if;
       end if;
@@ -633,11 +637,24 @@ package body Flow_Generated_Globals.Partial is
       if Entity_In_SPARK (E) then
          if Is_Callable (E) then
 
-            --  Ignore calls via access-to-subprogram, because we can't know
-            --  the actual subprogram and thus we assume it to be pure.
-
             for Call of Contract_Calls (E) loop
-               if Ekind (Call) /= E_Subprogram_Type then
+
+               --  Ignore calls via access-to-subprogram, because we can't know
+               --  the actual subprogram and thus we assume it to be pure.
+
+               if Ekind (Call) = E_Subprogram_Type then
+                  null;
+
+               --  Likewise, ignore calls to abstract functions (since
+               --  procedures or entries cannot be called in contracts),
+               --  because we assume abstract subprograms to be pure.
+
+               elsif Ekind (Call) = E_Function
+                 and then Is_Abstract_Subprogram (Call)
+               then
+                  null;
+
+               else
                   Contr.Direct_Calls.Insert (Call);
                end if;
             end loop;

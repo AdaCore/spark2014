@@ -514,6 +514,14 @@ package body Flow.Slice is
                elsif Ekind (E) = E_Subprogram_Type then
                   null;
 
+               --  Ignore calls to abstract subprograms, because we also assume
+               --  them to be pure.
+
+               elsif Is_Overloadable (E)
+                 and then Is_Abstract_Subprogram (E)
+               then
+                  null;
+
                --  For ordinary subprograms, check if their flow effects
                --  have been already "inlined" in CFG; see the call
                --  to Process_Subprogram_Globals in Do_Call_Statement.

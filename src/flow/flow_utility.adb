@@ -1532,6 +1532,15 @@ package body Flow_Utility is
             Debug ("writes", Globals.Outputs);
          end;
 
+      --  Assume abstract subprograms to be pure, because currently they can't
+      --  be annotated with Global/Depends contracts.
+
+      elsif Is_Overloadable (Subprogram)
+        and then Is_Abstract_Subprogram (Subprogram)
+      then
+
+         Debug ("giving null globals for an abstract entity");
+
       --  SPARK RM 6.1.4(4):
       --
       --  "If a subprogram's Global aspect is not otherwise specified and
