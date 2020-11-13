@@ -1,0 +1,2 @@
+use_intrinsic.adb:6:19: info: assertion proved (CVC4: 1 VC)
+use_intrinsic.adb:7:19: medium: assertion might fail, cannot prove Y < X (e.g. when X = 0.0 and Y = 42.0)
