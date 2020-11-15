@@ -127,6 +127,9 @@ package SPARK_Atree.Entities is
    function Is_Array_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Array_Type;
 
+   function Is_Assignable (E : Entity_Id) return Boolean renames
+     Einfo.Is_Assignable;
+
    function Is_Boolean_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Boolean_Type;
 

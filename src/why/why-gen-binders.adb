@@ -836,7 +836,7 @@ package body Why.Gen.Binders is
                                  Labels   => <>));
             end if;
 
-            if Ekind (E) in E_In_Out_Parameter | E_Out_Parameter | E_Variable
+            if Is_Assignable (E)
               and then Has_Defaulted_Discriminants (Ty)
             then
                Result.Constr :=
