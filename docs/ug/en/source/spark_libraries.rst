@@ -918,11 +918,20 @@ particular:
 * Effects of subprograms from ``Ada.Strings.Maps``, as specified in the Ada RM
   (A.4.2), are fully modeled through pre/postconditions.
 
-* Effects of subprograms from ``Ada.Strings.Fixed``, ``Ada.Strings.Bounded``
-  and ``Ada.Strings.Unbounded`` are partially modelled. Postconditions
-  state properties on the Length of the strings only and not on their
-  content. Preconditions protect from exceptions specified in the Ada RM
-  (A.4.3, A.4.4, A.4.5).
+* Effects of most subprograms from ``Ada.Strings.Fixed`` are fully
+  modeled through pre- and postconditions. Preconditions protect from
+  exceptions specified in the Ada RM (A.4.3). Some procedures are not
+  annotated with preconditions and may raise ``Length_Error`` when
+  called with inconsistent parameters. They are detailed below.
+  Subprograms not fully annotated with postconditions include the
+  functions ``Count`` and procedures ``Move``, ``Replace_Slice``,
+  ``Insert``, ``Overwrite``, ``Delete``, ``Trim``, ``Head`` and
+  ``Tail``.
+
+* Effects of subprograms from ``Ada.Strings.Bounded`` and ``Ada.Strings.Unbounded``
+  are partially modeled. Postconditions state properties on the Length of the
+  strings only and not on their content. Preconditions protect from exceptions
+  specified in the Ada RM (A.4.4, A.4.5).
 
 * Type ``String_Access`` and procedure ``Free`` in ``Ada.Strings.Unbounded`` are not
   in SPARK and cannot be denoted in SPARK program text, unless they are hidden
