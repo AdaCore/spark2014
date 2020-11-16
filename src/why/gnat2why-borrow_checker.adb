@@ -3436,10 +3436,18 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Simple_Return_Statement =>
             declare
-               Subp : constant Entity_Id :=
+               Subp : Entity_Id :=
                  Return_Applies_To (Return_Statement_Entity (Stmt));
                Expr : constant Node_Id := Expression (Stmt);
+
             begin
+               --  For simple return inside extended return, return applies to
+               --  the extended return. Go to the enclosing subprogram.
+
+               if Ekind (Subp) = E_Return_Statement then
+                  Subp := Return_Applies_To (Subp);
+               end if;
+
                if Present (Expr) then
                   declare
                      Return_Typ : constant Entity_Id :=
@@ -3497,15 +3505,15 @@ package body Gnat2Why.Borrow_Checker is
                      else
                         Check_Expression (Expr, Read);
                      end if;
-
-                     if Ekind (Subp) in E_Procedure | E_Entry
-                       and then not No_Return (Subp)
-                     then
-                        Return_Parameters (Subp);
-                        Return_Globals (Subp);
-                     end if;
                   end;
                end if;
+
+               if Ekind (Subp) in E_Procedure | E_Entry
+                 and then not No_Return (Subp)
+               then
+                  Return_Parameters (Subp);
+               end if;
+               Return_Globals (Subp);
             end;
 
          when N_Extended_Return_Statement =>
@@ -3545,8 +3553,8 @@ package body Gnat2Why.Borrow_Checker is
                  and then not No_Return (Subp)
                then
                   Return_Parameters (Subp);
-                  Return_Globals (Subp);
                end if;
+               Return_Globals (Subp);
             end;
 
          --  On loop exit, merge the current permission environment with the
