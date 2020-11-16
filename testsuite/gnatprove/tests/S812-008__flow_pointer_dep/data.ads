@@ -3,5 +3,5 @@ package Data is
    type AAI is access AI;
    procedure Copy_Pointer (A : in AAI; B : out AI) with
       Global  => null,
-      Depends => (B => A);
+      Depends => (B => A, A => A);
 end Data;
