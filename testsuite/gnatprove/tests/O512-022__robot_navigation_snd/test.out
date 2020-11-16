@@ -29,12 +29,12 @@ algorithm.adb:106:22: info: initialization of "d" proved
 algorithm.adb:108:44: medium: precondition might fail, cannot prove X /= 0.0 or Y /= 0.0
 algorithm.adb:108:64: info: division check proved (CVC4: 1 VC)
 algorithm.adb:108:64: info: float overflow check proved (Trivial)
-algorithm.adb:109:49: medium: divide by zero might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
-algorithm.adb:109:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
+algorithm.adb:109:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition]
+algorithm.adb:109:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition]
 algorithm.adb:111:42: info: division check proved (CVC4: 1 VC)
 algorithm.adb:111:42: info: float overflow check proved (Trivial)
-algorithm.adb:111:49: medium: divide by zero might fail [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
-algorithm.adb:111:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: loop at line 84 should mention deltaAngle in a loop invariant]
+algorithm.adb:111:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition]
+algorithm.adb:111:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition]
 algorithm.adb:143:46: info: function contract not available for proof ("Create" might not return)
 algorithm.adb:147:10: info: cannot unroll loop (too many loop iterations)
 algorithm.adb:150:63: info: range check proved (Trivial)
