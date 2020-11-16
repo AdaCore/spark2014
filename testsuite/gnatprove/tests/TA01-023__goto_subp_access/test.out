@@ -1,0 +1,5 @@
+subptr.adb:15:13: access to subprogram with global effects is not allowed in SPARK
+subptr.adb:15:13: violation of pragma SPARK_Mode at test.adc:1
+subptr.adb:17:13: access to subprogram with global effects is not allowed in SPARK
+subptr.adb:17:13: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof
