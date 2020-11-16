@@ -3347,22 +3347,39 @@ package body SPARK_Definition is
          end if;
 
          --  Parts of constant objects should not appear as out or in out
-         --  parameters in procedure calls.
+         --  parameters in procedure calls, nor as an in parameter of a
+         --  access-to-variable type.
 
-         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter then
+         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+           or else
+             (Ekind (E) /= E_Function
+              and then not Is_Function_Type (E)
+              and then Ekind (Formal) = E_In_Parameter
+              and then Is_Access_Type (Etype (Formal))
+              and then Ekind (Directly_Designated_Type (Etype (Formal))) /=
+                E_Subprogram_Type
+              and then not Is_Access_Constant (Etype (Formal)))
+         then
             declare
                Mode : constant String :=
-                 (if Ekind (Formal) = E_In_Out_Parameter
-                  then "`IN OUT`" else "`OUT`");
+                 (case Ekind (Formal) is
+                     when E_In_Parameter     =>
+                       "`IN` parameter of an access-to-variable type",
+                     when E_In_Out_Parameter =>
+                       "`IN OUT` parameter",
+                     when E_Out_Parameter    =>
+                       "`OUT` parameter",
+                     when others             =>
+                        raise Program_Error);
             begin
                if not Is_Path_Expression (Actual)
                  or else No (Get_Root_Object (Actual))
                then
                   Mark_Violation
-                    ("expression as " & Mode & " parameter", Actual);
+                    ("expression as " & Mode, Actual);
                elsif Is_Constant_In_SPARK (Get_Root_Object (Actual)) then
                   Mark_Violation
-                    ("constant object as " & Mode & " parameter", Actual);
+                    ("constant object as " & Mode, Actual);
                end if;
             end;
          end if;
