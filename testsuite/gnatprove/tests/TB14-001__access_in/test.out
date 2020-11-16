@@ -1,0 +1,5 @@
+access_param.adb:14:10: expression as "in" parameter of an access-to-variable type is not allowed in SPARK
+access_param.adb:14:10: violation of aspect SPARK_Mode at line 1
+access_param.adb:15:10: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+access_param.adb:15:10: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof
