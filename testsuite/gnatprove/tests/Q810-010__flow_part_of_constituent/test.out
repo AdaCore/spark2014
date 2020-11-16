@@ -6,5 +6,6 @@ p-priv.ads:3:12: "Instance_Gen" is declared in the visible part of private child
 p-priv.ads:3:12: "Instance_Gen" is declared in the visible part of private child unit "Priv"
 p-priv.ads:3:12: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
 p-priv.ads:3:12: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
-p.adb:4:61: cannot use "State_Gen_Pkg" in refinement, constituent is not a hidden state of package "P"
+p.adb:4:61: "State_Gen_Pkg" cannot act as constituent of state "State"
+p.adb:4:61: missing Part_Of indicator at p-priv.ads:3 should specify encapsulator "State"
 gnatprove: error during generation of Global contracts

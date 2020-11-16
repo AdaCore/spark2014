@@ -15,5 +15,4 @@ abstract_state_illegal_2.ads:14:48: "=>" expected (positional association cannot
 abstract_state_illegal_3.ads:6:26: state "State" requires refinement
 abstract_state_illegal_4-pub_child.adb:5:57: "Pr_State" cannot act as constituent of state "Pub_State"
 abstract_state_illegal_4-pub_child.adb:5:57: Part_Of indicator specifies encapsulator "State"
-abstract_state_illegal_4-pub_child.ads:3:26: state "Pub_State" requires refinement
 gnatprove: error during generation of Global contracts
