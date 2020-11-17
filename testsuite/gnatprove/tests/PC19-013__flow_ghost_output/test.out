@@ -1,1 +1,0 @@
-p.adb:11:04: high: modification of "X" in elaboration requires Elaborate_Body on package "P" (SPARK RM 7.7.1(5))

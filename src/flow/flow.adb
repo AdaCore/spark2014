@@ -48,7 +48,6 @@ with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with Lib;                              use Lib;
 with Namet;                            use Namet;
-with Opt;                              use Opt;
 with Osint;                            use Osint;
 with Output;                           use Output;
 with Sem_Aux;                          use Sem_Aux;
@@ -1445,25 +1444,12 @@ package body Flow is
                         Analysis.Check_Potentially_Blocking (FA);
                         Analysis.Check_Terminating_Annotation (FA);
                      end if;
-                     Analysis.Find_Non_Elaborated_State_Abstractions (FA);
                      Analysis.Check_Consistent_AS_For_Private_Child (FA);
                      if Have_Full_Package_Code then
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                         Analysis.Check_Initializes_Contract (FA);
                      end if;
                      Analysis.Check_Refined_State_Contract (FA);
-                     --  We check if pragma Elaborate_Body is needed only for
-                     --  libray unit packages without the pragma. We also only
-                     --  check this when we use the gnat static elaboration
-                     --  model, since otherwise the front-end has a much more
-                     --  brutal method of enforcing this.
-                     if Entity_Body_In_SPARK (FA.Spec_Entity)
-                       and then Is_Compilation_Unit (FA.Spec_Entity)
-                       and then not Has_Pragma_Elaborate_Body (FA.Spec_Entity)
-                       and then not Dynamic_Elaboration_Checks
-                     then
-                        Analysis.Check_Elaborate_Body (FA);
-                     end if;
                      Analysis.Check_State_Volatility_Escalation (FA);
                      Analysis.Check_Calls_With_Constant_After_Elaboration (FA);
                   end;

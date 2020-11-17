@@ -1,4 +1,2 @@
-rule5.adb:8:04: high: modification of "X" in elaboration requires Elaborate_Body on package "Rule5" (SPARK RM 7.7.1(5))
-rule5.adb:9:04: high: modification of "Y" in elaboration requires Elaborate_Body on package "Rule5" (SPARK RM 7.7.1(5))
 rule5.ads:3:04: warning: initialization of "X" has no effect
 rule5.ads:8:04: warning: initialization of "Y" has no effect

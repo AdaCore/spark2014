@@ -1,4 +1,3 @@
 main.adb:3:11: medium: ceiling priority protocol might not be respected
 main.adb:4:21: info: range check proved (CVC4: 2 VC)
-p.adb:9:06: high: modification of "PO" in elaboration requires Elaborate_Body on package "P" (SPARK RM 7.7.1(5))
 p.ads:3:24: info: range check proved (CVC4: 2 VC)

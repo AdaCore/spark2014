@@ -3,7 +3,6 @@ g.adb:21:19: medium: assertion might fail, cannot prove Inst.Foo = 10
 generate_initializes.ads:8:14: info: initialization of "X" constituent of "State" proved
 generate_initializes.ads:8:14: info: initialization of "Y" constituent of "State" proved
 generate_initializes.ads:9:11: info: data dependencies proved
-other.adb:14:04: high: modification of "G2" in elaboration requires Elaborate_Body on package "Other" (SPARK RM 7.7.1(5))
 outer.adb:16:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 10 should mention Hidden and Visible in a precondition]
 outer.adb:18:17: info: add a contract to analyze it separately from calling contexts
 outer.adb:18:17: info: local subprogram "Init" only analyzed in the context of calls
