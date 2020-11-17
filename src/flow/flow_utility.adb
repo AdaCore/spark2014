@@ -1813,6 +1813,11 @@ package body Flow_Utility is
       if Is_Derived_Type (Subprogram) then
          E := Root_Type (Subprogram);
 
+         if Is_Private_Type (E) then
+            pragma Assert (Present (Full_View (E)));
+            E := Full_View (E);
+         end if;
+
          pragma Assert (Ekind (E) = E_Task_Type
                           and then not Is_Derived_Type (E)
                           and then Entity_In_SPARK (E));

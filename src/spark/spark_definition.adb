@@ -6079,11 +6079,10 @@ package body SPARK_Definition is
                         end if;
                      end;
 
-                     --  Tasks are considered as always having a private part
-                     --  which is not visible to the prover.
+                  --  The full view of a task is in SPARK
 
                   else
-                     Fullview_In_SPARK := False;
+                     Fullview_In_SPARK := Is_Task_Type (E);
                   end if;
 
                   Current_SPARK_Pragma := Save_SPARK_Pragma;
