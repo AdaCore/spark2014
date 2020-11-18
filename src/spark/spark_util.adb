@@ -2757,10 +2757,8 @@ package body SPARK_Util is
    ---------------------------
 
    function Is_Writable_Parameter (E : Entity_Id) return Boolean is
-      Typ : constant Entity_Id := Etype (E);
    begin
-      return Is_Access_Object_Type (Typ)
-        and then not Is_Access_Constant (Typ);
+      return Is_Access_Variable (Base_Type (Etype (E)));
    end Is_Writable_Parameter;
 
    --------------------------------
