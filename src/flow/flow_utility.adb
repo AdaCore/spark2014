@@ -1814,8 +1814,8 @@ package body Flow_Utility is
          E := Root_Type (Subprogram);
 
          if Is_Private_Type (E) then
-            pragma Assert (Present (Full_View (E)));
             E := Full_View (E);
+            pragma Assert (Present (E));
          end if;
 
          pragma Assert (Ekind (E) = E_Task_Type
