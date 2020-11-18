@@ -290,7 +290,6 @@ package body Flow is
       Format_Item ("Is_Initialized", Boolean'Image (A.Is_Initialized));
       Format_Item ("Is_Function_Return", Boolean'Image (A.Is_Function_Return));
       Format_Item ("Is_Global", Boolean'Image (A.Is_Global));
-      Format_Item ("Is_Loop_Parameter", Boolean'Image (A.Is_Loop_Parameter));
       Format_Item ("Is_Import", Boolean'Image (A.Is_Import));
       Format_Item ("Is_Export", Boolean'Image (A.Is_Export));
       Format_Item ("Mode", Param_Mode'Image (A.Mode));

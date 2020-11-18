@@ -2555,8 +2555,8 @@ package body Flow.Control_Flow_Graph is
       --        v
       --
       --  The PARAMETER block defines the loop parameter (which is
-      --  also flagged as Is_Initialized and Is_Loop_Parameter so that
-      --  it can be suitably ignored by subsequent analysis).
+      --  also flagged as Is_Initialized so that it can be suitably
+      --  ignored by subsequent analysis).
       --
       --  We distinguish this case (non-empty range) from the previous
       --  one (unknown range) as subsequent code may rely on any

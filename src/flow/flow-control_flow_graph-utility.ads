@@ -223,7 +223,6 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Is_Initialized
    --     * Is_Function_Return
    --     * Is_Global (always false)
-   --     * Is_Loop_Parameter
    --     * Is_Export
    --     * Variables_Defined or Variables_Used
    --
