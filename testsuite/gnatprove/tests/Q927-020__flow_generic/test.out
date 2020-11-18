@@ -1,1 +1,6 @@
 id.adb:3:03: info: flow dependencies proved
+id.adb:8:39: info: flow dependencies proved, in instantiation at id.adb:15
+id.adb:8:39: info: flow dependencies proved, in instantiation at id.adb:16
+id2.adb:3:03: info: flow dependencies proved
+id2.adb:8:23: info: flow dependencies proved, in instantiation at id2.adb:13
+id2.adb:8:39: medium: constant without variable input "X" cannot appear in Initializes, in instantiation at id2.adb:12
