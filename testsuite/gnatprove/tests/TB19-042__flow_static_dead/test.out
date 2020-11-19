@@ -1,0 +1,11 @@
+main.adb:32:12: high: "X" must be a global output of "Try_Loop" (SPARK RM 6.1.4(17)), in instantiation at main.adb:47
+main.adb:47:04: info: cannot unroll loop (value of loop bounds)
+main.adb:47:04: info: in instantiation at line 31
+main2.adb:27:10: info: precondition proved (Trivial: 1 VC), in instantiation at main2.adb:48
+main2.adb:33:23: warning: statement has no effect, in instantiation at main2.adb:49
+main2.adb:34:10: info: precondition proved (Trivial: 1 VC), in instantiation at main2.adb:49
+main2.adb:34:10: warning: this statement is never reached, in instantiation at main2.adb:49
+main2.adb:42:13: info: precondition proved (Trivial: 1 VC), in instantiation at main2.adb:50
+main2.adb:49:04: info: cannot unroll loop (value of loop bounds)
+main2.adb:49:04: info: in instantiation at line 33
+main2.adb:49:14: warning: "X" is not modified, could be INPUT
