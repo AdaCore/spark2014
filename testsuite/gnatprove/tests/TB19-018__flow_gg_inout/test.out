@@ -1,0 +1,9 @@
+main.adb:19:28: info: data dependencies proved
+main.adb:19:49: warning: unused initial value of "X"
+main.adb:21:07: info: precondition proved (Trivial: 1 VC)
+main.adb:22:22: info: precondition proved (Trivial: 1 VC)
+main.adb:22:22: medium: assertion might fail, cannot prove (Get) [possible fix: call at line 21 should mention X in a postcondition]
+main.adb:25:04: warning: analyzing unreferenced procedure "Implicit"
+main.adb:27:07: info: precondition proved (Trivial: 1 VC)
+main.adb:28:22: info: precondition proved (Trivial: 1 VC)
+main.adb:28:22: medium: assertion might fail, cannot prove (Get) [possible fix: call at line 27 should mention X in a postcondition]
