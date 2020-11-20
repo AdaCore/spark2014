@@ -1205,8 +1205,9 @@ the subprogram.
 Subprogram_Variant Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The aspect Subprogram_Variant is defined for subprograms. It is intended for
-use in ensuring termination of recursive subprograms.
+The aspect Subprogram_Variant may be specified for subprograms; it can be
+used to ensure termination of recursive subprograms in a way that is
+similar to how pragma Loop_Variant can be used to ensure termination of loops.
 
 .. centered:: **Syntax**
 
@@ -1218,92 +1219,126 @@ use in ensuring termination of recursive subprograms.
 
 where ``discrete_expression`` is an ``expression`` of a discrete type.
 
-Two aspects Subprogram_Variant are said to be `compatible`, if the length of
-their subprogram_variant_item_list is the same, and, for each
-subprogram_variant_item,
-both sequences agree on the change_direction and the base type of the
-discrete_expression.
+The aspect_definition for a Subprogram_Variant aspect_specification
+shall be a subprogram_variant_list. The Subprogram_Variant aspect
+of an inherited subprogram for a derived type is inherited except in the
+case where the parent type is also the type of one or more of the
+discrete_expressions; in that case the aspect is not inherited.
+
+Two Subprogram_Variant aspects are said to be `compatible` if the lengths of
+the two subprogram_variant_item_list are equal and corresponding pairs
+of the elements of the two lists agree with respect to both change_direction
+and the type of their respective discrete_expressions. An unspecified
+(either explicitly or by inheritance) Subprogram_Variant aspect is
+compatible with, and only with, another unspecified Subprogram_Variant
+aspect (including itself).
 
 .. index:: recursive subprograms
 
 Two subprograms are said to be `statically mutually recursive`, if they are
-mutually recursive ignoring indirect calls (dispatching calls and calls
-through access-to-subprogram values). In the following, a direct recursive call
-is considered as a special case of a statically mutually recursive call.
+mutually recursive taking into account only direct calls (that is,
+ignoring dispatching calls and calls through access-to-subprogram values).
+For example, if subprogram Aa calls Bb (that is, Aa
+statically contains a direct call to Bb), Bb calls Cc, Cc calls Dd, and
+Dd calls Aa, then any 2 of those 4 subprograms (e.g., Bb and Dd) are
+statically mutually recursive. The case of a direct recursive call is just
+a special case of a statically mutually recursive call; thus, it
+is possible [and not unusual] for a subprogram to be statically mutually
+recursive with itself and with no other subprogram.
 
-The variant of a (mutually) recursive call to a subprogram which
-has an aspect
-Subprogram_Variant compatible with the aspect of its caller is said to
-`progress` if it passes the following check.
-One or more of the ``discrete_expressions`` of the callee are each compared
-to the result of the evaluation of the ``discrete_expression`` of the
-corresponding ``subprogram_variant_item`` at the beginning of the caller as
-follows: comparisons are performed in textual order either until unequal
-values are found or until values for all expressions have been compared.
-In either case, the last pair of values to be compared is then checked as
-follows: if the ``change_direction`` for the associated
-``subprogram_variant_item`` is Increases (respectively, Decreases) then the
-expression value obtained for the call is greater (respectively, less) than
-the value obtained at the beginning of the caller.
+In some cases (described in more detail below) involving a call where the
+calling subprogram and the called subprogram have compatible (specified)
+Subprogram_Variable aspects, a runtime check (or a verification condition
+corresponding to such a runtime check) may be be introduced to ensure that
+the "variant of the call progresses". This means that
+the values of the caller's discrete_expressions (which were saved upon
+entry to the caller, as will be described below) are compared in textual
+order with those of the callee (which are evaluated only as needed as part of
+the check) until either a pair of unequal values is encountered or until
+all pairs have been compared.
+In either case, a check is performed that the last pair of values to be
+compared satisfies the following condition: if the ``change_direction`` for
+the associated ``subprogram_variant_item`` is Increases (respectively,
+Decreases) then the expression value obtained for the call is greater
+(respectively, less) than the value that was saved upon entry to the caller.
 
 .. centered:: **Static Semantics**
 
-1. Aspect Subprogram_Variant is used to demonstrate that a (set of statically
-   mutually) recursive subprogram(s)
-   will terminate by specifying expressions that will increase or decrease at
-   each (mutually) recursive call.
+1. [Aspect Subprogram_Variant can be used to demonstrate that execution of
+   any of a set of statically mutually recursive subprogram(s)
+   will not result in unbounded recursion. This is accomplished by specifying
+   expressions that will increase or decrease at each (mutually) recursive
+   call.]
+
+2. Subprogram_Variant is an assertion aspect [and may be used in an
+   Assertion_Policy pragma]. Subprogram_Variant is an assertion (as
+   defined in Ada RM 11.4.2(1.1/3)); any Subtype_Variant runtime checking
+   associated with a call (see below) is governed by
+   the Subprogram_Variant assertion policy that is in effect at the
+   point of the call.
 
 .. centered:: **Legality Rules**
 
-2. Subprogram_Variant is an assertion and has an expected actual parameter
-   which is a specialization of an Ada expression. Otherwise, it has
-   the same name resolution and legality rules as aspect Precondition.
+3. A Subprogram_Variant aspect may be specified for the same subprograms
+   that a Pre aspect may be specified for. [This implies, for example,
+   that the Subprogram_Variant aspect cannot be specified for an abstract
+   subprogram.]
 
-3. The expression of a ``subprogram_variant_item`` shall be of any
+4. The expression of a ``subprogram_variant_item`` shall be of any
    discrete type.
+
+5. The Subprogram_Variant assertion policy in effect at the
+   point of a direct recursive call (i.e., a call where the calling
+   subprogram is the same as the callee) and at the point where the
+   subprogram is declared shall agree.
 
 .. centered:: **Dynamic Semantics**
 
-4. At the beginning of a subprogram, the ``discrete_expressions`` are evaluated
-   in textual order.
+6. At the beginning of a subprogram with a specified Subprogram_Variant aspect,
+   the ``discrete_expressions`` are evaluated in textual order and their
+   values are each saved in a constant that is implicitly declared at
+   the beginning of the subprogram body[, in the same way as for
+   an unconditionally evaluated Old attribute reference (see Ada RM 6.1.1)].
 
-5. On direct recursive calls, the ``discrete_expressions`` of the
-   subprogram_variant_list of the callee are evaluated in textual order.
-   A check is made that the variant of the call progresses. If it fails,
-   Assertion_Error is raised. [No runtime exception is raised in the case of
-   mutually recursive calls or indirect calls.] Aspect Subprogram_Variant is an
-   assertion (as defined in Ada RM 11.4.2(1.1/3)) and is governed by the
-   Subprogram_Variant assertion aspect [and may be used in an Assertion_Policy
-   pragma].
-
+7. For a direct recursive call (i.e., the calling subprogram is the same
+   as the callee), a check is made that the variant of the call progresses
+   (as described above). If the check fails, Assertion_Error is raised.
+   [No runtime check is performed in the case of a direct call from one
+   subprogram to a different subprogram, even if the two subprograms are
+   statically mutually recursive. No runtime check is performed for a
+   dispatching call or a call through an access-to-subprogram value.]
+   No runtime check is performed if the Subprogram_Variant assertion policy
+   in effect at the point of the call is not Check.
+    
 .. centered:: **Verification Rules**
 
-6.  Statically mutually recursive subprograms shall have compatible variants.
+8.  Statically mutually recursive subprograms shall have compatible variants.
 
-7.  A statically mutually recursive call to a subprogram annotated with aspect
-    Subprogram_Variant shall not occur inside a precondition or inside a
-    Subprogram_Variant aspect.
+9.  A statically mutually recursive call (that is, a direct call where the
+    caller and the callee are statically mutually recursive) where the
+    Subprogram_Variant aspects of the two subprograms are specified shall not
+    occur with a precondition expression, within a subtype predicate
+    expression, within a type invariant expression, within a
+    Default_Initial_Condition expression, within a discrete_expression
+    of a Subprogram_Variant aspect specification, or as part of the
+    default initialization of a type. Such a call shall also not occur
+    inside the elaboration of a package unless the package is located
+    within a subprogram and not within a declare block.
 
-8.  A statically mutually recursive call to a subprogram annotated with aspect
-    Subprogram_Variant shall not occur inside a type invariant or subtype
-    predicate, or as part of the default initialization of an object.
-
-9.  A statically mutually recursive call to a subprogram annotated with aspect
-    Subprogram_Variant shall not occur inside the elaboration of a
-    package, unless this package is located in the sequence of declarations of
-    a subprogram.
-
-10. On a statically  mutually recursive call to a subprogram annotated with
-    aspect Subprogram_Variant, a verification condition is introduced to
-    make sure that the evaluation of the ``discrete_expressions`` of the
-    subprogram_variant_list of the callee does not a raise any exception.
+10. For a statically mutually recursive call to a subprogram whose
+    Subprogram_Variant aspect is specified, a verification condition
+    is introduced to ensure that the evaluation of the
+    ``discrete_expressions`` of the subprogram_variant_list of the
+    callee does not a raise any exception.
     Additionally, a verification condition is generated to ensure that the
     variant of the call progresses. This verification condition is already
     implicitly generated in the case where the caller and the callee are the
-    same (direct recursive call) as a consequence of the runtime check taking
-    place in that case. We state it explicitly for the case of mutually
-    recursive calls, for which no checks are introduced at runtime due to
-    compiler implementation constraints.
+    same (a direct recursive call) as a consequence of the runtime check taking
+    place in that case. It is also generated in the case of other mutually
+    recursive calls, althoug no checks are introduced at runtime due to
+    compiler implementation constraints. No such verification condition
+    is introduced for the implicit call associated with an inherited
+    subprogram as described in the "Dynamic Semantics" section of Ada RM 3.4.
 
 Formal Parameter Modes
 ----------------------
