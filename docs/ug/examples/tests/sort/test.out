@@ -23,8 +23,8 @@ sort.adb:37:37: info: index check proved
 sort.adb:38:13: info: precondition proved
 sort.adb:38:30: info: range check proved
 sort.adb:38:39: info: index check proved
-sort.adb:40:16: info: loop invariant initialization proved
 sort.adb:40:16: info: loop invariant preservation proved
+sort.adb:40:16: info: loop invariant initialization proved
 sort.adb:46:29: info: index check proved
 sort.adb:47:15: info: index check proved
 sort.adb:47:29: info: index check proved

@@ -1,10 +1,10 @@
 
 test.adb:9:04: medium: memory leak might occur at end of scope
-    9 |   X : Int_Ptr     := new Integer'(10);  -- memory leak here
+    9 |   X : Int_Ptr     := new Integer'(10);  -- memory leak at end of scope
       |   ^ here
 
 test.adb:13:10: medium: memory leak might occur
-   13 |   Z.all := X;  -- memory leak here
+   13 |   Z.all := X;  -- memory leak on assignment
       |         ^ here
 
 test.adb:14:06: warning: unused assignment
@@ -12,5 +12,5 @@ test.adb:14:06: warning: unused assignment
       |     ^ here
 
 test.adb:15:04: medium: memory leak might occur
-   15 |   Free (Z);    -- memory leak here
+   15 |   Free (Z);    -- memory leak on deallocation
       |   ^ here

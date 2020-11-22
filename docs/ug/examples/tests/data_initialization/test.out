@@ -1,15 +1,15 @@
 
-data_initialization.adb:23:07: high: "G3.Val" is not initialized
-   23 |      Proc (X1, X2, X3);
-      |      ^ here
-  "G3.Val" is not an input in the Global contract of subprogram "Call_Proc" at data_initialization.ads:20
-  either make "G3.Val" an input in the Global contract or initialize it before use
-
 data_initialization.adb:23:07: high: "G3.Num" is not initialized
    23 |      Proc (X1, X2, X3);
       |      ^ here
   "G3.Num" is not an input in the Global contract of subprogram "Call_Proc" at data_initialization.ads:20
   either make "G3.Num" an input in the Global contract or initialize it before use
+
+data_initialization.adb:23:07: high: "G3.Val" is not initialized
+   23 |      Proc (X1, X2, X3);
+      |      ^ here
+  "G3.Val" is not an input in the Global contract of subprogram "Call_Proc" at data_initialization.ads:20
+  either make "G3.Val" an input in the Global contract or initialize it before use
 
 data_initialization.adb:23:13: high: "X1.Num" is not initialized
    23 |      Proc (X1, X2, X3);

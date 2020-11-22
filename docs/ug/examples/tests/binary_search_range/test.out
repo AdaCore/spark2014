@@ -2,7 +2,7 @@
 binary_search.ads:21:49: medium: postcondition might fail, cannot prove A (Index) /= I
    21 |              else (for all Index in A'Range => A (Index) /= I));
       |                                                ^ here
-  e.g. when A = (1 => 0, 3 => 0, 4 => 0, others => -1)
+  e.g. when A = (2 => -1, 3 => 0, 4 => 0)
         and A'First = 2
         and A'Last = 4
         and I = 0

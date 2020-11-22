@@ -3,11 +3,11 @@ check_aliasing.adb:6:04: warning: initialization of "Z" has no effect
     6 |   X, Y, Z : Integer := 0;
       |   ^ here
 
-check_aliasing.adb:8:04: medium: "Glob" might not be initialized after elaboration of main program "Check_Aliasing"
-    8 |   Whatever (In_1 => X, In_2 => X, Out_1 => X, Out_2 => Glob);     --  incorrect
-      |   ^ here
-
 check_aliasing.adb:8:57: high: formal parameter "Out_2" and global "Glob" are aliased (SPARK RM 6.4.2)
+    8 |   Whatever (In_1 => X, In_2 => X, Out_1 => X, Out_2 => Glob);     --  incorrect
+      |                                                        ^ here
+
+check_aliasing.adb:8:57: medium: "Glob" might not be initialized after elaboration of main program "Check_Aliasing"
     8 |   Whatever (In_1 => X, In_2 => X, Out_1 => X, Out_2 => Glob);     --  incorrect
       |                                                        ^ here
 

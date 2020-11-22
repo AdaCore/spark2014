@@ -19,10 +19,10 @@ logging_in.adb:7:12: medium: array index check might fail
       |   ^ here
 logging_in.ads:11:06: info: data dependencies proved
 
-logging_in.ads:12:29: medium: missing dependency "Log_In => Log"
+logging_in.ads:12:29: medium: missing dependency "Log_In => Log_Size"
    12 |     Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In));
       |                            ^ here
 
-logging_in.ads:12:29: medium: missing dependency "Log_In => Log_Size"
+logging_in.ads:12:29: medium: missing dependency "Log_In => Log"
    12 |     Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In));
       |                            ^ here
