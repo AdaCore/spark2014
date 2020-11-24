@@ -24,10 +24,6 @@ Simple and Compound Statements - Sequences of Statements
    statement are in |SPARK|.
 
 
-4. A ``goto_statement`` shall be located before the target statement in the
-   innermost ``sequence_of_statements`` enclosing the target statement.
-
-
 Assignment Statements
 ---------------------
 
@@ -72,6 +68,8 @@ Generalized Loop Iteration
    but only in a modified form. Ada's existing generalized
    loop iteration is defined in terms of other constructs
    which are not in |SPARK| (e.g., access discriminants).
+
+.. index:: Iterable
 
 2. Instead, |SPARK| provides a new mechanism for defining
    an iterable container type (see Ada RM 5.5.1). Iteration
@@ -160,6 +158,9 @@ Generalized Loop Iteration
     the iteration, Next is called (passing in the container and the cursor)
     and the result is assigned to the cursor.
 
+.. index:: Loop_Invariant
+           Loop_Variant
+           termination; of loop
 
 .. _loop_invariants:
 
@@ -290,6 +291,8 @@ Note that in this example, the loop variant is unnecessarily complex,
 stating that ``I`` increases is enough to prove termination of this
 simple loop.
 
+.. index:: Loop_Entry
+
 .. _loop_entry:
 
 Attribute Loop_Entry
@@ -377,7 +380,7 @@ Attribute Loop_Entry
 
      loop
         pragma Assert
-          ((Var > Some_Function (Param => (for all I in T => F (I))))'Loop_Entry);
+          (Boolean'(Var > Some_Function (Param => (for all I in T => F (I))))'Loop_Entry);
 
    In this example the value of the inequality ">" that would have been
    evaluated on entry to the loop is obtained even if the value of Var has since
@@ -471,13 +474,6 @@ Attribute Loop_Entry
      end; -- ...]
 
 
-.. centered:: **Examples**
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/reverse_ord.adb
-   :language: ada
-   :lines: 4-27
-   :linenos:
-
 Block Statements
 ----------------
 
@@ -488,14 +484,19 @@ Exit Statements
 
 No extensions or restrictions.
 
+.. index:: goto
+
 Goto Statements
 ---------------
 
 .. centered:: **Legality Rules**
 
 
-1. The goto statement is not permitted.
+1. A ``goto_statement`` shall be located before the target statement in the
+   innermost ``sequence_of_statements`` enclosing the target statement.
 
+
+.. index:: Assume, Assert_And_Cut
 
 .. _pragma_assume:
 
@@ -565,11 +566,6 @@ and is used to state axioms.
 
 
 .. centered:: **Examples**
-
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/f.adb
-   :language: ada
-   :linenos:
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/up_timer.ads
    :language: ada

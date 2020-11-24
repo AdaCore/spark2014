@@ -1,6 +1,8 @@
 Names and Expressions
 =====================
 
+.. index:: assertion expression
+
 The term *assertion expression* denotes an expression that appears inside an
 assertion, which can be a pragma Assert, a precondition or postcondition, a
 type invariant or (subtype) predicate, or other assertions introduced in |SPARK|.
@@ -8,12 +10,7 @@ type invariant or (subtype) predicate, or other assertions introduced in |SPARK|
 Names
 -----
 
-.. centered:: **Legality Rules**
-
-
-1. Neither ``explicit_dereference`` nor ``implicit_dereference`` are
-   in |SPARK|.
-
+No extensions or restrictions.
 
 Indexed Components
 ~~~~~~~~~~~~~~~~~~
@@ -54,6 +51,8 @@ should be documented in the User Guide for the tool.
 
 .. centered:: **Legality Rules**
 
+.. index:: Access
+
 1. The prefix of the attribute Access shall be the name of a subprogram.
 
 2. A subprogram used as the prefix of a reference to the attribute Access:
@@ -75,6 +74,8 @@ should be documented in the User Guide for the tool.
 
 4. The prefix of the Access attribute shall have no global inputs and outputs
    (see section 6.1 for inputs and outputs of subprograms).
+
+.. index:: verification condition; for Access on subprogram
 
 5. On a reference to the Access attribute, a verification condition is
    introduced to ensure that the precondition of the prefix of the attribute
@@ -139,6 +140,8 @@ subcomponent. Similarly for an ancestor subtype in an extension aggregate.]
 Expressions
 -----------
 
+.. index:: side-effects
+
 An expression is said to be *side-effect free* if the evaluation of the
 expression does not update any object.  The evaluation of an expression
 free from side-effects only retrieves or computes a value.
@@ -151,6 +154,7 @@ free from side-effects only retrieves or computes a value.
    most notably the rule that a function cannot have outputs other
    than its result.]
 
+.. index:: expression with a variable input; disallowed contexts
 
 2. An expression (or range) in |SPARK| occurring in certain contexts
    (listed below) shall not have a variable input. This means that
@@ -201,13 +205,15 @@ not considered to be a variable input in the case of a Dynamic_Predicate
 or Type_Invariant condition, but is considered to be a variable
 input in the case of the default_expression of a component declaration.]
 
+.. index:: portability; order of evaluation and overflows
+
 Operators and Expression Evaluation
 -----------------------------------
 
 Ada grants implementations the freedom to reassociate a sequence
 of predefined operators of the same precedence level even if this
 changes the behavior of the program with respect to intermediate
-overflow (see Ada 2012 RM 4.5). |SPARK| assumes that an implementation
+overflow (see Ada RM 4.5). |SPARK| assumes that an implementation
 does not take advantage of this permission; in particular,
 a proof of the absence of intermediate overflow in this situation
 may depend on this assumption.
@@ -215,7 +221,7 @@ may depend on this assumption.
 A |SPARK| tool is permitted to provide a warning where operators may
 be re-associated by a compiler.
 
-[The GNAT Ada 2012 compiler does not take advantage of this permission.
+[The GNAT Ada compiler does not take advantage of this permission.
 The GNAT compiler also provides an option for rejecting constructs to
 which this permission would apply. Explicit parenthesization can
 always be used to force a particular association in this situation.]
@@ -237,10 +243,12 @@ Allocators
 
 .. centered:: **Legality Rules**
 
+.. index:: full default initialization; in allocators
 
 1. The designated type of the type of an uninitialized allocator
    shall define full default initialization.
 
+.. index:: non-interfering context; for allocators
 
 2. Evaluation of an allocator is subject to the same restrictions as calling a
    volatile function (e.g., an allocator is not allowed within a non-volatile

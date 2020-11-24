@@ -2,9 +2,9 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="1000"/>
-<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
+<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="my_maps__test_map_pos.gnat-json"/>
@@ -57,7 +57,7 @@
   <proof prover="2"><result status="valid" steps="792"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
-  <proof prover="0"><result status="valid" steps="5137"/></proof>
+  <proof prover="1"><result status="valid" steps="90034"/></proof>
   <proof prover="2"><result status="unknown" steps="6288"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
@@ -125,9 +125,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.33" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1" timelimit="5"><result status="valid" steps="485184"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="2"><result status="valid" steps="621669"/></proof>
   </goal>
   <goal name="def&#39;vc.34" proved="true">
   <proof prover="2"><result status="valid" steps="2337"/></proof>
@@ -188,9 +186,9 @@
   <proof prover="2"><result status="valid" steps="3090"/></proof>
   </goal>
   <goal name="def&#39;vc.50">
-  <proof prover="0" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="1" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="2" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>

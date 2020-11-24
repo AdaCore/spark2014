@@ -98,7 +98,7 @@ package body Flow.Analysis is
    --
    --  ??? In some context where this routine is used we should also scan the
    --  Refined_Depends and Depends contracts, in particular when they are used
-   --  as a substitute for a missing Refined_Global/Global, e.g. Analyse_Main.
+   --  as a substitute for a missing Refined_Global/Global.
    --
    --  ??? in some calls to this routine the F is a constituent while the
    --  contract references its abstract state; should be fixed either in
@@ -396,8 +396,12 @@ package body Flow.Analysis is
                Expr_Vars : constant Flow_Id_Sets.Set :=
                  Get_All_Variables (N,
                                     Scope                => Scope,
+                                    Target_Name          => Null_Flow_Id,
                                     Assume_In_Expression => False,
                                     Use_Computed_Globals => True);
+               --  ??? Setting Target_Name to Null_Flow_Id is dubious here, but
+               --  this First_Variable_Use routine is dubious itself. Anyway,
+               --  this routine is only for error-reporting on illegal code.
 
             begin
                if (if Precise
@@ -405,6 +409,13 @@ package body Flow.Analysis is
                    else To_Entire_Variables (Expr_Vars).Contains (Var_Tgt))
                then
                   First_Use := N;
+                  --  ??? Returning OK won't actually pick up the "first" use
+                  --  of the variable in an expression, however it behaves
+                  --  more intuitively with regard to subprogram parameters.
+                  --  Returning Abandon here instead will tend to pick up
+                  --  the first occurrence when the variable is found in an
+                  --  expression, which is more intuitive for expressions but
+                  --  less so in other cases.
                   return OK;
                else
                   return Skip;
@@ -648,74 +659,6 @@ package body Flow.Analysis is
          return False;
       end if;
    end Is_Param_Of_Null_Subp_Of_Generic;
-
-   ------------------
-   -- Analyse_Main --
-   ------------------
-
-   procedure Analyse_Main (FA : in out Flow_Analysis_Graphs) is
-      Msg : constant String :=
-        "& might not be initialized " &
-        (case FA.Kind is
-            when Kind_Subprogram =>
-               "after elaboration of main program &",
-            when Kind_Task =>
-               "before start of tasks of type &",
-            when others =>
-               raise Program_Error);
-
-      procedure Check_If_Initialized (R : Flow_Id);
-      --  Emit error message if R is not initialized at elaboration
-
-      --------------------------
-      -- Check_If_Initialized --
-      --------------------------
-
-      procedure Check_If_Initialized (R : Flow_Id) is
-      begin
-         if not Is_Initialized_At_Elaboration (R, FA.B_Scope) then
-            Error_Msg_Flow
-              (FA       => FA,
-               Msg      => Msg,
-               N        => First_Variable_Use (FA      => FA,
-                                               Var     => R,
-                                               Kind    => Use_Read,
-                                               Precise => True),
-               F1       => R,
-               F2       => Direct_Mapping_Id (FA.Spec_Entity),
-               Tag      => Uninitialized,
-               Severity => Medium_Check_Kind);
-         end if;
-      end Check_If_Initialized;
-
-      --  Local variables
-
-      Globals : Global_Flow_Ids;
-
-   --  Start of processing for Analyse_Main
-
-   begin
-      --  Check if all global reads are initialized, i.e. that the following
-      --  holds:
-      --     Proof_In -> initialized
-      --     Input    -> initialized
-      --     Output   -> always OK
-      Get_Globals (Subprogram => FA.Spec_Entity,
-                   Scope      => FA.B_Scope,
-                   Classwide  => False,
-                   Globals    => Globals);
-
-      --  Proof_Reads and Reads are disjoint, iterate over their contents
-      --  separately.
-
-      for R of Globals.Proof_Ins loop
-         Check_If_Initialized (R);
-      end loop;
-
-      for R of Globals.Inputs loop
-         Check_If_Initialized (R);
-      end loop;
-   end Analyse_Main;
 
    ------------------
    -- Sanity_Check --
@@ -2221,13 +2164,13 @@ package body Flow.Analysis is
            Post => Vertex_Sets.Is_Subset (Subset => Visited'Old,
                                           Of_Set => Visited)
                    and then (if not OK'Old then not OK);
-      --  Detect uses of Var, which is an not-yet-initializes object, by
+      --  Detect uses of Var, which is a not-yet-initialized object, by
       --  looking at the PDG vertices originating from Start. For arrays this
       --  routine might be called recursively and then Possibly_Initialized
       --  is True iff some elements of the array have been written. Visited
       --  contains vertices that have been already examined; it is to prevent
       --  infinite recursive calls. If any message is emitted, then OK will
-      --  become False; otherwise, if will be unmodified.
+      --  become False; otherwise, it will be unmodified.
 
       function Is_Array (F : Flow_Id) return Boolean;
       --  Returns True iff F represents an array and thus requires special
@@ -2235,6 +2178,18 @@ package body Flow.Analysis is
 
       function Is_Empty_Record_Object (F : Flow_Id) return Boolean;
       --  Returns True iff F is a record that carries no data
+
+      function Is_Main_Global_Input (Atr : V_Attributes) return Boolean;
+      --  Returns True iff FA is a main-like subprogram and the vertex whose
+      --  attribute is Atr is a global input of FA.
+
+      function Is_Initialized (F : Flow_Id; Atr : V_Attributes) return Boolean
+      with Pre =>
+        F.Variant = Initial_Value
+          and then FA.Atr (FA.DDG.Get_Vertex (F)) = Atr;
+      --  * If FA is a main-like subprogram and F a global input of FA, returns
+      --    True if F it is initialized after elaboration of FA.
+      --  * Otherwise, returns Atr.Is_Initialized.
 
       function Has_Relaxed_Initialization (F : Flow_Id) return Boolean
       with Pre => not Is_Discriminant (F);
@@ -2257,14 +2212,18 @@ package body Flow.Analysis is
          V_Initial    : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
 
+         V_Initial_Atr : V_Attributes renames FA.Atr (V_Initial);
+
          N            : Node_Or_Entity_Id;
          Msg          : Unbounded_String;
 
          V_Goal       : Flow_Graphs.Vertex_Id;
 
          Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
-         Is_Global    : constant Boolean := FA.Atr (V_Initial).Is_Global;
-         Default_Init : constant Boolean := Is_Default_Initialized (Var);
+         Is_Global    : constant Boolean := V_Initial_Atr.Is_Global;
+         Default_Init : constant Boolean :=
+           Var.Kind in Direct_Mapping | Record_Field
+           and then Is_Default_Initialized (Var);
          Is_Function  : constant Boolean := Is_Function_Entity (Var);
 
          function Mark_Definition_Free_Path
@@ -2374,6 +2333,17 @@ package body Flow.Analysis is
             end if;
             if Is_Final_Use and not Is_Global then
                Append (Msg, " in &");
+            end if;
+            if Is_Main_Global_Input (V_Initial_Atr) then
+               Append (Msg,
+                       (case FA.Kind is
+                           when Kind_Subprogram =>
+                             " after elaboration of main program &",
+                           when Kind_Task =>
+                             " before start of tasks of type &",
+                           when others =>
+                              raise Program_Error));
+               --  ??? this message should be tuned for interrupt handlers
             end if;
          end if;
 
@@ -2609,6 +2579,26 @@ package body Flow.Analysis is
          and then Ekind (Get_Direct_Mapping_Id (F)) /= E_Abstract_State
          and then Is_Empty_Record_Type (Get_Type (F, FA.B_Scope)));
 
+      ---------------------
+      -- Is_Main_Global_Input --
+      ---------------------
+
+      function Is_Main_Global_Input (Atr : V_Attributes) return Boolean is
+        (FA.Kind in Kind_Subprogram | Kind_Task
+         and then FA.Is_Main
+         and then Atr.Is_Global
+         and then Atr.Mode in Initialized_Global_Modes);
+
+      --------------------
+      -- Is_Initialized --
+      --------------------
+
+      function Is_Initialized (F : Flow_Id; Atr : V_Attributes) return Boolean
+      is
+         (if Is_Main_Global_Input (Atr)
+          then Is_Initialized_At_Elaboration (F, FA.B_Scope)
+          else Atr.Is_Initialized);
+
       --------------------------------
       -- Has_Relaxed_Initialization --
       --------------------------------
@@ -2713,6 +2703,14 @@ package body Flow.Analysis is
          Is_Uninitialized : Boolean := False with Ghost;
 
       begin
+         --  Global inputs of main-like subprograms that do not appear in the
+         --  Initializes contract might still be initialized at elaboration
+         --  (e.g. if are only initialized when some condition is satisfied).
+
+         if Is_Main_Global_Input (FA.Atr (V_Initial)) then
+            return True;
+         end if;
+
          for V_Def of
            FA.DDG.Get_Collection (V_Use, Flow_Graphs.In_Neighbours)
          loop
@@ -2722,7 +2720,9 @@ package body Flow.Analysis is
             begin
                if V_Def = V_Initial then
                   --  We're using the initial value
-                  pragma Assert (not Def_Atr.Is_Initialized);
+                  pragma Assert
+                    (not Is_Initialized
+                       (Change_Variant (Var, Initial_Value), Def_Atr));
                   Is_Uninitialized := True;
 
                elsif V_Def = V_Use then
@@ -2912,10 +2912,11 @@ package body Flow.Analysis is
 
          begin
             if Parent_Key.Variant = Initial_Value
-              and then not Parent_Atr.Is_Initialized
               and then not Synthetic (Parent_Key)
+              and then not Is_Discriminant (Parent_Key)
               and then not Is_Empty_Record_Object (Parent_Key)
               and then not Has_Relaxed_Initialization (Parent_Key)
+              and then not Is_Initialized (Parent_Key, Parent_Atr)
             then
                OK := True;
 
@@ -4909,6 +4910,7 @@ package body Flow.Analysis is
                  Get_All_Variables
                    (N,
                     Scope                => FA.B_Scope,
+                    Target_Name          => Null_Flow_Id,
                     Use_Computed_Globals => True);
 
             begin
@@ -5727,6 +5729,7 @@ package body Flow.Analysis is
             VU : constant Flow_Id_Sets.Set :=
               Get_All_Variables (Precondition,
                                  Scope                => FA.S_Scope,
+                                 Target_Name          => Null_Flow_Id,
                                  Use_Computed_Globals => True);
             --  The above set contains all variables used in the precondition.
          begin

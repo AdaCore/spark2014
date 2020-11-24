@@ -299,7 +299,7 @@ The only property of the function Occ required to prove that swapping two
 elements of an array is in fact a permutation, is the way Occ is modified when
 updating a value of the array.
 
-There is no native construction for axioms in SPARK 2014. As a workaround, a
+There is no native construction for axioms in SPARK. As a workaround, a
 ghost subprogram, named "lemma subprogram", can be introduced with the desired
 property as a postcondition. An instance of the axiom will then be available
 whenever the subprogram is called. Notice that an explicit call to the lemma

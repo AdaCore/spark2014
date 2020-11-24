@@ -7,8 +7,8 @@ is
    topic : Integer;
 
    procedure set (device : Integer)
-   is null
-     with Global => (In_Out => (Time.S, current_status));
+     with Global => (In_Out => (Time.S, current_status))
+   is begin null; end;
 
    procedure update
      with Refined_Global => (Input  => topic,

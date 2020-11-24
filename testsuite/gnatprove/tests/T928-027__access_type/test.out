@@ -1,0 +1,5 @@
+null_exclusion.adb:8:56: info: pointer dereference check proved (CVC4: 1 VC)
+null_exclusion.adb:10:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
+null_exclusion.adb:10:04: info: predicate check proved on default value (CVC4: 1 VC)
+null_exclusion.adb:14:09: info: pointer dereference check proved (CVC4: 1 VC)
+null_exclusion.adb:15:22: info: assertion proved (CVC4: 1 VC)

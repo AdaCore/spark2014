@@ -2,8 +2,8 @@ main.adb:3:13: info: add a contract to analyze it separately from calling contex
 main.adb:3:13: info: local subprogram "Return_5" only analyzed in the context of calls
 main.adb:11:27: info: unrolling loop
 main.adb:12:20: info: overflow check proved (CVC4: 5 VC)
-main2.adb:3:10: medium: "Some_Package.State" might not be initialized after elaboration of main program "Main2"
 main2.adb:4:09: info: data dependencies proved
+main2.adb:4:48: info: initialization of "Some_Package.State" proved
 main2.adb:4:48: low: unused global "Some_Package.State"
 main2.adb:8:30: medium: "X" might not be initialized after elaboration of main program "Main2"
 main2.adb:8:33: info: cannot unroll loop (too many loop iterations)

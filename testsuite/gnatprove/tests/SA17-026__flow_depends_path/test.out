@@ -1,3 +1,9 @@
+status.adb:9:19: warning: unused variable "device"
+status.adb:10:11: info: data dependencies proved
+status.adb:10:37: low: unused global "Time.s"
+status.adb:10:37: warning: "Time.s" is not modified, could be INPUT
+status.adb:10:41: low: unused global "current_status" constituent of "S"
+status.adb:10:41: warning: "current_status" constituent of "S" is not modified, could be INPUT
 status.ads:4:28: warning: no procedure exists that can initialize abstract state "Status.S"
 status.ads:4:31: warning: no procedure exists that can initialize abstract state "Status.mode"
 status.ads:7:11: info: data dependencies proved

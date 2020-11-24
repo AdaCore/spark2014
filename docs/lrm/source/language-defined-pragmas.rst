@@ -10,7 +10,7 @@ Ada Language-Defined Pragmas
 The following Ada language-defined pragmas are supported as follows:
 
 ============================= ====================== ===============================================
-Pragma                        Allowed in SPARK 2014  Comment
+Pragma                        Allowed in SPARK       Comment
 ============================= ====================== ===============================================
 All_Calls_Remote	      No
 Assert             	      Yes
@@ -75,7 +75,7 @@ Volatile_Components 	      Yes
 The following |SPARK| language-defined pragmas are defined:
 
 ============================= ====================== =================================================
-Pragma                        Allowed in SPARK 2014  Comment
+Pragma                        Allowed in SPARK       Comment
 ============================= ====================== =================================================
 Abstract_State	 	      Yes
 Assert_And_Cut	 	      Yes
@@ -113,7 +113,7 @@ GNAT Implementation-Defined Pragmas
 The following GNAT implementation-defined pragmas are permitted in |SPARK|:
 
 ============================= ====================== =================================================
-Pragma                        Allowed in SPARK 2014  Comment
+Pragma                        Allowed in SPARK       Comment
 ============================= ====================== =================================================
 Ada_83			      Yes
 Ada_95			      Yes

@@ -286,6 +286,14 @@ package body SPARK_Definition is
    procedure Check_Source_Of_Move (Expr : Node_Id);
    --  Check that a move has a valid source
 
+   procedure Check_Compatible_Access_Types
+     (Expected_Type : Entity_Id;
+      Expression    : Node_Id);
+   --  If Expected_Type is an anonymous access type, check that the type of
+   --  Expression and Expected_Type have compatible designated types. This is
+   --  used to ensure that there can be no conversions between access types
+   --  with different representative types.
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -448,6 +456,49 @@ package body SPARK_Definition is
    --  analysis is not restricted to a single subprogram/line (typically during
    --  interactive use in IDEs), to avoid reporting messages on pieces of code
    --  not belonging to the analyzed subprogram/line.
+
+   -----------------------------------
+   -- Check_Compatible_Access_Types --
+   -----------------------------------
+
+   procedure Check_Compatible_Access_Types
+     (Expected_Type : Entity_Id;
+      Expression    : Node_Id)
+   is
+      Actual_Type     : constant Entity_Id := Etype (Expression);
+      Actual_Des_Ty   : Entity_Id;
+      Expected_Des_Ty : Entity_Id;
+   begin
+      if Is_Anonymous_Access_Object_Type (Expected_Type) then
+
+         --  Get the designated types of the root type of the actual and
+         --  expected types.
+
+         Actual_Des_Ty := Directly_Designated_Type (Root_Retysp (Actual_Type));
+         Expected_Des_Ty :=
+           Directly_Designated_Type (Root_Retysp (Expected_Type));
+         if Is_Incomplete_Type (Actual_Des_Ty) then
+            Actual_Des_Ty := Full_View (Actual_Des_Ty);
+         end if;
+         if Is_Incomplete_Type (Expected_Des_Ty) then
+            Expected_Des_Ty := Full_View (Expected_Des_Ty);
+         end if;
+
+         --  Check if they have the same Retysp. Only do this check if both
+         --  designated types are in SPARK (we need to check this here as
+         --  marking of the designated type of recursive access types might be
+         --  deferred).
+
+         if In_SPARK (Actual_Des_Ty)
+           and then In_SPARK (Expected_Des_Ty)
+           and then Retysp (Actual_Des_Ty) /= Retysp (Expected_Des_Ty)
+         then
+            Mark_Unsupported
+              ("implicit conversion between access types with different"
+               & " designated types", Expression);
+         end if;
+      end if;
+   end Check_Compatible_Access_Types;
 
    ---------------------------------------
    -- Check_Source_Of_Borrow_Or_Observe --
@@ -1132,16 +1183,9 @@ package body SPARK_Definition is
       -------------------------
 
       function Is_Update_Aggregate (Aggr : Node_Id) return Boolean is
-         Par : Node_Id;
       begin
-         if Nkind (Aggr) = N_Aggregate then
-            Par := Parent (Aggr);
-
-            return Nkind (Par) = N_Attribute_Reference
-              and then Is_Attribute_Update (Par);
-         else
-            return False;
-         end if;
+         return Nkind (Aggr) = N_Aggregate
+            and then Is_Attribute_Update (Parent (Aggr));
       end Is_Update_Aggregate;
 
       --------------------------------------
@@ -2001,6 +2045,12 @@ package body SPARK_Definition is
                   end loop;
                end;
 
+            --  When converting to an anonymous access type, check that the
+            --  expression and the target have compatible designated types.
+
+            elsif Has_Access_Type (Etype (N)) then
+               Check_Compatible_Access_Types (Etype (N), Expression (N));
+
             else
                Scalar_Conversion : declare
                   From_Type        : constant Entity_Id :=
@@ -2728,7 +2778,6 @@ package body SPARK_Definition is
          --  the attributes marked "Yes" in SPARK RM 15.2.
          when Attribute_Adjacent
             | Attribute_Aft
-            | Attribute_Body_Version
             | Attribute_Callable
             | Attribute_Caller
             | Attribute_Ceiling
@@ -2783,7 +2832,6 @@ package body SPARK_Definition is
             | Attribute_Update
             | Attribute_Val
             | Attribute_Value
-            | Attribute_Version
             | Attribute_Wide_Value
             | Attribute_Wide_Wide_Value
             | Attribute_Wide_Wide_Width
@@ -3285,6 +3333,13 @@ package body SPARK_Definition is
                     ("constant object as " & Mode & " parameter", Actual);
                end if;
             end;
+         end if;
+
+         --  If Formal has an anonymous access type, it can happen that Formal
+         --  and Actual have incompatible designated type. Reject this case.
+
+         if In_SPARK (Etype (Formal)) then
+            Check_Compatible_Access_Types (Etype (Formal), Actual);
          end if;
       end Mark_Param;
 
@@ -4120,6 +4175,11 @@ package body SPARK_Definition is
             elsif Is_Deep (T) then
                Check_Source_Of_Move (Expr);
             end if;
+
+            --  If T has an anonymous access type, it can happen that Expr and
+            --  E have incompatible designated type. Reject this case.
+
+            Check_Compatible_Access_Types (T, Expr);
          end if;
 
          --  If no violations were found and the object is annotated with
@@ -6237,8 +6297,9 @@ package body SPARK_Definition is
    ------------------------------------
 
    procedure Mark_Extended_Return_Statement (N : Node_Id) is
-      Subp : constant Entity_Id :=
+      Subp    : constant Entity_Id :=
         Return_Applies_To (Return_Statement_Entity (N));
+      Ret_Obj : constant Entity_Id := Get_Return_Object (N);
 
    begin
       --  SPARK RM 3.10(5): return statement of traversal function
@@ -6255,6 +6316,11 @@ package body SPARK_Definition is
       if Present (Handled_Statement_Sequence (N)) then
          Mark (Handled_Statement_Sequence (N));
       end if;
+
+      --  If Subp has an anonymous access type, it can happen that the return
+      --  object and Sup have incompatible designated types. Reject this case.
+
+      Check_Compatible_Access_Types (Etype (Subp), Ret_Obj);
    end Mark_Extended_Return_Statement;
 
    -----------------------------
@@ -7183,6 +7249,11 @@ package body SPARK_Definition is
             then
                Check_Source_Of_Move (Expr);
             end if;
+
+            --  If Subp has an anonymous access type, it can happen that Expr
+            --  and Subp have incompatible designated type. Reject this case.
+
+            Check_Compatible_Access_Types (Etype (Subp), Expr);
          end;
       end if;
    end Mark_Simple_Return_Statement;

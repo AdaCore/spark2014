@@ -1,416 +1,205 @@
+p.adb:41:07: info: initialization of "Num" proved
+p.adb:41:12: info: initialization of "Bits" proved
+p.adb:41:18: info: initialization of "Res" proved
+p.adb:41:23: info: initialization of "B" proved
+p.adb:45:07: warning: initialization of "I" has no effect
+p.adb:46:07: info: initialization of "M" proved
+p.adb:46:10: info: initialization of "Bits_G" proved
+p.adb:46:18: info: initialization of "Res_G" proved
 p.adb:50:22: info: assertion proved (CVC4: 1 VC)
-p.adb:50:22: info: initialization of "Num" proved
-p.adb:58:14: info: initialization of "Bits" proved
 p.adb:59:25: info: assertion proved (CVC4: 2 VC)
-p.adb:59:25: info: initialization of "Bits" proved
-p.adb:60:10: info: loop variant proved (CVC4: 1 VC)
-p.adb:60:44: info: initialization of "Bits" proved
-p.adb:61:33: info: initialization of "Bits" proved
+p.adb:60:31: info: loop variant proved (CVC4: 1 VC)
 p.adb:61:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:61:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:63:33: info: initialization of "M" proved
 p.adb:63:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:63:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:65:33: info: initialization of "Bits_G" proved
 p.adb:65:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:65:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:65:70: info: initialization of "M" proved
-p.adb:67:33: info: initialization of "Bits" proved
 p.adb:67:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:67:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:67:44: info: initialization of "Bits_G" proved
 p.adb:69:34: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:69:34: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:69:35: info: initialization of "Res_G" proved
-p.adb:69:52: info: initialization of "M" proved
-p.adb:71:33: info: initialization of "Res_G" proved
 p.adb:71:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:71:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:73:33: info: initialization of "Res" proved
 p.adb:73:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:73:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:73:39: info: initialization of "Res_G" proved
-p.adb:73:53: info: initialization of "M" proved
-p.adb:75:33: info: initialization of "Num" proved
 p.adb:75:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:75:33: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:79:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p.adb:79:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:79:37: info: initialization of "Num" proved
-p.adb:79:47: info: initialization of "Res_G" proved
+p.adb:79:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X - Num = Sqr(Res_G)
 p.adb:81:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:81:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:81:44: info: initialization of "Res_G" proved
-p.adb:81:59: info: initialization of "M" proved
 p.adb:84:25: info: assertion proved (CVC4: 1 VC)
-p.adb:84:25: info: initialization of "Bits" proved
 p.adb:85:25: info: assertion proved (CVC4: 1 VC)
-p.adb:85:25: info: initialization of "Bits_G" proved
 p.adb:86:25: info: assertion proved (CVC4: 1 VC)
-p.adb:86:25: info: initialization of "M" proved
-p.adb:87:15: info: initialization of "I" proved
-p.adb:88:15: info: initialization of "M" proved
+p.adb:87:12: warning: unused assignment
 p.adb:89:25: info: assertion proved (CVC4: 1 VC)
-p.adb:89:25: info: initialization of "Res" proved
-p.adb:89:31: info: initialization of "Res_G" proved
-p.adb:89:46: info: initialization of "M" proved
 p.adb:90:25: info: assertion proved (CVC4: 1 VC)
-p.adb:90:25: info: initialization of "Bits_G" proved
-p.adb:90:39: info: initialization of "M" proved
-p.adb:91:15: info: initialization of "Res" proved
-p.adb:91:22: info: initialization of "Bits" proved
 p.adb:92:25: info: assertion proved (CVC4: 1 VC)
-p.adb:92:25: info: initialization of "B" proved
-p.adb:92:29: info: initialization of "Res" proved
-p.adb:92:35: info: initialization of "Bits" proved
 p.adb:93:25: info: assertion proved (CVC4: 1 VC)
-p.adb:93:25: info: initialization of "B" proved
-p.adb:93:35: info: initialization of "Res_G" proved
-p.adb:93:44: info: initialization of "Bits_G" proved
-p.adb:93:59: info: initialization of "M" proved
-p.adb:94:30: info: initialization of "Res" proved
-p.adb:96:14: info: initialization of "Num" proved
-p.adb:96:21: info: initialization of "B" proved
-p.adb:97:20: info: initialization of "Num" proved
-p.adb:97:26: info: initialization of "B" proved
-p.adb:98:21: info: initialization of "Res" proved
-p.adb:98:28: info: initialization of "Bits" proved
-p.adb:100:22: info: initialization of "Res_G" proved
-p.adb:100:30: info: initialization of "Bits_G" proved
-p.adb:103:18: info: initialization of "Bits" proved
 p.adb:103:23: info: division check proved (CVC4: 1 VC)
-p.adb:104:33: info: initialization of "Bits_G" proved
-p.adb:107:14: info: initialization of "Res" proved
 p.adb:113:29: info: range check proved (CVC4: 1 VC)
-p.ads:20:19: info: postcondition proved (CVC4: 3 VC)
-p.ads:33:19: info: postcondition proved (Z3: 2 VC)
-p.ads:33:46: info: overflow check proved (Z3: 1 VC)
-p.ads:36:41: info: overflow check proved (Z3: 1 VC)
+p.ads:20:19: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+p.ads:33:19: medium: postcondition might fail, cannot prove (Sqrt_Von_Neumann16'Result * Sqrt_Von_Neumann16'Result) <= X
 p32.adb:13:31: info: range check proved (CVC4: 1 VC)
-p32.adb:21:22: info: assertion proved (CVC4: 7 VC; Z3: 9 VC)
+p32.adb:21:22: info: assertion proved (Z3: 1 VC)
+p32.adb:49:07: info: initialization of "Num" proved
+p32.adb:49:12: info: initialization of "Bits" proved
+p32.adb:49:18: info: initialization of "Res" proved
+p32.adb:49:23: info: initialization of "B" proved
+p32.adb:53:07: warning: initialization of "I" has no effect
+p32.adb:54:07: info: initialization of "M" proved
+p32.adb:54:10: info: initialization of "Bits_G" proved
+p32.adb:54:18: info: initialization of "Res_G" proved
 p32.adb:58:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:58:22: info: initialization of "Num" proved
-p32.adb:66:14: info: initialization of "Bits" proved
 p32.adb:67:25: info: assertion proved (CVC4: 2 VC)
-p32.adb:67:25: info: initialization of "Bits" proved
-p32.adb:68:20: info: initialization of "Res_G" proved
-p32.adb:68:27: info: initialization of "Bits_G" proved
 p32.adb:71:25: info: assertion proved (CVC4: 2 VC)
-p32.adb:71:25: info: initialization of "Bits" proved
 p32.adb:72:25: info: assertion proved (CVC4: 2 VC)
-p32.adb:72:25: info: initialization of "Bits_G" proved
 p32.adb:73:25: info: assertion proved (CVC4: 2 VC)
-p32.adb:73:25: info: initialization of "M" proved
-p32.adb:74:15: info: initialization of "I" proved
-p32.adb:75:15: info: initialization of "M" proved
+p32.adb:74:12: warning: unused assignment
 p32.adb:76:25: info: assertion proved (CVC4: 2 VC)
-p32.adb:76:25: info: initialization of "Res" proved
-p32.adb:76:31: info: initialization of "Res_G" proved
 p32.adb:76:40: info: precondition proved (CVC4: 2 VC)
-p32.adb:76:46: info: initialization of "M" proved
 p32.adb:77:25: info: assertion proved (CVC4: 2 VC)
-p32.adb:77:25: info: initialization of "Bits_G" proved
 p32.adb:77:34: info: precondition proved (CVC4: 2 VC)
-p32.adb:77:39: info: initialization of "M" proved
-p32.adb:78:15: info: initialization of "Res" proved
-p32.adb:78:22: info: initialization of "Bits" proved
-p32.adb:79:25: info: assertion proved (CVC4: 2 VC)
-p32.adb:79:25: info: initialization of "B" proved
-p32.adb:79:29: info: initialization of "Res" proved
-p32.adb:79:35: info: initialization of "Bits" proved
+p32.adb:79:25: info: assertion proved (CVC4: 1 VC; Z3: 1 VC)
 p32.adb:80:25: info: assertion proved (CVC4: 2 VC)
-p32.adb:80:25: info: initialization of "B" proved
-p32.adb:80:35: info: initialization of "Res_G" proved
-p32.adb:80:44: info: initialization of "Bits_G" proved
 p32.adb:80:54: info: precondition proved (CVC4: 2 VC)
-p32.adb:80:59: info: initialization of "M" proved
-p32.adb:81:30: info: initialization of "Res" proved
 p32.adb:82:25: info: assertion proved (CVC4: 2 VC)
-p32.adb:82:25: info: initialization of "Res" proved
-p32.adb:82:31: info: initialization of "Res_G" proved
 p32.adb:82:39: info: precondition proved (CVC4: 2 VC)
-p32.adb:82:45: info: initialization of "M" proved
-p32.adb:84:14: info: initialization of "Num" proved
-p32.adb:84:21: info: initialization of "B" proved
-p32.adb:85:20: info: initialization of "Num" proved
-p32.adb:85:26: info: initialization of "B" proved
-p32.adb:86:21: info: initialization of "Res" proved
-p32.adb:86:28: info: initialization of "Bits" proved
 p32.adb:88:28: info: assertion proved (CVC4: 2 VC)
-p32.adb:88:28: info: initialization of "Res" proved
-p32.adb:88:35: info: initialization of "Res_G" proved
-p32.adb:88:43: info: initialization of "Bits_G" proved
 p32.adb:88:53: info: precondition proved (CVC4: 2 VC)
-p32.adb:88:59: info: initialization of "M" proved
-p32.adb:89:22: info: initialization of "Res_G" proved
-p32.adb:89:30: info: initialization of "Bits_G" proved
-p32.adb:92:18: info: initialization of "Bits" proved
 p32.adb:92:23: info: division check proved (CVC4: 2 VC)
-p32.adb:93:33: info: initialization of "Bits_G" proved
-p32.adb:94:20: info: initialization of "Res_G" proved
-p32.adb:94:27: info: initialization of "Bits_G" proved
-p32.adb:96:10: info: loop variant proved (CVC4: 1 VC)
-p32.adb:96:44: info: initialization of "Bits" proved
-p32.adb:98:33: info: initialization of "M" proved
+p32.adb:96:31: info: loop variant proved (CVC4: 1 VC)
 p32.adb:98:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p32.adb:98:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p32.adb:100:33: info: initialization of "Bits_G" proved
 p32.adb:100:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p32.adb:100:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p32.adb:100:64: info: precondition proved (CVC4: 1 VC)
-p32.adb:100:70: info: initialization of "M" proved
-p32.adb:102:33: info: initialization of "Bits" proved
+p32.adb:100:64: info: precondition proved (CVC4: 2 VC)
 p32.adb:102:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p32.adb:102:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p32.adb:102:44: info: initialization of "Bits_G" proved
 p32.adb:104:34: info: loop invariant initialization proved (CVC4: 1 VC)
 p32.adb:104:34: info: loop invariant preservation proved (CVC4: 1 VC)
-p32.adb:104:35: info: initialization of "Res_G" proved
-p32.adb:104:46: info: precondition proved (CVC4: 1 VC)
-p32.adb:104:52: info: initialization of "M" proved
-p32.adb:106:33: info: initialization of "Res_G" proved
+p32.adb:104:46: info: precondition proved (CVC4: 2 VC)
 p32.adb:106:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p32.adb:106:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p32.adb:108:33: info: initialization of "Res" proved
 p32.adb:108:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p32.adb:108:33: info: loop invariant preservation proved (altergo: 1 VC)
-p32.adb:108:39: info: initialization of "Res_G" proved
-p32.adb:108:47: info: precondition proved (CVC4: 1 VC)
-p32.adb:108:53: info: initialization of "M" proved
-p32.adb:110:33: info: initialization of "Num" proved
+p32.adb:108:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res = Res_G * Pow2 (M)
+p32.adb:108:47: info: precondition proved (CVC4: 2 VC)
 p32.adb:110:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p32.adb:110:33: info: loop invariant preservation proved (CVC4: 1 VC)
+p32.adb:110:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num <= X
 p32.adb:112:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p32.adb:112:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p32.adb:112:38: info: initialization of "Res_G" proved
-p32.adb:112:46: info: initialization of "Bits_G" proved
-p32.adb:113:33: info: loop invariant initialization proved (CVC4: 2 VC)
-p32.adb:113:33: info: loop invariant preservation proved (CVC4: 2 VC)
-p32.adb:113:49: info: initialization of "Res" proved
-p32.adb:113:56: info: initialization of "Bits" proved
-p32.adb:113:70: info: initialization of "Res_G" proved
-p32.adb:113:79: info: initialization of "Bits_G" proved
-p32.adb:113:89: info: precondition proved (CVC4: 1 VC)
-p32.adb:113:95: info: initialization of "M" proved
-p32.adb:114:33: info: loop invariant initialization proved (CVC4: 2 VC)
-p32.adb:114:33: info: loop invariant preservation proved (CVC4: 2 VC)
-p32.adb:114:48: info: initialization of "Bits_G" proved
-p32.adb:114:57: info: precondition proved (CVC4: 1 VC)
-p32.adb:114:63: info: initialization of "M" proved
+p32.adb:113:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+p32.adb:113:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+p32.adb:113:89: info: precondition proved (CVC4: 2 VC)
+p32.adb:114:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+p32.adb:114:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+p32.adb:114:57: info: precondition proved (CVC4: 2 VC)
 p32.adb:116:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p32.adb:116:33: info: loop invariant preservation proved (CVC4: 5 VC)
-p32.adb:116:37: info: initialization of "Num" proved
-p32.adb:116:48: info: initialization of "Res_G" proved
-p32.adb:123:33: info: initialization of "Res_G" proved
+p32.adb:116:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X - Num = Sqr (Res_G)
 p32.adb:123:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p32.adb:123:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p32.adb:123:41: info: precondition proved (CVC4: 1 VC)
-p32.adb:123:47: info: initialization of "M" proved
+p32.adb:123:41: info: precondition proved (CVC4: 2 VC)
 p32.adb:125:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p32.adb:125:33: info: loop invariant preservation proved (CVC4: 11 VC; Z3: 8 VC; altergo: 6 VC)
-p32.adb:125:43: info: initialization of "Res_G" proved
-p32.adb:125:51: info: precondition proved (CVC4: 1 VC)
-p32.adb:125:57: info: initialization of "M" proved
+p32.adb:125:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X <= Sqr (Res_G + Pow2 (M)) - 1
+p32.adb:125:51: info: precondition proved (CVC4: 2 VC)
 p32.adb:128:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:128:22: info: initialization of "M" proved
 p32.adb:129:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:129:22: info: initialization of "Res" proved
-p32.adb:129:28: info: initialization of "Res_G" proved
 p32.adb:130:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:130:33: info: initialization of "Res_G" proved
 p32.adb:130:42: info: precondition proved (CVC4: 1 VC)
-p32.adb:130:48: info: initialization of "M" proved
 p32.adb:131:22: info: assertion proved (CVC4: 1 VC)
 p32.adb:131:22: info: precondition proved (CVC4: 1 VC)
-p32.adb:131:28: info: initialization of "M" proved
 p32.adb:132:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:132:33: info: initialization of "Res_G" proved
 p32.adb:133:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:133:33: info: initialization of "Res" proved
 p32.adb:134:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:134:26: info: initialization of "Num" proved
-p32.adb:134:37: info: initialization of "Res_G" proved
 p32.adb:135:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:135:22: info: initialization of "Num" proved
 p32.adb:136:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:136:26: info: initialization of "Num" proved
-p32.adb:136:32: info: initialization of "Res_G" proved
 p32.adb:137:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:137:26: info: initialization of "Num" proved
-p32.adb:137:32: info: initialization of "Res" proved
 p32.adb:139:22: info: assertion proved (CVC4: 1 VC)
-p32.adb:139:22: info: initialization of "Res" proved
-p32.adb:140:22: info: assertion proved (Z3: 1 VC)
-p32.adb:140:23: info: initialization of "Res" proved
-p32.adb:141:17: info: initialization of "Res" proved
-p32.adb:142:14: info: initialization of "Res" proved
-p32.adb:148:29: info: range check proved (altergo: 1 VC)
+p32.adb:140:22: info: assertion proved (CVC4: 1 VC)
+p32.adb:148:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at p32.ads:36 should mention X in a precondition]
 p32.ads:20:14: info: postcondition proved (CVC4: 1 VC)
-p32.ads:24:19: info: postcondition proved (CVC4: 3 VC)
-p32.ads:37:19: info: postcondition proved (altergo: 2 VC)
-p32.ads:37:46: info: overflow check proved (altergo: 1 VC)
-p32.ads:40:41: info: overflow check proved (altergo: 1 VC)
+p32.ads:24:19: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+p32.ads:37:19: medium: postcondition might fail, cannot prove (Sqrt_Von_Neumann32'Result * Sqrt_Von_Neumann32'Result) <= X
+p32.ads:40:41: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 p64.adb:13:31: info: range check proved (CVC4: 1 VC)
-p64.adb:21:22: info: assertion proved (CVC4: 5 VC; Z3: 9 VC; altergo: 2 VC)
+p64.adb:21:22: info: assertion proved (Z3: 1 VC)
+p64.adb:49:07: info: initialization of "Num" proved
+p64.adb:49:12: info: initialization of "Bits" proved
+p64.adb:49:18: info: initialization of "Res" proved
+p64.adb:49:23: info: initialization of "B" proved
+p64.adb:53:07: warning: initialization of "I" has no effect
+p64.adb:54:07: info: initialization of "M" proved
+p64.adb:54:10: info: initialization of "Bits_G" proved
+p64.adb:54:18: info: initialization of "Res_G" proved
 p64.adb:58:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:58:22: info: initialization of "Num" proved
-p64.adb:66:14: info: initialization of "Bits" proved
 p64.adb:67:25: info: assertion proved (CVC4: 2 VC)
-p64.adb:67:25: info: initialization of "Bits" proved
-p64.adb:68:20: info: initialization of "Res_G" proved
-p64.adb:68:27: info: initialization of "Bits_G" proved
 p64.adb:71:25: info: assertion proved (CVC4: 2 VC)
-p64.adb:71:25: info: initialization of "Bits" proved
 p64.adb:72:25: info: assertion proved (CVC4: 2 VC)
-p64.adb:72:25: info: initialization of "Bits_G" proved
 p64.adb:73:25: info: assertion proved (CVC4: 2 VC)
-p64.adb:73:25: info: initialization of "M" proved
-p64.adb:74:15: info: initialization of "I" proved
-p64.adb:75:15: info: initialization of "M" proved
+p64.adb:74:12: warning: unused assignment
 p64.adb:76:25: info: assertion proved (CVC4: 2 VC)
-p64.adb:76:25: info: initialization of "Res" proved
-p64.adb:76:31: info: initialization of "Res_G" proved
 p64.adb:76:40: info: precondition proved (CVC4: 2 VC)
-p64.adb:76:46: info: initialization of "M" proved
 p64.adb:77:25: info: assertion proved (CVC4: 2 VC)
-p64.adb:77:25: info: initialization of "Bits_G" proved
 p64.adb:77:34: info: precondition proved (CVC4: 2 VC)
-p64.adb:77:39: info: initialization of "M" proved
-p64.adb:78:15: info: initialization of "Res" proved
-p64.adb:78:22: info: initialization of "Bits" proved
-p64.adb:79:25: info: assertion proved (CVC4: 2 VC)
-p64.adb:79:25: info: initialization of "B" proved
-p64.adb:79:29: info: initialization of "Res" proved
-p64.adb:79:35: info: initialization of "Bits" proved
+p64.adb:79:25: medium: assertion might fail, cannot prove B = Res + Bits [possible fix: loop invariant at line 98 should mention B]
 p64.adb:80:25: info: assertion proved (CVC4: 2 VC)
-p64.adb:80:25: info: initialization of "B" proved
-p64.adb:80:35: info: initialization of "Res_G" proved
-p64.adb:80:44: info: initialization of "Bits_G" proved
 p64.adb:80:54: info: precondition proved (CVC4: 2 VC)
-p64.adb:80:59: info: initialization of "M" proved
-p64.adb:81:30: info: initialization of "Res" proved
-p64.adb:82:25: info: assertion proved (CVC4: 2 VC)
-p64.adb:82:25: info: initialization of "Res" proved
-p64.adb:82:31: info: initialization of "Res_G" proved
+p64.adb:82:25: medium: assertion might fail, cannot prove Res = Res_G * Pow2 (M)
 p64.adb:82:39: info: precondition proved (CVC4: 2 VC)
-p64.adb:82:45: info: initialization of "M" proved
-p64.adb:84:14: info: initialization of "Num" proved
-p64.adb:84:21: info: initialization of "B" proved
-p64.adb:85:20: info: initialization of "Num" proved
-p64.adb:85:26: info: initialization of "B" proved
-p64.adb:86:21: info: initialization of "Res" proved
-p64.adb:86:28: info: initialization of "Bits" proved
-p64.adb:88:28: info: assertion proved (CVC4: 1 VC; Z3: 1 VC)
-p64.adb:88:28: info: initialization of "Res" proved
-p64.adb:88:35: info: initialization of "Res_G" proved
-p64.adb:88:43: info: initialization of "Bits_G" proved
+p64.adb:88:28: medium: assertion might fail, cannot prove Res = (Res_G + Bits_G) * Pow2 (M)
 p64.adb:88:53: info: precondition proved (CVC4: 2 VC)
-p64.adb:88:59: info: initialization of "M" proved
-p64.adb:89:22: info: initialization of "Res_G" proved
-p64.adb:89:30: info: initialization of "Bits_G" proved
-p64.adb:92:18: info: initialization of "Bits" proved
 p64.adb:92:23: info: division check proved (CVC4: 2 VC)
-p64.adb:93:33: info: initialization of "Bits_G" proved
-p64.adb:94:20: info: initialization of "Res_G" proved
-p64.adb:94:27: info: initialization of "Bits_G" proved
-p64.adb:96:10: info: loop variant proved (CVC4: 1 VC)
-p64.adb:96:44: info: initialization of "Bits" proved
-p64.adb:98:33: info: initialization of "M" proved
+p64.adb:96:31: info: loop variant proved (CVC4: 1 VC)
 p64.adb:98:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p64.adb:98:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p64.adb:100:33: info: initialization of "Bits_G" proved
 p64.adb:100:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:100:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p64.adb:100:64: info: precondition proved (CVC4: 1 VC)
-p64.adb:100:70: info: initialization of "M" proved
-p64.adb:102:33: info: initialization of "Bits" proved
+p64.adb:100:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Bits_G = (if M = 0 then 0 else Unsigned_64'(Pow2 (M - 1)))
+p64.adb:100:64: info: precondition proved (CVC4: 2 VC)
 p64.adb:102:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p64.adb:102:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p64.adb:102:44: info: initialization of "Bits_G" proved
 p64.adb:104:34: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:104:34: info: loop invariant preservation proved (Z3: 1 VC)
-p64.adb:104:35: info: initialization of "Res_G" proved
-p64.adb:104:46: info: precondition proved (CVC4: 1 VC)
-p64.adb:104:52: info: initialization of "M" proved
-p64.adb:106:33: info: initialization of "Res_G" proved
+p64.adb:104:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (Res_G and (Pow2 (M) - 1)) = 0
+p64.adb:104:46: info: precondition proved (CVC4: 2 VC)
 p64.adb:106:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:106:33: info: loop invariant preservation proved (Z3: 1 VC)
-p64.adb:108:33: info: initialization of "Res" proved
+p64.adb:106:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res_G < 16#1000_0000_0#
 p64.adb:108:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:108:33: info: loop invariant preservation proved (altergo: 1 VC)
-p64.adb:108:39: info: initialization of "Res_G" proved
-p64.adb:108:47: info: precondition proved (CVC4: 1 VC)
-p64.adb:108:53: info: initialization of "M" proved
-p64.adb:110:33: info: initialization of "Num" proved
+p64.adb:108:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res = Res_G * Pow2 (M)
+p64.adb:108:47: info: precondition proved (CVC4: 2 VC)
 p64.adb:110:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:110:33: info: loop invariant preservation proved (CVC4: 1 VC)
+p64.adb:110:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num <= X
 p64.adb:112:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p64.adb:112:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p64.adb:112:38: info: initialization of "Res_G" proved
-p64.adb:112:46: info: initialization of "Bits_G" proved
-p64.adb:113:33: info: loop invariant initialization proved (CVC4: 2 VC)
-p64.adb:113:33: info: loop invariant preservation proved (CVC4: 2 VC)
-p64.adb:113:49: info: initialization of "Res" proved
-p64.adb:113:56: info: initialization of "Bits" proved
-p64.adb:113:70: info: initialization of "Res_G" proved
-p64.adb:113:79: info: initialization of "Bits_G" proved
-p64.adb:113:89: info: precondition proved (CVC4: 1 VC)
-p64.adb:113:95: info: initialization of "M" proved
-p64.adb:114:33: info: loop invariant initialization proved (CVC4: 2 VC)
-p64.adb:114:33: info: loop invariant preservation proved (CVC4: 2 VC)
-p64.adb:114:48: info: initialization of "Bits_G" proved
-p64.adb:114:57: info: precondition proved (CVC4: 1 VC)
-p64.adb:114:63: info: initialization of "M" proved
+p64.adb:113:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+p64.adb:113:48: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (Res or Bits) = ((2 * Res_G) + Bits_G) * Pow2 (M-1)
+p64.adb:113:89: info: precondition proved (CVC4: 2 VC)
+p64.adb:114:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+p64.adb:114:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+p64.adb:114:57: info: precondition proved (CVC4: 2 VC)
 p64.adb:116:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:116:33: info: loop invariant preservation proved (CVC4: 4 VC; altergo: 1 VC)
-p64.adb:116:37: info: initialization of "Num" proved
-p64.adb:116:48: info: initialization of "Res_G" proved
-p64.adb:118:33: info: initialization of "Res_G" proved
+p64.adb:116:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X - Num = Sqr (Res_G)
 p64.adb:118:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:118:33: info: loop invariant preservation proved (CVC4: 1 VC)
-p64.adb:118:41: info: precondition proved (CVC4: 1 VC)
-p64.adb:118:47: info: initialization of "M" proved
+p64.adb:118:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res_G + Pow2 (M) <= 2 ** 32
+p64.adb:118:41: info: precondition proved (CVC4: 2 VC)
 p64.adb:120:33: info: loop invariant initialization proved (CVC4: 1 VC)
-p64.adb:120:33: info: loop invariant preservation proved (CVC4: 18 VC; Z3: 5 VC; altergo: 5 VC)
-p64.adb:120:43: info: initialization of "Res_G" proved
-p64.adb:120:51: info: precondition proved (CVC4: 1 VC)
-p64.adb:120:57: info: initialization of "M" proved
-p64.adb:123:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:123:22: info: initialization of "M" proved
+p64.adb:120:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove X <= Sqr (Res_G + Pow2 (M)) - 1
+p64.adb:120:51: info: precondition proved (CVC4: 2 VC)
+p64.adb:123:22: info: assertion proved (Z3: 1 VC)
 p64.adb:124:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:124:22: info: initialization of "Res" proved
-p64.adb:124:28: info: initialization of "Res_G" proved
 p64.adb:125:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:125:33: info: initialization of "Res_G" proved
 p64.adb:125:42: info: precondition proved (CVC4: 1 VC)
-p64.adb:125:48: info: initialization of "M" proved
 p64.adb:126:22: info: assertion proved (CVC4: 1 VC)
 p64.adb:126:22: info: precondition proved (CVC4: 1 VC)
-p64.adb:126:28: info: initialization of "M" proved
 p64.adb:127:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:127:33: info: initialization of "Res_G" proved
 p64.adb:128:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:128:33: info: initialization of "Res" proved
 p64.adb:129:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:129:26: info: initialization of "Num" proved
-p64.adb:129:37: info: initialization of "Res_G" proved
 p64.adb:130:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:130:22: info: initialization of "Num" proved
 p64.adb:131:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:131:26: info: initialization of "Num" proved
-p64.adb:131:32: info: initialization of "Res_G" proved
 p64.adb:132:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:132:26: info: initialization of "Num" proved
-p64.adb:132:32: info: initialization of "Res" proved
-p64.adb:134:22: info: assertion proved (CVC4: 1 VC)
-p64.adb:134:22: info: initialization of "Res" proved
-p64.adb:135:22: info: assertion proved (Z3: 1 VC)
-p64.adb:135:23: info: initialization of "Res" proved
-p64.adb:136:17: info: initialization of "Res" proved
-p64.adb:137:14: info: initialization of "Res" proved
-p64.adb:143:29: info: range check proved (altergo: 1 VC)
+p64.adb:134:22: medium: assertion might fail, cannot prove Res * Res <= X
+p64.adb:135:22: info: assertion proved (CVC4: 1 VC)
+p64.adb:143:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at p64.ads:36 should mention X in a precondition]
 p64.ads:20:14: info: postcondition proved (CVC4: 1 VC)
-p64.ads:24:19: info: postcondition proved (CVC4: 3 VC)
-p64.ads:37:19: info: postcondition proved (altergo: 2 VC)
-p64.ads:37:46: info: overflow check proved (altergo: 1 VC)
-p64.ads:40:41: info: overflow check proved (altergo: 1 VC)
+p64.ads:24:19: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+p64.ads:37:19: medium: postcondition might fail, cannot prove (Sqrt_Von_Neumann64'Result * Sqrt_Von_Neumann64'Result) <= X
+p64.ads:40:41: medium: overflow check might fail [reason for check: result of multiplication must fit in a 64-bits machine integer]

@@ -73,7 +73,8 @@ VC_SUBPROGRAM_VARIANT - subprogram variant - Check that the given subprogram var
 VC_ASSERT - assertion - Check that the given assertion evaluates to True.
 VC_RAISE - raised exception - Check that the raise statement or expression can never be reached.
 VC_INLINE_CHECK - Inline_For_Proof annotation - Check that an Annotate pragma with the Inline_For_Proof identifier is correct.
-VC_UC_NO_HOLES - unchecked conversion check - Check that a type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object, and no invalid bitpatterns occur.
+VC_UC_SOURCE - unchecked conversion source check - Check that a source type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object.
+VC_UC_TARGET - unchecked conversion target check - Check that a target type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object, and no invalid bitpatterns occur.
 VC_UC_SAME_SIZE - unchecked conversion size check - Check that the two types in an unchecked conversion instance are of the same size.
 VC_UC_ALIGNMENT - alignment check - Check that the first object's alignment is an integral multiple of the second object's alignment.
 VC_WEAKER_PRE - precondition weaker than class-wide precondition - Check that the precondition aspect of the subprogram is weaker than its class-wide precondition.

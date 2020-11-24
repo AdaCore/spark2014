@@ -18,9 +18,13 @@ call does not modify any variables declared outside of the function.
 It follows as a consequence of these rules that the evaluation
 of any |SPARK| expression is side-effect free.
 
+.. index:: global item
+
 We also introduce the notion of a *global item*, which is a name that denotes a
 global object or a state abstraction (see :ref:`abstract-state`). Global items
 are presented in Global aspects (see :ref:`global-aspects`).
+
+.. index:: entire object
 
 An *entire object* is an object which is not a subcomponent of a larger
 containing object.  More specifically, an *entire object* is
@@ -28,6 +32,8 @@ an object declared by an ``object_declaration`` (as opposed to, for example,
 a slice or the result object of a function call) or a formal parameter of
 a subprogram. In particular, a component of a protected unit is not
 an *entire object*.
+
+.. index:: reachable element
 
 An object O1 is said to be a *reachable element* of an object O2 if
 
@@ -43,6 +49,8 @@ An object O1 is said to be a *reachable element* of an object O2 if
 2. The *entry* value of a global item or parameter of a subprogram is its
    value at the call of the subprogram.
 
+.. index:: subprogram output
+
 3. An *output* of a subprogram is a global item or parameter whose final value,
    or the final value of any of its reachable elements, may be updated by a
    successful call to the subprogram. The result of a
@@ -54,6 +62,8 @@ An object O1 is said to be a *reachable element* of an object O2 if
    an output of the subprogram if it is updated only on paths that lead to an
    explicit ``raise_statement`` or to a ``pragma Assert (statically_False)`` or
    to a call to a subprogram marked ``No_Return``.]
+
+.. index:: subprogram input
 
 4. An *input* of a subprogram is a global item or parameter whose
    initial value (or that of any of its reachable elements)
@@ -106,6 +116,8 @@ An object O1 is said to be a *reachable element* of an object O2 if
    fully initialized. Similarly, upon return from a call all outputs of the
    callee except for those that have relaxed initialization shall be
    fully initialized.
+
+.. index:: precondition, postcondition
 
 .. _preconditions-and-postconditions:
 
@@ -192,6 +204,8 @@ The callee is responsible for discharging the verification conditions associated
 with any postcondition checks, class-wide or specific. The success of these
 checks may then be assumed by the caller.
 
+.. index:: verification condition; on dispatching operation
+
 In the case of an overriding dispatching operation whose Pre'Class
 attribute is explicitly specified, a verification condition is introduced
 to ensure that the specified Pre'Class condition is implied by the
@@ -230,6 +244,8 @@ In order to extend Ada's support for specification of subprogram contracts
 See section :ref:`contract-cases` for further detail on Contract_Case aspects, section
 :ref:`global-aspects` for further detail on Global aspects and section :ref:`depends-aspects`
 for further detail on Depends aspects.
+
+.. index:: Contract_Cases
 
 .. _contract-cases:
 
@@ -385,20 +401,22 @@ on whether the subprogram in question is a dispatching operation.
 
    -- This is the equivalent specification not using Contract_Cases.
    -- It is noticeably more complex and the prover is not able to check
-   -- for disjoint cases or that he domain of X is covered.
+   -- for disjoint cases or that the domain of X is covered.
    procedure Incr_Threshold_1 (X : in out Integer; Threshold : in Integer)
-     with Pre  => (X < Threshold and not (X = Threshold))
-                     or else (not (X < Threshold) and X = Threshold),
+     with Pre  => (X < Threshold and not (X >= Threshold))
+                     or else (not (X < Threshold) and X >= Threshold),
           Post => (if X'Old < Threshold then X = X'Old + 1
-                   elsif X'Old = Threshold then X = X'Old);
+                   elsif X'Old >= Threshold then X = X'Old);
 
-   -- Contract_Cases can be used in conjunction with  pre and postconditions.
+   -- Contract_Cases can be used in conjunction with pre and postconditions.
    procedure Incr_Threshold_2 (X : in out Integer; Threshold : in Integer)
      with Pre  => X in 0 .. Threshold,
           Post => X >= X'Old,
           Contract_Cases => (X < Threshold => X = X'Old + 1,
                              X = Threshold => X = X'Old);
 
+
+.. index:: Global
 
 .. _global-aspects:
 
@@ -636,10 +654,11 @@ is used purely for static analysis purposes and is not executed.
     ``mode_selector`` of Proof_In.
 
 
+.. index:: constant with variable inputs; in Global
+
 19. A ``global_item`` shall not denote a constant object other than a formal
     parameter [of an enclosing subprogram] of mode **in**, a generic formal
     object of mode **in**, or a *constant with variable inputs*.
-
 
     If a ``global_item`` denotes a generic formal object of mode **in**,
     then the corresponding ``global_item`` in an instance of the generic
@@ -648,41 +667,20 @@ is used purely for static analysis purposes and is not executed.
     variable inputs]. Outside of the instance, such a ``global_item`` is
     ignored. For example,
 
-.. code-block:: ada
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/global_and_generics.ads
+   :language: ada
+   :linenos:
 
-        generic
-           Xxx : Integer;
-        package Ggg is
-           procedure Ppp (Yyy : in out Integer) with Global => Xxx,
-                                                     Depends => (Yyy =>+ Xxx);
-        end Ggg;
-
-        package body Ggg is
-           procedure Ppp (Yyy : in out Integer) is
-           begin
-              Yyy := Integer'Max (Xxx, Yyy);
-           end Ppp;
-        end Ggg;
-
-        package Iii is new Ggg
-          (Xxx => 123); -- actual parameter lacks variable inputs
-
-        procedure Qqq (Zzz : in out Integer) with Global => null,
-                                                  Depends => (Zzz =>+ null);
-        procedure Qqq (Zzz : in out Integer) is
-        begin
-           Iii.Ppp (Yyy => Zzz);
-        end Qqq;
-
-        -- Qqq's Global and Depends aspects don't mention Iii.Xxx even though
-        -- Qqq calls Iii.Ppp which does reference Iii.Xxx as a global.
-        -- As seen from outside of Iii, Iii.Ppp's references to Iii.Xxx in its
-        -- Global and Depends aspect specifications are ignored.
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/global_and_generics.adb
+   :language: ada
+   :linenos:
 
 
 20. The ``mode_selector`` of a ``global_item`` denoting a *constant with
     variable inputs* shall be ``Input`` or ``Proof_In``.
 
+
+.. index:: Constant_After_Elaboration; in Global
 
 21. The ``mode_selector`` of a ``global_item`` denoting a variable marked
     as a *constant after elaboration* shall be ``Input`` or ``Proof_In`` [,
@@ -716,6 +714,8 @@ is used purely for static analysis purposes and is not executed.
                    Proof_In => (T, U));
                    -- A global aspect with all types of global specification
 
+
+.. index:: Depends
 
 .. _depends-aspects:
 
@@ -851,10 +851,8 @@ where
    subprogram of mode **in out** and **out** along with the entities denoted by
    ``global_items`` of the Global aspect of the subprogram with a
    ``mode_selector`` of In_Out and Output and (for a function) the
-   ``function_result``.
-
-   [TBD: include in-mode parameters that are outputs. Do we want to
-   define a term for such parameters?]
+   ``function_result`` or (for a procedure or entry) the set of formal
+   parameters of the subprogram of mode **in** of an access-to-variable type.
 
 
 7. The entity denoted by each ``input`` of a ``dependency_relation`` of a
@@ -1020,7 +1018,7 @@ as it is used purely for static analysis purposes and is not executed.
      with Global  => G,
           Depends => (F'Result => (G, X),
                       null     => Y);
-   -- Depends aspects are only needed for special cases like here where the
+   -- Depends aspects on functions are only needed for special cases like here where the
    -- parameter Y has no discernible effect on the result of the function.
 
 .. _class-wide-global-and-depends-aspects:
@@ -1093,25 +1091,26 @@ Depends'Class aspect of the subprogram. The Depends'Class aspect of an
 an overriding subprogram shall be a valid overriding of the Depends'Class
 aspect(s) of the overridden inherited subprogram(s).
 
+.. index:: Extensions_Visible
+
 .. _extensions-visible-aspects:
 
 Extensions_Visible Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. The Extensions_Visible aspect provides a mechanism for ensuring that
-   "hidden" components of a formal parameter of a specific tagged type
-   are unreferenced.
-   For example, if a formal parameter of a specific tagged type T is converted
-   to a class-wide type and then used as a controlling operand in a dispatching
-   call, then the (dynamic) callee might reference components of the parameter
-   which are declared in some extension of T. Such a use of the formal parameter
-   could be forbidden via an Extensions_Visible aspect specification as
-   described below. The aspect also plays a corresponding role in the analysis
-   of callers of the subprogram.
+The Extensions_Visible aspect provides a mechanism for ensuring that "hidden"
+components of a formal parameter of a specific tagged type are unreferenced.
+For example, if a formal parameter of a specific tagged type T is converted to
+a class-wide type and then used as a controlling operand in a dispatching call,
+then the (dynamic) callee might reference components of the parameter which are
+declared in some extension of T. Such a use of the formal parameter could be
+forbidden via an Extensions_Visible aspect specification as described
+below. The aspect also plays a corresponding role in the analysis of callers of
+the subprogram.
 
 .. centered:: **Static Semantics**
 
-2. Extensions_Visible is a Boolean-valued aspect which may be specified for a
+1. Extensions_Visible is a Boolean-valued aspect which may be specified for a
    noninstance subprogram or a generic subprogram.
    If directly specified, the aspect_definition shall be a static
    [Boolean] expression. The aspect is inherited by an inherited primitive
@@ -1123,7 +1122,7 @@ Extensions_Visible Aspects
 
 .. centered:: **Legality Rules**
 
-3. If the Extensions_Visible aspect is False for a subprogram, then
+2. If the Extensions_Visible aspect is False for a subprogram, then
    certain restrictions are imposed on the use of any parameter of the
    subprogram which is of a specific tagged type (or of a private type
    whose full view is a specific tagged type).
@@ -1145,23 +1144,23 @@ Extensions_Visible Aspects
    attributes yields a result having the same underlying dynamic tag as their
    prefix).]
 
-#. A subprogram whose Extensions_Visible aspect is True shall not override
+3. A subprogram whose Extensions_Visible aspect is True shall not override
    an inherited primitive operation of a tagged type whose
    Extensions_Visible aspect is False. [The reverse is allowed.]
 
-#. If a nonnull type extension inherits a
+4. If a nonnull type extension inherits a
    procedure having both a False Extensions_Visible aspect and one or
    more controlling out-mode parameters, then the inherited procedure
    requires overriding. [This is because the inherited procedure would not
    initialize the noninherited component(s).]
 
-#. The Extensions_Visible aspect shall not be specified for a subprogram
+5. The Extensions_Visible aspect shall not be specified for a subprogram
    which has no parameters of either a specific tagged type or a private
    type unless the subprogram is declared in an instance of a generic
    unit and the corresponding subprogram in the generic unit satisfies
    this rule. [Such an aspect specification, if allowed, would be ineffective.]
 
-#. [These rules ensure that the value of the underlying tag (at run time) of
+6. [These rules ensure that the value of the underlying tag (at run time) of
    the actual parameter of a call to a subprogram whose Extensions_Visible
    aspect is False will have no effect on the behavior of that call.
    In particular, if the actual parameter has any additional components
@@ -1170,7 +1169,7 @@ Extensions_Visible Aspects
 
 .. centered:: **Verification Rules**
 
-#. [|SPARK| typically requires that an actual parameter corresponding
+7. [|SPARK| typically requires that an actual parameter corresponding
    to an in mode or in out mode formal parameter in a call shall be fully
    initialized before the call; similarly, the callee is typically responsible
    for fully initializing any out-mode formal parameters before returning.
@@ -1179,7 +1178,7 @@ Extensions_Visible Aspects
    and outputs (which include parameters) in :ref:`subprogram-declarations`
    and then :ref:`relaxed-initialization`].
 
-#. In the case of a formal parameter of a specific tagged type T (or of a
+8. In the case of a formal parameter of a specific tagged type T (or of a
    private type whose full view is a specific tagged type), the set of
    components which shall be initialized in order to meet these requirements
    depends on the Extensions_Visible aspect of the callee.
@@ -1191,7 +1190,7 @@ Extensions_Visible Aspects
    This set will always include the nondiscriminant components of T, but
    it may also include additional components.]
 
-#. [To put it another way, if the applicable Extensions_Visible aspect
+9. [To put it another way, if the applicable Extensions_Visible aspect
    is True, then the initialization requirements (for both the caller and
    the callee) for a parameter of a specific tagged type T are the same as
    if the formal parameter's type were T'Class. If the aspect is False,
@@ -1208,11 +1207,14 @@ Extensions_Visible Aspects
    to a procedure with two parameters of type T'Class, one of mode out and
    one of mode in.]
 
-#. [In the case of an actual parameter of a call to a subprogram whose
-   Extensions_Visible aspect is False where the corresponding formal parameter
-   is of a specific tagged type T, these rules imply that formal verification
-   can safely assume that any components of the actual parameter which are not
-   components of T will be neither read nor written by the call.]
+10. [In the case of an actual parameter of a call to a subprogram whose
+    Extensions_Visible aspect is False where the corresponding formal parameter
+    is of a specific tagged type T, these rules imply that formal verification
+    can safely assume that any components of the actual parameter which are not
+    components of T will be neither read nor written by the call.]
+
+.. index:: Subprogram_Variant
+           termination; of subprogram
 
 Subprogram_Variant Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1235,6 +1237,8 @@ their subprogram_variant_item_list is the same, and, for each
 subprogram_variant_item,
 both sequences agree on the change_direction and the base type of the
 discrete_expression.
+
+.. index:: recursive subprograms
 
 Two subprograms are said to be `statically mutually recursive`, if they are
 mutually recursive ignoring indirect calls (dispatching calls and calls
@@ -1348,7 +1352,8 @@ it.
 
 1. A subprogram formal parameter of a composite type which is updated
    but not fully initialized by the subprogram shall have a mode of
-   **in out**.
+   **in out**, unless it has relaxed initialization
+   (see section :ref:`relaxed-initialization`).
 
 
 2. A subprogram formal parameter of mode **out** shall not be read by
@@ -1359,17 +1364,6 @@ it.
    are A'First, A'Last and A'Length; examples of attributes that are
    dependent on the value of the formal parameter and shall not be
    used are X'Old and X'Loop_Entry.]
-
-
-.. centered:: **Examples**
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/param_1_illegal.adb
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/param_1_legal.adb
-   :language: ada
-   :linenos:
 
 
 Subprogram Bodies
@@ -1400,6 +1394,8 @@ Parameter Associations
 No extensions or restrictions.
 
 
+.. index:: aliasing
+
 .. _anti-aliasing:
 
 Anti-Aliasing
@@ -1426,6 +1422,8 @@ calls.
 
 .. centered:: **Static Semantics**
 
+.. index:: interfering object
+
 1. An object is said to be *interfering* if it is unsynchronized (see section
    :ref:`tasks-and-synchronization`) or it is synchronized only due to being
    *constant after elaboration* (see section :ref:`object-declarations`).
@@ -1436,6 +1434,8 @@ calls.
    [This definition has the effect of exempting most synchronized objects
    from the anti-aliasing rules given below; aliasing of most synchronized
    objects via parameter passing is allowed.]
+
+.. index:: immutable parameter
 
 2. A formal parameter is said to be *immutable* in the following cases:
 
@@ -1493,6 +1493,8 @@ Return Statements
 
 No extensions or restrictions.
 
+.. index:: No_Return
+
 Nonreturning Procedures
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1536,6 +1538,8 @@ Null Procedures
 No extensions or restrictions.
 
 
+.. index:: expression function
+
 Expression Functions
 --------------------
 
@@ -1549,12 +1553,8 @@ Expression Functions
    refined aspects applied (see :ref:`state_refinement`).
 
 
-.. centered:: **Examples**
-
-.. code-block:: ada
-
-   function Expr_Func_1 (X : Natural; Y : Natural) return Natural is (X + Y)
-     with Pre => X <= Natural'Last - Y;
+.. index:: ghost code
+           see: Ghost; ghost code
 
 .. _ghost-functions:
 
@@ -1830,6 +1830,10 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
           Ghost,
           Import;
    -- The body of the function is not declared elsewhere.
+
+.. index:: Relaxed_Initialization
+           Initialized
+           initialization; by proof
 
 .. _relaxed-initialization:
 

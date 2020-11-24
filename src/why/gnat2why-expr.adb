@@ -38,7 +38,6 @@ with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
-with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
@@ -1874,16 +1873,21 @@ package body Gnat2Why.Expr is
       As_Old : Boolean := False) return W_Expr_Id
    is
       Result : W_Expr_Id := Expr;
+      Cu     : Ada_To_Why_Ident.Cursor;
 
    begin
       for N of Subset loop
-         Result := Bind_From_Mapping_In_Expr
-           (Params => Params,
-            Expr   => Result,
-            N      => N,
-            Name   => Map.Element (N),
-            Domain => Domain,
-            As_Old => As_Old);
+         Cu := Map.Find (N);
+
+         if Ada_To_Why_Ident.Has_Element (Cu) then
+            Result := Bind_From_Mapping_In_Expr
+              (Params => Params,
+               Expr   => Result,
+               N      => N,
+               Name   => Ada_To_Why_Ident.Element (Cu),
+               Domain => Domain,
+               As_Old => As_Old);
+         end if;
       end loop;
 
       return Result;
@@ -3329,10 +3333,10 @@ package body Gnat2Why.Expr is
 
          --  Get values for global inputs of functions
 
-         for B in Bind_Cnt .. Binders'Last loop
+         if Arg_Cnt <= Why_Args'Last then
             Why_Args (Arg_Cnt .. Why_Args'Last) :=
               Get_Logic_Args (Subp, Params.Ref_Allowed);
-         end loop;
+         end if;
 
          return Why_Args;
       end;
@@ -6321,35 +6325,51 @@ package body Gnat2Why.Expr is
             end if;
 
          when Pointer =>
-
-            --  We can always reuse the reference for the value of split
-            --  pointers, since pointers designating the same type share a
-            --  single Why type.
-
             pragma Assert (Var.Kind = Pointer);
-            Args (Count) := +Var.Value.B_Name;
-            Count := Count + 1;
 
-            if Pattern.Mutable = Var.Mutable then
-               Args (Count) := +Var.Address;
+            --  We can reuse the reference for the value of split
+            --  pointers, if both pointer types designate the same subtype.
+
+            if Repr_Pointer_Type
+                (Get_Ada_Node (+Get_Why_Type_From_Item (Pattern)))
+              = Repr_Pointer_Type
+                (Get_Ada_Node (+Get_Why_Type_From_Item (Var)))
+            then
+
+               Args (Count) := +Var.Value.B_Name;
                Count := Count + 1;
-               Args (Count) := +Var.Is_Null;
+
+               if Pattern.Mutable = Var.Mutable then
+                  Args (Count) := +Var.Address;
+                  Count := Count + 1;
+                  Args (Count) := +Var.Is_Null;
+                  Count := Count + 1;
+               else
+                  pragma Assert (not Pattern.Mutable);
+                  Args (Count) := New_Deref
+                    (Right => Var.Address,
+                     Typ   => Get_Typ (Var.Address));
+                  Count := Count + 1;
+                  Args (Count) := New_Deref
+                    (Right => Var.Is_Null,
+                     Typ   => Get_Typ (Var.Is_Null));
+                  Count := Count + 1;
+               end if;
+
+               Args (Count) := +Var.Is_Moved;
                Count := Count + 1;
+
+            --  Otherwise, use the expression instead.
+
             else
-               pragma Assert (not Pattern.Mutable);
-               Args (Count) := New_Deref
-                 (Right => Var.Address,
-                  Typ   => Get_Typ (Var.Address));
-               Count := Count + 1;
-               Args (Count) := New_Deref
-                 (Right => Var.Is_Null,
-                  Typ   => Get_Typ (Var.Is_Null));
-               Count := Count + 1;
+               Get_Item_From_Expr
+                 (Pattern    => Pattern,
+                  Expr       => Expr,
+                  Context    => Context,
+                  Args       => Args,
+                  Need_Store => Need_Store);
+               return;
             end if;
-
-            Args (Count) := +Var.Is_Moved;
-            Count := Count + 1;
-
          when Func    =>
             raise Program_Error;
       end case;
@@ -6473,7 +6493,7 @@ package body Gnat2Why.Expr is
       --  If the borrowed object is not mutable (it happens when we are inside
       --  a traversal function), nothing needs to be done.
 
-      if not Is_Mutable_In_Why (Borrowed) then
+      if Is_Constant_Borrower (Brower) then
          return +Void;
       end if;
 
@@ -9935,10 +9955,10 @@ package body Gnat2Why.Expr is
          --  Predicate used to define the aggregate/updated object
 
          Params_No_Ref : constant Transformation_Params :=
-                           (Phase       => Params.Phase,
-                            Gen_Marker  => GM_None,
-                            Ref_Allowed => False,
-                            Old_Policy  => Ignore);
+           (Phase       => Params.Phase,
+            Gen_Marker  => GM_None,
+            Ref_Allowed => False,
+            Old_Policy  => Raise_Error);
 
          --  Values used in calls to the aggregate function
 
@@ -12413,16 +12433,17 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Expr_Id
    is
    begin
-      --  Do not generate old when they are not allowed (eg in postconditions
-      --  of functions or inside prefixes of 'Old attributes). When the
-      --  expression contains no variables, we may still need to generate old
-      --  in special cases (pledge functions). In these cases, we will use the
-      --  map for old. When we create old why3 nodes, the expression should
-      --  contain variable (or Why3 will complain).
+      --  If no old attributes are expected here, raise an exception
 
-      if Params.Old_Policy = Ignore
-        or else (Params.Old_Policy = As_Old
-                 and then Get_Variables_For_Proof (Expr, Expr).Is_Empty)
+      if Params.Old_Policy = Raise_Error then
+         raise Program_Error;
+
+      --  Do not generate old when they are not allowed (eg in postconditions
+      --  of functions or inside prefixes of 'Old attributes) or when the
+      --  expression contains no variables.
+
+      elsif Params.Old_Policy = Ignore
+        or else Get_Variables_For_Proof (Expr, Expr).Is_Empty
       then
          return Transform_Expr (Expr, Domain, Params);
       end if;
@@ -13884,6 +13905,7 @@ package body Gnat2Why.Expr is
                  Right  => Right_Expr,
                  Op     => EW_Equivalent);
          end;
+
       elsif Has_Array_Type (Left_Type) then
 
          --  If Expr is of the form Id = Id'Old'Update (...) and equality is
@@ -13928,6 +13950,57 @@ package body Gnat2Why.Expr is
                end if;
             end;
          end if;
+
+      elsif Has_Access_Type (Left_Type) then
+
+         --  For access types, there might not be a type which can act as
+         --  a base type of both operands (imagine one is a named access type
+         --  with a predicate and the other an anonymous type with a null
+         --  exclusion). Fortunately, the root of both types should really be
+         --  the same Why type, so we don't really need such a base.
+
+         declare
+            Op         : constant Node_Kind := Nkind (Expr);
+            Right_Type : constant Node_Id := Etype (Right);
+            Subdomain  : constant EW_Domain :=
+              (if Domain = EW_Pred then EW_Term else Domain);
+
+            W_Left_Ty  : constant W_Type_Id :=
+              EW_Abstract (Root_Retysp (Left_Type));
+            W_Right_Ty : constant W_Type_Id :=
+              EW_Abstract (Root_Retysp (Right_Type));
+            Left_Expr  : constant W_Expr_Id :=
+              Transform_Expr (Left, W_Left_Ty, Subdomain, Params);
+            Right_Expr : constant W_Expr_Id :=
+              Transform_Expr (Right, W_Right_Ty, Subdomain, Params);
+         begin
+            T := New_Call
+              (Ada_Node => Expr,
+               Domain   => Subdomain,
+               Name     =>
+                 E_Symb (Root_Retysp (Left_Type),
+                   WNE_Bool_Eq),
+               Args     => (1 => Left_Expr,
+                            2 => Right_Expr),
+               Typ      => EW_Bool_Type);
+
+            if Domain = EW_Pred then
+               T := New_Comparison
+                 (Symbol =>
+                    Transform_Compare_Op (Op, EW_Bool_Type, Domain),
+                  Left   => T,
+                  Right  => New_Literal (Domain => Subdomain,
+                                         Value  => EW_True),
+                  Domain => Domain);
+
+            elsif Op = N_Op_Ne then
+               T :=
+                 New_Call (Domain => Domain,
+                           Name   => M_Boolean.Notb,
+                           Args   => (1 => T),
+                           Typ    => EW_Bool_Type);
+            end if;
+         end;
       else
          declare
             Op         : constant Node_Kind := Nkind (Expr);
@@ -14030,34 +14103,6 @@ package body Gnat2Why.Expr is
                                     2 => Right_Expr),
                        Typ      => EW_Bool_Type);
                end if;
-
-               if Domain = EW_Pred then
-                  T := New_Comparison
-                    (Symbol =>
-                       Transform_Compare_Op (Op, EW_Bool_Type, Domain),
-                     Left   => T,
-                     Right  => New_Literal (Domain => Subdomain,
-                                            Value  => EW_True),
-                     Domain => Domain);
-
-               elsif Op = N_Op_Ne then
-                  T :=
-                    New_Call (Domain => Domain,
-                              Name   => M_Boolean.Notb,
-                              Args   => (1 => T),
-                              Typ    => EW_Bool_Type);
-               end if;
-
-            elsif Is_Access_Type (Retysp (Left_Type)) then
-               T :=
-                 New_Call
-                   (Ada_Node => Expr,
-                    Domain   => Subdomain,
-                    Name     =>
-                      E_Symb (Get_Ada_Node (+BT), WNE_Bool_Eq),
-                    Args     => (1 => Left_Expr,
-                                 2 => Right_Expr),
-                    Typ      => EW_Bool_Type);
 
                if Domain = EW_Pred then
                   T := New_Comparison
@@ -17403,11 +17448,11 @@ package body Gnat2Why.Expr is
                T := Why_Empty;
             elsif Is_Integer_Literal_Aspect_Parameter (Subp) then
                T := Transform_Hardcoded_Integer_Literal
-                 (First_Actual (Expr), Etype (Subp), Domain);
+                 (First_Actual (Expr), Root_Retysp (Etype (Subp)), Domain);
             else
                pragma Assert (Is_Real_Literal_Aspect_Parameter (Subp));
                T := Transform_Hardcoded_Real_Literal
-                 (First_Actual (Expr), Etype (Subp), Domain);
+                 (First_Actual (Expr), Root_Retysp (Etype (Subp)), Domain);
             end if;
 
             --  If the precise transformation was succesful, return it

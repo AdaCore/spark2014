@@ -1,0 +1,5 @@
+t.adb:1:32: info: initialization of "Y1" proved
+t.adb:1:36: info: initialization of "Y2" proved
+t.adb:3:20: medium: missing dependency "Y1 => X2"
+t.adb:3:30: medium: missing dependency "Y2 => X1"
+t.adb:4:16: info: postcondition proved (CVC4: 2 VC)

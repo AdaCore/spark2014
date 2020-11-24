@@ -13,4 +13,5 @@ options = ["--no-axiom-guard",
 def replay():
     prove_all(procs=0, steps=0, vc_timeout=20, opt=options)
 
-prove_all(replay=True, opt=options)
+if __name__ == "__main__":
+    prove_all(replay=True, opt=options)

@@ -1,0 +1,2 @@
+version.ads:15:31: info: postcondition of source is strong enough to imply postcondition of target (Trivial: 1 VC)
+version.ads:16:36: info: postcondition of source is strong enough to imply postcondition of target (Trivial: 1 VC)

@@ -9,7 +9,7 @@ feature its consequences in terms of execution and formal verification. This is
 not a reference manual for the |SPARK| language, which can be found in:
 
 * the Ada Reference Manual (for Ada features), and
-* the SPARK 2014 Reference Manual (for SPARK-specific features)
+* the SPARK Reference Manual (for SPARK-specific features)
 
 More details on how |GNAT Pro| compiles |SPARK| code can be found in the |GNAT
 Pro| Reference Manual.

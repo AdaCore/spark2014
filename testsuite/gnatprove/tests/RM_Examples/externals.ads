@@ -23,13 +23,10 @@ is
 
    function Last_Value_Sent return Integer
      with Volatile_Function,
-          Global => Complex_Device;  -- Complex_Device is an External
-                                     -- state.  It can be a global_item of
-                                     -- a function provided the Refined_Global
-                                     -- aspect only refers to non-volatile
-                                     -- constituents and to external
-                                     -- state abstractions via calls to
-                                     -- functions defined on them.
+          Global => Complex_Device;  -- Complex_Device is an External state.
+                                     -- It does not have Effective_Reads and
+                                     -- may be an specified as a global_item of
+                                     -- a volatile function.
 
    procedure Output_Value (Value : in Integer)
      with Global  => (In_Out => Complex_Device),

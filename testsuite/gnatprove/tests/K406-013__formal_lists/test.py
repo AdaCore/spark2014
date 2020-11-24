@@ -8,4 +8,5 @@ def replay():
               level=4,
               counterexample=False)
 
-prove_all(prover=["cvc4", "z3"], replay=True, counterexample=False)
+if __name__ == "__main__":
+    prove_all(prover=["cvc4", "z3"], replay=True, counterexample=False)

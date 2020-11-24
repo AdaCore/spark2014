@@ -29,11 +29,6 @@ with SPARK_Definition; use SPARK_Definition;
 
 package Flow.Analysis is
 
-   procedure Analyse_Main (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Is_Main;
-   --  If FA corresponds to a main program, we ensure that all globals it
-   --  references are initialized.
-
    procedure Sanity_Check (FA   : in out Flow_Analysis_Graphs;
                            Sane :    out Boolean);
    --  Check the following basic properties:

@@ -19,7 +19,7 @@ Type Contracts
   ``Default_Initial_Condition`` on a private type specifies the initialization
   status and possibly properties of the default initialization for a type.
 
-Note that |SPARK| does not yet support aspect ``Type_Invariant`` from Ada 2012.
+Note that |SPARK| does not yet support aspect ``Type_Invariant`` from Ada.
 
 .. index:: range
 
@@ -123,7 +123,7 @@ Predicates
 
 Predicates can be used on any subtype to express a property verified by objects of
 the subtype at all times. Aspects ``Static_Predicate`` and ``Dynamic_Predicate``
-are defined in Ada 2012 to associate a predicate with a subtype. Aspect
+are defined in Ada to associate a predicate with a subtype. Aspect
 ``Dynamic_Predicate`` allows to express more general predicates than aspect
 ``Static_Predicate``, at the cost of restricting the use of variables of the
 subtype. The following table summarizes the main similarities and differences
@@ -316,7 +316,7 @@ Type Invariants
 In |SPARK|, type invariants can only be specified on completions of private
 types (and not directly on private type declarations). They express a property
 that is only guaranteed outside of the immediate scope of the type bearing the
-invariant. Aspect ``Type_Invariant`` is defined in Ada 2012 to associate an
+invariant. Aspect ``Type_Invariant`` is defined in Ada to associate an
 invariant with a type. Aspect ``Invariant`` is specific to |GNAT Pro| and can be
 used instead of ``Type_Invariant``.
 

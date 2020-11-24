@@ -1464,7 +1464,7 @@ red_black_trees.adb:445:31: medium: assertion might fail, cannot prove Color (T,
 red_black_trees.adb:445:59: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:450:42: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:451:27: medium: assertion might fail, cannot prove T.Color (I) = Black
-red_black_trees.adb:457:18: info: precondition proved (CVC4: 2 VC)
+red_black_trees.adb:457:18: medium: precondition might fail, cannot prove Model (T) (I).K
 red_black_trees.adb:457:34: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:457:52: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:457:70: info: range check proved (CVC4: 1 VC)

@@ -32,3 +32,4 @@ pointers.adb:44:09: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:55:09: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:55:13: medium: memory leak might occur [possible fix: subprogram at pointers.ads:19 should mention L in a precondition]
 pointers.ads:10:14: warning: subprogram "Test" has no effect
+pointers.ads:19:25: warning: unused initial value of "L"

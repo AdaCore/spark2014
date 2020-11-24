@@ -94,8 +94,6 @@ heatingsystem_dfa.adb:133:17: info: add a contract to analyze it separately from
 heatingsystem_dfa.adb:133:17: info: local subprogram "TurnOff" only analyzed in the context of calls
 heatingsystem_dfa.adb:150:17: info: add a contract to analyze it separately from calling contexts
 heatingsystem_dfa.adb:150:17: info: local subprogram "OperateIfNeeded" only analyzed in the context of calls
-heatingsystem_dfa.adb:201:07: medium: "actuator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
-heatingsystem_dfa.adb:201:07: medium: "indicator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 indicator.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Settings has 2 values but has bit size 8]
 modeswitch.adb:5:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Modes has 3 values but has bit size 8]
 modeswitch.ads:5:20: info: initialization of "Value" proved

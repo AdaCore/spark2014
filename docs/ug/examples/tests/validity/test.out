@@ -1,5 +1,5 @@
 validity.adb:7:13: info: types in unchecked conversion have the same size
-validity.adb:7:59: info: type is suitable for unchecked conversion
+validity.adb:7:59: info: type is suitable as source for unchecked conversion
 
 validity.adb:7:68: high: type with constraints on bit representation is unsuitable for unchecked conversion
     7 |   function Int_To_Float is new Ada.Unchecked_Conversion (Integer, Float);

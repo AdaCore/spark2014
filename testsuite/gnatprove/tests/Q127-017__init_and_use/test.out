@@ -1,1 +1,0 @@
-runtest.adb:7:08: medium: "B" might not be initialized after elaboration of main program "runtest"

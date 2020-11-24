@@ -5,6 +5,7 @@ contains_manual_proof = False
 def replay():
     prove_all(procs=0, opt=["--no-axiom-guard", "--no-counterexample"], level=4)
 
-prove_all(opt=["--no-axiom-guard",
-               "--no-counterexample"],
-          replay=True)
+if __name__ == "__main__":
+    prove_all(opt=["--no-axiom-guard",
+                   "--no-counterexample"],
+              replay=True)

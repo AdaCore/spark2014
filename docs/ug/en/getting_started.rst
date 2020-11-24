@@ -12,7 +12,7 @@ illustration.
 
    The online version of this User's Guide applies to the latest development
    version of the |SPARK| toolset. If you're using an official release, some of
-   the described features may not apply. Refer to the version of the SPARK 2014
+   the described features may not apply. Refer to the version of the SPARK
    User's Guide shipping with your release, available through
    :menuselection:`Help --> SPARK` in GNAT Studio and GNATbench IDEs, or under
    ``share/doc/spark`` in your |SPARK| installation.

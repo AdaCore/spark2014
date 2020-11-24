@@ -42,7 +42,7 @@ def get_copyright():
     return u'2011-%s, AdaCore and Altran UK Ltd' % time.strftime("%Y")
 
 # General information about the project.
-project = u'SPARK 2014 User\'s Guide'
+project = u'SPARK User\'s Guide'
 copyright = get_copyright()
 
 
@@ -125,7 +125,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-  (master_doc, 'spark2014_ug.tex', u'SPARK 2014 User\'s Guide',
+  (master_doc, 'spark2014_ug.tex', u'SPARK User\'s Guide',
    u'AdaCore and Altran UK Ltd', 'manual'),
 ]
 
@@ -134,5 +134,5 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'spark2014usersguide', u'SPARK 2014 User\'s Guide',
+    (master_doc, 'spark2014usersguide', u'SPARK User\'s Guide',
      [u'AdaCore and Altran UK Ltd'], 1)]

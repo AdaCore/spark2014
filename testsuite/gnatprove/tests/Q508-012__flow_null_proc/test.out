@@ -1,4 +1,6 @@
 expanded.adb:5:20: low: unused global "Protected_Type"
 expanded.adb:6:17: info: flow dependencies proved
 expanded.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
+nullproc.adb:5:20: low: unused global "Protected_Type"
+nullproc.adb:6:15: info: flow dependencies proved
 nullproc.ads:7:09: medium: the task might terminate, which is not allowed in SPARK

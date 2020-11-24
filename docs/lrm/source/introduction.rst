@@ -3,7 +3,7 @@ Introduction
 
 |SPARK| is a programming language and a set of verification tools
 designed to meet the needs of high-assurance software development.
-|SPARK| is based on Ada 2012, both subsetting the language to remove
+|SPARK| is based on Ada, both subsetting the language to remove
 features that defy verification and also extending the system of
 contracts by defining new Ada aspects to support modular,
 constructive, formal verification.
@@ -17,21 +17,21 @@ Meaningful static analysis is possible on complete programs without
 the |SPARK| specific aspects and pragmas (for programs which are
 otherwise within the |SPARK| subset), in fact the formal verification
 of an implementation against a specification of a complete program is
-possible using only the Ada 2012 contracts.  Without the |SPARK|
+possible using only the Ada contracts.  Without the |SPARK|
 specific aspects, however, analysis has to be performed on a completed
 program and cannot be applied constructively during its development.
 
-|SPARK| is a much larger and more flexible language than its
-predecessor SPARK 2005. The language can be configured to suit
-a number of application domains and standards, from server-class
-high-assurance systems to embedded, hard real-time, critical systems.
+The current version of |SPARK|, sometimes referred to as SPARK 2014, is a much
+larger and more flexible language than its predecessor SPARK 2005. The language
+can be configured to suit a number of application domains and standards, from
+server-class high-assurance systems to embedded, hard real-time, critical
+systems.
 
-A major feature of |SPARK| is the support for a mixture of proof and
-other verification methods such as testing, which
-facilitates the use of unit proof in place of unit testing; an approach now
-formalized in DO-178C and the DO-333 formal methods supplement.
-Certain units may be formally proven and other units validated through
-testing.
+A major feature of |SPARK| is the support for a mixture of proof and other
+verification methods such as testing.  This facilitates the use of unit proof
+in place of unit testing, for example as formalized in avionics certification
+standard DO-178C and its DO-333 formal methods supplement.  Certain units may
+be formally proven and other units validated through testing.
 
 Ada 2012 introduced executable contracts such as Pre and Post
 conditions and new types of expression, in particular conditional
@@ -50,7 +50,7 @@ supports them in a way consistent with the definition given here in
 the |SPARK| reference manual.  The GNAT implementation is one such
 compiler.
 
-As with the Ada 2012 contracts, the new |SPARK| aspects and pragmas
+As with the Ada contracts, the new |SPARK| aspects and pragmas
 have executable semantics and may be executed at run time.  An
 expression in an Ada contract or |SPARK| aspect or pragma is called an
 *assertion expression* and it is the ability to execute such
@@ -60,12 +60,6 @@ The run-time checking of assertion expressions may be suppressed by
 using the Ada pragma Assertion_Policy but the static analysis and
 proof tools always use the assertion expressions whatever the
 assertion policy.
-
-A special feature of |SPARK| is that numbers in assertion expressions
-may have extended or "infinite" arithmetic to make it simpler to write
-specifications as they can be written without having to consider the
-possibility of overflow within the specification.  The numbers may therefore
-behave mathematically (see :ref:`exec_sem`).
 
 Structure of Introduction
 -------------------------
@@ -101,12 +95,12 @@ users and implementors of the language.  In this context,
 "implementors" includes those producing both compilers and
 verification tools.
 
-This manual is written in the style and language of the Ada 2012 RM,
-so knowledge of Ada 2012 is assumed.  Chapters 2 through 13 mirror
-the structure of the Ada 2012 RM.  Chapters 14 onward cover all the annexes
-of the Ada 2012 RM. Moreover, this manual should be interpreted as an extension
-of the Ada 2012 RM (that is, |SPARK| is fully defined by this document taken together
-with the Ada 2012 RM).
+This manual is written in the style and language of the Ada RM,
+so knowledge of Ada is assumed.  Chapters 2 through 13 mirror
+the structure of the Ada RM.  Chapters 14 onward cover all the annexes
+of the Ada RM. Moreover, this manual should be interpreted as an extension
+of the Ada RM (that is, |SPARK| is fully defined by this document taken together
+with the Ada RM).
 
 The |SPARK| RM uses and introduces technical terms in its
 descriptions, those that are less well known or introduced are
@@ -133,10 +127,10 @@ Method of Description
 
 In expressing the aspects, pragmas, attributes and rules of |SPARK|,
 the following chapters of this document follow the notational conventions of
-the Ada 2012 RM (section 1.1.4).
+the Ada RM (section 1.1.4).
 
 The following sections are given for each new language feature introduced
-for |SPARK|, following the Ada 2012 RM (other than *Verification Rules*,
+for |SPARK|, following the Ada RM (other than *Verification Rules*,
 which is specific to |SPARK|):
 
 #. Syntax: this section gives the format of any |SPARK| specific syntax.
@@ -192,7 +186,7 @@ limited to the following static analysis techniques:
   functional properties taken together.
 
 Data and information-flow analysis is not valid and might not be possible if the
-legality rules of Ada 2012 and those presented in this document are not met.
+legality rules of Ada and those presented in this document are not met.
 Similarly, a formal verification might not be possible if the legality rules are
 not met and may be unsound if data-flow errors are present.
 
@@ -202,13 +196,15 @@ Further Details on Formal Verification
 Many Ada constructs have dynamic semantics which include a requirement
 that some error condition must or may\ [#bounded_errors]_ be checked,
 and some exception  must or may\ [#bounded_errors]_  be raised, if the error is
-detected  (see Ada 2012 RM 1.1.5(5-8)).  For example, evaluating the name of an
+detected  (see Ada RM 1.1.5(5-8)).  For example, evaluating the name of an
 array component includes a check that each index value belongs to the
-corresponding index range of the array (see Ada 2012 RM 4.1.1(7)).
+corresponding index range of the array (see Ada RM 4.1.1(7)).
+
+.. index:: verification condition; for run-time checks
 
 For every such run-time check a corresponding obligation to prove that the error
 condition cannot be true is introduced. In particular, this rule applies to the
-run-time checks associated with any assertion (see Ada 2012 RM (11.4.2));
+run-time checks associated with any assertion (see Ada RM (11.4.2));
 the one exception to this rule is pragma
 ``Assume`` (see :ref:`pragma_assume`).
 
@@ -222,6 +218,8 @@ are unaffected by the value of T'Machine_Overflows.
 
 All such generated verification conditions must be discharged before the
 formal program verification phase may be considered to be complete.
+
+.. rubric:: Footnotes
 
 .. [#bounded_errors] In the case of some bounded errors, performing
    a check (and raising an exception if the check fails) is permitted
@@ -263,6 +261,8 @@ as explicit inputs to the formal verification process.
 The means by which this is accomplished is not specified as part of
 the |SPARK| language definition.
 
+.. index:: executable contracts
+
 .. _exec_sem:
 
 Executable Contracts and Mathematical Numbers
@@ -280,10 +280,9 @@ Assertion expressions are always significant in static analysis and
 proof and, indeed, form the basis of the specification against which
 the implementation is verified.
 
-In summary, Ada 2012 in itself enables contract-based, dynamic
+In summary, Ada in itself enables contract-based, dynamic
 verification of complex properties of a program.  |SPARK| enables
-contract-based static deductive verification of a large subset of Ada
-2012.
+contract-based static deductive verification of a large subset of Ada.
 
 
 The Advantages of Executable Contracts
@@ -309,9 +308,7 @@ the programmer in a number of ways:
     greatly encourages the adoption of contract-based programming;
 
   * contracts can be written and dynamically verified even when the
-    contracts or the program are too complex for automatic proof. This
-    includes programs that explicitly manipulate pointers, for
-    example.
+    contracts or the program are too complex for automatic proof.
 
 Executable contracts can be less expressive than pure mathematical
 ones, or more difficult to write in some situations but |SPARK| has
@@ -332,54 +329,49 @@ specifications using them, for instance, the expression
 might raise a run-time exception if Y is an integer and Y + Z >
 Integer'Last even if the entire expression is less then Integer'Last.
 
-|SPARK| mandates that there is an operational mode where such
-expressions (at least for Integer types) are treated as mathematical
-and the above expression shall not overflow and will not raise an
-exception.  In this mode the assertion expressions may still be
-executable and use extended or infinite precision numbers.  This mode
-might be acceptable if assertion expressions are not to be executed in
-the delivered code or if the overhead of executing contracts is not an
-issue.
-
-If the mode is not chosen, then |SPARK| requires checks that have to
-be proven to demonstrate that an overflow cannot occur.  In the above
-example the checks would not be provable and the postcondition would
-have to be rewritten something like:
+|SPARK| requires checks that have to be proven to demonstrate that an overflow
+cannot occur, which would not be provable in the above example.  Instead, the
+postcondition would would have to be rewritten, perhaps as something like:
 
 ::
 
   Post => X = Integer ((Long_Integer (Y) + Long_Integer (Z)) / 100)
 
-The way in which this operational mode is selected is tool dependent
-and shall be described in the user manual accompanying the tool.
+In general, the Ada library ``Ada.Numerics.Big_Numbers.Big_Integers`` can be
+used so that expressions (at least for Integer types) are treated as
+mathematical, with no overflow and no exception raised. Using this library, the
+above example can be rewritten:
+
+::
+
+  Post => To_Big_Integer (X) = (To_Big_Integer (Y) + To_Big_Integer (Z)) / 100
 
 Libraries for Specification and Proof
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is intended that |SPARK| will have available libraries (as
-packages) of common paradigms such as sets that might be difficult to
-express in executable contracts but the underlying model of the
-library packages will have a more expressive specification along with
-axioms that will make automatic proof of (executable) contracts using
-these libraries practical.
+It is intended that |SPARK| toolchains have available libraries (as packages)
+of common paradigms such as sets, supported by an underlying model of the
+library packages with an expressive specification that makes automatic proof of
+(executable) contracts using these libraries practical.
 
 .. _dynamic_sem:
 
 Dynamic Semantics of |SPARK| Programs
 -------------------------------------
 
-Every valid |SPARK| program is also a valid Ada 2012 program, although
-for a general Ada 2012 compiler, |SPARK| specific aspects may have to
-be replaced by their equivalent pragmas.  The |SPARK| dynamic
-semantics are the same as Ada 2012 with the exception of some new
-aspects, pragmas and attributes which have dynamic semantics and the
-mathematical arithmetic in assertion expressions. Additionally, the new
-dynamic semantics only affect assertion expressions so if assertion
-expressions are ignored then the dynamic semantics of an Ada 2012
-program are the same as a |SPARK| program.
+Every valid |SPARK| program is also a valid Ada program.  However, |SPARK|
+makes use of |SPARK|-defined attributes, aspects, and pragmas which an Ada
+compiler must process consistently with their |SPARK| definitions in order to
+compile and execute a |SPARK| program as an Ada program; this is possible
+because Ada permits implementation-defined attributes, aspects, and
+pragmas. The dynamic semantics of |SPARK| and of Ada are the same, assuming
+appropriate Ada support for those |SPARK|-defined constructs. That one sentence
+defines the dynamic semantics of |SPARK|; the only other description of dynamic
+semantics in the |SPARK| language definition is in defining these
+|SPARK|-defined attributes, aspects, and pragmas.
 
 |SPARK| programs that have failed their static analysis checks can still be
-valid Ada 2012 programs. An incorrect |SPARK| program with, say, flow
+valid Ada programs. An incorrect |SPARK| program with, say, flow
 analysis anomalies or undischarged verification conditions can still be executed as
 long as the Ada compiler in question finds nothing objectionable. What one gives
 up in this case is the formal analysis of the program, such as proof of absence
@@ -387,7 +379,7 @@ of run-time errors or the static checks performed by flow analysis such as the
 proof that all variables are initialized before use.
 
 |SPARK| may make use of certain aspects, attributes and pragmas which are not
-defined in the Ada 2012 reference manual. Ada 2012 explicitly permits
+defined in the Ada reference manual. Ada explicitly permits
 implementations to provide implementation-defined aspects, attributes and
 pragmas. If a |SPARK| program uses one of these aspects (e.g., Global), or
 attributes (e.g., Initialized) then it can only be compiled and executed by an
@@ -422,22 +414,17 @@ main program (albeit not within the language itself).
 The following requirements give the principal goals to be met by |SPARK|.
 Some are expanded in subsequent sections within this chapter.
 
-- The |SPARK| language subset shall embody the largest subset of Ada 2012 to
+- The |SPARK| language subset shall embody the largest subset of Ada to
   which it is currently practical to apply automatic formal verification, in line with
   the goals below. However, future advances in verification research and
   computing power may allow for expansion of the language and the forms of
   verification available. See section :ref:`main_restricts`
   for further details.
 
-- The use of Ada 2012 preconditions, postconditions and other assertions
-  dictates that |SPARK| shall have executable semantics for assertion
-  expressions. Such expressions may be executed, proven or both. To avoid having
-  to consider potential numeric overflows when defining an assertion expression
-  |SPARK| mandates a mode whereby extended or infinite integer arithmetic is
-  supported for assertion expressions. The way in which this mode is selected is
-  tool dependent and shall be described in the user guide for the tool. If this
-  mode is not active, verification conditions to demonstrate the absence of overflow
-  in assertion expressions will be present.
+- The use of Ada preconditions, postconditions and other assertions dictates
+  that |SPARK| shall have executable semantics for assertion expressions. Such
+  expressions may be executed, proven or both. See section :ref:`exec_sem` for
+  further details.
 
 - |SPARK| shall provide for mixing of verification evidence generated by formal
   analysis [for code written in the |SPARK| subset] and evidence generated by
@@ -449,6 +436,8 @@ Some are expanded in subsequent sections within this chapter.
   to be written in |SPARK|, making it potentially entirely provable largely
   using automatic proof tools.
 
+.. index:: constructive analysis; requirement
+
 - |SPARK| shall support *constructive*, modular development which allows
   contracts to be specified on the declaration of program units and allows
   analysis and verification to be performed based on these contracts as early as
@@ -456,6 +445,8 @@ Some are expanded in subsequent sections within this chapter.
   implemented. As units are implemented the implementation is verified against
   its specification given in its contract. The contracts are specified using
   |SPARK| specific aspects.
+
+.. index:: generative analysis; requirement
 
 - A |SPARK| analysis tool is required to synthesize at least some of the |SPARK|
   specific aspects, used to specify the contract of a program unit, if a
@@ -469,14 +460,14 @@ Some are expanded in subsequent sections within this chapter.
   code (see section :ref:`verific_modes`).
 
 - Although a goal of |SPARK| is to provide a language that supports as many
-  Ada 2012 features as practical, there is another goal which is to support good
+  Ada features as practical, there is another goal which is to support good
   programming practice guidelines and coding standards applicable to certain
   domains or standards. This goal is met either by standard Ada Restrictions and
   Profile pragmas, or via existing tools (e.g., pragma Restriction_Warnings in
-  GNAT, or the coding standard checker gnatcheck).
+  GNAT, or the coding standard checker GNATcheck).
 
 - |SPARK| shall allow the mixing of code written in the |SPARK| subset
-  with code written in full Ada 2012. See section :ref:`in_out` for
+  with code written in full Ada. See section :ref:`in_out` for
   further details.
 
 - Many systems are not written in a single programming language. |SPARK| shall
@@ -489,25 +480,16 @@ Some are expanded in subsequent sections within this chapter.
   a program but may be used in the test and verification of a program.
   See section :ref:`Adding Code for Specification and Verification`.
 
-- |SPARK| shall provide counterparts of all language features and
-  analysis modes provided in SPARK 83/95/2005, unless it has been
-  identified that customers do not find them useful.
-
-- Enhanced support for specifying and verifying properties of secure systems
-  shall be provided (over what is available in SPARK 2005). [The features to
-  provide this enhanced support are not yet fully defined and will not be
-  implemented until after release 1 of the |SPARK| tools.]
-
 - |SPARK| shall support the analysis of external communication channels, which
   are typically implemented using volatile variables.
   See section :ref:`volatile` for further details.
 
 - The language shall offer an unambiguous semantics. In Ada
-  terminology, this means that all erroneous and unspecified behaviour
+  terminology, this means that all erroneous and unspecified behavior
   shall be eliminated either by direct exclusion or by adding rules
   which indirectly guarantee that some implementation-dependent
   choice, other than the fundamental data types and constants, cannot
-  effect the externally-visible behaviour of the program. For example,
+  effect the externally-visible behavior of the program. For example,
   Ada does not specify the order in which actual parameters are
   evaluated as part of a subprogram call. As a result of the SPARK
   rules which prevent the evaluation of an expression from having side
@@ -519,17 +501,18 @@ Some are expanded in subsequent sections within this chapter.
   generated for the user. See section :ref:`in_out` for further
   details.] Where the possibility of ambiguity still exists it is
   noted, namely the reading of an invalid value from an external
-  source and the use of Unchecked_Conversion, otherwise There are no
+  source and the use of Unchecked_Conversion, otherwise there are no
   known ambiguities in the language presented in this document.
 
-- |SPARK| shall support provision of "formal analysis" as defined by DO-333,
+- |SPARK| shall support provision of "formal analysis" as defined by the DO-333
+  formal methods supplement of the avionics certification standard DO-178C,
   which states "an analysis method can only be regarded as formal analysis if
-  its determination of a property is sound. Sound analysis means that the method
-  never asserts a property to be true when it is not true." A language with
-  unambiguous semantics is required to achieve this and additionally any other
-  language feature that for which sound analysis is difficult or impractical
-  will be eliminated or its use constrained to meet this goal. See section
-  :ref:`main_restricts` for further details.
+  its determination of a property is sound. Sound analysis means that the
+  method never asserts a property to be true when it is not true." A language
+  with unambiguous semantics is required to achieve this and additionally any
+  other language feature that for which sound analysis is difficult or
+  impractical will be eliminated or its use constrained to meet this goal. See
+  section :ref:`main_restricts` for further details.
 
 .. _explain_sprs:
 
@@ -544,7 +527,7 @@ Principal Language Restrictions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To facilitate formal analyses and verification, |SPARK| enforces a number of
-global restrictions to Ada 2012. While these are covered in more detail
+global restrictions to Ada. While these are covered in more detail
 in the remaining chapters of this document, the most notable restrictions are:
 
 - Restrictions on the use of access types and values, similar in some
@@ -563,7 +546,7 @@ in the remaining chapters of this document, the most notable restrictions are:
 - The use of controlled types is not currently permitted.
 
 - Tasks and protected objects are permitted only if the Ravenscar profile
-  (or the Extended Ravenscar profile) is specified.
+  (or the Jorvik profile) is specified.
 
 - Raising and handling of exceptions is not currently permitted (exceptions can
   be included in a program but proof must be used to show that they cannot be
@@ -735,7 +718,7 @@ by the called subprogram:
 
 A tool set may provide further tools to demonstrate that the Global
 aspects are satisfied by a non-|SPARK| subprogram and possibly
-partially check the post condition.
+partially check the postcondition.
 
 Conditions on a tested subprogram which is calls a proven subprogram
 ####################################################################
@@ -803,7 +786,9 @@ but if the function is a ghost function this might not matter.
 Synthesis of |SPARK| Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-|SPARK| supports a *constructive* analysis style where all program units
+.. index:: constructive analysis
+
+|SPARK| supports a *constructive analysis* style where all program units
 require contracts specified by |SPARK| specific aspects to be provided on their
 declarations. Under this constructive analysis style, these contracts have to
 be designed and added at an early stage to assist modular analysis and
@@ -824,7 +809,7 @@ capable of synthesizing at least a basic, conservative :ref:`global-aspects`,
 :ref:`default_initial_condition_aspect` from either the
 implementation code or from other |SPARK| aspects as follows:
 
-  * if subprogram has no Depends aspect but has a Global aspect, an
+  * if a subprogram has no Depends aspect but has a Global aspect, an
     approximation of the Depends aspect is obtained by constructing a
     ``dependency_relation`` by assuming that each output is dependent on every
     input, where outputs are all of the parameters of mode out and in-out, plus
@@ -877,6 +862,8 @@ manually.
 An analysis tool may provide the synthesis of more aspects and more precise
 synthesis of the mandatory ones.
 
+.. index:: generative analysis
+
 Some use cases where the synthesis of aspects is likely to be required are:
 
 - Code has been developed as |SPARK| but not all the aspects are included on all
@@ -887,6 +874,8 @@ Some use cases where the synthesis of aspects is likely to be required are:
   specific aspects.  If there are aspects missing they are automatically
   for analysis purposes when possible. This is also regarded as generative
   analysis.
+
+.. index:: retrospective analysis
 
 - Legacy code is analyzed which has no or incomplete |SPARK| specific aspects
   This is regarded as *retrospective analysis*, where code is being analyzed
@@ -900,6 +889,8 @@ Some use cases where the synthesis of aspects is likely to be required are:
   * Manual definition of the boundary between the |SPARK| and non-|SPARK| code
     by explicitly specifying accurate and truthful contracts using |SPARK|
     specific aspects on the declarations of non-|SPARK| program units.
+
+.. index:: SPARK_Mode
 
 .. _in_out:
 
@@ -972,7 +963,7 @@ The following combinations may be typical:
   and not in |SPARK|.  A client of the package may be in |SPARK| if it only
   references |SPARK| declarations; the presence of non-|SPARK| constructs
   in a referenced package specification does not by itself mean that
-  a client is not in SPARK 2014.
+  a client is not in |SPARK|.
 
 Such patterns are intended to allow for mixed-language programming,
 mixed-verification using different analysis tools, and mixed-verification
@@ -1012,4 +1003,4 @@ may have an external effect as well as reading the value of the
 variable.  |SPARK| extends this notion to cover updates of a volatile
 variable such that an update of a volatile variable may also have some
 other observable effect.  |SPARK| further extends these principles to
-apply to state abstractions. (see section :ref:`external_state`).
+apply to state abstractions (see section :ref:`external_state`).

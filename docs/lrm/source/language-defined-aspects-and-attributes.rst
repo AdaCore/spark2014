@@ -8,7 +8,7 @@ Language-Defined Aspects
 1. Ada language aspects are permitted as shown in the following table:
 
 ============================= ====================== ===============================================
-Aspect                        Allowed in SPARK 2014  Comment
+Aspect                        Allowed in SPARK       Comment
 ============================= ====================== ===============================================
 Address	    		      Yes
 Alignment (object)	      Yes
@@ -83,7 +83,7 @@ Write			      No		     No streams
 2. |SPARK| defines the following aspects:
 
 ============================= ====================== =================================================
-Aspect                        Allowed in SPARK 2014  Comment
+Aspect                        Allowed in SPARK       Comment
 ============================= ====================== =================================================
 Abstract_State	 	      Yes
 Async_Readers		      Yes
@@ -122,7 +122,7 @@ Language-Defined Attributes
 1. The following attributes are in |SPARK|.
 
 ===================================== ====================== ====================================================
-Attribute                              Allowed in SPARK 2014 Comment
+Attribute                              Allowed in SPARK      Comment
 ===================================== ====================== ====================================================
 P'Access			      No		     Restricted access types
 X'Access	    		      Yes
@@ -133,7 +133,7 @@ S'Alignment	    		      Warn                   Warning in pedantic mode
 X'Alignment	    		      Warn		     Warning in pedantic mode
 S'Base				      Yes
 S'Bit_Order	    		      Warn		     Warning in pedantic mode
-P'Body_Version 			      Yes
+P'Body_Version 			      No
 T'Callable	    		      Yes
 E'Caller	    		      Yes
 S'Ceiling	    		      Yes
@@ -233,7 +233,7 @@ X'Update            		      Yes
 S'Val				      Yes                    Implicit precondition (Ada RM 3.5.5(7))
 X'Valid				      Yes	             Assumed to be True at present
 S'Value				      Yes                    Implicit precondition (Ada RM 3.5(55/3))
-P'Version	  		      Yes
+P'Version	  		      No
 S'Wide_Image			      Yes
 S'Wide_Value			      Yes                    Implicit precondition (Ada RM 3.5(43/3))
 S'Wide_Wide_Image 		      Yes
@@ -252,7 +252,7 @@ GNAT Implementation-Defined Attributes
 The following GNAT implementation-defined attributes are permitted in |SPARK|:
 
 ===================================== ====================== ====================================================
-Attribute                              Allowed in SPARK 2014 Comment
+Attribute                              Allowed in SPARK      Comment
 ===================================== ====================== ====================================================
 X'Img                                 Yes                    Same as X'Image (Ada RM 3.5(55.4/4))
 ===================================== ====================== ====================================================

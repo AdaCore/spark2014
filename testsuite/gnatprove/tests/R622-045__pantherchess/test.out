@@ -1,4 +1,0 @@
-acchessboard.ads:458:89: info: implicit function contract not available for proof ("not" might not return)
-acchessboard.ads:464:89: info: implicit function contract not available for proof ("not" might not return)
-acchessboard.ads:480:29: info: implicit function contract not available for proof ("not" might not return)
-acchessboard.ads:484:29: info: implicit function contract not available for proof ("not" might not return)

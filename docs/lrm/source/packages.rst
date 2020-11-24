@@ -24,6 +24,9 @@ Package Specifications and Declarations
 Abstraction of State
 ~~~~~~~~~~~~~~~~~~~~
 
+.. index:: visible state
+           hidden state
+
 The variables declared within a package but not within a subprogram body or
 block which does not also enclose the given package constitute the *persistent
 state* of the package. A package's persistent state is divided into *visible
@@ -31,6 +34,8 @@ state* and *hidden state*. If a declaration that is part of a package's
 persistent state is visible outside of the package, then it is a constituent of
 the package's visible state; otherwise it is a constituent of the package's
 hidden state.
+
+.. index:: state abstraction
 
 Though the variables may be hidden they still form part (or all) of
 the persistent state of the package and the hidden state cannot be
@@ -73,6 +78,8 @@ themselves records.
    :ref:`tasks-and-synchronization`).
 
 
+.. index:: external state
+
 .. _external_state:
 
 External State
@@ -88,6 +95,9 @@ potential effect on that device or subsystem. Similarly the value read from an
 external state might depend on a value provided by some external device or
 subsystem.
 
+.. index:: asynchronous readers
+           asynchronous writers
+
 Ada uses the terms external readers and writers to describe entities external to
 a program which interact with the program through reading and writing data. Of
 particular concern to |SPARK| are external readers and writers which are not
@@ -102,10 +112,14 @@ reading a temperature from a device or writing the same value to a
 lamp driver or display. |SPARK| provides a mechanism to indicate
 whether a read or write is always significant.
 
+.. index:: effectively volatile; type
+
 A type is said to be *effectively volatile* if it is either a volatile type, an
 array type whose Volatile_Components aspect is True, an array type whose
 component type is effectively volatile, a protected type, or a descendant of
 the type Ada.Synchronous_Task_Control.Suspension_Object.
+
+.. index:: effectively volatile for reading; type
 
 A type is said to be *effectively volatile for reading* if it is either a
 volatile type with the properties Async_Writers or Effective_Reads set to True
@@ -120,6 +134,10 @@ A nonvolatile protected type is said to be *nonvolatile during a protected
 action* if none of its subcomponent types are effectively volatile. [In other
 words, if the only reason that the protected type is effectively volatile
 is because it is protected.]
+
+.. index:: effectively volatile; object
+           effectively volatile for reading; object
+           No_Caching
 
 An *effectively volatile object* is a volatile object, or an object of an
 effectively volatile type. An *effectively volatile object for reading* is a
@@ -158,6 +176,11 @@ the SPARK portion of the program (although it might be); it refers to the
 state being potentially visible to multiple tasks (as well as to the outside
 world), so that it is externally visible from the perspective of any one task.]
 
+.. index:: Async_Readers
+           Async_Writers
+           Effective_Writes
+           Effective_Reads
+
 Four Boolean valued *properties* of external states that may be specified are
 defined:
 
@@ -173,6 +196,9 @@ defined:
 
 These properties may be specified for an effectively volatile object
 as Boolean aspects or as external properties of an external state abstraction.
+
+.. index:: volatile function
+           see: Volatile_Function; volatile function
 
 The Boolean aspect Volatile_Function may be specified as part of the
 (explicit) initial declaration of a function. A function whose
@@ -448,6 +474,8 @@ be *compatible with respect to volatility* with E2 if
    does not apply to the notional parameter denoting the current instance of
    the associated protected unit described in section :ref:`global-aspects`.]
 
+.. index:: non-interfering context; for read of volatile object
+
 10. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object for reading is
     considered to have an effect when read. To reconcile this
@@ -528,10 +556,8 @@ be *compatible with respect to volatility* with E2 if
    :language: ada
    :linenos:
 
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/multiple_ports.ads
-   :language: ada
-   :linenos:
-
+.. index:: Abstract_State
+           External
 
 .. _abstract-state-aspect:
 
@@ -696,40 +722,15 @@ There are no verification rules associated with the Abstract_State aspect.
 
 .. centered:: **Examples**
 
-.. code-block:: ada
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/simple_abstract_state.ads
+   :language: ada
    :linenos:
 
-   package Q
-     with Abstract_State => State         -- Declaration of abstract state named State
-                                          -- representing internal state of Q.
-   is
-      function Is_Ready return Boolean    -- Function checking some property of the State.
-        with Global => State;             -- State may be used in a global aspect.
-
-      procedure Init                      -- Procedure to initialize the internal state of Q.
-        with Global => (Output => State), -- State may be used in a global aspect.
-             Post   => Is_Ready;
-
-      procedure Op_1 (V : Integer)     -- Another procedure providing some operation on State
-        with Global => (In_Out => State),
-             Pre    => Is_Ready,
-             Post   => Is_Ready;
-   end Q;
-
-.. code-block:: ada
+.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/complex_abstract_state.ads
+   :language: ada
    :linenos:
 
-   package X
-     with Abstract_State => (A,
-                             B,
-                             (C with External => (Async_Writers,
-                                                  Effective_Reads => False))
-     --  Three abstract state names are declared A, B & C.
-     --  A and B are internal abstract states.
-     --  C is specified as external state which is an external input.
-   is
-      ...
-   end X;
+.. index:: Initializes
 
 .. _initializes_aspect:
 
@@ -823,6 +824,7 @@ There are no dynamic semantics associated with the Initializes aspect.
 
 .. centered:: **Verification Rules**
 
+.. index:: initialization; of package state
 
 9. If the Initializes aspect is specified for a package, then after
    the body (which may be implicit if the package has no explicit
@@ -917,6 +919,8 @@ of the package.]
       ...
    end Z;
 
+.. index:: Initial_Condition
+
 .. _initial_condition_aspect:
 
 Initial_Condition Aspects
@@ -965,6 +969,7 @@ be a *Boolean_*\ ``expression``.
 
 .. centered:: **Verification Rules**
 
+.. index:: verification condition; for Initial_Condition
 
 4. [The Initial_Condition aspect gives a verification condition to show that the
    implementation of the ``package_specification`` and its body satisfy the
@@ -1014,10 +1019,14 @@ be a *Boolean_*\ ``expression``.
 Package Bodies
 --------------
 
+.. index:: state refinement
+
 .. _state_refinement:
 
 State Refinement
 ~~~~~~~~~~~~~~~~
+
+.. index:: constituent
 
 A ``state_name`` declared by an Abstract_State aspect in the specification of a
 package shall denote an abstraction representing all or part of its hidden
@@ -1041,6 +1050,8 @@ In a refined view a subprogram has visibility of the full type declarations of
 any private types declared by the enclosing package and visibility of the
 refinements of state abstractions declared by the package. Refined versions of
 aspects are provided to express the contracts of a refined view of a subprogram.
+
+.. index:: Refined_State
 
 .. _refined_state_aspect:
 
@@ -1210,6 +1221,7 @@ There are no dynamic semantics associated with Refined_State aspect.
       ...
    end Q;
 
+.. index:: initialization; of constituents
 
 Initialization Issues
 ~~~~~~~~~~~~~~~~~~~~~
@@ -1237,6 +1249,8 @@ which reside in another package, initialization by their declaring package.
      that such constituents will appear in the initialization clause
      of the declaring unit unless they are external states.]
 
+
+.. index:: Refined_Global
 
 .. _refined-global-aspect:
 
@@ -1390,6 +1404,7 @@ There are no dynamic semantics associated with a Refined_Global aspect.
    :language: ada
    :linenos:
 
+.. index:: Refined_Depends
 
 .. _refined-depends-aspect:
 
@@ -1561,6 +1576,8 @@ as it is used purely for static analysis purposes and is not executed.
    :language: ada
    :linenos:
 
+.. index:: Part_Of; in state refinement
+
 .. _package_hierarchy:
 
 Abstract_State, Package Hierarchy and Part_Of
@@ -1720,256 +1737,7 @@ were declared within a protected unit or task unit (see section
       ...
    end P.Pub;
 
-.. code-block:: ada
-   :linenos:
-
-   package Outer
-     with Abstract_State => (A1, A2)
-   is
-      procedure Init_A1
-        with Global  => (Output => A1),
-             Depends => (A1 => null);
-
-      procedure Init_A2
-        with Global  => (Output => A2),
-             Depends => (A2 => null);
-
-   private
-      --  A variable declared in the private part must have a Part_Of aspect
-      Hidden_State : Integer
-        with Part_Of => A2;
-
-      package Inner
-        with Abstract_state => (B1 with Part_Of => Outer.A1)
-        --  State abstraction declared in the private
-        --  part must have a Part_Of option.
-      is
-         --  B1 may be used in aspect specifications provided
-         --  Outer.A1 is not also used.
-         procedure Init_B1
-           with Global  => (Output => B1),
-                Depends => (B1 => null);
-
-         procedure Init_A2
-           --  We can only refer to Outer.Hidden_State which is a constituent
-           --  of Outer.A2 if the subprogram does not also refer to Outer.A2.
-           with Global  => (Output => Hidden_State),
-                Depends => (Hidden_State => null);
-      end Inner;
-   end Outer;
-
-   package body Outer
-     with Refined_State => (A1 => Inner.B1,
-                            A2 => (Hidden_State, State_In_Body))
-     --  A1 and A2 cannot be denoted in the body of Outer because their
-     --  refinements are visible.
-   is
-      State_In_Body : Integer;
-
-      package body Inner
-        with Refined_State => (B1 => null)  --  Oh, there isn't any state after all
-      is
-         procedure Init_B1
-           with Refined_Global  => null,  --  Refined_Global and
-                Refined_Depends => null   --  Refined_Depends of a null refinement
-         is
-         begin
-            null;
-         end Init_B1;
-
-         procedure Init_A2
-           --  The Global sparct is already in terms of the constituent
-           --  Hidden_State which is part of A2, so no refined
-           --  Global or Depends aspects are required.
-         is
-         begin
-            Outer.Hidden_State := 0;
-         end Init_A2;
-
-      end Inner;
-
-      procedure Init_A1
-        with Refined_Global  => (Output => Inner.B1),
-             Refined_Depends => (Inner.B1 => null)
-      is
-      begin
-         Inner.Init_B1;
-      end Init_A1;
-
-      procedure Init_A2
-        with Refined_Global  => (Output => (Hidden_State, State_In_Body)),
-             Refined_Depends => ((Hidden_State, State_In_Body) => null)
-      is
-      begin
-         State_In_Body := 42;
-         Inner.Init_A2;
-      end Init_A2;
-
-   end Outer;
-
-   package Outer.Public_Child is
-      --  Outer.A1 and Outer.A2 are visible but
-      --  Outer.Hidden_State is not (by the rules of Ada).
-      --  The Global and Depends Aspects are in terms
-      --  of the encapsulating state abstraction Outer.A2.
-      procedure Init_A2_With (Val : in Integer)
-        with Global  => (Output => Outer.A2),
-             Depends => (Outer.A2 => Val);
-   end Outer.Public_Child;
-
-   package body Outer.Public_Child is
-      --  Outer.Hidden is visible here but the
-      --  refinement of A2 is not so there are
-      --  no Refined_Global or Refined_Depends.
-      procedure Init_A2_With (Val : in Integer) is
-      begin
-         Outer.Init_A2;
-         Outer.Hidden_State := Val;
-      end Init_A2_With;
-   end Outer.Public_Child;
-
-.. code-block:: ada
-   :linenos:
-
-   package Q
-     with Abstract_State => (Q1, Q2)
-   is
-      --  Q1 and Q2 may be denoted here
-      procedure Init_Q1
-        with Global  => (Output => Q1),
-             Depends => (Q1 => null);
-
-      procedure Init_Q2
-        with Global  => (Output => Q2),
-             Depends => (Q2 => null);
-
-   private
-      Hidden_State : Integer
-        with Part_Of => Q2;
-   end Q;
-
-   private package Q.Child
-     with Abstract_State => (C1 with Part_Of => Q.Q1)
-   is
-      --  C1 rather than the encapsulating state abstraction
-      --  may be used in aspect specifications provided
-      --  Q.Q1 is not also denoted in the same aspect
-      --  specification.
-
-      --  Here C1 is used so Q1 cannot also be used in
-      --  the aspect specifications of this subprogram.
-      procedure Init_Q1
-        with Global  => (Output => C1),
-             Depends => (C1 => null);
-
-      --  Q.Hidden_State which is a constituent of Q.Q2
-      --  is visible here so it can be used in a aspect
-      --  specification provided Q.Q2 is not also used.
-      procedure Init_Q2
-         with Global  => (Output => Q.Hidden_State),
-              Depends => (Q.Hidden_State => null);
-   end Q.Child;
-
-   package body Q.Child
-     with Refined_State => (C1 => Actual_State)
-   is
-      --  C1 shall not be denoted here - only Actual_State
-      --  but Q.Q2 and Q.Hidden_State may be denoted.
-      Actual_State : Integer;
-
-      procedure Init_Q1
-        with Refined_Global  => (Output => Actual_State),
-             Refined_Depends => (Actual_State => null)
-      is
-      begin
-         Actual_State := 0;
-      end Init_Q1;
-
-      --  The refinement of Q2 is not visible and so Init_Q2
-      --  has no Refined_Global or Refined_Depends aspects.
-      procedure Init_Q2 is
-      begin
-         Q.Hidden_State := 0;
-      end Init_Q2;
-
-   end Q.Child;
-
-   with Q.Child;
-
-   package body Q
-     with Refined_State => (Q1 => Q.Child.C1,
-                            Q2 => (Hidden_State, State_In_Body))
-   is
-      --  Q1 and Q2 shall not be denoted here but the constituents
-      --  Q.Child.C1, State_In_Body and Hidden_State may be.
-      State_In_Body : Integer;
-
-      procedure Init_Q1
-        with Refined_Global  => (Output => Q.Child.C1),
-             Refined_Depends => (Q.Child.C1 => null)
-      is
-      begin
-         Q.Child.Init_Q1;
-      end Init_Q1;
-
-      procedure Init_Q2
-        with Refined_Global  => (Output => (Hidden_State, State_in_Body)),
-             Refined_Depends => ((Hidden_State, State_in_Body) => null)
-      is
-      begin
-         State_In_Body := 42;
-         Q.Child.Init_Q2;
-      end Init_Q2;
-   end Q;
-
-.. code-block:: ada
-   :linenos:
-
-   package R
-     with Abstract_State => R1
-   is
-      -- R1 may be denoted here
-      procedure Init_R1
-        with Global  => (Output => R1),
-             Depends => (R1 => null);
-
-      procedure Op_1 (I : in Integer)
-        with Global  => (In_Out => R1),
-             Depends => (R1 =>+ I);
-   end Q;
-
-   private package R.Child
-     with Abstract_State => (R2 with Part_Of => R.R1)
-   is
-      --  Both R.R1 and R2 are visible.
-
-      --  Here more than just the R2 constituent of R.R1
-      --  will be updated and so we use R.R1 in the
-      --  aspect specifications rather than R2.
-      --  R2 cannot also be used in the aspect
-      --  specifications of this subprogram.
-      procedure Private_Op (I, J : in Integer)
-        with Global  => (In_Out => R.R1),
-             Depends => (R.R1 =>+ (I, J));
-   end R.Child;
-
-   package body R.Child
-     with Refined_State => (R2 => Actual_State)
-   is
-      --  R2 shall not be denoted here - only Actual_State
-      --  but R.R1 may be denoted.
-      Actual_State : Integer;
-
-      --  The Global and Depends aspects of Private_Op
-      --  are in terms of R.R1 and the refinement of
-      --  R.R1 is not visible and so Refined_Global
-      --  and Refined_Depends are not required.
-      procedure Private_Op (I, J : in Integer) is
-      begin
-         R.Op_1 (I);
-         Actual_State := J;
-      end Private_Op;
-   end R.Child;
+.. index:: Refined_Post
 
 .. _refined-postcondition:
 
@@ -2038,6 +1806,7 @@ be a Boolean ``expression``.
 
 .. centered:: **Verification Rules**
 
+.. index:: verification condition; for Refined_Post
 
 7. If a subprogram has both a Refined_Post aspect and a
    Post (and/or Post'Class) aspect, then the verification condition
@@ -2081,92 +1850,7 @@ be a Boolean ``expression``.
    Refined_* aspect specifications are visible.]
 
 
-.. centered:: **Examples**
-
-These examples show the two ways in which the Refined_Post aspect is
-useful:
-
-1. To write a postcondition in terms of the full view of a private
-   type.
-
-2. To write a postcondition in terms of the constituents of a state
-   abstraction.
-
-In either case a postcondition may be strengthened by the Refined_Post
-aspect by adding further constraints. The combination of these two
-types of usage in a single package is not necessarily common but is
-used here for brevity of the example.
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/stacks_1.ads
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/stacks_1.adb
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/stacks_2.ads
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/stacks_2.adb
-   :language: ada
-   :linenos:
-
-.. todo:: refined contract_cases.
-          To be completed in a post-Release 1 version of this document.
-
-.. Refined Precondition Aspect
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. todo:: The Refined_Pre aspect will not be implemented in Release 1 of the
-     |SPARK| Toolset.  Its usefulness and exact semantics are still to be
-     determined.
-
-.. Text commented out until decision on Refined_Pre is finalized.
-   A subprogram declared in the specification of a package may have a Refined
-   Precondition aspect applied to its body or body stub. The Refined
-   Precondition may be used to restate a precondition given on the declaration
-   of a subprogram in terms of the full view of a private type or the
-   ``constituents`` of a refined ``state_name``.
-
-   The Refined Precondition aspect is introduced by an ``aspect_specification``
-   where the ``aspect_mark`` is "Refined_Pre" and the ``aspect_definition``
-   shall be a Boolean ``expression``.
-
-   .. centered:: **Legality Rules**
-
-   #. A Refined_Pre aspect may appear only on a body_stub (if one is present) or
-      the body (if no stub is present) of subprogram if the subprogram is declared
-      in the specification of a package, its abstract view. If the subprogram
-      declaration in the visible part has no explicit precondition, a precondition
-      of True is assumed for its abstract view.
-
-   #. At the point of call of a subprogram, both its precondition and the
-      expression of its Refined_Pre aspect shall evaluate to True.
-
-   #. The same legality rules apply to a Refined Precondition as for
-      a precondition.
-
-   .. centered:: **Static Semantics**
-
-   #. A Refined Precondition of a subprogram defines a *refinement*
-      of the precondition of the subprogram.
-
-   #. The static semantics are otherwise as for a precondition.
-
-   .. centered:: **Dynamic Semantics**
-
-   #. When a subprogram with a Refined Precondition is called; first
-      the precondition is evaluated as defined in the Ada RM. If the
-      precondition evaluates to True, then the Refined Precondition
-      is evaluated. If either precondition or Refined Precondition
-      do not evaluate to True an exception is raised.
-
-   .. centered:: **Verification Rules**
-
-   #. The precondition of the abstract view of the subprogram shall imply its
-      Refined_Precondition.
+.. index:: state refinement; external state
 
 .. _refined_external_states:
 
@@ -2221,18 +1905,7 @@ abstraction on to external states which are given in this section.
 
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/externals.adb
    :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/hal.ads
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/hal.adb
-   :language: ada
-   :linenos:
-
-.. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/main_hal.adb
-   :language: ada
+   :lines: 1-36
    :linenos:
 
 Private Types and Private Extensions
@@ -2244,6 +1917,8 @@ Private Operations
 ~~~~~~~~~~~~~~~~~~
 
 No extensions or restrictions.
+
+.. index:: Type_Invariant, Invariant
 
 .. _type_invariants:
 
@@ -2301,6 +1976,8 @@ language definition and what is not.]
 4. A Type_Invariant shall not apply to an effectively volatile type for reading.
 
 .. centered:: **Verification Rules**
+
+.. index:: verification condition; for Type_Invariant
 
 In Ada RM 7.3.2, Ada defines the points at which runtime checking of
 type invariants is performed. In SPARK, these rules (or, more precisely,
@@ -2384,66 +2061,68 @@ parameters. The rules about tagged inputs and outputs in rules 6 and 8
 are introduced in order to deal with technical difficulties that would
 otherwise arise in the treatment of these hidden components.
 
+.. index:: Default_Initial_Condition
+
 .. _default_initial_condition_aspect:
 
 Default_Initial_Condition Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   The Default_Initial_Condition aspect is introduced by an aspect_specification
-   where the aspect_mark is Default_Initial_Condition. The aspect may be
-   specified only as part of the aspect_specification of a
-   ``private_type_declaration``.
-   The ``aspect_definition``, if any, of such an aspect specification
-   shall be either a null literal or a *Boolean_*\ ``expression``.
+The Default_Initial_Condition aspect is introduced by an aspect_specification
+where the aspect_mark is Default_Initial_Condition. The aspect may be
+specified only as part of the aspect_specification of a
+``private_type_declaration``.
+The ``aspect_definition``, if any, of such an aspect specification
+shall be either a null literal or a *Boolean_*\ ``expression``.
 
-   The ``aspect_definition`` may be omitted; this is semantically
-   equivalent to specifying a static *Boolean_*\ ``expression`` having the
-   value True.
+The ``aspect_definition`` may be omitted; this is semantically
+equivalent to specifying a static *Boolean_*\ ``expression`` having the
+value True.
 
-   An aspect specification of "null" indicates that the partial view of the
-   type does not define full default initialization (see :ref:`declarations`).
-   [The full view of the type might or might not define full default
-   initialization.]
+An aspect specification of "null" indicates that the partial view of the
+type does not define full default initialization (see :ref:`declarations`).
+[The full view of the type might or might not define full default
+initialization.]
 
-   Conversely, an aspect specification of a *Boolean_*\ ``expression`` indicates
-   that the partial view of the type does define full default initialization.
-   In this case, the completion of the private type shall define full
-   default initialization. [Implementations may provide a mechanism for
-   suppressing enforcement of this rule as described; the burden is then on
-   the user to ensure that this does not result in undetected uses of
-   uninitialized variables.]
+Conversely, an aspect specification of a *Boolean_*\ ``expression`` indicates
+that the partial view of the type does define full default initialization.
+In this case, the completion of the private type shall define full
+default initialization. [Implementations may provide a mechanism for
+suppressing enforcement of this rule as described; the burden is then on
+the user to ensure that this does not result in undetected uses of
+uninitialized variables.]
 
-   Unlike the null literal case, this case has associated dynamic semantics.
-   The *Boolean_*\ ``expression`` (which might typically mention the current
-   instance of the type, although this is not required) is an assertion
-   which is checked (at run time) after any object of the given type (or of
-   any descendant of the given type for which the specified aspect is
-   inherited and not overridden), is "initialized by
-   default" (see Ada RM 3.3.1). [Note that an imported object is not
-   "initialized by default" (see Ada RM B.3).]
+Unlike the null literal case, this case has associated dynamic semantics.
+The *Boolean_*\ ``expression`` (which might typically mention the current
+instance of the type, although this is not required) is an assertion
+which is checked (at run time) after any object of the given type (or of
+any descendant of the given type for which the specified aspect is
+inherited and not overridden), is "initialized by
+default" (see Ada RM 3.3.1). [Note that an imported object is not
+"initialized by default" (see Ada RM B.3).]
 
-   The *Boolean_*\ ``expression``, if any, causes freezing in the
-   same way as the ``default_expression`` of a ``component_declaration``.
-   [If the expresion is non-static, this means that the expression does not
-   cause freezing where it occurs, but instead when an object of the type
-   is initialized by default.]
+The *Boolean_*\ ``expression``, if any, causes freezing in the
+same way as the ``default_expression`` of a ``component_declaration``.
+[If the expresion is non-static, this means that the expression does not
+cause freezing where it occurs, but instead when an object of the type
+is initialized by default.]
 
-   Default_Initial_Condition assertion is an assertion aspect, which means
-   that it may be used in an Assertion_Policy pragma.
+Default_Initial_Condition assertion is an assertion aspect, which means
+that it may be used in an Assertion_Policy pragma.
 
-   Within the Boolean expression of the Default_Initial_Condition aspect of
-   a tagged type T, a name that denotes the current instance of the
-   tagged type is interpreted as though it had a (notional) type NT
-   that is a formal derived type whose ancestor type is T, with
-   directly visible primitive operations. [This name resolution rule
-   is similar to the "notional formal derived type" name resolution
-   rule introduced in Ada RM 6.1.1 for certain subexpressions of
-   class-wide precondition and postcondition expressions.]
-   Any operations within a Default_Initial_Condition expression that
-   were resolved in this way (i.e., as primitive operations of the (notional)
-   formal derived type NT), are in the evaluation of the expression
-   (i.e., at run-time) bound to the corresponding operations of the type of the
-   object being "initialized by default" (see Ada RM 3.3.1).
+Within the Boolean expression of the Default_Initial_Condition aspect of
+a tagged type T, a name that denotes the current instance of the
+tagged type is interpreted as though it had a (notional) type NT
+that is a formal derived type whose ancestor type is T, with
+directly visible primitive operations. [This name resolution rule
+is similar to the "notional formal derived type" name resolution
+rule introduced in Ada RM 6.1.1 for certain subexpressions of
+class-wide precondition and postcondition expressions.]
+Any operations within a Default_Initial_Condition expression that
+were resolved in this way (i.e., as primitive operations of the (notional)
+formal derived type NT), are in the evaluation of the expression
+(i.e., at run-time) bound to the corresponding operations of the type of the
+object being "initialized by default" (see Ada RM 3.3.1).
 
 Deferred Constants
 ------------------
@@ -2463,6 +2142,8 @@ Assignment and Finalization
 
 1. Controlled types are not permitted in |SPARK|.
 
+
+.. index:: elaboration
 
 .. _elaboration_issues:
 
@@ -2751,6 +2432,9 @@ global variables discussed later in this section.
 .. literalinclude:: ../../../testsuite/gnatprove/tests/RM_Examples/inter_unit_elaboration_examples.adb
    :language: ada
    :linenos:
+
+.. index:: Initial_Condition; and elaboration
+           Initializes; and elaboration
 
 Use of Initial_Condition and Initializes Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

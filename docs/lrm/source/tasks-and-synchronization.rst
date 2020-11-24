@@ -1,13 +1,13 @@
+.. index:: tasking, Ravenscar profile, Jorvik profile
+
 .. _tasks-and-synchronization:
 
 Tasks and Synchronization
 =========================
 
-Tasks and protected types are in |SPARK|, but are subject to the
-restrictions of the Ravenscar profile (see Ada RM D.13) or
-the more permissive Extended Ravenscar profile (see
-http://docs.adacore.com/gnathie_ug-docs/html/gnathie_ug/gnathie_ug/the_predefined_profiles.html#the-extended-ravenscar-profiles ). In particular,
-task entry declarations are never in |SPARK|.
+Tasks and protected types are in |SPARK|, but are subject to the restrictions
+of the Ravenscar profile or the more permissive Jorvik profile (see Ada RM
+D.13). In particular, task entry declarations are never in |SPARK|.
 
 Tasks may communicate with each other via synchronized objects; these include
 protected objects, suspension objects, atomic objects, constants, and
@@ -22,11 +22,13 @@ access to shared data (i.e., "data races").
 
 Tagged task types, tagged protected types, and the various forms of
 synchronized interface types are in |SPARK|. Subject to the restrictions
-of (extended) Ravenscar, delay statements and protected procedure handlers are
+of Ravenscar or Jorvik, delay statements and protected procedure handlers are
 in |SPARK|. The attributes Callable, Caller, Identity and Terminated
 are in |SPARK|.
 
 .. centered:: **Static Semantics**
+
+.. index:: yield synchronized objects
 
 1. A type is said to *yield synchronized objects* if it is
 
@@ -66,16 +68,17 @@ are in |SPARK|.
 
 
 2. Task and protected units are in |SPARK|, but their use requires
-   the (extended) Ravenscar profile. [In other words, a task or protected unit
-   is not in |SPARK| if neither the Ravenscar profile nor the Extended
-   Ravenscar profile apply to the enclosing compilation unit.]
+   the Ravenscar or Jorvik profile. [In other words, a task or protected unit
+   is not in |SPARK| if neither the Ravenscar profile nor the
+   Jorvik profile apply to the enclosing compilation unit.]
    Similarly, the use of task or protected units
    also requires a Partition_Elaboration_Policy of Sequential. [This
    is to prevent data races during library unit elaboration.]
    Similarly, the use of any subprogram which references the
    predefined state abstraction Ada.Task_Identification.Tasking_State
-   (described below) as a global requires the (extended) Ravenscar profile.
+   (described below) as a global requires the Ravenscar or Jorvik profile.
 
+.. index:: Part_Of; of task or protected object
 
 3. If the declaration of a variable or a package which declares a
    state abstraction follows (within the same immediately enclosing
@@ -176,7 +179,7 @@ are in |SPARK|.
 
 11. The Ravenscar profile includes "Max_Entry_Queue_Length => 1" and
     "Max_Protected_Entries => 1" restrictions.
-    The Extended Ravenscar profile does not, but does allow use of
+    The Jorvik profile does not, but does allow use of
     pragma Max_Queue_Length to specify the maximum entry queue length
     for a particular entry. If the maximum queue length for some given
     entry of some given protected object is specified (via either mechanism)
@@ -226,7 +229,7 @@ are in |SPARK|.
 
 
 13. The end of a task body shall not be reachable. [This follows from
-    from (extended) Ravenscar's No_Task_Termination restriction.]
+    from Ravenscar's or Jorvik's No_Task_Termination restriction.]
 
 
 14. A nonvolatile function shall not be potentially blocking.
@@ -263,7 +266,7 @@ are in |SPARK|.
     references Ada.Real_Time.Clock_Time;
 
   * Ada.Calendar.Clock (which is excluded by the Ravenscar profile
-    but not by the Extended Ravenscar profile) references
+    but not by the Jorvik profile) references
     Ada.Calendar.Clock_Time;
 
   * Ada.Task_Identification.Current_Task
@@ -296,7 +299,7 @@ are in |SPARK|.
   * Ada.Synchronous_Task_Control.Current_State
     references Ada.Task_Identification.Tasking_State.
 
-  [Functions excluded by the Extended Ravenscar profile (and
+  [Functions excluded by the Jorvik profile (and
   therefore also by the Ravenscar profile) are not on this list.]
 
 

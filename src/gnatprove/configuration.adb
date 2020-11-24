@@ -1245,7 +1245,7 @@ package body Configuration is
             Arr  : constant File_Array := Proj_Env.Predefined_Project_Path;
             Arr2 : File_Array
               (1 .. Integer (CL_Switches.GPR_Project_Path.Length));
-            I    : Integer := 1;
+            I    : Positive := 1;
          begin
             for S of CL_Switches.GPR_Project_Path loop
                Arr2 (I) := Create (Filesystem_String (S));

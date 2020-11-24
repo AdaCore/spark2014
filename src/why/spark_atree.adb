@@ -630,7 +630,7 @@ package body SPARK_Atree is
 
          when N_Component_Association
             | N_Iterated_Component_Association
-            =>
+         =>
 
             declare
                Pref        : Node_Id;
@@ -652,9 +652,6 @@ package body SPARK_Atree is
                --  needs a range check towards the expected type.
 
                if (Nkind (Atree.Parent (Par)) = N_Aggregate
-                   and then
-                   Nkind (Atree.Parent (Atree.Parent (Par))) =
-                     N_Attribute_Reference
                    and then
                    Sem_Util.Is_Attribute_Update
                      (Atree.Parent (Atree.Parent (Par))))
@@ -721,7 +718,6 @@ package body SPARK_Atree is
 
                pragma Assert
                  (Nkind (Aggr) = N_Aggregate
-                  and then Nkind (Atree.Parent (Aggr)) = N_Attribute_Reference
                   and then Sem_Util.Is_Attribute_Update (Atree.Parent (Aggr)));
 
                Pref        : constant Node_Id := Prefix (Atree.Parent (Aggr));
@@ -957,9 +953,7 @@ package body SPARK_Atree is
               Atree.Parent
                 (Atree.Parent (Atree.Parent (Possibly_Choice_Node)));
          begin
-            if Nkind (Attribute_Node) = N_Attribute_Reference
-              and then Sem_Util.Is_Attribute_Update (Attribute_Node)
-            then
+            if Sem_Util.Is_Attribute_Update (Attribute_Node) then
                Prefix_Node := Prefix (Attribute_Node);
             else
                return False;

@@ -77,6 +77,7 @@ with GNAT.Strings;               use GNAT.Strings;
 with Gnat2Why_Opts.Writing;
 with GNATCOLL.JSON;              use GNATCOLL.JSON;
 with GNATCOLL.Projects;          use GNATCOLL.Projects;
+with GNATCOLL.Projects.Aux;
 with GNATCOLL.VFS;               use GNATCOLL.VFS;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
 with Named_Semaphores;           use Named_Semaphores;
@@ -1205,6 +1206,7 @@ begin
         (Tree.Root_Project,
          Tree.Root_Project.Artifacts_Dir.Display_Full_Name, Obj_Path);
    end;
+   GNATCOLL.Projects.Aux.Delete_All_Temp_Files (Tree.Root_Project);
 exception
    when Invalid_Project =>
       Abort_With_Message

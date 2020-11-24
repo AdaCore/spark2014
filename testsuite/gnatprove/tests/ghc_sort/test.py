@@ -6,5 +6,7 @@ def replay():
     prove_all(prover=["z3", "cvc4", "altergo"],
               level=2,
               procs=10)
-prove_all(prover=["z3", "cvc4", "altergo"],
-          replay=True)
+
+if __name__ == "__main__":
+    prove_all(prover=["z3", "cvc4", "altergo"],
+              replay=True)

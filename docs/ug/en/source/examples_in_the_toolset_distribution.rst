@@ -154,8 +154,8 @@ slocs at most).
 .. rubric:: ``adacore_u``
 
 This folder contains the complete source code of the small examples used in the
-quiz of the SPARK 2014 course available from the AdaCore University website (at
-http://university.adacore.com/courses/spark-2014/). They include unannotated
+`Intro to SPARK` course available from the ``learn.adacore.com`` website (at
+https://learn.adacore.com/courses/intro-to-spark/index.html). They include unannotated
 units, examples with formally verified data flow, functional, or abstraction
 contracts, as well as erroneous programs, on which |GNATprove| detects failing
 checks.
@@ -797,7 +797,7 @@ This program is a secure time stamp client/server system that implements
 RFC-3161 (see https://www.ietf.org/rfc/rfc3161.txt). It allows clients to
 obtain cryptographic time stamps that can be used to later verify that certain
 documents existed on or before the time mentioned in the time stamp. Thumper is
-written in a combination of Ada 2012 and SPARK 2014 and makes use of an
+written in a combination of Ada and SPARK and makes use of an
 external C library. Thumper was developed as a SPARK technology demonstration
 by Prof. Peter Chapin from Vermont Technical College and his students. It is
 used as a case study in the book `Building High Integrity Applications with

@@ -243,6 +243,7 @@ package Flow_Utility is
    function Get_Variables
      (N                       : Node_Id;
       Scope                   : Flow_Scope;
+      Target_Name             : Flow_Id;
       Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
@@ -251,6 +252,10 @@ package Flow_Utility is
       return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
+   --
+   --  When processing the RHS of an assignment statement with an '@' symbol,
+   --  the Target_Name is the object being assigned (the LHS); otherwise, it
+   --  is Null_Flow_Id.
    --
    --  ??? Fold_Functions parameter refers to previous handling of objects
    --  referenced in assertions and null dependencies; should be renamed.
@@ -271,8 +276,8 @@ package Flow_Utility is
    function Get_Variables_For_Proof (Expr_N  : Node_Id;
                                      Scope_N : Node_Id)
                                      return Flow_Id_Sets.Set
-   with Pre  => Nkind (Expr_N) in N_Subexpr and then
-                Present (Scope_N),
+   with Pre  => Nkind (Expr_N) in N_Subexpr
+                and then Present (Scope_N),
         Post => (for all F of Get_Variables_For_Proof'Result =>
                    Is_Entire_Variable (F) and then F.Variant = Normal_Use);
    --  A wrapper around Get_Variables, as used by proof. Expr_N is the
@@ -282,6 +287,7 @@ package Flow_Utility is
    function Get_All_Variables
      (N                       : Node_Id;
       Scope                   : Flow_Scope;
+      Target_Name             : Flow_Id;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False)
@@ -414,6 +420,7 @@ package Flow_Utility is
      (N                       : Node_Id;
       Map_Root                : Flow_Id;
       Map_Type                : Entity_Id;
+      Target_Name             : Flow_Id;
       Scope                   : Flow_Scope;
       Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
@@ -434,8 +441,11 @@ package Flow_Utility is
    --     Tmp.F.X -> G
    --     Tmp.F.Y -> H
    --
-   --  Scope, Local_Constants, Fold_Functions, Use_Computed_Globals,
-   --  Expand_Internal_Objects will be passed on to Get_Variables if necessary.
+   --  Target_Name is the object represented by '@' on the RHS of an assignment
+   --  statements or Null_Flow_Id if '@' is not expected.
+   --
+   --  Scope, Fold_Functions, Use_Computed_Globals, Expand_Internal_Objects
+   --  will be passed on to Get_Variables if necessary.
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    with Pre  => Ekind (E) in Entry_Kind
@@ -768,5 +778,11 @@ package Flow_Utility is
    --  Converts a "path expression", which is how objects are represented in
    --  the borrow checker, to a "flow_id", which is how objects are represented
    --  in flow.
+   --
+   --  Note: this routine is similar to Get_Assignment_Target_Properties,
+   --  but only returns the Flow_Id and not the properties. Also, it handles
+   --  qualified expressions, which cannot appear in the assignment target. In
+   --  short, this routine can be used both for the LHS and RHS of assignments,
+   --  while Get_Assignment_Target_Properties can be only used for the LHS.
 
 end Flow_Utility;

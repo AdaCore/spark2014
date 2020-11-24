@@ -190,6 +190,7 @@ package body Flow.Analysis.Sanity is
       is
         (Get_All_Variables (N,
                             Scope                   => FA.B_Scope,
+                            Target_Name             => Null_Flow_Id,
                             Use_Computed_Globals    => True,
                             Expand_Internal_Objects => True));
       --  Wrapper around Get_Variables

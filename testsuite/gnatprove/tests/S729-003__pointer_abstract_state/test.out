@@ -71,6 +71,7 @@ outsrc.adb:113:10: "P" is not allowed in SPARK
 outsrc.adb:113:10: violation of aspect SPARK_Mode at line 22
 outsrc.adb:113:15: "P" is not allowed in SPARK
 outsrc.adb:113:15: violation of aspect SPARK_Mode at line 22
+outsrc.adb:116:18: implicit conversion between access types with different designated types is not yet supported
 outsrc.adb:123:33: "TEnumListMgr" is not allowed in SPARK
 outsrc.adb:123:33: violation of aspect SPARK_Mode at line 22
 outsrc.adb:125:13: "P" is not allowed in SPARK

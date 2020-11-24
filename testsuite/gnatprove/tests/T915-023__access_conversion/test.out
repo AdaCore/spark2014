@@ -1,0 +1,13 @@
+conv.adb:6:21: implicit conversion between access types with different designated types is not yet supported
+conv.adb:11:22: implicit conversion between access types with different designated types is not yet supported
+conv.adb:16:46: implicit conversion between access types with different designated types is not yet supported
+conv.adb:20:07: extended return applying to a traversal function is not allowed in SPARK (SPARK RM 3.10(5))
+conv.adb:20:07: violation of aspect SPARK_Mode at line 1
+conv.adb:20:14: implicit conversion between access types with different designated types is not yet supported
+conv.adb:20:14: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+conv.adb:20:14: violation of aspect SPARK_Mode at line 1
+conv.adb:20:30: implicit conversion between access types with different designated types is not yet supported
+conv.adb:27:14: implicit conversion between access types with different designated types is not yet supported
+conv.adb:44:22: implicit conversion between access types with different designated types is not yet supported
+conv.adb:48:04: implicit conversion between access types with different designated types is not yet supported
+gnatprove: error during flow analysis and proof
