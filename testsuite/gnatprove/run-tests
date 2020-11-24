@@ -20,22 +20,22 @@ class ProofTestDriver(AdaCoreLegacyTestDriver):
     default_yaml_entry = "prove_all"
 
     def get_script_command_line(self):
-        script_file = self.working_dir('src', 'test.py')
-        yaml_file = self.working_dir('src', 'test.yaml')
+        script_file = self.working_dir("src", "test.py")
+        yaml_file = self.working_dir("src", "test.yaml")
         argdict = {}
         if os.path.isfile(yaml_file):
-            with open(yaml_file, 'r') as fn:
+            with open(yaml_file, "r") as fn:
                 y = yaml.safe_load(fn)
                 if self.default_yaml_entry in y:
                     argdict = y[self.default_yaml_entry]
                 else:
                     raise TestAbortWithError(
-                        "expected yaml file to contain key " +
-                        self.default_yaml_entry)
+                        "expected yaml file to contain key " + self.default_yaml_entry
+                    )
         with open(script_file, "w") as fn:
-            fn.write("args = " + str(argdict) + '\n')
+            fn.write("args = " + str(argdict) + "\n")
             for line in self.default_testpy:
-                fn.write(line + '\n')
+                fn.write(line + "\n")
         self.test_control.opt_results["CMD"] = script_file
         return super().get_script_command_line()
 
@@ -56,7 +56,7 @@ class SPARKTestFinder(TestFinder):
         self.testlist = testlist
         self.root_dir = root_dir
         if pattern:
-            self.pattern = re.compile(pattern.encode('utf-8'))
+            self.pattern = re.compile(pattern.encode("utf-8"))
         else:
             self.pattern = None
 
@@ -65,7 +65,7 @@ class SPARKTestFinder(TestFinder):
         Return True iff the file [fn] contains [pattern], which is a compiled
         regex.
         """
-        with open(fn, 'rb') as f:
+        with open(fn, "rb") as f:
             for line in f:
                 if pattern.search(line):
                     return True
@@ -76,8 +76,9 @@ class SPARKTestFinder(TestFinder):
         Return True iff the test contains an .adb/s file that contains
         [pattern], which is a compiled regex.
         """
-        return any(self.file_contains_regex(pattern, fn)
-                   for fn in find(test, "*.ad[bs]"))
+        return any(
+            self.file_contains_regex(pattern, fn) for fn in find(test, "*.ad[bs]")
+        )
 
     def probe(self, testsuite, dirpath, dirnames, filenames):
         """
@@ -89,16 +90,17 @@ class SPARKTestFinder(TestFinder):
         testname = os.path.basename(dirpath)
         allowed_testdirs = ["tests", "internal"]
         # If the dir is not a direct subdir of <root_dir/tests>, skip it
-        if (os.path.basename(parent_name) not in allowed_testdirs or
-                os.path.dirname(parent_name) != self.root_dir):
+        if (
+            os.path.basename(parent_name) not in allowed_testdirs
+            or os.path.dirname(parent_name) != self.root_dir
+        ):
             return None
         # If testlist was passed and the dir is not in testlist, skip it
         if self.testlist and testname not in self.testlist:
             return None
         # If pattern was passed and dir doesn't contain files with the pattern,
         # skip it.
-        if (self.pattern and not
-                self.test_contains_pattern(dirpath, self.pattern)):
+        if self.pattern and not self.test_contains_pattern(dirpath, self.pattern):
             return None
 
         # If the test contains a test.py, we use the AdaCoreLegacyTestDriver,
@@ -116,42 +118,51 @@ class SPARKTestFinder(TestFinder):
 
 class SPARKTestsuite(Testsuite):
     """Testsuite for SPARK."""
+
     @property
     def test_finders(self):
-        return [SPARKTestFinder(self.root_dir,
-                                self.testlist,
-                                self.main.args.pattern)]
+        return [SPARKTestFinder(self.root_dir, self.testlist, self.main.args.pattern)]
 
     def add_options(self, parser):
         parser.add_argument(
-            "--cache", action="store_true",
-            help="Use memcached to run testsuite faster")
+            "--cache", action="store_true", help="Use memcached to run testsuite faster"
+        )
         parser.add_argument(
-            "--diffs", action="store_true",
-            help="Synonym of --show-error-output/-E")
+            "--diffs", action="store_true", help="Synonym of --show-error-output/-E"
+        )
+        parser.add_argument("--disc", type=str, help="discriminants to be used")
         parser.add_argument(
-            "--disc", type=str,
-            help="discriminants to be used")
+            "--inverse-prover",
+            action="store_true",
+            help="run testsuite in inverse-prover mode",
+        )
         parser.add_argument(
-            "--inverse-prover", action="store_true",
-            help="run testsuite in inverse-prover mode")
+            "--benchmark",
+            type=str,
+            help="run testsuite in benchmark mode for given prover",
+        )
         parser.add_argument(
-            "--benchmark", type=str,
-            help="run testsuite in benchmark mode for given prover")
+            "--no-gaia-output",
+            action="store_true",
+            help="The opposite of --gaia-output (which is on by default).",
+        )
         parser.add_argument(
-            "--no-gaia-output", action="store_true",
-            help="The opposite of --gaia-output (which is on by default).")
-        parser.add_argument(
-            "--pattern", type=str,
+            "--pattern",
+            type=str,
             help="Argument is a python regex. Run only tests whose \
-                  .adb/ads files match the regex.")
+                  .adb/ads files match the regex.",
+        )
         parser.add_argument(
-            "--rewrite", action="store_true",
-            help="Rewrite test baselines according to current outputs")
+            "--rewrite",
+            action="store_true",
+            help="Rewrite test baselines according to current outputs",
+        )
         parser.add_argument(
-            "--testlist", type=str,
+            "--testlist",
+            type=str,
             help="Argument is a file which contains one test \
-                  name per line. Run only those tests.")
+                  name per line. Run only those tests.",
+        )
 
     def compute_environ(self):
         python_lib = os.path.join(self.root_dir, "lib", "python")
@@ -176,7 +187,7 @@ class SPARKTestsuite(Testsuite):
             self.main.args.gaia_output = True
         self.env.discs = self.env.discriminants
         if self.main.args.disc:
-            self.env.discs += self.main.args.disc.split(',')
+            self.env.discs += self.main.args.disc.split(",")
         if self.main.args.inverse_prover:
             self.env.discs += "inverse-prover"
         self.env.rewrite_baselines = self.main.args.rewrite
