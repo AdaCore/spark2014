@@ -95,6 +95,9 @@ class SPARKTestFinder(TestFinder):
             or os.path.dirname(parent_name) != self.root_dir
         ):
             return None
+        # If bogus test dir such as git folder, skip it
+        if testname == ".git":
+            return None
         # If testlist was passed and the dir is not in testlist, skip it
         if self.testlist and testname not in self.testlist:
             return None
