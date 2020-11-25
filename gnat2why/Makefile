@@ -76,7 +76,7 @@ coverage-setup: setup force
 	gnatcov instrument -P gnat2why.gpr --level=stmt --dump-trigger=atexit
 	# ??? insert newlines into the gnatcov output; otherwise we would have
 	# too long lines
-	sed -i 's/;[^ ]/\n&/g' obj/gnatcov-instr/gnat1drv.adb
+	sed -i 's/;[^ ]/\n&/g' obj/gnat2why-gnatcov-instr/gnat1drv.adb
 	mkdir -p obj_coverage
 
 coverage: GPRARGS=-XBuild=Coverage --src-subdirs=gnatcov-instr

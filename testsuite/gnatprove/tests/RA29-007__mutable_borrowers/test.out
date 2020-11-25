@@ -4,7 +4,7 @@ traversal.adb:17:04: info: absence of memory leak at end of scope proved (CVC4: 
 traversal.adb:18:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 traversal.adb:21:29: info: precondition proved (CVC4: 1 VC)
 traversal.adb:23:09: info: pointer dereference check proved (CVC4: 1 VC)
-traversal.adb:26:19: medium: assertion might fail, cannot prove X.Fst.all = 1 (e.g. when X.all = (Fst => (all => 4), Snd => (all => 4)))
+traversal.adb:26:19: medium: assertion might fail, cannot prove X.Fst.all = 1 (e.g. when X.all = (Fst => (all => 0), Snd => null))
 traversal.adb:26:20: info: pointer dereference check proved (CVC4: 1 VC)
 traversal.adb:26:25: info: pointer dereference check proved (CVC4: 1 VC)
 walker.adb:9:04: info: absence of memory leak at end of scope proved (CVC4: 1 VC)

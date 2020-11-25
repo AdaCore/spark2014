@@ -38,6 +38,15 @@ with String_Utils;      use String_Utils;
 
 package Configuration is
 
+   GNATprove_Success, GNATprove_Failure : exception;
+   --  Exceptions used to abort execution early
+
+   procedure Succeed with No_Return;
+   --  End the program signaling success
+
+   procedure Fail (Msg : String) with No_Return;
+   --  End the program signaling a failure, with a message
+
    package Dir_Name_Sets is new Ada.Containers.Indefinite_Hashed_Sets
      (Element_Type        => String,
       Hash                => Ada.Strings.Hash,

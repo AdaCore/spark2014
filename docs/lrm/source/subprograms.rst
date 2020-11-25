@@ -1,8 +1,6 @@
 Subprograms
 ===========
 
-.. _subprogram-declarations:
-
 Subprogram Declarations
 -----------------------
 
@@ -21,8 +19,8 @@ of any |SPARK| expression is side-effect free.
 .. index:: global item
 
 We also introduce the notion of a *global item*, which is a name that denotes a
-global object or a state abstraction (see :ref:`abstract-state`). Global items
-are presented in Global aspects (see :ref:`global-aspects`).
+global object or a state abstraction (see :ref:`Abstract_State Aspects`). Global items
+are presented in Global aspects (see :ref:`Global Aspects`).
 
 .. index:: entire object
 
@@ -58,7 +56,7 @@ An object O1 is said to be a *reachable element* of an object O2 if
    state with the property Async_Readers => True, and for which intermediate
    values are written during an execution leading to a successful call, is also
    an output even if the final state is the same as the initial state. (see
-   :ref:`external_state`). [On the contrary, a global item or parameter is not
+   :ref:`External State`). [On the contrary, a global item or parameter is not
    an output of the subprogram if it is updated only on paths that lead to an
    explicit ``raise_statement`` or to a ``pragma Assert (statically_False)`` or
    to a call to a subprogram marked ``No_Return``.]
@@ -71,10 +69,10 @@ An object O1 is said to be a *reachable element* of an object O2 if
    output of the subprogram.  For a global item or parameter which is
    an external state with Async_Writers => True, each successive value
    read from the external state is also an input of the subprogram
-   (see :ref:`external_state`).  As a special case, a global item or
+   (see :ref:`External State`).  As a special case, a global item or
    parameter is also an input if it is mentioned in a
    ``null_dependency_clause`` in the Depends aspect of the subprogram
-   (see :ref:`depends-aspects`).
+   (see :ref:`Depends Aspects`).
 
 5. An output of a subprogram is said to be *fully initialized* by a call
    if all parts of the output are initialized as a result of any successful
@@ -91,7 +89,7 @@ An object O1 is said to be a *reachable element* of an object O2 if
    or passing X as a controlling out-mode parameter in a dispatching call.]
    The meaning of "all parts" in the case of a parameter of a specific
    tagged type is determined by the applicable Extensions_Visible aspect
-   (see :ref:`extensions-visible-aspects`).
+   (see :ref:`Extensions_Visible Aspects`).
    [A state abstraction cannot be fully initialized by initializing
    individual constituents unless its refinement is visible.]
 
@@ -112,14 +110,12 @@ An object O1 is said to be a *reachable element* of an object O2 if
 .. centered:: **Verification Rules**
 
 8. At the point of a call, all inputs of the callee except for those that have
-   relaxed initialization (see :ref:`relaxed-initialization`) shall be
+   relaxed initialization (see :ref:`Relaxed Initialization`) shall be
    fully initialized. Similarly, upon return from a call all outputs of the
    callee except for those that have relaxed initialization shall be
    fully initialized.
 
 .. index:: precondition, postcondition
-
-.. _preconditions-and-postconditions:
 
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -241,13 +237,11 @@ In order to extend Ada's support for specification of subprogram contracts
    may be specified for such a subprogram.
 
 
-See section :ref:`contract-cases` for further detail on Contract_Case aspects, section
-:ref:`global-aspects` for further detail on Global aspects and section :ref:`depends-aspects`
+See section :ref:`Contract Cases` for further detail on Contract_Case aspects, section
+:ref:`Global Aspects` for further detail on Global aspects and section :ref:`Depends Aspects`
 for further detail on Depends aspects.
 
 .. index:: Contract_Cases
-
-.. _contract-cases:
 
 Contract Cases
 ~~~~~~~~~~~~~~
@@ -418,8 +412,6 @@ on whether the subprogram in question is a dispatching operation.
 
 .. index:: Global
 
-.. _global-aspects:
-
 Global Aspects
 ~~~~~~~~~~~~~~
 
@@ -434,7 +426,7 @@ subprogram's Global aspect. Similarly, the implementation of an entry or
 task body shall be consistent with the entry or task's Global aspect.
 
 Note that a Refined_Global aspect may be applied to a subprogram body when
-using state abstraction; see section :ref:`refined-global-aspect` for further
+using state abstraction; see section :ref:`Refined_Global Aspects` for further
 details.
 
 The Global aspect is introduced by an ``aspect_specification`` where
@@ -561,7 +553,7 @@ and Refined_Depends.]
 
 
 11. A user-defined equality operation on a record type shall have a Global
-    aspect of ``null`` (see :ref:`overloading_of_operators`).
+    aspect of ``null`` (see :ref:`Overloading of Operators`).
 
     [This avoids the case where such a record type is a component of another
     composite type, whose predefined equality operation now depends on
@@ -601,7 +593,7 @@ is used purely for static analysis purposes and is not executed.
 
 
 16. Where the refinement of a state abstraction is not visible (see
-    :ref:`state_refinement`) and a subprogram references one or more
+    :ref:`State Refinement`) and a subprogram references one or more
     of its constituents the constituents may be represented by a
     ``global_item`` that denotes the state abstraction in the
     ``global_specification`` of the subprogram. [The state abstraction
@@ -628,7 +620,7 @@ is used purely for static analysis purposes and is not executed.
         shall not be used are X'Old and X'Loop_Entry] and
 
       - it does not have relaxed initialization
-        (see :ref:`relaxed-initialization`);
+        (see :ref:`Relaxed Initialization`);
 
     * a ``global_item`` that denotes an output which is not an input and
       which has relaxed initialization may have a ``mode_selector`` of
@@ -717,8 +709,6 @@ is used purely for static analysis purposes and is not executed.
 
 .. index:: Depends
 
-.. _depends-aspects:
-
 Depends Aspects
 ~~~~~~~~~~~~~~~
 
@@ -742,7 +732,7 @@ subprogram declaration when it defaults to the conservative
 relation that each output depends on every input of the subprogram.  A
 particular |SPARK| tool may synthesize a more accurate approximation
 from the subprogram implementation if it is present (see
-:ref:`verific_modes`).
+:ref:`Synthesis of |SPARK| Aspects`).
 
 For accurate information flow analysis the Depends aspect should be
 present on every subprogram.
@@ -753,7 +743,7 @@ context is that the input value(s) of *Y* may affect:
 
 * the exit value of *X*; and
 * the intermediate values of *X* if it is an external state
-  (see section  :ref:`external_state`), or if the subprogram
+  (see section  :ref:`External State`), or if the subprogram
   is a nonreturning procedure [, possibly the notional nonreturning
   procedure corresponding to a task body].
 
@@ -766,10 +756,10 @@ self-dependent but not dependent on any other input. The shorthand
 notation denoting self-dependence is useful here, X =>+ **null**.
 
 Note that a Refined_Depends aspect may be applied to a subprogram body when
-using state abstraction; see section :ref:`refined-depends-aspect` for further
+using state abstraction; see section :ref:`Refined_Depends Aspects` for further
 details.
 
-See section :ref:`global-aspects` regarding how the rules given in this
+See section :ref:`Global Aspects` regarding how the rules given in this
 section apply to protected operations and to task bodies.
 
 The Depends aspect is introduced by an ``aspect_specification`` where
@@ -1021,8 +1011,6 @@ as it is used purely for static analysis purposes and is not executed.
    -- Depends aspects on functions are only needed for special cases like here where the
    -- parameter Y has no discernible effect on the result of the function.
 
-.. _class-wide-global-and-depends-aspects:
-
 Class-Wide Global and Depends Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1076,7 +1064,7 @@ A Depends or Depends'Class aspect specification D2 is said to be a
 dependencies of D2 is a subset of the dependencies of D1 or, in the
 case where D1 mentions a state abstraction whose refinement is
 visible at the point of D2, if D2 is derivable from such a subset
-as described in :ref:`refined-depends-aspect`.
+as described in :ref:`Refined_Depends Aspects`.
 
 
 .. centered:: **Legality Rules**
@@ -1092,8 +1080,6 @@ an overriding subprogram shall be a valid overriding of the Depends'Class
 aspect(s) of the overridden inherited subprogram(s).
 
 .. index:: Extensions_Visible
-
-.. _extensions-visible-aspects:
 
 Extensions_Visible Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1175,8 +1161,8 @@ the subprogram.
    for fully initializing any out-mode formal parameters before returning.
    For details (including interactions with relaxed initialization), see
    the verification rule about full initialization of subprogram inputs
-   and outputs (which include parameters) in :ref:`subprogram-declarations`
-   and then :ref:`relaxed-initialization`].
+   and outputs (which include parameters) in :ref:`Subprogram Declarations`
+   and then :ref:`Relaxed Initialization`].
 
 8. In the case of a formal parameter of a specific tagged type T (or of a
    private type whose full view is a specific tagged type), the set of
@@ -1353,7 +1339,7 @@ it.
 1. A subprogram formal parameter of a composite type which is updated
    but not fully initialized by the subprogram shall have a mode of
    **in out**, unless it has relaxed initialization
-   (see section :ref:`relaxed-initialization`).
+   (see section :ref:`Relaxed Initialization`).
 
 
 2. A subprogram formal parameter of mode **out** shall not be read by
@@ -1396,8 +1382,6 @@ No extensions or restrictions.
 
 .. index:: aliasing
 
-.. _anti-aliasing:
-
 Anti-Aliasing
 ~~~~~~~~~~~~~
 
@@ -1425,10 +1409,10 @@ calls.
 .. index:: interfering object
 
 1. An object is said to be *interfering* if it is unsynchronized (see section
-   :ref:`tasks-and-synchronization`) or it is synchronized only due to being
-   *constant after elaboration* (see section :ref:`object-declarations`).
+   :ref:`Tasks and Synchronization`) or it is synchronized only due to being
+   *constant after elaboration* (see section :ref:`Object Declarations`).
 
-   Two names that potentially overlap (see section :ref:`access-types`)
+   Two names that potentially overlap (see section :ref:`Access Types`)
    and which each denotes an interfering object are said to
    *potentially introduce aliasing via parameter passing*.
    [This definition has the effect of exempting most synchronized objects
@@ -1509,11 +1493,9 @@ Nonreturning Procedures
 
    [In other words, the verification conditions introduced for a call to a
    nonreturning procedure are the same as those introduced for a runtime check
-   which fails unconditionally. See also section :ref:`exceptions`, where a
+   which fails unconditionally. See also section :ref:`Exceptions`, where a
    similar verification rule is imposed on ``raise_statements``.]
 
-
-.. _overloading_of_operators:
 
 Overloading of Operators
 ------------------------
@@ -1522,7 +1504,7 @@ Overloading of Operators
 
 
 1. [A user-defined equality operation on a record type shall have a Global
-   aspect of ``null``; see :ref:`global-aspects` for the statement of this
+   aspect of ``null``; see :ref:`Global Aspects` for the statement of this
    rule.]
 
 
@@ -1550,13 +1532,11 @@ Expression Functions
    expression function as for any other function declaration if it
    does not have a separate declaration.  If it has a separate
    declaration then the aspects are applied to that.  It may have
-   refined aspects applied (see :ref:`state_refinement`).
+   refined aspects applied (see :ref:`State Refinement`).
 
 
 .. index:: ghost code
            see: Ghost; ghost code
-
-.. _ghost-functions:
 
 Ghost Entities
 --------------
@@ -1772,10 +1752,10 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
 
 19. A ghost type shall not have a task or protected part.
     A ghost object shall not be of a type which yields synchronized objects
-    (see section :ref:`tasks-and-synchronization`).
+    (see section :ref:`Tasks and Synchronization`).
     A ghost object shall not have a volatile part.
     A synchronized state abstraction shall not be a ghost state abstraction
-    (see :ref:`abstract-state-aspect`).
+    (see :ref:`Abstract_State Aspects`).
 
 
 .. centered:: **Verification Rules**
@@ -1834,8 +1814,6 @@ library package that no longer needs a body (see Ada RM 7.2(4))].
 .. index:: Relaxed_Initialization
            Initialized
            initialization; by proof
-
-.. _relaxed-initialization:
 
 Relaxed Initialization
 ----------------------
@@ -2037,7 +2015,7 @@ The prefix of an Initialized attribute reference shall denote an object.
 
 13. For any object X, evaluation of X'Initialized includes the evaluation
     of Y'Initialized for every scalar reachable element Y of X (excluding
-    "hidden" components of tagged objects - see :ref:`type_invariants`).
+    "hidden" components of tagged objects - see :ref:`Type Invariants`).
     Evaluation of X'Initialized for a scalar object X is considered to be a
     read of X if and only if X does not have relaxed initialization. If X has
     relaxed initialization, then an evaluation of X'Initialized is instead

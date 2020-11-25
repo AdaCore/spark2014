@@ -87,8 +87,8 @@ The specific parser fulfils multiple objectives:
    appropriate background color (which can be customized in
    :menuselection:`Preferences --> Messages` panel).
 
-Counterexamples
-===============
+Display of Counterexamples
+==========================
 
 When a counterexample is available for a given check message, a magnify icon is
 displayed on the left of the message in the ``Locations`` view and on the left

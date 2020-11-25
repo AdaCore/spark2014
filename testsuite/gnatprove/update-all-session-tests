@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# Copyright (C) 2017, Altran UK Limited
+#!/usr/bin/env python3
 
 # This script calls update-session-test on all session tests.
 
@@ -7,11 +6,12 @@ import os
 
 bad_files = []
 
+
 def process(fn):
     test_name = fn.replace("tests/", "").replace("/test.py", "")
     with open(fn, "rU") as fd:
         tmp = fd.read()
-    if "--replay" not in tmp:
+    if "replay=True" not in tmp:
         return
     if "def replay" not in tmp:
         bad_files.append("%s: warning uses --replay but has no replay "
@@ -20,16 +20,18 @@ def process(fn):
 
     os.system("./update-session-test %s" % test_name)
 
+
 def main():
     for path, dirs, files in os.walk("tests"):
         if "test.py" in files:
             process(os.path.join(path, "test.py"))
 
     if len(bad_files):
-        print
-        print "=== you might want to fix these ==="
+        print("")
+        print("=== you might want to fix these ===")
         for f in bad_files:
-            print f
+            print(f)
+
 
 if __name__ == "__main__":
     main()

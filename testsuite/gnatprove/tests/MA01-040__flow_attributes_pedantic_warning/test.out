@@ -15,4 +15,3 @@ pedantic.adb:49:15: medium: range check might fail [possible fix: subprogram at 
 pedantic.adb:49:15: warning: attribute "Size" has an implementation-defined value
 pedantic.ads:12:29: medium: range check might fail
 pedantic.ads:12:29: warning: attribute "Alignment" has an implementation-defined value
-pedantic.ads:15:30: warning: attribute "Alignment" has an implementation-defined value

@@ -1,5 +1,3 @@
-.. _counterexamples:
-
 ###############
 Counterexamples
 ###############
@@ -654,6 +652,7 @@ of type ``bool__ref`` with a dummy "model_trace:0000" (but the model_trace is
 needed to get the counterexample).
 
 .. code-block:: whyml
+
    val spark__branch "model_trace:0000": bool__ref
 
 The idea is now to replace every translated if statement to an assignment to

@@ -17,12 +17,12 @@
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="1287"/></proof>
+  <proof prover="1"><result status="unknown" steps="1279"/></proof>
   <proof prover="2"><result status="unknown" steps="5517"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="2116284"/></proof>
+  <proof prover="1"><result status="unknown" steps="2116276"/></proof>
   <proof prover="2"><result status="unknown" steps="8005"/></proof>
   </goal>
  </transf>

@@ -16,6 +16,9 @@ package body List_Ex_Pledge with SPARK_Mode is
          pragma Loop_Invariant
            (Pledge (T, (for all K in I + 1 .. Length (L) =>
                 Get_Nth_Val (L, K) = Get_Nth_Val (T, K - I))));
+         pragma Loop_Invariant
+           (Pledge (T, (for all K in 1 .. Length (L) - I =>
+                Get_Nth_Val (L, K + I) = Get_Nth_Val (T, K))));
 
          T.Value := 0;
          T := T.Next;

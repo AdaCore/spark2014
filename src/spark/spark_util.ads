@@ -57,7 +57,6 @@ package SPARK_Util is
          | N_Freeze_Generic_Entity
          | N_Implicit_Label_Declaration
          | N_Incomplete_Type_Declaration
-         | N_Itype_Reference
          | N_Label
          | N_Null_Statement
          | N_Number_Declaration

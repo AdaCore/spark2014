@@ -26,7 +26,9 @@ compiler.adb:346:10: info: local subprogram "Identify_Symbol" only analyzed in t
 compiler.adb:348:27: medium: array index check might fail, in call inlined at compiler.adb:443 [reason for check: value must be a valid index into the array]
 compiler.adb:387:10: info: add a contract to analyze it separately from calling contexts
 compiler.adb:387:10: info: local subprogram "Identify_Punctuation" only analyzed in the context of calls
+compiler.adb:389:20: info: range check proved (Z3: 4 VC), in call inlined at compiler.adb:479
 compiler.adb:389:20: info: range check proved (Z3: 60 VC), in call inlined at compiler.adb:479
+compiler.adb:389:25: info: range check proved (Z3: 4 VC), in call inlined at compiler.adb:479
 compiler.adb:389:29: info: index check proved (Z3: 30 VC), in call inlined at compiler.adb:479
 compiler.adb:390:34: info: range check proved (Z3: 4 VC), in call inlined at compiler.adb:479
 compiler.adb:391:34: info: range check proved (Z3: 4 VC), in call inlined at compiler.adb:479
@@ -57,7 +59,7 @@ compiler.adb:438:12: medium: array index check might fail [reason for check: val
 compiler.adb:439:14: info: overflow check proved (Z3: 1 VC)
 compiler.adb:441:12: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 435 should mention i in a loop invariant]
 compiler.adb:442:43: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 435 should mention char_pos in a loop invariant]
-compiler.adb:443:37: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: loop at line 435 should mention line in a loop invariant]
+compiler.adb:443:37: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: loop at line 435 should mention i and line in a loop invariant]
 compiler.adb:445:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 435 should mention i in a loop invariant]
 compiler.adb:445:35: info: cannot unroll loop (too many loop iterations)
 compiler.adb:452:20: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 451 should mention number in a loop invariant]
@@ -68,6 +70,7 @@ compiler.adb:468:47: medium: range check might fail [reason for check: result of
 compiler.adb:473:35: medium: array index check might fail [reason for check: value must be a valid index into the array]
 compiler.adb:477:41: info: index check proved (Z3: 2 VC)
 compiler.adb:479:12: info: range check proved (Z3: 4 VC)
+compiler.adb:479:33: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 418 should mention punc in a precondition]
 compiler.adb:479:63: info: overflow check proved (Z3: 1 VC)
 compiler.adb:479:76: info: overflow check proved (Z3: 1 VC)
 compiler.adb:506:11: info: add a contract to analyze it separately from calling contexts

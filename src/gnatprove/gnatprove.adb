@@ -67,6 +67,7 @@ with Ada.Command_Line;
 with Ada.Containers;
 with Ada.Directories;            use Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Exceptions;             use Ada.Exceptions;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
 with Call;                       use Call;
@@ -88,6 +89,11 @@ procedure Gnatprove with SPARK_Mode is
    type Gnatprove_Step is (GS_ALI, GS_CodePeer, GS_Gnat2Why);
 
    type Plan_Type is array (Positive range <>) of Gnatprove_Step;
+
+   Success_Exit_Code : Ada.Command_Line.Exit_Status := 0;
+   --  This variable contains the exit code emitted by gnatprove in case of
+   --  success. This variable is changed to indicate some error situations that
+   --  are not signalled via the GNATprove_Failure exception.
 
    procedure Call_Gprbuild
      (Project_File      : String;
@@ -165,6 +171,12 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Write_Why3_Conf_File (Obj_Dir : String);
    --  Write the Why3 conf file to process prover configuration
+
+   procedure Cleanup (Proj      : Project_Type;
+                      Msg       : String;
+                      Exit_Code : Ada.Command_Line.Exit_Status);
+   --  Cleanup procedure that is called at the end of every gnatprove
+   --  execution. Delete temporary files.
 
    -------------------
    -- Call_Gprbuild --
@@ -284,6 +296,24 @@ procedure Gnatprove with SPARK_Mode is
          GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
       end if;
    end Call_Gprbuild;
+
+   ------------------
+   -- Cleanup_Step --
+   ------------------
+
+   procedure Cleanup (Proj      : Project_Type;
+                      Msg       : String;
+                      Exit_Code : Ada.Command_Line.Exit_Status)
+   is
+   begin
+      if Proj /= No_Project then
+         GNATCOLL.Projects.Aux.Delete_All_Temp_Files (Proj);
+      end if;
+      if Msg /= "" then
+         Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
+      end if;
+      Ada.Command_Line.Set_Exit_Status (Exit_Code);
+   end Cleanup;
 
    -----------------------------
    -- Compute_ALI_Information --
@@ -443,8 +473,7 @@ procedure Gnatprove with SPARK_Mode is
       end case;
 
       if Status /= 0 then
-         Abort_With_Message
-           ("gnatprove: error during " & Text_Of_Step (Plan (Step)));
+         Fail ("gnatprove: error during " & Text_Of_Step (Plan (Step)));
       end if;
    end Execute_Step;
 
@@ -658,13 +687,12 @@ procedure Gnatprove with SPARK_Mode is
       if CL_Switches.Checks_As_Errors
         and then Status = Unproved_Checks_Error_Status
       then
-         Abort_With_Message
-           ("gnatprove: unproved check messages considered as errors");
+         Fail ("gnatprove: unproved check messages considered as errors");
 
       --  We propagate errors other than the Unproved_Checks_Error
 
       elsif Status /= 0 and then Status /= Unproved_Checks_Error_Status then
-         GNAT.OS_Lib.OS_Exit (Status);
+         Success_Exit_Code := Ada.Command_Line.Exit_Status (Status);
       end if;
    end Generate_SPARK_Report;
 
@@ -1174,9 +1202,9 @@ begin
    Read_Command_Line (Tree);
 
    if Tree.Root_Project.Artifacts_Dir = GNATCOLL.VFS.No_File then
-      Abort_With_Message
+      Fail
         ("Error while loading project file: " & CL_Switches.P.all & ": " &
-         "could not determine working directory");
+           "could not determine working directory");
    end if;
 
    declare
@@ -1206,9 +1234,20 @@ begin
         (Tree.Root_Project,
          Tree.Root_Project.Artifacts_Dir.Display_Full_Name, Obj_Path);
    end;
-   GNATCOLL.Projects.Aux.Delete_All_Temp_Files (Tree.Root_Project);
+   Cleanup (Tree.Root_Project, "", Success_Exit_Code);
 exception
+   when E : GNATprove_Failure =>
+      Cleanup (Tree.Root_Project,
+               Exception_Message (E),
+               Exit_Code => 1);
+   when E : GNATprove_Success =>
+      pragma Assert (Exception_Message (E) = "");
+      Cleanup (Tree.Root_Project,
+               "",
+               Exit_Code => Success_Exit_Code);
+
    when Invalid_Project =>
-      Abort_With_Message
-         ("Error while loading project file: " & CL_Switches.P.all);
+      Cleanup (Tree.Root_Project,
+               "Error while loading project file: " & CL_Switches.P.all,
+               Exit_Code => 1);
 end Gnatprove;

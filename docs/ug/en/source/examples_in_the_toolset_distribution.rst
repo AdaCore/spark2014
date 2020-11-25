@@ -3,8 +3,6 @@
            Silver level; distributed examples
            Gold level; distributed examples
 
-.. _Examples in the Toolset Distribution:
-
 Examples in the Toolset Distribution
 ====================================
 
@@ -18,8 +16,6 @@ units. In this section, we describe briefly the code in each example, the
 properties specified, and the results of |GNATprove|'s analysis.
 
 .. index:: Platinum level; distributed examples - individual subprograms
-
-.. _Individual Subprograms:
 
 Individual Subprograms
 ----------------------
@@ -142,8 +138,6 @@ distance. Both absence of run-time errors (including overflows) and safe bounds
 on the computed speed are proved by using a combination of provers. A dozen
 intermediate assertions are needed to benefit from this combination, so that
 different provers can prove different parts of the property.
-
-.. _Single Units:
 
 Single Units
 ------------

@@ -1,5 +1,3 @@
-.. _Subprogram Contracts:
-
 Subprogram Contracts
 ====================
 
@@ -40,8 +38,6 @@ controller).
            seealso: Gold level; precondition
            Assertion_Policy; for precondition
            exceptions; in precondition
-
-.. _Preconditions:
 
 Preconditions
 -------------
@@ -163,8 +159,6 @@ the previous example.
            see: Post; postcondition
            seealso: Gold level; postcondition
 
-.. _Postconditions:
-
 Postconditions
 --------------
 
@@ -247,8 +241,6 @@ correct but likely functionally wrong postcondition.
 
 .. index:: Contract_Cases
            seealso: Gold level; Contract_Cases
-
-.. _Contract Cases:
 
 Contract Cases
 --------------
@@ -335,8 +327,6 @@ possible inputs. Only disjointness of contract cases is checked in that case.
 .. index:: Global; in subprogram contract
            global variables; in Global contract
            seealso: Bronze level; Global
-
-.. _Data Dependencies:
 
 Data Dependencies
 -----------------
@@ -439,8 +429,6 @@ Initialization Policy`.
            global variables; in Depends contract
            seealso: Bronze level; Depends
 
-.. _Flow Dependencies:
-
 Flow Dependencies
 -----------------
 
@@ -516,8 +504,6 @@ corresponding flow dependency should use the ``null`` input list:
 
 .. index:: state abstraction; in subprogram contract
 
-.. _State Abstraction and Contracts:
-
 State Abstraction and Contracts
 -------------------------------
 
@@ -532,8 +518,6 @@ case (see :ref:`State Abstraction`) to name in contracts global data that is
 not visible.
 
 .. index:: Refined_Global, Refined_Depends
-
-.. _State Abstraction and Dependencies:
 
 State Abstraction and Dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -616,8 +600,6 @@ are refined in the current unit.
 
 .. index:: expression function; in refinement
 
-.. _State Abstraction and Functional Contracts:
-
 State Abstraction and Functional Contracts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -675,8 +657,6 @@ precise refined contract (precondition and refined postcondition) of
 .. index:: termination; subprogram variant
            recursion; subprogram variant
            Subprogram_Variant
-
-.. _Subprogram Variant:
 
 Subprogram Variant
 ------------------

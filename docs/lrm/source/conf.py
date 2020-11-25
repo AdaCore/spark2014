@@ -27,7 +27,7 @@ except ImportError:
 def setup(app):
     app.add_config_value('Display_Trace_Units',False,True)
     if use_adacore_parser:
-        app.add_lexer('ada', ada_pygments.AdaLexer())
+        app.add_lexer('ada', ada_pygments.AdaLexer)
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -37,11 +37,13 @@ def setup(app):
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+needs_sphinx = '1.4'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.todo','sphinx.ext.ifconfig']
+extensions = ['sphinx.ext.todo',
+              'sphinx.ext.ifconfig',
+              'sphinx.ext.autosectionlabel']
 
 Display_Trace_Units = False
 
@@ -109,7 +111,7 @@ exclude_patterns = []
 #show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = None
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []

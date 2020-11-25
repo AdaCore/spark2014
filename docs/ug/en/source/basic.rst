@@ -1,5 +1,3 @@
-.. _basic_examples:
-
 Basic Examples
 --------------
 
@@ -7,8 +5,6 @@ The examples in this section have no loops, and do not use more complex
 features of |SPARK| like :ref:`Ghost Code`, :ref:`Interfaces to the Physical
 World`, or :ref:`Object Oriented Programming and Liskov Substitution
 Principle`.
-
-.. _Increment:
 
 Increment
 ^^^^^^^^^
@@ -138,8 +134,6 @@ assertion on line 15 holds:
 .. literalinclude:: /examples/tests/increment_local/test.out
    :language: none
 
-.. _Swap:
-
 Swap
 ^^^^
 
@@ -246,8 +240,6 @@ unused constructs:
 
 In general, warnings issued by |GNATprove|'s flow analysis should be carefully
 reviewed, as they may lead to the discovery of errors in the program.
-
-.. _Addition:
 
 Addition
 ^^^^^^^^

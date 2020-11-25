@@ -12,7 +12,7 @@ longest_common_prefix.adb:14:23: info: overflow check proved (CVC4: 2 VC)
 longest_common_prefix.adb:14:30: info: range check proved (CVC4: 8 VC)
 longest_common_prefix.adb:14:40: info: overflow check proved (CVC4: 2 VC)
 longest_common_prefix.adb:17:31: info: loop variant proved (CVC4: 1 VC)
-longest_common_prefix.adb:18:17: info: overflow check proved (CVC4: 1 VC)
+longest_common_prefix.adb:18:17: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 longest_common_prefix.ads:3:03: info: flow dependencies proved
 longest_common_prefix.ads:11:06: info: disjoint contract cases proved (CVC4: 1 VC)
 longest_common_prefix.ads:11:28: info: index check proved (CVC4: 2 VC)

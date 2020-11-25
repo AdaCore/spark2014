@@ -1,5 +1,3 @@
-.. _How to Write Object Oriented Contracts:
-
 How to Write Object Oriented Contracts
 ======================================
 

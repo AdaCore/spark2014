@@ -147,6 +147,21 @@ package Gnat2Why.Expr is
    --  @return a program that checks that no error can appear in N's DIC
    --          and it holds for default values of type N.
 
+   function Compute_Borrow_At_End_Value
+     (W_Brower      : W_Term_Id;
+      Expr          : Node_Id;
+      Borrowed_Expr : Node_Id := Empty) return W_Term_Id;
+   --  Expr should be a path. Reconstruct Borrowed_Expr, or the root of Expr
+   --  if Borrowed_Expr is not a prefix of Expr, updated so that the path
+   --  represented by Expr is set to W_Brower.
+   --
+   --  For example, if Expr is Func (X.F (I).G, Z).H and Borrowed_Expr is X.F
+   --  create:
+   --  { x with f =>
+   --      set x.f i { (get x.f i) with g =>
+   --          Func.borrowed_at_end (get x.f i).g z
+   --               { func (get x.f i).g z with h => w_brower } } }
+
    function Compute_Default_Check
      (Ada_Node         : Node_Id;
       Ty               : Entity_Id;
@@ -378,19 +393,6 @@ package Gnat2Why.Expr is
    --  @param Var_Ent entity of the corresponding variable if W_Expr is an
    --         array in split form.
    --  @result Why3 program that performs the check and returns [W_Expr]
-
-   function New_Pledge_Def_From_Expression
-     (Brower      : Entity_Id;
-      Borrowed_Id : out W_Identifier_Id;
-      Brower_Id   : out W_Identifier_Id;
-      Path        : Node_Id) return W_Term_Id;
-   --  Construct the new definition of the pledge of a borrower from a path.
-   --  @param Path expression for the definition or update of a borrower
-   --  @param Brower is either the local borrower in the case of a borrow or
-   --         a reborrow, or the subprogram entity when returning from a
-   --         traversal function.
-   --  @param Brower_Id and Borrowed_Id are the names used in the
-   --         definition to refer to the borrower and borrowed objects
 
    function New_Predicate_Check
      (Ada_Node         : Node_Id;

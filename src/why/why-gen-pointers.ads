@@ -26,6 +26,7 @@
 with Gnat2Why.Util;          use Gnat2Why.Util;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with Types;                  use Types;
@@ -173,71 +174,44 @@ package Why.Gen.Pointers is
    -- Borrowers --
    ---------------
 
-   procedure Declare_Pledge_Function
+   procedure Declare_At_End_Function
      (File    : Theory_UC;
       E       : Entity_Id;
-      Binders : Binder_Array);
-   --  Clone the pledge module for E and emit a function returning the pledge
-   --  for the result of a traversal function.
+      Binders : Binder_Array)
+   with Pre => Is_Borrowing_Traversal_Function (E);
+   --  Emit a function computing the value at the end of the borrow of the
+   --  borrowed parameter from the value of the end of the borrow of the result
+   --  of the borrowing traversal function E.
 
-   procedure Declare_Pledge_Ref (Th : Theory_UC; E : Entity_Id);
-   --  Clone the pledge module for E and emit a global reference for the pledge
+   procedure Declare_At_End_Ref (Th : Theory_UC; E : Entity_Id) with
+     Pre => Is_Local_Borrower (E);
+   --  Emit a global reference for the value at the end of a local borrower E.
+   --  Also declare a global constant for the value of the borrowed expression
+   --  at the end of the borrow.
 
-   function Get_Borrowed_Entity (E : Entity_Id) return Entity_Id;
+   function Get_Borrowed_At_End (E : Entity_Id) return W_Identifier_Id with
+     Pre => Is_Local_Borrower (E) or else Is_Borrowing_Traversal_Function (E);
+   --  Get the identifier introduced for the value of the borrowed expression
+   --  at the end of the borrow. It is a constant.
+
+   function Get_Borrowed_Entity (E : Entity_Id) return Entity_Id with
+     Pre => Is_Local_Borrower (E) or else Is_Borrowing_Traversal_Function (E);
    --  Get the borrowed entity
 
-   function Get_Borrowed_Expr (E : Entity_Id) return Node_Id
-   with Pre  => Ekind (E) /= E_Function,
-        Post => Nkind (Get_Borrowed_Expr'Result) in N_Subexpr;
+   function Get_Borrowed_Expr (E : Entity_Id) return Node_Id with
+     Pre  => Is_Local_Borrower (E),
+     Post => Nkind (Get_Borrowed_Expr'Result) in N_Subexpr;
    --  Get the initial borrowed expression
 
-   function Get_Borrowed_Typ (E : Entity_Id) return Entity_Id
-   with Post => Is_Type (Get_Borrowed_Typ'Result);
+   function Get_Borrowed_Typ (E : Entity_Id) return Entity_Id with
+     Pre  => Is_Local_Borrower (E) or else Is_Borrowing_Traversal_Function (E),
+     Post => Is_Type (Get_Borrowed_Typ'Result);
    --  Get the type of the borrower of initially borrowed expression
 
-   function Get_Pledge_Id (E : Entity_Id) return W_Identifier_Id;
-   --  Get the identifier of the pledge reference
-
-   function New_Pledge_For_Call
-     (E    : Entity_Id;
-      Args : W_Expr_Array) return W_Expr_Id;
-   --  Construct the pledge of a call to a traversal function E with
-   --  parameters Args.
-
-   function New_Pledge_Call
-     (E            : Entity_Id;
-      Borrowed_Arg : W_Expr_Id;
-      Brower_Arg   : W_Expr_Id;
-      Ref_Allowed  : Boolean) return W_Expr_Id;
-   --  Construct a call to the pledge of a borrower E
-
-   function New_Pledge_Call
-     (E            : Entity_Id;
-      Args         : W_Expr_Array;
-      Borrowed_Arg : W_Expr_Id;
-      Brower_Arg   : W_Expr_Id) return W_Expr_Id;
-   --  Construct a call to the pledge of a call to a traversal function E with
-   --  parameters Args.
-
-   function New_Pledge_Def
-     (E           : Entity_Id;
-      Name        : W_Term_Id;
-      Borrowed_Id : W_Identifier_Id;
-      Brower_Id   : W_Identifier_Id;
-      Def         : W_Term_Id) return W_Pred_Id;
-   --  Construct an equality between a pledge object Name and its definition
-   --  Def, Borrowed_Id and Brower_Id being the variables used in Def.
-
-   function New_Pledge_Update
-     (E           : Entity_Id;
-      Borrowed_Id : W_Identifier_Id;
-      Brower_Id   : W_Identifier_Id;
-      Def         : W_Term_Id) return W_Prog_Id;
-   --  Construct an update of the pledge of E
-
-   function Result_Pledge_Id (E : Entity_Id) return W_Identifier_Id with
-     Pre => Is_Borrowing_Traversal_Function (E);
-   --  E is a traversal function, create an identifier for references to the
-   --  pledge of E in its postcondition.
+   function Get_Brower_At_End (E : Entity_Id) return W_Identifier_Id with
+     Pre => Is_Local_Borrower (E) or else Is_Borrowing_Traversal_Function (E);
+   --  Get the identifier introduces for the value of the borrower at the end
+   --  of the borrow. It is a reference to handle reborrows, except in the
+   --  postcondition of traversal functions.
 
 end Why.Gen.Pointers;

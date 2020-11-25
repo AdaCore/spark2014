@@ -711,6 +711,8 @@ palindrome.adb:5:07: info: initialization of "Left_Index" proved
 palindrome.adb:5:07: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
 palindrome.adb:6:07: info: initialization of "Right_Index" proved
 palindrome.adb:6:07: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
+palindrome.adb:8:22: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
+palindrome.adb:9:22: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
 palindrome.adb:9:22: info: range check proved (CVC4: 8 VC), in call inlined at palindrome.adb:32
 palindrome.adb:9:26: info: range check proved (CVC4: 1 VC), in call inlined at palindrome.adb:32
 palindrome.adb:12:20: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
@@ -723,6 +725,7 @@ palindrome.adb:22:04: info: initialization of "Line" proved
 palindrome.adb:23:04: info: initialization of "Count" proved
 palindrome.adb:32:07: info: analyzing call to "Is_Palindrome" in context
 palindrome.adb:32:07: info: range check proved (CVC4: 4 VC)
+palindrome.adb:32:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: postcondition of call at line 29 should mention Item (for argument Line)]
 parent-public1.adb:7:07: info: initialization of "Temp" proved
 parent.adb:6:22: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at parent.ads:3 should mention Value in a precondition]
 populate_tree.adb:7:05: info: data dependencies proved
@@ -979,6 +982,7 @@ string_examples.adb:20:09: info: range check proved (CVC4: 4 VC)
 string_examples.adb:21:09: warning: unused assignment
 string_examples.adb:21:17: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:21:17: info: range check proved (CVC4: 1 VC)
+string_examples.adb:22:01: info: range check proved (CVC4: 4 VC)
 string_examples.adb:22:19: warning: unused assignment
 string_examples.adb:25:01: info: range check proved (CVC4: 4 VC)
 string_examples.adb:25:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
@@ -989,9 +993,9 @@ strings.adb:20:21: info: index check proved (CVC4: 2 VC)
 strings.adb:33:07: info: initialization of "Equals_Found" proved
 strings.adb:34:07: info: initialization of "Equals_Position" proved
 strings.adb:39:34: info: range check proved (CVC4: 1 VC)
-strings.adb:44:23: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at strings.ads:15 should mention Text in a precondition]
-strings.adb:45:32: medium: precondition might fail [possible fix: subprogram at strings.ads:15 should mention Text in a precondition]
-strings.adb:45:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at strings.ads:15 should mention Text in a precondition]
+strings.adb:44:23: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
+strings.adb:45:32: medium: precondition might fail [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
+strings.adb:45:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:62: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.ads:8:22: info: initialization of "Found" proved
 strings.ads:9:22: info: initialization of "Position" proved

@@ -104,7 +104,7 @@ textio.adb:174:10: info: range check proved (CVC4: 2 VC)
 textio.adb:174:51: info: range check proved (CVC4: 1 VC)
 textio.adb:175:10: info: initialization of "Last" proved
 textio.adb:178:10: info: precondition proved (CVC4: 1 VC)
-textio.adb:181:38: low: range check might fail [reason for check: default component value must fit in the type] [possible fix: call at line 178 should mention Item (for argument Buffer) in a postcondition]
+textio.adb:181:38: low: range check might fail [reason for check: default component value must fit in the type] [possible fix: call at line 178 should mention Item (for argument Buffer) and Last (for argument Last) in a postcondition]
 textio.adb:181:40: info: range check proved (CVC4: 4 VC)
 textio.adb:183:28: medium: assertion might fail, cannot prove R'First = S'first
 textio.adb:184:28: medium: assertion might fail, cannot prove R'Last = S'Last + Last [possible fix: call at line 178 should mention Last (for argument Last) in a postcondition]

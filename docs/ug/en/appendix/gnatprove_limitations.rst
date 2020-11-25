@@ -1,11 +1,7 @@
 .. index:: limitations
 
-.. _GNATprove_Limitations:
-
-|GNATprove| Limitations
-=======================
-
-.. _Tool Limitations:
+GNATprove Limitations
+=====================
 
 Tool Limitations
 ----------------
@@ -106,14 +102,14 @@ Flow Analysis Limitations
 
 .. index:: Depends; limitation
 
-#. Flow dependencies caused by record assignments is not captured with perfect
+1. Flow dependencies caused by record assignments is not captured with perfect
    accuracy. This means that the value of one field might incorrectly be
    considered to participate in the derivation of another field that it does
    not really participate in.
 
 .. index:: initialization; limitation
 
-#. Initialization of multi-dimensional arrays with nested FOR loops can be only
+2. Initialization of multi-dimensional arrays with nested FOR loops can be only
    detected if the array bounds are given by static expressions. A possible
    solution is to use :ref:`Aspect Relaxed_Initialization` instead in such a
    case and to prove that only initialized data is read.
@@ -123,7 +119,7 @@ Proof Limitations
 
 .. index:: recursion; limitation
 
-#. Postconditions of recursive functions called in contracts and assertion
+1. Postconditions of recursive functions called in contracts and assertion
    pragmas are not available, possibly leading to unproved checks. The current
    workaround is to use a non-recursive wrapper around those functions. Using
    the switch ``--info`` reveals where the information about postcondition may
@@ -131,17 +127,17 @@ Proof Limitations
 
 .. index:: Valid; limitation
 
-#. Attribute 'Valid is currently assumed to always return True.
+2. Attribute 'Valid is currently assumed to always return True.
 
 .. index:: validity; limitation
 
-#. Values read from an external source are assumed to be valid values.
+3. Values read from an external source are assumed to be valid values.
    Currently there is no model of invalidity or undefinedness. The onus
    is on the user to ensure that all values read from an external source are
    valid. The use of an invalid value invalidates any proofs associated with
    the value.
 
-#. The following attributes are not yet supported in proof: Adjacent, Aft,
+4. The following attributes are not yet supported in proof: Adjacent, Aft,
    Bit_Order, Body_Version, Copy_Sign, Definite, Denorm, First_Valid, Fore,
    Last_Valid, Machine, all Machine_* attributes, Model, all Model_* attributes,
    Partition_Id, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling, Small,
@@ -152,24 +148,24 @@ Proof Limitations
    no record representation clause then we assume that their value is
    nonnegative.
 
-#. The 'Update attribute on multidimensional unconstrained arrays is not
+5. The 'Update attribute on multidimensional unconstrained arrays is not
    yet fully supported in proof. Checks might be missing so currently an
    error is emitted for any use of the 'Update attribute on
    multidimensional unconstrained arrays.
 
-#. |GNATprove| does not follow the value of tags for tagged objects. As a
+6. |GNATprove| does not follow the value of tags for tagged objects. As a
    consequence, tag checks are currently unprovable in most cases.
 
 .. index:: Loop_Invariant; limitation
 
-#. Constants declared in loops before the loop invariant are handled as
+7. Constants declared in loops before the loop invariant are handled as
    variables by the tool. This means in particular that any information
    about their values needed after the loop invariant must be stated explicitly
    in the loop invariant.
 
-#. Preconditions on arithmetic and conversion operators (including Time_Of) in
+8. Preconditions on arithmetic and conversion operators (including Time_Of) in
    Ada.Execution_Time and Ada.Real_Time packages described in |SPARK| Reference
    Manual 9.19 are not yet implemented.
 
-#. Preconditions on arithmetic and conversion operators (including Time_Of) in
+9. Preconditions on arithmetic and conversion operators (including Time_Of) in
    Ada.Calendar package are not yet implemented.

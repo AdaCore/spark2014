@@ -1,5 +1,3 @@
-.. _How to Write Loop Invariants:
-
 How to Write Loop Invariants
 ============================
 
@@ -9,8 +7,6 @@ invariant contracts. This section describes a systematic approach
 for writing loop invariants.
 
 .. index:: loop; automatic unrolling
-
-.. _Automatic Unrolling of Simple For-Loops:
 
 Automatic Unrolling of Simple For-Loops
 ---------------------------------------
@@ -62,8 +58,6 @@ loop invariant at the start of the loop:
 It can also be disabled globally by using the switch ``--no-loop-unrolling``.
 
 .. index:: Loop_Invariant; automatic generation
-
-.. _Automatically Generated Loop Invariants:
 
 Automatically Generated Loop Invariants
 ---------------------------------------

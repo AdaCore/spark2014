@@ -1,5 +1,3 @@
-.. _Portability Issues:
-
 Portability Issues
 ==================
 
@@ -97,8 +95,6 @@ another compiler is used, it may be better to avoid these implementation
 specific constructs (see :ref:`Benefits of Using SPARK for Portability` for
 more details on how this can be achieved).
 
-.. _Parenthesized Arithmetic Operations:
-
 Parenthesized Arithmetic Operations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -112,8 +108,6 @@ used, a warning is emitted for every operation that could be re-ordered:
   operation;
 * any operand of a binary multiplying operation (\*,/,mod,rem) that is itself a
   binary multiplying operation.
-
-.. _Base Type of User-Defined Integer Types:
 
 Base Type of User-Defined Integer Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

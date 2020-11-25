@@ -27,6 +27,6 @@ foo.adb:91:33: info: initialization of "B" proved
 foo.adb:98:16: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 85 should mention New_Str in a precondition]
 foo.adb:105:23: info: initialization of "B" proved
 foo.adb:111:18: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 104 should mention New_Str in a precondition]
+foo.adb:111:32: high: "Y" is not initialized
 foo.adb:111:33: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
-foo.adb:111:49: high: "Y" is not initialized
 foo.adb:113:17: info: overflow check proved (CVC4: 1 VC)

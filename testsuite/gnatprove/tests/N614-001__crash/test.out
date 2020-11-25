@@ -9,6 +9,7 @@ main.adb:19:15: info: index check proved (CVC4: 2 VC), in call inlined at main.a
 main.adb:28:11: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:45
 main.adb:28:11: info: range check proved (CVC4: 4 VC), in call inlined at main.adb:45
 main.adb:28:11: info: range check proved (CVC4: 8 VC), in call inlined at main.adb:45
+main.adb:28:18: info: range check proved (CVC4: 4 VC), in call inlined at main.adb:45
 main.adb:29:15: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:45
 main.adb:29:15: info: range check proved (CVC4: 4 VC), in call inlined at main.adb:45
 main.adb:39:04: info: initialization of "NP" proved
@@ -21,6 +22,7 @@ main.adb:44:04: info: in inlined body at line 18
 main.adb:45:04: info: cannot unroll loop (too many loop iterations)
 main.adb:45:04: info: in inlined body at line 28
 main.adb:45:04: info: range check proved (CVC4: 4 VC)
+main.adb:45:16: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
 part.adb:8:06: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 part.adb:8:10: info: index check proved (CVC4: 2 VC)
 part.adb:8:22: info: index check proved (CVC4: 2 VC)

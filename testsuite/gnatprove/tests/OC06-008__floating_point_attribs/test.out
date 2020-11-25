@@ -1,0 +1,17 @@
+adjacent.adb:3:16: non-static attribute "Adjacent" is not yet supported
+compose.adb:3:11: attribute "Compose" is not allowed in SPARK
+compose.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
+exponent.adb:3:11: attribute "Exponent" is not allowed in SPARK
+exponent.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
+fraction.adb:3:11: attribute "Fraction" is not allowed in SPARK
+fraction.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
+leading_part.adb:3:11: attribute "Leading_Part" is not allowed in SPARK
+leading_part.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
+machine.adb:3:16: non-static attribute "Machine" is not yet supported
+machine_rounding.adb:3:11: attribute "Machine_Rounding" is not allowed in SPARK
+machine_rounding.adb:3:11: violation of pragma SPARK_Mode at test.adc:1
+model.adb:3:16: non-static attribute "Model" is not yet supported
+remainder.adb:3:16: medium: divide by zero might fail [possible fix: subprogram at remainder.ads:1 should mention X and Y in a precondition]
+scaling.adb:3:16: non-static attribute "Scaling" is not yet supported
+unbiased_rounding.adb:3:16: non-static attribute "Unbiased_Rounding" is not yet supported
+gnatprove: error during flow analysis and proof

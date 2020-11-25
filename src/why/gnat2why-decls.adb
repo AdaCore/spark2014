@@ -547,10 +547,10 @@ package body Gnat2Why.Decls is
                Labels      => Symbol_Sets.Empty_Set,
                Return_Type => EW_Int_Type));
 
-      --  Declare the variable for the pledge of E
+      --  Declare the variable for the value at end of E
 
       if Is_Local_Borrower (E) then
-         Declare_Pledge_Ref (Th, E);
+         Declare_At_End_Ref (Th, E);
       end if;
 
       Close_Theory (Th,

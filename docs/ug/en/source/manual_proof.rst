@@ -1,5 +1,3 @@
-.. _manual_proof:
-
 Manual Proof Examples
 ---------------------
 
@@ -25,8 +23,6 @@ degre of interaction required depends on the difficuly of the proof:
 
 .. index:: manual proof; using the lemma library
            lemma library; example of use
-
-.. _Manual Proof Using SPARK Lemma Library:
 
 Manual Proof Using SPARK Lemma Library
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -105,8 +101,6 @@ passed in arguments, as follows:
 .. index:: manual proof; using lemmas
            ghost code; manual proof using lemmas
 
-.. _Manual Proof Using User Lemmas:
-
 Manual Proof Using User Lemmas
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -168,8 +162,6 @@ Code`.
 
 .. index:: manual proof; using ghost code
            ghost code; manual proof
-
-.. _Manual Proof Using Ghost Code:
 
 Manual Proof Using Ghost Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -347,8 +339,6 @@ timeout of 1s for the default automatic prover CVC4.
    :language: none
 
 .. index:: manual proof; using Coq
-
-.. _Manual Proof Using Coq:
 
 Manual Proof Using Coq
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -695,8 +685,6 @@ proved::
   nonlinear.adb:8:12: info: division check proved
 
 .. index:: manual proof; in GNAT Studio
-
-.. _Manual Proof Using GNAT Studio:
 
 Manual Proof Using GNAT Studio
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

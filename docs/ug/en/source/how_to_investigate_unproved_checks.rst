@@ -1,8 +1,6 @@
 .. index:: Silver level; investigate unproved checks
            Gold level; investigate unproved checks
 
-.. _How to Investigate Unproved Checks:
-
 How to Investigate Unproved Checks
 ==================================
 
@@ -36,8 +34,6 @@ following GNAT switches can be used:
 * ``-gnat-p``: reenable run-time checking even if ``-gnatp`` was used to
   suppress all checks
 * ``-gnata``: enable run-time checking of assertions
-
-.. _Investigating Unprovable Properties:
 
 Investigating Unprovable Properties
 -----------------------------------
@@ -86,7 +82,7 @@ spot a missing assertion.
 
 A property can also be conceptually provable, but the model used by
 |GNATprove| can currently not reason about it [MODEL]. (See
-:ref:`GNATprove_Limitations` for a list of the current limitations in
+:ref:`GNATprove Limitations` for a list of the current limitations in
 |GNATprove|.) In particular using the following features of the language
 may yield checks that should be true, but cannot be proved:
 
@@ -129,8 +125,6 @@ internal decisions that could influence provability:
   subprogram (see the note in the section on :ref:`Subprogram Termination`)
 
 .. index:: --level; investigate unproved checks
-
-.. _Investigating Prover Shortcomings:
 
 Investigating Prover Shortcomings
 ---------------------------------

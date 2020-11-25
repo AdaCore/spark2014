@@ -1,8 +1,6 @@
-.. _Applying SPARK in Practice:
-
-****************************
-Applying |SPARK| in Practice
-****************************
+**************************
+Applying SPARK in Practice
+**************************
 
 |SPARK| tools offer different levels of analysis, which are relevant in
 different contexts. This section starts with a description of the five
@@ -21,8 +19,6 @@ possible :ref:`Project Scenarios`:
 
 The end of this section examines each of these scenarios in turn and describes
 how |SPARK| can be applied in each case.
-
-.. _Levels of Software Assurance:
 
 Levels of Software Assurance
 ============================
@@ -510,14 +506,10 @@ principle, a balance needs to be found between the higher cost of manual proof
 techniques and the benefits they bring compared to testing or manual
 justification.
 
-.. _Objectives of Using SPARK:
-
 Objectives of Using SPARK
 =========================
 
 .. index:: Stone level; safe coding standard
-
-.. _Safe Coding Standard for Critical Software:
 
 Safe Coding Standard for Critical Software
 ------------------------------------------
@@ -594,8 +586,6 @@ It will also warn systematically about the following suspicious behaviors:
   maintainability or even be the sign of a bug)
 
 .. index:: Silver level; absence of run-time errors
-
-.. _Prove Absence of Run-Time Errors (AoRTE):
 
 Prove Absence of Run-Time Errors (AoRTE)
 ----------------------------------------
@@ -694,8 +684,6 @@ This strategy has been applied at Altran on UK military projects submitted to
 Def Stan 00-56 certification: AoRTE was proved on all the code, and contracts
 were exercised during integration testing, which allowed to scrap unit testing.
 
-.. _Between Proof and Unit Testing:
-
 Between Proof and Unit Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -742,13 +730,11 @@ used as verification means on each module.
 
 .. index:: Gold level; correct component integration
 
-.. _Prove Correct Integration Between Components:
-
 Prove Correct Integration Between Components
 --------------------------------------------
 
-In New Developments
-^^^^^^^^^^^^^^^^^^^
+Correct Integration In New Developments
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 |GNATprove| can be used to prove correct integration between components, where
 a component could be a subprogram, a unit or a set of units. Indeed, even if
@@ -820,13 +806,11 @@ Defensive code can be advantageously replaced by preconditions:
 
 .. index:: Gold level; functional correctness
 
-.. _Prove Functional Correctness:
-
 Prove Functional Correctness
 ----------------------------
 
-In New Developments
-^^^^^^^^^^^^^^^^^^^
+Functional Correctness In New Developments
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 |GNATprove| can be used to prove functional correctness of an implementation
 against its specification. This strongest level of verification can be applied
@@ -878,8 +862,6 @@ corresponding case.
 developments. Then, cases can be progressively generalized (by relaxing the
 conditions in the guards), or new cases added to the contract, until the full
 functional behavior of the subprogram is specified and proved.
-
-.. _Ensure Correct Behavior of Parameterized Software:
 
 Ensure Correct Behavior of Parameterized Software
 -------------------------------------------------
@@ -935,8 +917,6 @@ for all possible values of the constant.
 
 .. index:: Silver level; optimize run-time checks
 
-.. _Safe Optimization of Run-Time Checks:
-
 Safe Optimization of Run-Time Checks
 ------------------------------------
 
@@ -966,8 +946,6 @@ running time of the application by doing safe and controlled optimization of
 run-time checks.
 
 .. index:: Bronze level; data and control coupling
-
-.. _Address Data and Control Coupling:
 
 Address Data and Control Coupling
 ---------------------------------
@@ -1020,8 +998,6 @@ sufficient to check that the program implements its specifications. When using
 functional contracts, |GNATprove|'s proof should also be applied.
 
 .. index:: portability
-
-.. _Ensure Portability of Programs:
 
 Ensure Portability of Programs
 ------------------------------
@@ -1135,8 +1111,6 @@ to implementation defined or unspecified behavior:
    be exercised to use these constructs with other compilers, or older versions
    of |GNAT Pro|. This issue is detailed in section :ref:`Portability Issues`.
 
-.. _Portability of Programs With Errors:
-
 Portability of Programs With Errors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1196,10 +1170,8 @@ analyses and reviews in the context of the original and the new compiler and/or
 target. Whenever possible, these analyses and reviews should be automated by
 tools to guarantee that all possible errors of a given kind have been reported.
 
-.. _Benefits of Using SPARK for Portability:
-
-Benefits of Using |SPARK| for Portability
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Benefits of Using SPARK for Portability
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The :ref:`Language Restrictions` in |SPARK| favor portability by excluding
 problematic language features (see :ref:`Excluded Ada Features`):
@@ -1369,8 +1341,6 @@ non-portability in |SPARK| may come from a small list of causes:
   section :ref:`Portability of Fixed-Point and Floating-Point Computations`
   below.
 
-.. _Avoiding Errors to Enhance Portability:
-
 Avoiding Errors to Enhance Portability
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1405,8 +1375,6 @@ the size of standard integer types.
 |GNATprove|'s analysis does not detect possible run-time errors corresponding
 to raising exception ``Storage_Error`` at run time, which should be
 independently assessed.
-
-.. _Portability of Fixed-Point and Floating-Point Computations:
 
 Portability of Fixed-Point and Floating-Point Computations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1456,8 +1424,6 @@ the same result when taking the same values in arguments. GNAT compiler was
 modified to ensure this property (see https://blog.adacore.com/how-our-compiler-learnt-from-our-analyzers),
 which may not hold for other Ada compilers.
 
-.. _Project Scenarios:
-
 Project Scenarios
 =================
 
@@ -1468,8 +1434,6 @@ codebase in Ada or in a version of SPARK prior to SPARK 2014? We examine all
 these project scenarios in this section.
 
 .. index:: migration from Ada; project scenario
-
-.. _Maintenance and Evolution of Existing Ada Software:
 
 Maintenance and Evolution of Existing Ada Software
 --------------------------------------------------
@@ -1576,8 +1540,6 @@ code ``SPARK_Mode => On``:
 #. Now that |GNATprove| can analyze the unit without any errors, continue with
    whatever analysis is required to achieve the desired objectives.
 
-.. _Choosing Which Run-time Checking to Keep:
-
 Choosing Which Run-time Checking to Keep
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1635,10 +1597,8 @@ in running time, with some checks being inserted at unexpected/extra places, as
 these validity checks do not follow a formal definition like the one found in
 Ada Reference Manual for other run-time checks.
 
-.. _New Developments in SPARK:
-
-New Developments in |SPARK|
----------------------------
+New Developments in SPARK
+-------------------------
 
 In this scenario, a significant part of a software (possibly a module, possibly
 the whole software) is developed in |SPARK|. Typically, |SPARK| is used for the
@@ -1676,8 +1636,6 @@ process for this scenario might be:
    contract, and/or to show absence of run-time errors).
 
 .. index:: migration from SPARK 2005; project scenario
-
-.. _Conversion of Existing SPARK Software to SPARK 2014:
 
 Conversion of Existing SPARK Software to SPARK 2014
 ---------------------------------------------------
@@ -1779,8 +1737,6 @@ improvements in the tools mean that sound analysis can be performed without
 them, but some projects may need to operate in a more constrained environment.)
 This can be achieved using ``pragma Restrictions (SPARK_05)``. For further
 details of this restriction please see the GNAT Reference Manual.
-
-.. _Analysis of Frozen Ada Software:
 
 Analysis of Frozen Ada Software
 -------------------------------

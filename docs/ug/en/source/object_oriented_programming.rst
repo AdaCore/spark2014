@@ -1,5 +1,3 @@
-.. _Object Oriented Programming and Liskov Substitution Principle:
-
 Object Oriented Programming and Liskov Substitution Principle
 =============================================================
 
@@ -13,8 +11,6 @@ type anywhere.
            Post'Class
            precondition; on dispatching operation
            postcondition; on dispatching operation
-
-.. _Class-Wide Subprogram Contracts:
 
 Class-Wide Subprogram Contracts
 -------------------------------
@@ -84,8 +80,6 @@ parent type and when it is inherited from an interface.
 
 |GNATprove| separately checks that a subprogram implements its class-wide
 contract, like for a specific contract.
-
-.. _Mixing Class-Wide and Specific Subprogram Contracts:
 
 Mixing Class-Wide and Specific Subprogram Contracts
 ---------------------------------------------------

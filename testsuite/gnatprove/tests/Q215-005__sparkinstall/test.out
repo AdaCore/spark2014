@@ -8,6 +8,7 @@ codepeer-gnatls
 codepeer-gprbuild
 codepeer-gprls
 codepeer_be
+colibri
 cvc4
 gcc
 gnat2why

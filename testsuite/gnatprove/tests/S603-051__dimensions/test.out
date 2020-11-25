@@ -1,13 +1,13 @@
-a-ngelfu.ads:117:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
-a-ngelfu.ads:117:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
-a-ngelfu.ads:117:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:379
-a-ngelfu.ads:117:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:380
-a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
-a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
-a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
-a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
-a-ngelfu.ads:127:64: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:379
-a-ngelfu.ads:127:64: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:380
+a-ngelfu.ads:119:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
+a-ngelfu.ads:119:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
+a-ngelfu.ads:119:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:379
+a-ngelfu.ads:119:66: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:380
+a-ngelfu.ads:128:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
+a-ngelfu.ads:128:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
+a-ngelfu.ads:129:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
+a-ngelfu.ads:129:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
+a-ngelfu.ads:129:64: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:379
+a-ngelfu.ads:129:64: info: float overflow check proved (Trivial), in instantiation at dimensions.ads:380
 camera_types.ads:19:42: info: division check proved (CVC4: 1 VC)
 camera_types.ads:19:72: info: division check proved (CVC4: 1 VC)
 camera_types.ads:21:36: info: predicate check proved (CVC4: 1 VC)

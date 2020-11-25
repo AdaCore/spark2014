@@ -50,6 +50,7 @@ package SPARK_Atree is
    subtype N_Declaration              is Sinfo.N_Declaration;
    subtype N_Entity                   is Sinfo.N_Entity;
    subtype N_Has_Entity               is Sinfo.N_Has_Entity;
+   subtype N_Has_Etype                is Sinfo.N_Has_Etype;
    subtype N_Membership_Test          is Sinfo.N_Membership_Test;
    subtype N_Op                       is Sinfo.N_Op;
    subtype N_Op_Compare               is Sinfo.N_Op_Compare;
@@ -113,6 +114,8 @@ package SPARK_Atree is
      Sinfo.N_Integer_Literal;
    N_Iterated_Component_Association : Node_Kind renames
      Sinfo.N_Iterated_Component_Association;
+   N_Itype_Reference                : Node_Kind renames
+     Sinfo.N_Itype_Reference;
    N_Label                          : Node_Kind renames Sinfo.N_Label;
    N_Loop_Statement                 : Node_Kind renames Sinfo.N_Loop_Statement;
    N_Not_In                         : Node_Kind renames Sinfo.N_Not_In;
@@ -566,6 +569,9 @@ package SPARK_Atree is
    function Iterator_Specification (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Iteration_Scheme
                        | N_Quantified_Expression;
+
+   function Itype (N : Node_Id) return Entity_Id with
+     Pre => Nkind (N) = N_Itype_Reference;
 
    function Last_Bit (N : Node_Id) return Node_Id with
      Pre => Nkind (N) = N_Component_Clause;

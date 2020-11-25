@@ -1,7 +1,5 @@
 .. index:: Ravenscar, concurrency
 
-.. _Concurrency and Ravenscar Profile:
-
 Concurrency and Ravenscar Profile
 =================================
 
@@ -52,8 +50,6 @@ expression, as follows (absolute and relative delays, respectively):
   similarly to Ada.Real_Time.Clock_Time but represents a different time base.
 
 .. index:: tasking, data race
-
-.. _Tasks and Data Races:
 
 Tasks and Data Races
 --------------------
@@ -138,8 +134,6 @@ need one task ``Account_Management`` then we can write:
 .. index:: protected object; and data races
            Suspension_Object; and data races
            Constant_After_Elaboration; and data races
-
-.. _Preventing Data Races:
 
 Preventing Data Races
 ^^^^^^^^^^^^^^^^^^^^^
@@ -272,8 +266,8 @@ returns`.
 
 .. index:: Global; in task contract
 
-Data Dependencies
-^^^^^^^^^^^^^^^^^
+Data Dependencies on Tasks
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Data dependencies on tasks follow the same syntax as the ones on subprograms
 (see :ref:`Data Dependencies`). For example, data dependencies can be specified
@@ -290,8 +284,8 @@ for task (type or object) ``Account_Management`` as follows:
 
 .. index:: Depends; in task contract
 
-Flow Dependencies
-^^^^^^^^^^^^^^^^^
+Flow Dependencies on Tasks
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Flow dependencies on tasks follow the same syntax as the ones on subprograms
 (see :ref:`Flow Dependencies`). For example, flow dependencies can be specified
@@ -329,8 +323,6 @@ The dependency of the task on itself can be left implicit as well, as follows:
 
 .. index:: protected object; and deadlock
 
-.. _Protected Objects and Deadlocks:
-
 Protected Objects and Deadlocks
 -------------------------------
 
@@ -342,8 +334,6 @@ conditions (lack of proper synchronization between reads and writes of shared
 data). They coordinate access to the protected data guaranteeing that
 read-write accesses are always exclusive while allowing concurrent read-only
 accesses. In Ravenscar, only library-level protected objects are allowed.
-
-.. _Protected Types and Protected Objects:
 
 Protected Types and Protected Objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -442,8 +432,6 @@ implicitly declared for it. For example, if ``Num_Account`` is the only
       end Num_Accounts;
 
    end Account;
-
-.. _Protected Subprograms:
 
 Protected Subprograms
 ^^^^^^^^^^^^^^^^^^^^^
@@ -585,8 +573,6 @@ protected subprogram:
 
    end Account;
 
-.. _Avoiding Deadlocks and Priority Ceiling Protocol:
-
 Avoiding Deadlocks and Priority Ceiling Protocol
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -648,8 +634,6 @@ used by ``Account_Management``, its ceiling priority should be no lower than 5:
    end Account;
 
 .. index:: Suspension_Object
-
-.. _Suspension Objects:
 
 Suspension Objects
 ------------------
@@ -729,8 +713,6 @@ each suspension object:
 .. index:: state abstraction; and concurrency
            External; and concurrency
            Synchronous_State
-
-.. _State Abstraction and Concurrency:
 
 State Abstraction and Concurrency
 ---------------------------------

@@ -1,5 +1,3 @@
-.. _Package Contracts:
-
 Package Contracts
 =================
 
@@ -24,8 +22,6 @@ statements sometimes given at the end of a package body that are precisely
 executed at package startup.
 
 .. index:: state abstraction; in package contract
-
-.. _State Abstraction:
 
 State Abstraction
 -----------------
@@ -270,8 +266,6 @@ abstract state of the enclosing package:
 
 .. index:: Initializes
 
-.. _Package Initialization:
-
 Package Initialization
 ----------------------
 
@@ -353,8 +347,6 @@ variable:
 
 .. index:: Initial_Condition
 
-.. _Package Initial Condition:
-
 Package Initial Condition
 -------------------------
 
@@ -389,8 +381,6 @@ When a package is analyzed with |GNATprove|, it checks that the initial
 condition of a package cannot fail. |GNATprove| also analyzes the initial
 condition expression to ensure that it is free from run-time errors, like any
 other assertion.
-
-.. _Interfaces to the Physical World:
 
 Interfaces to the Physical World
 --------------------------------
@@ -459,8 +449,6 @@ it can be read or written outside the program.
            Async_Readers; variables
            Effective_Writes; variables
            Effective_Reads; variables
-
-.. _Properties of Volatile Variables:
 
 Properties of Volatile Variables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -539,8 +527,6 @@ ones set to ``False``. See SPARK RM 7.1.3 for details.
 
 .. index:: volatile; types
 
-.. _Properties of Volatile Types:
-
 Properties of Volatile Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -572,8 +558,6 @@ can be written equivalently:
            Effective_Writes; state
            Effective_Reads; state
 
-
-.. _External State Abstraction:
 
 External State Abstraction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^

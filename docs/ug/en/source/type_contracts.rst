@@ -1,5 +1,3 @@
-.. _Type Contracts:
-
 Type Contracts
 ==============
 
@@ -22,8 +20,6 @@ Type Contracts
 Note that |SPARK| does not yet support aspect ``Type_Invariant`` from Ada.
 
 .. index:: range
-
-.. _Scalar Ranges:
 
 Scalar Ranges
 -------------
@@ -113,8 +109,6 @@ bounds:
    :language: none
 
 .. index:: predicate, Static_Predicate, Dynamic_Predicate
-
-.. _Predicates:
 
 Predicates
 ----------
@@ -305,8 +299,6 @@ the contrary, during analysis, |GNATprove| checks that initialized variables
 whose subtype has a predicate always contain a value allowed by the predicate.
 
 .. index:: Invariant, Type_Invariant
-
-.. _Type Invariants:
 
 Type Invariants
 ---------------
@@ -508,8 +500,6 @@ In this way, users will never have to use contracts to ensure that the invariant
 holds on global variable ``The_Stack`` through local subprogram calls.
 
 .. index:: Default_Initial_Condition
-
-.. _Default Initial Condition:
 
 Default Initial Condition
 -------------------------

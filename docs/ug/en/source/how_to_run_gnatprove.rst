@@ -1,9 +1,7 @@
-How to Run |GNATprove|
-======================
+How to Run GNATprove
+====================
 
 .. index:: project file; setup
-
-.. _Setting Up a Project File:
 
 Setting Up a Project File
 -------------------------
@@ -31,8 +29,6 @@ file will look like:
   end My_Project;
 
 saved in a file called ``my_project.gpr``.
-
-.. _Having Different Switches for Compilation and Verification:
 
 Having Different Switches for Compilation and Verification
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -77,10 +73,8 @@ tool. You can set it manually in this case::
 
   gnatprove -P my_project.gpr -XGPR_TOOL=gnatprove
 
-.. _Running GNATprove from the Command Line:
-
-Running |GNATprove| from the Command Line
------------------------------------------
+Running GNATprove from the Command Line
+---------------------------------------
 
 |GNATprove| can be run from the command line as follows::
 
@@ -332,7 +326,8 @@ of GNAT and |SPARK| (e.g. GNAT 18.2 and SPARK 18.2).
 The handling of runtimes of |GNATprove| is in fact unified with that of the
 GNAT compiler. For details, see "GNAT User's Guide Supplement for Cross
 Platforms", Section 3. If you specify a target, note that |GNATprove| requires
-additional configuration, see the section :ref:`implementation_defined`.
+additional configuration, see the section :ref:`Specifying the Target
+Architecture and Implementation-Defined Behavior`.
 
 If you're using GNAT Common Code Generator to generate C code from SPARK, you
 can specify the target and runtime as follows:
@@ -343,8 +338,6 @@ can specify the target and runtime as follows:
    for Runtime ("Ada") use "ccg";
 
 .. index:: --pedantic
-
-.. _implementation_defined:
 
 Specifying the Target Architecture and Implementation-Defined Behavior
 ----------------------------------------------------------------------
@@ -367,8 +360,6 @@ Note that |GNATprove| will always choose the smallest multiple of 8 bits for
 the base type, which is a safe and conservative choice for any Ada compiler.
 
 .. index:: -gnateT
-
-.. _Target Parameterization:
 
 Target Parameterization
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -448,8 +439,6 @@ processor configured as big-endian::
 
 .. index:: --codepeer; use cases
 
-.. _Using CodePeer Static Analysis:
-
 Using CodePeer Static Analysis
 ------------------------------
 
@@ -504,10 +493,8 @@ bounds of floating-point operations.
 
 .. index:: GNAT Studio integration
 
-.. _Running GNATprove from GNAT Studio:
-
-Running |GNATprove| from GNAT Studio
-------------------------------------
+Running GNATprove from GNAT Studio
+----------------------------------
 
 |GNATprove| can be run from GNAT Studio. When |GNATprove| is installed and found on
 your PATH, a :menuselection:`SPARK` menu is available with the following
@@ -623,10 +610,8 @@ screenshot which shows how symbols like :code:`=>` (arrow) or :code:`>=`
 
 .. index:: GNATbench
 
-.. _Running GNATprove from GNATbench:
-
-Running |GNATprove| from GNATbench
-----------------------------------
+Running GNATprove from GNATbench
+--------------------------------
 
 |GNATprove| can be run from GNATbench. When |GNATprove| is installed and found
 on your PATH, a :menuselection:`SPARK` menu is available with the following
@@ -680,10 +665,8 @@ When editing an Ada file, |GNATprove| can also be run from a
 .. index:: manual proof
            Platinum level; manual proof
 
-.. _GNATprove and Manual Proof:
-
-|GNATprove| and Manual Proof
-----------------------------
+GNATprove and Manual Proof
+--------------------------
 
 When automated provers fail to prove some condition that is valid, the validity
 may be proved using manual proof inside GNAT Studio or an external interactive prover.
@@ -748,8 +731,6 @@ Once the editor is closed, GNAT Studio re-executes
 :menuselection:`SPARK --> Prove Check`. The user should verify the same
 alternative prover as before is still specified. After execution, GNAT Studio will
 offer to re-edit the file if the proof fails.
-
-.. _Manual Proof Within GNAT Studio:
 
 Manual Proof Within GNAT Studio
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

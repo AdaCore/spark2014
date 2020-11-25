@@ -1,0 +1,17 @@
+test_enum.adb:8:14: info: postcondition proved (CVC4: 1 VC)
+test_enum.adb:13:34: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_enum.adb:18:32: info: range check proved (CVC4: 1 VC)
+test_enum.adb:21:04: warning: analyzing unreferenced function "My_Enum_Enumval_Bad"
+test_enum.adb:24:32: medium: range check might fail (e.g. when X = -1) [reason for check: value must correspond to representation in the type] [possible fix: subprogram at line 21 should mention X in a precondition]
+test_enum.adb:29:14: info: postcondition proved (CVC4: 1 VC)
+test_enum.adb:33:50: info: range check proved (CVC4: 1 VC)
+test_enum.adb:37:14: info: postcondition proved (CVC4: 1 VC)
+test_enum.adb:41:39: info: range check proved (CVC4: 1 VC)
+test_enum.adb:46:14: info: postcondition proved (CVC4: 1 VC)
+test_enum.adb:51:34: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+test_enum.adb:56:34: info: range check proved (CVC4: 1 VC)
+test_enum.adb:59:04: warning: analyzing unreferenced function "My_Enum_Enumval_Bad"
+test_enum.adb:62:34: medium: range check might fail (e.g. when X = -1) [reason for check: value must correspond to position in the type] [possible fix: subprogram at line 59 should mention X in a precondition]
+test_enum.adb:67:14: info: postcondition proved (CVC4: 1 VC)
+test_enum.adb:71:54: info: range check proved (CVC4: 1 VC)
+test_enum.adb:75:14: info: postcondition proved (CVC4: 1 VC)

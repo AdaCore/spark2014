@@ -1,10 +1,8 @@
 .. index:: SPARK_Mode; usage
 
-.. _Identifying SPARK Code:
-
-************************
-Identifying |SPARK| Code
-************************
+**********************
+Identifying SPARK Code
+**********************
 
 In general a program can have some parts that are in |SPARK| (and follow all
 the rules in the |SPARK| Reference Manual), and some parts that are full
@@ -119,8 +117,6 @@ The project file is used to identify coarsely which parts of a program are in
 |SPARK|. To get more details on project file setup, see section :ref:`Setting
 Up a Project File`.
 
-.. _Setting the Default SPARK_Mode:
-
 Setting the Default SPARK_Mode
 ------------------------------
 
@@ -153,8 +149,6 @@ line:
 .. code-block:: ada
 
   pragma SPARK_Mode (On);
-
-.. _Specifying Files To Analyze:
 
 Specifying Files To Analyze
 ---------------------------
@@ -193,8 +187,6 @@ Then, |GNATprove| should be called by specifying the value of the ``MODE``
 external variable as follows::
 
   gnatprove -P my_project -XMODE=Analyze
-
-.. _Excluding Files From Analysis:
 
 Excluding Files From Analysis
 -----------------------------
@@ -417,8 +409,6 @@ occurrences of ``SPARK_Mode`` in the generic are ignored for this instance.
 Examples of Use
 ---------------
 
-.. _Verifying Selected Subprograms:
-
 Verifying Selected Subprograms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -440,8 +430,6 @@ that the spec of ``Sub_Action`` is in |SPARK|.
    :language: ada
    :linenos:
 
-.. _Verifying Selected Units:
-
 Verifying Selected Units
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -461,8 +449,6 @@ Off``. On the contrary, procedure ``Non_Critical_Action`` whose spec is marked
 .. literalinclude:: /examples/tests/selected_units/selected_units.adb
    :language: ada
    :linenos:
-
-.. _Excluding Selected Unit Bodies:
 
 Excluding Selected Unit Bodies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -504,8 +490,6 @@ which case both the spec and the body of the instantiated generic are excluded.
 .. literalinclude:: /examples/tests/use_generic/use_generic.adb
    :language: ada
    :linenos:
-
-.. _Excluding Selected Parts of a Unit:
 
 Excluding Selected Parts of a Unit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -477,10 +477,14 @@ package body SPARK_Definition is
          Actual_Des_Ty := Directly_Designated_Type (Root_Retysp (Actual_Type));
          Expected_Des_Ty :=
            Directly_Designated_Type (Root_Retysp (Expected_Type));
-         if Is_Incomplete_Type (Actual_Des_Ty) then
+         if Is_Incomplete_Type (Actual_Des_Ty)
+           and then Present (Full_View (Actual_Des_Ty))
+         then
             Actual_Des_Ty := Full_View (Actual_Des_Ty);
          end if;
-         if Is_Incomplete_Type (Expected_Des_Ty) then
+         if Is_Incomplete_Type (Expected_Des_Ty)
+           and then Present (Full_View (Expected_Des_Ty))
+         then
             Expected_Des_Ty := Full_View (Expected_Des_Ty);
          end if;
 
@@ -2322,7 +2326,6 @@ package body SPARK_Definition is
             | N_Generic_Subprogram_Declaration
             | N_Implicit_Label_Declaration
             | N_Incomplete_Type_Declaration
-            | N_Itype_Reference
             | N_Null_Statement
             | N_Operator_Symbol
             | N_Others_Choice
@@ -2339,20 +2342,23 @@ package body SPARK_Definition is
          =>
             null;
 
+         --  Itype reference node may be needed to express the side-effects
+         --  associated to the creation of an Itype.
+
+         when N_Itype_Reference =>
+            declare
+               Assoc : constant Node_Id :=
+                 Associated_Node_For_Itype (Itype (N));
+            begin
+               if Nkind (Assoc) in N_Has_Etype then
+                  Mark (Assoc);
+               end if;
+            end;
+
          when N_Real_Literal
             | N_Integer_Literal
          =>
-            --  If a literal is the result of the front-end
-            --  rewriting a static attribute, then we mark
-            --  the original node.
-            if not Comes_From_Source (N)
-              and then Is_Rewrite_Substitution (N)
-              and then Nkind (Original_Node (N)) = N_Attribute_Reference
-            then
-               Mark_Attribute_Reference (Original_Node (N));
-            else
-               Mark_Entity (Etype (N));
-            end if;
+            Mark_Entity (Etype (N));
 
          when N_Delta_Aggregate =>
             Mark (Expression (N));
@@ -2679,10 +2685,11 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               --  Object renamings are not ignored, but simply checked for
-               --  absence of RTE in their name.
+               --  Object renamings and Itype references are not ignored, but
+               --  simply checked for absence of RTE.
 
                when N_Ignored_In_SPARK
+                  | N_Itype_Reference
                   | N_Object_Renaming_Declaration
                =>
                   null;
@@ -2775,27 +2782,49 @@ package body SPARK_Definition is
       case Attr_Id is
 
          --  Support a subset of the attributes defined in Ada RM. These are
-         --  the attributes marked "Yes" in SPARK RM 15.2.
-         when Attribute_Adjacent
-            | Attribute_Aft
-            | Attribute_Callable
-            | Attribute_Caller
+         --  the attributes marked "Yes" in SPARK RM 15.2 for which we support
+         --  non-static values.
+         when Attribute_Callable
             | Attribute_Ceiling
             | Attribute_Class
             | Attribute_Constrained
             | Attribute_Copy_Sign
+            | Attribute_Enum_Rep
+            | Attribute_Enum_Val
+            | Attribute_First
+            | Attribute_Floor
+            | Attribute_Last
+            | Attribute_Length
+            | Attribute_Max
+            | Attribute_Min
+            | Attribute_Mod
+            | Attribute_Modulus
+            | Attribute_Pos
+            | Attribute_Pred
+            | Attribute_Remainder
+            | Attribute_Result
+            | Attribute_Rounding
+            | Attribute_Succ
+            | Attribute_Terminated
+            | Attribute_Truncation
+            | Attribute_Update
+            | Attribute_Val
+            | Attribute_Value
+         =>
+            null;
+
+         --  These attributes are supported according to SPARM RM, but we
+         --  currently only support static values in GNATprove.
+         when Attribute_Adjacent
+            | Attribute_Aft
+            | Attribute_Caller
             | Attribute_Definite
             | Attribute_Delta
             | Attribute_Denorm
             | Attribute_Digits
-            | Attribute_Enum_Rep
-            | Attribute_First
             | Attribute_First_Valid
-            | Attribute_Floor
             | Attribute_Fore
-            | Attribute_Last
             | Attribute_Last_Valid
-            | Attribute_Length
             | Attribute_Machine
             | Attribute_Machine_Emax
             | Attribute_Machine_Emin
@@ -2803,42 +2832,30 @@ package body SPARK_Definition is
             | Attribute_Machine_Overflows
             | Attribute_Machine_Radix
             | Attribute_Machine_Rounds
-            | Attribute_Max
-            | Attribute_Min
-            | Attribute_Mod
             | Attribute_Model
             | Attribute_Model_Emin
             | Attribute_Model_Epsilon
             | Attribute_Model_Mantissa
             | Attribute_Model_Small
-            | Attribute_Modulus
             | Attribute_Partition_ID
-            | Attribute_Pos
-            | Attribute_Pred
             | Attribute_Range
-            | Attribute_Remainder
-            | Attribute_Result
             | Attribute_Round
-            | Attribute_Rounding
             | Attribute_Safe_First
             | Attribute_Safe_Last
             | Attribute_Scale
             | Attribute_Scaling
             | Attribute_Small
-            | Attribute_Succ
-            | Attribute_Terminated
-            | Attribute_Truncation
             | Attribute_Unbiased_Rounding
-            | Attribute_Update
-            | Attribute_Val
-            | Attribute_Value
             | Attribute_Wide_Value
             | Attribute_Wide_Wide_Value
             | Attribute_Wide_Wide_Width
             | Attribute_Wide_Width
             | Attribute_Width
          =>
-            null;
+            Mark_Unsupported
+              ("non-static attribute """
+               & Standard_Ada_Case (Get_Name_String (Aname))
+               & """", N);
 
          --  We assume a maximal length for the image of any type. This length
          --  may be inaccurate for identifiers.
@@ -5519,6 +5536,16 @@ package body SPARK_Definition is
               and then not In_SPARK (Base_Type (E))
             then
                Mark_Violation (E, From => Base_Type (E));
+            end if;
+
+            --  A record subtype might share its components with the subtype
+            --  from which it is cloned. Mark the clone first before marking
+            --  the components, which expects the enclosing type to be marked.
+
+            if Ekind (E) in E_Record_Subtype | E_Class_Wide_Subtype
+              and then Present (Cloned_Subtype (E))
+            then
+               Mark_Entity (Cloned_Subtype (E));
             end if;
 
             --  Components of a record type should be in SPARK for the record

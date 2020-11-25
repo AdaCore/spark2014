@@ -1,8 +1,6 @@
-.. _SPARK Tutorial:
-
-****************
-|SPARK| Tutorial
-****************
+**************
+SPARK Tutorial
+**************
 
 This chapter describes a simple use of the |SPARK| toolset on a program written
 completely in |SPARK|, within the GNAT Studio integrated development environment. All
@@ -102,8 +100,6 @@ this type:
    :linenos:
 
 .. index:: Bronze level; tutorial
-
-.. _Checking SPARK Initialization Policy:
 
 Checking SPARK Initialization Policy
 ------------------------------------
@@ -218,8 +214,8 @@ analyzes semantically without errors or warnings.
 
 .. index:: executable contracts; tutorial
 
-Testing |SPARK| Programs
-========================
+Testing SPARK Programs
+======================
 
 We can compile the above program, and test it on a set of selected inputs. The
 following test program in file ``test_search.adb`` exercises the case where the
@@ -336,10 +332,8 @@ the MC/DC coverage used in avionics, and even the full static path coverage.
 .. index:: Silver level; tutorial
            Gold level; tutorial
 
-.. _proving spark programs:
-
-Proving |SPARK| Programs
-========================
+Proving SPARK Programs
+======================
 
 Formal verification of |SPARK| programs is a two-step process:
 

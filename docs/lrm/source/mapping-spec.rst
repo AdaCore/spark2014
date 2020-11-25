@@ -1,5 +1,3 @@
-.. _mapping-spec-label:
-
 SPARK 2005 to SPARK 2014 Mapping Specification
 ==============================================
 
@@ -34,43 +32,43 @@ a reference to the equivalent or alternative in SPARK 2014.  In the table
 headings 2014 RM is the SPARK Reference Manual and Mapping is this
 appendix, the SPARK 2005 to SPARK 2014 mapping specification.
 
-================= ======================================== ================================================ ========
-SPARK 2005        SPARK 2014                               2014 RM                                          Mapping
-================= ======================================== ================================================ ========
-~ in post         'Old attribute   - see Ada RM 6.1.1                                                       :ref:`A.2.2 <ms-pre_post_return-label>`
-~ in body         'Loop_Entry attribute                    :ref:`5.5.3 <loop_entry>`                        :ref:`A.7 <ms-value_of_variable_on_entry_to_a_loop-label>`
+================= ======================================== ========================================================= ========
+SPARK 2005        SPARK 2014                               2014 RM                                                   Mapping
+================= ======================================== ========================================================= ========
+~ in post         'Old attribute   - see Ada RM 6.1.1                                                                :ref:`A.2.2 <ms-pre_post_return-label>`
+~ in body         'Loop_Entry attribute                    :ref:`5.5.3 <Attribute Loop_Entry>`                       :ref:`A.7 <ms-value_of_variable_on_entry_to_a_loop-label>`
 <->               =
-A -> B            (if A then B)     - see Ada RM 4.5.7                                                      :ref:`A.2.2 <ms-pre_post_return-label>`
-%                 not needed                                                                                :ref:`A.7 <ms-value_of_variable_on_entry_to_a_loop-label>`
-always_valid      not supported                                                                             :ref:`A.4.1 <ms-proof_assume_contract-label>`
-assert            pragma Assert_And_Cut                    :ref:`5.9 <pragma_assume>`                       :ref:`A.4.2 <ms-assert_no_loop_contract-label>`
-assert in loop    pragma Loop_Invariant                    :ref:`5.5.3 <loop_invariants>`                   :ref:`A.4.1 <ms-assert_loop_contract-label>`
-assume            pragma Assume                            :ref:`5.9 <pragma_assume>`                       :ref:`A.4.1 <ms-proof_assume_contract-label>`
-check             pragma Assert     - see Ada RM 11.4.2                                                     :ref:`A.4.1 <ms-check_contract-label>`
-derives on spec   Depends aspect                           :ref:`6.1.5 <depends-aspects>`                   :ref:`A.2.1 <ms-global_derives-label>`
+A -> B            (if A then B)     - see Ada RM 4.5.7                                                               :ref:`A.2.2 <ms-pre_post_return-label>`
+%                 not needed                                                                                         :ref:`A.7 <ms-value_of_variable_on_entry_to_a_loop-label>`
+always_valid      not supported                                                                                      :ref:`A.4.1 <ms-proof_assume_contract-label>`
+assert            pragma Assert_And_Cut                    :ref:`5.9 <Proof Pragmas>`                                :ref:`A.4.2 <ms-assert_no_loop_contract-label>`
+assert in loop    pragma Loop_Invariant                    :ref:`5.5.3 <Loop Invariants, Variants and Entry Values>` :ref:`A.4.1 <ms-assert_loop_contract-label>`
+assume            pragma Assume                            :ref:`5.9 <Proof Pragmas>`                                :ref:`A.4.1 <ms-proof_assume_contract-label>`
+check             pragma Assert     - see Ada RM 11.4.2                                                              :ref:`A.4.1 <ms-check_contract-label>`
+derives on spec   Depends aspect                           :ref:`6.1.5 <Depends Aspects>`                            :ref:`A.2.1 <ms-global_derives-label>`
 derives on body   No separate spec - Depends aspect
-derives on body   Separate spec - Refined_Depends aspect   :ref:`7.2.5 <refined-depends-aspect>`            :ref:`A.3.2 <ms-asm_abstract_state_refined_in_private_child-label>`
-for all           quantified_expression - see Ada RM 4.5.8                                                  :ref:`A.2.3 <ms-attributes_of_unconstrained_out_parameter_in_precondition-label>`
-for some          quantified_expression - See Ada RM 4.5.8                                                  :ref:`A.4.1 <ms-assert_loop_contract-label>`
-global on spec    Global aspect                            :ref:`6.1.4 <global-aspects>`                    :ref:`A.2.1 <ms-global_derives-label>`
+derives on body   Separate spec - Refined_Depends aspect   :ref:`7.2.5 <Refined_Depends Aspects>`                    :ref:`A.3.2 <ms-asm_abstract_state_refined_in_private_child-label>`
+for all           quantified_expression - see Ada RM 4.5.8                                                           :ref:`A.2.3 <ms-attributes_of_unconstrained_out_parameter_in_precondition-label>`
+for some          quantified_expression - See Ada RM 4.5.8                                                           :ref:`A.4.1 <ms-assert_loop_contract-label>`
+global on spec    Global aspect                            :ref:`6.1.4 <Global Aspects>`                             :ref:`A.2.1 <ms-global_derives-label>`
 global on body    No separate spec - Global aspect
-global on body    Separate spec - Refined_Global aspect    :ref:`7.2.4 <refined-global-aspect>`             :ref:`A.2.4 <ms-nesting_refinement-label>`
+global on body    Separate spec - Refined_Global aspect    :ref:`7.2.4 <Refined_Global Aspects>`                     :ref:`A.2.4 <ms-nesting_refinement-label>`
 hide              pragma SPARK_Mode - see User Guide
-inherit           not needed                                                                                :ref:`A.3.4 <ms-package_inheritance-label>`
-initializes       Initializes aspect                       :ref:`7.1.5 <initializes_aspect>`                :ref:`A.2.4 <ms-nesting_refinement-label>`
+inherit           not needed                                                                                         :ref:`A.3.4 <ms-package_inheritance-label>`
+initializes       Initializes aspect                       :ref:`7.1.5 <Initializes Aspects>`                        :ref:`A.2.4 <ms-nesting_refinement-label>`
 main_program      not needed
-object assertions rule declarations are not needed                                                          :ref:`A.5.3 <ms-proof_types_and_proof_functions-label>`
-own on spec       Abstract_State aspect                    :ref:`7.1.4 <abstract-state-aspect>`             :ref:`A.3.2 <ms-asm-label>`
-own on body       Refined_State aspect                     :ref:`7.2.2 <refined_state_aspect>`              :ref:`A.3.2 <ms-asm-label>`
-post on spec      postcondition     - see Ada RM 6.1.1     :ref:`6.1.1 <preconditions-and-postconditions>`  :ref:`A.2.2 <ms-pre_post_return-label>`
+object assertions rule declarations are not needed                                                                   :ref:`A.5.3 <ms-proof_types_and_proof_functions-label>`
+own on spec       Abstract_State aspect                    :ref:`7.1.4 <Abstract_State Aspects>`                     :ref:`A.3.2 <ms-asm-label>`
+own on body       Refined_State aspect                     :ref:`7.2.2 <Refined_State Aspects>`                      :ref:`A.3.2 <ms-asm-label>`
+post on spec      postcondition     - see Ada RM 6.1.1     :ref:`6.1.1 <Preconditions and Postconditions>`           :ref:`A.2.2 <ms-pre_post_return-label>`
 post on body      No separate spec - postcondition
-post on body      Separate spec - Refined_Post aspect      :ref:`7.2.7 <refined-postcondition>`
-pre               precondition      - see Ada RM 6.1.1     :ref:`6.1.1 <preconditions-and-postconditions>`
-proof functions   Ghost functions                          :ref:`6.9 <ghost-functions>`                     :ref:`A.5.3 <ms-proof_types_and_proof_functions-label>`
-proof types       Ada types                                                                                 :ref:`A.5.5 <ms-quote_own_variable_in_contract-label>`
-return            'Result attribute - see Ada RM 6.1.1                                                      :ref:`A.2.2 <ms-pre_post_return-label>`
-update            delta aggregate                                                                           :ref:`A.6 <ms-quote_own_variable_in_contract-label>`
-================= ======================================== ================================================ ========
+post on body      Separate spec - Refined_Post aspect      :ref:`7.2.7 <Refined Postcondition Aspects>`
+pre               precondition      - see Ada RM 6.1.1     :ref:`6.1.1 <Preconditions and Postconditions>`
+proof functions   Ghost functions                          :ref:`6.9 <Ghost Entities>`                               :ref:`A.5.3 <ms-proof_types_and_proof_functions-label>`
+proof types       Ada types                                                                                          :ref:`A.5.5 <ms-quote_own_variable_in_contract-label>`
+return            'Result attribute - see Ada RM 6.1.1                                                               :ref:`A.2.2 <ms-pre_post_return-label>`
+update            delta aggregate                                                                                    :ref:`A.6 <ms-quote_own_variable_in_contract-label>`
+================= ======================================== ========================================================= ========
 
 Subprogram patterns
 -------------------

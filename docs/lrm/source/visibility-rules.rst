@@ -35,8 +35,6 @@ Renaming Declarations
 ---------------------
 
 
-.. _object_renaming_declarations:
-
 Object Renaming Declarations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -45,9 +43,11 @@ Object Renaming Declarations
 
 1. [An expression or range occurring as part of an
    ``object_renaming_declaration`` shall not have a variable input;
-   see :ref:`expressions` for the statement of this rule.]
-   [This rule can apply to an index of an indexed_component and the range
-   of a slice.]
+   similarly, the access-valued prefix of a dereference occurring
+   as part of an object_renaming declaration shall not have a
+   variable input. See :ref:`Expressions` for the statement of this rule.]
+   [The first part of this rule can apply to an index of an
+   indexed_component and the range of a slice.]
 
 
 Exception Renaming Declarations

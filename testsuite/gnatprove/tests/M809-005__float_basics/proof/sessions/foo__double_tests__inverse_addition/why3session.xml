@@ -13,7 +13,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="34922"/></proof>
+  <proof prover="1"><result status="unknown" steps="34914"/></proof>
   <proof prover="2"><result status="unknown" steps="4060"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">

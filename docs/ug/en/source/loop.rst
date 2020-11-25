@@ -1,5 +1,3 @@
-.. _loop_examples:
-
 Loop Examples
 -------------
 
@@ -69,8 +67,6 @@ over the content of a collection (either an array or a container from the
 :ref:`Formal Containers Library`).
 
 .. index:: Loop_Invariant; initialization loops
-
-.. _Initialization Loops:
 
 Initialization Loops
 ^^^^^^^^^^^^^^^^^^^^
@@ -187,8 +183,6 @@ different value to each element of the collection would be proved by
 
 .. index:: Loop_Invariant; mapping loops
 
-.. _Mapping Loops:
-
 Mapping Loops
 ^^^^^^^^^^^^^
 
@@ -263,8 +257,6 @@ loop invariant, |GNATprove| is able to prove the postcondition of
    :language: none
 
 .. index:: Loop_Invariant; validation loops
-
-.. _Validation Loops:
 
 Validation Loops
 ^^^^^^^^^^^^^^^^
@@ -374,8 +366,6 @@ encountered would be proved by |GNATprove|.
 
 .. index:: Loop_Invariant; counting loops
 
-.. _Counting Loops:
-
 Counting Loops
 ^^^^^^^^^^^^^^
 
@@ -431,8 +421,6 @@ value:
    :language: none
 
 .. index:: Loop_Invariant; search loops
-
-.. _Search Loops:
 
 Search Loops
 ^^^^^^^^^^^^
@@ -502,8 +490,6 @@ examples of search loops, see the :ref:`SPARK Tutorial` as well as the section
 on :ref:`How to Write Loop Invariants`.
 
 .. index:: Loop_Invariant; maximize loops
-
-.. _Maximize Loops:
 
 Maximize Loops
 ^^^^^^^^^^^^^^
@@ -587,8 +573,6 @@ examples of search loops, see the :ref:`SPARK Tutorial` as well as the section
 on :ref:`How to Write Loop Invariants`.
 
 .. index:: Loop_Invariant; update loops
-
-.. _Update Loops:
 
 Update Loops
 ^^^^^^^^^^^^
