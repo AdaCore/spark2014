@@ -1,1 +1,0 @@
-gnatprove -P test.gpr
