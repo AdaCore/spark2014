@@ -1,5 +1,0 @@
-a-synbar.ads:41:30: "Barrier_Limit" is not allowed in SPARK
-a-synbar.ads:41:30: violation of pragma SPARK_Mode at test.adc:1
-p.adb:5:04: "Synchronous_Barrier" is not allowed in SPARK
-p.adb:5:04: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
