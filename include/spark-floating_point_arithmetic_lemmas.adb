@@ -76,4 +76,10 @@ is
       Val2 : Fl)
    is null;
 
+   procedure Lemma_Div_Left_Is_Monotonic
+     (Val1 : Float;
+      Val2 : Float;
+      Val3 : Float)
+   is null;
+
 end SPARK.Floating_Point_Arithmetic_Lemmas;

@@ -138,6 +138,21 @@ is
          Val1 <= Val2,
        Post => Val2 / Val3 <= Val1 / Val3;  --  MANUAL PROOF
 
+   procedure Lemma_Div_Left_Is_Monotonic
+     (Val1 : Float;
+      Val2 : Float;
+      Val3 : Float)
+     with
+       Global => null,
+       Pre =>
+         (Val1 in 0.0 .. 2.0**63) and then
+         ((Val2 in 1.0 / 2.0**63 .. Float'Last and then
+                   Val3 in 1.0 / 2.0**63 .. Float'Last) or else
+            (Val2 in Float'First .. -1.0 / 2.0**63 and then
+                     Val3 in Float'First .. -1.0 / 2.0**63)) and then
+         Val2 <= Val3,
+         Post => Val1 / Val3 <= Val1 / Val2; --  COLIBRI
+
    ---------------------------------------------
    -- Conversions between floats and integers --
    ---------------------------------------------
