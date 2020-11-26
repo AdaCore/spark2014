@@ -3262,7 +3262,7 @@ package body SPARK_Definition is
                      Right_Opnd (N));
                end if;
 
-            when N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem =>
+            when N_Multiplying_Operator =>
                if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
