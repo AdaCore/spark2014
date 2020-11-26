@@ -1,4 +1,3 @@
 inverse-prover DEAD too slow when inverting provers
-32bits,linux SKIP small test diffs on x86-linux
 !large SKIP move to large testsuite
 ALL RLIMIT 2000

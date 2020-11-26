@@ -1,5 +1,4 @@
 NT SKIP too slow on windows
-32bits SKIP minor proof diffs on x86-linux
 assertions SKIP minor proof diff
 !large SKIP part of large testsuite
 inverse-prover SKIP get a funny DIFF related to ordering of messages
