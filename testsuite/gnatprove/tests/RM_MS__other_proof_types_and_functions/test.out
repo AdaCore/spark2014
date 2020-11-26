@@ -43,15 +43,15 @@ stack_external_prover.adb:43:36: info: index check proved (CVC4: 2 VC)
 stack_external_prover.ads:4:08: info: flow dependencies proved
 stack_external_prover.ads:5:08: medium: initial condition might fail
 stack_external_prover.ads:40:11: info: data dependencies proved
-stack_external_prover.ads:42:21: medium: postcondition might fail, cannot prove Count = Count'Old + 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 1)) [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function]
-stack_external_prover.ads:42:39: medium: overflow check might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 0)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function]
+stack_external_prover.ads:42:21: medium: postcondition might fail, cannot prove Count = Count'Old + 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 1)) [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:42:39: medium: overflow check might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 0)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_external_prover.ads:45:19: info: initialization of "X" proved
 stack_external_prover.ads:46:11: info: data dependencies proved
-stack_external_prover.ads:48:21: medium: postcondition might fail, cannot prove Count = Count'Old - 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 0)) [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function]
+stack_external_prover.ads:48:21: medium: postcondition might fail, cannot prove Count = Count'Old - 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 0)) [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_external_prover.ads:51:11: info: data dependencies proved
-stack_external_prover.ads:53:21: medium: postcondition might fail, cannot prove Count = Count'old (e.g. when My_Stack = (S => (2 => 1, others => 0), Pointer => 2)) [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function]
+stack_external_prover.ads:53:21: medium: postcondition might fail, cannot prove Count = Count'old (e.g. when My_Stack = (S => (2 => 1, others => 0), Pointer => 2)) [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_external_prover.ads:54:62: info: range check proved (CVC4: 1 VC)
-stack_external_prover.ads:55:40: medium: range check might fail (e.g. when My_Stack = (S => (2 => 1, others => 0), Pointer => 2)) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function]
+stack_external_prover.ads:55:40: medium: range check might fail (e.g. when My_Stack = (S => (2 => 1, others => 0), Pointer => 2)) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
 stack_functional_spec.adb:20:04: info: initialization of "My_Stack" constituent of "State" proved
 stack_functional_spec.adb:32:25: info: range check proved (CVC4: 1 VC)
 stack_functional_spec.adb:38:44: info: range check proved (CVC4: 1 VC)

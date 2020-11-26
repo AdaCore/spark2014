@@ -799,6 +799,19 @@ package SPARK_Util is
      Pre => Ekind (Subp) = E_Function;
    --  Return True if the result of Subp has relaxed initialization
 
+   function Borrower_For_At_End_Borrow_Call
+     (Call : Node_Id) return Entity_Id
+   with Pre => Nkind (Call) = N_Function_Call;
+   --  From a call to a function annotated with At_End_Borrow, get the entity
+   --  whose scope the at end refers to.
+
+   procedure Set_At_End_Borrow_Call
+     (Call     : Node_Id;
+      Borrower : Entity_Id)
+   with Pre => Nkind (Call) = N_Function_Call;
+   --  Store the link between a call to a function annotated with
+   --  At_End_Borrow and the entity whose scope the at end refers to.
+
    ---------------------------------
    -- Misc operations and queries --
    ---------------------------------

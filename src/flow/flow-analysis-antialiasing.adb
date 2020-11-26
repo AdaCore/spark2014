@@ -895,6 +895,8 @@ package body Flow.Analysis.Antialiasing is
 
       --  Local variables
 
+      Called_Thing : constant Entity_Id := Get_Called_Entity (N);
+
       Globals : Global_Flow_Ids;
 
       use type Node_Sets.Set;
@@ -902,10 +904,12 @@ package body Flow.Analysis.Antialiasing is
    --  Start of processing for Check_Procedure_Call
 
    begin
-      Get_Globals (Subprogram => Get_Called_Entity (N),
-                   Scope      => FA.B_Scope,
-                   Classwide  => Flow_Classwide.Is_Dispatching_Call (N),
-                   Globals    => Globals);
+      if Ekind (Called_Thing) /= E_Subprogram_Type then
+         Get_Globals (Subprogram => Called_Thing,
+                      Scope      => FA.B_Scope,
+                      Classwide  => Flow_Classwide.Is_Dispatching_Call (N),
+                      Globals    => Globals);
+      end if;
 
       Writes_Or_Reads := Visible_Globals (Globals.Outputs);
       Reads_Only      :=

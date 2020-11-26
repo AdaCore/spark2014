@@ -1,0 +1,8 @@
+challenge.adb:1:11: warning: subprogram "Challenge" has no effect
+challenge.adb:6:25: info: assertion proved (colibri: 1 VC)
+challenge.adb:6:27: info: float overflow check proved (colibri: 1 VC)
+challenge.adb:6:36: info: float overflow check proved (colibri: 1 VC)
+challenge2.adb:1:11: warning: subprogram "Challenge2" has no effect
+challenge2.adb:6:25: info: assertion proved (colibri: 1 VC)
+challenge2.adb:6:27: info: float overflow check proved (colibri: 1 VC)
+challenge2.adb:6:36: info: float overflow check proved (colibri: 1 VC)

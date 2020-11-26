@@ -76,11 +76,19 @@ package Flow_Generated_Globals.Phase_2 is
    -- Reading & Computing --
    -------------------------
 
-   procedure GG_Read (GNAT_Root : Node_Id)
-   with Pre  => GG_Mode = GG_No_Mode
-                and then Nkind (GNAT_Root) = N_Compilation_Unit,
+   procedure GG_Resolve
+   with Pre  => GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Read_Mode;
-   --  Reads all ALI files and produce the transitive closure
+   --  Read ALI files for the transitive closure of the current compilation
+   --  unit and generate Global, Refined_Global and Initializes contracts.
+   --  Also, determines which constants have no variable inputs, so they can
+   --  be removed from generated contracts.
+
+   procedure GG_Complete (GNAT_Root : Node_Id)
+   with Pre => Nkind (GNAT_Root) = N_Compilation_Unit;
+   --  Complete "global generation" by computing tasking-related contracts
+   --  for subprograms from the current compilation unit that will be further
+   --  analyzed by flow and proof.
 
    --------------
    -- Querying --
@@ -148,6 +156,7 @@ package Flow_Generated_Globals.Phase_2 is
    function GG_Get_Initializes (E : Entity_Id) return Dependency_Maps.Map
    with Pre => GG_Has_Been_Generated and then
                Ekind (E) = E_Package and then
+               not Is_Wrapper_Package (E) and then
                No (Get_Pragma (E, Pragma_Initializes));
    --  @param E is the package whose generated Initializes aspect we want
 

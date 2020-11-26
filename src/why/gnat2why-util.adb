@@ -576,7 +576,7 @@ package body Gnat2Why.Util is
       function Is_Old_Attribute (N : Node_Id) return Atree.Traverse_Result is
       begin
          if Nkind (N) = N_Attribute_Reference
-             and then Attribute_Name (N) in Name_Old
+             and then Attribute_Name (N) = Name_Old
          then
             Old_Parts.Include (Prefix (N));
             return Atree.Skip;

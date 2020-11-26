@@ -34,9 +34,9 @@ string_utilities.adb:56:39: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:62:26: medium: "Result" might not be initialized
 string_utilities.adb:64:25: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:65:25: info: overflow check proved (CVC4: 1 VC)
-string_utilities.adb:65:25: medium: range check might fail (e.g. when X1 = 2147483645) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X1 in a loop invariant]
+string_utilities.adb:65:25: medium: range check might fail (e.g. when X1 = 2147483646) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X1 in a loop invariant]
 string_utilities.adb:66:25: info: overflow check proved (CVC4: 1 VC)
-string_utilities.adb:66:25: medium: range check might fail (e.g. when X2 = 1) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant]
+string_utilities.adb:66:25: medium: range check might fail (e.g. when X2 = 2147483646) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant]
 string_utilities.adb:67:19: medium: "Lengths" might not be initialized
 string_utilities.adb:67:38: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:67:38: info: range check proved (CVC4: 1 VC)

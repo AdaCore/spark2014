@@ -626,6 +626,11 @@ package body Flow.Analysis is
       elsif Present (First_Formal (E)) then
          return False;
 
+      --  Globals on access-to-subprogram are not allowed
+
+      elsif Ekind (E) = E_Subprogram_Type then
+         return True;
+
       --  Any global parameter is an effect
 
       else
@@ -4772,6 +4777,13 @@ package body Flow.Analysis is
                   if Ekind (E) = E_Package then
                      null;
 
+                  --  Calls via access-to-subprogram are not potentially
+                  --  blocking, because attribute Access is only allowed on
+                  --  subprograms with null globals.
+
+                  elsif Ekind (E) = E_Subprogram_Type then
+                     null;
+
                   --  Calls to entries are trivially potentially blocking
 
                   elsif Is_Entry (E) then
@@ -5126,7 +5138,7 @@ package body Flow.Analysis is
                Atr : V_Attributes renames FA.Atr (V);
             begin
                for E of Atr.Subprograms_Called loop
-                  if Ekind (E) /= E_Package then
+                  if Ekind (E) not in E_Package | E_Subprogram_Type then
                      Check_Subprogram (E, Atr.Error_Location);
                   end if;
                end loop;
@@ -5907,6 +5919,19 @@ package body Flow.Analysis is
                         if Is_Potentially_Nonreturning (E) then
                            Proved := False;
                         end if;
+
+                     elsif Ekind (E) = E_Subprogram_Type then
+
+                        Proved := False;
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "call via access-to-subprogram, " &
+                                       "terminating annotation could " &
+                                       "be incorrect",
+                           Severity => Medium_Check_Kind,
+                           N        => Atr.Error_Location,
+                           Tag      => Subprogram_Termination,
+                           Vertex   => V);
 
                      --  If the analyzed subprogram, its terminating annotation
                      --  cannot be trusted. A message is emitted if the

@@ -1,0 +1,3 @@
+with "support";
+project Test is
+end Test;

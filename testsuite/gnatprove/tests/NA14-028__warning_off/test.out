@@ -7,4 +7,4 @@ foo.ads:14:07: info: data dependencies proved
 foo.ads:15:07: info: flow dependencies proved
 main.adb:6:04: info: data dependencies proved
 main.adb:6:28: info: initialization of "Foo.State" proved
-main.adb:21:19: medium: assertion might fail, cannot prove Foo.Get_Data = Value [possible fix: you should consider adding a postcondition to function Get_Data or turning it into an expression function]
+main.adb:21:19: medium: assertion might fail, cannot prove Foo.Get_Data = Value [possible fix: you should consider adding a postcondition to function Get_Data or turning it into an expression function in its unit spec]

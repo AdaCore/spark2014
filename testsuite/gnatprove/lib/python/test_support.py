@@ -665,7 +665,11 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
             f_prj.write('project Test is\n')
             f_prj.write('  package Compiler is\n')
             f_prj.write('    for Default_Switches ("Ada")' +
-                        ' use ("-gnatws", "-gnat' + str(ada) + '");\n')
+                        # discard warning messages by default
+                        ' use ("-gnatws",' +
+                        # force generation of BUGBOX even when error is issued
+                        ' "-gnatdk", ' +
+                        '"-gnat' + str(ada) + '");\n')
             f_prj.write('    for Local_Configuration_Pragmas' +
                         ' use "test.adc";\n')
             f_prj.write('  end Compiler;\n')

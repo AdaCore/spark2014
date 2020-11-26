@@ -1031,6 +1031,12 @@ package body Gnat2Why.Expr.Loops is
                function Construct_Update_Stmt return W_Prog_Id;
                --  @return Update of Loop_Index and Nam_For_Iter when necessary
 
+               function Skip_Empty_Iterations return W_Prog_Id with
+                 Pre => Over_Range
+                 and then Present (Iterator_Filter (LParam_Spec));
+               --  Skip iterations of the loop until the filter condition
+               --  holds. If we reach the end of the loop, we exit.
+
                --------------------
                -- Construct_Cond --
                --------------------
@@ -1281,6 +1287,194 @@ package body Gnat2Why.Expr.Loops is
                   end if;
                end Construct_Update_Stmt;
 
+               ----------------------------
+               -- Skip_Empty_Iterations  --
+               ----------------------------
+
+               function Skip_Empty_Iterations return W_Prog_Id is
+                  --  Inside for loops containing iterator filters, the loop
+                  --  invariant only holds for iterations that are enabled.
+                  --  To match the Why3 semantics of loop invariants, we need
+                  --  to skip disabled iterations. Intuitively, the generated
+                  --  code is a loop over disabled iterations. We do not
+                  --  actually generate the loop though but rather simulate
+                  --  it by havocking the index parameter. For a loop:
+                  --
+                  --    for I in Low .. High when Cond loop ...
+                  --
+                  --  We generate:
+                  --
+                  --    let old_index = !i in
+                  --    any unit
+                  --      writes { i }
+                  --      ensures { old !i <= !i <= high
+                  --           /\ (forall tmp. old !i <= tmp < !i -> not cond)
+                  --           /\ (cond \/ !i = high) };
+                  --    ignore { let tmp = any int
+                  --               ensures { old_index <= result < !i } in
+                  --             cond };
+                  --    if not cond then raise loop_exit;
+
+                  Filter       : constant Node_Id :=
+                    Iterator_Filter (LParam_Spec);
+                  Is_Reverse   : constant Boolean :=
+                    Reverse_Present (LParam_Spec);
+                  Exit_Index   : constant W_Expr_Id :=
+                    (if Is_Reverse then +Low_Id else +High_Id);
+                  Exit_Cond    : constant W_Pred_Id :=
+                    New_Call (Name => Why_Eq,
+                              Typ  => EW_Bool_Type,
+                              Args => (+Index_Deref, +Exit_Index));
+                  --  !i = high or !i = low
+
+                  Range_Expr   : constant W_Pred_Id := +New_Range_Expr
+                    (Domain => EW_Pred,
+                     Low    => (if Is_Reverse then +Low_Id
+                                else New_Old (Expr   => +Index_Deref,
+                                              Domain => EW_Term)),
+                     High   => (if not Is_Reverse then +High_Id
+                                else New_Old (Expr   => +Index_Deref,
+                                              Domain => EW_Term)),
+                     Expr   => +Index_Deref);
+                  --  old !i <= !i <= high or low <= !i <= old !i
+
+                  Old_Index    : constant W_Identifier_Id :=
+                    New_Temp_Identifier
+                      (Typ       => Loop_Index_Type,
+                       Base_Name => "old_index");
+                  Index_Tmp    : constant W_Identifier_Id :=
+                    New_Temp_Identifier
+                      (Typ       => Loop_Index_Type,
+                       Base_Name => "index");
+                  Strict_Comp  : constant W_Identifier_Id :=
+                    (if Is_Reverse
+                     and Why_Type_Is_BitVector (Loop_Index_Type)
+                     then MF_BVs (Loop_Index_Type).Ugt
+                     elsif Is_Reverse then Int_Infix_Gt
+                     elsif Why_Type_Is_BitVector (Loop_Index_Type)
+                     then MF_BVs (Loop_Index_Type).Ult
+                     else Int_Infix_Lt);
+                  Large_Comp   : constant W_Identifier_Id :=
+                    (if Is_Reverse
+                     and Why_Type_Is_BitVector (Loop_Index_Type)
+                     then MF_BVs (Loop_Index_Type).Uge
+                     elsif Is_Reverse then Int_Infix_Ge
+                     elsif Why_Type_Is_BitVector (Loop_Index_Type)
+                     then MF_BVs (Loop_Index_Type).Ule
+                     else Int_Infix_Le);
+                  Tmp_Range    : constant W_Pred_Id := +New_And_Expr
+                    (Left   => New_Comparison
+                       (Symbol => Large_Comp,
+                        Left   => New_Old (Expr   => +Index_Deref,
+                                           Domain => EW_Term),
+                        Right  => +Index_Tmp,
+                        Domain => EW_Pred),
+                     Right  => New_Comparison
+                       (Symbol => Strict_Comp,
+                        Left   => +Index_Tmp,
+                        Right  => +Index_Deref,
+                        Domain => EW_Pred),
+                     Domain => EW_Pred);
+                  --  old !i <= tmp < i or old !i >= tmp > i
+
+                  Last_Filter  : constant W_Pred_Id :=
+                    +Transform_Expr (Filter, EW_Pred, Body_Params);
+                  Exit_Stmt    : constant W_Prog_Id := New_Conditional
+                    (Condition => New_Not
+                       (Domain => EW_Prog,
+                        Right  => Transform_Expr
+                          (Filter,
+                           EW_Bool_Type,
+                           EW_Prog,
+                           Params => Body_Params)),
+                     Then_Part => New_Raise
+                       (Name => Loop_Exception_Name (Loop_Id)));
+                  --  if not cond then raise loop_exit;
+
+                  Other_Filter : W_Pred_Id;
+                  Check_Filter : W_Prog_Id;
+
+               begin
+                  --  When referring to skipped iterations, occurrences of I
+                  --  in Cond must be translating as tmp. It happens in the
+                  --  universally quantified formula occuring in the post of
+                  --  the havoc program, and in the ignore block generating
+                  --  checks for Cond.
+
+                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+                  Insert_Entity (E    => Loop_Param_Ent,
+                                 Name => Index_Tmp);
+
+                  --  Compute:
+                  --    (forall tmp. old !i <= tmp < !i -> not cond)
+
+                  Other_Filter := New_Universal_Quantif
+                    (Variables => (1 => Index_Tmp),
+                     Labels    => Symbol_Sets.Empty_Set,
+                     Var_Type  => Loop_Index_Type,
+                     Pred      => New_Conditional
+                       (Condition => +Tmp_Range,
+                        Then_Part => New_Not
+                          (Domain => EW_Pred,
+                           Right  => Transform_Expr
+                             (Filter, EW_Term, Body_Params))));
+
+                  --  Compute:
+                  --    ignore { let tmp = any int
+                  --               ensures { old_index <= result < !i } in
+                  --             cond };
+
+                  Check_Filter := New_Ignore
+                    (Prog => New_Binding
+                       (Name    => Index_Tmp,
+                        Def     => New_Any_Expr
+                          (Return_Type => Loop_Index_Type,
+                           Labels      => Symbol_Sets.Empty_Set,
+                           Post        => +New_And_Expr
+                             (Left   => New_Comparison
+                                  (Symbol => Large_Comp,
+                                   Left   => +Old_Index,
+                                   Right  =>
+                                     +New_Result_Ident (Loop_Index_Type),
+                                   Domain => EW_Pred),
+                              Right  => New_Comparison
+                                (Symbol => Strict_Comp,
+                                 Left   => +New_Result_Ident (Loop_Index_Type),
+                                 Right  => +Index_Deref,
+                                 Domain => EW_Pred),
+                              Domain => EW_Pred)),
+                        Context => Transform_Expr
+                          (Filter, EW_Prog, Body_Params),
+                        Typ     => EW_Bool_Type));
+                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+                  --  Piece everything together
+
+                  return Sequence
+                    (Left  => New_Comment
+                       (Comment => NID ("Skip filtered out iterations")),
+                     Right => New_Binding
+                       (Name     => Old_Index,
+                        Def      => +Index_Deref,
+                        Context  => +Sequence
+                          ((1 => New_Any_Expr
+                            (Effects     =>
+                                 New_Effects (Writes => (1 => Loop_Index)),
+                             Post        => +New_And_Expr
+                               (Conjuncts =>
+                                  (1 => +Range_Expr,
+                                   2 => +Other_Filter,
+                                   3 => New_Or_Expr
+                                     (Left   => +Exit_Cond,
+                                      Right  => +Last_Filter,
+                                      Domain => EW_Pred)),
+                                Domain    => EW_Pred),
+                             Return_Type => EW_Unit_Type,
+                             Labels      => Symbol_Sets.Empty_Set),
+                            2 => Check_Filter,
+                            3 => Exit_Stmt))));
+               end Skip_Empty_Iterations;
+
                ---------------------
                -- Local Variables --
                ---------------------
@@ -1290,7 +1484,7 @@ package body Gnat2Why.Expr.Loops is
                Update_Stmt : constant W_Prog_Id :=
                  +Insert_Cnt_Loc_Label (Stmt, +Construct_Update_Stmt);
                Exit_Cond   : constant W_Prog_Id := Construct_Exit_Cond;
-               Impl_Inv    : constant W_Pred_Id :=
+               Impl_Inv    : W_Pred_Id :=
                  +New_And_Expr (Left   => +Dyn_Types_Inv,
                                 Right  => +Index_Inv,
                                 Domain => EW_Prog);
@@ -1323,6 +1517,20 @@ package body Gnat2Why.Expr.Loops is
                if not Gnat2Why_Args.No_Loop_Unrolling
                  and then Unroll /= No_Unrolling
                then
+                  --  If the loop has an iterator filter, we need to add
+                  --  the filtering expression as a guard for each loop
+                  --  unrolling.
+
+                  if Present (Iterator_Filter (LParam_Spec)) then
+                     Final_Prog := New_Conditional
+                       (Condition => Transform_Expr
+                          (Expr          => Iterator_Filter (LParam_Spec),
+                           Expected_Type => EW_Bool_Type,
+                           Domain        => EW_Prog,
+                           Params        => Body_Params),
+                        Then_Part => +Final_Prog);
+                  end if;
+
                   declare
                      Inlined_Body : constant W_Prog_Id :=
                        (if Unroll = Unrolling_With_Condition then
@@ -1345,6 +1553,35 @@ package body Gnat2Why.Expr.Loops is
                --  static bounds, requiring a proof by induction.
 
                else
+                  --  If the loop has an iterator filter, add a statement at
+                  --  the begining of the loop to skip iterations which are
+                  --  filtered out. We cannot simply wrap the loop body inside
+                  --  a conditionnal like for unrolled loops because the loop
+                  --  invariant is only supposed to hold on enabled iterations.
+
+                  if Present (Iterator_Filter (LParam_Spec)) then
+
+                     --  If the Loop_Assertion pragma comes first in the loop
+                     --  body (possibly inside nested block statements), then
+                     --  we can use the filter expression as an implicit
+                     --  invariant of the generated Why loop. In other cases,
+                     --  we cannot, as this would not be always correct.
+
+                     if Is_Essentially_Void (Initial_Prog) then
+                        Impl_Inv :=
+                          +New_And_Expr
+                          (Left   => +Impl_Inv,
+                           Right  => +Transform_Expr
+                             (Expr   => Iterator_Filter (LParam_Spec),
+                              Domain => EW_Pred,
+                              Params => Body_Params),
+                           Domain => EW_Prog);
+                     end if;
+
+                     Initial_Prog := Sequence
+                       (Skip_Empty_Iterations, Initial_Prog);
+                  end if;
+
                   Entire_Loop :=
                     Wrap_Loop (Loop_Id            => Loop_Id,
                                Loop_Start         => Initial_Prog,
@@ -1356,8 +1593,8 @@ package body Gnat2Why.Expr.Loops is
                                Invariant_Check    => Inv_Check,
                                Variants           =>
                                  Transform_Loop_Variants (Loop_Variants),
-                              Variant_Check      =>
-                                Check_Loop_Variants (Loop_Variants),
+                               Variant_Check      =>
+                                 Check_Loop_Variants (Loop_Variants),
                                Update_Stmt        => Update_Stmt,
                                First_Stmt         => Loop_Stmts.First_Element,
                                Next_Stmt          => Next_Stmt,

@@ -1,7 +1,7 @@
 sorting.adb:25:07: info: flow dependencies proved
-sorting.adb:28:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+sorting.adb:28:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 sorting.adb:28:37: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
-sorting.adb:30:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+sorting.adb:30:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 sorting.adb:30:37: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 sorting.adb:31:15: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
 sorting.adb:31:24: info: range check proved (CVC4: 2 VC)
@@ -43,13 +43,13 @@ sorting.adb:53:19: info: index check proved (CVC4: 2 VC)
 sorting.adb:53:38: info: index check proved (CVC4: 2 VC)
 sorting.adb:66:07: info: flow dependencies proved
 sorting.adb:68:40: info: overflow check proved (CVC4: 1 VC)
-sorting.adb:68:50: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+sorting.adb:68:50: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 sorting.adb:68:70: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 sorting.adb:69:17: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:69:31: medium: range check might fail
-sorting.adb:69:51: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
-sorting.adb:70:61: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
-sorting.adb:73:09: medium: postcondition might fail, cannot prove Sorted (A, A_First, Length1 + Length2) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function]
+sorting.adb:69:51: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+sorting.adb:70:61: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+sorting.adb:73:09: medium: postcondition might fail, cannot prove Sorted (A, A_First, Length1 + Length2) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
 sorting.adb:73:37: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:74:42: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:75:18: info: range check proved (CVC4: 2 VC)
@@ -59,8 +59,8 @@ sorting.adb:77:18: info: index check proved (CVC4: 2 VC)
 sorting.adb:77:30: info: index check proved (CVC4: 2 VC)
 sorting.adb:79:05: info: initialization of "I" proved
 sorting.adb:79:08: info: initialization of "J" proved
-sorting.adb:87:11: medium: loop invariant might fail in first iteration, cannot prove Sorted (B, B'First, I + J) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function]
-sorting.adb:87:11: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sorted (B, B'First, I + J) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function]
+sorting.adb:87:11: medium: loop invariant might fail in first iteration, cannot prove Sorted (B, B'First, I + J) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
+sorting.adb:87:11: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sorted (B, B'First, I + J) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
 sorting.adb:87:23: info: range check proved (CVC4: 2 VC)
 sorting.adb:87:33: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:88:41: info: overflow check proved (CVC4: 2 VC)
@@ -101,14 +101,14 @@ sorting.adb:119:05: info: initialization of "I" proved
 sorting.adb:119:08: info: initialization of "L" proved
 sorting.adb:119:11: info: initialization of "K" proved
 sorting.adb:126:19: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
-sorting.adb:127:14: medium: loop invariant might fail in first iteration, cannot prove Sorted (A, A_First + J * L, Natural'min) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function]
-sorting.adb:127:14: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sorted (A, A_First + J * L, Natural'min) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function]
+sorting.adb:127:14: medium: loop invariant might fail in first iteration, cannot prove Sorted (A, A_First + J * L, Natural'min) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
+sorting.adb:127:14: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sorted (A, A_First + J * L, Natural'min) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
 sorting.adb:127:33: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:37: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:49: info: range check proved (CVC4: 2 VC)
 sorting.adb:127:65: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:69: info: overflow check proved (CVC4: 2 VC)
-sorting.adb:134:13: info: loop invariant initialization proved (CVC4: 5 VC; Trivial: 3 VC; altergo: 1 VC)
+sorting.adb:134:13: info: loop invariant initialization proved (CVC4: 4 VC; Trivial: 3 VC; altergo: 2 VC)
 sorting.adb:135:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I mod (L * 2) = 0
 sorting.adb:135:35: info: division check proved (CVC4: 2 VC)
 sorting.adb:135:42: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
@@ -141,7 +141,7 @@ sorting.adb:149:17: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:149:22: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:154:19: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 sorting.adb:154:23: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
-sorting.adb:155:14: medium: assertion might fail, cannot prove Sorted (A, A_First + J * L * 2, Natural'min) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function]
+sorting.adb:155:14: medium: assertion might fail, cannot prove Sorted (A, A_First + J * L * 2, Natural'min) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]
 sorting.adb:155:33: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:155:37: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:155:41: info: overflow check proved (CVC4: 1 VC)
@@ -153,7 +153,7 @@ sorting.adb:155:81: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:158:24: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:159:14: info: overflow check proved (CVC4: 1 VC)
 sorting.ads:22:11: info: flow dependencies proved
-sorting.ads:23:54: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+sorting.ads:23:54: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 sorting.ads:23:73: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 sorting.ads:23:92: medium: range check might fail
-sorting.ads:24:23: medium: postcondition might fail, cannot prove Sorted (A, A_First, Length) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function]
+sorting.ads:24:23: medium: postcondition might fail, cannot prove Sorted (A, A_First, Length) [possible fix: you should consider adding a postcondition to function Sorted or turning it into an expression function in its unit spec]

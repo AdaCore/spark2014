@@ -496,6 +496,12 @@ package SPARK_Atree is
                        | N_Subprogram_Body
                        | N_Task_Body;
 
+   function Has_Wide_Character (N : Node_Id) return Boolean with
+     Pre => Nkind (N) = N_String_Literal;
+
+   function Has_Wide_Wide_Character (N : Node_Id) return Boolean with
+     Pre => Nkind (N) = N_String_Literal;
+
    function High_Bound (N : Node_Id) return Node_Id with
      Pre  => Nkind (N) in N_Range
                         | N_Real_Range_Specification
@@ -565,6 +571,10 @@ package SPARK_Atree is
 
    function Iteration_Scheme (N : Node_Id) return Node_Id with
      Pre => Nkind (N) = N_Loop_Statement;
+
+   function Iterator_Filter (N : Node_Id) return Node_Id with
+     Pre => Nkind (N) in N_Iterator_Specification
+                       | N_Loop_Parameter_Specification;
 
    function Iterator_Specification (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Iteration_Scheme

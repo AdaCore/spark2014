@@ -7,17 +7,17 @@ procedure Traverse_List with SPARK_Mode is
        Next : List_Acc;
     end record;
 
-   function Pledge (Borrower : access constant List; Prop : Boolean) return Boolean is
-     (Prop)
+   function At_End_Borrow (L : access constant List) return access constant List is
+     (L)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
 
    function Tail (L : access List) return access List with
      Contract_Cases =>
        (L = null =>
-          Tail'Result = null and Pledge (Tail'Result, L = null),
-        others   => Pledge (Tail'Result, L.Val = L.Val'Old)
-          and Pledge (Tail'Result, L.Next = Tail'Result));
+          Tail'Result = null and At_End_Borrow (L) = null,
+        others   => At_End_Borrow (L).Val = L.Val
+          and At_End_Borrow (L).Next = At_End_Borrow (Tail'Result));
 
    function Tail (L : access List) return access List is
    begin

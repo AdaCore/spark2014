@@ -1321,7 +1321,7 @@ package body Flow.Control_Flow_Graph is
             --  cannot be written (because functions cannot have side-effects).
 
             when E_In_Parameter =>
-               (if Is_Access_Type (Typ)
+               (if Is_Access_Object_Type (Typ)
                   and then not Is_Access_Constant (Typ)
                   and then not
                     (Is_Borrowing_Traversal_Function (FA.Spec_Entity)
@@ -4762,10 +4762,7 @@ package body Flow.Control_Flow_Graph is
       function Add_Loop_Entry_Reference (N : Node_Id) return Traverse_Result is
          Loop_Name : Node_Id;
       begin
-         if Nkind (N) = N_Attribute_Reference
-           and then
-             Get_Attribute_Id (Attribute_Name (N)) = Attribute_Loop_Entry
-         then
+         if Is_Attribute_Loop_Entry (N) then
             pragma Assert (Present (Ctx.Active_Loop));
 
             --  This is a named loop entry reference, e.g. "X'Loop_Entry (Foo)"
@@ -4888,25 +4885,36 @@ package body Flow.Control_Flow_Graph is
    is
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
-      --  Sanity check: the called subprogram is located in its own scope.
+      procedure Check_Visibility with Ghost;
+      --  Sanity-check that callee is visible to the caller. This exercises the
+      --  visibility machinery which otherwise is primarily used for constructs
+      --  that are far less common, e.g. private types and Part_Ofs.
 
-      Called_Loc  : constant Flow_Scope := Get_Flow_Scope (Called_Thing)
-        with Ghost;
-      pragma Assert (Called_Loc.Ent = Called_Thing);
-      --  We only check the Ent component of Called_Loc because the Part
-      --  component is either Visible_Part (for subprograms with explicit spec)
-      --  or Body_Part (for subprograms whose bodies act as specs).
+      ----------------------
+      -- Check_Visibility --
+      ----------------------
 
-      Called_Scop : constant Flow_Scope :=
-        (Called_Loc.Ent, Visible_Part) with Ghost;
+      procedure Check_Visibility is
+         Called_Loc  : constant Flow_Scope := Get_Flow_Scope (Called_Thing);
+         pragma Assert (Called_Loc.Ent = Called_Thing);
+         --  Sanity check: the called subprogram is located in its own scope
 
-      --  Sanity check: the caller can see the called subprogram, or, the
-      --  called subprogram is a dispatching operation declared in a private
-      --  part (SPARK RM 3.9.2 (20.1/3)).
+         --  We only check the Ent component of Called_Loc because the Part
+         --  component is either Visible_Part (for subprograms with explicit
+         --  spec) or Body_Part (for subprograms whose bodies act as specs).
 
-      pragma Assert ((Is_Dispatching_Operation (Called_Thing)
-                     and then Is_Hidden (Called_Thing))
-                     or else Is_Visible (Called_Scop, FA.B_Scope));
+         Called_Scop : constant Flow_Scope := (Called_Loc.Ent, Visible_Part);
+
+         --  Sanity check: the caller can see the called subprogram, or, the
+         --  called subprogram is a dispatching operation declared in a private
+         --  part (SPARK RM 3.9.2 (20.1/3)).
+
+         pragma Assert ((Is_Dispatching_Operation (Called_Thing)
+                        and then Is_Hidden (Called_Thing))
+                        or else Is_Visible (Called_Scop, FA.B_Scope));
+      begin
+         null;
+      end Check_Visibility;
 
       Ins  : Vertex_Lists.List;
       Outs : Vertex_Lists.List;
@@ -4914,9 +4922,44 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
       C : Flow_Graphs.Cluster_Id;
 
+      Vars_Used : Flow_Id_Sets.Set;
+      Funcs     : Node_Sets.Set;
+
    begin
+      --  Visibility checks don't make much sense for access-to-subprograms
+
+      if Ekind (Called_Thing) /= E_Subprogram_Type then
+         Check_Visibility;
+      end if;
+
       --  Add a cluster to help pretty printing
       FA.CFG.New_Cluster (C);
+
+      --  For calls via access-to-subprogram handle variables referenced in the
+      --  prefix.
+
+      if Ekind (Called_Thing) = E_Subprogram_Type then
+         declare
+            Pref : constant Node_Id := Prefix (Name (N));
+         begin
+            Vars_Used :=
+              Get_Variables
+                (Pref,
+                 Scope                => FA.B_Scope,
+                 Target_Name          => Null_Flow_Id,
+                 Fold_Functions       => Inputs,
+                 Use_Computed_Globals => not FA.Generating_Globals);
+
+            Collect_Functions_And_Read_Locked_POs
+              (Pref,
+               FA.B_Scope,
+               Functions_Called   => Funcs,
+               Tasking            => FA.Tasking,
+               Generating_Globals => FA.Generating_Globals);
+
+            Ctx.Folded_Function_Checks.Append (Pref);
+         end;
+      end if;
 
       --  A vertex for the actual call
       Add_Vertex
@@ -4924,7 +4967,8 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (N),
          Make_Call_Attributes
            (Callsite      => N,
-            Sub_Called    => Node_Sets.To_Set (Called_Thing),
+            Var_Use       => Vars_Used,
+            Sub_Called    => Node_Sets.To_Set (Called_Thing).Union (Funcs),
             Loops         => Ctx.Current_Loops,
             In_Nested_Pkg => Ctx.In_Nested_Package,
             E_Loc         => N),
@@ -4942,9 +4986,11 @@ package body Flow.Control_Flow_Graph is
       --       on the generated ones
       --  ??? for this decision we rely on condition hardcoded in Get_Globals,
       --  just like we do in Do_Subprogram_Call when processing function calls
-      Process_Subprogram_Globals (N,
-                                  Ins, Outs,
-                                  FA, CM, Ctx);
+      if Ekind (Called_Thing) /= E_Subprogram_Type then
+         Process_Subprogram_Globals (N,
+                                     Ins, Outs,
+                                     FA, CM, Ctx);
+      end if;
 
       --  A magic null export is needed when:
       --    * there is a usable Depends => (null => ...);
@@ -4953,7 +4999,8 @@ package body Flow.Control_Flow_Graph is
       --  Notice that we can only use the Depends when it:
       --    * does not need to be refined or
       --    * it has already been refined
-      if Has_Depends (Called_Thing)
+      if Ekind (Called_Thing) /= E_Subprogram_Type
+        and then Has_Depends (Called_Thing)
         and then (not FA.Generating_Globals
                     or else not Rely_On_Generated_Global (Called_Thing,
                                                           FA.B_Scope))
@@ -5778,25 +5825,7 @@ package body Flow.Control_Flow_Graph is
 
          when N_Entry_Call_Statement     |
               N_Procedure_Call_Statement =>
-
-            --  ??? currently we do ignore calls through access to subprograms
-
-            if Nkind (Name (N)) = N_Explicit_Dereference then
-               declare
-                  V : Flow_Graphs.Vertex_Id;
-               begin
-                  Add_Vertex
-                    (FA,
-                     Direct_Mapping_Id (N),
-                     Make_Aux_Vertex_Attributes
-                       (E_Loc     => N,
-                        Execution => Normal_Execution),
-                     V);
-                  CM.Insert (Union_Id (N), Trivial_Connection (V));
-               end;
-            else
-               Do_Call_Statement (N, FA, CM, Ctx);
-            end if;
+            Do_Call_Statement (N, FA, CM, Ctx);
 
          when N_Exception_Declaration          |
               N_Exception_Renaming_Declaration =>
@@ -7153,7 +7182,8 @@ package body Flow.Control_Flow_Graph is
                           Ekind (E) in Entry_Kind
                                      | E_Function
                                      | E_Package
-                                     | E_Procedure);
+                                     | E_Procedure
+                                     | E_Subprogram_Type);
 
          declare
             --  ??? this block should operate just on Entity_Ids

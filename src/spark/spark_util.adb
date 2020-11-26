@@ -126,14 +126,25 @@ package body SPARK_Util is
    --  class-wide type, and corresponding calls to primitive subprograms are
    --  dispatching calls.
 
-   ------------------------------
-   -- Set_Dispatching_Contract --
-   ------------------------------
+   At_End_Borrow_Call_Map : Node_Maps.Map;
+   --  Map from calls to functions annotated with At_End_Borrow to the related
+   --  borrower entity.
 
-   procedure Set_Dispatching_Contract (C, D : Node_Id) is
+   -------------------------------------
+   -- Borrower_For_At_End_Borrow_Call --
+   -------------------------------------
+
+   function Borrower_For_At_End_Borrow_Call
+     (Call : Node_Id) return Entity_Id
+   is
+      Cu : constant Node_Maps.Cursor := At_End_Borrow_Call_Map.Find (Call);
    begin
-      Dispatching_Contracts.Insert (C, D);
-   end Set_Dispatching_Contract;
+      if Node_Maps.Has_Element (Cu) then
+         return Node_Maps.Element (Cu);
+      else
+         return Empty;
+      end if;
+   end Borrower_For_At_End_Borrow_Call;
 
    --------------------------
    -- Dispatching_Contract --
@@ -148,6 +159,30 @@ package body SPARK_Util is
               then Element (Primitive)
               else Standard.Types.Empty);
    end Dispatching_Contract;
+
+   ----------------------------
+   -- Set_At_End_Borrow_Call --
+   ----------------------------
+
+   procedure Set_At_End_Borrow_Call
+     (Call     : Node_Id;
+      Borrower : Entity_Id)
+   is
+      Inserted : Boolean;
+      Position : Node_Maps.Cursor;
+   begin
+      At_End_Borrow_Call_Map.Insert (Call, Borrower, Position, Inserted);
+      pragma Assert (Inserted or else Node_Maps.Element (Position) = Borrower);
+   end Set_At_End_Borrow_Call;
+
+   ------------------------------
+   -- Set_Dispatching_Contract --
+   ------------------------------
+
+   procedure Set_Dispatching_Contract (C, D : Node_Id) is
+   begin
+      Dispatching_Contracts.Insert (C, D);
+   end Set_Dispatching_Contract;
 
    --------------------------------
    -- Aggregate_Is_In_Assignment --
@@ -1547,6 +1582,16 @@ package body SPARK_Util is
             =>
                return Find_Func_Call (Prefix (Expr));
 
+            when N_Op_Eq
+               | N_Op_Ne
+            =>
+               if Nkind (Left_Opnd (Expr)) = N_Null then
+                  return Find_Func_Call (Right_Opnd (Expr));
+               else
+                  pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
+                  return Find_Func_Call (Left_Opnd (Expr));
+               end if;
+
             when N_Qualified_Expression
                | N_Type_Conversion
                | N_Unchecked_Type_Conversion
@@ -1752,6 +1797,16 @@ package body SPARK_Util is
                                          | Name_Old
                                          | Name_Update);
                return Empty;
+            end if;
+
+         when N_Op_Eq
+            | N_Op_Ne
+         =>
+            if Nkind (Left_Opnd (Expr)) = N_Null then
+               return GRO (Right_Opnd (Expr));
+            else
+               pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
+               return GRO (Left_Opnd (Expr));
             end if;
 
          when others =>
@@ -2505,6 +2560,14 @@ package body SPARK_Util is
                                              | Name_Old
                                              | Name_Update;
             end if;
+
+         --  Path op null or null op Path is a path
+
+         when N_Op_Eq | N_Op_Ne =>
+            return (Nkind (Left_Opnd (Expr)) = N_Null
+                    and then Is_Path_Expression (Right_Opnd (Expr)))
+              or else (Nkind (Right_Opnd (Expr)) = N_Null
+                       and then Is_Path_Expression (Left_Opnd (Expr)));
 
          when N_Qualified_Expression
             | N_Type_Conversion

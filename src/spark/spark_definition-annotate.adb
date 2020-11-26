@@ -109,9 +109,10 @@ package body SPARK_Definition.Annotate is
    --  Stores type entities with a pragma Annotate
    --  (GNATprove, No_Wrap_Around, E).
 
-   Pledge_Annotations : Common_Containers.Node_Sets.Set :=
+   At_End_Borrow_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
-   --  Stores function entities with a pragma Annotate (GNATprove, Pledge, E).
+   --  Stores function entities with a pragma Annotate
+   --  (GNATprove, At_End_Borrow, E).
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
@@ -182,10 +183,10 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate (GNATprove, No_Wrap_Around, E)
    --  and insert it in the No_Wrap_Around_Annotations map.
 
-   procedure Check_Pledge_Annotation (Arg3_Exp : Node_Id) with
+   procedure Check_At_End_Borrow_Annotation (Arg3_Exp : Node_Id) with
      Pre => Present (Arg3_Exp);
-   --  Check validity of a pragma Annotate (Gnatprove, Pledge, E) and insert it
-   --  in the Pledge_Annotations map.
+   --  Check validity of a pragma Annotate (Gnatprove, At_End_Borrow, E) and
+   --  insert it in the At_End_Borrow_Annotations map.
 
    procedure Check_Terminate_Annotation
      (Arg3_Exp : Node_Id;
@@ -202,6 +203,100 @@ package body SPARK_Definition.Annotate is
    begin
       return L.First < R.First;
    end "<";
+
+   ------------------------------------
+   -- Check_At_End_Borrow_Annotation --
+   ------------------------------------
+
+   procedure Check_At_End_Borrow_Annotation (Arg3_Exp : Node_Id) is
+
+      procedure Check_At_End_Borrow_Entity (E : Entity_Id);
+      --  E should be a ghost identity expression function taking (and
+      --  returning) an access-to-constant type.
+
+      --------------------------------
+      -- Check_At_End_Borrow_Entity --
+      --------------------------------
+
+      procedure Check_At_End_Borrow_Entity (E : Entity_Id) is
+         Path      : constant Entity_Id := First_Formal (E);
+         Contracts : constant Node_Id := Contract (E);
+      begin
+         if No (Path)
+           or else Present (Next_Formal (Path))
+         then
+            Error_Msg_N
+              ("At_End_Borrow function must have exactly one parameter", E);
+         elsif not Is_Anonymous_Access_Type (Etype (Path))
+           or else not Is_Access_Constant (Etype (Path))
+         then
+            Error_Msg_N
+              ("the parameter of an At_End_Borrow function must have an"
+               & " anonymous access-to-constant type", E);
+         elsif not Is_Anonymous_Access_Type (Etype (E))
+           or else not Is_Access_Constant (Etype (E))
+         then
+            Error_Msg_N
+              ("At_End_Borrow function must return an"
+               & " anonymous access-to-constant type", E);
+         elsif not Is_Ghost_Entity (E) then
+            Error_Msg_N
+              ("At_End_Borrow function must be a ghost function", E);
+         elsif Present (Contracts)
+           and then (Present (Pre_Post_Conditions (Contracts)) or else
+                     Present (Contract_Test_Cases (Contracts)))
+         then
+            Error_Msg_N
+              ("At_End_Borrow function should not have a contract", E);
+         elsif not Is_Expression_Function_Or_Completion (E) then
+            Error_Msg_N
+              ("At_End_Borrow function must be an expression function", E);
+         else
+            declare
+               Expr : constant Node_Id :=
+                 Expression (Get_Expression_Function (E));
+            begin
+               if Nkind (Original_Node (Expr)) not in
+                   N_Expanded_Name | N_Identifier
+                 or else Entity (Original_Node (Expr)) /= Path
+               then
+                  Error_Msg_N
+                    ("At_End_Borrow function must be the identity function",
+                     E);
+               end if;
+            end;
+         end if;
+      end Check_At_End_Borrow_Entity;
+
+      E : Entity_Id;
+
+   --  Start of processing for Check_At_End_Borrow_Annotation
+
+   begin
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third parameter of a pragma At_End_Borrow must be an entity",
+            Arg3_Exp);
+         return;
+      else
+         E := Entity (Arg3_Exp);
+      end if;
+
+      --  This entity must be a function
+
+      if Ekind (E) /= E_Function then
+         Error_Msg_N
+           ("entity parameter of a pragma At_End_Borrow must be a function",
+            Arg3_Exp);
+         return;
+      else
+         Check_At_End_Borrow_Entity (E);
+      end if;
+
+      --  Go through renamings to find the appropriate entity
+
+      At_End_Borrow_Annotations.Include (Get_Renamed_Entity (E));
+   end Check_At_End_Borrow_Annotation;
 
    -----------------------------
    -- Check_Inline_Annotation --
@@ -655,98 +750,6 @@ package body SPARK_Definition.Annotate is
       Set_Has_No_Wrap_Around_Annotation (Base);
    end Check_No_Wrap_Around_Annotation;
 
-   -----------------------------
-   -- Check_Pledge_Annotation --
-   -----------------------------
-
-   procedure Check_Pledge_Annotation (Arg3_Exp : Node_Id) is
-
-      procedure Check_Pledge_Entity (E : Entity_Id);
-
-      -------------------------
-      -- Check_Pledge_Entity --
-      -------------------------
-
-      procedure Check_Pledge_Entity (E : Entity_Id) is
-         Borrower : constant Entity_Id := First_Formal (E);
-      begin
-         if No (Borrower)
-           or else No (Next_Formal (Borrower))
-           or else Present (Next_Formal (Next_Formal (Borrower)))
-         then
-            Error_Msg_N
-              ("Pledge function must have exactly two parameters", E);
-         elsif not Is_Ghost_Entity (E) then
-            Error_Msg_N
-              ("Pledge function must be a ghost function", E);
-         elsif not Is_Standard_Boolean_Type (Etype (E)) then
-            Error_Msg_N
-              ("Pledge function must return Boolean", E);
-         elsif not Is_Expression_Function_Or_Completion (E) then
-            Error_Msg_N
-              ("Pledge function must be an expression function", E);
-         else
-            declare
-               Pledge_Expr : constant Entity_Id := Next_Formal (Borrower);
-            begin
-               if not Is_Anonymous_Access_Type (Etype (Borrower)) then
-                  Error_Msg_N
-                    ("first parameter of Pledge function must be an anonymous "
-                     & "access type", Borrower);
-               elsif not Is_Standard_Boolean_Type (Etype (Pledge_Expr)) then
-                  Error_Msg_N
-                    ("second parameter of Pledge function must be a Boolean",
-                     Pledge_Expr);
-               else
-                  declare
-                     Expr : constant Node_Id :=
-                       Expression (Get_Expression_Function (E));
-                  begin
-                     if Nkind (Expr) not in N_Expanded_Name | N_Identifier
-                       or else Entity (Expr) /= Pledge_Expr
-                     then
-                        Error_Msg_N
-                          ("expression of a Pledge function must be its second"
-                           & " parameter", Pledge_Expr);
-                     end if;
-                  end;
-               end if;
-            end;
-         end if;
-      end Check_Pledge_Entity;
-
-      E : Entity_Id;
-
-   --  Start of processing for Check_Pledge_Annotation
-
-   begin
-      if Nkind (Arg3_Exp) not in N_Has_Entity then
-         Error_Msg_N
-           ("third parameter of a pragma Pledge must be an entity",
-            Arg3_Exp);
-         return;
-      else
-         E := Entity (Arg3_Exp);
-      end if;
-
-      --  This entity must be a function
-
-      if Ekind (E) /= E_Function then
-         Error_Msg_N
-           ("entity parameter of a pragma Pledge must be a function",
-            Arg3_Exp);
-         return;
-      else
-         Check_Pledge_Entity (E);
-      end if;
-
-      --  Go through renamings to find the appropriate entity
-      --  ??? this comment only applies to Check_Terminate_Annotation, where
-      --  Get_Renamed_Entity is called. What about others?
-
-      Pledge_Annotations.Include (Unique_Entity (E));
-   end Check_Pledge_Annotation;
-
    --------------------------------
    -- Check_Terminate_Annotation --
    --------------------------------
@@ -832,6 +835,14 @@ package body SPARK_Definition.Annotate is
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
 
+   ----------------------------------
+   -- Has_At_End_Borrow_Annotation --
+   ----------------------------------
+
+   function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean is
+     (Ekind (E) = E_Function
+      and then At_End_Borrow_Annotations.Contains (E));
+
    -------------------------------------
    -- Has_Might_Not_Return_Annotation --
    -------------------------------------
@@ -846,13 +857,6 @@ package body SPARK_Definition.Annotate is
 
    function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean is
      (No_Wrap_Around_Annotations.Contains (E));
-
-   ---------------------------
-   -- Has_Pledge_Annotation --
-   ---------------------------
-
-   function Has_Pledge_Annotation (E : Entity_Id) return Boolean is
-     (Pledge_Annotations.Contains (E));
 
    ------------------------------
    -- Has_Terminate_Annotation --
@@ -1153,11 +1157,11 @@ package body SPARK_Definition.Annotate is
                       Prag);
          return;
 
-      elsif Name = "init_by_proof"
+      elsif Name = "at_end_borrow"
+        or else Name = "init_by_proof"
         or else Name = "inline_for_proof"
         or else Name = "might_not_return"
         or else Name = "no_wrap_around"
-        or else Name = "pledge"
         or else Name = "terminating"
       then
          Check_Argument_Number (Name, 3, Ok);
@@ -1201,6 +1205,9 @@ package body SPARK_Definition.Annotate is
 
       --  Annotations with 3 arguments
 
+      elsif Name = "at_end_borrow" then
+         Check_At_End_Borrow_Annotation (Arg3_Exp);
+
       elsif Name = "inline_for_proof" then
          Check_Inline_Annotation (Arg3_Exp, Prag);
 
@@ -1209,9 +1216,6 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "no_wrap_around" then
          Check_No_Wrap_Around_Annotation (Arg3_Exp);
-
-      elsif Name = "pledge" then
-         Check_Pledge_Annotation (Arg3_Exp);
 
       elsif Name = "terminating" then
          Check_Terminate_Annotation (Arg3_Exp, Prag);

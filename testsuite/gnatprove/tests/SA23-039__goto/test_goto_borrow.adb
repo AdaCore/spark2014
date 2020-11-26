@@ -16,10 +16,10 @@ procedure Test_Goto_Borrow with SPARK_Mode is
   with Annotate => (GNATprove, Terminating),
     Pre => N <= Length (L);
 
-   function Pledge (L : access constant List_Cell; P : Boolean) return Boolean is
-     (P)
+   function At_End_Borrow (L : access constant List_Cell) return access constant List_Cell is
+     (L)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
 
    procedure Truncate_After_V (L : access List_Cell; Rest : out List; V : Integer; I : out Natural) with
      Pre  => Length (L) < Natural'Last,
@@ -36,19 +36,19 @@ procedure Test_Goto_Borrow with SPARK_Mode is
             pragma Loop_Invariant (Rest = null);
             pragma Loop_Invariant (I = Length (D)'Loop_Entry - Length (D));
             pragma Loop_Invariant
-              (Pledge (D, Length (L) = I + Integer'Min (Length (D), Natural'Last - I)));
+              (Length (At_End_Borrow (L)) = I + Integer'Min (Length (At_End_Borrow (D)), Natural'Last - I));
             pragma Loop_Invariant
-              (Pledge (D, (for all K in I + 1 .. Length (L) => Nth (D, K - I) = Nth (L, K))));
+              (for all K in I + 1 .. Length (At_End_Borrow (L)) =>
+                 Nth (At_End_Borrow (D), K - I) = Nth (At_End_Borrow (L), K));
             pragma Loop_Invariant
-              (Pledge (D, (for all K in 1 .. Integer'Min (Length (D), Natural'Last - I) => Nth (D, K) = Nth (L, K + I))));
+              (for all K in 1 .. Integer'Min (Length (At_End_Borrow (D)), Natural'Last - I) =>
+                   Nth (At_End_Borrow (D), K) = Nth (At_End_Borrow (L), K + I));
 
             I := I + 1;
 
             if D.Data = V then
-               pragma Assert (Nth (D, 1) = V);
                Rest := D.Next;
                D.Next := null;
-               pragma Assert (Length (D) = 1);
                goto EEnd;
             end if;
             D := D.Next;

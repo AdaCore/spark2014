@@ -3012,11 +3012,15 @@ are mutable, so we declare three references:
 
 In addition, if the access object is a local borrower (a constant or a
 variable of an anonymous access-to-variable type, see ``Is_Local_Borrower``),
-its module also contains a declaration for its `Pledge`. The pledge of a
-local borrower is conceptually a predicate which relates the value of the
-borrowed object to the value of the borrower at any time. The declaration
-of the pledge is a reference to this predicate, as the predicate can
-evolve when the borrower is reborrowed.
+its module also contains the declarations for two additional objects. One
+is a constant which stands for the value of the borrowed expression at the
+end of the borrow, the other is a variable, holding the value at the end of
+the borrow of the structure designated by the borrower at all time. This is
+the reason why it is a variable, as the part of the borrowed structure
+designated by the borrower might change during the borrow.
+We call these objects predicted values as they are used and linked together
+during the borrow prior to assuming their actual value when the end of the
+borrow is actually reached.
 
 Consider, as an example, the following borrow:
 
@@ -3029,37 +3033,15 @@ components described previously, we generate:
 
 .. code-block:: whyml
 
- clone export "ada__model".Pledge with axiom .,
- type borrower = Test__T2b.t2b,
- type borrowed = Test__int_acc.int_acc
+   val b__brower_at_end : Test__T2b.t2b__ref
 
- val test__b__pledge  : __pledge_ty__ref
+   val function b__borrowed_at_end : Test__T2b.t2b
 
 Here ``t2b`` is the type introduced by the compiler for the anonymous type of
-``B``. As the pledge of ``B`` should relate the value of the borrowed object
-(``Y``) to the value of the borrower (``B``), we clone the pledge module with
-the types of these two entities.
-
-The cloned module ``"ada__model".Pledge`` defines a type for the pledge of
-a borrower as follows:
-
-.. code-block:: whyml
-
-  type __pledge_ty
-
-  val function __pledge_get __pledge_ty borrowed borrower : bool
-
-  type __pledge_ty__ref = { mutable __pledge_ty__content : __pledge_ty }
-
-As we have said, a pledge is theoretically a predicate. The predicate is
-represented using an abstract type. The associated ``__pledge_get`` function can
-be used to apply the pledge. Said otherwise, to get the result of the pledge
-function ``p`` on two parameters ``b1`` and ``b2``, we should call
-``__pledge_get`` on ``p``, ``b1``, and ``b2``.
-We chose this indirect encoding even though Why3 has some level of support for
-higher-order programming. Indeed, it allows us to avoid introducing
-polymorphism, which is harmful to smtlib encoding, and to understand better
-the meaning of the generated code.
+``B``. We can see that, even though ``Y`` has type ``Int_Acc``, the borrowed
+expression has the type of the borrower. This is important as it is possible
+that constraints on the actual type for the borrowed expression might be broken
+during the borrow.
 
 Effect-Only Objects
 ^^^^^^^^^^^^^^^^^^^
@@ -3254,12 +3236,14 @@ here (it allows to deduce True). However, we can see by its form how
 the guard predicate is used to protect against wrong contracts which
 could lead to false post axioms if the function is not verified.
 
-Since borrowing traversal functions (see ``Is_Borrowing_Traversal_Function``)
-return local borrowers, we need to be able to get the pledge of their result
-(a predicate stating how they are related to the borrowed object) when they
-are called. In the main module of borrowing functions, we declare an
-additional function returning the pledge of the result. It takes the same
-parameters as the regular function.
+Borrowing traversal functions (see ``Is_Borrowing_Traversal_Function``)
+return local borrowers. We need to be able to reconstruct the value of the
+borrowed parameter at the end of the borrow from the value of the part of
+the structure designated by the result of the function.
+In the main module of borrowing functions, we declare an
+additional function doing this reconstruction. It takes the same
+parameters as the regular function plus the value of the result at the end
+of the borrow.
 
 For example, let us consider a function borrowing an element of an array of
 access types:
@@ -3272,22 +3256,43 @@ access types:
 
    function F (X : Int_Acc_Arr_Acc; I : Integer) return access Integer;
 
-We generate for it the declaration of a function returning a pledge which
-relates objects of type ``Int_Acc_Arr_Acc`` (the borrowed object) to
-objects of the compiler generated type for the return type of the function
-(the borrower):
+We generate for it a function which returns the reconstructed
+borrowed parameter from the value of the structure designated by the result
+of the function at the end of the borrow:
 
 .. code-block:: whyml
 
- clone export "ada__model".Pledge with axiom .,
- type borrower = t3b,
- type borrowed = int_acc_arr_acc
+   val function f__borrowed_at_end
+      (x: int_acc_arr_acc) (i: int) (f__result_at_end: t8b) : int_acc_arr_acc
 
- val function test__f__pledge
-   (x : int_acc_arr_acc) (i : int) : __pledge_ty
 
-The clone of the pledge module here is similar to the one used for local
-borrowers (see the section about access objects).
+Just like for usual functions, we don't assume much about what it
+actually returns unless the traversal function is an expression function.
+Here is the axiom generated for the function ``F`` above:
+
+.. code-block:: whyml
+
+   axiom f__post_axiom:
+      forall x : int_acc_arr_acc.
+      forall i : int [ f x i].
+         dynamic_invariant x /\ dynamic_invariant i ->
+         let result = f x i in
+         (forall f__result_at_end : t8b [ f__borrowed_at_end x i f__result_at_end].
+            f__result_at_end.is_null_pointer = result.is_null_pointer ->
+            let borrowed_at_end = f__borrowed_at_end x i f__result_at_end in
+               borrowed_at_end.is_null_pointer = x.is_null_pointer) /\
+          f__borrowed_at_end x i result = x
+
+It is made of two conjuncts. The first one describes what is known about the
+reconstructed borrowed parameter depending on the new value of the result
+``f_result_at_end``. Here since we have no postcondition and ``F`` is not an
+expression function, it is only that its ``is_null`` field cannot be
+modified. The second conjunct states that, if the result is unchanged, so is
+the borrowed parameter. If ``F`` has a postcondition, generated or user-defined,
+then it is translated inside the first conjunction, so that, if a user wants to
+give additional information about the value of the borrowed parameter at the
+end of the borrow using a call to a function annotated with ``At_End_Borrow``,
+we have a name for it.
 
 Subprogram Signature
 ^^^^^^^^^^^^^^^^^^^^
@@ -3885,11 +3890,16 @@ Assignments
 Local Borrows
 ^^^^^^^^^^^^^
 
-On borrows (declaration of local borrowers) and re-borrows (assignment at
-top-level inside a local borrower), the reference for the `pledge` of the
-local borrower needs to be updated (see ``New_Pledge_Update_From_Assignment``).
-In this pledge, we try to compute the most precise relation possible between
-the value of the borrowed expression and the value of the borrower at all time.
+On borrows (declaration of local borrowers), the value of the borrowed
+expression and the value of the borrower at the end of the borrow need to
+be linked together through an assumption, so the value of the borrowed
+expression can be reconstructed at the end of the borrow.
+In the same way, on re-borrows (assignment at
+top-level inside a local borrower), the value of the structure designated by
+the borrower at the end of the borrow changes, and the old value needs to
+be related to the new one through an assumption (see
+``New_Update_For_Borrow_At_End``).
+We try to generate these assumptions in the most precise way.
 To understand how it works, let us look at some examples.
 
 First, let us consider the simplest possible case: a borrow of a complete
@@ -3902,32 +3912,27 @@ object.
    Y : Int_Acc ;
    B : access Integer := Y;
 
-Here is the pledge computed for this declaration:
+Here is the statements introduced for this declaration:
 
 .. code-block:: whyml
 
-  (forall borrowed : int_acc.
-    (forall brower : t2b [ __pledge_get result borrowed brower ].
-       __pledge_get result borrowed brower = (borrowed = brower)))
+   b__brower_at_end.t2b__content <-
+      any (result : t2b)
+         ensures { y.is_null_pointer = result.is_null_pointer } in
+   assume { b__borrowed_at_end = b__brower_at_end.t2b__content };
 
 So here we have indeed the most precise relation possible, that is, that the
 borrowed object ``Y`` and the borrower ``B`` are always equal.
 
 At the end of the scope of ``B``, or when this scope is exited prematurely
-through a return or exit statement, the borrowed object ``Y`` is havoc'ed:
+through a return or exit statement, the value of ``b__brower_at_end``
+is set to ``B`` through an assumption and the borrowed object
+``Y`` is reconstructed from ``b__borrowed_at_end``:
 
 .. code-block:: whyml
 
-  let borrowed = (val _f : int_acc in _f) in
-    assume
-      { __pledge_get test__b__pledge.__pledge_ty__content borrowed b
-     /\ y__is_null_pointer.bool_content = borrowed.is_null_pointer };
-    y__pointer_value.integer__content <- borrowed.pointer_value;
-
-We only assume after the havoc that the pledge of the borrower holds
-(see ``Havoc_Borrowed_Expression``), plus the preservation of parts of ``Y``
-that are frozen by the borrow (here the address of ``Y`` is frozen, since ``Y``
-cannot have been assigned while it is borrowed).
+  assume { b__brower_at_end.t2b__content = b }
+  y__pointer_value.integer__content <- b__borrowed_at_end.pointer_value;
 
 Let us now consider a case where we only borrow part of an object:
 
@@ -3940,74 +3945,34 @@ Let us now consider a case where we only borrow part of an object:
    Y : Two_Acc ;
    B : access Integer := Y.F;
 
-The pledge of ``B`` expresses that the component ``F`` of ``Y`` is always equal
-to ``B``:
+Here the borrowed expression is ``Y.F``, so ``b__borrowed_at_end`` stands for
+the value of ``Y.F`` at the end of the borrow, and the assumption generated
+to link it to the borrower is similar to the one in the previous example:
 
 .. code-block:: whyml
 
-  (forall borrowed : two_acc.
-    (forall brower : t2b [ __pledge_get result borrowed brower ].
-       __pledge_get result borrowed brower = (borrowed.f = brower)))
+   b__brower_at_end.t1b__content <-
+       any (result : t1b)
+         ensures { y.rec__f.is_null_pointer = result.is_null_pointer } in
+   assume { b__borrowed_at_end = b__brower_at_end.t1b__content)) });
 
-Remark that here, we have no information about the value of ``Y.G`` after the
-borrow. Indeed, only ``Y.F`` is considered to be borrowed, and it is still
-possible to modify ``Y.G`` within the scope of ``B``. Thus, when
-exiting the scope of ``B``, we should only modify the borrowed expression, not
-the whole borrowed object. To do that, we first create a temporary object,
-that we havoc completely and assume the pledge. Afterward, we only copy into
-the borrowed object, the part which was actually borrowed:
+During the reconstruction, only the ``F`` component of ``Y`` is taken from
+``b__borrowed_at_end``. The rest comes from the current value of ``Y``.
+Indeed, only ``Y.F`` is considered to be borrowed, and it is still
+possible to modify ``Y.G`` within the scope of ``B``:
 
 .. code-block:: whyml
 
-  let borrowed = (val _f : two_acc in _f) in
-  let borrowed_expr = borrowed.f in
-     assume
-       { __pledge_get test__b__pledge.__pledge_ty__content borrowed b
-      /\ y__split_fields.__split_fields__content.f.is_null_pointer =
-         borrowed.f.is_null_pointer };
-     let temp = { y__split_fields with f = borrowed_expr } in
-       y__split_fields.__split_fields__content <- temp
-
-Here, we can see that the only part of ``Y`` which is frozen by the borrow
-(and thus assumed to be preserved after the havoc) is the ``is_null`` flag of
-``Y.F``. But this preseved part can be more complicated if the length of the
-borrowed path is longer. As an example, let us consider an access to an
-unconstrained array of access to integers:
-
-.. code-block:: ada
-
-   type Int_Acc_Arr is array (Positive range <>) of Int_Acc;
-   type Int_Acc_Arr_Acc is access Int_Acc_Arr;
-
-   Y : Int_Acc_Arr_Acc := new Int_Acc_Arr'(1 => null, 2 => null);
-   B : access Integer := Y (1);
-
-Here, the borrow will prevent the modification of the ``is_null`` flag of
-``Y (1)``, but not only. It will also prevent assigning into ``Y``,
-therefore preserving also the ``is_null`` flag of ``Y`` and the bounds of
-the array it designates:
-
-.. code-block:: whyml
-
-  let borrowed = (val _f : int_acc_arr_acc in _f) in
-  let borrowed_expr = get (to_array borrowed.pointer_value) 1 in
-     assume
-       { __pledge_get test__b__pledge.__pledge_ty__content borrowed y
-      /\ y__is_null_pointer.bool__content = borrowed.is_null_pointer
-      /\ first y__pointer_value.content =
-         first borrowed.pointer_value
-      /\ last y__pointer_value.content =
-	 last borrowed.pointer_value
-      /\ (get (to_array y__pointer_value.content) 1).is_null_pointer =
-         (get (to_array borrowed.pointer_value) 1).is_null_pointer };
-     ...
+   assume { b__brower_at_end = b };
+   y <- { y with __split_fields =
+           { y.__split_fields with acc__f = b__borrowed_at_end } };
 
 It is possible to assign at top-level inside a borrower when the assigned
 expression is rooted at the borrower (it is called a reborrow). When such
-an assignment occurs, the pledge of the borrowed object needs to be
-updated to reflect the new relation with the borrowed object. The new pledge
-is constructed by applying the old pledge to the current value of the old
-borrower updated with the value of the new borrower.
+an assignment occurs, the value of the borrower at end object needs to be
+updated to represent the value of the substructure only. A new imprecise
+value is declared for it, and the value of the old structure at the end of
+the borrow is computed from it and specified through an assumption.
 
 Let's see what happens on an example. Here we have a list ``X``
 (reborrows can only happen on recursive data structures), that we borrow inside
@@ -4029,25 +3994,23 @@ Let's see what happens on an example. Here we have a list ``X``
       Y := Y.N;
    end if;
 
-The new pledge of ``Y`` should relate the borrowed object, here ``X``, to the
-new borrowed value, here ``Y.N``, at any time. To construct this new pledge, we
-use the pledge of ``Y`` before the update. We reconstruct the value of ``Y``
-before the update from the value after the update and we link it to ``X``
-using the old pledge:
+As for borrows, we only assume that the new value of
+``y__brower_at_end`` has the same ``is_null`` field as
+``Y.N``. The old value of ``y__brower_at_end`` on the other hand is
+entirely determined by the previous value of ``Y`` and the new value
+of ``y__brower_at_end``:
 
 .. code-block:: whyml
 
-  test__y__pledge.__pledge_ty__content <-
-    (val _f : __pledge_ty
-       ensures
-         { (forall borrowed : list_acc.
-           (forall brower : t3b [ __pledge_get result borrowed brower ].
-              __pledge_get result borrowed brower =
-	      __pledge_get test__y__pledge.__pledge_ty__content borrowed
-	        { y with pointer_value =
-		  { y.pointer_value with __split_fields =
-		    { y.pointer_value.__split_fields with n = brower }
-		  } })) });
+   let temp___brower =
+      any (result : t3b)
+        ensures { y.pointer_value.__split_fields.n.is_null_pointer
+                  = result.is_null_pointer } in
+   assume { y__brower_at_end.t3b__content
+            = { y with pointer_value =
+                { y.pointer_value with __split_fields =
+                  { y.pointer_value.__split_fields with n = temp___brower } } } };
+   y__brower_at_end.t3b__content <- temp___brower;
 
 The value of the sublist designated by ``Y`` before the update at the end of
 the borrow is defined to be the current value of ``Y`` (that is, before the
@@ -4057,9 +4020,11 @@ the end of the borrow (since after the update the borrower will only hold the
 which are not in the reborrowed part, here ``Y.V``, are frozen by the reborrow,
 so they keep the value they have at the time where the pledge is computed.
 
-The computation is slightly more complicated when the expression used inside
-a borrow or a reborrow involves calls to traversal functions. Let us look at
-an example:
+When the expression used inside a borrow or a reborrow involves calls
+to traversal functions, the assumption uses the additional function
+symbol introduced for borrowing traversal function to reconstruct the
+borrowed parameter from the value of the borrower at the end of the
+borrow. Let us look at an example:
 
 .. code-block:: ada
 
@@ -4068,64 +4033,31 @@ an example:
    X : Int_Acc_Arr_Acc := new Int_Acc_Arr'(1 => null, 2 => null);
    Y : access Integer := F (X, 1);
 
-To relate ``Y`` to ``X`` here, we need to use the pledge of the traversal
-function. This pledge can be retrieved by calling the ``f__pledge`` function
-on the parameters of the call:
+The module generated for ``F`` includes a function
+``f__borrowed_at_end``. It takes the usual parameters of ``F`` plus the
+value at end of the result of the call (here stored in ``Y``) and
+reconstruct the value of the borrowed parameter (here ``X``) at the end
+of the borrow from it:
 
 .. code-block:: whyml
 
-  (forall borrowed : int_acc_arr_acc.
-    (forall brower : t7b [ __pledge_get result borrowed brower ].
-       __pledge_get result borrowed brower =
-       (exists temp : int_acc_arr_acc.
-          x__is_null_pointer.bool__content = temp.is_null_pointer
-       /\ temp = borrowed
-       /\ __pledge_get (f__pledge x 1) temp brower)))
+    y__brower_at_end.t7b__content <-
+        any (result : t7b)
+          ensures { (f x 1).is_null_pointer = result.is_null_pointer } in
+    assume { dynamic_invariant y__borrowed_at_end /\
+             y__borrowed_at_end
+             = f__borrowed_at_end x 1 y__brower_at_end.t7b__content };
 
-We can see above that a new existentially quantified variable is introduced
-to represent the object borrowed by the traversal function call at the end
-of the scope of the borrower. This is because, unlike with direct component
-accesses, we cannot reconstruct the borrowed object from the result of the call.
-Here since the object borrowed by the call turns out to be ``X``, the ``temp``
-is not really needed, but it would be if we had two nested calls for example:
-
-.. code-block:: ada
-
-   function F (X : access List) return access List;
-
-   X : List_Acc;
-   Y : access List := F (F (X));
-
-Here is the pledge generated for ``Y``:
-
-.. code-block:: whyml
-
-  (forall borrowed : list_acc.
-    (forall brower : t5b [ __pledge_get result borrowe brower ].
-       __pledge_get result borrowed brower =
-       (exists temp : t3b.
-         x__is_null_pointer.bool__content = temp.is_null_pointer
-	 /\ temp = borrowed
-	 /\ (exists temp_2 : t3b.
-              (f x).is_null_pointer = temp_2.is_null_pointer
-	      /\ __pledge_get (f__pledge x) temp temp_2
-	      /\ __pledge_get (f__pledge (f x)) temp_2 brower))))
-
-As before, the first existential quantifier is not really useful as ``temp``
-is really ``X``. The second stands for the object designated by ``F (X)``
-at the end of the borrow. Here we need the quantification, as we have no way to
-reconstruct it from the value of ``F (F (X))`` after the borrow.
-
-Note that in these examples, the expression which is actually borrowed by the
+Note that in this examples, the expression which is actually borrowed by the
 declaration of ``Y`` is not really the expression supplied as the initial value
 of ``Y`` but ``X`` entirely, as a call to a borrowing traversal
 function borrows its first parameter. As a result, at the end of the borrow,
-``X`` will be havoc'ed entirely.
+``X`` will be updated entirely.
 
 Traversal functions return local borrowers, so the return statement of a
-traversal function really is handled like a borrow: we update the pledge
-variable introduced for the result of the call like in the declaration of a
-borrow.
+traversal function really is handled like a borrow: we update the
+variable introduced for the result of the call at the end of the borrow
+like in the declaration of a borrower.
 
 For example, let us consider the following definition of ``F``:
 
@@ -4140,40 +4072,37 @@ For example, let us consider the following definition of ``F``:
       end if;
    end F;
 
-Here is the why3 code generated for the update of the result's pledge in the
-first return statement:
+Here is the why3 code generated for the update of the
+``result_at_end`` value in the first return statement:
 
 .. code-block:: whyml
 
-  __result_pledge.__pledge_ty__content <-
-    (val _f : __pledge_ty
-       ensures
-         { (forall borrowed : t5b.
-             (forall brower : t6b [ __pledge_get result borrowed brower].
-               __pledge_get result borrowed brower =
-	       (borrowed =
-	         { x with pointer_value =
-		   { x.pointer_value with __split_fields =
-		     { x.pointer_value.__split_fields with n = brower }
-		    } }))
-         })
+   f__result_at_end.t6b__content <-
+        any (result : t6b)
+           ensures { x.pointer_value.__split_fields.n.is_null_pointer
+                     = result.is_null_pointer } in
+   assume { f__borrowed_at_end =
+               { x with pointer_value =
+                   { x.pointer_value with __split_fields =
+                       { x.pointer_value.__split_fields with n =
+                           f__result_at_end.t6b__content } } } };
 
 We can see that it is different from the translation of a regular borrow of
-``X.N``. Indeed, here, ``X`` is entirely frozen by the borrow,
-so we can safely assume that the value of ``X`` at the end of the borrow will
+``X.N``. Here, ``X`` is entirely frozen by the borrow,
+so ``f__borrowed_at_end`` represents the entire value of ``X`` and not only
+the part which is effectively returned. Indeed, we can safely assume that
+the value of ``X`` at the end of the borrow will
 be the current value of ``X``, updated with the value of the borrower at the end
 of the borrow. There cannot be any simultaneous change in ``X.V`` for example.
 
 In the else branch of the if statement, we return null. Initializing a local
 borrower to null is in general not allowed, but there is an exception for the
-return value of a traversal function. The pledge function generated in this
-case states that the borrowed object will never be modified:
+return value of a traversal function. In this case we know that the borrowed
+object will never be modified:
 
 .. code-block:: whyml
 
-  (forall borrowed : t5b.
-    (forall brower : t6b [ __pledge_get result borrowed brower ].
-      __pledge_get result borrowed brower = (borrowed = x)))
+   assume { f__borrowed_at_end = x }
 
 Another particularity of borrowing traversal functions, is that the returned
 expression can be rooted not at the first parameter, but at one of its borrower
@@ -4197,24 +4126,20 @@ expression can be rooted not at the first parameter, but at one of its borrower
 
 Here the expression returned by ``F`` in the first branch is rooted at ``B2``
 which is itself a borrower of ``B1`` which borrows ``X``. So if we computed
-the new pledge directly from the returned statement, it would not relate the
-result to the borrowed parameter ``X`` but to a local variable ``B_2``. To
-compute the pledge relating the returned expression to ``X``, we use
-existentially quantified variables that are linked together using the pledges
-of local borrowers like for traversal function calls:
+the new assumption only from the returned statement, it would not relate the
+result to the borrowed parameter ``X`` but to a local variable ``B_2``.
+We need to go up the sequence of local borrowers until we reach the borrowed
+parameter and generate assumptions along the way:
 
 .. code-block:: whyml
 
-  (forall borrowed : t5b.
-    (forall brower : t6b [ __pledge_get result borrowed brower ].
-      __pledge_get result borrowedbrower =
-      (exists temp : t9b.
-        b1__is_null_pointer.bool__content = temp.is_null_pointer
-        /\ __pledge_get b1__pledge.__pledge_ty__content borrowed temp
-	/\ (exists temp_2 : t10b.
-             b2__is_null_pointer.bool__content = temp_2.is_null_pointer
-	     /\ __pledge_get b2__pledge.__pledge_ty__content temp temp_2
-	     /\ brower = temp_2))))
+   f__result_at_end.t6b__content <-
+      any (result : t6b)
+        ensures { b2.pointer_value.is_null_pointer
+                  = result.is_null_pointer } in
+   assume { b2__brower_at_end.t10b__content = f__result_at_end.t6b__content };
+   assume { b2__borrowed_at_end = b1__brower_at_end.t9b__content };
+   assume { b1__borrowed_at_end = f__borrowed_at_end };
 
 Loops
 ^^^^^
@@ -4754,28 +4679,29 @@ Function Calls
 In the program domain, function calls are translated in a similar way as
 :ref:`Procedure Calls`.
 
-Pledge Function Calls
-^^^^^^^^^^^^^^^^^^^^^
-A function can be annotated with a ``pragma (Annotate, GNATprove, Pledge)``
-under certain conditions (see ``Check_Pledge_Annotation``). It must be a
-ghost expression function with two parameters. The first parameter must be of an
-anonymous access type, while the second must be a boolean. The body
-of the expression function must return the second parameter:
+At_End_Borrow Function Calls
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A function can be annotated with a ``pragma (Annotate, GNATprove, At_End_Borrow)``
+under certain conditions (see ``Check_At_End_Borrow_Annotation``). It must be a
+ghost expression function with a parameter of an
+anonymous access-to-constant type. The body
+of the expression function must return its parameter:
 
 .. code-block:: ada
 
-   function Pledge
-     (Borrower : access constant Integer;
-      Prop     : Boolean) return Boolean
-   is (Prop)
+   function At_End_Borrow
+     (B : access constant Integer) return access constant Integer
+   is (B)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
 
-This subprogram can only be called on local borrowers, and on the result
-attribute of a borrowing traversal function (this is checked in marking).
-When such a call is encountered, it is translated as a constraint on the
-pledge of the local borrower (see ``Transform_Pledge_Call``). Said otherwise,
-the property given as a second parameter to the function is supposed to hold
+This subprogram can only be called on local borrowers, the result
+attribute of a borrowing traversal function (this is checked in marking),
+or borrowed paths (this is checked in the borrow checker).
+When such a call is encountered, it is translated as a reference to the
+value of its parameter at the end of the borrow (see 
+``Transform_At_End_Borrow_Call``). Since this value is imprecisely known
+while in the scope of the borrower, the property should hold
 at any time during the borrow.
 
 For example, let's consider a local borrower ``Y`` borrowing the component
@@ -4796,25 +4722,19 @@ designated by ``Y`` will be the value designated by ``X.F``:
 
 .. code-block:: ada
 
-   pragma Assert (Pledge (Y, X.F.all = Y.all));
+   pragma Assert (At_End_Borrow (X.F).all = At_End_Borrow (Y).all);
 
-In the translation to Why3, we quantify universally on the possible values of
-the borrowed object and the borrower to express that they can be modified
-arbitrarily. We only assume that the two are related with the pledge of the
-borrower, and that the parts of the borrowed object that are frozen by the
-borrow (see the description of local borrowers) are preserved:
+In the translation to Why3, we use the objects introduced for the value at
+the end of the borrow of borrowers and borrowed expressions:
 
 .. code-block:: whyml
 
-   (forall borrowed : two_acc.
-   (forall brower : t3b
-       [ __pledge_get y__pledge.__pledge_ty__content borrowed brower ].
-      __pledge_get y__pledge.__pledge_ty__content borrowed brower ->
-	x.__split_fields.f.is_null_pointer =
-	borrowed.__split_fields.f.is_null_pointer ->
-	y__is_null_pointer.bool__content = brower.is_null_pointer ->
-           to_rep borrowed.__split_fields.f.pointer_value =
-	   to_rep brower.pointer_value))
+   assert { to_rep
+               (let temp___x =
+                    { x with __split_fields =
+                        { x.__split_fields with f = y__borrowed_at_end } } in
+                temp___x.__split_fields.f.pointer_value)
+               = to_rep y__brower_at_end.t5b__content.pointer_value };
 
 Conversions
 ^^^^^^^^^^^

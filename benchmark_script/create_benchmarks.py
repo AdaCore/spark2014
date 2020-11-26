@@ -11,6 +11,8 @@ def create_benchmarks(datadir, limit):
         os.chdir("../testsuite/gnatprove")
         p = subprocess.run(["./run-tests", "--benchmarks",
                             "--temp-dir=" + datadir, "--disable-cleanup"] + limit)
+        if os.path.exists("internal"):
+            print("warning: collected VCs include internal tests")
     finally:
         os.chdir(olddir)
 
@@ -65,6 +67,7 @@ def collate_benchmarks(datadir, benchdir):
         "cvc4_16": "smt2",
         "z3_gnatprove": "smt2",
         "z3_gnatprove_ce":  "smt2",
+        "colibri":  "smt2",
     }
 
     for p in PROVERS:

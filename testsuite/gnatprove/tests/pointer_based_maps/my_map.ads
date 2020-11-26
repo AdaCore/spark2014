@@ -20,15 +20,15 @@ package My_Map with SPARK_Mode is
      Annotate => (GNATprove, Terminating),
      Pre => Model_Contains (M, K);
 
-   function Pledge (Borrower : access constant Map; Prop : Boolean) return Boolean is
-     (Prop)
+   function At_End_Borrow (X : access constant Map) return access constant Map is
+     (X)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
 
-   function Pledge (Borrower : access constant Integer; Prop : Boolean) return Boolean is
-     (Prop)
+   function At_End_Borrow (X : access constant Integer) return access constant Integer is
+     (X)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
 
    function Contains (M : access constant Map; K : Positive) return Boolean with
      Post => Contains'Result = Model_Contains (M, K);
@@ -59,8 +59,8 @@ package My_Map with SPARK_Mode is
    function Reference (M : access Map; K : Positive) return not null access Integer with
      Pre  => Model_Contains (M, K),
      Post => Model_Value (M, K) = Reference'Result.all and then
-     Pledge (Reference'Result, Model_Contains (M, K) and then
-                 Model_Value (M, K) = Reference'Result.all);
+           Model_Contains (At_End_Borrow (M), K) and then
+           Model_Value (At_End_Borrow (M), K) = At_End_Borrow (Reference'Result).all;
 
    --  For quantification purpose only, inefficient
 

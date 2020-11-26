@@ -1,16 +1,8 @@
-test_callback.adb:5:07: warning: "A" is not modified, could be IN
-test_callback.adb:5:07: warning: unused variable "A"
-test_callback.adb:6:07: warning: "Update_One" is not modified, could be of access constant type
-test_callback.adb:6:07: warning: unused variable "Update_One"
 test_callback.adb:9:18: info: cannot unroll loop (too many loop iterations)
-test_callback.adb:9:18: warning: statement has no effect
 test_callback.adb:10:10: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:23:34: info: null exclusion check proved (Trivial: 1 VC)
 test_callback.adb:32:22: medium: precondition of target might not be strong enough to imply precondition of source, cannot prove In_Range (X)
 test_callback.adb:32:34: info: null exclusion check proved (Trivial: 1 VC)
-test_callback.adb:40:07: warning: "A" is not modified, could be IN
-test_callback.adb:41:07: warning: "Update_One" is not modified, could be of access constant type
-test_callback.adb:41:07: warning: unused variable "Update_One"
 test_callback.adb:43:17: info: postcondition proved (CVC4: 1 VC)
 test_callback.adb:43:59: info: index check proved (CVC4: 2 VC)
 test_callback.adb:43:66: info: index check proved (CVC4: 2 VC)

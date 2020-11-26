@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Flow_Types;                     use Flow_Types;
+with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;               use GNAT.Source_Info;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
@@ -885,7 +887,34 @@ package body Gnat2Why.Subprograms.Pointers is
       Subp     : constant Entity_Id := Entity (Prefix (Expr));
       T        : W_Expr_Id;
 
+      procedure Check_No_Globals with Ghost;
+      --  Ghost procedure which checks that Subp has no global state.
+      --  We use it to ease debugging while flow analysis does not reject
+      --  this case.
+
+      ----------------------
+      -- Check_No_Globals --
+      ----------------------
+
+      procedure Check_No_Globals is
+         Reads  : Flow_Id_Sets.Set;
+         Writes : Flow_Id_Sets.Set;
+      begin
+         Get_Proof_Globals
+           (Subprogram      => Subp,
+            Reads           => Reads,
+            Writes          => Writes,
+            Erase_Constants => False);
+         pragma Assert (Writes.Is_Empty and Reads.Is_Empty);
+         --  If we stop here, it means that Subp has some global state,
+         --  which is not supported in SPARK.
+      end Check_No_Globals;
+
+   --  Start of processing for Transform_Access_Attribute_Of_Subprogram
+
    begin
+      Check_No_Globals;
+
       --  Declare a logic symbol for the subprogram object designated by Expr
       --  if needed.
 

@@ -421,6 +421,8 @@ package body SPARK_Util.Types is
                  and then not Is_Ref_Through_Discr (N)
                then
                   return Abandon;
+               else
+                  return Skip;
                end if;
             when others =>
                null;

@@ -902,3 +902,81 @@ Finally, ``Layout_Error`` may be raised when calling ``Put`` to display the
 value of a real number (floating-point or fixed-point) in a string output
 parameter, which is not reflected currently in the precondition of ``Put`` as
 no simple precondition can describe the required length in such a case.
+
+.. index:: strings
+
+Strings Libraries
+-----------------
+
+The following text is about ``Ada.Strings.Maps``, ``Ada.Strings.Fixed``,
+``Ada.Strings.Bounded`` and ``Ada.Strings.Unbounded``.
+
+Global contracts were added to non-pure packages, and pre/postconditions were
+added to all SPARK subprograms to partially model their effects. In
+particular:
+
+* Effects of subprograms from ``Ada.Strings.Maps``, as specified in the Ada RM
+  (A.4.2), are fully modeled through pre/postconditions.
+
+* Effects of subprograms from ``Ada.Strings.Fixed``, ``Ada.Strings.Bounded``
+  and ``Ada.Strings.Unbounded`` are partially modelled. Postconditions
+  state properties on the Length of the strings only and not on their
+  content. Preconditions protect from exceptions specified in the Ada RM
+  (A.4.3, A.4.4, A.4.5).
+
+* Type ``String_Access`` and procedure ``Free`` in ``Ada.Strings.Unbounded`` are not
+  in SPARK and cannot be denoted in SPARK program text, unless they are hidden
+  from GNATprove, due to the use of a general access type.
+
+Inside these packages, ``Translation_Error`` (in ``Ada.Strings.Maps``),
+``Index_Error`` and ``Pattern_Error`` are fully handled.
+
+``Length_Error`` is fully handled in ``Ada.Strings.Bounded`` and
+``Ada.Strings.Unbounded`` and in functions from ``Ada.Strings.Fixed``.
+
+However, in the procedures ``Move``, ``Replace_Slice``, ``Insert``,
+``Overwrite``, ``Head`` and ``Tail`` from ``Ada.Strings.Fixed``,
+``Length_Error`` may be raised under certain conditions. This is related to
+the call to ``Move``. Each call of these subprograms can be preceded with a
+pragma Assert to check that the actual parameters are consistent, when
+parameter ``Drop`` is set to ``Error`` and the ``Source`` is longer than
+``Target``.
+
+ .. code-block:: ada
+
+    --  From the Ada RM for Move: "The Move procedure copies characters from
+    --  Source to Target.
+    --
+    --  ...
+    --
+    --  If Source is longer than Target, then the effect is based on Drop.
+    --
+    --  ...
+    --
+    --  * If Drop=Error, then the effect depends on the value of the Justify
+    --    parameter and also on whether any characters in Source other than Pad
+    --    would fail to be copied:
+    --
+    --    * If Justify=Left, and if each of the rightmost
+    --      Source'Length-Target'Length characters in Source is Pad, then the
+    --      leftmost Target'Length characters of Source are copied to Target.
+    --
+    --    * If Justify=Right, and if each of the leftmost
+    --      Source'Length-Target'Length characters in Source is Pad, then the
+    --      rightmost Target'Length characters of Source are copied to Target.
+    --
+    --    * Otherwise, Length_Error is propagated.".
+    --
+    --  Here, Move will be called with Drop = Error, Justify = Left and
+    --  Pad = Space, so we add the following assertion before the call to Move.
+
+    pragma Assert
+     (if Source'Length > Target'Length then
+        (for all J in 1 .. Source'Length - Target'Length =>
+           (Source (Source'Last - J + 1) = Space)));
+
+    Move (Source  => Source,
+          Target  => Target,
+          Drop    => Error,
+          Justify => Left,
+          Pad     => Space);

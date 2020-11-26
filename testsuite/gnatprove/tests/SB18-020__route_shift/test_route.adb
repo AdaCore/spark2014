@@ -56,20 +56,23 @@ procedure Test_Route with SPARK_Mode is
       end return;
    end All_X;
 
-   function Pledge (P : access constant Point; W : Boolean) return Boolean is
-     (W)
+   function At_End_Borrow (P : access constant Point) return access constant Point is
+     (P)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
+   function At_End_Borrow (P : access constant Route) return access constant Route is
+     (P)
+   with Ghost,
+     Annotate => (GNATprove, At_End_Borrow);
 
    function Nth_Point (R : access Route; N : Positive) return not null access Point
    with
      Pre  => N < Length (R),
-     Post => Pledge
-       (Nth_Point'Result,
-        Length (R) = Length (R)'Old
-        and Nth_X (R, N) = Nth_Point'Result.X
-        and (for all I in 1 .. Length (R) =>
-               (if I /= N then Nth_X (R, I) = Get (All_X (R)'Old, I))))
+     Post =>
+        Length (At_End_Borrow (R)) = Length (R)
+        and Nth_X (At_End_Borrow (R), N) = At_End_Borrow (Nth_Point'Result).X
+        and (for all I in 1 .. Length (At_End_Borrow (R)) =>
+               (if I /= N then Nth_X (At_End_Borrow (R), I) = Nth_X (R, I)))
    is
       L1 : constant Natural := Length (R);
    begin

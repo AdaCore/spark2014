@@ -121,7 +121,7 @@ is
                                                        CurrentLatch),
                               (Interfac.Output,
                                SystemFault)        => CurrentLatch),
-          Refined_Post    => IsLocked = Interfac.isLocked or SystemFault
+          Refined_Post    => (IsLocked = Interfac.IsLocked) or SystemFault
    is
    begin
       if CurrentLatch = Locked then

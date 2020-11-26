@@ -12,10 +12,10 @@ procedure Binary_Search with SPARK_Mode is
       Right : Tree_Acc;
    end record;
 
-   function Pledge (T : access constant Tree; P : Boolean) return Boolean is
-     (P)
+   function At_End_Borrow (T : access constant Tree) return access constant Tree is
+     (T)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
 
    function M_Contains (T : access constant Tree; V : Integer) return Boolean is
       (if T = null then False
@@ -181,20 +181,21 @@ procedure Binary_Search with SPARK_Mode is
               (for all I of T_Old => Contains (Seen, I) or M_Contains (X, I));
             pragma Loop_Invariant
               (for all I of Seen => not M_Contains (X, I));
+
             pragma Loop_Invariant
-              (Pledge
-                 (X, (for all I in Integer =>
-                          (if M_Contains (X, I) then M_Contains (T, I)))));
+              (for all I in Integer =>
+                 (if M_Contains (At_End_Borrow (X), I)
+                  then M_Contains (At_End_Borrow (T), I)));
             pragma Loop_Invariant
-              (Pledge
-                 (X, (for all I of Seen => M_Contains (T, I))));
+              (for all I of Seen => M_Contains (At_End_Borrow (T), I));
             pragma Loop_Invariant
-              (Pledge
-                 (X, (for all I in Integer =>
-                          (if M_Contains (T, I) then Contains (Seen, I) or M_Contains (X, I)))));
+              (for all I in Integer =>
+                 (if M_Contains (At_End_Borrow (T), I)
+                  then Contains (Seen, I) or M_Contains (At_End_Borrow (X), I)));
             pragma Loop_Invariant
-              (Pledge
-                 (X, (if Sorted (X) and then X < H and then L < X then Sorted (T))));
+              (if Sorted (At_End_Borrow (X))
+                 and then At_End_Borrow (X) < H and then L < At_End_Borrow (X)
+               then Sorted (At_End_Borrow (T)));
 
             if X.Data = V then
                return;
@@ -208,9 +209,6 @@ procedure Binary_Search with SPARK_Mode is
                   H := (Present => True, Value => X.Data);
                   Seen := Union (Seen, Add (All_V (X.Right), X.Data));
                   X := X.Left;
-                  pragma Assert
-                    (Pledge
-                       (X, (if Sorted (X) and then X < H and then L < X then Sorted (T))));
                end if;
             else
                if X.Right = null then
@@ -222,9 +220,6 @@ procedure Binary_Search with SPARK_Mode is
                   L := (Present => True, Value => X.Data);
                   Seen := Union (Seen, Add (All_V (X.Left), X.Data));
                   X := X.Right;
-                  pragma Assert
-                    (Pledge
-                       (X, (if Sorted (X) and then X < H and then L < X then Sorted (T))));
                end if;
             end if;
          end loop;

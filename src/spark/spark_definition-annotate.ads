@@ -224,7 +224,7 @@ package SPARK_Definition.Annotate is
    function Has_Terminate_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Terminating applies to the subprogram E
 
-   function Has_Pledge_Annotation (E : Entity_Id) return Boolean;
-   --  Return True if the function E is a pledge function
+   function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
+   --  Return True if the function E is a function annotated with at_end_borrow
 
 end SPARK_Definition.Annotate;

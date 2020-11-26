@@ -106,6 +106,7 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Call_Attributes
      (Callsite      : Node_Id;
+      Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Sub_Called    : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops         : Node_Sets.Set     := Node_Sets.Empty_Set;
       In_Nested_Pkg : Boolean;

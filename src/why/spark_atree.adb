@@ -30,6 +30,7 @@ with Sem_Ch12;
 with Sem_Disp;
 with SPARK_Util.Types;
 with Stand;              use Stand;
+with Stringt;            use Stringt;
 
 package body SPARK_Atree is
 
@@ -814,6 +815,12 @@ package body SPARK_Atree is
                then Einfo.Full_View (Etype (Par))
                else Etype (Par));
 
+            if Einfo.Is_Incomplete_Type (Check_Type)
+              and then Present (Einfo.Full_View (Check_Type))
+            then
+               Check_Type := Einfo.Full_View (Check_Type);
+            end if;
+
          when others =>
             Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
                                   & Node_Kind'Image (Nkind (Par)));
@@ -899,6 +906,49 @@ package body SPARK_Atree is
 
    function Has_Target_Names (N : Node_Id) return Boolean renames
      Sinfo.Has_Target_Names;
+
+   ------------------------
+   -- Has_Wide_Character --
+   ------------------------
+
+   --  We cannot use directly Sinfo.Has_Wide_Character which is not set for
+   --  string literals not from source, say created as a result of inlining.
+   function Has_Wide_Character (N : Node_Id) return Boolean is
+   begin
+      for J in  1 .. String_Length (Strval (N)) loop
+         declare
+            Code : constant Char_Code := Get_String_Char (Strval (N), J);
+         begin
+            if not In_Character_Range (Code)
+              and then In_Wide_Character_Range (Code)
+            then
+               return True;
+            end if;
+         end;
+      end loop;
+      return False;
+   end Has_Wide_Character;
+
+   -----------------------------
+   -- Has_Wide_Wide_Character --
+   -----------------------------
+
+   --  We cannot use directly Sinfo.Has_Wide_Wide_Character which is not
+   --  set for string literals not from source, say created as a result
+   --  of inlining.
+   function Has_Wide_Wide_Character (N : Node_Id) return Boolean is
+   begin
+      for J in  1 .. String_Length (Strval (N)) loop
+         declare
+            Code : constant Char_Code := Get_String_Char (Strval (N), J);
+         begin
+            if not In_Wide_Character_Range (Code) then
+               return True;
+            end if;
+         end;
+      end loop;
+      return False;
+   end Has_Wide_Wide_Character;
 
    ----------------
    -- High_Bound --
@@ -1126,6 +1176,13 @@ package body SPARK_Atree is
 
    function Iteration_Scheme (N : Node_Id) return Node_Id renames
      Sinfo.Iteration_Scheme;
+
+   ---------------------
+   -- Iterator_Filter --
+   ---------------------
+
+   function Iterator_Filter (N : Node_Id) return Node_Id renames
+     Sinfo.Iterator_Filter;
 
    ----------------------------
    -- Iterator_Specification --

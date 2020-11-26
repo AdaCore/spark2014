@@ -8,6 +8,7 @@ import os
 contains_manual_proof = False
 
 def replay():
+    os.environ["SPARK_LEMMAS_OBJECT_DIR"] = TESTDIR
     prove_all(procs=16, level=3,
               opt=["-u", "test_higher_order.ads",
                    "-u", "test_higher_order1.ads",

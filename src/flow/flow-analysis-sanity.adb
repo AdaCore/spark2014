@@ -223,6 +223,11 @@ package body Flow.Analysis.Sanity is
                   Detect_Variable_Inputs
                     (N        => Expression (Decl),
                      Err_Desc => "actual for formal object with mode in");
+
+               elsif Nkind (Decl) = N_Object_Renaming_Declaration
+                 and then Present (Corresponding_Generic_Association (Decl))
+               then
+                  Check_Name_Dereferences (Name (Decl));
                end if;
             end;
 
@@ -963,28 +968,30 @@ package body Flow.Analysis.Sanity is
                Traverse_Declarations_Or_Statements (Statements (N));
 
             when N_Object_Renaming_Declaration =>
-               --  Check that an indexing expression of an indexed component
-               --  or the discrete range of a slice in an object renaming
-               --  declaration which renames part of that index or slice
-               --  is without variable inputs.
 
                if Comes_From_Source (N) then
+                  --  The checks below apply to generic in-out parameters which
+                  --  are transformed into renamings by GNAT (and SPARK RM rule
+                  --  makes provisions for such checking), but we check this
+                  --  when analysing generic actual parameters.
+
+                  pragma Assert (No (Corresponding_Generic_Association (N)));
+
+                  --  Check that an indexing expression of an indexed component
+                  --  or the discrete range of a slice in an object renaming
+                  --  declaration which renames part of that index or slice
+                  --  is without variable inputs.
+
                   Check_Name_Indexes_And_Slices (Name (N));
-               end if;
 
-               --  Check that the prefix of a dereference in an object renaming
-               --  declaration which renames part of that dereference is
-               --  without variable inputs. Contrary to indexing expressions
-               --  and slices whose side-effects are correctly hoisted in
-               --  GNATprove, we can't do the same for naming the memory
-               --  pointed to by a pointer before the pointer is reassigned.
-               --  Thus, extend that checking to generic in-out parameters
-               --  which are transformed into renamings by GNAT. SPARK RM
-               --  rule makes provisions for such checking.
+                  --  Check that the prefix of a dereference in an object
+                  --  renaming declaration which renames part of that
+                  --  dereference is without variable inputs. Contrary to
+                  --  indexing expressions and slices whose side-effects are
+                  --  correctly hoisted in GNATprove, we can't do the same
+                  --  for naming the memory pointed to by a pointer before
+                  --  the pointer is reassigned.
 
-               if Comes_From_Source (N)
-                 or else Present (Corresponding_Generic_Association (N))
-               then
                   Check_Name_Dereferences (Name (N));
                end if;
 

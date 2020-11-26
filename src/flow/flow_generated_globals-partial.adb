@@ -461,7 +461,15 @@ package body Flow_Generated_Globals.Partial is
       --  not appear in proof, definite or conditional.
       --  ??? not sure about protected types
       if Ekind (E) /= E_Protected_Type then
-         Contr.Direct_Calls := FA.Direct_Calls;
+
+         --  Ignore calls via access-to-subprogram, because we can't know the
+         --  actual subprogram and thus we assume it to be pure.
+
+         for Call of FA.Direct_Calls loop
+            if Ekind (Call) /= E_Subprogram_Type then
+               Contr.Direct_Calls.Insert (Call);
+            end if;
+         end loop;
       end if;
 
       --  Register abstract state components for packages whose body has
@@ -481,7 +489,8 @@ package body Flow_Generated_Globals.Partial is
       --  We register the following:
       --  * subprograms which contain at least one loop that may not terminate
       --  * procedures annotated with No_Return
-      --  * subprograms which call predefined procedures with No_Return.
+      --  * subprograms which call predefined procedures with No_Return
+      --  * subprograms with calls via access-to-subprogram
 
       --  ??? This flag is only meaningful for functions, procedures, entries
       --  and non-library-level packages, but meaningless for tasks and
@@ -497,7 +506,9 @@ package body Flow_Generated_Globals.Partial is
          No_Return (E)
            or else
          (for some Callee of FA.Direct_Calls =>
-             In_Predefined_Unit (Callee) and then No_Return (Callee)));
+             Ekind (Callee) = E_Subprogram_Type
+               or else
+             (In_Predefined_Unit (Callee) and then No_Return (Callee))));
 
       --  Check for potentially blocking statements in bodies of callable
       --  entities, i.e. entries and subprograms. Specs never contain any

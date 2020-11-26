@@ -1,1 +1,1 @@
-nano.adb:7:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Ticks_Per_Second or turning it into an expression function]
+nano.adb:7:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Ticks_Per_Second or turning it into an expression function in its unit spec]

@@ -8,9 +8,9 @@ procedure Traversal_Funcs with SPARK_Mode is
       N : List_Acc;
    end record;
 
-   function Pledge ( X : access constant List; B : Boolean) return Boolean is (B) with
+   function At_End_Borrow (X : access constant List) return access constant List is (X) with
      Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
 
    function Length (L : access constant List) return Natural is
      (if L = null then 0
@@ -21,9 +21,11 @@ procedure Traversal_Funcs with SPARK_Mode is
    function Next (X : access List) return access List with
      Pre => Length (X) < Natural'Last,
      Contract_Cases =>
-       (X = null => Next'Result = null and then Pledge (Next'Result, X = null),
+       (X = null => Next'Result = null and then At_End_Borrow (X) = null,
         others   => Length (Next'Result) = Length (X) - 1
-        and then Pledge (Next'Result, (if Length (Next'Result) < Natural'Last then Length (X) = Length (Next'Result) + 1)))
+        and then
+          (if Length (At_End_Borrow (Next'Result)) < Natural'Last
+           then Length (At_End_Borrow (X)) = Length (At_End_Borrow (Next'Result)) + 1))
    is
    begin
       if X /= null then
@@ -35,8 +37,9 @@ procedure Traversal_Funcs with SPARK_Mode is
 
    function Next_2 (X : access List) return access List with
      Pre  => Length (X) < Natural'Last,
-     Post => (if Length (X) < 2 then Pledge (Next_2'Result, Length (X) = Length (X)'Old)
-              else Pledge (Next_2'Result, (if Length (Next_2'Result) < Natural'Last - 1 then Length (X) = Length (Next_2'Result) + 2)))
+     Post => (if Length (X) < 2 then Length (At_End_Borrow (X)) = Length (X)
+              elsif Length (At_End_Borrow (Next_2'Result)) < Natural'Last - 1
+              then Length (At_End_Borrow (X)) = Length (At_End_Borrow (Next_2'Result)) + 2)
    is
    begin
       if Next (X) /= null then
@@ -54,8 +57,9 @@ procedure Traversal_Funcs with SPARK_Mode is
       L : Natural := Length (X) with Ghost;
       C : access List := Next (X).N;
       pragma Assert
-        (if L < 2 then Pledge (C, Length (X) = L)
-         else Pledge (C, (if Length (C) < Natural'Last - 1 then Length (X) = Length (C) + 2)));
+        (if L < 2 then Length (At_End_Borrow (X)) = L
+         elsif Length (At_End_Borrow (C)) < Natural'Last - 1
+         then Length (At_End_Borrow (X)) = Length (At_End_Borrow (C)) + 2);
    begin
       if C /= null then
          C.V := 3;

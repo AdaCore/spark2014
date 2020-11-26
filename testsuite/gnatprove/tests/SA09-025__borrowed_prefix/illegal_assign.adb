@@ -6,10 +6,10 @@ procedure Illegal_Assign with SPARK_Mode is
        Next : List_Acc;
     end record;
 
-   function Pledge (Borrower : access constant List; Prop : Boolean) return Boolean is
-     (Prop)
+   function At_End_Borrow (L : access constant List) return access constant List is
+     (L)
    with Ghost,
-     Annotate => (GNATprove, Pledge);
+     Annotate => (GNATprove, At_End_Borrow);
 
    X : List_Acc := new List'(1, null);
    W : List_Acc;
@@ -23,7 +23,7 @@ begin
       Y : access List := X.Next.Next;
    begin
       X.Val := 42; -- ok, X.Val is not borrowed
-      pragma Assert (Pledge (Y, X.Next /= null)); -- ok, we are in a pledge
+      pragma Assert (At_End_Borrow (X.Next.Next) /= null); -- ok, we are in a pledge
       pragma Assert (X.Next /= null); -- cannot read X.Next, as it is borrowed
       W := X.Next;    -- cannot move X.Next, as it is borrowed
       X.Next := null; -- cannot write into X.Next, as it is borrowed
