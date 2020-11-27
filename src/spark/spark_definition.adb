@@ -5057,6 +5057,11 @@ package body SPARK_Definition is
            and then Scope (Etype (E)) /= Standard_Standard
          then
             Mark_Violation (E, From => Retysp (Etype (E)));
+
+            --  If a violation is found, stop the marking here, other violation
+            --  might not be relevant.
+
+            return;
          end if;
 
          --  For private tagged types it is necessary to mark the full view as
