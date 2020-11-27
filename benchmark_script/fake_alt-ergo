@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "I don't know"
+echo "File \"toto\", line 1, characters 1-2:Valid"

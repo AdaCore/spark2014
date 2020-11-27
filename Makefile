@@ -202,3 +202,6 @@ clean:
 	$(MAKE) -C why3 clean
 	$(MAKE) -C include clean
 	rm -f docs/sphinx_support/confvars.py
+
+benchmark:
+	$(MAKE) -C benchmark_script

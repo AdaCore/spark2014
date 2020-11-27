@@ -9,7 +9,7 @@ reason_for_check.adb:19:25: medium: range check might fail (e.g. when Y2 = 1) [r
 reason_for_check.adb:19:29: info: range check proved (CVC4: 1 VC)
 reason_for_check.adb:19:29: medium: range check might fail (e.g. when Y2 = 1) [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention Y2]
 reason_for_check.adb:24:04: warning: analyzing unreferenced function "Get"
-reason_for_check.adb:26:16: medium: array index check might fail (e.g. when J = 1 and S = (others => 'NUL') and S'First = 2 and S'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 24 should mention J in a precondition]
+reason_for_check.adb:26:16: medium: array index check might fail (e.g. when J = 1 and S'First = 2 and S'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 24 should mention J in a precondition]
 reason_for_check.adb:29:04: warning: analyzing unreferenced procedure "Set"
 reason_for_check.adb:31:09: medium: array index check might fail (e.g. when C = 'NUL' and J = 1 and S'First = 2) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 29 should mention J in a precondition]
 reason_for_check.adb:42:04: warning: analyzing unreferenced procedure "Oper_Integer"
@@ -60,12 +60,12 @@ reason_for_check.adb:119:04: warning: analyzing unreferenced procedure "Assign"
 reason_for_check.adb:119:34: info: initialization of "T" proved
 reason_for_check.adb:121:09: medium: length check might fail (e.g. when S = (others => 'NUL') and T'First = 1 and T'Last = 0) [reason for check: source and destination arrays for the assignment must have the same length] [possible fix: subprogram at line 119 should mention T'Length or T'First or T'Last in a precondition]
 reason_for_check.adb:126:04: warning: analyzing unreferenced function "Get_Small"
-reason_for_check.adb:128:27: medium: length check might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 1) [reason for check: value must have same length as the target array type of the conversion] [possible fix: subprogram at line 126 should mention S in a precondition]
+reason_for_check.adb:128:27: medium: length check might fail (e.g. when S = (1 => 'NUL') and S'First = 1 and S'Last = 1) [reason for check: value must have same length as the target array type of the conversion] [possible fix: subprogram at line 126 should mention S in a precondition]
 reason_for_check.adb:134:04: warning: analyzing unreferenced procedure "Oper_Mask"
 reason_for_check.adb:137:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-reason_for_check.adb:137:37: medium: length check might fail (e.g. when Op = Logical_And and Y = (others => False) and Y'First = 1 and Y'Last = 0) [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
+reason_for_check.adb:137:37: medium: length check might fail (e.g. when Op = Logical_And and Y'First = 1 and Y'Last = 0) [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
 reason_for_check.adb:138:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-reason_for_check.adb:138:37: medium: length check might fail (e.g. when Op = Logical_Or and Y = (others => False) and Y'First = 1 and Y'Last = 0) [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
+reason_for_check.adb:138:37: medium: length check might fail (e.g. when Op = Logical_Or and Y'First = 1 and Y'Last = 0) [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
 reason_for_check.adb:139:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-reason_for_check.adb:139:37: medium: length check might fail (e.g. when X'Last = 0 and Y = (others => False) and Y'First = 1 and Y'Last = 0) [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
+reason_for_check.adb:139:37: medium: length check might fail (e.g. when X'Last = 0 and Y'First = 1 and Y'Last = 0) [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
 reason_for_check.adb:144:04: info: precondition proved (Trivial: 1 VC)

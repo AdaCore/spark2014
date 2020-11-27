@@ -19,10 +19,10 @@ foo.ads:13:54: info: range check proved (CVC4: 1 VC), in instantiation at usefoo
 foo.ads:13:54: info: range check proved (CVC4: 2 VC), in instantiation at usefoo.adb:9
 foo.ads:13:54: info: range check proved (CVC4: 4 VC), in instantiation at usefoo.adb:9
 foo.ads:13:54: info: range check proved (CVC4: 8 VC), in instantiation at usefoo.adb:9
-foo.ads:13:60: medium: range check might fail, in instantiation at usefoo.adb:9 (e.g. when B = (others => 1) and B'First = 1 and B'Last = 0) [reason for check: value must fit in the type of the qualification]
+foo.ads:13:60: medium: range check might fail, in instantiation at usefoo.adb:9 (e.g. when B'First = 1 and B'Last = 0) [reason for check: value must fit in the type of the qualification]
 usefoo.adb:9:29: info: range check proved (CVC4: 4 VC)
 usefoo.adb:9:51: info: overflow check proved (CVC4: 1 VC)
-usefoo.adb:9:54: medium: range check might fail (e.g. when B'First = -2147483647 and B'Last = 0)
+usefoo.adb:9:54: medium: range check might fail (e.g. when B'First = Integer'First+1 and B'Last = 0)
 usefoo.adb:9:62: info: division check proved (CVC4: 1 VC)
 usefoo.adb:9:66: info: overflow check proved (CVC4: 1 VC)
 usefoo.adb:11:27: info: overflow check proved (CVC4: 1 VC)

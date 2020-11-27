@@ -259,7 +259,7 @@ sensfusion6_pack.adb:191:21: info: range check proved (Z3: 1 VC), in call inline
 sensfusion6_pack.adb:191:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [reason for check: result of floating-point multiplication must be bounded]
 sensfusion6_pack.adb:192:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [reason for check: result of floating-point multiplication must be bounded]
-sensfusion6_pack.adb:193:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:193:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258 [reason for check: value must fit in the target type of the assignment]
 sensfusion6_pack.adb:193:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [reason for check: result of floating-point multiplication must be bounded]
 sensfusion6_pack.adb:197:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [reason for check: result of floating-point multiplication must be bounded]
 sensfusion6_pack.adb:197:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [reason for check: result of floating-point subtraction must be bounded]

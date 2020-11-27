@@ -28,7 +28,7 @@ package body List is
                    Model.To (S)(J - First + 1) = Element (L, J)));
       end loop;
 
-      for I in  First .. Last loop
+      for I in First .. Last loop
          pragma Loop_Invariant
          -- The size of the List increases with each Append
            (Natural (Length (Res)) = I - First and then

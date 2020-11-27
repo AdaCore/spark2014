@@ -48,18 +48,18 @@ is
    begin
       R1 := X1 * Y;
       R2 := X2 * Y;
-      Lemma_Mul_Is_Monotonic (X1, X2, Y);
+      Lemma_Mult_Is_Monotonic (X1, X2, Y);
    end Mult_Is_Monotonic;
 
-   procedure Mult_Is_Antimonotonic (X1, X2 : Small_Float; Y : Small_Nat_Float; R1, R2 : out Long_Float) with
+   procedure Mult_Right_Is_Monotonic (X1, X2 : Small_Float; Y : Small_Nat_Float; R1, R2 : out Long_Float) with
      Pre => X1 <= X2,
      Post => R2 <= R1
    is
    begin
       R1 := X1 * (-Y);
       R2 := X2 * (-Y);
-      Lemma_Mul_Is_Antimonotonic (X1, X2, (-Y));
-   end Mult_Is_Antimonotonic;
+      Lemma_Mult_Right_Negative_Is_Monotonic (X1, X2, (-Y));
+   end Mult_Right_Is_Monotonic;
 
    --  Division
 
@@ -73,15 +73,15 @@ is
       Lemma_Div_Is_Monotonic (X1, X2, Y);
    end Div_Is_Monotonic;
 
-   procedure Div_Is_Antimonotonic (X1, X2 : Small_Float; Y : Small_Pos_Float; R1, R2 : out Long_Float) with
+   procedure Div_Right_Is_Monotonic (X1, X2 : Small_Float; Y : Small_Pos_Float; R1, R2 : out Long_Float) with
      Pre => X1 <= X2,
      Post => R2 <= R1
    is
    begin
       R1 := X1 / (-Y);
       R2 := X2 / (-Y);
-      Lemma_Div_Is_Antimonotonic (X1, X2, (-Y));
-   end Div_Is_Antimonotonic;
+      Lemma_Div_Right_Negative_Is_Monotonic (X1, X2, (-Y));
+   end Div_Right_Is_Monotonic;
 
    X, Y, Z, R, S : Long_Float;
 
@@ -95,9 +95,9 @@ begin
    Sub_Is_Monotonic (X, Y, Z, R, S);
    Mult_Zero (X, Y, R);
    Mult_Is_Monotonic (X, Y, Z, R, S);
-   Mult_Is_Antimonotonic (X, Y, Z, R, S);
+   Mult_Right_Is_Monotonic (X, Y, Z, R, S);
    Div_Is_Monotonic (X, Y, Z, R, S);
-   Div_Is_Antimonotonic (X, Y, Z, R, S);
+   Div_Right_Is_Monotonic (X, Y, Z, R, S);
 
    pragma Assert (Is_Integer_64 (Z));
    pragma Assert (Is_Integer_32 (Z));

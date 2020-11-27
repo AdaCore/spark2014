@@ -1,5 +1,5 @@
 test.ads:10:33: high: "D" is not initialized in "Set"
 test.ads:12:15: high: "D" is not initialized
-test.ads:12:15: medium: postcondition might fail, cannot prove D = (Get_Pos (P) .. D'Last => Character'/0') (e.g. when D = (others => 'NUL') and D'First = 0 and D'Last = -1 and P = (First => 0))
+test.ads:12:15: medium: postcondition might fail, cannot prove D = (Get_Pos (P) .. D'Last => Character'/0') (e.g. when D'First = 0 and D'Last = -1 and P = (First => 0))
 test.ads:12:19: medium: range check might fail
 test.ads:12:32: info: range check proved (CVC4: 2 VC)

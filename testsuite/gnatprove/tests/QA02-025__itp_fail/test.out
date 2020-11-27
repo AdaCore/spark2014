@@ -1,4 +1,4 @@
 bounded_dynamic_arrays.ads:19:09: info: predicate check proved on default value (CVC4: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:25:13: medium: postcondition might fail, cannot prove Empty'Result = (Length (This) = 1), in instantiation at bounded_dynamic_strings.ads:5 (e.g. when This = (Capacity => 0, Current_Length => 0, Content => (others => 'NUL')) and This.Content'First = 1 and This.Content'Last = 0)
+bounded_dynamic_arrays.ads:25:13: medium: postcondition might fail, cannot prove Empty'Result = (Length (This) = 1), in instantiation at bounded_dynamic_strings.ads:5 (e.g. when This = (Capacity => 0, Current_Length => 0, Content => ?) and This.Content'First = 1 and This.Content'Last = 0)
 bounded_dynamic_arrays.ads:37:07: info: range check proved (CVC4: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:37:48: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at bounded_dynamic_strings.ads:5

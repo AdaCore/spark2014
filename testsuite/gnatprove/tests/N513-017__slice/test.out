@@ -34,7 +34,7 @@ sorters.adb:48:42: info: index check proved (CVC4: 2 VC)
 sorters.adb:49:20: info: range check proved (CVC4: 1 VC)
 sorters.adb:57:07: info: initialization of "Smallest" proved
 sorters.adb:59:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:60:22: medium: precondition might fail, cannot prove Unsorted'Last < Positive'last (e.g. when Current = 1 and Values = (others => 1) and Values'Last = 2147483647)
+sorters.adb:60:22: medium: precondition might fail, cannot prove Unsorted'Last < Positive'last (e.g. when Current = 1 and Values = (others => 1) and Values'Last = Integer'Last)
 sorters.adb:60:40: info: range check proved (CVC4: 8 VC)
 sorters.adb:62:13: info: precondition proved (CVC4: 10 VC)
 sorters.adb:62:26: info: range check proved (CVC4: 2 VC)

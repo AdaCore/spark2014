@@ -2491,71 +2491,69 @@ package body Gnat2Why.Expr is
       --        ignore__ (Def_Init_Cond (x));
       --        assert {Def_Init_Cond (x)}
 
-      if Present (DIC_Expr) then
+      --  Add the binder for the reference to the type to the
+      --  Symbol_Table.
 
-         --  Add the binder for the reference to the type to the
-         --  Symbol_Table.
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      declare
+         Tmp_Id   : constant W_Identifier_Id :=
+           New_Temp_Identifier (Ty, Type_Of_Node (Ty));
+         Tmp_Post : constant W_Pred_Id :=
+           +New_And_Then_Expr
+           (Left   =>
+              +Compute_Dynamic_Invariant
+              (Expr        => +New_Result_Ident (Type_Of_Node (Ty)),
+               Ty          => Ty,
+               Initialized => True_Term,
+               Only_Var    => False_Term,
+               Params      => Params),
+            Right  =>
+              +Compute_Default_Init
+              (Expr             => +New_Result_Ident (Type_Of_Node (Ty)),
+               Ty               => Ty,
+               Include_Subtypes => True,
+               Skip_Last_Cond   => True_Term),
+            Domain => EW_Pred);
+         --  Assume default initialization of the expression. Do not assume
+         --  the DIC itself.
 
-         declare
-            Tmp_Id   : constant W_Identifier_Id :=
-              New_Temp_Identifier (Ty, Type_Of_Node (Ty));
-            Tmp_Post : constant W_Pred_Id :=
-              +New_And_Then_Expr
-              (Left   =>
-                 +Compute_Dynamic_Invariant
-                 (Expr        => +New_Result_Ident (Type_Of_Node (Ty)),
-                  Ty          => Ty,
-                  Initialized => True_Term,
-                  Only_Var    => False_Term,
-                  Params      => Params),
-               Right  =>
-                 +Compute_Default_Init
-                 (Expr             => +New_Result_Ident (Type_Of_Node (Ty)),
-                  Ty               => Ty,
-                  Include_Subtypes => True,
-                  Skip_Last_Cond   => True_Term),
-               Domain => EW_Pred);
-            --  Assume default initialization of the expression. Do not assume
-            --  the DIC itself.
+         Tmp_Def : constant W_Prog_Id :=
+           New_Any_Expr (Ada_Node    => N,
+                         Post        => Tmp_Post,
+                         Labels      => Symbol_Sets.Empty_Set,
+                         Return_Type => Type_Of_Node (Ty));
 
-            Tmp_Def : constant W_Prog_Id :=
-              New_Any_Expr (Ada_Node    => N,
-                            Post        => Tmp_Post,
-                            Labels      => Symbol_Sets.Empty_Set,
-                            Return_Type => Type_Of_Node (Ty));
+      begin
+         --  Store the entity for the type variable
 
-         begin
-            --  Store the entity for the type variable
+         Insert_Entity (DIC_Param, Tmp_Id);
 
-            Insert_Entity (DIC_Param, Tmp_Id);
+         DIC_Check := Sequence
+           (New_Ignore
+              (Prog     => +Transform_Expr
+                   (Expr    => DIC_Expr,
+                    Domain  => EW_Prog,
+                    Params  => Params)),
+            New_Located_Assert
+              (Ada_Node =>
+                   (if Is_Full_View (N) then Partial_View (N) else N),
+               Kind     => EW_Check,
+               Reason   => VC_Default_Initial_Condition,
+               Pred     => +Transform_Expr
+                 (Expr    => DIC_Expr,
+                  Domain  => EW_Pred,
+                  Params  => Params)));
 
-            DIC_Check := Sequence
-              (New_Ignore
-                 (Prog     => +Transform_Expr
-                      (Expr    => DIC_Expr,
-                       Domain  => EW_Prog,
-                       Params  => Params)),
-               New_Located_Assert
-                 (Ada_Node =>
-                      (if Is_Full_View (N) then Partial_View (N) else N),
-                  Kind     => EW_Check,
-                  Reason   => VC_Default_Initial_Condition,
-                  Pred     => +Transform_Expr
-                    (Expr    => DIC_Expr,
-                     Domain  => EW_Pred,
-                     Params  => Params)));
+         DIC_Check := +New_Typed_Binding
+           (Domain  => EW_Prog,
+            Name    => Tmp_Id,
+            Def     => +Tmp_Def,
+            Context => +DIC_Check);
 
-            DIC_Check := +New_Typed_Binding
-              (Domain  => EW_Prog,
-               Name    => Tmp_Id,
-               Def     => +Tmp_Def,
-               Context => +DIC_Check);
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      end;
 
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         end;
-      end if;
       return DIC_Check;
    end Check_Type_With_DIC;
 
@@ -3029,15 +3027,15 @@ package body Gnat2Why.Expr is
                elsif Is_Self then +Self_Name
 
                --  Do not check initialization of out parameters. If the
-               --  parameter is a scalar, no checks are introduced.
-               --  ??? Should we check predicates if the type has a
-               --  Default_Value?
+               --  parameter is a scalar or an access type, no checks are
+               --  introduced.
 
                elsif Ekind (Formal) = E_Out_Parameter
                then Insert_Checked_Conversion
                  (Ada_Node => Actual,
                   Domain   =>
-                    (if Is_Scalar_Type (Retysp (Etype (Formal)))
+                    (if (Is_Scalar_Type (Retysp (Etype (Formal)))
+                     or else Is_Access_Type (Retysp (Etype (Formal))))
                        and then Domain = EW_Prog
                      then EW_Pterm else Domain),
                   Expr     => Transform_Expr
@@ -3231,7 +3229,7 @@ package body Gnat2Why.Expr is
          --  parameter, the protected object itself. We call "Compute_Arg" with
          --  empty arguments to process this case.
 
-         if Within_Protected_Type (Subp) then
+         if Need_Self_Binder (Subp) then
             Compute_Param (Empty, Empty);
          end if;
 
@@ -3701,27 +3699,24 @@ package body Gnat2Why.Expr is
                     First_Formal (Default_Init_Subp);
 
                begin
-                  if Present (Default_Init_Expr) then
+                  --  Add the binder for the reference to the type to the
+                  --  Symbol_Table.
 
-                     --  Add the binder for the reference to the type to the
-                     --  Symbol_Table.
+                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-                     Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+                  Insert_Entity
+                    (Default_Init_Param,
+                     Tmp_Exp,
+                     Mutable => False);
 
-                     Insert_Entity
-                       (Default_Init_Param,
-                        Tmp_Exp,
-                        Mutable => False);
+                  Check_Or_Assume_DIC
+                    (Ada_Node   => Ada_Node,
+                     Expr       => Default_Init_Expr,
+                     Params     => Params,
+                     Checks     => Checks,
+                     Assume_Exp => Assume_Last_DIC);
 
-                     Check_Or_Assume_DIC
-                       (Ada_Node   => Ada_Node,
-                        Expr       => Default_Init_Expr,
-                        Params     => Params,
-                        Checks     => Checks,
-                        Assume_Exp => Assume_Last_DIC);
-
-                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-                  end if;
+                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                end;
             end if;
 
@@ -4175,47 +4170,44 @@ package body Gnat2Why.Expr is
                   T          : W_Pred_Id;
 
                begin
-                  if Present (Init_Expr) then
-                     Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-                     --  Register the temporary identifier Init_Id for
-                     --  parameter Init_Param in the symbol table. This ensures
-                     --  both that a distinct name is used each time
-                     --  (preventing name capture), and that the type of Tmp is
-                     --  used as the type used to represent Init_Param
-                     --  (avoiding type conversion).
+                  --  Register the temporary identifier Init_Id for parameter
+                  --  Init_Param in the symbol table. This ensures both that a
+                  --  distinct name is used each time (preventing name
+                  --  capture), and that the type of Tmp is used as the type
+                  --  used to represent Init_Param (avoiding type conversion).
 
-                     Insert_Entity (Init_Param, Init_Id);
+                  Insert_Entity (Init_Param, Init_Id);
 
-                     --  Transform the default init expression into Why3
+                  --  Transform the default init expression into Why3
 
-                     T := +Transform_Expr (Expr   => Init_Expr,
-                                           Domain => EW_Pred,
-                                           Params => Params);
+                  T := +Transform_Expr (Expr   => Init_Expr,
+                                        Domain => EW_Pred,
+                                        Params => Params);
 
-                     --  Relate the name Init_Id used in the default init
-                     --  expression to the value Tmp for which the predicate is
-                     --  checked.
+                  --  Relate the name Init_Id used in the default init
+                  --  expression to the value Tmp for which the predicate is
+                  --  checked.
 
-                     T := New_Binding (Name    => Init_Id,
-                                       Def     => Tmp,
-                                       Context => +T,
-                                       Typ     => Get_Type (+T));
+                  T := New_Binding (Name    => Init_Id,
+                                    Def     => Tmp,
+                                    Context => +T,
+                                    Typ     => Get_Type (+T));
 
-                     --  Only take default init condition into account if
-                     --  Skip_Last_Cond is False.
+                  --  Only take default init condition into account if
+                  --  Skip_Last_Cond is False.
 
-                     T := New_Conditional (Condition => +Skip_Last_Cond,
-                                           Then_Part => +True_Pred,
-                                           Else_Part => +T,
-                                           Typ       => EW_Bool_Type);
+                  T := New_Conditional (Condition => +Skip_Last_Cond,
+                                        Then_Part => +True_Pred,
+                                        Else_Part => +T,
+                                        Typ       => EW_Bool_Type);
 
-                     Assumption := +New_And_Then_Expr (Left   => +Assumption,
-                                                       Right  => +T,
-                                                       Domain => EW_Pred);
+                  Assumption := +New_And_Then_Expr (Left   => +Assumption,
+                                                    Right  => +T,
+                                                    Domain => EW_Pred);
 
-                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-                  end if;
+                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                end;
             end if;
          end;
@@ -4520,21 +4512,41 @@ package body Gnat2Why.Expr is
             Expr   => +Expr,
             Params => Params);
 
+         --  Only assume that an object with null exclusion is not null if it
+         --  is initialized. This is the case in most cases, since access types
+         --  are initialized by default. However, out parameters might not be
+         --  valid values of the type.
+
          if Can_Never_Be_Null (Ty_Ext) then
             T := +New_And_Expr
-              (Left   => New_Not
-                 (Right  => New_Record_Access
-                      (Name  => +Expr,
-                       Field => M_Subprogram_Access.Rec_Is_Null,
-                       Typ   => EW_Bool_Type),
-                  Domain => EW_Pred),
+              (Left   => New_Conditional
+                 (Domain    => EW_Pred,
+                  Condition => +Initialized,
+                  Then_Part => New_Not
+                    (Right  => New_Record_Access
+                         (Name  => +Expr,
+                          Field => M_Subprogram_Access.Rec_Is_Null,
+                          Typ   => EW_Bool_Type),
+                     Domain => EW_Pred),
+                  Typ       => EW_Bool_Type),
                Right  => +T,
                Domain => EW_Pred);
          end if;
 
       elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
-         T := New_Not (Right => New_Pointer_Is_Null_Access (E    => Ty_Ext,
-                                                            Name => +Expr));
+
+         --  Only assume that an object with null exclusion is not null if it
+         --  is initialized. This is the case in most cases, since access types
+         --  are initialized by default. However, out parameters might not be
+         --  valid values of the type.
+
+         T := New_Conditional
+           (Condition => +Initialized,
+            Then_Part => New_Not
+              (Domain => EW_Pred,
+               Right  => New_Pointer_Is_Null_Access (E    => Ty_Ext,
+                                                     Name => +Expr)),
+            Typ       => EW_Bool_Type);
 
       --  Do not assume bounds of arrays and discriminants if Only_Var is
       --  statically True.

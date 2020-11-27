@@ -376,7 +376,7 @@ package body SPARK_Util.Types is
       Default_Init_Expr : constant Node_Id :=
         Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
       Init_Param        : constant Entity_Id :=
-        Unique_Entity (First_Formal (Default_Init_Subp));
+        First_Formal (Default_Init_Subp);
 
       function Is_Ref_Through_Discr (N : Node_Id) return Boolean with
         Pre => Nkind (N) in N_Identifier | N_Expanded_Name;
@@ -417,7 +417,7 @@ package body SPARK_Util.Types is
       begin
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name =>
-               if Unique_Entity (Entity (N)) = Init_Param
+               if Entity (N) = Init_Param
                  and then not Is_Ref_Through_Discr (N)
                then
                   return Abandon;
@@ -964,8 +964,11 @@ package body SPARK_Util.Types is
    -- Is_Standard_Type --
    ----------------------
 
+   --  E might be a standard type or the implicit base type of such a standard
+   --  type.
    function Is_Standard_Type (E : Entity_Id) return Boolean is
-     (for some S_Type in S_Types => Standard_Entity (S_Type) = E);
+     (for some S_Type in S_Types =>
+         E = Standard_Entity (S_Type) or E = Etype (Standard_Entity (S_Type)));
 
    ------------------------------
    -- Is_Standard_Boolean_Type --

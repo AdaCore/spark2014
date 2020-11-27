@@ -1,7 +1,7 @@
-bit_converter.adb:20:55: medium: range check might fail (e.g. when Array_of_Bits = (others => False) and Array_of_Bits'First = 0 and Array_of_Bits'Last = -1) [reason for check: default component value must fit in the type]
-bit_converter.adb:21:55: medium: range check might fail (e.g. when Array_of_Bits = (others => False) and Array_of_Bits'First = 1 and Array_of_Bits'Last = 0) [reason for check: default component value must fit in the type]
+bit_converter.adb:20:55: medium: range check might fail (e.g. when Array_of_Bits'First = 0 and Array_of_Bits'Last = -1) [reason for check: default component value must fit in the type]
+bit_converter.adb:21:55: medium: range check might fail (e.g. when Array_of_Bits'First = 1 and Array_of_Bits'Last = 0) [reason for check: default component value must fit in the type]
 bit_converter.adb:23:05: info: initialization of "Bit" proved
-bit_converter.adb:26:37: medium: array index check might fail (e.g. when Array_of_Bits = (others => False) and Array_of_Bits'First = 2 and Array_of_Bits'Last = 1 and First_Index = 2) [reason for check: value must be a valid index into the array]
+bit_converter.adb:26:37: medium: array index check might fail (e.g. when Array_of_Bits'First = 2 and Array_of_Bits'Last = 1 and First_Index = 2) [reason for check: value must be a valid index into the array]
 bit_converter.adb:29:44: info: cannot unroll loop (too many loop iterations)
 bit_converter.adb:31:39: info: index check proved (CVC4: 2 VC)
 bit_converter.ads:13:10: info: data dependencies proved

@@ -76,7 +76,7 @@ dynamic_preds_array.adb:22:23: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:23:23: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:28:18: medium: predicate check might fail, cannot prove Even mod 2 = 0 [possible fix: subprogram at dynamic_preds_array.ads:17 should mention X in a precondition]
 dynamic_preds_array.adb:29:21: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:34:18: medium: predicate check might fail (e.g. when X = (1 => 0, 2 => 0, others => 1)) [possible fix: subprogram at dynamic_preds_array.ads:18 should mention X in a precondition]
+dynamic_preds_array.adb:34:18: medium: predicate check might fail [possible fix: subprogram at dynamic_preds_array.ads:18 should mention X in a precondition]
 dynamic_preds_array.adb:35:21: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:40:27: info: range check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:40:27: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when A = 1 and B = 0) [possible fix: subprogram at dynamic_preds_array.ads:23 should mention A in a precondition]
@@ -106,7 +106,7 @@ dynamic_preds_array.adb:102:29: medium: predicate check might fail, cannot prove
 dynamic_preds_array.adb:104:29: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:104:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
 dynamic_preds_array.adb:107:30: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:107:30: medium: overflow check might fail (e.g. when Result = (1 => Even'Last-3, others => 0)) [reason for check: result of addition must fit in a 32-bits machine integer]
+dynamic_preds_array.adb:107:30: medium: overflow check might fail (e.g. when Result = (1 => Even'Last-3, 2 => 0)) [reason for check: result of addition must fit in a 32-bits machine integer]
 dynamic_preds_array.adb:109:14: medium: predicate check might fail (e.g. when Result = (2 => 4, others => 0))
 dynamic_preds_array.adb:115:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:116:10: medium: predicate check might fail

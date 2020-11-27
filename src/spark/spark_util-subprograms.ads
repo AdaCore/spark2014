@@ -331,14 +331,18 @@ package SPARK_Util.Subprograms is
    --  @return the corresponding N_Expression_Function original node
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id
-   with Pre => Is_DIC_Procedure (E)
-                 or else
-               Is_Invariant_Procedure (E)
-                 or else
-               Is_Partial_Invariant_Procedure (E);
+   with Pre  => Is_DIC_Procedure (E)
+                  or else
+                Is_Invariant_Procedure (E)
+                  or else
+                Is_Partial_Invariant_Procedure (E),
+        Post =>
+          (if Is_DIC_Procedure (E) or else Is_Partial_Invariant_Procedure (E)
+           then Nkind (Get_Expr_From_Check_Only_Proc'Result) in N_Subexpr);
    --  @param E a Default_Initial_Condition or Type_Invariant procedure
-   --  @return the expression in the first pragma Check found in the body of E,
-   --     if any, or Empty otherwise
+   --  @return the expression in the first pragma Check found in the body of E
+   --     (or Empty for an invariant procedure given for the public declaration
+   --     of a private type, which is not supported in SPARK)
    --  Extract a condition checked for aspect Default_Initialization and
    --  Type_Invariant.
 

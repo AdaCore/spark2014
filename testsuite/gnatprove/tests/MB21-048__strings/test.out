@@ -1,2 +1,2 @@
 lines.adb:6:07: info: initialization of "Pos" proved
-lines.adb:9:14: medium: range check might fail (e.g. when Pos = 1 and S = (others => 'NUL') and S'First = 2 and S'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at lines.ads:3 should mention S in a precondition]
+lines.adb:9:14: medium: range check might fail (e.g. when Pos = 1 and S'First = 2 and S'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at lines.ads:3 should mention S in a precondition]

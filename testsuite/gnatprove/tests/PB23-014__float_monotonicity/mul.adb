@@ -10,7 +10,7 @@ procedure Mul (X1, X2 : in out Float;
        Post => X1 <= X2
 is
 begin
-   Lemma_Mul_Is_Monotonic (X1,X2,Y);
+   Lemma_Mult_Is_Monotonic (X1,X2,Y);
    X1 := X1 * Y;
    X2 := X2 * Y;
 end Mul;

@@ -55,6 +55,18 @@ is
          Trains (Train) := New_Position;
 
          pragma Assert (Occupied_Tracks_On_Red);
+         pragma Assert
+           (for all Train in Train_Id range 1 .. Cur_Num_Trains =>
+              (for all Id in Prev_Id =>
+                   (if Get_Previous_Track (Trains (Train), Id) /= No_Track_Id then
+                         Track_Signals (Get_Previous_Track (Trains (Train), Id)) in
+                      Orange | Red)));
+         pragma Assert
+           (for all Train in Train_Id range 1 .. Cur_Num_Trains =>
+              (for all Id in Prev_Id =>
+                   (if Get_Other_Previous_Track (Trains (Train), Id) /= No_Track_Id then
+                         Track_Signals (Get_Other_Previous_Track (Trains (Train), Id)) in
+                      Orange | Red)));
          pragma Assert (Previous_Tracks_On_Orange_Or_Red);
          pragma Assert (Safe_Signaling);
 
@@ -148,6 +160,12 @@ is
                        ((if Track_Signals'Loop_Entry (J) = Red then Track_Signals (J) = Red)
                            and then
                         (if Track_Signals'Loop_Entry (J) = Orange then Track_Signals (J) = Orange)));
+                  pragma Loop_Invariant
+                    (for all Train in Train_Id range 1 .. Cur_Num_Trains =>
+                       (for all Id in Prev_Id =>
+                            (if Get_Previous_Track (Trains (Train), Id) /= No_Track_Id then
+                                  Track_Signals (Get_Previous_Track (Trains (Train), Id)) in
+                               Orange | Red)));
                end loop;
 
                pragma Assert (Occupied_Tracks_On_Red);

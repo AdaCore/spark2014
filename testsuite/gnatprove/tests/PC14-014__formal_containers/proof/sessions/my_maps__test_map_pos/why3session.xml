@@ -126,7 +126,7 @@
   </goal>
   <goal name="def&#39;vc.33" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1" timelimit="5"><result status="valid" steps="886383"/></proof>
+  <proof prover="1" timelimit="5"><result status="valid" steps="1393038"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.34" proved="true">

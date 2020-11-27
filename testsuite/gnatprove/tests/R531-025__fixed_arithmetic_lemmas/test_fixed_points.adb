@@ -14,14 +14,14 @@ package body Test_Fixed_Points is
       Lemmas.GNAT_Lemma_Div_Is_Monotonic (Val1, Val2, Denom);
    end Test_Div_Is_Monotonic;
 
-   procedure Test_Div_Is_Antimonotonic
+   procedure Test_Div_Right_Is_Monotonic
      (Num    : Fix;
       Denom1 : Positive;
       Denom2 : Positive)
    is
    begin
-      Lemmas.GNAT_Lemma_Div_Is_Antimonotonic (Num, Denom1, Denom2);
-   end Test_Div_Is_Antimonotonic;
+      Lemmas.GNAT_Lemma_Div_Right_Is_Monotonic (Num, Denom1, Denom2);
+   end Test_Div_Right_Is_Monotonic;
 
    procedure Test_Mult_Then_Div_Is_Ident
      (Val1 : Fix;

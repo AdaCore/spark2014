@@ -17,15 +17,15 @@ concat.adb:11:31: info: range check proved (CVC4: 4 VC), in call inlined at conc
 concat.adb:13:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat.adb:35
 concat.adb:14:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat.adb:35
 concat.adb:17:14: warning: subprogram "Three" has no effect
-concat.adb:20:14: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = 1 and A'Last = 1 and B = (others => 0) and B'First = 0 and B'Last = 2147483647) [reason for check: result of addition must fit in a 32-bits machine integer]
-concat.adb:20:24: medium: overflow check might fail (e.g. when B = (others => -1) and B'First = -1 and B'Last = 2147483647) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+concat.adb:20:14: medium: overflow check might fail (e.g. when A = (1 => 0) and A'First = 1 and A'Last = 1 and B = (others => 0) and B'First = 0 and B'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+concat.adb:20:24: medium: overflow check might fail (e.g. when B = (others => -1) and B'First = -1 and B'Last = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 concat.adb:23:19: info: range check proved (CVC4: 1 VC)
 concat.adb:25:22: info: assertion proved (CVC4: 1 VC)
 concat.adb:26:22: info: assertion proved (CVC4: 1 VC)
 concat.adb:27:22: info: assertion proved (CVC4: 1 VC)
 concat.adb:27:38: info: overflow check proved (CVC4: 1 VC)
 concat.adb:27:42: info: overflow check proved (CVC4: 1 VC)
-concat.adb:27:52: medium: overflow check might fail (e.g. when B = (others => -1) and B'First = -1 and B'Last = 2147483647) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+concat.adb:27:52: medium: overflow check might fail (e.g. when B = (others => -1) and B'First = -1 and B'Last = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 concat.adb:36:07: info: precondition proved (CVC4: 3 VC)
 concat.ads:10:14: warning: subprogram "P" has no effect
 concat_left.adb:4:14: warning: subprogram "One" has no effect

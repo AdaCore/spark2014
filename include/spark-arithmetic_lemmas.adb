@@ -41,7 +41,7 @@ is
       Denom : Pos)
    is null;
 
-   procedure Lemma_Div_Is_Antimonotonic
+   procedure Lemma_Div_Right_Is_Monotonic
      (Num    : Int;
       Denom1 : Pos;
       Denom2 : Pos)

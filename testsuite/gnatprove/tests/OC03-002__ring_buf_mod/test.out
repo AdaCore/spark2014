@@ -20,7 +20,7 @@ ring_buf.ads:43:47: medium: range check might fail (e.g. when R = (Data => (othe
 ring_buf.ads:45:13: info: range check proved (CVC4: 4 VC)
 ring_buf.ads:45:52: medium: range check might fail (e.g. when R = (Data => (others => 0), First => Ar_Index'Last, Length => ?)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 38 should mention R in a precondition]
 ring_buf.ads:47:58: info: index check proved (CVC4: 2 VC)
-ring_buf.ads:50:67: medium: range check might fail (e.g. when M = (others => 0) and M'First = 65535 and M'Last = 65535 and X = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 50 should mention M and X in a precondition]
+ring_buf.ads:50:67: medium: range check might fail (e.g. when M = (Ar_Index'Last => 0) and M'First = Ar_Index'Last and M'Last = Ar_Index'Last and X = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 50 should mention M and X in a precondition]
 ring_buf.ads:51:51: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 51 should mention M]
 ring_buf.ads:58:21: info: initialization of "R" proved
 ring_buf.ads:59:19: medium: postcondition might fail, cannot prove To_Model (R) = Model'(1 .. 0 => 0)

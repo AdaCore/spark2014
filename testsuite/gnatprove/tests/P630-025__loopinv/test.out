@@ -1,4 +1,4 @@
-decadriver.adb:73:21: medium: range check might fail (e.g. when Frame'First = 0 and Frame'Last = 2147483647)
+decadriver.adb:73:21: medium: range check might fail (e.g. when Frame'First = 0 and Frame'Last = Integer'Last)
 decadriver.adb:74:16: info: range check proved (CVC4: 4 VC)
 decadriver.adb:74:50: info: overflow check proved (CVC4: 1 VC)
 decadriver.adb:75:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

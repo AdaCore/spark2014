@@ -23,7 +23,7 @@ string_utilities.adb:41:53: medium: "Lengths" might not be initialized
 string_utilities.adb:41:72: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:41:72: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:47:10: medium: "Lengths" might not be initialized
-string_utilities.adb:47:33: medium: range check might fail (e.g. when S2 = (others => 'NUL') and S2'First = 0 and S2'Last = -1) [reason for check: input value must fit in parameter type]
+string_utilities.adb:47:33: medium: range check might fail (e.g. when S2'First = 0 and S2'Last = -1) [reason for check: input value must fit in parameter type]
 string_utilities.adb:52:48: medium: "Lengths" might not be initialized
 string_utilities.adb:52:71: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:53:10: info: range check proved (CVC4: 2 VC)
@@ -34,9 +34,9 @@ string_utilities.adb:56:39: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:62:26: medium: "Result" might not be initialized
 string_utilities.adb:64:25: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:65:25: info: overflow check proved (CVC4: 1 VC)
-string_utilities.adb:65:25: medium: range check might fail (e.g. when X1 = 2147483646) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X1 in a loop invariant]
+string_utilities.adb:65:25: medium: range check might fail (e.g. when X1 = 2147483645) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X1 in a loop invariant]
 string_utilities.adb:66:25: info: overflow check proved (CVC4: 1 VC)
-string_utilities.adb:66:25: medium: range check might fail (e.g. when X2 = 2147483646) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant]
+string_utilities.adb:66:25: medium: range check might fail (e.g. when X2 = 1) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant]
 string_utilities.adb:67:19: medium: "Lengths" might not be initialized
 string_utilities.adb:67:38: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:67:38: info: range check proved (CVC4: 1 VC)
@@ -46,12 +46,12 @@ string_utilities.adb:68:25: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:68:25: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:70:25: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:70:25: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant]
-string_utilities.ads:3:55: medium: array index check might fail (e.g. when S = (others => 'NUL') and S'First = 0 and S'Last = -1) [reason for check: value must be a valid index into the array]
+string_utilities.ads:3:55: medium: array index check might fail (e.g. when S'First = 0 and S'Last = -1) [reason for check: value must be a valid index into the array]
 string_utilities.ads:4:48: info: range check proved (CVC4: 4 VC)
-string_utilities.ads:4:59: medium: overflow check might fail (e.g. when S = (others => 'NUL') and S'First = 2147483647 and S'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer]
+string_utilities.ads:4:59: medium: overflow check might fail (e.g. when S'First = Integer'Last and S'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer]
 string_utilities.ads:10:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
 string_utilities.ads:11:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
-string_utilities.ads:17:15: medium: overflow check might fail (e.g. when S1 = (others => 'NUL') and S1'First = 1 and S1'Last = 1 and S2 = (others => 'NUL') and S2'First = 1 and S2'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 13 should mention S1 and S2 in a precondition]
+string_utilities.ads:17:15: medium: overflow check might fail (e.g. when S1 = (1 => 'NUL') and S1'First = 1 and S1'Last = 1 and S2 = (1 => 'NUL') and S2'First = 1 and S2'Last = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 13 should mention S1 and S2 in a precondition]
 string_utilities.ads:17:17: info: expression function body not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:17:17: info: implicit function contract not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:19:21: info: expression function body not available for proof ("Slow_LCS_Length" might not return)
@@ -59,7 +59,7 @@ string_utilities.ads:19:21: info: implicit function contract not available for p
 string_utilities.ads:20:21: info: expression function body not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:20:21: info: implicit function contract not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:24:06: info: expression function body not available for proof ("Is_Subsequence" might not return)
-string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1) (e.g. when Longest_Common_Subsequence'Result = (others => 'NUL') and Longest_Common_Subsequence'Result'First = 1 and Longest_Common_Subsequence'Result'Last = 0 and S1 = (others => 'NUL') and S1'First = 2147483647 and S1'Last = 2147483646)
+string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1) (e.g. when Longest_Common_Subsequence'Result'First = 1 and Longest_Common_Subsequence'Result'Last = 0 and S1'First = Integer'Last and S1'Last = Integer'Last-1)
 string_utilities.ads:25:06: info: expression function body not available for proof ("Is_Subsequence" might not return)
 string_utilities.ads:26:39: info: range check proved (CVC4: 1 VC)
 string_utilities.ads:26:49: info: expression function body not available for proof ("Slow_LCS_Length" might not return)

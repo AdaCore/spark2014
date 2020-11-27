@@ -22,7 +22,7 @@ keccak-duplex.adb:89:27: info: range check proved (CVC4: 4 VC), in instantiation
 keccak-duplex.adb:89:54: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:94:07: info: precondition proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:106:07: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when In_Data = (others => 0) and In_Data'First = 0 and In_Data'Last = 200) [reason for check: slice bounds must fit in the underlying array]
-keccak-duplex.adb:106:25: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when In_Data = (others => 0) and In_Data'First = 0 and In_Data'Last = 2147483647)
+keccak-duplex.adb:106:25: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when In_Data = (others => 0) and In_Data'First = 0 and In_Data'Last = Integer'Last)
 keccak-duplex.adb:106:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:106:41: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:108:07: info: precondition proved (CVC4: 5 VC), in instantiation at keccak-keccak_1600.ads:66
@@ -37,21 +37,21 @@ keccak-duplex.ads:79:14: info: postcondition proved (CVC4: 1 VC), in instantiati
 keccak-duplex.ads:80:06: info: data dependencies proved, in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:118:21: info: initialization of "Out_Data" proved, in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:120:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:66
-keccak-duplex.ads:123:30: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when In_Data = (others => 0) and In_Data'First = 0 and In_Data'Last = 2147483647 and In_Data_Bit_Length = 0)
+keccak-duplex.ads:123:30: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when In_Data = (others => 0) and In_Data'First = 0 and In_Data'Last = Integer'Last and In_Data_Bit_Length = 0)
 keccak-duplex.ads:123:61: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:123:66: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
-keccak-duplex.ads:125:31: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when Out_Data'First = 0 and Out_Data'Last = 2147483647 and Out_Data_Bit_Length = 0)
+keccak-duplex.ads:125:31: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when Out_Data'First = 0 and Out_Data'Last = Integer'Last and Out_Data_Bit_Length = 0)
 keccak-duplex.ads:125:62: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:125:67: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:126:15: info: postcondition proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:138:27: info: initialization of "Out_Data" proved, in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:140:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:66
-keccak-duplex.ads:143:31: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when Out_Data'First = 0 and Out_Data'Last = 2147483647 and Out_Data_Bit_Length = 0)
+keccak-duplex.ads:143:31: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when Out_Data'First = 0 and Out_Data'Last = Integer'Last and Out_Data_Bit_Length = 0)
 keccak-duplex.ads:143:62: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:143:66: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:144:15: info: postcondition proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:158:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:66
-keccak-duplex.ads:160:30: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when In_Data = (others => 0) and In_Data'First = 0 and In_Data'Last = 2147483647 and In_Data_Bit_Length = 0)
+keccak-duplex.ads:160:30: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 (e.g. when In_Data = (others => 0) and In_Data'First = 0 and In_Data'Last = Integer'Last and In_Data_Bit_Length = 0)
 keccak-duplex.ads:160:61: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:160:66: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:161:15: info: postcondition proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
@@ -125,15 +125,15 @@ keccak-keccakf-byte_lanes.adb:170:19: info: index check proved (CVC4: 2 VC), in 
 keccak-keccakf-byte_lanes.adb:170:38: info: index check proved (CVC4: 2 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.adb:170:62: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.ads:35:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.ads:36:18: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:55 (e.g. when Data = (others => 0) and Data'First = 0 and Data'Last = 2147483647)
+keccak-keccakf-byte_lanes.ads:36:18: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:55 (e.g. when Data = (others => 0) and Data'First = 0 and Data'Last = Integer'Last)
 keccak-keccakf-byte_lanes.ads:37:38: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.ads:37:46: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.ads:52:28: info: initialization of "Data" proved, in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.ads:53:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.ads:54:17: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:55 (e.g. when Data'First = 0 and Data'Last = 2147483647)
+keccak-keccakf-byte_lanes.ads:54:17: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:55 (e.g. when Data'First = 0 and Data'Last = Integer'Last)
 keccak-keccakf-byte_lanes.ads:67:27: info: initialization of "Data" proved, in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.ads:69:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:55
-keccak-keccakf-byte_lanes.ads:71:27: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:55 (e.g. when Bit_Len = 0 and Data'First = 0 and Data'Last = 2147483647)
+keccak-keccakf-byte_lanes.ads:71:27: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:55 (e.g. when Bit_Len = 0 and Data'First = 0 and Data'Last = Integer'Last)
 keccak-keccakf-byte_lanes.ads:71:46: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-byte_lanes.ads:71:51: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:55
 keccak-keccakf-permutation.adb:32:07: info: initialization of "Temp" proved, in instantiation at keccak-keccak_1600.ads:53
@@ -151,11 +151,11 @@ keccak-keccakf.ads:98:17: info: initialization of "AR" proved, in instantiation 
 keccak-keccakf.ads:99:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:103:23: medium: "AR" might not be initialized in "Chi_Iota", in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:105:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:45
-keccak-padding.ads:52:34: medium: range check might fail (e.g. when First_Block'First = 0 and First_Block'Last = 2147483647)
+keccak-padding.ads:52:34: medium: range check might fail (e.g. when First_Block'First = 0 and First_Block'Last = Integer'Last)
 keccak-padding.ads:54:34: info: range check proved (CVC4: 1 VC)
 keccak-padding.ads:54:60: info: overflow check proved (CVC4: 1 VC)
 keccak-padding.ads:54:65: info: division check proved (CVC4: 1 VC)
-keccak-padding.ads:91:19: medium: range check might fail (e.g. when Block'First = 0 and Block'Last = 2147483647)
+keccak-padding.ads:91:19: medium: range check might fail (e.g. when Block'First = 0 and Block'Last = Integer'Last)
 keccak-padding.ads:93:28: info: range check proved (CVC4: 1 VC)
 keccak-padding.ads:93:54: info: overflow check proved (CVC4: 1 VC)
 keccak-padding.ads:93:59: info: division check proved (CVC4: 1 VC)
@@ -306,7 +306,7 @@ keccak-sponge.adb:311:30: info: range check proved (CVC4: 4 VC), in instantiatio
 keccak-sponge.adb:317:07: info: precondition proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:317:23: info: non-aliasing of formal parameters "A" and "Data" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:317:34: info: range check proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.adb:330:36: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Digest'First = 0 and Digest'Last = 2147483647)
+keccak-sponge.adb:330:36: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Digest'First = 0 and Digest'Last = Integer'Last)
 keccak-sponge.adb:335:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:342:21: info: assertion proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:347:10: info: precondition proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
@@ -372,14 +372,14 @@ keccak-sponge.ads:137:19: info: postcondition proved (CVC4: 1 VC), in instantiat
 keccak-sponge.ads:149:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:152:35: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:152:40: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.ads:152:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Data = (others => 0) and Data'First = 0 and Data'Last = 2147483647)
+keccak-sponge.ads:152:51: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Data = (others => 0) and Data'First = 0 and Data'Last = Integer'Last)
 keccak-sponge.ads:153:48: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:155:15: info: postcondition proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:157:45: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:157:66: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:183:40: info: overflow check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:183:45: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.ads:183:59: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Message = (others => 0) and Message'First = 0 and Message'Last = 2147483647)
+keccak-sponge.ads:183:59: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:57 (e.g. when Message = (others => 0) and Message'First = 0 and Message'Last = Integer'Last)
 keccak-sponge.ads:184:53: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:186:15: info: postcondition proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:188:45: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57

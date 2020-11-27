@@ -63,7 +63,7 @@ is
      Pre  => Val1 <= Val2,
      Post => Val1 / Denom <= Val2 / Denom;
 
-   procedure Lemma_Div_Is_Antimonotonic
+   procedure Lemma_Div_Right_Is_Monotonic
      (Num    : Int;
       Denom1 : Pos;
       Denom2 : Pos)

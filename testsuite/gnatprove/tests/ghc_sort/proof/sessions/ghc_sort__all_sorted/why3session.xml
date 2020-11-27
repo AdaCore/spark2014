@@ -10,32 +10,32 @@
  <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="0"><result status="valid" steps="3109"/></proof>
+  <proof prover="0"><result status="valid" steps="3110"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="valid" steps="3175"/></proof>
+  <proof prover="0"><result status="valid" steps="3176"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="20955"/></proof>
+  <proof prover="0"><result status="valid" steps="21064"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="20414"/></proof>
+  <proof prover="0"><result status="valid" steps="20523"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="3275"/></proof>
+  <proof prover="0"><result status="valid" steps="3276"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="12309"/></proof>
+  <proof prover="0"><result status="valid" steps="12404"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="21340"/></proof>
+  <proof prover="0"><result status="valid" steps="21454"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="valid" steps="3367"/></proof>
+  <proof prover="0"><result status="valid" steps="3368"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <transf name="trivial_true" proved="true" >

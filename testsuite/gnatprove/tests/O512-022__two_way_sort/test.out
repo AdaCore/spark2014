@@ -25,7 +25,7 @@ p1.adb:37:19: medium: range check might fail (e.g. when J = 0) [reason for check
 p1.adb:39:13: info: precondition proved (CVC4: 4 VC)
 p1.adb:40:19: info: range check proved (CVC4: 1 VC)
 p1.adb:41:19: info: range check proved (CVC4: 1 VC)
-p1.ads:5:14: medium: postcondition might fail, cannot prove A'Last < A'First or else (for some K in A'Range => (for all J in A'First .. K => not A(J)) and then (for all J in K+1 .. A'Last => A(J))) (e.g. when A = (0 => False, others => True) and A'First = 0 and A'Last = 1)
+p1.ads:5:14: medium: postcondition might fail, cannot prove A'Last < A'First or else (for some K in A'Range => (for all J in A'First .. K => not A(J)) and then (for all J in K+1 .. A'Last => A(J))) (e.g. when A = (0 => False, 1 => True) and A'First = 0 and A'Last = 1)
 p1.ads:7:63: info: index check proved (CVC4: 2 VC)
 p1.ads:8:53: info: overflow check proved (CVC4: 1 VC)
 p1.ads:8:71: info: index check proved (CVC4: 2 VC)

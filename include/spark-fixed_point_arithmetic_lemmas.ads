@@ -7,7 +7,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2018-2019, AdaCore                     --
+--                     Copyright (C) 2018-2020, AdaCore                     --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -64,7 +64,7 @@ is
    --  correction of the above lemma rests on the proof of
    --  Lemma_Div_Is_Monotonic from SPARK.Arithmetic_Lemmas
 
-   procedure GNAT_Lemma_Div_Is_Antimonotonic
+   procedure GNAT_Lemma_Div_Right_Is_Monotonic
      (Num    : Fix;
       Denom1 : Positive;
       Denom2 : Positive)
@@ -76,13 +76,13 @@ is
    pragma Annotate (GNATprove, Intentional, "postcondition",
                     "GNAT-specific lemma, as Ada RM does not guarantee it");
    --  GNAT implements division of fixed-point type by Integer with integer
-   --  division, which is antimonotonic in its denominator, when all arguments
+   --  division, which is monotonic in its denominator, when all arguments
    --  are non-negative.
    --
    --  As fixed-point value Num is represented internally by an integer, the
    --  fixed-point divisions (Num / Denom1) and (Num / Denom2) are computed as
    --  the integer divisions on its representation. Thus, the correction of the
-   --  above lemma rests on the proof of Lemma_Div_Is_Antimonotonic from
+   --  above lemma rests on the proof of Lemma_Div_Right_Is_Monotonic from
    --  SPARK.Arithmetic_Lemmas
 
    procedure GNAT_Lemma_Mult_Then_Div_Is_Ident

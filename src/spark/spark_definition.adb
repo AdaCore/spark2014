@@ -3872,13 +3872,11 @@ package body SPARK_Definition is
                      Current_Delayed_Aspect_Type := Etype (Param);
 
                      Mark_Entity (Param);
-                     if Present (Expr) then
-                        pragma Assert (not Violation_Detected);
-                        Mark (Expr);
-                        --  ??? Violations in the aspect expressions seem
-                        --  ignored.
-                        Violation_Detected := False;
-                     end if;
+
+                     pragma Assert (not Violation_Detected);
+                     Mark (Expr);
+                     --  ??? Violations in the aspect expressions seem ignored
+                     Violation_Detected := False;
 
                      --  Restore global variable to its initial value
                      Current_Delayed_Aspect_Type := Empty;

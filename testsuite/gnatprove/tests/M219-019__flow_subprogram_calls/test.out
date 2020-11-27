@@ -64,6 +64,10 @@ test.ads:34:41: info: initialization of "Y" proved
 test.ads:35:09: info: data dependencies proved
 test.ads:36:09: info: flow dependencies proved
 Trace files' contents:
+test.adb:101
+
+test.adb:101
+
 test.adb:95
 
 test.adb:95
@@ -81,8 +85,4 @@ test.adb:190
 test.adb:178
 
 test.adb:160
-
-test.adb:101
-
-test.adb:101
 

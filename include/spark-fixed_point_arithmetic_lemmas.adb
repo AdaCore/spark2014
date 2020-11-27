@@ -35,7 +35,7 @@ package body SPARK.Fixed_Point_Arithmetic_Lemmas is
       Denom : Positive)
    is null;
 
-   procedure GNAT_Lemma_Div_Is_Antimonotonic
+   procedure GNAT_Lemma_Div_Right_Is_Monotonic
      (Num    : Fix;
       Denom1 : Positive;
       Denom2 : Positive)

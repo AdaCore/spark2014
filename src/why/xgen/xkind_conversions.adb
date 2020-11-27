@@ -128,7 +128,7 @@ package body Xkind_Conversions is
 
             --  Conversions between a class id and its elements
 
-            for Kind in  F1 .. L1 loop
+            for Kind in F1 .. L1 loop
                NL (O);
                Print_Conversion_Couple
                  (O,

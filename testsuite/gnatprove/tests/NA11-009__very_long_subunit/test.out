@@ -90,7 +90,7 @@ very_longs-divide.adb:187:08: info: data dependencies proved
 very_longs-divide.adb:188:08: info: flow dependencies proved
 very_longs-divide.adb:191:07: info: initialization of "Carry" proved
 very_longs-divide.adb:192:07: info: initialization of "Sum" proved
-very_longs-divide.adb:194:28: medium: array index check might fail (e.g. when J = 2 and Q_Hat = 0 and Quotient = (Length => ?, Long_Digits => (others => 0)) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 185 should mention J in a precondition]
+very_longs-divide.adb:194:28: medium: array index check might fail (e.g. when J = 2 and Q_Hat = 0 and Quotient = (Length => ?, Long_Digits => (1 => 0)) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 185 should mention J in a precondition]
 very_longs-divide.adb:194:40: medium: range check might fail (e.g. when Q_Hat = 256) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 185 should mention Q_Hat in a precondition]
 very_longs-divide.adb:198:31: info: index check proved (CVC4: 2 VC)
 very_longs-divide.adb:198:58: info: index check proved (CVC4: 2 VC)
@@ -109,7 +109,7 @@ very_longs-divide.adb:211:26: info: length check proved (CVC4: 3 VC; Trivial: 1 
 very_longs-divide.adb:211:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:212:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs-divide.adb:212:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-very_longs-divide.adb:215:09: medium: range check might fail (e.g. when Divisor = (Length => 1, Long_Digits => (others => 1)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1) [reason for check: value must fit in the target type of the assignment] [possible fix: you should consider adding a postcondition to function Number_Of_Digits or turning it into an expression function]
+very_longs-divide.adb:215:09: medium: range check might fail (e.g. when Divisor = (Length => 1, Long_Digits => (1 => 1)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1) [reason for check: value must fit in the target type of the assignment] [possible fix: you should consider adding a postcondition to function Number_Of_Digits or turning it into an expression function]
 very_longs-divide.adb:216:25: info: range check proved (CVC4: 1 VC)
 very_longs-divide.adb:219:22: info: precondition proved (CVC4: 1 VC)
 very_longs-divide.adb:219:61: info: index check proved (CVC4: 2 VC)
@@ -245,7 +245,7 @@ very_longs.adb:291:65: info: index check proved (CVC4: 2 VC)
 very_longs.adb:293:37: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:293:41: info: index check proved (CVC4: 2 VC)
 very_longs.adb:303:07: info: initialization of "Result" proved
-very_longs.adb:303:36: medium: range check might fail (e.g. when L = (Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and R = (Length => Digit_Index_Type'Last, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 65536) [possible fix: subprogram at very_longs.ads:61 should mention L and R in a precondition]
+very_longs.adb:303:36: medium: range check might fail (e.g. when L = (Length => 1, Long_Digits => (1 => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and R = (Length => Digit_Index_Type'Last, Long_Digits => (others => 0)) and R.Long_Digits'First = 1 and R.Long_Digits'Last = 65536) [possible fix: subprogram at very_longs.ads:61 should mention L and R in a precondition]
 very_longs.adb:304:07: info: initialization of "L_Digit" proved
 very_longs.adb:305:07: info: initialization of "R_Digit" proved
 very_longs.adb:306:07: info: initialization of "T_Digit" proved

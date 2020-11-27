@@ -13,18 +13,18 @@ a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 list.adb:12:26: info: range check proved (CVC4: 1 VC)
 list.adb:14:14: info: initialization of "Res" proved
 list.adb:15:50: info: cannot unroll loop (too many loop iterations)
-list.adb:16:10: medium: precondition might fail, cannot prove not Is_Full (S) (e.g. when I = 1 and S = (N => ?, Top => 0, Content => (others => 1)) and S.Content'First = 1 and S.Content'Last = 0) [possible fix: loop at line 15 should mention S in a loop invariant]
+list.adb:16:10: medium: precondition might fail, cannot prove not Is_Full (S) (e.g. when I = 1 and S = (Top => 0, others => ?) and S.Content'First = 1 and S.Content'Last = 0) [possible fix: loop at line 15 should mention S in a loop invariant]
 list.adb:16:16: medium: private part of "S" might not be initialized
 list.adb:16:19: info: precondition proved (CVC4: 2 VC)
 list.adb:16:31: info: range check proved (CVC4: 1 VC)
 list.adb:20:10: medium: precondition might fail, cannot prove Length (Container) < Capacity (Container) (e.g. when S = (N => ?, Top => 0, Content => (others => 1)))
-list.adb:20:23: medium: precondition might fail, cannot prove not Is_Empty (S) (e.g. when S = (N => ?, Top => 0, Content => (others => 1)) and S.Content'First = 1 and S.Content'Last = 0) [possible fix: loop invariant at line 22 should mention S]
+list.adb:20:23: medium: precondition might fail, cannot prove not Is_Empty (S) (e.g. when S = (Top => 0, others => ?) and S.Content'First = 1 and S.Content'Last = 0) [possible fix: loop invariant at line 22 should mention S]
 list.adb:20:28: medium: private part of "S" might not be initialized
-list.adb:21:10: medium: precondition might fail, cannot prove not Is_Empty (S) (e.g. when S = (N => ?, Top => 0, Content => (others => 1)) and S.Content'First = 1 and S.Content'Last = 0) [possible fix: loop invariant at line 22 should mention S]
+list.adb:21:10: medium: precondition might fail, cannot prove not Is_Empty (S) (e.g. when S = (Top => 0, others => ?) and S.Content'First = 1 and S.Content'Last = 0) [possible fix: loop invariant at line 22 should mention S]
 list.adb:21:15: medium: private part of "S" might not be initialized
 list.adb:22:33: info: loop invariant initialization proved (CVC4: 1 VC)
 list.adb:22:54: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1) (e.g. when J = 1) [possible fix: subprogram at list.ads:11 should mention L in a precondition]
-list.adb:22:54: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) (e.g. when I = 1 and S = (N => ?, Top => 0, Content => (others => 1)) and S.Content'First = 1 and S.Content'Last = 0)
+list.adb:22:54: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) (e.g. when I = 1 and S = (Top => 0, others => ?) and S.Content'First = 1 and S.Content'Last = 0)
 list.adb:22:68: info: range check proved (CVC4: 2 VC)
 list.adb:22:73: info: precondition proved (CVC4: 4 VC)
 list.adb:22:104: info: range check proved (CVC4: 2 VC)
@@ -37,9 +37,9 @@ list.ads:13:79: info: overflow check proved (CVC4: 1 VC)
 list.ads:13:83: info: overflow check proved (CVC4: 1 VC)
 list.ads:13:83: info: range check proved (CVC4: 1 VC)
 stack.adb:4:47: info: range check proved (CVC4: 1 VC)
-stack.adb:4:47: medium: range check might fail (e.g. when S = (N => 0, Top => 1, Content => (others => 0)) and S.Content'First = 1 and S.Content'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition]
+stack.adb:4:47: medium: range check might fail (e.g. when S = (N => 0, Top => 1, Content => ?) and S.Content'First = 1 and S.Content'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition]
 stack.adb:5:55: info: range check proved (CVC4: 1 VC)
-stack.adb:5:55: medium: range check might fail (e.g. when S = (N => 0, Top => 2, Content => (others => 0)) and S.Content'First = 1 and S.Content'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition]
+stack.adb:5:55: medium: range check might fail (e.g. when S = (N => 0, Top => 2, Content => ?) and S.Content'First = 1 and S.Content'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition]
 stack.adb:20:22: info: range check proved (CVC4: 1 VC)
 stack.adb:21:19: info: index check proved (CVC4: 2 VC)
 stack.adb:32:22: info: range check proved (CVC4: 1 VC)
