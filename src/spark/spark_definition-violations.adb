@@ -24,12 +24,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Errout;                          use Errout;
-with Namet;                           use Namet;
-with Nmake;                           use Nmake;
-with Restrict;                        use Restrict;
-with Rident;                          use Rident;
-with Sem_Prag;                        use Sem_Prag;
+with Errout;   use Errout;
+with Namet;    use Namet;
+with Restrict; use Restrict;
+with Rident;   use Rident;
+with Sem_Prag; use Sem_Prag;
+with Tbuild;   use Tbuild;
 
 package body SPARK_Definition.Violations is
 
@@ -61,10 +61,8 @@ package body SPARK_Definition.Violations is
    --  code is moved to Restrict package.
 
    function GNATprove_Tasking_Profile return Boolean is
-      Prefix_Entity   : Entity_Id;
-      Selector_Entity : Entity_Id;
-      Prefix_Node     : Node_Id;
-      Node            : Node_Id;
+      Parent_Unit : Node_Id;
+      Child_Unit  : Node_Id;
 
       Profile : Profile_Data renames Profile_Info (Jorvik);
       --  A minimal settings required for tasking constructs to be allowed
@@ -208,50 +206,17 @@ package body SPARK_Definition.Violations is
 
          if Ada_Version >= Ada_2005 then
 
-            Name_Buffer (1 .. 3) := "ada";
-            Name_Len := 3;
+            Parent_Unit := Sel_Comp ("ada", "execution_time", No_Location);
+            Child_Unit  := Sel_Comp (Parent_Unit, "group_budgets");
 
-            Prefix_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Name_Buffer (1 .. 14) := "execution_time";
-            Name_Len := 14;
-
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Prefix_Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Entity,
-                 Selector_Name => Selector_Entity);
-
-            Name_Buffer (1 .. 13) := "group_budgets";
-            Name_Len := 13;
-
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Node,
-                 Selector_Name => Selector_Entity);
-
-            if not Restriction_No_Dependence (Unit => Node) then
+            if not Restriction_No_Dependence (Unit => Child_Unit) then
                Ravenscar_Profile_Result := False;
                return False;
             end if;
 
-            Name_Buffer (1 .. 6) := "timers";
-            Name_Len := 6;
+            Child_Unit := Sel_Comp (Parent_Unit, "timers");
 
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Node,
-                 Selector_Name => Selector_Entity);
-
-            if not Restriction_No_Dependence (Unit => Node) then
+            if not Restriction_No_Dependence (Unit => Child_Unit) then
                Ravenscar_Profile_Result := False;
                return False;
             end if;
@@ -263,34 +228,10 @@ package body SPARK_Definition.Violations is
 
          if Ada_Version >= Ada_2012 then
 
-            Name_Buffer (1 .. 6) := "system";
-            Name_Len := 6;
+            Parent_Unit := Sel_Comp ("system", "multiprocessors", No_Location);
+            Child_Unit  := Sel_Comp (Parent_Unit, "dispatching_domains");
 
-            Prefix_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Name_Buffer (1 .. 15) := "multiprocessors";
-            Name_Len := 15;
-
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Prefix_Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Entity,
-                 Selector_Name => Selector_Entity);
-
-            Name_Buffer (1 .. 19) := "dispatching_domains";
-            Name_Len := 19;
-
-            Selector_Entity := Make_Identifier (No_Location, Name_Find);
-
-            Node :=
-              Make_Selected_Component
-                (Sloc          => No_Location,
-                 Prefix        => Prefix_Node,
-                 Selector_Name => Selector_Entity);
-
-            if not Restriction_No_Dependence (Unit => Node) then
+            if not Restriction_No_Dependence (Unit => Child_Unit) then
                Ravenscar_Profile_Result := False;
                return False;
             end if;
