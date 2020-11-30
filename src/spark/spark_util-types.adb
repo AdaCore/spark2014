@@ -25,7 +25,6 @@
 
 with Aspects;                    use Aspects;
 with Elists;                     use Elists;
-with Exp_Util;                   use Exp_Util;
 with Sem_Eval;                   use Sem_Eval;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
@@ -372,7 +371,7 @@ package body SPARK_Util.Types is
    ------------------------------
 
    function Check_DIC_At_Declaration (E : Entity_Id) return Boolean is
-      Default_Init_Subp : constant Entity_Id := Get_Initial_DIC_Procedure (E);
+      Default_Init_Subp : constant Entity_Id := Partial_DIC_Procedure (E);
       Default_Init_Expr : constant Node_Id :=
         Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
       Init_Param        : constant Entity_Id :=
@@ -662,53 +661,6 @@ package body SPARK_Util.Types is
          Next_Rep_Item (Rep_Item);
       end loop;
    end Find_Predicate_Item;
-
-   -------------------------------
-   -- Get_Initial_DIC_Procedure --
-   -------------------------------
-
-   function Get_Initial_DIC_Procedure (E : Entity_Id) return Entity_Id is
-      Ty  : Entity_Id := Retysp (E);
-      Anc : Entity_Id;
-
-   begin
-      --  If E has no DIC procedure, or if its DIC procedure has an associated
-      --  body which has been marked, return it.
-
-      if No (DIC_Procedure (E))
-        or else (Present (Get_Body (DIC_Procedure (E)))
-                 and then May_Need_DIC_Checking (E))
-      then
-         return DIC_Procedure (E);
-      end if;
-
-      --  An inherited DIC procedure may have no body. Go to the ancestor to
-      --  find an adequate body.
-
-      while No (Get_Body (DIC_Procedure (Ty)))
-        or else not May_Need_DIC_Checking (Ty)
-      loop
-         pragma Assert (Has_Inherited_DIC (Ty));
-         Anc := Ty;
-         Ty := Retysp (Etype (Ty));
-
-         pragma Assert (Present (DIC_Procedure (Ty)));
-
-         exit when Anc = Ty;
-      end loop;
-
-      if Present (Get_Body (DIC_Procedure (Ty)))
-        and then May_Need_DIC_Checking (Ty)
-      then
-         return DIC_Procedure (Ty);
-
-      --  The DIC has been inherited in a part not in SPARK. Ignore it.
-
-      else
-         pragma Assert (Full_View_Not_In_SPARK (Ty));
-         return Empty;
-      end if;
-   end Get_Initial_DIC_Procedure;
 
    -------------------------------------
    -- Get_Parent_Type_If_Check_Needed --
@@ -1290,24 +1242,33 @@ package body SPARK_Util.Types is
       Is_Valid_Bitpattern_No_Holes_Internal (Typ, False, Result, Explanation);
    end Is_Valid_Bitpattern_No_Holes;
 
+   ----------------------------
+   -- Iterate_Applicable_DIC --
+   ----------------------------
+
+   procedure Iterate_Applicable_DIC (Ty : Entity_Id) is
+      Rep_Ty : Entity_Id := Retysp (Ty);
+      Proc   : Entity_Id;
+   begin
+      while Present (Rep_Ty) and then Has_DIC (Rep_Ty) loop
+         Proc := Partial_DIC_Procedure (Rep_Ty);
+         if Present (Proc) then
+            Process_DIC_Expression
+              (First_Formal (Proc),
+               Get_Expr_From_Check_Only_Proc (Proc));
+         end if;
+         Rep_Ty := Parent_Type (Rep_Ty);
+      end loop;
+   end Iterate_Applicable_DIC;
+
    ---------------------------
    -- May_Need_DIC_Checking --
    ---------------------------
 
    function May_Need_DIC_Checking (E : Entity_Id) return Boolean is
-      DIC_Needs_To_Be_Checked : constant Boolean :=
-        Has_Own_DIC (E)
-        and then Present (DIC_Procedure (E));
-
-      DIC_Needs_To_Be_Rechecked : constant Boolean :=
-        Is_Tagged_Type (E)
-        and then Is_Full_View (E)
-        and then Present (DIC_Procedure (E))
-        and then Expression_Contains_Primitives_Calls_Of
-          (Get_Expr_From_Check_Only_Proc (DIC_Procedure (E)), E);
-   begin
-      return DIC_Needs_To_Be_Checked or DIC_Needs_To_Be_Rechecked;
-   end May_Need_DIC_Checking;
+     (Has_Own_DIC (E) and then Present (Partial_DIC_Procedure (E)));
+   --  ??? has_own_dic returns true on a type with a DIC that defaults to True
+   --  but no partial_DIC_procedure is created.
 
    ----------------------------------
    -- Needs_Default_Checks_At_Decl --
@@ -1448,6 +1409,43 @@ package body SPARK_Util.Types is
       end loop;
       return Count;
    end Num_Literals;
+
+   -----------------
+   -- Parent_Type --
+   -----------------
+
+   function Parent_Type (Ty : Entity_Id) return Entity_Id is
+      Rep_Ty  : constant Entity_Id := Retysp (Ty);
+      Decl    : constant Node_Id := Original_Node (Parent (Rep_Ty));
+      --  Derived type definitions are sometimes rewritten into record
+      --  definitions by the frontend.
+      Sub_Ty  : constant Node_Id :=
+        (if Nkind (Decl) = N_Subtype_Declaration
+         then Subtype_Indication (Decl)
+         elsif Nkind (Decl) = N_Full_Type_Declaration
+         and then Nkind (Type_Definition (Decl)) =
+           N_Derived_Type_Definition
+         then Subtype_Indication (Type_Definition (Decl))
+         else Empty);
+      --  If Rep_Ty is a subtype, we need to use its declaration to find
+      --  the next subtype in the derivation tree. Indeed, Etype on
+      --  subtypes returns the base type.
+
+      Next_Ty : constant Entity_Id :=
+        (if Present (Sub_Ty)
+         then Retysp
+           (Entity
+                (if Nkind (Sub_Ty) = N_Subtype_Indication
+                 then Subtype_Mark (Sub_Ty)
+                 else Sub_Ty))
+         else Retysp (Etype (Rep_Ty)));
+   begin
+      if Next_Ty = Rep_Ty then
+         return Empty;
+      else
+         return Next_Ty;
+      end if;
+   end Parent_Type;
 
    ---------------------------------------
    -- Private_Declarations_Of_Prot_Type --

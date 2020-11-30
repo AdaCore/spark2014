@@ -11,7 +11,7 @@ procedure N09b is
       procedure Copy_Pointer (A : in AAI; B: out AI)
         with
           Global => null,
-          Depends => (B => (A));
+          Depends => (B => A, A => A);
           --ERROR: (B) cannot Depend on an `in' parameter (A)
    end Data;
    package body Data is

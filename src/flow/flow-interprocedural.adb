@@ -25,6 +25,7 @@ with Flow_Classwide; use Flow_Classwide;
 with Flow_Utility;   use Flow_Utility;
 with Sem_Aux;        use Sem_Aux;
 with Sinfo;          use Sinfo;
+with SPARK_Util;     use SPARK_Util;
 
 package body Flow.Interprocedural is
 
@@ -270,6 +271,9 @@ package body Flow.Interprocedural is
 
                case Ekind (E) is
                   when E_In_Parameter =>
+                     if Is_Writable_Parameter (E) then
+                        Globals.Outputs.Insert (The_Out);
+                     end if;
                      Globals.Inputs.Insert (The_In);
 
                   when E_In_Out_Parameter =>

@@ -788,6 +788,8 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
             prover_arg = build_prover_switch(inverse)
         else:
             prover_arg = build_prover_switch(prover)
+    else:
+        prover_arg=[]
     if benchmark_mode():
         fullopt += ["--benchmark"]
         prover_arg = build_prover_switch([benchmark_mode()])

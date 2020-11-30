@@ -110,23 +110,13 @@ is
 
          pragma Assume (No_Track_Precedes_Itself);
          pragma Assert (Occupied_Tracks_On_Red);
-         --  Inline definition of Previous_Tracks_On_Orange_Or_Red
-         pragma Assert
-           (for all Train in Train_Id range 1 .. Cur_Num_Trains =>
-              (for all Id in Prev_Id =>
-                 (if Get_Previous_Track (Trains (Train), Id) /= No_Track_Id then
-                    Track_Signals (Get_Previous_Track (Trains (Train), Id)) in
-                      Orange | Red)
-                   and then
-                 (if Get_Other_Previous_Track (Trains (Train), Id) /= No_Track_Id then
-                    Track_Signals (Get_Other_Previous_Track (Trains (Train), Id)) in
-                      Orange | Red)));
          pragma Assert (Previous_Tracks_On_Orange_Or_Red);
          pragma Assert (Safe_Signaling);
 
       --   otherwise, the train is moving in a new track
 
       else
+
          case Track_Signals (New_Position.Track_Begin) is
             when Red =>
                Result := Stop;
@@ -137,6 +127,12 @@ is
                else
                   Result := Slow_Down;
                end if;
+
+               pragma Assert
+                 (for all Id in Prev_Id =>
+                    (if Get_Previous_Track (New_Position, Id) /= No_Track_Id then
+                          Track_Signals (Get_Previous_Track (Trains (Train), Id)) in
+                         Orange | Red));
 
                Trains (Train) := New_Position;
                Track_Signals (New_Position.Track_Begin) := Red;

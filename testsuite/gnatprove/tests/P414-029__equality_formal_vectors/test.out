@@ -69,7 +69,7 @@ names.adb:123:17: info: range check proved (CVC4: 2 VC)
 names.adb:124:17: info: range check proved (CVC4: 2 VC)
 names.adb:124:44: info: cannot unroll loop (too many loop iterations)
 names.adb:125:25: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) (e.g. when E = (Table_Index => 0, Length => 1, Next_Hash => 0) and I = 1) [possible fix: precondition of subprogram at names.ads:15 should mention Char_Table]
-names.adb:126:48: medium: overflow check might fail (e.g. when E = (Table_Index => Char_Table_Index'Last, Length => 3, Next_Hash => 0) and I = 3) [reason for check: result of addition must fit in a 32-bits machine integer]
-names.adb:126:48: medium: range check might fail (e.g. when E = (Table_Index => Char_Table_Index'Last, Length => 2, Next_Hash => 0) and I = 2) [reason for check: input value must fit in parameter type]
+names.adb:126:48: medium: overflow check might fail (e.g. when E = (Table_Index => Char_Table_Index'Last, Length => 3, Next_Hash => 0) and I = 3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
+names.adb:126:48: medium: range check might fail (e.g. when E = (Table_Index => Char_Table_Index'Last, Length => 2, Next_Hash => 0) and I = 2) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
 names.ads:10:22: info: initialization of "N" proved
 names.ads:13:19: info: postcondition proved (CVC4: 1 VC)

@@ -1,0 +1,5 @@
+nested_prot.adb:15:40: call to operation of a component of a protected type is not yet supported
+nested_prot.adb:18:11: call to operation of a component of a protected type is not yet supported
+nested_prot.adb:22:11: call to operation of a component of a protected type is not yet supported
+nested_prot.adb:22:11: warning: potentially blocking operation in protected operation
+gnatprove: error during flow analysis and proof

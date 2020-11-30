@@ -1,5 +1,5 @@
 init_in_loop.adb:8:18: info: range check proved (CVC4: 4 VC)
-init_in_loop.adb:11:25: medium: assertion might fail, cannot prove Fst <= Lst (e.g. when Fst = 51 and Lst = 50) [possible fix: loop invariant at line 13 should mention Lst]
+init_in_loop.adb:11:25: medium: assertion might fail, cannot prove Fst <= Lst (e.g. when Fst = 51 and Lst = 50)
 init_in_loop.adb:13:30: info: loop invariant initialization proved (CVC4: 1 VC)
 init_in_loop.adb:13:30: info: loop invariant preservation proved (CVC4: 1 VC)
 init_in_loop.adb:14:14: info: overflow check proved (CVC4: 1 VC)

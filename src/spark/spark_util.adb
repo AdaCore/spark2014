@@ -2752,6 +2752,17 @@ package body SPARK_Util is
           --  subprograms nested in the type itself.
    end Is_Synchronized;
 
+   ---------------------------
+   -- Is_Writable_Parameter --
+   ---------------------------
+
+   function Is_Writable_Parameter (E : Entity_Id) return Boolean is
+      Typ : constant Entity_Id := Etype (E);
+   begin
+      return Is_Access_Object_Type (Typ)
+        and then not Is_Access_Constant (Typ);
+   end Is_Writable_Parameter;
+
    --------------------------------
    -- Is_Traversal_Function_Call --
    --------------------------------

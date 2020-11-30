@@ -1,0 +1,8 @@
+repro.adb:5:30: info: loop invariant initialization proved (CVC4: 1 VC)
+repro.adb:5:30: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I < 43 (e.g. when I = 43)
+repro.adb:6:14: info: overflow check proved (CVC4: 1 VC)
+counterexample expected for check at repro.adb:5
+  trace at repro.adb:4 --> I = 0
+  trace at repro.adb:5 --> I = 43
+[PREVIOUS]  trace at repro.adb:5 --> I = 43
+  trace at repro.adb:6 --> I = 43

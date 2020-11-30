@@ -1,0 +1,6 @@
+loop_gt.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
+loop_gt.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
+loop_gt.adb:9:14: info: division check proved (CVC4: 1 VC)
+loop_ne.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
+loop_ne.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
+loop_ne.adb:9:14: info: division check proved (CVC4: 1 VC)

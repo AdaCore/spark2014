@@ -9,59 +9,49 @@ a-cfinve.ads:602:28: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cfinve.ads:602:57: info: range check proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
 a-cfinve.ads:730:23: info: precondition proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
 a-cfinve.ads:766:14: info: precondition proved (CVC4: 1 VC), in instantiation at state_machine_with_oop.ads:75
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
-state_machine_with_discriminant.adb:5:15: info: discriminant check proved (CVC4: 2 VC)
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
+a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
+a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
+a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
+a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
+a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
+a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at state_machine_with_oop.ads:75
+state_machine_with_discriminant.adb:5:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 state_machine_with_discriminant.adb:5:51: info: discriminant check proved (CVC4: 1 VC)
-state_machine_with_discriminant.adb:10:15: info: discriminant check proved (CVC4: 2 VC)
-state_machine_with_discriminant.adb:15:15: info: discriminant check proved (CVC4: 2 VC)
+state_machine_with_discriminant.adb:10:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+state_machine_with_discriminant.adb:15:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 state_machine_with_discriminant.adb:15:51: info: discriminant check proved (CVC4: 1 VC)
 state_machine_with_discriminant.adb:20:35: info: precondition proved (CVC4: 1 VC)
 state_machine_with_discriminant.adb:21:55: info: overflow check proved (CVC4: 1 VC)
-state_machine_with_discriminant.adb:29:13: info: precondition proved (CVC4: 2 VC)
-state_machine_with_discriminant.adb:31:13: info: precondition proved (CVC4: 2 VC)
-state_machine_with_discriminant.adb:33:13: info: precondition proved (CVC4: 2 VC)
+state_machine_with_discriminant.adb:27:29: info: cannot unroll loop (too many loop iterations)
+state_machine_with_discriminant.adb:29:13: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+state_machine_with_discriminant.adb:31:13: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
+state_machine_with_discriminant.adb:33:13: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 state_machine_with_discriminant.adb:35:13: info: precondition proved (CVC4: 3 VC)
 state_machine_with_discriminant.ads:26:14: info: postcondition proved (CVC4: 1 VC)
 state_machine_with_discriminant.ads:30:14: info: postcondition proved (CVC4: 1 VC)
 state_machine_with_discriminant.ads:34:14: info: postcondition proved (CVC4: 1 VC)
 state_machine_with_discriminant.ads:40:14: info: postcondition proved (CVC4: 1 VC)
-state_machine_with_oop.adb:4:07: info: raise statement proved unreachable (CVC4: 3 VC)
-state_machine_with_oop.adb:18:07: info: raise statement proved unreachable (CVC4: 3 VC)
-state_machine_with_oop.adb:23:07: info: raise statement proved unreachable (CVC4: 3 VC)
-state_machine_with_oop.adb:28:07: info: raise statement proved unreachable (CVC4: 3 VC)
-state_machine_with_oop.adb:33:07: info: raise statement proved unreachable (CVC4: 3 VC)
+state_machine_with_oop.adb:4:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+state_machine_with_oop.adb:18:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+state_machine_with_oop.adb:23:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+state_machine_with_oop.adb:28:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+state_machine_with_oop.adb:33:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 state_machine_with_oop.adb:39:55: info: overflow check proved (CVC4: 1 VC)
-state_machine_with_oop.adb:50:07: info: raise statement proved unreachable (CVC4: 3 VC)
-state_machine_with_oop.adb:55:07: info: raise statement proved unreachable (CVC4: 3 VC)
+state_machine_with_oop.adb:50:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+state_machine_with_oop.adb:55:07: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 state_machine_with_oop.adb:60:52: info: overflow check proved (CVC4: 1 VC)
 state_machine_with_oop.adb:68:13: info: loop invariant initialization proved (CVC4: 1 VC)
 state_machine_with_oop.adb:68:13: info: loop invariant preservation proved (CVC4: 1 VC)
 state_machine_with_oop.adb:70:37: info: precondition proved (CVC4: 2 VC)
-state_machine_with_oop.adb:72:31: info: initialization of "E.Common_Value" proved
-state_machine_with_oop.adb:72:31: info: initialization of extension of "E" proved
 state_machine_with_oop.adb:73:16: info: precondition proved (CVC4: 2 VC)
 state_machine_with_oop.adb:73:44: info: precondition proved (CVC4: 1 VC)
-state_machine_with_oop.adb:73:55: info: initialization of "E.Common_Value" proved
-state_machine_with_oop.adb:73:55: info: initialization of extension of "E" proved
 state_machine_with_oop.adb:75:16: info: precondition proved (CVC4: 2 VC)
 state_machine_with_oop.adb:75:44: info: precondition proved (CVC4: 1 VC)
-state_machine_with_oop.adb:75:55: info: initialization of "E.Common_Value" proved
-state_machine_with_oop.adb:75:55: info: initialization of extension of "E" proved
 state_machine_with_oop.adb:77:16: info: precondition proved (CVC4: 2 VC)
 state_machine_with_oop.adb:77:44: info: precondition proved (CVC4: 1 VC)
-state_machine_with_oop.adb:77:55: info: initialization of "E.Common_Value" proved
-state_machine_with_oop.adb:77:55: info: initialization of extension of "E" proved
 state_machine_with_oop.adb:79:16: info: precondition proved (CVC4: 3 VC)
-state_machine_with_oop.adb:79:27: info: initialization of "E.Common_Value" proved
-state_machine_with_oop.adb:79:27: info: initialization of extension of "E" proved
 state_machine_with_oop.adb:80:16: info: precondition proved (CVC4: 2 VC)
-state_machine_with_oop.adb:80:44: info: initialization of "E.Common_Value" proved
-state_machine_with_oop.adb:80:44: info: initialization of extension of "E" proved
 state_machine_with_oop.ads:8:28: warning: unused variable "Current"
 state_machine_with_oop.ads:9:28: warning: unused variable "Current"
 state_machine_with_oop.ads:10:28: warning: unused variable "Current"

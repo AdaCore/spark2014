@@ -31,6 +31,7 @@ with Assumption_Types;                use Assumption_Types;
 with Common_Iterators;                use Common_Iterators;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
+with Exp_Util;                        use Exp_Util;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Flow_Types;                      use Flow_Types;
@@ -3496,6 +3497,12 @@ package body SPARK_Definition is
                   when E_Variable =>
                      Mark (Prefix (Name (N)));
 
+                  when E_Component =>
+                     Mark_Unsupported
+                       ("call to operation of a component of a protected type",
+                        N);
+                     return;
+
                   when others =>
                      raise Program_Error;
                end case;
@@ -5075,15 +5082,26 @@ package body SPARK_Definition is
          --  corresponding procedure in the Delayed_Type_Aspects map.
 
          if May_Need_DIC_Checking (E) then
-            declare
-               Delayed_Mapping : constant Node_Id :=
-                 (if Present (Current_SPARK_Pragma)
-                  then Current_SPARK_Pragma
-                  else E);
-            begin
-               Delayed_Type_Aspects.Include
-                 (DIC_Procedure (E), Delayed_Mapping);
-            end;
+
+            --  For now, reject DIC with primitive calls which would have to
+            --  be rechecked on derived types.
+
+            if Expression_Contains_Primitives_Calls_Of
+              (Get_Expr_From_Check_Only_Proc (Partial_DIC_Procedure (E)), E)
+            then
+               Mark_Unsupported
+                 ("primitive calls in default initial condition", E);
+            else
+               declare
+                  Delayed_Mapping : constant Node_Id :=
+                    (if Present (Current_SPARK_Pragma)
+                     then Current_SPARK_Pragma
+                     else E);
+               begin
+                  Delayed_Type_Aspects.Include
+                    (Partial_DIC_Procedure (E), Delayed_Mapping);
+               end;
+            end if;
          end if;
 
          --  A derived type cannot have explicit discriminants
@@ -5457,7 +5475,11 @@ package body SPARK_Definition is
                      Low  : constant Node_Id := Type_Low_Bound (E);
                      High : constant Node_Id := Type_High_Bound (E);
                   begin
-                     if Has_Fixed_Point_Type (Etype (Low))
+                     if not In_SPARK (Etype (Low)) then
+                        Mark_Violation (E, From => Etype (Low));
+                     elsif not In_SPARK (Etype (High)) then
+                        Mark_Violation (E, From => Etype (High));
+                     elsif Has_Fixed_Point_Type (Etype (Low))
                        or else Has_Fixed_Point_Type (Etype (High))
                      then
                         Mark_Unsupported ("conversion between fixed-point and "

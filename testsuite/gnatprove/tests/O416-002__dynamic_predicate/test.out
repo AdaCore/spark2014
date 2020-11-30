@@ -107,7 +107,7 @@ dynamic_preds_array.adb:104:29: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:104:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dynamic_preds_array.ads:35 should mention Above in a precondition]
 dynamic_preds_array.adb:107:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:107:30: medium: overflow check might fail (e.g. when Result = (1 => Even'Last-3, 2 => 0)) [reason for check: result of addition must fit in a 32-bits machine integer]
-dynamic_preds_array.adb:109:14: medium: predicate check might fail (e.g. when Result = (2 => 4, others => 0))
+dynamic_preds_array.adb:109:14: medium: predicate check might fail (e.g. when Result = (1 => 0, 2 => 4))
 dynamic_preds_array.adb:115:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:116:10: medium: predicate check might fail
 dynamic_preds_array.adb:116:23: info: predicate check proved (CVC4: 1 VC)
@@ -122,7 +122,7 @@ dynamic_preds_array.adb:128:15: medium: predicate check might fail, cannot prove
 dynamic_preds_array.adb:129:15: medium: predicate check might fail, cannot prove Even mod 2 = 0 (e.g. when B = 1) [possible fix: subprogram at dynamic_preds_array.ads:38 should mention B in a precondition]
 dynamic_preds_array.adb:134:15: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:135:15: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:140:25: medium: predicate check might fail (e.g. when X = (others => 0)) [possible fix: subprogram at dynamic_preds_array.ads:41 should mention X in a precondition]
+dynamic_preds_array.adb:140:25: medium: predicate check might fail [possible fix: subprogram at dynamic_preds_array.ads:41 should mention X in a precondition]
 dynamic_preds_array.adb:141:34: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:151:31: medium: predicate check might fail [possible fix: subprogram at dynamic_preds_array.ads:43 should mention X in a precondition]
 dynamic_preds_array.adb:152:31: info: predicate check proved (CVC4: 1 VC)

@@ -17,7 +17,7 @@ procedure N08b is
       procedure Inc_and_get (A : in AM; B: out ACI)
         with
           Global => null,
-          Depends => (B => (A)) --want to add A=>(A)
+          Depends => (B => A, A => A)
           ;
           --ERROR: (B) cannot Depend on an `in' parameter (A)
    end Data;

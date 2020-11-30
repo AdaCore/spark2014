@@ -482,7 +482,7 @@ package body Flow_Visibility is
 
       E : constant Entity_Id :=
         (if Nkind (N) = N_Private_Type_Declaration
-         then DIC_Procedure (Def_E)
+         then Partial_DIC_Procedure (Def_E)
          elsif Nkind (N) = N_Full_Type_Declaration
          then Invariant_Procedure (Def_E)
          else Def_E);
@@ -865,7 +865,7 @@ package body Flow_Visibility is
 
          E : constant Entity_Id :=
            (if Nkind (N) = N_Private_Type_Declaration
-            then DIC_Procedure (Def_E)
+            then Partial_DIC_Procedure (Def_E)
             elsif Nkind (N) = N_Full_Type_Declaration
             then Invariant_Procedure (Def_E)
             else Def_E);
@@ -1096,7 +1096,7 @@ package body Flow_Visibility is
 
                   begin
                      if Has_Own_DIC (T)
-                       and then Present (DIC_Procedure (T))
+                       and then Present (Partial_DIC_Procedure (T))
                      then
                         Process (N);
                      end if;

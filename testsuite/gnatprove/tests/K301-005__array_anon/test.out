@@ -1,2 +1,2 @@
 named.ads:4:16: warning: unused variable "X"
-named.ads:5:20: info: postcondition proved (CVC4: 1 VC)
+named.ads:5:20: info: postcondition proved (Trivial: 1 VC)

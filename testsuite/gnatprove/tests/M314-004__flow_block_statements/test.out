@@ -15,6 +15,6 @@ test.adb:37:23: info: initialization of "temp2" proved
 test.adb:39:27: medium: divide by zero might fail [possible fix: subprogram at line 14 should mention X and Y in a precondition]
 test.adb:40:27: medium: divide by zero might fail [possible fix: subprogram at line 14 should mention X and Y in a precondition]
 test.adb:49:04: warning: analyzing unreferenced procedure "Nested_Block_Statements"
-test.adb:57:20: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 49 should mention X in a precondition]
+test.adb:57:20: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 49 should mention X and Y in a precondition]
 test.adb:59:17: info: overflow check proved (CVC4: 1 VC)
 test.adb:61:22: info: assertion proved (CVC4: 1 VC)

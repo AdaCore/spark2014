@@ -1397,8 +1397,6 @@ package body Gnat2Why.Util is
            or else
            Nkind (Enclosing_Declaration (E)) not in
              N_Private_Type_Declaration | N_Private_Extension_Declaration)
-
-        and then Present (Get_Initial_DIC_Procedure (E))
         and then Check_DIC_At_Declaration (E);
    end Needs_DIC_Check_At_Decl;
 
@@ -1407,8 +1405,7 @@ package body Gnat2Why.Util is
    ----------------------------
 
    function Needs_DIC_Check_At_Use (Ty : Entity_Id) return Boolean is
-     (Present (DIC_Procedure (Ty))
-       and then Present (Get_Initial_DIC_Procedure (Ty))
+     (May_Need_DIC_Checking (Ty)
        and then not Check_DIC_At_Declaration (Ty));
 
    --------------------------------

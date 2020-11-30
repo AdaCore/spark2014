@@ -19,6 +19,7 @@ test.adb:6:17: medium: "C" is not set in "Test"
 test.adb:6:17: warning: unused variable "C"
 test.adb:7:17: medium: private part of "D" is not set in "Test"
 test.adb:7:17: warning: unused variable "D"
+test.adb:11:04: info: initialization of "Tmp_C" proved
 test.adb:12:04: info: initialization of "Tmp_D" proved
 test.adb:14:09: high: "Tmp_A" is not initialized
 test.adb:15:09: high: "Tmp_B" is not initialized

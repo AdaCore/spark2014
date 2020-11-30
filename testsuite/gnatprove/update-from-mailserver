@@ -5,16 +5,26 @@ This script will update the expected output of all failed tests.
 """
 
 import os
+import re
 import shutil
+import subprocess
 from glob import glob
 
 
 def get_result(result_file):
-    fd = open(result_file, "rU")
+    fd = open(result_file, "r")
     tmp = fd.read().strip()
     fd.close()
 
     return tmp.split(":")[0]
+
+
+def output_too_long(result_file):
+    fd = open(result_file, "r")
+    tmp = fd.read().splitlines()
+    fd.close()
+
+    return re.search("output too long", tmp[1]) is not None
 
 
 for result_file in glob("out/*.result"):
@@ -51,7 +61,13 @@ for result_file in glob("out/*.result"):
                 print("Add output %s" % old_out_file)
                 print("THIS OUTPUT SHOULD BE ADDED TO VERSION CONTROL")
             else:
-                shutil.copyfile(new_out_file, old_out_file)
+                # If output is truncated due to mailserver limitations, apply the
+                # diff file instead
+                if output_too_long(new_out_file):
+                    diff_file = new_out_file.replace(".out", ".diff")
+                    subprocess.run(['patch', '-p', '0', old_out_file, diff_file])
+                else:
+                    shutil.copyfile(new_out_file, old_out_file)
                 print("Update output %s" % old_out_file)
                 if os.stat(new_out_file).st_size == 0:
                     print("THIS EMPTY OUTPUT SHOULD BE REMOVED\

@@ -10,7 +10,7 @@ procedure N09c is
       type ACAI is access AI;
       procedure Copy_Pointer (A : in ACAI; B: out AI) with
         Global => null,
-        Depends => (B => (A));
+        Depends => (B => A, A => A);
    end Data;
    package body Data is
       procedure Copy_Pointer (A : in ACAI; B: out AI) is --peek (A) move (B)

@@ -1,5 +1,7 @@
 a-reatim.ads:6:04: medium: assertion might fail
 s-bbbosu.adb:2:47: warning: "Constraint_Error" will be raised at run time
 s-bbbosu.adb:2:47: warning: value not in range of type "System.Interrupt_Priority"
+s-bbbosu.adb:9:31: warning: "Constraint_Error" will be raised at run time
+s-bbbosu.adb:9:31: warning: value not in range of type "System.Interrupt_Priority"
 s-osinte.adb:14:22: warning: "Constraint_Error" will be raised at run time
 s-osinte.adb:14:22: warning: value not in range of type "System.Interrupt_Priority"

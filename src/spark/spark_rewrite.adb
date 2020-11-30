@@ -533,7 +533,7 @@ package body SPARK_Rewrite is
                      end if;
 
                      if Has_Own_DIC (Ty) then
-                        DIC_Proc := DIC_Procedure (Ty);
+                        DIC_Proc := Partial_DIC_Procedure (Ty);
 
                         if Present (DIC_Proc) then
                            DIC_Expr :=

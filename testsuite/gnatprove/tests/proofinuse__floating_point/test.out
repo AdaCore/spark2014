@@ -78,9 +78,9 @@ floating_point.adb:153:40: info: float overflow check proved (Trivial)
 floating_point.adb:154:40: info: float overflow check proved (Trivial)
 floating_point.adb:155:40: info: float overflow check proved (Trivial)
 floating_point.adb:156:40: info: float overflow check proved (Trivial)
-floating_point.adb:158:46: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-floating_point.adb:158:57: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
-floating_point.adb:159:46: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+floating_point.adb:158:46: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:52 should mention A_X and B_X and C_X in a precondition]
+floating_point.adb:158:57: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at floating_point.ads:52 should mention A_X and A_Y and B_X and B_Y and C_X and C_Y in a precondition]
+floating_point.adb:159:46: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:52 should mention A_Y and B_Y and C_Y in a precondition]
 floating_point.adb:161:70: info: precondition proved (Z3: 1 VC)
 floating_point.adb:162:15: info: float overflow check proved (Trivial)
 floating_point.adb:162:22: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at floating_point.ads:52 should mention A_X and B_X in a precondition]

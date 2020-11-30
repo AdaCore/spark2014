@@ -58,15 +58,13 @@ n09b.adb:11:17: return from "Copy_Pointer" with moved value for "A"
 n09b.adb:11:31: warning: "A" is not modified, could be of access constant type
 n09b.adb:11:43: info: initialization of "B" proved
 n09b.adb:13:11: info: data dependencies proved
-n09b.adb:14:11: medium: expected to see "A" on the left-hand-side of a dependency relation
-n09b.adb:14:11: medium: missing self-dependency "A => A"
+n09b.adb:14:11: info: flow dependencies proved
 n09c.adb:11:17: object was moved at line 18
 n09c.adb:11:17: return from "Copy_Pointer" with moved value for "A"
 n09c.adb:11:31: warning: "A" is not modified, could be of access constant type
 n09c.adb:11:44: info: initialization of "B" proved
 n09c.adb:12:09: info: data dependencies proved
-n09c.adb:13:09: medium: expected to see "A" on the left-hand-side of a dependency relation
-n09c.adb:13:09: medium: missing self-dependency "A => A"
+n09c.adb:13:09: info: flow dependencies proved
 n10.adb:12:17: object was moved at line 19
 n10.adb:12:17: return from "Modify" with moved value for "A"
 n10.adb:12:25: warning: "A" is not modified, could be of access constant type

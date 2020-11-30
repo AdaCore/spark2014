@@ -443,6 +443,12 @@ package SPARK_Util is
    --  @param E an entity that represents a global
    --  @return True if E is safe to be accesses from multiple tasks
 
+   function Is_Writable_Parameter (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) = E_In_Parameter
+               and then Ekind (Scope (E)) in E_Procedure | E_Entry;
+   --  @param E entity of a procedure or entry formal parameter of mode IN
+   --  @return True if E can be written despite being of mode IN
+
    function Root_Record_Component (E : Entity_Id) return Entity_Id
    with Pre => Ekind (E) in E_Component | E_Discriminant;
    --  Given a component or discriminant of a record (sub-)type, return the

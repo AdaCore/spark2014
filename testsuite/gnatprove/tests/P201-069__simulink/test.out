@@ -93,7 +93,7 @@ simulink_functions.adb:234:53: medium: overflow check might fail [reason for che
 simulink_functions.adb:236:28: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:236:36: info: overflow check proved (CodePeer)
 simulink_functions.adb:236:47: info: overflow check proved (CodePeer)
-simulink_functions.adb:236:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:64 should mention Right in a precondition]
+simulink_functions.adb:236:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:64 should mention Left and Right in a precondition]
 simulink_functions.adb:239:25: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:239:33: info: division check proved (CodePeer)
 simulink_functions.adb:239:33: medium: overflow check might fail [reason for check: result of division must fit in a 8-bits machine integer] [possible fix: subprogram at simulink_functions.ads:64 should mention Left and Right in a precondition]
@@ -105,7 +105,7 @@ simulink_functions.adb:255:54: medium: overflow check might fail [reason for che
 simulink_functions.adb:257:28: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:257:36: info: overflow check proved (CodePeer)
 simulink_functions.adb:257:47: info: overflow check proved (CodePeer)
-simulink_functions.adb:257:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:65 should mention Right in a precondition]
+simulink_functions.adb:257:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:65 should mention Left and Right in a precondition]
 simulink_functions.adb:261:20: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:261:28: info: division check proved (CodePeer)
 simulink_functions.adb:261:28: medium: overflow check might fail [reason for check: result of division must fit in a 16-bits machine integer] [possible fix: subprogram at simulink_functions.ads:65 should mention Left and Right in a precondition]
@@ -117,7 +117,7 @@ simulink_functions.adb:277:54: medium: overflow check might fail [reason for che
 simulink_functions.adb:279:28: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:279:36: info: overflow check proved (CodePeer)
 simulink_functions.adb:279:47: info: overflow check proved (CodePeer)
-simulink_functions.adb:279:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:66 should mention Right in a precondition]
+simulink_functions.adb:279:52: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:66 should mention Left and Right in a precondition]
 simulink_functions.adb:283:20: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:283:28: info: division check proved (CodePeer)
 simulink_functions.adb:283:28: medium: overflow check might fail [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:66 should mention Left and Right in a precondition]

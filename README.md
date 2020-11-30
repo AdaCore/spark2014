@@ -39,9 +39,9 @@ mailing-list](https://lists.adacore.com/mailman/listinfo/spark2014-discuss).
 # 5. Documentation
 
 You can find the definition of the SPARK language in the
-[SPARK Reference Manual](http://docs.adacore.com/spark2014-docs/html/lrm/),
+[SPARK Reference Manual](https://docs.adacore.com/live/wave/spark2014/html/spark2014_rm/index.html),
 and instructions on how to use the tool, together with a tutorial, in the
-[SPARK User's Guide](http://docs.adacore.com/spark2014-docs/html/ug/).
+[SPARK User's Guide](https://docs.adacore.com/live/wave/spark2014/html/spark2014_ug/index.html).
 
 # 6. Building SPARK
 
