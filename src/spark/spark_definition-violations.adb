@@ -61,13 +61,6 @@ package body SPARK_Definition.Violations is
    --  code is moved to Restrict package.
 
    function GNATprove_Tasking_Profile return Boolean is
-      Parent_Unit : Node_Id;
-      Child_Unit  : Node_Id;
-
-      Profile : Profile_Data renames Profile_Info (Jorvik);
-      --  A minimal settings required for tasking constructs to be allowed
-      --  in SPARK.
-
       function Restriction_No_Dependence (Unit : Node_Id) return Boolean;
       --  Check if restriction No_Dependence is set for Unit.
 
@@ -122,6 +115,16 @@ package body SPARK_Definition.Violations is
 
          return False;
       end Restriction_No_Dependence;
+
+      --  Local variables
+
+      Profile : Profile_Data renames Profile_Info (Jorvik);
+      --  A minimal settings required for tasking constructs to be allowed
+      --  in SPARK.
+
+      Parent_Unit : Node_Id;
+      Child_Unit  : Node_Id;
+      --  For constructing names of restricted units
 
    --  Start of processing for GNATprove_Tasking_Profile
 
