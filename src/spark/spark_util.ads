@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Directories;
 with Assumption_Types;      use Assumption_Types;
 with Atree;                 use Atree;
 with Checked_Types;         use Checked_Types;
@@ -836,8 +837,6 @@ package SPARK_Util is
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element
 
-   function File_Name_Without_Suffix (File_Name : String) return String;
-
    function Real_Image (U : Ureal; Max_Length : Integer) return String;
    --  Return a string, of maximum length Max_length, representing U.
 
@@ -849,7 +848,7 @@ package SPARK_Util is
 
    function Unit_Name return String is
      (Append_Multiple_Index
-        (File_Name_Without_Suffix
+        (Ada.Directories.Base_Name
            (Get_Name_String (Unit_File_Name (Main_Unit)))));
 
    function File_Name (Loc : Source_Ptr) return String is

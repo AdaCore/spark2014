@@ -1192,39 +1192,6 @@ package body SPARK_Util is
       end case;
    end Expr_Has_Relaxed_Init;
 
-   ------------------------------
-   -- File_Name_Without_Suffix --
-   ------------------------------
-
-   function File_Name_Without_Suffix (File_Name : String) return String is
-      Name_Index : Natural := File_Name'Last;
-
-   begin
-      pragma Assert (File_Name'Length > 0);
-
-      --  We loop in reverse to ensure that file names that follow nonstandard
-      --  naming conventions that include additional dots are handled properly,
-      --  preserving dots in front of the main file suffix (for example,
-      --  main.2.ada => main.2).
-
-      while Name_Index >= File_Name'First
-        and then File_Name (Name_Index) /= '.'
-      loop
-         Name_Index := Name_Index - 1;
-      end loop;
-
-      --  Return the part of the file name up to but not including the last dot
-      --  in the name, or return the whole name as is if no dot character was
-      --  found.
-
-      if Name_Index >= File_Name'First then
-         return File_Name (File_Name'First .. Name_Index - 1);
-
-      else
-         return File_Name;
-      end if;
-   end File_Name_Without_Suffix;
-
    --------------------------------
    -- First_Parent_With_Property --
    --------------------------------
