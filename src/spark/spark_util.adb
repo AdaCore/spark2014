@@ -291,23 +291,6 @@ package body SPARK_Util is
       or else Ekind (Entity (N)) not in
         E_Variable | E_Out_Parameter | E_In_Out_Parameter);
 
-   --------------------
-   -- Body_File_Name --
-   --------------------
-
-   function Body_File_Name (N : Node_Id) return String is
-      CU     : Node_Id := Enclosing_Lib_Unit_Node (N);
-      Switch : constant Boolean :=
-        Nkind (Unit (CU)) not in N_Package_Body | N_Subprogram_Body;
-
-   begin
-      if Switch and then Present (Library_Unit (CU)) then
-         CU := Library_Unit (CU);
-      end if;
-
-      return File_Name (Sloc (CU));
-   end Body_File_Name;
-
    ----------------------
    -- Canonical_Entity --
    ----------------------
@@ -3524,31 +3507,6 @@ package body SPARK_Util is
          end;
       end if;
    end Source_Name;
-
-   --------------------
-   -- Spec_File_Name --
-   --------------------
-
-   function Spec_File_Name (N : Node_Id) return String is
-      CU : Node_Id := Enclosing_Lib_Unit_Node (N);
-
-   begin
-      case Nkind (Unit (CU)) is
-         when N_Package_Body =>
-            CU := Library_Unit (CU);
-         when others =>
-            null;
-      end case;
-
-      return File_Name (Sloc (CU));
-   end Spec_File_Name;
-
-   -----------------------------------
-   -- Spec_File_Name_Without_Suffix --
-   -----------------------------------
-
-   function Spec_File_Name_Without_Suffix (N : Node_Id) return String is
-     (File_Name_Without_Suffix (Spec_File_Name (N)));
 
    --------------------
    -- String_Of_Node --

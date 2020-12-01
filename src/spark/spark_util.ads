@@ -526,21 +526,6 @@ package SPARK_Util is
    -- Queries for arbitrary nodes --
    ---------------------------------
 
-   function Body_File_Name (N : Node_Id) return String;
-   --  @param N any node
-   --  @return Same as [Spec_File_Name], but always return the file name of the
-   --    body, if there is one.
-
-   function Spec_File_Name (N : Node_Id) return String;
-   --  @param N any node
-   --  @return the name of the spec file of the unit which contains the node,
-   --    if it exists, otherwise the body file. Also, we return the file name
-   --    of the instance, not the generic.
-
-   function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
-   --  @param N any node
-   --  @return same as Spec_File_Name but without the suffix.
-
    function String_Of_Node (N : Node_Id) return String
    with Pre => Nkind (N) in N_Subexpr;
    --  @param N any expression node
@@ -865,7 +850,7 @@ package SPARK_Util is
    function Unit_Name return String is
      (Append_Multiple_Index
         (File_Name_Without_Suffix
-             (Get_Name_String (Unit_File_Name (Main_Unit)))));
+           (Get_Name_String (Unit_File_Name (Main_Unit)))));
 
    function File_Name (Loc : Source_Ptr) return String is
      (Get_Name_String (File_Name (Get_Source_File_Index (Loc))));
