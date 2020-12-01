@@ -1,0 +1,7 @@
+test_fold.adb:17:42: iterator filter is not yet supported
+test_fold.adb:31:50: iterator filter is not yet supported
+test_fold.adb:46:41: iterator filter is not yet supported
+test_fold.adb:53:42: iterator filter is not yet supported
+test_fold.adb:60:31: iterator filter is not yet supported
+test_fold.adb:70:34: iterator filter is not yet supported
+gnatprove: error during flow analysis and proof
