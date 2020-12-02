@@ -1,4 +1,4 @@
-borrow.adb:11:15: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 9 should mention X]
+borrow.adb:11:15: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: precondition of subprogram at line 9 should mention X]
 borrow.adb:17:38: info: precondition proved (Trivial: 1 VC)
 borrow.adb:17:44: info: precondition proved (Trivial: 1 VC)
 borrow.adb:19:18: medium: pointer dereference check might fail (e.g. when Y = null)

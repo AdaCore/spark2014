@@ -33,5 +33,5 @@ binary_search_trees.adb:105:20: info: pointer dereference check proved (CVC4: 2 
 binary_search_trees.adb:106:28: info: null exclusion check proved (CVC4: 1 VC)
 binary_search_trees.adb:106:28: info: pointer dereference check proved (CVC4: 1 VC)
 binary_search_trees.adb:108:14: info: null exclusion check proved (CVC4: 1 VC)
-binary_search_trees.adb:114:31: medium: null exclusion check might fail
+binary_search_trees.adb:114:31: medium: null exclusion check might fail (e.g. when Tree = (Root => null, Size => 0))
 binary_search_trees.adb:114:37: info: pointer dereference check proved (CVC4: 1 VC)

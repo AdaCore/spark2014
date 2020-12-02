@@ -7,16 +7,16 @@ psu_monitoring.adb:98:75: info: division check proved (CVC4: 1 VC)
 psu_monitoring.adb:98:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:98:75: info: range check proved (Trivial)
 psu_monitoring.adb:100:75: info: float overflow check proved (Trivial)
-psu_monitoring.adb:100:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
+psu_monitoring.adb:100:75: medium: range check might fail (e.g. when monitor.config.monitoring_mode = threshold_based and monitor.config.mean = -5.1637653E+2 and monitor.config.lower_threshold = -5.1637653E+2 and monitor.config.upper_threshold = -5.1637653E+2 and monitor.config.settling_tolerance_expansion = 1.9687346E+0) [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
 psu_monitoring.adb:104:75: info: float overflow check proved (Trivial)
-psu_monitoring.adb:104:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
+psu_monitoring.adb:104:75: medium: range check might fail (e.g. when monitor.config.monitoring_mode = -1 and monitor.config.mean = 1.9414060E+0 and monitor.config.lower_threshold = 1.9414060E+0 and monitor.config.upper_threshold = 1.9374996E+0 and monitor.config.settling_tolerance_expansion = 3.3163523E+38) [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
 psu_monitoring.adb:106:75: info: division check proved (CVC4: 1 VC)
 psu_monitoring.adb:106:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:106:75: info: range check proved (Trivial)
 psu_monitoring.adb:122:22: medium: assertion might fail, cannot prove all_config_is_set (e.g. when all_config_is_set = False)
-psu_monitoring.adb:135:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
-psu_monitoring.adb:158:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
-psu_monitoring.adb:166:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:135:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 (e.g. when monitor.current_state = startup and monitor.next_state = startup) [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:158:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 (e.g. when monitor.current_state = active and monitor.next_state = active) [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:166:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 (e.g. when monitor.current_state = alert and monitor.next_state = alert) [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
 psu_monitoring.adb:197:22: medium: assertion might fail, cannot prove U_C1 in Float_Signed1000 (e.g. when U_C1 = -1.8446746E+19)
 psu_monitoring.adb:198:22: medium: assertion might fail, cannot prove I_L1 in Float_Signed1000 (e.g. when I_L1 = -1.8446746E+19)
 psu_monitoring.adb:199:22: medium: assertion might fail, cannot prove U_C2 in Float_Signed1000 (e.g. when U_C2 = -1.8446746E+19)
@@ -24,9 +24,9 @@ psu_monitoring.adb:200:22: medium: assertion might fail, cannot prove I_L2 in Fl
 psu_monitoring.ads:74:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 psu_monitoring.ads:74:09: info: nontermination of task proved (CVC4: 1 VC)
 psu_monitoring.ads:75:39: info: range check proved (CVC4: 2 VC)
-psu_monitoring.ads:89:47: medium: postcondition might fail, cannot prove monitor.timer < Milliseconds (200)
+psu_monitoring.ads:89:47: medium: postcondition might fail, cannot prove monitor.timer < Milliseconds (200) (e.g. when monitor.config.monitoring_mode = threshold_based and monitor.config.mean = 1.5775499E+0 and monitor.config.maximum_deviation = 1.2890548E+0 and monitor.config.lower_threshold = 1.5775499E+0 and monitor.config.upper_threshold = 1.5150499E+0)
 psu_monitoring.ads:92:07: info: complete contract cases proved (CVC4: 1 VC)
 psu_monitoring.ads:92:07: info: disjoint contract cases proved (CVC4: 1 VC)
 psu_monitoring.ads:92:70: info: contract case proved (CVC4: 1 VC; Trivial: 2 VC)
 psu_monitoring.ads:92:132: info: float overflow check proved (CVC4: 1 VC)
-psu_monitoring.ads:93:75: medium: contract case might fail (e.g. when signal_value = 1.2056555E+0)
+psu_monitoring.ads:93:75: medium: contract case might fail (e.g. when monitor.config.monitoring_mode = threshold_based and monitor.config.mean = 1.9951171E+0 and monitor.config.maximum_deviation = 1.4541435E+0 and monitor.config.lower_threshold = 1.9951169E+0 and monitor.config.upper_threshold = 1.9951171E+0 and signal_value = 1.2056555E+0)

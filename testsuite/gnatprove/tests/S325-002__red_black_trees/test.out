@@ -1,6 +1,6 @@
 red_black_trees.adb:4:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 red_black_trees.adb:4:23: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 3 should mention T in a precondition]
-red_black_trees.adb:6:08: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 3 should mention T in a precondition]
+red_black_trees.adb:6:08: medium: pointer dereference check might fail (e.g. when T = null and Tnew.all = (Value => 0, Color => Red, others => ?)) [possible fix: subprogram at line 3 should mention T in a precondition]
 red_black_trees.adb:6:15: info: absence of memory leak proved (CVC4: 1 VC)
 red_black_trees.adb:6:22: medium: pointer dereference check might fail (e.g. when Tnew = null)
 red_black_trees.adb:7:11: medium: pointer dereference check might fail (e.g. when Tnew = null)
@@ -8,7 +8,7 @@ red_black_trees.adb:7:17: info: absence of memory leak proved (CVC4: 1 VC)
 red_black_trees.adb:8:09: info: absence of memory leak proved (CVC4: 1 VC)
 red_black_trees.adb:12:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 red_black_trees.adb:12:23: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 11 should mention T in a precondition]
-red_black_trees.adb:14:08: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 11 should mention T in a precondition]
+red_black_trees.adb:14:08: medium: pointer dereference check might fail (e.g. when T = null and Tnew.all = (Value => 0, Color => Red, others => ?)) [possible fix: subprogram at line 11 should mention T in a precondition]
 red_black_trees.adb:14:14: info: absence of memory leak proved (CVC4: 1 VC)
 red_black_trees.adb:14:21: medium: pointer dereference check might fail (e.g. when Tnew = null)
 red_black_trees.adb:15:11: medium: pointer dereference check might fail (e.g. when Tnew = null)
@@ -24,7 +24,7 @@ red_black_trees.adb:26:22: medium: pointer dereference check might fail (e.g. wh
 red_black_trees.adb:26:27: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:26:32: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:29:14: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: call at line 28 should mention T (for argument T) in a postcondition]
-red_black_trees.adb:29:19: medium: pointer dereference check might fail [possible fix: call at line 28 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:29:19: medium: pointer dereference check might fail (e.g. when T.all = (Value => 0, Color => Black, Left => null, Right => ?)) [possible fix: call at line 28 should mention T (for argument T) in a postcondition]
 red_black_trees.adb:30:17: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 19 should mention T in a precondition]
 red_black_trees.adb:30:22: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:31:22: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 19 should mention T in a precondition]
@@ -32,7 +32,7 @@ red_black_trees.adb:31:27: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:31:33: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:33:27: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 19 should mention T in a precondition]
 red_black_trees.adb:35:14: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: call at line 34 should mention T (for argument T) in a postcondition]
-red_black_trees.adb:35:19: medium: pointer dereference check might fail [possible fix: call at line 34 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:35:19: medium: pointer dereference check might fail (e.g. when T.all = (Value => 0, Color => Black, Left => null, Right => ?)) [possible fix: call at line 34 should mention T (for argument T) in a postcondition]
 red_black_trees.adb:37:14: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 19 should mention T in a precondition]
 red_black_trees.adb:38:19: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 19 should mention T in a precondition]
 red_black_trees.adb:39:19: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 19 should mention T in a precondition]
@@ -44,14 +44,14 @@ red_black_trees.adb:42:28: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:42:33: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:44:28: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 19 should mention T in a precondition]
 red_black_trees.adb:46:14: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: call at line 45 should mention T (for argument T) in a postcondition]
-red_black_trees.adb:46:20: medium: pointer dereference check might fail [possible fix: call at line 45 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:46:20: medium: pointer dereference check might fail (e.g. when T.all = (Value => 0, Color => Black, Left => ?, Right => null)) [possible fix: call at line 45 should mention T (for argument T) in a postcondition]
 red_black_trees.adb:47:17: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 19 should mention T in a precondition]
 red_black_trees.adb:47:23: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:48:22: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 19 should mention T in a precondition]
 red_black_trees.adb:48:28: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:48:34: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:51:14: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: call at line 50 should mention T (for argument T) in a postcondition]
-red_black_trees.adb:51:20: medium: pointer dereference check might fail [possible fix: call at line 50 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:51:20: medium: pointer dereference check might fail (e.g. when T.all = (Value => 0, Color => Black, Left => ?, Right => null)) [possible fix: call at line 50 should mention T (for argument T) in a postcondition]
 red_black_trees.adb:57:14: medium: postcondition might fail, cannot prove T /= null (e.g. when T = null) [possible fix: call at line 73 should mention T (for argument T) in a postcondition]
 red_black_trees.adb:61:12: info: absence of memory leak proved (CVC4: 1 VC)
 red_black_trees.adb:65:14: info: pointer dereference check proved (CVC4: 1 VC)

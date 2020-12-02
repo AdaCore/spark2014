@@ -1,4 +1,4 @@
 p.ads:19:25: info: range check proved (CVC4: 1 VC)
 p.ads:22:17: info: postcondition proved (CVC4: 1 VC)
-p.ads:25:17: medium: postcondition might fail, cannot prove Identity1'Result = L
+p.ads:25:17: medium: postcondition might fail, cannot prove Identity1'Result = L (e.g. when Identity1'Result = (Capacity => 10, others => ?))
 p.ads:28:17: medium: postcondition might fail, cannot prove Identity2'Result = L

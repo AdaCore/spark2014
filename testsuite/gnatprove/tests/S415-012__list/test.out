@@ -26,6 +26,6 @@ list_borrow.adb:31:30: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:32:19: info: assertion proved (CVC4: 1 VC)
 list_borrow.adb:32:20: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:32:25: info: pointer dereference check proved (CVC4: 1 VC)
-list_borrow.adb:35:07: medium: predicate check might fail
+list_borrow.adb:35:07: medium: predicate check might fail (e.g. when Y.all = (Value => 3, Next => ?))
 list_borrow.adb:37:13: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:38:08: info: pointer dereference check proved (CVC4: 1 VC)
