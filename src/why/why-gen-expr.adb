@@ -2335,12 +2335,12 @@ package body Why.Gen.Expr is
 
    function Is_Void (W : W_Prog_Id) return Boolean is
    begin
-      return (W = +Void
-              or else
-                (Get_Kind (+W) = W_Statement_Sequence
-                 and then
-                 Is_Void_List
-                   (Statement_Sequence_Get_Statements (+W))));
+      return W = +Void
+             or else
+               (Get_Kind (+W) = W_Statement_Sequence
+                and then
+                Is_Void_List
+                  (Statement_Sequence_Get_Statements (+W)));
    end Is_Void;
 
    ------------------
@@ -2358,20 +2358,20 @@ package body Why.Gen.Expr is
 
    function Is_Essentially_Void (W : W_Prog_Id) return Boolean is
    begin
-      return (W = +Void
-              or else
-                (Get_Kind (+W) = W_Label
-                 and then
-                 Is_Essentially_Void (+Label_Get_Def (+W)))
-              or else
-                (Get_Kind (+W) = W_Loc_Label
-                 and then
-                 Is_Essentially_Void (+Loc_Label_Get_Def (+W)))
-              or else
-                (Get_Kind (+W) = W_Statement_Sequence
-                 and then
-                 Is_Essentially_Void_List
-                   (Statement_Sequence_Get_Statements (+W))));
+      return W = +Void
+             or else
+               (Get_Kind (+W) = W_Label
+                and then
+                Is_Essentially_Void (+Label_Get_Def (+W)))
+             or else
+               (Get_Kind (+W) = W_Loc_Label
+                and then
+                Is_Essentially_Void (+Loc_Label_Get_Def (+W)))
+             or else
+               (Get_Kind (+W) = W_Statement_Sequence
+                and then
+                Is_Essentially_Void_List
+                  (Statement_Sequence_Get_Statements (+W)));
    end Is_Essentially_Void;
 
    ------------------------------
@@ -2390,8 +2390,8 @@ package body Why.Gen.Expr is
    function Is_False_Boolean (P : W_Expr_Id) return Boolean is
    begin
       return
-         (Get_Kind (+P) = W_Literal and then
-          Get_Value (+P) = EW_False);
+         Get_Kind (+P) = W_Literal and then
+         Get_Value (+P) = EW_False;
    end Is_False_Boolean;
 
    ---------------------
@@ -2401,8 +2401,8 @@ package body Why.Gen.Expr is
    function Is_True_Boolean (P : W_Expr_Id) return Boolean is
    begin
       return
-         (Get_Kind (+P) = W_Literal and then
-          Get_Value (+P) = EW_True);
+         Get_Kind (+P) = W_Literal and then
+         Get_Value (+P) = EW_True;
    end Is_True_Boolean;
 
    -----------------
