@@ -5044,6 +5044,20 @@ package body SPARK_Definition is
             Entity_Set.Insert (Full_View (E));
          end if;
 
+         --  For private tagged types it is necessary to mark the full view as
+         --  well for proper processing in proof. We use Mark_Entity because
+         --  the full view might contain SPARK violations, but the partial view
+         --  shouldn't be affected by that.
+
+         if Ekind (E) in
+           E_Record_Type_With_Private | E_Record_Subtype_With_Private
+           and then Is_Tagged_Type (E)
+           and then not Is_Class_Wide_Type (E)
+           and then not Is_Itype (E)
+         then
+            Mark_Entity (Full_View (E));
+         end if;
+
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
          --  of a full view points to the partial view. We don't issue a
@@ -5062,20 +5076,6 @@ package body SPARK_Definition is
             --  might not be relevant.
 
             return;
-         end if;
-
-         --  For private tagged types it is necessary to mark the full view as
-         --  well for proper processing in proof. We use Mark_Entity because
-         --  the full view might contain SPARK violations, but the partial view
-         --  shouldn't be affected by that.
-
-         if Ekind (E) in
-           E_Record_Type_With_Private | E_Record_Subtype_With_Private
-           and then Is_Tagged_Type (E)
-           and then not Is_Class_Wide_Type (E)
-           and then not Is_Itype (E)
-         then
-            Mark_Entity (Full_View (E));
          end if;
 
          declare
