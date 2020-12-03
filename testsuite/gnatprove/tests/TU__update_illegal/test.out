@@ -6,5 +6,5 @@ gnatlink main.ali
 raised CONSTRAINT_ERROR : update_illegal_3.adb:6 discriminant check failed
 update_illegal.adb:19:54: component "A" already updated
 update_illegal.adb:20:38: attribute "Update" may not modify record discriminants
-update_illegal.adb:29:26: others choice not allowed in attribute "Update"
+update_illegal.adb:29:26: "others" choice not allowed in attribute "Update"
 update_illegal_2.adb:9:28: too few subscripts in array reference

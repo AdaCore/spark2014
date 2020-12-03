@@ -2,7 +2,7 @@
 raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : contract cases overlap for subprogram overlapping_conditions
 
 raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : failed contract case at contract_cases_illegal_2.ads:34
-contract_cases_illegal.ads:14:11: others must be the last choice in contract cases
+contract_cases_illegal.ads:14:11: "others" must be the last choice in contract cases
 contract_cases_illegal.ads:23:40: attribute "Old" must appear in the consequence of a contract case
 contract_cases_illegal.ads:24:30: attribute "Old" must appear in the consequence of a contract case
 contract_cases_illegal.ads:32:11: warning: contract cases do not mention result

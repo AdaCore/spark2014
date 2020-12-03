@@ -12,7 +12,7 @@ raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : failed postcondition from refined_post
 refined_post_illegal-inv_proc_1.adb:4:08: aspect "Refined_Post" cannot apply to a subunit
 refined_post_illegal.adb:17:11: aspect "Refined_Post" must apply to the body of subprogram declared in a package specification
 refined_post_illegal.adb:35:11: aspect "Refined_Post" must apply to the body of subprogram declared in a package specification
-refined_post_illegal.adb:52:11: aspect "Refined_Post" cannot apply to a stand alone expression function
+refined_post_illegal.adb:52:11: aspect "Refined_Post" cannot apply to a standalone expression function
 refined_post_illegal.adb:52:11: incorrect placement of aspect "Refined_Post"
 refined_post_illegal.ads:11:11: incorrect placement of aspect "Refined_Post"
 refined_post_illegal_2.adb:5:27: info: refined post proved (CVC4: 1 VC)
