@@ -605,7 +605,7 @@ package body Gnat2Why.Driver is
             end if;
          end if;
 
-         return;
+         goto Leave;
       end if;
 
       --  Allow the generation of new nodes and lists, which might happen when
@@ -657,7 +657,7 @@ package body Gnat2Why.Driver is
          if Compilation_Errors
            or else Gnat2Why_Args.Check_Mode
          then
-            return;
+            goto Leave;
          end if;
 
          --  Build hierarchical representation of scopes in the current
@@ -736,7 +736,7 @@ package body Gnat2Why.Driver is
          if Compilation_Errors
            or else Gnat2Why_Args.Check_Mode
          then
-            return;
+            goto Leave;
          end if;
 
          GG_Complete (GNAT_Root);
@@ -793,6 +793,8 @@ package body Gnat2Why.Driver is
          end if;
          Create_JSON_File (Proof_Done);
       end if;
+
+      <<Leave>>
 
       --  If gnat2why is compiled with support for profiling then separate
       --  profiling data for each phase. For file foo.ads two files will be
