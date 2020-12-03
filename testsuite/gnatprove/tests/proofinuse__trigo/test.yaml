@@ -3,3 +3,4 @@ comment: "Do not use Z3, as the step limit fluctuates too much between platforms
 prove_all:
   prover: ["cvc4"]
   counterexample: False
+large: True

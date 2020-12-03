@@ -1,60 +1,88 @@
 #! /usr/bin/env python
 
+from e3.env import Env
 from e3.fs import find
-from e3.testsuite import Testsuite
-from e3.testsuite.testcase_finder import TestFinder, ParsedTest
-from e3.testsuite.driver.classic import TestAbortWithError
+from e3.testsuite import logger, Testsuite
+from e3.testsuite.control import AdaCoreLegacyTestControlCreator, TestControl
+from e3.testsuite.driver import TestDriver
 from e3.testsuite.driver.adacore import AdaCoreLegacyTestDriver
+from e3.testsuite.testcase_finder import ParsedTest, ProbingError, TestFinder
+import e3.yaml
 import os
 import os.path
 import re
 import sys
-import yaml
+from typing import List
+
+# name for the entry in the test_env dict for the subprogram to call
+call_entry = "call_name"
+# name for the entry in the test_env dict for arguments to prove_all/do_flow calls
+args_entry = "call_args"
+
+
+class SPARKControlCreator(AdaCoreLegacyTestControlCreator):
+    """Class that decides the status (XFAIL, SKIP, etc) of a test. This is the
+    same as the standard "test.opt" mechanism, except that we also look into
+    the yaml file for the "large" attribute."""
+
+    def create(self, driver: TestDriver) -> TestControl:
+        if (
+            "large" in self.condition_env
+            and self.condition_env["large"]
+            and "large" not in self.system_tags
+        ):
+            return TestControl("large test", skip=True, xfail=False)
+        return super().create(driver)
+
+    def __init__(
+        self, system_tags: List[str], env=None, opt_filename: str = "test.opt"
+    ) -> None:
+        super().__init__(system_tags, opt_filename)
+        self.condition_env = {} if env is None else env
 
 
 class ProofTestDriver(AdaCoreLegacyTestDriver):
+    """Driver for all SPARK tests. This test generates a test.py if not already
+    there. The generated test.py contains a call to the method in
+    self.test_env[call_entry], with the arguments in
+    self.test_env[args_entry]."""
 
     copy_test_directory = True
 
-    default_testpy = ["from test_support import *", "prove_all(**args)"]
-    default_yaml_entry = "prove_all"
+    @property
+    def test_control_creator(self):
+        assert isinstance(self.env.discs, list)
+        return SPARKControlCreator(self.env.discs, self.test_env)
 
     def get_script_command_line(self):
         script_file = self.working_dir("src", "test.py")
-        yaml_file = self.working_dir("src", "test.yaml")
-        argdict = {}
-        if os.path.isfile(yaml_file):
-            with open(yaml_file, "r") as fn:
-                y = yaml.safe_load(fn)
-                if self.default_yaml_entry in y:
-                    argdict = y[self.default_yaml_entry]
-                else:
-                    raise TestAbortWithError(
-                        "expected yaml file to contain key " + self.default_yaml_entry
-                    )
-        with open(script_file, "w") as fn:
-            fn.write("args = " + str(argdict) + "\n")
-            for line in self.default_testpy:
-                fn.write(line + "\n")
+        if not os.path.isfile(script_file):
+            assert call_entry in self.test_env
+            assert args_entry in self.test_env
+            argdict = self.test_env[args_entry]
+            with open(script_file, "w") as fn:
+                fn.write("from test_support import *" + "\n")
+                fn.write("args = " + str(argdict) + "\n")
+                fn.write(self.test_env[call_entry] + "(**args)" + "\n")
         self.test_control.opt_results["CMD"] = script_file
         return super().get_script_command_line()
 
 
-class FlowTestDriver(ProofTestDriver):
-
-    default_testpy = ["from test_support import *", "do_flow(**args)"]
-    default_yaml_entry = "do_flow"
-
-
 class SPARKTestFinder(TestFinder):
-    """Include all direct subdirs of the tests folder."""
+    """Class to find the tests. The [probe] method determines if a folder is a
+    valid test. To do that it takes into account various command line arguments
+    that allow users to select tests. It also reads the test.yaml file of the
+    test if present, and loads it into the test environment. Finally, it sets
+    some settings, such as the "call_entry" and "args_entry" fields of the test
+    environment."""
 
-    def __init__(self, root_dir, testlist=[], pattern=""):
+    def __init__(self, root_dir, testlist=[], pattern="", only_large=False):
         """
         Initialize a SPARKTestFinder instance.
         """
         self.testlist = testlist
         self.root_dir = root_dir
+        self.only_large = only_large
         if pattern:
             self.pattern = re.compile(pattern.encode("utf-8"))
         else:
@@ -106,17 +134,62 @@ class SPARKTestFinder(TestFinder):
         if self.pattern and not self.test_contains_pattern(dirpath, self.pattern):
             return None
 
+        # We read the test.yaml file if present and load it into the
+        # environment
+        test_env = None
+        try:
+            yaml_file = os.path.join(dirpath, "test.yaml")
+            if "test.yaml" in filenames:
+                test_env = e3.yaml.load_with_config(yaml_file, Env().to_dict())
+        except e3.yaml.YamlError:
+            raise ProbingError("invalid syntax for test.yaml in '{}'".format(testname))
+        if test_env is None:
+            test_env = {}
+
+        # If this is not a large test, but only large was requested, skip
+        # test
+        if self.only_large and "large" not in test_env:
+            return None
+
         # If the test contains a test.py, we use the AdaCoreLegacyTestDriver,
-        # otherwise we use the default driver (proof).
+        # otherwise we use the proof/flow driver
         if "test.py" in filenames or "test.cmd" in filenames:
-            driver = AdaCoreLegacyTestDriver
+            if "prove_all" in test_env or "do_flow" in test_env:
+                logger.warning(
+                    '{}: "test.py" file is present, so "prove_all" '
+                    'and "do_flow" ignored in "test.yaml"'.format(
+                        testname
+                    )
+                )
         else:
+            # if it's a flow test, we set the call to do_flow, and if no
+            # do_flow entry is present, we define empty args.
+            # We emit a warning if "prove_all" is present
             if "__flow" in testname:
-                driver = FlowTestDriver
+                test_env[call_entry] = "do_flow"
+                if "prove_all" in test_env:
+                    logger.warning(
+                        '{}: "prove_all" in "test.yaml" ignored for flow test'.format(
+                            testname
+                        )
+                    )
+                test_env[args_entry] = (
+                    test_env["do_flow"] if "do_flow" in test_env else {}
+                )
+            # same for proof
             else:
-                driver = ProofTestDriver
+                test_env[call_entry] = "prove_all"
+                if "do_flow" in test_env:
+                    logger.warning(
+                        '{}: "do_flow" in "test.yaml" ignored for proof test'.format(
+                            testname
+                        )
+                    )
+                test_env[args_entry] = (
+                    test_env["prove_all"] if "prove_all" in test_env else {}
+                )
         # This is a valid test, return the ParsedTest object
-        return ParsedTest(testname, driver, {}, dirpath)
+        return ParsedTest(testname, ProofTestDriver, test_env, dirpath)
 
 
 class SPARKTestsuite(Testsuite):
@@ -124,7 +197,14 @@ class SPARKTestsuite(Testsuite):
 
     @property
     def test_finders(self):
-        return [SPARKTestFinder(self.root_dir, self.testlist, self.main.args.pattern)]
+        return [
+            SPARKTestFinder(
+                self.root_dir,
+                testlist=self.testlist,
+                pattern=self.main.args.pattern,
+                only_large=self.env.only_large,
+            )
+        ]
 
     def add_options(self, parser):
         parser.add_argument(
@@ -166,6 +246,11 @@ class SPARKTestsuite(Testsuite):
             help="Argument is a file which contains one test \
                   name per line. Run only those tests.",
         )
+        parser.add_argument(
+            "--only-large",
+            action="store_true",
+            help="Run only large tests; implies --disc=large",
+        )
 
     def compute_environ(self):
         python_lib = os.path.join(self.root_dir, "lib", "python")
@@ -192,7 +277,12 @@ class SPARKTestsuite(Testsuite):
         if self.main.args.disc:
             self.env.discs += self.main.args.disc.split(",")
         if self.main.args.inverse_prover:
-            self.env.discs += "inverse-prover"
+            self.env.discs += ["inverse-prover"]
+        if self.main.args.only_large:
+            self.env.only_large = True
+            self.env.discs += ["large"]
+        else:
+            self.env.only_large = False
         self.env.rewrite_baselines = self.main.args.rewrite
         self.env.test_environ = self.compute_environ()
         if self.main.args.testlist:

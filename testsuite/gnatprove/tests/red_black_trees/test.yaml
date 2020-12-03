@@ -3,3 +3,4 @@ prove_all:
   opt: ["--no-axiom-guard"]
   steps: 300
   prover: ["cvc4"]
+large: True

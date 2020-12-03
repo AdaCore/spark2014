@@ -1,3 +1,2 @@
 assertions DEAD too slow for assertions
 NT DEAD too slow on Windows (PA06-025)
-!large SKIP part of large testsuite

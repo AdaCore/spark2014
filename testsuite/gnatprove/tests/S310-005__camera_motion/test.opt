@@ -1,3 +1,2 @@
-!large SKIP part of large testsuite
 Windows SKIP too slow on Windows
 ALL RLIMIT 1500

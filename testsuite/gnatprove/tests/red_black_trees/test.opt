@@ -1,4 +1,3 @@
-!large SKIP part of large testsuite
 inverse-prover SKIP too slow
 assertions SKIP too slow
 NT SKIP hanging prover processes on windows (QA16-002)

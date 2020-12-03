@@ -4,3 +4,4 @@ prove_all:
   prover: ["cvc4"]
   opt: ["--no-axiom-guard"]
   counterexample: False
+large: True

@@ -1,2 +1,1 @@
-!large SKIP part of large testsuite
 ALL XFAIL crash on DIC on abstract type (TC10-011)

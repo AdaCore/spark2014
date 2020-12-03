@@ -8,3 +8,4 @@ prove_all:
   counterexample: False
   prover: ["z3"]
   opt: ["--no-axiom-guard"]
+large: True

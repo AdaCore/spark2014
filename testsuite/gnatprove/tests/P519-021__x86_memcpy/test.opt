@@ -1,4 +1,3 @@
 NT DEAD too slow on windows (PA06-025)
 inverse-prover SKIP too slow
-!large SKIP part of large testsuite
 assertion SKIP minor proof diff
