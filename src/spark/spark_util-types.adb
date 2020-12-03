@@ -560,7 +560,7 @@ package body SPARK_Util.Types is
                Comp             : Entity_Id := First_Component (Rep_Ty);
                Has_Visible_Comp : Boolean := False;
             begin
-               loop
+               while Present (Comp) loop
                   if Component_Is_Visible_In_SPARK (Comp) then
 
                      --  We have found at least one component with relaxed
@@ -578,7 +578,6 @@ package body SPARK_Util.Types is
                      end if;
                   end if;
                   Next_Component (Comp);
-                  exit when No (Comp);
                end loop;
 
                --  The loop exits normally, so all components of Typ have
