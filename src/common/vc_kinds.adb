@@ -537,7 +537,7 @@ package body VC_Kinds is
          return CEE_Other; -- CEE_Before_Loop;
       elsif S = "current_iteration" then
          return CEE_Other; -- CEE_Current_Iteration;
-      elsif S = "previous_iteration" then
+      elsif S = "before_iteration" then
          return CEE_Other; -- CEE_Previous_Iteration
       elsif S = "result" then
          return CEE_Result;
