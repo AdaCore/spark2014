@@ -5,7 +5,7 @@ with
 Refined_State => ( caller_state => ( Global_Ghost_c, Global_Ghost_d ) ),
   SPARK_Mode => On
 is
-
+   
    procedure caller_func
      with
    --Refined_Pre => caller_func_pre_success_state,
@@ -20,17 +20,17 @@ is
    end caller_func;
 
    package body spec is
-
-      function caller_func_pre_success_state
+   
+      function caller_func_pre_success_state 
         return Boolean
-      is
+      is 
         ( ghost.caller_func_pre_success_state );
-
-      function caller_func_post_success_state
-        return Boolean
+  
+      function caller_func_post_success_state 
+        return Boolean 
       is
          ( ghost.caller_func_post_success_state );
-
+      
    end spec;
-
+   
 end caller_package;
