@@ -3092,6 +3092,11 @@ package body SPARK_Util is
       then First_Sloc (N)
       else Sloc (First_Node (N)));
 
+   function Safe_Last_Sloc (N : Node_Id) return Source_Ptr is
+     (if Instantiation_Location (Sloc (N)) = No_Location
+      then Last_Sloc (N)
+      else Sloc (Last_Node (N)));
+
    ------------------------------
    -- Search_Component_By_Name --
    ------------------------------
