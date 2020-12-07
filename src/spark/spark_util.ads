@@ -895,6 +895,10 @@ package SPARK_Util is
    --  instances of generic subprograms (where the Main_Unit_Entity has a
    --  void Ekind).
 
+   function Package_Body (E : Entity_Id) return Node_Id;
+   --  Given an entity for a package (spec or body), return the corresponding
+   --  package body if any, or else Empty.
+
    function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean;
    --  Approximation of cases where we know that the Constrained attribute of
    --  N is known statically.

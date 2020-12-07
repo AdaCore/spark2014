@@ -305,8 +305,7 @@ package body SPARK_Definition is
         SPARK_Aux_Pragma (Defining_Entity (Package_Body (E)));
    begin
       return
-        (if Present (Prag)
-         then Get_SPARK_Mode_From_Annotation (Prag) /= Off);
+        (if Present (Prag) then Get_SPARK_Mode_From_Annotation (Prag) /= Off);
    end Body_Statements_In_SPARK;
 
    --------------------------
@@ -315,11 +314,9 @@ package body SPARK_Definition is
 
    function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean is
       Prag : constant Node_Id := SPARK_Pragma (E);
-
    begin
       return
-        Present (Prag) and then
-        Get_SPARK_Mode_From_Annotation (Prag) = Opt.On;
+        Present (Prag) and then Get_SPARK_Mode_From_Annotation (Prag) = Opt.On;
    end Entity_Spec_In_SPARK;
 
    ---------------------------

@@ -30,7 +30,6 @@ with ALI;                        use ALI;
 with Namet;                      use Namet;
 with Osint;                      use Osint;
 with Output;                     use Output;
-with Sem_Aux;                    use Sem_Aux;
 with Sem_Util;                   use Sem_Util;
 
 with Call;                       use Call;

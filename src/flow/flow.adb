@@ -50,7 +50,6 @@ with Lib;                              use Lib;
 with Namet;                            use Namet;
 with Osint;                            use Osint;
 with Output;                           use Output;
-with Sem_Aux;                          use Sem_Aux;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
 with Sinfo;                            use Sinfo;
