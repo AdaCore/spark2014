@@ -1272,7 +1272,7 @@ Decreases) then the expression value obtained for the call is greater
 
 2. Subprogram_Variant is an assertion aspect [and may be used in an
    Assertion_Policy pragma]. Subprogram_Variant is an assertion (as
-   defined in Ada RM 11.4.2(1.1/3)); any Subtype_Variant runtime checking
+   defined in Ada RM 11.4.2(1.1/3)); any Subprogram_Variant runtime checking
    associated with a call (see below) is governed by
    the Subprogram_Variant assertion policy that is in effect at the
    point of the call.
@@ -1335,7 +1335,7 @@ Decreases) then the expression value obtained for the call is greater
     implicitly generated in the case where the caller and the callee are the
     same (a direct recursive call) as a consequence of the runtime check taking
     place in that case. It is also generated in the case of other mutually
-    recursive calls, althoug no checks are introduced at runtime due to
+    recursive calls, although no checks are introduced at runtime due to
     compiler implementation constraints. No such verification condition
     is introduced for the implicit call associated with an inherited
     subprogram as described in the "Dynamic Semantics" section of Ada RM 3.4.
