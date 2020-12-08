@@ -39,7 +39,7 @@ libexec/spark/share dir
 alt-ergo
 codepeer
 doc
-gcc-9.3.1
+gcc-10.2.1
 gpr
 gprconfig
 info
