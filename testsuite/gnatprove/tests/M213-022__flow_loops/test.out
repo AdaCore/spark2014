@@ -58,8 +58,8 @@ test.adb:109:27: high: "X" is not initialized in "For_Test_01"
 test.adb:109:27: warning: unused variable "X"
 test.adb:112:33: info: cannot unroll loop (value of loop bounds)
 test.adb:112:33: warning: statement has no effect
+test.adb:113:10: warning: unreachable code (CVC4: 1 VC)
 test.adb:113:12: warning: this statement is never reached
-test.adb:113:12: warning: unreachable code (CVC4: 1 VC)
 test.adb:117:04: warning: analyzing unreferenced procedure "For_Test_02"
 test.adb:117:27: info: initialization of "X" proved
 test.adb:120:38: info: unrolling loop

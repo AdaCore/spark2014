@@ -35,9 +35,9 @@ counter_example.adb:13:10: warning: unreachable code (CVC4: 1 VC)
 counter_example.adb:13:22: info: predicate check proved (CVC4: 1 VC)
 counter_example.adb:15:22: medium: predicate check might fail (e.g. when Idx2 = 3) [possible fix: subprogram at counter_example.ads:14 should mention Cat1 in a precondition]
 counter_example.ads:12:72: info: index check proved (CVC4: 2 VC)
-ghost_example.adb:11:15: warning: unreachable code (CVC4: 1 VC)
-ghost_example.adb:20:15: warning: unreachable code (CVC4: 1 VC)
-ghost_example.adb:32:15: warning: unreachable code (CVC4: 1 VC)
+ghost_example.adb:11:10: warning: unreachable code (CVC4: 1 VC)
+ghost_example.adb:20:10: warning: unreachable code (CVC4: 1 VC)
+ghost_example.adb:32:10: warning: unreachable code (CVC4: 1 VC)
 ghost_example.ads:3:20: info: initialization of "Done" proved
 ghost_example.ads:5:14: info: postcondition proved (CVC4: 1 VC)
 ghost_example.ads:5:55: warning: unreachable branch (CVC4: 1 VC)

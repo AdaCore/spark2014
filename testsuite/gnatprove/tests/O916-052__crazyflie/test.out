@@ -9,6 +9,7 @@ crtp_pack.adb:96:10: info: type is suitable as source for unchecked conversion (
 crtp_pack.adb:96:18: high: type with constraints on bit representation is unsuitable for unchecked conversion, in instantiation at console_pack.adb:40 [possible explanation: type Byte_Array_Data doesn't have an Object_Size representation clause or aspect]
 crtp_pack.adb:98:24: medium: overflow check might fail, in instantiation at console_pack.adb:40 (e.g. when Handler.Index = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at crtp_pack.ads:102 should mention Handler in a precondition]
 crtp_pack.adb:99:24: info: range check proved (CVC4: 4 VC), in instantiation at console_pack.adb:40
+crtp_pack.adb:99:24: medium: discriminant check might fail, in instantiation at console_pack.adb:40 (e.g. when Data = 'NUL' and Handler.Packet.Repr = HEADER_DATA and Handler.Index = 1) [possible fix: subprogram at crtp_pack.ads:102 should mention Handler in a precondition]
 crtp_pack.adb:99:24: medium: discriminant check might fail, in instantiation at console_pack.adb:40 (e.g. when Handler.Packet.Repr = HEADER_DATA and Handler.Index = 1) [possible fix: subprogram at crtp_pack.ads:102 should mention Handler in a precondition]
 crtp_pack.adb:100:44: info: overflow check proved (CVC4: 1 VC), in instantiation at console_pack.adb:40
 crtp_pack.adb:100:61: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at console_pack.adb:40

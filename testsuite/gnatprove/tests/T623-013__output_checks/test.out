@@ -3,7 +3,7 @@ default command-line output
 
 incr.adb:3:11: medium: overflow check might fail
     3 |   X := X + 1;
-      |          ^ here
+      |        ~~^~~
   e.g. when X = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at line 1 should mention X in a precondition
@@ -19,7 +19,7 @@ pretty output
 
 incr.adb:3:11: medium: overflow check might fail
     3 |   X := X + 1;
-      |          ^ here
+      |        ~~^~~
   e.g. when X = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at line 1 should mention X in a precondition
