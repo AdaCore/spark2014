@@ -1,4 +1,4 @@
-procedure System.Inline with SPARK_Mode is
+procedure Main with SPARK_Mode is
 
    procedure Lemma (X : Integer) is
    begin
@@ -6,5 +6,5 @@ procedure System.Inline with SPARK_Mode is
    end Lemma;
 
 begin
-   Lemma (Integer'Last);
-end System.Inline;
+   Lemma (Integer'(Integer'Last));
+end Main;
