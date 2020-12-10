@@ -7164,6 +7164,7 @@ package body SPARK_Definition is
             | Pragma_Component_Alignment
             | Pragma_Controlled
             | Pragma_Convention_Identifier
+            | Pragma_CUDA_Global
             | Pragma_Debug_Policy
             | Pragma_Default_Storage_Pool
             | Pragma_Disable_Atomic_Synchronization
