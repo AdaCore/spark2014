@@ -1,7 +1,7 @@
 
 integrity.adb:26:10: medium: precondition might fail, cannot prove (Invariant)
    26 |         Update (X);
-      |         ^ here
+      |         ^~~~~~~~~
   e.g. when Max1 = 0
         and Max2 = 1
         and X = 2

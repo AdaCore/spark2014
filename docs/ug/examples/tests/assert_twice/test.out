@@ -1,7 +1,7 @@
 
 assert_twice.adb:5:19: medium: assertion might fail, cannot prove X > 0
     5 |   pragma Assert (X > 0);
-      |                  ^ here
+      |                  ^~~~~
   possible fix: subprogram at line 1 should mention X in a precondition
     1 |procedure Assert_Twice (X : Integer) with
       |^ here

@@ -1,12 +1,12 @@
 
 terminating_annotations.adb:8:10: medium: "F_Rec" is recursive, terminating annotation could be incorrect
     8 |         return F_Rec (X - 1);
-      |         ^ here
+      |         ^~~~~~~~~~~~~~~~~~~
 
 terminating_annotations.adb:15:19: medium: loop might be nonterminating, terminating annotation on "F_While" could be incorrect
    15 |      while Y > 0 loop
-      |                  ^ here
+      |                  ^~~~
 
 terminating_annotations.adb:37:07: medium: call to "Not_SPARK" might be nonterminating, terminating annotation on "F_Call" could be incorrect
    37 |      Not_SPARK (X);
-      |      ^ here
+      |      ^~~~~~~~~~~~

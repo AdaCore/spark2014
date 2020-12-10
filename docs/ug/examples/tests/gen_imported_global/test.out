@@ -1,8 +1,8 @@
 
 gen_imported_global.adb:13:07: warning: statement has no effect
    13 |      Set_Global;
-      |      ^ here
+      |      ^~~~~~~~~~
 
 gen_imported_global.adb:13:07: warning: "V" constituent of "State" is set by "Set_Global" but not used after the call
    13 |      Set_Global;
-      |      ^ here
+      |      ^~~~~~~~~~

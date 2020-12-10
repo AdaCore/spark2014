@@ -1,7 +1,7 @@
 
 account5.adb:7:31: medium: overflow check might fail
     7 |         The_Data := The_Data + 1;
-      |                              ^ here
+      |                     ~~~~~~~~~^~~
   reason for check: result of addition must fit in a 32-bits machine integer
 account5.ads:14:14: info: ceiling priority protocol is respected
 account5.ads:14:14: info: nontermination of task proved

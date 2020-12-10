@@ -1,8 +1,8 @@
 
 gen_global.adb:18:07: warning: statement has no effect
    18 |      Set_Global;
-      |      ^ here
+      |      ^~~~~~~~~~
 
 gen_global.adb:18:07: warning: "V" is set by "Set_Global" but not used after the call
    18 |      Set_Global;
-      |      ^ here
+      |      ^~~~~~~~~~

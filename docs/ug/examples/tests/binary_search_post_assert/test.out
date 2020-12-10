@@ -1,7 +1,7 @@
 
 binary_search.adb:36:50: medium: assertion might fail, cannot prove A (Index) /= I
    36 |      pragma Assert (for all Index in A'Range => A (Index) /= I);
-      |                                                 ^ here
+      |                                                 ^~~~~~~~~~~~~~
   e.g. when A = (1 => -1, 2 => 0)
         and A'First = 1
         and A'Last = 2
