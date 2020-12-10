@@ -54,10 +54,10 @@ package body VC_Kinds is
 
          when VC_Division_Check            => "369",
 
-         --  CWE-120: Buffer Copy without Checking Size of Input ('Classic
-         --  Buffer Overflow')
+         --  CWE-119: Improper Restriction of Operations within the Bounds of a
+         --  Memory Buffer.
 
-         when VC_Index_Check               => "120",
+         when VC_Index_Check               => "119",
 
          --  CWE-190: Integer Overflow or Wraparound
 
