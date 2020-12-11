@@ -1,4 +1,4 @@
 prove_all:
-  prover: ["z3,cvc4,altergo"]
+  prover: ["colibri,z3,cvc4,altergo"]
   counterexample: False
 large: True

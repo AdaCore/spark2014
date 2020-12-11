@@ -100,13 +100,13 @@ floating_point.adb:170:22: medium: assertion might fail, cannot prove Res in -1.
 floating_point.adb:171:22: medium: assertion might fail, cannot prove Res in -1.0 .. 1.0
 floating_point.adb:183:19: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:184:22: info: assertion proved (Z3: 1 VC)
-floating_point.adb:193:16: info: division check proved (Z3: 1 VC)
+floating_point.adb:193:16: info: division check proved (colibri: 1 VC)
 floating_point.adb:193:16: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at floating_point.ads:66 should mention X and Y in a precondition]
 floating_point.adb:194:22: info: assertion proved (CVC4: 1 VC)
-floating_point.adb:203:16: info: division check proved (Z3: 1 VC)
+floating_point.adb:203:16: info: division check proved (colibri: 1 VC)
 floating_point.adb:203:16: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at floating_point.ads:69 should mention X and Y in a precondition]
 floating_point.adb:204:22: info: assertion proved (CVC4: 1 VC)
-floating_point.adb:212:14: info: precondition proved (Z3: 1 VC)
+floating_point.adb:212:14: info: precondition proved (colibri: 1 VC)
 floating_point.adb:213:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:225:17: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:225:22: info: division check proved (CVC4: 1 VC)
@@ -122,11 +122,11 @@ floating_point.adb:249:28: medium: float overflow check might fail [reason for c
 floating_point.adb:249:45: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:81 should mention B in a precondition]
 floating_point.adb:251:22: info: assertion proved (Z3: 1 VC)
 floating_point.adb:258:37: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:84 should mention B in a precondition]
-floating_point.adb:259:16: info: division check proved (Z3: 1 VC)
+floating_point.adb:259:16: info: division check proved (colibri: 1 VC)
 floating_point.adb:259:16: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:260:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:267:37: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:87 should mention B in a precondition]
-floating_point.adb:268:16: info: division check proved (Z3: 1 VC)
+floating_point.adb:268:16: info: division check proved (colibri: 1 VC)
 floating_point.adb:268:16: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:269:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:280:17: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention C in a precondition]
@@ -151,12 +151,12 @@ floating_point.adb:316:30: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:317:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:327:16: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:327:20: info: float overflow check proved (CVC4: 1 VC)
-floating_point.adb:327:24: info: float overflow check proved (Z3: 1 VC)
+floating_point.adb:327:24: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:328:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:338:14: medium: precondition might fail, cannot prove X >= 0.0
 floating_point.adb:338:22: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:338:26: info: float overflow check proved (CVC4: 1 VC)
-floating_point.adb:338:30: info: float overflow check proved (CVC4: 1 VC)
+floating_point.adb:338:30: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:339:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:349:04: warning: analyzing unreferenced procedure "Polynomial"
 floating_point.adb:349:14: warning: subprogram "Polynomial" has no effect
