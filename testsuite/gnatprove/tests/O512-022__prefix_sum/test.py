@@ -8,7 +8,7 @@ options = ["--no-axiom-guard",
            "prefixsum.adb",
            "prefixsum_expanded.adb",
            "prefixsum_general.adb",
-           "--no-counterexample"]
+           "--counterexamples=off"]
 
 def replay():
     prove_all(procs=0, steps=0, vc_timeout=20, opt=options)

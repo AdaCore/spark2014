@@ -128,7 +128,7 @@ package body Configuration is
    --  @param Tree the project tree
    --  @param FN a file name
 
-   function Is_Coq_Prover return Boolean;
+   function Is_Coq_Prover (FS : File_Specific) return Boolean;
    --  @return True iff one alternate prover is "coq"
 
    --  There are more than one "command lines" in gnatprove. For example, the
@@ -515,25 +515,21 @@ package body Configuration is
    -- Is_Manual_Prover --
    ----------------------
 
-   function Is_Manual_Prover return Boolean is
-      Provers : String_Lists.List renames
-        File_Specific_Map ("Ada").Provers;
+   function Is_Manual_Prover (FS : File_Specific) return Boolean is
    begin
-      return Provers.Length = 1
+      return FS.Provers.Length = 1
         and then
-          (Case_Insensitive_Contains (Provers, "coq")
-           or else Case_Insensitive_Contains (Provers, "isabelle"));
+          (Case_Insensitive_Contains (FS.Provers, "coq")
+           or else Case_Insensitive_Contains (FS.Provers, "isabelle"));
    end Is_Manual_Prover;
 
    -------------------
    -- Is_Coq_Prover --
    -------------------
 
-   function Is_Coq_Prover return Boolean is
-      Provers : String_Lists.List renames
-        File_Specific_Map ("Ada").Provers;
+   function Is_Coq_Prover (FS : File_Specific) return Boolean is
    begin
-      return Case_Insensitive_Contains (Provers, "coq");
+      return Case_Insensitive_Contains (FS.Provers, "coq");
    end Is_Coq_Prover;
 
    --------------------
@@ -627,6 +623,10 @@ package body Configuration is
            (Config,
             CL_Switches.CodePeer'Access,
             Long_Switch => "--codepeer=");
+         Define_Switch
+           (Config,
+            CL_Switches.Counterexamples'Access,
+            Long_Switch => "--counterexamples=");
          Define_Switch
            (Config,
             CL_Switches.CWE'Access,
@@ -1150,8 +1150,8 @@ package body Configuration is
       procedure Set_Report_Mode;
 
       procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific);
-      --  Using the --level, --timeout, --steps and --provers switches, set the
-      --  corresponding variables.
+      --  Using the --level, --timeout, --steps, --provers and
+      --  --counterexamples switches, set the corresponding variables.
 
       procedure Set_Proof_Mode (FS : in out File_Specific);
       procedure Process_Limit_Switches;
@@ -1379,6 +1379,13 @@ package body Configuration is
             Parallel := CL_Switches.J;
          end if;
 
+         if CL_Switches.No_Counterexample then
+            Ada.Text_IO.Put_Line
+              ("Note: switch ""--no-counterexample"" is ignored.");
+            Ada.Text_IO.Put_Line
+              ("Note: use ""--counterexamples=off"" instead.");
+         end if;
+
          --  Handling of Only_Given and Filelist
 
          Only_Given := CL_Switches.U
@@ -1491,6 +1498,7 @@ package body Configuration is
                FS.Steps := Default_Steps;
                FS.Timeout := 0;
                FS.Memlimit := 0;
+               FS.Counterexamples := False;
 
             --  See the UG for the meaning of the level switches
 
@@ -1499,6 +1507,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 1;
                FS.Memlimit := 1000;
+               FS.Counterexamples := False;
 
             when 1 =>
                FS.Provers.Append ("cvc4");
@@ -1507,6 +1516,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 1;
                FS.Memlimit := 1000;
+               FS.Counterexamples := False;
 
             when 2 =>
                FS.Provers.Append ("cvc4");
@@ -1515,6 +1525,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 5;
                FS.Memlimit := 1000;
+               FS.Counterexamples := True;
 
             when 3 =>
                FS.Provers.Append ("cvc4");
@@ -1523,6 +1534,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 20;
                FS.Memlimit := 2000;
+               FS.Counterexamples := True;
 
             when 4 =>
                FS.Provers.Append ("cvc4");
@@ -1531,6 +1543,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 60;
                FS.Memlimit := 2000;
+               FS.Counterexamples := True;
 
             when others =>
                Abort_Msg ("error: wrong argument for --level",
@@ -1592,6 +1605,25 @@ package body Configuration is
          if CL_Switches.Output_Msg_Only then
             FS.Provers.Clear;
          end if;
+
+         if CL_Switches.Counterexamples.all = "" then
+            null;
+         elsif CL_Switches.Counterexamples.all = "on" then
+            FS.Counterexamples := True;
+         elsif CL_Switches.Counterexamples.all = "off" then
+            FS.Counterexamples := False;
+         else
+            Abort_Msg ("error: wrong argument for --counterexamples, " &
+                         "must be one of (on, off)",
+                       With_Help => False);
+         end if;
+
+         FS.Counterexamples :=
+           FS.Counterexamples
+           and then SPARK_Install.CVC4_Present
+           and then not Is_Manual_Prover (FS)
+           and then not CL_Switches.Output_Msg_Only;
+
       end Set_Level_Timeout_Steps_Provers;
 
       --------------
@@ -1999,7 +2031,6 @@ package body Configuration is
               Concat3 (Prj_Attr.Prove.Switches,
                        Prj_Attr.Prove.Proof_Switches_Ada, Com_Lin);
          begin
-
             --  parse all switches that apply to all files, concatenated in the
             --  right order (most important is last).
 
@@ -2007,15 +2038,6 @@ package body Configuration is
             Postprocess;
             File_Specific_Postprocess (FS);
             File_Specific_Map.Insert ("Ada", FS);
-
-            --  ??? this piece of code should be in Postprocess, but it
-            --  requires the FS object to be inserted in the map already.
-
-            Counterexample :=
-              not CL_Switches.No_Counterexample
-              and then SPARK_Install.CVC4_Present
-              and then not Is_Manual_Prover
-              and then not CL_Switches.Output_Msg_Only;
          end;
 
          for FS_Entry of Prj_Attr.Prove.Proof_Switches_Indices.all loop
@@ -2081,7 +2103,7 @@ package body Configuration is
             Socket_Name := new String'(
                (if Socket_Dir = "" then Socket_Base
                 else Compose (Socket_Dir, Socket_Base)));
-            if Is_Coq_Prover then
+            if Is_Coq_Prover (File_Specific_Map ("Ada")) then
                Prepare_Prover_Lib (Proj_Type.Artifacts_Dir.Display_Full_Name);
             end if;
          end;
@@ -2385,7 +2407,7 @@ package body Configuration is
          --  the project directory so we give it an absolute path to the
          --  proof_dir.
          Args.Append (Proof_Dir.all);
-         if Is_Manual_Prover then
+         if Is_Manual_Prover (File_Specific_Map ("Ada")) then
             Prepare_Why3_Manual;
          end if;
       end if;
@@ -2401,7 +2423,7 @@ package body Configuration is
       end if;
 
       Args.Append ("--counterexample");
-      Args.Append (if Counterexample then "on" else "off");
+      Args.Append (if FS.Counterexamples then "on" else "off");
 
       if CL_Switches.Z3_Counterexample then
          Args.Append ("--ce-prover");

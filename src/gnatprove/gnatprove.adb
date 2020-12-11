@@ -229,7 +229,10 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-k");
       end if;
 
-      if Force or else Is_Manual_Prover or else CL_Switches.Replay then
+      if Force
+        or else Is_Manual_Prover (File_Specific_Map ("Ada"))
+        or else CL_Switches.Replay
+      then
          Args.Append ("-f");
       end if;
 

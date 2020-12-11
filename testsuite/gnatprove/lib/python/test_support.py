@@ -795,7 +795,9 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
         prover_arg = build_prover_switch([benchmark_mode()])
     fullopt += prover_arg
     if not counterexample or benchmark_mode():
-        fullopt += ["--no-counterexample"]
+        fullopt += ["--counterexamples=off"]
+    else:
+        fullopt += ["--counterexamples=on"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt

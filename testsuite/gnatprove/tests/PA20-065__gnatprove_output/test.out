@@ -58,6 +58,7 @@ gnatprove basic switches:
 
 gnatprove advanced switches:
  --checks-as-errors   Treat unproved check messages as errors
+ --counterexamples=c  Enable or disable counterexamples (c=on,off*)
  -d, --debug          Debug mode
  --debug-save-vcs     Do not delete intermediate files for provers
  --flow-debug         Extra debugging for flow analysis (requires graphviz)
@@ -73,7 +74,6 @@ gnatprove advanced switches:
                       no limit (default when no level set)
  --no-axiom-guard     Do not generate guards for axioms defining contracts of
                       functions
- --no-counterexample  Do not generate a counterexample for unproved formulas
  --no-global-generation
                       Do not generate Global and Initializes contracts from
                       code, instead assume "null". Note that this option also

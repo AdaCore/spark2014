@@ -84,6 +84,7 @@ package Configuration is
       Cargs_List           : String_Lists.List;
       Checks_As_Errors     : aliased Boolean;
       CodePeer             : aliased GNAT.Strings.String_Access;
+      Counterexamples      : aliased GNAT.Strings.String_Access;
       CWE                  : aliased Boolean;
       D                    : aliased Boolean;
       Dbg_No_Sem           : aliased Boolean;
@@ -188,7 +189,6 @@ package Configuration is
    --  use a clearer name, e.g. Continue_On_Error vs K).
 
    CodePeer       : Boolean;
-   Counterexample : Boolean;
    Debug          : Boolean;
    GnateT_Switch  : GNAT.Strings.String_Access;
    Mode           : GP_Mode;
@@ -220,6 +220,7 @@ package Configuration is
       Info              : Boolean;
       No_Loop_Unrolling : Boolean;
       Proof_Warnings    : Boolean;
+      Counterexamples   : Boolean;
    end record;
 
    package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps
@@ -319,7 +320,7 @@ package Configuration is
 
    procedure Read_Command_Line (Tree : out Project_Tree);
 
-   function Is_Manual_Prover return Boolean;
+   function Is_Manual_Prover (FS : File_Specific) return Boolean;
    --  @return True iff the alternate prover is "coq" or "isabelle"
 
    function To_String (P : Proof_Mode) return String;
