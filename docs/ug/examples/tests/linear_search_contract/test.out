@@ -1,11 +1,7 @@
 
 linear_search.ads:28:06: medium: contract cases might not be disjoint
    28>|     Contract_Cases =>
-   29 |       (A(1) = Val =>
-   30 |          Search'Result.At_Index = 1,
-   31 |        Value_Found_In_Range (A, Val, 2, 10) =>
-   32 |          Search'Result.Found,
-   33 |        (for all J in Arr'Range => A(J) /= Val) =>
+  ... | ...
    34 |          not Search'Result.Found);
 
 linear_search.ads:29:20: medium: contract case might fail

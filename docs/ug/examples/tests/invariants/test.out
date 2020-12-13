@@ -43,9 +43,7 @@ invariants.ads:41:57: info: index check proved
 
 invariants.ads:47:04: medium: type "Stack_2" is not fully initialized
    47>|   type Stack_2 is record
-   48 |      Content : Element_Array;
-   49 |      Size    : My_Length;
-   50 |      Max     : Element;
+  ... | ...
    51 |   end record with
 invariants.ads:47:09: info: invariant check proved on default value
 invariants.ads:53:60: info: index check proved
