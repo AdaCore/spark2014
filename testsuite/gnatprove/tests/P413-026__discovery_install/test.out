@@ -19,14 +19,14 @@ spark_report
 spark_semaphore_wrapper
 target.atp
 why3
-why3config
+why3config.cmxs
 why3cpulimit
-why3realize
+why3realize.cmxs
 why3server
-why3session
+why3session.cmxs
 libexec/spark/share dir
 alt-ergo
-gcc-9.3.1
+gcc-10.2.1
 gpr
 gprconfig
 info
