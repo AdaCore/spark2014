@@ -42,6 +42,9 @@ package body SPARK_Register is
 
    procedure Register_Compilation_Unit (N : Node_Id) is
 
+      procedure Register_Aspect (E : Entity_Id; A : Aspect_Id);
+      --  Register names in the expression of aspect A of E if any
+
       function Process_Node (N : Node_Id) return Traverse_Result;
       --  Process a single node
 
@@ -225,14 +228,15 @@ package body SPARK_Register is
          if Nkind (N) in N_Object_Declaration
                        | N_Subprogram_Declaration
          then
-            declare
-               Address : constant Node_Id :=
-                 Find_Aspect (Defining_Entity (N), Aspect_Address);
-            begin
-               if Present (Address) then
-                  Process_Tree (Expression (Address));
-               end if;
-            end;
+            Register_Aspect (Defining_Entity (N), Aspect_Address);
+
+         --  On type declarations, register names from the literal aspects if
+         --  any.
+
+         elsif Nkind (N) = N_Full_Type_Declaration then
+            Register_Aspect (Defining_Entity (N), Aspect_Real_Literal);
+            Register_Aspect (Defining_Entity (N), Aspect_Integer_Literal);
+            Register_Aspect (Defining_Entity (N), Aspect_String_Literal);
          end if;
 
          --  Special-case type aspect subprograms
@@ -384,6 +388,18 @@ package body SPARK_Register is
 
          return OK;
       end Process_Node;
+
+      ---------------------
+      -- Register_Aspect --
+      ---------------------
+
+      procedure Register_Aspect (E : Entity_Id; A : Aspect_Id) is
+         Aspect_Node : constant Node_Id := Find_Aspect (E, A);
+      begin
+         if Present (Aspect_Node) then
+            Process_Tree (Expression (Aspect_Node));
+         end if;
+      end Register_Aspect;
 
    --  Start of processing for Register_Compilation_Unit
 

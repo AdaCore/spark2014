@@ -364,11 +364,26 @@ package body SPARK_Rewrite is
 
    procedure Rewrite_Compilation_Unit (N : Node_Id) is
 
+      procedure Rewrite_Aspect (E : Entity_Id; A : Aspect_Id);
+      --  Apply expansion operations on the expression of aspect A of E if any
+
       function Rewrite_Node (N : Node_Id) return Traverse_Result;
       --  Apply expansion operations on a node
 
       procedure Rewrite_Nodes is
         new Traverse_More_Proc (Rewrite_Node, Process_Itypes => True);
+
+      --------------------
+      -- Rewrite_Aspect --
+      --------------------
+
+      procedure Rewrite_Aspect (E : Entity_Id; A : Aspect_Id) is
+         Aspect_Node : constant Node_Id := Find_Aspect (E, A);
+      begin
+         if Present (Aspect_Node) then
+            Rewrite_Nodes (Expression (Aspect_Node));
+         end if;
+      end Rewrite_Aspect;
 
       ------------------
       -- Rewrite_Node --
@@ -403,14 +418,15 @@ package body SPARK_Rewrite is
          if Nkind (N) in N_Object_Declaration
                        | N_Subprogram_Declaration
          then
-            declare
-               Address : constant Node_Id :=
-                 Find_Aspect (Defining_Entity (N), Aspect_Address);
-            begin
-               if Present (Address) then
-                  Rewrite_Nodes (Expression (Address));
-               end if;
-            end;
+            Rewrite_Aspect (Defining_Entity (N), Aspect_Address);
+
+         --  On type declarations, rewrite the literal aspects to use the
+         --  ultimate alias if any.
+
+         elsif Nkind (N) = N_Full_Type_Declaration then
+            Rewrite_Aspect (Defining_Entity (N), Aspect_Real_Literal);
+            Rewrite_Aspect (Defining_Entity (N), Aspect_Integer_Literal);
+            Rewrite_Aspect (Defining_Entity (N), Aspect_String_Literal);
          end if;
 
          case Nkind (N) is
