@@ -1,0 +1,5 @@
+main.adb:4:04: info: predicate check proved on default value (CVC4: 1 VC)
+main.adb:6:04: info: precondition proved (CVC4: 1 VC)
+test.adb:7:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+test.ads:4:09: medium: predicate check might fail on default value
+test.ads:6:26: info: initialization of "Context" proved
