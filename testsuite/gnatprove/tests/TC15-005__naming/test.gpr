@@ -1,0 +1,8 @@
+project Test is
+   package Naming is
+      for Body ("prog") use "Renamed.adb";
+   end Naming;
+   package Prove is
+      for Proof_Switches ("Renamed.adb") use ("--level=2");
+   end Prove;
+end Test;
