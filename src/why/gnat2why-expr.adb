@@ -11091,15 +11091,9 @@ package body Gnat2Why.Expr is
             Assocs   : constant List_Id := Component_Associations (Expr);
 
             Association : Node_Id;
-            Assocs_Len  : Nat :=
-              (if Present (Assocs)
-               then List_Length (Assocs)
-               else 0);
+            Assocs_Len  : Nat := List_Length (Assocs);
             Expression  : Node_Id;
-            Exprs_Len   : constant Nat :=
-              (if Present (Exprs)
-               then List_Length (Exprs)
-               else 0);
+            Exprs_Len   : constant Nat := List_Length (Exprs);
             Else_Part   : W_Expr_Id := +True_Pred;
 
          --  Start of processing for Transform_Rec_Aggregate
