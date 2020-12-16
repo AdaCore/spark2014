@@ -1222,8 +1222,9 @@ package body Configuration is
          declare
             Sswitches : constant String :=
               Register_New_Attribute ("Proof_Switches", "Prove",
-                                      Is_List => True,
-                                      Indexed => True);
+                                      Is_List              => True,
+                                      Indexed              => True,
+                                      Case_Sensitive_Index => True);
          begin
             if Sswitches /= "" then
                Abort_Msg (Sswitches, With_Help => False);
