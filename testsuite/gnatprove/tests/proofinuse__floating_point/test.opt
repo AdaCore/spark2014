@@ -1,3 +1,2 @@
 assertions SKIP too slow for build with assertions
-NT XFAIL waiting for TC14-010
 ALL RLIMIT 1500
