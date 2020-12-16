@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2020, AdaCore                     --
+--                     Copyright (C) 2010-2021, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1213,8 +1213,9 @@ package body Configuration is
          declare
             Sswitches : constant String :=
               Register_New_Attribute ("Proof_Switches", "Prove",
-                                      Is_List => True,
-                                      Indexed => True);
+                                      Is_List              => True,
+                                      Indexed              => True,
+                                      Case_Sensitive_Index => True);
          begin
             if Sswitches /= "" then
                Abort_Msg (Sswitches, With_Help => False);
