@@ -3,3 +3,4 @@ prove_all:
   codepeer: True
   opt: ["-XMODE=Analyze"]
 large: True
+timeout: 1500

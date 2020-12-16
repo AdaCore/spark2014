@@ -1,5 +1,4 @@
 NT SKIP too slow on windows (PA06-025)
 assertions SKIP too slow for run assertions
-ALL RLIMIT 1500
 ALL SKIP R308-053 cvc4 extremely slow
 community SKIP codepeer not supported in community

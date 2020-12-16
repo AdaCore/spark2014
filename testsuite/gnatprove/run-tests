@@ -67,6 +67,11 @@ class ProofTestDriver(AdaCoreLegacyTestDriver):
         self.test_control.opt_results["CMD"] = script_file
         return super().get_script_command_line()
 
+    def set_up(self) -> None:
+        super().set_up()
+        if 'timeout' in self.test_env:
+            self.timeout = int(self.test_env['timeout'])
+
 
 class SPARKTestFinder(TestFinder):
     """Class to find the tests. The [probe] method determines if a folder is a

@@ -6,3 +6,4 @@ prove_all:
   counterexample: False
   steps: 400
 large: True
+timeout: 1500

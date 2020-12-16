@@ -5,3 +5,4 @@ prove_all:
   opt: ["--no-axiom-guard"]
   counterexample: False
 large: True
+timeout: 1500
