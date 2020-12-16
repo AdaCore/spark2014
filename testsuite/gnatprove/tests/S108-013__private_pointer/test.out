@@ -1,4 +1,3 @@
-private_pointer.ads:5:26: warning: "X" is not modified, could be of access constant type
 private_pointer.ads:24:05: info: initialization of "X_1" proved
 private_pointer.ads:25:20: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:26:20: info: assertion proved (CVC4: 1 VC)

@@ -32,10 +32,8 @@ n04.adb:33:07: error: "MyStruct" is not allowed in SPARK (due to component of an
 n04.adb:33:07: error: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:37:07: error: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 n04.adb:37:07: error: violation of pragma SPARK_Mode at test.adc:3
-n05.adb:31:27: warning: "X" is not modified, could be of access constant type
 n05.adb:37:22: error: object was declared as not writable at line 31
 n05.adb:37:22: error: part of dereference from "X" is not writable
-n06.adb:33:27: warning: "X" is not modified, could be of access constant type
 n06.adb:39:22: error: object was declared as not writable at line 33
 n06.adb:39:22: error: part of dereference from "X" is not writable
 n07.adb:10:16: error: anonymous access type for result for non-traversal functions is not allowed in SPARK
@@ -50,24 +48,23 @@ n08.adb:21:18: error: object was declared as not writable at line 16
 n08.adb:21:18: error: part of dereference from "A" is not writable
 n08.adb:23:22: error: object was declared as not writable at line 16
 n08.adb:23:22: error: part of dereference from "A" is not writable
-n09.adb:11:30: warning: "A" is not modified, could be of access constant type
 n09.adb:16:19: error: dereference from "A" is not writable
 n09.adb:16:19: error: object was declared as not writable at line 11
 n09b.adb:11:17: error: object was moved at line 20
 n09b.adb:11:17: error: return from "Copy_Pointer" with moved value for "A"
-n09b.adb:11:31: warning: "A" is not modified, could be of access constant type
+n09b.adb:11:31: warning: "A" is not modified, parameter type could be rewritten as 'access constant AI'
 n09b.adb:11:43: info: initialization of "B" proved
 n09b.adb:13:11: info: data dependencies proved
 n09b.adb:14:11: info: flow dependencies proved
 n09c.adb:11:17: error: object was moved at line 18
 n09c.adb:11:17: error: return from "Copy_Pointer" with moved value for "A"
-n09c.adb:11:31: warning: "A" is not modified, could be of access constant type
+n09c.adb:11:31: warning: "A" is not modified, parameter type could be rewritten as 'access constant AI'
 n09c.adb:11:44: info: initialization of "B" proved
 n09c.adb:12:09: info: data dependencies proved
 n09c.adb:13:09: info: flow dependencies proved
 n10.adb:12:17: error: object was moved at line 19
 n10.adb:12:17: error: return from "Modify" with moved value for "A"
-n10.adb:12:25: warning: "A" is not modified, could be of access constant type
+n10.adb:12:25: warning: "A" is not modified, parameter type could be rewritten as 'access constant Integer'
 n10.adb:14:09: info: data dependencies proved
 n10.adb:19:10: warning: initialization of "B" has no effect
 n10.adb:20:10: warning: initialization of "T1" has no effect
@@ -101,7 +98,7 @@ n15.adb:24:25: error: "T2" is not allowed in SPARK (due to borrow or observe of 
 n15.adb:24:25: error: violation of pragma SPARK_Mode at test.adc:3
 n16.adb:13:17: error: object was moved at line 19
 n16.adb:13:17: error: return from "Modify" with moved value for "T0"
-n16.adb:13:25: warning: "T0" is not modified, could be of access constant type
+n16.adb:13:25: warning: "T0" is not modified, parameter type could be rewritten as 'access constant AI'
 n16.adb:15:09: info: data dependencies proved
 n16.adb:23:10: warning: initialization of "P" has no effect
 n16.adb:23:23: error: dereference from "T0" is not readable
@@ -132,7 +129,7 @@ pointers.ads:15:31: warning: "Y" is not modified, could be INPUT
 pointers.ads:18:06: info: data dependencies proved
 pointers.ads:24:14: error: object was moved at pointers.adb:34
 pointers.ads:24:14: error: return from "Bad_Swap2" with moved value for "Y"
-pointers.ads:24:28: warning: "Y" is not modified, could be of access constant type
+pointers.ads:24:28: warning: "Y" is not modified, parameter type could be rewritten as 'access constant Int_Ptr'
 pointers.ads:30:14: error: object was moved at pointers.adb:46
 pointers.ads:30:14: error: return from "Bad_Swap2" with moved value for "YY"
 pointers.ads:40:14: error: object was moved at pointers.adb:60
@@ -147,10 +144,10 @@ pointers.ads:47:32: warning: "CY" is not modified, could be INPUT
 pointers.ads:50:06: info: data dependencies proved
 pointers.ads:56:14: error: object was moved at pointers.adb:86
 pointers.ads:56:14: error: return from "Bad_Swap4" with moved value for "Y"
-pointers.ads:56:28: warning: "Y" is not modified, could be of access constant type
+pointers.ads:56:28: warning: "Y" is not modified, parameter type could be rewritten as 'access constant Int_Cst_Ptr'
 pointers.ads:62:14: error: object was moved at pointers.adb:98
 pointers.ads:62:14: error: return from "Bad_Swap4" with moved value for "CYY"
-pointers.ads:72:28: warning: "Y" is not modified, could be of access constant type
+pointers.ads:72:28: warning: "Y" is not modified, parameter type could be rewritten as 'access constant Int_Ptr'
 pointers.ads:74:14: error: object was moved at pointers.adb:116
 pointers.ads:74:14: error: return from "Swap5" with moved value for "X"
 pointers.ads:81:14: error: object was moved at pointers.adb:128
@@ -209,7 +206,7 @@ spark03b.ads:17:63: info: initialization of "Z" proved
 spark03b.ads:17:65: info: initialization of "W" proved
 spark03c.ads:7:13: error: object was moved at spark03c.adb:6
 spark03c.ads:7:13: error: return from "Insert" with moved value for "An_Item"
-spark03c.ads:7:21: warning: "An_Item" is not modified, could be of access constant type
+spark03c.ads:7:21: warning: "An_Item" is not modified, parameter type could be rewritten as 'access constant Integer'
 spark03c.ads:8:21: info: initialization of "An_Item" proved
 spark03c.ads:19:24: info: data dependencies proved
 spark03c.ads:19:63: info: initialization of "Z" proved

@@ -6,11 +6,18 @@ a.adb:16:09: error: dereference from "X" is not writable
 a.adb:16:09: error: object was declared as not writable at line 4
 a.adb:17:20: error: "X" is not writable
 a.adb:17:20: error: object was declared as not writable at line 4
-a.adb:22:17: warning: "X" is not modified, could be of access constant type
+a.adb:17:20: warning: "X" is set by "Q" but not used after the call
 a.adb:23:07: info: initialization of "Y" proved
-a.ads:8:16: warning: "X" is not modified, could be of access constant type
-a.ads:16:17: warning: "X" is not modified, could be of access constant type
-a.ads:17:17: info: initialization of "Result" proved
-a.ads:23:17: info: initialization of "Result" proved
-a.ads:27:17: info: initialization of "Result" proved
+a.adb:88:07: info: initialization of "Y" proved
+a.adb:99:07: info: initialization of "Y" proved
+a.adb:112:11: info: flow dependencies proved
+a.adb:124:11: info: flow dependencies proved
+a.ads:36:17: warning: "X" is not modified, parameter type could be rewritten as 'access constant Integer'
+a.ads:37:17: info: initialization of "Result" proved
+a.ads:43:17: info: initialization of "Result" proved
+a.ads:49:17: info: initialization of "Result" proved
+a.ads:54:24: info: initialization of "Result" proved
+a.ads:58:22: info: initialization of "Result" proved
+a.ads:61:23: warning: "Z" is not modified, could be IN
+a.ads:62:23: info: initialization of "Result" proved
 gnatprove: error during flow analysis and proof
