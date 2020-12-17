@@ -36,6 +36,7 @@ with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 with GNAT.Strings;              use GNAT.Strings;
+with Interfaces.C_Streams;
 with Platform;                  use Platform;
 with SPARK2014VSN;              use SPARK2014VSN;
 with System.Multiprocessors;
@@ -1674,16 +1675,30 @@ package body Configuration is
       procedure Set_Output_Mode is
       begin
          if CL_Switches.Output.all = "" then
-            Output := GPO_Pretty;
+            Output := GPO_Pretty_Simple;
          elsif CL_Switches.Output.all = "brief" then
             Output := GPO_Brief;
          elsif CL_Switches.Output.all = "oneline" then
             Output := GPO_Oneline;
          elsif CL_Switches.Output.all = "pretty" then
-            Output := GPO_Pretty;
+            Output := GPO_Pretty_Simple;
          else
             Abort_Msg ("error: wrong argument for --output",
                        With_Help => False);
+         end if;
+
+         --  When outputting to a terminal, switch automatically to colored
+         --  output when pretty output is requested.
+
+         if Output = GPO_Pretty_Simple then
+            declare
+               use Interfaces.C_Streams;
+               TTY_Output : constant Boolean := isatty (fileno (stdout)) /= 0;
+            begin
+               if TTY_Output then
+                  Output := GPO_Pretty_Color;
+               end if;
+            end;
          end if;
       end Set_Output_Mode;
 

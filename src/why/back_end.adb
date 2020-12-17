@@ -30,6 +30,7 @@ with Adabkend;
 with Debug; use Debug;
 with Elists;
 with Errout;
+with Erroutc;
 with Gnat2Why.Driver;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;
@@ -167,6 +168,20 @@ package body Back_End is
          Gnat2Why_Args.Load (Args_File, Source_File);
       end;
 
+      --  For the pretty output mode, we set -gnatdF to force alternative
+      --  display of messages in Errout.
+
+      if Gnat2Why_Args.Output_Mode in Gnat2Why_Opts.GPO_Pretty then
+         Debug_Flag_FF := True;
+      end if;
+
+      --  For the colored output mode, we set the corresponding flag in
+      --  Erroutc.
+
+      if Gnat2Why_Args.Output_Mode = Gnat2Why_Opts.GPO_Pretty_Color then
+         Erroutc.Use_SGR_Control := True;
+      end if;
+
       --  gnat2why is run in two main modes:
       --    Global_Gen_Mode = True for generating ALI files with effects.
       --    Global_Gen_Mode = False for flow analysis and proof.
@@ -188,13 +203,6 @@ package body Back_End is
          --  generation should be disabled.
 
          Opt.Disable_ALI_File := True;
-
-         --  For the pretty output mode, we set -gnatdF to force alternative
-         --  display of messages in Errout.
-
-         if Gnat2Why_Args.Output_Mode = Gnat2Why_Opts.GPO_Pretty then
-            Debug_Flag_FF := True;
-         end if;
       end if;
 
       Debug_Flag_M := Gnat2Why_Args.No_Inlining;

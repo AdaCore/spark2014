@@ -90,6 +90,8 @@ package body Gnat2Why_Opts.Reading is
    begin
       Global_Gen_Mode         := Get_Opt (V, Global_Gen_Mode_Name);
       Check_Mode              := Get_Opt (V, Check_Mode_Name);
+      Output_Mode             :=
+        Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));
 
       Debug_Mode              := Get_Opt (V, Debug_Mode_Name);
       Flow_Advanced_Debug     := Get_Opt (V, Flow_Advanced_Debug_Name);
@@ -104,9 +106,6 @@ package body Gnat2Why_Opts.Reading is
          Limit_Subp   := Get_Opt (V, Limit_Subp_Name);
          Limit_Line   := Get_Opt (V, Limit_Line_Name);
          Limit_Region := Get_Opt (V, Limit_Region_Name);
-
-         Output_Mode :=
-           Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));
 
          Report_Mode :=
            Report_Mode_Type'Value (Get (Get (V, Report_Mode_Name)));
