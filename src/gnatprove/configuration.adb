@@ -1060,6 +1060,8 @@ package body Configuration is
         Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
       Alt_Ergo : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("alt-ergo");
+      Colibri : String_Access :=
+        GNAT.OS_Lib.Locate_Exec_On_Path ("colibri");
       CVC4 : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("cvc4");
       Z3 : String_Access :=
@@ -1081,6 +1083,13 @@ package body Configuration is
                            Arguments => Dash_Version,
                            Status    => Status);
          Free (Alt_Ergo);
+      end if;
+      if Colibri /= null then
+         Ada.Text_IO.Put (Colibri.all & ": ");
+         Call_With_Status (Colibri.all,
+                           Arguments => Dash_Dash_Version,
+                           Status    => Status);
+         Free (Colibri);
       end if;
       if CVC4 /= null then
          Ada.Text_IO.Put (CVC4.all & ": ");
