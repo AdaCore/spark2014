@@ -15,25 +15,25 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="1"><result status="valid" steps="33851"/></proof>
+  <proof prover="1"><result status="valid" steps="30990"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="889"/></proof>
+  <proof prover="0"><result status="valid" steps="890"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="617"/></proof>
+  <proof prover="0"><result status="valid" steps="618"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
-  <proof prover="0"><result status="valid" steps="617"/></proof>
+  <proof prover="0"><result status="valid" steps="618"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="1104"/></proof>
+  <proof prover="0"><result status="valid" steps="1106"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
@@ -46,15 +46,15 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="641"/></proof>
+  <proof prover="0"><result status="valid" steps="643"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
-  <proof prover="0"><result status="valid" steps="674"/></proof>
+  <proof prover="0"><result status="valid" steps="675"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="0"><result status="valid" steps="1534"/></proof>
+  <proof prover="0"><result status="valid" steps="1535"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>

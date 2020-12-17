@@ -240,7 +240,7 @@
   <proof prover="1"><result status="valid" steps="389"/></proof>
   </goal>
   <goal name="def&#39;vc.74" proved="true">
-  <proof prover="0"><result status="valid" steps="4030"/></proof>
+  <proof prover="0"><result status="valid" steps="3591"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.75" proved="true">
