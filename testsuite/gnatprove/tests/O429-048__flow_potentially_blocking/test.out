@@ -34,7 +34,6 @@ p-po_stub_2.adb:10:07: high: potentially blocking delay statement in protected o
 p-po_stub_2.adb:10:07: warning: potentially blocking operation in protected operation
 p-po_stub_3.adb:5:07: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Stub_Entry"
 p-po_stub_3.adb:10:07: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Stub_Proc"
-p.adb:10:04: medium: use of remote abstract state "Real_Time.Clock_Time" during elaboration of "P" - Elaborate pragma required for "Real_Time" (SPARK RM 7.7.1(4))
 p.adb:55:41: warning: statement has no effect
 p.adb:69:10: high: potentially blocking delay statement in protected operation "Directly_Blocking_Type_Entry"
 p.adb:69:10: warning: potentially blocking operation in protected operation

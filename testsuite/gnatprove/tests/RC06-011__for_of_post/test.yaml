@@ -1,0 +1,2 @@
+prove_all:
+  prover: ["z3"]

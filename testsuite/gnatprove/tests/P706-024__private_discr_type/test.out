@@ -6,6 +6,4 @@ p.ads:5:09: "Device" is not allowed in SPARK (due to access discriminant)
 p.ads:5:09: violation of pragma SPARK_Mode at test.adc:1
 p.ads:12:09: "Device" is not allowed in SPARK (due to access discriminant)
 p.ads:12:09: violation of pragma SPARK_Mode at test.adc:1
-p.ads:14:07: subtype of "Device" is not allowed in SPARK (due to attribute "Access" on object)
-p.ads:14:07: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

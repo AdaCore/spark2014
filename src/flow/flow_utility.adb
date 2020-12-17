@@ -1813,6 +1813,11 @@ package body Flow_Utility is
       if Is_Derived_Type (Subprogram) then
          E := Root_Type (Subprogram);
 
+         if Is_Private_Type (E) then
+            E := Full_View (E);
+            pragma Assert (Present (E));
+         end if;
+
          pragma Assert (Ekind (E) = E_Task_Type
                           and then not Is_Derived_Type (E)
                           and then Entity_In_SPARK (E));
@@ -3895,6 +3900,11 @@ package body Flow_Utility is
                        then Iterator_Specification (N)
                        else Loop_Parameter_Specification (N));
 
+                  Filter : constant Node_Id :=
+                    Iterator_Filter
+                      (if Present (Iterator_Specification (N))
+                       then Iterator_Specification (N)
+                       else Loop_Parameter_Specification (N));
                begin
                   if Present (Iterator_Specification (N)) then
                      Variables.Union
@@ -3913,9 +3923,25 @@ package body Flow_Utility is
                   end if;
 
                   --  Filter the quantified expression parameter from variables
+                  --  referenced in the iterator filter, if present, because
+                  --  the parameter is only visible within that predicate
+                  --  (similar to what we do for type predicate expressions).
+
+                  if Present (Filter) then
+                     for V of Recurse (Filter) loop
+                        if V.Kind in Direct_Mapping | Record_Field
+                          and then V.Node = E
+                        then
+                           null;
+                        else
+                           Variables.Include (V);
+                        end if;
+                     end loop;
+                  end if;
+
+                  --  Filter the quantified expression parameter from variables
                   --  referenced in the predicate, because the parameter is
-                  --  only visible within that predicate (similar to what we
-                  --  do for type predicate expressions).
+                  --  only visible within that predicate.
 
                   for V of Recurse (Condition (N)) loop
                      if V.Kind in Direct_Mapping | Record_Field

@@ -53,14 +53,6 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2) and O(N) respectively.
 
-   procedure Find_Non_Elaborated_State_Abstractions
-     (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind = Kind_Package;
-   --  Find uses of state abstractions that belong to other non-elaborated
-   --  packages.
-   --
-   --  Complexity is O(N)
-
    procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs);
    --  Find all ineffective statements.
    --
@@ -219,13 +211,6 @@ package Flow.Analysis is
    with Pre => FA.Kind = Kind_Subprogram;
    --  Check that preconditions of protected operations only reference global
    --  variables that have Constant_After_Elaboration set.
-
-   procedure Check_Elaborate_Body (FA : in out Flow_Analysis_Graphs)
-   with Pre => Entity_Body_In_SPARK (FA.Spec_Entity)
-               and then Is_Compilation_Unit (FA.Spec_Entity);
-   --  Checks that the compilation unit package has Elaborate_Body applied if
-   --  at least one variable declared in the specification is modified in the
-   --  package elaboration.
 
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind in Kind_Subprogram | Kind_Package;

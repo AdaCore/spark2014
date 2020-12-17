@@ -1,0 +1,5 @@
+prove_all:
+  no_fail: True
+  prover: ["altergo"]
+  opt: ["--proof-warnings"]
+  steps: 5000

@@ -1,3 +1,3 @@
 lemma_mul_less_by_one.adb:1:11: warning: subprogram "Lemma_Mul_By_Less_Than_One" has no effect
-lemma_mul_less_by_one.adb:6:11: medium: postcondition might fail, cannot prove Val1 * Val2 <= Val2 (e.g. when Val1 = 0.0 and Val2 = 0.0)
-lemma_mul_less_by_one.adb:6:16: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+lemma_mul_less_by_one.adb:6:11: info: postcondition proved (colibri: 1 VC)
+lemma_mul_less_by_one.adb:6:16: info: float overflow check proved (colibri: 1 VC)

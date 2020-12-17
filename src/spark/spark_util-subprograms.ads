@@ -659,6 +659,10 @@ package SPARK_Util.Subprograms is
    --  @param E entry
    --  @return the entry body entity for the given entry
 
+   function Is_Protected_Operation (E : Entity_Id) return Boolean;
+   --  Given an entity, determines whether E is a protected entry
+   --  or protected subprogram.
+
    ---------------------------------
    -- Queries related to packages --
    ---------------------------------

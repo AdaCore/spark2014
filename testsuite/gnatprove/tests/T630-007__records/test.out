@@ -1,10 +1,13 @@
 mutable_discrs.adb:7:25: info: range check proved (CVC4: 1 VC)
 mutable_discrs.adb:14:04: info: range check proved (CVC4: 2 VC)
+mutable_discrs.adb:21:04: warning: initialization of "Y" has no effect
 mutable_discrs.adb:21:13: info: discriminant check proved (CVC4: 1 VC)
 mutable_discrs.adb:22:04: warning: initialization of "A" has no effect
 mutable_discrs.adb:26:18: info: discriminant check proved (CVC4: 1 VC)
 mutable_discrs.adb:27:19: info: assertion proved (CVC4: 1 VC)
-mutable_discrs.adb:29:19: info: assertion proved (CVC4: 1 VC)
+mutable_discrs.adb:28:04: warning: statement has no effect
+mutable_discrs.adb:28:20: warning: "Y" is set by "Do_Something_2" but not used after the call
+mutable_discrs.adb:29:19: info: assertion proved (Trivial)
 mutable_discrs.adb:30:04: warning: statement has no effect
 mutable_discrs.adb:30:20: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 mutable_discrs.adb:30:20: warning: "A" is set by "Do_Something_3" but not used after the call

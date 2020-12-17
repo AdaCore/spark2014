@@ -1,7 +1,7 @@
 init_wrapper_simple.adb:1:11: warning: subprogram "Init_Wrapper_Simple" has no effect
 init_wrapper_simple.adb:19:18: info: range check proved (CVC4: 1 VC)
 init_wrapper_simple.adb:25:15: info: range check proved (CVC4: 1 VC)
-init_wrapper_simple.adb:29:22: medium: assertion might fail
+init_wrapper_simple.adb:29:22: medium: assertion might fail (e.g. when X = (G => (D => 5, others => ?), others => ?))
 init_wrapper_simple.adb:30:22: medium: assertion might fail, cannot prove Y'Initialized
 init_wrapper_simple.adb:31:22: medium: assertion might fail
 init_wrapper_simple.adb:35:22: info: assertion proved (CVC4: 2 VC; Trivial: 5 VC)

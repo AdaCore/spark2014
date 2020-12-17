@@ -106,15 +106,15 @@ corresponding part of the Ada RM to be raised.
 Fixed-Length String Handling (A.4.3)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Preconditions and postconditions are added to
-subprograms. Preconditions on functions prevent all exceptions
-specified in the corresponding part of the Ada RM to be raised.
-
-All procedures may be called but procedures Move, Replace_Slice,
-Insert, Overwrite, Head, Tail have incomplete contracts and may raise
-an exception if they are called with inconsistent actual
-parameters. Each call of these procedures should be preceded with a
-pragma Assert to check that the actual parameters are consistent.
+Preconditions and postconditions are added to subprograms.
+Preconditions on subprograms prevent all exceptions specified in the
+corresponding part of the Ada RM to be raised, except for procedures
+Move, Replace_Slice, Insert, Overwrite, Head, and Tail. These have
+incomplete contracts and may raise an exception if they are called
+with inconsistent actual parameters. Each call of these procedures
+should be preceded with a pragma Assert to check that the actual
+parameters are consistent.  Postconditions on subprograms, when
+present, fully detail their effect.
 
 Bounded-Length String Handling (A.4.4)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

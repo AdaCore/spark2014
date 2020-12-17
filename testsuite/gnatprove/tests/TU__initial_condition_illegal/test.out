@@ -8,7 +8,6 @@ initial_condition_illegal_3.adb:6:11:   variable "Var" assigned at line 6
 initial_condition_illegal_3.adb:6:11: add pragma "Elaborate_Body" to spec "Initial_Condition_Illegal_3" to ensure full initialization
 initial_condition_illegal_3.adb:6:11: variable "Var" modified by elaboration code in package body
 gnatprove: error during generation of Global contracts
-initial_condition_illegal_4.adb:6:08: high: modification of "Var" in elaboration requires Elaborate_Body on package "Initial_Condition_Illegal_4" (SPARK RM 7.7.1(5))
 initial_condition_illegal_4.ads:8:08: info: initial condition proved (CVC4: 1 VC)
 initial_condition_illegal_4.ads:10:04: info: initialization of "Var" proved
 initial_condition_illegal_4.ads:11:14: warning: subprogram "P1" has no effect

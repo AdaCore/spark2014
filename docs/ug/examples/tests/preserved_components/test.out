@@ -1,4 +1,5 @@
 preserved_components.adb:7:04: info: initialization of "M" proved
+preserved_components.adb:11:07: info: range check proved
 preserved_components.adb:13:10: info: assertion proved
 preserved_components.adb:21:07: info: range check proved
 preserved_components.adb:21:31: info: length check proved

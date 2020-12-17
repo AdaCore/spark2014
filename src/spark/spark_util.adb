@@ -291,23 +291,6 @@ package body SPARK_Util is
       or else Ekind (Entity (N)) not in
         E_Variable | E_Out_Parameter | E_In_Out_Parameter);
 
-   --------------------
-   -- Body_File_Name --
-   --------------------
-
-   function Body_File_Name (N : Node_Id) return String is
-      CU     : Node_Id := Enclosing_Lib_Unit_Node (N);
-      Switch : constant Boolean :=
-        Nkind (Unit (CU)) not in N_Package_Body | N_Subprogram_Body;
-
-   begin
-      if Switch and then Present (Library_Unit (CU)) then
-         CU := Library_Unit (CU);
-      end if;
-
-      return File_Name (Sloc (CU));
-   end Body_File_Name;
-
    ----------------------
    -- Canonical_Entity --
    ----------------------
@@ -1208,39 +1191,6 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Expr_Has_Relaxed_Init;
-
-   ------------------------------
-   -- File_Name_Without_Suffix --
-   ------------------------------
-
-   function File_Name_Without_Suffix (File_Name : String) return String is
-      Name_Index : Natural := File_Name'Last;
-
-   begin
-      pragma Assert (File_Name'Length > 0);
-
-      --  We loop in reverse to ensure that file names that follow nonstandard
-      --  naming conventions that include additional dots are handled properly,
-      --  preserving dots in front of the main file suffix (for example,
-      --  main.2.ada => main.2).
-
-      while Name_Index >= File_Name'First
-        and then File_Name (Name_Index) /= '.'
-      loop
-         Name_Index := Name_Index - 1;
-      end loop;
-
-      --  Return the part of the file name up to but not including the last dot
-      --  in the name, or return the whole name as is if no dot character was
-      --  found.
-
-      if Name_Index >= File_Name'First then
-         return File_Name (File_Name'First .. Name_Index - 1);
-
-      else
-         return File_Name;
-      end if;
-   end File_Name_Without_Suffix;
 
    --------------------------------
    -- First_Parent_With_Property --
@@ -2757,10 +2707,8 @@ package body SPARK_Util is
    ---------------------------
 
    function Is_Writable_Parameter (E : Entity_Id) return Boolean is
-      Typ : constant Entity_Id := Etype (E);
    begin
-      return Is_Access_Object_Type (Typ)
-        and then not Is_Access_Constant (Typ);
+      return Is_Access_Variable (Base_Type (Etype (E)));
    end Is_Writable_Parameter;
 
    --------------------------------
@@ -2993,6 +2941,38 @@ package body SPARK_Util is
       Result := True;
       Explanation := Null_Unbounded_String;
    end Objects_Have_Compatible_Alignments;
+
+   ------------------
+   -- Package_Body --
+   ------------------
+
+   function Package_Body (E : Entity_Id) return Node_Id is
+      N : Node_Id;
+   begin
+      if Ekind (E) = E_Package_Body then
+         N := Parent (E);
+
+         if Nkind (N) = N_Defining_Program_Unit_Name then
+            N := Parent (N);
+         end if;
+
+      else
+         N := Package_Spec (E);
+
+         if Present (Corresponding_Body (N)) then
+            N := Parent (Corresponding_Body (N));
+
+            if Nkind (N) = N_Defining_Program_Unit_Name then
+               N := Parent (N);
+            end if;
+         else
+            N := Empty;
+         end if;
+      end if;
+
+      return N;
+
+   end Package_Body;
 
    ----------------
    -- Real_Image --
@@ -3526,31 +3506,6 @@ package body SPARK_Util is
          end;
       end if;
    end Source_Name;
-
-   --------------------
-   -- Spec_File_Name --
-   --------------------
-
-   function Spec_File_Name (N : Node_Id) return String is
-      CU : Node_Id := Enclosing_Lib_Unit_Node (N);
-
-   begin
-      case Nkind (Unit (CU)) is
-         when N_Package_Body =>
-            CU := Library_Unit (CU);
-         when others =>
-            null;
-      end case;
-
-      return File_Name (Sloc (CU));
-   end Spec_File_Name;
-
-   -----------------------------------
-   -- Spec_File_Name_Without_Suffix --
-   -----------------------------------
-
-   function Spec_File_Name_Without_Suffix (N : Node_Id) return String is
-     (File_Name_Without_Suffix (Spec_File_Name (N)));
 
    --------------------
    -- String_Of_Node --

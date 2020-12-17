@@ -510,7 +510,7 @@ package body Gnat2Why.Tables is
 
             --  Init info for components
 
-            if Full_View_Not_In_SPARK (E) then
+            if Full_View_Not_In_SPARK (E) or else Is_Task_Type (E) then
                Needs_Private_Part := True;
             else
                Field := First_Component (E);

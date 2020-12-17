@@ -3,14 +3,47 @@
 MY_DIR=`dirname "$0"`
 cd "$MY_DIR"
 
-prefix=`type gnatmake 2>/dev/null | cut -d' ' -f3 | sed 's%/bin.*$%%'`
+prefix=`type gnatstudio 2>/dev/null | cut -d' ' -f3 | sed 's%/bin.*$%%'`
 if [ "$prefix" = "" -o "$prefix" = "found" ]; then
-  prefix="/opt/spark2014"
+  prefix="/opt/spark"
+fi
+
+do_install ()
+{
+    echo "
+    installing package..."
+    mkdir -p $prefix || exit 1
+    rm -rf "$prefix/share/spark" "$prefix/libexec/spark"
+    tar cf - bin include lib libexec share | (cd $prefix && tar xf -)
+    echo "    installation completed.
+    To use SPARK, users must put $prefix/bin
+    in front of their PATH environment variable.
+    The following commands enable you to do this:
+       PATH=$prefix/bin:\$PATH  # Bourne shell
+       setenv PATH $prefix/bin:\$PATH  # C shell
+    Thank you for installing SPARK!
+"
+}
+
+if [ $# -eq 1 ]; then
+  if [ "$1" = "--help" ]; then
+    cat << EOF
+   Usage: $0 [install_dir]
+
+   When no argument is specified, runs the SPARK installer
+   interactively, otherwise installs automatically under install_dir.
+EOF
+  else
+    echo "    installing SPARK under $1"
+    prefix="$1"
+    do_install
+  fi
+  exit 0
 fi
 
 clear
 printf "    This is the installation script for the AdaCore and Altran
-    SPARK 2014 verification toolset.
+    SPARK verification toolset.
     For information on commercial support please contact sales@adacore.com.
 
     To install this package, you need to specify a base directory.
@@ -35,18 +68,5 @@ read confirm
 case $confirm in
   [nN])
     echo "installation aborted."; exit 1 ;;
-  *)
-    echo "
-    installing package..."
-    mkdir -p $prefix
-    rm -rf "$prefix/share/spark" "$prefix/libexec/spark"
-    tar cf - bin include lib libexec share | (cd $prefix && tar xf -)
-    echo "    installation completed.
-    To use SPARK 2014, users must put $prefix/bin
-    in front of their PATH environment variable.
-    The following commands enable you to do this:
-       PATH=$prefix/bin:\$PATH  # Bourne shell
-       setenv PATH $prefix/bin:\$PATH  # C shell
-    Thank you for installing SPARK 2014!
-"
+  *) do_install
 esac

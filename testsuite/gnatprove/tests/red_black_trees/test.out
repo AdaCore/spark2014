@@ -1141,7 +1141,7 @@ red_black_trees.adb:70:13: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:74:13: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:74:13: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:81:13: info: loop invariant initialization proved (CVC4: 6 VC; Trivial: 1 VC)
-red_black_trees.adb:83:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Length (M (I).A) < Max - N
+red_black_trees.adb:81:13: info: loop invariant preservation proved (CVC4: 6 VC; Trivial: 1 VC)
 red_black_trees.adb:87:26: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:88:26: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:90:26: info: precondition proved (CVC4: 4 VC)

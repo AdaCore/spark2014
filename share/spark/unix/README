@@ -1,4 +1,4 @@
-This is the README file for the binary distribution of SPARK 2014.
+This is the README file for the binary distribution of SPARK.
 
 INSTALLING
 
@@ -7,7 +7,12 @@ directory. This script asks where you want this package to be installed.
 It prompts you for confirmation before proceeding with the actual installation.
 At any time before this confirmation, you can interrupt it by pressing Ctrl-C.
 
+You can also install this package in non interactive mode by specifying
+the installation dir as the parameter to doinstall:
+
+  ./doinstall /path/to/spark/install
+
 USE
 
-See the SPARK 2014 documentation for more information:
+See the SPARK documentation for more information:
 https://www.adacore.com/documentation#SPARK

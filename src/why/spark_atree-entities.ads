@@ -27,6 +27,7 @@ with Aspects;
 with Einfo;      use Einfo;
 with Sem_Aux;
 with SPARK_Util;
+with SPARK_Util.Subprograms;
 
 package SPARK_Atree.Entities is
 
@@ -198,9 +199,6 @@ package SPARK_Atree.Entities is
 
    function Is_Private_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Private_Type;
-
-   function Is_Protected_Operation (E : Entity_Id) return Boolean renames
-     Sem_Aux.Is_Protected_Operation;
 
    function Is_Protected_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Protected_Type;
@@ -574,7 +572,7 @@ package SPARK_Atree.Entities is
    function Enclosing_Type (Obj : Entity_Id) return Node_Id with
      Pre  => Ekind (Obj) in
        E_Discriminant | E_Component | E_Constant | E_In_Parameter
-     or else Sem_Aux.Is_Protected_Operation (Obj),
+     or else SPARK_Util.Subprograms.Is_Protected_Operation (Obj),
      Post => Is_Type (Enclosing_Type'Result)
        and then Ekind (Enclosing_Type'Result) in
        Record_Kind | Private_Kind | Concurrent_Kind;
@@ -691,9 +689,6 @@ package SPARK_Atree.Entities is
    -------------------
 
    function Is_Wrapper_Package (Pack : Entity_Id) return Boolean with
-     Pre => Ekind (Pack) = E_Package;
-
-   function Package_Body (Pack : Entity_Id) return Node_Id with
      Pre => Ekind (Pack) = E_Package;
 
    function Package_Body_Entity (Pack : Node_Id) return Entity_Id with

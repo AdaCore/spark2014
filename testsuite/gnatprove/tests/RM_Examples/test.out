@@ -114,7 +114,7 @@ outer-public_child.adb:7:15: warning: "Hidden_State" constituent of "A2" is set 
 outer-public_child.ads:6:17: info: initialization of "Hidden_State" constituent of "A2" proved
 outer-public_child.ads:7:14: info: data dependencies proved
 outer-public_child.ads:7:41: info: initialization of "Outer.A2" proved
-outer-public_child.ads:8:26: medium: missing self-dependency "Outer.A2 => Outer.A2"
+outer-public_child.ads:8:14: info: flow dependencies proved
 outer.adb:32:49: info: initialization of "Inner.B1" constituent of "Outer.A1" proved
 outer.adb:40:45: info: initialization of "Hidden_State" constituent of "A2" proved
 outer.adb:40:59: info: initialization of "State_In_Body" constituent of "A2" proved

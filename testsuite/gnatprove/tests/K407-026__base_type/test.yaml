@@ -1,0 +1,3 @@
+prove_all:
+  opt: ["--pedantic"]
+  codepeer: True

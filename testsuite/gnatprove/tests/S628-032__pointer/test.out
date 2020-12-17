@@ -1,3 +1,4 @@
+traverse_list.adb:14:46: medium: pointer dereference check might fail (e.g. when B.all = (Val => 3, Next => ?) and X = null) [possible fix: subprogram at line 13 should mention X in a precondition]
 traverse_list.adb:14:46: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at line 13 should mention X in a precondition]
 traverse_list.adb:14:55: medium: pointer dereference check might fail [possible fix: subprogram at line 13 should mention X in a precondition]
 traverse_list.adb:14:64: medium: pointer dereference check might fail [possible fix: subprogram at line 13 should mention X in a precondition]

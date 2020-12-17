@@ -19,7 +19,11 @@ invariants.adb:43:07: info: precondition proved
 invariants.adb:43:07: info: invariant check proved
 invariants.adb:51:07: info: precondition proved
 invariants.adb:51:07: info: invariant check proved
-invariants.ads:1:09: info: invariant check proved
+
+invariants.ads:1:09: medium: invariant check might fail
+    1 |package Invariants with SPARK_Mode is
+      |        ^ here
+  e.g. when The_Stack = (Content => (others => 0), Size => 5, Max => 1)
 invariants.ads:13:14: info: invariant check proved
 invariants.ads:14:13: info: invariant check proved
 invariants.ads:16:14: info: invariant check proved

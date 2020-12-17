@@ -74,6 +74,7 @@ project GNATprove is
       for Excluded_Source_Files use
         ("assumptions.ads",
          "assumptions.adb",
+         "print_table.adb",
          "configuration.adb");
 
       for Switches use ("-j0",

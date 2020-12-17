@@ -7,7 +7,6 @@ my_test.adb:13:26: info: precondition proved (CVC4: 1 VC)
 my_test.adb:17:10: info: discriminant check proved (CVC4: 1 VC)
 my_test.adb:17:10: info: precondition proved (CVC4: 1 VC)
 my_test.adb:18:19: info: assertion proved (Z3: 1 VC)
-my_test.adb:18:54: info: index check proved (CVC4: 2 VC)
 my_test.adb:20:10: medium: discriminant check might fail
 my_test.adb:22:19: medium: assertion might fail, cannot prove T1 = T3
 simple_unc_arrays.adb:10:07: medium: "C.V" might not be initialized

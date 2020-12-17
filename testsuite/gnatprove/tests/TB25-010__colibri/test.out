@@ -1,0 +1,6 @@
+lemma.ads:11:08: info: data dependencies proved, in instantiation at inst.adb:3
+lemma.ads:19:16: info: postcondition proved (colibri: 1 VC), in instantiation at inst.adb:3
+lemma.ads:19:21: info: division check proved (colibri: 1 VC), in instantiation at inst.adb:3
+lemma.ads:19:21: info: float overflow check proved (colibri: 1 VC), in instantiation at inst.adb:3
+lemma.ads:19:36: info: division check proved (colibri: 1 VC), in instantiation at inst.adb:3
+lemma.ads:19:36: info: float overflow check proved (colibri: 1 VC), in instantiation at inst.adb:3

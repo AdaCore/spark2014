@@ -1,0 +1,14 @@
+test_move.adb:5:13: object was moved at line 7
+test_move.adb:5:13: return from "Create" with moved value for "Ptr"
+test_move.adb:9:13: object was moved at line 10
+test_move.adb:9:13: return from "Create_2" with moved value for "Ptr"
+test_move.adb:14:13: object was moved at line 15
+test_move.adb:14:13: return from "Create_3" with moved value for "Ptr"
+test_move.adb:15:07: warning: initialization of "C" has no effect
+test_move.adb:19:13: object was moved at line 22
+test_move.adb:19:13: return from "Create4" with moved value for "Ptr"
+test_move.adb:21:14: info: initialization of "R" proved
+test_move.adb:25:13: object was moved at line 26
+test_move.adb:25:13: return from "Create_5" with moved value for "Ptr"
+test_move.adb:28:14: info: initialization of "R" proved
+gnatprove: error during flow analysis and proof

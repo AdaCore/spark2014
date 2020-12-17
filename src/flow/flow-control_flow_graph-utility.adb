@@ -671,8 +671,6 @@ package body Flow.Control_Flow_Graph.Utility is
                A.Is_Initialized := True;
             end if;
 
-            A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
-
             A.Variables_Defined := Flow_Id_Sets.To_Set (Change_Variant
                                                           (F_Ent, Normal_Use));
 
@@ -680,8 +678,6 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Is_Export :=
               A.Mode in Exported_Global_Modes
               and then not Is_Bound (F_Ent);
-
-            A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
 
             A.Variables_Used := Flow_Id_Sets.To_Set (Change_Variant
                                                        (F_Ent, Normal_Use));

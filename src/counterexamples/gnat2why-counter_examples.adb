@@ -270,7 +270,7 @@ package body Gnat2Why.Counter_Examples is
       L : S_String_List.List;
    begin
       for E of Elems loop
-         L.Append_One (Pref & E);
+         L.Append (Pref & E);
       end loop;
       return L;
    end Prefix_Elements;

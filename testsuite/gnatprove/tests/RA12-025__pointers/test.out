@@ -1,7 +1,5 @@
-pointers.adb:13:14: info: non-aliasing of formal parameters "X" and "Y" proved
-pointers.adb:13:14: object was declared as not writable at pointers.ads:16
-pointers.adb:13:14: part of "R" is not writable
-pointers.adb:13:19: object was declared as not writable at pointers.ads:16
-pointers.adb:13:19: part of "R" is not writable
-pointers.ads:16:14: warning: subprogram "Swap" has no effect
+pointers.adb:13:13: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+pointers.adb:13:13: violation of pragma SPARK_Mode at line 1
+pointers.adb:13:18: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+pointers.adb:13:18: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

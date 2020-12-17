@@ -305,8 +305,7 @@ package body SPARK_Definition is
         SPARK_Aux_Pragma (Defining_Entity (Package_Body (E)));
    begin
       return
-        (if Present (Prag)
-         then Get_SPARK_Mode_From_Annotation (Prag) /= Off);
+        (if Present (Prag) then Get_SPARK_Mode_From_Annotation (Prag) /= Off);
    end Body_Statements_In_SPARK;
 
    --------------------------
@@ -315,11 +314,9 @@ package body SPARK_Definition is
 
    function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean is
       Prag : constant Node_Id := SPARK_Pragma (E);
-
    begin
       return
-        Present (Prag) and then
-        Get_SPARK_Mode_From_Annotation (Prag) = Opt.On;
+        Present (Prag) and then Get_SPARK_Mode_From_Annotation (Prag) = Opt.On;
    end Entity_Spec_In_SPARK;
 
    ---------------------------
@@ -3262,7 +3259,7 @@ package body SPARK_Definition is
                      Right_Opnd (N));
                end if;
 
-            when N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem =>
+            when N_Multiplying_Operator =>
                if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
@@ -3392,22 +3389,39 @@ package body SPARK_Definition is
          end if;
 
          --  Parts of constant objects should not appear as out or in out
-         --  parameters in procedure calls.
+         --  parameters in procedure calls, nor as an in parameter of a
+         --  access-to-variable type.
 
-         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter then
+         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+           or else
+             (Ekind (E) /= E_Function
+              and then not Is_Function_Type (E)
+              and then Ekind (Formal) = E_In_Parameter
+              and then Is_Access_Type (Etype (Formal))
+              and then Ekind (Directly_Designated_Type (Etype (Formal))) /=
+                E_Subprogram_Type
+              and then not Is_Access_Constant (Etype (Formal)))
+         then
             declare
                Mode : constant String :=
-                 (if Ekind (Formal) = E_In_Out_Parameter
-                  then "`IN OUT`" else "`OUT`");
+                 (case Ekind (Formal) is
+                     when E_In_Parameter     =>
+                       "`IN` parameter of an access-to-variable type",
+                     when E_In_Out_Parameter =>
+                       "`IN OUT` parameter",
+                     when E_Out_Parameter    =>
+                       "`OUT` parameter",
+                     when others             =>
+                        raise Program_Error);
             begin
                if not Is_Path_Expression (Actual)
                  or else No (Get_Root_Object (Actual))
                then
                   Mark_Violation
-                    ("expression as " & Mode & " parameter", Actual);
+                    ("expression as " & Mode, Actual);
                elsif Is_Constant_In_SPARK (Get_Root_Object (Actual)) then
                   Mark_Violation
-                    ("constant object as " & Mode & " parameter", Actual);
+                    ("constant object as " & Mode, Actual);
                end if;
             end;
          end if;
@@ -5027,6 +5041,20 @@ package body SPARK_Definition is
             Entity_Set.Insert (Full_View (E));
          end if;
 
+         --  For private tagged types it is necessary to mark the full view as
+         --  well for proper processing in proof. We use Mark_Entity because
+         --  the full view might contain SPARK violations, but the partial view
+         --  shouldn't be affected by that.
+
+         if Ekind (E) in
+           E_Record_Type_With_Private | E_Record_Subtype_With_Private
+           and then Is_Tagged_Type (E)
+           and then not Is_Class_Wide_Type (E)
+           and then not Is_Itype (E)
+         then
+            Mark_Entity (Full_View (E));
+         end if;
+
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
          --  of a full view points to the partial view. We don't issue a
@@ -5040,20 +5068,11 @@ package body SPARK_Definition is
            and then Scope (Etype (E)) /= Standard_Standard
          then
             Mark_Violation (E, From => Retysp (Etype (E)));
-         end if;
 
-         --  For private tagged types it is necessary to mark the full view as
-         --  well for proper processing in proof. We use Mark_Entity because
-         --  the full view might contain SPARK violations, but the partial view
-         --  shouldn't be affected by that.
+            --  If a violation is found, stop the marking here, other violation
+            --  might not be relevant.
 
-         if Ekind (E) in
-           E_Record_Type_With_Private | E_Record_Subtype_With_Private
-           and then Is_Tagged_Type (E)
-           and then not Is_Class_Wide_Type (E)
-           and then not Is_Itype (E)
-         then
-            Mark_Entity (Full_View (E));
+            return;
          end if;
 
          declare
@@ -6062,11 +6081,10 @@ package body SPARK_Definition is
                         end if;
                      end;
 
-                     --  Tasks are considered as always having a private part
-                     --  which is not visible to the prover.
+                  --  The full view of a task is in SPARK
 
                   else
-                     Fullview_In_SPARK := False;
+                     Fullview_In_SPARK := Is_Task_Type (E);
                   end if;
 
                   Current_SPARK_Pragma := Save_SPARK_Pragma;

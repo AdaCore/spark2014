@@ -2447,6 +2447,20 @@ package body Flow.Control_Flow_Graph is
                                 (Iteration_Scheme (N))));
       --  Check if the given loop is a simple for loop
 
+      function Get_Filter_Variables (Expr : Node_Id) return Flow_Id_Sets.Set is
+        (if Present (Expr)
+         then
+            Get_Variables
+              (N                    => Expr,
+               Scope                => FA.B_Scope,
+               Target_Name          => Null_Flow_Id,
+               Fold_Functions       => Inputs,
+               Use_Computed_Globals => not FA.Generating_Globals)
+         else Flow_Id_Sets.Empty_Set)
+      with Pre => (if Present (Expr) then Nkind (Expr) in N_Subexpr);
+      --  If Expr is not an empty node, returns the set of variables
+      --  read in the filter expression. Otherwise, returns an empty set.
+
       function Get_Loop_Variable (N : Node_Id) return Entity_Id
       is (Defining_Identifier
             (Loop_Parameter_Specification (Iteration_Scheme (N))))
@@ -2555,8 +2569,8 @@ package body Flow.Control_Flow_Graph is
       --        v
       --
       --  The PARAMETER block defines the loop parameter (which is
-      --  also flagged as Is_Initialized and Is_Loop_Parameter so that
-      --  it can be suitably ignored by subsequent analysis).
+      --  also flagged as Is_Initialized so that it can be suitably
+      --  ignored by subsequent analysis).
       --
       --  We distinguish this case (non-empty range) from the previous
       --  one (unknown range) as subsequent code may rely on any
@@ -2770,10 +2784,11 @@ package body Flow.Control_Flow_Graph is
 
          LP : constant Entity_Id := Defining_Identifier (LPS);
 
-         DSD : constant Node_Id := Discrete_Subtype_Definition (LPS);
-         R   : constant Node_Id := Get_Loop_Range (N);
-         LB  : constant Node_Id := Low_Bound (R);
-         HB  : constant Node_Id := High_Bound (R);
+         DSD    : constant Node_Id := Discrete_Subtype_Definition (LPS);
+         R      : constant Node_Id := Get_Loop_Range (N);
+         LB     : constant Node_Id := Low_Bound (R);
+         HB     : constant Node_Id := High_Bound (R);
+         Filter : constant Node_Id := Iterator_Filter (LPS);
 
          V : Flow_Graphs.Vertex_Id;
          Funcs : Node_Sets.Set;
@@ -2783,7 +2798,8 @@ package body Flow.Control_Flow_Graph is
          Create_Initial_And_Final_Vertices (LP, FA);
 
          --  Work out which of the three variants (empty, full,
-         --  unknown) we have...
+         --  unknown) we have... When an iterator filter is present, we
+         --  consider the unknown case.
          if Is_Null_Range (LB, HB) then
             --  We have an empty range. We should complain!
             Add_Vertex
@@ -2803,7 +2819,9 @@ package body Flow.Control_Flow_Graph is
 
             Fully_Initialized := Flow_Id_Sets.Empty_Set;
 
-         elsif Compile_Time_Compare (LB, HB, Assume_Valid => True) = EQ then
+         elsif Compile_Time_Compare (LB, HB, Assume_Valid => True) = EQ
+           and then No (Filter)
+         then
             --  The loop is executed exactly once
 
             Add_Vertex
@@ -2826,7 +2844,7 @@ package body Flow.Control_Flow_Graph is
 
             Fully_Initialized := Variables_Initialized_By_Loop (N);
 
-         elsif Not_Null_Range (LB, HB) then
+         elsif Not_Null_Range (LB, HB) and then No (Filter) then
             --  We need to make sure the loop is executed at least once
 
             Add_Vertex
@@ -2877,7 +2895,9 @@ package body Flow.Control_Flow_Graph is
                        Scope                => FA.B_Scope,
                        Target_Name          => Null_Flow_Id,
                        Fold_Functions       => Inputs,
-                       Use_Computed_Globals => not FA.Generating_Globals),
+                       Use_Computed_Globals => not FA.Generating_Globals)
+                      or
+                    Get_Filter_Variables (Filter),
                   Sub_Called    => Funcs,
                   Loops         => Ctx.Current_Loops,
                   In_Nested_Pkg => Ctx.In_Nested_Package,
@@ -2894,7 +2914,13 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
             Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
 
-            Fully_Initialized := Variables_Initialized_By_Loop (N);
+            --  If an iterator filter is present, the detection of variables
+            --  initialized by the loop is disabled.
+            if Present (Filter) then
+               Fully_Initialized := Flow_Id_Sets.Empty_Set;
+            else
+               Fully_Initialized := Variables_Initialized_By_Loop (N);
+            end if;
          end if;
 
          --  Set Potentially_Neverending_Vertex to the added vertex
@@ -3453,8 +3479,9 @@ package body Flow.Control_Flow_Graph is
          I_Spec : constant Node_Id :=
            Iterator_Specification (Iteration_Scheme (N));
 
-         Param : constant Entity_Id := Defining_Identifier (I_Spec);
-         Cont  : constant Node_Id   := Name (I_Spec);
+         Param  : constant Entity_Id := Defining_Identifier (I_Spec);
+         Cont   : constant Node_Id   := Name (I_Spec);
+         Filter : constant Node_Id   := Iterator_Filter (I_Spec);
 
          V : Flow_Graphs.Vertex_Id;
          Funcs : Node_Sets.Set;
@@ -3476,12 +3503,15 @@ package body Flow.Control_Flow_Graph is
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Def       => Flatten_Variable (Param, FA.B_Scope),
-               Var_Ex_Use    => Get_Variables
-                 (Cont,
-                  Scope                => FA.B_Scope,
-                  Target_Name          => Null_Flow_Id,
-                  Fold_Functions       => Inputs,
-                  Use_Computed_Globals => not FA.Generating_Globals),
+               Var_Ex_Use    =>
+                 Get_Variables
+                   (Cont,
+                    Scope                => FA.B_Scope,
+                    Target_Name          => Null_Flow_Id,
+                    Fold_Functions       => Inputs,
+                    Use_Computed_Globals => not FA.Generating_Globals)
+                   or
+                 Get_Filter_Variables (Filter),
                Sub_Called    => Funcs,
                Loops         => Ctx.Current_Loops,
                In_Nested_Pkg => Ctx.In_Nested_Package,

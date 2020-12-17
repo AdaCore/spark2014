@@ -1,4 +1,3 @@
 p1.ads:3:08: info: flow dependencies proved
 p2.adb:4:04: info: initialization of "Hidden_Var" constituent of "State" proved
-p2.adb:11:04: medium: use of remote abstract state "P1.State" during elaboration of "P2" - Elaborate pragma required for "P1" (SPARK RM 7.7.1(4))
 p2.ads:5:08: info: flow dependencies proved

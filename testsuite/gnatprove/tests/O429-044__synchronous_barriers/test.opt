@@ -1,1 +1,1 @@
-NT OUT test.nt.out
+NT SKIP small diffs in output (TC03-044)

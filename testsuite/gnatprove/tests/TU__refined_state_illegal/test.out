@@ -16,11 +16,8 @@ refined_state_illegal.adb:65:17: variable "Var1" defined at line 68
 refined_state_illegal.adb:71:33: extra global item "Var1" does not refine or repeat any global item at refined_state_illegal.ads:114
 refined_state_illegal.ads:24:11: aspect "Refined_State" must apply to a package body
 refined_state_illegal.ads:33:29: state "S" requires refinement
-refined_state_illegal.ads:50:29: state "S" requires refinement
 refined_state_illegal.ads:74:34: abstract state "S2" must be refined
 refined_state_illegal.ads:74:34: state "S2" requires refinement
-refined_state_illegal.ads:94:30: state "S1" requires refinement
-refined_state_illegal.ads:94:34: state "S2" requires refinement
 refined_state_illegal.ads:98:07: "Pr_Var1" is declared in the private part of package "Pac8"
 refined_state_illegal.ads:98:07: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
 refined_state_illegal.ads:99:07: "Pr_Var2" is declared in the private part of package "Pac8"

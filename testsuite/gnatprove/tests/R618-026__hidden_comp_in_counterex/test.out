@@ -1,5 +1,5 @@
 test_record_cnt_ex.ads:30:19: medium: assertion might fail, cannot prove X_1 = Y_1 (e.g. when X_1 = (F1 => 1, F2 => 2 <hidden, defined at test_record_cnt_ex.ads:19>, F2 => 3) and Y_1 = (F1 => 1, F2 => 2 <hidden, defined at test_record_cnt_ex.ads:19>, F2 => 0))
-test_record_cnt_ex.ads:51:19: medium: assertion might fail, cannot prove X_2 = Y_2
+test_record_cnt_ex.ads:51:19: medium: assertion might fail, cannot prove X_2 = Y_2 (e.g. when X_2 = (F1 => 0, F2 => 4, others => ?) and Y_2 = (F1 => 0, F2 => 0, others => ?))
 test_record_cnt_ex.ads:55:50: info: flow dependencies proved
 test_record_cnt_ex.ads:71:33: info: range check proved (CVC4: 1 VC)
 test_record_cnt_ex.ads:72:38: info: range check proved (CVC4: 1 VC)

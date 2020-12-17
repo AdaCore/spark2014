@@ -557,22 +557,34 @@ package body SPARK_Util.Types is
 
          else
             declare
-               Comp : Entity_Id := First_Component (Rep_Ty);
+               Comp             : Entity_Id := First_Component (Rep_Ty);
+               Has_Visible_Comp : Boolean := False;
             begin
-               if No (Comp) then
-                  return False;
-               else
-                  loop
-                     if Component_Is_Visible_In_SPARK (Comp)
-                       and then not Contains_Only_Relaxed_Init (Etype (Comp))
-                     then
+               while Present (Comp) loop
+                  if Component_Is_Visible_In_SPARK (Comp) then
+
+                     --  We have found at least one component with relaxed
+                     --  init. If we don't find any component without it, then
+                     --  the type contains only relaxed init parts.
+
+                     if Contains_Only_Relaxed_Init (Etype (Comp)) then
+                        Has_Visible_Comp := True;
+
+                     --  We have found at least one component without relaxed
+                     --  init. We return False directly.
+
+                     else
                         return False;
                      end if;
-                     Next_Component (Comp);
-                     exit when No (Comp);
-                  end loop;
-                  return True;
-               end if;
+                  end if;
+                  Next_Component (Comp);
+               end loop;
+
+               --  The loop exits normally, so all components of Typ have
+               --  relaxed init. We return True if it has at least one
+               --  such components.
+
+               return Has_Visible_Comp;
             end;
          end if;
       else

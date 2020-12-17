@@ -1,4 +1,3 @@
 po_t.adb:9:34: info: overflow check proved (CVC4: 1 VC)
 po_t.adb:21:34: info: overflow check proved (CVC4: 1 VC)
-po_t.adb:30:09: high: modification of "P_Int" in elaboration requires Elaborate_Body on package "PO_T" (SPARK RM 7.7.1(5))
 po_t.adb:36:22: medium: assertion might fail, cannot prove X = Y (e.g. when X = 0 and Y = 1)

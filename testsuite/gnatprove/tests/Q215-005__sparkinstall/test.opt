@@ -1,2 +1,2 @@
 packaged REQUIRED
-community OUT test.community.out
+community XFAIL see TB25-005

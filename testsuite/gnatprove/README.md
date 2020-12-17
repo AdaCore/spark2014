@@ -24,10 +24,26 @@ Test structure
 ==============
 
 Each subdirectory of `tests` is a separate testcase, the directory name is
-equal to the test name. The `test.py` file (if present) contains the test
-script to be run. This test script generally uses some functions from the
-Python library in `lib/python`.
+equal to the test name.
 
-If the `test.py` is missing, a default test script is assumed. If the test name
-contains "__flow" as a substring, the default test script runs the `do_flow()`
-function with no arguments, otherwise it runs `prove_all()`.
+By default, a test just contains Ada sources and an expected output in the
+`test.out` file. In this case, the test driver runs the python function
+`prove_all()`, or `do_flow()` if the test directory name contains the `__flow`
+substring. Both functions are defined in the helper library in
+`lib/python/test_support.py`.  Arguments to this call can be provided via a
+`test.yaml` file in the test directory, in the following form:
+
+```
+prove_all:
+  steps: 100
+  prover: ["cvc4"]
+  ...
+```
+
+The term `prove_all` above must be replaced by `do_flow` in the case of a test
+that contains `__flow`. The keys are identical to the named parameters of the
+corresponding python functions, see those functions for more information.
+
+This default behavior can be overridden by placing a `test.py` file in the test
+directory. In that case the test simply runs that test.py file. An existing
+`test.yaml` file is ignored in that case.

@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Directories;
 with Assumption_Types;      use Assumption_Types;
 with Atree;                 use Atree;
 with Checked_Types;         use Checked_Types;
@@ -445,7 +446,9 @@ package SPARK_Util is
 
    function Is_Writable_Parameter (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_In_Parameter
-               and then Ekind (Scope (E)) in E_Procedure | E_Entry;
+         and then Ekind (Scope (E)) in E_Procedure
+                                     | E_Entry
+                                     | E_Subprogram_Type;
    --  @param E entity of a procedure or entry formal parameter of mode IN
    --  @return True if E can be written despite being of mode IN
 
@@ -523,21 +526,6 @@ package SPARK_Util is
    ---------------------------------
    -- Queries for arbitrary nodes --
    ---------------------------------
-
-   function Body_File_Name (N : Node_Id) return String;
-   --  @param N any node
-   --  @return Same as [Spec_File_Name], but always return the file name of the
-   --    body, if there is one.
-
-   function Spec_File_Name (N : Node_Id) return String;
-   --  @param N any node
-   --  @return the name of the spec file of the unit which contains the node,
-   --    if it exists, otherwise the body file. Also, we return the file name
-   --    of the instance, not the generic.
-
-   function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
-   --  @param N any node
-   --  @return same as Spec_File_Name but without the suffix.
 
    function String_Of_Node (N : Node_Id) return String
    with Pre => Nkind (N) in N_Subexpr;
@@ -849,8 +837,6 @@ package SPARK_Util is
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element
 
-   function File_Name_Without_Suffix (File_Name : String) return String;
-
    function Real_Image (U : Ureal; Max_Length : Integer) return String;
    --  Return a string, of maximum length Max_length, representing U.
 
@@ -862,8 +848,8 @@ package SPARK_Util is
 
    function Unit_Name return String is
      (Append_Multiple_Index
-        (File_Name_Without_Suffix
-             (Get_Name_String (Unit_File_Name (Main_Unit)))));
+        (Ada.Directories.Base_Name
+           (Get_Name_String (Unit_File_Name (Main_Unit)))));
 
    function File_Name (Loc : Source_Ptr) return String is
      (Get_Name_String (File_Name (Get_Source_File_Index (Loc))));
@@ -908,6 +894,10 @@ package SPARK_Util is
    --  Wrapper for Lib.Main_Unit_Entity, which deals with library-level
    --  instances of generic subprograms (where the Main_Unit_Entity has a
    --  void Ekind).
+
+   function Package_Body (E : Entity_Id) return Node_Id;
+   --  Given an entity for a package (spec or body), return the corresponding
+   --  package body if any, or else Empty.
 
    function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean;
    --  Approximation of cases where we know that the Constrained attribute of

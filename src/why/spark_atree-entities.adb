@@ -30,7 +30,6 @@ with Sinfo;            use Sinfo;
 with Sem_Ch7;          use Sem_Ch7;
 with Sem_Util;
 with Sem_Prag;
-with SPARK_Util.Subprograms;
 with SPARK_Util.Types;
 with Ttypes;
 with Interfaces;
@@ -785,13 +784,6 @@ package body SPARK_Atree.Entities is
    -----------------
 
    function Object_Size (Typ : Entity_Id) return Uint renames Einfo.Esize;
-
-   ------------------
-   -- Package_Body --
-   ------------------
-
-   function Package_Body (Pack : Entity_Id) return Node_Id renames
-     Sem_Aux.Package_Body;
 
    -------------------------
    -- Package_Body_Entity --

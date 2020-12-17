@@ -1,13 +1,13 @@
 test_new.adb:2:11: warning: subprogram "Test_New" has no effect
 test_new.adb:3:19: info: assertion proved (CVC4: 1 VC)
-test_new.adb:4:19: medium: assertion might fail, cannot prove X.G1 > 10 [possible fix: subprogram at line 2 should mention X in a precondition]
+test_new.adb:4:19: medium: assertion might fail, cannot prove X.G1 > 10 (e.g. when X = (F1 => 1, G1 => 0, G2 => 16, others => ?)) [possible fix: subprogram at line 2 should mention X in a precondition]
 test_new.adb:5:19: info: assertion proved (CVC4: 1 VC)
-test_new.adb:6:19: medium: assertion might fail, cannot prove X.F1 < 100 [possible fix: subprogram at line 2 should mention X in a precondition]
+test_new.adb:6:19: medium: assertion might fail, cannot prove X.F1 < 100 (e.g. when X = (F1 => 100, G1 => 11, G2 => 16, others => ?)) [possible fix: subprogram at line 2 should mention X in a precondition]
 test_new.adb:7:19: info: assertion proved (CVC4: 1 VC)
-test_new.adb:8:19: medium: assertion might fail, cannot prove Y.G1 > 10 [possible fix: subprogram at line 2 should mention Y in a precondition]
-test_new.adb:9:19: medium: assertion might fail, cannot prove Y.G2 > 15 [possible fix: subprogram at line 2 should mention Y in a precondition]
-test_new.adb:10:19: medium: assertion might fail, cannot prove Y.F1 < 100 [possible fix: subprogram at line 2 should mention Y in a precondition]
+test_new.adb:8:19: medium: assertion might fail, cannot prove Y.G1 > 10 (e.g. when Y = (F1 => 1, G1 => 0, G2 => 11, others => ?)) [possible fix: subprogram at line 2 should mention Y in a precondition]
+test_new.adb:9:19: medium: assertion might fail, cannot prove Y.G2 > 15 (e.g. when Y = (F1 => 1, G1 => 11, G2 => 0, others => ?)) [possible fix: subprogram at line 2 should mention Y in a precondition]
+test_new.adb:10:19: medium: assertion might fail, cannot prove Y.F1 < 100 (e.g. when Y = (F1 => 100, G1 => 11, G2 => 16, others => ?)) [possible fix: subprogram at line 2 should mention Y in a precondition]
 test_new.adb:11:19: info: assertion proved (CVC4: 1 VC)
-test_new.adb:12:19: medium: assertion might fail, cannot prove Z.G1 > 10 [possible fix: subprogram at line 2 should mention Z in a precondition]
+test_new.adb:12:19: medium: assertion might fail, cannot prove Z.G1 > 10 (e.g. when Z = (F1 => 1, G1 => 0, G2 => 16, F2 => 1, others => ?)) [possible fix: subprogram at line 2 should mention Z in a precondition]
 test_new.adb:13:19: info: assertion proved (CVC4: 1 VC)
 test_new.adb:14:19: info: assertion proved (CVC4: 2 VC)

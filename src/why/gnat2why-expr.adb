@@ -9990,12 +9990,14 @@ package body Gnat2Why.Expr is
                         --  index sutype in case of empty ranges.
 
                         Rng := Get_Range (Choice);
-                        Values.Append_One
-                          ((Value => Low_Bound (Rng),
-                            Typ   => Etype (Low_Bound (Rng))));
-                        Values.Append_One
-                          ((Value => High_Bound (Rng),
-                            Typ   => Etype (High_Bound (Rng))));
+                        Values.Append
+                          (Aggregate_Element'
+                             (Value => Low_Bound (Rng),
+                              Typ   => Etype (Low_Bound (Rng))));
+                        Values.Append
+                          (Aggregate_Element'
+                             (Value => High_Bound (Rng),
+                              Typ   => Etype (High_Bound (Rng))));
 
                      when N_Aggregate =>
 
@@ -10022,9 +10024,10 @@ package body Gnat2Why.Expr is
                              (Natural (List_Length (Multi_Exprs)) = Nb_Dim);
 
                            while Present (Multi_Expression) loop
-                              Values.Append_One
-                                ((Value => Multi_Expression,
-                                  Typ   => Etype (Current_Index)));
+                              Values.Append
+                                (Aggregate_Element'
+                                   (Value => Multi_Expression,
+                                    Typ   => Etype (Current_Index)));
                                  Next (Multi_Expression);
                                  Next_Index (Current_Index);
                            end loop;
@@ -10032,9 +10035,10 @@ package body Gnat2Why.Expr is
                         end;
 
                      when others =>
-                        Values.Append_One
-                          ((Value  => Choice,
-                            Typ    => Etype (Index)));
+                        Values.Append
+                          (Aggregate_Element'
+                             (Value  => Choice,
+                              Typ    => Etype (Index)));
                   end case;
                   Next (Choice);
                end loop;
@@ -10107,9 +10111,10 @@ package body Gnat2Why.Expr is
                   --  parameter.
 
                   else
-                     Values.Append_One
-                       ((Value => Value_Expr,
-                         Typ   => Comp_Type));
+                     Values.Append
+                       (Aggregate_Element'
+                          (Value => Value_Expr,
+                           Typ   => Comp_Type));
                   end if;
                end if;
 
@@ -10169,9 +10174,10 @@ package body Gnat2Why.Expr is
          --  a parameter to the logic function.
 
          if In_Delta_Aggregate then
-            Values.Append_One
-              ((Value  => Update_Prefix,
-                Typ    => Etype (Update_Prefix)));
+            Values.Append
+              (Aggregate_Element'
+                 (Value  => Update_Prefix,
+                  Typ    => Etype (Update_Prefix)));
          end if;
 
          Traverse_Rec_Aggregate
