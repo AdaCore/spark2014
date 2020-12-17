@@ -6,16 +6,17 @@ Alternative Provers
 Installed with |SPARK| Pro
 --------------------------
 
-The provers Alt-Ergo, CVC4 and Z3 are installed with the |SPARK| tool. By
-default, |GNATprove| uses prover CVC4 only. Switch ``--level`` changes the
+The provers Alt-Ergo, Colibri, CVC4 and Z3 are installed with the |SPARK| tool.
+By default, |GNATprove| uses prover CVC4 only. Switch ``--level`` changes the
 default to use one or more provers depending on the chosen level (see
 :ref:`Running GNATprove from the Command Line`). Switch ``--prover`` allows to
-use another prover, or a list of provers. Prover names ``altergo``, ``cvc4``
-and ``z3`` are used to refer to the versions of provers Alt-Ergo, CVC4 and Z3
-that are installed with the |SPARK| toolset. The string ``alt-ergo`` can also
-be used to refer to Alt-Ergo. Using the switch ``--prover=all``, one can select
-all three built-in provers, in the order ``cvc4, z3, altergo``. More information
-on Alt-Ergo, CVC4 and Z3 can be found on their respective websites:
+use another prover, or a list of provers. Prover names ``altergo``,
+``colibri``, ``cvc4`` and ``z3`` are used to refer to the versions of provers
+Alt-Ergo, Colibri, CVC4 and Z3 that are installed with the |SPARK| toolset. The
+string ``alt-ergo`` can also be used to refer to Alt-Ergo. Using the switch
+``--prover=all``, one can select all four built-in provers, in the order
+``cvc4, z3, colibri, altergo``. More information on Alt-Ergo, CVC4 and Z3 can
+be found on their respective websites:
 
  * Alt-Ergo: https://alt-ergo.ocamlpro.com
  * CVC4: http://cvc4.cs.stanford.edu/web/
@@ -58,7 +59,8 @@ switch ``--why3-conf=<file>``. Any prover name configured in this configuration
 file can be used as an argument to switch ``--prover``.
 
 Note that using this mechanism, you cannot replace the definitions provided
-with the SPARK tools for the provers ``altergo``, ``cvc4`` and ``z3``.
+with the SPARK tools for the provers ``altergo``, ``colibri``, ``cvc4`` and
+``z3``.
 
 If more than one prover is specified, the provers are tried in order on each
 VC, until one of them succeeds or all fail. Interactive provers cannot be

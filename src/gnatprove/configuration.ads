@@ -279,6 +279,7 @@ package Configuration is
            Compose (Share_Spark_Config, "gnatprove.conf");
          Z3_Present               : Boolean;
          CVC4_Present             : Boolean;
+         Colibri_Present          : Boolean;
          Help_Message             : constant String :=
            Read_File_Into_String (Help_Msg_File);
    end SPARK_Install;

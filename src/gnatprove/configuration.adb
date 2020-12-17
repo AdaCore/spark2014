@@ -1174,10 +1174,10 @@ package body Configuration is
       --  <path-to-project-file>/<value-of-proof-dir>.
 
       procedure Limit_Provers (Provers : in out String_Lists.List);
-      --  This subprogram is here for SPARK Discovery. It removes cvc4/z3 from
-      --  the provers list, if not found on the PATH. If that makes the list of
-      --  provers become empty, alt-ergo is added as prover, so that we have at
-      --  least one prover.
+      --  This subprogram is here for SPARK Discovery. It removes
+      --  cvc4/z3/colibri from the provers list, if not found on the PATH. If
+      --  that makes the list of provers become empty, alt-ergo is added as
+      --  prover, so that we have at least one prover.
 
       procedure Sanity_Checking;
       --  Check the command line flags for conflicting flags
@@ -1318,6 +1318,9 @@ package body Configuration is
          if not SPARK_Install.Z3_Present then
             Remove_Prover ("z3");
          end if;
+         if not SPARK_Install.Colibri_Present then
+            Remove_Prover ("colibri");
+         end if;
 
          if not Is_Empty_At_Start and then Provers.Is_Empty then
             Provers.Append ("altergo");
@@ -1353,8 +1356,9 @@ package body Configuration is
       begin
          Sanity_Checking;
 
-         SPARK_Install.Z3_Present   := On_Path ("z3");
-         SPARK_Install.CVC4_Present := On_Path ("cvc4");
+         SPARK_Install.Z3_Present      := On_Path ("z3");
+         SPARK_Install.CVC4_Present    := On_Path ("cvc4");
+         SPARK_Install.Colibri_Present := On_Path ("colibri");
 
          Debug := CL_Switches.D or CL_Switches.Flow_Debug;
 
@@ -1865,13 +1869,16 @@ package body Configuration is
                FS.Provers.Append (S (First .. S'Last));
             end if;
 
-            --  Check if cvc4 or z3 have explicitly been requested, but are
-            --  missing from the install.
+            --  Check if cvc4/z3/colibri have explicitly been requested, but
+            --  are missing from the install.
 
             for Prover of FS.Provers loop
                if (Prover = "cvc4" and then not SPARK_Install.CVC4_Present)
                  or else
                    (Prover = "z3" and then not SPARK_Install.Z3_Present)
+                 or else
+                   (Prover = "colibri"
+                    and then not SPARK_Install.Colibri_Present)
                then
                   Abort_Msg ("error: prover " & Prover &
                                " was selected, but it is not installed",
@@ -1887,6 +1894,9 @@ package body Configuration is
             end if;
             if SPARK_Install.Z3_Present then
                FS.Provers.Append ("z3");
+            end if;
+            if SPARK_Install.Colibri_Present then
+               FS.Provers.Append ("colibri");
             end if;
             FS.Provers.Append ("altergo");
          end if;

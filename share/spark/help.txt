@@ -116,8 +116,8 @@ gnatprove advanced switches:
 
  * Prover name values
    (Default prover is cvc4.)
-   (Provers marked with [steps] support the --steps switch.)
-   . altergo       - [steps] Use Alt-Ergo
-   . cvc4          - [steps] Use CVC4
-   . z3            - [steps] Use Z3
+   . altergo       - Use Alt-Ergo
+   . colibri       - Use Colibri
+   . cvc4          - Use CVC4
+   . z3            - Use Z3
    . ...           - Any other prover configured in your .why3.conf file
