@@ -4,6 +4,9 @@ main.adb:9:04: value not in range of type "Standard.Integer"
 main2.adb:8:28: "Constraint_Error" would have been raised at run time
 main2.adb:8:28: error in inlined body at line 5
 main2.adb:8:28: value not in range of type "Standard.Integer"
+main3.adb:7:04: "Constraint_Error" would have been raised at run time
+main3.adb:7:04: error in inlined body at line 4
+main3.adb:7:04: value not in range of type universal integer
 neg.adb:10:04: "Constraint_Error" would have been raised at run time
 neg.adb:10:04: "Constraint_Error" would have been raised at run time
 neg.adb:10:04: error in inlined body at line 5
