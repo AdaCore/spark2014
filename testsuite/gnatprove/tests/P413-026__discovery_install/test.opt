@@ -1,1 +1,2 @@
 !discovery SKIP test is only for discovery edition
+NT XFAIL waiting for migration to gcc 10 on windows
