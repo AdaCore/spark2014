@@ -225,10 +225,16 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Update_Status
      (New_Write   : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
-      Inv_Seen    : Boolean);
-   --  Same as before except that Expected_Kind is set to Entire_Object,
-   --  Ignore_Slices is set to False, and Expected_Type and Updated_Status are
-   --  discarded.
+      Inv_Seen    : Boolean;
+      Deref_Only  : Boolean := False)
+   with Pre => (if Deref_Only then Has_Access_Type (Etype (New_Write)));
+   --  Update a write status map to account for a new write.
+   --  @param New_Write variable name which has been written.
+   --  @param Loop_Writes map between entities and their write status.
+   --  @param Inv_Seen True if the current update occurs after the loop
+   --         invariant in the top level loop.
+   --  @param Deref_Only true if New_Write is an access object and only its
+   --         value is updated.
 
    --------------------
    -- Tree Traversal --
@@ -1358,8 +1364,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       Inv_Seen    : Boolean)
    is
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
-      --  Update Loop_Writes with Actual if Formal is an out or an in out
-      --  parameter.
+      --  Update Loop_Writes with Actual if Formal is mutable
 
       -------------------
       -- Process_Param --
@@ -1369,6 +1374,15 @@ package body Gnat2Why.Expr.Loops.Inv is
       begin
          if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter then
             Update_Status (Actual, Loop_Writes, Inv_Seen);
+
+         --  If Formal is an in parameter of an access-to-variable type, the
+         --  designated value only can be updated by the call, not the access
+         --  itself.
+
+         elsif Has_Access_Type (Etype (Formal))
+           and then not Is_Access_Constant (Retysp (Etype (Formal)))
+         then
+            Update_Status (Actual, Loop_Writes, Inv_Seen, Deref_Only => True);
          end if;
       end Process_Param;
 
@@ -1988,7 +2002,8 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Update_Status
      (New_Write   : Node_Id;
       Loop_Writes : in out Write_Status_Maps.Map;
-      Inv_Seen    : Boolean)
+      Inv_Seen    : Boolean;
+      Deref_Only  : Boolean := False)
    is
       Updated_Status : Write_Status_Access;
       Expected_Type  : Entity_Id;
@@ -1997,10 +2012,24 @@ package body Gnat2Why.Expr.Loops.Inv is
         (New_Write      => New_Write,
          Loop_Writes    => Loop_Writes,
          Inv_Seen       => Inv_Seen,
-         Expected_Kind  => Entire_Object,
+         Expected_Kind  =>
+           (if Deref_Only then Access_Value else Entire_Object),
          Ignore_Slices  => False,
          Expected_Type  => Expected_Type,
          Updated_Status => Updated_Status);
+
+      --  If we have created status of an access_value kind for New_Write, we
+      --  might need to initialize its Value_Status field.
+
+      if Deref_Only
+        and then Updated_Status.Kind = Access_Value
+        and then Updated_Status.Value_Status = null
+      then
+         Updated_Status.Value_Status :=
+           New_Status
+             (New_Write, Discard_Writes => False,
+              Expected_Kind             => Entire_Object);
+      end if;
    end Update_Status;
 
 end Gnat2Why.Expr.Loops.Inv;
