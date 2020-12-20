@@ -1,3 +1,9 @@
+
 check_param_aliasing.adb:8:45: writable actual for "Out_1" overlaps with actual for "Out_2"
+    8 |   Whatever (In_1 => X, In_2 => X, Out_1 => X, Out_2 => X);  --  illegal
+      |                                            ^ here
+
 check_param_aliasing.adb:11:45: writable actual for "Out_1" overlaps with actual for "Out_2"
+   11 |   Whatever (In_1 => Y, In_2 => Z, Out_1 => X, Out_2 => X);  --  illegal
+      |                                            ^ here
 gnatprove: error during generation of Global contracts

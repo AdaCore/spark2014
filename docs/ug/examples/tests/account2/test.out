@@ -1,2 +1,5 @@
+
 account2.adb:15:26: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+   15 |         Num_Accounts := Num_Accounts + 1;
+      |                         ^~~~~~~~~~~~
 gnatprove: error during generation of Global contracts
