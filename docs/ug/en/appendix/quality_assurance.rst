@@ -99,7 +99,9 @@ behind the private release).  SPARK uses the public release of Alt-Ergo.
 
 Track record: Apart from SPARK, it is used by `Frama-C <http://frama-c.com/>`_ and `Atelier B <http://www.atelierb.eu/en/>`_. In particular, used by Airbus for the qualification DO-178C of an aircraft [10].
 
-Relationship with AdaCore/Altran: AdaCore and OCamlPro collaborate in the `SOPRANO <http://soprano-project.fr/>`_. AdaCore has contributed some minor changes to Alt-Ergo, including a deterministic resource limiting switch.
+Relationship with AdaCore/Altran: AdaCore and OCamlPro have collaborated in the
+`SOPRANO <http://soprano-project.fr/>`_ project. AdaCore has contributed some minor
+changes to Alt-Ergo, including a deterministic resource limiting switch.
 
 * Main developers: `OCamlPro <https://alt-ergo.ocamlpro.com/>`_
 * Main website: https://alt-ergo.ocamlpro.com/
