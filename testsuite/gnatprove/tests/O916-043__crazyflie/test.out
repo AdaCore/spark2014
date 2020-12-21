@@ -5,10 +5,10 @@ log_pack.adb:560:63: warning: "Value" may be referenced before it has a value
 log_pack.adb:570:63: warning: "Value" may be referenced before it has a value
 log_pack.adb:580:63: warning: "Value" may be referenced before it has a value
 log_pack.adb:590:61: warning: "Value" may be referenced before it has a value
-log_pack.ads:134:04: "Log_Variable" is not allowed in SPARK (due to component of anonymous access type)
-log_pack.ads:134:04: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:140:07: component of anonymous access type is not allowed in SPARK
 log_pack.ads:140:07: violation of pragma SPARK_Mode at gnat.adc:2
+log_pack.ads:140:22: "Log_Variable" is not allowed in SPARK (due to component of anonymous access type)
+log_pack.ads:140:22: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:146:04: "Log_Variable" is not allowed in SPARK (due to component of anonymous access type)
 log_pack.ads:146:04: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:152:04: "Log_Variable" is not allowed in SPARK (due to component of anonymous access type)
