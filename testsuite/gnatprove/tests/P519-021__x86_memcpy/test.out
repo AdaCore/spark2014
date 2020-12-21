@@ -197,7 +197,7 @@ memcpy.ads:53:40: info: initialization of "CarryFlag" proved
 memcpy.ads:53:55: info: initialization of "SignFlag" proved
 memcpy.ads:53:69: info: initialization of "OverflowFlag" proved
 memcpy.ads:53:87: info: initialization of "ZeroFlag" proved
-memcpy.ads:72:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-16+6) = X86.Memory'Old(X86.RBP'Old-16+6)
+memcpy.ads:73:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-16+7) = X86.Memory'Old(X86.RBP'Old-16+7)
 memcpy.ads:86:92: info: division check proved (CVC4: 1 VC)
 memcpy.ads:111:06: info: data dependencies proved
 memcpy.ads:112:31: info: initialization of "ZeroFlag" proved
@@ -205,7 +205,7 @@ memcpy.ads:112:45: info: initialization of "SignFlag" proved
 memcpy.ads:112:59: info: initialization of "CarryFlag" proved
 memcpy.ads:112:75: info: initialization of "OverflowFlag" proved
 memcpy.ads:113:61: warning: unused initial value of "RAX"
-memcpy.ads:132:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-32+7) = X86.Memory'Old(X86.RBP'Old-32+7)
+memcpy.ads:125:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-32) = X86.Memory'Old(X86.RBP'Old-32)
 memcpy.ads:169:09: info: data dependencies proved
 memcpy.ads:170:52: warning: unused initial value of "SignFlag"
 memcpy.ads:170:66: warning: unused initial value of "ZeroFlag"
