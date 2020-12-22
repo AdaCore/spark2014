@@ -1,3 +1,4 @@
+recursive_through_type.ads:3:27: high: cannot call potentially nonreturning subprogram "Bad_F" for type "Bad_Ty" in its own predicate (SPARK RM 3.2.4(4))
 recursive_through_type.ads:3:27: info: expression function body not available for proof ("Bad_F" might not return)
 recursive_through_type.ads:3:27: info: function contract not available for proof ("Bad_F" might not return)
 recursive_through_type.ads:6:12: medium: postcondition might fail, cannot prove false

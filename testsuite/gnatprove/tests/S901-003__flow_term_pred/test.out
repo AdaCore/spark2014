@@ -1,5 +1,6 @@
 bad.adb:5:34: info: expression function body not available for proof ("B" might not return)
 bad.adb:6:34: info: expression function body not available for proof ("A" might not return)
+bad.adb:9:43: high: cannot call potentially nonreturning subprogram "A" for type "T" in its own predicate (SPARK RM 3.2.4(4))
 bad.adb:9:43: info: expression function body not available for proof ("A" might not return)
 bad.adb:12:13: info: add a contract to analyze it separately from calling contexts
 bad.adb:12:13: info: local subprogram "In_T" only analyzed in the context of calls

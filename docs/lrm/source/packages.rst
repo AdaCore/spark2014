@@ -2017,6 +2017,8 @@ is of type T (or a descendant thereof) can be assumed to satisfy T's invariant.
     rule (very roughly speaking) says that the global outputs of this notional
     subprogram follow much the same rules as for other subprograms.]
 
+11. A Type_Invariant expression shall always terminate.
+
 
 **Ramification:** In determining whether a dispatching call is a call
 to a boundary subprogram or to a subprogram declared outside of the

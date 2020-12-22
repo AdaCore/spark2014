@@ -217,45 +217,26 @@ package body Flow_Utility is
                     (Ekind (Called_Func) in E_Function | E_Subprogram_Type);
 
                begin
-                  --  For predicate functions descend into the predicate
-                  --  expression and continue traversal.
+
+                  --  Ignore calls to predicate functions and don't descend
+                  --  into their predicate expressions.
 
                   if Ekind (Called_Func) = E_Function
                     and then Is_Predicate_Function (Called_Func)
                   then
-                     Collect_Functions_And_Read_Locked_POs
-                       (N                  =>
-                          Get_Expr_From_Return_Only_Func (Called_Func),
-                        Scop               => Scop,
-                        Functions_Called   => Functions_Called,
-                        Tasking            => Tasking,
-                        Generating_Globals => Generating_Globals);
+
+                     --  We return OK to traverse the predicate function
+                     --  parameter. If we returned Skip, we would ignore the
+                     --  call entirely.
 
                      return OK;
                   end if;
 
-                  --  We include the called function only if it is visible from
-                  --  the scope. For example, the call might not be visible
-                  --  when it happens in the type invariant of an externally
-                  --  visible type and the function called is declared in the
-                  --  private part.
-                  if Ekind (Called_Func) = E_Function
-                    and then
-                      Is_Visible (Unit_Declaration_Node (Called_Func), Scop)
-                  then
-                     Functions_Called.Include (Called_Func);
-                  end if;
-
-                  --  Include access-to-functions, as they affect the
-                  --  potentially non-returning status of the caller.
-
-                  if Ekind (Called_Func) = E_Subprogram_Type then
-                     pragma Assert (Etype (Called_Func) /= Standard_Void_Type);
-                     Functions_Called.Include (Called_Func);
-                  end if;
+                  Functions_Called.Include (Called_Func);
 
                   --  Only external calls to protected functions trigger
                   --  priority ceiling protocol checks; internal calls do not.
+
                   if Generating_Globals
                     and then Ekind (Scope (Called_Func)) = E_Protected_Type
                     and then Is_External_Call (N)

@@ -1,6 +1,7 @@
 test_callback.adb:8:18: medium: overflow check might fail (e.g. when x = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 test_callback.adb:11:19: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:11:19: info: precondition proved (CVC4: 1 VC)
+test_callback.adb:11:25: high: cannot call potentially nonreturning subprogram "S" for type "S" in its own predicate (SPARK RM 3.2.4(4))
 test_callback.adb:20:04: warning: analyzing unreferenced procedure "Junk"
 test_callback.adb:20:14: warning: subprogram "Junk" has no effect
 test_callback.adb:25:58: info: overflow check proved (CVC4: 1 VC)
