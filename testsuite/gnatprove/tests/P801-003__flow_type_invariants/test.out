@@ -18,8 +18,8 @@ test_05.adb:30:10: type invariant not immediately in a compilation unit is not y
 gnatprove: error during flow analysis and proof
 
 === test_06.adb ===
-test_06.ads:9:09: high: cannot call boundary subprogram "F" for type "T" in its own invariant (SPARK RM 7.3.2(5))
 test_06.ads:9:09: medium: invariant check might fail on default value
+test_06.ads:13:27: high: cannot call boundary subprogram "F" for type "T" in its own invariant (SPARK RM 7.3.2(5))
 test_06.ads:13:27: medium: invariant check might fail
 
 === test_07.ads ===

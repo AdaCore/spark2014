@@ -2,5 +2,5 @@ sorted.ads:6:39: info: index check proved (CVC4: 2 VC)
 sorted.ads:14:14: info: postcondition proved (CVC4: 1 VC)
 sorted.ads:16:14: info: invariant check proved (CVC4: 1 VC)
 sorted.ads:18:04: medium: type "Sorted_Nat_Array" is not fully initialized
-sorted.ads:18:09: high: cannot call boundary subprogram "Is_Sorted" for type "Sorted_Nat_Array" in its own invariant (SPARK RM 7.3.2(5))
 sorted.ads:18:09: info: invariant check proved on default value (CVC4: 1 VC)
+sorted.ads:19:24: high: cannot call boundary subprogram "Is_Sorted" for type "Sorted_Nat_Array" in its own invariant (SPARK RM 7.3.2(5))

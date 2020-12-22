@@ -593,7 +593,7 @@ package body Flow.Analysis.Sanity is
                           "for type & in its own invariant",
                         Severity => High_Check_Kind,
                         Tag      => Call_In_Type_Invariant,
-                        N        => Full_View (Typ),
+                        N        => Expr,
                         F1       => Direct_Mapping_Id (F),
                         F2       => Direct_Mapping_Id (Typ),
                         SRM_Ref  => "7.3.2(5)");

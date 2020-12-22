@@ -19,17 +19,17 @@ termination.ads:24:41: high: cannot call potentially nonreturning subprogram "In
 termination.ads:24:41: high: cannot call potentially nonreturning subprogram "Rec_Func" for type "Tag" in its own predicate (SPARK RM 3.2.4(4))
 termination.ads:30:09: high: cannot call potentially nonreturning subprogram "Another_Nonterminating_Func" for type "Tag3" in its own predicate (SPARK RM 3.2.4(4))
 termination.ads:35:53: high: cannot call potentially nonreturning subprogram "Rec_Func" for type "Int_Acc" in its own predicate (SPARK RM 3.2.4(4))
-termination.ads:44:09: high: cannot call boundary subprogram "Infinite_Loop2" for type "Int6" in its own invariant (SPARK RM 7.3.2(5))
 termination.ads:44:09: medium: invariant check might fail on default value
+termination.ads:44:52: high: cannot call boundary subprogram "Infinite_Loop2" for type "Int6" in its own invariant (SPARK RM 7.3.2(5))
 termination.ads:44:52: high: cannot call potentially nonreturning subprogram "Infinite_Loop2" for type "Int6" in its own invariant (SPARK RM 7.3.2(11))
-termination.ads:46:09: high: cannot call boundary subprogram "Infinite_Loop2" for type "Int7" in its own invariant (SPARK RM 7.3.2(5))
 termination.ads:46:09: info: invariant check proved on default value (CVC4: 1 VC)
+termination.ads:47:32: high: cannot call boundary subprogram "Infinite_Loop2" for type "Int7" in its own invariant (SPARK RM 7.3.2(5))
 termination.ads:47:32: high: cannot call potentially nonreturning subprogram "Infinite_Loop2" for type "Int7" in its own invariant (SPARK RM 7.3.2(11))
 termination.ads:49:09: info: invariant check proved on default value (CVC4: 2 VC)
-termination.ads:53:09: high: cannot call boundary subprogram "Infinite_Loop2" for type "Discr_Rec" in its own invariant (SPARK RM 7.3.2(5))
 termination.ads:53:09: medium: invariant check might fail on default value
 termination.ads:54:07: info: range check proved (CVC4: 2 VC)
 termination.ads:54:30: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+termination.ads:56:29: high: cannot call boundary subprogram "Infinite_Loop2" for type "Discr_Rec" in its own invariant (SPARK RM 7.3.2(5))
 termination.ads:56:29: high: cannot call potentially nonreturning subprogram "Infinite_Loop2" for type "Discr_Rec" in its own invariant (SPARK RM 7.3.2(11))
 wrapper.adb:1:46: info: data dependencies proved
 wrapper.adb:3:25: info: data dependencies proved
