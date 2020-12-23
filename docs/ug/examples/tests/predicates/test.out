@@ -24,5 +24,9 @@ predicates.ads:32:28: medium: overflow check might fail
 predicates.ads:34:17: info: range check proved
 predicates.ads:36:24: info: overflow check proved
 predicates.ads:38:24: info: overflow check proved
+
+predicates.ads:44:50: high: cannot call potentially nonreturning subprogram "Get_GCD" for type "Bundle_Values" in its own predicate (SPARK RM 3.2.4(4))
+   44 |     with Dynamic_Predicate => Bundle_Values.GCD = Get_GCD (Bundle_Values.X, Bundle_Values.Y);
+      |                               ~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 predicates.ads:50:07: info: range check proved
 predicates.ads:58:89: info: index check proved
