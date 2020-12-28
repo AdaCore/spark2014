@@ -324,10 +324,10 @@ illegal. Note that reading ``X`` is still possible in the scope of ``B``:
    :language: none
 
 Only pool-specific access types are allowed in SPARK, so it is not possible to
-declare access types with the qualifiers ``all`` or ``const``, as these define
-general access types. This ensures in particular that access values in SPARK
-always point to dynamically-allocated memory, and thus can be freed when not
-null.
+declare access types with the qualifiers ``all`` or ``constant``, as these
+define general access types. This ensures in particular that access values in
+SPARK always point to dynamically-allocated memory, and thus can be freed when
+not null.
 
 .. index:: aliasing; absence of interference
 
