@@ -399,7 +399,7 @@ see :ref:`Referring to a value at the end of a local borrow`.
 
 .. index:: access types; access to subprogram
 
-Supprogram Pointers
+Subprogram Pointers
 -------------------
 
 Unlike access to objects, access to subprograms are not subjected to the
@@ -458,7 +458,7 @@ prove anything on the effect of ``Update_All``.
 .. index:: precondition; for subprogram pointer
            postcondition; for subprogram pointer
 
-Contracts for Supprogram Pointers
+Contracts for Subprogram Pointers
 ---------------------------------
 
 [Ada202X]
