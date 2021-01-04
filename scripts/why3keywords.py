@@ -52,8 +52,8 @@ def find_keywords(input_file):
     result = ""
     update = '      Keywords.Insert ("'
     input_file = open(input_file, 'r')
-    for l in input_file:
-        x = re.search(regexp, l)
+    for line in input_file:
+        x = re.search(regexp, line)
         if x is not None and x.group(1) is not None:
             result = result + (update + x.group(1) + '");\n')
     return result
