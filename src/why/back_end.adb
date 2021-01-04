@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2020, AdaCore                     --
+--                     Copyright (C) 2010-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -44,7 +44,7 @@ package body Back_End is
 
    package GNAT2Why_BE is new Adabkend
      (Product_Name       => "GNAT2WHY",
-      Copyright_Years    => "2010-2020",
+      Copyright_Years    => "2010-2021",
       Driver             => Gnat2Why.Driver.GNAT_To_Why,
       Is_Back_End_Switch => Gnat2Why.Driver.Is_Back_End_Switch);
 
