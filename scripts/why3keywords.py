@@ -45,7 +45,7 @@ postlude = """
 end Why.Keywords;
 """
 
-regexp = ".*\"([a-z]*)\", [A-Z]*;.*"
+regexp = re.compile(".*\"([a-z]*)\", [A-Z]*;.*")
 
 
 def find_keywords(input_file):
