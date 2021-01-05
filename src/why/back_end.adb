@@ -169,9 +169,12 @@ package body Back_End is
       end;
 
       --  For the pretty output mode, we set -gnatdF to force alternative
-      --  display of messages in Errout.
+      --  display of messages in Errout. Currently only do this on Linux,
+      --  as not all terminals support SGR on Windows.
 
-      if Gnat2Why_Args.Output_Mode in Gnat2Why_Opts.GPO_Pretty then
+      if Gnat2Why_Args.Output_Mode in Gnat2Why_Opts.GPO_Pretty
+        and then not Osint.On_Windows
+      then
          Debug_Flag_FF := True;
       end if;
 
