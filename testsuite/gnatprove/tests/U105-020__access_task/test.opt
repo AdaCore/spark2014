@@ -1,0 +1,1 @@
+ALL XFAIL crash in borrow checker on task with global output (U105-020)
