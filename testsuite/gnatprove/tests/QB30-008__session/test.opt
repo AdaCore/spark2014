@@ -1,1 +1,1 @@
-inverse-prover DEAD test depends on prover order
+inverse-prover SKIP test depends on prover order

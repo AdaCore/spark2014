@@ -1,1 +1,1 @@
-!packaged SKIP this test only works in official packages (R913-001)
+packaged REQUIRED this test only works in official packages (R913-001)

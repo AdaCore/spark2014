@@ -1,2 +1,2 @@
-assertions DEAD too slow for assertions
-NT DEAD too slow on Windows (PA06-025)
+assertions SKIP too slow for assertions
+NT SKIP too slow on Windows (PA06-025)
