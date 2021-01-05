@@ -279,10 +279,10 @@ package SPARK_Util is
    --  @param Scope scope
    --  @return True iff E is declared directly in Scope
 
-   function Is_Declared_In_Main_Lib_Unit (N : Node_Id) return Boolean;
-   --  @param any entity Node which is not in Standard
-   --  @return True iff E is declared in the same library unit as the analysed
-   --      unit. Go from child packages to parents for comparison.
+   function Is_Declared_In_Main_Unit_Or_Parent (N : Node_Id) return Boolean;
+   --  @param N any node which is not in Standard
+   --  @return True iff N is declared in the analysed unit or any of its
+   --     parents.
 
    function Is_Declared_In_Private (E : Entity_Id) return Boolean;
    --  @param E any entity

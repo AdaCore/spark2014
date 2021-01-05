@@ -273,7 +273,7 @@ package body Gnat2Why.Subprograms is
      (E : Entity_Id) return W_Term_Id
    is
      (if not Is_Globally_Visible (E)
-      and then not Is_Declared_In_Main_Lib_Unit (E)
+      and then not Is_Declared_In_Main_Unit_Or_Parent (E)
       then False_Term
       else True_Term);
    --  If E is a private subprogram, type invariants of its enclosing units may

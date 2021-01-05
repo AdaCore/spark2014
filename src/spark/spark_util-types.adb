@@ -266,8 +266,8 @@ package body SPARK_Util.Types is
          else Ty);
 
    begin
-      return Has_Invariants_In_SPARK (Ty) and then
-        Is_Declared_In_Main_Lib_Unit (Real_Node);
+      return Has_Invariants_In_SPARK (Ty)
+        and then Is_Declared_In_Main_Unit_Or_Parent (Real_Node);
    end Has_Visible_Type_Invariants;
 
    -------------------------------------

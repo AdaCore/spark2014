@@ -2069,32 +2069,26 @@ package body SPARK_Util is
      (Enclosing_Unit (E) = Scope and then not Is_Formal (E)
       and then (Ekind (E) /= E_Discriminant or else Sinfo.Scope (E) /= Scope));
 
-   ----------------------------------
-   -- Is_Declared_In_Main_Lib_Unit --
-   ----------------------------------
+   ----------------------------------------
+   -- Is_Declared_In_Main_Unit_Or_Parent --
+   ----------------------------------------
 
-   function Is_Declared_In_Main_Lib_Unit (N : Node_Id) return Boolean is
+   function Is_Declared_In_Main_Unit_Or_Parent (N : Node_Id) return Boolean
+   is
       Main_CU : Entity_Id := Main_Unit_Entity;
-      N_CU    : Entity_Id :=
+      N_CU    : constant Entity_Id :=
         Unique_Defining_Entity (Unit (Enclosing_Lib_Unit_Node (N)));
 
    begin
       --  If the current compilation unit is a child unit, go to its parent
 
-      while Is_Child_Unit (Main_CU) loop
+      while Is_Child_Unit (Main_CU) and then Main_CU /= N_CU loop
          Main_CU := Unique_Defining_Entity
            (Unit (Enclosing_Lib_Unit_Node (Scope (Main_CU))));
       end loop;
 
-      --  If the enclosing unit of N is a child unit, go to its parent
-
-      while Is_Child_Unit (N_CU) loop
-         N_CU := Unique_Defining_Entity
-           (Unit (Enclosing_Lib_Unit_Node (Scope (N_CU))));
-      end loop;
-
       return N_CU = Main_CU;
-   end Is_Declared_In_Main_Lib_Unit;
+   end Is_Declared_In_Main_Unit_Or_Parent;
 
    ---------------------
    -- Is_Empty_Others --
