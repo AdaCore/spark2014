@@ -37,4 +37,4 @@ package Bug with
         others                              =>
           Search'Result = Size_A
        );
- end Bug;
+end Bug;
