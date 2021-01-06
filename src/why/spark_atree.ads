@@ -453,9 +453,6 @@ package SPARK_Atree is
    --  return Empty on dereferences of access objects.
    --  It can only return Empty when called on expressions which are not paths.
 
-   function Get_Pragma_Arg (N : Node_Id) return Node_Id renames
-     Sinfo.Get_Pragma_Arg;
-
    function Get_Pragma_Id (N : Node_Id) return Pragma_Id with
      Pre => Nkind (N) = N_Pragma;
 
