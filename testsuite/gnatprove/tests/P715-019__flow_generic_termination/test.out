@@ -1,10 +1,10 @@
-a-cfhase.ads:124:09: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cfhase.ads:266:09: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cfhase.ads:534:06: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cfhase.ads:1237:06: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cofuse.ads:73:06: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
-a-cofuse.ads:120:06: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
-a-cofuse.ads:159:06: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
+a-cfhase.ads:124:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cfhase.ads:266:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cfhase.ads:534:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cfhase.ads:1237:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cofuse.ads:73:06: error: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
+a-cofuse.ads:120:06: error: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
+a-cofuse.ads:159:06: error: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
 a-cofuve.ads:95:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at a-cfhase.ads:102, in instantiation at term.ads:15
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:102, in instantiation at term.ads:15
 term.adb:5:07: medium: "Eq" and "Contains" are mutually recursive, terminating annotation on "Eq" could be incorrect

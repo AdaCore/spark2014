@@ -2,12 +2,12 @@ functions_illegal.adb:21:22: global mode "Output" is not applicable to functions
 functions_illegal.adb:33:22: global mode "In_Out" is not applicable to functions
 functions_illegal.ads:11:22: global mode "Output" is not applicable to functions
 functions_illegal.ads:19:22: global mode "In_Out" is not applicable to functions
-functions_illegal_2.adb:16:13: function with "out" parameter is not allowed in SPARK
-functions_illegal_2.adb:16:13: violation of aspect SPARK_Mode at line 2
-functions_illegal_2.adb:27:13: function with "in out" parameter is not allowed in SPARK
-functions_illegal_2.adb:27:13: violation of aspect SPARK_Mode at line 2
-functions_illegal_2.ads:4:13: function with "out" parameter is not allowed in SPARK
-functions_illegal_2.ads:4:13: violation of aspect SPARK_Mode at line 2
-functions_illegal_2.ads:10:13: function with "in out" parameter is not allowed in SPARK
-functions_illegal_2.ads:10:13: violation of aspect SPARK_Mode at line 2
+functions_illegal_2.adb:16:13: error: function with "out" parameter is not allowed in SPARK
+functions_illegal_2.adb:16:13: error: violation of aspect SPARK_Mode at line 2
+functions_illegal_2.adb:27:13: error: function with "in out" parameter is not allowed in SPARK
+functions_illegal_2.adb:27:13: error: violation of aspect SPARK_Mode at line 2
+functions_illegal_2.ads:4:13: error: function with "out" parameter is not allowed in SPARK
+functions_illegal_2.ads:4:13: error: violation of aspect SPARK_Mode at line 2
+functions_illegal_2.ads:10:13: error: function with "in out" parameter is not allowed in SPARK
+functions_illegal_2.ads:10:13: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

@@ -1,5 +1,5 @@
-derived.ads:5:04: cannot modify inherited condition (SPARK RM 6.1.1(1))
-derived.ads:5:04: cannot modify inherited condition (SPARK RM 6.1.1(1))
-derived.ads:5:04: overriding of "Is_Valid" at line 7 forces overriding of "Do_Stuff"
-derived.ads:5:04: overriding of "Is_Valid" at line 7 forces overriding of "Do_Stuff"
+derived.ads:5:04: error: cannot modify inherited condition (SPARK RM 6.1.1(1))
+derived.ads:5:04: error: cannot modify inherited condition (SPARK RM 6.1.1(1))
+derived.ads:5:04: error: overriding of "Is_Valid" at line 7 forces overriding of "Do_Stuff"
+derived.ads:5:04: error: overriding of "Is_Valid" at line 7 forces overriding of "Do_Stuff"
 gnatprove: error during generation of Global contracts

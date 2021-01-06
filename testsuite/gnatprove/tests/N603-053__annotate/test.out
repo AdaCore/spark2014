@@ -1,8 +1,8 @@
 warn_not_suppr.ads:5:30: medium: "X" might not be initialized in "P"
-syntax.adb:12:07: wrong number of arguments in pragma Annotate (GNATprove, Intentional, ...), expected 4
-syntax.adb:13:35: invalid name "Bla" in pragma Annotate (GNATprove, name)
-syntax.adb:14:07: third argument "pattern" for GNATprove Annotate pragma must be a string literal
-syntax.adb:15:07: fourth argument "reason" for GNATprove Annotate pragma must be a string literal
+syntax.adb:12:07: error: wrong number of arguments in pragma Annotate (GNATprove, Intentional, ...), expected 4
+syntax.adb:13:35: error: invalid name "Bla" in pragma Annotate (GNATprove, name)
+syntax.adb:14:07: error: third argument "pattern" for GNATprove Annotate pragma must be a string literal
+syntax.adb:15:07: error: fourth argument "reason" for GNATprove Annotate pragma must be a string literal
 gnatprove: error during generation of Global contracts
 suppr.adb:17:04: warning: analyzing unreferenced procedure "Q"
 suppr.adb:17:14: warning: subprogram "Q" has no effect

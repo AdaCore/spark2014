@@ -304,14 +304,14 @@ dynamic_fixed.adb:6:40: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:7:19: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:9:25: medium: assertion might fail, cannot prove Integer (T'Last) = I (e.g. when I = 1)
 dynamic_fixed.adb:10:25: info: assertion proved (Trivial)
-unsupported.adb:19:13: operation between incompatible fixed-point types is not yet supported
-unsupported.adb:20:13: operation between incompatible fixed-point types is not yet supported
-unsupported.adb:21:15: real literal argument to fixed-point multiplication or division is not allowed in SPARK
-unsupported.adb:21:15: use qualification to give a fixed-point type to the real literal
-unsupported.adb:21:15: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:22:10: real literal argument to fixed-point multiplication or division is not allowed in SPARK
-unsupported.adb:22:10: use qualification to give a fixed-point type to the real literal
-unsupported.adb:22:10: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:24:10: conversion between incompatible fixed-point types is not yet supported
-unsupported.adb:25:22: operation between incompatible fixed-point types is not yet supported
+unsupported.adb:19:13: error: operation between incompatible fixed-point types is not yet supported
+unsupported.adb:20:13: error: operation between incompatible fixed-point types is not yet supported
+unsupported.adb:21:15: error: real literal argument to fixed-point multiplication or division is not allowed in SPARK
+unsupported.adb:21:15: error: use qualification to give a fixed-point type to the real literal
+unsupported.adb:21:15: error: violation of pragma SPARK_Mode at test.adc:1
+unsupported.adb:22:10: error: real literal argument to fixed-point multiplication or division is not allowed in SPARK
+unsupported.adb:22:10: error: use qualification to give a fixed-point type to the real literal
+unsupported.adb:22:10: error: violation of pragma SPARK_Mode at test.adc:1
+unsupported.adb:24:10: error: conversion between incompatible fixed-point types is not yet supported
+unsupported.adb:25:22: error: operation between incompatible fixed-point types is not yet supported
 gnatprove: error during flow analysis and proof

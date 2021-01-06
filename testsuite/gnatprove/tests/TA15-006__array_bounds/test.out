@@ -1,20 +1,20 @@
-test_borrow.adb:31:25: object was borrowed at line 29
-test_borrow.adb:31:43: object was borrowed at line 29
-test_borrow.adb:31:60: object was borrowed at line 29
-test_borrow.adb:39:25: object was borrowed at line 37
-test_borrow.adb:39:43: object was borrowed at line 37
-test_borrow.adb:39:60: object was borrowed at line 37
+test_borrow.adb:31:25: error: object was borrowed at line 29
+test_borrow.adb:31:43: error: object was borrowed at line 29
+test_borrow.adb:31:60: error: object was borrowed at line 29
+test_borrow.adb:39:25: error: object was borrowed at line 37
+test_borrow.adb:39:43: error: object was borrowed at line 37
+test_borrow.adb:39:60: error: object was borrowed at line 37
 test_borrow.adb:45:07: warning: initialization of "Z" has no effect
-test_borrow.adb:56:25: object was moved at line 54
-test_borrow.adb:56:25: part of dereference from "X" is not readable
-test_borrow.adb:56:43: object was moved at line 54
-test_borrow.adb:56:43: part of dereference from "X" is not readable
-test_borrow.adb:56:60: object was moved at line 54
-test_borrow.adb:56:60: part of dereference from "X" is not readable
-test_borrow.adb:65:25: object was moved at line 63
-test_borrow.adb:65:25: part of dereference from "X" is not readable
-test_borrow.adb:65:43: object was moved at line 63
-test_borrow.adb:65:43: part of dereference from "X" is not readable
-test_borrow.adb:65:60: object was moved at line 63
-test_borrow.adb:65:60: part of dereference from "X" is not readable
+test_borrow.adb:56:25: error: object was moved at line 54
+test_borrow.adb:56:25: error: part of dereference from "X" is not readable
+test_borrow.adb:56:43: error: object was moved at line 54
+test_borrow.adb:56:43: error: part of dereference from "X" is not readable
+test_borrow.adb:56:60: error: object was moved at line 54
+test_borrow.adb:56:60: error: part of dereference from "X" is not readable
+test_borrow.adb:65:25: error: object was moved at line 63
+test_borrow.adb:65:25: error: part of dereference from "X" is not readable
+test_borrow.adb:65:43: error: object was moved at line 63
+test_borrow.adb:65:43: error: part of dereference from "X" is not readable
+test_borrow.adb:65:60: error: object was moved at line 63
+test_borrow.adb:65:60: error: part of dereference from "X" is not readable
 gnatprove: error during flow analysis and proof

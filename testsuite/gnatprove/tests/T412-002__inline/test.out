@@ -1,4 +1,4 @@
-test_inline.adb:2:13: function with Inline_For_Proof and no postconditions must be an expression function
-test_inline.adb:4:13: function with Inline_For_Proof must have a postcondition of the form "F2'Result = Expr"
-test_inline.adb:9:24: function with Inline_For_Proof must be an expression function or have exactly one postcondition
+test_inline.adb:2:13: error: function with Inline_For_Proof and no postconditions must be an expression function
+test_inline.adb:4:13: error: function with Inline_For_Proof must have a postcondition of the form "F2'Result = Expr"
+test_inline.adb:9:24: error: function with Inline_For_Proof must be an expression function or have exactly one postcondition
 gnatprove: error during generation of Global contracts

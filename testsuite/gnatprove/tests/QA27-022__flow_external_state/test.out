@@ -1,4 +1,4 @@
 main.adb:5:12: info: postcondition proved (CVC4: 1 VC)
-state.adb:18:36: external state abstraction "State.State" of variable "Local_Value" constituent of "State" cannot act as global item of nonvolatile function "Get"
+state.adb:18:36: error: external state abstraction "State.State" of variable "Local_Value" constituent of "State" cannot act as global item of nonvolatile function "Get"
 state.ads:7:07: info: data dependencies proved
 gnatprove: error during flow analysis and proof

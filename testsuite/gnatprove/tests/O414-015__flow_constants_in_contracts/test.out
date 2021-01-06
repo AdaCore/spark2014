@@ -12,9 +12,9 @@ const.ads:12:33: info: precondition proved (Trivial: 1 VC)
 const.ads:13:04: low: initialization of constant with variable input "E" through constant with variable input "C" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
 const.ads:15:33: info: precondition proved (Trivial: 1 VC)
 const.ads:20:11: info: data dependencies proved
-const2.adb:2:08: all constituents must be declared before body at line 5
-const2.adb:2:08: body "Get_V" declared at line 5 freezes the contract of "Const2"
-const2.adb:2:35: "V2" is undefined
+const2.adb:2:08: error: all constituents must be declared before body at line 5
+const2.adb:2:08: error: body "Get_V" declared at line 5 freezes the contract of "Const2"
+const2.adb:2:35: error: "V2" is undefined
 compilation abandoned
 gnatprove: error during generation of Global contracts
 const3.adb:3:19: info: initialization of "F" proved

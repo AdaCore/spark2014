@@ -1,5 +1,5 @@
-p_no_return.adb:4:07: implied return after this statement would have raised Program_Error
-p_no_return.adb:4:07: procedure "Returning" is marked as No_Return
-p_no_return.adb:12:26: implied return after this statement would have raised Program_Error
-p_no_return.adb:12:26: procedure "Difficult_Non_Returning" is marked as No_Return
+p_no_return.adb:4:07: error: implied return after this statement would have raised Program_Error
+p_no_return.adb:4:07: error: procedure "Returning" is marked as No_Return
+p_no_return.adb:12:26: error: implied return after this statement would have raised Program_Error
+p_no_return.adb:12:26: error: procedure "Difficult_Non_Returning" is marked as No_Return
 gnatprove: error during generation of Global contracts

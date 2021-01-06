@@ -1,35 +1,35 @@
 iommu.adb:23:07: info: initialization of "Value" proved
-iommu.adb:26:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Capability"
-iommu.adb:27:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Capability"
+iommu.adb:26:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Capability"
+iommu.adb:27:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Capability"
 iommu.adb:39:07: info: initialization of "Value" proved
-iommu.adb:42:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Context_Command"
-iommu.adb:43:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Context_Command"
+iommu.adb:42:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Context_Command"
+iommu.adb:43:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Context_Command"
 iommu.adb:55:07: info: initialization of "Value" proved
-iommu.adb:58:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Extended_Capability"
-iommu.adb:59:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Extended_Capability"
+iommu.adb:58:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Extended_Capability"
+iommu.adb:59:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Extended_Capability"
 iommu.adb:71:07: info: initialization of "Value" proved
-iommu.adb:74:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Address"
-iommu.adb:75:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Address"
+iommu.adb:74:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Address"
+iommu.adb:75:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Address"
 iommu.adb:87:07: info: initialization of "Value" proved
-iommu.adb:90:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Control"
-iommu.adb:91:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Control"
+iommu.adb:90:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Control"
+iommu.adb:91:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Control"
 iommu.adb:103:07: info: initialization of "Value" proved
-iommu.adb:106:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Data"
-iommu.adb:107:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Data"
+iommu.adb:106:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Data"
+iommu.adb:107:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Event_Data"
 iommu.adb:119:07: info: initialization of "Value" proved
-iommu.adb:122:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Recording"
-iommu.adb:123:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Recording"
+iommu.adb:122:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Recording"
+iommu.adb:123:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Recording"
 iommu.adb:135:07: info: initialization of "Value" proved
-iommu.adb:138:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Status"
-iommu.adb:139:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Status"
+iommu.adb:138:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Status"
+iommu.adb:139:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Fault_Status"
 iommu.adb:151:07: info: initialization of "Value" proved
-iommu.adb:154:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Global_Status"
-iommu.adb:155:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Global_Status"
+iommu.adb:154:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Global_Status"
+iommu.adb:155:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Global_Status"
 iommu.adb:167:07: info: initialization of "Value" proved
-iommu.adb:170:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_IOTLB_Invalidate"
-iommu.adb:171:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_IOTLB_Invalidate"
+iommu.adb:170:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_IOTLB_Invalidate"
+iommu.adb:171:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_IOTLB_Invalidate"
 iommu.adb:183:07: info: initialization of "Value" proved
-iommu.adb:186:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Version"
-iommu.adb:187:26: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Version"
+iommu.adb:186:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Version"
+iommu.adb:187:26: error: volatile variable "IOMMUs" constituent of "State" cannot act as global item of nonvolatile function "Read_Version"
 iommu.ads:10:04: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

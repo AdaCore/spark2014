@@ -1,42 +1,42 @@
-i2c-system_clock.adb:2:06: "SYSTEM.STM32" is not a predefined library unit
-stm32_svd-gpio.ads:23:09: discriminated type "MODER_Register" cannot be volatile
-stm32_svd-gpio.ads:23:09: discriminated type "MODER_Register" cannot be volatile
-stm32_svd-gpio.ads:23:09: discriminated type "MODER_Register" cannot be volatile
-stm32_svd-gpio.ads:23:09: discriminated type "MODER_Register" cannot be volatile
-stm32_svd-gpio.ads:93:09: discriminated type "OSPEEDR_Register" cannot be volatile
-stm32_svd-gpio.ads:93:09: discriminated type "OSPEEDR_Register" cannot be volatile
-stm32_svd-gpio.ads:93:09: discriminated type "OSPEEDR_Register" cannot be volatile
-stm32_svd-gpio.ads:93:09: discriminated type "OSPEEDR_Register" cannot be volatile
-stm32_svd-gpio.ads:121:09: discriminated type "PUPDR_Register" cannot be volatile
-stm32_svd-gpio.ads:121:09: discriminated type "PUPDR_Register" cannot be volatile
-stm32_svd-gpio.ads:121:09: discriminated type "PUPDR_Register" cannot be volatile
-stm32_svd-gpio.ads:121:09: discriminated type "PUPDR_Register" cannot be volatile
-stm32_svd-gpio.ads:349:09: discriminated type "AFRL_Register" cannot be volatile
-stm32_svd-gpio.ads:349:09: discriminated type "AFRL_Register" cannot be volatile
-stm32_svd-gpio.ads:349:09: discriminated type "AFRL_Register" cannot be volatile
-stm32_svd-gpio.ads:349:09: discriminated type "AFRL_Register" cannot be volatile
-stm32_svd-gpio.ads:377:09: discriminated type "AFRH_Register" cannot be volatile
-stm32_svd-gpio.ads:377:09: discriminated type "AFRH_Register" cannot be volatile
-stm32_svd-gpio.ads:377:09: discriminated type "AFRH_Register" cannot be volatile
-stm32_svd-gpio.ads:377:09: discriminated type "AFRH_Register" cannot be volatile
-stm32_svd-gpio.ads:427:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:427:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:427:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:427:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:429:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:429:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:429:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:429:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:430:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:430:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:430:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:430:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:435:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:435:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:435:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:435:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:436:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:436:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:436:15: component clause not allowed for variable length component
-stm32_svd-gpio.ads:436:15: component clause not allowed for variable length component
+i2c-system_clock.adb:2:06: error: "SYSTEM.STM32" is not a predefined library unit
+stm32_svd-gpio.ads:23:09: error: discriminated type "MODER_Register" cannot be volatile
+stm32_svd-gpio.ads:23:09: error: discriminated type "MODER_Register" cannot be volatile
+stm32_svd-gpio.ads:23:09: error: discriminated type "MODER_Register" cannot be volatile
+stm32_svd-gpio.ads:23:09: error: discriminated type "MODER_Register" cannot be volatile
+stm32_svd-gpio.ads:93:09: error: discriminated type "OSPEEDR_Register" cannot be volatile
+stm32_svd-gpio.ads:93:09: error: discriminated type "OSPEEDR_Register" cannot be volatile
+stm32_svd-gpio.ads:93:09: error: discriminated type "OSPEEDR_Register" cannot be volatile
+stm32_svd-gpio.ads:93:09: error: discriminated type "OSPEEDR_Register" cannot be volatile
+stm32_svd-gpio.ads:121:09: error: discriminated type "PUPDR_Register" cannot be volatile
+stm32_svd-gpio.ads:121:09: error: discriminated type "PUPDR_Register" cannot be volatile
+stm32_svd-gpio.ads:121:09: error: discriminated type "PUPDR_Register" cannot be volatile
+stm32_svd-gpio.ads:121:09: error: discriminated type "PUPDR_Register" cannot be volatile
+stm32_svd-gpio.ads:349:09: error: discriminated type "AFRL_Register" cannot be volatile
+stm32_svd-gpio.ads:349:09: error: discriminated type "AFRL_Register" cannot be volatile
+stm32_svd-gpio.ads:349:09: error: discriminated type "AFRL_Register" cannot be volatile
+stm32_svd-gpio.ads:349:09: error: discriminated type "AFRL_Register" cannot be volatile
+stm32_svd-gpio.ads:377:09: error: discriminated type "AFRH_Register" cannot be volatile
+stm32_svd-gpio.ads:377:09: error: discriminated type "AFRH_Register" cannot be volatile
+stm32_svd-gpio.ads:377:09: error: discriminated type "AFRH_Register" cannot be volatile
+stm32_svd-gpio.ads:377:09: error: discriminated type "AFRH_Register" cannot be volatile
+stm32_svd-gpio.ads:427:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:427:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:427:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:427:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:429:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:429:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:429:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:429:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:430:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:430:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:430:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:430:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:435:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:435:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:435:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:435:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:436:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:436:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:436:15: error: component clause not allowed for variable length component
+stm32_svd-gpio.ads:436:15: error: component clause not allowed for variable length component
 gnatprove: error during generation of Global contracts

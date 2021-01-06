@@ -1,4 +1,4 @@
-main.adb:14:09: "Constraint_Error" would have been raised at run time
-main.adb:14:09: error in inlined body at line 9
-main.adb:14:09: value not in range of type "Angle" defined at line 4
+main.adb:14:09: error: "Constraint_Error" would have been raised at run time
+main.adb:14:09: error: error in inlined body at line 9
+main.adb:14:09: error: value not in range of type "Angle" defined at line 4
 gnatprove: error during generation of Global contracts

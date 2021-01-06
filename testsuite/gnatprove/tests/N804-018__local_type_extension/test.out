@@ -1,11 +1,11 @@
-local_type_ext.adb:5:12: local derived type from non-local parent is not allowed in SPARK (SPARK RM 3.9.1(1))
-local_type_ext.adb:5:12: violation of aspect SPARK_Mode at line 2
-local_type_ext.adb:17:12: local derived type from non-local parent is not allowed in SPARK (SPARK RM 3.9.1(1))
-local_type_ext.adb:17:12: violation of aspect SPARK_Mode at line 2
+local_type_ext.adb:5:12: error: local derived type from non-local parent is not allowed in SPARK (SPARK RM 3.9.1(1))
+local_type_ext.adb:5:12: error: violation of aspect SPARK_Mode at line 2
+local_type_ext.adb:17:12: error: local derived type from non-local parent is not allowed in SPARK (SPARK RM 3.9.1(1))
+local_type_ext.adb:17:12: error: violation of aspect SPARK_Mode at line 2
 local_type_ext.adb:35:04: warning: analyzing unreferenced procedure "NOK"
-local_type_ext.adb:40:15: local derived type from non-local parent is not allowed in SPARK (SPARK RM 3.9.1(1))
-local_type_ext.adb:40:15: violation of aspect SPARK_Mode at line 2
-local_type_ext.adb:42:15: local derived type from non-local interface is not allowed in SPARK (SPARK RM 3.9.1(1))
-local_type_ext.adb:42:15: violation of aspect SPARK_Mode at line 2
+local_type_ext.adb:40:15: error: local derived type from non-local parent is not allowed in SPARK (SPARK RM 3.9.1(1))
+local_type_ext.adb:40:15: error: violation of aspect SPARK_Mode at line 2
+local_type_ext.adb:42:15: error: local derived type from non-local interface is not allowed in SPARK (SPARK RM 3.9.1(1))
+local_type_ext.adb:42:15: error: violation of aspect SPARK_Mode at line 2
 local_type_ext.adb:48:04: warning: analyzing unreferenced procedure "OK"
 gnatprove: error during flow analysis and proof

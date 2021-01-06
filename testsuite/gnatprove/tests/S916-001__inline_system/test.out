@@ -1,4 +1,4 @@
-s-inline.adb:9:04: "Constraint_Error" would have been raised at run time
-s-inline.adb:9:04: error in inlined body at line 5
-s-inline.adb:9:04: value not in range of type "Standard.Integer"
+s-inline.adb:9:04: error: "Constraint_Error" would have been raised at run time
+s-inline.adb:9:04: error: error in inlined body at line 5
+s-inline.adb:9:04: error: value not in range of type "Standard.Integer"
 gnatprove: error during generation of Global contracts

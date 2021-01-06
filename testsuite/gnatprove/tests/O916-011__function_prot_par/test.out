@@ -1,2 +1,2 @@
-fun_prot_par.ads:8:16: nonvolatile function "F" cannot have a volatile parameter
+fun_prot_par.ads:8:16: error: nonvolatile function "F" cannot have a volatile parameter
 gnatprove: error during generation of Global contracts

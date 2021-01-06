@@ -1,7 +1,7 @@
-dic_not_spark.ads:4:35: "Add" is not allowed in SPARK (due to function with "in out" parameter)
-dic_not_spark.ads:4:35: delayed type aspect on "Bad1" is required to be in SPARK
-dic_not_spark.ads:13:38: "Add" is not allowed in SPARK (due to function with "in out" parameter)
-dic_not_spark.ads:13:38: violation of aspect SPARK_Mode at line 10
-dic_not_spark.ads:15:16: function with "in out" parameter is not allowed in SPARK
-dic_not_spark.ads:15:16: violation of aspect SPARK_Mode at line 10
+dic_not_spark.ads:4:35: error: "Add" is not allowed in SPARK (due to function with "in out" parameter)
+dic_not_spark.ads:4:35: error: delayed type aspect on "Bad1" is required to be in SPARK
+dic_not_spark.ads:13:38: error: "Add" is not allowed in SPARK (due to function with "in out" parameter)
+dic_not_spark.ads:13:38: error: violation of aspect SPARK_Mode at line 10
+dic_not_spark.ads:15:16: error: function with "in out" parameter is not allowed in SPARK
+dic_not_spark.ads:15:16: error: violation of aspect SPARK_Mode at line 10
 gnatprove: error during flow analysis and proof

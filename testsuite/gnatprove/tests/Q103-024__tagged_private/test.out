@@ -1,4 +1,4 @@
-types.ads:16:05: cannot derive from "T" declared as untagged private (SPARK RM 3.4(1))
-types.ads:16:05: cannot derive from "T" declared as untagged private (SPARK RM 3.4(1))
-types.ads:16:05: cannot derive from "T" declared as untagged private (SPARK RM 3.4(1))
+types.ads:16:05: error: cannot derive from "T" declared as untagged private (SPARK RM 3.4(1))
+types.ads:16:05: error: cannot derive from "T" declared as untagged private (SPARK RM 3.4(1))
+types.ads:16:05: error: cannot derive from "T" declared as untagged private (SPARK RM 3.4(1))
 gnatprove: error during generation of Global contracts

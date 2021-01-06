@@ -1,3 +1,3 @@
-p.ads:6:31: "Y" is not allowed in SPARK (due to iterator specification over array of dimension 2)
-p.ads:6:31: violation of aspect SPARK_Mode at line 5
+p.ads:6:31: error: "Y" is not allowed in SPARK (due to iterator specification over array of dimension 2)
+p.ads:6:31: error: violation of aspect SPARK_Mode at line 5
 gnatprove: error during flow analysis and proof

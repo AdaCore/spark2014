@@ -1,2 +1,2 @@
-p.adb:4:10: protected function with effective reads "PT.C" is not allowed in SPARK
+p.adb:4:10: error: protected function with effective reads "PT.C" is not allowed in SPARK
 gnatprove: error during flow analysis and proof

@@ -1,16 +1,16 @@
-violations.adb:12:04: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
-violations.adb:12:04: violation of pragma SPARK_Mode at test.adc:1
-violations.adb:18:07: "Data3" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-violations.adb:18:07: violation of pragma SPARK_Mode at test.adc:1
-violations.adb:48:07: handler is not allowed in SPARK
-violations.adb:48:07: violation of pragma SPARK_Mode at test.adc:1
-violations.ads:3:13: function with "in out" parameter is not allowed in SPARK
-violations.ads:3:13: violation of pragma SPARK_Mode at test.adc:1
+violations.adb:12:04: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+violations.adb:12:04: error: violation of pragma SPARK_Mode at test.adc:1
+violations.adb:18:07: error: "Data3" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+violations.adb:18:07: error: violation of pragma SPARK_Mode at test.adc:1
+violations.adb:48:07: error: handler is not allowed in SPARK
+violations.adb:48:07: error: violation of pragma SPARK_Mode at test.adc:1
+violations.ads:3:13: error: function with "in out" parameter is not allowed in SPARK
+violations.ads:3:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during fast partial checking of SPARK legality rules
 all_violations.adb:24:04: warning: analyzing unreferenced procedure "Call_Increment_And_Log"
 all_violations.adb:24:14: warning: "Last" is not modified, could be INPUT
 all_violations.adb:27:09: warning: unused assignment
-all_violations.adb:27:12: side effects of function "Increment_And_Log" are not modeled in SPARK
-all_violations.ads:5:13: function with output global "Count" is not allowed in SPARK
-all_violations.ads:9:13: function with output global "Last" is not allowed in SPARK
+all_violations.adb:27:12: error: side effects of function "Increment_And_Log" are not modeled in SPARK
+all_violations.ads:5:13: error: function with output global "Count" is not allowed in SPARK
+all_violations.ads:9:13: error: function with output global "Last" is not allowed in SPARK
 gnatprove: error during analysis of data and information flow

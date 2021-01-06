@@ -4,13 +4,13 @@ illegal_1.adb:25:07: info: initialization of "E" proved
 illegal_1.adb:36:07: info: initialization of "E" proved
 illegal_1.adb:46:07: info: initialization of "E" proved
 illegal_1.adb:56:07: info: initialization of "E" proved
-illegal_1.ads:13:13: "G" is a Proof_In of overriding subprogram, but not of overridden subprogram "New_Object" at root.ads:14 (SPARK RM 6.1.6)
-illegal_1.ads:19:13: "G" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "New_Object_From_State" at root.ads:18 (SPARK RM 6.1.6)
-illegal_1.ads:28:13: "G" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "New_P_Object_From_State" at root.ads:25 (SPARK RM 6.1.6)
-illegal_1.ads:31:14: "G" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "New_Object_And_Update_Global_Outputs" at root.ads:28 (SPARK RM 6.1.6)
-illegal_1.ads:31:14: "G" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "New_Object_And_Update_Global_Outputs" at root.ads:28 (SPARK RM 6.1.6)
+illegal_1.ads:13:13: error: "G" is a Proof_In of overriding subprogram, but not of overridden subprogram "New_Object" at root.ads:14 (SPARK RM 6.1.6)
+illegal_1.ads:19:13: error: "G" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "New_Object_From_State" at root.ads:18 (SPARK RM 6.1.6)
+illegal_1.ads:28:13: error: "G" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "New_P_Object_From_State" at root.ads:25 (SPARK RM 6.1.6)
+illegal_1.ads:31:14: error: "G" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "New_Object_And_Update_Global_Outputs" at root.ads:28 (SPARK RM 6.1.6)
+illegal_1.ads:31:14: error: "G" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "New_Object_And_Update_Global_Outputs" at root.ads:28 (SPARK RM 6.1.6)
 illegal_1.ads:31:52: info: initialization of "O" proved
-illegal_1.ads:34:14: "G" is an Output of overriding subprogram, but it is not an Output of overridden subprogram "Update_Global_Based_On_Object" at root.ads:31 (SPARK RM 6.1.6)
+illegal_1.ads:34:14: error: "G" is an Output of overriding subprogram, but it is not an Output of overridden subprogram "Update_Global_Based_On_Object" at root.ads:31 (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof
 root.adb:11:29: info: overflow check proved (CVC4: 1 VC)
 root.adb:43:40: info: initialization of "Counter" constituent of "State" proved
@@ -23,13 +23,13 @@ root.ads:29:11: info: data dependencies proved
 root.ads:32:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:16:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:19:34: info: initialization of "O" proved
-simple_illegal_with_contracts.ads:25:14: "PI" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:25:14: error: "PI" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
 simple_illegal_with_contracts.ads:26:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:28:32: info: initialization of "O" proved
-simple_illegal_with_contracts.ads:34:14: "I" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:34:14: error: "I" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
 simple_illegal_with_contracts.ads:35:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:37:34: info: initialization of "O" proved
-simple_illegal_with_contracts.ads:43:14: "I" is an Output of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:43:14: error: "I" is an Output of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
 simple_illegal_with_contracts.ads:44:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:45:35: info: initialization of "I" proved
 simple_illegal_with_contracts.ads:45:38: info: initialization of "IO" proved
@@ -40,7 +40,7 @@ simple_illegal_with_contracts.ads:54:39: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:61:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:62:34: info: initialization of "O" proved
 gnatprove: error during flow analysis and proof
-simple_illegal_without_contracts.ads:21:14: "PI" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
-simple_illegal_without_contracts.ads:27:14: "I" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
-simple_illegal_without_contracts.ads:33:14: "I" is an Output of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_without_contracts.ads:21:14: error: "PI" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_without_contracts.ads:27:14: error: "I" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_without_contracts.ads:33:14: error: "I" is an Output of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof

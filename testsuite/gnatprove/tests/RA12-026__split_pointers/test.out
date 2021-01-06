@@ -1,19 +1,19 @@
-split_pointers.adb:68:04: "H2" is not allowed in SPARK (due to allocators in interfering context)
-split_pointers.adb:68:04: violation of aspect SPARK_Mode at line 1
-split_pointers.adb:68:34: allocators in interfering context is not allowed in SPARK
-split_pointers.adb:68:34: violation of aspect SPARK_Mode at line 1
-split_pointers.adb:69:04: "H3" is not allowed in SPARK (due to allocators in interfering context)
-split_pointers.adb:69:04: violation of aspect SPARK_Mode at line 1
-split_pointers.adb:69:25: allocators in interfering context is not allowed in SPARK
-split_pointers.adb:69:25: violation of aspect SPARK_Mode at line 1
-split_pointers.adb:76:19: "H3" is not allowed in SPARK (due to allocators in interfering context)
-split_pointers.adb:76:19: violation of aspect SPARK_Mode at line 1
-split_pointers.adb:76:25: "H2" is not allowed in SPARK (due to allocators in interfering context)
-split_pointers.adb:76:25: violation of aspect SPARK_Mode at line 1
-split_pointers.adb:77:25: "H3" is not allowed in SPARK (due to allocators in interfering context)
-split_pointers.adb:77:25: violation of aspect SPARK_Mode at line 1
-split_pointers.adb:77:31: "H2" is not allowed in SPARK (due to allocators in interfering context)
-split_pointers.adb:77:31: violation of aspect SPARK_Mode at line 1
-split_pointers.adb:78:23: "H3" is not allowed in SPARK (due to allocators in interfering context)
-split_pointers.adb:78:23: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:68:04: error: "H2" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:68:04: error: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:68:34: error: allocators in interfering context is not allowed in SPARK
+split_pointers.adb:68:34: error: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:69:04: error: "H3" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:69:04: error: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:69:25: error: allocators in interfering context is not allowed in SPARK
+split_pointers.adb:69:25: error: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:76:19: error: "H3" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:76:19: error: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:76:25: error: "H2" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:76:25: error: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:77:25: error: "H3" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:77:25: error: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:77:31: error: "H2" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:77:31: error: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:78:23: error: "H3" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:78:23: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

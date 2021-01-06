@@ -1,2 +1,2 @@
-parser_utilities.adb:13:07: too complex actions inserted in expression is not yet supported
+parser_utilities.adb:13:07: error: too complex actions inserted in expression is not yet supported
 gnatprove: error during flow analysis and proof

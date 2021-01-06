@@ -1,23 +1,23 @@
-arr.adb:4:26: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
-arr.adb:4:26: violation of pragma SPARK_Mode at test.adc:1
-ext_aggr.adb:7:15: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
-ext_aggr.adb:7:15: violation of pragma SPARK_Mode at test.adc:1
-p.adb:16:15: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
-p.adb:16:15: violation of pragma SPARK_Mode at test.adc:1
-priv.ads:10:04: "Ob" is not allowed in SPARK (due to box notation without default initialization)
-priv.ads:10:04: violation of pragma SPARK_Mode at test.adc:1
-priv.ads:10:14: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
-priv.ads:10:14: violation of pragma SPARK_Mode at test.adc:1
-rec.ads:8:04: "O1" is not allowed in SPARK (due to box notation without default initialization)
-rec.ads:8:04: violation of pragma SPARK_Mode at test.adc:1
-rec.ads:8:14: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
-rec.ads:8:14: violation of pragma SPARK_Mode at test.adc:1
-rec.ads:9:04: "O2" is not allowed in SPARK (due to box notation without default initialization)
-rec.ads:9:04: violation of pragma SPARK_Mode at test.adc:1
-rec.ads:9:14: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
-rec.ads:9:14: violation of pragma SPARK_Mode at test.adc:1
-rec.ads:16:04: "O3" is not allowed in SPARK (due to box notation without default initialization)
-rec.ads:16:04: violation of pragma SPARK_Mode at test.adc:1
-rec.ads:16:15: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
-rec.ads:16:15: violation of pragma SPARK_Mode at test.adc:1
+arr.adb:4:26: error: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+arr.adb:4:26: error: violation of pragma SPARK_Mode at test.adc:1
+ext_aggr.adb:7:15: error: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+ext_aggr.adb:7:15: error: violation of pragma SPARK_Mode at test.adc:1
+p.adb:16:15: error: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+p.adb:16:15: error: violation of pragma SPARK_Mode at test.adc:1
+priv.ads:10:04: error: "Ob" is not allowed in SPARK (due to box notation without default initialization)
+priv.ads:10:04: error: violation of pragma SPARK_Mode at test.adc:1
+priv.ads:10:14: error: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+priv.ads:10:14: error: violation of pragma SPARK_Mode at test.adc:1
+rec.ads:8:04: error: "O1" is not allowed in SPARK (due to box notation without default initialization)
+rec.ads:8:04: error: violation of pragma SPARK_Mode at test.adc:1
+rec.ads:8:14: error: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+rec.ads:8:14: error: violation of pragma SPARK_Mode at test.adc:1
+rec.ads:9:04: error: "O2" is not allowed in SPARK (due to box notation without default initialization)
+rec.ads:9:04: error: violation of pragma SPARK_Mode at test.adc:1
+rec.ads:9:14: error: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+rec.ads:9:14: error: violation of pragma SPARK_Mode at test.adc:1
+rec.ads:16:04: error: "O3" is not allowed in SPARK (due to box notation without default initialization)
+rec.ads:16:04: error: violation of pragma SPARK_Mode at test.adc:1
+rec.ads:16:15: error: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+rec.ads:16:15: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

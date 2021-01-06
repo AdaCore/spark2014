@@ -1,2 +1,2 @@
-art.ads:6:22: conversion between fixed-point and floating-point types is not yet supported
+art.ads:6:22: error: conversion between fixed-point and floating-point types is not yet supported
 gnatprove: error during flow analysis and proof

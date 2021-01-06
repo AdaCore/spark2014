@@ -1,3 +1,3 @@
-borrow_with_variables.adb:17:36: borrowed expression cannot depend on variable input "I" (SPARK RM 4.4(2))
-borrow_with_variables.adb:18:37: borrowed expression cannot depend on variable input "X" (SPARK RM 4.4(2))
+borrow_with_variables.adb:17:36: error: borrowed expression cannot depend on variable input "I" (SPARK RM 4.4(2))
+borrow_with_variables.adb:18:37: error: borrowed expression cannot depend on variable input "X" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

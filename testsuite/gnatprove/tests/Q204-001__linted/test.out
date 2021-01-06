@@ -29,60 +29,60 @@ linted-controls.adb:55:27: info: range check proved (CVC4: 4 VC)
 linted-controls.ads:37:41: info: initialization of "C" proved
 linted-controls.ads:38:07: info: data dependencies proved
 linted-controls.ads:39:07: info: flow dependencies proved
-linted-io_pool.adb:77:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:77:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:77:04: instantiation error at linted-circ_bufs.adb:55
-linted-io_pool.adb:77:04: instantiation error at linted-circ_bufs.adb:64
-linted-io_pool.adb:77:04: instantiation error at linted-queue.adb:19
-linted-io_pool.adb:77:04: instantiation error at linted-queue.adb:19
-linted-io_pool.adb:78:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:78:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:78:04: instantiation error at linted-circ_bufs.adb:55
-linted-io_pool.adb:78:04: instantiation error at linted-circ_bufs.adb:64
-linted-io_pool.adb:78:04: instantiation error at linted-queue.adb:19
-linted-io_pool.adb:78:04: instantiation error at linted-queue.adb:19
-linted-io_pool.adb:79:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:79:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:79:04: instantiation error at linted-circ_bufs.adb:55
-linted-io_pool.adb:79:04: instantiation error at linted-circ_bufs.adb:64
-linted-io_pool.adb:79:04: instantiation error at linted-queue.adb:19
-linted-io_pool.adb:79:04: instantiation error at linted-queue.adb:19
-linted-io_pool.adb:80:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:80:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:80:04: instantiation error at linted-circ_bufs.adb:55
-linted-io_pool.adb:80:04: instantiation error at linted-circ_bufs.adb:64
-linted-io_pool.adb:80:04: instantiation error at linted-queue.adb:19
-linted-io_pool.adb:80:04: instantiation error at linted-queue.adb:19
-linted-io_pool.adb:95:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:95:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:95:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:95:04: instantiation error at linted-channels.adb:17
-linted-io_pool.adb:95:04: instantiation error at linted-channels.adb:22
-linted-io_pool.adb:95:04: instantiation error at linted-channels.adb:31
-linted-io_pool.adb:96:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:96:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:96:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:96:04: instantiation error at linted-channels.adb:17
-linted-io_pool.adb:96:04: instantiation error at linted-channels.adb:22
-linted-io_pool.adb:96:04: instantiation error at linted-channels.adb:31
-linted-io_pool.adb:97:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:97:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:97:04: call to operation of a formal protected parameter is not yet supported
-linted-io_pool.adb:97:04: instantiation error at linted-channels.adb:17
-linted-io_pool.adb:97:04: instantiation error at linted-channels.adb:22
-linted-io_pool.adb:97:04: instantiation error at linted-channels.adb:31
+linted-io_pool.adb:77:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:77:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:77:04: error: instantiation error at linted-circ_bufs.adb:55
+linted-io_pool.adb:77:04: error: instantiation error at linted-circ_bufs.adb:64
+linted-io_pool.adb:77:04: error: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:77:04: error: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:78:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:78:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:78:04: error: instantiation error at linted-circ_bufs.adb:55
+linted-io_pool.adb:78:04: error: instantiation error at linted-circ_bufs.adb:64
+linted-io_pool.adb:78:04: error: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:78:04: error: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:79:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:79:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:79:04: error: instantiation error at linted-circ_bufs.adb:55
+linted-io_pool.adb:79:04: error: instantiation error at linted-circ_bufs.adb:64
+linted-io_pool.adb:79:04: error: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:79:04: error: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:80:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:80:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:80:04: error: instantiation error at linted-circ_bufs.adb:55
+linted-io_pool.adb:80:04: error: instantiation error at linted-circ_bufs.adb:64
+linted-io_pool.adb:80:04: error: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:80:04: error: instantiation error at linted-queue.adb:19
+linted-io_pool.adb:95:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:95:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:95:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:95:04: error: instantiation error at linted-channels.adb:17
+linted-io_pool.adb:95:04: error: instantiation error at linted-channels.adb:22
+linted-io_pool.adb:95:04: error: instantiation error at linted-channels.adb:31
+linted-io_pool.adb:96:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:96:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:96:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:96:04: error: instantiation error at linted-channels.adb:17
+linted-io_pool.adb:96:04: error: instantiation error at linted-channels.adb:22
+linted-io_pool.adb:96:04: error: instantiation error at linted-channels.adb:31
+linted-io_pool.adb:97:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:97:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:97:04: error: call to operation of a formal protected parameter is not yet supported
+linted-io_pool.adb:97:04: error: instantiation error at linted-channels.adb:17
+linted-io_pool.adb:97:04: error: instantiation error at linted-channels.adb:22
+linted-io_pool.adb:97:04: error: instantiation error at linted-channels.adb:31
 linted-poller.ads:18:16: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
 linted-poller.ads:18:16: high: with task "linted.io_pool.worker_tasks"
 linted-reader.ads:21:16: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
 linted-reader.ads:21:16: high: with task "linted.io_pool.worker_tasks"
 linted-stdio.adb:22:21: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
 linted-stdio.adb:22:21: high: with task "linted.io_pool.worker_tasks"
-linted-timer.adb:23:04: call to operation of a formal protected parameter is not yet supported
-linted-timer.adb:23:04: call to operation of a formal protected parameter is not yet supported
-linted-timer.adb:23:04: call to operation of a formal protected parameter is not yet supported
-linted-timer.adb:23:04: instantiation error at linted-channels.adb:17
-linted-timer.adb:23:04: instantiation error at linted-channels.adb:22
-linted-timer.adb:23:04: instantiation error at linted-channels.adb:31
+linted-timer.adb:23:04: error: call to operation of a formal protected parameter is not yet supported
+linted-timer.adb:23:04: error: call to operation of a formal protected parameter is not yet supported
+linted-timer.adb:23:04: error: call to operation of a formal protected parameter is not yet supported
+linted-timer.adb:23:04: error: instantiation error at linted-channels.adb:17
+linted-timer.adb:23:04: error: instantiation error at linted-channels.adb:22
+linted-timer.adb:23:04: error: instantiation error at linted-channels.adb:31
 linted-update.adb:24:13: info: add a contract to analyze it separately from calling contexts
 linted-update.adb:24:13: info: local subprogram "To_Nat" only analyzed in the context of calls
 linted-update.adb:25:13: info: add a contract to analyze it separately from calling contexts

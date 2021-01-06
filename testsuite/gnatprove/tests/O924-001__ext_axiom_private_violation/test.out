@@ -1,9 +1,9 @@
-my_gen.ads:3:01: attribute "Access" on object is not allowed in SPARK
-my_gen.ads:3:01: instantiation error at gen.ads:8
-my_gen.ads:3:01: instantiation error at gen.ads:8
-my_gen.ads:3:01: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
-my_gen.ads:3:01: violation of aspect SPARK_Mode at gen.ads:3, instance at line 3
-my_gen.ads:3:01: violation of aspect SPARK_Mode at gen.ads:3, instance at line 3
+my_gen.ads:3:01: error: attribute "Access" on object is not allowed in SPARK
+my_gen.ads:3:01: error: instantiation error at gen.ads:8
+my_gen.ads:3:01: error: instantiation error at gen.ads:8
+my_gen.ads:3:01: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+my_gen.ads:3:01: error: violation of aspect SPARK_Mode at gen.ads:3, instance at line 3
+my_gen.ads:3:01: error: violation of aspect SPARK_Mode at gen.ads:3, instance at line 3
 my_gen.ads:3:01: warning: External Axiomatizations are not supported anymore, ignored
 my_gen.ads:3:01: warning: in instantiation at gen.ads:5
 gnatprove: error during flow analysis and proof

@@ -1,7 +1,7 @@
-c390010.adb:18:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-c390010.adb:18:04: violation of pragma SPARK_Mode at test.adc:1
-c390010.adb:29:09: general access type is not allowed in SPARK
-c390010.adb:29:09: violation of pragma SPARK_Mode at test.adc:1
-c390010.adb:34:15: "Derived_Record" is not allowed in SPARK (due to discriminant on derived type)
-c390010.adb:34:15: violation of pragma SPARK_Mode at test.adc:1
+c390010.adb:18:04: error: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
+c390010.adb:18:04: error: violation of pragma SPARK_Mode at test.adc:1
+c390010.adb:29:09: error: general access type is not allowed in SPARK
+c390010.adb:29:09: error: violation of pragma SPARK_Mode at test.adc:1
+c390010.adb:34:15: error: "Derived_Record" is not allowed in SPARK (due to discriminant on derived type)
+c390010.adb:34:15: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

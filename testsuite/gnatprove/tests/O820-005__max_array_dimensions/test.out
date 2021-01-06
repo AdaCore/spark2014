@@ -1,2 +1,2 @@
-max_array_dimensions.ads:9:04: array of dimension greater than 4 is not yet supported
+max_array_dimensions.ads:9:04: error: array of dimension greater than 4 is not yet supported
 gnatprove: error during flow analysis and proof

@@ -1,5 +1,5 @@
-p.adb:6:13: "Constraint_Error" would have been raised at run time
-p.adb:6:13: value not in range of type "T" defined at pack.ads:2
-p.adb:7:13: "Constraint_Error" would have been raised at run time
-p.adb:7:13: value not in range of type "T" defined at pack.ads:2
+p.adb:6:13: error: "Constraint_Error" would have been raised at run time
+p.adb:6:13: error: value not in range of type "T" defined at pack.ads:2
+p.adb:7:13: error: "Constraint_Error" would have been raised at run time
+p.adb:7:13: error: value not in range of type "T" defined at pack.ads:2
 gnatprove: error during generation of Global contracts

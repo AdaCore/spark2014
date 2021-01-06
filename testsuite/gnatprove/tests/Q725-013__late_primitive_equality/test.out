@@ -1,2 +1,2 @@
-test.adb:14:13: equality operator must be declared before type "R" is frozen (RM 4.5.2 (9.8)) (Ada 2012)
+test.adb:14:13: error: equality operator must be declared before type "R" is frozen (RM 4.5.2 (9.8)) (Ada 2012)
 gnatprove: error during generation of Global contracts

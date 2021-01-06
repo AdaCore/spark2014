@@ -1,7 +1,7 @@
-p.adb:20:13: non-traversal function call of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
-p.adb:20:13: violation of pragma SPARK_Mode at test.adc:1
-p.adb:21:32: aggregate of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
-p.adb:21:32: violation of pragma SPARK_Mode at test.adc:1
-p.adb:21:50: aggregate of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
-p.adb:21:50: violation of pragma SPARK_Mode at test.adc:1
+p.adb:20:13: error: non-traversal function call of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
+p.adb:20:13: error: violation of pragma SPARK_Mode at test.adc:1
+p.adb:21:32: error: aggregate of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
+p.adb:21:32: error: violation of pragma SPARK_Mode at test.adc:1
+p.adb:21:50: error: aggregate of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
+p.adb:21:50: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

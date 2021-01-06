@@ -1,5 +1,5 @@
-pack.ads:16:05: cannot modify inherited condition (SPARK RM 6.1.1(1))
-pack.ads:16:05: cannot modify inherited condition (SPARK RM 6.1.1(1))
-pack.ads:16:05: overriding of "Less_Than_Max" at line 20 forces overriding of "Incr"
-pack.ads:16:05: overriding of "Less_Than_Max" at line 20 forces overriding of "Incr"
+pack.ads:16:05: error: cannot modify inherited condition (SPARK RM 6.1.1(1))
+pack.ads:16:05: error: cannot modify inherited condition (SPARK RM 6.1.1(1))
+pack.ads:16:05: error: overriding of "Less_Than_Max" at line 20 forces overriding of "Incr"
+pack.ads:16:05: error: overriding of "Less_Than_Max" at line 20 forces overriding of "Incr"
 gnatprove: error during generation of Global contracts

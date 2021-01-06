@@ -1,4 +1,4 @@
-instance_pack.ads:3:38: actual for formal object with mode in cannot depend on variable input "G" (SPARK RM 4.4(2))
-instance_sub.ads:8:44: actual for formal object with mode in cannot depend on variable input "G" (SPARK RM 4.4(2))
-instance_sub.ads:8:47: actual for formal object with mode in cannot depend on variable input "G" (SPARK RM 4.4(2))
+instance_pack.ads:3:38: error: actual for formal object with mode in cannot depend on variable input "G" (SPARK RM 4.4(2))
+instance_sub.ads:8:44: error: actual for formal object with mode in cannot depend on variable input "G" (SPARK RM 4.4(2))
+instance_sub.ads:8:47: error: actual for formal object with mode in cannot depend on variable input "G" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

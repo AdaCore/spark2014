@@ -1,9 +1,9 @@
-p1.adb:6:20:   body of unit "P1" elaborated
-p1.adb:6:20:   variable "Body1_Elaborated" assigned at line 6
-p1.adb:6:20: add pragma "Elaborate_Body" to spec "P1" to ensure full initialization
-p1.adb:6:20: variable "Body1_Elaborated" modified by elaboration code in package body
-p2.adb:6:20:   body of unit "P2" elaborated
-p2.adb:6:20:   variable "Body2_Elaborated" assigned at line 6
-p2.adb:6:20: add pragma "Elaborate_Body" to spec "P2" to ensure full initialization
-p2.adb:6:20: variable "Body2_Elaborated" modified by elaboration code in package body
+p1.adb:6:20: error:   body of unit "P1" elaborated
+p1.adb:6:20: error:   variable "Body1_Elaborated" assigned at line 6
+p1.adb:6:20: error: add pragma "Elaborate_Body" to spec "P1" to ensure full initialization
+p1.adb:6:20: error: variable "Body1_Elaborated" modified by elaboration code in package body
+p2.adb:6:20: error:   body of unit "P2" elaborated
+p2.adb:6:20: error:   variable "Body2_Elaborated" assigned at line 6
+p2.adb:6:20: error: add pragma "Elaborate_Body" to spec "P2" to ensure full initialization
+p2.adb:6:20: error: variable "Body2_Elaborated" modified by elaboration code in package body
 gnatprove: error during generation of Global contracts

@@ -1,7 +1,7 @@
-foo.ads:75:30: class-wide dependency "X => B" is not a class-wide dependency of overridden subprogram "Test_01" at line 10 (SPARK RM 6.1.6)
-foo.ads:76:30: class-wide dependency "Y => G" is not a class-wide dependency of overridden subprogram "Test_01" at line 10 (SPARK RM 6.1.6)
-foo.ads:86:14: class-wide dependency "X => B" is not a class-wide dependency of overridden subprogram "Test_03" at line 25 (SPARK RM 6.1.6)
-foo.ads:97:26: class-wide dependency "Y => B" is not a class-wide dependency of overridden subprogram "Test_04" at line 34 (SPARK RM 6.1.6)
-foo.ads:107:14: "G" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Test_06" at line 49 (SPARK RM 6.1.6)
-foo.ads:117:13: class-wide dependency "Test_08 => B" is not a class-wide dependency of overridden subprogram "Test_08" at line 58 (SPARK RM 6.1.6)
+foo.ads:75:30: error: class-wide dependency "X => B" is not a class-wide dependency of overridden subprogram "Test_01" at line 10 (SPARK RM 6.1.6)
+foo.ads:76:30: error: class-wide dependency "Y => G" is not a class-wide dependency of overridden subprogram "Test_01" at line 10 (SPARK RM 6.1.6)
+foo.ads:86:14: error: class-wide dependency "X => B" is not a class-wide dependency of overridden subprogram "Test_03" at line 25 (SPARK RM 6.1.6)
+foo.ads:97:26: error: class-wide dependency "Y => B" is not a class-wide dependency of overridden subprogram "Test_04" at line 34 (SPARK RM 6.1.6)
+foo.ads:107:14: error: "G" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Test_06" at line 49 (SPARK RM 6.1.6)
+foo.ads:117:13: error: class-wide dependency "Test_08 => B" is not a class-wide dependency of overridden subprogram "Test_08" at line 58 (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof

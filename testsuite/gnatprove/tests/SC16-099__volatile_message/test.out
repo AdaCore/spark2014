@@ -1,5 +1,5 @@
-p.adb:32:07: volatile variable "X" cannot act as global item of nonvolatile function "F"
-p.adb:33:07: volatile variable "Y" cannot act as global item of nonvolatile function "F"
-p.adb:44:55: external state abstraction "P.State" of variable "Local_Value" constituent of "State" cannot act as global item of nonvolatile function "Get"
+p.adb:32:07: error: volatile variable "X" cannot act as global item of nonvolatile function "F"
+p.adb:33:07: error: volatile variable "Y" cannot act as global item of nonvolatile function "F"
+p.adb:44:55: error: external state abstraction "P.State" of variable "Local_Value" constituent of "State" cannot act as global item of nonvolatile function "Get"
 p.ads:9:07: info: data dependencies proved
 gnatprove: error during flow analysis and proof

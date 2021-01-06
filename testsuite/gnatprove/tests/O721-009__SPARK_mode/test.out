@@ -1,7 +1,7 @@
-mode_on.ads:3:04: "My_Array" is not allowed in SPARK
-mode_on.ads:3:04: violation of aspect SPARK_Mode at line 2
-mode_on.ads:4:04: "My_Scalar" is not allowed in SPARK
-mode_on.ads:4:04: violation of aspect SPARK_Mode at line 2
-mode_on.ads:5:09: "My_Record" is not allowed in SPARK
-mode_on.ads:5:09: violation of aspect SPARK_Mode at line 2
+mode_on.ads:3:04: error: "My_Array" is not allowed in SPARK
+mode_on.ads:3:04: error: violation of aspect SPARK_Mode at line 2
+mode_on.ads:4:04: error: "My_Scalar" is not allowed in SPARK
+mode_on.ads:4:04: error: violation of aspect SPARK_Mode at line 2
+mode_on.ads:5:09: error: "My_Record" is not allowed in SPARK
+mode_on.ads:5:09: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

@@ -1,3 +1,3 @@
-default_discriminant.ads:6:38: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+default_discriminant.ads:6:38: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
 default_discriminant.ads:11:15: warning: subprogram "P" has no effect
 gnatprove: error during flow analysis and proof

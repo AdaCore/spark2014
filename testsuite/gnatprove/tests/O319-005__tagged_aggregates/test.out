@@ -1,10 +1,10 @@
-tagged_aggregate_with_root.adb:8:22: extension aggregate with subtype ancestor part is not yet supported
-tagged_aggregate_with_root.adb:9:22: extension aggregate with subtype ancestor part is not yet supported
-tagged_aggregate_with_root.adb:10:22: extension aggregate with subtype ancestor part is not yet supported
-tagged_aggregate_with_root.adb:15:22: "C6" is not allowed in SPARK (due to extension aggregate with subtype ancestor part)
-tagged_aggregate_with_root.adb:15:22: violation of aspect SPARK_Mode at line 1
-tagged_aggregate_with_root.adb:18:22: "C4" is not allowed in SPARK (due to extension aggregate with subtype ancestor part)
-tagged_aggregate_with_root.adb:18:22: violation of aspect SPARK_Mode at line 1
-tagged_aggregate_with_root.adb:19:22: "C5" is not allowed in SPARK (due to extension aggregate with subtype ancestor part)
-tagged_aggregate_with_root.adb:19:22: violation of aspect SPARK_Mode at line 1
+tagged_aggregate_with_root.adb:8:22: error: extension aggregate with subtype ancestor part is not yet supported
+tagged_aggregate_with_root.adb:9:22: error: extension aggregate with subtype ancestor part is not yet supported
+tagged_aggregate_with_root.adb:10:22: error: extension aggregate with subtype ancestor part is not yet supported
+tagged_aggregate_with_root.adb:15:22: error: "C6" is not allowed in SPARK (due to extension aggregate with subtype ancestor part)
+tagged_aggregate_with_root.adb:15:22: error: violation of aspect SPARK_Mode at line 1
+tagged_aggregate_with_root.adb:18:22: error: "C4" is not allowed in SPARK (due to extension aggregate with subtype ancestor part)
+tagged_aggregate_with_root.adb:18:22: error: violation of aspect SPARK_Mode at line 1
+tagged_aggregate_with_root.adb:19:22: error: "C5" is not allowed in SPARK (due to extension aggregate with subtype ancestor part)
+tagged_aggregate_with_root.adb:19:22: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

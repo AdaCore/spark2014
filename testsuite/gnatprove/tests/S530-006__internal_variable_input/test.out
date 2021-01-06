@@ -1,11 +1,11 @@
 INLINING ENABLED:
 c37102b.adb:6:16: info: data dependencies proved
 c37102b.adb:11:16: warning: unused variable "D"
-c37102b.adb:18:18: subtype constraint cannot depend on variable input "G" (SPARK RM 4.4(2))
+c37102b.adb:18:18: error: subtype constraint cannot depend on variable input "G" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof
 
 INLINING DISABLED:
 c37102b.adb:6:16: info: data dependencies proved
 c37102b.adb:11:16: warning: unused variable "D"
-c37102b.adb:18:18: subtype constraint cannot depend on variable input "G" (SPARK RM 4.4(2))
+c37102b.adb:18:18: error: subtype constraint cannot depend on variable input "G" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

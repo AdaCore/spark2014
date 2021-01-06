@@ -1,81 +1,81 @@
-lib_level.adb:6:37: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.adb:6:37: violation of pragma SPARK_Mode at line 1
-lib_level.adb:7:39: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.adb:7:39: violation of pragma SPARK_Mode at line 1
-lib_level.adb:8:39: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.adb:8:39: violation of pragma SPARK_Mode at line 1
-lib_level.adb:9:39: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.adb:9:39: violation of pragma SPARK_Mode at line 1
-lib_level.adb:10:48: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.adb:10:48: violation of pragma SPARK_Mode at line 1
-lib_level.adb:11:50: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.adb:11:50: violation of pragma SPARK_Mode at line 1
-lib_level.adb:13:32: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.adb:13:32: violation of pragma SPARK_Mode at line 1
-lib_level.adb:14:32: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.adb:14:32: violation of pragma SPARK_Mode at line 1
-lib_level.ads:5:22: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.ads:5:22: violation of pragma SPARK_Mode at line 1
-lib_level.ads:6:27: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.ads:6:27: violation of pragma SPARK_Mode at line 1
-lib_level.ads:7:27: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.ads:7:27: violation of pragma SPARK_Mode at line 1
-lib_level.ads:8:27: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.ads:8:27: violation of pragma SPARK_Mode at line 1
-lib_level.ads:10:30: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.ads:10:30: violation of pragma SPARK_Mode at line 1
-lib_level.ads:11:32: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.ads:11:32: violation of pragma SPARK_Mode at line 1
-lib_level.ads:12:43: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.ads:12:43: violation of pragma SPARK_Mode at line 1
-lib_level.ads:13:32: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-lib_level.ads:13:32: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:27:41: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:27:41: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:28:43: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:28:43: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:29:43: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:29:43: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:30:43: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:30:43: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:31:52: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:31:52: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:32:54: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:32:54: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:34:36: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:34:36: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:35:36: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:35:36: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:40:22: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:40:22: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:41:27: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:41:27: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:42:27: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:42:27: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:43:27: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:43:27: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:45:30: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:45:30: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:46:32: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:46:32: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:47:43: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:47:43: violation of pragma SPARK_Mode at line 1
-old_loop_entry.adb:48:32: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.adb:48:32: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:27:22: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.ads:27:22: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:28:27: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.ads:28:27: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:29:27: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.ads:29:27: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:30:27: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.ads:30:27: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:32:30: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.ads:32:30: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:33:32: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.ads:33:32: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:34:43: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.ads:34:43: violation of pragma SPARK_Mode at line 1
-old_loop_entry.ads:35:32: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
-old_loop_entry.ads:35:32: violation of pragma SPARK_Mode at line 1
+lib_level.adb:6:37: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:6:37: error: violation of pragma SPARK_Mode at line 1
+lib_level.adb:7:39: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:7:39: error: violation of pragma SPARK_Mode at line 1
+lib_level.adb:8:39: error: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:8:39: error: violation of pragma SPARK_Mode at line 1
+lib_level.adb:9:39: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:9:39: error: violation of pragma SPARK_Mode at line 1
+lib_level.adb:10:48: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:10:48: error: violation of pragma SPARK_Mode at line 1
+lib_level.adb:11:50: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:11:50: error: violation of pragma SPARK_Mode at line 1
+lib_level.adb:13:32: error: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:13:32: error: violation of pragma SPARK_Mode at line 1
+lib_level.adb:14:32: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.adb:14:32: error: violation of pragma SPARK_Mode at line 1
+lib_level.ads:5:22: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:5:22: error: violation of pragma SPARK_Mode at line 1
+lib_level.ads:6:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:6:27: error: violation of pragma SPARK_Mode at line 1
+lib_level.ads:7:27: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:7:27: error: violation of pragma SPARK_Mode at line 1
+lib_level.ads:8:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:8:27: error: violation of pragma SPARK_Mode at line 1
+lib_level.ads:10:30: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:10:30: error: violation of pragma SPARK_Mode at line 1
+lib_level.ads:11:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:11:32: error: violation of pragma SPARK_Mode at line 1
+lib_level.ads:12:43: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:12:43: error: violation of pragma SPARK_Mode at line 1
+lib_level.ads:13:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+lib_level.ads:13:32: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:27:41: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:27:41: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:28:43: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:28:43: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:29:43: error: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:29:43: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:30:43: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:30:43: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:31:52: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:31:52: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:32:54: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:32:54: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:34:36: error: prefix of "Loop_Entry" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:34:36: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:35:36: error: prefix of "Loop_Entry" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:35:36: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:40:22: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:40:22: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:41:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:41:27: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:42:27: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:42:27: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:43:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:43:27: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:45:30: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:45:30: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:46:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:46:32: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:47:43: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:47:43: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.adb:48:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.adb:48:32: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.ads:27:22: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:27:22: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.ads:28:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:28:27: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.ads:29:27: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:29:27: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.ads:30:27: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:30:27: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.ads:32:30: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:32:30: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.ads:33:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:33:32: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.ads:34:43: error: prefix of "Old" attribute which is a call to a traversal function is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:34:43: error: violation of pragma SPARK_Mode at line 1
+old_loop_entry.ads:35:32: error: prefix of "Old" attribute which is not a function call is not allowed in SPARK (SPARK RM 3.10(13))
+old_loop_entry.ads:35:32: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

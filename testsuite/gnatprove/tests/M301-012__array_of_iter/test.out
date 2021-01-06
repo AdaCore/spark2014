@@ -6,7 +6,7 @@ iter_array.adb:19:30: info: loop invariant initialization proved (CVC4: 1 VC)
 iter_array.adb:19:30: info: loop invariant preservation proved (CVC4: 1 VC)
 iter_array.adb:19:55: info: index check proved (CVC4: 4 VC)
 iter_array.adb:21:19: info: assertion proved (CVC4: 1 VC)
-iter_multi_array.adb:6:27: iterator specification over array of dimension 2 is not yet supported
-iter_multi_array.adb:11:27: iterator specification over array of dimension 2 is not yet supported
-iter_multi_array.adb:30:27: iterator specification over array of dimension 2 is not yet supported
+iter_multi_array.adb:6:27: error: iterator specification over array of dimension 2 is not yet supported
+iter_multi_array.adb:11:27: error: iterator specification over array of dimension 2 is not yet supported
+iter_multi_array.adb:30:27: error: iterator specification over array of dimension 2 is not yet supported
 gnatprove: error during flow analysis and proof

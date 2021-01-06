@@ -1,5 +1,5 @@
 lsp_checks.adb:1:11: warning: subprogram "LSP_Checks" has no effect
 lsp_checks.adb:27:27: warning: unused variable "R"
 lsp_checks.adb:27:44: warning: unused variable "G"
-lsp_checks.adb:38:17: "C" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Do_Something" at line 17 (SPARK RM 6.1.6)
+lsp_checks.adb:38:17: error: "C" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Do_Something" at line 17 (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof

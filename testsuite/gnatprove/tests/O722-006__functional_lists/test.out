@@ -16,41 +16,55 @@ functional_sequences.ads:16:66: medium: range check might fail, in instantiation
 functional_sequences.ads:16:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5 [reason for check: result of subtraction must be convertible to the target type of the conversion] [possible fix: subprogram at line 14 should mention S1 in a precondition]
 functional_sequences.ads:18:09: info: data dependencies proved, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5
 functional_sequences.ads:18:09: info: data dependencies proved, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5
-use_lists.adb:3:22: side effects of function "First" are not modeled in SPARK
+use_lists.adb:3:22: error: side effects of function "First" are not modeled in SPARK
 use_lists.adb:5:14: medium: "L2" is not set
 use_lists.adb:5:14: medium: private part of "L2" is not set
-use_lists.adb:6:13: side effects of function "Has_Element" are not modeled in SPARK
+use_lists.adb:6:13: error: side effects of function "Has_Element" are not modeled in SPARK
 use_lists.adb:8:13: medium: loop invariant might fail in first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
 use_lists.adb:8:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
-use_lists.adb:8:35: side effects of function "Get_Cursor_Model" are not modeled in SPARK
+use_lists.adb:8:35: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.adb:8:64: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:10:13: info: loop invariant initialization proved (CVC4: 1 VC)
 use_lists.adb:10:40: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:11:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Is_Incr (Get (Get_Element_Model (L1), N), Get (Get_Element_Model (L2), N))
-use_lists.adb:11:32: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.adb:12:32: side effects of function "Get_Element_Model" are not modeled in SPARK
+use_lists.adb:11:32: error: side effects of function "Get_Element_Model" are not modeled in SPARK
+use_lists.adb:12:32: error: side effects of function "Get_Element_Model" are not modeled in SPARK
+use_lists.adb:13:13: error: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:13:13: info: precondition proved (CVC4: 1 VC)
-use_lists.adb:13:13: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:14:13: medium: precondition might fail, cannot prove Length (L) <= Capacity (L) - 1
+use_lists.adb:14:25: error: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:14:25: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
-use_lists.adb:14:25: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:14:42: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 use_lists.adb:16:13: medium: precondition might fail, cannot prove Length (L) <= Capacity (L) - 1
+use_lists.adb:16:25: error: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:16:25: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
-use_lists.adb:16:25: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:18:16: medium: assertion might fail, cannot prove Get (Get_Element_Model (L2), Length (L2) - 1) = Element (L1, Cu)
-use_lists.adb:18:21: side effects of function "Get_Element_Model" are not modeled in SPARK
+use_lists.adb:18:21: error: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:18:45: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:18:57: info: range check proved (CVC4: 1 VC)
+use_lists.adb:19:18: error: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:19:18: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
-use_lists.adb:19:18: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:21:25: medium: assertion might fail, cannot prove Is_Incr (Element (L1, Cu), Get (Get_Element_Model (L2), Length (L2) - 1))
+use_lists.adb:21:34: error: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:21:34: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
-use_lists.adb:21:34: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:22:30: side effects of function "Get_Element_Model" are not modeled in SPARK
+use_lists.adb:22:30: error: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:22:54: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:22:66: info: range check proved (CVC4: 1 VC)
 use_lists.adb:23:10: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:51
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:64
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:80
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:81
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:83
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:84
+use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:85
+use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
+use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
+use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
+use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
+use_lists.ads:5:04: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
+use_lists.ads:5:04: error: side effects of function "Get_Element_Model" are not modeled in SPARK
+use_lists.ads:5:04: error: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
 use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
 use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
@@ -241,25 +255,11 @@ use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:39
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:40
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:40
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:41
-use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:51
-use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:64
-use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:80
-use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:81
-use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:83
-use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:84
-use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:85
-use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.ads:5:04: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.ads:5:04: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.ads:14:65: info: overflow check proved (CVC4: 1 VC)
 use_lists.ads:17:14: info: function contract not available for proof ("Length" might not return)
 use_lists.ads:17:14: medium: postcondition might fail, cannot prove Length (L2) = Length (L1)
 use_lists.ads:17:28: info: function contract not available for proof ("Length" might not return)
 use_lists.ads:18:43: info: function contract not available for proof ("Length" might not return)
-use_lists.ads:19:32: side effects of function "Get_Element_Model" are not modeled in SPARK
-use_lists.ads:20:32: side effects of function "Get_Element_Model" are not modeled in SPARK
+use_lists.ads:19:32: error: side effects of function "Get_Element_Model" are not modeled in SPARK
+use_lists.ads:20:32: error: side effects of function "Get_Element_Model" are not modeled in SPARK
 gnatprove: error during flow analysis and proof

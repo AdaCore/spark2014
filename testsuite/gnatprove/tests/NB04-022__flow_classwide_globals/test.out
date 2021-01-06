@@ -1,5 +1,5 @@
-foo.ads:24:13: "G2" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Input_Rule" at line 13 (SPARK RM 6.1.6)
-foo.ads:27:14: "G1" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "In_Out_Rule" at line 16 (SPARK RM 6.1.6)
-foo.ads:30:14: "G1" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "In_Out_Rule_2" at line 19 (SPARK RM 6.1.6)
-foo.ads:30:14: "G1" is an Output of overridden subprogram "In_Out_Rule_2" at line 19 and must be an Output here (SPARK RM 6.1.6)
+foo.ads:24:13: error: "G2" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Input_Rule" at line 13 (SPARK RM 6.1.6)
+foo.ads:27:14: error: "G1" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "In_Out_Rule" at line 16 (SPARK RM 6.1.6)
+foo.ads:30:14: error: "G1" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "In_Out_Rule_2" at line 19 (SPARK RM 6.1.6)
+foo.ads:30:14: error: "G1" is an Output of overridden subprogram "In_Out_Rule_2" at line 19 and must be an Output here (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof

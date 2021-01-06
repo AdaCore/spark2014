@@ -1,3 +1,3 @@
-vecs.ads:5:04: in instantiation of "Formal_Indefinite_Vectors" declared at a-cfinve.ads:55
-vecs.ads:5:04: missing actual "Max_Size_In_Storage_Elements"
+vecs.ads:5:04: error: in instantiation of "Formal_Indefinite_Vectors" declared at a-cfinve.ads:55
+vecs.ads:5:04: error: missing actual "Max_Size_In_Storage_Elements"
 gnatprove: error during generation of Global contracts

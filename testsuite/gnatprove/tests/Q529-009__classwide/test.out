@@ -4,11 +4,11 @@ p_heir2.adb:16:41: medium: overflow check might fail (e.g. when This = (X0 => 0,
 p_heir2.adb:17:41: medium: overflow check might fail (e.g. when This = (X0 => 0, X2 => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 16 should mention This (for argument This) in a postcondition]
 p_parent.adb:16:41: medium: overflow check might fail (e.g. when This = (X0 => T0'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p_parent.ads:14 should mention This in a precondition]
 p_parent.ads:11:22: warning: unused initial value of "This"
-p_u_parent.ads:11:24: "memory accessed through objects of access type" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Get_X0" at p_i_parent.ads:9 (SPARK RM 6.1.6)
-p_u_parent.ads:13:25: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "Set_X0" at p_i_parent.ads:11 (SPARK RM 6.1.6)
-p_u_parent.ads:13:25: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "Set_X0" at p_i_parent.ads:11 (SPARK RM 6.1.6)
-p_u_parent.ads:16:25: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
-p_u_parent.ads:16:25: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
+p_u_parent.ads:11:24: error: "memory accessed through objects of access type" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Get_X0" at p_i_parent.ads:9 (SPARK RM 6.1.6)
+p_u_parent.ads:13:25: error: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "Set_X0" at p_i_parent.ads:11 (SPARK RM 6.1.6)
+p_u_parent.ads:13:25: error: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "Set_X0" at p_i_parent.ads:11 (SPARK RM 6.1.6)
+p_u_parent.ads:16:25: error: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
+p_u_parent.ads:16:25: error: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
 run.adb:12:14: info: add a contract to analyze it separately from calling contexts
 run.adb:12:14: info: local subprogram "Compute_List" only analyzed in the context of calls
 run.adb:33:23: info: unrolling loop

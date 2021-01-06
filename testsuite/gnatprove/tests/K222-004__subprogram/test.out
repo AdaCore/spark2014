@@ -1,21 +1,21 @@
-sub.adb:5:07: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
-sub.adb:5:07: violation of pragma SPARK_Mode at line 1
-sub.adb:7:07: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-sub.adb:7:07: violation of pragma SPARK_Mode at line 1
-sub.adb:7:12: uninitialized allocator without default initialization is not allowed in SPARK
-sub.adb:7:12: violation of pragma SPARK_Mode at line 1
-sub.adb:8:07: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-sub.adb:8:07: violation of pragma SPARK_Mode at line 1
-sub.adb:9:14: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-sub.adb:9:14: violation of pragma SPARK_Mode at line 1
-sub.adb:16:10: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
-sub.adb:16:10: violation of pragma SPARK_Mode at line 1
-sub.adb:18:10: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-sub.adb:18:10: violation of pragma SPARK_Mode at line 1
-sub.adb:18:15: uninitialized allocator without default initialization is not allowed in SPARK
-sub.adb:18:15: violation of pragma SPARK_Mode at line 1
-sub.adb:19:10: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-sub.adb:19:10: violation of pragma SPARK_Mode at line 1
-sub.adb:20:13: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-sub.adb:20:13: violation of pragma SPARK_Mode at line 1
+sub.adb:5:07: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+sub.adb:5:07: error: violation of pragma SPARK_Mode at line 1
+sub.adb:7:07: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+sub.adb:7:07: error: violation of pragma SPARK_Mode at line 1
+sub.adb:7:12: error: uninitialized allocator without default initialization is not allowed in SPARK
+sub.adb:7:12: error: violation of pragma SPARK_Mode at line 1
+sub.adb:8:07: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+sub.adb:8:07: error: violation of pragma SPARK_Mode at line 1
+sub.adb:9:14: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+sub.adb:9:14: error: violation of pragma SPARK_Mode at line 1
+sub.adb:16:10: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+sub.adb:16:10: error: violation of pragma SPARK_Mode at line 1
+sub.adb:18:10: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+sub.adb:18:10: error: violation of pragma SPARK_Mode at line 1
+sub.adb:18:15: error: uninitialized allocator without default initialization is not allowed in SPARK
+sub.adb:18:15: error: violation of pragma SPARK_Mode at line 1
+sub.adb:19:10: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+sub.adb:19:10: error: violation of pragma SPARK_Mode at line 1
+sub.adb:20:13: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+sub.adb:20:13: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

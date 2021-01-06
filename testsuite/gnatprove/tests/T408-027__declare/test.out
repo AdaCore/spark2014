@@ -21,14 +21,14 @@ test_declare_deep.adb:18:13: medium: memory leak might occur at end of scope
 test_declare_deep.adb:19:21: info: pointer dereference check proved (CVC4: 1 VC)
 test_declare_deep.adb:19:25: info: overflow check proved (CVC4: 1 VC)
 test_declare_illegal.adb:4:04: warning: analyzing unreferenced procedure "Bad1"
-test_declare_illegal.adb:8:37: allocators in interfering context is not allowed in SPARK
-test_declare_illegal.adb:8:37: violation of aspect SPARK_Mode at line 1
-test_declare_illegal.adb:9:19: "Y" is not allowed in SPARK (due to allocators in interfering context)
-test_declare_illegal.adb:9:19: violation of aspect SPARK_Mode at line 1
+test_declare_illegal.adb:8:37: error: allocators in interfering context is not allowed in SPARK
+test_declare_illegal.adb:8:37: error: violation of aspect SPARK_Mode at line 1
+test_declare_illegal.adb:9:19: error: "Y" is not allowed in SPARK (due to allocators in interfering context)
+test_declare_illegal.adb:9:19: error: violation of aspect SPARK_Mode at line 1
 test_declare_illegal.adb:12:04: warning: analyzing unreferenced procedure "Bad2"
-test_declare_illegal.adb:17:13: move in declare expression is not allowed in SPARK
-test_declare_illegal.adb:17:13: violation of aspect SPARK_Mode at line 1
+test_declare_illegal.adb:17:13: error: move in declare expression is not allowed in SPARK
+test_declare_illegal.adb:17:13: error: violation of aspect SPARK_Mode at line 1
 test_declare_illegal.adb:23:04: warning: analyzing unreferenced procedure "Bad3"
-test_declare_illegal.adb:26:13: expression as source of move is not allowed in SPARK
-test_declare_illegal.adb:26:13: violation of aspect SPARK_Mode at line 1
+test_declare_illegal.adb:26:13: error: expression as source of move is not allowed in SPARK
+test_declare_illegal.adb:26:13: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

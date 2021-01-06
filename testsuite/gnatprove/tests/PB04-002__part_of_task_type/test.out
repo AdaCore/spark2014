@@ -1,5 +1,5 @@
-p.ads:3:08: not fully initialized part of task type is not allowed in SPARK (SPARK RM 9.4)
-p.ads:3:08: violation of aspect SPARK_Mode at line 1
-p.ads:6:08: not fully initialized part of protected type is not allowed in SPARK (SPARK RM 9.4)
-p.ads:6:08: violation of aspect SPARK_Mode at line 1
+p.ads:3:08: error: not fully initialized part of task type is not allowed in SPARK (SPARK RM 9.4)
+p.ads:3:08: error: violation of aspect SPARK_Mode at line 1
+p.ads:6:08: error: not fully initialized part of protected type is not allowed in SPARK (SPARK RM 9.4)
+p.ads:6:08: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

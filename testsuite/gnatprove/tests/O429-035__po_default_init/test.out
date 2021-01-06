@@ -1,2 +1,2 @@
-tasks.ads:8:37: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+tasks.ads:8:37: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

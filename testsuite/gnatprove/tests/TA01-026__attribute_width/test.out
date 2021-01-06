@@ -1,6 +1,6 @@
-getwidth.adb:18:04: "X" is not allowed in SPARK (due to non-static attribute "Width")
-getwidth.adb:18:04: instantiation error at line 12
-getwidth.adb:18:04: instantiation error at line 14
-getwidth.adb:18:04: non-static attribute "Width" is not yet supported
-getwidth.adb:18:04: violation of pragma SPARK_Mode at test.adc:1
+getwidth.adb:18:04: error: "X" is not allowed in SPARK (due to non-static attribute "Width")
+getwidth.adb:18:04: error: instantiation error at line 12
+getwidth.adb:18:04: error: instantiation error at line 14
+getwidth.adb:18:04: error: non-static attribute "Width" is not yet supported
+getwidth.adb:18:04: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

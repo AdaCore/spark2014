@@ -1,8 +1,8 @@
-dic.ads:3:09: primitive calls in default initial condition is not yet supported
-dic.ads:13:09: primitive calls in default initial condition is not yet supported
-dic.ads:17:53: "Parent" is not allowed in SPARK (due to primitive calls in default initial condition)
-dic.ads:17:53: violation of aspect SPARK_Mode at line 1
-dic.ads:21:56: "Child" is not allowed in SPARK (due to primitive calls in default initial condition)
-dic.ads:21:56: violation of aspect SPARK_Mode at line 1
-dic2.ads:4:12: primitive calls in default initial condition is not yet supported
+dic.ads:3:09: error: primitive calls in default initial condition is not yet supported
+dic.ads:13:09: error: primitive calls in default initial condition is not yet supported
+dic.ads:17:53: error: "Parent" is not allowed in SPARK (due to primitive calls in default initial condition)
+dic.ads:17:53: error: violation of aspect SPARK_Mode at line 1
+dic.ads:21:56: error: "Child" is not allowed in SPARK (due to primitive calls in default initial condition)
+dic.ads:21:56: error: violation of aspect SPARK_Mode at line 1
+dic2.ads:4:12: error: primitive calls in default initial condition is not yet supported
 gnatprove: error during flow analysis and proof

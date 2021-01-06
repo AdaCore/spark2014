@@ -1,5 +1,5 @@
-main.adb:6:09: access type with Storage_Size is not allowed in SPARK
-main.adb:6:09: violation of pragma SPARK_Mode at test.adc:1
-main.adb:9:09: access type with Storage_Pool is not allowed in SPARK
-main.adb:9:09: violation of pragma SPARK_Mode at test.adc:1
+main.adb:6:09: error: access type with Storage_Size is not allowed in SPARK
+main.adb:6:09: error: violation of pragma SPARK_Mode at test.adc:1
+main.adb:9:09: error: access type with Storage_Pool is not allowed in SPARK
+main.adb:9:09: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

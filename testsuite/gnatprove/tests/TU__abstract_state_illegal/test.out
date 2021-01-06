@@ -1,18 +1,18 @@
-abstract_state_illegal.ads:35:34: malformed abstract state declaration
-abstract_state_illegal.ads:37:30: "S1" conflicts with declaration at line 33
-abstract_state_illegal.ads:39:39: simple option not allowed in state declaration
-abstract_state_illegal.ads:42:51: invalid external state property
-abstract_state_illegal.ads:45:30: malformed abstract state declaration
-abstract_state_illegal.ads:48:52: duplicate external property
-abstract_state_illegal.ads:52:30: package "Invalid_Parameters" has non-null abstract state
-abstract_state_illegal.ads:55:14: aspect "Abstract_State" must apply to a package declaration
-abstract_state_illegal.ads:66:07: "Priv_Var" is declared in the private part of package "Null_Abstract_State_With_Hidden_State"
-abstract_state_illegal.ads:66:07: cannot introduce hidden state "Priv_Var"
-abstract_state_illegal.ads:66:07: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
-abstract_state_illegal.ads:66:07: package "Null_Abstract_State_With_Hidden_State" has null abstract state
-abstract_state_illegal.ads:77:07: "S1" conflicts with declaration at line 75
-abstract_state_illegal_2.ads:14:48: "=>" expected (positional association cannot follow named association)
-abstract_state_illegal_3.ads:6:26: state "State" requires refinement
-abstract_state_illegal_4-pub_child.adb:5:57: "Pr_State" cannot act as constituent of state "Pub_State"
-abstract_state_illegal_4-pub_child.adb:5:57: Part_Of indicator specifies encapsulator "State"
+abstract_state_illegal.ads:35:34: error: malformed abstract state declaration
+abstract_state_illegal.ads:37:30: error: "S1" conflicts with declaration at line 33
+abstract_state_illegal.ads:39:39: error: simple option not allowed in state declaration
+abstract_state_illegal.ads:42:51: error: invalid external state property
+abstract_state_illegal.ads:45:30: error: malformed abstract state declaration
+abstract_state_illegal.ads:48:52: error: duplicate external property
+abstract_state_illegal.ads:52:30: error: package "Invalid_Parameters" has non-null abstract state
+abstract_state_illegal.ads:55:14: error: aspect "Abstract_State" must apply to a package declaration
+abstract_state_illegal.ads:66:07: error: "Priv_Var" is declared in the private part of package "Null_Abstract_State_With_Hidden_State"
+abstract_state_illegal.ads:66:07: error: cannot introduce hidden state "Priv_Var"
+abstract_state_illegal.ads:66:07: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
+abstract_state_illegal.ads:66:07: error: package "Null_Abstract_State_With_Hidden_State" has null abstract state
+abstract_state_illegal.ads:77:07: error: "S1" conflicts with declaration at line 75
+abstract_state_illegal_2.ads:14:48: error: "=>" expected (positional association cannot follow named association)
+abstract_state_illegal_3.ads:6:26: error: state "State" requires refinement
+abstract_state_illegal_4-pub_child.adb:5:57: error: "Pr_State" cannot act as constituent of state "Pub_State"
+abstract_state_illegal_4-pub_child.adb:5:57: error: Part_Of indicator specifies encapsulator "State"
 gnatprove: error during generation of Global contracts

@@ -1,4 +1,4 @@
-unsupported_classwides.ads:3:09: Class attribute of a constrained type is not yet supported
-unsupported_classwides.ads:4:12: Class attribute of a constrained type is not yet supported
-unsupported_classwides.ads:6:12: constrained class-wide subtype is not yet supported
+unsupported_classwides.ads:3:09: error: Class attribute of a constrained type is not yet supported
+unsupported_classwides.ads:4:12: error: Class attribute of a constrained type is not yet supported
+unsupported_classwides.ads:6:12: error: constrained class-wide subtype is not yet supported
 gnatprove: error during flow analysis and proof

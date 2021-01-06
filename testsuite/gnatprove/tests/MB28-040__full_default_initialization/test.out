@@ -1,5 +1,5 @@
-aggs.adb:13:32: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
-aggs.adb:13:32: violation of aspect SPARK_Mode at line 2
-aggs.adb:31:32: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
-aggs.adb:31:32: violation of aspect SPARK_Mode at line 2
+aggs.adb:13:32: error: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+aggs.adb:13:32: error: violation of aspect SPARK_Mode at line 2
+aggs.adb:31:32: error: box notation without default initialization is not allowed in SPARK (SPARK RM 4.3(1))
+aggs.adb:31:32: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

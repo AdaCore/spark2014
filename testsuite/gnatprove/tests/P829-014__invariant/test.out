@@ -1,4 +1,4 @@
-invariant_test.adb:23:11: type invariant not immediately in a compilation unit is not yet supported
-invariant_test.adb:35:24: "T2" is not allowed in SPARK
-invariant_test.adb:35:24: violation of pragma SPARK_Mode at test.adc:1
+invariant_test.adb:23:11: error: type invariant not immediately in a compilation unit is not yet supported
+invariant_test.adb:35:24: error: "T2" is not allowed in SPARK
+invariant_test.adb:35:24: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

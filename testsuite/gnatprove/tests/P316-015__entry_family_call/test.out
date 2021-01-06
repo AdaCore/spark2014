@@ -1,7 +1,7 @@
-client.adb:5:04: "E" is not allowed in SPARK (due to entry family)
-client.adb:5:04: violation of aspect SPARK_Mode at line 3
-family.ads:6:13: entry family is not allowed in SPARK
-family.ads:6:13: entry family is not allowed in SPARK
-family.ads:6:13: violation of pragma SPARK_Mode at test.adc:1
-family.ads:6:13: violation of pragma SPARK_Mode at test.adc:1
+client.adb:5:04: error: "E" is not allowed in SPARK (due to entry family)
+client.adb:5:04: error: violation of aspect SPARK_Mode at line 3
+family.ads:6:13: error: entry family is not allowed in SPARK
+family.ads:6:13: error: entry family is not allowed in SPARK
+family.ads:6:13: error: violation of pragma SPARK_Mode at test.adc:1
+family.ads:6:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

@@ -1,5 +1,5 @@
-p.ads:5:04: subtype of "Integer" is not allowed in SPARK
-p.ads:5:04: violation of aspect SPARK_Mode at line 3
-p.ads:5:26: "High" is not allowed in SPARK
-p.ads:5:26: violation of aspect SPARK_Mode at line 3
+p.ads:5:04: error: subtype of "Integer" is not allowed in SPARK
+p.ads:5:04: error: violation of aspect SPARK_Mode at line 3
+p.ads:5:26: error: "High" is not allowed in SPARK
+p.ads:5:26: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

@@ -1,7 +1,7 @@
-example.adb:12:25: expression of type root_real is not allowed in SPARK
-example.adb:12:25: value is dependent on the compiler and target
-example.adb:12:25: violation of aspect SPARK_Mode at line 1
-example.adb:12:41: expression of type root_real is not allowed in SPARK
-example.adb:12:41: value is dependent on the compiler and target
-example.adb:12:41: violation of aspect SPARK_Mode at line 1
+example.adb:12:25: error: expression of type root_real is not allowed in SPARK
+example.adb:12:25: error: value is dependent on the compiler and target
+example.adb:12:25: error: violation of aspect SPARK_Mode at line 1
+example.adb:12:41: error: expression of type root_real is not allowed in SPARK
+example.adb:12:41: error: value is dependent on the compiler and target
+example.adb:12:41: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

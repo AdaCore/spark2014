@@ -1,6 +1,6 @@
 client.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 client.adb:3:11: warning: "ada.task_identification.tasking_state" is not modified, could be INPUT
-client.adb:5:08: side effects of function "Blocking" are not modeled in SPARK
+client.adb:5:08: error: side effects of function "Blocking" are not modeled in SPARK
 p.adb:12:52: warning: statement has no effect
-p.ads:3:13: function with output global "Task_Identification.Tasking_State" is not allowed in SPARK
+p.ads:3:13: error: function with output global "Task_Identification.Tasking_State" is not allowed in SPARK
 gnatprove: error during flow analysis and proof

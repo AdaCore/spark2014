@@ -1,7 +1,7 @@
-discr.adb:13:07: component not present in subtype of "R" defined at line 10
-discr.adb:13:07: component not present in subtype of "R" defined at line 11
-discr.adb:13:07: error in inlined body at line 8
-discr.adb:13:07: error in inlined body at line 8
-discr.adb:13:07: static expression fails Constraint_Check
-discr.adb:13:07: static expression fails Constraint_Check
+discr.adb:13:07: error: component not present in subtype of "R" defined at line 10
+discr.adb:13:07: error: component not present in subtype of "R" defined at line 11
+discr.adb:13:07: error: error in inlined body at line 8
+discr.adb:13:07: error: error in inlined body at line 8
+discr.adb:13:07: error: static expression fails Constraint_Check
+discr.adb:13:07: error: static expression fails Constraint_Check
 gnatprove: error during generation of Global contracts

@@ -58,6 +58,6 @@ in_out_pledge.adb:85:22: info: assertion proved (CVC4: 1 VC)
 in_out_pledge.adb:85:27: info: pointer dereference check proved (CVC4: 1 VC)
 in_out_pledge.adb:85:32: info: pointer dereference check proved (CVC4: 1 VC)
 in_out_pledge.adb:85:37: info: pointer dereference check proved (CVC4: 1 VC)
-pledge_constraints.adb:31:45: actual for a call to a function annotated with At_End_Borrow should not depend on a variable
-pledge_constraints_2.adb:30:42: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
+pledge_constraints.adb:31:45: error: actual for a call to a function annotated with At_End_Borrow should not depend on a variable
+pledge_constraints_2.adb:30:42: error: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
 gnatprove: error during flow analysis and proof

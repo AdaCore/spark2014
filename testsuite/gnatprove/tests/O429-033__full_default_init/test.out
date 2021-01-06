@@ -1,9 +1,9 @@
-lr4a.ads:12:12: not fully initialized part of protected type is not allowed in SPARK (SPARK RM 9.4)
-lr4a.ads:12:12: violation of aspect SPARK_Mode at line 1
-lr4a.ads:13:12: not fully initialized part of task type is not allowed in SPARK (SPARK RM 9.4)
-lr4a.ads:13:12: violation of aspect SPARK_Mode at line 1
-lr4a.ads:14:12: not fully initialized part of protected type is not allowed in SPARK (SPARK RM 9.4)
-lr4a.ads:14:12: violation of aspect SPARK_Mode at line 1
-lr4a.ads:16:12: not fully initialized part of task type is not allowed in SPARK (SPARK RM 9.4)
-lr4a.ads:16:12: violation of aspect SPARK_Mode at line 1
+lr4a.ads:12:12: error: not fully initialized part of protected type is not allowed in SPARK (SPARK RM 9.4)
+lr4a.ads:12:12: error: violation of aspect SPARK_Mode at line 1
+lr4a.ads:13:12: error: not fully initialized part of task type is not allowed in SPARK (SPARK RM 9.4)
+lr4a.ads:13:12: error: violation of aspect SPARK_Mode at line 1
+lr4a.ads:14:12: error: not fully initialized part of protected type is not allowed in SPARK (SPARK RM 9.4)
+lr4a.ads:14:12: error: violation of aspect SPARK_Mode at line 1
+lr4a.ads:16:12: error: not fully initialized part of task type is not allowed in SPARK (SPARK RM 9.4)
+lr4a.ads:16:12: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

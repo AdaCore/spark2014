@@ -1,5 +1,5 @@
-e.adb:5:13: implied return after this statement would have raised Program_Error
-e.adb:5:13: implied return after this statement would have raised Program_Error
-e.adb:5:13: procedure "E" is marked as No_Return
-e.adb:5:13: procedure "E" is marked as No_Return
+e.adb:5:13: error: implied return after this statement would have raised Program_Error
+e.adb:5:13: error: implied return after this statement would have raised Program_Error
+e.adb:5:13: error: procedure "E" is marked as No_Return
+e.adb:5:13: error: procedure "E" is marked as No_Return
 gnatprove: error during generation of Global contracts

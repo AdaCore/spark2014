@@ -1,2 +1,2 @@
-q.ads:3:49: compiler-generated raise statement is not yet supported
+q.ads:3:49: error: compiler-generated raise statement is not yet supported
 gnatprove: error during flow analysis and proof

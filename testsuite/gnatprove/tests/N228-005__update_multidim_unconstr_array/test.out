@@ -1,6 +1,6 @@
-update_checks_multidim_unconstr.adb:14:21: attribute "Update" of unconstrained multidimensional array is not yet supported
+update_checks_multidim_unconstr.adb:14:21: error: attribute "Update" of unconstrained multidimensional array is not yet supported
 update_checks_multidim_unconstr.adb:17:04: warning: analyzing unreferenced procedure "Test3"
-update_checks_multidim_unconstr.adb:26:24: attribute "Update" of unconstrained multidimensional array is not yet supported
+update_checks_multidim_unconstr.adb:26:24: error: attribute "Update" of unconstrained multidimensional array is not yet supported
 update_checks_multidim_unconstr.adb:30:04: warning: analyzing unreferenced procedure "Test4"
-update_checks_multidim_unconstr.adb:38:21: attribute "Update" of unconstrained multidimensional array is not yet supported
+update_checks_multidim_unconstr.adb:38:21: error: attribute "Update" of unconstrained multidimensional array is not yet supported
 gnatprove: error during flow analysis and proof

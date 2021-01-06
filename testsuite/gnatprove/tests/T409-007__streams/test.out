@@ -1,5 +1,5 @@
-main.adb:7:04: attribute "Write" is not allowed in SPARK
-main.adb:7:04: violation of aspect SPARK_Mode at line 5
+main.adb:7:04: error: attribute "Write" is not allowed in SPARK
+main.adb:7:04: error: violation of aspect SPARK_Mode at line 5
 streamable_types.adb:14:48: info: range check proved (CVC4: 1 VC)
 streamable_types.adb:15:32: info: range check proved (CVC4: 1 VC)
 streamable_types.adb:15:38: info: range check proved (CVC4: 1 VC)

@@ -1,5 +1,5 @@
-arr.ads:5:04: "Ind1" is not allowed in SPARK
-arr.ads:5:04: violation of aspect SPARK_Mode at line 3
-client.ads:3:10: "T" is not allowed in SPARK
-client.ads:3:10: violation of aspect SPARK_Mode at line 3
+arr.ads:5:04: error: "Ind1" is not allowed in SPARK
+arr.ads:5:04: error: violation of aspect SPARK_Mode at line 3
+client.ads:3:10: error: "T" is not allowed in SPARK
+client.ads:3:10: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

@@ -1,5 +1,5 @@
-prot.adb:18:50: call to a volatile function in interfering context is not allowed in SPARK
-prot.adb:18:50: violation of aspect SPARK_Mode at line 4
-user.adb:8:12: call to a volatile function in interfering context is not allowed in SPARK
-user.adb:8:12: violation of aspect SPARK_Mode at line 4
+prot.adb:18:50: error: call to a volatile function in interfering context is not allowed in SPARK
+prot.adb:18:50: error: violation of aspect SPARK_Mode at line 4
+user.adb:8:12: error: call to a volatile function in interfering context is not allowed in SPARK
+user.adb:8:12: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof

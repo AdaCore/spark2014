@@ -2,11 +2,11 @@ initial_condition_illegal_2.ads:8:29: low: initialization of "Initial_Condition_
 initial_condition_illegal_2.ads:8:29: warning: no procedure exists that can initialize abstract state "Initial_Condition_Illegal_2.State"
 initial_condition_illegal_2.ads:10:08: info: initial condition proved (CVC4: 2 VC)
 initial_condition_illegal_2.ads:15:11: info: data dependencies proved
-initial_condition_illegal_3.adb:6:11:   body of unit "Initial_Condition_Illegal_3" elaborated
-initial_condition_illegal_3.adb:6:11:   procedure "Init" called at line 9
-initial_condition_illegal_3.adb:6:11:   variable "Var" assigned at line 6
-initial_condition_illegal_3.adb:6:11: add pragma "Elaborate_Body" to spec "Initial_Condition_Illegal_3" to ensure full initialization
-initial_condition_illegal_3.adb:6:11: variable "Var" modified by elaboration code in package body
+initial_condition_illegal_3.adb:6:11: error:   body of unit "Initial_Condition_Illegal_3" elaborated
+initial_condition_illegal_3.adb:6:11: error:   procedure "Init" called at line 9
+initial_condition_illegal_3.adb:6:11: error:   variable "Var" assigned at line 6
+initial_condition_illegal_3.adb:6:11: error: add pragma "Elaborate_Body" to spec "Initial_Condition_Illegal_3" to ensure full initialization
+initial_condition_illegal_3.adb:6:11: error: variable "Var" modified by elaboration code in package body
 gnatprove: error during generation of Global contracts
 initial_condition_illegal_4.ads:8:08: info: initial condition proved (CVC4: 1 VC)
 initial_condition_illegal_4.ads:10:04: info: initialization of "Var" proved

@@ -1,4 +1,4 @@
-pack.adb:11:14: side effects of function "F1" are not modeled in SPARK
-pack.ads:6:13: function with output global "X" is not allowed in SPARK
-pack.ads:7:13: function with output global "X" is not allowed in SPARK
+pack.adb:11:14: error: side effects of function "F1" are not modeled in SPARK
+pack.ads:6:13: error: function with output global "X" is not allowed in SPARK
+pack.ads:7:13: error: function with output global "X" is not allowed in SPARK
 gnatprove: error during flow analysis and proof

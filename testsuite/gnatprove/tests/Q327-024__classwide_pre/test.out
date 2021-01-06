@@ -1,9 +1,9 @@
-my_types.ads:7:20: plain precondition on dispatching subprogram is not allowed in SPARK (SPARK RM 6.1.1(2))
-my_types.ads:7:20: plain precondition on dispatching subprogram is not allowed in SPARK (SPARK RM 6.1.1(2))
-my_types.ads:7:20: use classwide precondition Pre'Class instead of Pre
-my_types.ads:7:20: use classwide precondition Pre'Class instead of Pre
-my_types.ads:7:20: violation of aspect SPARK_Mode at line 1
-my_types.ads:7:20: violation of aspect SPARK_Mode at line 1
-test_pre.adb:5:04: "Incr" is not allowed in SPARK (due to plain precondition on dispatching subprogram)
-test_pre.adb:5:04: violation of aspect SPARK_Mode at line 2
+my_types.ads:7:20: error: plain precondition on dispatching subprogram is not allowed in SPARK (SPARK RM 6.1.1(2))
+my_types.ads:7:20: error: plain precondition on dispatching subprogram is not allowed in SPARK (SPARK RM 6.1.1(2))
+my_types.ads:7:20: error: use classwide precondition Pre'Class instead of Pre
+my_types.ads:7:20: error: use classwide precondition Pre'Class instead of Pre
+my_types.ads:7:20: error: violation of aspect SPARK_Mode at line 1
+my_types.ads:7:20: error: violation of aspect SPARK_Mode at line 1
+test_pre.adb:5:04: error: "Incr" is not allowed in SPARK (due to plain precondition on dispatching subprogram)
+test_pre.adb:5:04: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

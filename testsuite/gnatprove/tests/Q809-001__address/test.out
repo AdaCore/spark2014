@@ -2,22 +2,22 @@ addr.ads:7:04: info: object is suitable for aliasing via address clause (Trivial
 addr.ads:7:04: medium: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: Y doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
 addr.ads:8:22: info: object is suitable for aliasing via address clause (Trivial)
 addr.ads:8:22: info: types of aliased objects have the same size (Trivial)
-aspect.ads:5:04: "Z" is not allowed in SPARK
-aspect.ads:5:04: violation of pragma SPARK_Mode at test.adc:1
-aspect.ads:5:32: "F" is not allowed in SPARK
-aspect.ads:5:32: violation of pragma SPARK_Mode at test.adc:1
-attribute.ads:5:04: "Z" is not allowed in SPARK
-attribute.ads:5:04: violation of pragma SPARK_Mode at test.adc:1
-attribute.ads:6:22: "F" is not allowed in SPARK
-attribute.ads:6:22: violation of pragma SPARK_Mode at test.adc:1
-attribute_and_aspect.ads:5:04: "Z1" is not allowed in SPARK
-attribute_and_aspect.ads:5:04: violation of pragma SPARK_Mode at test.adc:1
-attribute_and_aspect.ads:6:23: "F" is not allowed in SPARK
-attribute_and_aspect.ads:6:23: violation of pragma SPARK_Mode at test.adc:1
-attribute_and_aspect.ads:8:04: "Z2" is not allowed in SPARK
-attribute_and_aspect.ads:8:04: violation of pragma SPARK_Mode at test.adc:1
-attribute_and_aspect.ads:8:33: "F" is not allowed in SPARK
-attribute_and_aspect.ads:8:33: violation of pragma SPARK_Mode at test.adc:1
-p.ads:5:22: "F" is not allowed in SPARK
-p.ads:5:22: violation of pragma SPARK_Mode at test.adc:1
+aspect.ads:5:04: error: "Z" is not allowed in SPARK
+aspect.ads:5:04: error: violation of pragma SPARK_Mode at test.adc:1
+aspect.ads:5:32: error: "F" is not allowed in SPARK
+aspect.ads:5:32: error: violation of pragma SPARK_Mode at test.adc:1
+attribute.ads:5:04: error: "Z" is not allowed in SPARK
+attribute.ads:5:04: error: violation of pragma SPARK_Mode at test.adc:1
+attribute.ads:6:22: error: "F" is not allowed in SPARK
+attribute.ads:6:22: error: violation of pragma SPARK_Mode at test.adc:1
+attribute_and_aspect.ads:5:04: error: "Z1" is not allowed in SPARK
+attribute_and_aspect.ads:5:04: error: violation of pragma SPARK_Mode at test.adc:1
+attribute_and_aspect.ads:6:23: error: "F" is not allowed in SPARK
+attribute_and_aspect.ads:6:23: error: violation of pragma SPARK_Mode at test.adc:1
+attribute_and_aspect.ads:8:04: error: "Z2" is not allowed in SPARK
+attribute_and_aspect.ads:8:04: error: violation of pragma SPARK_Mode at test.adc:1
+attribute_and_aspect.ads:8:33: error: "F" is not allowed in SPARK
+attribute_and_aspect.ads:8:33: error: violation of pragma SPARK_Mode at test.adc:1
+p.ads:5:22: error: "F" is not allowed in SPARK
+p.ads:5:22: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

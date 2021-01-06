@@ -1,7 +1,7 @@
-discrims.adb:16:33: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
-discrims.adb:18:33: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
-discrims.ads:21:29: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
-discrims.ads:29:30: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
+discrims.adb:16:33: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+discrims.adb:18:33: error: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
+discrims.ads:21:29: error: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
+discrims.ads:29:30: error: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
 discrims.ads:36:11: info: flow dependencies proved
-discrims.ads:43:30: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
+discrims.ads:43:30: error: default initialization cannot depend on variable input "V0" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

@@ -1,4 +1,4 @@
-p.adb:4:54: global item must denote object, state or current instance of concurrent type
-p.adb:16:57: global item must denote object, state or current instance of concurrent type
-p.ads:6:37: global item must denote object, state or current instance of concurrent type
+p.adb:4:54: error: global item must denote object, state or current instance of concurrent type
+p.adb:16:57: error: global item must denote object, state or current instance of concurrent type
+p.ads:6:37: error: global item must denote object, state or current instance of concurrent type
 gnatprove: error during generation of Global contracts

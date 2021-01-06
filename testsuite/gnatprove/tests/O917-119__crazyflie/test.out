@@ -10,7 +10,7 @@ crtp_pack.adb:53:25: high: "Packet.Reserved" is not initialized
 crtp_pack.adb:61:07: info: initialization of "Handler" proved
 crtp_pack.ads:138:07: info: initialization of "Packet" proved
 crtp_pack.ads:144:07: info: initialization of "Has_Succeed" proved
-crtp_pack.ads:167:63: actual for formal object with mode in cannot depend on variable input "Bla" (SPARK RM 4.4(2))
+crtp_pack.ads:167:63: error: actual for formal object with mode in cannot depend on variable input "Bla" (SPARK RM 4.4(2))
 generic_queue_pack.ads:23:07: medium: "Item.Channel" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:23:07: medium: "Item.Data_1" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:23:07: medium: "Item.Data_2" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
