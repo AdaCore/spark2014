@@ -9351,6 +9351,7 @@ package body Gnat2Why.Expr is
         (Expr   : Node_Id;
          Arr    : W_Expr_Id;
          Args   : Ada_Ent_To_Why.Map;
+         Bnds   : W_Expr_Array;
          Params : Transformation_Params) return W_Pred_Id;
       --  Generates the proposition defining the aggregate Arr, based on a
       --  mapping between Ada nodes and corresponding Why identifiers.
@@ -9829,6 +9830,7 @@ package body Gnat2Why.Expr is
               (Expr   => Expr,
                Arr    => +Aggr_Temp,
                Args   => Args_Map,
+               Bnds   => Bnd_Args,
                Params => Params_No_Ref));
 
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -10580,6 +10582,7 @@ package body Gnat2Why.Expr is
         (Expr   : Node_Id;
          Arr    : W_Expr_Id;
          Args   : Ada_Ent_To_Why.Map;
+         Bnds   : W_Expr_Array;
          Params : Transformation_Params) return W_Pred_Id
       is
          Typ     : constant Entity_Id := Type_Of_Node (Expr);
@@ -10892,10 +10895,7 @@ package body Gnat2Why.Expr is
                    (Value => Expr_Value (Low) + UI_From_Int (Offset),
                     Typ   => Typ);
             else
-               First := New_Attribute_Expr (Etype (Rng),
-                                            EW_Term,
-                                            Attribute_First,
-                                            Params);
+               First := Bnds (2 * Positive (Dim) - 1);
 
                Val :=
                  New_Discrete_Add (Domain => Domain,
