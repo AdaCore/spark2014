@@ -26,10 +26,11 @@
 --  refined view then which one.
 
 with Atree;                use Atree;
-with Einfo;                use Einfo;
+with Einfo.Entities;       use Einfo.Entities;
+with Einfo.Utils;          use Einfo.Utils;
 with Sem_Util;             use Sem_Util;
 with Snames;               use Snames;
-with Sinfo;                use Sinfo;
+with Sinfo.Nodes;          use Sinfo.Nodes;
 with Types;                use Types;
 
 with Checked_Types;        use Checked_Types;

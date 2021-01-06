@@ -25,6 +25,7 @@
 
 with Ada.Text_IO; -- debugging purpose
 with Aspects;
+with Einfo.Utils;
 with Nlists;             use Nlists;
 with Sem_Ch12;
 with Sem_Disp;
@@ -38,35 +39,35 @@ package body SPARK_Atree is
    -- Actions --
    -------------
 
-   function Actions (N : Node_Id) return List_Id renames Sinfo.Actions;
+   function Actions (N : Node_Id) return List_Id renames Sinfo.Nodes.Actions;
 
    ----------------------
    -- Aggregate_Bounds --
    ----------------------
 
-   function Aggregate_Bounds (N : Node_Id) return Node_Id renames
-     Sinfo.Aggregate_Bounds;
+   function Aggregate_Bounds (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Aggregate_Bounds (N));
 
    -----------------
    -- All_Present --
    -----------------
 
    function All_Present (N : Node_Id) return Boolean renames
-     Sinfo.All_Present;
+     Sinfo.Nodes.All_Present;
 
    ------------------
    -- Alternatives --
    ------------------
 
    function Alternatives (N : Node_Id) return List_Id renames
-     Sinfo.Alternatives;
+     Sinfo.Nodes.Alternatives;
 
    -------------------
    -- Ancestor_Part --
    -------------------
 
-   function Ancestor_Part (N : Node_Id) return Node_Id renames
-     Sinfo.Ancestor_Part;
+   function Ancestor_Part (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Ancestor_Part (N));
 
    ----------------------------------------
    -- Attribute_Constrained_Static_Value --
@@ -80,27 +81,29 @@ package body SPARK_Atree is
    -- Attribute_Name --
    --------------------
 
-   function Attribute_Name (N : Node_Id) return Name_Id renames
-     Sinfo.Attribute_Name;
+   function Attribute_Name (N : Node_Id) return Name_Id is
+     (Sinfo.Nodes.Attribute_Name (N));
 
    -----------------
    -- Box_Present --
    -----------------
 
-   function Box_Present (N : Node_Id) return Boolean renames Sinfo.Box_Present;
+   function Box_Present (N : Node_Id) return Boolean renames
+     Sinfo.Nodes.Box_Present;
 
    ------------------------
    -- Char_Literal_Value --
    ------------------------
 
-   function Char_Literal_Value (N : Node_Id) return Uint renames
-     Sinfo.Char_Literal_Value;
+   function Char_Literal_Value (N : Node_Id) return Uint is
+     (Sinfo.Nodes.Char_Literal_Value (N));
 
    -----------
    -- Chars --
    -----------
 
-   function Chars (N : Node_Id) return Name_Id renames Sinfo.Chars;
+   function Chars (N : Node_Id) return Name_Id is
+     (Sinfo.Nodes.Chars (N));
 
    -----------------
    -- Choice_List --
@@ -114,14 +117,14 @@ package body SPARK_Atree is
    ----------------------------
 
    function Component_Associations (N : Node_Id) return List_Id renames
-     Sinfo.Component_Associations;
+     Sinfo.Nodes.Component_Associations;
 
    --------------------------
    -- Component_Definition --
    --------------------------
 
    function Component_Definition (N : Node_Id) return Node_Id renames
-     Sinfo.Component_Definition;
+     Sinfo.Nodes.Component_Definition;
 
    ----------------------------------
    -- Component_Subtype_Indication --
@@ -132,58 +135,58 @@ package body SPARK_Atree is
       and then Nkind (Type_Definition (N)) in
             N_Constrained_Array_Definition
           | N_Unconstrained_Array_Definition
-      then Sinfo.Subtype_Indication
-        (Sinfo.Component_Definition (Sinfo.Type_Definition (N)))
+      then Sinfo.Nodes.Subtype_Indication
+        (Sinfo.Nodes.Component_Definition (Sinfo.Nodes.Type_Definition (N)))
       else Empty);
 
    ---------------
    -- Condition --
    ---------------
 
-   function Condition (N : Node_Id) return Node_Id renames
-     Sinfo.Condition;
+   function Condition (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Condition (N));
 
    -----------------------
    -- Condition_Actions --
    -----------------------
 
-   function Condition_Actions (N : Node_Id) return List_Id renames
-     Sinfo.Condition_Actions;
+   function Condition_Actions (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Condition_Actions (N));
 
    ----------------------
    -- Constant_Present --
    ----------------------
 
-   function Constant_Present (N : Node_Id) return Boolean renames
-     Sinfo.Constant_Present;
+   function Constant_Present (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Constant_Present (N));
 
    -------------------
    -- Context_Items --
    -------------------
 
-   function Context_Items (N : Node_Id) return List_Id renames
-     Sinfo.Context_Items;
+   function Context_Items (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Context_Items (N));
 
    --------------------------
    -- Controlling_Argument --
    --------------------------
 
-   function Controlling_Argument (N : Node_Id) return Node_Id renames
-      Sinfo.Controlling_Argument;
+   function Controlling_Argument (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Controlling_Argument (N));
 
    ---------------------------------
    -- Corresponding_Integer_Value --
    ---------------------------------
 
-   function Corresponding_Integer_Value (N : Node_Id) return Uint renames
-      Sinfo.Corresponding_Integer_Value;
+   function Corresponding_Integer_Value (N : Node_Id) return Uint is
+     (Sinfo.Nodes.Corresponding_Integer_Value (N));
 
    ------------------
    -- Declarations --
    ------------------
 
    function Declarations (N : Node_Id) return List_Id renames
-     Sinfo.Declarations;
+     Sinfo.Nodes.Declarations;
 
    -----------------------------
    -- Depends_On_Discriminant --
@@ -196,66 +199,67 @@ package body SPARK_Atree is
    -- Discrete_Choices --
    ----------------------
 
-   function Discrete_Choices (N : Node_Id) return List_Id renames
-    Sinfo.Discrete_Choices;
+   function Discrete_Choices (N : Node_Id) return List_Id is
+    (Sinfo.Nodes.Discrete_Choices (N));
 
    --------------------
    -- Discrete_Range --
    --------------------
 
-   function Discrete_Range (N : Node_Id) return Node_Id renames
-    Sinfo.Discrete_Range;
+   function Discrete_Range (N : Node_Id) return Node_Id is
+    (Sinfo.Nodes.Discrete_Range (N));
 
    ---------------------------------
    -- Discrete_Subtype_Definition --
    ---------------------------------
 
-   function Discrete_Subtype_Definition (N : Node_Id) return Node_Id renames
-    Sinfo.Discrete_Subtype_Definition;
+   function Discrete_Subtype_Definition (N : Node_Id) return Node_Id is
+    (Sinfo.Nodes.Discrete_Subtype_Definition (N));
 
    -----------------------------------
    -- Do_Check_On_Scalar_Conversion --
    -----------------------------------
 
    function Do_Check_On_Scalar_Conversion (N : Node_Id) return Boolean is
-      use type Einfo.Entity_Kind;
+      use type Einfo.Entities.Entity_Kind;
    begin
       return
-      Sinfo.Do_Range_Check (N)
+      Sinfo.Nodes.Do_Range_Check (N)
       or else
-        (Atree.Nkind (Atree.Parent (N)) = N_Type_Conversion
-         and then Sinfo.Do_Overflow_Check (Atree.Parent (N)))
+        (Sinfo.Nodes.Nkind (Atree.Parent (N)) = N_Type_Conversion
+         and then Sinfo.Nodes.Do_Overflow_Check (Atree.Parent (N)))
       or else
-        (Atree.Nkind (N) = N_Type_Conversion
-         and then Sinfo.Do_Range_Check (Sinfo.Expression (N))
-         and then Atree.Nkind (Atree.Parent (N)) in
+        (Sinfo.Nodes.Nkind (N) = N_Type_Conversion
+         and then Sinfo.Nodes.Do_Range_Check (Sinfo.Nodes.Expression (N))
+         and then Sinfo.Nodes.Nkind (Atree.Parent (N)) in
            N_Parameter_Association | N_Procedure_Call_Statement
              | N_Entry_Call_Statement
-         and then Atree.Ekind (SPARK_Util.Get_Formal_From_Actual (N)) in
-           Einfo.E_In_Out_Parameter | Einfo.E_Out_Parameter)
+         and then Einfo.Entities.Ekind (SPARK_Util.Get_Formal_From_Actual (N))
+                    in Einfo.Entities.E_In_Out_Parameter
+                     | Einfo.Entities.E_Out_Parameter)
       or else
-        (Atree.Nkind (Atree.Parent (N)) = N_Range
-         and then Sinfo.Do_Range_Check (Atree.Parent (N)))
+        (Sinfo.Nodes.Nkind (Atree.Parent (N)) = N_Range
+         and then Sinfo.Nodes.Do_Range_Check (Atree.Parent (N)))
 
       --  Do_Range_Check flag is not set on allocators. Do the check if the
       --  designated subtype and the provided subtype do not match.
       --  For uninitialized allocators, N is the allocator node itself.
 
       or else
-        (Atree.Nkind (N) = N_Allocator
-         and then Einfo.Directly_Designated_Type
-           (if Present (Einfo.Full_View (Etype (N)))
-            then Einfo.Full_View (Etype (N))
+        (Sinfo.Nodes.Nkind (N) = N_Allocator
+         and then Einfo.Entities.Directly_Designated_Type
+           (if Present (Einfo.Entities.Full_View (Etype (N)))
+            then Einfo.Entities.Full_View (Etype (N))
             else Etype (N)) /= Entity (Expression (N)))
 
       --  On initialized allocators, it is the allocated expression, so the
       --  allocator is its parent.
 
       or else
-        (Atree.Nkind (Atree.Parent (N)) = N_Allocator
-         and then Einfo.Directly_Designated_Type
-           (if Present (Einfo.Full_View (Etype (Atree.Parent (N))))
-            then Einfo.Full_View (Etype (Atree.Parent (N)))
+        (Sinfo.Nodes.Nkind (Atree.Parent (N)) = N_Allocator
+         and then Einfo.Entities.Directly_Designated_Type
+           (if Present (Einfo.Entities.Full_View (Etype (Atree.Parent (N))))
+            then Einfo.Entities.Full_View (Etype (Atree.Parent (N)))
             else Etype (Atree.Parent (N)))
          /= Etype (N));
    end Do_Check_On_Scalar_Conversion;
@@ -264,42 +268,43 @@ package body SPARK_Atree is
    -- Do_Division_Check --
    -----------------------
 
-   function Do_Division_Check (N : Node_Id) return Boolean renames
-      Sinfo.Do_Division_Check;
+   function Do_Division_Check (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Do_Division_Check (N));
 
    -----------------------
    -- Do_Overflow_Check --
    -----------------------
 
-   function Do_Overflow_Check (N : Node_Id) return Boolean renames
-      Sinfo.Do_Overflow_Check;
+   function Do_Overflow_Check (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Do_Overflow_Check (N));
 
    --------------------
    -- Do_Range_Check --
    --------------------
 
-   function Do_Range_Check (N : Node_Id) return Boolean renames
-      Sinfo.Do_Range_Check;
+   function Do_Range_Check (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Do_Range_Check (N));
 
    ------------------
    -- Else_Actions --
    ------------------
 
-   function Else_Actions (N : Node_Id) return List_Id renames
-      Sinfo.Else_Actions;
+   function Else_Actions (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Else_Actions (N));
 
    ---------------------
    -- Else_Statements --
    ---------------------
 
-   function Else_Statements (N : Node_Id) return List_Id renames
-     Sinfo.Else_Statements;
+   function Else_Statements (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Else_Statements (N));
 
    -----------------
    -- Elsif_Parts --
    -----------------
 
-   function Elsif_Parts (N : Node_Id) return List_Id renames Sinfo.Elsif_Parts;
+   function Elsif_Parts (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Elsif_Parts (N));
 
    ------------------------------
    -- Enclosing_Comp_Unit_Node --
@@ -319,20 +324,22 @@ package body SPARK_Atree is
    -- Entity --
    ------------
 
-   function Entity (N : Node_Id) return Node_Id renames Sinfo.Entity;
+   function Entity (N : Node_Id) return Node_Id is
+     (Sinfo.Utils.Entity (N));
 
    ------------------------
    -- Entry_Body_Barrier --
    ------------------------
 
    function Entry_Body_Barrier (N : Node_Id) return Node_Id is
-     (Sinfo.Condition (Sinfo.Entry_Body_Formal_Part (N)));
+     (Sinfo.Nodes.Condition (Sinfo.Nodes.Entry_Body_Formal_Part (N)));
 
    -----------
    -- Etype --
    -----------
 
-   function Etype (N : Node_Id) return Node_Id renames Sinfo.Etype;
+   function Etype (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Etype (N));
 
    ----------------
    -- Expr_Value --
@@ -351,7 +358,8 @@ package body SPARK_Atree is
    -- Expression --
    ----------------
 
-   function Expression (N : Node_Id) return Node_Id renames Sinfo.Expression;
+   function Expression (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Expression (N));
 
    -------------------------------------------
    -- Expression_Contains_Old_Or_Loop_Entry --
@@ -441,27 +449,29 @@ package body SPARK_Atree is
    -- Expressions --
    -----------------
 
-   function Expressions (N : Node_Id) return List_Id renames Sinfo.Expressions;
+   function Expressions (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Expressions (N));
 
    ---------------
    -- First_Bit --
    ---------------
 
-   function First_Bit (N : Node_Id) return Node_Id renames Sinfo.First_Bit;
+   function First_Bit (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.First_Bit (N));
 
    -------------------------------
    -- From_Aspect_Specification --
    -------------------------------
 
-   function From_Aspect_Specification (N : Node_Id) return Boolean renames
-     Sinfo.From_Aspect_Specification;
+   function From_Aspect_Specification (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.From_Aspect_Specification (N));
 
    -----------------------------------
    -- From_Real_Range_Specification --
    -----------------------------------
 
    function From_Real_Range_Specification (N : Node_Id) return Boolean is
-     (Nkind (Atree.Parent (N)) = Sinfo.N_Real_Range_Specification);
+     (Nkind (Atree.Parent (N)) = Sinfo.Nodes.N_Real_Range_Specification);
 
    ----------------------
    -- Get_Address_Expr --
@@ -469,10 +479,10 @@ package body SPARK_Atree is
 
    function Get_Address_Expr (N : Node_Id) return Node_Id is
       Address : constant Node_Id :=
-        Einfo.Address_Clause (Sem_Util.Defining_Entity (N));
+        Einfo.Utils.Address_Clause (Sem_Util.Defining_Entity (N));
    begin
       if Present (Address) then
-         return Sinfo.Expression (Address);
+         return Sinfo.Nodes.Expression (Address);
       else
          return Empty;
       end if;
@@ -493,7 +503,7 @@ package body SPARK_Atree is
 
    function Get_Enclosing_Object (N : Node_Id) return Entity_Id is
    begin
-      if Einfo.Is_Entity_Name (N) then
+      if Einfo.Utils.Is_Entity_Name (N) then
          return Entity (N);
       else
          case Nkind (N) is
@@ -583,7 +593,9 @@ package body SPARK_Atree is
 
          when N_Simple_Return_Statement =>
             Check_Type :=
-              Etype (Einfo.Return_Applies_To (Return_Statement_Entity (Par)));
+              Etype
+                (Einfo.Entities.Return_Applies_To
+                   (Return_Statement_Entity (Par)));
 
          --  For a call, retrieve the type for the corresponding argument
 
@@ -613,7 +625,8 @@ package body SPARK_Atree is
                      | Attribute_Succ
                      | Attribute_Val
                   =>
-                     Check_Type := Einfo.Base_Type (Entity (Prefix (Par)));
+                     Check_Type :=
+                       Einfo.Utils.Base_Type (Entity (Prefix (Par)));
 
                   when others =>
                      Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] attr ="
@@ -675,12 +688,12 @@ package body SPARK_Atree is
 
                   elsif Expression (Par) = N then
                      Check_Type :=
-                       Einfo.Component_Type
+                       Einfo.Entities.Component_Type
                          (Sem_Util.Unique_Entity (Prefix_Type));
 
                   else
                      Check_Type :=
-                       Etype (Einfo.First_Index
+                       Etype (Einfo.Entities.First_Index
                               (Sem_Util.Unique_Entity (Prefix_Type)));
                   end if;
 
@@ -723,7 +736,7 @@ package body SPARK_Atree is
 
                Pref        : constant Node_Id := Prefix (Atree.Parent (Aggr));
                Num_Dim     : constant Pos :=
-                 Einfo.Number_Dimensions
+                 Einfo.Utils.Number_Dimensions
                    (SPARK_Util.Types.Retysp (Etype (Pref)));
                Multi_Exprs : constant List_Id := Expressions (Par);
 
@@ -741,10 +754,11 @@ package body SPARK_Atree is
                --  When present, the Actual_Subtype of the entity should be
                --  used instead of the Etype of the prefix.
 
-               if Einfo.Is_Entity_Name (Pref)
-                 and then Present (Einfo.Actual_Subtype (Entity (Pref)))
+               if Einfo.Utils.Is_Entity_Name (Pref)
+                 and then
+                   Present (Einfo.Entities.Actual_Subtype (Entity (Pref)))
                then
-                  Array_Type := Einfo.Actual_Subtype (Entity (Pref));
+                  Array_Type := Einfo.Entities.Actual_Subtype (Entity (Pref));
                else
                   Array_Type := Etype (Pref);
                end if;
@@ -753,7 +767,8 @@ package body SPARK_Atree is
 
                Dim_Expr      := Nlists.First (Multi_Exprs);
                Current_Index :=
-                 Einfo.First_Index (Sem_Util.Unique_Entity (Array_Type));
+                 Einfo.Entities.First_Index
+                   (Sem_Util.Unique_Entity (Array_Type));
                Found         := False;
 
                while Present (Dim_Expr) loop
@@ -763,7 +778,7 @@ package body SPARK_Atree is
                      exit;
                   end if;
                   Next (Dim_Expr);
-                  Einfo.Next_Index (Current_Index);
+                  Einfo.Utils.Next_Index (Current_Index);
                end loop;
 
                pragma Assert (Found);
@@ -777,14 +792,14 @@ package body SPARK_Atree is
             case Aspects.Get_Aspect_Id (Par) is
             when Aspects.Aspect_Default_Component_Value =>
                pragma Assert
-                 (Einfo.Is_Array_Type
+                 (Einfo.Utils.Is_Array_Type
                     (SPARK_Util.Types.Retysp (Entity (Par))));
                Check_Type :=
-                 Einfo.Component_Type
+                 Einfo.Entities.Component_Type
                    (SPARK_Util.Types.Retysp (Entity (Par)));
             when Aspects.Aspect_Default_Value =>
                pragma Assert
-                 (Einfo.Is_Scalar_Type
+                 (Einfo.Utils.Is_Scalar_Type
                     (SPARK_Util.Types.Retysp (Entity (Par))));
                Check_Type := SPARK_Util.Types.Retysp (Entity (Par));
             when others =>
@@ -810,15 +825,15 @@ package body SPARK_Atree is
             Check_Type := Etype (Atree.Parent (Par));
 
          when N_Allocator =>
-            Check_Type := Einfo.Directly_Designated_Type
-              (if Present (Einfo.Full_View (Etype (Par)))
-               then Einfo.Full_View (Etype (Par))
+            Check_Type := Einfo.Entities.Directly_Designated_Type
+              (if Present (Einfo.Entities.Full_View (Etype (Par)))
+               then Einfo.Entities.Full_View (Etype (Par))
                else Etype (Par));
 
-            if Einfo.Is_Incomplete_Type (Check_Type)
-              and then Present (Einfo.Full_View (Check_Type))
+            if Einfo.Utils.Is_Incomplete_Type (Check_Type)
+              and then Present (Einfo.Entities.Full_View (Check_Type))
             then
-               Check_Type := Einfo.Full_View (Check_Type);
+               Check_Type := Einfo.Entities.Full_View (Check_Type);
             end if;
 
          when others =>
@@ -833,8 +848,8 @@ package body SPARK_Atree is
 
       --  If the target type is a constrained array, we have a length check.
 
-      if Einfo.Is_Array_Type (Check_Type)
-        and then Einfo.Is_Constrained (Check_Type)
+      if Einfo.Utils.Is_Array_Type (Check_Type)
+        and then Einfo.Entities.Is_Constrained (Check_Type)
       then
          Check_Kind := SPARK_Util.RCK_Length;
 
@@ -846,7 +861,7 @@ package body SPARK_Atree is
       elsif Nkind (Par) = N_Attribute_Reference
         and then Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred
       then
-         if Einfo.Is_Enumeration_Type (Check_Type) then
+         if Einfo.Utils.Is_Enumeration_Type (Check_Type) then
             Check_Kind := SPARK_Util.RCK_Range_Not_First;
          else
             Check_Kind := SPARK_Util.RCK_Overflow_Not_First;
@@ -855,7 +870,7 @@ package body SPARK_Atree is
       elsif Nkind (Par) = N_Attribute_Reference
         and then Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ
       then
-         if Einfo.Is_Enumeration_Type (Check_Type) then
+         if Einfo.Utils.Is_Enumeration_Type (Check_Type) then
             Check_Kind := SPARK_Util.RCK_Range_Not_Last;
          else
             Check_Kind := SPARK_Util.RCK_Overflow_Not_Last;
@@ -883,29 +898,34 @@ package body SPARK_Atree is
                                             Source, Target : out Node_Id)
    is
       Wrapper_Pkg : constant Node_Id :=
-        Sinfo.Defining_Unit_Name (Atree.Parent (Sem_Aux.Subprogram_Spec (E)));
-      pragma Assert (Einfo.Is_Wrapper_Package (Wrapper_Pkg));
-      First_Assoc : constant Node_Id :=
-        First (Sinfo.Generic_Associations (Sem_Ch12.Get_Unit_Instantiation_Node
-               (Wrapper_Pkg)));
+        Sinfo.Nodes.Defining_Unit_Name
+          (Atree.Parent (Sem_Aux.Subprogram_Spec (E)));
+      pragma Assert (Einfo.Utils.Is_Wrapper_Package (Wrapper_Pkg));
+
+      First_Assoc  : constant Node_Id :=
+        First
+          (Sinfo.Nodes.Generic_Associations
+             (Sem_Ch12.Get_Unit_Instantiation_Node (Wrapper_Pkg)));
+      Second_Accoc : constant Node_Id := Next (First_Assoc);
+
    begin
-      Source := Sinfo.Explicit_Generic_Actual_Parameter (First_Assoc);
-      Target := Sinfo.Explicit_Generic_Actual_Parameter (Next (First_Assoc));
+      Source := Sinfo.Nodes.Explicit_Generic_Actual_Parameter (First_Assoc);
+      Target := Sinfo.Nodes.Explicit_Generic_Actual_Parameter (Second_Accoc);
    end Get_Unchecked_Conversion_Args;
 
    --------------------------------
    -- Handled_Statement_Sequence --
    --------------------------------
 
-   function Handled_Statement_Sequence (N : Node_Id) return Node_Id renames
-     Sinfo.Handled_Statement_Sequence;
+   function Handled_Statement_Sequence (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Handled_Statement_Sequence (N));
 
    ----------------------
    -- Has_Target_Names --
    ----------------------
 
-   function Has_Target_Names (N : Node_Id) return Boolean renames
-     Sinfo.Has_Target_Names;
+   function Has_Target_Names (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Has_Target_Names (N));
 
    ---------------------------------
    -- Has_Inferable_Discriminants --
@@ -961,26 +981,29 @@ package body SPARK_Atree is
    -- High_Bound --
    ----------------
 
-   function High_Bound (N : Node_Id) return Node_Id renames Sinfo.High_Bound;
+   function High_Bound (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.High_Bound (N));
 
    ----------------
    -- Identifier --
    ----------------
 
-   function Identifier (N : Node_Id) return Node_Id renames Sinfo.Identifier;
+   function Identifier (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Identifier (N));
 
    ----------------------------
    -- Inherited_Discriminant --
    ----------------------------
 
-   function Inherited_Discriminant (N : Node_Id) return Boolean renames
-     Sinfo.Inherited_Discriminant;
+   function Inherited_Discriminant (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Inherited_Discriminant (N));
 
    ------------
    -- Intval --
    ------------
 
-   function Intval (N : Node_Id) return Uint renames Sinfo.Intval;
+   function Intval (N : Node_Id) return Uint is
+     (Sinfo.Nodes.Intval (N));
 
    ---------------------------------------------
    -- Is_Choice_Of_Unconstrained_Array_Update --
@@ -1025,8 +1048,8 @@ package body SPARK_Atree is
          return False;
       end if;
 
-      if Einfo.Is_Array_Type (Etype (Prefix_Node))
-        and then not Einfo.Is_Constrained (Etype (Prefix_Node))
+      if Einfo.Utils.Is_Array_Type (Etype (Prefix_Node))
+        and then not Einfo.Entities.Is_Constrained (Etype (Prefix_Node))
         and then Is_List_Member (Possibly_Choice_Node)
         and then Present (Choice_List (Atree.Parent (Possibly_Choice_Node)))
         and then List_Containing (Possibly_Choice_Node)
@@ -1042,22 +1065,22 @@ package body SPARK_Atree is
    -- Is_Component_Left_Opnd --
    ----------------------------
 
-   function Is_Component_Left_Opnd (N : Node_Id) return Boolean renames
-     Sinfo.Is_Component_Left_Opnd;
+   function Is_Component_Left_Opnd (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Is_Component_Left_Opnd (N));
 
    -----------------------------
    -- Is_Component_Right_Opnd --
    -----------------------------
 
-   function Is_Component_Right_Opnd (N : Node_Id) return Boolean renames
-     Sinfo.Is_Component_Right_Opnd;
+   function Is_Component_Right_Opnd (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Is_Component_Right_Opnd (N));
 
    ---------------------------
    -- Is_Controlling_Actual --
    ---------------------------
 
-   function Is_Controlling_Actual (N : Node_Id) return Boolean renames
-      Sinfo.Is_Controlling_Actual;
+   function Is_Controlling_Actual (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Is_Controlling_Actual (N));
 
    -----------------
    -- Is_In_Range --
@@ -1120,8 +1143,8 @@ package body SPARK_Atree is
    -- Is_Static_Expression --
    --------------------------
 
-   function Is_Static_Expression (N : Node_Id) return Boolean renames
-     Sinfo.Is_Static_Expression;
+   function Is_Static_Expression (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Is_Static_Expression (N));
 
    --------------------------
    -- Is_Tag_Indeterminate --
@@ -1158,7 +1181,7 @@ package body SPARK_Atree is
                declare
                   Def : constant Node_Id := Type_Definition (Decl);
                begin
-                  return No (Sinfo.Record_Extension_Part (Def))
+                  return No (Sinfo.Nodes.Record_Extension_Part (Def))
                     and then not Cstr_Subtype_Indication (Def);
                end;
             else
@@ -1181,185 +1204,197 @@ package body SPARK_Atree is
    -- Iteration_Scheme --
    ----------------------
 
-   function Iteration_Scheme (N : Node_Id) return Node_Id renames
-     Sinfo.Iteration_Scheme;
+   function Iteration_Scheme (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Iteration_Scheme (N));
 
    ---------------------
    -- Iterator_Filter --
    ---------------------
 
-   function Iterator_Filter (N : Node_Id) return Node_Id renames
-     Sinfo.Iterator_Filter;
+   function Iterator_Filter (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Iterator_Filter (N));
 
    ----------------------------
    -- Iterator_Specification --
    ----------------------------
 
-   function Iterator_Specification (N : Node_Id) return Node_Id renames
-     Sinfo.Iterator_Specification;
+   function Iterator_Specification (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Iterator_Specification (N));
 
    -----------
    -- Itype --
    -----------
 
-   function Itype (N : Node_Id) return Entity_Id renames Sinfo.Itype;
+   function Itype (N : Node_Id) return Entity_Id is
+     (Sinfo.Nodes.Itype (N));
 
    --------------
    -- Last_Bit --
    --------------
 
-   function Last_Bit (N : Node_Id) return Node_Id renames Sinfo.Last_Bit;
+   function Last_Bit (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Last_Bit (N));
 
    ---------------
    -- Left_Opnd --
    ---------------
 
-   function Left_Opnd (N : Node_Id) return Node_Id renames Sinfo.Left_Opnd;
+   function Left_Opnd (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Left_Opnd (N));
 
    ------------------
    -- Library_Unit --
    ------------------
 
-   function Library_Unit (N : Node_Id) return Node_Id renames
-     Sinfo.Library_Unit;
+   function Library_Unit (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Library_Unit (N));
 
    ---------------------
    -- Limited_Present --
    ---------------------
 
-   function Limited_Present (N : Node_Id) return Boolean renames
-     Sinfo.Limited_Present;
+   function Limited_Present (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Limited_Present (N));
 
    ----------------------------------
    -- Loop_Parameter_Specification --
    ----------------------------------
 
-   function Loop_Parameter_Specification (N : Node_Id) return Node_Id renames
-     Sinfo.Loop_Parameter_Specification;
+   function Loop_Parameter_Specification (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Loop_Parameter_Specification (N));
 
    ---------------
    -- Low_Bound --
    ---------------
 
-   function Low_Bound (N : Node_Id) return Node_Id renames Sinfo.Low_Bound;
+   function Low_Bound (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Low_Bound (N));
 
    ----------
    -- Name --
    ----------
 
-   function Name (N : Node_Id) return Node_Id renames Sinfo.Name;
+   function Name (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Name (N));
 
    ----------------
    -- Of_Present --
    ----------------
 
-   function Of_Present (N : Node_Id) return Boolean renames Sinfo.Of_Present;
+   function Of_Present (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Of_Present (N));
 
    ------------------------------
    -- Parameter_Specifications --
    ------------------------------
 
-   function Parameter_Specifications (N : Node_Id) return List_Id renames
-     Sinfo.Parameter_Specifications;
+   function Parameter_Specifications (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Parameter_Specifications (N));
 
    ----------------------------------
    -- Pragma_Argument_Associations --
    ----------------------------------
 
-   function Pragma_Argument_Associations (N : Node_Id) return List_Id renames
-      Sinfo.Pragma_Argument_Associations;
+   function Pragma_Argument_Associations (N : Node_Id) return List_Id is
+      (Sinfo.Nodes.Pragma_Argument_Associations (N));
 
    ------------
    -- Prefix --
    ------------
 
-   function Prefix (N : Node_Id) return Node_Id renames Sinfo.Prefix;
+   function Prefix (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Prefix (N));
 
    -------------
    -- Realval --
    -------------
 
-   function Realval (N : Node_Id) return Ureal renames Sinfo.Realval;
+   function Realval (N : Node_Id) return Ureal is
+     (Sinfo.Nodes.Realval (N));
 
    ------------
    -- Reason --
    ------------
 
-   function Reason (N : Node_Id) return Uint renames Sinfo.Reason;
+   function Reason (N : Node_Id) return Uint is
+     (Sinfo.Nodes.Reason (N));
 
    --------------------------------
    -- Return_Object_Declarations --
    --------------------------------
 
-   function Return_Object_Declarations (N : Node_Id) return List_Id renames
-     Sinfo.Return_Object_Declarations;
+   function Return_Object_Declarations (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Return_Object_Declarations (N));
 
    -----------------------------
    -- Return_Statement_Entity --
    -----------------------------
 
-   function Return_Statement_Entity (N : Node_Id) return Entity_Id renames
-     Sinfo.Return_Statement_Entity;
+   function Return_Statement_Entity (N : Node_Id) return Entity_Id is
+     (Sinfo.Nodes.Return_Statement_Entity (N));
 
    ---------------------
    -- Reverse_Present --
    ---------------------
 
-   function Reverse_Present (N : Node_Id) return Boolean renames
-     Sinfo.Reverse_Present;
+   function Reverse_Present (N : Node_Id) return Boolean is
+     (Sinfo.Nodes.Reverse_Present (N));
 
    ----------------
    -- Right_Opnd --
    ----------------
 
-   function Right_Opnd (N : Node_Id) return Node_Id renames Sinfo.Right_Opnd;
+   function Right_Opnd (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Right_Opnd (N));
 
    -------------------
    -- Selector_Name --
    -------------------
 
-   function Selector_Name (N : Node_Id) return Node_Id renames
-     Sinfo.Selector_Name;
+   function Selector_Name (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Selector_Name (N));
 
    ----------------
    -- Statements --
    ----------------
 
-   function Statements (N : Node_Id) return List_Id renames Sinfo.Statements;
+   function Statements (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Statements (N));
 
    ------------
    -- Strval --
    ------------
 
-   function Strval (N : Node_Id) return String_Id renames Sinfo.Strval;
+   function Strval (N : Node_Id) return String_Id is
+     (Sinfo.Nodes.Strval (N));
 
    ------------------------
    -- Subtype_Indication --
    ------------------------
 
-   function Subtype_Indication (N : Node_Id) return Node_Id renames
-     Sinfo.Subtype_Indication;
+   function Subtype_Indication (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Subtype_Indication (N));
 
    ------------------
    -- Subtype_Mark --
    ------------------
 
-   function Subtype_Mark (N : Node_Id) return Node_Id renames
-     Sinfo.Subtype_Mark;
+   function Subtype_Mark (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Subtype_Mark (N));
 
    ------------------
    -- Then_Actions --
    ------------------
 
-   function Then_Actions (N : Node_Id) return List_Id renames
-      Sinfo.Then_Actions;
+   function Then_Actions (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Then_Actions (N));
 
    ---------------------
    -- Then_Statements --
    ---------------------
 
-   function Then_Statements (N : Node_Id) return List_Id renames
-     Sinfo.Then_Statements;
+   function Then_Statements (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Then_Statements (N));
 
    ------------------------
    -- Traverse_More_Proc --
@@ -1375,26 +1410,28 @@ package body SPARK_Atree is
    -- Type_Definition --
    ---------------------
 
-   function Type_Definition (N : Node_Id) return Node_Id renames
-     Sinfo.Type_Definition;
+   function Type_Definition (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Type_Definition (N));
 
    -----------------
    -- Unqual_Conv --
    -----------------
 
    function Unqual_Conv (N : Node_Id) return Node_Id renames
-      Sem_Util.Unqual_Conv;
+     Sem_Util.Unqual_Conv;
 
    ----------
    -- Unit --
    ----------
 
-   function Unit (N : Node_Id) return Node_Id renames Sinfo.Unit;
+   function Unit (N : Node_Id) return Node_Id is
+     (Sinfo.Nodes.Unit (N));
 
    --------------
    -- Variants --
    --------------
 
-   function Variants (N : Node_Id) return List_Id renames Sinfo.Variants;
+   function Variants (N : Node_Id) return List_Id is
+     (Sinfo.Nodes.Variants (N));
 
 end SPARK_Atree;

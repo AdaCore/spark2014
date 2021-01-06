@@ -23,7 +23,7 @@
 
 with Flow_Generated_Globals.Partial; use Flow_Generated_Globals.Partial;
 with Flow_Visibility;                use Flow_Visibility;
-with Sinfo;                          use Sinfo;
+with Sinfo.Nodes;                    use Sinfo.Nodes;
 with SPARK_Util;                     use SPARK_Util;
 
 package Flow_Generated_Globals.Phase_1 is

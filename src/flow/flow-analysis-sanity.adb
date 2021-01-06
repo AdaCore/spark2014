@@ -27,7 +27,7 @@
 with Nlists;                         use Nlists;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
-with Sinfo;                          use Sinfo;
+with Sinfo.Utils;                    use Sinfo.Utils;
 with Snames;                         use Snames;
 
 with Checked_Types;                  use Checked_Types;

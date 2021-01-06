@@ -30,9 +30,9 @@ with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Atree;                       use Atree;
 with Common_Containers;           use Common_Containers;
-with Einfo;                       use Einfo;
+with Einfo.Entities;              use Einfo.Entities;
 with Graphs;
-with Sinfo;                       use Sinfo;
+with Sinfo.Nodes;                 use Sinfo.Nodes;
 with SPARK_Util;                  use SPARK_Util;
 with Types;                       use Types;
 

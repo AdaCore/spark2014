@@ -21,13 +21,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;                          use Atree;
 with Common_Containers;              use Common_Containers;
 with Common_Iterators;               use Common_Iterators;
+with Einfo.Utils;                    use Einfo.Utils;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with Nlists;                         use Nlists;
 with Sem_Prag;                       use Sem_Prag;
-with Sinfo;                          use Sinfo;
+with Sinfo.Nodes;                    use Sinfo.Nodes;
+with Sinfo.Utils;                    use Sinfo.Utils;
 with SPARK_Util;                     use SPARK_Util;
 
 package body Flow_Dependency_Maps is

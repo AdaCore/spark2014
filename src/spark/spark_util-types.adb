@@ -26,6 +26,7 @@
 with Aspects;                    use Aspects;
 with Elists;                     use Elists;
 with Sem_Eval;                   use Sem_Eval;
+with Sinfo.Utils;                use Sinfo.Utils;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 

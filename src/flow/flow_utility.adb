@@ -32,6 +32,7 @@ with Output;                          use Output;
 with Rtsfind;                         use Rtsfind;
 with Sem_Prag;                        use Sem_Prag;
 with Sem_Type;                        use Sem_Type;
+with Sinfo.Utils;                     use Sinfo.Utils;
 with Sprint;                          use Sprint;
 with Treepr;                          use Treepr;
 
@@ -419,7 +420,7 @@ package body Flow_Utility is
       return Is_Formal (E)
         and then Is_Tagged_Type (T)
         and then not Is_Class_Wide_Type (T)
-        and then Has_Extensions_Visible (Sinfo.Scope (E));
+        and then Has_Extensions_Visible (Sinfo.Nodes.Scope (E));
    end Extensions_Visible;
 
    function Extensions_Visible (F     : Flow_Id;
@@ -3273,14 +3274,14 @@ package body Flow_Utility is
                     or else
                   (Ekind (Root_Entity) in E_Discriminant | E_Component
                      and then
-                   Is_Concurrent_Type (Sinfo.Scope (Root_Entity))));
+                   Is_Concurrent_Type (Sinfo.Nodes.Scope (Root_Entity))));
 
             begin
                if Is_Protected_Component (Root_Entity) then
                   Comp_Id       := 2;
                   Current_Field :=
                     Add_Component
-                      (Direct_Mapping_Id (Sinfo.Scope (Root_Entity)),
+                      (Direct_Mapping_Id (Sinfo.Nodes.Scope (Root_Entity)),
                        Root_Entity);
 
                elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
@@ -5480,7 +5481,7 @@ package body Flow_Utility is
                      elsif Is_Concurrent_Component_Or_Discr (E) then
                        Flatten_Variable
                          (Add_Component
-                            (Direct_Mapping_Id (Sinfo.Scope (E)),
+                            (Direct_Mapping_Id (Sinfo.Nodes.Scope (E)),
                              E),
                           Scope)
 

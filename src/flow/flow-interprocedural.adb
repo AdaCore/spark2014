@@ -24,7 +24,7 @@
 with Flow_Classwide; use Flow_Classwide;
 with Flow_Utility;   use Flow_Utility;
 with Sem_Aux;        use Sem_Aux;
-with Sinfo;          use Sinfo;
+with Sinfo.Nodes;    use Sinfo.Nodes;
 with SPARK_Util;     use SPARK_Util;
 
 package body Flow.Interprocedural is

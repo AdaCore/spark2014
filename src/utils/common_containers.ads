@@ -31,8 +31,7 @@ with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Hash;
 
-with Atree;            use Atree;
-with Einfo;            use Einfo;
+with Einfo.Entities;   use Einfo.Entities;
 with GNATCOLL.Symbols; use GNATCOLL.Symbols;
 with Hashing;          use Hashing;
 with Types;            use Types;

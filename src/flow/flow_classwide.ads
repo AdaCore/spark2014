@@ -23,10 +23,10 @@
 
 --  This package deals with the sanity checking of classwide flow contracts
 
-with Atree; use Atree;
-with Einfo; use Einfo;
-with Sinfo; use Sinfo;
-with Types; use Types;
+with Atree;          use Atree;
+with Einfo.Entities; use Einfo.Entities;
+with Sinfo.Nodes;    use Sinfo.Nodes;
+with Types;          use Types;
 
 package Flow_Classwide is
 

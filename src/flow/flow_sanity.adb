@@ -22,7 +22,8 @@
 ------------------------------------------------------------------------------
 
 with Atree;                  use Atree;
-with Einfo;                  use Einfo;
+with Einfo.Entities;         use Einfo.Entities;
+with Einfo.Utils;            use Einfo.Utils;
 with Flow_Error_Messages;    use Flow_Error_Messages;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Generated_Globals.Phase_2;
@@ -31,7 +32,7 @@ with Flow_Utility;           use Flow_Utility;
 with Lib;                    use Lib;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
+with Sinfo.Nodes;            use Sinfo.Nodes;
 with Snames;                 use Snames;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util;             use SPARK_Util;

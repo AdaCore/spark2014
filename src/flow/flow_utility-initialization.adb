@@ -21,10 +21,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;                    use Aspects;
-with Namet;                      use Namet;
-with Nlists;                     use Nlists;
-with Sem_Type;                   use Sem_Type;
+with Aspects;     use Aspects;
+with Namet;       use Namet;
+with Nlists;      use Nlists;
+with Sem_Type;    use Sem_Type;
+with Sinfo.Utils; use Sinfo.Utils;
 
 package body Flow_Utility.Initialization is
 

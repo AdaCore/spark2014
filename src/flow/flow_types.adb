@@ -25,6 +25,7 @@ with Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Strings;
+with Einfo.Utils;                    use Einfo.Utils;
 with Errout;                         use Errout;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
@@ -35,6 +36,7 @@ with Interfaces;
 with Namet;                          use Namet;
 with Output;
 with Sem_Util;                       use Sem_Util;
+with Sinfo.Utils;                    use Sinfo.Utils;
 with Snames;                         use Snames;
 
 package body Flow_Types is

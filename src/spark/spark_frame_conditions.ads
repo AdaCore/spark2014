@@ -33,7 +33,7 @@
 
 with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
-with Einfo;             use Einfo;
+with Einfo.Entities;    use Einfo.Entities;
 with Types;             use Types;
 
 package SPARK_Frame_Conditions is

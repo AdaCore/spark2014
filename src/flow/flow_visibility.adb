@@ -25,7 +25,8 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Common_Containers;          use Common_Containers;
-with Einfo;                      use Einfo;
+with Einfo.Entities;             use Einfo.Entities;
+with Einfo.Utils;                use Einfo.Utils;
 with Flow_Refinement;            use Flow_Refinement;
 with Graphs;
 with Nlists;                     use Nlists;
@@ -33,8 +34,9 @@ with Rtsfind;                    use Rtsfind;
 with Sem_Aux;                    use Sem_Aux;
 with Sem_Ch12;                   use Sem_Ch12;
 with Sem_Util;                   use Sem_Util;
+with Sinfo.Nodes;                use Sinfo.Nodes;
+with Sinfo.Utils;                use Sinfo.Utils;
 with SPARK_Util;                 use SPARK_Util;
-with Sinfo;                      use Sinfo;
 with Stand;                      use Stand;
 
 package body Flow_Visibility is

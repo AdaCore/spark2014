@@ -31,6 +31,7 @@ with Rident;                      use Rident;
 with Sem_Aux;                     use Sem_Aux;
 with Sem_Type;                    use Sem_Type;
 with Sem_Warn;                    use Sem_Warn;
+with Sinfo.Utils;                 use Sinfo.Utils;
 with Snames;                      use Snames;
 with Stand;                       use Stand;
 

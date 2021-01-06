@@ -25,9 +25,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Atree;                       use Atree;
 with Common_Containers;           use Common_Containers;
-with Einfo;                       use Einfo;
+with Einfo.Entities;              use Einfo.Entities;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with Types;                       use Types;

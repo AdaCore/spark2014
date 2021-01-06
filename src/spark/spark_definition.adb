@@ -46,6 +46,7 @@ with Sem_Aux;                         use Sem_Aux;
 with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
+with Sinfo.Utils;                     use Sinfo.Utils;
 with Snames;                          use Snames;
 with SPARK_Atree.Entities;
 with SPARK_Util;                      use SPARK_Util;

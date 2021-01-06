@@ -41,10 +41,11 @@
 
 with Atree;                             use Atree;
 with Common_Containers;                 use Common_Containers;
-with Einfo;                             use Einfo;
+with Einfo.Entities;                    use Einfo.Entities;
+with Einfo.Utils;                       use Einfo.Utils;
 with GNATCOLL.JSON;                     use GNATCOLL.JSON;
 with Sem_Util;                          use Sem_Util;
-with Sinfo;                             use Sinfo;
+with Sinfo.Nodes;                       use Sinfo.Nodes;
 with Types;                             use Types;
 
 package SPARK_Definition is

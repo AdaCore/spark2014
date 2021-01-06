@@ -22,10 +22,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;
+with Einfo.Utils;  use Einfo.Utils;
 with Flow_Utility; use Flow_Utility;
 with Nlists;       use Nlists;
 with Sem_Util;     use Sem_Util;
-with Sinfo;        use Sinfo;
+with Sinfo.Nodes;  use Sinfo.Nodes;
 with SPARK_Util;   use SPARK_Util;
 
 package body Flow_Generated_Globals.Traversal is

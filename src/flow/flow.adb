@@ -55,7 +55,7 @@ with Osint;                            use Osint;
 with Output;                           use Output;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
-with Sinfo;                            use Sinfo;
+with Sinfo.Nodes;                      use Sinfo.Nodes;
 with Sinput;                           use Sinput;
 with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;

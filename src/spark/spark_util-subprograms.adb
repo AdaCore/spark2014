@@ -35,6 +35,7 @@ with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Rtsfind;                            use Rtsfind;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Prag;                           use Sem_Prag;
+with Sinfo.Utils;                        use Sinfo.Utils;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Definition.Annotate;          use SPARK_Definition.Annotate;
 with SPARK_Util.Types;                   use SPARK_Util.Types;

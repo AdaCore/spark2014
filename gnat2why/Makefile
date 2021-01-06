@@ -34,6 +34,10 @@ ifeq ($(filter-out CYGWIN%,$(uname)),)
   USE_LN=false
 endif
 
+GEN_IL_FILES = nmake.adb nmake.ads \
+  seinfo.ads sinfo-nodes.ads sinfo-nodes.adb \
+  einfo-entities.ads einfo-entities.adb
+
 .PHONY: setup force clean
 
 all: build
@@ -53,14 +57,15 @@ setup: setup_precheck
 	    -e "s^@PREFIX@^$(prefix)^" \
 	    -e "s^@GNAT1DIR@^$(gnat1dir)^" \
 	    sdefault.adb.in > obj/sdefault.adb
-	for f in `cd gnat_src; ls xtreeprs.adb xnmake.adb xutil.ad? *-tmpl sinfo.ads treeprs.adt nmake.adt xsnamest.adb`; \
+	cp -f gnat_src/ada_get_targ.adb obj/get_targ.adb
+	for f in `cd gnat_src; ls gen_il*.ad? xutil.ad? *-tmpl xsnamest.adb`; \
 	do \
 	  cp -p gnat_src/$$f obj-tools; \
 	done
-	cd obj-tools && $(GPRBUILD) -q xtreeprs xnmake xsnamest && \
-	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj && \
-	./xsnamest && mv snames.ns ../obj/snames.ads && mv snames.nb ../obj/snames.adb
-	cp -f gnat_src/ada_get_targ.adb obj/get_targ.adb
+	cd obj-tools && $(GPRBUILD) -q xsnamest && ./xsnamest && \
+	mv snames.ns ../obj/snames.ads && mv snames.nb ../obj/snames.adb && \
+	$(GPRBUILD) -q -j0 gen_il-main.adb -cargs -I../obj && ./gen_il-main && \
+	mv $(GEN_IL_FILES) ../obj
 
 build: setup force
 	$(GPRBUILD) $(GPRARGS) -P$(PROJECTFILE) -j$(PROCS) -cargs ${CFLAGS} -largs $(LDFLAGS)

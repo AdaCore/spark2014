@@ -29,13 +29,14 @@ with Assumption_Types;      use Assumption_Types;
 with Atree;                 use Atree;
 with Checked_Types;         use Checked_Types;
 with Common_Containers;     use Common_Containers;
-with Einfo;                 use Einfo;
+with Einfo.Entities;        use Einfo.Entities;
+with Einfo.Utils;           use Einfo.Utils;
 with Lib;                   use Lib;
 with Namet;                 use Namet;
 with Nlists;                use Nlists;
 with Sem_Aux;               use Sem_Aux;
 with Sem_Util;              use Sem_Util;
-with Sinfo;                 use Sinfo;
+with Sinfo.Nodes;           use Sinfo.Nodes;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
 with Types;                 use Types;
@@ -84,8 +85,7 @@ package SPARK_Util is
          | N_Variable_Reference_Marker;
 
    subtype N_Entity_Body is Node_Kind
-     with Static_Predicate => N_Entity_Body in
-       Sinfo.N_Proper_Body | Sinfo.N_Entry_Body;
+     with Static_Predicate => N_Entity_Body in N_Proper_Body | N_Entry_Body;
 
    type Execution_Kind_T is
      (Normal_Execution,      --  regular subprogram

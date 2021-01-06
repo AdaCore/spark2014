@@ -27,7 +27,7 @@ with Namet;       use Namet;
 with Nlists;      use Nlists;
 with Nmake;       use Nmake;
 with Sem_Util;    use Sem_Util;
-with Sinfo;       use Sinfo;
+with Sinfo.Nodes; use Sinfo.Nodes;
 with Snames;      use Snames;
 with Stand;       use Stand;
 
