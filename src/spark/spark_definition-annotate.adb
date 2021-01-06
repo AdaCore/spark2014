@@ -29,7 +29,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Aspects;                      use Aspects;
 with Common_Containers;
 with Errout;                       use Errout;
-with GNAT.Regpat;                  use GNAT.Regpat;
+with Erroutc;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
 with Sem_Aux;                      use Sem_Aux;
@@ -416,7 +416,8 @@ package body SPARK_Definition.Annotate is
          --  whether the pattern matches, too.
 
          elsif Node_Slc <= E.Last
-           and then Match (String_Value (E.Pattern), Msg)
+           and then Erroutc.Matches (S => Msg,
+                                     P => '*' & String_Value (E.Pattern) & '*')
          then
             Info := E;
             Found := True;
