@@ -610,7 +610,7 @@ package body Why.Gen.Hardcoded is
                           Args     => (1 => Args (1))),
                      2 => New_Real_Constant
                        (Ada_Node => Ada_Node,
-                        Value    =>  Small_Value (From_Ty))),
+                        Value    => Small_Value (From_Ty))),
                   Typ      => Type_Of_Node (Etype (Subp)));
             else
                pragma Assert (Is_Floating_Point_Type (From_Ty));
