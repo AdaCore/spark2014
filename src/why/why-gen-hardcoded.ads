@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Einfo;                use Einfo;
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util;           use SPARK_Util;
 with SPARK_Util.Hardcoded; use SPARK_Util.Hardcoded;
 with Types;                use Types;
