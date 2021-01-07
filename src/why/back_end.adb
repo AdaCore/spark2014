@@ -169,19 +169,19 @@ package body Back_End is
       end;
 
       --  For the pretty output mode, we set -gnatdF to force alternative
-      --  display of messages in Errout. Currently only do this on Linux,
-      --  as not all terminals support SGR on Windows.
+      --  display of messages in Errout.
 
-      if Gnat2Why_Args.Output_Mode in Gnat2Why_Opts.GPO_Pretty
-        and then not Osint.On_Windows
-      then
+      if Gnat2Why_Args.Output_Mode in Gnat2Why_Opts.GPO_Pretty then
          Debug_Flag_FF := True;
       end if;
 
       --  For the colored output mode, we set the corresponding flag in
-      --  Erroutc.
+      --  Erroutc. Currently only do this on Linux, as not all terminals
+      --  support SGR on Windows.
 
-      if Gnat2Why_Args.Output_Mode = Gnat2Why_Opts.GPO_Pretty_Color then
+      if Gnat2Why_Args.Output_Mode = Gnat2Why_Opts.GPO_Pretty_Color
+        and then not Osint.On_Windows
+      then
          Erroutc.Use_SGR_Control := True;
       end if;
 
