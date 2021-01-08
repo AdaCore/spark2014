@@ -4,6 +4,6 @@ p_colibri.ads:17:27: info: predicate check proved (colibri: 1 VC)
 p_colibri.ads:17:31: medium: divide by zero might fail [possible fix: subprogram at line 16 should mention n and v in a precondition]
 p_colibri.ads:17:57: info: predicate check proved (colibri: 1 VC)
 p_colibri.ads:21:06: info: data dependencies proved
-p_colibri.ads:22:14: medium: postcondition might fail, cannot prove ("=" (Difference, (From_String ("0.0")))) (e.g. when n = 1 and v = (others => 1.0))
+p_colibri.ads:22:14: medium: postcondition might fail, cannot prove Difference = 0.0 (e.g. when n = 1 and v = (others => 1.0))
 p_colibri.ads:24:21: info: predicate check proved (colibri: 1 VC)
 p_colibri.ads:24:34: info: predicate check proved (colibri: 1 VC)

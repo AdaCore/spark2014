@@ -43,7 +43,7 @@ convert.ads:52:35: info: predicate check proved (Z3: 1 VC)
 convert.ads:52:40: info: predicate check proved (Z3: 1 VC)
 convert.ads:52:48: info: predicate check proved (Z3: 1 VC)
 convert.ads:52:54: info: predicate check proved (Z3: 1 VC)
-convert.ads:61:11: medium: postcondition might fail, cannot prove if V <= 16#1000_000# then Res = V else if V >= 18446742974197923840 then (Correct_Rounding (V, Res, Last_Float_As_Uns64, ...)) else if V < ResU then ... else ...
+convert.ads:61:11: medium: postcondition might fail, cannot prove if V <= 16#1000_000# then Res = V else if V >= 18446742974197923840 then (Correct_Rounding (V, Res, Last_Float_As_Uns64, ...)) else if V < ResU then (... (..., ..., ..., ...)) else ...
 convert.ads:65:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 convert.ads:67:17: info: precondition proved (Z3: 2 VC)
 convert.ads:72:64: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
