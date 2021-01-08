@@ -1,6 +1,6 @@
 my_pack-child.ads:4:13: medium: invariant check might fail (e.g. when Incr'Result = 0 and X = -1)
 my_pack-child.ads:6:09: medium: invariant check might fail on default value
 my_pack-child.ads:8:41: medium: overflow check might fail (e.g. when X = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention X in a precondition]
-my_pack-child_bad.ads:4:04: error: type invariant in child unit is not yet supported
+my_pack-child_bad.ads:4:04: error: type invariant in private child unit is not yet supported
 my_pack.ads:4:09: medium: invariant check might fail on default value
 gnatprove: error during flow analysis and proof
