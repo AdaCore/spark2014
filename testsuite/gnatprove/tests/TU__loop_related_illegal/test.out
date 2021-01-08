@@ -1,7 +1,7 @@
 
-raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Loop_Variant failed at loop_related_illegal_2.adb:31
+raised ADA.ASSERTIONS.ASSERTION_ERROR : Loop_Variant failed at loop_related_illegal_2.adb:31
 
-raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Loop_Invariant failed at main2.adb:15
+raised ADA.ASSERTIONS.ASSERTION_ERROR : Loop_Invariant failed at main2.adb:15
 loop_related_illegal.adb:17:07: pragma "Loop_Invariant" must appear immediately within the statements of a loop
 loop_related_illegal.adb:36:13: pragma "Loop_Invariant" must appear immediately within the statements of a loop
 loop_related_illegal.adb:51:44: expected a discrete type
