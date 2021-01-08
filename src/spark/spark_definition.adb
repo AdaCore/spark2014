@@ -1878,7 +1878,7 @@ package body SPARK_Definition is
                      Apply_Compile_Time_Constraint_Error
                        (N, "component not present in }",
                         CE_Discriminant_Check_Failed,
-                        Ent => Prefix_Type, Rep => False);
+                        Ent => Prefix_Type);
                   end if;
                end if;
             end;
