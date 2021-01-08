@@ -1244,8 +1244,10 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Add formals and globals to the environment with adequate permissions
 
-      if Is_Subprogram_Or_Entry (Id) then
-         Setup_Parameters (Id);
+      if Is_Subprogram_Or_Entry (Id) or else Is_Task_Type (Id) then
+         if Is_Subprogram_Or_Entry (Id) then
+            Setup_Parameters (Id);
+         end if;
          Setup_Globals (Id);
       end if;
 
@@ -5659,10 +5661,10 @@ package body Gnat2Why.Borrow_Checker is
       --  depends contract if any.
 
       loop
-         if Is_Subprogram_Or_Entry (Scop) then
-            Pragma_Node := Get_Pragma (Scop, Pragma_Global);
+         if Is_Subprogram_Or_Entry (Scop) or Is_Task_Type (Scop) then
+            Pragma_Node := Find_Contract (Scop, Pragma_Global);
             if No (Pragma_Node) then
-               Pragma_Node := Get_Pragma (Scop, Pragma_Depends);
+               Pragma_Node := Find_Contract (Scop, Pragma_Depends);
             end if;
             exit when Present (Pragma_Node);
          end if;
