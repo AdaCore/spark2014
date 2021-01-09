@@ -11,7 +11,7 @@ account7.adb:40:10: high: call to potentially blocking subprogram "Incr_Num_Acco
    40 |         Incr_Num_Accounts;
       |         ^~~~~~~~~~~~~~~~~
 
-account7.ads:20:16: function with output global "Num_Accounts" is not allowed in SPARK
+account7.ads:20:16: error: function with output global "Num_Accounts" is not allowed in SPARK
    20 |      function Bad_F return Natural;
       |               ^~~~~
 account7.ads:25:06: info: data dependencies proved

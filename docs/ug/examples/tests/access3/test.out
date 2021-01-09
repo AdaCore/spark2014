@@ -1,5 +1,5 @@
 
-test.adb:7:06: dereference from "X" is not writable
+test.adb:7:06: error: dereference from "X" is not writable
     7 |   X.all := 0;
       |   ~~^~~
   object was moved at line 4
