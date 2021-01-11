@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;
 with Debug;
 with Gnat2Why_Args;
 with Gnat2Why.Expr.Loops.Exits;
@@ -430,10 +429,9 @@ package body Gnat2Why.Expr.Loops is
                                     return W_Prog_Id
       is
          Stmts : W_Prog_Array (1 .. Natural (List.Length));
-         Counter : Integer := 1;
-         use Ada.Containers;
+         Counter : Positive := 1;
       begin
-         if List.Length = 0 then
+         if List.Is_Empty then
             return +Void;
          end if;
          for Variant of List loop

@@ -315,7 +315,7 @@ procedure SPARK_Report is
          Buf         : Unbounded_String;
          First       : Boolean := True;
       begin
-         if Check_Total = 0 or else Stats.Provers.Length = 0 then
+         if Check_Total = 0 or else Stats.Provers.Is_Empty then
             Put_Cell (T, Check_Total);
             return;
          end if;
