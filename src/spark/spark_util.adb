@@ -713,7 +713,7 @@ package body SPARK_Util is
    -----------------------------
 
    function Comes_From_Declare_Expr (E : Entity_Id) return Boolean is
-     (Is_Object (E)
+     (Ekind (E) = E_Constant
       and then Nkind (Parent (Enclosing_Declaration (E))) =
           N_Expression_With_Actions);
 
