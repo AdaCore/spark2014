@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2020, AdaCore                     --
+--                     Copyright (C) 2010-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -4610,7 +4610,7 @@ package body Gnat2Why.Subprograms is
          Ref_Allowed => False,
          Old_Policy  => Ignore);
 
-      if Ekind (E) = E_Function or else Is_Function_Type (E) then
+      if Is_Function_Or_Function_Type (E) then
          Why_Type := Type_Of_Node (E);
       end if;
 
@@ -4619,9 +4619,7 @@ package body Gnat2Why.Subprograms is
       --      unsound,
       --    * volatile functions and protected subprograms.
 
-      if Ekind (E) in E_Procedure | Entry_Kind
-        or else
-          (Ekind (E) = E_Subprogram_Type and then not Is_Function_Type (E))
+      if not Is_Function_Or_Function_Type (E)
         or else Has_Pragma_Volatile_Function (E)
         or else (Ekind (E) = E_Function
                  and then Is_Potentially_Nonreturning (E)
@@ -5543,7 +5541,7 @@ package body Gnat2Why.Subprograms is
          end if;
       end if;
 
-      if Ekind (E) = E_Function or else Is_Function_Type (E) then
+      if Is_Function_Or_Function_Type (E) then
 
          Why_Type := Type_Of_Node (E);
 

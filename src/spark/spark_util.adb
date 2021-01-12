@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2011-2020, AdaCore                     --
+--                     Copyright (C) 2011-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -936,6 +936,7 @@ package body SPARK_Util is
                        | E_Procedure
                        | E_Package
                        | E_Protected_Type
+                       | E_Subprogram_Type
                        | E_Task_Type
          then
             --  We have found the enclosing unit, return it

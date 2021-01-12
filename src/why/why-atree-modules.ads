@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2010-2020, AdaCore                     --
+--                     Copyright (C) 2010-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,7 +28,6 @@ with Ada.Containers.Hashed_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Util;                  use Gnat2Why.Util;
 with GNATCOLL.Symbols;
-with SPARK_Atree.Entities;           use SPARK_Atree.Entities;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Why.Ids;                        use Why.Ids;
@@ -699,13 +698,13 @@ package Why.Atree.Modules is
    --  entity.
 
    function Get_Logic_Function (E : Entity_Id) return W_Identifier_Id with
-     Pre => Is_Function_Type (E) or else Ekind (E) = E_Function;
+     Pre => Is_Function_Or_Function_Type (E);
    --  Return the logic function __call associated with the profile of a
    --  function or function type.
 
    function Get_Logic_Function_Guard (E : Entity_Id) return W_Identifier_Id
    with
-     Pre => Is_Function_Type (E) or else Ekind (E) = E_Function;
+     Pre => Is_Function_Or_Function_Type (E);
    --  Return the guard predicate __pred_call associated with the profile of a
    --  function or function type.
 

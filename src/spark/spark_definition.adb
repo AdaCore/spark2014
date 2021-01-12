@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2011-2020, AdaCore                     --
+--                     Copyright (C) 2011-2021, AdaCore                     --
 --                Copyright (C) 2016-2020, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
@@ -3348,8 +3348,7 @@ package body SPARK_Definition is
          --  of traversal functions in these parameters.
 
          if Is_Anonymous_Access_Object_Type (Etype (Formal))
-           and then Ekind (E) /= E_Function
-           and then not Is_Function_Type (E)
+           and then not Is_Function_Or_Function_Type (E)
          then
             Check_Source_Of_Borrow_Or_Observe (Actual);
 
@@ -3370,8 +3369,7 @@ package body SPARK_Definition is
 
          if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
            or else
-             (Ekind (E) /= E_Function
-              and then not Is_Function_Type (E)
+             (not Is_Function_Or_Function_Type (E)
               and then Ekind (Formal) = E_In_Parameter
               and then Is_Access_Type (Etype (Formal))
               and then Ekind (Directly_Designated_Type (Etype (Formal))) /=

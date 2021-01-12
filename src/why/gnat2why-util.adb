@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2012-2020, AdaCore                     --
+--                     Copyright (C) 2012-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1117,7 +1117,7 @@ package body Gnat2Why.Util is
       elsif Is_Constant_Object (E) then
          if Ekind (E) = E_In_Parameter then
             return not Is_Constant_In_SPARK (E)
-              and then Ekind (Enclosing_Unit (E)) /= E_Function;
+              and then not Is_Function_Or_Function_Type (Enclosing_Unit (E));
          else
             return not Is_Constant_In_SPARK (E);
          end if;
