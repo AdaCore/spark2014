@@ -1028,6 +1028,7 @@ procedure SPARK_Report is
             | VC_UC_Same_Size
             | VC_UC_Alignment
             | VC_Unchecked_Union_Restriction
+            | VC_UC_Volatile
          =>
             return Runtime_Checks;
 

@@ -124,6 +124,10 @@ package VC_Kinds is
                                       --  in an overlay have compatible
                                       --  alignments
 
+      VC_UC_Volatile,                 --  Check that we specify the address of
+                                      --  an object only if it is volatile, or
+                                      --  the address clause is "simple"
+
       --  VC_LSP_Kind - Liskov Substitution Principle
 
       VC_Weaker_Pre,                  --  pre weaker than classwide pre
@@ -151,7 +155,7 @@ package VC_Kinds is
      VC_Division_Check .. VC_Task_Termination;
 
    subtype VC_Assert_Kind is VC_Kind range
-     VC_Initial_Condition .. VC_UC_Alignment;
+     VC_Initial_Condition .. VC_UC_Volatile;
 
    subtype VC_LSP_Kind is VC_Kind range
      VC_Weaker_Pre .. VC_Stronger_Post_Access;
@@ -166,6 +170,7 @@ package VC_Kinds is
        | VC_UC_Target
        | VC_UC_Same_Size
        | VC_UC_Alignment
+       | VC_UC_Volatile
        | VC_Unchecked_Union_Restriction;
    --  Subtype used to indicate VC kinds that have high severity if unproved.
    --  We use a subtype predicate rather than a range to allow for

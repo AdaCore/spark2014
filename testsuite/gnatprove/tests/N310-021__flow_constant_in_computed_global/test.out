@@ -1,5 +1,7 @@
 actuator.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Settings has 2 values but has bit size 8]
+actuator.adb:7:04: info: object with non-trivial address clause is volatile (Trivial)
 advancebutton-raw.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has bit size 8]
+advancebutton-raw.adb:7:04: info: object with non-trivial address clause is volatile (Trivial)
 advancebutton-raw.ads:5:20: info: initialization of "Pressed" proved
 advancebutton.adb:26:07: info: initialization of "PressedBefore" proved
 advancebutton.adb:27:07: info: initialization of "PressedNow" proved
@@ -12,8 +14,10 @@ advancebutton.ads:29:27: info: initialization of "Result" proved
 advancebutton.ads:33:26: info: initialization of "Result" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
 clock.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Times has 86400 values but has bit size 32]
+clock.adb:6:04: info: object with non-trivial address clause is volatile (Trivial)
 clock.ads:6:19: info: initialization of "Time" proved
 display.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Displays doesn't have an Object_Size representation clause or aspect]
+display.adb:6:04: info: object with non-trivial address clause is volatile (Trivial)
 heatingsystem_dfa.adb:22:04: info: initialization of "OnOffTime" proved
 heatingsystem_dfa.adb:23:04: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:24:04: info: initialization of "HeatingIsOn" proved
@@ -95,9 +99,13 @@ heatingsystem_dfa.adb:133:17: info: local subprogram "TurnOff" only analyzed in 
 heatingsystem_dfa.adb:150:17: info: add a contract to analyze it separately from calling contexts
 heatingsystem_dfa.adb:150:17: info: local subprogram "OperateIfNeeded" only analyzed in the context of calls
 indicator.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Settings has 2 values but has bit size 8]
+indicator.adb:7:04: info: object with non-trivial address clause is volatile (Trivial)
 modeswitch.adb:5:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Modes has 3 values but has bit size 8]
+modeswitch.adb:5:04: info: object with non-trivial address clause is volatile (Trivial)
 modeswitch.ads:5:20: info: initialization of "Value" proved
 programswitch.adb:5:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Positions has 6 values but has bit size 8]
+programswitch.adb:5:04: info: object with non-trivial address clause is volatile (Trivial)
 programswitch.ads:5:20: info: initialization of "Value" proved
 thermostat.adb:17:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has bit size 8]
+thermostat.adb:17:04: info: object with non-trivial address clause is volatile (Trivial)
 thermostat.ads:15:25: info: initialization of "Result" proved

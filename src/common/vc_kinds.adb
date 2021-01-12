@@ -145,6 +145,7 @@ package body VC_Kinds is
             | VC_Null_Exclusion
             | VC_UC_Alignment
             | VC_Unchecked_Union_Restriction
+            | VC_UC_Volatile
          => "");
    end CWE_ID;
 
@@ -344,12 +345,12 @@ package body VC_Kinds is
          when VC_Inline_Check                     =>
             return "Check that an Annotate pragma with the Inline_For_Proof " &
               "identifier is correct.";
-         when VC_UC_Source                      =>
+         when VC_UC_Source                        =>
             return "Check that a source type in an unchecked conversion can " &
               "safely be used for such conversions. This means that the " &
               "memory occupied by objects of this type is fully used by the " &
               "object.";
-         when VC_UC_Target                      =>
+         when VC_UC_Target                        =>
             return "Check that a target type in an unchecked conversion can " &
               "safely be used for such conversions. This means that the " &
               "memory occupied by objects of this type is fully used by the " &
@@ -360,6 +361,9 @@ package body VC_Kinds is
          when VC_UC_Alignment                     =>
             return "Check that the first object's alignment is an integral " &
               "multiple of the second object's alignment.";
+         when VC_UC_Volatile                      =>
+            return "Check that, if an object has an address clause that is " &
+              "not simply the address of another object, it is volatile";
          when VC_Weaker_Pre                       =>
             return "Check that the precondition aspect of the subprogram is " &
               "weaker than its class-wide precondition.";
@@ -917,6 +921,7 @@ package body VC_Kinds is
              when VC_UC_Target => "unchecked conversion target check",
              when VC_UC_Same_Size => "unchecked conversion size check",
              when VC_UC_Alignment => "alignment check",
+             when VC_UC_Volatile => "volatile overlay check",
              when VC_Weaker_Pre =>
                "precondition weaker than class-wide precondition",
              when VC_Trivial_Weaker_Pre =>

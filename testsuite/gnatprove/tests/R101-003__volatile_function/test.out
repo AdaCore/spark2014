@@ -1,2 +1,3 @@
 lb.adb:10:14: info: initialization of "Result" proved
 lb.adb:15:04: info: object is suitable for aliasing via address clause (Trivial)
+lb.adb:15:04: info: object with non-trivial address clause is volatile (Trivial)

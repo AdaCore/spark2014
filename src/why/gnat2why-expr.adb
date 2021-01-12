@@ -15134,14 +15134,30 @@ package body Gnat2Why.Expr is
                        | N_Subprogram_Declaration
       then
          declare
-            Expr : constant Node_Id := Get_Address_Expr (Decl);
+            Expr                        : constant Node_Id :=
+              Get_Address_Expr (Decl);
+            Is_Object_Decl              : constant Boolean :=
+              Nkind (Decl) = N_Object_Declaration;
+            Is_Top_Level_Address_Clause : constant Boolean :=
+              Present (Expr)
+              and then Nkind (Expr) = N_Attribute_Reference
+              and then Attribute_Name (Expr) = Name_Address;
          begin
             if Present (Expr) then
+
+               --  We generate the expression of the address for runtime checks
+
+               declare
+                  Why_Expr : constant W_Expr_Id :=
+                    Transform_Expr (Expr, EW_Prog, Body_Params);
+               begin
+                  R := +Sequence (New_Ignore (Prog => +Why_Expr), R);
+               end;
 
                --  We emit a static check that the type of the object is OK for
                --  address clauses.
 
-               if Nkind (Decl) = N_Object_Declaration then
+               if Is_Object_Decl then
                   declare
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
@@ -15152,56 +15168,55 @@ package body Gnat2Why.Expr is
                      Emit_Static_Proof_Result
                        (Decl, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
+                     if not Is_Top_Level_Address_Clause then
+                        Emit_Static_Proof_Result
+                          (Decl,
+                           VC_UC_Volatile,
+                           Has_Volatile (Defining_Identifier (Decl)),
+                           Current_Subp);
+                     end if;
                   end;
                end if;
 
-               if Nkind (Expr) = N_Attribute_Reference
-                 and then Get_Attribute_Id (Attribute_Name (Expr))
-                   = Attribute_Address
-               then
-                  if Nkind (Decl) = N_Object_Declaration then
-                     declare
-                        Valid       : Boolean;
-                        Explanation : Unbounded_String;
-                     begin
-                        Is_Valid_Bitpattern_No_Holes
-                          (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
-                        Emit_Static_Proof_Result
-                          (Expr, VC_UC_Target, Valid, Current_Subp,
-                           Explanation => To_String (Explanation));
+               --  We now emit static checks to make sure the two aliased
+               --  objects are compatible.
 
-                        Types_Have_Same_Known_Esize
-                          (Retysp (Etype (Defining_Identifier (Decl))),
-                           Retysp (Etype (Prefix (Expr))),
+               if Is_Top_Level_Address_Clause and then Is_Object_Decl then
+                  declare
+                     Valid       : Boolean;
+                     Explanation : Unbounded_String;
+                  begin
+                     Is_Valid_Bitpattern_No_Holes
+                       (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
+                     Emit_Static_Proof_Result
+                       (Expr, VC_UC_Target, Valid, Current_Subp,
+                        Explanation => To_String (Explanation));
+
+                     Types_Have_Same_Known_Esize
+                       (Retysp (Etype (Defining_Identifier (Decl))),
+                        Retysp (Etype (Prefix (Expr))),
+                        Valid, Explanation);
+                     Emit_Static_Proof_Result
+                       (Expr, VC_UC_Same_Size, Valid, Current_Subp,
+                        Explanation => To_String (Explanation));
+
+                     if Nkind (Prefix (Expr)) in N_Has_Entity then
+                        Objects_Have_Compatible_Alignments
+                          (Defining_Identifier (Decl),
+                           Entity (Prefix (Expr)),
                            Valid, Explanation);
-                        Emit_Static_Proof_Result
-                          (Expr, VC_UC_Same_Size, Valid, Current_Subp,
-                           Explanation => To_String (Explanation));
-
-                        if Nkind (Prefix (Expr)) in N_Has_Entity then
-                           Objects_Have_Compatible_Alignments
-                             (Defining_Identifier (Decl),
-                              Entity (Prefix (Expr)),
-                              Valid, Explanation);
-                        else
-                           Valid := False;
-                           Explanation :=
-                             To_Unbounded_String
-                               ("unknown alignment for object");
-                        end if;
-                        Emit_Static_Proof_Result
-                          (Decl, VC_UC_Alignment, Valid, Current_Subp,
-                           Explanation => To_String (Explanation));
-                     end;
-                  end if;
+                     else
+                        Valid := False;
+                        Explanation :=
+                          To_Unbounded_String
+                            ("unknown alignment for object");
+                     end if;
+                     Emit_Static_Proof_Result
+                       (Decl, VC_UC_Alignment, Valid, Current_Subp,
+                        Explanation => To_String (Explanation));
+                  end;
                end if;
 
-               declare
-                  Why_Expr : constant W_Expr_Id :=
-                    Transform_Expr (Expr, EW_Prog, Body_Params);
-               begin
-                  R := +Sequence (New_Ignore (Prog => +Why_Expr), R);
-               end;
             end if;
          end;
       end if;

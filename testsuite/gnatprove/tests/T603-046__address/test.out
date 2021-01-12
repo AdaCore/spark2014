@@ -1,1 +1,2 @@
 lb2.ads:18:04: info: object is suitable for aliasing via address clause (Trivial)
+lb2.ads:18:04: info: object with non-trivial address clause is volatile (Trivial)

@@ -263,6 +263,7 @@ package body Gnat2Why.Error_Messages is
                | VC_UC_Target
                | VC_UC_Same_Size
                | VC_UC_Alignment
+               | VC_UC_Volatile
                | VC_Memory_Leak
                | VC_Memory_Leak_At_End_Of_Scope
                | VC_Unchecked_Union_Restriction
@@ -759,6 +760,9 @@ package body Gnat2Why.Error_Messages is
             return "operation on unchecked union type will raise"
               & " Program_Error";
 
+         when VC_UC_Volatile =>
+            return "object with non-trivial address clause is not volatile";
+
          --  VC_LSP_Kind - Liskov Substitution Principle
 
          when VC_Weaker_Pre                =>
@@ -1119,6 +1123,9 @@ package body Gnat2Why.Error_Messages is
 
          when VC_UC_Alignment =>
             return "alignment of overlaid objects is compatible";
+
+         when VC_UC_Volatile =>
+            return "object with non-trivial address clause is volatile";
 
          when VC_Weaker_Pre                =>
             return "precondition is weaker than class-wide precondition";
