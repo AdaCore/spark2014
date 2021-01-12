@@ -1052,78 +1052,85 @@ package body Gnat2Why.Util is
 
    function Is_Mutable_In_Why (E : Entity_Id) return Boolean is
    begin
-      --  A variable is translated as mutable in Why if it is not constant on
-      --  the Ada side, or if it is a loop parameter (of an actual loop, not a
-      --  quantified expression).
+      --  An object is translated as mutable in Why due to being read/write in
+      --  SPARK/Ada or due to its represententation in Why.
 
-      if Ekind (E) = E_Loop_Parameter then
-         return not Is_Quantified_Loop_Param (E);
+      case Ekind (E) is
+         when E_Loop_Parameter =>
 
-      elsif Ekind (E) = E_Variable
-        and then Is_Quantified_Loop_Param (E)
-      then
-         return False;
+            --  A loop parameter of an genuine loop (but not of a quantified
+            --  expression) is mutable.
 
-      --  Entities of tasks are modeled as constants
+            return not Is_Quantified_Loop_Param (E);
 
-      elsif Ekind (E) = E_Task_Type then
-         return False;
+         when E_Variable =>
 
-      --  A component or discriminant is not separately considered as mutable,
-      --  only the enclosing object is. This ensures that components used in
-      --  the named notation of aggregates are not considered as references
-      --  to mutable variables (e.g. in Expression_Depends_On_Variables).
+            --  Same for variables that are Part_Ofs protected objects; they
+            --  are like components for proof.
 
-      elsif Ekind (E) in E_Component
-                       | E_Discriminant
-      then
-         return False;
+            return not Is_Quantified_Loop_Param (E)
+              and then not Is_Part_Of_Protected_Object (E);
 
-      --  Same for objects that have Part_Of specified (for a protected
-      --  object), they are like components for proof.
+         when E_Task_Type =>
 
-      elsif Is_Part_Of_Protected_Object (E) then
-         return False;
+            --  Tasks are modeled as constants
 
-      --  Constants defined locally to a loop inside a subprogram (or any
-      --  other dynamic scope) may end up having different values, so should
-      --  be mutable in Why, except when they are defined inside "actions" (in
-      --  which case they are defined as local "let" bound variables in Why)
-      --  or when they have no variable inputs.
+            return False;
 
-      elsif Ekind (E) = E_Constant
-        and then SPARK_Definition.Is_Loop_Entity (E)
-        and then not SPARK_Definition.Is_Actions_Entity (E)
-      then
-         return Flow_Utility.Has_Variable_Input (E);
+         when E_Component | E_Discriminant =>
 
-      --  We special case any volatile with async writers: they are always
-      --  mutable (even if they are, for example, in parameters). Constants
-      --  cannot be volatile in SPARK so are not considered here.
+            --  A component or discriminant is not separately considered
+            --  as mutable, only the enclosing object is. This ensures that
+            --  components used in the named notation of aggregates are
+            --  not considered as references to mutable variables (e.g.
+            --  in Expression_Depends_On_Variables).
 
-      elsif Ekind (E) /= E_Constant
-        and then Has_Volatile (E)
-        and then Has_Volatile_Property (E, Pragma_Async_Writers)
-      then
-         return True;
+            return False;
 
-      --  We allow an In parameter of an owning access type to
-      --  provide read/write access to its designated object as a parameter
-      --  in a procedure call.
-      --
-      --  We allow a constant of an owning access type to provide read/write
-      --  access to its designated object
+         when E_In_Out_Parameter | E_Out_Parameter | E_Protected_Type =>
+            return True;
 
-      elsif Is_Constant_Object (E) then
-         if Ekind (E) = E_In_Parameter then
-            return not Is_Constant_In_SPARK (E)
-              and then not Is_Function_Or_Function_Type (Enclosing_Unit (E));
-         else
-            return not Is_Constant_In_SPARK (E);
-         end if;
-      else
-         return True;
-      end if;
+         when E_Constant =>
+
+            --  Constants defined locally to a loop inside a subprogram (or
+            --  any other dynamic scope) may end up having different values, so
+            --  should be mutable in Why, except when they are defined inside
+            --  "actions" (in which case they are defined as local "let" bound
+            --  variables in Why) or when they have no variable inputs.
+
+            if SPARK_Definition.Is_Loop_Entity (E)
+              and then not SPARK_Definition.Is_Actions_Entity (E)
+            then
+               return Flow_Utility.Has_Variable_Input (E);
+
+            --  An owning access type provides a read/write access to its
+            --  designated object.
+
+            else
+               return not Is_Constant_In_SPARK (E);
+            end if;
+
+         when E_In_Parameter =>
+
+            --  Volatile in parameters with async writers are mutable
+
+            if Has_Volatile (E)
+              and then Has_Volatile_Property (E, Pragma_Async_Writers)
+            then
+               return True;
+
+            --  An owning access type provides a read/write access to procedure
+            --  and entry parameters.
+
+            else
+               return not Is_Constant_In_SPARK (E)
+                 and then
+                 not Is_Function_Or_Function_Type (Enclosing_Unit (E));
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
    end Is_Mutable_In_Why;
 
    -----------------------------
