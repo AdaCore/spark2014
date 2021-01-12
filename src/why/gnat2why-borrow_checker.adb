@@ -1250,10 +1250,10 @@ package body Gnat2Why.Borrow_Checker is
          Setup_Globals (Id);
       end if;
 
-      --  For protected operations, add protected components to the environment
-      --  with adequate permissions.
+      --  For operations directly inside protected objects, add protected
+      --  components to the environment with adequate permissions.
 
-      if Is_Protected_Operation (Id) then
+      if Ekind (Scope (Id)) = E_Protected_Type then
          Setup_Protected_Components (Id);
       end if;
 
