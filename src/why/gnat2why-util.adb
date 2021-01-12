@@ -1117,7 +1117,7 @@ package body Gnat2Why.Util is
       elsif Is_Constant_Object (E) then
          if Ekind (E) = E_In_Parameter then
             return not Is_Constant_In_SPARK (E)
-              and then Ekind (Enclosing_Unit (E)) /= E_Function;
+              and then not Is_Function_Or_Function_Type (Enclosing_Unit (E));
          else
             return not Is_Constant_In_SPARK (E);
          end if;

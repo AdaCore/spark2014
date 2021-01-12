@@ -26,7 +26,6 @@
 with Common_Containers;      use Common_Containers;
 with GNATCOLL.Symbols;       use GNATCOLL.Symbols;
 with Snames;                 use Snames;
-with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with Types;                  use Types;
@@ -166,7 +165,7 @@ package Why.Gen.Names is
       Is_Access_Subp_Wrapper : Boolean := False)
       return W_Identifier_Id
    with
-     Pre => Is_Function_Type (E) or else Ekind (E) = E_Function;
+     Pre => Is_Function_Or_Function_Type (E);
    --  Compute the name to be used to call a function or a function profile in
    --  the logic domain.
 
@@ -176,7 +175,7 @@ package Why.Gen.Names is
       Is_Access_Subp_Wrapper : Boolean := False)
       return W_Identifier_Id
    with
-      Pre => Is_Function_Type (E) or else Ekind (E) = E_Function;
+      Pre => Is_Function_Or_Function_Type (E);
    --  Compute the name to be used for the guard of a function or a function
    --  profile.
 

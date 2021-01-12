@@ -954,6 +954,7 @@ package body SPARK_Util is
                        | E_Procedure
                        | E_Package
                        | E_Protected_Type
+                       | E_Subprogram_Type
                        | E_Task_Type
          then
             --  We have found the enclosing unit, return it
