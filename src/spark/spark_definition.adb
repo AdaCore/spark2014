@@ -3387,9 +3387,13 @@ package body SPARK_Definition is
             Check_Source_Of_Move (Actual);
          end if;
 
-         --  Parts of constant objects should not appear as out or in out
-         --  parameters in procedure calls, nor as an in parameter of a
-         --  access-to-variable type.
+         --  We only support updates to actual parameters which are parts of
+         --  variables. This is enforced by the Ada language and the frontend
+         --  except when the actual parameter contains a dereference of an
+         --  expression of an access-to-variable type.
+         --  A parameter is considered to be modified by a call if its mode is
+         --  OUT or IN OUT, or if its mode is IN, it has an access-to-variable
+         --  type, and the called subprogram is not a function.
 
          if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
            or else
@@ -3412,11 +3416,17 @@ package body SPARK_Definition is
                      when others             =>
                         raise Program_Error);
             begin
+               --  Actual should represent a part of an object
+
                if not Is_Path_Expression (Actual)
-                 or else No (Get_Root_Object (Actual))
+                 or else
+                   No (Get_Root_Object (Actual, Through_Traversal => False))
                then
                   Mark_Violation
                     ("expression as " & Mode, Actual);
+
+               --  The root object of Actual should not be a constant objects
+
                elsif Is_Constant_In_SPARK (Get_Root_Object (Actual)) then
                   Mark_Violation
                     ("constant object as " & Mode, Actual);
