@@ -1,93 +1,107 @@
-bar.adb:10:04: warning: analyzing unreferenced function "Wobble"
-bar.adb:18:04: warning: analyzing unreferenced function "Wibble"
-bar.adb:23:22: medium: assertion might fail, cannot prove Y = G2 [possible fix: subprogram at line 18 should mention G2 and Y in a precondition]
-bar.adb:24:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition]
-bar.adb:31:19: info: postcondition proved (Trivial: 1 VC)
-bar.adb:42:04: warning: analyzing unreferenced procedure "Flop"
-foo.ads:7:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
+Generated contracts for proxy
+   Global =>
+      Input =>
+         Hidden
+   Refined_Global =>
+      Input =>
+         Hidden
+Generated contracts for entity_name
+   Initializes =>
+      Hidden
+Generated contracts for get
+   Global =>
+      Input =>
+         X
+   Refined_Global =>
+      Input =>
+         X
+Generated contracts for get
+   Global =>
+      Input =>
+         X
+         Y
+   Refined_Global =>
+      Input =>
+         X
+         Y
+Generated contracts for inner
+Generated contracts for outer
 outer.ads:7:21: warning: unused variable "B"
 outer.ads:12:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention X and Y in a precondition]
-         B
-         B
-         B
-         B
-         B
-         B
-         G1
-         G1
-         G1
-         G1
-         G1
-         G1
-         G2
-         G2
-         G2
-         G2
+Generated contracts for get
+   Global =>
+      Input =>
          X
+   Refined_Global =>
+      Input =>
          X
-         X
-         X
-         X
-         X
-         X
+Generated contracts for get
+   Global =>
+      Input =>
          X
          Y
+   Refined_Global =>
+      Input =>
+         X
          Y
-         Y
-         Y
+Generated contracts for inner
+Generated contracts for outer
+foo.ads:7:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
+Generated contracts for main
+   Global =>
+      Input =>
+         entity_name__hidden
+   Refined_Global =>
+      Input =>
+         entity_name__hidden
+Generated contracts for wobble
+   Global =>
+      Input =>
+         B
+   Refined_Global =>
+      Input =>
+         B
+Generated contracts for wibble
+   Global =>
+      Input =>
+         G1
+         G2
+   Refined_Global =>
+      Input =>
+         G1
+         G2
+Generated contracts for donk
+   Global =>
+      Input =>
+         G1
+   Refined_Global =>
+      Input =>
+         G1
+Generated contracts for flip
+   Global =>
+      In_Out =>
+         B
+   Refined_Global =>
+      In_Out =>
+         B
+Generated contracts for flop
+   Global =>
+      Input =>
+         G1
+      Output =>
+         B
+         G2
+   Refined_Global =>
+      Input =>
+         G1
+      Output =>
+         B
+         G2
+Generated contracts for bar
+   Initializes =>
       B
       G1
       G2
-      In_Out =>
-      In_Out =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Input =>
-      Output =>
-      Output =>
-   Global =>
-   Global =>
-   Global =>
-   Global =>
-   Global =>
-   Global =>
-   Global =>
-   Global =>
-   Global =>
-   Initializes =>
-   Refined_Global =>
-   Refined_Global =>
-   Refined_Global =>
-   Refined_Global =>
-   Refined_Global =>
-   Refined_Global =>
-   Refined_Global =>
-   Refined_Global =>
-   Refined_Global =>
-Generated contracts for bar
-Generated contracts for donk
-Generated contracts for flip
-Generated contracts for flop
-Generated contracts for get
-Generated contracts for get
-Generated contracts for get
-Generated contracts for get
-Generated contracts for inner
-Generated contracts for inner
-Generated contracts for outer
-Generated contracts for outer
-Generated contracts for wibble
-Generated contracts for wobble
+bar.adb:23:22: medium: assertion might fail, cannot prove Y = G2 [possible fix: subprogram at line 18 should mention G2 and Y in a precondition]
+bar.adb:24:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition]
+bar.adb:31:19: info: postcondition proved (Trivial: 1 VC)
