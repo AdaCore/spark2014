@@ -750,6 +750,53 @@ package body Flow_Types is
       Output.Write_Eol;
    end Print_Flow_Id;
 
+   ------------------
+   -- Pretty_Print --
+   ------------------
+
+   function Pretty_Print (EN : Entity_Name) return String is
+      Original : constant String := Strip_Child_Prefixes (To_String (EN));
+
+      Pretty : String (1 .. Original'Length);
+      --  A placeholder for the pretty-printed string; it will be as long as
+      --  the original name or shorter.
+
+      Last : Natural := 0;
+      --  Length of the pretty-printed image
+
+      Skip       : Boolean := False;
+      Capitalize : Boolean := True;
+      --  Control variables for skipping a second consecutive underscore and
+      --  capitalizing the first letter of a compound string.
+   begin
+      for J in Original'Range loop
+         if Skip then
+            Skip := False;
+         else
+            Last := Last + 1;
+
+            if Original (J) = '_' then
+               if Original (J + 1) = '_' then
+                  Pretty (Last) := '.';
+                  Skip := True;
+               else
+                  Pretty (Last) := '_';
+               end if;
+               Capitalize := True;
+            else
+               Pretty (Last) :=
+                 (if Capitalize
+                  then Ada.Characters.Handling.To_Upper (Original (J))
+                  else Original (J));
+
+               Capitalize := False;
+            end if;
+         end if;
+      end loop;
+
+      return Pretty (1 .. Last);
+   end Pretty_Print;
+
    -----------------------
    -- Flow_Id_To_String --
    -----------------------
@@ -760,12 +807,6 @@ package body Flow_Types is
       return String
    is
       function Get_Unmangled_Name (N : Node_Id) return String;
-
-      function Pretty_Print (EN : Entity_Name) return String
-      with Pre => Pretty;
-      --  Pretty-print an entity name by substituting double underscores with a
-      --  single dot and converting strings to mixed case, e.g. "pkg__a_state"
-      --  will become "Pkg.A_State".
 
       ------------------------
       -- Get_Unmangled_Name --
@@ -801,53 +842,6 @@ package body Flow_Types is
          Adjust_Name_Case (Sloc (Nam));
          return Name_Buffer (1 .. Name_Len);
       end Get_Unmangled_Name;
-
-      ------------------
-      -- Pretty_Print --
-      ------------------
-
-      function Pretty_Print (EN : Entity_Name) return String is
-         Original : constant String := Strip_Child_Prefixes (To_String (EN));
-
-         Pretty : String (1 .. Original'Length);
-         --  A placeholder for the pretty-printed string; it will be as long as
-         --  the original name or shorter.
-
-         Last : Natural := 0;
-         --  Length of the pretty-printed image
-
-         Skip       : Boolean := False;
-         Capitalize : Boolean := True;
-         --  Control variables for skipping a second consecutive underscore and
-         --  capitalizing the first letter of a compound string.
-      begin
-         for J in Original'Range loop
-            if Skip then
-               Skip := False;
-            else
-               Last := Last + 1;
-
-               if Original (J) = '_' then
-                  if Original (J + 1) = '_' then
-                     Pretty (Last) := '.';
-                     Skip := True;
-                  else
-                     Pretty (Last) := '_';
-                  end if;
-                  Capitalize := True;
-               else
-                  Pretty (Last) :=
-                    (if Capitalize
-                     then Ada.Characters.Handling.To_Upper (Original (J))
-                     else Original (J));
-
-                  Capitalize := False;
-               end if;
-            end if;
-         end loop;
-
-         return Pretty (1 .. Last);
-      end Pretty_Print;
 
       --  Local variables
 
