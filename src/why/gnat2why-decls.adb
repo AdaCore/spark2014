@@ -88,17 +88,6 @@ package body Gnat2Why.Decls is
                Location    => Safe_First_Sloc (E),
                Return_Type => Typ));
 
-      --  Define a logic function to return the address of a constant object
-
-      Emit (Th,
-            Why.Atree.Builders.New_Function_Decl
-              (Domain      => EW_Pterm,
-               Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
-               Binders     => (1 .. 0 => <>),
-               Labels      => Symbol_Sets.Empty_Set,
-               Location    => No_Location,
-               Return_Type => EW_Int_Type));
-
       Close_Theory (Th,
                     Kind           => Definition_Theory,
                     Defined_Entity => E);
@@ -537,15 +526,6 @@ package body Gnat2Why.Decls is
                Location => Safe_First_Sloc (E),
                Ref_Type => EW_Bool_Type));
       end if;
-
-      Emit (Th,
-            Why.Atree.Builders.New_Function_Decl
-              (Domain      => EW_Pterm,
-               Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
-               Binders     => (1 .. 0 => <>),
-               Location    => No_Location,
-               Labels      => Symbol_Sets.Empty_Set,
-               Return_Type => EW_Int_Type));
 
       --  Declare the variable for the value at end of E
 

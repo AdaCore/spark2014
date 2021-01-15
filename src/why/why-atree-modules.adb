@@ -2429,13 +2429,6 @@ package body Why.Atree.Modules is
 
       begin
          Insert_Symbol
-           (E, WNE_Attr_Address,
-            New_Identifier
-              (Symb   => NID ("attr__ATTRIBUTE_ADDRESS"),
-               Module => M,
-               Domain => EW_Term,
-               Typ    => EW_Int_Type));
-         Insert_Symbol
            (E, WNE_Attr_First_Bit,
             New_Identifier
               (Symb   => NID (Name & "__first__bit"),

@@ -13017,9 +13017,6 @@ package body Gnat2Why.Expr is
                     (Prog => +Transform_Expr (Var, Domain, Params)), +T);
             end if;
 
-         when Attribute_Address =>
-            T := +E_Symb (Entity (Var), WNE_Attr_Address);
-
          when Attribute_Callable =>
             T := +True_Term;
 
