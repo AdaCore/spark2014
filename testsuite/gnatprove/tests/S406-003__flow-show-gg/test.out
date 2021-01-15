@@ -1,13 +1,3 @@
-Generated contracts for proxy
-   Global =>
-      Input =>
-         Hidden
-   Refined_Global =>
-      Input =>
-         Hidden
-Generated contracts for entity_name
-   Initializes =>
-      Hidden
 Generated contracts for wobble
    Global =>
       Input =>
@@ -59,13 +49,35 @@ Generated contracts for bar
 bar.adb:23:22: medium: assertion might fail, cannot prove Y = G2 [possible fix: subprogram at line 18 should mention G2 and Y in a precondition]
 bar.adb:24:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition]
 bar.adb:31:19: info: postcondition proved (Trivial: 1 VC)
-Generated contracts for main
+Generated contracts for proxy
    Global =>
       Input =>
-         entity_name__hidden
+         Hidden
    Refined_Global =>
       Input =>
-         entity_name__hidden
+         Hidden
+Generated contracts for entity_name
+   Initializes =>
+      Hidden
+Generated contracts for get
+   Global =>
+      Input =>
+         X
+   Refined_Global =>
+      Input =>
+         X
+Generated contracts for get
+   Global =>
+      Input =>
+         X
+         Y
+   Refined_Global =>
+      Input =>
+         X
+         Y
+Generated contracts for inner
+Generated contracts for outer
+foo.ads:7:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
 Generated contracts for get
    Global =>
       Input =>
@@ -86,22 +98,3 @@ Generated contracts for inner
 Generated contracts for outer
 outer.ads:7:21: warning: unused variable "B"
 outer.ads:12:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention X and Y in a precondition]
-Generated contracts for get
-   Global =>
-      Input =>
-         X
-   Refined_Global =>
-      Input =>
-         X
-Generated contracts for get
-   Global =>
-      Input =>
-         X
-         Y
-   Refined_Global =>
-      Input =>
-         X
-         Y
-Generated contracts for inner
-Generated contracts for outer
-foo.ads:7:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
