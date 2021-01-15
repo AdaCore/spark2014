@@ -46,4 +46,10 @@ is
       G2 := G1;
    end Flop;
 
+   function No_Globals return Integer
+   is
+   begin
+      return 42;
+   end No_Globals;
+
 end Bar;

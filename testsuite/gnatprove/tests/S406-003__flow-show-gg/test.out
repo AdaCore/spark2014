@@ -41,6 +41,9 @@ Generated contracts for flop
       Output =>
          B
          G2
+Generated contracts for no_globals
+   Global =>
+   Refined_Global =>
 Generated contracts for bar
    Initializes =>
       B
