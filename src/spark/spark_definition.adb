@@ -2975,15 +2975,43 @@ package body SPARK_Definition is
                   N);
             end if;
 
-         --  Attribute Address is only allowed at the top level of an Address
-         --  aspect or attribute definition clause.
+         --  Attribute Address is only allowed inside an Address aspect or
+         --  attribute definition clause (SPARK RM 15.2).
+         --  We also exclude nodes that are known to make proof switch domain
+         --  from Prog to Pred, as this is not supported in the translation
+         --  currently.
 
          when Attribute_Address =>
-            if Nkind (Parent (N)) /= N_Attribute_Definition_Clause then
-               Mark_Violation
-                 ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
-                  & """ outside an attribute definition clause", N);
-            end if;
+
+            declare
+               M : Node_Id := Parent (N);
+            begin
+               loop
+                  if Nkind (M) = N_Attribute_Definition_Clause
+                    and then Chars (M) = Name_Address
+                  then
+                     exit;
+                  elsif Nkind (M) in N_Range
+                                   | N_Quantified_Expression
+                                   | N_Subtype_Indication
+                  then
+                     Mark_Unsupported
+                       ("attribute """
+                        & Standard_Ada_Case (Get_Name_String (Aname))
+                        & """ in unsupported context", N);
+                     exit;
+                  elsif Nkind (M) in N_Subexpr then
+                     null;
+                  else
+                     Mark_Violation
+                       ("attribute """
+                        & Standard_Ada_Case (Get_Name_String (Aname))
+                        & """ outside an attribute definition clause", N);
+                     exit;
+                  end if;
+                  M := Parent (M);
+               end loop;
+            end;
 
          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
          --  types.

@@ -13017,6 +13017,28 @@ package body Gnat2Why.Expr is
                     (Prog => +Transform_Expr (Var, Domain, Params)), +T);
             end if;
 
+         when Attribute_Address =>
+            --  Attribute 'Address can only appear in address clauses. We are
+            --  not interested in the value of the expression, only run-time
+            --  errors. So we skip the attribute and just translate the prefix
+            --  to get the RTE.
+
+            --  ??? If an address clause uses complex features such as
+            --  quantified expressions or slices, we might end up outside of
+            --  the Prog domain. We exclude some of these cases in marking, but
+            --  we probably missed some.
+
+            pragma Assert (Domain = EW_Prog);
+
+            T :=
+              +Sequence
+              (New_Ignore (Prog =>
+                                +Transform_Expr (Var, EW_Prog, Params)),
+               New_Any_Expr (Ada_Node    => Expr,
+                             Post        => True_Pred,
+                             Labels      => Symbol_Sets.Empty_Set,
+                             Return_Type => Type_Of_Node (Expr)));
+
          when Attribute_Callable =>
             T := +True_Term;
 
@@ -14936,7 +14958,7 @@ package body Gnat2Why.Expr is
                        | N_Subprogram_Declaration
       then
          declare
-            Expr : Node_Id := Get_Address_Expr (Decl);
+            Expr : constant Node_Id := Get_Address_Expr (Decl);
          begin
             if Present (Expr) then
 
@@ -14956,10 +14978,6 @@ package body Gnat2Why.Expr is
                         Explanation => To_String (Explanation));
                   end;
                end if;
-
-               --  Attribute Address is only allowed at the top level of an
-               --  Address aspect or attribute definition clause. Skip it to
-               --  reach to the underlying name if present.
 
                if Nkind (Expr) = N_Attribute_Reference
                  and then Get_Attribute_Id (Attribute_Name (Expr))
@@ -15000,7 +15018,6 @@ package body Gnat2Why.Expr is
                            Explanation => To_String (Explanation));
                      end;
                   end if;
-                  Expr := Prefix (Expr);
                end if;
 
                declare
