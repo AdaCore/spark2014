@@ -81,6 +81,13 @@ Generated contracts for get
 Generated contracts for inner
 Generated contracts for outer
 foo.ads:7:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
+Generated contracts for main
+   Global =>
+      Input =>
+         entity_name__hidden
+   Refined_Global =>
+      Input =>
+         entity_name__hidden
 Generated contracts for get
    Global =>
       Input =>
