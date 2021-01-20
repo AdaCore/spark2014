@@ -1,92 +1,92 @@
 [Flow analysis check categories]
-ALIASING - aliasing between subprogram parameters - Aliasing between formal parameters or global objects.
-CALL_IN_TYPE_INVARIANT - invalid call in type invariant - A type invariant calls a boundary subprogram for the type.
-CALL_TO_CURRENT_TASK - invalid context for call to Current_Task - Current_Task is called from an invalid context.
-CONCURRENT_ACCESS - race condition - An unsynchronized global object is accessed concurrently.
-DEAD_CODE - dead code - A statement is never executed.
-DEFAULT_INITIALIZATION_MISMATCH - wrong Default_Initial_Condition aspect - A type is wrongly declared as initialized by default.
-DEPENDS_MISSING - input item missing from the dependency clause - An input is missing from the dependency clause.
-DEPENDS_MISSING_CLAUSE - output item missing from the dependency clause - An output item is missing from the dependency clause.
-DEPENDS_NULL - input item missing from the null dependency clause - An input item is missing from the null dependency clause.
-DEPENDS_WRONG - extra input item in the dependency clause - Extra input item in the dependency clause.
-EXPORT_DEPENDS_ON_PROOF_IN - subprogram output depends on a Proof_In global - Subprogram output depends on a Proof_In global.
-GHOST_WRONG - non-ghost output of ghost procedure - A ghost procedure has a non-ghost global output.
-GLOBAL_MISSING - incomplete Global or Initializes contract - A Global or Initializes contract fails to mention some objects.
-GLOBAL_WRONG - an extra item in the Global or Initializes contract - A Global or Initializes contract wrongly mentions some objects.
-HIDDEN_UNEXPOSED_STATE - constants with variable inputs that is not a state constituent - Constants with variable inputs that are not state constituents.
-ILLEGAL_UPDATE - illegal write of a global input - Illegal write of a global input.
-IMPOSSIBLE_TO_INITIALIZE_STATE - a state abstraction that is impossible to initialize - A state abstraction that is impossible to initialize.
-INEFFECTIVE - a statement with no effect on subprogram's outputs - A statement with no effect on subprogram's outputs.
-INITIALIZES_WRONG - an extra item in the Initializes contract - An object that shall not appear in the Initializes contract.
-INOUT_ONLY_READ - an IN OUT parameter or an In_Out global that is not written - An IN OUT parameter or an In_Out global that is not written.
-MISSING_RETURN - all execution paths raise exceptions or do not return - All execution paths raise exceptions or do not return.
-NON_VOLATILE_FUNCTION_WITH_VOLATILE_EFFECTS - volatile function wrongly declared as non-volatile - A volatile function wrongly declared as non-volatile.
-NOT_CONSTANT_AFTER_ELABORATION - illegal write of an object declared as constant after elaboration - Illegal write of an object declared as constant after elaboration.
-PRAGMA_ELABORATE_ALL_NEEDED - use of an abstract state of a package that was not yet elaborated - Use of an abstract state of a package that was not yet elaborated.
-PRAGMA_ELABORATE_BODY_NEEDED - a missing pragma Elaborate_Body - A missing pragma Elaborate_Body.
-POTENTIALLY_BLOCKING_IN_PROTECTED - protected operation blocks - A protected operation may block.
-REFERENCE_TO_NON_CAE_VARIABLE - illegal reference to a global object in precondition of a protected operation - An illegal reference to global in precondition of a protected operation.
-REFINED_STATE_WRONG - constant with no variable inputs as an abstract state's constituent - Constant with no variable inputs as an abstract state's constituent.
-SIDE_EFFECTS - function with side effects - A function with side effects.
-STABLE - loop with stable statement - A loop with stable statement.
-SUBPROGRAM_TERMINATION - subprogram marked Terminating may not terminate - A subprogram with Terminating annotation may not terminate.
-UNINITIALIZED - use of an uninitialized variable - Flow analysis has detected the use of an uninitialized variable.
-UNUSED - object is not used - A global or locally declared object is never used.
-UNUSED_INITIAL_VALUE - initial value of an object is not used - The initial value of an object is not used.
-VOLATILE_FUNCTION_WITHOUT_VOLATILE_EFFECTS - non-volatile function wrongly declared as volatile - A non-volatile function wrongly declared as volatile.
+ALIASING - aliasing between subprogram parameters - Aliasing between formal parameters or global objects. - EASY
+CALL_IN_TYPE_INVARIANT - invalid call in type invariant - A type invariant calls a boundary subprogram for the type. - EASY
+CALL_TO_CURRENT_TASK - invalid context for call to Current_Task - Current_Task is called from an invalid context. - EASY
+CONCURRENT_ACCESS - race condition - An unsynchronized global object is accessed concurrently. - EASY
+DEAD_CODE - dead code - A statement is never executed. - EASY
+DEFAULT_INITIALIZATION_MISMATCH - wrong Default_Initial_Condition aspect - A type is wrongly declared as initialized by default. - EASY
+DEPENDS_MISSING - input item missing from the dependency clause - An input is missing from the dependency clause. - EASY
+DEPENDS_MISSING_CLAUSE - output item missing from the dependency clause - An output item is missing from the dependency clause. - EASY
+DEPENDS_NULL - input item missing from the null dependency clause - An input item is missing from the null dependency clause. - EASY
+DEPENDS_WRONG - extra input item in the dependency clause - Extra input item in the dependency clause. - EASY
+EXPORT_DEPENDS_ON_PROOF_IN - subprogram output depends on a Proof_In global - Subprogram output depends on a Proof_In global. - EASY
+GHOST_WRONG - non-ghost output of ghost procedure - A ghost procedure has a non-ghost global output. - EASY
+GLOBAL_MISSING - incomplete Global or Initializes contract - A Global or Initializes contract fails to mention some objects. - EASY
+GLOBAL_WRONG - an extra item in the Global or Initializes contract - A Global or Initializes contract wrongly mentions some objects. - EASY
+HIDDEN_UNEXPOSED_STATE - constants with variable inputs that is not a state constituent - Constants with variable inputs that are not state constituents. - EASY
+ILLEGAL_UPDATE - illegal write of a global input - Illegal write of a global input. - EASY
+IMPOSSIBLE_TO_INITIALIZE_STATE - a state abstraction that is impossible to initialize - A state abstraction that is impossible to initialize. - EASY
+INEFFECTIVE - a statement with no effect on subprogram's outputs - A statement with no effect on subprogram's outputs. - EASY
+INITIALIZES_WRONG - an extra item in the Initializes contract - An object that shall not appear in the Initializes contract. - EASY
+INOUT_ONLY_READ - an IN OUT parameter or an In_Out global that is not written - An IN OUT parameter or an In_Out global that is not written. - EASY
+MISSING_RETURN - all execution paths raise exceptions or do not return - All execution paths raise exceptions or do not return. - EASY
+NON_VOLATILE_FUNCTION_WITH_VOLATILE_EFFECTS - volatile function wrongly declared as non-volatile - A volatile function wrongly declared as non-volatile. - EASY
+NOT_CONSTANT_AFTER_ELABORATION - illegal write of an object declared as constant after elaboration - Illegal write of an object declared as constant after elaboration. - EASY
+PRAGMA_ELABORATE_ALL_NEEDED - use of an abstract state of a package that was not yet elaborated - Use of an abstract state of a package that was not yet elaborated. - EASY
+PRAGMA_ELABORATE_BODY_NEEDED - a missing pragma Elaborate_Body - A missing pragma Elaborate_Body. - EASY
+POTENTIALLY_BLOCKING_IN_PROTECTED - protected operation blocks - A protected operation may block. - EASY
+REFERENCE_TO_NON_CAE_VARIABLE - illegal reference to a global object in precondition of a protected operation - An illegal reference to global in precondition of a protected operation. - EASY
+REFINED_STATE_WRONG - constant with no variable inputs as an abstract state's constituent - Constant with no variable inputs as an abstract state's constituent. - EASY
+SIDE_EFFECTS - function with side effects - A function with side effects. - EASY
+STABLE - loop with stable statement - A loop with stable statement. - EASY
+SUBPROGRAM_TERMINATION - subprogram marked Terminating may not terminate - A subprogram with Terminating annotation may not terminate. - EASY
+UNINITIALIZED - use of an uninitialized variable - Flow analysis has detected the use of an uninitialized variable. - EASY
+UNUSED - object is not used - A global or locally declared object is never used. - EASY
+UNUSED_INITIAL_VALUE - initial value of an object is not used - The initial value of an object is not used. - EASY
+VOLATILE_FUNCTION_WITHOUT_VOLATILE_EFFECTS - non-volatile function wrongly declared as volatile - A non-volatile function wrongly declared as volatile. - EASY
 [Proof check categories]
-VC_DIVISION_CHECK - divide by zero - Check that the second operand of the division, mod or rem operation is different from zero.
-VC_INDEX_CHECK - index check - Check that the given index is within the bounds of the array.
-VC_OVERFLOW_CHECK - overflow check - Check that the result of the given integer arithmetic operation is within the bounds of the base type.
-VC_FP_OVERFLOW_CHECK - fp_overflow check - Check that the result of the given floating point operation is within the bounds of the base type.
-VC_RANGE_CHECK - range check - Check that the given value is within the bounds of the expected scalar subtype.
-VC_PREDICATE_CHECK - predicate check - Check that the given value respects the applicable type predicate.
-VC_PREDICATE_CHECK_ON_DEFAULT_VALUE - predicate check on default value - Check that the default value for the type respects the applicable type predicate.
-VC_NULL_POINTER_DEREFERENCE - null pointer dereference - Check that the given pointer is not null so that it can be dereferenced.
-VC_NULL_EXCLUSION - null exclusion - Check that the subtype_indication of the allocator does not specify a null_exclusion
-VC_MEMORY_LEAK - memory leak - Check that the assignment does not lead to a memory leak
-VC_MEMORY_LEAK_AT_END_OF_SCOPE - memory leak at end of scope - Check that the declaration does not lead to a memory leak
-VC_LENGTH_CHECK - length check - Check that the given array is of the length of the expected array subtype.
-VC_DISCRIMINANT_CHECK - discriminant check - Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required.
-VC_TAG_CHECK - tag check - Check that the tag of the given tagged object has the expected value.
-VC_CEILING_INTERRUPT - ceiling priority in Interrupt_Priority - Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority.
-VC_INITIALIZATION_CHECK - use of an uninitialized variable - Check that a variable is initialized
-VC_INTERRUPT_RESERVED - interrupt is reserved - Check that the interrupt specified by Attach_Handler is not reserved.
-VC_INVARIANT_CHECK - invariant check - Check that the given value respects the applicable type invariant.
-VC_INVARIANT_CHECK_ON_DEFAULT_VALUE - invariant check on default value - Check that the default value for the type respects the applicable type invariant.
-VC_CEILING_PRIORITY_PROTOCOL - ceiling priority protocol - Check that the ceiling priority protocol is respected, i.e., when a task calls a protected operation, the active priority of the task is not higher than the priority of the protected object (Ada RM Annex D.3).
-VC_TASK_TERMINATION - task termination - Check that the task does not terminate, as required by Ravenscar.
-VC_INITIAL_CONDITION - initial condition - Check that the initial condition of a package is true after elaboration.
-VC_DEFAULT_INITIAL_CONDITION - default initial condition - Check that the default initial condition of a type is true after default initialization of an object of the type.
-VC_PRECONDITION - precondition - Check that the precondition aspect of the given call evaluates to True.
-VC_PRECONDITION_MAIN - precondition of main - Check that the precondition aspect of the given main procedure evaluates to True after elaboration.
-VC_POSTCONDITION - postcondition - Check that the postcondition aspect of the subprogram evaluates to True.
-VC_REFINED_POST - refined postcondition - Check that the refined postcondition aspect of the subprogram evaluates to True.
-VC_CONTRACT_CASE - contract case - Check that all cases of the contract case evaluate to true at the end of the subprogram.
-VC_DISJOINT_CONTRACT_CASES - disjoint contract cases - Check that the cases of the contract cases aspect are all mutually disjoint.
-VC_COMPLETE_CONTRACT_CASES - complete contract cases - Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect.
-VC_LOOP_INVARIANT - loop invariant - Check that the loop invariant evaluates to True on all iterations of the loop.
-VC_LOOP_INVARIANT_INIT - loop invariant in first iteration - Check that the loop invariant evaluates to True on the first iteration of the loop.
-VC_LOOP_INVARIANT_PRESERV - loop invariant after first iteration - Check that the loop invariant evaluates to True at each further iteration of the loop.
-VC_LOOP_VARIANT - loop variant - Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop.
-VC_SUBPROGRAM_VARIANT - subprogram variant - Check that the given subprogram variant decreases/increases as specified during each recursive call. This implies there will be no infinite recursion.
-VC_ASSERT - assertion - Check that the given assertion evaluates to True.
-VC_RAISE - raised exception - Check that the raise statement or expression can never be reached.
-VC_INLINE_CHECK - Inline_For_Proof annotation - Check that an Annotate pragma with the Inline_For_Proof identifier is correct.
-VC_UC_SOURCE - unchecked conversion source check - Check that a source type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object.
-VC_UC_TARGET - unchecked conversion target check - Check that a target type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object, and no invalid bitpatterns occur.
-VC_UC_SAME_SIZE - unchecked conversion size check - Check that the two types in an unchecked conversion instance are of the same size.
-VC_UC_ALIGNMENT - alignment check - Check that the first object's alignment is an integral multiple of the second object's alignment.
-VC_WEAKER_PRE - precondition weaker than class-wide precondition - Check that the precondition aspect of the subprogram is weaker than its class-wide precondition.
-VC_TRIVIAL_WEAKER_PRE - precondition not True while class-wide precondition is True - Check that the precondition aspect of the subprogram is True if its class-wide precondition is True.
-VC_STRONGER_POST - postcondition stronger than class-wide postcondition - Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition.
-VC_WEAKER_CLASSWIDE_PRE - class-wide precondition weaker than overridden one - Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition.
-VC_STRONGER_CLASSWIDE_POST - class-wide postcondition stronger than overridden one - Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition.
-VC_WEAKER_PRE_ACCESS - precondition of the source weaker than precondition of the target - Check that the precondition aspect of the access-to-subprogram type used as the target of a conversion implies the precondition of the source.
-VC_STRONGER_POST_ACCESS - postcondition of the source stronger than postcondition of the target - Check that the postcondition aspect of the access-to-subprogram type used as the target of a conversion is implied by the postcondition of the source.
+VC_DIVISION_CHECK(run-time-check) - divide by zero - Check that the second operand of the division, mod or rem operation is different from zero. - MEDIUM
+VC_INDEX_CHECK(run-time-check) - index check - Check that the given index is within the bounds of the array. - MEDIUM
+VC_OVERFLOW_CHECK(run-time-check) - overflow check - Check that the result of the given integer arithmetic operation is within the bounds of the base type. - MEDIUM
+VC_FP_OVERFLOW_CHECK(run-time-check) - fp_overflow check - Check that the result of the given floating point operation is within the bounds of the base type. - MEDIUM
+VC_RANGE_CHECK(run-time-check) - range check - Check that the given value is within the bounds of the expected scalar subtype. - MEDIUM
+VC_PREDICATE_CHECK(run-time-check) - predicate check - Check that the given value respects the applicable type predicate. - MEDIUM
+VC_PREDICATE_CHECK_ON_DEFAULT_VALUE(run-time-check) - predicate check on default value - Check that the default value for the type respects the applicable type predicate. - MEDIUM
+VC_NULL_POINTER_DEREFERENCE(run-time-check) - null pointer dereference - Check that the given pointer is not null so that it can be dereferenced. - MEDIUM
+VC_NULL_EXCLUSION(run-time-check) - null exclusion - Check that the subtype_indication of the allocator does not specify a null_exclusion - MEDIUM
+VC_MEMORY_LEAK(run-time-check) - memory leak - Check that the assignment does not lead to a memory leak - MEDIUM
+VC_MEMORY_LEAK_AT_END_OF_SCOPE(run-time-check) - memory leak at end of scope - Check that the declaration does not lead to a memory leak - MEDIUM
+VC_LENGTH_CHECK(run-time-check) - length check - Check that the given array is of the length of the expected array subtype. - MEDIUM
+VC_DISCRIMINANT_CHECK(run-time-check) - discriminant check - Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required. - MEDIUM
+VC_TAG_CHECK(run-time-check) - tag check - Check that the tag of the given tagged object has the expected value. - MEDIUM
+VC_CEILING_INTERRUPT(run-time-check) - ceiling priority in Interrupt_Priority - Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority. - MEDIUM
+VC_INITIALIZATION_CHECK(run-time-check) - use of an uninitialized variable - Check that a variable is initialized - MEDIUM
+VC_INTERRUPT_RESERVED(run-time-check) - interrupt is reserved - Check that the interrupt specified by Attach_Handler is not reserved. - MEDIUM
+VC_INVARIANT_CHECK(run-time-check) - invariant check - Check that the given value respects the applicable type invariant. - MEDIUM
+VC_INVARIANT_CHECK_ON_DEFAULT_VALUE(run-time-check) - invariant check on default value - Check that the default value for the type respects the applicable type invariant. - MEDIUM
+VC_CEILING_PRIORITY_PROTOCOL(run-time-check) - ceiling priority protocol - Check that the ceiling priority protocol is respected, i.e., when a task calls a protected operation, the active priority of the task is not higher than the priority of the protected object (Ada RM Annex D.3). - MEDIUM
+VC_TASK_TERMINATION(run-time-check) - task termination - Check that the task does not terminate, as required by Ravenscar. - MEDIUM
+VC_INITIAL_CONDITION(assertion) - initial condition - Check that the initial condition of a package is true after elaboration. - MEDIUM
+VC_DEFAULT_INITIAL_CONDITION(assertion) - default initial condition - Check that the default initial condition of a type is true after default initialization of an object of the type. - MEDIUM
+VC_PRECONDITION(assertion) - precondition - Check that the precondition aspect of the given call evaluates to True. - MEDIUM
+VC_PRECONDITION_MAIN(assertion) - precondition of main - Check that the precondition aspect of the given main procedure evaluates to True after elaboration. - MEDIUM
+VC_POSTCONDITION(assertion) - postcondition - Check that the postcondition aspect of the subprogram evaluates to True. - MEDIUM
+VC_REFINED_POST(assertion) - refined postcondition - Check that the refined postcondition aspect of the subprogram evaluates to True. - MEDIUM
+VC_CONTRACT_CASE(assertion) - contract case - Check that all cases of the contract case evaluate to true at the end of the subprogram. - MEDIUM
+VC_DISJOINT_CONTRACT_CASES(assertion) - disjoint contract cases - Check that the cases of the contract cases aspect are all mutually disjoint. - MEDIUM
+VC_COMPLETE_CONTRACT_CASES(assertion) - complete contract cases - Check that the cases of the contract cases aspect cover the state space that is allowed by the precondition aspect. - MEDIUM
+VC_LOOP_INVARIANT(assertion) - loop invariant - Check that the loop invariant evaluates to True on all iterations of the loop. - MEDIUM
+VC_LOOP_INVARIANT_INIT(assertion) - loop invariant in first iteration - Check that the loop invariant evaluates to True on the first iteration of the loop. - MEDIUM
+VC_LOOP_INVARIANT_PRESERV(assertion) - loop invariant after first iteration - Check that the loop invariant evaluates to True at each further iteration of the loop. - MEDIUM
+VC_LOOP_VARIANT(assertion) - loop variant - Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop. - MEDIUM
+VC_SUBPROGRAM_VARIANT(assertion) - subprogram variant - Check that the given subprogram variant decreases/increases as specified during each recursive call. This implies there will be no infinite recursion. - MEDIUM
+VC_ASSERT(assertion) - assertion - Check that the given assertion evaluates to True. - MEDIUM
+VC_RAISE(assertion) - raised exception - Check that the raise statement or expression can never be reached. - MEDIUM
+VC_INLINE_CHECK(assertion) - Inline_For_Proof annotation - Check that an Annotate pragma with the Inline_For_Proof identifier is correct. - MEDIUM
+VC_UC_SOURCE(assertion) - unchecked conversion source check - Check that a source type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object. - MEDIUM
+VC_UC_TARGET(assertion) - unchecked conversion target check - Check that a target type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object, and no invalid bitpatterns occur. - MEDIUM
+VC_UC_SAME_SIZE(assertion) - unchecked conversion size check - Check that the two types in an unchecked conversion instance are of the same size. - MEDIUM
+VC_UC_ALIGNMENT(assertion) - alignment check - Check that the first object's alignment is an integral multiple of the second object's alignment. - MEDIUM
+VC_WEAKER_PRE(liskov-substitution-principle) - precondition weaker than class-wide precondition - Check that the precondition aspect of the subprogram is weaker than its class-wide precondition. - MEDIUM
+VC_TRIVIAL_WEAKER_PRE(liskov-substitution-principle) - precondition not True while class-wide precondition is True - Check that the precondition aspect of the subprogram is True if its class-wide precondition is True. - MEDIUM
+VC_STRONGER_POST(liskov-substitution-principle) - postcondition stronger than class-wide postcondition - Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition. - MEDIUM
+VC_WEAKER_CLASSWIDE_PRE(liskov-substitution-principle) - class-wide precondition weaker than overridden one - Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition. - MEDIUM
+VC_STRONGER_CLASSWIDE_POST(liskov-substitution-principle) - class-wide postcondition stronger than overridden one - Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition. - MEDIUM
+VC_WEAKER_PRE_ACCESS(liskov-substitution-principle) - precondition of the source weaker than precondition of the target - Check that the precondition aspect of the access-to-subprogram type used as the target of a conversion implies the precondition of the source. - MEDIUM
+VC_STRONGER_POST_ACCESS(liskov-substitution-principle) - postcondition of the source stronger than postcondition of the target - Check that the postcondition aspect of the access-to-subprogram type used as the target of a conversion is implied by the postcondition of the source. - MEDIUM
 [Proof warnings categories]
-VC_INCONSISTENT_PRE - precondition always False - Warn if precondition is found to be always False
-VC_INCONSISTENT_POST - postcondition always False - Warn if postcondition is found to be always False
-VC_INCONSISTENT_ASSUME - pragma Assume always False - Warn if pragma Assume is found to be always False
-VC_UNREACHABLE_BRANCH - unreachable branch - Warn if branch is found to be unreachable
-VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable
+VC_INCONSISTENT_PRE - precondition always False - Warn if precondition is found to be always False - EASY
+VC_INCONSISTENT_POST - postcondition always False - Warn if postcondition is found to be always False - EASY
+VC_INCONSISTENT_ASSUME - pragma Assume always False - Warn if pragma Assume is found to be always False - EASY
+VC_UNREACHABLE_BRANCH - unreachable branch - Warn if branch is found to be unreachable - EASY
+VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable - EASY
