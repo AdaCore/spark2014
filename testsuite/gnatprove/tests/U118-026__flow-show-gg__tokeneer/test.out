@@ -1,0 +1,7 @@
+Generated contracts for enclave
+enclave.adb:17:27: info: refined post proved (CVC4: 1 VC)
+enclave.adb:23:14: info: initialization of "Status" constituent of "State" proved
+enclave.adb:30:11: info: flow dependencies proved
+enclave.ads:16:14: info: initialization of "Status" constituent of "State" proved
+enclave.ads:17:11: info: data dependencies proved
+Generated global .gg contents:
