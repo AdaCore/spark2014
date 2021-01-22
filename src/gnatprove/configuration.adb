@@ -1069,8 +1069,20 @@ package body Configuration is
       --  [category]
       --  key(optional category override) - name - description - effort
 
+      Ada.Text_IO.Put_Line ("[Flow analysis error categories]");
+      for K in Flow_Error_Kind loop
+         Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) & " - " &
+                                 Description (K) & " - MEDIUM");
+      end loop;
+
       Ada.Text_IO.Put_Line ("[Flow analysis check categories]");
-      for K in Valid_Flow_Tag_Kind loop
+      for K in Flow_Check_Kind loop
+         Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) & " - " &
+                                 Description (K) & " - EASY");
+      end loop;
+
+      Ada.Text_IO.Put_Line ("[Flow analysis warnings categories]");
+      for K in Flow_Warning_Kind loop
          Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) & " - " &
                                  Description (K) & " - EASY");
       end loop;

@@ -158,6 +158,21 @@ package VC_Kinds is
      (Empty_Tag,
       --  Used when a tag is not specified, only for errors/warnings not checks
 
+      --  Flow_Error_Kind - errors
+      ----------------------------
+
+      Critical_Global_Missing,
+      --  There is a critical variable missing from the Globals
+
+      Non_Volatile_Function_With_Volatile_Effects,
+      --  Non Volatile_Function refers to globals with volatile effects
+
+      Side_Effects,
+      --  A function with side-effects has been found
+
+      --  Flow_Check_Kind - checks
+      ----------------------------
+
       Aliasing,
       --  Used for aliasing checks
 
@@ -169,9 +184,6 @@ package VC_Kinds is
 
       Concurrent_Access,
       --  Global data is accessed concurrently by tasks
-
-      Dead_Code,
-      --  Statement is never reached
 
       Default_Initialization_Mismatch,
       --  A type marked as Fully_Default_Initialized is not fully initialized
@@ -207,35 +219,15 @@ package VC_Kinds is
       --  Writing to a variable which is not a global Output of the subprogram,
       --  or not a variable of the package during its elaboration.
 
-      Impossible_To_Initialize_State,
-      --  A state abstraction cannot possibly be initialized
-
-      Ineffective,
-      --  Code has no effect on any exports
-
       Initializes_Wrong,
       --  User provided an incorrect Initializes contract
-
-      Inout_Only_Read,
-      --  Inout could have been an In
 
       Missing_Return,
       --  Function has a path without a return statement
 
-      Non_Volatile_Function_With_Volatile_Effects,
-      --  Non Volatile_Function refers to globals with volatile effects
-
       Not_Constant_After_Elaboration,
       --  Variable that has been marked as Constant_After_Elaboration
       --  can potentially be updated.
-
-      Pragma_Elaborate_All_Needed,
-      --  A remote state abstraction has been used during elaboration
-      --  so a pragma Elaborate_All is needed.
-
-      Pragma_Elaborate_Body_Needed,
-      --  State visible in a package spec is modified in the package
-      --  elaboration.
 
       Potentially_Blocking_In_Protected,
       --  Protected operation calls potentially blocking feature
@@ -247,21 +239,36 @@ package VC_Kinds is
       Refined_State_Wrong,
       --  User provided an incorrect Refined_State contract
 
-      Side_Effects,
-      --  A function with side-effects has been found
-
-      Stable,
-      --  Found a stable element inside a loop (this has not been
-      --  implemented yet).
-
       Subprogram_Termination,
       --  A subprogram with annotation Terminating may not terminate
 
       Uninitialized,
       --  Use of an uninitialized variable
 
-      Unused,
-      --  A parameter has not been used
+      Unused_Global,
+      --  A global has not been used
+
+      --  Flow_Warning_Kind - warnings
+      --------------------------------
+
+      Dead_Code,
+      --  Statement is never reached
+
+      Impossible_To_Initialize_State,
+      --  A state abstraction cannot possibly be initialized
+
+      Ineffective,
+      --  Code has no effect on any exports
+
+      Inout_Only_Read,
+      --  Inout could have been an In
+
+      Stable,
+      --  Found a stable element inside a loop (this has not been
+      --  implemented yet).
+
+      Unused_Variable,
+      --  A variable has not been used
 
       Unused_Initial_Value,
       --  Initial value has not been used
@@ -272,9 +279,25 @@ package VC_Kinds is
      );
    pragma Ordered (Flow_Tag_Kind);
 
+   subtype Flow_Error_Kind is Flow_Tag_Kind range
+     Critical_Global_Missing .. Side_Effects;
+
+   subtype Flow_Check_Kind is Flow_Tag_Kind range
+     Aliasing .. Unused_Global;
+
+   subtype Flow_Warning_Kind is Flow_Tag_Kind range
+     Dead_Code .. Volatile_Function_Without_Volatile_Effects;
+
    subtype Valid_Flow_Tag_Kind is Flow_Tag_Kind range
      Flow_Tag_Kind'Succ (Empty_Tag) .. Flow_Tag_Kind'Last;
    --  Non-empty tags
+
+   --  Each valid flow analysis kind is exactly one of error/check/warning
+   pragma Assert (for all Kind in Valid_Flow_Tag_Kind =>
+                    (if Kind in Flow_Error_Kind then 1 else 0)
+                  + (if Kind in Flow_Check_Kind then 1 else 0)
+                  + (if Kind in Flow_Warning_Kind then 1 else 0)
+                  = 1);
 
    subtype Data_Dependency_Tag is Flow_Tag_Kind with
      Static_Predicate => Data_Dependency_Tag in

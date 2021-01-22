@@ -1208,7 +1208,7 @@ package body Flow.Analysis is
                                   (FA.Spec_Entity,
                                    Direct_Mapping_Id (Repr)),
                               F1       => Direct_Mapping_Id (Repr),
-                              Tag      => VC_Kinds.Unused,
+                              Tag      => Unused_Global,
                               Severity => Severity,
                               Vertex   => V);
                         end if;
@@ -1242,7 +1242,7 @@ package body Flow.Analysis is
                            Msg      => "unused variable &",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            F1       => F,
-                           Tag      => VC_Kinds.Unused,
+                           Tag      => Unused_Variable,
                            Severity => Warning_Kind,
                            Vertex   => V);
                      end if;

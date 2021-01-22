@@ -98,7 +98,16 @@ package Flow_Error_Messages is
    with Pre => (if Present (F2) then Present (F1))
      and then (if Present (F3) then Present (F2))
      and then (if Continuation then Tracefile = "")
-     and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind);
+     and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
+     and then (case Tag is
+                 when Empty_Tag =>
+                   True,
+                 when Flow_Error_Kind =>
+                   Severity = Error_Kind,
+                 when Flow_Check_Kind =>
+                   Severity in Check_Kind | Info_Kind,
+                 when Flow_Warning_Kind =>
+                   Severity = Warning_Kind);
    --  Output a message attached to the given node with a substitution
    --  using F1, F2 and F3. It also adds a JSON entry in the "unit.flow" file
    --  for the given entity E.
@@ -130,7 +139,16 @@ package Flow_Error_Messages is
    with Pre => (if Present (F2) then Present (F1))
      and then (if Present (F3) then Present (F2))
      and then (if Continuation then Path.Is_Empty)
-     and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind);
+     and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
+     and then (case Tag is
+                 when Empty_Tag =>
+                   True,
+                 when Flow_Error_Kind =>
+                   Severity = Error_Kind,
+                 when Flow_Check_Kind =>
+                   Severity in Check_Kind | Info_Kind,
+                 when Flow_Warning_Kind =>
+                   Severity = Warning_Kind);
    --  As above but it also writes the tracefile.
    --
    --  Also:

@@ -109,7 +109,7 @@ procedure SPARK_Report is
    --  @return the corresponding summary entry which this VC corresponds to
 
    function Flow_Kind_To_Summary (S : Flow_Tag_Kind) return Possible_Entries;
-   --  @param S a Flow kind like VC_DIVISION_CHECK etc
+   --  @param S a Flow kind like ALIASING etc
    --  @return the corresponding summary entry which this VC corresponds to
 
    function To_String (S : Summary_Entries) return String;
@@ -402,7 +402,8 @@ procedure SPARK_Report is
          =>
             return Concurrency;
 
-         when Global_Missing
+         when Critical_Global_Missing
+            | Global_Missing
             | Global_Wrong
             | Export_Depends_On_Proof_In
             | Ghost_Wrong
@@ -411,6 +412,7 @@ procedure SPARK_Report is
             | Non_Volatile_Function_With_Volatile_Effects
             | Refined_State_Wrong
             | Side_Effects
+            | Unused_Global
             | Volatile_Function_Without_Volatile_Effects
          =>
             return Data_Dep;
@@ -439,12 +441,10 @@ procedure SPARK_Report is
             | Inout_Only_Read
             | Missing_Return
             | Not_Constant_After_Elaboration
-            | Pragma_Elaborate_All_Needed
-            | Pragma_Elaborate_Body_Needed
             | Reference_To_Non_CAE_Variable
             | Stable
-            | Unused
             | Unused_Initial_Value
+            | Unused_Variable
          =>
             return No_Entry;
       end case;

@@ -171,8 +171,8 @@ package body VC_Kinds is
 
          --  CWE-563: Assignment to Variable without Use ('Unused Variable')
 
-         when Unused
-            | Unused_Initial_Value          => "563",
+         when Unused_Initial_Value
+            | Unused_Variable               => "563",
 
          --  CWE-1164: Irrelevant Code
 
@@ -185,6 +185,7 @@ package body VC_Kinds is
 
          when Aliasing
             | Call_To_Current_Task
+            | Critical_Global_Missing
             | Depends_Null
             | Depends_Missing
             | Depends_Missing_Clause
@@ -201,12 +202,11 @@ package body VC_Kinds is
             | Missing_Return
             | Non_Volatile_Function_With_Volatile_Effects
             | Not_Constant_After_Elaboration
-            | Pragma_Elaborate_All_Needed
-            | Pragma_Elaborate_Body_Needed
             | Reference_To_Non_CAE_Variable
             | Refined_State_Wrong
             | Side_Effects
             | Stable
+            | Unused_Global
             | Volatile_Function_Without_Volatile_Effects => "");
    end CWE_ID;
 
@@ -423,9 +423,10 @@ package body VC_Kinds is
             "Extra input item in the dependency clause.",
          when Export_Depends_On_Proof_In                  =>
             "Subprogram output depends on a Proof_In global.",
-         when Ghost_Wrong                                =>
+         when Ghost_Wrong                                 =>
             "A ghost procedure has a non-ghost global output.",
-         when Global_Missing                              =>
+         when Critical_Global_Missing
+            | Global_Missing                              =>
             "A Global or Initializes contract fails to mention some objects.",
          when Global_Wrong                                =>
             "A Global or Initializes contract wrongly mentions some objects.",
@@ -448,11 +449,6 @@ package body VC_Kinds is
          when Not_Constant_After_Elaboration              =>
             "Illegal write of an object " &
             "declared as constant after elaboration.",
-         when Pragma_Elaborate_All_Needed                 =>
-            "Use of an abstract state of a package " &
-            "that was not yet elaborated.",
-         when Pragma_Elaborate_Body_Needed                =>
-            "A missing pragma Elaborate_Body.",
          when Potentially_Blocking_In_Protected =>
             "A protected operation may block.",
          when Reference_To_Non_CAE_Variable               =>
@@ -464,15 +460,17 @@ package body VC_Kinds is
          when Side_Effects                                =>
             "A function with side effects.",
          when Stable                                      =>
-            "A loop with stable statement.",  --  ??? appears dead
+            "A loop with stable statement.",
          when Subprogram_Termination                      =>
             "A subprogram with Terminating annotation may not terminate.",
          when Uninitialized                               =>
             "Flow analysis has detected the use of an uninitialized variable.",
-         when Unused                                      =>
-            "A global or locally declared object is never used.",
+         when Unused_Global                               =>
+            "A global object is never used.",
          when Unused_Initial_Value                        =>
             "The initial value of an object is not used.",
+         when Unused_Variable                             =>
+            "A parameter or locally declared object is never used.",
          when Volatile_Function_Without_Volatile_Effects  =>
             "A non-volatile function wrongly declared as volatile.");
 
@@ -955,6 +953,8 @@ package body VC_Kinds is
             "invalid context for call to Current_Task",
          when Concurrent_Access                           =>
             "race condition",
+         when Critical_Global_Missing                     =>
+            "critically incomplete Global or Initializes contract",
          when Dead_Code                                   =>
             "dead code",
          when Default_Initialization_Mismatch             =>
@@ -969,7 +969,7 @@ package body VC_Kinds is
             "extra input item in the dependency clause",
          when Export_Depends_On_Proof_In                  =>
             "subprogram output depends on a Proof_In global",
-         when Ghost_Wrong                                =>
+         when Ghost_Wrong                                 =>
             "non-ghost output of ghost procedure",
          when Global_Missing                              =>
             "incomplete Global or Initializes contract",
@@ -994,11 +994,6 @@ package body VC_Kinds is
          when Not_Constant_After_Elaboration              =>
             "illegal write of an object " &
             "declared as constant after elaboration",
-         when Pragma_Elaborate_All_Needed                 =>
-            "use of an abstract state of a package " &
-            "that was not yet elaborated",
-         when Pragma_Elaborate_Body_Needed                =>
-            "a missing pragma Elaborate_Body",
          when Potentially_Blocking_In_Protected           =>
             "protected operation blocks",
          when Reference_To_Non_CAE_Variable               =>
@@ -1010,15 +1005,17 @@ package body VC_Kinds is
          when Side_Effects                                =>
             "function with side effects",
          when Stable                                      =>
-            "loop with stable statement",  --  ??? appears dead
+            "loop with stable statement",
          when Subprogram_Termination                      =>
             "subprogram marked Terminating may not terminate",
          when Uninitialized                               =>
             "use of an uninitialized variable",
-         when Unused                                      =>
-            "object is not used",
+         when Unused_Global                               =>
+            "global object is not used",
          when Unused_Initial_Value                        =>
             "initial value of an object is not used",
+         when Unused_Variable                             =>
+            "object is not used",
          when Volatile_Function_Without_Volatile_Effects  =>
             "non-volatile function wrongly declared as volatile");
 
