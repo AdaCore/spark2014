@@ -73,10 +73,10 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    Children : Name_Graphs.Map;
    Nested   : Name_Graphs.Map;
    --  ??? those should be maps from Entity_Name -> Name_Lists.List, just like
-   --  in Flow_Generated_Globals.Traversal. Also, they are not used now, but
-   --  the intention is to mimick the top-down traversal from phase 1, in
-   --  particular, to synthesize the Initializes of a parent package with
-   --  Part_Ofs its state located in its private children.
+   --  in Flow_Generated_Globals.Traversal. The intention is to mimick the
+   --  top-down traversal from phase 1, in particular, to synthesize the
+   --  Initializes of a parent package with Part_Ofs its state located in
+   --  its private children and abstract state in all children.
 
    function Present (E : Any_Entity_Name) return Boolean is
      (E /= Null_Entity_Name);
@@ -766,5 +766,18 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    begin
       return To_Entity_Name (S (S'First .. J - 1));
    end Scope;
+
+   ------------------------
+   -- Child_Packages --
+   ------------------------
+
+   function Child_Packages (Parent_Package : Entity_Name)
+                            return Name_Sets.Set
+   is
+      C : constant Name_Graphs.Cursor := Children.Find (Parent_Package);
+   begin
+      return (if Name_Graphs.Has_Element (C) then Children (C)
+              else Name_Sets.Empty_Set);
+   end Child_Packages;
 
 end Flow_Generated_Globals.Phase_2.Visibility;

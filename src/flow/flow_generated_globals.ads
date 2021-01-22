@@ -147,7 +147,8 @@ package Flow_Generated_Globals is
       Proper  : Global_Names;
       Refined : Global_Names;
 
-      Initializes : Name_Sets.Set;
+      Initializes         : Name_Sets.Set;
+      Refined_Initializes : Name_Sets.Set;
       --  Only meaningful for packages
 
       Calls : Call_Names;

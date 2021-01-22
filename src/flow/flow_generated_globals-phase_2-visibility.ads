@@ -63,4 +63,12 @@ private package Flow_Generated_Globals.Phase_2.Visibility is
       return Boolean
    with Pre => GG_Is_Abstract_State (State);
 
+   function Child_Packages
+     (Parent_Package : Entity_Name)
+      return Name_Sets.Set;
+   --  Returns the set of known children of Parent_Package as derived in phase
+   --  1. If Parent_Package contains no known children, return the empty set.
+   --  ??? Should craft a useful precondition to ensure the parameter actually
+   --  is a package.
+
 end Flow_Generated_Globals.Phase_2.Visibility;

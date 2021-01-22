@@ -388,6 +388,9 @@ package body Flow_Generated_Globals.Phase_1 is
       Serialize (Globals.Refined, "refined_");
       if Ekind (E) = E_Package then
          Serialize (Globals.Initializes.Proper, "initializes");
+         --  Normally we don't write an "Initializes" contract for refined
+         --  state, however this information is required by phase 2.
+         Serialize (Globals.Initializes.Refined, "refined_initializes");
       end if;
       Serialize (Globals.Calls.Proof_Calls,       "calls_proof");
       Serialize (Globals.Calls.Definite_Calls,    "calls");

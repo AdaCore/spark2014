@@ -1,0 +1,28 @@
+Generated contracts for proxy
+   Global =>
+      Output =>
+         Y
+   Refined_Global =>
+      Output =>
+         Y
+Generated contracts for c
+   Initializes =>
+      C.X
+Generated contracts for init_y
+   Global =>
+      Output =>
+         Y
+   Refined_Global =>
+      Output =>
+         Y
+Generated contracts for p
+   Initializes =>
+      P.State
+Generated contracts for child
+   Initializes =>
+      Child.B
+parent-child.ads:2:25: info: data dependencies proved
+Generated contracts for parent
+   Initializes =>
+      Parent.A
+parent.ads:3:25: info: data dependencies proved
