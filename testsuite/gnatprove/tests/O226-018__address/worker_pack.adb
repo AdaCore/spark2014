@@ -34,7 +34,7 @@ is
       pragma Import(C, XQueue_Receive, "w_xQueueReceive");
    begin
        if Worker_Queue /= System.Null_Address then
-         while True loop
+         while Standard.True loop
             Res := XQueue_Receive(Worker_Queue, Work'Address, PORT_MAX_DELAY);
 
             if Res = -1 then

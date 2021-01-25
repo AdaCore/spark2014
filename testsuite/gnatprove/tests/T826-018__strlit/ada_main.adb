@@ -6,7 +6,7 @@ is
 
    begin
       Get_Host_By_Name("httpbin.org");
-      pragma Assert (False);
+      pragma Assert (Standard.False);
    end HTTP_Client_Test;
 
 end Ada_Main;
