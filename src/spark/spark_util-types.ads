@@ -164,6 +164,13 @@ package SPARK_Util.Types is
    --  Get the type of the given entity. This function looks through private
    --  types and should be used with extreme care.
 
+   function Use_Predefined_Equality_For_Type (Typ : Entity_Id) return Boolean
+   with Pre  => Is_Type (Typ);
+   --  Return True if membership tests and equality of components of
+   --  composite types of type Typ use the predefined equality and not the
+   --  primitive one (ie. Type is not an unlimited record type or it does
+   --  not have a redefined equality).
+
    function Get_Parent_Type_If_Check_Needed (N : Node_Id) return Entity_Id
      with Pre => Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration;
    --  @param N a (sub)type declaration
@@ -174,6 +181,12 @@ package SPARK_Util.Types is
    with Pre => Is_Type (E);
    --  @params E any type
    --  @returns True if E has a type invariant and the invariant is in SPARK.
+
+   function Has_Unconstrained_UU_Component (Typ : Entity_Id) return Boolean
+   with Pre => Is_Type (Typ);
+   --  Returns True iff Typ has a component visible in SPARK whose type is an
+   --  unchecked union type which is unconstrained.
+   --  Should be called on marked types.
 
    function Has_Visible_Type_Invariants (Ty : Entity_Id) return Boolean
    with Pre => Is_Type (Ty);

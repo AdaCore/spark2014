@@ -1026,6 +1026,14 @@ package body Why.Gen.Expr is
       --  If To has predicate, the check must be done on initialized values
 
    begin
+      --  The case where we are converting from an unchecked union type
+      --  to a type without unchecked union should not occur as we do not
+      --  support discriminants on derived type currently. If we were to
+      --  support them, we would need to detect this case and emit a
+      --  check message.
+
+      pragma Assert (Is_Unchecked_Union (R) = Is_Unchecked_Union (L));
+
       --  If From has relaxed initialization and not Base, introduce a
       --  conversion and possibly a check.
 
@@ -2463,21 +2471,19 @@ package body Why.Gen.Expr is
       Domain      : EW_Domain;
       Left, Right : W_Expr_Id) return W_Expr_Id
    is
-      Why_Type : constant W_Type_Id := Type_Of_Node (Typ);
+      Why_Type   : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
-        not (Is_Record_Type (Unchecked_Full_Type (Typ))
-             or else Is_Limited_View (Typ))
-        or else No (Get_User_Defined_Eq (Base_Type (Typ)));
-      Eq_Str   : constant String :=
+        Use_Predefined_Equality_For_Type (Typ);
+      Eq_Str     : constant String :=
         (if Use_Predef then "bool_eq" else "user_eq");
-      Module   : constant W_Module_Id :=
+      Module     : constant W_Module_Id :=
         (if Is_Boolean_Type (Typ) then M_Boolean.Module else E_Module (Typ));
-      Eq_Id    : constant W_Identifier_Id :=
+      Eq_Id      : constant W_Identifier_Id :=
         New_Identifier (Module   => Module,
                         Name     => Eq_Str,
                         Typ      => EW_Bool_Type,
                         Ada_Node => Typ);
-      T        : W_Expr_Id;
+      T          : W_Expr_Id;
 
    begin
       if Is_Scalar_Type (Typ) then

@@ -144,6 +144,7 @@ package body VC_Kinds is
             | VC_Warning_Kind
             | VC_Null_Exclusion
             | VC_UC_Alignment
+            | VC_Unchecked_Union_Restriction
          => "");
    end CWE_ID;
 
@@ -396,6 +397,9 @@ package body VC_Kinds is
             return "Warn if code is found to be unreachable";
          when VC_Initialization_Check             =>
             return "Check that a variable is initialized";
+         when VC_Unchecked_Union_Restriction      =>
+            return "Check restrictions imposed on expressions of an unchecked"
+              & " union type";
       end case;
    end Description;
 
@@ -940,7 +944,9 @@ package body VC_Kinds is
              when VC_Dead_Code =>
                "unreachable code",
              when VC_Initialization_Check =>
-               "use of an uninitialized variable");
+               "use of an uninitialized variable",
+             when VC_Unchecked_Union_Restriction =>
+               "unchecked union restriction");
    end Kind_Name;
 
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String is

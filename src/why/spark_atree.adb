@@ -907,6 +907,13 @@ package body SPARK_Atree is
    function Has_Target_Names (N : Node_Id) return Boolean renames
      Sinfo.Has_Target_Names;
 
+   ---------------------------------
+   -- Has_Inferable_Discriminants --
+   ---------------------------------
+
+   function Has_Inferable_Discriminants (N : Node_Id) return Boolean renames
+     Sem_Util.Has_Inferable_Discriminants;
+
    ------------------------
    -- Has_Wide_Character --
    ------------------------

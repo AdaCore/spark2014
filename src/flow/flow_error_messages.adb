@@ -2061,6 +2061,12 @@ package body Flow_Error_Messages is
       elsif Tag in VC_UC_Source | VC_UC_Target | VC_UC_Same_Size then
          return "";
 
+      --  Do not try to generate a fix message for static checks on specific
+      --  restrictions for Unchecked_Union.
+
+      elsif Tag = VC_Unchecked_Union_Restriction then
+         return "";
+
       --  Do not try to generate a fix message for static checks on subprogram
       --  variants.
 

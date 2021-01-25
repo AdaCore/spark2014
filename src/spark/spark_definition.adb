@@ -5731,6 +5731,17 @@ package body SPARK_Definition is
                declare
                   Comp              : Entity_Id := First_Component (E);
                   Comp_Type         : Entity_Id;
+                  Needs_No_UU_Check : constant Boolean :=
+                    not Is_Nouveau_Type (E)
+                    and then Underlying_Type (Etype (E)) /= E
+                    and then Is_Tagged_Type (E)
+                    and then not Has_Unconstrained_UU_Component (Etype (E));
+                  --  True if we need to make sure that the type contains no
+                  --  component with an unconstrained unchecked union type.
+                  --  We reject them for tagged types whose root type does not
+                  --  have components with an unconstrained unchecked union
+                  --  type, as the builtin dispatching equality could silently
+                  --  raise Program_Error.
 
                begin
                   while Present (Comp) loop
@@ -5787,6 +5798,22 @@ package body SPARK_Definition is
                                 (Ultimate_Alias
                                    (Get_User_Defined_Eq
                                         (Base_Type (Comp_Type))));
+                           end if;
+
+                           --  Reject components an unconstrained unchecked
+                           --  union type in a tagged extension.
+
+                           if Needs_No_UU_Check
+                             and then
+                               ((Is_Unchecked_Union (Base_Retysp (Comp_Type))
+                                 and then
+                                   not Is_Constrained (Retysp (Comp_Type)))
+                                or else Has_Unconstrained_UU_Component
+                                  (Comp_Type))
+                           then
+                              Mark_Unsupported
+                                ("component of an unconstrained unchecked"
+                                 & " union type in a tagged extension", Comp);
                            end if;
 
                            --  Mark default value of component or discriminant

@@ -527,6 +527,14 @@ package body SPARK_Atree.Entities is
    function Is_Unchecked_Conversion_Instance (Subp : Entity_Id) return Boolean
      renames Sem_Util.Is_Unchecked_Conversion_Instance;
 
+   ------------------------
+   -- Is_Unchecked_Union --
+   ------------------------
+
+   function Is_Unchecked_Union (E : Entity_Id) return Boolean is
+     (Einfo.Is_Type (E)
+      and then Einfo.Is_Unchecked_Union (SPARK_Util.Types.Base_Retysp (E)));
+
    --------------------------------------
    -- Is_Visible_Dispatching_Operation --
    --------------------------------------

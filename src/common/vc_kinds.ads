@@ -66,6 +66,11 @@ package VC_Kinds is
       VC_Memory_Leak,
       VC_Memory_Leak_At_End_Of_Scope,
 
+      VC_Unchecked_Union_Restriction, --  Specific restrictions for types
+                                      --  with Unchecked_Union occuring in
+                                      --  equality, membership tests, and
+                                      --  type conversions
+
       VC_Length_Check,
       VC_Discriminant_Check,
       VC_Tag_Check,

@@ -183,6 +183,9 @@ package SPARK_Atree.Entities is
    function Is_Generic_Unit (E : Entity_Id) return Boolean renames
      Einfo.Is_Generic_Unit;
 
+   function Is_Imported (E : Entity_Id) return Boolean renames
+     Einfo.Is_Imported;
+
    function Is_Itype (E : Entity_Id) return Boolean renames
      Einfo.Is_Itype;
 
@@ -230,11 +233,11 @@ package SPARK_Atree.Entities is
 
    function Is_Type (E : Entity_Id) return Boolean renames Einfo.Is_Type;
 
+   function Is_Unchecked_Union (E : Entity_Id) return Boolean;
+   --  Same as Einfo.Is_Unchecked_Union except that it goes to the Base_Retysp
+
    function Is_Universal_Numeric_Type (E : Entity_Id) return Boolean renames
      Sem_Util.Is_Universal_Numeric_Type;
-
-   function Is_Imported (E : Entity_Id) return Boolean renames
-     Einfo.Is_Imported;
 
    function Unique_Entity (E : Entity_Id) return Entity_Id renames
      Sem_Util.Unique_Entity;

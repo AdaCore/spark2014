@@ -266,6 +266,11 @@ package body Gnat2Why.Expr is
    --          invariant and that the invariant holds for default values
    --          of type N.
 
+   procedure Check_UU_Restrictions (Expr : Node_Id);
+   --  Check special restrictions for unchecked union types on membership tests
+   --  and builtin equality. Emit statically failed proof results for these
+   --  checks.
+
    type Ref_Type is record
       Mutable : Boolean;
       Name    : W_Identifier_Id;
@@ -2841,6 +2846,172 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
    end Check_Subtype_Indication;
+
+   ---------------------------
+   -- Check_UU_Restrictions --
+   ---------------------------
+
+   procedure Check_UU_Restrictions (Expr : Node_Id) is
+   --  Program_Error is raised in the following cases:
+   --  * Evaluation of the predefined equality operator for an unchecked union
+   --    type if either of the operands lacks inferable discriminants.
+   --  * Evaluation of the predefined equality operator for a type which has a
+   --    subcomponent of an unchecked union type whose nominal subtype is
+   --    unconstrained.
+   --  * Evaluation of a membership test if the subtype_mark denotes a
+   --    constrained unchecked union subtype and the expression lacks inferable
+   --    discriminants.
+
+      Is_Membership_Test                 : constant Boolean :=
+        Nkind (Expr) in N_Membership_Test;
+      Left                               : constant Node_Id :=
+        Left_Opnd (Expr);
+      Left_Type                          : constant Entity_Id :=
+        Etype (Left);
+      Ty_Has_Unconstrained_UU_Component  : constant Boolean :=
+        Has_Unconstrained_UU_Component (Left_Type);
+      Ty_Has_UU_Type                     : constant Boolean :=
+        Is_Unchecked_Union (Left_Type);
+      Left_Lacks_Inferable_Discriminants : constant Boolean :=
+        Ty_Has_UU_Type and then not Has_Inferable_Discriminants (Left);
+      Use_Predef_Equality                : constant Boolean :=
+        not Is_Membership_Test
+        or else Use_Predefined_Equality_For_Type (Left_Type);
+      --  Nothing needs to be done for equalities if we are not using the
+      --  predefined one. This should not occur while translating equalities
+      --  as ones using primitives will have be rewritten as function calls.
+
+      procedure Do_One_Alternative
+        (Right           : Node_Id;
+         Violation_Found : in out Boolean;
+         Ada_Node        : in out Node_Id;
+         Explanation     : in out Unbounded_String);
+      --  Check if a restriction is broken for a single comparison. If one is
+      --  found, Violation_Found is set to true and Ada_Node and Explanation
+      --  are updated accordingly.
+
+      ------------------------
+      -- Do_One_Alternative --
+      ------------------------
+
+      procedure Do_One_Alternative
+        (Right           : Node_Id;
+         Violation_Found : in out Boolean;
+         Ada_Node        : in out Node_Id;
+         Explanation     : in out Unbounded_String)
+      is
+         Right_Is_Type : constant Boolean :=
+           Is_Membership_Test
+           and then Nkind (Right) in N_Identifier | N_Expanded_Name
+           and then Is_Type (Entity (Right));
+         --  Either Right is a type and the operation is a membership test or
+         --  Right is an expression and it is an equality.
+
+      begin
+         --  If the operation is an equality and Right_Type has a
+         --  subcomponent of an unchecked union type whose nominal subtype is
+         --  unconstrained, we have found a violation of the restrictions.
+
+         if not Right_Is_Type
+           and then Use_Predef_Equality
+           and then Ty_Has_Unconstrained_UU_Component
+         then
+            Violation_Found := True;
+            Explanation :=
+              To_Unbounded_String
+                ("operand type has a subcomponent of an unchecked"
+                 & " union type whose nominal subtype is"
+                 & " unconstrained");
+
+         --  We need inferable discriminants on the left operand if the
+         --  operation is a predefined equality or Right is a constrained type.
+
+         elsif Left_Lacks_Inferable_Discriminants
+           and then (if Right_Is_Type then Is_Constrained (Entity (Right))
+                     else Use_Predef_Equality)
+         then
+            Violation_Found := True;
+            Explanation := To_Unbounded_String
+              ("left operand should have inferable discriminants");
+
+         --  We need inferable discriminants on the right operand if the
+         --  operation is a predefined equality.
+
+         elsif Ty_Has_UU_Type
+           and then Use_Predef_Equality
+           and then not Right_Is_Type
+           and then not Has_Inferable_Discriminants (Right)
+         then
+            declare
+               Right_String : constant String :=
+                 (if Is_Membership_Test then "alternative"
+                  else "right operand");
+            begin
+               Violation_Found := True;
+               Explanation := To_Unbounded_String
+                 (Right_String & " should have inferable discriminants");
+
+               --  If we are in a membership test, set the location to the
+               --  corresponding alternative.
+
+               if Is_Membership_Test then
+                  Ada_Node := Right;
+               end if;
+            end;
+         end if;
+      end Do_One_Alternative;
+
+      Violation_Found : Boolean := False;
+      Ada_Node        : Node_Id := Expr;
+      Explanation     : Unbounded_String := To_Unbounded_String ("");
+
+   --  Start of processing for Check_UU_Restrictions
+
+   begin
+      --  Nothing to do if the type does not contain parts with unchecked union
+      --  types.
+
+      if not Ty_Has_UU_Type and then not Ty_Has_Unconstrained_UU_Component then
+         return;
+      end if;
+
+      --  Go over the alternatives and search for violations of the UU
+      --  restrictions.
+
+      if Left_Lacks_Inferable_Discriminants
+        or else (Use_Predef_Equality
+                 and then (Ty_Has_Unconstrained_UU_Component
+                           or Ty_Has_UU_Type))
+      then
+         if Is_Membership_Test and then Present (Alternatives (Expr)) then
+            declare
+               Alt : Node_Id := First (Alternatives (Expr));
+            begin
+               loop
+                  Do_One_Alternative
+                    (Alt,
+                     Violation_Found,
+                     Ada_Node,
+                     Explanation);
+                  Next (Alt);
+                  exit when No (Alt) or else Violation_Found;
+               end loop;
+            end;
+         else
+            Do_One_Alternative
+              (Right_Opnd (Expr),
+               Violation_Found,
+               Ada_Node,
+               Explanation);
+         end if;
+      end if;
+
+      --  Generate a statically known proof result
+
+      Emit_Static_Proof_Result
+        (Ada_Node, VC_Unchecked_Union_Restriction, not Violation_Found,
+         Current_Subp, Explanation => To_String (Explanation));
+   end Check_UU_Restrictions;
 
    ---------------------------------
    -- Compute_Borrow_At_End_Value --
@@ -13907,6 +14078,11 @@ package body Gnat2Why.Expr is
                pragma Assert (Root_Retysp (Left_Type) =
                                 Root_Retysp (Get_Ada_Node (+BT)));
 
+               --  Check the specific rules for builtin equality on
+               --  unchecked union types.
+
+               Check_UU_Restrictions (Expr);
+
                --  Check that operands are initialized. Even if initialization
                --  checks are introduced for the conversion to BT, we still
                --  need to insert these checks here to ensure initialization of
@@ -17886,6 +18062,7 @@ package body Gnat2Why.Expr is
             Result :=
               Transform_Simple_Membership_Expression (Var, Alt);
          else
+
             Result := New_Ada_Equality
               (Typ    => Etype (Left_Opnd (Expr)),
                Left   => Var,
@@ -18243,6 +18420,13 @@ package body Gnat2Why.Expr is
    --  Start of processing for Transform_Membership_Expression
 
    begin
+      --  Check the specific rules for membership tests on unchecked union
+      --  types.
+
+      if Is_Record_Type_In_Why (Etype (Var)) then
+         Check_UU_Restrictions (Expr);
+      end if;
+
       --  For ranges and membership, "bool" should be mapped to "int"
 
       if Base_Type = EW_Bool_Type then

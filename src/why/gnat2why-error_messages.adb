@@ -265,6 +265,7 @@ package body Gnat2Why.Error_Messages is
                | VC_UC_Alignment
                | VC_Memory_Leak
                | VC_Memory_Leak_At_End_Of_Scope
+               | VC_Unchecked_Union_Restriction
             =>
                return (OK => False);
          end case;
@@ -752,6 +753,11 @@ package body Gnat2Why.Error_Messages is
          when VC_UC_Alignment =>
             return "alignment of overlaying object might not be an integral " &
               "multiple of alignment of overlaid object";
+         when VC_Initialization_Check      =>
+            return "initialization check might fail";
+         when VC_Unchecked_Union_Restriction =>
+            return "operation on unchecked union type will raise"
+              & " Program_Error";
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
@@ -784,8 +790,6 @@ package body Gnat2Why.Error_Messages is
 
          when VC_Warning_Kind              =>
             raise Program_Error;
-         when VC_Initialization_Check      =>
-            return "initialization check might fail";
       end case;
    end Not_Proved_Message;
 
@@ -1132,6 +1136,10 @@ package body Gnat2Why.Error_Messages is
          when VC_Stronger_Post_Access      =>
             return "postcondition of source is strong enough to imply"
               & " postcondition of target";
+         when VC_Initialization_Check      =>
+            return "initialization check proved";
+         when VC_Unchecked_Union_Restriction =>
+            return "operation on unchecked union type proved";
 
          --  VC_Warning_Kind - warnings
 
@@ -1145,8 +1153,6 @@ package body Gnat2Why.Error_Messages is
             return "unreachable branch";
          when VC_Dead_Code                 =>
             return "unreachable code";
-         when VC_Initialization_Check      =>
-            return "initialization check proved";
       end case;
    end Proved_Message;
 

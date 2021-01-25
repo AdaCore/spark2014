@@ -279,7 +279,8 @@ def is_rte_tag(tag):
                    "TAG_CHECK",
                    "NULL_EXCLUSION",
                    "MEMORY_LEAK",
-                   "DEREFERENCE_CHECK")
+                   "DEREFERENCE_CHECK",
+                   "UU_RESTRICTION")
 
 
 def is_proof_initialization_tag(tag):
@@ -431,6 +432,8 @@ def check_marks(strlist):
             return 'MEMORY_LEAK'
         elif 'dereference check' in text:
             return 'DEREFERENCE_CHECK'
+        elif 'operation on unchecked union type' in text:
+            return 'UU_RESTRICTION'
         elif 'default initial condition' in text:
             return 'DEFAULT_INITIAL_CONDITION'
         elif 'initial condition' in text:

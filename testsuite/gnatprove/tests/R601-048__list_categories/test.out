@@ -48,6 +48,7 @@ VC_NULL_POINTER_DEREFERENCE(run-time-check) - null pointer dereference - Check t
 VC_NULL_EXCLUSION(run-time-check) - null exclusion - Check that the subtype_indication of the allocator does not specify a null_exclusion - MEDIUM
 VC_MEMORY_LEAK(run-time-check) - memory leak - Check that the assignment does not lead to a memory leak - MEDIUM
 VC_MEMORY_LEAK_AT_END_OF_SCOPE(run-time-check) - memory leak at end of scope - Check that the declaration does not lead to a memory leak - MEDIUM
+VC_UNCHECKED_UNION_RESTRICTION(run-time-check) - unchecked union restriction - Check restrictions imposed on expressions of an unchecked union type - MEDIUM
 VC_LENGTH_CHECK(run-time-check) - length check - Check that the given array is of the length of the expected array subtype. - MEDIUM
 VC_DISCRIMINANT_CHECK(run-time-check) - discriminant check - Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required. - MEDIUM
 VC_TAG_CHECK(run-time-check) - tag check - Check that the tag of the given tagged object has the expected value. - MEDIUM

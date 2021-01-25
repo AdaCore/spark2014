@@ -481,6 +481,9 @@ package SPARK_Atree is
    --  @param Target same for the second argument of the instance of
    --           Unchecked_Conversion.
 
+   function Has_Inferable_Discriminants (N : Node_Id) return Boolean with
+     Pre => Nkind (N) in N_Subexpr;
+
    function Has_Target_Names (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Assignment_Statement;
 
