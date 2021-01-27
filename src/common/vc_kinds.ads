@@ -159,6 +159,18 @@ package VC_Kinds is
    subtype VC_Warning_Kind is VC_Kind range
      VC_Inconsistent_Pre .. VC_Dead_Code;
 
+   subtype Proof_High_Severity_Kind is VC_Kind
+     with Predicate =>
+       Proof_High_Severity_Kind in
+         VC_UC_Source
+       | VC_UC_Target
+       | VC_UC_Same_Size
+       | VC_UC_Alignment
+       | VC_Unchecked_Union_Restriction;
+   --  Subtype used to indicate VC kinds that have high severity if unproved.
+   --  We use a subtype predicate rather than a range to allow for
+   --  non-consecutive entries.
+
    type Flow_Tag_Kind is
      (Empty_Tag,
       --  Used when a tag is not specified, only for errors/warnings not checks

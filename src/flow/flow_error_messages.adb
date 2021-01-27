@@ -656,7 +656,7 @@ package body Flow_Error_Messages is
          --  The checks related to Unchecked_Conversion are quite precise (if
          --  the Esize is known), so we can make them of high severity.
 
-         elsif Tag in VC_UC_Source | VC_UC_Target | VC_UC_Same_Size then
+         elsif Tag in Proof_High_Severity_Kind then
             Result := High_Check_Kind;
 
          --  Range checks on concatenation of strings are likely to be
