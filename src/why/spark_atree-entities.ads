@@ -233,7 +233,8 @@ package SPARK_Atree.Entities is
 
    function Is_Type (E : Entity_Id) return Boolean renames Einfo.Is_Type;
 
-   function Is_Unchecked_Union (E : Entity_Id) return Boolean;
+   function Is_Unchecked_Union (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
    --  Same as Einfo.Is_Unchecked_Union except that it goes to the Base_Retysp
 
    function Is_Universal_Numeric_Type (E : Entity_Id) return Boolean renames

@@ -532,8 +532,7 @@ package body SPARK_Atree.Entities is
    ------------------------
 
    function Is_Unchecked_Union (E : Entity_Id) return Boolean is
-     (Einfo.Is_Type (E)
-      and then Einfo.Is_Unchecked_Union (SPARK_Util.Types.Base_Retysp (E)));
+     (Einfo.Is_Unchecked_Union (SPARK_Util.Types.Base_Retysp (E)));
 
    --------------------------------------
    -- Is_Visible_Dispatching_Operation --
