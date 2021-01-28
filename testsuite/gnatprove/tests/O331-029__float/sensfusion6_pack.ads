@@ -1,6 +1,5 @@
 with Types; use Types;
-with Interfaces.C;
-with Interfaces.C.Extensions; use Interfaces.C.Extensions;
+with Interfaces.C; use Interfaces.C;
 with IMU_Pack; use IMU_Pack;
 
 package SensFusion6_Pack
@@ -38,7 +37,7 @@ private
 
    --  Global variables and constants
 
-   Is_Init : bool := Interfaces.C.False with Part_Of => SensFusion6_State;
+   Is_Init : bool := False with Part_Of => SensFusion6_State;
 
    Q0 : T_Quaternion := 1.0
      with Part_Of => SensFusion6_State;

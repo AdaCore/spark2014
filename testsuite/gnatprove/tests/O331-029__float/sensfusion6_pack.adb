@@ -2,8 +2,6 @@ with Maths_Pack; use Maths_Pack;
 with Safety_Pack; use Safety_Pack;
 with Config; use Config;
 
-with Interfaces.C; use Interfaces.C;
-
 package body SensFusion6_Pack
 with SPARK_Mode,
   Refined_State => (SensFusion6_State => (Is_Init,
@@ -28,7 +26,7 @@ is procedure Madgwick_Update_Q (Gx : T_Rate; Gy : T_Rate; Gz : T_Rate; Ax : T_Ac
       Is_Init := True;
    end SensFusion6_Init;
 
-   function SensFusion6_Test return Interfaces.C.Extensions.bool is
+   function SensFusion6_Test return bool is
    begin
       return Is_Init;
    end SensFusion6_Test;
