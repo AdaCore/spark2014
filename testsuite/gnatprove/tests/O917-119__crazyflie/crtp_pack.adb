@@ -17,8 +17,8 @@ package body CRTP_Pack with SPARK_Mode is
       pragma Unreferenced (Has_Succeed);
    begin
       loop
-         Tx_Queue.Await_Item_To_Dequeue
-           (Packet);
+         CRTP_Queue.Await_Item_To_Dequeue
+           (Tx_Queue, Packet);
 
          Has_Succeed := Link_Send_Packet (Packet);
       end loop;
@@ -34,7 +34,8 @@ package body CRTP_Pack with SPARK_Mode is
          if Callbacks (Packet.Port) /= Null_Callback then
             Call (Callbacks (Packet.Port), Packet);
          else
-            Port_Queues (Packet.Port).Enqueue_Item (Packet, Has_Succeed);
+            CRTP_Queue.Enqueue_Item
+              (Port_Queues (Packet.Port), Packet, Has_Succeed);
          end if;
       end loop;
    end CRTP_Rx_Task;
@@ -132,8 +133,8 @@ package body CRTP_Pack with SPARK_Mode is
      (Packet           : out CRTP_Packet;
       Port_ID          : CRTP_Port) is
    begin
-      Port_Queues (Port_ID).Await_Item_To_Dequeue
-        (Packet);
+      CRTP_Queue.Await_Item_To_Dequeue
+        (Port_Queues (Port_ID), Packet);
    end CRTP_Receive_Packet_Blocking;
 
    procedure CRTP_Send_Packet
@@ -142,7 +143,7 @@ package body CRTP_Pack with SPARK_Mode is
       Time_To_Wait : Time_Span := Milliseconds (0)) is
       pragma Unreferenced (Time_To_Wait);
    begin
-      Tx_Queue.Enqueue_Item (Packet, Has_Succeed);
+      CRTP_Queue.Enqueue_Item (Tx_Queue, Packet, Has_Succeed);
    end CRTP_Send_Packet;
 
    procedure CRTP_Register_Callback
@@ -159,7 +160,7 @@ package body CRTP_Pack with SPARK_Mode is
 
    procedure CRTP_Reset is
    begin
-      Tx_Queue.Reset_Queue;
+      CRTP_Queue.Reset_Queue (Tx_Queue);
       --  TODO: reset the link queues too.
    end CRTP_Reset;
 
