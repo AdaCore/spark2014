@@ -127,7 +127,11 @@ overlays), that no invalid values can be produced in this way. Conversely, as
 no invalid values can be constructed in |SPARK|, the evaluation of the
 attribute ``Valid`` is assumed to always return True.
 
-This is illustrated in the following example:
+For address clauses, in addition to the above checks, SPARK checks that objects
+whose address clause is more complex than a simple address clause of the form
+``with Address => Y'Address``, are volatile.
+
+These validity checks are illustrated in the following example:
 
 .. literalinclude:: /examples/tests/validity/validity.ads
    :language: ada
