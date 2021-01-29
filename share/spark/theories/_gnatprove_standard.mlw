@@ -220,6 +220,64 @@ module Int_Division
 
 end
 
+module Int_Shift
+  use int.Int
+  use int.Power as Power
+  use int.ComputerDivision as ComputerDivision
+
+  (* Signed to unsigned interpretation of the same bitvector of size bits *)
+  let function to_unsigned (x size : int) : int =
+    if x >= 0 then x else x + Power.power 2 size
+
+  (* Unsigned to signed interpretation of the same bitvector of size bits *)
+  let function to_signed (x size : int) : int =
+    if x < Power.power 2 (size-1) then x else x - Power.power 2 size
+
+  (* Lazy modulus, only applied when x >= m *)
+  let function lazy_mod (x m : int) : int =
+    if x < m then x else ComputerDivision.mod x m
+
+  (* shift_left behavior on signed is the same as:
+     - applying to_unsigned
+     - doing the shift on unsigned value: (uns * 2**n) mod 2**size
+     - applying to_signed
+     We don't apply the mod operation if not needed, in order to
+     improve proof results, as provers tend to be ignorant of mod.
+   *)
+  let function shift_left (x n size : int) : int =
+    let uns = to_unsigned x size in
+    let res = lazy_mod (uns * (Power.power 2 n)) (Power.power 2 size) in
+    to_signed res size
+
+  (* shift_right behavior on signed is the same as:
+     - applying to_unsigned
+     - doing the shift on unsigned value: (uns / 2**n)
+     - applying to_signed
+   *)
+  let function shift_right (x n size : int) : int =
+    let uns = to_unsigned x size in
+    let res = ComputerDivision.div uns (Power.power 2 n) in
+    to_signed res size
+
+  (* shift_right_arithmetic behavior on signed is the same as:
+     - doing the division for the shift: (x / 2**n)
+     - with round down for negative, that is, subtract one if the
+       rest of the division is not null in that case
+     Note: argument 'size' is not used.
+   *)
+  let function shift_right_arithmetic (x n size : int) : int =
+    let res = ComputerDivision.div x (Power.power 2 n) in
+    if x < 0 && ComputerDivision.mod x (Power.power 2 n) <> 0 then
+      res - 1
+    else
+      res
+
+  (* rotate_left and rotate_right are left uninterpreted for now *)
+  val function rotate_left (x n size : int) : int
+  val function rotate_right (x n size : int) : int
+
+end
+
 module Real
   use        real.RealInfix
   use export "_gnatprove_standard_th".Real

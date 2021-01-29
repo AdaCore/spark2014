@@ -142,6 +142,13 @@ package SPARK_Atree is
    N_Op_Not                         : Node_Kind renames Sinfo.N_Op_Not;
    N_Op_Plus                        : Node_Kind renames Sinfo.N_Op_Plus;
    N_Op_Rem                         : Node_Kind renames Sinfo.N_Op_Rem;
+   N_Op_Rotate_Left                 : Node_Kind renames Sinfo.N_Op_Rotate_Left;
+   N_Op_Rotate_Right                : Node_Kind renames
+     Sinfo.N_Op_Rotate_Right;
+   N_Op_Shift_Left                  : Node_Kind renames Sinfo.N_Op_Shift_Left;
+   N_Op_Shift_Right                 : Node_Kind renames Sinfo.N_Op_Shift_Right;
+   N_Op_Shift_Right_Arithmetic      : Node_Kind renames
+     Sinfo.N_Op_Shift_Right_Arithmetic;
    N_Op_Subtract                    : Node_Kind renames Sinfo.N_Op_Subtract;
    N_Op_Xor                         : Node_Kind renames Sinfo.N_Op_Xor;
    N_Or_Else                        : Node_Kind renames Sinfo.N_Or_Else;

@@ -198,9 +198,9 @@ package body Gnat2Why.Subprograms is
    --     local names should be used for these binders
    --  @param W_Return_Type Why3 type for Function_Entity's return type
    --  @param Params parameters for the translation
-   --  @return if Function_Entity is non recursive and has a pragma Annotate
-   --          (GNATprove, Inline_For_Proof), return the Why3 expression for
-   --          its value. Otherwise return Why_Empty.
+   --  @return if Function_Entity is non recursive and has a pragma
+   --     Annotate (GNATprove, Inline_For_Proof), return the Why3 expression
+   --     for its value; otherwise return Why_Empty.
 
    function Compute_Moved_Property_For_Deep_Outputs
      (E      : Entity_Id;
@@ -1464,9 +1464,9 @@ package body Gnat2Why.Subprograms is
       return Inv_Pred;
    end Compute_Type_Invariants_For_Package;
 
-   ---------------------------------------------
-   -- Compute_Type_Invariants_For_Subprogram  --
-   ---------------------------------------------
+   --------------------------------------------
+   -- Compute_Type_Invariants_For_Subprogram --
+   --------------------------------------------
 
    function Compute_Type_Invariants_For_Subprogram
      (E         : Entity_Id;
@@ -2193,10 +2193,9 @@ package body Gnat2Why.Subprograms is
       W_Return_Type      : W_Type_Id;
       Params             : Transformation_Params) return W_Expr_Id
    is
-      Value  : constant Node_Id :=
+      Value : constant Node_Id :=
         Retrieve_Inline_Annotation (Function_Entity);
-      W_Def  : W_Expr_Id;
-
+      W_Def : W_Expr_Id;
    begin
       if No (Value) then
          W_Def := Why_Empty;
@@ -2211,8 +2210,8 @@ package body Gnat2Why.Subprograms is
 
          W_Def := Why_Empty;
 
-         --  We fill the map of parameters, so that in the definition, we use
-         --  local names of the parameters, instead of the global names.
+      --  We fill the map of parameters, so that in the definition, we use
+      --  local names of the parameters, instead of the global names.
 
       else
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);

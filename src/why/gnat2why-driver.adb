@@ -901,7 +901,7 @@ package body Gnat2Why.Driver is
 
        --  Ignore simple shifts and rotates
 
-       and then not Is_Simple_Shift_Or_Rotate (E)
+       and then Is_Simple_Shift_Or_Rotate (E) not in N_Op_Shift
 
        --  Ignore hardcoded subprograms
 

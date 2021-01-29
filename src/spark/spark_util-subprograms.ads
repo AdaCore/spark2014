@@ -485,11 +485,18 @@ package SPARK_Util.Subprograms is
    --  @return True iff E is a subprogram/task whose analysis was specifically
    --     requested, so it should be analyzed even if otherwise inlined
 
-   function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return Boolean;
-   --  @param E subprogram
-   --  @return True iff Subp is an intrisic shift or rotate for a modular type
-   --     of modulus smaller or equal to 2 ** 64, with no functional contract
-   --     (precondition, postcondition or contract cases).
+   subtype N_Op_Shift_Option is Node_Kind with
+     Predicate => N_Op_Shift_Option in N_Unused_At_Start | N_Op_Shift;
+   --  Optional shift operation kind
+
+   function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return N_Op_Shift_Option
+     with Pre => Is_Subprogram_Or_Entry (E)
+       or else Ekind (E) = E_Subprogram_Type;
+   --  @return the corresponding operator kind if E is an intrinsic shift or
+   --     rotate for a signed or modular type of modulus smaller or equal to
+   --     2 ** 64 (enforced by GNAT frontend), with no functional contract
+   --     (precondition, postcondition or contract cases). Otherwise, return
+   --     N_Unused_At_Start.
 
    function Is_Traversal_Function (E : Entity_Id) return Boolean;
    --  @param E any entity

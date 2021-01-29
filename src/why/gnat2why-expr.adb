@@ -27,7 +27,6 @@ with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Vectors;
 with Ada.Strings;
-with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                         use Checks;
@@ -888,9 +887,11 @@ package body Gnat2Why.Expr is
 
    function Transform_Shift_Or_Rotate_Call
      (Expr   : Node_Id;
+      Oper   : N_Op_Shift;
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id;
    --  @param Expr a call where the callee is a shift or rotate subprogram
+   --  @param Oper the shift or rotate operation kind
    --  @param Domain the domain in which the translation happens
    --  @param Params the translation parameters
    --  @return the Why expression corresponding to the shift or rotate
@@ -16808,20 +16809,23 @@ package body Gnat2Why.Expr is
          when N_Function_Call =>
             declare
                Subp : constant Entity_Id := Get_Called_Entity (Expr);
+               Oper : constant N_Op_Shift_Option :=
+                 Is_Simple_Shift_Or_Rotate (Subp);
             begin
-               if Is_Simple_Shift_Or_Rotate (Subp) then
+               if Oper in N_Op_Shift then
                   T := Transform_Shift_Or_Rotate_Call
-                    (Expr, Domain, Local_Params);
+                    (Expr, Oper, Domain, Local_Params);
+
+               --  Calls to predicate functions are ignored. Inherited
+               --  predicates are handled by other means. This is needed to be
+               --  able to handle inherited predicates which are not visible in
+               --  SPARK.
+
                elsif Ekind (Subp) = E_Function
                  and then Is_Predicate_Function (Subp)
                then
-
-                  --  Calls to predicate functions are ignored. Inherited
-                  --  predicates are handled by other means. This is needed to
-                  --  be able to handle inherited predicates which are not
-                  --  visible in SPARK.
-
                   return New_Literal (Value => EW_True, Domain => Domain);
+
                elsif Has_At_End_Borrow_Annotation (Subp) then
                   T := Transform_At_End_Borrow_Call
                     (Expr,
@@ -20379,13 +20383,10 @@ package body Gnat2Why.Expr is
 
    function Transform_Shift_Or_Rotate_Call
      (Expr   : Node_Id;
+      Oper   : N_Op_Shift;
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id
    is
-      --  Define a convenient short hand for the test below
-      function ECI (Left, Right : String) return Boolean
-        renames Ada.Strings.Equal_Case_Insensitive;
-
       Subp        : constant Entity_Id := Entity (SPARK_Atree.Name (Expr));
       Context     : Ref_Context;
       Store       : constant W_Statement_Sequence_Unchecked_Id :=
@@ -20396,106 +20397,120 @@ package body Gnat2Why.Expr is
       pragma Assert (Args'Length = 2);
       pragma Assert (Context.Is_Empty);
 
-      Modulus_Val : constant Uint := Modulus (Etype (Subp));
-      Nb_Of_Bits  : constant Pos := (if Modulus_Val = UI_Expon (2, 8) then
-                                        8
-                                     elsif Modulus_Val = UI_Expon (2, 16) then
-                                        16
-                                     elsif Modulus_Val = UI_Expon (2, 32) then
-                                        32
-                                     elsif Modulus_Val = UI_Expon (2, 64) then
-                                        64
-                                     elsif Modulus_Val = UI_Expon (2, 128) then
-                                        128
-                                     else
-                                        raise Program_Error);
-      Typ         : constant W_Type_Id := (if Nb_Of_Bits = 8 then
-                                              EW_BitVector_8_Type
-                                           elsif Nb_Of_Bits = 16 then
-                                              EW_BitVector_16_Type
-                                           elsif Nb_Of_Bits = 32 then
-                                              EW_BitVector_32_Type
-                                           elsif Nb_Of_Bits = 64 then
-                                              EW_BitVector_64_Type
-                                           elsif Nb_Of_Bits = 128 then
-                                              EW_BitVector_128_Type
-                                           else raise Program_Error);
       T           : W_Expr_Id;
 
    begin
       --  ??? it is assumed that rotate calls are only valid on actual
       --  unsigned_8/16/32/64/128 types with the corresponding 'Size
 
-      Get_Unqualified_Decoded_Name_String (Chars (Subp));
+      if Is_Modular_Integer_Type (Etype (Expr)) then
+         declare
+            Modulus_Val : constant Uint := Modulus (Etype (Subp));
+            Nb_Of_Bits  : constant Pos :=
+              (if    Modulus_Val = UI_Expon (2, 8)   then   8
+               elsif Modulus_Val = UI_Expon (2, 16)  then  16
+               elsif Modulus_Val = UI_Expon (2, 32)  then  32
+               elsif Modulus_Val = UI_Expon (2, 64)  then  64
+               elsif Modulus_Val = UI_Expon (2, 128) then 128
+               else raise Program_Error);
+            Typ         : constant W_Type_Id :=
+              (if    Nb_Of_Bits =   8 then EW_BitVector_8_Type
+               elsif Nb_Of_Bits =  16 then EW_BitVector_16_Type
+               elsif Nb_Of_Bits =  32 then EW_BitVector_32_Type
+               elsif Nb_Of_Bits =  64 then EW_BitVector_64_Type
+               elsif Nb_Of_Bits = 128 then EW_BitVector_128_Type
+               else raise Program_Error);
 
-      declare
-         Arg1   : constant W_Expr_Id := Args (Args'First);
-         Arg2   : constant W_Expr_Id := Args (Args'First + 1);
-         Arg2_M : constant W_Expr_Id :=
-           Insert_Simple_Conversion (Domain => EW_Term,
-                                     Expr   => Arg2,
-                                     To     => Typ);
-         Name_S : constant String    := Name_Buffer (1 .. Name_Len);
-         Name   : constant W_Identifier_Id :=
-           (if ECI (Name_S, Get_Name_String (Name_Shift_Right)) then
-               MF_BVs (Typ).Lsr
-            elsif ECI (Name_S, Get_Name_String (Name_Shift_Right_Arithmetic))
+            Arg1   : constant W_Expr_Id := Args (Args'First);
+            Arg2   : constant W_Expr_Id := Args (Args'First + 1);
+            Arg2_M : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Domain => EW_Term,
+                                        Expr   => Arg2,
+                                        To     => Typ);
+            Name   : constant W_Identifier_Id :=
+              (case Oper is
+               when N_Op_Shift_Right            => MF_BVs (Typ).Lsr,
+               when N_Op_Shift_Right_Arithmetic => MF_BVs (Typ).Asr,
+               when N_Op_Shift_Left             => MF_BVs (Typ).Lsl,
+               when N_Op_Rotate_Left            => MF_BVs (Typ).Rotate_Left,
+               when N_Op_Rotate_Right           => MF_BVs (Typ).Rotate_Right);
+         begin
+            --  A special care need to be put in the case of shifts on a
+            --  bitvector of size smaller than 32. Indeed, in this case
+            --  the amount of the shift can be greater than 2**(Size of the
+            --  underlying bv), resulting in a modulo on the amount of the
+            --  shift Introduced by the conversion at the why3 level.
+
+            if Nb_Of_Bits < 32
+              and then Name /= MF_BVs (Typ).Rotate_Left
+              and then Name /= MF_BVs (Typ).Rotate_Right
             then
-               MF_BVs (Typ).Asr
-            elsif ECI (Name_S, Get_Name_String (Name_Shift_Left)) then
-               MF_BVs (Typ).Lsl
-            elsif ECI (Name_S, Get_Name_String (Name_Rotate_Left)) then
-               MF_BVs (Typ).Rotate_Left
-            elsif ECI (Name_S, Get_Name_String (Name_Rotate_Right)) then
-               MF_BVs (Typ).Rotate_Right
-            else
-               raise Program_Error);
-         --         function Actual_Call (Amount : W_Expr_Id) return W_Expr_Id
-      begin
-
-         --  A special care need to be put in the case of shifts on a bitvector
-         --  of size smaller than 32. Indeed, in this case the amount of
-         --  the shift can be greater than 2**(Size of the underlying bv),
-         --  resulting in a modulo on the amount of the shift Introduced by
-         --  the conversion at the why3 level.
-         if Nb_Of_Bits < 32
-           and then Name /= MF_BVs (Typ).Rotate_Left
-           and then Name /= MF_BVs (Typ).Rotate_Right
-         then
-            declare
-               Nb_Of_Buits_UI : constant Uint := UI_From_Int (Nb_Of_Bits);
-            begin
-               T := New_Conditional
-                 (Ada_Node  => Expr,
-                  Domain    => EW_Term,
-                  Condition => New_Call
-                    (Domain => Domain,
-                     Name   => Int_Infix_Lt,
-                     Args   => (1 => Arg2,
-                                2 => New_Integer_Constant
-                                  (Value => Nb_Of_Buits_UI)),
-                     Typ    => EW_Bool_Type),
-                  Then_Part => New_Call
+               declare
+                  Nb_Of_Buits_UI : constant Uint := UI_From_Int (Nb_Of_Bits);
+               begin
+                  T := New_Conditional
+                    (Ada_Node  => Expr,
+                     Domain    => EW_Term,
+                     Condition => New_Call
+                       (Domain => Domain,
+                        Name   => Int_Infix_Lt,
+                        Args   => (1 => Arg2,
+                                   2 => New_Integer_Constant
+                                     (Value => Nb_Of_Buits_UI)),
+                        Typ    => EW_Bool_Type),
+                     Then_Part => New_Call
                        (Domain => EW_Term,
                         Name   => Name,
                         Args   =>
                           (1 => Arg1,
                            2 => Arg2_M),
                         Typ    => Typ),
-                  Else_Part =>
-                    New_Modular_Constant (Value => Uint_0,
-                                          Typ => Typ),
-                  Typ       => Typ);
-            end;
-         else
+                     Else_Part =>
+                       New_Modular_Constant (Value => Uint_0,
+                                             Typ => Typ),
+                     Typ       => Typ);
+               end;
+            else
+               T := New_Call
+                 (Domain => EW_Term,
+                  Name   => Name,
+                  Args   => (1 => Arg1,
+                             2 => Arg2_M),
+                  Typ    => Typ);
+            end if;
+         end;
+
+      else
+         declare
+            Arg1 : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Domain => EW_Term,
+                                        Expr   => Args (Args'First),
+                                        To     => EW_Int_Type);
+            Arg2 : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Domain => EW_Term,
+                                        Expr   => Args (Args'First + 1),
+                                        To     => EW_Int_Type);
+            --  Size in bits of the machine type
+            Size : constant W_Expr_Id := New_Integer_Constant
+              (Value => Object_Size (Etype (Subp)));
+            Name : constant W_Identifier_Id :=
+              (case Oper is
+               when N_Op_Shift_Right            => M_Int_Shift.Shift_Right,
+               when N_Op_Shift_Right_Arithmetic =>
+                 M_Int_Shift.Shift_Right_Arithmetic,
+               when N_Op_Shift_Left             => M_Int_Shift.Shift_Left,
+               when N_Op_Rotate_Left            => M_Int_Shift.Rotate_Left,
+               when N_Op_Rotate_Right           => M_Int_Shift.Rotate_Right);
+         begin
             T := New_Call
               (Domain => EW_Term,
                Name   => Name,
                Args   => (1 => Arg1,
-                          2 => Arg2_M),
-               Typ    => Typ);
-         end if;
-      end;
+                          2 => Arg2,
+                          3 => Size),
+               Typ    => EW_Int_Type);
+         end;
+      end if;
 
       return T;
    end Transform_Shift_Or_Rotate_Call;
