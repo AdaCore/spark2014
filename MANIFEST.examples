@@ -32,6 +32,7 @@ crazyflie
 database
 euclidian_division
 evoting
+float_error_bounds
 formal_queue
 gcd
 ghc_sort
