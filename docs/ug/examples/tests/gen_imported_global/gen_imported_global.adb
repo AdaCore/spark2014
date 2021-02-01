@@ -6,6 +6,11 @@ package body Gen_Imported_Global with
 is
    V : Integer with
      Size => 32,
+     Volatile,
+     Async_Writers => True,
+     Async_Readers => False,
+     Effective_Reads => False,
+     Effective_Writes => False,
      Address => System.Storage_Elements.To_Address (16#8000_0000#);
 
    procedure Set_Global_Twice is

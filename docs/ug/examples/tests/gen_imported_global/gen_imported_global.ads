@@ -1,6 +1,10 @@
 package Gen_Imported_Global with
   SPARK_Mode,
-  Abstract_State => State
+  Abstract_State => (State with External =>
+                        (Async_Writers,
+                         Async_Readers => False,
+                         Effective_Reads => False,
+                         Effective_Writes => False))
 is
    procedure Set_Global with
      Import,
