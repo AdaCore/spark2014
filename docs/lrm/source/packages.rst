@@ -506,8 +506,8 @@ be *compatible with respect to volatility* with E2 if
      non-interfering context; or
 
    * the prefix of an ``attribute_reference`` whose ``attribute_designator`` is
-     either Alignment, Component_Size, First, First_Bit, Last, Last_Bit,
-     Length, Position, Size, or Storage_Size; or
+     either Address, Alignment, Component_Size, First, First_Bit, Last,
+     Last_Bit, Length, Position, Size, or Storage_Size; or
 
    * the expression of a type conversion occurring in a non-interfering context; or
 
