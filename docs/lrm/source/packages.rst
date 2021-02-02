@@ -497,7 +497,7 @@ be *compatible with respect to volatility* with E2 if
    * the return expression of a ``simple_return_statement`` which applies
      to a volatile function; or
 
-   * the initial value expression of the ``extended_return_object_declaration``
+   * the expression of the ``extended_return_object_declaration``
      of an ``extended_return_statement`` which applies to a
      volatile function; or
 
