@@ -1122,6 +1122,7 @@ package body SPARK_Definition is
             if not Box_Present (Assoc)
               and then Is_Deep (Etype (Expression (Assoc)))
               and then not Is_Singleton_Choice (Choices)
+              and then Nkind (Expression (Assoc)) /= N_Null
             then
                Mark_Violation
                  ("duplicate value of a type with ownership",
