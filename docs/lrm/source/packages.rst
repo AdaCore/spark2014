@@ -472,7 +472,7 @@ be *compatible with respect to volatility* with E2 if
 
 10. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object for reading is
-    considered to have an effect when read. To reconcile this
+    considered to have a side effect. To reconcile this
     discrepancy, a name denoting such an object shall only occur in
     a *non-interfering context*. A name occurs in a non-interfering
     context if it is:
