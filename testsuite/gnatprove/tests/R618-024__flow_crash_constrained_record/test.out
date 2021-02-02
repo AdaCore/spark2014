@@ -10,5 +10,5 @@ test_record_cnt_ex.ads:29:34: info: discriminant check proved (CVC4: 1 VC)
 test_record_cnt_ex.ads:30:08: high: cannot write constant without variable input "Z" during elaboration of "test_record_cnt_ex" (SPARK RM 7.7.1(6))
 test_record_cnt_ex.ads:30:34: info: discriminant check proved (CVC4: 1 VC)
 test_record_cnt_ex.ads:30:59: info: implicit function contract not available for proof ("Id" might not return)
-test_record_cnt_ex.ads:35:20: medium: assertion might fail, cannot prove Nested_3.X = Nested_3.y
-test_record_cnt_ex.ads:36:20: medium: assertion might fail, cannot prove Nested_3.Z = Nested_3.w
+test_record_cnt_ex.ads:35:20: medium: assertion might fail
+test_record_cnt_ex.ads:36:20: medium: assertion might fail

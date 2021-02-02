@@ -34,9 +34,9 @@ longest_common_prefix.ads:19:53: info: overflow check proved (CVC4: 1 VC)
 main.adb:16:19: info: assertion proved (CVC4: 1 VC)
 main.adb:16:40: info: range check proved (CVC4: 4 VC)
 main.adb:16:75: info: range check proved (CVC4: 4 VC)
-main.adb:18:19: medium: assertion might fail, cannot prove Longest_Common_Prefix.LCP (1, 6) = 5
+main.adb:18:19: medium: assertion might fail
 main.adb:18:40: info: precondition proved (CVC4: 4 VC)
 main.adb:20:19: info: assertion proved (CVC4: 1 VC)
 main.adb:20:40: info: precondition proved (CVC4: 4 VC)
-main.adb:22:19: medium: assertion might fail, cannot prove Longest_Common_Prefix.LCP (1, 1001) = 0
+main.adb:22:19: medium: assertion might fail
 main.adb:22:40: medium: precondition might fail, cannot prove Y in A'range

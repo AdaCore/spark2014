@@ -1,1 +1,1 @@
-logger.adb:7:25: medium: assertion might fail, cannot prove Num_Queued > 0
+logger.adb:7:25: medium: assertion might fail

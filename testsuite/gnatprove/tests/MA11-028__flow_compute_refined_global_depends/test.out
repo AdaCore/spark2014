@@ -40,7 +40,7 @@ lots_of_tests.adb:103:49: low: unused global "B" constituent of "State"
 lots_of_tests.adb:104:42: info: initialization of "C" constituent of "State2" proved
 lots_of_tests.adb:104:45: info: initialization of "D" constituent of "State2" proved
 lots_of_tests.adb:113:42: info: initialization of "G1" proved
-lots_of_tests.adb:116:22: medium: assertion might fail, cannot prove A > 5 [possible fix: subprogram at lots_of_tests.ads:64 should mention A in a precondition]
+lots_of_tests.adb:116:22: medium: assertion might fail [possible fix: subprogram at lots_of_tests.ads:64 should mention A in a precondition]
 lots_of_tests.adb:132:07: high: "C" constituent of "State2" must be listed in the Refined_Depends aspect of "Internal_User_Of_RG_D_BAD" (SPARK RM 6.1.4(14))
 lots_of_tests.adb:147:40: info: initialization of "G1" proved
 lots_of_tests.adb:154:44: warning: "C" constituent of "State2" is not modified, could be INPUT

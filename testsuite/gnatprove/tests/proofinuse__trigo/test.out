@@ -14,7 +14,7 @@ test_trigo.adb:27:19: warning: statement has no effect
 test_trigo.adb:28:21: medium: precondition might fail, cannot prove X in -0.5 .. 0.5
 test_trigo.adb:29:09: warning: unused assignment
 test_trigo.adb:29:24: info: overflow check proved (CVC4: 1 VC)
-test_trigo.adb:36:22: medium: assertion might fail, cannot prove abs (Trigo.Tan (F) - Trigo.Sin (F) / Trigo.Cos (F)) < 1.0E-3
+test_trigo.adb:36:22: medium: assertion might fail
 test_trigo.adb:36:32: medium: precondition might fail, cannot prove X in -0.5 .. 0.5
 test_trigo.adb:36:41: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 test_trigo.adb:36:48: medium: precondition might fail, cannot prove X in -1.0 .. 1.0
@@ -67,7 +67,7 @@ trigo.ads:14:38: info: float overflow check proved (Trivial)
 trigo.ads:14:46: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 13 should mention X in a precondition]
 trigo.ads:14:57: info: division check proved (CVC4: 1 VC)
 trigo.ads:14:57: info: float overflow check proved (Trivial)
-trigo.ads:18:14: medium: postcondition might fail, cannot prove abs (Sin'Result - Approx_Sin (X)) < 3.0E-6
+trigo.ads:18:14: medium: postcondition might fail
 trigo.ads:18:30: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 trigo.ads:21:12: info: float overflow check proved (Trivial)
 trigo.ads:21:23: info: division check proved (CVC4: 1 VC)
@@ -81,7 +81,7 @@ trigo.ads:21:58: info: float overflow check proved (Trivial)
 trigo.ads:21:66: info: float overflow check proved (Trivial)
 trigo.ads:21:77: info: division check proved (CVC4: 1 VC)
 trigo.ads:21:77: info: float overflow check proved (Trivial)
-trigo.ads:25:14: medium: postcondition might fail, cannot prove abs (Cos'Result - Approx_Cos (X)) < 3.0E-6
+trigo.ads:25:14: medium: postcondition might fail
 trigo.ads:25:30: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]
 trigo.ads:28:10: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:21: info: division check proved (CVC4: 1 VC)
@@ -98,5 +98,5 @@ trigo.ads:28:77: medium: float overflow check might fail [reason for check: resu
 trigo.ads:28:84: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 27 should mention X in a precondition]
 trigo.ads:28:95: info: division check proved (CVC4: 1 VC)
 trigo.ads:28:95: info: float overflow check proved (Trivial)
-trigo.ads:32:14: medium: postcondition might fail, cannot prove abs (Tan'Result - Approx_Tan (X)) < 1.0E-4
+trigo.ads:32:14: medium: postcondition might fail
 trigo.ads:32:30: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded]

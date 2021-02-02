@@ -8,10 +8,10 @@ test_callback.adb:25:58: info: overflow check proved (CVC4: 1 VC)
 test_callback.adb:34:14: info: postcondition proved (CVC4: 1 VC)
 test_callback.adb:37:48: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:37:48: info: precondition proved (CVC4: 1 VC)
-test_callback.adb:42:14: medium: postcondition might fail, cannot prove Call_Incr_Bad'Result > X (e.g. when Call_Incr_Bad'Result = 100 and X = 100)
+test_callback.adb:42:14: medium: postcondition might fail (e.g. when Call_Incr_Bad'Result = 100 and X = 100)
 test_callback.adb:45:14: info: pointer dereference check proved (CVC4: 1 VC)
 test_callback.adb:45:14: medium: precondition might fail, cannot prove X < 100 (e.g. when X = 100)
-test_callback.adb:50:14: medium: postcondition might fail, cannot prove Call_Incr_Bad2'Result >= X (e.g. when Call_Incr_Bad2'Result = Integer'First and X = 0)
+test_callback.adb:50:14: medium: postcondition might fail (e.g. when Call_Incr_Bad2'Result = Integer'First and X = 0)
 test_callback.adb:53:14: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 48 should mention F]
 test_callback.adb:53:14: medium: precondition might fail, cannot prove X < 50 (e.g. when X = 50)
 test_callback.adb:58:14: info: postcondition proved (CVC4: 1 VC)
@@ -53,4 +53,4 @@ test_callback.adb:116:49: info: postcondition of source is strong enough to impl
 test_callback.adb:116:49: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
 test_callback.adb:116:58: info: null exclusion check proved (Trivial: 1 VC)
 test_callback.adb:117:19: info: assertion proved (CVC4: 2 VC)
-test_callback.adb:118:19: medium: assertion might fail, cannot prove Y in S
+test_callback.adb:118:19: medium: assertion might fail

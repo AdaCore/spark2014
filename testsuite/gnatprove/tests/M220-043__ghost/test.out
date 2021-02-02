@@ -1,4 +1,4 @@
-semantics.adb:9:22: medium: assertion might fail, cannot prove Formal + Ghost_Func > 0 [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
+semantics.adb:9:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
 semantics.adb:9:29: medium: overflow check might fail (e.g. when Formal = -1073741825) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
 semantics.adb:10:29: medium: overflow check might fail (e.g. when Formal = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Ghost_Func or turning it into an expression function]
 semantics.adb:13:27: medium: overflow check might fail (e.g. when Formal = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]

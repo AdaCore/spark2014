@@ -25,7 +25,7 @@ mul_div_2.ads:9:42: info: division check proved (CVC4: 1 VC)
 mul_div_2.ads:9:47: info: division check proved (CVC4: 1 VC)
 mul_div_2.ads:10:47: info: division check proved (CVC4: 1 VC)
 mul_div_2.ads:10:52: info: division check proved (CVC4: 1 VC)
-mul_div_2.ads:11:14: medium: postcondition might fail, cannot prove Mul_Div'Result = (if V >= 0 then V * M + D / 2 / D else --V * M + ... / ...)
+mul_div_2.ads:11:14: medium: postcondition might fail
 mul_div_2.ads:13:43: info: division check proved (CVC4: 1 VC)
 mul_div_2.ads:13:48: info: division check proved (CVC4: 1 VC)
 mul_div_2.ads:14:48: info: division check proved (CVC4: 1 VC)

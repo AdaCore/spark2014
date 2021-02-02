@@ -159,12 +159,12 @@ hermes-der-decode.ads:71:07: info: initialization of "Stop" proved
 hermes-der-decode.ads:72:07: info: initialization of "Value" proved
 hermes-der-decode.ads:73:07: info: initialization of "Status" proved
 hermes-der-decode.ads:75:08: info: flow dependencies proved
-hermes-der-decode.ads:77:16: medium: postcondition might fail, cannot prove Stop in Start .. Message'last
+hermes-der-decode.ads:77:16: medium: postcondition might fail
 hermes-der-decode.ads:98:07: info: initialization of "Stop" proved
 hermes-der-decode.ads:99:07: info: initialization of "Value" proved
 hermes-der-decode.ads:100:07: info: initialization of "Status" proved
 hermes-der-decode.ads:102:08: info: flow dependencies proved
-hermes-der-decode.ads:104:16: medium: postcondition might fail, cannot prove Stop in Start .. Message'last
+hermes-der-decode.ads:104:16: medium: postcondition might fail
 hermes-der-encode.adb:77:07: info: initialization of "Value" proved
 hermes-der-encode.adb:82:50: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:83:20: info: range check proved (CVC4: 4 VC)

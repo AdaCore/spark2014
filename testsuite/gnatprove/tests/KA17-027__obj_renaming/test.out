@@ -15,6 +15,6 @@ main.adb:73:19: info: assertion proved (CVC4: 1 VC)
 main.adb:74:19: info: assertion proved (CVC4: 1 VC)
 main.adb:75:19: info: assertion proved (CVC4: 1 VC)
 main.adb:76:19: info: assertion proved (CVC4: 1 VC)
-main.adb:87:25: medium: assertion might fail, cannot prove Obj_1.Comp = 9012
-main.adb:89:25: medium: assertion might fail, cannot prove Obj_2.Comp = 9012
-main.adb:91:25: medium: assertion might fail, cannot prove Obj_4 = 5678
+main.adb:87:25: medium: assertion might fail
+main.adb:89:25: medium: assertion might fail
+main.adb:91:25: medium: assertion might fail

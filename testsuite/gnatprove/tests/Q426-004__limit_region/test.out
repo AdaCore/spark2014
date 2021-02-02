@@ -1,4 +1,4 @@
 unproved_checks.ads:3:19: high: "X1" is not initialized
-unproved_checks.ads:3:19: medium: assertion might fail, cannot prove X1 = 0 (e.g. when X1 = -1)
+unproved_checks.ads:3:19: medium: assertion might fail (e.g. when X1 = -1)
 unproved_checks.ads:5:19: high: "X2" is not initialized
-unproved_checks.ads:5:19: medium: assertion might fail, cannot prove X2 = 0 (e.g. when X2 = -1)
+unproved_checks.ads:5:19: medium: assertion might fail (e.g. when X2 = -1)

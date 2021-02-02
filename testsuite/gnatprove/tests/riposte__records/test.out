@@ -28,7 +28,7 @@ records.adb:142:22: medium: postcondition might fail, cannot prove Is_Valid (Dst
 records.adb:151:11: info: flow dependencies proved
 records.adb:152:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 records.adb:165:11: info: flow dependencies proved
-records.adb:166:22: medium: postcondition might fail, cannot prove Dst = Src (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0)))
+records.adb:166:22: medium: postcondition might fail (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0)))
 records.adb:177:11: info: flow dependencies proved
 records.adb:178:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
 records.adb:183:07: info: initialization of "Tmp" proved
@@ -47,10 +47,10 @@ records.adb:242:11: info: flow dependencies proved
 records.adb:243:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:247:07: info: initialization of "Tmp" proved
 records.adb:255:11: info: flow dependencies proved
-records.adb:256:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0)))
+records.adb:256:22: medium: postcondition might fail (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0)))
 records.adb:261:07: info: initialization of "Tmp" proved
 records.adb:269:11: info: flow dependencies proved
-records.adb:270:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1)))
+records.adb:270:22: medium: postcondition might fail (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1)))
 records.adb:275:07: info: initialization of "Tmp" proved
 records.adb:285:11: info: flow dependencies proved
 records.adb:286:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
@@ -58,7 +58,7 @@ records.adb:296:11: info: flow dependencies proved
 records.adb:300:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 4, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 4, B => 4)))
 records.adb:309:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:312:07: info: initialization of "Tmp" proved
-records.adb:323:19: medium: postcondition might fail, cannot prove Update_B'Result = X'update (e.g. when N = 0 and Update_B'Result = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 1, B => 0)))
+records.adb:323:19: medium: postcondition might fail (e.g. when N = 0 and Update_B'Result = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 1, B => 0)))
 records.adb:326:07: info: initialization of "Tmp" proved
 records.adb:329:27: info: range check proved (CVC4: 1 VC)
 records.adb:334:11: info: flow dependencies proved
@@ -69,19 +69,19 @@ records.adb:352:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:359:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:366:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:370:07: info: initialization of "R" proved
-records.adb:380:19: medium: postcondition might fail, cannot prove Make_Optional_Pair_A_2'Result =  Optional_Pair'(Exists => False, The_Pair => X) (e.g. when Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0))
+records.adb:380:19: medium: postcondition might fail (e.g. when Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0))
 records.adb:384:07: info: initialization of "R" proved
 records.adb:394:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:398:07: info: initialization of "R" proved
 records.adb:406:11: info: flow dependencies proved
-records.adb:410:22: medium: assertion might fail, cannot prove X.The_Pair.A = 0 (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 1))) [possible fix: subprogram at line 405 should mention X in a precondition]
+records.adb:410:22: medium: assertion might fail (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 1))) [possible fix: subprogram at line 405 should mention X in a precondition]
 records.adb:414:11: info: flow dependencies proved
-records.adb:418:22: medium: assertion might fail, cannot prove X.The_Pair.A = X.The_Pair.B (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 0))) [possible fix: subprogram at line 413 should mention X in a precondition]
+records.adb:418:22: medium: assertion might fail (e.g. when X = (Exists => False, The_Pair => (A => 1, B => 0))) [possible fix: subprogram at line 413 should mention X in a precondition]
 records.adb:422:11: info: flow dependencies proved
-records.adb:426:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X.The_Pair.B [possible fix: subprogram at line 421 should mention X in a precondition]
+records.adb:426:22: medium: assertion might fail [possible fix: subprogram at line 421 should mention X in a precondition]
 records.adb:429:22: info: initialization of "X" proved
 records.adb:430:11: info: flow dependencies proved
-records.adb:436:22: medium: assertion might fail, cannot prove not X.Exists (e.g. when X = (Exists => True, The_Pair => (A => 5, B => 10)))
+records.adb:436:22: medium: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 5, B => 10)))
 records.adb:439:13: info: add a contract to analyze it separately from calling contexts
 records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the context of calls
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command"
@@ -91,15 +91,15 @@ records.adb:465:11: info: flow dependencies proved
 records.adb:466:22: info: postcondition proved (CVC4: 1 VC)
 records.adb:474:30: info: assertion proved (CVC4: 1 VC)
 records.adb:482:11: info: flow dependencies proved
-records.adb:483:22: medium: postcondition might fail, cannot prove R = R'Old'update (e.g. when R = (Exists => True, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = 1)
+records.adb:483:22: medium: postcondition might fail (e.g. when R = (Exists => True, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = 1)
 records.adb:491:30: info: assertion proved (CVC4: 1 VC)
 records.adb:501:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
-records.adb:504:22: medium: assertion might fail, cannot prove R.Exists [possible fix: subprogram at line 498 should mention R in a precondition]
+records.adb:504:22: medium: assertion might fail [possible fix: subprogram at line 498 should mention R in a precondition]
 records.adb:513:11: info: flow dependencies proved
 records.adb:514:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 records.adb:523:19: info: postcondition proved (CVC4: 2 VC)
 records.adb:530:11: info: flow dependencies proved
-records.adb:534:22: medium: assertion might fail, cannot prove F_Of_Pair (Pair'(5, 5)) [possible fix: you should consider adding a postcondition to function F_Of_Pair or turning it into an expression function in its unit spec]
+records.adb:534:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F_Of_Pair or turning it into an expression function in its unit spec]
 counterexample expected for check at records.adb:86
   trace at records.adb:83 --> A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => Unsigned_Byte'Last)
   trace at records.adb:86 --> A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => Unsigned_Byte'Last) and Safe_Add_Pair_B'Result = (A => 0, B => 0)

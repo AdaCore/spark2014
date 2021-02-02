@@ -6,4 +6,4 @@ foo.ads:2:16: info: initialization of "Y" proved
 foo.ads:3:06: info: data dependencies proved
 foo.ads:4:18: medium: missing dependency "Y => Secret"
 foo.ads:5:26: medium: incorrect dependency "null => Secret"
-foo.ads:6:17: medium: postcondition might fail, cannot prove Y = Secret
+foo.ads:6:17: medium: postcondition might fail

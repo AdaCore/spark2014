@@ -59,7 +59,7 @@ levels.adb:13:12: info: data dependencies proved
 levels.adb:16:12: info: data dependencies proved
 levels.adb:18:26: info: initialization of "A" proved
 levels.adb:19:12: info: data dependencies proved
-levels.adb:20:20: medium: postcondition might fail, cannot prove A = Read_Partial_0 + Read_Partial_1 + (Read_Partial_1_Inner) [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_1_Inner and function Read_Partial_0 or turning them into expression functions]
+levels.adb:20:20: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_1_Inner and function Read_Partial_0 or turning them into expression functions]
 levels.adb:20:39: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_0 or turning them into expression functions]
 levels.adb:20:56: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_1_Inner and function Read_Partial_0 or turning them into expression functions]
 levels.adb:22:28: info: initialization of "X" proved
@@ -69,7 +69,7 @@ levels.adb:36:45: low: unused global "Y0" constituent of "Abs_0"
 levels.adb:36:57: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:37:27: info: refined post proved (CVC4: 1 VC)
 levels.adb:44:27: medium: "X0" constituent of "Abs_0" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
-levels.adb:45:27: medium: refined postcondition might fail, cannot prove Read_Partial_0 + 1 > X0 [possible fix: you should consider adding a postcondition to function Read_Partial_0 or turning it into an expression function]
+levels.adb:45:27: medium: refined postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_0 or turning it into an expression function]
 levels.adb:45:42: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_0 or turning it into an expression function]
 levels.adb:52:23: info: initialization of "A" proved
 levels.adb:53:09: info: data dependencies proved
@@ -82,7 +82,7 @@ levels.adb:71:36: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs
 levels.adb:87:09: info: flow dependencies proved
 levels.adb:88:09: medium: initial condition might fail
 levels.adb:92:15: info: data dependencies proved
-levels.adb:127:25: medium: refined postcondition might fail, cannot prove A = Read_Partial_0 + Read_Partial_1 + Nested_2(Nested_2.read_partial_2) [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_2 and function Read_Partial_0 or turning them into expression functions]
+levels.adb:127:25: medium: refined postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_2 and function Read_Partial_0 or turning them into expression functions]
 levels.adb:127:44: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_0 or turning them into expression functions]
 levels.adb:127:61: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_2 and function Read_Partial_0 or turning them into expression functions]
 levels.adb:130:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention X1 and X0 in a precondition]

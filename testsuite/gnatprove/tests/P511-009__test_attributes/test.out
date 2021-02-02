@@ -32,7 +32,7 @@ component_size_attribute.adb:13:04: warning: analyzing unreferenced procedure "P
 component_size_attribute.adb:13:14: warning: subprogram "P" has no effect
 component_size_attribute.adb:17:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 component_size_attribute.adb:20:22: info: assertion proved (Trivial)
-component_size_attribute.adb:21:22: medium: assertion might fail, cannot prove A2'Component_size = 32
+component_size_attribute.adb:21:22: medium: assertion might fail
 component_size_attribute.adb:28:04: warning: analyzing unreferenced procedure "Test1"
 component_size_attribute.adb:28:14: high: all paths in "Test1" raise exceptions or do not terminate normally
 component_size_attribute.adb:28:14: warning: subprogram "Test1" has no effect
@@ -64,11 +64,11 @@ storage_place_attributes.adb:28:22: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:33:04: info: initialization of "R2a_arr" proved
 storage_place_attributes.adb:35:04: info: initialization of "O2a" proved
 storage_place_attributes.adb:37:04: info: initialization of "O2b" proved
-storage_place_attributes.adb:39:19: medium: assertion might fail, cannot prove O2a.D3'First_bit = O2b.D3'first_bit
+storage_place_attributes.adb:39:19: medium: assertion might fail
 storage_place_attributes.adb:40:19: info: assertion proved (Trivial: 1 VC)
 storage_place_attributes.adb:41:19: info: assertion proved (Trivial: 1 VC)
 storage_place_attributes.adb:43:04: info: initialization of "O2" proved
-storage_place_attributes.adb:45:19: medium: assertion might fail, cannot prove O2.D3'First_Bit = O2a.D3'first_bit
+storage_place_attributes.adb:45:19: medium: assertion might fail
 storage_place_attributes.adb:49:04: warning: analyzing unreferenced procedure "First1"
 storage_place_attributes.adb:49:14: warning: subprogram "First1" has no effect
 storage_place_attributes.adb:51:22: info: assertion proved (Trivial)

@@ -4,7 +4,7 @@ aco-math-very_longs.adb:23:08: info: flow dependencies proved
 aco-math-very_longs.adb:39:52: info: initialization of "Result" proved
 aco-math-very_longs.adb:39:76: info: initialization of "Carry" proved
 aco-math-very_longs.adb:41:08: info: flow dependencies proved
-aco-math-very_longs.adb:43:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (1 => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible fix: loop at line 51 should mention Result in a loop invariant]
+aco-math-very_longs.adb:43:16: medium: postcondition might fail (e.g. when L = (Octet_Length => 1, Long_Digits => (1 => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible fix: loop at line 51 should mention Result in a loop invariant]
 aco-math-very_longs.adb:45:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:46:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:47:07: info: initialization of "Sum" proved
@@ -17,7 +17,7 @@ aco-math-very_longs.adb:56:29: medium: array index check might fail (e.g. when I
 aco-math-very_longs.adb:62:58: info: initialization of "Result" proved
 aco-math-very_longs.adb:62:82: info: initialization of "Borrow" proved
 aco-math-very_longs.adb:64:08: info: flow dependencies proved
-aco-math-very_longs.adb:66:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (1 => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible fix: loop at line 74 should mention Result in a loop invariant]
+aco-math-very_longs.adb:66:16: medium: postcondition might fail (e.g. when L = (Octet_Length => 1, Long_Digits => (1 => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible fix: loop at line 74 should mention Result in a loop invariant]
 aco-math-very_longs.adb:68:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:69:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:70:07: info: initialization of "Difference" proved
@@ -48,7 +48,7 @@ aco-math-very_longs.adb:119:29: info: length check proved (CVC4: 3 VC; Trivial: 
 aco-math-very_longs.adb:122:41: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:123:29: info: range check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:125:32: info: loop invariant preservation proved (CVC4: 1 VC)
-aco-math-very_longs.adb:125:32: medium: loop invariant might fail in first iteration, cannot prove String_Index = Positive(2 * (Result.Long_Digits'Last - Index) + 1) (e.g. when Index = 1 and Result = (Octet_Length => ?, Long_Digits => (1 => 0)) and Result.Long_Digits'First = 1 and Result.Long_Digits'Last = 1 and String_Index = 2)
+aco-math-very_longs.adb:125:32: medium: loop invariant might fail in first iteration (e.g. when Index = 1 and Result = (Octet_Length => ?, Long_Digits => (1 => 0)) and Result.Long_Digits'First = 1 and Result.Long_Digits'Last = 1 and String_Index = 2)
 aco-math-very_longs.adb:125:58: info: overflow check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:125:85: info: overflow check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:125:94: info: overflow check proved (CVC4: 2 VC)

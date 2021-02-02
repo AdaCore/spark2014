@@ -2,7 +2,7 @@ array_borrows.adb:5:05: info: absence of memory leak at end of scope proved (CVC
 array_borrows.adb:6:05: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 array_borrows.adb:7:05: medium: memory leak might occur at end of scope
 array_borrows.adb:10:06: info: data dependencies proved
-array_borrows.adb:12:16: medium: postcondition might fail, cannot prove X (True).all = I
+array_borrows.adb:12:16: medium: postcondition might fail
 array_borrows.adb:12:25: info: pointer dereference check proved (CVC4: 1 VC)
 array_borrows.adb:16:09: medium: pointer dereference check might fail
 array_borrows.adb:23:23: info: assertion proved (CVC4: 1 VC)

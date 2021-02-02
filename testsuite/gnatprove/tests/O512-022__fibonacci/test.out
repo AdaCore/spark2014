@@ -39,13 +39,13 @@ fib.adb:66:11: info: range check proved (CVC4: 2 VC)
 fib.adb:66:35: info: cannot unroll loop (too many loop iterations)
 fib.adb:67:17: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 66 should mention p in a loop invariant]
 fib.adb:75:11: info: range check proved (CVC4: 2 VC)
-fib.adb:76:33: medium: loop invariant might fail in first iteration, cannot prove p1 = Factorial(i - 1) [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
-fib.adb:76:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove p1 = Factorial(i - 1) [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
+fib.adb:76:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
+fib.adb:76:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
 fib.adb:76:38: info: precondition proved (CVC4: 2 VC)
 fib.adb:77:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 fib.adb:80:11: info: range check proved (CVC4: 2 VC)
-fib.adb:81:33: medium: loop invariant might fail in first iteration, cannot prove p2 = Factorial(i - 1) [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
-fib.adb:81:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove p2 = Factorial(i - 1) [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
+fib.adb:81:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
+fib.adb:81:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
 fib.adb:81:38: info: precondition proved (CVC4: 2 VC)
 fib.adb:82:18: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 fib.adb:87:07: info: initialization of "b1" proved
@@ -56,11 +56,11 @@ fib.adb:94:33: info: loop invariant initialization proved (CVC4: 2 VC)
 fib.adb:94:33: info: loop invariant preservation proved (CVC4: 1 VC; altergo: 1 VC)
 fib.adb:95:31: info: loop variant proved (CVC4: 1 VC)
 fib.adb:96:17: info: division check proved (CVC4: 1 VC)
-fib.adb:97:28: medium: assertion might fail, cannot prove p1 * (b1 * b1) ** (k1 / 2) = a1 ** n1
+fib.adb:97:28: medium: assertion might fail
 fib.adb:97:50: info: division check proved (CVC4: 1 VC)
 fib.adb:98:22: info: division check proved (CVC4: 1 VC)
 fib.adb:99:22: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
-fib.adb:101:28: medium: assertion might fail, cannot prove (p1 * b1) * (b1 ** (k1 - 1)) = a1 ** n1
+fib.adb:101:28: medium: assertion might fail
 fib.adb:101:51: info: range check proved (CVC4: 1 VC)
 fib.adb:102:22: info: range check proved (CVC4: 1 VC)
 fib.adb:103:22: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
@@ -68,7 +68,7 @@ fib.adb:110:33: medium: loop invariant might not be preserved by an arbitrary it
 fib.adb:111:27: medium: loop invariant might fail in first iteration, cannot prove p2 <= a2 ** n2
 fib.adb:112:31: info: loop variant proved (CVC4: 1 VC)
 fib.adb:113:17: info: division check proved (CVC4: 1 VC)
-fib.adb:114:28: medium: assertion might fail, cannot prove p2 * (b2 * b2) ** (k2 / 2) = a2 ** n2
+fib.adb:114:28: medium: assertion might fail
 fib.adb:114:50: info: division check proved (CVC4: 1 VC)
 fib.adb:115:22: info: division check proved (CVC4: 1 VC)
 fib.adb:116:22: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
@@ -122,7 +122,7 @@ fib.ads:23:52: info: initialization of "p2" proved
 fib.ads:25:14: info: postcondition proved (CVC4: 1 VC)
 fib.ads:29:65: info: initialization of "p1" proved
 fib.ads:29:69: info: initialization of "p2" proved
-fib.ads:33:14: medium: postcondition might fail, cannot prove p1 = p2
+fib.ads:33:14: medium: postcondition might fail
 fib.ads:36:41: medium: "A1" might not be initialized in "ArrayPartitionedTransferSC"
 fib.ads:36:45: medium: "A2" might not be initialized in "ArrayPartitionedTransferSC"
 fib.ads:41:50: info: index check proved (CVC4: 2 VC)

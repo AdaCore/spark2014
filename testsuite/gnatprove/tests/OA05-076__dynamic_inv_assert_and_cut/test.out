@@ -42,7 +42,7 @@ lsc-bignum.adb:94:58: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:94:68: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:95:22: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:95:41: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:103:08: medium: postcondition might fail, cannot prove Math_Int.From_Word32 (Word_Of_Boolean'Result) = Num_Of_Boolean (B)
+lsc-bignum.adb:103:08: medium: postcondition might fail
 lsc-bignum.adb:105:07: info: initialization of "Result" proved
 lsc-bignum.adb:126:07: info: initialization of "J" proved
 lsc-bignum.adb:127:07: info: initialization of "New_Carry" proved
@@ -110,7 +110,7 @@ lsc-bignum.adb:180:24: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:185:23: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:185:31: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:202:08: info: flow dependencies proved
-lsc-bignum.adb:206:10: medium: postcondition might fail, cannot prove Math_Int.From_Word32 (A'Old) + Math_Int.From_Word32 (V) * Math_Int.From_Word32 (W) + Math_Int.From_Word32 (X) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Old) + Base * Math_Int.From_Word32 (Carry2'Old) = Math_Int.From_Word32 (A) + Base * (Mat...) [possible fix: you should consider adding a postcondition to operator "+" and operator "*" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:206:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to operator "+" and operator "*" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
 lsc-bignum.adb:215:07: info: initialization of "Mult1" proved
 lsc-bignum.adb:215:14: info: initialization of "Mult2" proved
 lsc-bignum.adb:215:21: info: initialization of "Temp" proved
@@ -606,7 +606,7 @@ lsc-bignum.ads:118:36: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:118:36: info: range check proved (Z3: 1 VC)
 lsc-bignum.ads:132:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:132:28: info: overflow check proved (Z3: 1 VC)
-lsc-bignum.ads:135:10: medium: postcondition might fail, cannot prove Less'Result = (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) < Num_Of_Big_Int (B, B_First, A_Last - A_First + 1))
+lsc-bignum.ads:135:10: medium: postcondition might fail
 lsc-bignum.ads:136:46: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:136:56: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:136:56: info: range check proved (Z3: 1 VC)
@@ -631,7 +631,7 @@ lsc-bignum.ads:166:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:166:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:166:55: info: range check proved (Z3: 1 VC)
 lsc-bignum.ads:167:25: info: index check proved (Z3: 2 VC)
-lsc-bignum.ads:169:10: medium: postcondition might fail, cannot prove Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, A_Last - A_First + 1) * Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) * Inverse (Num_Of_Big_Int (M, M_First, A_Last - A_First + 1), Base) ** (A_Last - A_First + 1)) mod Nu... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
+lsc-bignum.ads:169:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
 lsc-bignum.ads:169:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:169:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:169:55: info: range check proved (Z3: 1 VC)
@@ -686,7 +686,7 @@ lsc-bignum.ads:246:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:246:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:246:55: info: range check proved (Z3: 1 VC)
 lsc-bignum.ads:247:25: info: index check proved (Z3: 2 VC)
-lsc-bignum.ads:249:10: medium: postcondition might fail, cannot prove Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) = Num_Of_Big_Int (X, X_First, A_Last - A_First + 1) ** Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
+lsc-bignum.ads:249:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
 lsc-bignum.ads:249:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:249:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:249:55: info: range check proved (Z3: 1 VC)

@@ -16,7 +16,7 @@ not_main.adb:18:14: medium: overflow check might fail [reason for check: result 
 not_main.adb:23:12: info: data dependencies proved
 not_main.ads:5:17: warning: subprogram "Do_Nothing" has no effect
 not_main2.ads:5:14: warning: subprogram "Not_Main_Generic_Instantiation" has no effect
-p-main.adb:3:19: medium: assertion might fail, cannot prove Some_Package.X = 0 [possible fix: subprogram at p-main.ads:3 should mention X in a precondition]
+p-main.adb:3:19: medium: assertion might fail [possible fix: subprogram at p-main.ads:3 should mention X in a precondition]
 p-main.adb:3:31: medium: "X" might not be initialized after elaboration of main program "Main"
 p-main.ads:3:23: info: data dependencies proved
 some_package.adb:3:53: info: initialization of "Y" constituent of "State" proved

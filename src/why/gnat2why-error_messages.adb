@@ -864,7 +864,9 @@ package body Gnat2Why.Error_Messages is
            Parse_Why3_Prove_Result (V);
          VC         : VC_Info renames VC_Table (Rec.Id);
          Extra_Text : constant String :=
-           (if not Rec.Result and then Present (Rec.Extra_Info)
+           (if not Rec.Result
+              and then Present (Rec.Extra_Info)
+              and then VC.Node /= Rec.Extra_Info
             then String_Of_Node (Original_Node (Rec.Extra_Info))
             else "");
          Extra_Msg  : constant String :=

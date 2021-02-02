@@ -1,1 +1,1 @@
-calendar_clock.adb:9:19: medium: assertion might fail, cannot prove T1 = T2
+calendar_clock.adb:9:19: medium: assertion might fail

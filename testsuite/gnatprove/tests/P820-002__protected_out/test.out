@@ -52,7 +52,7 @@ polyorb_hi-messages.ads:77:07: info: initialization of "Item" proved
 polyorb_hi-messages.ads:78:07: info: initialization of "Last" proved
 polyorb_hi-messages.ads:91:26: info: initialization of "M" proved
 polyorb_hi-messages.ads:98:40: info: precondition proved (CVC4: 1 VC)
-polyorb_hi-messages.ads:99:17: medium: postcondition might fail, cannot prove Payload'Result'Length = Length (M)
+polyorb_hi-messages.ads:99:17: medium: postcondition might fail
 polyorb_hi-messages.ads:99:32: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:99:42: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:103:44: info: precondition proved (CVC4: 1 VC)

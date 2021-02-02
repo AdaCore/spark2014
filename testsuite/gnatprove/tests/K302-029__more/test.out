@@ -12,6 +12,6 @@ pack.adb:47:10: warning: analyzing unreferenced procedure "P2_Ok"
 pack.adb:47:20: warning: subprogram "P2_Ok" has no effect
 pack.ads:13:14: warning: subprogram "P0" has no effect
 pack.ads:15:14: warning: subprogram "P1" has no effect
-pack.ads:15:30: medium: postcondition might fail, cannot prove Y.all = 0 (e.g. when Y.all = -1)
+pack.ads:15:30: medium: postcondition might fail (e.g. when Y.all = -1)
 pack.ads:15:32: medium: pointer dereference check might fail (e.g. when Y = null)
 pack.ads:17:14: warning: subprogram "P2" has no effect
