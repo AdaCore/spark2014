@@ -4801,25 +4801,37 @@ package body Gnat2Why.Borrow_Checker is
             end if;
 
          when Free =>
-            --  For a deep designated type, check W permission on the
-            --  pointed-to path. Still issue an error message wrt permission
-            --  of the full path and RW permission, as it is likely less
-            --  confusing.
+            declare
+               Des_Ty : Entity_Id :=
+                 Directly_Designated_Type (Retysp (Expr_Type));
 
-            if Is_Deep (Designated_Type (Expr_Type)) then
-               if Get_Pointed_To_Perm (Expr) not in Write_Perm then
-                  Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
-                  return;
+            begin
+               --  If Des_Ty is an incomplete type, go to its full view
+
+               if Is_Incomplete_Type (Des_Ty) then
+                  Des_Ty := Full_View (Des_Ty);
                end if;
 
-            --  Otherwise, check RW permission
+               --  For a deep designated type, check W permission on the
+               --  pointed-to path. Still issue an error message wrt permission
+               --  of the full path and RW permission, as it is likely less
+               --  confusing.
 
-            else
-               if Perm /= Read_Write then
-                  Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
-                  return;
+               if Is_Deep (Des_Ty) then
+                  if Get_Pointed_To_Perm (Expr) not in Write_Perm then
+                     Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
+                     return;
+                  end if;
+
+               --  Otherwise, check RW permission
+
+               else
+                  if Perm /= Read_Write then
+                     Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
+                     return;
+                  end if;
                end if;
-            end if;
+            end;
 
          when Assign =>
             --  For assignment, check W permission
