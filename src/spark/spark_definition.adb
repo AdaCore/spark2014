@@ -3659,6 +3659,7 @@ package body SPARK_Definition is
 
       if Has_At_End_Borrow_Annotation (E) then
          declare
+            In_Proc_Call     : Boolean := False;
             In_Old_Attribute : Boolean := False;
             In_Contracts     : Entity_Id := Empty;
 
@@ -3666,8 +3667,9 @@ package body SPARK_Definition is
             --  Check whether Call occurs in a context where it can be handled.
             --  If this context is the contract of a subprogram, set
             --  In_Contracts to the entity of the related subprogram.
-            --  For now, only allow postconditions and assertions. We can
-            --  extend later if we see a need. Set In_Old_Attribute to True
+            --  If the context is a procedure call, set In_Proc_Call to True.
+            --  For now, only allow postconditions, lemmas, and assertions. We
+            --  can extend later if we see a need. Set In_Old_Attribute to True
             --  if Call occurs inside a 'Loop_Entry or 'Old attribute.
 
             ------------------------
@@ -3708,8 +3710,36 @@ package body SPARK_Definition is
                         | N_Iterator_Specification
                         | N_Component_Association
                      =>
+                        --  We allow procedure calls if they correspond to
+                        --  lemmas.
+
                         if Nkind (P) = N_Procedure_Call_Statement then
-                           return False;
+                           In_Proc_Call := True;
+
+                           declare
+                              Proc     : constant Entity_Id :=
+                                Get_Called_Entity (P);
+                              Contract : constant Node_Id :=
+                                Find_Contract (Proc, Pragma_Global);
+                              Formal   : Entity_Id := First_Formal (Proc);
+
+                           begin
+                              --  Proc is necessarily Ghost. It is a lemma if
+                              --  it has no outputs.
+
+                              pragma Assert (Is_Ghost_Entity (Proc));
+
+                              while Present (Formal) loop
+                                 if not Is_Constant_In_SPARK (Formal) then
+                                    return False;
+                                 end if;
+                                 Next_Formal (Formal);
+                              end loop;
+
+                              return Present (Contract)
+                                and then Parse_Global_Contract
+                                  (Proc, Contract).Outputs.Is_Empty;
+                           end;
                         elsif Is_Attribute_Loop_Entry (P)
                           or else Is_Attribute_Old (P)
                         then
@@ -3756,6 +3786,12 @@ package body SPARK_Definition is
                     ("call to a function annotated with At_End_Borrow"
                      & " occurring inside a reference to the 'Old or"
                      & " 'Loop_Entry attributes",
+                     N);
+               elsif In_Proc_Call then
+                  Mark_Violation
+                    ("call to a function annotated with At_End_Borrow"
+                     & " occurring inside a procedure call which is not known"
+                     & " to be free of side-effects",
                      N);
                else
                   Mark_Violation

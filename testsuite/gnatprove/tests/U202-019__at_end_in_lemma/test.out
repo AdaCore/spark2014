@@ -1,0 +1,7 @@
+test_at_end_in_lemma.adb:42:22: error: call to a function annotated with At_End_Borrow occurring inside a procedure call which is not known to be free of side-effects is not allowed in SPARK
+test_at_end_in_lemma.adb:42:22: error: violation of aspect SPARK_Mode at line 1
+test_at_end_in_lemma.adb:43:20: error: call to a function annotated with At_End_Borrow occurring inside a procedure call which is not known to be free of side-effects is not allowed in SPARK
+test_at_end_in_lemma.adb:43:20: error: violation of aspect SPARK_Mode at line 1
+test_at_end_in_lemma.adb:44:20: error: call to a function annotated with At_End_Borrow occurring inside a procedure call which is not known to be free of side-effects is not allowed in SPARK
+test_at_end_in_lemma.adb:44:20: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

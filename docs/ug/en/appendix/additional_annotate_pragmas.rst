@@ -486,7 +486,8 @@ Conceptually, a pledge is a property involving a borrower and/or the expression
 it borrows which is known to hold at the end of the borrow, no matter
 the modifications that may be done to the borrower. In |SPARK|, it is possible
 to refer to the value of a local borrower or a borrowed expression at the
-end of the borrow inside a regular assertion or contract using a function
+end of the borrow inside a regular assertion or contract, or as a parameter of
+a call to a lemma function, using a function
 annotated with the ``At_End_Borrow Annotate`` pragma:
 
 .. code-block:: ada
