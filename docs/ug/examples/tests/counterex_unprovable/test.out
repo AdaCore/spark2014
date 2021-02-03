@@ -9,13 +9,13 @@ counterex_unprovable.adb:20:27: medium: range check might fail
    19 |      while J <= 2 loop
       |                   ^ here
 
-counterex_unprovable.ads:13:14: medium: postcondition might fail, cannot prove X = 2 * X'old
+counterex_unprovable.ads:13:14: medium: postcondition might fail
    13 |     Post => X = 2 * X'Old;
       |             ^~~~~~~~~~~~~
   e.g. when X = 1
         and X'Old = 1
 
-counterex_unprovable.ads:17:14: medium: postcondition might fail, cannot prove X = 2 * X'old
+counterex_unprovable.ads:17:14: medium: postcondition might fail
    17 |     Post => X = 2 * X'Old;
       |             ^~~~~~~~~~~~~
   e.g. when X = 1

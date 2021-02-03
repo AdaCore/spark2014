@@ -3,7 +3,7 @@ forgetful_assert.adb:7:19: info: assertion proved
 forgetful_assert.adb:9:27: info: assertion proved
 forgetful_assert.adb:11:19: info: assertion proved
 
-forgetful_assert.adb:12:19: medium: assertion might fail, cannot prove X = 1
+forgetful_assert.adb:12:19: medium: assertion might fail
    12 |   pragma Assert (X = 1);
       |                  ^~~~~
   e.g. when X = 2

@@ -1,5 +1,5 @@
 
-increment_loop.adb:4:11: medium: postcondition might fail, cannot prove X = X'Old + N
+increment_loop.adb:4:11: medium: postcondition might fail
     4 |  Post => X = X'Old + N
       |          ^~~~~~~~~~~~~
   e.g. when N = 1

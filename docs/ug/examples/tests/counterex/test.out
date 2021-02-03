@@ -6,7 +6,7 @@ counterex.adb:10:17: medium: overflow check might fail
         and R = Integer'First
   reason for check: result of addition must fit in a 32-bits machine integer
 
-counterex.adb:11:25: medium: assertion might fail, cannot prove R < 42
+counterex.adb:11:25: medium: assertion might fail
    11 |         pragma Assert (R < 42);
       |                        ^~~~~~
   e.g. when R = 43
