@@ -1,12 +1,12 @@
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic"
-lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic/../../Coq/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v
+lemmas.ads:15:14: medium: postcondition might fail, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic/../../Coq/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic"
 lemmas.ads:15:14: info: postcondition proved (Coq: 1 VC)
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic"
-lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom < Val2 / Denom, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic/../../Coq/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v
+lemmas.ads:15:14: medium: postcondition might fail, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic/../../Coq/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v
 
  "(val1 Ã· denom ?= val2 Ã· denom) = Lt".
 Error:
@@ -19,6 +19,6 @@ h4 : val1 <= val2
 =======================================
 lemmas.ads:13:06: info: data dependencies proved
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic"
-lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom < Val2 / Denom
+lemmas.ads:15:14: medium: postcondition might fail
 lemmas.ads:15:19: info: division check proved (CVC4: 1 VC)
 lemmas.ads:15:34: info: division check proved (CVC4: 1 VC)
