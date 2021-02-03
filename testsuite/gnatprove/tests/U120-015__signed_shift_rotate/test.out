@@ -16,7 +16,7 @@ signed.adb:34:19: info: assertion proved (CVC4: 1 VC)
 signed.adb:39:19: info: assertion proved (CVC4: 1 VC)
 signed.adb:39:25: info: division check proved (CVC4: 1 VC)
 signed.adb:41:33: info: overflow check proved (CVC4: 1 VC)
-signed.adb:42:19: info: assertion proved (CVC4: 1 VC)
+signed.adb:42:19: medium: assertion might fail
 signed.adb:42:24: info: overflow check proved (CVC4: 1 VC)
 signed.adb:42:28: info: division check proved (CVC4: 1 VC)
 signed.adb:45:19: info: assertion proved (CVC4: 1 VC)

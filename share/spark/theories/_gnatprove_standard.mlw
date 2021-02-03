@@ -266,11 +266,10 @@ module Int_Shift
      Note: argument 'size' is not used.
    *)
   let function shift_right_arithmetic (x n size : int) : int =
-    let res = ComputerDivision.div x (Power.power 2 n) in
-    if x < 0 && ComputerDivision.mod x (Power.power 2 n) <> 0 then
-      res - 1
+    if x < 0 then
+      ComputerDivision.div (x + 1) (Power.power 2 n) - 1
     else
-      res
+      ComputerDivision.div x (Power.power 2 n)
 
   (* rotate_left and rotate_right are left uninterpreted for now *)
   val function rotate_left (x n size : int) : int
