@@ -495,12 +495,11 @@ be *compatible with respect to volatility* with E2 if
 
    * the (protected) prefix of a name denoting a protected operation; or
 
-   * the return expression of a ``simple_return_statement`` which applies
-     to a volatile function; or
+   * the return expression of a ``simple_return_statement``
+     which applies to a volatile function; or
 
    * the expression of the ``extended_return_object_declaration``
-     of an ``extended_return_statement`` which applies to a
-     volatile function; or
+     which applies to a volatile function; or
 
    * the prefix of a ``slice``, ``selected_component``, ``indexed_component``,
      or ``attribute_reference`` which is itself a name occurring in a
