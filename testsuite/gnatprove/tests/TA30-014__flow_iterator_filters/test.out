@@ -5,7 +5,7 @@ a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at test.adb:97
 a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at test.adb:97
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at test.adb:97
-test.adb:18:11: high: "Y" must be listed in the Global aspect of "LPS_Bad_Global" (SPARK RM 6.1.4(14))
+test.adb:18:29: high: "Y" must be listed in the Global aspect of "LPS_Bad_Global" (SPARK RM 6.1.4(14))
 test.adb:18:35: info: cannot unroll loop (too many loop iterations)
 test.adb:24:06: info: data dependencies proved
 test.adb:27:35: info: cannot unroll loop (too many loop iterations)
@@ -21,8 +21,8 @@ test.adb:48:17: medium: overflow check might fail [reason for check: result of a
 test.adb:52:04: warning: analyzing unreferenced procedure "LPS_Init"
 test.adb:52:36: medium: "B" might not be initialized in "LPS_Init"
 test.adb:54:35: info: cannot unroll loop (too many loop iterations)
-test.adb:65:07: high: "Y" must be listed in the Global aspect of "QE_LPS_Bad_Global" (SPARK RM 6.1.4(14))
 test.adb:65:22: info: assertion proved (Trivial: 2 VC)
+test.adb:65:48: high: "Y" must be listed in the Global aspect of "QE_LPS_Bad_Global" (SPARK RM 6.1.4(14))
 test.adb:69:06: info: data dependencies proved
 test.adb:72:22: info: assertion proved (Trivial: 2 VC)
 test.adb:76:06: info: data dependencies proved
@@ -30,9 +30,9 @@ test.adb:77:18: medium: missing dependency "Z => Y"
 test.adb:77:39: medium: incorrect dependency "null => Y"
 test.adb:87:06: info: data dependencies proved
 test.adb:88:06: info: flow dependencies proved
-test.adb:106:07: high: "Y" must be listed in the Global aspect of "QE_IS_Bad_Global" (SPARK RM 6.1.4(14))
 test.adb:106:22: info: assertion proved (Trivial: 2 VC)
 test.adb:106:22: info: precondition proved (Trivial: 1 VC)
+test.adb:106:42: high: "Y" must be listed in the Global aspect of "QE_IS_Bad_Global" (SPARK RM 6.1.4(14))
 test.adb:110:06: info: data dependencies proved
 test.adb:113:22: info: assertion proved (Trivial: 2 VC)
 test.adb:113:22: info: precondition proved (Trivial: 1 VC)
