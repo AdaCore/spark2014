@@ -18995,8 +18995,10 @@ package body Gnat2Why.Expr is
          =>
             return +Void;
 
-         --  Group 1d - pragma that are re-written and/or removed by the
-         --  front-end in GNATprove, so they should never be seen here.
+         --  Group 1d - These pragmas are re-written and/or removed by the
+         --  front-end in GNATprove, so they should never be seen here,
+         --  unless they are ignored by virtue of pragma Ignore_Pragma.
+
          when Pragma_Assert
             | Pragma_Assert_And_Cut
             | Pragma_Assume
@@ -19005,7 +19007,7 @@ package body Gnat2Why.Expr is
             | Pragma_Debug
             | Pragma_Loop_Invariant
          =>
-            raise Program_Error;
+            return +Void;
 
          --  Group 2 - Remaining pragmas, enumerated here rather than a "when
          --  others" to force re-consideration when SNames.Pragma_Id is

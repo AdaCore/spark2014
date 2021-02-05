@@ -7245,8 +7245,9 @@ package body SPARK_Definition is
          =>
             null;
 
-         --  Group 1d - pragma that are re-written and/or removed by the
-         --  front-end in GNATprove, so they should never be seen here.
+         --  Group 1d - These pragmas are re-written and/or removed by the
+         --  front-end in GNATprove, so they should never be seen here,
+         --  unless they are ignored by virtue of pragma Ignore_Pragma.
 
          when Pragma_Assert
             | Pragma_Assert_And_Cut
@@ -7256,7 +7257,7 @@ package body SPARK_Definition is
             | Pragma_Debug
             | Pragma_Loop_Invariant
          =>
-            raise Program_Error;
+            pragma Assert (Should_Ignore_Pragma_Sem (N));
 
          --  Group 2 - Remaining pragmas, enumerated here rather than a
          --  "when others" to force re-consideration when SNames.Pragma_Id

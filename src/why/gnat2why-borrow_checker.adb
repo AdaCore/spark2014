@@ -3295,8 +3295,9 @@ package body Gnat2Why.Borrow_Checker is
          when Pragma_Initial_Condition =>
             null;
 
-         --  These pragmas should have been rewritten and/or removed in
-         --  GNATprove mode.
+         --  These pragmas are re-written and/or removed by the front-end in
+         --  GNATprove, so they should never be seen here, unless they are
+         --  ignored by virtue of pragma Ignore_Pragma.
 
          when Pragma_Assert
             | Pragma_Assert_And_Cut
@@ -3306,7 +3307,7 @@ package body Gnat2Why.Borrow_Checker is
             | Pragma_Debug
             | Pragma_Loop_Invariant
          =>
-            raise Program_Error;
+            pragma Assert (Should_Ignore_Pragma_Sem (Prag));
 
          when others =>
             null;
