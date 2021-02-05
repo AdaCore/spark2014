@@ -250,9 +250,20 @@ package body Gnat2Why.Subprograms.Pointers is
         Compute_Subprogram_Parameters (From_Ent, EW_Term);
       To_Formals             : constant Item_Array (Formals'Range) :=
         Compute_Subprogram_Parameters (To_Ent, EW_Term);
-      Effects                : Item_Array :=
-        (if Is_Function_Type (To_Profile) then (1 .. 0 => <>)
-         else Compute_Binders_For_Effects (From_Ent, Compute => False));
+
+      --  workaround for U205-007
+      function Fix return Item_Array;
+
+      function Fix return Item_Array is
+      begin
+         if Is_Function_Type (To_Profile) then
+            return (1 .. 0 => <>);
+         else
+            return Compute_Binders_For_Effects (From_Ent, Compute => False);
+         end if;
+      end Fix;
+
+      Effects                : Item_Array := Fix;
       Checks                 : W_Prog_Id;
 
       --  As this check can occur anywhere during the translation, we need to

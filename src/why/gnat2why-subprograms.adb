@@ -4860,9 +4860,21 @@ package body Gnat2Why.Subprograms is
                  Is_Access_Subp_Wrapper => Is_Access_Subp_Wrapper);
             Result_Id     : constant W_Identifier_Id :=
               New_Result_Ident (Why_Type);
-            Tag_B         : constant Binder_Array :=
-              (if Selector = Dispatch then (1 => Tag_Binder)
-               else (1 .. 0 => <>));
+
+            --  workaround for U250-007
+
+            function Fix return Binder_Array;
+
+            function Fix return Binder_Array is
+            begin
+               if Selector = Dispatch then
+                  return (1 => Tag_Binder);
+               else
+                  return (1 .. 0 => <>);
+               end if;
+            end Fix;
+
+            Tag_B         : constant Binder_Array := Fix;
             Binders       : constant Binder_Array :=
               Tag_B & Spec_Binders & Logic_Why_Binders;
             Pred_Binders  : constant Binder_Array :=
@@ -5034,10 +5046,20 @@ package body Gnat2Why.Subprograms is
       Ty            : constant Entity_Id :=
         SPARK_Util.Subprograms.Find_Dispatching_Type (E);
       Descendants   : Node_Sets.Set := Get_Descendant_Set (Ty);
-      Anc_Binders   : constant Binder_Array :=
-        (if Ekind (E) = E_Function then
-            To_Binder_Array (Compute_Binders (E, EW_Term))
-         else Procedure_Logic_Binders (E));
+
+      --  workaround for U205-007
+      function Fix return Binder_Array;
+
+      function Fix return Binder_Array is
+      begin
+         if Ekind (E) = E_Function then
+            return To_Binder_Array (Compute_Binders (E, EW_Term));
+         else
+            return Procedure_Logic_Binders (E);
+         end if;
+      end Fix;
+
+      Anc_Binders   : constant Binder_Array := Fix;
       Dispatch_Args : W_Expr_Array (1 .. Anc_Binders'Length + 1);
       Anc_Id        : constant W_Identifier_Id :=
         (if Ekind (E) = E_Function then
@@ -5617,9 +5639,20 @@ package body Gnat2Why.Subprograms is
                Tag_Arg    : constant W_Expr_Array :=
                  (if Need_Tag then (1 => +Tag_Binder.B_Name)
                   else (1 .. 0 => <>));
-               Tag_B      : constant Binder_Array :=
-                 (if Need_Tag then (1 => Tag_Binder)
-                  else (1 .. 0 => <>));
+
+               --  workaround for U205-007
+               function Fix return Binder_Array;
+
+               function Fix return Binder_Array is
+               begin
+                  if Need_Tag then
+                     return (1 => Tag_Binder);
+                  else
+                     return (1 .. 0 => <>);
+                  end if;
+               end Fix;
+
+               Tag_B      : constant Binder_Array := Fix;
                Result_Id  : constant W_Identifier_Id :=
                  New_Result_Ident (Why_Type);
                Pred_Args  : constant W_Expr_Array :=

@@ -1220,16 +1220,27 @@ package body Why.Gen.Pointers is
                        Typ       => Field_Type_For_Fields (Typ, Init_Wrapper)),
                   Mutable  => True,
                   others   => <>));
-            P_Discrs : constant Opt_Binder :=
-              (if Has_Discriminants (Typ) then
-                   (Present => True,
-                    Binder  =>
-                      (B_Name   => New_Temp_Identifier
-                         (Base_Name => "discrs",
-                          Typ       => Field_Type_For_Discriminants (Typ)),
-                       Mutable  => False,
-                       others   => <>))
-               else (Present => False));
+
+            --  workaround for U205-007
+            function Fix return Opt_Binder;
+
+            function Fix return Opt_Binder is
+            begin
+               if Has_Discriminants (Typ) then
+                  return (Present => True,
+                          Binder  =>
+                            (B_Name   => New_Temp_Identifier
+                               (Base_Name => "discrs",
+                                Typ       =>
+                                  Field_Type_For_Discriminants (Typ)),
+                             Mutable  => False,
+                             others   => <>));
+               else
+                  return (Present => False);
+               end if;
+            end Fix;
+
+            P_Discrs : constant Opt_Binder := Fix;
             P_Tag    : constant Opt_Id :=
               (if Is_Tagged_Type (Typ) then
                    (Present => True,

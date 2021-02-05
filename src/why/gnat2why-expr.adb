@@ -3292,17 +3292,26 @@ package body Gnat2Why.Expr is
 
             if Use_Var and then Item_Is_Mutable (Pattern) then
                declare
-                  Actual_Binder : constant Item_Type :=
-                    (if Binders (Bind_Cnt).Kind = Concurrent_Self
-                     then Item_Type'(Kind  => Concurrent_Self,
+                  --  workaround for U205-007
+
+                  function Fix return Item_Type;
+                  function Fix return Item_Type is
+                  begin
+                     if Binders (Bind_Cnt).Kind = Concurrent_Self then
+                        return Item_Type'(Kind  => Concurrent_Self,
                                      Init  => <>,
                                      Local => True,
                                      Main  =>
                                        (B_Name  => Self_Name,
                                         Mutable => Self_Is_Mutable,
-                                        others  => <>))
-                     else Ada_Ent_To_Why.Element
-                       (Symbol_Table, Entity (Actual)));
+                                        others  => <>));
+                     else
+                        return Ada_Ent_To_Why.Element
+                          (Symbol_Table, Entity (Actual));
+                     end if;
+                  end Fix;
+
+                  Actual_Binder : constant Item_Type := Fix;
                begin
                   Get_Item_From_Var
                     (Pattern    => Pattern,
