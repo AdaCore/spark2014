@@ -14,8 +14,8 @@ a-cfdlli.ads:1416:14: info: precondition proved, in instantiation at loop_types.
 a-cfdlli.ads:1422:23: info: precondition proved, in instantiation at loop_types.ads:16
 a-cfdlli.ads:1471:14: info: precondition proved, in instantiation at loop_types.ads:16
 a-cfdlli.ads:1478:23: info: precondition proved, in instantiation at loop_types.ads:16
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
 a-cofuve.ads:232:54: info: overflow check proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
 a-cofuve.ads:232:54: info: overflow check proved, in instantiation at a-cfdlli.ads:69, in instantiation at loop_types.ads:16
 a-cofuve.ads:237:63: info: range check proved, in instantiation at a-cofove.ads:87, in instantiation at loop_types.ads:13
