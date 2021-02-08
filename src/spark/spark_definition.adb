@@ -2987,7 +2987,9 @@ package body SPARK_Definition is
 
             declare
                M : Node_Id := Parent (N);
+               Found_Violation : Boolean := False;
             begin
+
                loop
                   if Nkind (M) = N_Attribute_Definition_Clause
                     and then Chars (M) = Name_Address
@@ -3001,6 +3003,7 @@ package body SPARK_Definition is
                        ("attribute """
                         & Standard_Ada_Case (Get_Name_String (Aname))
                         & """ in unsupported context", N);
+                     Found_Violation := True;
                      exit;
                   elsif Nkind (M) in N_Subexpr then
                      null;
@@ -3009,10 +3012,25 @@ package body SPARK_Definition is
                        ("attribute """
                         & Standard_Ada_Case (Get_Name_String (Aname))
                         & """ outside an attribute definition clause", N);
+                     Found_Violation := True;
                      exit;
                   end if;
                   M := Parent (M);
                end loop;
+
+               if not Found_Violation
+                 and then Nkind (Prefix (N)) in N_Identifier | N_Expanded_Name
+                 and then not Is_Volatile (Entity (Prefix (N)))
+                 and then
+                   not (Nkind (Parent (N)) = N_Attribute_Definition_Clause
+                        and then Chars (Parent (N)) = Name_Address)
+               then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ of non-volatile object not"
+                     & " at top level of address clause", N);
+               end if;
             end;
 
          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
