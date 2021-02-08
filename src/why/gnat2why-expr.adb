@@ -1057,14 +1057,6 @@ package body Gnat2Why.Expr is
                                        Lhs_Typ => Etype (Lvalue),
                                        Expr    => Why_Expr);
 
-            --  Init value at end of local borrowers
-
-            if Is_Local_Borrower (Lvalue) then
-               Res := New_Update_For_Borrow_At_End
-                 (Brower  => Lvalue,
-                  Path    => Rexpr);
-            end if;
-
             case Binder.Kind is
             when DRecord =>
 
@@ -1168,7 +1160,7 @@ package body Gnat2Why.Expr is
                                       else +E_Symb (Binder.Typ, WNE_Tag))))));
                   end if;
 
-                  return +New_Typed_Binding
+                  Res := +New_Typed_Binding
                     (Ada_Node => N,
                      Domain   => EW_Prog,
                      Name     => Tmp_Var,
@@ -1237,7 +1229,7 @@ package body Gnat2Why.Expr is
                                           Dim    => I)))))));
                   end loop;
 
-                  return +New_Typed_Binding
+                  Res := +New_Typed_Binding
                     (Ada_Node => N,
                      Domain   => EW_Prog,
                      Name     => Tmp_Var,
@@ -1336,7 +1328,7 @@ package body Gnat2Why.Expr is
                             Name => +Tmp_Var),
                          Typ      => EW_Bool_Type));
 
-                  return +New_Typed_Binding
+                  Res := +New_Typed_Binding
                     (Ada_Node => N,
                      Domain   => EW_Prog,
                      Name     => Tmp_Var,
@@ -1356,7 +1348,7 @@ package body Gnat2Why.Expr is
                      --  Attributes of record objects have the default values
                      --  of their type.
 
-                     return Sequence
+                     Res := Sequence
                        (Res,
                         New_Assignment
                           (Ada_Node => N,
@@ -1398,7 +1390,7 @@ package body Gnat2Why.Expr is
                                          Ty       => Etype (Lvalue)),
                                       +L_Id));
                      begin
-                        return +New_Typed_Binding
+                        Res := +New_Typed_Binding
                           (Ada_Node => N,
                            Domain   => EW_Prog,
                            Name     => Tmp_Var,
@@ -1414,6 +1406,21 @@ package body Gnat2Why.Expr is
             when Func =>
                raise Program_Error;
             end case;
+
+            --  Init value at end of local borrowers. This assumes the dynamic
+            --  invariant of the value of the borrowed object at the end of the
+            --  borrow, so it should be done after all checks at performed for
+            --  the assignment so that we do not create an inconsistency.
+
+            if Is_Local_Borrower (Lvalue) then
+               Res := Sequence
+                 (Left  => Res,
+                  Right => New_Update_For_Borrow_At_End
+                    (Brower  => Lvalue,
+                     Path    => Rexpr));
+            end if;
+
+            return Res;
          end;
 
       elsif not Is_Partial_View (Lvalue)
@@ -8318,11 +8325,12 @@ package body Gnat2Why.Expr is
         (Return_Type => Get_Typ (Brower_At_End),
          Labels      => Symbol_Sets.Empty_Set,
          Post        => +New_And_Expr
-           (Left   => +Compute_Dynamic_Invariant
-                (Expr        => +Result_Id,
-                 Ty          => Etype (Brower),
-                 Params      => Body_Params,
-                 Initialized => True_Term),
+           (Left   => (if Reborrow then +True_Pred
+                       else +Compute_Dynamic_Invariant
+                         (Expr        => +Result_Id,
+                          Ty          => Etype (Brower),
+                          Params      => Body_Params,
+                          Initialized => True_Term)),
             Right  => New_Comparison
               (Symbol => Why_Eq,
                Left   => New_Pointer_Is_Null_Access
@@ -8336,9 +8344,16 @@ package body Gnat2Why.Expr is
                   Name => +Result_Id),
                Domain => EW_Pred),
             Domain => EW_Pred));
-      --  New value of the borrower. Use an any expr but assume the dynamic
-      --  property of the type and the value of the is_null field since it
-      --  cannot be modified.
+      --  New value of the borrower. Use an any expr and assume the value of
+      --  the is_null field since it cannot be modified.
+      --  If we are not inside a reborrow we also assume that the value of
+      --  the borrowed object at the end of the borrow respects its dynamic
+      --  invariant. This is sound as we only do this update after we have
+      --  created the current value of the borrowed object, so we are sure that
+      --  there exists a value matching this assumption, the current value.
+      --  For reborrow, we do this update before the assignment, as we need to
+      --  refer to the value of the object before the assignment. As a result,
+      --  it could be unsound to assume the dynamic invariant here.
 
       At_End_Value    : constant W_Expr_Id := +Compute_Borrow_At_End_Value
         (W_Brower      => +W_Brower,
@@ -8366,17 +8381,20 @@ package body Gnat2Why.Expr is
       At_End_Assume   : constant W_Prog_Id :=
         New_Assume_Statement
           (Pred => +New_And_Expr
-             (Left   => +Compute_Dynamic_Invariant
-                (Expr   => +W_Borrowed,
-                 Ty     => Borrowed_Ty,
-                 Params => Body_Params),
+             (Left   =>
+                (if Reborrow then +True_Pred
+                 else +Compute_Dynamic_Invariant
+                   (Expr   => +W_Borrowed,
+                    Ty     => Borrowed_Ty,
+                    Params => Body_Params)),
               Right  => New_Comparison
                 (Symbol => Why_Eq,
                  Left   => W_Borrowed,
                  Right  => At_End_Value,
                  Domain => EW_Pred),
               Domain => EW_Pred));
-      --  borrowed_at_end = at_end_value
+      --  We assume borrowed_at_end = at_end_value. If we are in a borrow, also
+      --  assume the dynamic invariant of the borrowed object.
 
    begin
       --  In reborrows, we emit:
@@ -12244,16 +12262,34 @@ package body Gnat2Why.Expr is
             Expr     => T);
       end if;
 
-      --  Update the value at end of local borrowers
+      --  Update the value at end of local borrowers. This needs to be done
+      --  prior to the assignment, as the assumtion generated during the
+      --  update needs to refer to the old value of the borrower.
+      --  New_Update_For_Borrow_At_End does not assume the dynamic property of
+      --  the borrower at the end of the borrow on reborrows as it could
+      --  be unsound prior to the assignment. We add the assumption afterward.
 
       if Nkind (Lvalue) in N_Identifier | N_Expanded_Name
         and then Is_Local_Borrower (Entity (Lvalue))
       then
-         T := Sequence
-           (Left  => New_Update_For_Borrow_At_End
-              (Brower  => Entity (Lvalue),
-               Path    => Expression (Stmt)),
-            Right => T);
+
+         declare
+            Brower : constant Entity_Id := Entity (Lvalue);
+         begin
+            T := Sequence
+              ((1 => New_Update_For_Borrow_At_End
+                (Brower => Brower,
+                 Path   => Expression (Stmt)),
+                2 => T,
+                3 => New_Assume_Statement
+                  (Ada_Node => Stmt,
+                   Pred     => Compute_Dynamic_Invariant
+                     (Expr   => New_Deref
+                          (Right => Get_Brower_At_End (Brower),
+                           Typ   => Get_Typ (Get_Brower_At_End (Brower))),
+                      Ty     => Get_Borrowed_Typ (Brower),
+                      Params => Body_Params))));
+         end;
       end if;
       return T;
    end Transform_Assignment_Statement;
@@ -20870,7 +20906,7 @@ package body Gnat2Why.Expr is
                           Value    => +Result_Stmt,
                           Typ      => Type_Of_Node (Subp));
 
-                     --  Update the pledge of the result
+                     --  Update the value at end of the result
 
                      if Is_Borrowing_Traversal_Function (Subp) then
                         --  If the result is null, then the borrowed object
@@ -20897,7 +20933,12 @@ package body Gnat2Why.Expr is
                                          Domain => EW_Pred)));
                            end;
 
-                        --  Otherwise, compute the pledge from the assignment
+                        --  Otherwise, compute the value at end from the
+                        --  assignment. This assumes the dynamic invariant of
+                        --  the value of the borrowed object at the end of the
+                        --  borrow, so it should be done after all checks at
+                        --  performed for the assignment so that we do not
+                        --  create an inconsistency.
 
                         else
                            Result_Stmt :=

@@ -5,6 +5,7 @@
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="binary_search__insert.gnat-json"/>
@@ -246,7 +247,7 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.60" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <proof prover="2"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="def&#39;vc.61" proved="true">
   <proof prover="2"><result status="valid" steps="57"/></proof>
@@ -643,7 +644,9 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.172" proved="true">
-  <proof prover="2"><result status="valid" steps="15626"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="125021"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.173" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
@@ -654,6 +657,7 @@
   <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2" timelimit="60" memlimit="2000"><result status="valid" steps="126495"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.175" proved="true">
   <proof prover="2"><result status="valid" steps="1640"/></proof>
@@ -666,14 +670,19 @@
   <proof prover="2"><result status="valid" steps="3945"/></proof>
   </goal>
   <goal name="def&#39;vc.178" proved="true">
-  <proof prover="2"><result status="valid" steps="17781"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="132749"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.179" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;vc.180" proved="true">
-  <proof prover="2"><result status="valid" steps="18259"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="2" timelimit="60" memlimit="2000"><result status="valid" steps="18259"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.181" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -705,18 +714,20 @@
   </goal>
   <goal name="def&#39;vc.188" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="1253988"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="2" timelimit="60" memlimit="2000"><result status="valid" steps="758014"/></proof>
   </goal>
   <goal name="def&#39;vc.189" proved="true">
   <proof prover="2"><result status="valid" steps="5860"/></proof>
   </goal>
   <goal name="def&#39;vc.190" proved="true">
-  <proof prover="2"><result status="valid" steps="20851"/></proof>
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="2" timelimit="60" memlimit="2000"><result status="valid" steps="20851"/></proof>
   </goal>
   <goal name="def&#39;vc.191" proved="true">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="valid" steps="954148"/></proof>
+  <proof prover="1"><result status="valid" steps="330838"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
  </transf>
