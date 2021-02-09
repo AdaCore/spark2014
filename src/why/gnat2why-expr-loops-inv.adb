@@ -35,6 +35,7 @@ with Snames;                 use Snames;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with Why;                    use Why;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
@@ -1111,6 +1112,10 @@ package body Gnat2Why.Expr.Loops.Inv is
                     (if Is_Declared_In_Unit (N, Scope) then
                           Is_Initialized_At_Decl (N)
                      else Is_Initialized_In_Scope (N, Scope));
+                  Brower_Id   : constant W_Identifier_Id :=
+                    (if Is_Local_Borrower (N)
+                     then Get_Brower_At_End (N)
+                     else Why_Empty);
 
                begin
                   Dyn_Types_Inv :=
@@ -1131,9 +1136,38 @@ package body Gnat2Why.Expr.Loops.Inv is
                              (if Initialized then True_Term
                               else False_Term)),
 
+                        --  If N is a local borrower and it is modified at
+                        --  top-level in the loop (we have a reborrow), also
+                        --  assume the dynamic invariant of its value at the
+                        --  end of the borrow and link the values of their
+                        --  is_null fields.
+
+                        3 => (if Is_Local_Borrower (N)
+                                and then Status.Kind = Entire_Object
+                              then New_And_Expr
+                                (Domain => EW_Pred,
+                                 Left   => +Compute_Dynamic_Invariant
+                                   (Expr        => New_Deref
+                                        (Right => Brower_Id,
+                                         Typ   => Get_Typ (Brower_Id)),
+                                    Ty          => Etype (N),
+                                    Params      => Body_Params,
+                                    Initialized => True_Term),
+                                 Right  => New_Comparison
+                                   (Symbol => Why_Eq,
+                                    Left   => New_Pointer_Is_Null_Access
+                                      (Etype (N),
+                                       New_Deref
+                                         (Right => Brower_Id,
+                                          Typ   => Get_Typ (Brower_Id))),
+                                    Right  => New_Pointer_Is_Null_Access
+                                      (Etype (N), Expr),
+                                    Domain => EW_Pred))
+                              else +True_Pred),
+
                         --  Unmodified fields are preserved
 
-                        3 => +Equality_Of_Preserved_Components
+                        4 => +Equality_Of_Preserved_Components
                           (Loop_Idx  => Loop_Index,
                            Low_Id    => Low_Id,
                            High_Id   => High_Id,
