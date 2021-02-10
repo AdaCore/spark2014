@@ -128,7 +128,11 @@ package Gnat2Why_Opts.Reading is
 
    Limit_Units : Boolean;
 
-   --  Limit analysis to this subprogram
+   --  Limit analysis to this subprogram. This may be reset to
+   --  Null_Unbounded_String inside marking, if the corresponding subprogram is
+   --  always inlined. In such a case, Limit_Region is set instead if neither
+   --  Limit_Line or Limit_Region are already set, so that the subprogram is
+   --  analysed in its calling contexts.
 
    Limit_Subp : Unbounded_String;
 

@@ -363,6 +363,9 @@ package SPARK_Util is
    --  @return True iff E has the specified property P of volatility, either
    --     directly or through its (base) type.
 
+   function Int_Image (Val : Int) return String;
+   --  Return the image of Val without leading whitespace
+
    function Is_Constant_After_Elaboration (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_Variable;
    --  @param E entity of a variable

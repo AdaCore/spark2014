@@ -1864,6 +1864,20 @@ package body SPARK_Util is
       end case;
    end Has_Volatile_Property;
 
+   ---------------
+   -- Int_Image --
+   ---------------
+
+   function Int_Image (Val : Int) return String is
+      S : constant String := Int'Image (Val);
+   begin
+      if Val < 0 then
+         return S;
+      else
+         return S (S'First + 1 .. S'Last);
+      end if;
+   end Int_Image;
+
    ------------------------------------------------
    -- Is_Additional_Param_Of_Access_Subp_Wrapper --
    ------------------------------------------------

@@ -47,6 +47,7 @@ with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Sinfo.Utils;                     use Sinfo.Utils;
+with Sinput;                          use Sinput;
 with Snames;                          use Snames;
 with SPARK_Atree.Entities;
 with SPARK_Util;                      use SPARK_Util;
@@ -4832,6 +4833,49 @@ package body SPARK_Definition is
       --  Start of processing for Mark_Subprogram_Entity
 
       begin
+         --  Switch --limit-subp may be passed on for a subprogram that is
+         --  always inlined. Ignore the switch in that case by resetting
+         --  the value of Limit_Subp. If --limit-line or --limit-region are
+         --  not already used, set the value of Limit_Region to analyze the
+         --  subprogram in its calling contexts.
+
+         if Is_Requested_Subprogram_Or_Task (E)
+           and then Is_Local_Subprogram_Always_Inlined (E)
+         then
+            Gnat2Why_Args.Limit_Subp := Null_Unbounded_String;
+
+            if Gnat2Why_Args.Limit_Region = Null_Unbounded_String
+              and then Gnat2Why_Args.Limit_Line = Null_Unbounded_String
+            then
+               declare
+                  Body_E     : constant Entity_Id := Get_Body_Entity (E);
+                  This_E     : constant Entity_Id :=
+                    (if Present (Body_E) then Body_E else E);
+                  This_Decl  : constant Node_Id :=
+                    (if Present (Body_E) then Subprogram_Body (E)
+                     else Subprogram_Spec (E));
+                  Slc        : constant Source_Ptr := Sloc (This_E);
+                  File       : constant String := File_Name (Slc);
+                  First_Line : constant Physical_Line_Number :=
+                    Get_Physical_Line_Number (Slc);
+                  Last_Line  : constant Physical_Line_Number :=
+                    Get_Physical_Line_Number (Sloc (Last_Node (This_Decl)));
+                  Limit_Str  : constant String :=
+                    File
+                    & ':' & Int_Image (Int (First_Line))
+                    & ':' & Int_Image (Int (Last_Line));
+               begin
+                  Gnat2Why_Args.Limit_Region :=
+                    To_Unbounded_String (Limit_Str);
+
+                  --  Also add the corresponding arguments for gnatwhy3
+
+                  Gnat2Why_Args.Why3_Args.Append ("--limit-region");
+                  Gnat2Why_Args.Why3_Args.Append (Limit_Str);
+               end;
+            end if;
+         end if;
+
          if Is_Protected_Operation (E)
            and then not Is_SPARK_Tasking_Configuration
          then
