@@ -1,0 +1,13 @@
+deep_overlay.adb:6:13: error: unchecked conversion instance to or from an ownership type is not allowed in SPARK
+deep_overlay.adb:6:13: error: violation of aspect SPARK_Mode at line 3
+deep_overlay.adb:7:13: error: unchecked conversion instance to or from an ownership type is not allowed in SPARK
+deep_overlay.adb:7:13: error: violation of aspect SPARK_Mode at line 3
+deep_overlay.adb:10:04: error: "Y" is not allowed in SPARK (due to attribute "Address" on an object of an ownership type)
+deep_overlay.adb:10:04: error: violation of aspect SPARK_Mode at line 3
+deep_overlay.adb:11:17: error: attribute "Address" on an object of an ownership type is not allowed in SPARK
+deep_overlay.adb:11:17: error: violation of aspect SPARK_Mode at line 3
+deep_overlay.adb:13:04: error: "Z" is not allowed in SPARK (due to address clause on an object of an ownership type)
+deep_overlay.adb:13:04: error: violation of aspect SPARK_Mode at line 3
+deep_overlay.adb:15:06: error: address clause on an object of an ownership type is not allowed in SPARK
+deep_overlay.adb:15:06: error: violation of aspect SPARK_Mode at line 3
+gnatprove: error during flow analysis and proof

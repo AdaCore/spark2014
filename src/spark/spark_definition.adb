@@ -2772,7 +2772,12 @@ package body SPARK_Definition is
       Address : constant Node_Id := Address_Clause (E);
    begin
       if Present (Address) then
-         Mark (Expression (Address));
+         if Is_Object (E) and then Is_Deep (Etype (E)) then
+            Mark_Violation
+              ("address clause on an object of an ownership type", Address);
+         else
+            Mark (Expression (Address));
+         end if;
       end if;
    end Mark_Address;
 
@@ -2978,18 +2983,29 @@ package body SPARK_Definition is
                   N);
             end if;
 
-         --  Attribute Address is only allowed inside an Address aspect or
-         --  attribute definition clause (SPARK RM 15.2).
-         --  We also exclude nodes that are known to make proof switch domain
-         --  from Prog to Pred, as this is not supported in the translation
-         --  currently.
-
          when Attribute_Address =>
 
             declare
-               M : Node_Id := Parent (N);
-               Found_Violation : Boolean := False;
+               Pref        : constant Node_Id := Prefix (N);
+               Root_Object : constant Entity_Id :=
+                 (if Is_Path_Expression (Pref)
+                  then Get_Root_Object (Pref, False)
+                  else Empty);
+               Root_Is_Volatile : constant Boolean :=
+                 (Present (Root_Object)
+                  and then Is_Object (Root_Object)
+                  and then Has_Volatile (Root_Object)
+                  and then Has_Volatile_Property
+                    (Root_Object, Pragma_Async_Writers));
+               M                : Node_Id := Parent (N);
+               Found_Violation  : Boolean := False;
+
             begin
+               --  Attribute Address is only allowed inside an Address aspect
+               --  or attribute definition clause (SPARK RM 15.2).
+               --  We also exclude nodes that are known to make proof switch
+               --  domain from Prog to Pred, as this is not supported in the
+               --  translation currently.
 
                loop
                   if Nkind (M) = N_Attribute_Definition_Clause
@@ -3019,9 +3035,35 @@ package body SPARK_Definition is
                   M := Parent (M);
                end loop;
 
-               if not Found_Violation
-                 and then Nkind (Prefix (N)) in N_Identifier | N_Expanded_Name
-                 and then not Is_Volatile (Entity (Prefix (N)))
+               if Found_Violation then
+                  null;
+
+               --  For now we reject P'Address if P is a complex expression
+               --  (not an identifier) unless it is a path rooted at a volatile
+               --  object.
+
+               elsif No (Root_Object) then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ on an expression which is not a part of an object",
+                     N);
+               elsif Is_Object (Root_Object)
+                 and then not Root_Is_Volatile
+                 and then Nkind (Pref) not in
+                   N_Identifier | N_Expanded_Name
+               then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ of a part of an object which is not volatile", N);
+
+               --  If the prefix is a non-volatile object, the attribute
+               --  reference must appear at the top-level in an address clause
+               --  so we can handle the underlying alias in a safe way.
+
+               elsif Is_Object (Root_Object)
+                 and then not Root_Is_Volatile
                  and then
                    not (Nkind (Parent (N)) = N_Attribute_Definition_Clause
                         and then Chars (Parent (N)) = Name_Address)
@@ -3031,6 +3073,17 @@ package body SPARK_Definition is
                      & Standard_Ada_Case (Get_Name_String (Aname))
                      & """ of non-volatile object not"
                      & " at top level of address clause", N);
+
+               --  We do not support taking the address of an object of a deep
+               --  type as an overlay would break the ownership model.
+
+               elsif Is_Object (Root_Object)
+                 and then Is_Deep (Etype (Root_Object))
+               then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ on an object of an ownership type", N);
                end if;
             end;
 
@@ -4420,6 +4473,10 @@ package body SPARK_Definition is
                Ty  => T,
                Own => False);
          end if;
+
+         --  Also mark the Address clause if any
+
+         Mark_Address (E);
       end Mark_Object_Entity;
 
       ---------------------------
@@ -4880,6 +4937,18 @@ package body SPARK_Definition is
            and then not Is_SPARK_Tasking_Configuration
          then
             Mark_Violation_In_Tasking (E);
+         end if;
+
+         --  Reject unchecked conversion to and from a deep type as it could
+         --  create an unknown alias.
+
+         if Is_Unchecked_Conversion_Instance (E)
+           and then (Is_Deep (Etype (E))
+                     or else Is_Deep (Etype (First_Formal (E))))
+         then
+            Mark_Violation
+              ("unchecked conversion instance to or from an ownership type",
+               E);
          end if;
 
          Mark_Subprogram_Specification (E);
@@ -6430,10 +6499,6 @@ package body SPARK_Definition is
       then
          Set_Partial_View (Full_View (E), E);
          Queue_For_Marking (Full_View (E));
-      end if;
-
-      if Ekind (E) in E_Constant | E_Variable then
-         Mark_Address (E);
       end if;
 
       --  Mark differently each kind of entity
