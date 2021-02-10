@@ -443,10 +443,23 @@ package body Flow.Analysis is
       if Targeted then
          case Nkind (N) is
             when N_Assignment_Statement =>
+               --  ??? The object might appear in the LHS of the assignment,
+               --  e.g. in the array index expressions, but we only search on
+               --  the RHS to better locate checks on self-assignment of
+               --  uninitialized objects.
+
                Search_Under := Expression (N);
 
-            when N_If_Statement =>
+            when N_Case_Statement =>
+               Search_Under := Expression (N);
+
+            when N_If_Statement
+               | N_Elsif_Part
+            =>
                Search_Under := Condition (N);
+
+            when N_Loop_Statement =>
+               Search_Under := Iteration_Scheme (N);
 
             when others =>
                null;
