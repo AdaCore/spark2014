@@ -2768,7 +2768,7 @@ package body SPARK_Definition is
    ------------------
 
    procedure Mark_Address (E : Entity_Id) is
-      Address : constant Node_Id := Get_Rep_Item (E, Name_Address);
+      Address : constant Node_Id := Address_Clause (E);
    begin
       if Present (Address) then
          Mark (Expression (Address));
