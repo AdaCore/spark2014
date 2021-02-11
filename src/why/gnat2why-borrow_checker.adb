@@ -2476,8 +2476,8 @@ package body Gnat2Why.Borrow_Checker is
             Perm_Error_Loop_Exit
               (E          => E,
                Loop_Stmt  => Stmt,
-               Perm       => Permission (New_Tree),
-               Found_Perm => Permission (Orig_Tree),
+               Perm       => Permission (Orig_Tree),
+               Found_Perm => Permission (New_Tree),
                Expl       => Explanation (New_Tree));
          end if;
 
@@ -2497,9 +2497,9 @@ package body Gnat2Why.Borrow_Checker is
                   then
                      Perm_Error_Loop_Exit
                        (E, Stmt,
-                        Children_Permission (New_Tree),
-                        Children_Permission (Orig_Tree),
-                        Explanation (New_Tree));
+                        Perm       => Children_Permission (Orig_Tree),
+                        Found_Perm => Children_Permission (New_Tree),
+                        Expl       => Explanation (New_Tree));
                   end if;
 
                when Reference =>
@@ -2508,9 +2508,9 @@ package body Gnat2Why.Borrow_Checker is
                   then
                      Perm_Error_Loop_Exit
                        (E, Stmt,
-                        Children_Permission (New_Tree),
-                        Null_Permission (Orig_Tree),
-                        Explanation (New_Tree));
+                        Perm       => Null_Permission (Orig_Tree),
+                        Found_Perm => Children_Permission (New_Tree),
+                        Expl       => Explanation (New_Tree));
                   end if;
 
                   Check_Is_More_Restrictive_Tree_Than
@@ -2522,9 +2522,9 @@ package body Gnat2Why.Borrow_Checker is
                   then
                      Perm_Error_Loop_Exit
                        (E, Stmt,
-                        Children_Permission (New_Tree),
-                        Bounds_Permission (Orig_Tree),
-                        Explanation (New_Tree));
+                        Perm       => Bounds_Permission (Orig_Tree),
+                        Found_Perm => Children_Permission (New_Tree),
+                        Expl       => Explanation (New_Tree));
                   end if;
 
                   Check_Is_More_Restrictive_Tree_Than
@@ -2553,9 +2553,9 @@ package body Gnat2Why.Borrow_Checker is
                   then
                      Perm_Error_Loop_Exit
                        (E, Stmt,
-                        Null_Permission (New_Tree),
-                        Children_Permission (Orig_Tree),
-                        Explanation (New_Tree));
+                        Perm       => Children_Permission (Orig_Tree),
+                        Found_Perm => Null_Permission (New_Tree),
+                        Expl       => Explanation (New_Tree));
                   end if;
 
                   Check_Is_Less_Restrictive_Tree_Than
@@ -2566,9 +2566,9 @@ package body Gnat2Why.Borrow_Checker is
                   then
                      Perm_Error_Loop_Exit
                        (E, Stmt,
-                        Null_Permission (New_Tree),
-                        Null_Permission (Orig_Tree),
-                        Explanation (New_Tree));
+                        Perm       => Null_Permission (Orig_Tree),
+                        Found_Perm => Null_Permission (New_Tree),
+                        Expl       => Explanation (New_Tree));
                   end if;
 
                   Check_Is_Less_Restrictive_Tree
@@ -2586,9 +2586,9 @@ package body Gnat2Why.Borrow_Checker is
                   then
                      Perm_Error_Loop_Exit
                        (E, Stmt,
-                        Bounds_Permission (New_Tree),
-                        Children_Permission (Orig_Tree),
-                        Explanation (New_Tree));
+                        Perm       => Children_Permission (Orig_Tree),
+                        Found_Perm => Bounds_Permission (New_Tree),
+                        Expl       => Explanation (New_Tree));
                   end if;
 
                   Check_Is_Less_Restrictive_Tree_Than
@@ -2600,9 +2600,9 @@ package body Gnat2Why.Borrow_Checker is
                   then
                      Perm_Error_Loop_Exit
                        (E, Stmt,
-                        Bounds_Permission (New_Tree),
-                        Bounds_Permission (Orig_Tree),
-                        Explanation (New_Tree));
+                        Perm       => Bounds_Permission (Orig_Tree),
+                        Found_Perm => Bounds_Permission (New_Tree),
+                        Expl       => Explanation (New_Tree));
                   end if;
 
                   Check_Is_Less_Restrictive_Tree
