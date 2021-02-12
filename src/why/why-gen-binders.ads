@@ -101,7 +101,7 @@ package Why.Gen.Binders is
       --  in Why3.
 
       Init  : Opt_Id;
-      --  Optional init flag for types which have Init_By_Proof
+      --  Optional init flag for scalar objects which have Init_By_Proof
 
       case Kind is
          --  Common case where mapping from Ada object to Why object is 1 to 1

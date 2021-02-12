@@ -60,6 +60,7 @@ with Why.Atree.Builders;             use Why.Atree.Builders;
 with Why.Atree.Modules;              use Why.Atree.Modules;
 with Why.Atree.Mutators;             use Why.Atree.Mutators;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
+with Why.Gen.Init;                   use Why.Gen.Init;
 with Why.Gen.Names;                  use Why.Gen.Names;
 with Why.Gen.Pointers;               use Why.Gen.Pointers;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
@@ -1108,15 +1109,20 @@ package body Gnat2Why.Subprograms is
                begin
                   if not Is_Concurrent_Type (Entity) then
                      declare
+                        Init_Id  : constant W_Expr_Id :=
+                          Get_Init_Id_From_Object (Entity, Params.Ref_Allowed);
                         Dyn_Prop : constant W_Pred_Id :=
                           Compute_Dynamic_Invariant
-                            (Expr   =>
+                            (Expr        =>
                                +Transform_Identifier (Params   => Params,
                                                       Expr     => Entity,
                                                       Ent      => Entity,
                                                       Domain   => EW_Term),
-                             Ty     => Etype (Entity),
-                             Params => Params);
+                             Ty          => Etype (Entity),
+                             Params      => Params,
+                             Initialized =>
+                               (if Init_Id /= Why_Empty then +Init_Id
+                                else True_Term));
                      begin
                         Dynamic_Prop_Effects := +New_And_Expr
                           (Left   => +Dynamic_Prop_Effects,

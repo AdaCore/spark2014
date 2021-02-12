@@ -24,7 +24,7 @@ test_loops.adb:60:07: info: range check proved (CVC4: 1 VC), in call inlined at 
 test_loops.adb:60:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at test_loops.adb:101
 test_loops.adb:60:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at test_loops.adb:74
 test_loops.adb:60:12: info: range check proved (CVC4: 1 VC), in call inlined at test_loops.adb:74
-test_loops.adb:60:12: medium: initialization check might fail, in call inlined at test_loops.adb:74
+test_loops.adb:60:12: medium: initialization check might fail, in call inlined at test_loops.adb:74 (e.g. when R'First = 1 and R'Last = 3)
 test_loops.adb:63:28: info: initialization of "X" proved
 test_loops.adb:67:16: medium: initialization check might fail
 test_loops.adb:68:16: info: initialization check proved (CVC4: 3 VC; Trivial: 3 VC)

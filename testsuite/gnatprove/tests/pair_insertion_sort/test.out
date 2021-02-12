@@ -7,7 +7,7 @@ pair_insertion_sort.adb:15:55: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:15:72: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:17:07: info: initialization of "Temp" proved
 pair_insertion_sort.adb:20:07: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:20:47: info: length check proved (Trivial: 2 VC; Z3: 2 VC)
+pair_insertion_sort.adb:20:47: info: length check proved (Trivial: 1 VC; Z3: 3 VC)
 pair_insertion_sort.adb:20:47: info: predicate check proved (Z3: 1 VC)
 pair_insertion_sort.adb:21:07: info: initialization of "Interm" proved
 pair_insertion_sort.adb:21:07: info: range check proved (Z3: 2 VC)
@@ -31,7 +31,7 @@ pair_insertion_sort.adb:47:22: info: assertion proved (Z3: 1 VC)
 pair_insertion_sort.adb:47:22: info: precondition proved (Z3: 2 VC)
 pair_insertion_sort.adb:47:45: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:48:14: info: length check proved (Trivial: 1 VC; Z3: 3 VC)
-pair_insertion_sort.adb:48:17: info: length check proved (Trivial: 2 VC; Z3: 2 VC)
+pair_insertion_sort.adb:48:17: info: length check proved (Trivial: 1 VC; Z3: 3 VC)
 pair_insertion_sort.adb:48:17: info: predicate check proved (Z3: 1 VC)
 pair_insertion_sort.adb:50:07: info: predicate check proved (Z3: 1 VC)
 pair_insertion_sort.adb:50:15: info: index check proved (Z3: 2 VC)
@@ -45,7 +45,7 @@ pair_insertion_sort.adb:58:13: info: initialization of "X" proved
 pair_insertion_sort.adb:58:16: info: initialization of "Y" proved
 pair_insertion_sort.adb:58:19: info: initialization of "Z" proved
 pair_insertion_sort.adb:59:07: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:59:36: info: length check proved (Trivial: 2 VC; Z3: 2 VC)
+pair_insertion_sort.adb:59:36: info: length check proved (Trivial: 1 VC; Z3: 3 VC)
 pair_insertion_sort.adb:59:36: info: predicate check proved (Z3: 1 VC)
 pair_insertion_sort.adb:62:18: info: range check proved (Z3: 2 VC)
 pair_insertion_sort.adb:63:17: info: index check proved (Z3: 4 VC)

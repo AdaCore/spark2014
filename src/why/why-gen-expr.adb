@@ -553,29 +553,9 @@ package body Why.Gen.Expr is
         and then Is_Init_Wrapper_Type (From) = Is_Init_Wrapper_Type (To)
       then
 
-         --  In the case of unconstrained arrays, the Ada entity may be equal,
-         --  but in Why we have to convert from the split representation to the
-         --  unique representation. This is checked here.
+         --  No range check needed
 
-         if not Has_Static_Array_Type (To_Ent) then
-            if Get_Type_Kind (From) = EW_Split and then
-              Get_Type_Kind (To) = EW_Abstract
-            then
-               return Array_Convert_From_Base (Domain, Expr);
-            elsif Get_Type_Kind (From) = EW_Abstract and then
-              Get_Type_Kind (To) = EW_Split
-            then
-               return Array_Convert_To_Base (Domain, Expr);
-            else
-               return Expr;
-            end if;
-
-         else
-
-            --  No range check needed
-
-            return Expr;
-         end if;
+         return Expr;
       end if;
 
       --  Check for initialization if needed. We also need an initialization
@@ -605,16 +585,6 @@ package body Why.Gen.Expr is
          Split_T : W_Expr_Id;
          --  Placeholder to store the value of T before reconstruction. It is
          --  used to generate the predicate check.
-
-         To_Is_Abstract      : constant Boolean :=
-           not Is_Static_Array_Type (To_Ent)
-           and then Get_Type_Kind (To) /= EW_Split;
-         Need_Reconstruction : constant Boolean :=
-           To_Is_Abstract
-           or else (not Is_Static_Array_Type (To_Ent)
-                    and then Pred_Check);
-         --  Reconstruction is needed if To is in abstract form or if a
-         --  predicate check is required.
 
          Need_Elt_Conv       : constant Boolean :=
            Retysp (Component_Type (To_Ent)) /=
@@ -648,12 +618,13 @@ package body Why.Gen.Expr is
                   Typ    => Get_Type (Args (1)));
             end;
 
-            --  If reconstruction is needed, fill the Args array.
+            --  If To isn't a statically constrained array type, fill the Args
+            --  array to allow reconstruction.
             --  Here, we must get attributes from the type as the slided
             --  expression has no registered bounds. It is OK since To must
             --  be constrained.
 
-            if Need_Reconstruction then
+            if not Is_Static_Array_Type (To_Ent)  then
                Arg_Ind := 1;
                Add_Map_Arg (Domain, Args, T, Arg_Ind);
 
@@ -668,21 +639,18 @@ package body Why.Gen.Expr is
             end if;
 
          --  If reconstruction is needed, fill the Args array. T is the
-         --  first element of Args. It will be Arr_Expr if from is split
-         --  and To_Array (Arr_Expr) otherwise.
+         --  first element of Args.
 
-         elsif Need_Reconstruction then
+         elsif not Is_Static_Array_Type (To_Ent) then
             Add_Array_Arg (Domain, Args, Arr_Expr, Arg_Ind);
             T := Args (1);
 
-         --  Both are in split form, T is Arr_Expr
+         --  Both are statically constrained, T is Arr_Expr
 
-         elsif Is_Static_Array_Type (From_Ent)
-           or else Get_Type_Kind (From) = EW_Split
-         then
+         elsif Is_Static_Array_Type (From_Ent) then
             T := Arr_Expr;
 
-         --  To is in split form but not From. Split From.
+         --  To is in constrained but not From. Convert From to base.
 
          else
             T := Array_Convert_To_Base
@@ -744,7 +712,7 @@ package body Why.Gen.Expr is
 
          --  5. Reconstruct the array if needed
 
-         if To_Is_Abstract then
+         if not Is_Static_Array_Type (To_Ent) then
             Args (1) := T;
             T :=
               New_Call
@@ -829,20 +797,6 @@ package body Why.Gen.Expr is
       T := Binding_For_Temp (Domain  => Domain,
                              Tmp     => Arr_Expr,
                              Context => T);
-
-      --  Introduce an empty label to preserve the Ada node of Expr if any.
-      --  This should avoid all the risk of erasing the Ada node of an array
-      --  variable in split form while doing a conversion.
-
-      if Get_Type_Kind (From) = EW_Split
-        and then Get_Type_Kind (To) = EW_Split
-      then
-         T := New_Label (Ada_Node => Get_Entity_Of_Variable (Expr),
-                         Domain   => Domain,
-                         Labels   => Symbol_Sets.Empty_Set,
-                         Def      => T,
-                         Typ      => To);
-      end if;
 
       return T;
    end Insert_Array_Conversion;

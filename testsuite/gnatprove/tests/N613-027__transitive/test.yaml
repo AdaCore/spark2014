@@ -1,2 +1,2 @@
 prove_all:
-  steps: 250
+  steps: 5000

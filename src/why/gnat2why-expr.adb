@@ -716,9 +716,7 @@ package body Gnat2Why.Expr is
      (Expr     : W_Expr_Id;
       Inv_Subp : Entity_Id;
       Domain   : EW_Domain;
-      Params   : Transformation_Params) return W_Expr_Id
-   with Pre => Get_Type_Kind (Get_Type (Expr)) /= EW_Split
-     or else not Has_Array_Type (Get_Ada_Node (+Get_Type (Expr)));
+      Params   : Transformation_Params) return W_Expr_Id;
    --  Transform the expression of a type_invariant
    --  @param Expr expression on which the invariant is called
    --  @param Inv_Subp entity of the invariant procedure
@@ -1549,14 +1547,23 @@ package body Gnat2Why.Expr is
 
       --  Assume dynamic property of E
 
-      Context := Sequence
-        (Context,
-         Assume_Dynamic_Invariant
-           (Expr          => +L_Id,
-            Ty            => Etype (E),
-            Initialized   => Initialized,
-            Only_Var      => False,
-            Top_Predicate => Top_Predicate));
+      declare
+         Init_Id : constant W_Expr_Id := Get_Init_Id_From_Object
+           (E, Params.Ref_Allowed);
+         Dyn_Inv : constant W_Prog_Id := New_Assume_Statement
+           (Pred => Compute_Dynamic_Invariant
+              (Expr          => +L_Id,
+               Ty            => Etype (E),
+               Initialized   =>
+                 (if Init_Id /= Why_Empty then +Init_Id
+                  elsif Initialized then True_Term else False_Term),
+               Params        => Body_Params,
+               Only_Var      => False_Term,
+               Top_Predicate =>
+                 (if Top_Predicate then True_Term else False_Term)));
+      begin
+         Context := Sequence (Context, Dyn_Inv);
+      end;
 
       --  Assume value if constant
 
@@ -3180,17 +3187,13 @@ package body Gnat2Why.Expr is
                   and then not Aliasing
                   and then not
                     Has_Async_Writers (Direct_Mapping_Id (Formal))));
-            Fetch_Ty      : constant W_Type_Id :=
-              (if not Is_Self
-                 and then Has_Array_Type (Etype (Formal))
-                 and then Get_Type_Kind (Formal_T) = EW_Split
-               then EW_Abstract
-                 (Etype (Formal),
-                  Relaxed_Init => Is_Init_Wrapper_Type (Formal_T))
-               else Formal_T);
-            --  We use an abstract type for arrays so that bounds can be
-            --  retrieved.
 
+            Subdomain     : constant EW_Domain :=
+              (if not Is_Self
+               and then (Is_Scalar_Type (Retysp (Etype (Formal)))
+                 or else Is_Access_Type (Retysp (Etype (Formal))))
+               and then Domain = EW_Prog
+               then EW_Pterm else Domain);
             Actual_Expr   : constant W_Expr_Id :=
             --  Expression for the actual
 
@@ -3207,21 +3210,26 @@ package body Gnat2Why.Expr is
 
                --  Do not check initialization of out parameters. If the
                --  parameter is a scalar or an access type, no checks are
-               --  introduced.
+               --  introduced. For complex expression, the translation of the
+               --  Actual is still done in the Prog domain to generate checks
+               --  inside the expression. If the Actual is an identifier, use
+               --  EW_Pterm to avoid initialization checks.
 
                elsif Ekind (Formal) = E_Out_Parameter
                then Insert_Checked_Conversion
                  (Ada_Node => Actual,
-                  Domain   =>
-                    (if (Is_Scalar_Type (Retysp (Etype (Formal)))
-                     or else Is_Access_Type (Retysp (Etype (Formal))))
-                       and then Domain = EW_Prog
-                     then EW_Pterm else Domain),
-                  Expr     => Transform_Expr
-                    (Expr          => Actual,
-                     Domain        => Domain,
-                     Params        => Params),
-                  To       => Fetch_Ty,
+                  Domain   => Subdomain,
+                  Expr     =>
+                    (if Nkind (Actual) in N_Identifier | N_Expanded_Name
+                     then Transform_Expr
+                       (Expr   => Actual,
+                        Domain => Subdomain,
+                        Params => Params)
+                     else Transform_Expr
+                       (Expr   => Actual,
+                        Domain => Domain,
+                        Params => Params)),
+                  To       => Formal_T,
                   No_Init  => True)
 
                --  Otherwise, directly use the expected type for the conversion
@@ -3230,7 +3238,7 @@ package body Gnat2Why.Expr is
                  (Expr          => Actual,
                   Domain        => Domain,
                   Params        => Params,
-                  Expected_Type => Fetch_Ty));
+                  Expected_Type => Formal_T));
 
             Actual_Tmp    : W_Expr_Id;
             --  Temporary identifier to store the actual expression
@@ -5783,28 +5791,7 @@ package body Gnat2Why.Expr is
       --  time (preventing name capture), and that the type of Expr is used as
       --  the type used to represent Pred_Param (avoiding type conversion).
 
-      if Get_Type_Kind (Get_Type (+Expr)) = EW_Split
-        and then Has_Array_Type (Get_Ada_Node (+Get_Type (+Expr)))
-      then
-         declare
-            E : constant Item_Type :=
-              Ada_Ent_To_Why.Element
-                (Symbol_Table, Get_Entity_Of_Variable (+Expr));
-         begin
-            Insert_Item
-              (I => Item_Type'(Kind    => UCArray,
-                               Local   => E.Local,
-                               Init    => <>,
-                               Content =>
-                                 Binder_Type'(B_Name => Pred_Id,
-                                              others => <>),
-                               Dim     => E.Dim,
-                               Bounds  => E.Bounds),
-               E => Pred_Param);
-         end;
-      else
-         Insert_Entity (Pred_Param, Pred_Id);
-      end if;
+      Insert_Entity (Pred_Param, Pred_Id);
 
       --  Transform the predicate expression into Why3
 
@@ -6050,7 +6037,6 @@ package body Gnat2Why.Expr is
                   Name    => Pattern.Content.B_Name,
                   Value   =>
                     (if Has_Static_Array_Type (Get_Ada_Node (+Get_Type (Expr)))
-                     or else Get_Type_Kind (Get_Type (Expr)) = EW_Split
                      then Expr
                      else Array_Convert_To_Base (Domain => EW_Prog,
                                                  Ar     => Expr))));
@@ -6815,9 +6801,7 @@ package body Gnat2Why.Expr is
       --  be inserted in the set as it is handled specially.
 
       function Tmp_Of_Expr (Expr : W_Expr_Id) return W_Identifier_Id;
-      --  Return a temporary identifier suitable to be used in place of Expr.
-      --  It has the same type and if the type is an array in split form, an
-      --  appropriate Ada node to retrieve the bounds.
+      --  Return a temporary identifier suitable to be used in place of Expr
 
       ------------------
       -- Can_Be_Moved --
@@ -6955,15 +6939,9 @@ package body Gnat2Why.Expr is
 
       function Tmp_Of_Expr (Expr : W_Expr_Id) return W_Identifier_Id is
          Typ  : constant W_Type_Id := Get_Type (+Expr);
-         Node : constant Node_Id :=
-           (if Get_Type_Kind (Typ) = EW_Split
-              and then Has_Array_Type (Get_Ada_Node (+Typ))
-            then Get_Entity_Of_Variable (Expr)
-            else Empty);
       begin
          return New_Temp_Identifier
-           (Ada_Node  => Node,
-            Typ       => Typ,
+           (Typ       => Typ,
             Base_Name => "for_move");
       end Tmp_Of_Expr;
 
@@ -7314,26 +7292,15 @@ package body Gnat2Why.Expr is
             Args       : W_Expr_Array
               (1 .. Item_Array_Length ((1 => Pattern)));
             T          : W_Prog_Id;
-            W_Expr     : W_Expr_Id := +Tmp;
-            Exp_Typ    : W_Type_Id := Get_Why_Type_From_Item (Pattern);
-
-         begin
-            --  Get_Item_From_Var and Get_Item_From_Expr expect an expression
-            --  of the pattern type but with arrays to be in abstract form.
-
-            if Has_Array_Type (Etype (Expr))
-              and then Get_Type_Kind (Exp_Typ) = EW_Split
-            then
-               Exp_Typ := EW_Abstract
-                 (Get_Ada_Node (+Exp_Typ), Get_Relaxed_Init (Exp_Typ));
-            end if;
-
-            W_Expr := Insert_Simple_Conversion
+            Exp_Typ    : constant W_Type_Id :=
+              Get_Why_Type_From_Item (Pattern);
+            W_Expr     : constant W_Expr_Id := Insert_Simple_Conversion
               (Domain         => EW_Pterm,
-               Expr           => W_Expr,
+               Expr           => +Tmp,
                To             => Exp_Typ,
                Force_No_Slide => True);
 
+         begin
             --  If Expr is a whole object, try to reuse the references of Expr
 
             if Is_Simple_Actual (Expr) then
@@ -7555,7 +7522,8 @@ package body Gnat2Why.Expr is
                     (Ada_Node => Ada_Node,
                      Name     => Binder.Content.B_Name,
                      Labels   => Symbol_Sets.Empty_Set,
-                     Value    => +Right_Side,
+                     Value    => +Array_Convert_To_Base
+                       (Ar => +Right_Side, Domain => EW_Prog),
                      Typ      => Get_Typ (Binder.Content.B_Name)));
 
             when DRecord =>
@@ -12266,26 +12234,9 @@ package body Gnat2Why.Expr is
       if Is_Deep (Typ)
         and then not Is_Anonymous_Access_Type (Typ)
       then
-
-         --  If T is an array in split form, we need to be able to retrieve
-         --  its bounds. Use a label to provide the appropriate Ada node.
-
          declare
-            Is_Split : constant Boolean :=
-              Get_Type_Kind (Get_Type (+T)) = EW_Split
-              and then Has_Array_Type (Get_Ada_Node (+Get_Type (+T)));
-            pragma Assert
-              (if Is_Split
-               then Nkind (Lvalue) in N_Identifier | N_Expanded_Name);
-            Tmp      : W_Expr_Id;
+            Tmp : W_Expr_Id;
          begin
-            if Is_Split then
-               T := New_Label (Ada_Node => Entity (Lvalue),
-                               Labels   => Symbol_Sets.Empty_Set,
-                               Def      => +T,
-                               Typ      => Get_Type (+T));
-            end if;
-
             Insert_Move_Of_Deep_Parts (Stmt    => Stmt,
                                        Lhs_Typ => Typ,
                                        Expr    => T);
@@ -12845,8 +12796,20 @@ package body Gnat2Why.Expr is
                               Why_Expr : constant W_Expr_Id :=
                                 Transform_Expr (Var, Domain, Params);
                            begin
-                              T := Get_Array_Attr
-                                (Domain, Why_Expr, Attr_Id, Dim, Typ => Typ);
+                              if Nkind (Var) in N_Identifier | N_Expanded_Name
+                              then
+                                 T := Get_Array_Attr
+                                   (Domain,
+                                    Ada_Ent_To_Why.Element
+                                      (Symbol_Table, Entity (Var)),
+                                    Attr_Id, Dim, Typ => Typ);
+                              else
+                                 T := Get_Array_Attr
+                                   (Domain,
+                                    Why_Expr,
+                                    Attr_Id, Dim, Typ => Typ);
+                              end if;
+
                               if Domain = EW_Prog then
                                  T := +Sequence
                                    (New_Ignore (Prog => +Why_Expr), +T);
@@ -13457,6 +13420,20 @@ package body Gnat2Why.Expr is
          --  'Initialized necessarily returns False on uninitialized data.
 
          when Attribute_Initialized =>
+
+            --  If Var has its own Init flag, use it
+
+            if Nkind (Var) in N_Identifier | N_Expanded_Name then
+               declare
+                  Init_Flag : constant W_Expr_Id :=
+                    Get_Init_Id_From_Object (Entity (Var), Params.Ref_Allowed);
+               begin
+                  if Init_Flag /= Why_Empty then
+                     return Init_Flag;
+                  end if;
+               end;
+            end if;
+
             declare
                Expr : constant W_Expr_Id :=
                  Transform_Expr
@@ -14572,9 +14549,7 @@ package body Gnat2Why.Expr is
                                             To     => Comp_Type),
                   Right_First,
                   Type_Of_Node (Ada_Node))
-               elsif Is_Static_Array_Type (Right_Type)
-               or else (Get_Type_Kind (Get_Type (Right_Expr)) = EW_Split)
-               then Right_Expr
+               elsif Is_Static_Array_Type (Right_Type) then Right_Expr
                else Array_Convert_To_Base (Domain => Domain,
                                            Ar     => Right_Expr));
             Condition   : constant W_Expr_Id :=
@@ -15261,6 +15236,7 @@ package body Gnat2Why.Expr is
                      Emit_Static_Proof_Result
                        (Decl, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
+
                      if not Is_Top_Level_Address_Clause then
                         Emit_Static_Proof_Result
                           (Decl,
@@ -17826,11 +17802,6 @@ package body Gnat2Why.Expr is
       C          : constant Ada_Ent_To_Why.Cursor :=
         Ada_Ent_To_Why.Find (Symbol_Table, Ent);
       T          : W_Expr_Id;
-      Need_Deref : Boolean := False;
-      --  Whether dereference need to be applied
-
-      Init_Id    : Opt_Id;
-      --  Identifier for intialization flag if any
 
    begin
       --  The special cases of this function are:
@@ -17845,149 +17816,162 @@ package body Gnat2Why.Expr is
       if Ada_Ent_To_Why.Has_Element (C) then
          declare
             E : constant Item_Type := Ada_Ent_To_Why.Element (C);
+
          begin
-            Init_Id := E.Init;
+            if Selector /= Why.Inter.Standard then
+               pragma Assert (Is_Subprogram_Or_Entry (Ent));
+               declare
+                  Ty : constant W_Type_Id := Get_Why_Type_From_Item (E);
+               begin
+                  T := +To_Why_Id (Ent, Domain,
+                                   Selector => Selector,
+                                   Typ      => Ty);
+               end;
 
             --  If E is a function and Domain is Prog, use the program specific
             --  identifier instead.
 
-            case E.Kind is
-               when Func =>
-                  if Domain = EW_Prog then
-                     T := +E.For_Prog.B_Name;
-                  else
-                     T := +E.For_Logic.B_Name;
-                  end if;
+            elsif E.Kind = Func then
+               if Domain = EW_Prog then
+                  T := +E.For_Prog.B_Name;
+               else
+                  T := +E.For_Logic.B_Name;
+               end if;
+            else
+               T := Reconstruct_Item (E, Params.Ref_Allowed);
 
-               when Regular
-                  | Concurrent_Self
-               =>
-                  T := +E.Main.B_Name;
-                  Need_Deref := E.Main.Mutable;
+               --  If we have an object with Async_Writers, we must havoc it
+               --  before dereferencing it. Given a ref term t, this produces
+               --  the sequence:
+               --     (__havoc(t); !t)
+               --  It is sound (and necessary) to only do that in the program
+               --  domain. We can be sure that the relevant Ada code will pass
+               --  this point at least once in program domain.
 
-               when UCArray =>
-                  T := +E.Content.B_Name;
-                  Need_Deref := E.Content.Mutable;
+               if Has_Async_Writers (Direct_Mapping_Id (Ent))
+                 and then Domain in EW_Prog | EW_Pterm
+                 and then Params.Ref_Allowed
+               then
+                  pragma Assert (Is_Mutable_In_Why (Ent));
 
-               when DRecord =>
-                  T := Record_From_Split_Form (E, Params.Ref_Allowed);
+                  --  Assume dynamic invariant of the object after havoc
 
-                  --  Havoc the references of Ent for volatiles with
-                  --  Async_Writers.
+                  declare
+                     Typ      : constant Entity_Id :=
+                       Get_Ada_Type_From_Item (E);
+                     Dyn_Prop : constant W_Pred_Id :=
+                       Compute_Dynamic_Invariant (Expr   => +T,
+                                                  Ty     => Typ,
+                                                  Params => Params);
+                     Havoc    : W_Prog_Id := +Void;
+                  begin
+                     case E.Kind is
+                        when Func =>
+                           raise Program_Error;
+                        when Regular | Concurrent_Self =>
+                           if E.Main.Mutable then
+                              Havoc := New_Havoc_Call (E.Main.B_Name);
+                           end if;
 
-                  if Has_Async_Writers (Direct_Mapping_Id (Ent))
-                    and then Domain = EW_Prog
-                  then
-                     pragma Assert (Is_Mutable_In_Why (Ent));
-                     pragma Assert (Params.Ref_Allowed);
+                        when UCArray =>
+                           pragma Assert (E.Content.Mutable);
+                           Havoc := New_Havoc_Call (E.Content.B_Name);
 
-                     --  Assume dynamic invariant of the object after havoc
+                        when DRecord =>
 
-                     declare
-                        Dyn_Prop : constant W_Pred_Id :=
-                          Compute_Dynamic_Invariant (Expr   => +T,
-                                                     Ty     => E.Typ,
-                                                     Params => Params);
-                     begin
+                           --  Havoc the reference for fields
+
+                           if E.Fields.Present then
+                              pragma Assert (E.Fields.Binder.Mutable);
+
+                              Havoc := +Sequence
+                                (New_Havoc_Call (E.Fields.Binder.B_Name),
+                                 +Havoc);
+                           end if;
+
+                           --  If the object is not constrained then also havoc
+                           --  the reference for discriminants.
+
+                           if E.Discrs.Present and then E.Discrs.Binder.Mutable
+                           then
+                              pragma Assert (E.Constr.Present);
+
+                              declare
+                                 Havoc_Discr      : constant W_Prog_Id :=
+                                   New_Havoc_Call (E.Discrs.Binder.B_Name);
+                                 Havoc_Discr_Cond : constant W_Expr_Id :=
+                                   New_Conditional
+                                     (Domain      => EW_Prog,
+                                      Condition   => New_Not
+                                        (Domain   => EW_Prog,
+                                         Right    => +E.Constr.Id),
+                                      Then_Part   => +Havoc_Discr);
+                              begin
+                                 Havoc :=
+                                   +Sequence (+Havoc_Discr_Cond, +Havoc);
+                              end;
+                           end if;
+
+                        when Pointer =>
+
+                           --  Havoc the reference for value
+
+                           pragma Assert (E.Value.Mutable);
+
+                           Havoc := New_Havoc_Call (E.Value.B_Name);
+
+                           --  If the object is mutable then also havoc the
+                           --  address and is_null.
+
+                           if E.Mutable then
+                              Havoc := +Sequence
+                                (New_Havoc_Call (E.Address), +Havoc);
+                              Havoc := +Sequence
+                                (New_Havoc_Call (E.Is_Null), +Havoc);
+                           end if;
+
+                           --  Do not havoc the reference for is_moved, as we
+                           --  don't consider that an asynchronous writer could
+                           --  move the object.
+                     end case;
+
+                     if Havoc /= +Void then
                         if Dyn_Prop /= True_Pred then
                            T := +Sequence
                              (New_Assume_Statement (Pred => Dyn_Prop),
                               +T);
                         end if;
-                     end;
-
-                     --  Havoc the reference for fields
-
-                     if E.Fields.Present then
-                        pragma Assert (E.Fields.Binder.Mutable);
-
                         T := +Sequence
-                          (New_Havoc_Call (E.Fields.Binder.B_Name),
+                          (Havoc,
                            +T);
                      end if;
+                  end;
+               end if;
 
-                     --  If the object is not constrained then also havoc the
-                     --  reference for discriminants.
+               --  Introduce initialization check if the object has an Init
+               --  component.
 
-                     if E.Discrs.Present and then E.Discrs.Binder.Mutable then
-                        pragma Assert (E.Constr.Present);
-
-                        declare
-                           Havoc_Discr      : constant W_Prog_Id :=
-                             New_Havoc_Call (E.Discrs.Binder.B_Name);
-                           Havoc_Discr_Cond : constant W_Expr_Id :=
-                             New_Conditional
-                               (Domain      => EW_Prog,
-                                Condition   => New_Not
-                                  (Domain   => EW_Prog,
-                                   Right    => +E.Constr.Id),
-                                Then_Part   => +Havoc_Discr);
-                        begin
-                           T := +Sequence (+Havoc_Discr_Cond, +T);
-                        end;
-                     end if;
-                  end if;
-
-               when Pointer =>
-                  T := Pointer_From_Split_Form (E, Params.Ref_Allowed);
-
-                  --  Havoc the references of Ent for volatiles with
-                  --  Async_Writers.
-
-                  if Has_Async_Writers (Direct_Mapping_Id (Ent))
-                    and then Domain = EW_Prog
-                  then
-                     pragma Assert (Is_Mutable_In_Why (Ent));
-                     pragma Assert (Params.Ref_Allowed);
-
-                     --  Assume dynamic invariant of the object after havoc
-
+               if Domain = EW_Prog then
+                  if E.Init.Present then
                      declare
-                        E_Typ    : constant Entity_Id :=
-                          Etype (E.Value.Ada_Node);
-                        Dyn_Prop : constant W_Pred_Id :=
-                          Compute_Dynamic_Invariant (Expr   => +T,
-                                                     Ty     => E_Typ,
-                                                     Params => Params);
+                        Init_Flag : constant W_Expr_Id :=
+                          (if Params.Ref_Allowed
+                           then New_Deref
+                             (Right => E.Init.Id, Typ => EW_Bool_Type)
+                           else +E.Init.Id);
                      begin
-                        if Dyn_Prop /= True_Pred then
-                           T := +Sequence
-                             (New_Assume_Statement (Pred => Dyn_Prop),
-                              +T);
-                        end if;
+                        T := +Sequence
+                          (Left  => New_Assert
+                             (Pred        => +New_VC_Expr
+                                  (Expr,
+                                   +Pred_Of_Boolean_Term (+Init_Flag),
+                                   VC_Initialization_Check,
+                                   EW_Pred),
+                              Assert_Kind => EW_Assert),
+                           Right => +T);
                      end;
-
-                     --  Havoc the reference for value
-
-                     pragma Assert (E.Value.Mutable);
-
-                     T := +Sequence
-                       (New_Havoc_Call (E.Value.B_Name),
-                        +T);
-
-                     --  If the object is mutable then also havoc the address
-                     --  and is_null.
-
-                     if E.Mutable then
-                        T := +Sequence
-                          (New_Havoc_Call (E.Address), +T);
-                        T := +Sequence
-                          (New_Havoc_Call (E.Is_Null), +T);
-                     end if;
-
-                     --  Do not havoc the reference for is_moved, as we don't
-                     --  consider that an asynchronous writer could move the
-                     --  object.
                   end if;
-
-            end case;
-
-            --  ??? no use of T below when test succeeds? (except for its type)
-
-            if Selector /= Why.Inter.Standard then
-               T := +To_Why_Id (Ent, Domain,
-                                Selector => Selector,
-                                Typ      => Get_Type (T));
+               end if;
             end if;
          end;
 
@@ -18037,62 +18021,6 @@ package body Gnat2Why.Expr is
          Ada.Text_IO.Put_Line ("[Transform_Identifier] unregistered entity "
                                & Full_Name (Ent));
          raise Program_Error;
-      end if;
-
-      --  If we have an object with Async_Writers, we must havoc it before
-      --  dereferencing it. Given a ref term t, this produces the sequence:
-      --     (__havoc(t); !t)
-      --  It is sound (and necessary) to only do that in the program domain. We
-      --  can be sure that the relevant Ada code will pass this point at least
-      --  once in program domain.
-
-      if Has_Async_Writers (Direct_Mapping_Id (Ent))
-        and then Domain = EW_Prog
-        and then Need_Deref
-        and then Params.Ref_Allowed
-      then
-         pragma Assert (Is_Mutable_In_Why (Ent));
-         declare
-            Deref    : constant W_Expr_Id :=
-              New_Deref (Ada_Node => Get_Ada_Node (+T),
-                         Right    => +T,
-                         Typ      => Get_Type (T));
-            Dyn_Prop : constant W_Pred_Id :=
-              Compute_Dynamic_Invariant (Expr   => +Deref,
-                                         Ty     => Etype (Ent),
-                                         Params => Params);
-            Havoc    : W_Prog_Id := New_Havoc_Call (+T);
-         begin
-            if Dyn_Prop /= True_Pred then
-
-               --  Assume dynamic invariant of the object after the havoc
-
-               Havoc := +Sequence
-                 (Havoc, New_Assume_Statement (Pred => Dyn_Prop));
-            end if;
-
-            T := +Sequence (Ada_Node => Get_Ada_Node (+T),
-                            Left     => Havoc,
-                            Right    => +Deref);
-         end;
-
-      elsif Params.Ref_Allowed and then Need_Deref then
-         pragma Assert (Is_Mutable_In_Why (Ent));
-         T := New_Deref (Ada_Node => Get_Ada_Node (+T),
-                         Right    => +T,
-                         Typ      => Get_Type (T));
-      end if;
-
-      --  If the init_id field is present, use a wrapper type in split form so
-      --  that initialization checks are inserted when necessary.
-
-      if Init_Id.Present then
-         T := New_Label
-           (Ada_Node => Ent,
-            Domain   => Domain,
-            Labels   => Symbol_Sets.Empty_Set,
-            Def      => T,
-            Typ      => EW_Split (Etype (Ent), Relaxed_Init => True));
       end if;
 
       return T;
@@ -20653,7 +20581,6 @@ package body Gnat2Why.Expr is
       if not Is_Static_Array_Type (Etype (Expr))
         and then
           not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Pref_Expr)))
-        and then Get_Type_Kind (Get_Type (Pref_Expr)) /= EW_Split
       then
          T := Array_Convert_To_Base (Domain, T);
       end if;
@@ -20861,13 +20788,6 @@ package body Gnat2Why.Expr is
             declare
                Lvalue : constant Entity_Id := Name (Stmt_Or_Decl);
                W_Ty   : constant W_Type_Id := Type_Of_Node (Lvalue);
-               pragma Assert
-                 (if Has_Array_Type (Etype (Lvalue))
-                    and then Get_Type_Kind (W_Ty) = EW_Split
-                  then Nkind (Lvalue) in N_Identifier | N_Expanded_Name
-                    and then Is_Object (Entity (Lvalue)));
-               --  Type_Of_Node only returns split array types on array objects
-
                T      : W_Prog_Id;
 
             begin
@@ -20879,16 +20799,7 @@ package body Gnat2Why.Expr is
                --  the assigned expression.
 
                Target_Name := New_Temp_Identifier
-                 (Ada_Node  =>
-                    (if Has_Array_Type (Etype (Lvalue))
-                     and then Get_Type_Kind (W_Ty) = EW_Split
-                     then Entity (Lvalue)
-                     else Empty),
-                  --  If W_Ty is a split array type, we need to use the
-                  --  Ada_Node of the entity associated to Lvalue so that
-                  --  bounds can be retrieved.
-
-                  Typ       => W_Ty,
+                 (Typ       => W_Ty,
                   Base_Name => "target");
 
                T := Transform_Assignment_Statement (Stmt_Or_Decl);

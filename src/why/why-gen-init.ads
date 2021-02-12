@@ -78,6 +78,12 @@ package Why.Gen.Init is
    --  happens for example when storing the expression in an object of its
    --  type, or when giving it as a parameter to a function call.
 
+   function Get_Init_Id_From_Object
+     (Obj         : Entity_Id;
+      Ref_Allowed : Boolean) return W_Expr_Id;
+   --  Return the init flag associated to Obj in the Symol_Table if any.
+   --  Otherwise, return Why_Empty.
+
    function Insert_Initialization_Check
      (Ada_Node               : Node_Id;
       E                      : Entity_Id;

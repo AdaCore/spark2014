@@ -31,6 +31,7 @@ with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
 with Why.Atree.Modules;    use Why.Atree.Modules;
+with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Gen.Expr;         use Why.Gen.Expr;
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
@@ -154,6 +155,12 @@ package Why.Gen.Arrays is
    with Pre => Is_Constrained (Ty);
    --  This variant of Add_Attr_Arg will only work for constrained types
 
+   function Array_From_Split_Form
+     (I           : Item_Type;
+      Ref_Allowed : Boolean) return W_Expr_Id
+   with Pre => I.Kind = UCArray;
+   --  Reconstructs a complete array from an item in split form.
+
    procedure Declare_Ada_Array (Th : Theory_UC; E : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration;
    --  E is the entity which contains the relevant type information (the
@@ -180,13 +187,6 @@ package Why.Gen.Arrays is
    with Pre => Get_Type_Kind (Get_Type (Ar)) = EW_Abstract;
    --  "Ar" must be a Why expression of unconstrained array type. Convert it to
    --  the "split" view of UC arrays
-
-   function Array_Convert_From_Base
-     (Domain : EW_Domain;
-      Ar     : W_Expr_Id) return W_Expr_Id
-   with Pre => Get_Type_Kind (Get_Type (Ar)) = EW_Split;
-   --  "Ar" must be a Why expression of unconstrained array type, in split
-   --  form. Convert it to the regular unconstrained form.
 
    function Array_Convert_From_Base
      (Domain : EW_Domain;
@@ -361,13 +361,6 @@ package Why.Gen.Arrays is
    --  The final value of Arg_Ind corresponds to the array index that follows
    --  the last argument filled in by this procedure.
 
-   function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
-     with Pre => Get_Type_Kind (Get_Type (E)) in EW_Split;
-   --  Return the Ada entity associated to an array expression in split form.
-   --  There is always one or we cannot reach to the object's bounds.
-   --  @param E Why expression for which we want an ada entity.
-   --  @result Ada entity associated to E that can be used to find its bounds.
-
    function Get_Array_Attr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
@@ -408,6 +401,22 @@ package Why.Gen.Arrays is
    --  @param Typ expected type of the result. It is only relevant for
    --         length attribute.
    --  @return the translated array type attribute into Why3
+
+   function Get_Array_Attr
+     (Domain : EW_Domain;
+      Item   : Item_Type;
+      Attr   : Attribute_Id;
+      Dim    : Positive;
+      Typ    : W_Type_Id := EW_Int_Type) return W_Expr_Id;
+   --  Get the expression for the attribute (first/last/length) of an array
+   --  item.
+   --  @param Domain the domain of the returned expression
+   --  @param Item the item for the array object
+   --  @param Attr the querried array attribute
+   --  @param Dim dimension of the attribute
+   --  @param Typ expected type of the result. It is only relevant for
+   --         length attribute.
+   --  @return the translated array attribute into Why3
 
    function New_Concat_Call
      (Domain             : EW_Domain;
