@@ -38,7 +38,7 @@ a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at names.adb:44
 names.adb:34:04: info: initialization of "Char_Table" proved
 names.adb:34:38: info: range check proved (CVC4: 1 VC)
-names.adb:48:49: medium: range check might fail
+names.adb:48:49: medium: range check might fail [reason for check: default component value must fit in the type]
 names.adb:51:04: info: initialization of "Entry_Table" proved
 names.adb:51:39: info: range check proved (CVC4: 1 VC)
 names.adb:63:30: info: division check proved (CVC4: 1 VC)
@@ -55,7 +55,7 @@ names.adb:89:22: info: assertion proved (CVC4: 1 VC)
 names.adb:90:22: info: assertion proved (CVC4: 1 VC)
 names.adb:92:07: medium: precondition might fail, cannot prove Length (Container) < Capacity (Container) [possible fix: precondition of subprogram at names.ads:9 should mention Entry_Table]
 names.adb:93:55: info: overflow check proved (CVC4: 1 VC)
-names.adb:93:55: medium: range check might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 2) [possible fix: loop at line 84 should mention Char_Table in a loop invariant]
+names.adb:93:55: medium: range check might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 2) [reason for check: result of subtraction must fit in component type] [possible fix: loop at line 84 should mention Char_Table in a loop invariant]
 names.adb:93:59: info: range check proved (CVC4: 1 VC)
 names.adb:94:32: info: range check proved (CVC4: 1 VC)
 names.adb:99:10: medium: precondition might fail, cannot prove Index in First_Index (Container) .. Last_Index (Container) (e.g. when Ptr = 2)

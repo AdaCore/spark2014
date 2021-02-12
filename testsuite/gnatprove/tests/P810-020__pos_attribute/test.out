@@ -1,6 +1,6 @@
 main.adb:11:04: info: initialization of "foo" proved
-main.adb:13:39: medium: range check might fail
-main.adb:14:39: medium: range check might fail
+main.adb:13:39: medium: range check might fail [reason for check: default component value must fit in the type]
+main.adb:14:39: medium: range check might fail [reason for check: default component value must fit in the type]
 main.adb:16:19: medium: assertion might fail (e.g. when off_c1 = 10000)
 main.adb:17:19: medium: assertion might fail (e.g. when off_c2 = 1)
 main.adb:18:24: info: range check proved (CVC4: 1 VC)
