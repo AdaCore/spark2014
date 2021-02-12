@@ -928,6 +928,10 @@ package body Flow_Error_Messages is
       Par : Node_Id := Atree.Parent (N);
       --  Enclosing expression to inform on context for the check
 
+      Arg : Node_Id := N;
+      --  Node whose parent is Par, when skipping type conversions introduced
+      --  by the frontend for Par.
+
       --  Name of the operation to use in more detailed message
       Oper : constant String :=
         (case Nkind (N) is
@@ -984,6 +988,7 @@ package body Flow_Error_Messages is
                          | N_Unchecked_Type_Conversion
         and then not Comes_From_Source (Par)
       loop
+         Arg := Par;
          Par := Atree.Parent (Par);
       end loop;
 
@@ -1114,19 +1119,8 @@ package body Flow_Error_Messages is
                | N_Entry_Call_Statement
             =>
                declare
-                  Arg   : Node_Id := N;
-                  Param : Entity_Id;
+                  Param : constant Entity_Id := Get_Formal_From_Actual (Arg);
                begin
-                  --  Retrieve the argument of the call, in case Par is not the
-                  --  direct parent of N, but higher in the parent chain due to
-                  --  intermediate frontend-generated type conversions.
-
-                  while Atree.Parent (Arg) /= Par loop
-                     Arg := Atree.Parent (Arg);
-                  end loop;
-
-                  Param := Get_Formal_From_Actual (Arg);
-
                   case Formal_Kind'(Ekind (Param)) is
                      when E_In_Parameter =>
                         return "input value must fit in parameter type";
