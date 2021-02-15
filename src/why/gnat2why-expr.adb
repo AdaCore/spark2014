@@ -16849,30 +16849,14 @@ package body Gnat2Why.Expr is
 
          when N_Unchecked_Type_Conversion =>
 
-            --  Source unchecked type conversion nodes were rewritten as such
-            --  by SPARK_Rewrite.Rewrite_Call, keeping the original call to an
-            --  instance of Unchecked_Conversion as the Original_Node of the
-            --  new N_Unchecked_Type_Conversion node, and marking the node as
-            --  coming from source. We translate this original node to Why.
+            --  Compiler-generated unchecked type conversions are transparent
+            --  for Why with our translation.
 
-            if Comes_From_Source (Expr) then
-               T := Transform_Expr (Original_Node (Expr),
-                                    Expected_Type,
-                                    Domain,
-                                    Local_Params);
-
-            --  Compiler-generated unchecked type conversions may have been
-            --  rewritten into the converted expression in SPARK_Rewrite, when
-            --  needed to propagate the Do_Range_Check flag to the converted
-            --  expression. In any case, they are transparent for Why with our
-            --  translation.
-
-            else
-               T := Transform_Expr (Expression (Expr),
-                                    Expected_Type,
-                                    Domain,
-                                    Local_Params);
-            end if;
+            pragma Assert (not Comes_From_Source (Expr));
+            T := Transform_Expr (Expression (Expr),
+                                 Expected_Type,
+                                 Domain,
+                                 Local_Params);
 
          when N_Function_Call =>
             declare

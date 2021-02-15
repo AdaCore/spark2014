@@ -185,42 +185,70 @@ package body Flow.Analysis.Antialiasing is
                       Formal_A, Formal_B : Entity_Id)
                       return Computed_Aliasing_Result
    is
-      --  Expressions are not interesting. Names are, but only some:
-      Is_Interesting : constant array (Node_Kind) of Boolean :=
-        (
-         --  Direct name
-         N_Identifier                => True,
-         N_Expanded_Name             => True,
-         N_Defining_Identifier       => True,
+      function Is_Interesting (N : Node_Id) return Boolean
+      with Pre => Nkind (N) in N_Defining_Identifier | N_Subexpr;
+      --  Returns True iff N is interesting from the aliasing point of view.
+      --  Only objects appearing as the global parameters and some names
+      --  appearing as actual parameters are interesting; other expressions are
+      --  not.
 
-         --  Explicit dereference is now in SPARK
-         N_Explicit_Dereference      => True,
+      --------------------
+      -- Is_Interesting --
+      --------------------
 
-         --  Indexed component and slices
-         N_Indexed_Component         => True,
-         N_Slice                     => True,
+      function Is_Interesting (N : Node_Id) return Boolean is
+      begin
+         case Nkind (N) is
 
-         --  Selected components
-         N_Selected_Component        => True,
+            --  Detect names as described by Ada RM 4.1(2/3)
 
-         --  Attribute references (the only interesting one is 'access which is
-         --  not in SPARK).
+            when
+               --  Direct name
+                 N_Identifier
+               | N_Expanded_Name
+               | N_Defining_Identifier
 
-         --  Type conversion
-         N_Qualified_Expression      => True,
-         N_Type_Conversion           => True,
+               --  Explicit dereference is now in SPARK
+               | N_Explicit_Dereference
 
-         --  Function call is boring in SPARK as it can't return access, except
-         --  for unchecked conversions.
-         N_Unchecked_Type_Conversion => True,
+               --  Indexed component and slices
+               | N_Indexed_Component
+               | N_Slice
 
-         --  Character literals, qualified expressions are boring
+               --  Selected components
+               | N_Selected_Component
 
-         --  Generalized reference and indexing are suitably expanded
+               --  Attribute references (the only interesting one is 'Access
+               --  which is not in SPARK).
 
-         --  Everything else must be an expression and is thus not interesting
+               --  Type conversion
+               | N_Qualified_Expression
+               | N_Type_Conversion
 
-         others                      => False);
+               | N_Unchecked_Type_Conversion
+            =>
+               return True;
+
+            --  Detect calls to instances of unchecked conversion. Other
+            --  function calls are not interesting, including those returning
+            --  access types, because that kind of aliasing should not be a
+            --  concern of flow analysis: either the result is newly allocated,
+            --  or it's a borrow/observe and dealt with by the borrow checker.
+
+            when N_Function_Call =>
+               return Is_Unchecked_Conversion_Instance (Get_Called_Entity (N));
+
+            --  Character literals, qualified expressions are boring
+
+            --  Generalized reference and indexing are suitably expanded
+
+            --  Everything else must be an expression and is thus not
+            --  interesting.
+
+            when others =>
+               return False;
+         end case;
+      end Is_Interesting;
 
       Is_Root : constant array (Node_Kind) of Boolean :=
         (N_Identifier          => True,
@@ -228,14 +256,32 @@ package body Flow.Analysis.Antialiasing is
          N_Defining_Identifier => True,
          others                => False);
 
-      Is_Conversion : constant array (Node_Kind) of Boolean :=
-        (N_Qualified_Expression      => True,
-         N_Type_Conversion           => True,
-         N_Unchecked_Type_Conversion => True,
-         others                      => False);
+      function Is_Conversion (N : Node_Id) return Boolean;
+      --  Returns True iff N represents an type conversion
+
+      -------------------
+      -- Is_Conversion --
+      -------------------
+
+      function Is_Conversion (N : Node_Id) return Boolean is
+      begin
+         case Nkind (N) is
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               return True;
+
+            when N_Function_Call =>
+               return Is_Unchecked_Conversion_Instance (Get_Called_Entity (N));
+
+            when others =>
+               return False;
+         end case;
+      end Is_Conversion;
 
       function Down_One_Level (N : Node_Id) return Node_Id
-      with Pre => Is_Interesting (Nkind (N))
+      with Pre => Is_Interesting (N)
                   and then not Is_Root (Nkind (N));
       --  Goes down the parse tree by one level. For example:
       --     * R.X.Y       ->  R.X
@@ -244,9 +290,9 @@ package body Flow.Analysis.Antialiasing is
       --     * Wibble (X)  ->  X
 
       procedure Find_Root (N : in out Node_Id; Depth : out Natural)
-      with Pre  => Is_Interesting (Nkind (N)),
+      with Pre  => Is_Interesting (N),
            Post => Is_Root (Nkind (N))
-                   or else not Is_Interesting (Nkind (N));
+                   or else not Is_Interesting (N);
       --  Calls Down_One_Level until we find an identifier. For example:
       --    * R.X.Y       ->  R
       --    * A (12)      ->  A
@@ -267,8 +313,8 @@ package body Flow.Analysis.Antialiasing is
       procedure Up_Ignoring_Conversions
         (N     : in out Node_Id;
          Depth : in out Natural)
-      with Pre  => Is_Interesting (Nkind (N)) and then Depth > 0,
-           Post => Is_Interesting (Nkind (N)) and then Depth < Depth'Old;
+      with Pre  => Is_Interesting (N) and then Depth > 0,
+           Post => Is_Interesting (N) and then Depth < Depth'Old;
       --  Goes up the parse tree (calling Parent), but not higher than Depth.
       --  If we find a type conversion of some kind we keep going.
       --
@@ -303,6 +349,9 @@ package body Flow.Analysis.Antialiasing is
             =>
                return Expression (N);
 
+            when N_Function_Call =>
+               return First_Actual (N);
+
             when others =>
                raise Program_Error;
          end case;
@@ -315,7 +364,7 @@ package body Flow.Analysis.Antialiasing is
       procedure Find_Root (N : in out Node_Id; Depth : out Natural) is
       begin
          Depth := 0;
-         while Is_Interesting (Nkind (N)) and then not Is_Root (Nkind (N)) loop
+         while Is_Interesting (N) and then not Is_Root (Nkind (N)) loop
             N     := Down_One_Level (N);
             Depth := Depth + 1;
          end loop;
@@ -333,7 +382,7 @@ package body Flow.Analysis.Antialiasing is
          loop
             N := Parent (N);
             Depth := Depth - 1;
-            exit when not Is_Conversion (Nkind (N));
+            exit when not Is_Conversion (N);
          end loop;
       end Up_Ignoring_Conversions;
 
@@ -356,12 +405,12 @@ package body Flow.Analysis.Antialiasing is
       --  First we check if either of the nodes is interesting as
       --  non-interesting nodes cannot introduce aliasing.
 
-      if not Is_Interesting (Nkind (A)) then
+      if not Is_Interesting (A) then
          if Trace_Antialiasing then
             Write_Line ("   -> A is not interesting");
          end if;
          return Impossible;
-      elsif not Is_Interesting (Nkind (B)) then
+      elsif not Is_Interesting (B) then
          if Trace_Antialiasing then
             Write_Line ("   -> B is not interesting");
          end if;
@@ -492,9 +541,7 @@ package body Flow.Analysis.Antialiasing is
          --  Check if we are dealing with any type conversion *now*. If so, we
          --  have aliasing.
 
-         if Is_Conversion (Nkind (Ptr_A)) or else
-           Is_Conversion (Nkind (Ptr_B))
-         then
+         if Is_Conversion (Ptr_A) or else Is_Conversion (Ptr_B) then
             if Trace_Antialiasing then
                Write_Line ("   -> identical tree followed by conversion");
             end if;

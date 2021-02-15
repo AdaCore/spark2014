@@ -62,10 +62,6 @@ package body SPARK_Rewrite is
    --  be to special-case all routines that examine the Depends contract, which
    --  seems much more error-prone.
 
-   procedure Rewrite_Call (N : Node_Id);
-   --  Replace instantiations of unchecked conversions with
-   --  N_Unchecked_Type_Conversion nodes.
-
    procedure Rewrite_Fixed_Point_Mult_Div (N : Node_Id);
    --  Rewrite the type conversion introduced on multiplication/division
    --  between fixed-point values, to avoid the use of the universal-fixed
@@ -173,43 +169,6 @@ package body SPARK_Rewrite is
         (Defining_Entity (Find_Related_Declaration_Or_Body (Prag)) = E);
 
    end Decorate_Unchecked_Deallocation;
-
-   ------------------
-   -- Rewrite_Call --
-   ------------------
-
-   procedure Rewrite_Call (N : Node_Id) is
-      Nam : constant Node_Id := Name (N);
-   begin
-      --  If the subprogram is actually an unchecked type conversion we
-      --  rewrite the tree to use an N_Unchecked_Type_Conversion node
-      --  instead, as documented in Sinfo. The original call to an instance
-      --  of Unchecked_Conversion is still accessible in the tree as the
-      --  Original_Node of the new N_Unchecked_Type_Conversion node. We mark
-      --  the node N_Unchecked_Type_Conversion as coming from source so that
-      --  it can be distinguished from compiler-generated unchecked type
-      --  conversion nodes, which are translated differently into Why.
-
-      if Is_Entity_Name (Nam)
-        and then Is_Unchecked_Conversion_Instance (Entity (Nam))
-      then
-         --  Rewrite the subprogram name as it will be used in the translation
-         --  to Why3.
-
-         Rewrite_Subprogram_Reference (Nam);
-
-         Rewrite (Old_Node => N,
-                  New_Node => Unchecked_Convert_To
-                    (Typ  => Etype (Etype (N)),
-                     Expr => First_Actual (N)));
-         Set_Comes_From_Source (N, True);
-
-         --  Reset correct parent of original node, as this may be used
-         --  during the translation to Why.
-
-         Set_Parent (Original_Node (N), Parent (N));
-      end if;
-   end Rewrite_Call;
 
    ----------------------------------
    -- Rewrite_Fixed_Point_Mult_Div --
@@ -329,7 +288,8 @@ package body SPARK_Rewrite is
       --  inherited primitive operation has the derived type declaration as
       --  parent.
 
-      if (Is_Overloadable (E) or else Ekind (E) = E_Subprogram_Type)
+      if Present (E)
+        and then (Is_Overloadable (E) or else Ekind (E) = E_Subprogram_Type)
         and then Present (Alias (E))
       then
          Set_Entity (N, Ultimate_Alias (E));
@@ -397,8 +357,7 @@ package body SPARK_Rewrite is
                                               | N_Identifier
                                               | N_Integer_Literal
                                               | N_Null_Statement
-                                              | N_Qualified_Expression
-                                              | N_Unchecked_Type_Conversion;
+                                              | N_Qualified_Expression;
          --  ??? this is copy-pasted from SPARK_Register; refactor
 
       begin
@@ -462,13 +421,6 @@ package body SPARK_Rewrite is
                   end if;
                end;
 
-            --  Replace calls to Unchecked_Conversion instances by nodes
-            --  N_Unchecked_Type_Conversion, which are marked as coming
-            --  from source.
-
-            when N_Function_Call =>
-               Rewrite_Call (N);
-
             --  Replace renamings and inherited subprograms by the subprogram
             --  they rename or inherit.
 
@@ -476,11 +428,7 @@ package body SPARK_Rewrite is
                | N_Expanded_Name
                | N_Operator_Symbol
             =>
-               if Present (Entity (N))
-                 and then Is_Subprogram (Entity (N))
-               then
-                  Rewrite_Subprogram_Reference (N);
-               end if;
+               Rewrite_Subprogram_Reference (N);
 
             when N_Subprogram_Instantiation =>
                Rewrite_Subprogram_Instantiation (N);

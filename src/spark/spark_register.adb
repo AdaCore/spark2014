@@ -64,8 +64,7 @@ package body SPARK_Register is
                                               | N_Identifier
                                               | N_Integer_Literal
                                               | N_Null_Statement
-                                              | N_Qualified_Expression
-                                              | N_Unchecked_Type_Conversion;
+                                              | N_Qualified_Expression;
          --  Type with kinds of nodes that may represent rewritten subprogram
          --  calls.
          --  ??? this is quite subtle, perhaps we should just check the kind of
@@ -138,7 +137,7 @@ package body SPARK_Register is
                            else
                               Register_Entity (E);
 
-                              if Is_Unchecked_Conversion_Instance (E) then
+                              if Is_Unchecked_Deallocation_Instance (E) then
                                  Register_Entity
                                    (Flow.Dynamic_Memory.Heap_State);
                               end if;

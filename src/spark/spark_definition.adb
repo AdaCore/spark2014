@@ -1999,32 +1999,10 @@ package body SPARK_Definition is
 
             Mark (Expression (N));
 
-            --  Source unchecked type conversion nodes were rewritten as such
-            --  by SPARK_Rewrite.Rewrite_Call, keeping the original call to an
-            --  instance of Unchecked_Conversion as the Original_Node of the
-            --  new N_Unchecked_Type_Conversion node, and marking the node as
-            --  coming from source. We translate this original node to Why, so
-            --  it should be in SPARK too.
+            --  Check various limitations of GNATprove and issue an error on
+            --  unsupported conversions.
 
-            if Nkind (N) = N_Unchecked_Type_Conversion
-              and then Comes_From_Source (N)
-            then
-               declare
-                  Orig_N : constant Node_Id := Original_Node (N);
-               begin
-                  pragma Assert (Nkind (Orig_N) = N_Function_Call
-                                   and then Is_Entity_Name (Name (Orig_N))
-                                   and then Is_Unchecked_Conversion_Instance
-                                     (Entity (Name (Orig_N))));
-
-                  Mark (Orig_N);
-               end;
-
-            --  Otherwise, this is a type conversion that does not come from an
-            --  unchecked conversion in the source. Check various limitations
-            --  of GNATprove and issue an error on unsupported conversions.
-
-            elsif Has_Array_Type (Etype (N)) then
+            if Has_Array_Type (Etype (N)) then
 
                --  Restrict array conversions to the cases where either:
                --  - corresponding indices have modular types of the same size

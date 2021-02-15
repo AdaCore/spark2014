@@ -218,7 +218,6 @@ package body Flow_Utility is
                     (Ekind (Called_Func) in E_Function | E_Subprogram_Type);
 
                begin
-
                   --  Ignore calls to predicate functions and don't descend
                   --  into their predicate expressions.
 
@@ -230,6 +229,9 @@ package body Flow_Utility is
                      --  parameter. If we returned Skip, we would ignore the
                      --  call entirely.
 
+                     return OK;
+
+                  elsif Is_Unchecked_Conversion_Instance (Called_Func) then
                      return OK;
                   end if;
 
