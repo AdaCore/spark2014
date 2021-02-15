@@ -6375,8 +6375,8 @@ package body SPARK_Definition is
 
          if not Violation_Detected
            and then
-             ((Is_First_Subtype (E)
-               and then Has_Relaxed_Initialization (E))
+             ((Is_First_Subtype (First_Subtype (E))
+               and then Has_Relaxed_Initialization (First_Subtype (E)))
               or else (Is_Composite_Type (E)
                        and then Contains_Only_Relaxed_Init (E)))
          then
@@ -8214,6 +8214,14 @@ package body SPARK_Definition is
       Inserted : Boolean;
 
    begin
+      --  Predicates might apply to subtypes. We do this check even if the base
+      --  type was already analyzed.
+
+      if Has_Predicates (Ty) then
+         Mark_Unsupported
+           ("predicate on a type with initialization by proof", N);
+      end if;
+
       --  Store Rep_Ty in the Relaxed_Init map or update its mapping if
       --  necessary.
 
@@ -8228,10 +8236,7 @@ package body SPARK_Definition is
 
       --  Raise violations on currently unsupported cases
 
-      if Has_Predicates (Ty) then
-         Mark_Unsupported
-           ("predicate on a type with initialization by proof", N);
-      elsif Has_Invariants_In_SPARK (Ty) then
+      if Has_Invariants_In_SPARK (Ty) then
          Mark_Unsupported
            ("invariant on a type with initialization by proof", N);
       elsif Is_Tagged_Type (Rep_Ty) then
