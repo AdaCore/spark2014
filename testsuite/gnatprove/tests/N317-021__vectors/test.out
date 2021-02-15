@@ -441,7 +441,7 @@ indefinite_bounded_tagged.adb:113:07: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:113:30: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:115:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:117:07: medium: assertion might fail
-indefinite_bounded_tagged.ads:15:40: medium: range check might fail
+indefinite_bounded_tagged.ads:15:40: medium: range check might fail [reason for check: default component value must fit in the type]
 indefinite_bounded_tagged.ads:19:14: warning: subprogram "Test" has no effect
 indefinite_unbounded.adb:11:07: info: initialization of "V" proved
 indefinite_unbounded.adb:11:19: info: range check proved (CVC4: 1 VC)
@@ -645,7 +645,7 @@ indefinite_unbounded_tagged.adb:104:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:106:07: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:106:30: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:108:07: medium: assertion might fail
-indefinite_unbounded_tagged.ads:17:40: medium: range check might fail
+indefinite_unbounded_tagged.ads:17:40: medium: range check might fail [reason for check: default component value must fit in the type]
 indefinite_unbounded_tagged.ads:21:14: warning: subprogram "Test" has no effect
 unbounded.adb:10:07: info: initialization of "V" proved
 unbounded.adb:10:19: info: range check proved (CVC4: 1 VC)

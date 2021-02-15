@@ -13,7 +13,7 @@ compiler.adb:276:10: info: local subprogram "Char_Type" only analyzed in the con
 compiler.adb:300:20: info: initialization of "ch" proved
 compiler.adb:302:03: info: data dependencies proved
 compiler.adb:302:23: medium: constant without variable input "error_strings" cannot appear in Globals
-compiler.adb:313:29: medium: range check might fail
+compiler.adb:313:29: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
 compiler.adb:323:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 300 should mention char_pos in a precondition]
 compiler.adb:324:26: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at line 300 should mention char_pos in a precondition]
 compiler.adb:334:10: info: add a contract to analyze it separately from calling contexts
@@ -309,24 +309,24 @@ compiler.adb:1757:24: medium: range check might fail [reason for check: result o
 compiler.adb:1762:73: info: range check proved (Z3: 1 VC)
 compiler.adb:1770:24: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1780:22: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1781:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1781:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
 compiler.adb:1783:43: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Caller and Code in a loop invariant]
 compiler.adb:1783:61: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1788:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1788:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
 compiler.adb:1790:61: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
 compiler.adb:1791:27: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
 compiler.adb:1791:64: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1796:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1796:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
 compiler.adb:1799:44: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Caller and Code in a loop invariant]
 compiler.adb:1799:62: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
 compiler.adb:1800:22: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1804:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1804:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
 compiler.adb:1807:62: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Code in a loop invariant]
 compiler.adb:1808:28: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
 compiler.adb:1808:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1808:81: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1811:22: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1815:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1815:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
 compiler.adb:1816:51: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1817:51: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1818:51: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: loop at line 1633 should mention Top in a loop invariant]
@@ -341,7 +341,7 @@ compiler.adb:1836:40: medium: range check might fail [reason for check: value mu
 compiler.adb:1838:22: medium: range check might fail [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1844:22: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1845:62: info: range check proved (Z3: 1 VC)
-compiler.adb:1853:28: medium: range check might fail [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1853:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: loop at line 1633 should mention Basereg in a loop invariant]
 compiler.adb:1859:26: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Code in a loop invariant]
 compiler.adb:1869:45: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 1633 should mention Processors in a loop invariant]
 compiler.adb:1892:22: medium: range check might fail [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 1633 should mention Top in a loop invariant]

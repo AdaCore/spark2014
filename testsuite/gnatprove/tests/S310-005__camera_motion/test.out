@@ -87,8 +87,8 @@ camera_motion.adb:184:30: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:184:30: info: cannot unroll loop (too many loop iterations)
 camera_motion.adb:184:30: info: in inlined body at line 40
 camera_motion.adb:184:30: info: in inlined body at line 47
-camera_motion.adb:184:58: medium: range check might fail
-camera_motion.adb:184:63: medium: range check might fail
+camera_motion.adb:184:58: medium: range check might fail [reason for check: default component value must fit in the type]
+camera_motion.adb:184:63: medium: range check might fail [reason for check: default component value must fit in the type]
 camera_motion.adb:199:09: info: predicate check proved (CVC4: 1 VC)
 camera_motion.adb:204:07: warning: initialization of "Erode_3x3" has no effect
 camera_motion.adb:205:09: info: predicate check proved (CVC4: 1 VC)
