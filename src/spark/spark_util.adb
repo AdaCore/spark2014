@@ -1989,13 +1989,19 @@ package body SPARK_Util is
    --------------------------
 
    function Is_Constant_In_SPARK (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Etype (E);
    begin
-      return Ekind (E) in E_Constant | E_In_Parameter
-            and then (not Is_Access_Type (Ty)
-              or else Is_Access_Constant (Ty)
-              or else Ekind (Directly_Designated_Type (Ty)) = E_Subprogram_Type
-              or else Comes_From_Declare_Expr (E));
+      case Ekind (E) is
+         when E_In_Parameter =>
+            return not Is_Access_Variable (Etype (E));
+         when E_Constant =>
+            if Comes_From_Declare_Expr (E) then
+               return True;
+            else
+               return not Is_Access_Variable (Etype (E));
+            end if;
+         when others =>
+            return False;
+      end case;
    end Is_Constant_In_SPARK;
 
    ------------------------------------------
