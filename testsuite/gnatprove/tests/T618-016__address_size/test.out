@@ -1,2 +1,4 @@
 problem_types.ads:8:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Data_Type doesn't have an Object_Size representation clause or aspect]
-problem_types.ads:8:04: high: object with non-trivial address clause is not volatile
+problem_types.ads:9:07: warning: consider annotating "Problem_Var" with Async_Writers
+problem_types.ads:9:07: warning: indirect writes to "Problem_Var" through a potential alias are ignored
+problem_types.ads:9:07: warning: writing to "Problem_Var" is assumed to have no effects on other non-volatile objects

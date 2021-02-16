@@ -761,7 +761,8 @@ package body Gnat2Why.Error_Messages is
               & " Program_Error";
 
          when VC_UC_Volatile =>
-            return "object with non-trivial address clause is not volatile";
+            return "object with non-trivial address clause or prefix of the " &
+              "'Address reference does not have asynchronous writers";
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
@@ -1127,7 +1128,8 @@ package body Gnat2Why.Error_Messages is
             return "alignment of overlaid objects is compatible";
 
          when VC_UC_Volatile =>
-            return "object with non-trivial address clause is volatile";
+            return "object with non-trivial address clause and prefix of the" &
+              " 'Address attribute have asynchronous writers";
 
          when VC_Weaker_Pre                =>
             return "precondition is weaker than class-wide precondition";

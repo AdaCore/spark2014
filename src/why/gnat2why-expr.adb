@@ -15210,6 +15210,10 @@ package body Gnat2Why.Expr is
               Present (Expr)
               and then Nkind (Expr) = N_Attribute_Reference
               and then Attribute_Name (Expr) = Name_Address;
+            Root_Object                 : constant Entity_Id :=
+              (if Is_Top_Level_Address_Clause
+               then Get_Root_Object (Prefix (Expr), False)
+               else Empty);
          begin
             if Present (Expr) then
 
@@ -15237,11 +15241,26 @@ package body Gnat2Why.Expr is
                        (Decl, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
 
-                     if not Is_Top_Level_Address_Clause then
+                     --  If the address clause has a root object which is a
+                     --  variable, check that we can account for indirect
+                     --  effects to the declared object. Either Expr is a
+                     --  reference to another object, or the defined object
+                     --  should have async writers.
+                     --  If no Root_Object can be found, a warning has already
+                     --  been emitted in marking.
+
+                     if Present (Root_Object)
+                       and then not Is_Constant_In_SPARK (Root_Object)
+                       and then Nkind (Prefix (Expr)) not in
+                         N_Identifier | N_Expanded_Name
+                     then
                         Emit_Static_Proof_Result
                           (Decl,
                            VC_UC_Volatile,
-                           Has_Volatile (Defining_Identifier (Decl)),
+                           Has_Async_Writers
+                             (Direct_Mapping_Id (Defining_Identifier (Decl)))
+                           and Has_Async_Writers
+                             (Direct_Mapping_Id (Root_Object)),
                            Current_Subp);
                      end if;
                   end;

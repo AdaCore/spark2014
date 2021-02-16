@@ -2750,12 +2750,96 @@ package body SPARK_Definition is
       Address : constant Node_Id := Address_Clause (E);
    begin
       if Present (Address) then
-         if Is_Object (E) and then Is_Deep (Etype (E)) then
-            Mark_Violation
-              ("address clause on an object of an ownership type", Address);
-         else
-            Mark (Expression (Address));
-         end if;
+         declare
+            Address_Expr   : constant Node_Id := Expression (Address);
+            Simple_Address : constant Boolean :=
+              Nkind (Address_Expr) = N_Attribute_Reference
+              and then Attribute_Name (Address_Expr) = Name_Address;
+            Prefix_Expr    : constant Node_Id :=
+              (if Simple_Address then Prefix (Address_Expr)
+               else Empty);
+            Aliased_Object : constant Entity_Id :=
+              (if Simple_Address
+               then Get_Root_Object (Prefix_Expr, Through_Traversal => False)
+               else Empty);
+            E_Is_Constant  : constant Boolean :=
+              Is_Object (E) and then Is_Constant_In_SPARK (E);
+         begin
+
+            Mark (Address_Expr);
+
+            --  If we cannot determine which object the address of E
+            --  references, check that E has asynchronous writers. If it is
+            --  not the case, issue a warning that we cannot account for
+            --  indirect writes.
+
+            if Is_Object (E)
+              and then No (Aliased_Object)
+              and then not
+                (Has_Volatile (E)
+                 and then Has_Volatile_Property (E, Pragma_Async_Writers))
+            then
+               Error_Msg_NE
+                 ("?indirect writes to & through a potential alias are"
+                  & " ignored", Address, E);
+               Error_Msg_NE
+                 ("\consider annotating & with Async_Writers",
+                  Address, E);
+            end if;
+
+            --  If E is variable in SPARK, check here that we can account
+            --  for effects to other objects induced by writing to E. The
+            --  fact that we can account for indirect effects to E is
+            --  verified inside proof. We emit check messages in this case.
+
+            if Is_Object (E) and then not E_Is_Constant then
+
+               --  If E is a variable and the address clause do not link to a
+               --  part of an object, we cannot handle the case, emit a
+               --  warning.
+
+               if No (Aliased_Object) then
+                  Error_Msg_NE
+                    ("?writing to & is assumed to have no effects on"
+                     & " other non-volatile objects", Address, E);
+
+               --  We do not handle yet overlays between (parts of) objects of
+               --  a deep type.
+
+               elsif Is_Object (Aliased_Object) then
+                  if Is_Deep (Etype (E)) then
+                     Mark_Unsupported
+                       ("address clause on an object of an ownership type",
+                        Address);
+                  elsif Is_Deep (Etype (Aliased_Object)) then
+                     Mark_Unsupported
+                       ("overlay with an object of an ownership type",
+                        Address);
+                  end if;
+               end if;
+            end if;
+
+            --  If the address expression is a reference to the address of
+            --  (a part of) another object, check that either both are
+            --  mutable or both are constant for SPARK.
+
+            if Present (Aliased_Object)
+              and then Is_Object (Aliased_Object)
+              and then E_Is_Constant /= Is_Constant_In_SPARK (Aliased_Object)
+            then
+               declare
+                  E_Mod : constant String :=
+                    (if E_Is_Constant then "constant" else "mutable");
+                  R_Mod : constant String :=
+                    (if E_Is_Constant then "mutable" else "constant");
+               begin
+                  Mark_Violation
+                    ("address clause for a " & E_Mod
+                     & " object referencing a " & R_Mod & " object",
+                     Address);
+               end;
+            end if;
+         end;
       end if;
    end Mark_Address;
 
@@ -2961,29 +3045,18 @@ package body SPARK_Definition is
                   N);
             end if;
 
+         --  Attribute Address is only allowed inside an Address aspect
+         --  or attribute definition clause (SPARK RM 15.2).
+         --  We also exclude nodes that are known to make proof switch
+         --  domain from Prog to Pred, as this is not supported in the
+         --  translation currently.
+
          when Attribute_Address =>
 
             declare
-               Pref        : constant Node_Id := Prefix (N);
-               Root_Object : constant Entity_Id :=
-                 (if Is_Path_Expression (Pref)
-                  then Get_Root_Object (Pref, False)
-                  else Empty);
-               Root_Is_Volatile : constant Boolean :=
-                 (Present (Root_Object)
-                  and then Is_Object (Root_Object)
-                  and then Has_Volatile (Root_Object)
-                  and then Has_Volatile_Property
-                    (Root_Object, Pragma_Async_Writers));
-               M                : Node_Id := Parent (N);
-               Found_Violation  : Boolean := False;
+               M : Node_Id := Parent (N);
 
             begin
-               --  Attribute Address is only allowed inside an Address aspect
-               --  or attribute definition clause (SPARK RM 15.2).
-               --  We also exclude nodes that are known to make proof switch
-               --  domain from Prog to Pred, as this is not supported in the
-               --  translation currently.
 
                loop
                   if Nkind (M) = N_Attribute_Definition_Clause
@@ -2998,7 +3071,6 @@ package body SPARK_Definition is
                        ("attribute """
                         & Standard_Ada_Case (Get_Name_String (Aname))
                         & """ in unsupported context", N);
-                     Found_Violation := True;
                      exit;
                   elsif Nkind (M) in N_Subexpr then
                      null;
@@ -3007,62 +3079,10 @@ package body SPARK_Definition is
                        ("attribute """
                         & Standard_Ada_Case (Get_Name_String (Aname))
                         & """ outside an attribute definition clause", N);
-                     Found_Violation := True;
                      exit;
                   end if;
                   M := Parent (M);
                end loop;
-
-               if Found_Violation then
-                  null;
-
-               --  For now we reject P'Address if P is a complex expression
-               --  (not an identifier) unless it is a path rooted at a volatile
-               --  object.
-
-               elsif No (Root_Object) then
-                  Mark_Violation
-                    ("attribute """
-                     & Standard_Ada_Case (Get_Name_String (Aname))
-                     & """ on an expression which is not a part of an object",
-                     N);
-               elsif Is_Object (Root_Object)
-                 and then not Root_Is_Volatile
-                 and then Nkind (Pref) not in
-                   N_Identifier | N_Expanded_Name
-               then
-                  Mark_Violation
-                    ("attribute """
-                     & Standard_Ada_Case (Get_Name_String (Aname))
-                     & """ of a part of an object which is not volatile", N);
-
-               --  If the prefix is a non-volatile object, the attribute
-               --  reference must appear at the top-level in an address clause
-               --  so we can handle the underlying alias in a safe way.
-
-               elsif Is_Object (Root_Object)
-                 and then not Root_Is_Volatile
-                 and then
-                   not (Nkind (Parent (N)) = N_Attribute_Definition_Clause
-                        and then Chars (Parent (N)) = Name_Address)
-               then
-                  Mark_Violation
-                    ("attribute """
-                     & Standard_Ada_Case (Get_Name_String (Aname))
-                     & """ of non-volatile object not"
-                     & " at top level of address clause", N);
-
-               --  We do not support taking the address of an object of a deep
-               --  type as an overlay would break the ownership model.
-
-               elsif Is_Object (Root_Object)
-                 and then Is_Deep (Etype (Root_Object))
-               then
-                  Mark_Violation
-                    ("attribute """
-                     & Standard_Ada_Case (Get_Name_String (Aname))
-                     & """ on an object of an ownership type", N);
-               end if;
             end;
 
          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
