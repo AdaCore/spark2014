@@ -59,6 +59,7 @@ with Sinfo.Nodes;                      use Sinfo.Nodes;
 with Sinput;                           use Sinput;
 with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
+with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
 with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with Sprint;                           use Sprint;
@@ -378,9 +379,13 @@ package body Flow is
          for F of To_Ordered_Flow_Id_Set (S) loop
             case F.Kind is
                when Direct_Mapping =>
-                  Append (Variables, To_JSON (F.Node));
+                  if not Is_Heap_Variable (F.Node) then
+                     Append (Variables, To_JSON (F.Node));
+                  end if;
                when Magic_String =>
-                  Append (Variables, Create (Pretty_Print (F.Name)));
+                  if not Is_Heap_Variable (F.Name) then
+                     Append (Variables, Create (Pretty_Print (F.Name)));
+                  end if;
                when others =>
                   raise Program_Error;
             end case;
