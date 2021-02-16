@@ -3501,10 +3501,7 @@ package body SPARK_Definition is
            or else
              (not Is_Function_Or_Function_Type (E)
               and then Ekind (Formal) = E_In_Parameter
-              and then Is_Access_Type (Etype (Formal))
-              and then Ekind (Directly_Designated_Type (Etype (Formal))) /=
-                E_Subprogram_Type
-              and then not Is_Access_Constant (Etype (Formal)))
+              and then Is_Access_Variable (Etype (Formal)))
          then
             declare
                Mode : constant String :=
