@@ -3046,8 +3046,6 @@ package body Flow_Error_Messages is
                                ((F with delta Facet => Normal_Part)));
                   elsif Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
                     and then Ekind (Get_Direct_Mapping_Id (F)) = E_Constant
-                    and then not Is_Access_Type
-                      (Etype (Get_Direct_Mapping_Id (F)))
                   then
                      declare
                         Var : constant Entity_Id := Get_Direct_Mapping_Id (F);
@@ -3058,11 +3056,20 @@ package body Flow_Error_Messages is
                         then
                            Append (R, "renaming of a function call ");
                         else
-                           Append (R, "constant with");
-                           if not Has_Variable_Input (Var) then
-                              Append (R, "out");
+                           if Has_Variable_Input (Var) then
+
+                              --  Constant of an access-to-variable type that
+                              --  has variable input can be assigned, so it
+                              --  behaves like a variable.
+
+                              if Is_Access_Variable (Etype (Var)) then
+                                 null;
+                              else
+                                 Append (R, "constant with variable input ");
+                              end if;
+                           else
+                              Append (R, "constant without variable input ");
                            end if;
-                           Append (R, " variable input ");
                         end if;
                      end;
                      Append_Quote;
