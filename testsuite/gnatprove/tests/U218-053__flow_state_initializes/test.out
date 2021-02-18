@@ -1,0 +1,9 @@
+p1.adb:3:38: info: initialization of "P2.State2" constituent of "P1.State1" proved
+p1.adb:3:46: info: flow dependencies proved
+p1.adb:4:28: info: data dependencies proved
+p1.ads:1:43: info: flow dependencies proved
+p1.ads:2:25: info: data dependencies proved
+q.ads:4:04: high: possible data race when accessing variable "p1.p2.state2"
+q.ads:4:04: high: possible data race when accessing variable "p1.z"
+q.ads:4:04: high: with task "q.t1"
+q.ads:4:04: high: with task "q.t2"
