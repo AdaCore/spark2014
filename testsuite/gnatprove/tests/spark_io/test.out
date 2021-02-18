@@ -1,7 +1,7 @@
 copy.adb:33:08: info: data dependencies proved
 copy.adb:36:03: info: flow dependencies proved
 copy.adb:42:14: info: implicit function contract not available for proof ("Status" might not return)
-copy.adb:42:14: medium: precondition of main program might fail, cannot prove Status (Standard_Error) = success
+copy.adb:42:14: medium: precondition of main program might fail, cannot prove Status (Standard_Error) = Success
 copy.adb:47:04: info: initialization of "Count" proved
 copy.adb:48:04: info: initialization of "Count_Limit_Reached" proved
 copy.adb:50:04: info: initialization of "Response" proved
