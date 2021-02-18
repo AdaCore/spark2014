@@ -1,11 +1,11 @@
 enable_ide: no
 enable_zarith: yes
 enable_zip: yes
-enable_coq_libs: no
-enable_coq_fp_libs: yes
+enable_coq_libs: yes
+enable_coq_fp_libs: no
 enable_pvs_libs: no
 enable_isabelle_libs: no
-enable_hypothesis_selection: no
+enable_hypothesis_selection: yes
 enable_local: no
 enable_relocation: yes
 
