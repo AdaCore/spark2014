@@ -1,0 +1,4 @@
+test.ads:9:05: warning: pragma "external" ignored (not yet supported)
+test.ads:11:21: info: initialization of "param" proved
+test2.ads:8:21: info: initialization of "param" proved
+test3.ads:11:21: info: initialization of "param" proved
