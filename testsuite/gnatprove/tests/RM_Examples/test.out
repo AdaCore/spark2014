@@ -63,7 +63,7 @@ hal.adb:38:04: info: object is suitable for aliasing via address clause (Trivial
 hal.adb:41:11: warning: consider annotating "Control" with Async_Writers
 hal.adb:41:11: warning: indirect writes to "Control" through a potential alias are ignored
 hal.adb:41:11: warning: writing to "Control" is assumed to have no effects on other non-volatile objects
-hal.adb:46:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has bit size 8]
+hal.adb:46:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has Object_Size 8]
 hal.adb:50:11: warning: writing to "Wdog_Shared_Memory" is assumed to have no effects on other non-volatile objects
 hal.adb:70:07: info: initialization of "Current_Status" proved
 hal.adb:71:07: info: initialization of "Next_Byte" proved

@@ -1,8 +1,8 @@
-actuator.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Settings has 2 values but has bit size 8]
+actuator.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Settings has 2 values but has Object_Size 8]
 actuator.adb:10:11: warning: consider annotating "Output_Ext" with Async_Writers
 actuator.adb:10:11: warning: indirect writes to "Output_Ext" through a potential alias are ignored
 actuator.adb:10:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
-advancebutton-raw.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has bit size 8]
+advancebutton-raw.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has Object_Size 8]
 advancebutton-raw.adb:10:11: warning: writing to "Input_Ext" is assumed to have no effects on other non-volatile objects
 advancebutton-raw.ads:5:20: info: initialization of "Pressed" proved
 advancebutton.adb:26:07: info: initialization of "PressedBefore" proved
@@ -15,7 +15,7 @@ advancebutton.adb:69:07: info: initialization of "Pressed" proved
 advancebutton.ads:29:27: info: initialization of "Result" proved
 advancebutton.ads:33:26: info: initialization of "Result" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
-clock.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Times has 86400 values but has bit size 32]
+clock.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Times has 86400 values but has Object_Size 32]
 clock.adb:9:11: warning: writing to "Tick_Ext" is assumed to have no effects on other non-volatile objects
 clock.ads:6:19: info: initialization of "Time" proved
 display.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Displays doesn't have an Object_Size representation clause or aspect]
@@ -102,16 +102,16 @@ heatingsystem_dfa.adb:133:17: info: add a contract to analyze it separately from
 heatingsystem_dfa.adb:133:17: info: local subprogram "TurnOff" only analyzed in the context of calls
 heatingsystem_dfa.adb:150:17: info: add a contract to analyze it separately from calling contexts
 heatingsystem_dfa.adb:150:17: info: local subprogram "OperateIfNeeded" only analyzed in the context of calls
-indicator.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Settings has 2 values but has bit size 8]
+indicator.adb:7:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Settings has 2 values but has Object_Size 8]
 indicator.adb:10:11: warning: consider annotating "Output_Ext" with Async_Writers
 indicator.adb:10:11: warning: indirect writes to "Output_Ext" through a potential alias are ignored
 indicator.adb:10:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
-modeswitch.adb:5:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Modes has 3 values but has bit size 8]
+modeswitch.adb:5:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Modes has 3 values but has Object_Size 8]
 modeswitch.adb:8:11: warning: writing to "Input_Ext" is assumed to have no effects on other non-volatile objects
 modeswitch.ads:5:20: info: initialization of "Value" proved
-programswitch.adb:5:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Positions has 6 values but has bit size 8]
+programswitch.adb:5:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Positions has 6 values but has Object_Size 8]
 programswitch.adb:8:11: warning: writing to "Input_Ext" is assumed to have no effects on other non-volatile objects
 programswitch.ads:5:20: info: initialization of "Value" proved
-thermostat.adb:17:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has bit size 8]
+thermostat.adb:17:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has Object_Size 8]
 thermostat.adb:20:11: warning: writing to "Input_Ext" is assumed to have no effects on other non-volatile objects
 thermostat.ads:15:25: info: initialization of "Result" proved

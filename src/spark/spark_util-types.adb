@@ -1274,7 +1274,9 @@ package body SPARK_Util.Types is
                      Explanation :=
                        To_Unbounded_String
                          (Typ_Name & " has "
-                          & UI_Image (Num_Values) & " values but has bit size "
+                          & UI_Image (Num_Values)
+                          & " values but has "
+                          & (if Use_RM_Size then "Size " else "Object_Size ")
                           & UI_Image (Typ_Size));
                   end if;
                   return;

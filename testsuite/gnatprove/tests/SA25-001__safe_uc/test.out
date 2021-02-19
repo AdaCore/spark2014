@@ -3,7 +3,7 @@ safe.adb:5:57: info: type is suitable as source for unchecked conversion (Trivia
 safe.adb:5:66: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
 safe.adb:7:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:7:56: info: type is suitable as source for unchecked conversion (Trivial)
-safe.adb:7:63: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type natural has 16#8000_0000# values but has bit size 32]
+safe.adb:7:63: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type natural has 16#8000_0000# values but has Object_Size 32]
 safe.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:9:60: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:9:67: info: type is suitable for unchecked conversion (Trivial)
@@ -15,7 +15,7 @@ safe.adb:19:55: info: type is suitable as source for unchecked conversion (Trivi
 safe.adb:19:59: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:20:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:20:59: info: type is suitable as source for unchecked conversion (Trivial)
-safe.adb:20:63: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type SS_Nat has 128 values but has bit size 8]
+safe.adb:20:63: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type SS_Nat has 128 values but has Object_Size 8]
 safe.adb:41:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:41:57: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:41:62: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: record type has size 64 but components add up to size 40]
@@ -36,7 +36,7 @@ safe.adb:106:54: info: type is suitable as source for unchecked conversion (Triv
 safe.adb:106:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:107:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:107:54: info: type is suitable as source for unchecked conversion (Trivial)
-safe.adb:107:64: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type My_Enum_Sub has 239 values but has bit size 8]
+safe.adb:107:64: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type My_Enum_Sub has 239 values but has Object_Size 8]
 safe.adb:121:13: high: types used for unchecked conversion do not have the same size [possible explanation: type My_Rec doesn't have an Object_Size representation clause or aspect]
 safe.adb:121:55: high: type with holes is unsuitable for unchecked conversion [possible explanation: type My_Rec has discriminants]
 safe.adb:121:63: info: type is suitable for unchecked conversion (Trivial)
