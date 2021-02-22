@@ -4,15 +4,17 @@ package body Functional_Imported with
   SPARK_Mode,
   Refined_State => (Max_And_Snd => (Max, Snd))
 is
+   pragma Warnings(Off, "indirect writes");
+   pragma Warnings(Off, "writing to");
    Max : Natural := 0;  --  max value seen
    pragma Annotate(Gnatprove, Intentional, "constraints on bit representation", "");
-   pragma Annotate(Gnatprove, Intentional, "object with non-trivial address clause", "");
    for Max'Address use System.Storage_Elements.To_Address (16#8000_0000#);
 
    Snd : Natural := 0;  --  second max value seen
    pragma Annotate(Gnatprove, Intentional, "constraints on bit representation", "");
-   pragma Annotate(Gnatprove, Intentional, "object with non-trivial address clause", "");
    for Snd'Address use System.Storage_Elements.To_Address (16#8000_0004#);
+   pragma Warnings(On, "indirect writes");
+   pragma Warnings(On, "writing to");
 
    function Invariant return Boolean is
      (if Max = 0 then Snd = 0 else Snd < Max);
