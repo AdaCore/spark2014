@@ -427,7 +427,8 @@ package body Flow is
       if not Is_Empty (Obj) then
          declare
             Result : constant JSON_Value := Create_Object;
-            Slc    : constant Source_Ptr := Sloc (FA.Spec_Entity);
+            Slc    : constant Source_Ptr :=
+              Sloc (Enclosing_Declaration (FA.Spec_Entity));
             File   : constant String     := File_Name (Slc);
             Line   : constant Positive   :=
               Positive (Get_Physical_Line_Number (Slc));
