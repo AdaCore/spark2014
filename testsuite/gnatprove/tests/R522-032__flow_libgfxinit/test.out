@@ -76,6 +76,8 @@ hw-gfx-dp_training.ads:56:07: info: initialization of "Success" proved, in insta
 hw-gfx-dp_training.ads:56:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-edid.adb:113:07: info: initialization of "Mode" proved
 hw-gfx-edid.ads:25:57: info: initialization of "Success" proved
+hw-gfx-framebuffer_filler.adb:25:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-framebuffer_filler.adb:25:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma-config.ads:17:04: info: flow dependencies proved
 hw-gfx-gma-config_helpers.adb:89:07: info: initialization of "Success" proved
 hw-gfx-gma-config_helpers.adb:95:10: info: initialization of "Enabled" proved
@@ -207,6 +209,10 @@ hw-gfx-gma-port_detect.adb:59:07: info: initialization of "HDMI_Detected" proved
 hw-gfx-gma-port_detect.adb:60:07: info: initialization of "DP_Detected" proved
 hw-gfx-gma-port_detect.adb:122:07: info: initialization of "Ctl32" proved
 hw-gfx-gma-port_detect.ads:21:07: info: initialization of "Detected" proved
+hw-gfx-gma-registers.adb:41:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-gma-registers.adb:41:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
+hw-gfx-gma-registers.adb:54:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-gma-registers.adb:54:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma-registers.adb:92:07: info: initialization of "Reg32" proved
 hw-gfx-gma-registers.adb:128:07: info: initialization of "Fence_Upper" proved
 hw-gfx-gma-registers.adb:128:20: info: initialization of "Fence_Lower" proved
@@ -245,6 +251,18 @@ hw-gfx-gma-transcoder.adb:157:07: info: initialization of "Data_N" proved
 hw-gfx-gma-transcoder.adb:157:15: info: initialization of "Link_N" proved
 hw-gfx-gma-transcoder.adb:270:07: info: initialization of "Enabled" proved
 hw-gfx-gma-transcoder.adb:295:07: info: initialization of "DDI_Func_Ctl" proved
+hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
+hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
+hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
+hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-dev.adb:28
+hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:36
+hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:38
+hw-gfx-gma.adb:68:04: warning: in instantiation at hw-pci-mmconf.adb:40
+hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
+hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
+hw-gfx-gma.adb:68:04: warning: writing to "MMIO" is assumed to have no effects on other non-volatile objects
 hw-gfx-gma.adb:99:07: info: initialization of "Success" proved
 hw-gfx-gma.adb:103:07: info: initialization of "Port_Cfg" proved
 hw-gfx-gma.adb:104:07: info: initialization of "Scaler_Available" proved
