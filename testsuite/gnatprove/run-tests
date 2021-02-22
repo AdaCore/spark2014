@@ -6,8 +6,10 @@ from e3.testsuite import logger, Testsuite
 from e3.testsuite.control import AdaCoreLegacyTestControlCreator, TestControl
 from e3.testsuite.driver import TestDriver
 from e3.testsuite.driver.adacore import AdaCoreLegacyTestDriver
+from e3.testsuite.driver.diff import DiffTestDriver, OutputRefiner
 from e3.testsuite.testcase_finder import ParsedTest, ProbingError, TestFinder
 import e3.yaml
+import glob
 import os
 import os.path
 import re
@@ -69,8 +71,44 @@ class ProofTestDriver(AdaCoreLegacyTestDriver):
 
     def set_up(self) -> None:
         super().set_up()
-        if 'timeout' in self.test_env:
-            self.timeout = int(self.test_env['timeout'])
+        if "timeout" in self.test_env:
+            self.timeout = int(self.test_env["timeout"])
+
+
+class NoEmptyOutputRefiner(OutputRefiner):
+    def refine(self, output):
+        if len(output) == 0:
+            return "(no output)"
+        return output
+
+
+class UGTestDriver(DiffTestDriver):
+
+    copy_test_directory = True
+
+    output_refiners = [NoEmptyOutputRefiner()]
+
+    def run(self):
+        pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
+        gprfiles = glob.glob(pattern)
+        assert len(gprfiles) == 1
+        cmd = [
+            "gnatprove",
+            "-P",
+            gprfiles[0],
+            "-f",
+            "-q",
+            "--level=2",
+            "--steps=100",
+            "--timeout=60",
+        ]
+
+        # test access6 requires use of lemma library SPARK.Heap, which in turn
+        # requires defining env var SPARK_HEAP_OBJECT_DIR
+        if self.test_env["test_name"] == "ug__access6":
+            cmd += ["-XSPARK_HEAP_OBJECT_DIR=."]
+
+        self.shell(cmd, catch_error=False)
 
 
 class SPARKTestFinder(TestFinder):
@@ -139,6 +177,9 @@ class SPARKTestFinder(TestFinder):
         if self.pattern and not self.test_contains_pattern(dirpath, self.pattern):
             return None
 
+        if testname.startswith("ug__"):
+            return ParsedTest(testname, UGTestDriver, {}, dirpath)
+
         # We read the test.yaml file if present and load it into the
         # environment
         test_env = None
@@ -162,9 +203,7 @@ class SPARKTestFinder(TestFinder):
             if "prove_all" in test_env or "do_flow" in test_env:
                 logger.warning(
                     '{}: "test.py" file is present, so "prove_all" '
-                    'and "do_flow" ignored in "test.yaml"'.format(
-                        testname
-                    )
+                    'and "do_flow" ignored in "test.yaml"'.format(testname)
                 )
         else:
             # if it's a flow test, we set the call to do_flow, and if no

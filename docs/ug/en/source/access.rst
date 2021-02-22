@@ -22,14 +22,14 @@ object, and therefore loses the right to access it, both for writing and
 reading. In the example below, the assignment from ``X`` to ``Y`` causes ``X``
 to lose ownership on the value it references:
 
-.. literalinclude:: /examples/tests/access1/test.adb
+.. literalinclude:: /examples/ug__access1/test.adb
    :language: ada
    :linenos:
 
 As a result, the last assertion, which reads the value of ``X``, is illegal in
 |SPARK|, leading to an error message from |GNATprove|:
 
-.. literalinclude:: /examples/tests/access1/test.out
+.. literalinclude:: /examples/ug__access1/test.out
    :language: none
    :linenos:
 
@@ -51,7 +51,7 @@ Note that a variable which has been moved is not necessarily lost for the rest
 of the program. Indeed, it is possible to assign it again, restoring ownership.
 For example, here is a piece of code that swaps the pointers ``X`` and ``Y``:
 
-.. literalinclude:: /examples/tests/access2/test.adb
+.. literalinclude:: /examples/ug__access2/test.adb
    :language: ada
    :linenos:
 
@@ -60,13 +60,13 @@ at top-level into ``X`` after it has been moved is OK, since it will not modify
 the actual owner of the moved value (here ``Tmp``). However, writing in
 ``X.all`` is forbidden, as it would affect ``Tmp``:
 
-.. literalinclude:: /examples/tests/access3/test.adb
+.. literalinclude:: /examples/ug__access3/test.adb
    :language: ada
    :linenos:
 
 The above variant is rejected by |GNATprove|:
 
-.. literalinclude:: /examples/tests/access3/test.out
+.. literalinclude:: /examples/ug__access3/test.out
    :language: none
    :linenos:
 
@@ -83,13 +83,13 @@ achieved by instantiating the standard generic procedure
 ``Ada.Unchecked_Deallocation`` with the type of the underlying ``Object`` and
 the type ``Name`` of the access type:
 
-.. literalinclude:: /examples/tests/access4/test.adb
+.. literalinclude:: /examples/ug__access4/test.adb
    :language: ada
    :linenos:
 
 |GNATprove| guarantees the absence of memory leak in the above code:
 
-.. literalinclude:: /examples/tests/access4/test.out
+.. literalinclude:: /examples/ug__access4/test.out
    :language: none
    :linenos:
 
@@ -108,13 +108,13 @@ Notice that there are three kinds of checks for memory leaks:
 
 Here is an example of code with all three cases of memory leaks:
 
-.. literalinclude:: /examples/tests/access5/test.adb
+.. literalinclude:: /examples/ug__access5/test.adb
    :language: ada
    :linenos:
 
 |GNATprove| detects all three memory leaks in the above code:
 
-.. literalinclude:: /examples/tests/access5/test.out
+.. literalinclude:: /examples/ug__access5/test.out
    :language: none
    :linenos:
 
@@ -126,7 +126,7 @@ procedure applying to arguments of type ``Int_Ptr_Ptr``, which is based on
 instances of ``Ada.Unchecked_Deallocation`` for deallocating individual memory
 chunks:
 
-.. literalinclude:: /examples/tests/access6/test.adb
+.. literalinclude:: /examples/ug__access6/test.adb
    :language: ada
    :linenos:
 
@@ -138,7 +138,7 @@ Library`), similar to what is defined for the standard
 ``Ada.Unchecked_Deallocation`` procedure in SPARK RM 3.10. |GNATprove|
 guarantees that the above code is correctly deallocating memory:
 
-.. literalinclude:: /examples/tests/access6/test.out
+.. literalinclude:: /examples/ug__access6/test.out
    :language: none
    :linenos:
 

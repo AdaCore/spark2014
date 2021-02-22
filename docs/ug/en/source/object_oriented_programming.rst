@@ -40,7 +40,7 @@ For example, suppose that the ``Logging`` unit introduced in :ref:`Ghost
 Packages` defines a tagged type ``Log_Type`` for logs, with corresponding
 operations:
 
-.. literalinclude:: /examples/tests/logging/logging.ads
+.. literalinclude:: /examples/ug__logging/logging.ads
    :language: ada
    :linenos:
 
@@ -48,7 +48,7 @@ and that this type is derived in ``Range_Logging.Log_Type`` which additionally
 keeps track of the minimum and maximum values in the log, so that they can be
 accessed in constant time:
 
-.. literalinclude:: /examples/tests/range_logging/range_logging.ads
+.. literalinclude:: /examples/ug__range_logging/range_logging.ads
    :language: ada
    :linenos:
 
@@ -56,7 +56,7 @@ accessed in constant time:
 overriding ``Range_Logging.Append_To_Log`` respect the Liskov Substitution
 Principle:
 
-.. literalinclude:: /examples/tests/range_logging/test.out
+.. literalinclude:: /examples/ug__range_logging/test.out
    :language: none
 
 Units ``Logging`` and ``Range_Logging`` need not be implemented, or available,
@@ -196,7 +196,7 @@ tagged type. For example, it detects no issues during flow analysis on
 procedure ``Use_Logging`` which initializes parameter ``Log`` and then updates
 it:
 
-.. literalinclude:: /examples/tests/use_logging/use_logging.adb
+.. literalinclude:: /examples/ug__use_logging/use_logging.adb
    :language: ada
    :linenos:
 
@@ -209,13 +209,13 @@ those components of ``Log`` that come from the parent type
 then there is no read of uninitialized data. This is in contrast with what
 occurs in procedure ``Use_Logging_Classwide``:
 
-.. literalinclude:: /examples/tests/use_logging_classwide/use_logging_classwide.adb
+.. literalinclude:: /examples/ug__use_logging_classwide/use_logging_classwide.adb
    :language: ada
    :linenos:
 
 on which |GNATprove| issues a check message during flow analysis:
 
-.. literalinclude:: /examples/tests/use_logging_classwide/test.out
+.. literalinclude:: /examples/ug__use_logging_classwide/test.out
    :language: none
    :lines: 2-4
 

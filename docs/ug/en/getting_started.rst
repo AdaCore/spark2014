@@ -59,7 +59,7 @@ To begin with, launch GNAT Studio with a new default project and check that the
 Now open a new file in GNAT Studio and type the following short program into it.
 Save this file as ``diff.adb``.
 
-.. literalinclude:: /examples/tests/diff/diff.adb
+.. literalinclude:: /examples/ug__diff/diff.adb
    :language: ada
    :linenos:
 
@@ -71,7 +71,7 @@ as you may have noticed, there is a bug in the code. Note the use of aspect
 tools.  To analyze this program, select :menuselection:`SPARK --> Examine File`
 from the menu in GNAT Studio. |GNATprove| executes in flow analysis mode and reports:
 
-.. literalinclude:: /examples/tests/diff/test.out
+.. literalinclude:: /examples/ug__diff/test.out
    :language: none
 
 These messages are informing us that there is a discrepancy between the
@@ -89,7 +89,7 @@ dialog box.  |GNATprove| now attempts to show, using formal verification, that
 the program is free from run-time errors. But it finds a problem and highlights
 the assignment statement in red, reporting:
 
-.. literalinclude:: /examples/tests/diff2/test.out
+.. literalinclude:: /examples/ug__diff2/test.out
    :language: none
 
 This means that the tools are unable to show that the result of subtracting one

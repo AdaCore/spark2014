@@ -673,7 +673,7 @@ is enough to ensure that there will be no infinite chain of recursive calls.
 In the following example, we can verify that the ``Fibonacci`` function
 terminates stating that its parameter ``N`` decreases at each recursive call:
 
-.. literalinclude:: /examples/tests/recursive_subprograms/recursive_subprograms.ads
+.. literalinclude:: /examples/ug__recursive_subprograms/recursive_subprograms.ads
    :language: ada
    :linenos:
 
@@ -681,7 +681,7 @@ terminates stating that its parameter ``N`` decreases at each recursive call:
 that the value given for ``N`` is smaller than the
 value of ``N`` on entry of ``Fibonacci``:
 
-.. literalinclude:: /examples/tests/recursive_subprograms/test.out
+.. literalinclude:: /examples/ug__recursive_subprograms/test.out
    :language: none
 
 It is possible to give more than one discrete value in a subprogram variant. In
@@ -696,7 +696,7 @@ value is considered. The function ``Max`` computes the index of the maximal
 value in a slice of an array. At each recursive call, it shifts the bound
 containing the smallest value:
 
-.. literalinclude:: /examples/tests/recursive_subprograms-multiple/recursive_subprograms-multiple.ads
+.. literalinclude:: /examples/ug__recursive_subprograms-multiple/recursive_subprograms-multiple.ads
    :language: ada
    :linenos:
 
@@ -705,7 +705,7 @@ The variant specifies that, for each recursive call, either ``F`` increases, or
 ``L`` and ``F`` are never modified at the same time. This variant can
 be verified by |GNATprove|.
 
-.. literalinclude:: /examples/tests/recursive_subprograms-multiple/test.out
+.. literalinclude:: /examples/ug__recursive_subprograms-multiple/test.out
    :language: none
 
 To verify the termination of mutually recursive subprograms, all subprograms
@@ -715,12 +715,12 @@ values in the list have the same direction and the same base type. For example,
 the variants of ``Is_Even`` and ``Is_Odd`` are compatible,
 because both are of type ``Integer`` and both decrease.
 
-.. literalinclude:: /examples/tests/recursive_subprograms-mutually/recursive_subprograms-mutually.ads
+.. literalinclude:: /examples/ug__recursive_subprograms-mutually/recursive_subprograms-mutually.ads
    :language: ada
    :linenos:
 
 |GNATprove| introduces a check to make sure that the variant progresses at each
 mutually recursive call.
 
-.. literalinclude:: /examples/tests/recursive_subprograms-mutually/test.out
+.. literalinclude:: /examples/ug__recursive_subprograms-mutually/test.out
    :language: none

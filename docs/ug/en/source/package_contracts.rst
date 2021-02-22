@@ -405,11 +405,11 @@ variable ``V`` and a non-volatile variable ``N``, and procedure
 ``Swap_Then_Zero`` which starts by swapping the values of ``V`` and ``N``
 before zeroing them out:
 
-.. literalinclude:: /examples/tests/volatile_or_not/volatile_or_not.ads
+.. literalinclude:: /examples/ug__volatile_or_not/volatile_or_not.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/volatile_or_not/volatile_or_not.adb
+.. literalinclude:: /examples/ug__volatile_or_not/volatile_or_not.adb
    :language: ada
    :linenos:
 
@@ -433,7 +433,7 @@ non-volatile variable ``N``:
 |GNATprove| checks that ``Volatile_Or_Not`` and ``Swap_Then_Zero`` implement
 their contract, and it issues a warning on the first assignment to ``N``:
 
-.. literalinclude:: /examples/tests/volatile_or_not/test.out
+.. literalinclude:: /examples/ug__volatile_or_not/test.out
    :language: none
 
 This warning points to a real issue, as the intermediate value of ``N`` is not
@@ -498,22 +498,22 @@ For example, the program writing in a log each value passed as argument to
 procedure ``Add_To_Total`` may model the output port ``Log_Out`` as a volatile
 variable with ``Async_Readers`` and ``Effective_Writes`` set:
 
-.. literalinclude:: /examples/tests/logging_out/logging_out.ads
+.. literalinclude:: /examples/ug__logging_out/logging_out.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/logging_out/logging_out.adb
+.. literalinclude:: /examples/ug__logging_out/logging_out.adb
    :language: ada
    :linenos:
 
 while the logging program may model the input port ``Log_In`` as a volatile
 variable with ``Async_Writers`` and ``Effective_Reads`` set:
 
-.. literalinclude:: /examples/tests/logging_in/logging_in.ads
+.. literalinclude:: /examples/ug__logging_in/logging_in.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/logging_in/logging_in.adb
+.. literalinclude:: /examples/ug__logging_in/logging_in.adb
    :language: ada
    :linenos:
 
@@ -593,22 +593,22 @@ state abstraction, which is then used by |GNATprove| to refine the
 analysis. For example, the program writing in a log seen in the previous
 section can be rewritten to abstract global variables as follows:
 
-.. literalinclude:: /examples/tests/logging_out_abstract/logging_out_abstract.ads
+.. literalinclude:: /examples/ug__logging_out_abstract/logging_out_abstract.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/logging_out_abstract/logging_out_abstract.adb
+.. literalinclude:: /examples/ug__logging_out_abstract/logging_out_abstract.adb
    :language: ada
    :linenos:
 
 while the logging program seen in the previous section may be rewritten to
 abstract global variables as follows:
 
-.. literalinclude:: /examples/tests/logging_in_abstract/logging_in_abstract.ads
+.. literalinclude:: /examples/ug__logging_in_abstract/logging_in_abstract.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/tests/logging_in_abstract/logging_in_abstract.adb
+.. literalinclude:: /examples/ug__logging_in_abstract/logging_in_abstract.adb
    :language: ada
    :linenos:
 
