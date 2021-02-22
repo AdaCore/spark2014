@@ -225,7 +225,7 @@ package body SPARK_Util.Types is
       --  similar subtypes of the same base type). And our translation to Why3
       --  depends on being able to unify all such access types.
 
-      if Is_Generic_Actual_Type (Typ) then
+      if Entity_In_SPARK (Typ) and then Is_Generic_Actual_Type (Typ) then
          declare
             Decl    : constant Node_Id := Parent (Typ);
             Sub_Ind : Node_Id;
