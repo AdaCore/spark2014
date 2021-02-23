@@ -191,11 +191,12 @@ install-examples:
 	done
 	find $(EXAMPLESDIR) -name test.py -exec rm -f {} \;
 	find $(EXAMPLESDIR) -name test.out -exec rm -f {} \;
-	# install examples in SPARK User's Guide specially
-	# ??? deactivated temporarily, see U222-023
-	#$(CP) docs/ug/examples/tests \
-	#  $(EXAMPLESDIR)/gnatprove_by_example
-
+	# install examples in SPARK User's Guide
+	mkdir $(EXAMPLESDIR)/gnatprove_by_example
+	$(CP) testsuite/gnatprove/tests/ug__* \
+	  $(EXAMPLESDIR)/gnatprove_by_example
+	$(CP) docs/ug/gnatprove_by_example.gpr docs/ug/test.adc \
+	  $(EXAMPLESDIR)/gnatprove_by_example
 clean:
 	$(MAKE) -C gnat2why clean
 	$(MAKE) -f Makefile.gnatprove clean
