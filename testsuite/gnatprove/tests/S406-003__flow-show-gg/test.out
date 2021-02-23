@@ -116,7 +116,7 @@ contents:
     {
       "file": "bar.adb",
       "line": 8,
-      "col": 13,
+      "col": 4,
       "globals": {
         "Global": {
           "Input": [
@@ -133,7 +133,7 @@ contents:
     {
       "file": "bar.adb",
       "line": 18,
-      "col": 13,
+      "col": 4,
       "globals": {
         "Global": {
           "Input": [
@@ -152,7 +152,7 @@ contents:
     {
       "file": "bar.adb",
       "line": 27,
-      "col": 13,
+      "col": 4,
       "globals": {
         "Global": {
           "Input": [
@@ -169,7 +169,7 @@ contents:
     {
       "file": "bar.adb",
       "line": 29,
-      "col": 14,
+      "col": 4,
       "globals": {
         "Global": {
           "In_Out": [
@@ -186,7 +186,7 @@ contents:
     {
       "file": "bar.adb",
       "line": 39,
-      "col": 14,
+      "col": 4,
       "globals": {
         "Global": {
           "Input": [
@@ -211,7 +211,7 @@ contents:
     {
       "file": "bar.adb",
       "line": 49,
-      "col": 13,
+      "col": 4,
       "globals": {
         "Global": {
         },
@@ -229,7 +229,7 @@ contents:
     {
       "file": "entity_name.ads",
       "line": 2,
-      "col": 13,
+      "col": 4,
       "globals": {
         "Global": {
           "Input": [
@@ -253,7 +253,7 @@ contents:
     {
       "file": "foo.ads",
       "line": 6,
-      "col": 16,
+      "col": 7,
       "globals": {
         "Global": {
           "Input": [
@@ -270,7 +270,7 @@ contents:
     {
       "file": "foo.ads",
       "line": 7,
-      "col": 16,
+      "col": 7,
       "globals": {
         "Global": {
           "Input": [
@@ -296,7 +296,7 @@ contents:
     {
       "file": "main.adb",
       "line": 3,
-      "col": 11,
+      "col": 1,
       "globals": {
         "Global": {
           "Input": [
@@ -320,7 +320,7 @@ contents:
     {
       "file": "outer.ads",
       "line": 6,
-      "col": 16,
+      "col": 7,
       "globals": {
         "Global": {
           "Input": [
@@ -337,7 +337,7 @@ contents:
     {
       "file": "outer.ads",
       "line": 12,
-      "col": 16,
+      "col": 7,
       "globals": {
         "Global": {
           "Input": [
