@@ -13,27 +13,36 @@
  <goal name="def&#39;vc" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
-  <proof prover="2"><result status="valid" steps="3595"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="2"><result status="valid" steps="4058"/></proof>
+  <proof prover="2"><result status="valid" steps="3595"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="2"><result status="valid" steps="3906"/></proof>
+  <proof prover="2"><result status="valid" steps="4058"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="2"><result status="valid" steps="1587"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="2"><result status="valid" steps="6535"/></proof>
+  <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
+  <proof prover="2"><result status="valid" steps="3906"/></proof>
+  </goal>
+  <goal name="def&#39;vc.6" proved="true">
+  <proof prover="2"><result status="valid" steps="1587"/></proof>
+  </goal>
+  <goal name="def&#39;vc.7" proved="true">
+  <proof prover="2"><result status="valid" steps="6535"/></proof>
+  </goal>
+  <goal name="def&#39;vc.8" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="34497"/></proof>
-  <proof prover="1"><result status="unknown" steps="2166125"/></proof>
+  <goal name="def&#39;vc.9" proved="true">
+  <proof prover="0"><result status="valid" steps="26210"/></proof>
+  <proof prover="1"><result status="unknown" steps="2165095"/></proof>
   <proof prover="2" timelimit="20" memlimit="2000"><result status="timeout"/></proof>
   <proof prover="3"><result status="timeout"/></proof>
   </goal>

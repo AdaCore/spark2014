@@ -5,13 +5,13 @@ procedure Test_Literal with
 is
 
    procedure Foo_2 (Value : Big_Real) with
-     Pre  => 10000000000000000000000000000000000000000000000000.0 <= Value, --@PRECONDITION:FAIL
+     Pre  => 10#10000000000000000000000000000000000000000000000000.0# <= Value,
      Ghost;
 
    procedure Foo_2 (Value : Big_Real)
    is
    begin
-      pragma Assert (0.0 <= Value); --  Too big literals are not handled yet
+      pragma Assert (0.0 <= Value); --  Literals with explicit bases are not handled yet
    end Foo_2;
 
    procedure Bad (C : Integer) is

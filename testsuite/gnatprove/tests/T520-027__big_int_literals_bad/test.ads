@@ -6,7 +6,7 @@ package Test with
 is
 
    procedure Foo_2 (Value : Big_Integer) with
-     Pre  => 10000000000000000000000000000000000000000000000000 <= Value,--@PRECONDITION:FAIL
+     Pre  => 10#10000000000000000000000000000000000000000000000000# <= Value,
      Ghost;
 
    Zero : String := "0";

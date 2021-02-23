@@ -1,11 +1,14 @@
 package body Libst.Reals.Errors with SPARK_Mode is
 
-   Epsilon      : constant Valid_Big_Real := 1.0E-7;
-   --  Approximation of the machine epsilon for 32bits floats
-   First_Norm   : constant Valid_Big_Real := 1.2E-38;
-   --  Approximation of the first positive normal number
-   Error_Denorm : constant Valid_Big_Real := 1.0E-45;
-   --  Approximation of the error bound on denormal numbers
+   Epsilon      : constant := 1.0E-7;
+   pragma Assert (2.0 ** (-24) <= Epsilon);
+   --  Over-approximation of the machine epsilon for 32bits floats
+   First_Norm   : constant := 1.2E-38;
+   pragma Assert (2.0 ** (-126) <= First_Norm);
+   --  Over-approximation of the first positive normal number
+   Error_Denorm : constant := 1.0E-45;
+   pragma Assert (2.0 ** (-150) <= Error_Denorm);
+   --  Over-approximation of the error bound on denormal numbers
 
    --  Types for which the floating point operations are safe
 
@@ -20,26 +23,26 @@ package body Libst.Reals.Errors with SPARK_Mode is
 
    procedure Bound_Error_Sub (X, Y : Floats_For_Add) with
      Post => abs (To_Big_Real (X - Y) - (To_Big_Real (X) - To_Big_Real (Y))) <=
-       (if abs (To_Big_Real (X) - To_Big_Real (Y)) >= First_Norm
-        then Epsilon * abs (To_Big_Real (X) - To_Big_Real (Y))
+       (if abs (To_Big_Real (X) - To_Big_Real (Y)) >= Big_Real'(First_Norm)
+        then Big_Real'(Epsilon) * abs (To_Big_Real (X) - To_Big_Real (Y))
         else Error_Denorm);
    procedure Bound_Error_Sub (X, Y : Floats_For_Add) is null;
    procedure Bound_Error_Add (X, Y : Floats_For_Add) with
      Post => abs (To_Big_Real (X + Y) - (To_Big_Real (X) + To_Big_Real (Y))) <=
-       (if abs (To_Big_Real (X) + To_Big_Real (Y)) >= First_Norm
-        then Epsilon * abs (To_Big_Real (X) + To_Big_Real (Y))
+       (if abs (To_Big_Real (X) + To_Big_Real (Y)) >= Big_Real'(First_Norm)
+        then Big_Real'(Epsilon) * abs (To_Big_Real (X) + To_Big_Real (Y))
         else Error_Denorm);
    procedure Bound_Error_Add (X, Y : Floats_For_Add) is null;
    procedure Bound_Error_Mul (X, Y : Floats_For_Mul) with
      Post => abs (To_Big_Real (X * Y) - To_Big_Real (X) * To_Big_Real (Y)) <=
-       (if abs (To_Big_Real (X) * To_Big_Real (Y)) >= First_Norm
-        then Epsilon * abs (To_Big_Real (X) * To_Big_Real (Y))
+       (if abs (To_Big_Real (X) * To_Big_Real (Y)) >= Big_Real'(First_Norm)
+        then Big_Real'(Epsilon) * abs (To_Big_Real (X) * To_Big_Real (Y))
         else Error_Denorm);
    procedure Bound_Error_Mul (X, Y : Floats_For_Mul) is null;
    procedure Bound_Error_Div (X : Floats_For_Mul; Y : Floats_For_Div) with
      Post => abs (To_Big_Real (X / Y) - To_Big_Real (X) / To_Big_Real (Y)) <=
-       (if abs (To_Big_Real (X) / To_Big_Real (Y)) >= First_Norm
-        then Epsilon * abs (To_Big_Real (X) / To_Big_Real (Y))
+       (if abs (To_Big_Real (X) / To_Big_Real (Y)) >= Big_Real'(First_Norm)
+        then Big_Real'(Epsilon) * abs (To_Big_Real (X) / To_Big_Real (Y))
         else Error_Denorm);
    procedure Bound_Error_Div (X : Floats_For_Mul; Y : Floats_For_Div) is null;
 
@@ -79,7 +82,7 @@ package body Libst.Reals.Errors with SPARK_Mode is
          --  Compute the error for the last addition
          Bound_Error_Add (Sum_Weight_Rec (Weights, I - 1), Weights (I));
          --  We don't need to consider denormal numbers here
-         pragma Assert (Weights (I) = 0.0 or To_Big_Real (Weights (I)) >= First_Norm);
+         pragma Assert (Weights (I) = 0.0 or To_Big_Real (Weights (I)) >= Big_Real'(First_Norm));
          --  Aggregate together both bounds
          Aggregate_Bounds
            (Sum_Weight_Rec (Weights, I - 1), Weights (I), Sum_Weight_Rec (Weights, I - 1));

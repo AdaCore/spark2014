@@ -314,7 +314,15 @@ package body Why.Gen.Hardcoded is
                                                         Domain => Domain));
                end if;
 
-            --  Imprecise translation of From_String
+            --  Imprecise translation of From_String. This is a function taking
+            --  a string representing an integer value.
+            --  We translate From_String (Val) as:
+            --    int_value (of_string (val))
+            --  This translation is imprecise as int_value and of_string are
+            --  abstract Why3 functions left mostly uninterpreted.
+            --  In the special case where Val is a string literal, a more
+            --  precise translation is attempted first, see
+            --  Transform_Hardcoded_Literal.
 
             elsif Name_String = BIN.From_String then
                T :=
@@ -378,131 +386,235 @@ package body Why.Gen.Hardcoded is
       --  Transformation of Big_Reals
 
       elsif Is_From_Hardcoded_Unit (Subp, Big_Reals) then
-
-         --  This block transforms the comparison operators, binary operators,
-         --  Min, and Max.
-
          if Args'Length = 2 then
 
-            declare
-               Base      : constant W_Type_Id :=
-                 Type_Of_Node (Etype (Subp));
-               Left_Rep  : W_Expr_Id := Args (1);
-               Right_Rep : W_Expr_Id := Args (2);
-               Name      : W_Identifier_Id;
-            begin
+            --  Imprecise translation of From_Universal_Image. This is a
+            --  function taking two strings representing integer values
+            --  standing for the numerator and denominator of a big real.
+            --  We translate From_Universal_Value (Num, Den) as:
+            --    to_real (int_value (of_string (num))) /
+            --      to_real (int_value (of_string (den)))
+            --  This translation is imprecise as int_value and of_string are
+            --  both abstract Why3 functions left mostly uninterpreted.
+            --  In the special case where Num and Den are string literals, a
+            --  more precise translation is attempted first, see
+            --  Transform_Hardcoded_Literal.
 
-               --  The following block assigns a value to Name which will be
-               --  called in New_Call afterwards.
+            if Name_String = BRN.From_Universal_Image then
+               declare
+                  Num : W_Expr_Id := New_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => Of_String_Id,
+                     Args     => (1 => Args (1)));
+                  Den : W_Expr_Id := New_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => Of_String_Id,
+                     Args     => (1 => Args (2)));
 
-               if Name_String = BRN.Min then
-                  Name := M_Real_Minmax.Min;
+               begin
+                  --  Translate each operand from an image to an integer
 
-               elsif Name_String = BIN.Max then
-                  Name := M_Real_Minmax.Max;
+                  if Domain = EW_Prog then
+                     Num := New_VC_Call
+                       (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Name     => To_Program_Space
+                          (M_Builtin_From_Image.Int_Value),
+                        Progs    => (1 => Num),
+                        Reason   => VC_Precondition,
+                        Typ      => EW_Int_Type);
+                     Den := New_VC_Call
+                       (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Name     => To_Program_Space
+                          (M_Builtin_From_Image.Int_Value),
+                        Progs    => (1 => Den),
+                        Reason   => VC_Precondition,
+                        Typ      => EW_Int_Type);
+                  else
+                     Num := New_Call
+                       (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Name     => M_Builtin_From_Image.Int_Value,
+                        Args     => (1 => Num),
+                        Typ      => EW_Int_Type);
+                     Den := New_Call
+                       (Ada_Node => Ada_Node,
+                        Domain   => Domain,
+                        Name     => M_Builtin_From_Image.Int_Value,
+                        Args     => (1 => Den),
+                        Typ      => EW_Int_Type);
+                  end if;
 
-               else
-                  case Chars (Subp) is
-                     when Name_Op_Add      =>
-                        Name := Real_Infix_Add;
+                  --  Insert a conversion to real on both operands
 
-                     when Name_Op_Subtract =>
-                        Name := Real_Infix_Subtr;
+                  Num  := New_Call
+                    (Domain   => Domain,
+                     Ada_Node => Ada_Node,
+                     Name     => M_Real_From_Int.From_Int,
+                     Args     => (1 => Num));
+                  Den := New_Call
+                    (Domain   => Domain,
+                     Ada_Node => Ada_Node,
+                     Name     => M_Real_From_Int.From_Int,
+                     Args     => (1 => Den));
 
-                     when Name_Op_Multiply =>
-                        Name := Real_Infix_Mult;
+                  --  Reconstruct the real value by doing the division
 
-                     when Name_Op_Divide   =>
-                        --  If the division is done on big integers, we need to
-                        --  insert a conversion to real on both operands.
+                  if Domain = EW_Prog then
+                     pragma Assert (Present (Ada_Node));
+                     T :=
+                       New_VC_Call
+                         (Ada_Node => Ada_Node,
+                          Domain   => Domain,
+                          Name     => Real_Infix_Div,
+                          Progs    => (1 => Num, 2 => Den),
+                          Reason   => VC_Division_Check,
+                          Typ      => EW_Real_Type);
+                  else
+                     T :=
+                       New_Call
+                         (Ada_Node => Ada_Node,
+                          Domain   => Domain,
+                          Name     => Real_Infix_Div,
+                          Args     => (1 => Num, 2 => Den),
+                          Typ      => EW_Real_Type);
+                  end if;
 
-                        if Is_From_Hardcoded_Unit
-                          (Root_Retysp (Etype (First_Formal (Subp))),
-                           Big_Integers)
-                        then
-                           Left_Rep  := New_Call
-                             (Domain   => Domain,
-                              Ada_Node => Ada_Node,
-                              Name     => M_Real_From_Int.From_Int,
-                              Args     => (1 => Left_Rep));
-                           Right_Rep := New_Call
-                             (Domain   => Domain,
-                              Ada_Node => Ada_Node,
-                              Name     => M_Real_From_Int.From_Int,
-                              Args     => (1 => Right_Rep));
-                        end if;
+                  T := New_Label
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Def      => T,
+                     Typ      => Type_Of_Node (Etype (Subp)));
+               end;
 
-                        Name := Real_Infix_Div;
+            --  This block transforms the comparison operators, binary
+            --  operators, Min, and Max.
 
-                     when Name_Op_Expon    =>
-                        --  For exponentiation, a mathematical integer is
-                        --  expected for the second parameter.
+            else
+               declare
+                  Base      : constant W_Type_Id :=
+                    Type_Of_Node (Etype (Subp));
+                  Left_Rep  : W_Expr_Id := Args (1);
+                  Right_Rep : W_Expr_Id := Args (2);
+                  Name      : W_Identifier_Id;
+               begin
 
-                        Right_Rep := Insert_Simple_Conversion
-                          (Ada_Node => Ada_Node,
-                           Domain   => Domain,
-                           Expr     => Right_Rep,
-                           To       => EW_Int_Type);
-                        Name := M_Real_Power.Power;
+                  --  The following block assigns a value to Name which will be
+                  --  called in New_Call afterwards.
 
-                     when Name_Op_Eq       =>
-                        Name := (if Domain = EW_Term
-                                 then M_Real.Bool_Eq
-                                 elsif Domain = EW_Pred
-                                 then Why_Eq
-                                 else Real_Infix_Eq);
+                  if Name_String = BRN.Min then
+                     Name := M_Real_Minmax.Min;
 
-                     when Name_Op_Lt       =>
-                        Name := (if Domain = EW_Term
-                                 then M_Real.Bool_Lt
-                                 else Real_Infix_Lt);
+                  elsif Name_String = BIN.Max then
+                     Name := M_Real_Minmax.Max;
 
-                     when Name_Op_Le      =>
-                        Name := (if Domain = EW_Term
-                                 then M_Real.Bool_Le
-                                 else Real_Infix_Le);
+                  else
+                     case Chars (Subp) is
+                        when Name_Op_Add      =>
+                           Name := Real_Infix_Add;
 
-                     when Name_Op_Gt       =>
-                        Name := (if Domain = EW_Term
-                                 then M_Real.Bool_Gt
-                                 else Real_Infix_Gt);
+                        when Name_Op_Subtract =>
+                           Name := Real_Infix_Subtr;
 
-                     when Name_Op_Ge       =>
-                        Name := (if Domain = EW_Term
-                                 then M_Real.Bool_Ge
-                                 else Real_Infix_Ge);
+                        when Name_Op_Multiply =>
+                           Name := Real_Infix_Mult;
 
-                     when others           =>
-                        raise Program_Error;
-                  end case;
-               end if;
+                        when Name_Op_Divide   =>
+                           --  If the division is done on big integers, we need
+                           --  to insert a conversion to real on both operands.
 
-               --  Divide needs a division check
+                           if Is_From_Hardcoded_Unit
+                             (Root_Retysp (Etype (First_Formal (Subp))),
+                              Big_Integers)
+                           then
+                              Left_Rep  := New_Call
+                                (Domain   => Domain,
+                                 Ada_Node => Ada_Node,
+                                 Name     => M_Real_From_Int.From_Int,
+                                 Args     => (1 => Left_Rep));
+                              Right_Rep := New_Call
+                                (Domain   => Domain,
+                                 Ada_Node => Ada_Node,
+                                 Name     => M_Real_From_Int.From_Int,
+                                 Args     => (1 => Right_Rep));
+                           end if;
 
-               if Domain = EW_Prog
-                 and then Chars (Subp) = Name_Op_Divide
-               then
-                  pragma Assert (Present (Ada_Node));
+                           Name := Real_Infix_Div;
 
-                  T :=
-                    New_VC_Call
-                      (Ada_Node => Ada_Node,
-                       Domain   => Domain,
-                       Name     => Name,
-                       Progs    => (1 => Left_Rep, 2 => Right_Rep),
-                       Reason   => VC_Division_Check,
-                       Typ      => Base);
-               else
-                  T :=
-                    New_Call
-                      (Ada_Node => Ada_Node,
-                       Domain   => Domain,
-                       Name     => Name,
-                       Args     => (1 => Left_Rep,
-                                    2 => Right_Rep),
-                       Typ      => Base);
-               end if;
-            end;
+                        when Name_Op_Expon    =>
+                           --  For exponentiation, a mathematical integer is
+                           --  expected for the second parameter.
+
+                           Right_Rep := Insert_Simple_Conversion
+                             (Ada_Node => Ada_Node,
+                              Domain   => Domain,
+                              Expr     => Right_Rep,
+                              To       => EW_Int_Type);
+                           Name := M_Real_Power.Power;
+
+                        when Name_Op_Eq       =>
+                           Name := (if Domain = EW_Term
+                                    then M_Real.Bool_Eq
+                                    elsif Domain = EW_Pred
+                                    then Why_Eq
+                                    else Real_Infix_Eq);
+
+                        when Name_Op_Lt       =>
+                           Name := (if Domain = EW_Term
+                                    then M_Real.Bool_Lt
+                                    else Real_Infix_Lt);
+
+                        when Name_Op_Le      =>
+                           Name := (if Domain = EW_Term
+                                    then M_Real.Bool_Le
+                                    else Real_Infix_Le);
+
+                        when Name_Op_Gt       =>
+                           Name := (if Domain = EW_Term
+                                    then M_Real.Bool_Gt
+                                    else Real_Infix_Gt);
+
+                        when Name_Op_Ge       =>
+                           Name := (if Domain = EW_Term
+                                    then M_Real.Bool_Ge
+                                    else Real_Infix_Ge);
+
+                        when others           =>
+                           raise Program_Error;
+                     end case;
+                  end if;
+
+                  --  Divide needs a division check
+
+                  if Domain = EW_Prog
+                    and then Chars (Subp) = Name_Op_Divide
+                  then
+                     pragma Assert (Present (Ada_Node));
+
+                     T :=
+                       New_VC_Call
+                         (Ada_Node => Ada_Node,
+                          Domain   => Domain,
+                          Name     => Name,
+                          Progs    => (1 => Left_Rep, 2 => Right_Rep),
+                          Reason   => VC_Division_Check,
+                          Typ      => Base);
+                  else
+                     T :=
+                       New_Call
+                         (Ada_Node => Ada_Node,
+                          Domain   => Domain,
+                          Name     => Name,
+                          Args     => (1 => Left_Rep,
+                                       2 => Right_Rep),
+                          Typ      => Base);
+                  end if;
+               end;
+            end if;
 
          --  This block transforms the unary operators, Is_Valid, and
          --  From_String.
@@ -525,7 +637,15 @@ package body Why.Gen.Hardcoded is
                                                         Domain => Domain));
                end if;
 
-            --  Imprecise translation of From_String
+            --  Imprecise translation of From_String. This is a function taking
+            --  a string representing a real value.
+            --  We translate From_String (Val) as:
+            --    real_value (of_string (val))
+            --  This translation is imprecise as real_value and of_string are
+            --  abstract Why3 functions left mostly uninterpreted.
+            --  In the special case where Val is a string literal, a more
+            --  precise translation is attempted first, see
+            --  Transform_Hardcoded_Literal.
 
             elsif Name_String = BRN.From_String then
                T :=
@@ -628,25 +748,42 @@ package body Why.Gen.Hardcoded is
       return T;
    end Transform_Hardcoded_Function_Call;
 
-   -----------------------------------------
-   -- Transform_Hardcoded_Integer_Literal --
-   -----------------------------------------
+   ---------------------------------
+   -- Transform_Hardcoded_Literal --
+   ---------------------------------
 
-   function Transform_Hardcoded_Integer_Literal
-     (String_Literal : Node_Id;
-      Typ            : Entity_Id;
-      Domain         : EW_Domain)
-      return W_Expr_Id
+   function Transform_Hardcoded_Literal
+     (Call   : Node_Id;
+      Domain : EW_Domain) return W_Expr_Id
    is
+      Subp      : constant Entity_Id := Get_Called_Entity (Call);
+      Root_Type : constant W_Type_Id :=
+        Type_Of_Node (Root_Retysp (Etype (Call)));
+      Actual    : Node_Id := First_Actual (Call);
    begin
+      --  Go over the actuals to check that their are all string literals
+
+      while Present (Actual) loop
+         if Nkind (Actual) /= N_String_Literal then
+            return Why_Empty;
+         end if;
+         Actual := Next_Actual (Actual);
+      end loop;
+
       --  Transformation of integer literals from Big_Integers
 
-      if Is_From_Hardcoded_Unit (Typ, Big_Integers) then
+      if Is_From_Hardcoded_Unit (Subp, Big_Integers) then
+         pragma Assert (Get_Name_String (Chars (Subp)) = BIN.From_String);
+
          declare
-            Str_Value    : constant String_Id := Strval (String_Literal);
-            Len          : constant Nat := String_Length (Str_Value);
-            Value_String : String (1 .. Natural (Len));
-            UI_Val       : Uint;
+            String_Literal : constant Node_Id := First_Actual (Call);
+            pragma Assert
+              (Present (String_Literal)
+               and then No (Next_Actual (String_Literal)));
+            Str_Value      : constant String_Id := Strval (String_Literal);
+            Len            : constant Nat := String_Length (Str_Value);
+            Value_String   : String (1 .. Natural (Len));
+            UI_Val         : Uint;
 
          begin
             --  Fetch the value of the string literal
@@ -666,152 +803,245 @@ package body Why.Gen.Hardcoded is
                Labels   => Symbol_Sets.Empty_Set,
                Def      => New_Integer_Constant (Ada_Node => String_Literal,
                                                  Value    => UI_Val),
-               Typ      => Type_Of_Node (Typ));
+               Typ      => Root_Type);
 
          exception
             when Constraint_Error =>
-               --  If the parameter of the call does not fit in
-               --  Long_Long_Long_Integer, then default to imprecise
-               --  translation.
+               --  If we did not manage to transform the literal to an integer,
+               --  default to the imprecise translation.
 
                return Why_Empty;
          end;
 
-      else
-         raise Program_Error;
-      end if;
-   end Transform_Hardcoded_Integer_Literal;
-
-   --------------------------------------
-   -- Transform_Hardcoded_Real_Literal --
-   --------------------------------------
-
-   function Transform_Hardcoded_Real_Literal
-     (String_Literal : Node_Id;
-      Typ            : Entity_Id;
-      Domain         : EW_Domain)
-      return W_Expr_Id
-   is
-   begin
       --  Transformation of real literals from Big_Reals
 
-      if Is_From_Hardcoded_Unit (Typ, Big_Reals) then
-         declare
-            function UI_From_Integer is new UI_From_Integral (Integer);
+      elsif Is_From_Hardcoded_Unit (Subp, Big_Reals) then
+         if Get_Name_String (Chars (Subp)) = BRN.From_String then
+            declare
+               function UI_From_Integer is new UI_From_Integral (Integer);
 
-            Str_Value    : constant String_Id := Strval (String_Literal);
-            Len          : constant Nat := String_Length (Str_Value);
-            Arg          : String (1 .. Natural (Len));
-            Frac         : Uint;
-            Exp          : Uint := Uint_0;
-            Pow          : Int := 0;
-            Index        : Natural := 0;
-            Last         : Natural := Arg'Last;
-            Num          : Uint;
-            Den          : Uint;
+               String_Literal : constant Node_Id := First_Actual (Call);
+               pragma Assert
+                 (Present (String_Literal)
+                  and then No (Next_Actual (String_Literal)));
+               Str_Value      : constant String_Id := Strval
+                 (String_Literal);
+               Len            : constant Nat := String_Length (Str_Value);
+               Arg            : String (1 .. Natural (Len));
+               Frac           : Uint;
+               Exp            : Uint := Uint_0;
+               Pow            : Int := 0;
+               Index          : Natural := 0;
+               Last           : Natural := Arg'Last;
+               Num            : Uint;
+               Den            : Uint;
+               Result         : W_Expr_Id;
 
-         begin
-            --  Fetch the value of the string literal
+            begin
+               --  Fetch the value of the string literal
 
-            String_To_Name_Buffer (Str_Value);
-            Arg := Name_Buffer (Arg'Range);
+               String_To_Name_Buffer (Str_Value);
+               Arg := Name_Buffer (Arg'Range);
 
-            --  Parse the real value. The code is inspired from the
-            --  implementation of Big_Reals.From_String.
+               --  Parse the real value. The code is inspired from the
+               --  implementation of Big_Reals.From_String.
 
-            --  Search for:
-            --    The last index before the dot, stored in Index,
-            --    The last index before the exponent, stored in Last
+               --  Search for:
+               --    The last index before the dot, stored in Index,
+               --    The last index before the exponent, stored in Last
 
-            for J in reverse Arg'Range loop
-               if Arg (J) in 'e' | 'E' then
-                  if Last /= Arg'Last then
-                     raise Constraint_Error
-                       with "multiple exponents specified";
+               for J in reverse Arg'Range loop
+                  if Arg (J) in 'e' | 'E' then
+                     if Last /= Arg'Last then
+                        raise Constraint_Error
+                          with "multiple exponents specified";
+                     end if;
+
+                     Last := J - 1;
+                     Pow := 0;
+                     Exp := UI_From_Integer
+                       (Integer'Value (Arg (J + 1 .. Arg'Last)));
+
+                  elsif Arg (J) = '.' then
+                     Index := J - 1;
+                     exit;
+                  else
+                     Pow := Pow + 1;
                   end if;
+               end loop;
 
-                  Last := J - 1;
-                  Pow := 0;
-                  Exp := UI_From_Integer
-                    (Integer'Value (Arg (J + 1 .. Arg'Last)));
+               --  Pow is the number of digits after the dot
 
-               elsif Arg (J) = '.' then
-                  Index := J - 1;
-                  exit;
-               else
-                  Pow := Pow + 1;
+               pragma Assert
+                 (if Index /= 0 then Pow = Int (Last - Index - 1));
+
+               --  Exp is the exponent if one was supplied 0 otherwise
+
+               pragma Assert
+                 (if Last /= Arg'Last
+                  then Exp = Uint_From_String (Arg (Last + 2 .. Arg'Last))
+                  else Exp = Uint_0);
+
+               if Index = 0 then
+                  raise Constraint_Error with "invalid real value";
                end if;
-            end loop;
 
-            --  Pow is the number of digits after the dot
+               --  From <Int> . <Frac> E <Exp>,
+               --  generate
+               --     ((Int * 10 ** Pow +/- Frac) / 10 ** Pow) * 10 ** Exp
 
-            pragma Assert (if Index /= 0 then Pow = Int (Last - Index - 1));
+               Den := Uint_10 ** Pow;
+               Num := Uint_From_String (Arg (Arg'First .. Index)) * Den;
+               Frac := Uint_From_String (Arg (Index + 2 .. Last));
 
-            --  Exp is the exponent if one was supplied 0 otherwise
+               if Num < Uint_0 then
+                  Num := Num - Frac;
+               else
+                  Num := Num + Frac;
+               end if;
 
-            pragma Assert
-              (if Last /= Arg'Last
-               then Exp = Uint_From_String (Arg (Last + 2 .. Arg'Last))
-               else Exp = Uint_0);
+               if Exp > Uint_0 then
+                  Num := Num * Uint_10 ** Exp;
+               elsif Exp < Uint_0 then
+                  Den := Den * Uint_10 ** (-Exp);
+               end if;
 
-            if Index = 0 then
-               raise Constraint_Error with "invalid real value";
-            end if;
+               --  Return the appropriate real constant. Only emit a division
+               --  check if Den is 0.
 
-            --  From <Int> . <Frac> E <Exp>,
-            --  generate ((Int * 10 ** Pow +/- Frac) / 10 ** Pow) * 10 ** Exp
+               declare
+                  Subdomain : constant EW_Domain :=
+                    (if Domain = EW_Prog and then Den /= Uint_0
+                     then EW_Pterm else Domain);
+                  W_Args    : constant W_Expr_Array :=
+                    (1 => New_Real_Constant
+                       (Ada_Node => String_Literal,
+                        Value    => UR_From_Uint (Num)),
+                     2 => New_Real_Constant
+                       (Ada_Node => String_Literal,
+                        Value    => UR_From_Uint (Den)));
+               begin
+                  if Subdomain = EW_Prog then
+                     Result := New_VC_Call
+                       (Ada_Node => Call,
+                        Domain   => Subdomain,
+                        Name     => Real_Infix_Div,
+                        Progs    => W_Args,
+                        Reason   => VC_Division_Check,
+                        Typ      => EW_Real_Type);
+                  else
+                     Result := New_Call
+                       (Ada_Node => Call,
+                        Domain   => Subdomain,
+                        Name     => M_Real.Div,
+                        Args     => W_Args,
+                        Typ      => EW_Real_Type);
+                  end if;
+               end;
 
-            Den := Uint_10 ** Pow;
-            Num := Uint_From_String (Arg (Arg'First .. Index)) * Den;
-            Frac := Uint_From_String (Arg (Index + 2 .. Last));
-
-            if Num < Uint_0 then
-               Num := Num - Frac;
-            else
-               Num := Num + Frac;
-            end if;
-
-            if Exp > Uint_0 then
-               Num := Num * Uint_10 ** Exp;
-            elsif Exp < Uint_0 then
-               Den := Den * Uint_10 ** (-Exp);
-            end if;
-
-            --  Return the appropriate real constant.
-            --  ??? For now, real constants with a base of 0 and denominator
-            --  which is not 1 are not supported by gnatwhy3. Generate a
-            --  division instead.
-
-            return New_Label
-              (Ada_Node => String_Literal,
-               Domain   => Domain,
-               Labels   => Symbol_Sets.Empty_Set,
-               Def      => New_Call
+               return New_Label
                  (Ada_Node => String_Literal,
                   Domain   => Domain,
-                  Name     => M_Real.Div,
-                  Args     => (New_Real_Constant
-                               (Ada_Node => String_Literal,
-                                Value    => UR_From_Uint (Num)),
-                               New_Real_Constant
-                                 (Ada_Node => String_Literal,
-                                  Value    => UR_From_Uint (Den))),
-                  Typ      => EW_Real_Type),
-               Typ      => Type_Of_Node (Typ));
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Def      => Result,
+                  Typ      => Root_Type);
 
-         exception
-            when Constraint_Error =>
-               --  If the parameter is not a valid real value, or if its
-               --  components exceed Long_Long_Integer, then default to
-               --  imprecise translation.
+            exception
+               when Constraint_Error =>
+                  --  If the parameter is not a valid real value, or if its
+                  --  components exceed Long_Long_Integer, then default to
+                  --  imprecise translation.
 
-               return Why_Empty;
-         end;
+                  return Why_Empty;
+            end;
 
+         elsif Get_Name_String (Chars (Subp)) = BRN.From_Universal_Image then
+
+            declare
+               Num_Literal : constant Node_Id := First_Actual (Call);
+               pragma Assert (Present (Num_Literal));
+               Den_Literal : constant Node_Id := Next_Actual (Num_Literal);
+               pragma Assert
+                 (Present (Den_Literal)
+                  and then No (Next_Actual (Den_Literal)));
+               Num_Str_Id  : constant String_Id := Strval (Num_Literal);
+               Den_Str_Id  : constant String_Id := Strval (Den_Literal);
+               Num_Len     : constant Nat := String_Length (Num_Str_Id);
+               Den_Len     : constant Nat := String_Length (Den_Str_Id);
+               Num_String  : String (1 .. Natural (Num_Len));
+               Den_String  : String (1 .. Natural (Den_Len));
+               Num_Val     : Uint;
+               Den_Val     : Uint;
+               Result      : W_Expr_Id;
+
+            begin
+               --  Fetch the value of the string literals
+
+               String_To_Name_Buffer (Num_Str_Id);
+               Num_String := Name_Buffer (1 .. Natural (Num_Len));
+               String_To_Name_Buffer (Den_Str_Id);
+               Den_String := Name_Buffer (1 .. Natural (Den_Len));
+
+               --  Get their values as a Uint
+
+               Num_Val := Uint_From_String (Num_String);
+               Den_Val := Uint_From_String (Den_String);
+
+               --  Return the appropriate real constant. Only emit a division
+               --  check if Den_Val is 0.
+
+               declare
+                  Subdomain : constant EW_Domain :=
+                    (if Domain = EW_Prog and then Den_Val /= Uint_0
+                     then EW_Pterm else Domain);
+                  W_Args    : constant W_Expr_Array :=
+                    (1 => New_Real_Constant
+                       (Ada_Node => Num_Literal,
+                        Value    => UR_From_Uint (Num_Val)),
+                     2 => New_Real_Constant
+                       (Ada_Node => Den_Literal,
+                        Value    => UR_From_Uint (Den_Val)));
+               begin
+                  if Subdomain = EW_Prog then
+                     Result := New_VC_Call
+                       (Ada_Node => Call,
+                        Domain   => Subdomain,
+                        Name     => Real_Infix_Div,
+                        Progs    => W_Args,
+                        Reason   => VC_Division_Check,
+                        Typ      => EW_Real_Type);
+                  else
+                     Result := New_Call
+                       (Ada_Node => Call,
+                        Domain   => Subdomain,
+                        Name     => M_Real.Div,
+                        Args     => W_Args,
+                        Typ      => EW_Real_Type);
+                  end if;
+               end;
+
+               return New_Label
+                 (Ada_Node => Call,
+                  Domain   => Domain,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Def      => Result,
+                  Typ      => Root_Type);
+
+            exception
+               when Constraint_Error =>
+                  --  If the parameter is not a valid real value, or if its
+                  --  components exceed Long_Long_Integer, then default to
+                  --  imprecise translation.
+
+                  return Why_Empty;
+            end;
+         else
+            raise Program_Error;
+         end if;
       else
          raise Program_Error;
       end if;
-   end Transform_Hardcoded_Real_Literal;
+   end Transform_Hardcoded_Literal;
 
    ----------------------
    -- Uint_From_String --
@@ -826,7 +1056,7 @@ package body Why.Gen.Hardcoded is
       UI_Val : Uint;
 
    begin
-      --  Get the value of Str_Value as a long long long integer
+      --  Try to get the value of Str_Value as a long long long integer
 
       Def := Long_Long_Long_Integer'Value (Str_Value);
 
@@ -835,6 +1065,72 @@ package body Why.Gen.Hardcoded is
       UI_Val := UI_From_Long_Long_Long_Integer (Def);
 
       return UI_Val;
+
+   exception
+      when Constraint_Error =>
+
+         --  Otherwise, try the slow path
+
+         declare
+            Neg    : Boolean := False;
+            J      : Natural := Str_Value'First;
+            Result : Uint := Uint_0;
+
+         begin
+            --  Scan past leading blanks
+
+            while J <= Str_Value'Last and then Str_Value (J) = ' ' loop
+               J := J + 1;
+            end loop;
+
+            if J > Str_Value'Last then
+               raise;
+            end if;
+
+            --  Scan and store negative sign if found
+
+            if Str_Value (J) = '-' then
+               Neg := True;
+               J   := J + 1;
+            end if;
+
+            --  Scan decimal value. If something which is not between '0' and
+            --  '9' or '_' is found ('#' or 'E') we don't support it yet.
+
+            while J <= Str_Value'Last loop
+               if Str_Value (J) in '0' .. '9' then
+                  Result :=
+                    UI_Add
+                      (UI_Mul (Result, Uint_10),
+                       (case Str_Value (J) is
+                           when '0'    => Uint_0,
+                           when '1'    => Uint_1,
+                           when '2'    => Uint_2,
+                           when '3'    => Uint_3,
+                           when '4'    => Uint_4,
+                           when '5'    => Uint_5,
+                           when '6'    => Uint_6,
+                           when '7'    => Uint_7,
+                           when '8'    => Uint_8,
+                           when '9'    => Uint_9,
+                           when others => raise Program_Error));
+               elsif Str_Value (J) = '_' then
+                  if J = Str_Value'Last or else Str_Value (J + 1) = '_' then
+                     raise;
+                  end if;
+               else
+                  raise;
+               end if;
+
+               J := J + 1;
+            end loop;
+
+            if Neg then
+               return UI_Negate (Result);
+            else
+               return Result;
+            end if;
+         end;
    end Uint_From_String;
 
 end Why.Gen.Hardcoded;

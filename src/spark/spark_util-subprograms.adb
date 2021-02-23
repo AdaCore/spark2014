@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;                            use Aspects;
 with Common_Iterators;                   use Common_Iterators;
 with Debug;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
@@ -1143,17 +1142,6 @@ package body SPARK_Util.Subprograms is
    function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean is
       (Is_Traversal_Function (E) and then not Is_Access_Constant (Etype (E)));
 
-   -----------------------------------------
-   -- Is_Integer_Literal_Aspect_Parameter --
-   -----------------------------------------
-
-   function Is_Integer_Literal_Aspect_Parameter (E : Entity_Id) return Boolean
-   is (Ekind (E) = E_Function
-       and then Has_Aspect (Etype (E), Aspect_Integer_Literal)
-       and then
-       Entity (Find_Value_Of_Aspect
-               (Etype (E), Aspect_Integer_Literal)) = E);
-
    ----------------------------------------
    -- Is_Invisible_Dispatching_Operation --
    ----------------------------------------
@@ -1256,17 +1244,6 @@ package body SPARK_Util.Subprograms is
                  and then Nkind (Parent (Sem_Aux.Unit_Declaration_Node (E))) =
                      N_Protected_Definition);
    end Is_Protected_Operation;
-
-   --------------------------------------
-   -- Is_Real_Literal_Aspect_Parameter --
-   --------------------------------------
-
-   function Is_Real_Literal_Aspect_Parameter (E : Entity_Id) return Boolean
-   is (Ekind (E) = E_Function
-       and then Has_Aspect (Etype (E), Aspect_Real_Literal)
-       and then
-       Entity (Find_Value_Of_Aspect
-               (Etype (E), Aspect_Real_Literal)) = E);
 
    -------------------------------------
    -- Is_Requested_Subprogram_Or_Task --
