@@ -82,11 +82,23 @@ class NoEmptyOutputRefiner(OutputRefiner):
         return output
 
 
+class SortLinesRefiner(OutputRefiner):
+    def refine(self, output):
+        lines = output.splitlines()
+        lines.sort()
+        return "\n".join(lines)
+
+
 class UGTestDriver(DiffTestDriver):
 
     copy_test_directory = True
 
-    output_refiners = [NoEmptyOutputRefiner()]
+    output_refiners = [NoEmptyOutputRefiner(), SortLinesRefiner()]
+
+    @property
+    def refine_baseline(self) -> bool:
+        """Whether to apply output refiners to the output baseline."""
+        return True
 
     def run(self):
         pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
