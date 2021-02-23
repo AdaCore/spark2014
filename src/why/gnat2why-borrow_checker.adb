@@ -3205,11 +3205,9 @@ package body Gnat2Why.Borrow_Checker is
             then
                Mode := Observe;
 
-            --  Other access types are a borrow
+            --  Other access-to-object types are a borrow
 
-            elsif Is_Access_Type (Typ)
-              and then not Is_Access_Subprogram_Type (Typ)
-            then
+            elsif Is_Access_Object_Type (Typ) then
                Mode := Borrow;
 
             --  Deep types other than access types define an observe
