@@ -102,7 +102,7 @@ respect to the program semantics of |SPARK|.
 3. If an object ``X`` overlays an object ``Y``, then the alignment of ``X``
    shall be an integral multiple of the alignment of ``Y``.
 
-4. The type of an overlaid object shall be suitable for unchecked conversion
+4. The type of an overlaid object shall be suitable as the target of an unchecked conversion
    (see :ref:`Unchecked Type Conversions`);
 
 5. If the address clause of an object ``X`` is not of the form ``with Address
@@ -125,15 +125,28 @@ Unchecked Type Conversions
 
 A subtype ``S`` is said to be `suitable for unchecked conversion` if:
 
-- ``S`` has a contiguous representation. No part of ``S`` is of a tagged type,
-  of an access type, of a subtype that is subject to a predicate, of a type
-  that is subject to a type_invariant, of an immutably limited type, or of a
-  private type whose completion fails to meet these requirements.
+- ``S`` is not of a tagged type, of an access type, of an immutably
+  limited type, of a type with discriminants, or of a private type whose
+  completion fails to meet these requirements.
 
-- Given the size N of ``S`` in bits, there exist exactly 2**N distinct values
-  that belong to ``S`` and contain no invalid scalar parts.  [In other words,
-  every possible assignment of values to the bits representing an object of
-  subtype ``S`` represents a distinct value of ``S``.]
+- ``S`` is a scalar type, or if it is a composite type, the Object__Size N of
+  ``S`` is the sum of the size of the components of ``S``, and all components
+  of ``S`` are also suitable for unchecked conversion.
+
+A subtype ``S`` is said to be `suitable as the target of an unchecked
+conversion` if it is suitable for unchecked conversion, and, in addition:
+
+- ``S`` is not of a subtype that is subject to a predicate, of a type
+  that is subject to a type_invariant.
+- Given the Object_Size N of ``S`` in bits, there exist exactly 2**N distinct
+  values that belong to ``S`` and contain no invalid scalar parts.  [In other
+  words, every possible assignment of values to the bits representing an object
+  of subtype ``S`` represents a distinct value of ``S``.]
+- If ``S`` is a composite type, all parts of ``S`` are also suitable as the
+  target of an unchecked conversion.
+
+[Note that floating-point types are not suitable as the target of an unchecked
+conversion.]
 
 Unchecked type conversions are in |SPARK|, with some restrictions described
 below. Although it is not mandated by Ada standard, the compiler should ensure
@@ -145,7 +158,9 @@ could be misaligned (as GNAT ensures).
 1. The source and target subtypes of an instance of ``Unchecked_Conversion``
    shall have the same size.
 
-2. The source and target subtypes shall be suitable for unchecked conversion.
+2. The source and target subtypes shall be suitable for unchecked conversion
+   and the target subtype should be suitable as the target of an unchecked
+   conversion.
 
 Data Validity
 ~~~~~~~~~~~~~
