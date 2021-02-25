@@ -13,8 +13,8 @@ test_04.ads:13:39: error: invariant cannot depend on variable input "C" (SPARK R
 gnatprove: error during flow analysis and proof
 
 === test_05.adb ===
-test_05.adb:13:10: error: type invariant not immediately in a compilation unit is not yet supported
-test_05.adb:30:10: error: type invariant not immediately in a compilation unit is not yet supported
+test_05.adb:13:10: error: type invariant in a nested package is not yet supported
+test_05.adb:30:10: error: type invariant in a nested package is not yet supported
 gnatprove: error during flow analysis and proof
 
 === test_06.adb ===

@@ -5523,8 +5523,7 @@ package body SPARK_Definition is
 
                   elsif not Is_Compilation_Unit (Enclosing_U) then
                      Mark_Unsupported
-                       ("type invariant not immediately in a compilation unit",
-                        E);
+                       ("type invariant in a nested package", E);
 
                   elsif Is_Child_Unit (Enclosing_U)
                     and then Is_Private_Descendant (Enclosing_U)

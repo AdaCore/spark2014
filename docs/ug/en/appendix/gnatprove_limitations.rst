@@ -64,7 +64,7 @@ Tool Limitations
 
 #. Type_Invariant and Invariant aspects are not supported:
 
-   * on private types declared in nested packages or child packages
+   * on private types declared in nested packages
    * on protected types
    * on tagged types
    * on components of tagged types if the tagged type is visible from inside the
