@@ -3091,14 +3091,9 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Package_Body (Id : Entity_Id) is
       Save_In_Elab : constant Boolean := Inside_Elaboration;
       Body_N       : constant Node_Id := Package_Body (Id);
-      Saved_Env    : Perm_Env;
 
    begin
       Inside_Elaboration := True;
-
-      --  Save environment
-
-      Copy_Env (Current_Perm_Env, Saved_Env);
 
       --  Check declarations and statements in the special mode for
       --  elaboration.
@@ -3108,10 +3103,6 @@ package body Gnat2Why.Borrow_Checker is
 
          Check_Node (Handled_Statement_Sequence (Body_N));
       end if;
-
-      --  Restore the saved environment and free the current one
-
-      Move_Env (Saved_Env, Current_Perm_Env);
 
       Inside_Elaboration := Save_In_Elab;
    end Check_Package_Body;
