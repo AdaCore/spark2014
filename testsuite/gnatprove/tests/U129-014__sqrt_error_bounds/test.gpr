@@ -1,0 +1,9 @@
+with "spark_lemmas";
+
+project Test is
+
+   package Compiler is
+      for Switches ("Ada") use ("-g", "-gnat2020");
+   end Compiler;
+
+end Test;
