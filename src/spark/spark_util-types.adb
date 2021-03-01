@@ -317,12 +317,17 @@ package body SPARK_Util.Types is
    is
    begin
       if Is_Array_Type (Typ) then
-         if not Is_Static_Array_Type (Typ) then
+         if not Is_Constrained (Typ) then
             Result := False;
             Explanation :=
-              To_Unbounded_String ("size of non-static array type cannot "
-                                   & "be determined");
+              To_Unbounded_String ("can't determine size for "
+                                   & "unconstrained array type ");
             return;
+         elsif not Compile_Time_Known_Bounds (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("bounds of array type are not "
+                                   & "known at compile time");
          end if;
 
          declare
