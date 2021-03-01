@@ -1334,7 +1334,8 @@ package body SPARK_Definition is
             end if;
 
          when N_Allocator =>
-            if Is_OK_Volatile_Context (Context => Parent (N), Obj_Ref => N)
+            if Is_OK_Volatile_Context
+              (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
             then
                --  Check that the type of the allocator is visibly an access
                --  type.
@@ -3633,9 +3634,10 @@ package body SPARK_Definition is
       end if;
 
       if Ekind (E) = E_Function
-        and then not Is_OK_Volatile_Context (Context => Parent (N),
-                                             Obj_Ref => N)
         and then Is_Volatile_Call (N)
+        and then
+          not Is_OK_Volatile_Context
+                (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
       then
          Mark_Violation ("call to a volatile function in interfering context",
                          N);
