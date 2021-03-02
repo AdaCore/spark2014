@@ -1,0 +1,2 @@
+test_annotate.adb:3:30: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type positive has 16#7FFF_FFFF# values but has Object_Size 32]
+test_annotate.adb:3:30: info: types of aliased objects have the same size (Trivial)
