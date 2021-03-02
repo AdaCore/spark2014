@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                     Copyright (C) 2011-2020, AdaCore                     --
+--                     Copyright (C) 2011-2021, AdaCore                     --
 --                Copyright (C) 2014-2020, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
@@ -590,7 +590,6 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be marked with No_Return",
             Arg3_Exp);
-         return;
 
       --  The procedure should not be annotated as terminating
 
@@ -599,7 +598,6 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be marked with Terminating",
             Arg3_Exp);
-         return;
 
       --  The procedure should not be dispatching
 
@@ -608,7 +606,6 @@ package body SPARK_Definition.Annotate is
            ("procedure with " & Aspect_Or_Pragma & " Annotate "
             & "Might_Not_Return must not also be dispatching",
             Arg3_Exp);
-         return;
       end if;
 
       Might_Not_Return_Annotations.Include (E);
