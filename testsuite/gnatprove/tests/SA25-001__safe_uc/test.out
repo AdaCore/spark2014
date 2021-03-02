@@ -18,7 +18,7 @@ safe.adb:20:59: info: type is suitable as source for unchecked conversion (Trivi
 safe.adb:20:63: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type SS_Nat has 128 values but has Object_Size 8]
 safe.adb:41:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:41:57: info: type is suitable as source for unchecked conversion (Trivial)
-safe.adb:41:62: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: record type has size 64 but components add up to size 40]
+safe.adb:41:62: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type HRec has minimal size 40, but Object_Size was declared as 64]
 safe.adb:43:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:43:58: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:43:63: info: type is suitable for unchecked conversion (Trivial)

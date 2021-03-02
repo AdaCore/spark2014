@@ -18,7 +18,7 @@ advancebutton.ads:37:26: info: initialization of "Result" proved
 clock.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Times has 86400 values but has Object_Size 32]
 clock.adb:9:11: warning: writing to "Tick_Ext" is assumed to have no effects on other non-volatile objects
 clock.ads:6:19: info: initialization of "Time" proved
-display.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Displays doesn't have an Object_Size representation clause or aspect]
+display.adb:6:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type DisplayDigits has 10 values but has Size 4]
 display.adb:9:11: warning: consider annotating "Output_Ext" with Async_Writers
 display.adb:9:11: warning: indirect writes to "Output_Ext" through a potential alias are ignored
 display.adb:9:11: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects

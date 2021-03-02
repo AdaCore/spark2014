@@ -2,7 +2,7 @@ p.adb:31:28: medium: overflow check might fail (e.g. when Full_S = (A => Integer
 p.adb:32:28: medium: float overflow check might fail (e.g. when Full_S = (A => 0, B => 2.6164253E+33) and Y = 3.4027975E+38) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at p.ads:30 should mention Full_S and Y in a precondition]
 p.ads:21:04: high: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: Raw_S doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
 p.ads:21:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type R_Raw_Vector doesn't have an Object_Size representation clause or aspect]
-p.ads:22:26: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type R doesn't have an Object_Size representation clause or aspect]
+p.ads:22:26: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: floating-point types have invalid bit patterns for SPARK]
 p.ads:22:26: high: types of aliased objects do not have the same size [possible explanation: type R_Raw_Vector doesn't have an Object_Size representation clause or aspect]
 p.ads:25:11: info: data dependencies proved
 p.ads:25:34: info: initialization of "Full_S" proved
@@ -18,7 +18,7 @@ p2.adb:39:28: medium: overflow check might fail (e.g. when Full_S = (A => Intege
 p2.adb:40:28: medium: float overflow check might fail (e.g. when Full_S = (A => 0, B => 2.6164253E+33) and Y = 3.4027975E+38) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at p2.ads:30 should mention Full_S and Y in a precondition]
 p2.ads:21:04: high: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: Raw_S doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
 p2.ads:21:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type R_Raw_Vector doesn't have an Object_Size representation clause or aspect]
-p2.ads:22:26: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type R doesn't have an Object_Size representation clause or aspect]
+p2.ads:22:26: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: floating-point types have invalid bit patterns for SPARK]
 p2.ads:22:26: high: types of aliased objects do not have the same size [possible explanation: type R_Raw_Vector doesn't have an Object_Size representation clause or aspect]
 p2.ads:25:11: info: data dependencies proved
 p2.ads:25:34: info: initialization of "Full_S" proved

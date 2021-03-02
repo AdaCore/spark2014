@@ -15234,7 +15234,7 @@ package body Gnat2Why.Expr is
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
                   begin
-                     Is_Valid_Bitpattern_No_Holes
+                     Suitable_For_UC_Target
                        (Retysp (Etype (Defining_Identifier (Decl))),
                         Valid, Explanation);
                      Emit_Static_Proof_Result
@@ -15274,7 +15274,7 @@ package body Gnat2Why.Expr is
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
                   begin
-                     Is_Valid_Bitpattern_No_Holes
+                     Suitable_For_UC_Target
                        (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
                      Emit_Static_Proof_Result
                        (Expr, VC_UC_Target, Valid, Current_Subp,

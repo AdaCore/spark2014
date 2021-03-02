@@ -4421,12 +4421,12 @@ package body Gnat2Why.Subprograms is
                Valid       : Boolean;
                Explanation : Unbounded_String;
             begin
-               Type_Has_No_Holes (Src_Ty, Valid, Explanation);
+               Suitable_For_UC (Src_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Is_Valid_Bitpattern_No_Holes (Tar_Ty, Valid, Explanation);
+               Suitable_For_UC_Target (Tar_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Target, VC_UC_Target, Valid, E,
                   Explanation => To_String (Explanation));
