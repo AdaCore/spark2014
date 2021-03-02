@@ -2987,7 +2987,7 @@ package body Flow.Control_Flow_Graph is
       function Variables_Initialized_By_Loop (Loop_N : Node_Id)
                                               return Flow_Id_Sets.Set
       is
-         Fully_Initialized : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Fully_Initialized : Flow_Id_Sets.Set;
 
          type Target (Valid : Boolean := False)
             is record
@@ -3035,6 +3035,11 @@ package body Flow.Control_Flow_Graph is
          --  Note: this is similar to Scope_Within, but operating on the
          --  syntactic level, because FOR loops do not act as scopes for
          --  objects declared within them.
+
+         procedure Potentially_Defined (N : Node_Id)
+           with Pre => Nkind (N) in N_Subexpr;
+         --  Examine if a subexpression N denotes an component of an array that
+         --  is fully initialized in the current loop.
 
          function Proc_Search (N : Node_Id) return Traverse_Result;
          --  In the traversal of the loop body, this finds suitable targets
@@ -3093,8 +3098,6 @@ package body Flow.Control_Flow_Graph is
             end case;
 
             --  Extract indices (and make sure they are simple and distinct)
-
-            L := Node_Lists.Empty_List;
 
             declare
                Param_Expr  : Node_Id := First (Expressions (N)); --  LHS
@@ -3349,6 +3352,22 @@ package body Flow.Control_Flow_Graph is
             return Present (Current_Loop_Parent (E));
          end Is_Declared_Within_Current_Loop;
 
+         -------------------------
+         -- Potentially_Defined --
+         -------------------------
+
+         procedure Potentially_Defined (N : Node_Id) is
+            T : constant Target := Get_Array_Index (N);
+         begin
+            if T.Valid
+              and then not Is_Declared_Within_Current_Loop
+                (Get_Direct_Mapping_Id (T.Var))
+              and then Fully_Defined_In_Original_Loop (T)
+            then
+               Fully_Initialized.Include (T.Var);
+            end if;
+         end Potentially_Defined;
+
          -----------------
          -- Proc_Search --
          -----------------
@@ -3380,20 +3399,7 @@ package body Flow.Control_Flow_Graph is
                   end if;
 
                when N_Assignment_Statement =>
-                  if Nkind (Name (N)) = N_Indexed_Component then
-                     declare
-                        T : constant Target := Get_Array_Index (Name (N));
-
-                     begin
-                        if T.Valid
-                          and then not Is_Declared_Within_Current_Loop
-                            (Get_Direct_Mapping_Id (T.Var))
-                          and then Fully_Defined_In_Original_Loop (T)
-                        then
-                           Fully_Initialized.Include (T.Var);
-                        end if;
-                     end;
-                  end if;
+                  Potentially_Defined (Name (N));
 
                when N_Procedure_Call_Statement
                   | N_Entry_Call_Statement
@@ -3410,20 +3416,8 @@ package body Flow.Control_Flow_Graph is
                                                  Actual : Node_Id)
                      is
                      begin
-                        if Ekind (Formal) = E_Out_Parameter
-                          and then Nkind (Actual) = N_Indexed_Component
-                        then
-                           declare
-                              T : constant Target := Get_Array_Index (Actual);
-                           begin
-                              if T.Valid
-                                and then not Is_Declared_Within_Current_Loop
-                                  (Get_Direct_Mapping_Id (T.Var))
-                                and then Fully_Defined_In_Original_Loop (T)
-                              then
-                                 Fully_Initialized.Include (T.Var);
-                              end if;
-                           end;
+                        if Ekind (Formal) = E_Out_Parameter then
+                           Potentially_Defined (Actual);
                         end if;
                      end Handle_Parameter;
 
