@@ -3561,35 +3561,6 @@ package body SPARK_Definition is
             else Ekind (E) = E_Entry_Family);
       end if;
 
-      --  A possibly nonreturning procedure should only be called from
-      --  another (possibly) nonreturning procedure.
-
-      if Has_Might_Not_Return_Annotation (E) then
-         declare
-            Caller : Entity_Id :=
-              Unique_Defining_Entity (Enclosing_Declaration (N));
-         begin
-            while Ekind (Caller) not in Subprogram_Kind
-                                      | E_Entry
-                                      | E_Package
-                                      | E_Package_Body
-                                      | E_Task_Body
-            loop
-               Caller := Scope (Caller);
-            end loop;
-
-            if not Is_Possibly_Nonreturning_Procedure (Caller) then
-               Error_Msg_N ("call to possibly nonreturning procedure outside "
-                            & "a (possibly) nonreturning procedure", N);
-               if Ekind (Caller) = E_Procedure then
-                  Error_Msg_NE
-                    ("\consider annotating caller & with Might_Not_Return",
-                     N, Caller);
-               end if;
-            end if;
-         end;
-      end if;
-
       --  There should not be calls to default initial condition and invariant
       --  procedures.
 
@@ -3713,6 +3684,34 @@ package body SPARK_Definition is
            ("?no Global contract available for &", N, E);
          Error_Msg_NE
            ("\\assuming & has no effect on global items", N, E);
+      end if;
+
+      --  A possibly nonreturning procedure should only be called from
+      --  another (possibly) nonreturning procedure.
+
+      if Has_Might_Not_Return_Annotation (E) then
+         declare
+            Caller : Entity_Id :=
+              Unique_Defining_Entity (Enclosing_Declaration (N));
+         begin
+            while Ekind (Caller) not in Subprogram_Kind
+                                      | E_Entry
+                                      | E_Package
+                                      | E_Task_Type
+            loop
+               Caller := Scope (Caller);
+            end loop;
+
+            if not Is_Possibly_Nonreturning_Procedure (Caller) then
+               Error_Msg_N ("call to possibly nonreturning procedure outside "
+                            & "a (possibly) nonreturning procedure", N);
+               if Ekind (Caller) = E_Procedure then
+                  Error_Msg_NE
+                    ("\consider annotating caller & with Might_Not_Return",
+                     N, Caller);
+               end if;
+            end if;
+         end;
       end if;
 
       --  Check that the parameter of a function annotated with At_End_Borrow
