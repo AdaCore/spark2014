@@ -3757,6 +3757,14 @@ package body Gnat2Why.Borrow_Checker is
          =>
             null;
 
+         --  Unsupported INOX constructs
+
+         when N_Goto_When_Statement
+            | N_Raise_When_Statement
+            | N_Return_When_Statement
+         =>
+            null;
+
          --  The following nodes are never generated in GNATprove mode
 
          when N_Compound_Statement

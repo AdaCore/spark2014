@@ -2428,6 +2428,14 @@ package body SPARK_Definition is
          =>
             Mark_Violation ("tasking", N);
 
+         --  Unsupported INOX constructs
+
+         when N_Goto_When_Statement
+            | N_Raise_When_Statement
+            | N_Return_When_Statement
+         =>
+            Mark_Violation ("INOX", N);
+
          --  The following kinds can be safely ignored by marking
 
          when N_At_Clause
