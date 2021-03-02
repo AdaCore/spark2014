@@ -3259,24 +3259,20 @@ package body Flow.Control_Flow_Graph is
                then
                   declare
                      Var : constant Node_Id := Get_Direct_Mapping_Id (F);
-                     Var_Defined : Target;
+                     pragma Assert
+                       (Nkind (Var) = N_Assignment_Statement
+                          or else
+                        Is_Actual_Parameter (Var));
+                     --  The written object is either assigned directly or via
+                     --  an output of a subprogram call.
+
+                     Var_Defined : constant Target :=
+                       Get_Array_Index
+                         (if Nkind (Var) = N_Assignment_Statement
+                          then Name (Var)
+                          else Var);
 
                   begin
-                     case Nkind (Var) is
-                        when N_Assignment_Statement =>
-                           Var_Defined := Get_Array_Index (Name (Var));
-
-                        when N_Indexed_Component =>
-                           Var_Defined := Get_Array_Index (Var);
-
-                        when N_Slice =>
-                           Var_Defined := Get_Array_Index (Var);
-
-                        when others =>
-                           raise Program_Error;
-
-                     end case;
-
                      if Var_Defined = T then
                         FA.CFG.DFS (Start         => V,
                                     Include_Start => False,
