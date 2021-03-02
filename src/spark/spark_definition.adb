@@ -7301,7 +7301,7 @@ package body SPARK_Definition is
             | Pragma_Ada_12
             | Pragma_Ada_2005
             | Pragma_Ada_2012
-            | Pragma_Ada_2020
+            | Pragma_Ada_2022
             | Pragma_Annotate
             | Pragma_Assume_No_Invalid_Values
             --  Pragma_Check is handled specially above
