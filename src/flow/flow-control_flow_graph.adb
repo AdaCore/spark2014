@@ -3410,14 +3410,11 @@ package body Flow.Control_Flow_Graph is
                                                  Actual : Node_Id)
                      is
                      begin
-                        if Nkind (Actual) = N_Indexed_Component then
-
+                        if Ekind (Formal) = E_Out_Parameter
+                          and then Nkind (Actual) = N_Indexed_Component
+                        then
                            declare
-                              T : constant Target :=
-                                (if Ekind (Formal) = E_Out_Parameter
-                                 then Get_Array_Index (Actual)
-                                 else Null_Target);
-
+                              T : constant Target := Get_Array_Index (Actual);
                            begin
                               if T.Valid
                                 and then not Is_Declared_Within_Current_Loop
