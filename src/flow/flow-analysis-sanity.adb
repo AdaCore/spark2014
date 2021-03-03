@@ -1907,7 +1907,8 @@ package body Flow.Analysis.Sanity is
                                         else FA.Spec_Entity),
                            F1       => Var,
                            Severity => Error_Kind,
-                           Tag      => Side_Effects);
+                           Tag      => Side_Effects,
+                           Vertex   => V);
                         --  ??? the Atr.Error_Location should be always present
                         --  (which should be enforced by the graph building
                         --  API); we check it only to be on the safe side.
