@@ -11,7 +11,4 @@ arrays.ads:34:04: error: "Arr_6" is not allowed in SPARK (due to attribute "Addr
 arrays.ads:34:04: error: violation of aspect SPARK_Mode at line 2
 arrays.ads:35:27: error: subtype of "First" is not allowed in SPARK (due to attribute "Address" in unsupported context)
 arrays.ads:35:27: error: violation of aspect SPARK_Mode at line 2
-arrays.ads:35:34: error: subtype of "First" is not allowed in SPARK (due to attribute "Address" in unsupported context)
-arrays.ads:35:34: error: violation of aspect SPARK_Mode at line 2
-arrays.ads:35:52: error: attribute "Address" in unsupported context is not yet supported
 gnatprove: error during flow analysis and proof
