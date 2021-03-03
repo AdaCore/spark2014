@@ -129,24 +129,24 @@ A subtype ``S`` is said to be `suitable for unchecked conversion` if:
   limited type, of a type with discriminants, or of a private type whose
   completion fails to meet these requirements.
 
-- ``S`` is a scalar type, or if it is a composite type, the Object__Size N of
+- ``S`` is a scalar type, or if it is a composite type, the Object_Size N of
   ``S`` is the sum of the size of the components of ``S``, and all components
   of ``S`` are also suitable for unchecked conversion.
 
 A subtype ``S`` is said to be `suitable as the target of an unchecked
 conversion` if it is suitable for unchecked conversion, and, in addition:
 
-- ``S`` is not of a subtype that is subject to a predicate, of a type
-  that is subject to a type_invariant.
+- ``S`` is not of a subtype that is subject to a predicate, or of a type
+  that is subject to a type invariant.
 - Given the Object_Size N of ``S`` in bits, there exist exactly 2**N distinct
-  values that belong to ``S`` and contain no invalid scalar parts.  [In other
-  words, every possible assignment of values to the bits representing an object
-  of subtype ``S`` represents a distinct value of ``S``.]
+  valid values that belong to ``S`` and contain no invalid scalar parts.  [In
+  other words, every possible assignment of values to the bits representing an
+  object of subtype ``S`` represents a distinct value of ``S``.]
 - If ``S`` is a composite type, all parts of ``S`` are also suitable as the
   target of an unchecked conversion.
 
 [Note that floating-point types are not suitable as the target of an unchecked
-conversion.]
+conversion, because NaN is not considered to be a valid value.]
 
 Unchecked type conversions are in |SPARK|, with some restrictions described
 below. Although it is not mandated by Ada standard, the compiler should ensure
@@ -156,7 +156,7 @@ could be misaligned (as GNAT ensures).
 .. centered:: **Verification Rules**
 
 1. The source and target subtypes of an instance of ``Unchecked_Conversion``
-   shall have the same size.
+   shall have the same Object_Size.
 
 2. The source and target subtypes shall be suitable for unchecked conversion
    and the target subtype should be suitable as the target of an unchecked
