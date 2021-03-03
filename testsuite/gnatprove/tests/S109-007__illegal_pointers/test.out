@@ -1,3 +1,4 @@
 illegal.adb:7:09: error: effectively volatile type "Ptr_V" must be declared at library level (SPARK RM 7.1.3(3))
+illegal.adb:11:46: error: allocator cannot appear in this context (SPARK RM 7.1.3(10))
 illegal.adb:17:12: error: allocator cannot appear in this context (SPARK RM 7.1.3(10))
 gnatprove: error during generation of Global contracts
