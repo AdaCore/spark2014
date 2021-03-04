@@ -911,10 +911,10 @@ package body SPARK_Definition.Annotate is
       if Whole then
          Sloc_Range (Range_Node, Left_Sloc, Right_Sloc);
 
-         --  Sloc_Range doesn't take into account aspect specifications for
-         --  object declarations, so we do this ourselves here.
+         --  Sloc_Range doesn't take into account aspect specifications
+         --  attached to the node, so we do this ourselves here.
 
-         if Nkind (Range_Node) = N_Object_Declaration then
+         if Permits_Aspect_Specifications (Range_Node) then
             declare
                N : Node_Id := First (Aspect_Specifications (Range_Node));
             begin
