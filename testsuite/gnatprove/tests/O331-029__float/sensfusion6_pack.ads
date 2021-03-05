@@ -12,7 +12,7 @@ is
 
    procedure SensFusion6_Init;
 
-   function SensFusion6_Test return bool;
+   function SensFusion6_Test return C_Bool;
 
    procedure SensFusion6_Update_Q
      (Gx : T_Rate;
@@ -37,7 +37,7 @@ private
 
    --  Global variables and constants
 
-   Is_Init : bool := False with Part_Of => SensFusion6_State;
+   Is_Init : C_Bool := False with Part_Of => SensFusion6_State;
 
    Q0 : T_Quaternion := 1.0
      with Part_Of => SensFusion6_State;
