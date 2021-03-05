@@ -321,6 +321,8 @@ package body SPARK_Util.Types is
    is
       function Typ_Name return String is (Type_Name_For_Explanation (Typ));
    begin
+      --  default initialization for Codepeer
+      Size := Uint_0;
       if Is_Array_Type (Typ) then
          if not Is_Constrained (Typ) then
             Result := False;
@@ -339,7 +341,7 @@ package body SPARK_Util.Types is
          declare
             Comp_Typ : constant Entity_Id :=
               Retysp (Component_Type (Typ));
-            Comp_Size : Uint;
+            Comp_Size : Uint := Uint_0;
             Index : Entity_Id;
          begin
             Size := Uint_1;
@@ -1393,6 +1395,9 @@ package body SPARK_Util.Types is
 
       begin
 
+         --  Default initialization for Codepeer
+         Typ_Size := Uint_0;
+
          if Is_Tagged_Type (Typ) then
             Result := False;
             Explanation :=
@@ -1550,6 +1555,10 @@ package body SPARK_Util.Types is
       --  Start of processing for Suitable_For_UC_Target_Internal
 
       begin
+
+         --  Default Initialization for Codepeer
+         Typ_Size := Uint_0;
+
          --  Some valid IEEE 754 values are not allowed in SPARK, such as NaN
 
          if Is_Floating_Point_Type (Typ) then
