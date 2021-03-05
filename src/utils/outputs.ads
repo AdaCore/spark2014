@@ -72,6 +72,8 @@ private
 
    Output_States : array (Output_Id) of Output_State;
 
-   Current_File_Handle : File_Type;
+   Stdout_Handle       : aliased File_Type := Standard_Output;
+   Stderr_Handle       : aliased File_Type := Standard_Error;
+   Current_File_Handle : aliased File_Type;
 
 end Outputs;
