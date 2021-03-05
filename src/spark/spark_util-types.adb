@@ -40,7 +40,7 @@ package body SPARK_Util.Types is
    --  argument.
 
    generic
-      with procedure Callback
+      with procedure Examine
         (Typ         : Entity_Id;
          Result      : out Boolean;
          Typ_Size    : out Uint;
@@ -53,7 +53,7 @@ package body SPARK_Util.Types is
    --  This function is used by Type_Has_No_Holes and
    --  Is_Valid_Bitpattern_No_Holes to recurse over composite types. It checks
    --  that the composite types have no holes, and that each field has the
-   --  property checked by the Callback. If Result is True, Size contains the
+   --  property checked by the Examine. If Result is True, Size contains the
    --  declared or computed size of the type (RM_Size). Otherwise, Size is
    --  undefined and Explanation contains a string why the size could not
    --  be computed.
@@ -345,7 +345,7 @@ package body SPARK_Util.Types is
             Index : Entity_Id;
          begin
             Size := Uint_1;
-            Callback (Comp_Typ, Result, Comp_Size, Explanation);
+            Examine (Comp_Typ, Result, Comp_Size, Explanation);
             if not Result then
                return;
             end if;
@@ -379,8 +379,7 @@ package body SPARK_Util.Types is
                   Comp_Size : Uint;
                begin
                   if Ekind (Comp) = E_Component then
-                     Callback
-                       (Comp_Ty, Result, Comp_Size, Explanation);
+                     Examine (Comp_Ty, Result, Comp_Size, Explanation);
                      if not Result then
                         return;
                      end if;
