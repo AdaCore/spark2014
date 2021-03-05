@@ -321,8 +321,9 @@ package body SPARK_Util.Types is
    is
       function Typ_Name return String is (Type_Name_For_Explanation (Typ));
    begin
-      --  default initialization for Codepeer
+      --  Default initialization for Codepeer
       Size := Uint_0;
+
       if Is_Array_Type (Typ) then
          if not Is_Constrained (Typ) then
             Result := False;
@@ -330,6 +331,7 @@ package body SPARK_Util.Types is
               To_Unbounded_String ("can't determine size for "
                                    & "unconstrained array " & Typ_Name);
             return;
+
          elsif not Compile_Time_Known_Bounds (Typ) then
             Result := False;
             Explanation :=
@@ -339,59 +341,53 @@ package body SPARK_Util.Types is
          end if;
 
          declare
-            Comp_Typ : constant Entity_Id :=
-              Retysp (Component_Type (Typ));
-            Comp_Size : Uint := Uint_0;
-            Index : Entity_Id;
+            Comp_Typ  : constant Entity_Id := Retysp (Component_Type (Typ));
+            Comp_Size : Uint;
+            Index     : Node_Id;
          begin
-            Size := Uint_1;
             Examine (Comp_Typ, Result, Comp_Size, Explanation);
             if not Result then
                return;
             end if;
 
-            Size := UI_Mul (Size, Comp_Size);
+            Size := Comp_Size;
             Index := First_Index (Typ);
             while Present (Index) loop
                declare
                   Rng : constant Node_Id := Get_Range (Index);
                begin
                   Size :=
-                    UI_Mul (Size,
-                            UI_Add (
-                              UI_Sub (Expr_Value (High_Bound (Rng)),
-                                Expr_Value (Low_Bound (Rng))),
-                              Uint_1));
+                    Size *
+                      (Expr_Value (High_Bound (Rng)) -
+                         Expr_Value (Low_Bound (Rng)) + 1);
                   Next_Index (Index);
                end;
             end loop;
          end;
-      end if;
 
-      if Is_Record_Type (Typ) then
+      elsif Is_Record_Type (Typ) then
          declare
-            Comp     : Node_Id := First_Component (Typ);
+            Comp : Entity_Id := First_Component (Typ);
          begin
-            Size := Uint_0;
             while Present (Comp) loop
                declare
                   Comp_Ty   : constant Entity_Id := Retysp (Etype (Comp));
                   Comp_Size : Uint;
                begin
-                  if Ekind (Comp) = E_Component then
-                     Examine (Comp_Ty, Result, Comp_Size, Explanation);
-                     if not Result then
-                        return;
-                     end if;
+                  Examine (Comp_Ty, Result, Comp_Size, Explanation);
+                  if not Result then
+                     return;
                   end if;
-                  Size := UI_Add (Size, Comp_Size);
-                  Next_Component (Comp);
+                  Size := Size + Comp_Size;
                end;
+               Next_Component (Comp);
             end loop;
          end;
       end if;
-      Result := True;
-      Explanation := To_Unbounded_String ("");
+
+      Result      := True;
+      Explanation := Null_Unbounded_String;
+
       return;
    end Compute_Size_For_Composite_Types;
 
