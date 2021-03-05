@@ -281,11 +281,12 @@ package SPARK_Util.Types is
    --  This procedure implements the notion of "suitable as a target of an
    --  unchecked conversion" of SPARK RM 13.9.
 
-   procedure Types_Have_Same_Known_Esize (A, B        : Entity_Id;
-                                          Result      : out Boolean;
-                                          Explanation : out Unbounded_String)
+   procedure Have_Same_Known_Esize (A, B        : Entity_Id;
+                                    Result      : out Boolean;
+                                    Explanation : out Unbounded_String)
      with Pre => Is_Type (A) and then Is_Type (B);
-   --  Returns True if the two types in argument have the same Esize
+   --  If types A and B have the same Esize, then set Result to True; otherwise
+   --  set Result to False and Explanation to a possible fix.
 
    function Contains_Relaxed_Init_Parts
      (Typ        : Entity_Id;

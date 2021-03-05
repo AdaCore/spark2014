@@ -33,8 +33,8 @@ with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 package body SPARK_Util.Types is
 
    function Type_Name_For_Explanation (Typ : Entity_Id) return String
-     is (if not Is_Itype (Typ) then "type " & Source_Name (Typ)
-         else "anonymous type")
+     is (if Is_Itype (Typ) then "anonymous type"
+         else "type " & Source_Name (Typ))
      with Pre => Is_Type (Typ);
    --  This function computes a user-visible string to represent the type in
    --  argument.
@@ -45,11 +45,12 @@ package body SPARK_Util.Types is
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String);
-   procedure Compute_Size_For_Composite_Types
+   procedure Minimal_Size
      (Typ         : Entity_Id;
       Result      : out Boolean;
       Size        : out Uint;
-      Explanation : out Unbounded_String);
+      Explanation : out Unbounded_String)
+   with Pre => Is_Composite_Type (Typ);
    --  This function is used by Type_Has_No_Holes and
    --  Is_Valid_Bitpattern_No_Holes to recurse over composite types. It checks
    --  that the composite types have no holes, and that each field has the
@@ -309,11 +310,11 @@ package body SPARK_Util.Types is
       end if;
    end Has_Unconstrained_UU_Component;
 
-   --------------------------------------
-   -- Compute_Size_For_Composite_Types --
-   --------------------------------------
+   ------------------
+   -- Minimal_Size --
+   ------------------
 
-   procedure Compute_Size_For_Composite_Types
+   procedure Minimal_Size
      (Typ         : Entity_Id;
       Result      : out Boolean;
       Size        : out Uint;
@@ -389,7 +390,7 @@ package body SPARK_Util.Types is
       Explanation := Null_Unbounded_String;
 
       return;
-   end Compute_Size_For_Composite_Types;
+   end Minimal_Size;
 
    ------------------------------
    -- Check_DIC_At_Declaration --
@@ -1369,10 +1370,9 @@ package body SPARK_Util.Types is
            (Typ, False, Result, Typ_Size, Explanation);
       end Suitable_For_UC_Callback;
 
-      procedure Recurse is new
-        Compute_Size_For_Composite_Types (Suitable_For_UC_Callback);
-      --  we use the generic Check_Composite_Types_For_Holes, which factors
-      --  common code between Suitable_For_UC_Target and Suitable_For_UC.
+      procedure Recurse is new Minimal_Size (Suitable_For_UC_Callback);
+      --  We use the generic Minimal_Size, which factors common code between
+      --  Suitable_For_UC_Target and Suitable_For_UC.
 
       ------------------------------
       -- Suitable_For_UC_Internal --
@@ -1513,7 +1513,7 @@ package body SPARK_Util.Types is
          Result      : out Boolean;
          Typ_Size    : out Uint;
          Explanation : out Unbounded_String);
-      --  same as Suitable_For_UC_Target_Internal, but Top_Level fixed to
+      --  Same as Suitable_For_UC_Target_Internal, but Top_Level fixed to
       --  False.
 
       -------------------------------------
@@ -1530,8 +1530,7 @@ package body SPARK_Util.Types is
            (Typ, False, Result, Typ_Size, Explanation);
       end Suitable_For_UC_Target_Callback;
 
-      procedure Recurse is new Compute_Size_For_Composite_Types
-        (Suitable_For_UC_Target_Callback);
+      procedure Recurse is new Minimal_Size (Suitable_For_UC_Target_Callback);
 
       -------------------------------------
       -- Suitable_For_UC_Target_Internal --
@@ -1608,7 +1607,7 @@ package body SPARK_Util.Types is
 
          if Is_Scalar_Type (Typ) then
             declare
-               R        : constant Node_Id := Scalar_Range (Typ);
+               R : constant Node_Id := Scalar_Range (Typ);
             begin
                if Top_Level and then not Known_Esize (Typ) then
                   Result := False;
@@ -1632,9 +1631,9 @@ package body SPARK_Util.Types is
                declare
                   Low        : constant Uint := Expr_Value (Low_Bound (R));
                   High       : constant Uint := Expr_Value (High_Bound (R));
-                  Num_Values : constant Uint := UI_Add (UI_Sub (High, Low), 1);
+                  Num_Values : constant Uint := High - Low + 1;
                begin
-                  if UI_Eq (UI_Expon (Uint_2, Typ_Size), Num_Values) then
+                  if 2 ** Typ_Size = Num_Values then
                      Result := True;
                      Explanation := To_Unbounded_String ("");
                   else
@@ -1710,13 +1709,13 @@ package body SPARK_Util.Types is
       end if;
    end Task_Body_Entity;
 
-   ---------------------------------
-   -- Types_Have_Same_Known_Esize --
-   ---------------------------------
+   ---------------------------
+   -- Have_Same_Known_Esize --
+   ---------------------------
 
-   procedure Types_Have_Same_Known_Esize (A, B        : Entity_Id;
-                                          Result      : out Boolean;
-                                          Explanation : out Unbounded_String)
+   procedure Have_Same_Known_Esize (A, B        : Entity_Id;
+                                    Result      : out Boolean;
+                                    Explanation : out Unbounded_String)
    is
    begin
       if not Known_Esize (A) then
@@ -1735,7 +1734,7 @@ package body SPARK_Util.Types is
                                 & "clause or aspect");
          return;
       end if;
-      if not UI_Eq (Esize (A), Esize (B)) then
+      if Esize (A) /= Esize (B) then
          Result := False;
          Explanation :=
            To_Unbounded_String ("Object_Sizes of "
@@ -1746,7 +1745,7 @@ package body SPARK_Util.Types is
       end if;
       Result := True;
       Explanation := Null_Unbounded_String;
-   end Types_Have_Same_Known_Esize;
+   end Have_Same_Known_Esize;
 
    -------------------------
    -- Unchecked_Full_Type --

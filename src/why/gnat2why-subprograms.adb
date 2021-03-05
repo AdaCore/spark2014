@@ -4431,7 +4431,7 @@ package body Gnat2Why.Subprograms is
                  (Target, VC_UC_Target, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Types_Have_Same_Known_Esize
+               Have_Same_Known_Esize
                  (Src_Ty, Tar_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (E, VC_UC_Same_Size, Valid, E,

@@ -15280,7 +15280,7 @@ package body Gnat2Why.Expr is
                        (Expr, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
 
-                     Types_Have_Same_Known_Esize
+                     Have_Same_Known_Esize
                        (Retysp (Etype (Defining_Identifier (Decl))),
                         Retysp (Etype (Prefix (Expr))),
                         Valid, Explanation);
