@@ -910,8 +910,10 @@ package body Flow.Analysis is
                              "could be rewritten as 'access constant %'",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            F1       => Entire_Variable (F_Final),
-                           F2       => Direct_Mapping_Id
-                             (Directly_Designated_Type (Etype (Var))),
+                           F2       =>
+                             Direct_Mapping_Id
+                               (Base_Type
+                                  (Directly_Designated_Type (Etype (Var)))),
                            Tag      => Inout_Only_Read,
                            Severity => Warning_Kind,
                            Vertex   => V);
