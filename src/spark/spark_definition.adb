@@ -6860,10 +6860,20 @@ package body SPARK_Definition is
    begin
       case Ekind (E) is
          when Object_Kind =>
-            if Ekind (E) in E_Variable | E_Constant | Formal_Kind
-              and then not In_SPARK (E)
-            then
-               Mark_Violation (N, From => E);
+            if Ekind (E) in E_Variable | E_Constant | Formal_Kind then
+               if not In_SPARK (E) then
+                  Mark_Violation (N, From => E);
+
+               elsif Is_Effectively_Volatile_For_Reading (E)
+                 and then
+                   not Is_OK_Volatile_Context (Context       => Parent (N),
+                                               Obj_Ref       => N,
+                                               Check_Actuals => True)
+               then
+                  Mark_Violation
+                    ("volatile object in interfering context", N,
+                     SRM_Reference => "SPARK RM 7.1.3(10)");
+               end if;
 
             --  Record components and discriminants are in SPARK if they are
             --  visible in the representative type of their scope. Do not
