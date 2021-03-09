@@ -1,0 +1,49 @@
+access_to_constants.ads:4:09: error: general access type is not allowed in SPARK
+access_to_constants.ads:4:09: error: violation of aspect SPARK_Mode at line 1
+access_to_constants.ads:9:09: error: general access type is not allowed in SPARK
+access_to_constants.ads:9:09: error: violation of aspect SPARK_Mode at line 1
+access_to_constants.ads:13:09: error: "Rec_2" is not allowed in SPARK (due to general access type)
+access_to_constants.ads:13:09: error: violation of aspect SPARK_Mode at line 1
+access_to_constants.ads:14:09: error: general access type is not allowed in SPARK
+access_to_constants.ads:14:09: error: violation of aspect SPARK_Mode at line 1
+test_alias.adb:7:09: error: general access type is not allowed in SPARK
+test_alias.adb:7:09: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:11:09: error: general access type is not allowed in SPARK
+test_alias.adb:11:09: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:15:09: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:15:09: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:20:09: error: general access type is not allowed in SPARK
+test_alias.adb:20:09: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:28:04: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:28:04: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:29:07: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:29:07: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:31:04: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:31:04: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:33:14: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:33:14: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:37:04: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:37:04: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:77:30: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:77:30: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:79:52: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:79:52: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:82:07: error: "B1" is not allowed in SPARK (due to general access type)
+test_alias.adb:82:07: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:91:39: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:91:39: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:93:61: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:93:61: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:96:22: error: "C1" is not allowed in SPARK (due to general access type)
+test_alias.adb:96:22: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:103:21: error: "C" is not allowed in SPARK (due to general access type)
+test_alias.adb:103:21: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:109:22: error: "R" is not allowed in SPARK (due to general access type)
+test_alias.adb:109:22: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:112:22: error: "R" is not allowed in SPARK (due to general access type)
+test_alias.adb:112:22: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:126:07: error: "S" is not allowed in SPARK (due to general access type)
+test_alias.adb:126:07: error: violation of aspect SPARK_Mode at line 5
+test_alias.adb:141:20: error: "Holder" is not allowed in SPARK (due to general access type)
+test_alias.adb:141:20: error: violation of aspect SPARK_Mode at line 5
+gnatprove: error during flow analysis and proof
