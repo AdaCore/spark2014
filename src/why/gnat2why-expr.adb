@@ -6808,11 +6808,16 @@ package body Gnat2Why.Expr is
       ------------------
 
       function Can_Be_Moved (Expr : Node_Id) return Boolean is
-         Typ : constant Entity_Id := Retysp (Etype (Expr));
+         Typ  : constant Entity_Id := Retysp (Etype (Expr));
+         Root : constant Entity_Id :=
+           (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
+            else Empty);
       begin
          return Is_Deep (Typ)
-          and then not Is_Anonymous_Access_Type (Typ)
-          and then Present (Get_Root_Object (Expr));
+           and then not Is_Anonymous_Access_Type (Typ)
+           and then Present (Root)
+           and then not Is_Constant_In_SPARK (Root)
+           and then not Traverse_Access_To_Constant (Expr);
       end Can_Be_Moved;
 
       ---------------------------
@@ -15081,6 +15086,7 @@ package body Gnat2Why.Expr is
                   when E_Access_Type
                      | E_Access_Subtype
                      | E_Access_Subprogram_Type
+                     | E_General_Access_Type
                   =>
                      null;
 

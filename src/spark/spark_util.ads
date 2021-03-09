@@ -810,6 +810,16 @@ package SPARK_Util is
    --  Store the link between a call to a function annotated with
    --  At_End_Borrow and the entity whose scope the at end refers to.
 
+   function Traverse_Access_To_Constant (Expr : Node_Id) return Boolean with
+     Pre => Is_Path_Expression (Expr);
+   --  Return True if the path from Expr goes through a dereference of an
+   --  access-to-constant type.
+
+   function Is_Rooted_In_Constant (Expr : Node_Id) return Boolean;
+   --  Return True is Expr is a path rooted inside a constant part of an
+   --  object. We do not return True if Expr is rooted inside an IN parameter,
+   --  as the actual might be a variable object.
+
    ---------------------------------
    -- Misc operations and queries --
    ---------------------------------

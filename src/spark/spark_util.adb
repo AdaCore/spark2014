@@ -2649,6 +2649,23 @@ package body SPARK_Util is
         and then Ekind (Scope (E)) = E_Protected_Type;
    end Is_Protected_Component_Or_Discr;
 
+   ---------------------------
+   -- Is_Rooted_In_Constant --
+   ---------------------------
+
+   function Is_Rooted_In_Constant (Expr : Node_Id) return Boolean is
+      Root : constant Entity_Id :=
+        (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
+         else Empty);
+   begin
+      return Present (Root)
+        and then
+          (not Is_Deep (Etype (Root))
+           or else (Is_Constant_In_SPARK (Root)
+                    and then Ekind (Root) /= E_In_Parameter)
+           or else Traverse_Access_To_Constant (Expr));
+   end Is_Rooted_In_Constant;
+
    ------------------------------
    -- Is_Quantified_Loop_Param --
    ------------------------------
@@ -3682,6 +3699,79 @@ package body SPARK_Util is
    begin
       return Parent (Label);
    end Statement_Enclosing_Label;
+
+   ---------------------------------
+   -- Traverse_Access_To_Constant --
+   ---------------------------------
+
+   function Traverse_Access_To_Constant (Expr : Node_Id) return Boolean is
+   begin
+      case Nkind (Expr) is
+         when N_Expanded_Name
+            | N_Identifier
+            | N_Aggregate
+            | N_Allocator
+            | N_Delta_Aggregate
+            | N_Extension_Aggregate
+            | N_Null
+         =>
+            return False;
+
+         --  In the case of a call to a traversal function, the root object is
+         --  the root of the traversed parameter. Otherwise there is no root
+         --  object.
+
+         when N_Function_Call =>
+            if Is_Traversal_Function_Call (Expr) then
+               return Traverse_Access_To_Constant (First_Actual (Expr));
+            else
+               return False;
+            end if;
+
+         when N_Attribute_Reference =>
+            if Attribute_Name (Expr) in Name_First | Name_Last | Name_Length
+            then
+               return Traverse_Access_To_Constant (Prefix (Expr));
+            else
+               pragma Assert
+                 (Attribute_Name (Expr) in Name_Loop_Entry
+                                         | Name_Old
+                                         | Name_Update);
+               return False;
+            end if;
+
+         when N_Explicit_Dereference =>
+            pragma Assert (Is_Access_Type (Retysp (Etype (Prefix (Expr)))));
+
+            return Is_Access_Constant (Retysp (Etype (Prefix (Expr))))
+              or else Traverse_Access_To_Constant (Prefix (Expr));
+
+         when N_Indexed_Component
+            | N_Selected_Component
+            | N_Slice
+         =>
+            return Traverse_Access_To_Constant (Prefix (Expr));
+
+         when N_Qualified_Expression
+            | N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return Traverse_Access_To_Constant (Expression (Expr));
+
+         when N_Op_Eq
+            | N_Op_Ne
+         =>
+            if Nkind (Left_Opnd (Expr)) = N_Null then
+               return Traverse_Access_To_Constant (Right_Opnd (Expr));
+            else
+               pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
+               return Traverse_Access_To_Constant (Left_Opnd (Expr));
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Traverse_Access_To_Constant;
 
    -----------------------------
    -- Unique_Main_Unit_Entity --

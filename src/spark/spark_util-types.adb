@@ -892,10 +892,14 @@ package body SPARK_Util.Types is
       case Type_Kind'(Ekind (Rep_Typ)) is
          when Access_Kind =>
 
-            --  Access to subprograms are not subjected to ownership rules
+            --  Access to subprograms are not subjected to ownership rules, nor
+            --  are access-to-constant types, unless they are observers
+            --  (anonymous access-to-constant types).
 
             return Ekind (Directly_Designated_Type (Rep_Typ)) /=
-              E_Subprogram_Type;
+              E_Subprogram_Type
+              and then (not Is_Access_Constant (Rep_Typ)
+                        or else Is_Anonymous_Access_Type (Rep_Typ));
 
          when E_Array_Type
             | E_Array_Subtype

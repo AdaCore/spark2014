@@ -90,6 +90,8 @@ package SPARK_Atree.Entities is
      Einfo.Entities.E_Exception_Type;
    E_Function                    : Entity_Kind renames
      Einfo.Entities.E_Function;
+   E_General_Access_Type         : Entity_Kind renames
+     Einfo.Entities.E_General_Access_Type;
    E_In_Parameter                : Entity_Kind renames
      Einfo.Entities.E_In_Parameter;
    E_In_Out_Parameter            : Entity_Kind renames

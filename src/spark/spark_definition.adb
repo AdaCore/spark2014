@@ -280,14 +280,24 @@ package body SPARK_Definition is
    --  Return true if E has subcomponents of a deep type which are subjected
    --  to a subtype predicate.
 
-   procedure Check_Source_Of_Borrow_Or_Observe (Expr : Node_Id) with
+   procedure Check_Move_To_Constant (Expr : Node_Id) with
+     Pre => Nkind (Expr) in N_Allocator
+                          | N_Type_Conversion
+                          | N_Unchecked_Type_Conversion;
+   --  Check that Expr is directly inside a library level constant declaration
+
+   procedure Check_Source_Of_Borrow_Or_Observe
+     (Expr : Node_Id; In_Observe : Boolean)
+   with
      Post => (if not Violation_Detected
               then Is_Path_Expression (Expr)
                 and then Present (Get_Root_Object (Expr)));
    --  Check that a borrow has a valid source (stand-alone object or call to a
    --  traversal function).
 
-   procedure Check_Source_Of_Move (Expr : Node_Id);
+   procedure Check_Source_Of_Move
+     (Expr        : Node_Id;
+      To_Constant : Boolean := False);
    --  Check that a move has a valid source
 
    procedure Check_Compatible_Access_Types
@@ -505,12 +515,36 @@ package body SPARK_Definition is
       end if;
    end Check_Compatible_Access_Types;
 
+   ----------------------------
+   -- Check_Move_To_Constant --
+   ----------------------------
+
+   procedure Check_Move_To_Constant (Expr : Node_Id) is
+      Par       : constant Node_Id := Parent (Expr);
+      Operation : constant String :=
+        (if Nkind (Expr) = N_Allocator then "allocator of"
+         else "move inside a conversion to");
+
+   begin
+      --  Check that we are directly inside a library level constant
+      --  declaration.
+
+      if Nkind (Par) /= N_Object_Declaration
+        or else not Is_Constant_In_SPARK (Defining_Identifier (Par))
+        or else not Is_Library_Level_Entity (Defining_Identifier (Par))
+      then
+         Mark_Violation
+           (Operation & " an access-to-constant type not in"
+            & " library level constant declaration", Expr);
+      end if;
+   end Check_Move_To_Constant;
+
    ---------------------------------------
    -- Check_Source_Of_Borrow_Or_Observe --
    ---------------------------------------
 
    procedure Check_Source_Of_Borrow_Or_Observe
-     (Expr : Node_Id)
+     (Expr : Node_Id; In_Observe : Boolean)
    is
       Root : constant Entity_Id :=
         (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
@@ -537,6 +571,13 @@ package body SPARK_Definition is
       elsif Is_Effectively_Volatile (Root) then
          Mark_Violation
            ("borrow or observe of a volatile object", Expr);
+
+      --  In case of a borrow, the path should not traverse an
+      --  access-to-constant type.
+
+      elsif not In_Observe and then Traverse_Access_To_Constant (Expr) then
+         Mark_Violation
+           ("borrow of an access-to-constant part of an object", Expr);
       end if;
    end Check_Source_Of_Borrow_Or_Observe;
 
@@ -544,10 +585,15 @@ package body SPARK_Definition is
    -- Check_Source_Of_Move --
    --------------------------
 
-   procedure Check_Source_Of_Move (Expr : Node_Id) is
+   procedure Check_Source_Of_Move
+     (Expr        : Node_Id;
+      To_Constant : Boolean := False) is
    begin
       if not Is_Path_Expression (Expr) then
          Mark_Violation ("expression as source of move", Expr);
+      elsif not To_Constant and then Traverse_Access_To_Constant (Expr) then
+         Mark_Violation
+           ("access-to-constant part of an object as source of move", Expr);
       else
          declare
             Root : constant Entity_Id := Get_Root_Object (Expr);
@@ -1376,6 +1422,35 @@ package body SPARK_Definition is
                         end if;
                      end;
                   end if;
+
+                  --  We only support allocators of access-to-constant types in
+                  --  specific contexts.
+
+                  if Is_Access_Constant (Retysp (Etype (N))) then
+
+                     Check_Move_To_Constant (N);
+
+                     --  The initial value of the allocator is moved. We need
+                     --  to consider it specifically in the case of allocators
+                     --  to access-to-constant types as the allocator type is
+                     --  not itself of a deep type.
+
+                     if Nkind (Expression (N)) = N_Qualified_Expression then
+                        declare
+                           Des_Ty : Entity_Id := Directly_Designated_Type
+                             (Retysp (Etype (N)));
+                        begin
+                           if Is_Incomplete_Type (Des_Ty) then
+                              Des_Ty := Full_View (Des_Ty);
+                           end if;
+
+                           if Is_Deep (Des_Ty) then
+                              Check_Source_Of_Move
+                                (Expression (N), To_Constant => True);
+                           end if;
+                        end;
+                     end if;
+                  end if;
                else
                   Mark_Violation (N, Etype (N));
                end if;
@@ -1403,8 +1478,17 @@ package body SPARK_Definition is
                then
                   Mark_Violation ("assignment to a complex expression", Var);
 
+               --  Assigned object should not be a constant
+
                elsif Is_Constant_In_SPARK (Get_Root_Object (Var)) then
                   Mark_Violation ("assignment into a constant object", Var);
+
+               --  Assigned object should not be inside an access-to-constant
+               --  type.
+
+               elsif Traverse_Access_To_Constant (Var) then
+                  Mark_Violation ("assignment into an access-to-constant part"
+                                  & " of an object", Var);
 
                --  SPARK RM 3.10(7): If the type of the target is an anonymous
                --  access-to-variable type (an owning access type), the source
@@ -1420,7 +1504,8 @@ package body SPARK_Definition is
 
                elsif Is_Anonymous_Access_Object_Type (Etype (Var)) then
 
-                  Check_Source_Of_Borrow_Or_Observe (Expr);
+                  Check_Source_Of_Borrow_Or_Observe
+                    (Expr, Is_Access_Constant (Etype (Var)));
 
                   if Is_Path_Expression (Expr)
                     and then Present (Get_Root_Object (Expr))
@@ -2062,11 +2147,39 @@ package body SPARK_Definition is
                   end loop;
                end;
 
-            --  When converting to an anonymous access type, check that the
-            --  expression and the target have compatible designated types.
-
             elsif Has_Access_Type (Etype (N)) then
+
+               --  When converting to an anonymous access type, check that the
+               --  expression and the target have compatible designated types.
+
                Check_Compatible_Access_Types (Etype (N), Expression (N));
+
+               --  Anonymous access types are for borrows and observe. It is
+               --  not allowed to convert them back into a named type.
+
+               if Is_Anonymous_Access_Object_Type (Etype (Expression (N)))
+                 and then not Is_Anonymous_Access_Object_Type (Etype (N))
+               then
+                  Mark_Violation
+                    ("conversion from an anonymous access type to a named"
+                     & " access type", N);
+
+               --  A conversion from an access-to-variable type to an
+               --  access-to-constant type is considered a move if the
+               --  expression is not rooted inside a constant part of an
+               --  object. In this case, we need to check that we are in a
+               --  context where the move is allowed.
+
+               elsif Is_Access_Object_Type (Retysp (Etype (N)))
+                 and then Is_Access_Constant (Retysp (Etype (N)))
+                 and then not Is_Anonymous_Access_Object_Type (Etype (N))
+                 and then not Is_Access_Constant
+                   (Retysp (Etype (Expression (N))))
+                 and then not Is_Rooted_In_Constant (Expression (N))
+               then
+                  Check_Source_Of_Move (Expression (N), To_Constant => True);
+                  Check_Move_To_Constant (N);
+               end if;
 
             else
                Scalar_Conversion : declare
@@ -3475,9 +3588,10 @@ package body SPARK_Definition is
          if Is_Anonymous_Access_Object_Type (Etype (Formal))
            and then not Is_Function_Or_Function_Type (E)
          then
-            Check_Source_Of_Borrow_Or_Observe (Actual);
+            Check_Source_Of_Borrow_Or_Observe
+              (Actual, Is_Access_Constant (Etype (Formal)));
 
-         --  In and in out parameters of an access type are considered to be
+         --  OUT and IN OUT parameters of an access type are considered to be
          --  moved.
 
          elsif Is_Access_Type (Etype (Formal))
@@ -3528,6 +3642,13 @@ package body SPARK_Definition is
                elsif Is_Constant_In_SPARK (Get_Root_Object (Actual)) then
                   Mark_Violation
                     ("constant object as " & Mode, Actual);
+
+               --  The actual should not be inside an access-to-constant type
+
+               elsif Traverse_Access_To_Constant (Actual) then
+                  Mark_Violation
+                    ("access-to-constant part of an object as " & Mode,
+                     Actual);
                end if;
             end;
          end if;
@@ -4429,7 +4550,8 @@ package body SPARK_Definition is
             if Nkind (N) = N_Object_Declaration
               and then Is_Anonymous_Access_Object_Type (T)
             then
-               Check_Source_Of_Borrow_Or_Observe (Expr);
+               Check_Source_Of_Borrow_Or_Observe
+                 (Expr, Is_Access_Constant (T));
 
                --  We do not support local borrowers if they have predicates
                --  that can be broken during the traversal.
@@ -4448,7 +4570,7 @@ package body SPARK_Definition is
             --  moving a path.
 
             elsif Is_Deep (T) then
-               Check_Source_Of_Move (Expr);
+               Check_Source_Of_Move (Expr, Is_Constant_In_SPARK (E));
             end if;
 
             --  If T has an anonymous access type, it can happen that Expr and
@@ -6081,16 +6203,18 @@ package body SPARK_Definition is
             elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
                Mark_Violation ("access attribute", E);
 
-            --  Reject general access types. We check the underlying type of
-            --  the base type as the base type itself can be private.
+            --  Reject general access-to-variable types. We check the
+            --  underlying type of the base type as the base type itself can be
+            --  private.
             --  ??? We assume that access subtypes have visibility on the full
             --  view of their base type or we would have a private subtype
             --  instead of an access subtype.
 
             elsif Ekind (Underlying_Type (Base_Type (E))) =
               E_General_Access_Type
+              and then not Is_Access_Constant (E)
             then
-               Mark_Violation ("general access type", E);
+               Mark_Violation ("general access-to-variable type", E);
 
             --  Storage_Pool is not in SPARK
 
@@ -7633,7 +7757,8 @@ package body SPARK_Definition is
                if Is_Traversal_Function (Subp)
                  and then Nkind (Expr) /= N_Null
                then
-                  Check_Source_Of_Borrow_Or_Observe (Expr);
+                  Check_Source_Of_Borrow_Or_Observe
+                    (Expr, Is_Access_Constant (Return_Typ));
                end if;
 
             --  If we are returning a deep type, this is a move. Check that we
