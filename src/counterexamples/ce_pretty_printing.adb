@@ -370,7 +370,8 @@ package body Ce_Pretty_Printing is
          pragma Assert (Size (Exp) = 11);
          pragma Assert (Size (Significand) = 52);
          declare
-            package P is new Print_Conversion (Unsigned_64, Long_Float);
+            package P is new Print_Conversion
+              (Interfaces.Unsigned_64, Long_Float);
          begin
             return P.StringBits_To_Float_Approx (Sign, Significand, Exp);
          end;
