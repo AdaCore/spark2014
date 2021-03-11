@@ -1,3 +1,7 @@
+access_to_constants.adb:24:04: warning: analyzing unreferenced procedure "P"
+access_to_constants.adb:24:14: warning: subprogram "P" has no effect
+access_to_constants.adb:28:18: error: "U" is not writable
+access_to_constants.adb:28:18: error: object was declared as not writable at line 26
 access_to_constants.ads:22:44: error: illegal move during elaboration
 access_to_constants.ads:27:43: error: illegal move during elaboration
 test_alias.adb:29:07: error: borrow of an access-to-constant part of an object is not allowed in SPARK
