@@ -59,7 +59,7 @@ def find_keywords(input_file):
     return result
 
 
-f = open(sys.argv[2], 'w')
+f = open(sys.argv[2], 'w', newline='\n')
 
 try:
     update = find_keywords(sys.argv[1])
