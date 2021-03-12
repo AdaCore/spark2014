@@ -2953,6 +2953,10 @@ package body SPARK_Definition is
                      Address);
                end;
             end if;
+
+            if Present (Aliased_Object) and then not E_Is_Constant then
+               Set_Overlay_Alias (E, Aliased_Object);
+            end if;
          end;
       end if;
    end Mark_Address;

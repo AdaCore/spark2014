@@ -957,6 +957,10 @@ package body Gnat2Why.Expr is
    --  a contract/an assertion fails to prove whereas it actually holds at
    --  runtime, but not the other way around.
 
+   function Havoc_Overlay_Aliases (Aliases : Node_Sets.Set) return W_Prog_Id;
+   --  For each variable in the parameter set, havoc its contents and assume
+   --  its invariants.
+
    -------------------
    -- Apply_Modulus --
    -------------------
@@ -6601,6 +6605,40 @@ package body Gnat2Why.Expr is
          end if;
       end return;
    end Havoc_Borrowed_From_Block;
+
+   ---------------------------
+   -- Havoc_Overlay_Aliases --
+   ---------------------------
+
+   function Havoc_Overlay_Aliases (Aliases : Node_Sets.Set) return W_Prog_Id is
+      Result : W_Prog_Id := +Void;
+   begin
+      if not Aliases.Is_Empty then
+         declare
+            Eff : constant W_Effects_Id := New_Effects;
+            procedure Effects_Append_Binder_To_Writes is
+              new Effects_Append_Binder (Effects_Append_To_Writes);
+            Assume : W_Prog_Id := +Void;
+         begin
+            for Elt of Aliases loop
+               declare
+                  Item : constant Item_Type :=
+                    Ada_Ent_To_Why.Element (Symbol_Table, Elt);
+               begin
+                  Effects_Append_Binder_To_Writes (Eff, Item);
+                  Assume :=
+                    Sequence
+                      (Assume,
+                       Assume_Dynamic_Invariant
+                         (+Reconstruct_Item (Item),
+                          Get_Ada_Type_From_Item (Item)));
+               end;
+            end loop;
+            Result := Sequence (New_Havoc_Statement (Effects => Eff), Assume);
+         end;
+      end if;
+      return Result;
+   end Havoc_Overlay_Aliases;
 
    ---------------------------------
    -- Initialize_Tables_Nth_Roots --
@@ -12303,6 +12341,15 @@ package body Gnat2Why.Expr is
                       Params => Body_Params))));
          end;
       end if;
+
+      --  After the assignment, we need to havoc the overlay aliases of the
+      --  lvalue.
+
+      T :=
+        Sequence
+          (T,
+           Havoc_Overlay_Aliases (Overlay_Alias (Get_Root_Object (Lvalue))));
+
       return T;
    end Transform_Assignment_Statement;
 
@@ -21021,7 +21068,7 @@ package body Gnat2Why.Expr is
                       or else Call_Needs_Variant_Check
                       (Stmt_Or_Decl, Current_Subp));
                --  If we need to perform invariant or variant checks for this
-               --  call, Args will be reused for the call to the checking.
+               --  call, Args will be reused for the call to the checking
                --  procedure. Force the use of temporary identifiers to avoid
                --  duplicating checks.
 
@@ -21186,6 +21233,40 @@ package body Gnat2Why.Expr is
                      end loop;
                   end if;
                end Check_For_Memory_Leak;
+
+               --  We collect all overlay aliases of any out parameters of the
+               --  call and havoc them.
+
+               Havoc_Aliases : declare
+
+                  Aliases : Node_Sets.Set;
+
+                  procedure Process_Param
+                    (Formal : Entity_Id; Actual : Node_Id);
+                  --  If the parameter is an output of the procedure call, put
+                  --  the overlay aliases of the actual in "Aliases".
+
+                  -----------------
+                  -- Check_Param --
+                  -----------------
+
+                  procedure Process_Param
+                    (Formal : Entity_Id; Actual : Node_Id) is
+                  begin
+                     if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
+                     then
+                        Aliases.Union
+                          (Overlay_Alias (Get_Root_Object (Actual)));
+                     end if;
+                  end Process_Param;
+
+                  procedure Iterate_Call is new
+                    Iterate_Call_Parameters (Process_Param);
+
+               begin
+                  Iterate_Call (Stmt_Or_Decl);
+                  Call := +Sequence (+Call, Havoc_Overlay_Aliases (Aliases));
+               end Havoc_Aliases;
 
                --  Always call Insert_Ref_Context to get the checks on store
                --  for predicates.

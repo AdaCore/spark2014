@@ -58,6 +58,11 @@ package body SPARK_Util is
    --  Map from full views of entities to their partial views, for deferred
    --  constants and private types.
 
+   Overlay_Aliases : Node_Graphs.Map;
+   --  Map from an entity to all its overlay aliases. This map is filled during
+   --  marking and queried (via a getter function) during flow and proof. Note
+   --  that the mapping for an entity E contains E as well.
+
    ----------------------
    -- Set_Partial_View --
    ----------------------
@@ -116,6 +121,59 @@ package body SPARK_Util is
 
    function Specific_Tagged (E : Entity_Id) return Entity_Id
      renames Specific_Tagged_Types.Element;
+
+   -----------------------
+   -- Set_Overlay_Alias --
+   -----------------------
+
+   procedure Set_Overlay_Alias (E1, E2 : Entity_Id) is
+      use Node_Graphs;
+      C1, C2 : Node_Graphs.Cursor;
+      Un : Node_Sets.Set;
+   begin
+
+      C1 := Overlay_Aliases.Find (E1);
+      C2 := Overlay_Aliases.Find (E2);
+
+      --  Store the union of the aliases of E1 and E2 in Un
+
+      if Has_Element (C1) then
+         Un.Union (Overlay_Aliases (C1));
+      else
+         Un.Include (E1);
+      end if;
+
+      if Has_Element (C2) then
+         Un.Union (Overlay_Aliases (C2));
+      else
+         Un.Include (E2);
+      end if;
+
+      --  Map all elements of Un to Un
+
+      for Elt of Un loop
+         Overlay_Aliases.Include (Elt, Un);
+      end loop;
+   end Set_Overlay_Alias;
+
+   -------------------
+   -- Overlay_Alias --
+   -------------------
+
+   function Overlay_Alias (E : Entity_Id) return Node_Sets.Set is
+      C : constant Node_Graphs.Cursor := Overlay_Aliases.Find (E);
+      use Node_Graphs;
+   begin
+      --  Given that the alias set for E contains E itself, we remove it here
+
+      if Has_Element (C) then
+         pragma Assert (Overlay_Aliases (C).Contains (E));
+         return Overlay_Aliases (C).Difference (Node_Sets.To_Set (E));
+      else
+         return Node_Sets.Empty_Set;
+      end if;
+
+   end Overlay_Alias;
 
    ---------------------------------
    -- Extra tables on expressions --
