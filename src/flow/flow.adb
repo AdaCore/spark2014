@@ -1290,7 +1290,7 @@ package body Flow is
    begin
       Current_Error_Node := E;
 
-      FA.Spec_Entity                          := Unique_Entity (E);
+      FA.Spec_Entity                          := E;
       FA.Start_Vertex                         := Null_Vertex;
       FA.Helper_End_Vertex                    := Null_Vertex;
       FA.End_Vertex                           := Null_Vertex;
