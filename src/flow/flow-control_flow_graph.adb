@@ -5156,6 +5156,8 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      pragma Unmodified (Ctx);
+
       V     : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
    begin
@@ -5508,6 +5510,7 @@ package body Flow.Control_Flow_Graph is
       Ctx      : in out Context)
    is
       pragma Unreferenced (CM);
+      pragma Unmodified (Ctx);
 
       Globals : Global_Flow_Ids;
       V       : Flow_Graphs.Vertex_Id;
