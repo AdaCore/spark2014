@@ -1,0 +1,14 @@
+p.adb:10:33: info: loop invariant preservation proved
+p.adb:10:33: info: loop invariant initialization proved
+p.adb:10:62: info: null exclusion check proved
+p.adb:12:13: info: loop invariant initialization proved
+p.adb:12:13: info: loop invariant preservation proved
+p.adb:12:59: info: null exclusion check proved
+p.adb:13:61: info: null exclusion check proved
+p.adb:14:11: info: pointer dereference check proved
+p.adb:14:22: info: pointer dereference check proved
+p.adb:14:29: info: overflow check proved
+p.adb:15:16: info: pointer dereference check proved
+p.ads:12:43: info: null exclusion check proved
+p.ads:13:14: info: postcondition proved
+p.ads:13:48: info: null exclusion check proved

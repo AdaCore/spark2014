@@ -249,9 +249,14 @@ class UGTestDriver(DiffTestDriver):
             "-f",
             "-q",
             "--level=2",
-            "--steps=100",
             "--timeout=60",
         ]
+
+        # tests prefixed by ug__long__ require more steps to prove
+        if self.test_env["test_name"].startswith("ug__long__"):
+            cmd += ["--steps=7000"]
+        else:
+            cmd += ["--steps=100"]
 
         # test access6 requires use of lemma library SPARK.Heap, which in turn
         # requires defining env var SPARK_HEAP_OBJECT_DIR

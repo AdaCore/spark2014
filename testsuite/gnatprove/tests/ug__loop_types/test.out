@@ -1,3 +1,11 @@
+loop_types.ads:38:25: info: pointer dereference check proved
+loop_types.ads:38:29: info: pointer dereference check proved
+loop_types.ads:38:61: info: pointer dereference check proved
+loop_types.ads:54:15: info: pointer dereference check proved
+loop_types.ads:54:20: info: pointer dereference check proved
+loop_types.ads:54:30: info: pointer dereference check proved
+loop_types.ads:55:35: info: pointer dereference check proved
+loop_types.ads:55:44: info: pointer dereference check proved
 a-cfdlli.ads:469:49: info: overflow check proved, in instantiation at loop_types.ads:16
 a-cfdlli.ads:610:49: info: overflow check proved, in instantiation at loop_types.ads:16
 a-cfdlli.ads:700:57: info: overflow check proved, in instantiation at loop_types.ads:16
