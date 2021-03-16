@@ -210,7 +210,8 @@ package body Flow_Error_Messages is
      (S    : Unbounded_String;
       F    : Flow_Id;
       Flag : Source_Ptr)
-      return Unbounded_String;
+      return Unbounded_String
+   with Pre => not Is_Internal (F);
    --  Find the first '&' or '%' and substitute with the given flow id, with or
    --  without enclosing quotes respectively. Alternatively, '#' works like
    --  '&', but is followed by a line reference. Use '@' to substitute only

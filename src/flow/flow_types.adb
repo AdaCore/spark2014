@@ -594,9 +594,32 @@ package body Flow_Types is
    -----------------
 
    function Is_Internal (F : Flow_Id) return Boolean is
-     (F.Kind in Direct_Mapping | Record_Field
-      and then Nkind (F.Node) in N_Entity
-      and then Is_Internal (F.Node));
+   begin
+      if F.Kind in Direct_Mapping | Record_Field then
+         if Nkind (F.Node) in N_Entity then
+            declare
+               Partial_View : constant Entity_Id :=
+                 Incomplete_Or_Partial_View (F.Node);
+               --  Flow represents deferred constants with their full views
+               --  (because messages emitted for full views are easier
+               --  to understand). Those full views are actually internal
+               --  entities, so here we must examine their partial views.
+               --  Same for incomplete and private types.
+
+            begin
+               if Present (Partial_View) then
+                  return Is_Internal (Partial_View);
+               else
+                  return Is_Internal (F.Node);
+               end if;
+            end;
+         else
+            return not Comes_From_Source (F.Node);
+         end if;
+      else
+         return False;
+      end if;
+   end Is_Internal;
 
    ---------------------
    -- Magic_String_Id --

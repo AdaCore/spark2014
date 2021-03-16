@@ -2267,7 +2267,11 @@ package body Flow.Analysis is
                   F1           => Direct_Mapping_Id
                                     (Encapsulating_State
                                        (Get_Direct_Mapping_Id (Var))),
-                  F2           => Direct_Mapping_Id (FA.Initializes_N),
+                  F2           =>
+                    Direct_Mapping_Id
+                      (if From_Aspect_Specification (FA.Initializes_N)
+                       then Corresponding_Aspect (FA.Initializes_N)
+                       else FA.Initializes_N),
                   Tag          => Uninitialized,
                   Severity     => (case Kind is
                                       when Unknown => Medium_Check_Kind,
