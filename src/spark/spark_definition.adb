@@ -3203,6 +3203,16 @@ package body SPARK_Definition is
                end loop;
             end;
 
+            --  Reject taking the address of a subprogram
+
+            if Nkind (P) in N_Identifier | N_Expanded_Name
+              and then not Is_Object (Entity (P))
+            then
+               Mark_Violation ("attribute """
+                               & Standard_Ada_Case (Get_Name_String (Aname))
+                               & """ of a non-object entity", N);
+            end if;
+
          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
          --  types.
 
