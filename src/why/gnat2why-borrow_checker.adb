@@ -3394,20 +3394,20 @@ package body Gnat2Why.Borrow_Checker is
                                  Expr   => Expression (Stmt));
 
                --  Local observers and borrowers can always be assigned, unless
-               --  they are themselves observed/borrowed. We skip checking for
-               --  them as observers have only read permission. Note that
-               --  includes regular observers of access-to-constant type as
-               --  well as observers of access-to-variable type inside
-               --  traversal functions.
+               --  they are themselves borrowed (for borrowers only). Indeed,
+               --  they cannot be moved, and an assignment at top-level is fine
+               --  even if the object is observed as it cannot modify the
+               --  underlying data structure.
 
                if Is_Anonymous_Access_Object_Type (Etype (Target)) then
+                  pragma Assert
+                    (Nkind (Target) in N_Identifier | N_Expanded_Name);
+
                   declare
-                     Root : constant Entity_Id := Get_Root_Object (Target);
+                     Root : constant Entity_Id := Entity (Target);
                   begin
-                     Check_Not_Observed (+Target, Root);
                      Check_Not_Borrowed (+Target, Root);
                   end;
-
                else
                   Check_Expression (Target, Assign);
                end if;
