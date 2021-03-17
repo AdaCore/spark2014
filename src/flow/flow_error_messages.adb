@@ -776,12 +776,12 @@ package body Flow_Error_Messages is
 
                   when GPO_Oneline =>
                      if One_Liner /= "" then
-                        Message := Message & " (e.g. when " & One_Liner & ")";
+                        Append (Message, " (e.g. when " & One_Liner & ")");
                      end if;
 
                      if Details /= "" then
-                        Message :=
-                          Message & " [reason for check: " & Details & "]";
+                        Append
+                          (Message, " [reason for check: " & Details & "]");
                      end if;
 
                      declare
@@ -789,8 +789,9 @@ package body Flow_Error_Messages is
                           Get_Explanation (N, Tag, Explanation);
                      begin
                         if Expl /= "" then
-                           Message := Message
-                             & " [possible explanation: " & Expl & "]";
+                           Append
+                             (Message,
+                              " [possible explanation: " & Expl & "]");
                         end if;
                      end;
 
@@ -798,7 +799,7 @@ package body Flow_Error_Messages is
                         Fix : constant String := Get_Fix (N, Tag, How_Proved);
                      begin
                         if Fix /= "" then
-                           Message := Message & " [possible fix: " & Fix & "]";
+                           Append (Message, " [possible fix: " & Fix & "]");
                         end if;
                      end;
 
