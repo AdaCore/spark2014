@@ -970,11 +970,11 @@ package body Flow.Control_Flow_Graph is
    --  the created vertex, so this procedure can be called again with another
    --  borrower.
 
-   function RHS_Split_Useful (N     : Node_Id;
+   function RHS_Split_Useful (LHS   : Node_Id;
+                              RHS   : Node_Id;
                               Scope : Flow_Scope)
                               return Boolean
-   with Pre => Nkind (N) in N_Assignment_Statement | N_Object_Declaration
-               and then Present (Expression (N));
+   with Pre => Nkind (RHS) in N_Subexpr;
    --  Checks the right hand side of an assignment statement (or the
    --  expression on an object declaration) and determines if we can
    --  perform some meaningful record-field splitting.
@@ -1553,7 +1553,9 @@ package body Flow.Control_Flow_Graph is
       --  we try our best to dis-entangle the record fields so that information
       --  does not bleed all over the place) and the default case.
 
-      if not Partial and then RHS_Split_Useful (N, FA.B_Scope) then
+      if not Partial
+        and then RHS_Split_Useful (Name (N), Expression (N), FA.B_Scope)
+      then
 
          --  Deal with record self-assignments like we deal with calls to
          --  procedures with parameters of mode IN OUT, i.e. create separate
@@ -4133,7 +4135,7 @@ package body Flow.Control_Flow_Graph is
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
 
-            if RHS_Split_Useful (N, FA.B_Scope) then
+            if RHS_Split_Useful (E, Expr, FA.B_Scope) then
 
                declare
                   M : constant Flow_Id_Maps.Map := Untangle_Record_Assignment
@@ -6027,19 +6029,21 @@ package body Flow.Control_Flow_Graph is
    -- RHS_Split_Useful --
    ----------------------
 
-   function RHS_Split_Useful (N     : Node_Id;
+   function RHS_Split_Useful (LHS   : Node_Id;
+                              RHS   : Node_Id;
                               Scope : Flow_Scope)
                               return Boolean is
 
-      function Rec (N : Node_Id) return Boolean
+      function Is_Split_Useful (N : Node_Id) return Boolean
       with Pre => Nkind (N) in N_Subexpr;
-      --  Recursive helper function
+      --  Returns True iff assignment with expression N should be analysed
+      --  component-by-component.
 
-      ---------
-      -- Rec --
-      ---------
+      ---------------------
+      -- Is_Split_Useful --
+      ---------------------
 
-      function Rec (N : Node_Id) return Boolean is
+      function Is_Split_Useful (N : Node_Id) return Boolean is
          T : constant Entity_Id := Get_Type (N, Scope);
       begin
          if not Is_Record_Type (T)
@@ -6070,36 +6074,31 @@ package body Flow.Control_Flow_Graph is
                return True;
 
             when N_Selected_Component =>
-               return Rec (Prefix (N));
+               return Is_Split_Useful (Prefix (N));
 
             when N_Attribute_Reference =>
-               return Is_Attribute_Update (N)
-                 and then Rec (Prefix (N));
+               return Attribute_Name (N) = Name_Update
+                 and then Is_Split_Useful (Prefix (N));
 
             when N_Expression_With_Actions
                | N_Qualified_Expression
                | N_Type_Conversion
             =>
-               return Rec (Expression (N));
+               return Is_Split_Useful (Expression (N));
 
             when others =>
                return False;
          end case;
-      end Rec;
+      end Is_Split_Useful;
 
-      T : constant Entity_Id :=
-        Get_Type ((if Nkind (N) = N_Assignment_Statement then
-                      Name (N)
-                   else
-                      Defining_Identifier (N)),
-                  Scope);
+      T : constant Entity_Id := Get_Type (LHS, Scope);
 
    --  Start of processing for RHS_Split_Useful
 
    begin
       return not Is_Class_Wide_Type (T)
         and then not Is_Tagged_Type (T)
-        and then Rec (Expression (N));
+        and then Is_Split_Useful (RHS);
    end RHS_Split_Useful;
 
    ----------------------------
