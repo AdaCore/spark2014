@@ -973,9 +973,7 @@ package body Flow.Control_Flow_Graph is
    function RHS_Split_Useful (N     : Node_Id;
                               Scope : Flow_Scope)
                               return Boolean
-   with Pre => Nkind (N) in N_Assignment_Statement  |
-                            N_Component_Declaration |
-                            N_Object_Declaration
+   with Pre => Nkind (N) in N_Assignment_Statement | N_Object_Declaration
                and then Present (Expression (N));
    --  Checks the right hand side of an assignment statement (or the
    --  expression on an object declaration) and determines if we can
