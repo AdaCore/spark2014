@@ -59,8 +59,8 @@ package body SPARK_Util is
 
    Overlay_Aliases : Node_Graphs.Map;
    --  Map from an entity to all its overlay aliases. This map is filled during
-   --  marking and queried (via a getter function) during flow and proof. Note
-   --  that the mapping for an entity E contains E as well.
+   --  marking and queried (via a getter function) during flow and proof.
+   --  ??? this could be a map from nodes to lists of nodes (not set of nodes)
 
    ----------------------
    -- Set_Partial_View --
@@ -125,34 +125,39 @@ package body SPARK_Util is
    -- Set_Overlay_Alias --
    -----------------------
 
-   procedure Set_Overlay_Alias (E1, E2 : Entity_Id) is
-      use Node_Graphs;
-      C1, C2 : Node_Graphs.Cursor;
-      Un : Node_Sets.Set;
+   procedure Set_Overlay_Alias (New_Id, Old_Id : Entity_Id) is
+      New_Aliases : Node_Sets.Set;
+      C           : Node_Graphs.Cursor;
+      Inserted    : Boolean;
    begin
+      --  Find existing aliases of Old_Id
 
-      C1 := Overlay_Aliases.Find (E1);
-      C2 := Overlay_Aliases.Find (E2);
+      Overlay_Aliases.Insert (Key      => Old_Id,
+                              Position => C,
+                              Inserted => Inserted);
 
-      --  Store the union of the aliases of E1 and E2 in Un
+      --  New_Id is overlaying all the aliases of Old_Id; all those aliases of
+      --  Old_Id overlay New_Id as well.
 
-      if Has_Element (C1) then
-         Un.Union (Overlay_Aliases (C1));
-      else
-         Un.Include (E1);
-      end if;
-
-      if Has_Element (C2) then
-         Un.Union (Overlay_Aliases (C2));
-      else
-         Un.Include (E2);
-      end if;
-
-      --  Map all elements of Un to Un
-
-      for Elt of Un loop
-         Overlay_Aliases.Include (Elt, Un);
+      for Old_Alias of Overlay_Aliases (C) loop
+         New_Aliases.Insert (Old_Alias);
+         Overlay_Aliases (Old_Alias).Insert (New_Id);
       end loop;
+
+      --  New_Id is overlaying the Old_Id; Old_Id is overlaying New_Id as well
+
+      New_Aliases.Insert (Old_Id);
+      Overlay_Aliases (C).Insert (New_Id);
+
+      --  Finally, move the collected aliases of New_Id to map
+
+      Overlay_Aliases.Insert (Key      => New_Id,
+                              Position => C,
+                              Inserted => Inserted);
+      pragma Assert (Inserted);
+
+      Node_Sets.Move (Target => Overlay_Aliases (C),
+                      Source => New_Aliases);
    end Set_Overlay_Alias;
 
    -------------------
@@ -166,8 +171,7 @@ package body SPARK_Util is
       --  Given that the alias set for E contains E itself, we remove it here
 
       if Has_Element (C) then
-         pragma Assert (Overlay_Aliases (C).Contains (E));
-         return Overlay_Aliases (C).Difference (Node_Sets.To_Set (E));
+         return Overlay_Aliases (C);
       else
          return Node_Sets.Empty_Set;
       end if;
