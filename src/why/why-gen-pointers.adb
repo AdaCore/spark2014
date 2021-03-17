@@ -866,7 +866,7 @@ package body Why.Gen.Pointers is
                                            Labels   => Symbol_Sets.Empty_Set,
                                            Location => No_Location));
 
-         --  Declare a global constant for the value of the borrwoed expression
+         --  Declare a global constant for the value of the borrowed expression
          --  at the end of the borrow. We assume its value on the borrow based
          --  on the value of the borrower at the end.
 
