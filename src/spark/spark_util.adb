@@ -1491,37 +1491,9 @@ package body SPARK_Util is
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
       Formal : Entity_Id;
       Call   : Node_Id;
-      Par    : Node_Id;
    begin
-      --  Detect actual of a call to instance of Ada.Unchecked_Conversion,
-      --  which are rewritten into N_Unchecked_Type_Conversion.
-
-      Par := Parent (Actual);
-
-      if Nkind (Par) = N_Parameter_Association then
-         Par := Parent (Par);
-      end if;
-
-      if Nkind (Par) = N_Unchecked_Type_Conversion then
-         declare
-            Conversion_Call : constant Node_Id := Original_Node (Par);
-            --  Original call to instance of Ada.Unchecked_Conversion
-
-            pragma Assert
-              (Nkind (Conversion_Call) = N_Function_Call
-                 and then
-               Is_Unchecked_Conversion_Instance
-                 (Entity (Name (Conversion_Call))));
-         begin
-            return First_Formal (Entity (Name (Conversion_Call)));
-         end;
-
-      --  Otherwise it is an ordinary actual of a subprogram call
-
-      else
-         Find_Actual (Actual, Formal, Call);
-         return Formal;
-      end if;
+      Find_Actual (Actual, Formal, Call);
+      return Formal;
    end Get_Formal_From_Actual;
 
    ----------------------------
