@@ -1,0 +1,23 @@
+assign.adb:1:19: warning: unused initial value of "X"
+assign.adb:1:32: high: "Y" is not initialized in "Assign"
+assign.adb:1:32: warning: unused variable "Y"
+assign.adb:2:08: medium: missing dependency "null => X"
+assign.adb:2:25: medium: incorrect dependency "Y => X"
+assign.adb:4:04: high: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: Z doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
+assign.adb:4:04: info: object is suitable for aliasing via address clause (Trivial)
+assign.adb:4:32: info: object is suitable for aliasing via address clause (Trivial)
+assign.adb:4:32: info: types of aliased objects have the same size (Trivial)
+assign.adb:6:06: warning: unused assignment
+call.adb:1:17: warning: unused initial value of "X"
+call.adb:1:30: high: "Y" is not initialized in "Call"
+call.adb:1:30: warning: unused variable "Y"
+call.adb:2:08: medium: missing dependency "null => X"
+call.adb:2:25: medium: incorrect dependency "Y => X"
+call.adb:4:04: high: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: Z doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
+call.adb:4:04: info: object is suitable for aliasing via address clause (Trivial)
+call.adb:4:32: info: object is suitable for aliasing via address clause (Trivial)
+call.adb:4:32: info: types of aliased objects have the same size (Trivial)
+call.adb:5:36: info: initialization of "To" proved
+call.adb:12:04: info: precondition proved (Trivial: 1 VC)
+call.adb:12:04: warning: statement has no effect
+call.adb:12:27: warning: "Z" is set by "Copy" but not used after the call
