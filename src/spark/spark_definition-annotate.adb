@@ -671,9 +671,9 @@ package body SPARK_Definition.Annotate is
          E := Unique_Entity (Entity (Arg3_Exp));
       end if;
 
-      --  This entity must be a procedure
+      --  This entity must be a (generic) procedure
 
-      if Ekind (E) /= E_Procedure then
+      if Ekind (E) not in E_Procedure | E_Generic_Procedure then
          Error_Msg_N
            (Aspect_Or_Pragma
             & " Annotate Might_Not_Return must apply to a procedure",
@@ -788,7 +788,7 @@ package body SPARK_Definition.Annotate is
 
       --  It must not be a procedure with Might_Not_Return
 
-      elsif Ekind (E) = E_Procedure
+      elsif Ekind (E) in E_Procedure | E_Generic_Procedure
         and then Has_Might_Not_Return_Annotation (E)
       then
          Error_Msg_N
@@ -847,7 +847,7 @@ package body SPARK_Definition.Annotate is
    -------------------------------------
 
    function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean is
-     (Ekind (E) = E_Procedure
+     (Ekind (E) in E_Procedure | E_Generic_Procedure
       and then Might_Not_Return_Annotations.Contains (E));
 
    -----------------------------------
