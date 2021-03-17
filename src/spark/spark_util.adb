@@ -1529,19 +1529,13 @@ package body SPARK_Util is
    ----------------------------
 
    function Get_Initialized_Object (N : Node_Id) return Entity_Id is
-      Par : Node_Id := Parent (N);
+      Context : constant Node_Id := Unqual_Conv (Parent (N));
+      --  Skip qualifications and type conversions between the aggregate and
+      --  the object declaration.
 
    begin
-      --  The object declaration might be the parent expression of the
-      --  aggregate, or there might be a qualification in between. Deal
-      --  uniformly with both cases.
-
-      if Nkind (Par) = N_Qualified_Expression then
-         Par := Parent (Par);
-      end if;
-
-      if Nkind (Par) = N_Object_Declaration then
-         return Defining_Identifier (Par);
+      if Nkind (Context) = N_Object_Declaration then
+         return Defining_Identifier (Context);
       else
          return Empty;
       end if;
