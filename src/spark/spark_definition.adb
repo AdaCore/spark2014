@@ -533,7 +533,7 @@ package body SPARK_Definition is
         or else not Is_Constant_In_SPARK (Defining_Identifier (Par))
         or else not Is_Library_Level_Entity (Defining_Identifier (Par))
       then
-         Mark_Violation
+         Mark_Unsupported
            (Operation & " an access-to-constant type not in"
             & " library level constant declaration", Expr);
       end if;
