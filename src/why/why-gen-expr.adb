@@ -2507,6 +2507,32 @@ package body Why.Gen.Expr is
    -----------------
 
    function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean is
+      function First_Constrained_Parent (Ty : Entity_Id) return Entity_Id with
+        Pre => Is_Constrained (Ty);
+      --  Traverse the parents of Ty to find the first constrained type
+
+      ------------------------------
+      -- First_Constrained_Parent --
+      ------------------------------
+
+      function First_Constrained_Parent (Ty : Entity_Id) return Entity_Id is
+         Parent : Entity_Id := Retysp (Ty);
+      begin
+         loop
+            declare
+               New_Parent : constant Entity_Id := Parent_Type (Parent);
+            begin
+               if No (New_Parent)
+                 or else not Is_Constrained (New_Parent)
+               then
+                  return Parent;
+               else
+                  Parent := New_Parent;
+               end if;
+            end;
+         end loop;
+      end First_Constrained_Parent;
+
       Dim              : constant Positive :=
         Positive (Number_Dimensions (To_Ent));
       To_Constrained   : constant Boolean := Is_Constrained (To_Ent);
@@ -2532,6 +2558,17 @@ package body Why.Gen.Expr is
         and then not Is_Fixed_Lower_Bound_Array_Subtype (From_Ent)
       then
          return True;
+      end if;
+
+      --  If "To" and "From" are derived from the same constrained type, no
+      --  sliding is needed.
+
+      if From_Constrained
+        and then To_Constrained
+        and then First_Constrained_Parent (From_Ent) =
+        First_Constrained_Parent (To_Ent)
+      then
+         return False;
       end if;
 
       --  Go over the indexes to see if one of them needs sliding

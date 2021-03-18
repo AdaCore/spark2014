@@ -5126,10 +5126,9 @@ package body Gnat2Why.Subprograms is
                   for I in Desc_Binders'Range loop
                      Desc_Args (I) :=
                        Insert_Simple_Conversion
-                         (Domain         => EW_Term,
-                          Expr           => +Anc_Binders (I).B_Name,
-                          To             => Get_Typ (Desc_Binders (I).B_Name),
-                          Force_No_Slide => True);
+                         (Domain => EW_Term,
+                          Expr   => +Anc_Binders (I).B_Name,
+                          To     => Get_Typ (Desc_Binders (I).B_Name));
                   end loop;
 
                   Emit
@@ -5152,15 +5151,14 @@ package body Gnat2Why.Subprograms is
                            --  Conversion is needed for controlling result
 
                            Left   => Insert_Simple_Conversion
-                             (Domain         => EW_Term,
-                              Expr           => New_Function_Call
+                             (Domain => EW_Term,
+                              Expr   => New_Function_Call
                                 (Domain => EW_Term,
                                  Subp   => Descendant_E,
                                  Name   => Desc_Id,
                                  Args   => Desc_Args,
                                  Typ    => Desc_Ty),
-                              To             => Anc_Ty,
-                              Force_No_Slide => True),
+                              To     => Anc_Ty),
                            Right  => Anc_Call,
                            Domain => EW_Term)));
                end;
@@ -5295,13 +5293,12 @@ package body Gnat2Why.Subprograms is
                              (Domain   => EW_Pred,
                               Name     => Desc_Params (I).Main.B_Name,
                               Def      => Insert_Simple_Conversion
-                                (Domain         => EW_Term,
-                                 Expr           =>
+                                (Domain => EW_Term,
+                                 Expr   =>
                                    Reconstruct_Item
                                      (New_Binders (I), Ref_Allowed => False),
-                                 To             =>
-                                   Get_Typ (Desc_Params (I).Main.B_Name),
-                                 Force_No_Slide => True),
+                                 To     =>
+                                   Get_Typ (Desc_Params (I).Main.B_Name)),
                               Context  => +Desc_Post);
                            Ada_Ent_To_Why.Insert (Symbol_Table,
                                                   Ada_Node,
@@ -5349,13 +5346,12 @@ package body Gnat2Why.Subprograms is
                              (Domain   => EW_Pred,
                               Name     => Desc_Params (I).Main.B_Name,
                               Def      => Insert_Simple_Conversion
-                                (Domain         => EW_Term,
-                                 Expr           =>
+                                (Domain => EW_Term,
+                                 Expr   =>
                                    Reconstruct_Item
                                      (Old_Binders (I), Ref_Allowed => False),
-                                 To             =>
-                                   Get_Typ (Desc_Params (I).Main.B_Name),
-                                 Force_No_Slide => True),
+                                 To     =>
+                                   Get_Typ (Desc_Params (I).Main.B_Name)),
                               Context  => +Desc_Post);
                         end if;
                      end;

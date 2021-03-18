@@ -366,7 +366,8 @@ package Why.Gen.Expr is
    --  @param To type to convert to
    --  @param Force_No_Slide True if we want to force no sliding to be
    --     introduced even for types with non-static bounds. Should be used
-   --     with care.
+   --     only for components of records which may have discriminant
+   --     constraints.
    --  @result converted expression of Expr to type To, no check
 
    function Insert_Scalar_Conversion

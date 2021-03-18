@@ -825,11 +825,10 @@ package body Why.Gen.Arrays is
                 or else From_Wrapper) /= Relaxed_Init
             then
                A_Comp := Insert_Simple_Conversion
-                 (Domain         => EW_Term,
-                  Expr           => A_Comp,
-                  To             => EW_Abstract
-                    (From_Comp, Relaxed_Init => Relaxed_Init),
-                  Force_No_Slide => True);
+                 (Domain => EW_Term,
+                  Expr   => A_Comp,
+                  To     => EW_Abstract
+                    (From_Comp, Relaxed_Init => Relaxed_Init));
             end if;
 
             --  If we are converting scalars, the equality will be stated on
@@ -876,15 +875,13 @@ package body Why.Gen.Arrays is
                      else EW_Init_Wrapper (BT));
                begin
                   A_Comp := Insert_Simple_Conversion
-                   (Domain         => EW_Term,
-                    Expr           => A_Comp,
-                    To             => Init_BT,
-                    Force_No_Slide => True);
+                   (Domain => EW_Term,
+                    Expr   => A_Comp,
+                    To     => Init_BT);
                   B_Comp := Insert_Simple_Conversion
-                   (Domain         => EW_Term,
-                    Expr           => B_Comp,
-                    To             => Init_BT,
-                    Force_No_Slide => True);
+                   (Domain => EW_Term,
+                    Expr   => B_Comp,
+                    To     => Init_BT);
                end;
             end if;
 
@@ -1382,11 +1379,10 @@ package body Why.Gen.Arrays is
                         Name    => To_Rep_Name,
                         Args    =>
                           (1 => Insert_Simple_Conversion
-                               (Ada_Node       => Empty,
-                                Domain         => EW_Term,
-                                Expr           => +A_Ident,
-                                To             => EW_Abstract (Component_Typ),
-                                Force_No_Slide => True)),
+                               (Ada_Node => Empty,
+                                Domain   => EW_Term,
+                                Expr     => +A_Ident,
+                                To       => EW_Abstract (Component_Typ))),
                         Typ     => Base)));
 
             To_Rep_Name := To_Local (To_Rep_Name);
@@ -1750,20 +1746,18 @@ package body Why.Gen.Arrays is
                Domain => EW_Pred,
                Left   =>
                  Insert_Simple_Conversion
-                   (Ada_Node       => Empty,
-                    Domain         => EW_Term,
-                    Expr           => New_Call
+                   (Ada_Node => Empty,
+                    Domain   => EW_Term,
+                    Expr     => New_Call
                       (Empty, EW_Term, Get_Name, A_Indexes, W_Ty),
-                    To             => EW_Abstract (C_Type),
-                    Force_No_Slide => True),
+                    To       => EW_Abstract (C_Type)),
                Right  =>
                  Insert_Simple_Conversion
-                   (Ada_Node       => Empty,
-                    Domain         => EW_Term,
-                    Expr           => New_Call
+                   (Ada_Node => Empty,
+                    Domain   => EW_Term,
+                    Expr     => New_Call
                       (Empty, EW_Term, Get_Name, B_Indexes, W_Ty),
-                    To             => EW_Abstract (C_Type),
-                    Force_No_Slide => True));
+                    To       => EW_Abstract (C_Type)));
          begin
 
             Def := New_Conditional
@@ -1907,11 +1901,10 @@ package body Why.Gen.Arrays is
                      Location    => No_Location,
                      Return_Type => EW_Int_Type,
                      Def         => Insert_Simple_Conversion
-                       (Ada_Node       => Empty,
-                        Domain         => EW_Term,
-                        Expr           => +A_Ident,
-                        To             => EW_Int_Type,
-                        Force_No_Slide => True)));
+                       (Ada_Node => Empty,
+                        Domain   => EW_Term,
+                        Expr     => +A_Ident,
+                        To       => EW_Int_Type)));
             Emit (Th,
                   New_Function_Decl
                     (Domain      => EW_Term,
@@ -1926,11 +1919,10 @@ package body Why.Gen.Arrays is
                      Location    => No_Location,
                      Return_Type => Comp_Ty,
                      Def         => Insert_Simple_Conversion
-                       (Ada_Node       => Empty,
-                        Domain         => EW_Term,
-                        Expr           => +I_Ident,
-                        To             => Comp_Ty,
-                        Force_No_Slide => True)));
+                       (Ada_Node => Empty,
+                        Domain   => EW_Term,
+                        Expr     => +I_Ident,
+                        To       => Comp_Ty)));
 
             --  Clone the module with the new of_int and to_int wrappers. This
             --  generates the following axioms for each logical operation:
@@ -2579,12 +2571,11 @@ package body Why.Gen.Arrays is
         (if Has_Relaxed_Init (Component_Type (Ty_Entity))
            or else Init_Wrapper
          then Insert_Simple_Conversion
-           (Ada_Node       => Ada_Node,
-            Domain         => Domain,
-            Expr           => Value,
-            To             =>
-              EW_Abstract (Component_Type (Ty_Entity), Relaxed_Init => True),
-            Force_No_Slide => True)
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Expr     => Value,
+            To       =>
+              EW_Abstract (Component_Type (Ty_Entity), Relaxed_Init => True))
          else Value);
    begin
       if Is_Static_Array_Type (Ty_Entity) then

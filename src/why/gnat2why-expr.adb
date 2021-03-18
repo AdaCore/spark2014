@@ -1883,14 +1883,13 @@ package body Gnat2Why.Expr is
         (Name    => Name,
          Domain  => Domain,
          Def     => +Insert_Simple_Conversion
-           (Domain         => Prog_Or_Term_Domain (Domain),
-            Expr           =>
+           (Domain => Prog_Or_Term_Domain (Domain),
+            Expr   =>
               (if As_Old
                then Transform_Attribute_Old (N, Domain, Params)
                else Transform_Expr_Or_Identifier
                  (N, Prog_Or_Term_Domain (Domain), Params)),
-            To             => Get_Typ (Name),
-            Force_No_Slide => True),
+            To     => Get_Typ (Name)),
          Context => Expr);
    end Bind_From_Mapping_In_Expr;
 
@@ -4209,10 +4208,9 @@ package body Gnat2Why.Expr is
          begin
 
             Args (1) := Insert_Simple_Conversion
-              (Domain         => EW_Term,
-               Expr           => Expr,
-               To             => Type_Of_Node (Ty_Ext),
-               Force_No_Slide => True);
+              (Domain => EW_Term,
+               Expr   => Expr,
+               To     => Type_Of_Node (Ty_Ext));
             Args (2) := +Skip_Last_Cond;
             Args (3 .. Num_B) := Vars;
 
@@ -4641,22 +4639,22 @@ package body Gnat2Why.Expr is
                   else Int_Infix_Le);
                First        : constant W_Expr_Id :=
                  Insert_Simple_Conversion
-                   (Domain   => EW_Term,
-                    Expr     => New_Attribute_Expr
+                   (Domain => EW_Term,
+                    Expr   => New_Attribute_Expr
                       (Ty       => Ty_Ext,
                        Domain   => EW_Term,
                        Attr     => Attribute_First,
                        Params   => Params),
-                    To       => Why_Rep_Type);
+                    To     => Why_Rep_Type);
                Last        : constant W_Expr_Id :=
                  Insert_Simple_Conversion
-                   (Domain   => EW_Term,
-                    Expr     => New_Attribute_Expr
+                   (Domain => EW_Term,
+                    Expr   => New_Attribute_Expr
                       (Ty     => Ty_Ext,
                        Domain => EW_Term,
                        Attr   => Attribute_Last,
                        Params => Params),
-                    To       => Why_Rep_Type);
+                    To     => Why_Rep_Type);
                Fst_Le_Last  : constant W_Pred_Id :=
                  New_Call (Name     => Le_Op,
                            Typ      => EW_Bool_Type,
@@ -5385,10 +5383,9 @@ package body Gnat2Why.Expr is
 
             Full_Expr : constant W_Expr_Id :=
               Insert_Simple_Conversion
-                (Domain         => EW_Term,
-                 Expr           => +Expr,
-                 To             => EW_Abstract (Ty),
-                 Force_No_Slide => True);
+                (Domain => EW_Term,
+                 Expr   => +Expr,
+                 To     => EW_Abstract (Ty));
          begin
             return +W_Expr_Id'(New_Call
                                (Domain => EW_Pred,
@@ -5710,10 +5707,10 @@ package body Gnat2Why.Expr is
                  (Left   => +Pred,
                   Right  => +Compute_Top_Level_Type_Invariant
                     (+Insert_Simple_Conversion
-                         (Domain         => EW_Term,
-                          Expr           => +Expr,
-                          To             => Type_Of_Node (Current),
-                          Force_No_Slide => True), Current, Params,
+                         (Domain => EW_Term,
+                          Expr   => +Expr,
+                          To     => Type_Of_Node (Current)),
+                     Current, Params,
                      Use_Pred => Use_Pred),
                   Domain   => EW_Pred);
             end if;
@@ -6072,21 +6069,21 @@ package body Gnat2Why.Expr is
             for I in 1 .. Pattern.Dim loop
                Args (Count) :=
                  Insert_Simple_Conversion
-                   (Domain   => EW_Prog,
-                    Expr     => Get_Array_Attr (Domain => EW_Prog,
+                   (Domain => EW_Prog,
+                    Expr   => Get_Array_Attr (Domain => EW_Prog,
                                                 Expr   => Expr,
                                                 Attr   => Attribute_First,
                                                 Dim    => I),
-                    To       =>
+                    To     =>
                       Get_Typ (Pattern.Bounds (I).First));
                Args (Count + 1) :=
                  Insert_Simple_Conversion
-                   (Domain   => EW_Prog,
-                    Expr     => Get_Array_Attr (Domain => EW_Prog,
+                   (Domain => EW_Prog,
+                    Expr   => Get_Array_Attr (Domain => EW_Prog,
                                                 Expr   => Expr,
                                                 Attr   => Attribute_Last,
                                                 Dim    => I),
-                    To       =>
+                    To     =>
                       Get_Typ (Pattern.Bounds (I).Last));
                Count := Count + 2;
             end loop;
@@ -6373,23 +6370,23 @@ package body Gnat2Why.Expr is
                      for Dim_Index in 1 .. Pattern.Dim loop
                         Args (Count) :=
                           Insert_Simple_Conversion
-                            (Domain   => EW_Prog,
-                             Expr     => Get_Array_Attr
+                            (Domain => EW_Prog,
+                             Expr   => Get_Array_Attr
                                (Domain => EW_Prog,
                                 Ty     => Arr_Ty,
                                 Attr   => Attribute_First,
                                 Dim    => Dim_Index),
-                             To       =>
+                             To     =>
                                Get_Typ (Pattern.Bounds (Dim_Index).First));
                         Args (Count + 1) :=
                           Insert_Simple_Conversion
-                            (Domain   => EW_Prog,
-                             Expr     => Get_Array_Attr
+                            (Domain => EW_Prog,
+                             Expr   => Get_Array_Attr
                                (Domain => EW_Prog,
                                 Ty     => Arr_Ty,
                                 Attr   => Attribute_Last,
                                 Dim    => Dim_Index),
-                             To       =>
+                             To     =>
                                Get_Typ (Pattern.Bounds (Dim_Index).Last));
                         Count := Count + 2;
                      end loop;
@@ -7335,10 +7332,9 @@ package body Gnat2Why.Expr is
                Expr     => +New_Pointer_Is_Moved_Update
                  (E      => Typ,
                   Name   => Insert_Simple_Conversion
-                    (Domain         => EW_Pterm,
-                     Expr           => +Tmp,
-                     To             => Type_Of_Node (Expr),
-                     Force_No_Slide => True),
+                    (Domain => EW_Pterm,
+                     Expr   => +Tmp,
+                     To     => Type_Of_Node (Expr)),
                   Value  => +True_Prog,
                   Domain => EW_Prog),
                No_Check => True);
@@ -7357,10 +7353,9 @@ package body Gnat2Why.Expr is
             Exp_Typ    : constant W_Type_Id :=
               Get_Why_Type_From_Item (Pattern);
             W_Expr     : constant W_Expr_Id := Insert_Simple_Conversion
-              (Domain         => EW_Pterm,
-               Expr           => +Tmp,
-               To             => Exp_Typ,
-               Force_No_Slide => True);
+              (Domain => EW_Pterm,
+               Expr   => +Tmp,
+               To     => Exp_Typ);
 
          begin
             --  If Expr is a whole object, try to reuse the references of Expr
@@ -8957,9 +8952,9 @@ package body Gnat2Why.Expr is
            (Domain    => Domain,
             Low       => Low_Expr,
             High      => High_Expr,
-            Expr      => Insert_Simple_Conversion (Domain   => Subdomain,
-                                                   Expr     => T,
-                                                   To       => Base_Type));
+            Expr      => Insert_Simple_Conversion (Domain => Subdomain,
+                                                   Expr   => T,
+                                                   To     => Base_Type));
       end;
 
       --  In programs, we generate a check that the range_constraint of a
@@ -9172,9 +9167,9 @@ package body Gnat2Why.Expr is
 
                Reconstructed_Arg :=
                  +Insert_Simple_Conversion
-                 (Domain   => EW_Pterm,
-                  Expr     => +Reconstructed_Arg,
-                  To       => EW_Abstract
+                 (Domain => EW_Pterm,
+                  Expr   => +Reconstructed_Arg,
+                  To     => EW_Abstract
                     (Etype (Actual),
                      Relaxed_Init =>
                        Is_Init_Wrapper_Type (Formal_T)));
@@ -9234,9 +9229,9 @@ package body Gnat2Why.Expr is
 
                Reconstructed_Arg :=
                  +Insert_Simple_Conversion
-                 (Domain   => EW_Pterm,
-                  Expr     => +Reconstructed_Arg,
-                  To       => EW_Abstract
+                 (Domain => EW_Pterm,
+                  Expr   => +Reconstructed_Arg,
+                  To     => EW_Abstract
                     (Etype (Actual),
                      Relaxed_Init =>
                        Is_Init_Wrapper_Type
@@ -9267,9 +9262,9 @@ package body Gnat2Why.Expr is
       --  been inserted.
 
       return +Insert_Simple_Conversion
-        (Domain   => EW_Pterm,
-         Expr     => +T,
-         To       => Type_Of_Node (Actual));
+        (Domain => EW_Pterm,
+         Expr   => +T,
+         To     => Type_Of_Node (Actual));
    end Reconstruct_Expr_From_Item;
 
    ------------------
@@ -10936,14 +10931,13 @@ package body Gnat2Why.Expr is
                   Right  =>
                     (if Has_Relaxed_Init (C_Typ) or else Init_Wrapper
                      then Insert_Simple_Conversion
-                       (Ada_Node       => Empty,
-                        Domain         => EW_Term,
-                        Expr           => New_Range_Constant
+                       (Ada_Node => Empty,
+                        Domain   => EW_Term,
+                        Expr     => New_Range_Constant
                           (Value => Expr_Value (Expr),
                            Typ   => EW_Abstract (C_Typ)),
-                        To             =>
-                          EW_Abstract (C_Typ, Relaxed_Init => True),
-                        Force_No_Slide => True)
+                        To       =>
+                          EW_Abstract (C_Typ, Relaxed_Init => True))
                      else New_Range_Constant
                        (Value => Expr_Value (Expr),
                         Typ   => EW_Abstract (C_Typ))),
@@ -14573,15 +14567,15 @@ package body Gnat2Why.Expr is
          begin
             Last_Expr :=
               Insert_Simple_Conversion
-                (Domain         => EW_Prog,
-                 Expr           =>
+                (Domain => EW_Prog,
+                 Expr   =>
                    (if Domain = EW_Prog then
                            +Do_Range_Check (Ada_Node   => Ada_Node,
                                             Ty         => Target,
                                             W_Expr     => Last_Expr,
                                             Check_Kind => RCK_Range)
                     else Last_Expr),
-                 To             => Get_Type (First_Expr));
+                 To    => Get_Type (First_Expr));
 
             T := Array_Convert_From_Base
               (Domain => Domain,
@@ -16499,9 +16493,9 @@ package body Gnat2Why.Expr is
                           New_Comparison
                             (Symbol => Int_Infix_Lt,
                              Left   => Insert_Simple_Conversion
-                               (Domain   => EW_Term,
-                                Expr     => Expo,
-                                To       => EW_Int_Type),
+                               (Domain => EW_Term,
+                                Expr   => Expo,
+                                To     => EW_Int_Type),
                              Right  => +MF_BVs (Typ).Two_Power_Size,
                              Domain => EW_Pred),
                         Then_Part   => T,
@@ -18267,10 +18261,9 @@ package body Gnat2Why.Expr is
                         else Retysp (Ty));
                      Conc_Var   : constant W_Expr_Id :=
                        Insert_Simple_Conversion
-                         (Domain         => Domain,
-                          Expr           => Var_Tmp,
-                          To             => EW_Abstract (Ty),
-                          Force_No_Slide => True);
+                         (Domain => Domain,
+                          Expr   => Var_Tmp,
+                          To     => EW_Abstract (Ty));
                      --  If Var is partially initialized, we need to go to the
                      --  concrete type to introduce the checks. Do not check
                      --  for initialization here.
@@ -19687,9 +19680,9 @@ package body Gnat2Why.Expr is
            Etype (First_Formal (Element_E));
          Cont_Expr   : constant W_Expr_Id :=
            Insert_Simple_Conversion
-             (Domain   => Domain,
-              Expr     => W_Over_E,
-              To       => Type_Of_Node (Cont_Type));
+             (Domain => Domain,
+              Expr   => W_Over_E,
+              To     => Type_Of_Node (Cont_Type));
          Curs_Type   : constant Entity_Id :=
            Etype (Next_Formal (First_Formal (Element_E)));
          Curs_Expr   : constant W_Expr_Id :=
@@ -19780,9 +19773,9 @@ package body Gnat2Why.Expr is
               Etype (First_Formal (Has_Element));
             Cont_Expr   : constant W_Expr_Id :=
               Insert_Simple_Conversion
-                (Domain   => Subdomain,
-                 Expr     => W_Over_E,
-                 To       => Type_Of_Node (Cont_Type));
+                (Domain => Subdomain,
+                 Expr   => W_Over_E,
+                 To     => Type_Of_Node (Cont_Type));
             Curs_Type   : constant Entity_Id :=
               Etype (Next_Formal (First_Formal (Has_Element)));
             Curs_Expr   : constant W_Expr_Id :=
@@ -19875,9 +19868,9 @@ package body Gnat2Why.Expr is
                     Etype (First_Formal (Model));
                   Cont_Expr : constant W_Expr_Id :=
                     Insert_Simple_Conversion
-                      (Domain   => Subdomain,
-                       Expr     => W_Over_E,
-                       To       => Type_Of_Node (Cont_Type));
+                      (Domain => Subdomain,
+                       Expr   => W_Over_E,
+                       To     => Type_Of_Node (Cont_Type));
                begin
                   Over_Type := Etype (Model);
                   if Subdomain = EW_Term then
