@@ -10,7 +10,7 @@ procedure Proc is
    end Inc;
 
 begin
-   pragma Assert (X = 0);
+   pragma Assert (X = 0); --@ASSERT:FAIL
    Inc (Y);
    pragma Assert (X = 0); --@ASSERT:FAIL
 end Proc;

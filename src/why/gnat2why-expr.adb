@@ -15290,13 +15290,19 @@ package body Gnat2Why.Expr is
                end;
 
                --  We emit a static check that the type of the object is OK for
-               --  address clauses.
+               --  address clauses, and we havoc any potential aliases.
 
                if Is_Object_Decl then
                   declare
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
                   begin
+
+                     R := +Sequence
+                       (R,
+                        Havoc_Overlay_Aliases
+                          (Overlay_Alias (Defining_Identifier (Decl))));
+
                      Suitable_For_UC_Target
                        (Retysp (Etype (Defining_Identifier (Decl))),
                         Valid, Explanation);
