@@ -15016,6 +15016,7 @@ package body Gnat2Why.Expr is
                         --  range_constraint is compatible with the subtype.
 
                         if Present (Typ)
+                          and then No (Base)
                           and then Nkind (Typ) = N_Subtype_Indication
                           and then Comes_From_Source (Original_Node (Typ))
                         then
@@ -15032,10 +15033,16 @@ package body Gnat2Why.Expr is
                         --  that the range_constraint is compatible with the
                         --  subtype.
 
-                        Index := First_Index (Ent);
-                        while Present (Index) loop
-                           if Nkind (Index) = N_Subtype_Indication then
-                              if Comes_From_Source (Original_Node (Index)) then
+                        if No (Base)
+                          or else (Is_Constrained (Ent)
+                                   and then not Is_Constrained (Base))
+                        then
+                           Index := First_Index (Ent);
+                           while Present (Index) loop
+                              if Nkind (Index) = N_Subtype_Indication
+                                and then Comes_From_Source
+                                  (Original_Node (Index))
+                              then
                                  R := Sequence
                                    (Check_Subtype_Indication
                                       (Params   => Body_Params,
@@ -15043,17 +15050,20 @@ package body Gnat2Why.Expr is
                                        Sub_Type => Etype (Index)),
                                     R);
                               end if;
-                           end if;
 
-                           Next_Index (Index);
-                        end loop;
+                              Next_Index (Index);
+                           end loop;
+                        end if;
 
                         --  For each range_constraint of an array subtype, we
                         --  generate a check that it is compatible with the
                         --  subtype of the corresponding index in the base
                         --  array type.
 
-                        if Present (Base) then
+                        if Present (Base)
+                          and then Is_Constrained (Ent)
+                          and then not Is_Constrained (Base)
+                        then
                            Index := First_Index (Ent);
                            Index_Base := First_Index (Base);
                            while Present (Index) loop
