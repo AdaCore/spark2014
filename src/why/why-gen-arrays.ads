@@ -152,8 +152,14 @@ package Why.Gen.Arrays is
       Dim     : Positive;
       Arg_Ind : in out Positive;
       Params  : Transformation_Params := Body_Params)
-   with Pre => Is_Constrained (Ty);
-   --  This variant of Add_Attr_Arg will only work for constrained types
+   with Pre =>
+       (Attr in Attribute_First | Attribute_Last | Attribute_Length
+        and then Is_Constrained (Ty))
+     or else (Attr = Attribute_First
+              and then Is_Fixed_Lower_Bound_Index_Subtype
+                (Nth_Index_Type (Ty, Dim)));
+   --  This variant of Add_Attr_Arg will only work when the attribute of the
+   --  type is constrained.
 
    function Array_From_Split_Form
      (I           : Item_Type;

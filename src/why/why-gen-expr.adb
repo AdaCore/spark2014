@@ -453,40 +453,58 @@ package body Why.Gen.Expr is
         (Expr   : W_Expr_Id;
          To_Ent : Entity_Id) return W_Prog_Id
       is
-         Check : W_Pred_Id;
-         Dim   : constant Positive :=
+         Constrained : constant Boolean := Is_Constrained (To_Ent);
+         Check       : W_Pred_Id;
+         Dim         : constant Positive :=
            Positive (Number_Dimensions (To_Ent));
-         Eqs   : W_Expr_Array (1 .. 2 * Dim);
+         Eqs         : W_Expr_Array (1 .. 2 * Dim);
+         Count       : Natural := 0;
       begin
          for I in 1 .. Dim loop
-            Eqs (2 * I - 1) := New_Comparison
-              (Symbol => Why_Eq,
-               Left   => Get_Array_Attr
-                 (Domain => EW_Term,
-                  Expr   => Expr,
-                  Attr   => Attribute_First,
-                  Dim    => I),
-               Right  => Get_Array_Attr
-                 (Domain => EW_Term,
-                  Attr   => Attribute_First,
-                  Dim    => I,
-                  Ty     => To_Ent),
-               Domain => EW_Pred);
-            Eqs (2 * I) := New_Comparison
-              (Symbol => Why_Eq,
-               Left   => Get_Array_Attr
-                 (Domain => EW_Term,
-                  Expr   => Expr,
-                  Attr   => Attribute_Last,
-                  Dim    => I),
-               Right  => Get_Array_Attr
-                 (Domain => EW_Term,
-                  Attr   => Attribute_Last,
-                  Dim    => I,
-                  Ty     => To_Ent),
-               Domain => EW_Pred);
+
+            --  If To_Ent is constrained or the current index has a fixed
+            --  lower bound, add constraint on the first bound.
+
+            if Constrained
+              or else Is_Fixed_Lower_Bound_Index_Subtype
+                (Nth_Index_Type (To_Ent, I))
+            then
+               Count := Count + 1;
+               Eqs (Count) := New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => Get_Array_Attr
+                    (Domain => EW_Term,
+                     Expr   => Expr,
+                     Attr   => Attribute_First,
+                     Dim    => I),
+                  Right  => Get_Array_Attr
+                    (Domain => EW_Term,
+                     Attr   => Attribute_First,
+                     Dim    => I,
+                     Ty     => To_Ent),
+                  Domain => EW_Pred);
+            end if;
+
+            --  If To_Ent is constrained add constraint on the last bound
+
+            if Constrained then
+               Count := Count + 1;
+               Eqs (Count) := New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => Get_Array_Attr
+                    (Domain => EW_Term,
+                     Expr   => Expr,
+                     Attr   => Attribute_Last,
+                     Dim    => I),
+                  Right  => Get_Array_Attr
+                    (Domain => EW_Term,
+                     Attr   => Attribute_Last,
+                     Dim    => I,
+                     Ty     => To_Ent),
+                  Domain => EW_Pred);
+            end if;
          end loop;
-         Check := +New_And_Expr (Eqs, EW_Pred);
+         Check := +New_And_Expr (Eqs (1 .. Count), EW_Pred);
 
          return New_Located_Assert (Ada_Node,
                                     Check,
@@ -579,14 +597,14 @@ package body Why.Gen.Expr is
       --  appropriate bounds in Args.
 
       declare
-         Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
-         Arg_Ind : Positive := 1;
+         Args          : W_Expr_Array (1 .. 1 + 2 * Dim);
+         Arg_Ind       : Positive := 1;
 
-         Split_T : W_Expr_Id;
+         Split_T       : W_Expr_Id;
          --  Placeholder to store the value of T before reconstruction. It is
          --  used to generate the predicate check.
 
-         Need_Elt_Conv       : constant Boolean :=
+         Need_Elt_Conv : constant Boolean :=
            Retysp (Component_Type (To_Ent)) /=
              Retysp (Component_Type (From_Ent));
          --  We need an element conversion if To and From do not have the
@@ -599,15 +617,27 @@ package body Why.Gen.Expr is
             declare
                Args    : W_Expr_Array (1 .. 1 + 2 * Dim);
                Arg_Ind : Positive := 1;
+               To_Idx  : Entity_Id := First_Index (To_Ent);
             begin
                Add_Map_Arg (Domain, Args, Arr_Expr, Arg_Ind);
                for I in 1 .. Dim loop
                   Add_Attr_Arg
                     (Domain, Args, Arr_Expr,
                      Attribute_First, I, Arg_Ind);
-                  Add_Attr_Arg
-                    (Domain, Args, To_Ent,
-                     Attribute_First, I, Arg_Ind);
+
+                  if Is_Constrained (To_Ent)
+                    or else Is_Fixed_Lower_Bound_Index_Subtype (Etype (To_Idx))
+                  then
+                     Add_Attr_Arg
+                       (Domain, Args, To_Ent,
+                        Attribute_First, I, Arg_Ind);
+                  else
+                     Add_Attr_Arg
+                       (Domain, Args, Arr_Expr,
+                        Attribute_First, I, Arg_Ind);
+                  end if;
+
+                  Next_Index (To_Idx);
                end loop;
 
                T := New_Call
@@ -621,20 +651,119 @@ package body Why.Gen.Expr is
             --  If To isn't a statically constrained array type, fill the Args
             --  array to allow reconstruction.
             --  Here, we must get attributes from the type as the slided
-            --  expression has no registered bounds. It is OK since To must
-            --  be constrained.
+            --  expression has no registered bounds.
 
             if not Is_Static_Array_Type (To_Ent)  then
                Arg_Ind := 1;
                Add_Map_Arg (Domain, Args, T, Arg_Ind);
 
                for I in 1 .. Dim loop
-                  Add_Attr_Arg
-                    (Domain, Args, To_Ent,
-                     Attribute_First, I, Arg_Ind);
-                  Add_Attr_Arg
-                    (Domain, Args, To_Ent,
-                     Attribute_Last, I, Arg_Ind);
+
+                  --  If To_Ent is constrained or its Ith index has a fixed
+                  --  lower bound, the index has been slided. Compute the
+                  --  bounds from the expected type.
+
+                  if Is_Constrained (To_Ent)
+                    or else Is_Fixed_Lower_Bound_Index_Subtype
+                      (Nth_Index_Type (To_Ent, I))
+                  then
+
+                     --  The first bound can be queried directly
+
+                     Add_Attr_Arg
+                       (Domain, Args, To_Ent,
+                        Attribute_First, I, Arg_Ind);
+
+                     --  If To_Ent is constrained the last bound can be queried
+                     --  directly.
+
+                     if Is_Constrained (To_Ent) then
+                        Add_Attr_Arg
+                          (Domain, Args, To_Ent,
+                           Attribute_Last, I, Arg_Ind);
+
+                     --  Otherwise, we recompute it from the first bound and
+                     --  the length of the converted array. A range check might
+                     --  be emitted if we are in the program domain.
+
+                     else
+                        declare
+                           Target      : constant Entity_Id :=
+                             Nth_Index_Type (To_Ent, I);
+                           Length_Expr : constant W_Expr_Id :=
+                             Build_Length_Expr (Domain, Arr_Expr, I);
+                           First_Expr  : constant W_Expr_Id :=
+                             Args (Arg_Ind - 1);
+                           Last_Expr   : constant W_Expr_Id := New_Discrete_Add
+                             (Domain => Domain,
+                              Left   => New_Discrete_Substract
+                                (Domain => Domain,
+                                 Left   => First_Expr,
+                                 Right  => New_Discrete_Constant
+                                   (Value => Uint_1, Typ => EW_Int_Type),
+                                 Typ    => EW_Int_Type),
+                              Right  => Length_Expr,
+                              Typ    => EW_Int_Type);
+                           --  Expression of the last index. Computation is
+                           --  done on mathematical integers to avoid overflows
+                           --  and wrap-arounds.
+
+                        begin
+                           --  Convert Last_Expr to the expected type
+
+                           Args (Arg_Ind) :=
+                             Insert_Simple_Conversion
+                               (Domain => Domain,
+                                Expr   => Last_Expr,
+                                To     => Get_Type (First_Expr));
+
+                           --  If we are in the EW_Prog domain, also introduce
+                           --  a range check to make sure that Last_Expr is
+                           --  in the expected type.
+
+                           if Domain = EW_Prog and then Need_Check then
+                              Args (Arg_Ind) := +Sequence
+                                (New_Ignore
+                                   (Ada_Node => Ada_Node,
+                                    Prog     => New_Conditional
+                                      (Ada_Node  => Ada_Node,
+                                       Condition => New_Comparison
+                                         (Symbol => Int_Infix_Le,
+                                          Domain => Domain,
+                                          Left   => Insert_Scalar_Conversion
+                                            (Domain => Domain,
+                                             Expr   => First_Expr,
+                                             To     => EW_Int_Type),
+                                          Right  => Last_Expr),
+                                       Then_Part => +Do_Range_Check
+                                         (Ada_Node   => Ada_Node,
+                                          Ty         => Target,
+                                          W_Expr     => Last_Expr,
+                                          Check_Kind => RCK_Range),
+                                       Else_Part => +Do_Range_Check
+                                         (Ada_Node   => Ada_Node,
+                                          Ty         => Base_Retysp (Target),
+                                          W_Expr     => Last_Expr,
+                                          Check_Kind => RCK_Range),
+                                       Typ       => Get_Type (First_Expr))),
+                                 +Args (Arg_Ind));
+                           end if;
+
+                           Arg_Ind := Arg_Ind + 1;
+                        end;
+                     end if;
+
+                  --  The index has not been slided, we keep the bounds of the
+                  --  converted expression.
+
+                  else
+                     Add_Attr_Arg
+                       (Domain, Args, Arr_Expr,
+                        Attribute_First, I, Arg_Ind);
+                     Add_Attr_Arg
+                       (Domain, Args, Arr_Expr,
+                        Attribute_Last, I, Arg_Ind);
+                  end if;
                end loop;
             end if;
 
@@ -727,7 +856,7 @@ package body Why.Gen.Expr is
 
          if Domain = EW_Prog and then Need_Check then
             declare
-               Check_Type : constant Entity_Id := Get_Ada_Node (+To);
+               Check_Type : constant Entity_Id := To_Ent;
             begin
                if Is_Qualif and then Need_Slide then
                   T := +Sequence
@@ -737,10 +866,16 @@ package body Why.Gen.Expr is
                   T := +Sequence
                     (Insert_Length_Check (Arr_Expr, Check_Type),
                      +T);
-               else
+               elsif not Sliding then
                   T := +Sequence
                     (Insert_Array_Range_Check (Arr_Expr, Check_Type),
                      +T);
+               else
+                  --  For FLB types, the check that the last bound is in the
+                  --  index type is performed during the sliding.
+
+                  pragma Assert
+                    (Is_Fixed_Lower_Bound_Array_Subtype (Check_Type));
                end if;
 
                --  If the target type has a direct or inherited predicate,
@@ -2372,40 +2507,71 @@ package body Why.Gen.Expr is
    -----------------
 
    function Needs_Slide (From_Ent, To_Ent : Entity_Id) return Boolean is
-      Dim : constant Positive := Positive (Number_Dimensions (To_Ent));
+      Dim              : constant Positive :=
+        Positive (Number_Dimensions (To_Ent));
+      To_Constrained   : constant Boolean := Is_Constrained (To_Ent);
+      From_Constrained : constant Boolean := Is_Constrained (From_Ent);
    begin
       --  Sliding is needed when we convert to a constrained type and the
       --  'First of the From type is not known to be equal to the 'First
       --  of the "To" type.
 
-      --  Sliding is only necessary when converting to a constrained array
+      --  Sliding is only necessary when converting to a constrained array or
+      --  to a type with fixed lower bounds.
 
-      if not Is_Constrained (To_Ent) then
+      if not To_Constrained
+        and then not Is_Fixed_Lower_Bound_Array_Subtype (To_Ent)
+      then
          return False;
       end if;
 
       --  When the "To" is constrained, sliding is always necessary when
-      --  converting from an unconstrained array
+      --  converting from an unconstrained array without fixed lower bounds
 
-      if not Is_Constrained (From_Ent) then
+      if not From_Constrained
+        and then not Is_Fixed_Lower_Bound_Array_Subtype (From_Ent)
+      then
          return True;
       end if;
 
-      --  Here we have two constrained types, and we check if the 'First (I)
-      --  of both types differ for some dimension I
+      --  Go over the indexes to see if one of them needs sliding
 
       for I in 1 .. Dim loop
          declare
-            Low_From : constant Node_Id :=
-              Type_Low_Bound (Retysp (Nth_Index_Type (From_Ent, I)));
-            Low_To   : constant Node_Id :=
-              Type_Low_Bound (Retysp (Nth_Index_Type (To_Ent, I)));
+            Typ_From : constant Entity_Id := Nth_Index_Type (From_Ent, I);
+            Typ_To   : constant Entity_Id := Nth_Index_Type (To_Ent, I);
+            Low_From : Node_Id;
+            Low_To   : Node_Id;
+
          begin
-            if not Is_Static_Expression (Low_From)
-              or else not Is_Static_Expression (Low_To)
-              or else Expr_Value (Low_From) /= Expr_Value (Low_To)
+            --  If To has no constraints for this index, we don't need sliding
+            --  for the current dimension.
+
+            if not To_Constrained
+              and then not Is_Fixed_Lower_Bound_Index_Subtype (Typ_To)
+            then
+               null;
+
+            --  If From has no constraints for this index, sliding is needed
+
+            elsif not From_Constrained
+              and then not Is_Fixed_Lower_Bound_Index_Subtype (Typ_From)
             then
                return True;
+
+            --  Both lower bounds are constrained, check that they have the
+            --  same value.
+
+            else
+               Low_From := Type_Low_Bound (Retysp (Typ_From));
+               Low_To := Type_Low_Bound (Retysp (Typ_To));
+
+               if not Is_Static_Expression (Low_From)
+                 or else not Is_Static_Expression (Low_To)
+                 or else Expr_Value (Low_From) /= Expr_Value (Low_To)
+               then
+                  return True;
+               end if;
             end if;
          end;
       end loop;

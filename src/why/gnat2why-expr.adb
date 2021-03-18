@@ -4741,61 +4741,80 @@ package body Gnat2Why.Expr is
 
          --  For arrays, also assume the value of its bounds
 
-         if Is_Constrained (Ty_Ext) then
+         if Is_Constrained (Ty_Ext)
+           or else Is_Fixed_Lower_Bound_Array_Subtype (Ty_Ext)
+         then
             declare
-               Index : Node_Id := First_Index (Ty_Ext);
-               I     : Positive := 1;
+               Constrained : constant Boolean := Is_Constrained (Ty_Ext);
+               Index       : Node_Id := First_Index (Ty_Ext);
+               I           : Positive := 1;
             begin
                while Present (Index) loop
-                  declare
-                     Rng       : constant Node_Id := Get_Range (Index);
-                     Rng_Ty    : constant W_Type_Id :=
-                           Base_Why_Type_No_Bool (Etype (Index));
-                     Low_Expr  : constant W_Expr_Id :=
-                       Transform_Expr (Low_Bound (Rng), Rng_Ty,
-                                       EW_Term, Params);
-                     First_Eq  : constant W_Pred_Id :=
-                       New_Call
-                         (Name => Why_Eq,
-                          Typ  => EW_Bool_Type,
-                          Args =>
-                            (1 => Insert_Conversion_To_Rep_No_Bool
-                               (EW_Term,
-                                +Get_Array_Attr
-                                  (Domain => EW_Term,
-                                   Expr   => +Expr,
-                                   Attr   => Attribute_First,
-                                   Dim    => I)),
-                             2 => Low_Expr));
-                     High_Expr : constant W_Expr_Id :=
-                       Transform_Expr (High_Bound (Rng), Rng_Ty,
-                                       EW_Term, Params);
-                     Last_Eq   : constant W_Pred_Id :=
-                       New_Call
-                         (Name => Why_Eq,
-                          Typ  => EW_Bool_Type,
-                          Args =>
-                            (1 => Insert_Conversion_To_Rep_No_Bool
-                               (EW_Term,
-                                +Get_Array_Attr
-                                  (Domain => EW_Term,
-                                   Expr   => +Expr,
-                                   Attr   => Attribute_Last,
-                                   Dim    => I)),
-                             2 => High_Expr));
-                  begin
 
-                     --  Assuming the value of Ty's bounds
+                  --  If Ty is constrained or Index has a fixed lower bound,
+                  --  assume the value of Ty'First.
 
-                     T := +New_And_Then_Expr
-                       (Left   => +T,
-                        Right  =>
-                          +New_And_Then_Expr (Left   => +First_Eq,
-                                              Right  => +Last_Eq,
-                                              Domain => EW_Pred),
-                        Domain => EW_Pred);
+                  if Constrained
+                    or else Is_Fixed_Lower_Bound_Index_Subtype (Etype (Index))
+                  then
+                     declare
+                        Rng       : constant Node_Id := Get_Range (Index);
+                        Rng_Ty    : constant W_Type_Id :=
+                          Base_Why_Type_No_Bool (Etype (Index));
+                        Low_Expr  : constant W_Expr_Id :=
+                          Transform_Expr (Low_Bound (Rng), Rng_Ty,
+                                          EW_Term, Params);
+                        First_Eq  : constant W_Pred_Id :=
+                          New_Call
+                            (Name => Why_Eq,
+                             Typ  => EW_Bool_Type,
+                             Args =>
+                               (1 => Insert_Conversion_To_Rep_No_Bool
+                                  (EW_Term,
+                                   +Get_Array_Attr
+                                     (Domain => EW_Term,
+                                      Expr   => +Expr,
+                                      Attr   => Attribute_First,
+                                      Dim    => I)),
+                                2 => Low_Expr));
+                     begin
 
-                  end;
+                        T := +New_And_Then_Expr
+                          (Left   => +T,
+                           Right  => +First_Eq,
+                           Domain => EW_Pred);
+
+                        --  If Ty is constrained also assume the value of
+                        --  Ty'Last.
+
+                        if Constrained then
+                           declare
+                              High_Expr : constant W_Expr_Id :=
+                                Transform_Expr (High_Bound (Rng), Rng_Ty,
+                                                EW_Term, Params);
+                              Last_Eq   : constant W_Pred_Id :=
+                                New_Call
+                                  (Name => Why_Eq,
+                                   Typ  => EW_Bool_Type,
+                                   Args =>
+                                     (1 => Insert_Conversion_To_Rep_No_Bool
+                                        (EW_Term,
+                                         +Get_Array_Attr
+                                           (Domain => EW_Term,
+                                            Expr   => +Expr,
+                                            Attr   => Attribute_Last,
+                                            Dim    => I)),
+                                      2 => High_Expr));
+                           begin
+                              T := +New_And_Then_Expr
+                                (Left   => +T,
+                                 Right  => +Last_Eq,
+                                 Domain => EW_Pred);
+                           end;
+                        end if;
+                     end;
+                  end if;
+
                   Next_Index (Index);
                   I := I + 1;
                end loop;
@@ -15009,6 +15028,16 @@ package body Gnat2Why.Expr is
                         Index_Base : Entity_Id;
                         Typ        : constant Node_Id :=
                           Component_Subtype_Indication (Decl);
+                        Check_Idx  : constant Boolean := No (Base)
+                          or else
+                            (not Is_Constrained (Base)
+                             and then
+                               (Is_Constrained (Ent)
+                                or else
+                                Is_Fixed_Lower_Bound_Array_Subtype (Ent)));
+                        --  We only need to check the index types of Ent if
+                        --  either there is no Base or Base is unconstrained
+                        --  and Ent has some constraints.
 
                      begin
                         --  If the component type of the array has a non-static
@@ -15033,10 +15062,7 @@ package body Gnat2Why.Expr is
                         --  that the range_constraint is compatible with the
                         --  subtype.
 
-                        if No (Base)
-                          or else (Is_Constrained (Ent)
-                                   and then not Is_Constrained (Base))
-                        then
+                        if Check_Idx then
                            Index := First_Index (Ent);
                            while Present (Index) loop
                               if Nkind (Index) = N_Subtype_Indication
@@ -15060,10 +15086,7 @@ package body Gnat2Why.Expr is
                         --  subtype of the corresponding index in the base
                         --  array type.
 
-                        if Present (Base)
-                          and then Is_Constrained (Ent)
-                          and then not Is_Constrained (Base)
-                        then
+                        if Present (Base) and then Check_Idx then
                            Index := First_Index (Ent);
                            Index_Base := First_Index (Base);
                            while Present (Index) loop
@@ -15074,6 +15097,34 @@ package body Gnat2Why.Expr is
                                        N      => Etype (Index),
                                        Base   => Etype (Index_Base)),
                                     R);
+
+                                 --  If the index type has a fixed first bound
+                                 --  in Base, check that Ent has the same first
+                                 --  bound.
+
+                                 if Is_Fixed_Lower_Bound_Index_Subtype
+                                   (Etype (Index_Base))
+                                 then
+                                    R := Sequence
+                                      (New_Located_Assert
+                                         (Ada_Node => Etype (Index),
+                                          Pred     => +New_Comparison
+                                            (Symbol => Why_Eq,
+                                             Left   => New_Attribute_Expr
+                                               (Ty     => Etype (Index),
+                                                Domain => EW_Term,
+                                                Attr   => Attribute_First,
+                                                Params => Body_Params),
+                                             Right  => New_Attribute_Expr
+                                               (Ty     => Etype (Index_Base),
+                                                Domain => EW_Term,
+                                                Attr   => Attribute_First,
+                                                Params => Body_Params),
+                                             Domain => EW_Pred),
+                                          Reason   => VC_Range_Check,
+                                          Kind     => EW_Assert),
+                                       R);
+                                 end if;
                               end if;
                               Next_Index (Index);
                               Next_Index (Index_Base);
@@ -16895,7 +16946,9 @@ package body Gnat2Why.Expr is
 
                if Nkind (Expr) = N_Qualified_Expression
                  and then Has_Array_Type (Etype (Expr))
-                 and then Is_Constrained (Etype (Expr))
+                 and then
+                   (Is_Constrained (Etype (Expr))
+                    or else Is_Fixed_Lower_Bound_Array_Subtype (Etype (Expr)))
                  and then Domain = EW_Prog
                then
                   T := Transform_Expr (Expression (Expr),

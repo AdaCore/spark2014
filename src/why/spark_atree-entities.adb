@@ -511,6 +511,22 @@ package body SPARK_Atree.Entities is
       return Boolean
       renames Sem_Util.Is_Expression_Function_Or_Completion;
 
+   ----------------------------------------
+   -- Is_Fixed_Lower_Bound_Array_Subtype --
+   ----------------------------------------
+
+   function Is_Fixed_Lower_Bound_Array_Subtype
+     (Typ : Entity_Id) return Boolean
+   is (Einfo.Entities.Is_Fixed_Lower_Bound_Array_Subtype (Typ));
+
+   ----------------------------------------
+   -- Is_Fixed_Lower_Bound_Index_Subtype --
+   ----------------------------------------
+
+   function Is_Fixed_Lower_Bound_Index_Subtype
+     (Typ : Entity_Id) return Boolean
+   is (Einfo.Entities.Is_Fixed_Lower_Bound_Index_Subtype (Typ));
+
    ---------------------
    -- Is_Limited_View --
    ---------------------

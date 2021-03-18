@@ -359,6 +359,12 @@ package SPARK_Atree.Entities is
    function Is_Constrained (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
 
+   function Is_Fixed_Lower_Bound_Array_Subtype (Typ : Entity_Id) return Boolean
+   with Pre => Is_Type (Typ);
+
+   function Is_Fixed_Lower_Bound_Index_Subtype (Typ : Entity_Id) return Boolean
+   with Pre => Is_Type (Typ);
+
    function Is_Limited_View (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
 
