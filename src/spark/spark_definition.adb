@@ -7539,7 +7539,6 @@ package body SPARK_Definition is
             | Pragma_Eliminate
             | Pragma_Enable_Atomic_Synchronization
             | Pragma_Export_Object
-            | Pragma_Export_Value
             | Pragma_Export_Valued_Procedure
             | Pragma_Extend_System
             | Pragma_Extensions_Allowed
@@ -7616,7 +7615,6 @@ package body SPARK_Definition is
             | Pragma_Title
             | Pragma_Unimplemented_Unit
             | Pragma_Universal_Aliasing
-            | Pragma_Universal_Data
             | Pragma_Unreferenced_Objects
             | Pragma_Unreserve_All_Interrupts
             | Pragma_Use_VADS_Size
