@@ -1989,9 +1989,23 @@ package body Flow_Generated_Globals.Phase_2 is
                   for Child of Child_Packages (Parent) loop
                      Children_Initializes (Child);
                      --  ??? generic child units should be filtered earlier
-                     if Contracts.Contains (Child) then
-                        Result_Outputs.Union (Contracts (Child).Initializes);
-                     end if;
+
+                     --  Pick the Initializes contract computed in the current
+                     --  iteration of Do_Global.
+
+                     --  ??? if Patches would be a map, so we could just pick
+                     --  what we need and not scan it.
+
+                     for Patch of Patches loop
+                        if Patch.Entity = Child then
+                           Result_Outputs.Union (Patch.Contract.Initializes);
+                           Result_Inputs.Union
+                             (Patch.Contract.Proper.Inputs);
+                           Result_Proof_Ins.Union
+                             (Patch.Contract.Proper.Proof_Ins);
+                           exit;
+                        end if;
+                     end loop;
                   end loop;
                end Children_Initializes;
 
