@@ -1662,7 +1662,10 @@ package body Flow is
                         end if;
                      end if;
                      Analysis.Check_Aliasing (FA);
-                     if not Is_Library_Level_Entity (FA.Spec_Entity) then
+                     if Present
+                          (SPARK_Util.Subprograms.Enclosing_Subprogram
+                             (FA.Spec_Entity))
+                     then
                         Analysis.Check_Potentially_Blocking (FA);
                         Analysis.Check_Terminating_Annotation (FA);
                      end if;

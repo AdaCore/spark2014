@@ -241,6 +241,7 @@ package body SPARK_Util.Subprograms is
    begin
       while Ekind (Context) in E_Package | E_Block loop
          Context := Scope (Context);
+         exit when No (Context);
       end loop;
       return Context;
    end Enclosing_Subprogram;

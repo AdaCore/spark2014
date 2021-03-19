@@ -1974,7 +1974,8 @@ package body Flow_Generated_Globals.Partial is
          Contr.Has_Subp_Variant :=
            (if Is_Callable (E)
                or else (Ekind (E) = E_Package
-                        and then not Is_Library_Level_Entity (E))
+                          and then
+                        Present (Subprograms.Enclosing_Subprogram (E)))
             then Has_Subprogram_Variant
               (Subprograms.Enclosing_Subprogram (E))
             else Meaningless);

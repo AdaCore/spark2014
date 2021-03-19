@@ -2836,7 +2836,7 @@ package body Flow.Analysis is
               or else (Parent_Key.Variant = Final_Value
                        and then not Parent_Atr.Is_Export)
 
-              --  Ignore own objects of the analysed pacakge, but only for
+              --  Ignore own objects of the analysed package, but only for
               --  packages with a generated Initializes contract.
 
               or else (Parent_Key.Variant = Final_Value
@@ -5637,15 +5637,16 @@ package body Flow.Analysis is
 
    procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
 
+      Enclosing_Subp : constant Entity_Id :=
+        Subprograms.Enclosing_Subprogram (FA.Spec_Entity);
+
       Spec_Entity_Id : constant Flow_Id :=
-        Direct_Mapping_Id (Subprograms.Enclosing_Subprogram (FA.Spec_Entity));
+        Direct_Mapping_Id (Enclosing_Subp);
 
       Proved : Boolean := True;
 
    begin
-      if Has_Terminate_Annotation
-        (Subprograms.Enclosing_Subprogram (FA.Spec_Entity))
-      then
+      if Has_Terminate_Annotation (Enclosing_Subp) then
 
          --  If all paths in subprogram raise exceptions or, more importantly,
          --  call procedures with No_Return, then the CFG will be pruned. We
@@ -5738,9 +5739,7 @@ package body Flow.Analysis is
                           and then
                             not Has_Subprogram_Variant (E)
                           and then
-                            not Has_Subprogram_Variant
-                              (Subprograms.Enclosing_Subprogram
-                                 (FA.Spec_Entity))
+                            not Has_Subprogram_Variant (Enclosing_Subp)
                         then
 
                            Proved := False;
