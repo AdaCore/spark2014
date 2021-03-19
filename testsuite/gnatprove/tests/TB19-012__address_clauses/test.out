@@ -6,4 +6,7 @@ test_overlay.adb:4:04: error: "Z" is not allowed in SPARK (due to address clause
 test_overlay.adb:4:04: error: violation of aspect SPARK_Mode at line 1
 test_overlay.adb:4:21: error: address clause for a mutable object referencing a constant object is not allowed in SPARK
 test_overlay.adb:4:21: error: violation of aspect SPARK_Mode at line 1
+test_overlay.adb:5:04: error: consider marking it as imported
+test_overlay.adb:5:04: error: object with an address clause which is not fully initialized at declaration is not allowed in SPARK
+test_overlay.adb:5:04: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

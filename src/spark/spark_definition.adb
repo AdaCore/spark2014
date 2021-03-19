@@ -2865,18 +2865,20 @@ package body SPARK_Definition is
    begin
       if Present (Address) then
          declare
-            Address_Expr   : constant Node_Id := Expression (Address);
-            Simple_Address : constant Boolean :=
+            Address_Expr    : constant Node_Id := Expression (Address);
+            Simple_Address  : constant Boolean :=
               Nkind (Address_Expr) = N_Attribute_Reference
               and then Attribute_Name (Address_Expr) = Name_Address;
-            Prefix_Expr    : constant Node_Id :=
+            Prefix_Expr     : constant Node_Id :=
               (if Simple_Address then Prefix (Address_Expr)
                else Empty);
-            Aliased_Object : constant Entity_Id :=
+            Aliased_Object  : constant Entity_Id :=
               (if Simple_Address
                then Get_Root_Object (Prefix_Expr, Through_Traversal => False)
                else Empty);
-            E_Is_Constant  : constant Boolean :=
+            Supported_Alias : constant Boolean :=
+              Present (Aliased_Object) and then Is_Object (Aliased_Object);
+            E_Is_Constant   : constant Boolean :=
               Is_Object (E) and then Is_Constant_In_SPARK (E);
          begin
 
@@ -2888,7 +2890,7 @@ package body SPARK_Definition is
             --  indirect writes.
 
             if Is_Object (E)
-              and then No (Aliased_Object)
+              and then not Supported_Alias
               and then not
                 (Has_Volatile (E)
                  and then Has_Volatile_Property (E, Pragma_Async_Writers))
@@ -2912,7 +2914,7 @@ package body SPARK_Definition is
                --  part of an object, we cannot handle the case, emit a
                --  warning.
 
-               if No (Aliased_Object) then
+               if not Supported_Alias then
                   Error_Msg_NE
                     ("?writing to & is assumed to have no effects on"
                      & " other non-volatile objects", Address, E);
@@ -2920,7 +2922,7 @@ package body SPARK_Definition is
                --  We do not handle yet overlays between (parts of) objects of
                --  a deep type.
 
-               elsif Is_Object (Aliased_Object) then
+               else
                   if Is_Deep (Etype (E)) then
                      Mark_Unsupported
                        ("address clause on an object of an ownership type",
@@ -2937,8 +2939,7 @@ package body SPARK_Definition is
             --  (a part of) another object, check that either both are
             --  mutable or both are constant for SPARK.
 
-            if Present (Aliased_Object)
-              and then Is_Object (Aliased_Object)
+            if Supported_Alias
               and then E_Is_Constant /= Is_Constant_In_SPARK (Aliased_Object)
             then
                declare
@@ -2952,9 +2953,58 @@ package body SPARK_Definition is
                      & " object referencing a " & R_Mod & " object",
                      Address);
                end;
+
+            --  If E is not imported, its initialization writes to the supplied
+            --  address.
+
+            elsif not Is_Imported (E) then
+
+               --  If E has an unsupported address, the effect is ignored, emit
+               --  a warning.
+
+               if not Supported_Alias then
+
+                  --  Only emit the warning for constants, it is redundant for
+                  --  variables.
+
+                  if E_Is_Constant then
+                     Error_Msg_NE
+                       ("?initialization of & is assumed to have no effects on"
+                        & " other non-volatile objects", Address, E);
+                  end if;
+
+               --  Constants are aliased with constants, they should always be
+               --  imported.
+
+               elsif E_Is_Constant then
+                  Mark_Violation
+                    ("constant object with an address clause which is not"
+                     & " imported", E);
+
+               --  To avoid introducing invalid values in aliases, E
+               --  should be initialized at declaration.
+
+               else
+                  declare
+                     Decl    : constant Node_Id := Parent (E);
+                     Is_Init : constant Boolean :=
+                       Nkind (Decl) = N_Object_Declaration
+                       and then Present (Expression (Decl));
+                  begin
+                     if not Is_Init
+                       and then Default_Initialization (Etype (E)) /=
+                         Full_Default_Initialization
+                     then
+                        Mark_Violation
+                          ("object with an address clause which is not"
+                           & " fully initialized at declaration", E,
+                           Cont_Msg => "consider marking it as imported");
+                     end if;
+                  end;
+               end if;
             end if;
 
-            if Present (Aliased_Object) and then not E_Is_Constant then
+            if Supported_Alias and then not E_Is_Constant then
                Set_Overlay_Alias (E, Aliased_Object);
             end if;
          end;

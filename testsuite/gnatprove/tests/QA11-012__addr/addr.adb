@@ -3,7 +3,7 @@ procedure Addr is
 begin
    for I in Arr'Range loop
       declare
-         Val : Character with Address => Arr(I)'Address;
+         Val : Character with Import, Address => Arr(I)'Address;
       begin
          Val := Character'Pred (Val);
       end;

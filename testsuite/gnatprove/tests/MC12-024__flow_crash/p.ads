@@ -18,7 +18,7 @@ is
    Null_Raw_R : constant R_Raw_Vector := R_Raw_Vector'(others => 0);
 
    Full_S : R;
-   Raw_S  : R_Raw_Vector;
+   Raw_S  : R_Raw_Vector with Import;
    for Raw_S'Address use Full_S'Address;
 
    procedure Initialize

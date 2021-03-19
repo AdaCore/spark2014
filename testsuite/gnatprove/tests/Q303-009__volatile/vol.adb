@@ -5,6 +5,7 @@ package body vol is
 
   a : array(1..10) of integer;
   pragma volatile(a);
+  pragma import(Ada, a);
   for a'address use b'address;
 
   procedure set_a(idx : in integer;
