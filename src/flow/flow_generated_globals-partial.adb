@@ -1686,6 +1686,10 @@ package body Flow_Generated_Globals.Partial is
    --  Start of processing for Fold
 
    begin
+      for Child of Scope_Map (Folded) loop
+         Fold (Child, Analyzed, Contracts, Patches);
+      end loop;
+
       Debug ("Folding", Folded);
 
       Update := Collect (Folded);
@@ -1753,10 +1757,6 @@ package body Flow_Generated_Globals.Partial is
 
       Patches.Append (Global_Patch'(Entity  => Folded,
                                     Globals => Update));
-
-      for Child of Scope_Map (Folded) loop
-         Fold (Child, Analyzed, Contracts, Patches);
-      end loop;
    end Fold;
 
    --------------------

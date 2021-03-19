@@ -2090,11 +2090,13 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             Debug ("Folding", Folded);
 
+            for Child of Traversal.Scope_Map (Folded) loop
+               Fold (Child, Analyzed, Contracts, Patches);
+            end loop;
+
             --  See comment above that explains why Original is not a renaming
             if Contracts.Contains (Folded) then
                Original := Contracts (Folded);
-            else
-               goto Fold_Children;
             end if;
 
             --  First we resolve globals coming from the callees...
@@ -2140,11 +2142,6 @@ package body Flow_Generated_Globals.Phase_2 is
               (Global_Patch'(Entity   => Folded,
                              Contract => Update));
 
-            <<Fold_Children>>
-
-            for Child of Traversal.Scope_Map (Folded) loop
-               Fold (Child, Analyzed, Contracts, Patches);
-            end loop;
          end Fold;
 
          ---------------
