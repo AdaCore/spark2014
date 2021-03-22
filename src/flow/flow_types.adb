@@ -601,7 +601,7 @@ package body Flow_Types is
          --  The heap entity should behave as coming from source even when it
          --  is created implicitly.
 
-         if F.Node = Flow.Dynamic_Memory.Heap_State then
+         if Flow.Dynamic_Memory.Is_Heap_State (F.Node) then
             return False;
 
          elsif Nkind (F.Node) in N_Entity then
