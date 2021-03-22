@@ -1,16 +1,16 @@
-norm-reals-errors.adb:11:14: medium: postcondition might fail (e.g. when X = 1.0000008E+0 and Y = 1.0000008E+0)
+norm-reals-errors.adb:11:14: medium: postcondition might fail (e.g. when X = 1.0000024E+0 and Y = 1.0000024E+0)
 norm-reals-errors.adb:11:34: info: float overflow check proved (CVC4: 1 VC)
 norm-reals-errors.adb:12:63: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:13:22: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:14:14: info: predicate check proved (CVC4: 1 VC)
-norm-reals-errors.adb:17:14: medium: postcondition might fail (e.g. when X = 1.0186193E+0 and Y = 1.0186193E+0)
+norm-reals-errors.adb:17:14: medium: postcondition might fail (e.g. when X = -1.2018496E+0 and Y = -1.2018496E+0)
 norm-reals-errors.adb:17:34: info: float overflow check proved (Trivial)
 norm-reals-errors.adb:18:63: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:19:22: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:20:14: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:33:46: info: float overflow check proved (Trivial)
 norm-reals-errors.adb:33:57: info: range check proved (Trivial)
-norm-reals-errors.adb:34:17: medium: postcondition might fail (e.g. when Sum = 1.9140881E+38)
+norm-reals-errors.adb:34:17: medium: postcondition might fail (e.g. when Sum = 1.7479348E+38)
 norm-reals-errors.adb:45:36: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:47:14: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:47:43: info: predicate check proved (CVC4: 1 VC)
@@ -64,7 +64,7 @@ norm-reals-errors.adb:99:39: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:100:35: info: float overflow check proved (CVC4: 1 VC)
 norm-reals-errors.adb:101:14: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:101:24: info: predicate check proved (CVC4: 1 VC)
-norm-reals-errors.adb:102:17: medium: postcondition might fail (e.g. when I = 2 and Sum_F = 2.8025969E-45)
+norm-reals-errors.adb:102:17: medium: postcondition might fail (e.g. when I = 1 and Sum_F = 1.0)
 norm-reals-errors.adb:103:14: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:103:39: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:103:48: info: predicate check proved (CVC4: 1 VC)
@@ -86,11 +86,11 @@ norm-reals-errors.adb:141:10: info: precondition proved (CVC4: 2 VC)
 norm-reals-errors.adb:143:10: info: subprogram variant proved (CVC4: 1 VC)
 norm-reals-errors.adb:143:39: info: range check proved (CVC4: 1 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC4: 1 VC)
-norm-reals-errors.adb:146:60: medium: float overflow check might fail (e.g. when I = 2 and Values = (1 => 4.6191120E-10, others => 3.4025898E+19)) [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:146:60: medium: range check might fail (e.g. when I = 3 and Values = (2 => 1.5981020E-3, others => 1.3091418E+19)) [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) (e.g. when Values = (others => 1.3828270E+0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:146:60: medium: float overflow check might fail (e.g. when I = 2 and Values = (1 => 1.7189792E+0, others => -1.5140641E+38)) [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:146:60: medium: range check might fail (e.g. when I = 2 and Values = (1 => 1.8820515E+0, others => 1.4977547E+19)) [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) (e.g. when Values = (others => 1.0423259E+0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:150:22: info: range check proved (CVC4: 1 VC)
-norm-reals-errors.adb:154:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) (e.g. when I = 2 and Values = (1 => 1.5612491E+0, others => 1.0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:154:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) (e.g. when I = 2 and Values = (1 => -1.4216285E+0, others => 1.0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:155:22: info: range check proved (CVC4: 1 VC)
 norm-reals-errors.adb:159:10: info: precondition proved (CVC4: 2 VC; Z3: 1 VC)
 norm-reals-errors.adb:160:22: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
@@ -127,14 +127,14 @@ norm-reals-errors.adb:200:64: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:201:17: info: postcondition proved (CVC4: 1 VC)
 norm-reals-errors.adb:201:42: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:201:52: info: predicate check proved (CVC4: 1 VC)
-norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove X >= 0.0 (e.g. when Values = (others => 1.4142148E+0))
+norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove X >= 0.0 (e.g. when Values = (others => -1.6835779E+0))
 norm-reals-errors.adb:210:15: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:211:15: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.adb:212:07: info: precondition proved (CVC4: 1 VC)
-norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0 (e.g. when Values = (others => 1.6204541E+0))
+norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0 (e.g. when Values = (others => 1.8178347E+0))
 norm-reals-errors.adb:214:33: info: precondition proved (CVC4: 1 VC)
 norm-reals-errors.adb:215:20: info: predicate check proved (CVC4: 1 VC)
-norm-reals-errors.adb:215:20: medium: precondition might fail, cannot prove X >= 0.0 (e.g. when Values = (others => 1.4446063E+0))
+norm-reals-errors.adb:215:20: medium: precondition might fail, cannot prove X >= 0.0 (e.g. when Values = (others => -1.5001373E+0))
 norm-reals-errors.adb:216:20: info: precondition proved (CVC4: 1 VC)
 norm-reals-errors.adb:216:20: info: predicate check proved (CVC4: 1 VC)
 norm-reals-errors.ads:8:08: info: postcondition proved (CVC4: 1 VC)
@@ -161,7 +161,7 @@ norm.adb:19:27: medium: float overflow check might fail (e.g. when Val1 = 0.0 an
 norm.adb:19:49: info: float overflow check proved (CVC4: 1 VC)
 norm.adb:19:54: info: float overflow check proved (CVC4: 1 VC)
 norm.adb:26:10: info: precondition proved (CVC4: 7 VC)
-norm.adb:27:10: info: precondition proved (CVC4: 7 VC)
+norm.adb:27:10: info: precondition proved (CVC4: 6 VC; Z3: 1 VC)
 norm.adb:28:10: info: precondition proved (CVC4: 7 VC)
 norm.adb:28:39: info: float overflow check proved (CVC4: 1 VC)
 norm.adb:28:50: info: float overflow check proved (CVC4: 1 VC)
@@ -174,19 +174,19 @@ norm.adb:35:51: info: float overflow check proved (Trivial)
 norm.adb:36:33: info: float overflow check proved (Trivial)
 norm.adb:36:44: info: overflow check proved (CVC4: 1 VC)
 norm.adb:36:44: info: range check proved (Trivial)
-norm.adb:43:13: medium: assertion might fail (e.g. when I = 0)
+norm.adb:43:13: medium: assertion might fail
 norm.adb:43:28: info: float overflow check proved (Trivial)
 norm.adb:43:37: info: range check proved (Trivial)
 norm.adb:44:54: info: overflow check proved (CVC4: 1 VC)
 norm.adb:44:54: info: range check proved (Trivial)
-norm.adb:46:13: medium: assertion might fail (e.g. when I = 0)
+norm.adb:46:13: medium: assertion might fail
 norm.adb:46:28: info: float overflow check proved (Trivial)
 norm.adb:46:37: info: range check proved (Trivial)
 norm.adb:46:40: info: float overflow check proved (Trivial)
 norm.adb:47:43: info: overflow check proved (CVC4: 1 VC)
 norm.adb:47:47: info: overflow check proved (CVC4: 1 VC)
 norm.adb:47:47: info: range check proved (Trivial)
-norm.adb:50:13: medium: assertion might fail (e.g. when I = 0)
+norm.adb:50:13: medium: assertion might fail
 norm.adb:50:28: info: float overflow check proved (Trivial)
 norm.adb:50:39: info: overflow check proved (CVC4: 1 VC)
 norm.adb:50:39: info: range check proved (Trivial)
@@ -203,7 +203,7 @@ norm.adb:63:10: info: precondition proved (CVC4: 1 VC)
 norm.adb:63:42: info: range check proved (CVC4: 1 VC)
 norm.adb:64:17: info: subprogram variant proved (CVC4: 1 VC)
 norm.adb:64:47: info: range check proved (CVC4: 1 VC)
-norm.adb:64:52: medium: float overflow check might fail (e.g. when I = 0 and Values = (others => 2.5833683E+19)) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at norm.ads:27 should mention I and Values in a precondition]
+norm.adb:64:52: medium: float overflow check might fail (e.g. when I = 0 and Values = (others => 3.6843682E+19)) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at norm.ads:27 should mention I and Values in a precondition]
 norm.adb:64:62: info: index check proved (CVC4: 4 VC)
 norm.adb:64:65: medium: float overflow check might fail (e.g. when I = 0 and Values = (others => 3.3230700E+35)) [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm.ads:27 should mention I and Values in a precondition]
 norm.adb:69:34: info: precondition proved (CVC4: 1 VC)
@@ -233,7 +233,7 @@ spark-floating_point_arithmetic_lemmas.ads:207:13: info: subprogram "Is_Integer_
 spark-floating_point_arithmetic_lemmas.ads:211:21: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:211:21: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:211:33: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:211:33: medium: range check might fail, in instantiation at spark-long_float_arithmetic_lemmas.ads:32 (e.g. when F = -6.7443402416E+16) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 207 should mention F in a precondition]
+spark-floating_point_arithmetic_lemmas.ads:211:33: medium: range check might fail, in instantiation at spark-long_float_arithmetic_lemmas.ads:32 (e.g. when F = 0.0) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 207 should mention F in a precondition]
 spark-floating_point_arithmetic_lemmas.ads:215:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:215:13: info: subprogram "Is_Integer_32" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:219:21: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
@@ -244,7 +244,7 @@ spark-floating_point_arithmetic_lemmas.ads:224:13: info: subprogram "Is_Float" w
 spark-floating_point_arithmetic_lemmas.ads:224:13: info: subprogram "Is_Float" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:226:38: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:228:29: medium: range check might fail, in instantiation at spark-float_arithmetic_lemmas.ads:32 (e.g. when I = 0) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 224 should mention I in a precondition]
+spark-floating_point_arithmetic_lemmas.ads:228:29: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:228:29: medium: range check might fail, in instantiation at spark-long_float_arithmetic_lemmas.ads:32 [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 224 should mention I in a precondition]
 spark-floating_point_arithmetic_lemmas.ads:228:33: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:228:33: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
@@ -261,7 +261,7 @@ spark-floating_point_arithmetic_lemmas.ads:241:13: info: subprogram "Is_Integer"
 spark-floating_point_arithmetic_lemmas.ads:248:19: info: range check proved (Trivial), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:248:19: info: range check proved (Trivial), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
-spark-floating_point_arithmetic_lemmas.ads:248:31: medium: range check might fail, in instantiation at spark-long_float_arithmetic_lemmas.ads:32 (e.g. when F = -1.1258999061E+15) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 241 should mention F in a precondition]
+spark-floating_point_arithmetic_lemmas.ads:248:31: info: range check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-mod_arithmetic_lemmas.ads:69:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:69:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:80:52: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
