@@ -2932,8 +2932,6 @@ package body SPARK_Definition is
                        ("overlay with an object of an ownership type",
                         Address);
                   end if;
-
-                  Set_Overlay_Alias (E, Aliased_Object);
                end if;
             end if;
 
@@ -2942,7 +2940,9 @@ package body SPARK_Definition is
             --  mutable or both are constant for SPARK.
 
             if Supported_Alias
-              and then E_Is_Constant /= Is_Constant_In_SPARK (Aliased_Object)
+              and then E_Is_Constant /=
+                (Is_Constant_In_SPARK (Aliased_Object)
+                 or else Traverse_Access_To_Constant (Prefix_Expr))
             then
                declare
                   E_Mod : constant String :=
@@ -2952,7 +2952,7 @@ package body SPARK_Definition is
                begin
                   Mark_Violation
                     ("address clause for a " & E_Mod
-                     & " object referencing a " & R_Mod & " object",
+                     & " object referencing a " & R_Mod & " part of an object",
                      Address);
                end;
 
@@ -2973,6 +2973,9 @@ package body SPARK_Definition is
                      Error_Msg_NE
                        ("?initialization of & is assumed to have no effects on"
                         & " other non-volatile objects", Address, E);
+                     Error_Msg_NE
+                       ("\consider annotating & with Import",
+                        Address, E);
                   end if;
 
                --  Constants are aliased with constants, they should always be
@@ -3004,6 +3007,10 @@ package body SPARK_Definition is
                      end if;
                   end;
                end if;
+            end if;
+
+            if Supported_Alias and then not E_Is_Constant then
+               Set_Overlay_Alias (E, Aliased_Object);
             end if;
          end;
       end if;

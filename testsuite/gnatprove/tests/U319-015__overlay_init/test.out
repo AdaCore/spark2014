@@ -3,6 +3,7 @@ test_overlays.adb:10:04: error: violation of aspect SPARK_Mode at line 3
 test_overlays.adb:14:06: warning: consider annotating "C4" with Async_Writers
 test_overlays.adb:14:06: warning: indirect writes to "C4" through a potential alias are ignored
 test_overlays.adb:16:06: warning: consider annotating "C5" with Async_Writers
+test_overlays.adb:16:06: warning: consider annotating "C5" with Import
 test_overlays.adb:16:06: warning: indirect writes to "C5" through a potential alias are ignored
 test_overlays.adb:16:06: warning: initialization of "C5" is assumed to have no effects on other non-volatile objects
 test_overlays.adb:26:04: error: consider marking it as imported
