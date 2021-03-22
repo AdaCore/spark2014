@@ -6637,18 +6637,25 @@ package body Gnat2Why.Expr is
             Assume : W_Prog_Id := +Void;
          begin
             for Elt of Aliases loop
-               declare
-                  Item : constant Item_Type :=
-                    Ada_Ent_To_Why.Element (Symbol_Table, Elt);
-               begin
-                  Effects_Append_Binder_To_Writes (Eff, Item);
-                  Assume :=
-                    Sequence
-                      (Assume,
-                       Assume_Dynamic_Invariant
-                         (+Reconstruct_Item (Item),
-                          Get_Ada_Type_From_Item (Item)));
-               end;
+
+               --  Append Elt to Eff and its dynamic property to Assume. If
+               --  Elt has asynchronous writers, we do not need to do anything
+               --  as Elt will be havoc'ed at reads anyway.
+
+               if not Has_Async_Writers (Direct_Mapping_Id (Elt)) then
+                  declare
+                     Item : constant Item_Type :=
+                       Ada_Ent_To_Why.Element (Symbol_Table, Elt);
+                  begin
+                     Effects_Append_Binder_To_Writes (Eff, Item);
+                     Assume :=
+                       Sequence
+                         (Assume,
+                          Assume_Dynamic_Invariant
+                            (+Reconstruct_Item (Item),
+                             Get_Ada_Type_From_Item (Item)));
+                  end;
+               end if;
             end loop;
             Result := Sequence (New_Havoc_Statement (Effects => Eff), Assume);
          end;
