@@ -83,7 +83,7 @@ setup:
 
 why3:
 	$(MAKE) -C why3
-	why3/bin/gnatwhy3.opt --list-transforms | python scripts/why3menus.py share/spark/config/generated_menus.json
+	why3/bin/gnatwhy3.opt --list-transforms | python3 scripts/why3menus.py share/spark/config/generated_menus.json
 
 install-all:
 	$(MAKE) install
@@ -129,7 +129,7 @@ gnat2why:
 	# Produce Ada code that stores the reserved keywords of Why3
 	# This script should be run *ONLY* in developper build not in prod
 	# (gnat2why-nightly)
-	python scripts/why3keywords.py why3/src/parser/lexer.mll src/why/why-keywords.adb
+	python3 scripts/why3keywords.py why3/src/parser/lexer.mll src/why/why-keywords.adb
 	$(MAKE) -C gnat2why
 	# (The timestamp of) src/why/xgen/gnat_ast.ml is updated every time `make` is called in
 	# `gnat2why`, causing a recompilation of why3 every time because Why3's makefile is
