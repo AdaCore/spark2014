@@ -190,7 +190,7 @@ procedure Test_First_Bound with SPARK_Mode is
       function Id (X : Integer) return Integer is (X);
       type Index is new Positive range 1 .. 2;
       type Int_Array is array (Index range <>) of Integer;
-      subtype My_Arr is Int_Array (1 .. <>); --  Should be OK, but the frontend type does not propagate the higher bound
+      subtype My_Arr is Int_Array (1 .. <>);
       type Constr is array (Positive range 1 .. Id (4)) of Integer;
       A : Constr := (1, 2, 3, 4);
       B : My_Arr := My_Arr (A); -- @RANGE_CHECK:FAIL
