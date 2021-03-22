@@ -2932,6 +2932,8 @@ package body SPARK_Definition is
                        ("overlay with an object of an ownership type",
                         Address);
                   end if;
+
+                  Set_Overlay_Alias (E, Aliased_Object);
                end if;
             end if;
 
@@ -3002,10 +3004,6 @@ package body SPARK_Definition is
                      end if;
                   end;
                end if;
-            end if;
-
-            if Supported_Alias and then not E_Is_Constant then
-               Set_Overlay_Alias (E, Aliased_Object);
             end if;
          end;
       end if;
