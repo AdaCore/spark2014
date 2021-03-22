@@ -13,23 +13,23 @@
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="55185"/></proof>
-  <proof prover="2"><result status="unknown" steps="7298"/></proof>
+  <proof prover="1"><result status="unknown" steps="85362"/></proof>
+  <proof prover="2"><result status="unknown" steps="7077"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="158980"/></proof>
-  <proof prover="2"><result status="unknown" steps="11291"/></proof>
+  <proof prover="1"><result status="unknown" steps="350176"/></proof>
+  <proof prover="2"><result status="unknown" steps="11484"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="371105"/></proof>
-  <proof prover="2"><result status="unknown" steps="40763"/></proof>
+  <proof prover="1"><result status="unknown" steps="425675"/></proof>
+  <proof prover="2"><result status="unknown" steps="26910"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="566012"/></proof>
-  <proof prover="2"><result status="unknown" steps="63095"/></proof>
+  <proof prover="1"><result status="unknown" steps="624333"/></proof>
+  <proof prover="2"><result status="unknown" steps="64441"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -37,8 +37,8 @@
   </goal>
   <goal name="def&#39;vc.5">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="2330274"/></proof>
-  <proof prover="2"><result status="unknown" steps="14727"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450153"/></proof>
+  <proof prover="2"><result status="unknown" steps="16239"/></proof>
   </goal>
  </transf>
  </goal>

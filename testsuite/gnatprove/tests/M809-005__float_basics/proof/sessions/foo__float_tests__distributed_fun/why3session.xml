@@ -13,27 +13,27 @@
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="483052"/></proof>
-  <proof prover="2"><result status="unknown" steps="9848"/></proof>
+  <proof prover="1"><result status="unknown" steps="323441"/></proof>
+  <proof prover="2"><result status="unknown" steps="10084"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="1025488"/></proof>
-  <proof prover="2"><result status="unknown" steps="14873"/></proof>
+  <proof prover="1"><result status="unknown" steps="1551228"/></proof>
+  <proof prover="2"><result status="unknown" steps="12278"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="3332491"/></proof>
-  <proof prover="2"><result status="unknown" steps="21278"/></proof>
+  <proof prover="1"><result status="unknown" steps="4677037"/></proof>
+  <proof prover="2"><result status="unknown" steps="25580"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="972261"/></proof>
-  <proof prover="2"><result status="unknown" steps="258009"/></proof>
+  <proof prover="1"><result status="unknown" steps="840436"/></proof>
+  <proof prover="2"><result status="unknown" steps="326675"/></proof>
   </goal>
   <goal name="def&#39;vc.4">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450222"/></proof>
+  <proof prover="1"><result status="unknown" steps="5578623"/></proof>
   <proof prover="2"><result status="unknown" steps="365002"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
@@ -42,8 +42,8 @@
   </goal>
   <goal name="def&#39;vc.6">
   <proof prover="0"><result status="failure"/></proof>
-  <proof prover="1"><result status="unknown" steps="8450140"/></proof>
-  <proof prover="2"><result status="unknown" steps="20452"/></proof>
+  <proof prover="1"><result status="unknown" steps="4061573"/></proof>
+  <proof prover="2"><result status="unknown" steps="18440"/></proof>
   </goal>
  </transf>
  </goal>
