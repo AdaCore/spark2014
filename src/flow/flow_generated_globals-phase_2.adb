@@ -2097,6 +2097,8 @@ package body Flow_Generated_Globals.Phase_2 is
             --  See comment above that explains why Original is not a renaming
             if Contracts.Contains (Folded) then
                Original := Contracts (Folded);
+            else
+               return;
             end if;
 
             --  First we resolve globals coming from the callees...
