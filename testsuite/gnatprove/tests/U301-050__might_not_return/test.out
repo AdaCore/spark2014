@@ -1,3 +1,3 @@
-test_might_not_return.adb:7:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
-test_might_not_return.adb:7:07: error: consider annotating caller "Caller" with Might_Not_Return
+test_might_not_return.adb:7:07: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
+test_might_not_return.adb:7:07: consider annotating caller "Caller" with Might_Not_Return
 gnatprove: error during generation of Global contracts
