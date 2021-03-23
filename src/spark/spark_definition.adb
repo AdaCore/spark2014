@@ -3009,7 +3009,10 @@ package body SPARK_Definition is
                end if;
             end if;
 
-            if Supported_Alias and then not E_Is_Constant then
+            if Is_Object (E)
+              and then not E_Is_Constant
+              and then Supported_Alias
+            then
                Set_Overlay_Alias (E, Aliased_Object);
             end if;
          end;
