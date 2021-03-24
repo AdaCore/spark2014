@@ -3088,6 +3088,19 @@ package body Gnat2Why.Expr is
                Path := First_Actual (Path);
             end;
 
+         --  If Path is a 'Access attribute, return Result.all.
+
+         elsif Nkind (Path) = N_Attribute_Reference then
+            pragma Assert (Attribute_Name (Path) = Name_Access);
+
+            Result := New_Pointer_Value_Access
+              (Ada_Node => Path,
+               E        => Etype (Path),
+               Name     => Result,
+               Domain   => EW_Term);
+
+            Path := Prefix (Path);
+
          --  If Path is a variable, the computation is over, return.
 
          elsif Nkind (Path) in N_Identifier | N_Expanded_Name then
@@ -5847,8 +5860,9 @@ package body Gnat2Why.Expr is
      (Returned_Expr : Node_Id;
       Subp          : Entity_Id)
    is
-      Param : constant Entity_Id := First_Formal (Subp);
-      Path  : Node_Id := Returned_Expr;
+      Param       : constant Entity_Id := First_Formal (Subp);
+      Path        : Node_Id := Returned_Expr;
+      Access_Seen : Boolean := False;
 
    begin
       --  Approximate the accessibility level check on the return statement in
@@ -5862,8 +5876,15 @@ package body Gnat2Why.Expr is
       --      accessibility. It is still possible that a failed accessibility
       --      check will occur in the body of the traversal function if its
       --      first parameter is local, so continue the verification.
-      --    * Otherwise, we are in a part of the parameter, no checks are
-      --      necessary.
+      --    * Otherwise, we are in a part of the parameter. For all references
+      --      of the 'Access attribute on the path linking Returned_Expr to the
+      --      traversed parameter, check that its prefix contains at least a
+      --      dereference so that we can statically know that the accessibility
+      --      check on the return statement will succeed.
+      --      As an exception to this rule, it is OK to return a reference of
+      --      the 'Access attribute if the returned expression is rooted
+      --      directly at the traversed parameter and this parameter is
+      --      aliased.
 
       loop
          case Nkind (Path) is
@@ -5874,24 +5895,60 @@ package body Gnat2Why.Expr is
                   Root : constant Entity_Id := Entity (Path);
 
                begin
+                  --  We have reached the traversed parameter. Check that we
+                  --  have not encountered any 'Access attribute without a
+                  --  dereference in its prefix.
+
+                  if Root = Param then
+
+                     --  Do not generate a check if the returned expression
+                     --  is a part of the traversed parameter and this
+                     --  parameter is aliased. In this case the accessibility
+                     --  check is deferred to the call site.
+
+                     if Get_Root_Object
+                       (Returned_Expr, Through_Traversal => False) /= Param
+                       or else not Is_Aliased (Param)
+                     then
+                        Emit_Static_Proof_Result
+                          (Node   => Returned_Expr,
+                           Kind   => VC_Dynamic_Accessibility_Check,
+                           Proved => not Access_Seen,
+                           E      => Subp);
+                     end if;
+                     exit;
+
                   --  Root is a local borrower/observer, continue the traversal
                   --  in its initial value. We ignore reborrows here. As they
                   --  can only go deeper in the structure, it can be imprecise
                   --  but safe.
 
-                  if Root /= Param then
+                  else
                      declare
                         Decl : constant Node_Id :=
                           Enclosing_Declaration (Root);
                      begin
                         Path := Expression (Decl);
                      end;
-                  else
-                     exit;
                   end if;
                end;
 
+            when N_Attribute_Reference =>
+               pragma Assert (Attribute_Name (Path) = Name_Access);
+
+               --  Use Access_Seen to record that we are in the prefix of a
+               --  reference to the 'Access attribute and we should check for a
+               --  dereference.
+
+               Access_Seen := True;
+               Path := Prefix (Path);
+
             when N_Explicit_Dereference =>
+
+               --  We have found a dereference. The previously encountered
+               --  accesses are fine.
+
+               Access_Seen := False;
                Path := Prefix (Path);
 
             when N_Function_Call =>
@@ -5909,6 +5966,14 @@ package body Gnat2Why.Expr is
                      Proved => False,
                      E      => Subp);
                   exit;
+               end if;
+
+               --  If the first formal is aliased, an accessibility check
+               --  might have been deferred to the call site. We need to check
+               --  that it is OK to call Actual'Access in this context.
+
+               if Is_Aliased (First_Formal (Get_Called_Entity (Path))) then
+                  Access_Seen := True;
                end if;
 
                Path := First_Actual (Path);
@@ -6668,6 +6733,7 @@ package body Gnat2Why.Expr is
    is
       Expr            : constant Node_Id := Get_Borrowed_Expr (Brower);
       Borrowed_At_End : constant W_Expr_Id := +Get_Borrowed_At_End (Brower);
+      Assignment      : W_Prog_Id;
 
    begin
       --  If the borrowed object is not mutable (it happens when we are inside
@@ -6677,10 +6743,40 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
 
+      --  We assign borrowed_at_end to Expr, unless Expr is an Access
+      --  attribute reference, in which case we assign borrowed_at_end.all to
+      --  Prefix (Expr).
+
+      if Nkind (Expr) = N_Attribute_Reference
+        and then Attribute_Name (Expr) = Name_Access
+      then
+         Assignment := New_Assignment
+           (Lvalue => Prefix (Expr),
+            Expr   => +Insert_Checked_Conversion
+              (Ada_Node => Brower,
+               Domain   => EW_Prog,
+               Expr     => New_Pointer_Value_Access
+                 (Ada_Node => Brower,
+                  E        => Etype (Brower),
+                  Name     => Borrowed_At_End,
+                  Domain   => EW_Pterm),
+               To       => Type_Of_Node (Prefix (Expr)),
+               Lvalue   => True));
+      else
+         Assignment := New_Assignment
+           (Lvalue => Expr,
+            Expr   => +Insert_Checked_Conversion
+              (Ada_Node => Brower,
+               Domain   => EW_Prog,
+               Expr     => Borrowed_At_End,
+               To       => Type_Of_Node (Expr),
+               Lvalue   => True));
+      end if;
+
       --  We produce:
       --
-      --  assume { brower_at_end = brower };
-      --  expr := borrowed_at_end;
+      --    assume { brower_at_end = brower };
+      --    expr := borrowed_at_end;
 
       return Sequence
         (Left => New_Assume_Statement
@@ -6695,14 +6791,7 @@ package body Gnat2Why.Expr is
                    Ent      => Brower,
                    Domain   => EW_Term),
                 Domain => EW_Pred)),
-          Right => New_Assignment
-            (Lvalue => Expr,
-             Expr   => +Insert_Checked_Conversion
-               (Ada_Node => Brower,
-                Domain   => EW_Prog,
-                Expr     => Borrowed_At_End,
-                To       => Type_Of_Node (Expr),
-                Lvalue   => True)));
+          Right => Assignment);
    end Havoc_Borrowed_Expression;
 
    -------------------------------
@@ -8498,6 +8587,16 @@ package body Gnat2Why.Expr is
 
       Result_Id       : constant W_Identifier_Id :=
         New_Result_Ident (Typ => Get_Typ (Brower_At_End));
+      Is_Null_Field   : constant W_Expr_Id :=
+        (if Nkind (Path) = N_Attribute_Reference
+         and then Attribute_Name (Path) = Name_Access
+         then +False_Term
+         else New_Pointer_Is_Null_Access
+           (E    => Retysp (Etype (Brower)),
+            Name => Transform_Expr
+              (Expr   => Path,
+               Domain => EW_Term,
+               Params => Body_Params)));
       New_Brower      : constant W_Prog_Id := New_Any_Expr
         (Return_Type => Get_Typ (Brower_At_End),
          Labels      => Symbol_Sets.Empty_Set,
@@ -8510,12 +8609,7 @@ package body Gnat2Why.Expr is
                           Initialized => True_Term)),
             Right  => New_Comparison
               (Symbol => Why_Eq,
-               Left   => New_Pointer_Is_Null_Access
-                 (E    => Retysp (Etype (Brower)),
-                  Name => Transform_Expr
-                    (Expr   => Path,
-                     Domain => EW_Term,
-                     Params => Body_Params)),
+               Left   => Is_Null_Field,
                Right  => New_Pointer_Is_Null_Access
                  (E    => Retysp (Etype (Brower)),
                   Name => +Result_Id),
@@ -8540,7 +8634,12 @@ package body Gnat2Why.Expr is
                            else Get_Borrowed_Expr (Brower)));
       --  Reconstruct the value of Path from the borrower at end of borrow
 
-      Borrowed_Ty     : constant Entity_Id := Get_Borrowed_Typ (Brower);
+      Borrowed_Ty     : constant Entity_Id :=
+        (if Reborrow
+         then Etype (Brower)
+         elsif Ekind (Brower) = E_Function
+         then Etype (Borrowed_Entity)
+         else Get_Borrowed_Typ (Brower));
       W_Borrowed      : constant W_Expr_Id :=
         (if Reborrow
          then New_Deref
@@ -12464,7 +12563,7 @@ package body Gnat2Why.Expr is
                      (Expr   => New_Deref
                           (Right => Get_Brower_At_End (Brower),
                            Typ   => Get_Typ (Get_Brower_At_End (Brower))),
-                      Ty     => Get_Borrowed_Typ (Brower),
+                      Ty     => Etype (Brower),
                       Params => Body_Params))));
          end;
       end if;
@@ -13620,20 +13719,58 @@ package body Gnat2Why.Expr is
                     Domain  => Domain,
                     Params  => Params);
             begin
-               return Compute_Is_Initialized
+               T := Compute_Is_Initialized
                  (Etype (Var), Expr, Params.Ref_Allowed, Domain);
             end;
 
          when Attribute_Access =>
+            if Is_Access_Subprogram_Type (Etype (Expr)) then
+               T := Transform_Access_Attribute_Of_Subprogram
+                 (Expr   => Expr,
+                  Domain => Domain,
+                  Params => Params);
 
-            --  We only support 'Access on subprograms
+            --  Construct a pointer object designating Var. Its address is
+            --  unknown.
+            --  We don't assume here that we are in the program domain. For
+            --  the axiom giving values of constants, the expression is
+            --  translated in the term domain and rejected when an "any"
+            --  expression is found.
 
-            pragma Assert (Is_Access_Subprogram_Type (Etype (Expr)));
+            else
+               declare
+                  Value_Expr    : constant W_Expr_Id := Transform_Expr
+                    (Expr          => Var,
+                     Domain        => Domain,
+                     Params        => Params,
+                     Expected_Type => EW_Abstract
+                       (Directly_Designated_Type (Etype (Expr))));
+                  Address_Expr  : constant W_Expr_Id := New_Any_Expr
+                    (Return_Type => EW_Int_Type,
+                     Labels      => Symbol_Sets.Empty_Set);
+                  Is_Moved_Expr : constant W_Expr_Id := +False_Term;
+                  Is_Null_Expr  : constant W_Expr_Id := +False_Term;
 
-            return Transform_Access_Attribute_Of_Subprogram
-              (Expr   => Expr,
-               Domain => Domain,
-               Params => Params);
+               begin
+                  T := Pointer_From_Split_Form
+                    (A  => (Value_Expr,
+                            Address_Expr,
+                            Is_Null_Expr,
+                            Is_Moved_Expr),
+                     Ty => Etype (Expr));
+
+                  --  If the access type has a direct or inherited predicate,
+                  --  generate a corresponding check.
+
+                  if Domain = EW_Prog and then Has_Predicates (Etype (Expr))
+                  then
+                     T := +Insert_Predicate_Check
+                       (Ada_Node => Expr,
+                        Check_Ty => Etype (Expr),
+                        W_Expr   => +T);
+                  end if;
+               end;
+            end if;
 
          when Attribute_Copy_Sign =>
             declare

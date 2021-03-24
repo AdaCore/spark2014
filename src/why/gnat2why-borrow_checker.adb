@@ -1005,6 +1005,12 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Local subprograms
 
+      procedure Handle_Borrow_Or_Observe
+        (Map  : in out Variable_Mapping;
+         Var  : Entity_Id;
+         Expr : Node_Id);
+      --  Update Map with a new borrow or observe Var := Expr
+
       procedure Handle_Borrow
         (Var  : Entity_Id;
          Expr : Node_Id);
@@ -1028,14 +1034,38 @@ package body Gnat2Why.Borrow_Checker is
         (Var  : Entity_Id;
          Expr : Node_Id)
       is
-         Borrowed : constant Node_Id := Get_Observed_Or_Borrowed_Expr (Expr);
       begin
+         Handle_Borrow_Or_Observe (Current_Borrowers, Var, Expr);
+      end Handle_Borrow;
+
+      ------------------------------
+      -- Handle_Borrow_Or_Observe --
+      ------------------------------
+
+      procedure Handle_Borrow_Or_Observe
+        (Map  : in out Variable_Mapping;
+         Var  : Entity_Id;
+         Expr : Node_Id)
+      is
+         Borrowed : Node_Id := Get_Observed_Or_Borrowed_Expr (Expr);
+
+      begin
+         --  Path'Access borrows/observes Path
+
+         if Nkind (Borrowed) = N_Attribute_Reference
+           and then Attribute_Name (Borrowed) = Name_Access
+         then
+            Borrowed := Prefix (Borrowed);
+         end if;
+
+         --  Insert the pair in Map if we are in a declaration
+
          if Is_Decl then
-            Set (Current_Borrowers, Var, Borrowed);
+            Set (Map, Var, Borrowed);
          else
             pragma Assert (Get_Root_Object (Borrowed) = Var);
          end if;
-      end Handle_Borrow;
+      end Handle_Borrow_Or_Observe;
 
       --------------------
       -- Handle_Observe --
@@ -1045,13 +1075,8 @@ package body Gnat2Why.Borrow_Checker is
         (Var  : Entity_Id;
          Expr : Node_Id)
       is
-         Observed : constant Node_Id := Get_Observed_Or_Borrowed_Expr (Expr);
       begin
-         if Is_Decl then
-            Set (Current_Observers, Var, Observed);
-         else
-            pragma Assert (Get_Root_Object (Observed) = Var);
-         end if;
+         Handle_Borrow_Or_Observe (Current_Observers, Var, Expr);
       end Handle_Observe;
 
       -------------------------
@@ -1138,8 +1163,9 @@ package body Gnat2Why.Borrow_Checker is
 
             begin
                --  E_Root might not be deep if it contains access-to-constant
-               --  types. In this case, it is not in the perm environment but
-               --  we can assume the permission is at least Read.
+               --  types, or if we are observing a regular object using
+               --  'Access. In this case, it is not in the perm environment but
+               --  the permission is necessarily sufficient.
 
                if Is_Deep (Etype (Expr_Root)) then
                   Perm := Get_Perm (+Expr);
@@ -1178,12 +1204,19 @@ package body Gnat2Why.Borrow_Checker is
          --  state, and whose root object is the target object itself.
 
          else
-            Perm := Get_Perm (+Expr);
+            --  Expr_Root might not be deep if we are borrowing a regular
+            --  object using 'Access. In this case, it is not in the perm
+            --  environment but we can assume the permission is necessarily
+            --  sufficient.
 
-            if Perm /= Read_Write then
-               Perm_Error (+Expr, Read_Write, Perm,
-                           Expl => Get_Expl (+Expr));
-               return;
+            if Is_Deep (Etype (Expr_Root)) then
+               Perm := Get_Perm (+Expr);
+
+               if Perm /= Read_Write then
+                  Perm_Error (+Expr, Read_Write, Perm,
+                              Expl => Get_Expl (+Expr));
+                  return;
+               end if;
             end if;
 
             --  The fact that a re-borrow is always rooted at the borrower is
@@ -1204,10 +1237,9 @@ package body Gnat2Why.Borrow_Checker is
          pragma Assert (Is_Path_Expression (Expr));
          Check_Expression (Expr, Move);
 
-      elsif Is_Deep (Target_Typ)
-        or else (Is_Access_Type (Retysp (Target_Typ))
-                 and then Is_Access_Constant (Retysp (Target_Typ))
-                 and then Is_Move_To_Constant (Expr))
+      elsif Is_Access_Type (Retysp (Target_Typ))
+        and then Is_Access_Constant (Retysp (Target_Typ))
+        and then Is_Move_To_Constant (Expr)
       then
 
          --  The expression of the conversion/allocator is moved
@@ -1951,10 +1983,14 @@ package body Gnat2Why.Borrow_Checker is
                   | Attribute_Img
                   | Attribute_First
                   | Attribute_Last
-                  | Attribute_Length);
+                  | Attribute_Length
+                  | Attribute_Access);
 
                if Get_Attribute_Id (Attribute_Name (Expr)) in
-                 Attribute_First | Attribute_Last | Attribute_Length
+                   Attribute_First
+                 | Attribute_Last
+                 | Attribute_Length
+                 | Attribute_Access
                then
                   Read_Indexes (Prefix (Expr));
                else
@@ -3886,7 +3922,10 @@ package body Gnat2Why.Borrow_Checker is
             pragma Assert
               (if Nkind (N.Expr) = N_Attribute_Reference
                then Get_Attribute_Id (Attribute_Name (N.Expr))
-                 in Attribute_First | Attribute_Last | Attribute_Length);
+                 in Attribute_First
+                  | Attribute_Last
+                  | Attribute_Length
+                  | Attribute_Access);
 
             declare
                Pref : constant Node_Id :=
@@ -4777,13 +4816,30 @@ package body Gnat2Why.Borrow_Checker is
       Expl      : Node_Id;
 
    begin
-      --  Nothing to do if the root type is not deep, or the path is not rooted
-      --  in an object.
+      --  Nothing to do if the path is not rooted in an object
 
       if No (Root)
         or else not Is_Object (Root)
-        or else not Is_Deep (Etype (Root))
       then
+         return;
+
+      --  If the root type is not deep, it can still be borrowed or observed
+
+      elsif not Is_Deep (Etype (Root)) then
+
+         --  Check path was not borrowed
+
+         Check_Not_Borrowed (Expr, Root);
+
+         --  For modes that require W permission, check path was not observed
+
+         case Mode is
+            when Read | Observe =>
+               null;
+            when Assign | Move | Free | Borrow =>
+               Check_Not_Observed (Expr, Root);
+         end case;
+
          return;
       end if;
 

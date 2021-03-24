@@ -5,6 +5,8 @@ a-cofuve.ads:238:59: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:238:76: info: overflow check proved (CVC4: 1 VC), in instantiation at test_borrow.adb:34
 a-cofuve.ads:239:30: info: range check proved (CVC4: 1 VC), in instantiation at test_borrow.adb:34
 a-cofuve.ads:300:52: info: overflow check proved (CVC4: 1 VC), in instantiation at test_borrow.adb:34
+test_borrow.adb:15:92: info: dynamic accessibility check proved (Trivial)
+test_borrow.adb:18:86: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls
 test_borrow.adb:23:07: medium: "Length" is recursive, terminating annotation could be incorrect
 test_borrow.adb:23:37: info: predicate check proved (CVC4: 1 VC)
@@ -187,6 +189,8 @@ test_borrow.adb:158:21: info: pointer dereference check proved (CVC4: 1 VC)
 test_borrow.adb:158:23: info: pointer dereference check proved (CVC4: 1 VC)
 test_borrow.adb:158:25: info: pointer dereference check proved (CVC4: 1 VC)
 test_borrow.adb:158:27: info: pointer dereference check proved (CVC4: 1 VC)
+test_borrow.adb:175:101: info: dynamic accessibility check proved (Trivial)
+test_borrow.adb:178:107: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:183:17: info: pointer dereference check proved (CVC4: 2 VC)
 test_borrow.adb:183:35: info: pointer dereference check proved (CVC4: 2 VC)
 test_borrow.adb:183:52: info: pointer dereference check proved (CVC4: 2 VC)

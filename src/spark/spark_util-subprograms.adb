@@ -1309,16 +1309,9 @@ package body SPARK_Util.Subprograms is
 
         and then Is_Anonymous_Access_Object_Type (Etype (E))
 
-        --  the function has at least one formal parameter,
+        --  and the function has at least one formal parameter.
 
-        and then Present (First_Formal (E))
-
-        --  and the function's first parameter is of an access-to-object type.
-
-        and then Is_Access_Type (Retysp (Etype (First_Formal (E))))
-        and then
-          Ekind (Directly_Designated_Type (Retysp (Etype (First_Formal (E)))))
-            /= E_Subprogram_Type;
+        and then Present (First_Formal (E));
    end Is_Traversal_Function;
 
    ----------------------------------------

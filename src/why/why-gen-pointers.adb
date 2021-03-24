@@ -822,6 +822,7 @@ package body Why.Gen.Pointers is
                   | N_Indexed_Component
                   | N_Selected_Component
                   | N_Slice
+                  | N_Attribute_Reference
                =>
                   Borrowed_Expr := Prefix (Borrowed_Expr);
 

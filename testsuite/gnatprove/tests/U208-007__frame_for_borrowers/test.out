@@ -1,3 +1,4 @@
+borrow_frame.adb:11:08: info: dynamic accessibility check proved (Trivial)
 borrow_frame.adb:15:13: info: implicit function contract might not be available on recursive calls
 borrow_frame.adb:16:07: medium: "Last" is recursive, terminating annotation could be incorrect
 borrow_frame.adb:16:11: info: pointer dereference check proved (CVC4: 1 VC)

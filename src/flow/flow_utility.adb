@@ -6205,6 +6205,7 @@ package body Flow_Utility is
                   | N_Indexed_Component
                   | N_Slice
                   | N_Selected_Component
+                  | N_Attribute_Reference
                =>
                   Prefix (N),
 
@@ -6244,6 +6245,10 @@ package body Flow_Utility is
                | N_Indexed_Component
                | N_Slice
             =>
+               return Obj;
+
+            when N_Attribute_Reference =>
+               pragma Assert (Attribute_Name (N) = Name_Access);
                return Obj;
 
             when N_Qualified_Expression

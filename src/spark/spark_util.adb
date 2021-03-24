@@ -1751,6 +1751,7 @@ package body SPARK_Util is
          when N_Function_Call =>
             if Through_Traversal
               and then Is_Traversal_Function_Call (Expr)
+              and then Is_Path_Expression (First_Actual (Expr))
             then
                return GRO (First_Actual (Expr));
             else
@@ -1764,7 +1765,10 @@ package body SPARK_Util is
             return GRO (Expression (Expr));
 
          when N_Attribute_Reference =>
-            if Attribute_Name (Expr) in Name_First | Name_Last | Name_Length
+            if Attribute_Name (Expr) in Name_First
+                                      | Name_Last
+                                      | Name_Length
+                                      | Name_Access
             then
                return GRO (Prefix (Expr));
             else
@@ -2512,7 +2516,10 @@ package body SPARK_Util is
             return True;
 
          when N_Attribute_Reference =>
-            if Attribute_Name (Expr) in Name_First | Name_Last | Name_Length
+            if Attribute_Name (Expr) in Name_First
+                                      | Name_Last
+                                      | Name_Length
+                                      | Name_Access
             then
                return Is_Path_Expression (Prefix (Expr));
 
@@ -3725,7 +3732,10 @@ package body SPARK_Util is
             end if;
 
          when N_Attribute_Reference =>
-            if Attribute_Name (Expr) in Name_First | Name_Last | Name_Length
+            if Attribute_Name (Expr) in Name_First
+                                      | Name_Last
+                                      | Name_Length
+                                      | Name_Access
             then
                return Traverse_Access_To_Constant (Prefix (Expr));
             else

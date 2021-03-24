@@ -474,6 +474,13 @@ package body SPARK_Atree.Entities is
    function Is_Actual_Subtype (Typ : Entity_Id) return Boolean is
      (Einfo.Entities.Is_Actual_Subtype (Typ));
 
+   ----------------
+   -- Is_Aliased --
+   ----------------
+
+   function Is_Aliased (Obj : Entity_Id) return Boolean renames
+     Einfo.Entities.Is_Aliased;
+
    ------------------
    -- Is_Base_Type --
    ------------------

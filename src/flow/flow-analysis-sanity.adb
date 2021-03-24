@@ -24,6 +24,7 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
+with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
@@ -1105,6 +1106,11 @@ package body Flow.Analysis.Sanity is
                            when N_Explicit_Dereference
                               | N_Selected_Component
                            =>
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Attribute_Reference =>
+                              pragma Assert
+                                (Attribute_Name (Expr) = Name_Access);
                               Collect_Indexes (Prefix (Expr));
 
                            when N_Indexed_Component =>

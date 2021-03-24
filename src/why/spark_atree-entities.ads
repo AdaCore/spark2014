@@ -640,6 +640,9 @@ package SPARK_Atree.Entities is
        and then SPARK_Util.Is_Partial_View (Obj),
      Post => Ekind (Full_View'Result) = E_Constant;
 
+   function Is_Aliased (Obj : Entity_Id) return Boolean with
+     Pre => Ekind (Obj) = E_In_Parameter;
+
    function Known_Component_First_Bit (Obj : Entity_Id) return Boolean with
      Pre => Ekind (Obj) in E_Discriminant | E_Component;
    --  Returns True if the first bit of a component has been supplied either
