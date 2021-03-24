@@ -31,7 +31,6 @@ with Ada.Strings;                 use Ada.Strings;
 with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Ce_Interval_Sets;
 with Ce_Pretty_Printing;          use Ce_Pretty_Printing;
-with Common_Containers;           use Common_Containers;
 with Erroutc;                     use Erroutc;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT;                        use GNAT;

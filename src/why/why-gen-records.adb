@@ -315,7 +315,7 @@ package body Why.Gen.Records is
          end if;
       else
          declare
-            Fields    : Node_Sets.Set renames Get_Component_Set (Ty_Ext);
+            Fields    : Component_Sets.Set renames Get_Component_Set (Ty_Ext);
             Conjuncts : W_Expr_Array (1 .. Natural (Fields.Length));
             Count     : Natural := 0;
          begin
@@ -2344,7 +2344,8 @@ package body Why.Gen.Records is
 
                if not Is_Simple_Private_Type (E) then
                   declare
-                     Comp_Set : Node_Sets.Set renames Get_Component_Set (E);
+                     Comp_Set : Component_Sets.Set renames
+                       Get_Component_Set (E);
                   begin
                      if not Comp_Set.Is_Empty then
                         declare
