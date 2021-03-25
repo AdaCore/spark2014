@@ -711,10 +711,6 @@ package SPARK_Util is
    --  NULL, or a function call. Through_Traversal is True if it should follow
    --  through calls to traversal functions.
 
-   function Has_Dereferences (N : Node_Id) return Boolean with
-     Pre => Nkind (N) in N_Subexpr;
-   --  Return True if there is a dereference in the suffix of N which is a path
-
    function Is_Action (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Object_Declaration;
    --  @param N is an object declaration
