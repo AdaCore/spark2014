@@ -147,15 +147,6 @@ procedure Test_First_Bound with SPARK_Mode is
       pragma Assert (Id2 (My_Arr'(X))'First = 1);
    end Test_8;
 
-   procedure Test_9 with Global => null is
-      type Int_Array is array (Positive range <>) of Integer;
-      function Id (X : Integer) return Integer is (X);
-      subtype My_Arr is Int_Array (1 .. <>);
-      subtype My_Arr_Bad is My_Arr (Id (7) .. <>); --@RANGE_CHECK:FAIL
-   begin
-      null;
-   end Test_9;
-
    procedure Test_10 with Global => null is
       type Int_Array is array (Positive range <>) of Integer;
       function Id (X : Integer) return Integer is (X);
@@ -169,7 +160,6 @@ procedure Test_First_Bound with SPARK_Mode is
       type Int_Array is array (Positive range <>) of Integer;
       function Id (X : Integer) return Integer is (X);
       subtype My_Arr is Int_Array (1 .. <>);
-      subtype My_Arr_1 is My_Arr (Id (1) .. <>);
       subtype My_Arr_2 is My_Arr (Id (1) .. 8);
    begin
       null;
