@@ -2016,13 +2016,13 @@ package body SPARK_Util is
    begin
       case Ekind (E) is
          when E_In_Parameter =>
-            return not Is_Access_Variable (Etype (E));
+            return Ekind (Scope (E)) = E_Function
+              or else not Is_Access_Variable (Etype (E));
+         when E_Loop_Parameter =>
+            return True;
          when E_Constant =>
-            if Comes_From_Declare_Expr (E) then
-               return True;
-            else
-               return not Is_Access_Variable (Etype (E));
-            end if;
+            return Comes_From_Declare_Expr (E)
+              or else not Is_Access_Variable (Etype (E));
          when others =>
             return False;
       end case;

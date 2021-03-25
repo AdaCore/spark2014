@@ -1,23 +1,7 @@
-a.adb:5:07: info: initialization of "Y" proved
-a.adb:5:10: info: initialization of "Z" proved
-a.adb:11:20: error: "X" is not writable
-a.adb:11:20: error: object was declared as not writable at line 4
-a.adb:16:09: error: dereference from "X" is not writable
-a.adb:16:09: error: object was declared as not writable at line 4
-a.adb:17:20: error: "X" is not writable
-a.adb:17:20: error: object was declared as not writable at line 4
-a.adb:17:20: warning: "X" is set by "Q" but not used after the call
-a.adb:23:07: info: initialization of "Y" proved
-a.adb:88:07: info: initialization of "Y" proved
-a.adb:99:07: info: initialization of "Y" proved
-a.adb:112:11: info: flow dependencies proved
-a.adb:124:11: info: flow dependencies proved
-a.ads:36:17: warning: "X" is not modified, parameter type could be rewritten as 'access constant Integer'
-a.ads:37:17: info: initialization of "Result" proved
-a.ads:43:17: info: initialization of "Result" proved
-a.ads:49:17: info: initialization of "Result" proved
-a.ads:54:24: info: initialization of "Result" proved
-a.ads:58:22: info: initialization of "Result" proved
-a.ads:61:23: warning: "Z" is not modified, could be IN
-a.ads:62:23: info: initialization of "Result" proved
+a.adb:11:20: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+a.adb:11:20: error: violation of aspect SPARK_Mode at line 1
+a.adb:16:07: error: assignment into a constant object is not allowed in SPARK
+a.adb:16:07: error: violation of aspect SPARK_Mode at line 1
+a.adb:17:20: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+a.adb:17:20: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
