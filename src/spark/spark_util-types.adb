@@ -1630,8 +1630,26 @@ package body SPARK_Util.Types is
                   return;
                end if;
                Typ_Size := (if Top_Level then Esize (Typ) else RM_Size (Typ));
-               pragma Assert (Compile_Time_Known_Value (Low_Bound (R)));
-               pragma Assert (Compile_Time_Known_Value (High_Bound (R)));
+
+               --  Despite having a known Esize, we might not know the bounds
+               --  at compile time. Checking for this next.
+
+               if not Compile_Time_Known_Value (Low_Bound (R)) then
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String ("lower bound for " & Typ_Name
+                                         & " is not known at compile time");
+                  return;
+               end if;
+
+               if not Compile_Time_Known_Value (High_Bound (R)) then
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String ("upper bound for " & Typ_Name
+                                         & " is not known at compile time");
+                  return;
+               end if;
+
                declare
                   Low        : constant Uint := Expr_Value (Low_Bound (R));
                   High       : constant Uint := Expr_Value (High_Bound (R));

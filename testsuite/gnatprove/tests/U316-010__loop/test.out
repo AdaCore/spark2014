@@ -1,0 +1,7 @@
+loop_param.adb:1:11: warning: subprogram "Loop_Param" has no effect
+loop_param.adb:3:08: info: range check proved (CVC4: 2 VC)
+loop_param.adb:3:34: info: cannot unroll loop (too many loop iterations)
+loop_param.adb:5:10: high: alignment of overlaying object might not be an integral multiple of alignment of overlaid object [possible explanation: K doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
+loop_param.adb:5:10: info: object is suitable for aliasing via address clause (Trivial)
+loop_param.adb:5:38: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: upper bound for anonymous type is not known at compile time]
+loop_param.adb:5:38: info: types of aliased objects have the same size (Trivial)
