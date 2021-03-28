@@ -254,7 +254,7 @@ pointers.adb:148:15: warning: "W" is set by "Assign" but not used after the call
 pointers.adb:150:11: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:150:11: warning: unused assignment
 pointers.adb:150:14: high: "A.Q.Z" is not initialized
-pointers.adb:150:14: warning: "A.Q" may be referenced before it has a value
+pointers.adb:150:14: warning: "A.Q" may be referenced before it has a value [enabled by default]
 pointers.adb:151:11: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:151:11: warning: unused assignment
 pointers.adb:152:09: info: absence of memory leak proved (CVC4: 1 VC)

@@ -132,26 +132,26 @@ polyorb_hi_generated-activity.adb:100:06: error: attribute "Address" outside an 
 polyorb_hi_generated-activity.adb:100:06: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:121:23: error: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
 polyorb_hi_generated-activity.adb:121:23: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:225:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect
-polyorb_hi_generated-activity.adb:251:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect
-polyorb_hi_generated-activity.adb:300:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:316:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:333:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:351:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:368:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:386:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:402:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:421:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:439:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:471:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:487:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:504:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:522:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:540:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:557:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:573:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:592:05: warning: use clause for package "Deployment" has no effect
-polyorb_hi_generated-activity.adb:610:05: warning: use clause for package "Deployment" has no effect
+polyorb_hi_generated-activity.adb:225:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:251:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:300:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:316:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:333:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:351:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:368:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:386:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:402:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:421:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:439:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:471:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:487:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:504:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:522:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:540:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:557:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:573:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:592:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
+polyorb_hi_generated-activity.adb:610:05: warning: use clause for package "Deployment" has no effect [-gnatwu]
 polyorb_hi_generated-activity.ads:102:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74
 polyorb_hi_generated-activity.ads:102:03: warning: pragma "Storage_Size" ignored (not yet supported)
 polyorb_hi_generated-activity.ads:192:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74

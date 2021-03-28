@@ -3,7 +3,7 @@ swap_warn.adb:1:25: warning: unused initial value of "Y"
     1 |procedure Swap_Warn (X, Y : in out Integer) with
       |                        ^ here
 
-swap_warn.adb:8:09: warning: "Tmp_Y" may be referenced before it has a value
+swap_warn.adb:8:09: warning: "Tmp_Y" may be referenced before it has a value [enabled by default]
     8 |   X := Tmp_Y;
       |        ^~~~~
 

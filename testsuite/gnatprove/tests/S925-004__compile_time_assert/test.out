@@ -1,7 +1,7 @@
 ###########
 compilation
 ###########
-bad_assert.adb:5:33: condition is not known at compile time
+bad_assert.adb:5:33: error: condition is not known at compile time
 
 ############
 verification

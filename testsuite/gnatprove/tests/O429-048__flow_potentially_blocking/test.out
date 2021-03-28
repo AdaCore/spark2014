@@ -12,13 +12,13 @@ external_separate_calls.ads:4:13: info: ceiling priority protocol is respected (
 internal_protected_call.adb:7:33: high: call to potentially blocking subprogram "P" in protected operation "E"
 internal_protected_call.adb:8:10: high: call to potentially blocking subprogram "P" in protected operation "E"
 internal_protected_call.adb:13:33: high: potentially blocking entry call in protected operation "P"
-internal_protected_call.adb:13:33: warning: potentially blocking operation in protected operation
+internal_protected_call.adb:13:33: warning: potentially blocking operation in protected operation [enabled by default]
 internal_protected_call.adb:14:10: high: potentially blocking entry call in protected operation "P"
-internal_protected_call.adb:14:10: warning: potentially blocking operation in protected operation
+internal_protected_call.adb:14:10: warning: potentially blocking operation in protected operation [enabled by default]
 internal_protected_call.adb:36:26: high: potentially blocking entry call in protected operation "P1"
-internal_protected_call.adb:36:26: warning: potentially blocking operation in protected operation
+internal_protected_call.adb:36:26: warning: potentially blocking operation in protected operation [enabled by default]
 internal_protected_call.adb:41:10: high: potentially blocking entry call in protected operation "P2"
-internal_protected_call.adb:41:10: warning: potentially blocking operation in protected operation
+internal_protected_call.adb:41:10: warning: potentially blocking operation in protected operation [enabled by default]
 internal_protected_call.adb:44:20: warning: statement has no effect
 library_level_function.adb:5:09: info: data dependencies proved
 library_level_procedure.adb:4:09: info: data dependencies proved
@@ -26,26 +26,26 @@ nested_pb_call.adb:7:10: info: data dependencies proved
 nested_pb_call.adb:7:33: warning: unused initial value of "Real_Time.Clock_Time"
 nested_pb_call.adb:11:24: warning: statement has no effect
 nested_pb_call.adb:19:13: high: potentially blocking delay statement in protected operation "Dummy"
-nested_pb_call.adb:19:13: warning: potentially blocking operation in protected operation
+nested_pb_call.adb:19:13: warning: potentially blocking operation in protected operation [enabled by default]
 p-po_stub_1.adb:3:38: warning: statement has no effect
 p-po_stub_2.adb:5:07: high: potentially blocking delay statement in protected operation "Directly_Blocking_Stub_Entry"
-p-po_stub_2.adb:5:07: warning: potentially blocking operation in protected operation
+p-po_stub_2.adb:5:07: warning: potentially blocking operation in protected operation [enabled by default]
 p-po_stub_2.adb:10:07: high: potentially blocking delay statement in protected operation "Directly_Blocking_Stub_Proc"
-p-po_stub_2.adb:10:07: warning: potentially blocking operation in protected operation
+p-po_stub_2.adb:10:07: warning: potentially blocking operation in protected operation [enabled by default]
 p-po_stub_3.adb:5:07: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Stub_Entry"
 p-po_stub_3.adb:10:07: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Stub_Proc"
 p.adb:55:41: warning: statement has no effect
 p.adb:69:10: high: potentially blocking delay statement in protected operation "Directly_Blocking_Type_Entry"
-p.adb:69:10: warning: potentially blocking operation in protected operation
+p.adb:69:10: warning: potentially blocking operation in protected operation [enabled by default]
 p.adb:74:10: high: potentially blocking delay statement in protected operation "Directly_Blocking_Type_Proc"
-p.adb:74:10: warning: potentially blocking operation in protected operation
+p.adb:74:10: warning: potentially blocking operation in protected operation [enabled by default]
 p.adb:81:10: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Type_Entry"
 p.adb:86:10: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Type_Proc"
 p.adb:97:43: warning: statement has no effect
 p.adb:111:10: high: potentially blocking delay statement in protected operation "Directly_Blocking_Object_Entry"
-p.adb:111:10: warning: potentially blocking operation in protected operation
+p.adb:111:10: warning: potentially blocking operation in protected operation [enabled by default]
 p.adb:116:10: high: potentially blocking delay statement in protected operation "Directly_Blocking_Object_Proc"
-p.adb:116:10: warning: potentially blocking operation in protected operation
+p.adb:116:10: warning: potentially blocking operation in protected operation [enabled by default]
 p.adb:123:10: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Object_Entry"
 p.adb:128:10: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Object_Proc"
 p.adb:156:10: high: call to potentially blocking subprogram "Yielding_Proc" in protected operation "Yielding_Entry"

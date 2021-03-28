@@ -1,17 +1,17 @@
-initializes_illegal.adb:6:11: aspect "Initializes" must apply to a package declaration
-initializes_illegal.ads:11:30: initialization item must denote object or state
-initializes_illegal_3.ads:24:30: initialization item must denote object or state
-initializes_illegal_3.ads:26:27: "PrivVar" is undefined
-initializes_illegal_3.ads:32:34: input item "Rec" cannot denote a visible object or state of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:32:39: input item "S2" cannot denote a visible object or state of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:32:46: input item "SS" cannot denote a visible object or state of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:32:54: input item "XX" cannot denote a visible object or state of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:36:45: duplicate input item
-initializes_illegal_3.ads:36:49: duplicate input item
-initializes_illegal_3.ads:52:04: "PrivVar" is declared in the private part of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:52:04: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
-initializes_illegal_3_helper.ads:5:35: "SH" is declared in the visible part of package "Initializes_Illegal_3_Helper"
-initializes_illegal_3_helper.ads:5:35: indicator Part_Of cannot appear in this context (SPARK RM 7.2.6(5))
+initializes_illegal.adb:6:11: error: aspect "Initializes" must apply to a package declaration
+initializes_illegal.ads:11:30: error: initialization item must denote object or state
+initializes_illegal_3.ads:24:30: error: initialization item must denote object or state
+initializes_illegal_3.ads:26:27: error: "PrivVar" is undefined
+initializes_illegal_3.ads:32:34: error: input item "Rec" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:32:39: error: input item "S2" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:32:46: error: input item "SS" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:32:54: error: input item "XX" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:36:45: error: duplicate input item
+initializes_illegal_3.ads:36:49: error: duplicate input item
+initializes_illegal_3.ads:52:04: error: "PrivVar" is declared in the private part of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:52:04: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
+initializes_illegal_3_helper.ads:5:35: error: "SH" is declared in the visible part of package "Initializes_Illegal_3_Helper"
+initializes_illegal_3_helper.ads:5:35: error: indicator Part_Of cannot appear in this context (SPARK RM 7.2.6(5))
 initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:19:07: info: initialization of "Body_Var" constituent of "State" proved
 initializes_illegal_4.adb:22:17: warning: unused assignment
@@ -25,8 +25,8 @@ initializes_illegal_4.ads:53:30: medium: overflow check might fail (e.g. when G_
 initializes_illegal_4.ads:53:32: high: "G_Var2" must be mentioned as an input of the Initializes aspect of "Pac3" (SPARK RM 7.1.5(11))
 initializes_illegal_4.ads:63:11: info: flow dependencies proved
 initializes_illegal_4.ads:65:22: high: "G_Var" must be mentioned as an input of the Initializes aspect of "Pac4" (SPARK RM 7.1.5(11))
-initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"
-initializes_illegal_5.ads:14:66: input item "Pr_Var" cannot denote a visible object or state of package "Initializes_Illegal_5"
+initializes_illegal_5.ads:1:14: error: current unit must also be private descendant of "Initializes_Illegal_5"
+initializes_illegal_5.ads:14:66: error: input item "Pr_Var" cannot denote a visible object or state of package "Initializes_Illegal_5"
 initializes_illegal_6.adb:8:04: high: "Var" constituent of "State" is not initialized in "Initializes_Illegal_6"
 initializes_illegal_6.adb:8:04: high: initialization of "Initializes_Illegal_6.State" is specified at initializes_illegal_6.ads:14
 initializes_illegal_6.ads:14:08: info: flow dependencies proved

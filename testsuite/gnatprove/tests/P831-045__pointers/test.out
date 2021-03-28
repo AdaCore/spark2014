@@ -10,8 +10,8 @@ n04.adb:14:08: error: general access-to-variable type is not allowed in SPARK
 n04.adb:14:08: error: violation of aspect SPARK_Mode at line 12
 n05.adb:11:08: error: general access-to-variable type is not allowed in SPARK
 n05.adb:11:08: error: violation of aspect SPARK_Mode at line 9
-n05.adb:15:20: warning: formal parameter "A" is not referenced
-n05.adb:44:03: warning: variable "C" is never read and never assigned
+n05.adb:15:20: warning: formal parameter "A" is not referenced [-gnatwf]
+n05.adb:44:03: warning: variable "C" is never read and never assigned [-gnatwv]
 observingcomposite.adb:20:20: error: uninitialized allocator without default initialization is not allowed in SPARK
 observingcomposite.adb:20:20: error: violation of aspect SPARK_Mode at line 6
 observingcomposite.adb:21:20: error: uninitialized allocator without default initialization is not allowed in SPARK
@@ -86,18 +86,18 @@ test.adb:10:09: error: general access-to-variable type is not allowed in SPARK
 test.adb:10:09: error: violation of aspect SPARK_Mode at line 7
 test.adb:13:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
 test.adb:13:04: error: violation of aspect SPARK_Mode at line 7
-test.adb:20:12: warning: variable "varPtr2" is read but never assigned
+test.adb:20:12: warning: variable "varPtr2" is read but never assigned [-gnatwv]
 test.adb:24:30: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:24:30: error: violation of aspect SPARK_Mode at line 7
 test.adb:28:08: error: general access-to-variable type is not allowed in SPARK
 test.adb:28:08: error: violation of aspect SPARK_Mode at line 7
-test.adb:64:09: warning: variable "X" is read but never assigned
+test.adb:64:09: warning: variable "X" is read but never assigned [-gnatwv]
 test.adb:78:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:78:03: error: violation of aspect SPARK_Mode at line 7
 test.adb:78:08: error: attribute "Access" on object is not allowed in SPARK
 test.adb:78:08: error: violation of aspect SPARK_Mode at line 7
-test.adb:84:08: warning: "B" may be null
-test.adb:86:11: warning: "x0" may be referenced before it has a value
+test.adb:84:08: warning: "B" may be null [enabled by default]
+test.adb:86:11: warning: "x0" may be referenced before it has a value [enabled by default]
 test.adb:87:08: info: analyzing call to "g" in context
 test.adb:89:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:89:03: error: violation of aspect SPARK_Mode at line 7
