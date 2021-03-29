@@ -38,7 +38,7 @@ average.adb:15:18: info: range check proved (Trivial)
 average.adb:15:18: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 12 should mention Item (for argument B)]
 average.adb:15:23: info: division check proved (CVC4: 1 VC)
 average.adb:15:23: info: float overflow check proved (Trivial)
-average_with_use.adb:4:11: warning: file name does not match unit name, should be "average.adb"
+average_with_use.adb:4:11: warning: file name does not match unit name, should be "average.adb" [enabled by default]
 average_with_use.adb:6:04: info: initialization of "A" proved
 average_with_use.adb:7:04: info: initialization of "B" proved
 average_with_use.adb:8:04: info: initialization of "M" proved
