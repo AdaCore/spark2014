@@ -266,6 +266,7 @@ package body Gnat2Why.Error_Messages is
                | VC_UC_Volatile
                | VC_Memory_Leak
                | VC_Memory_Leak_At_End_Of_Scope
+               | VC_Dynamic_Accessibility_Check
                | VC_Unchecked_Union_Restriction
             =>
                return (OK => False);
@@ -657,6 +658,8 @@ package body Gnat2Why.Error_Messages is
             return "pointer dereference check might fail";
          when VC_Null_Exclusion =>
             return "null exclusion check might fail";
+         when VC_Dynamic_Accessibility_Check =>
+            return "dynamic accessibility check might fail";
          when VC_Memory_Leak =>
             return "memory leak might occur";
          when VC_Memory_Leak_At_End_Of_Scope =>
@@ -1045,6 +1048,8 @@ package body Gnat2Why.Error_Messages is
             return "pointer dereference check proved";
          when VC_Null_Exclusion =>
             return "null exclusion check proved";
+         when VC_Dynamic_Accessibility_Check =>
+            return "dynamic accessibility check proved";
          when VC_Memory_Leak =>
             return "absence of memory leak proved";
          when VC_Memory_Leak_At_End_Of_Scope =>

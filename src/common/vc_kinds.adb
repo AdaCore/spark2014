@@ -126,6 +126,7 @@ package body VC_Kinds is
             | VC_Initial_Condition
             | VC_Default_Initial_Condition
             | VC_Disjoint_Contract_Cases
+            | VC_Dynamic_Accessibility_Check
             | VC_Complete_Contract_Cases
             | VC_Loop_Invariant
             | VC_Loop_Invariant_Init
@@ -256,6 +257,10 @@ package body VC_Kinds is
          when VC_Null_Exclusion                   =>
             return "Check that the subtype_indication of the allocator " &
               "does not specify a null_exclusion";
+         when VC_Dynamic_Accessibility_Check      =>
+            return "Check that the accessibility level of the result of a " &
+              "traversal function call is not deeper than the accessibility " &
+              "level of its traversed parameter.";
          when VC_Memory_Leak                      =>
             return "Check that the assignment does not lead to a memory leak";
          when VC_Memory_Leak_At_End_Of_Scope      =>
@@ -884,6 +889,8 @@ package body VC_Kinds is
                "predicate check on default value",
              when VC_Null_Pointer_Dereference => "null pointer dereference",
              when VC_Null_Exclusion => "null exclusion",
+             when VC_Dynamic_Accessibility_Check =>
+               "dynamic accessibility check",
              when VC_Memory_Leak => "memory leak",
              when VC_Memory_Leak_At_End_Of_Scope =>
                "memory leak at end of scope",

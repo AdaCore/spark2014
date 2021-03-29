@@ -46,6 +46,7 @@ VC_PREDICATE_CHECK(run-time-check) - predicate check - Check that the given valu
 VC_PREDICATE_CHECK_ON_DEFAULT_VALUE(run-time-check) - predicate check on default value - Check that the default value for the type respects the applicable type predicate. - MEDIUM
 VC_NULL_POINTER_DEREFERENCE(run-time-check) - null pointer dereference - Check that the given pointer is not null so that it can be dereferenced. - MEDIUM
 VC_NULL_EXCLUSION(run-time-check) - null exclusion - Check that the subtype_indication of the allocator does not specify a null_exclusion - MEDIUM
+VC_DYNAMIC_ACCESSIBILITY_CHECK(run-time-check) - dynamic accessibility check - Check that the accessibility level of the result of a traversal function call is not deeper than the accessibility level of its traversed parameter. - MEDIUM
 VC_MEMORY_LEAK(run-time-check) - memory leak - Check that the assignment does not lead to a memory leak - MEDIUM
 VC_MEMORY_LEAK_AT_END_OF_SCOPE(run-time-check) - memory leak at end of scope - Check that the declaration does not lead to a memory leak - MEDIUM
 VC_UNCHECKED_UNION_RESTRICTION(run-time-check) - unchecked union restriction - Check restrictions imposed on expressions of an unchecked union type - MEDIUM

@@ -339,6 +339,12 @@ package body Gnat2Why.Expr is
    function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean;
    --  Return whether Choice is a range ("others" counts as a range)
 
+   procedure Emit_Dynamic_Accessibility_Check
+     (Returned_Expr : Node_Id;
+      Subp          : Entity_Id);
+   --  Emit static proof results for dynamic accessibility checks on return of
+   --  traversal functions.
+
    function Expected_Type_Of_Prefix (N : Node_Id) return Entity_Id;
    --  The node in argument is the target of an assignment. This function
    --  computes the type of the entity that corresponds to the access.
@@ -5832,6 +5838,107 @@ package body Gnat2Why.Expr is
 
       return Result;
    end Dynamic_Predicate_Expression;
+
+   --------------------------------------
+   -- Emit_Dynamic_Accessibility_Check --
+   --------------------------------------
+
+   procedure Emit_Dynamic_Accessibility_Check
+     (Returned_Expr : Node_Id;
+      Subp          : Entity_Id)
+   is
+      Param : constant Entity_Id := First_Formal (Subp);
+      Path  : Node_Id := Returned_Expr;
+
+   begin
+      --  Approximate the accessibility level check on the return statement in
+      --  the following way:
+      --    * If we are in a part of a named access type, then no checks are
+      --      necessary.
+      --    * If we have a call to traversal function inside the declaration
+      --      of a local object, then the accessibility check will fail.
+      --    * If we have a call to traversal function inside the return
+      --      expression, the accessibility of the result will be the result
+      --      accessibility. It is still possible that a failed accessibility
+      --      check will occur in the body of the traversal function if its
+      --      first parameter is local, so continue the verification.
+      --    * Otherwise, we are in a part of the parameter, no checks are
+      --      necessary.
+
+      loop
+         case Nkind (Path) is
+            when N_Expanded_Name
+               | N_Identifier
+               =>
+               declare
+                  Root : constant Entity_Id := Entity (Path);
+
+               begin
+                  --  Root is a local borrower/observer, continue the traversal
+                  --  in its initial value. We ignore reborrows here. As they
+                  --  can only go deeper in the structure, it can be imprecise
+                  --  but safe.
+
+                  if Root /= Param then
+                     declare
+                        Decl : constant Node_Id :=
+                          Enclosing_Declaration (Root);
+                     begin
+                        Path := Expression (Decl);
+                     end;
+                  else
+                     exit;
+                  end if;
+               end;
+
+            when N_Explicit_Dereference =>
+               Path := Prefix (Path);
+
+            when N_Function_Call =>
+
+               --  We have found a function call. If we are not inside the
+               --  return statement, the master of the call is local, we will
+               --  have an accessibility check.
+
+               pragma Assert (Is_Traversal_Function_Call (Path));
+               if Get_Root_Object (Returned_Expr) /= Get_Root_Object (Path)
+               then
+                  Emit_Static_Proof_Result
+                    (Node   => Returned_Expr,
+                     Kind   => VC_Dynamic_Accessibility_Check,
+                     Proved => False,
+                     E      => Subp);
+                  exit;
+               end if;
+
+               Path := First_Actual (Path);
+
+            when N_Indexed_Component
+               | N_Selected_Component
+               | N_Slice
+               =>
+               Path := Prefix (Path);
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+               =>
+               Path := Expression (Path);
+
+            when others =>
+               raise Program_Error;
+         end case;
+
+         --  We are in a part of a named access type. The accessibility check
+         --  is guaranteed to succeed.
+
+         if Is_Access_Type (Retysp (Etype (Path)))
+           and then not Is_Anonymous_Access_Type (Etype (Path))
+         then
+            exit;
+         end if;
+      end loop;
+   end Emit_Dynamic_Accessibility_Check;
 
    -----------------------------
    -- Expected_Type_Of_Prefix --
@@ -20978,6 +21085,18 @@ package body Gnat2Why.Expr is
                           Labels   => Symbol_Sets.Empty_Set,
                           Value    => +Result_Stmt,
                           Typ      => Type_Of_Node (Subp));
+
+                     --  On return of traversal functions, perform dynamic
+                     --  accessibility checks. We approximate them in a static
+                     --  way.
+
+                     if Is_Traversal_Function (Subp)
+                       and then Nkind (Expression (Stmt_Or_Decl)) /= N_Null
+                     then
+                        Emit_Dynamic_Accessibility_Check
+                          (Returned_Expr => Expression (Stmt_Or_Decl),
+                           Subp          => Subp);
+                     end if;
 
                      --  Update the value at end of the result
 

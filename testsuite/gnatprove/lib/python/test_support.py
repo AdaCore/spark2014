@@ -278,6 +278,7 @@ def is_rte_tag(tag):
                    "DISCRIMINANT_CHECK",
                    "TAG_CHECK",
                    "NULL_EXCLUSION",
+                   "ACCESSIBILITY_CHECK",
                    "MEMORY_LEAK",
                    "DEREFERENCE_CHECK",
                    "UU_RESTRICTION")
@@ -428,6 +429,8 @@ def check_marks(strlist):
             return 'INIT_BY_PROOF'
         elif 'null exclusion check' in text:
             return 'NULL_EXCLUSION'
+        elif 'accessibility check' in text:
+            return 'ACCESSIBILITY_CHECK'
         elif 'memory leak' in text:
             return 'MEMORY_LEAK'
         elif 'dereference check' in text:
