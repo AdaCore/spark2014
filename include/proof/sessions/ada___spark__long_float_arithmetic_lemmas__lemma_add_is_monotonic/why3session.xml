@@ -3,8 +3,9 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
-<prover id="2" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
+<prover id="1" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="1000"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
+<prover id="3" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
 <file format="gnat-json" proved="true">
 <path name=".."/><path name=".."/><path name=".."/><path name="obj"/>
 <path name="gnatprove"/><path name="ada___spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic.gnat-json"/>
@@ -16,10 +17,10 @@
   </transf>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="valid" steps="12347"/></proof>
+  <proof prover="0"><result status="valid" steps="11663"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="15131"/></proof>
+  <proof prover="0"><result status="valid" steps="14929"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -28,7 +29,8 @@
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0" timelimit="5"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="3396"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
+  <proof prover="3"><result status="valid" steps="3494"/></proof>
   </goal>
  </transf>
  </goal>
