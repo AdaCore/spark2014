@@ -6797,25 +6797,17 @@ package body Flow.Control_Flow_Graph is
    ------------
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
-      Connection_Map  : Connection_Maps.Map := Connection_Maps.Empty_Map;
-      The_Context     : Context             := No_Context;
-      Preconditions   : Node_Lists.List;
-      Precon_Block    : Graph_Connections;
-      Postcon_Block   : Graph_Connections;
-      Body_N          : Node_Id;
-      Spec_N          : Node_Id;
+      Connection_Map : Connection_Maps.Map := Connection_Maps.Empty_Map;
+      The_Context    : Context             := No_Context;
+      Precon_Block   : Graph_Connections;
+      Postcon_Block  : Graph_Connections;
+      Body_N         : Node_Id;
+      Spec_N         : Node_Id;
 
    begin
       case FA.Kind is
-         when Kind_Subprogram =>
-            Body_N        := Get_Body (FA.Spec_Entity);
-            Preconditions :=
-              Get_Precondition_Expressions (FA.Spec_Entity);
-
-         when Kind_Task =>
-            --  Tasks cannot have pre- or postconditions right now. This is
-            --  a matter for the ARG perhaps.
-            Body_N := Task_Body (FA.Spec_Entity);
+         when Kind_Subprogram | Kind_Task =>
+            Body_N := Get_Body (FA.Spec_Entity);
 
          when Kind_Package =>
             Spec_N := Package_Specification (FA.Spec_Entity);
@@ -6996,9 +6988,12 @@ package body Flow.Control_Flow_Graph is
             --  Flowgraph for preconditions and left hand sides of contract
             --  cases.
             declare
-               NL : Union_Lists.List := Union_Lists.Empty_List;
+               NL : Union_Lists.List;
+
             begin
-               for Precondition of Preconditions loop
+               for Precondition of
+                 Get_Precondition_Expressions (FA.Spec_Entity)
+               loop
                   Do_Contract_Expression (Precondition,
                                           FA,
                                           Connection_Map,
@@ -7014,15 +7009,12 @@ package body Flow.Control_Flow_Graph is
             --  Flowgraph for postconditions and right hand sides of contract
             --  cases.
             declare
-               NL             : Union_Lists.List := Union_Lists.Empty_List;
-               Postconditions : Node_Lists.List;
+               NL : Union_Lists.List;
             begin
                for Refined in Boolean loop
-                  Postconditions := Get_Postcondition_Expressions
-                    (FA.Spec_Entity,
-                     Refined);
-
-                  for Postcondition of Postconditions loop
+                  for Postcondition of
+                    Get_Postcondition_Expressions (FA.Spec_Entity, Refined)
+                  loop
                      Do_Contract_Expression (Postcondition,
                                              FA,
                                              Connection_Map,
@@ -7043,12 +7035,13 @@ package body Flow.Control_Flow_Graph is
          when Kind_Package =>
             --  Flowgraph for initial_condition aspect
             declare
-               NL             : Union_Lists.List := Union_Lists.Empty_List;
-               Postconditions : constant Node_Lists.List :=
-                 Get_Postcondition_Expressions (FA.Spec_Entity,
-                                                Refined => False);
+               NL : Union_Lists.List := Union_Lists.Empty_List;
+
             begin
-               for Postcondition of Postconditions loop
+               for Postcondition of
+                 Get_Postcondition_Expressions (FA.Spec_Entity,
+                                                Refined => False)
+               loop
                   Do_Contract_Expression (Postcondition,
                                           FA,
                                           Connection_Map,
