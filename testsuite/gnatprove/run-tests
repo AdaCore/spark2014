@@ -16,6 +16,7 @@ import os
 import os.path
 import re
 import sys
+import time
 from typing import AnyStr, List, Optional
 
 # name for the entry in the test_env dict for the subprogram to call
@@ -263,7 +264,9 @@ class UGTestDriver(DiffTestDriver):
         if self.test_env["test_name"] == "ug__access6":
             cmd += ["-XSPARK_HEAP_OBJECT_DIR=."]
 
+        start_time = time.time()
         self.shell(cmd, catch_error=False)
+        self.result.time = time.time() - start_time
 
 
 class SPARKTestFinder(TestFinder):
