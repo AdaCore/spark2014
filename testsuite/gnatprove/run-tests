@@ -107,6 +107,11 @@ class UGTestDriver(DiffTestDriver):
     output_refiners = [NoEmptyOutputRefiner(), SortLinesRefiner()]
 
     @property
+    def test_control_creator(self):
+        assert isinstance(self.env.discs, list)
+        return SPARKControlCreator(self.env.discs, self.test_env)
+
+    @property
     def refine_baseline(self) -> bool:
         """Whether to apply output refiners to the output baseline."""
         return True
