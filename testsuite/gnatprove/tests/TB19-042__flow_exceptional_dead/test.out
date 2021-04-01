@@ -1,0 +1,13 @@
+main.adb:6:04: warning: analyzing unreferenced procedure "Dead_Loop"
+main.adb:6:14: warning: subprogram "Dead_Loop" has no effect
+main.adb:8:23: info: cannot unroll loop (value of loop bounds)
+main.adb:9:10: warning: this statement is never reached
+main.adb:11:24: warning: this statement is never reached
+main.adb:11:30: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+main.adb:17:14: warning: subprogram "Dead_Return" has no effect
+main.adb:20:07: warning: this statement is never reached
+main.adb:22:21: warning: this statement is never reached
+main.adb:27:04: warning: analyzing unreferenced procedure "Dead_Goto"
+main.adb:27:14: warning: subprogram "Dead_Goto" has no effect
+main.adb:30:07: warning: this statement is never reached
+main.adb:32:21: warning: this statement is never reached
