@@ -4857,6 +4857,18 @@ package body SPARK_Definition is
                Mark_Violation
                  ("anonymous access type for result for "
                   & "non-traversal functions", Id);
+
+            --  For now we don't support volatile borrowing traversal
+            --  functions.
+            --  Supporting them would require some special handling as we
+            --  cannot call the function in the term domain to update the value
+            --  of the borrowed parameter at end.
+
+            elsif Is_Volatile_Func
+              and then Is_Borrowing_Traversal_Function (Id)
+            then
+               Mark_Unsupported
+                 ("volatile borrowing traversal function", Id);
             end if;
 
             while Present (Formal) loop

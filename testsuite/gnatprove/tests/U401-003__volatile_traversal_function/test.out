@@ -1,0 +1,2 @@
+volatile_traversal.adb:8:13: error: volatile borrowing traversal function is not yet supported
+gnatprove: error during flow analysis and proof
