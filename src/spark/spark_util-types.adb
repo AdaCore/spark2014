@@ -1425,7 +1425,14 @@ package body SPARK_Util.Types is
             return;
          end if;
 
-         if Is_Scalar_Type (Typ) or else Is_Access_Type (Typ) then
+         if Is_Access_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is an access type");
+            return;
+         end if;
+
+         if Is_Scalar_Type (Typ) then
             if Top_Level and then not Known_Esize (Typ) then
                Result := False;
                Explanation :=
@@ -1604,6 +1611,13 @@ package body SPARK_Util.Types is
             Result := False;
             Explanation :=
               To_Unbounded_String (Typ_Name & " is a concurrent type");
+            return;
+         end if;
+
+         if Is_Access_Type (Typ) then
+            Result := False;
+            Explanation :=
+              To_Unbounded_String (Typ_Name & " is an access type");
             return;
          end if;
 
