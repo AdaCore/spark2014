@@ -21586,8 +21586,50 @@ package body Gnat2Why.Expr is
                   procedure Iterate_Call is new
                     Iterate_Call_Parameters (Process_Param);
 
+                  Call_Outputs : Node_Sets.Set;
+                  Read_Ids     : Flow_Types.Flow_Id_Sets.Set;
+                  Write_Ids    : Flow_Types.Flow_Id_Sets.Set;
+
                begin
+                  --  We compute the global outputs of the procedure call in
+                  --  Call_Outputs.
+
+                  Flow_Utility.Get_Proof_Globals
+                    (Subprogram      => Subp,
+                     Reads           => Read_Ids,
+                     Writes          => Write_Ids,
+                     Erase_Constants => True);
+                  for Write_Id of Write_Ids loop
+                     case Write_Id.Kind is
+                        when Direct_Mapping =>
+                           declare
+                              Obj : constant Entity_Id :=
+                                Get_Direct_Mapping_Id (Write_Id);
+                           begin
+                              if Is_Object (Obj) then
+                                 Call_Outputs.Insert (Obj);
+                              end if;
+                           end;
+                        when others =>
+                           null;
+                     end case;
+                  end loop;
+
+                  --  We compute the aliases of all out/in out parameters in
+                  --  Aliases.
+
                   Iterate_Call (Stmt_Or_Decl);
+
+                  --  We add the aliases of the global outputs
+
+                  for Elt of Call_Outputs loop
+                     Aliases.Union (Overlay_Alias (Elt));
+                  end loop;
+
+                  --  We remove the global outputs of the call from the aliases
+                  --  to be havoced.
+
+                  Aliases.Difference (Call_Outputs);
                   Call := +Sequence (+Call, Havoc_Overlay_Aliases (Aliases));
                end Havoc_Aliases;
 
