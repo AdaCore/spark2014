@@ -77,7 +77,7 @@ procedure Test_Annotate with SPARK_Mode is
    function Find (M : Map; K : String) return Values_Option with
      Post => (if Find'Result = null then (for all P of M.all => P.Key.all /= K)
               else (for some P of M.all =>
-                        P.Key.all = K and Find'Result = P.Val))
+                        P.Key.all = K and Find'Result /= null and Find'Result.all = P.Val.all))
    is
    begin
       for I in M'Range loop

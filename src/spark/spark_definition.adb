@@ -1748,6 +1748,44 @@ package body SPARK_Definition is
                Mark (Right_Opnd (N));
             end if;
 
+            --  Disallow membership tests if they involved the use of the
+            --  predefined equality on access types (except if one of the
+            --  operands is syntactically null).
+
+            if not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
+              and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
+              and then Nkind (Left_Opnd (N)) /= N_Null
+            then
+               --  Iterate through the alternatives to see if some involve the
+               --  use of the predefined equality.
+
+               declare
+                  function Alternative_Uses_Eq (Alt : Node_Id) return Boolean
+                  is
+                    ((not Is_Entity_Name (Alt)
+                     or else not Is_Type (Entity (Alt)))
+                     and then Nkind (Alt) /= N_Null);
+                  --  Return True if Alt is not a type inclusion or a
+                  --  comparison to null.
+
+                  Alt : Node_Id;
+               begin
+                  if Present (Alternatives (N)) then
+                     Alt := First (Alternatives (N));
+                     while Present (Alt) loop
+                        if Alternative_Uses_Eq (Alt) then
+                           Mark_Violation
+                             ("equality on access types", Alt);
+                           exit;
+                        end if;
+                        Next (Alt);
+                     end loop;
+                  elsif Alternative_Uses_Eq (Right_Opnd (N)) then
+                     Mark_Violation ("equality on access types", N);
+                  end if;
+               end;
+            end if;
+
          --  Check that the type of null is visibly an access type
 
          when N_Null =>
@@ -3548,6 +3586,17 @@ package body SPARK_Definition is
       Mark (Left_Opnd (N));
       Mark (Right_Opnd (N));
 
+      --  Disallow equality operators tests if they involved the use of the
+      --  predefined equality on access types (except if one of the operands is
+      --  syntactically null).
+
+      if Nkind (N) in N_Op_Eq | N_Op_Ne
+        and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
+        and then Nkind (Left_Opnd (N)) /= N_Null
+        and then Nkind (Right_Opnd (N)) /= N_Null
+      then
+         Mark_Violation ("equality on access types", N);
+
       --  Only support multiplication and division operations on fixed-point
       --  types if either:
       --  - one of the arguments is an integer type, or
@@ -3555,7 +3604,7 @@ package body SPARK_Definition is
       --  - both arguments and the result have compatible fixed-point types as
       --    defined in Ada RM G.2.3(21)
 
-      if Nkind (N) in N_Op_Multiply | N_Op_Divide then
+      elsif Nkind (N) in N_Op_Multiply | N_Op_Divide then
          declare
             L_Type  : constant Entity_Id := Base_Type (Etype (Left_Opnd (N)));
             R_Type  : constant Entity_Id := Base_Type (Etype (Right_Opnd (N)));

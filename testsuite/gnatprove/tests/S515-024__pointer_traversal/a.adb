@@ -6,6 +6,16 @@ procedure A with SPARK_Mode is
       Next : List_Ptr;
    end record;
 
+   function Eq (X, Y : access constant List) return Boolean with
+     Annotate => (GNATprove, Terminating);
+   function "=" (X, Y : List) return Boolean is
+     (X.Val = Y.Val and then Eq (X.Next, Y.Next))
+   with
+     Annotate => (GNATprove, Terminating);
+   function Eq (X, Y : access constant List) return Boolean is
+     ((X = null) = (Y = null)
+      and then (if X /= null then X.all = Y.all));
+
    LNN : List_Ptr := new List'(Val => 3, Next => null);
    LN : List_Ptr := new List'(Val => 2, Next => LNN);
    L : List_Ptr := new List'(Val => 1, Next => LN);
@@ -27,7 +37,7 @@ begin
    begin
       while N /= null loop
          pragma Loop_Invariant
-           (for some I in 1 .. Length (L) => Get_Next (L, I) = N);
+           (for some I in 1 .. Length (L) => Eq (Get_Next (L, I), N));
          pragma Assert (N.Val > 0);
          N := N.Next;
       end loop;

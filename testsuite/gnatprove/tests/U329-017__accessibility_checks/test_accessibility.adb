@@ -6,6 +6,11 @@ procedure Test_Accessibility with SPARK_Mode is
       F2 : Int_Acc;
    end record;
 
+   function "=" (X, Y : Rec) return Boolean is
+     (X.F1 = Y.F1
+      and then ((X.F2 = null) = (Y.F2 = null)
+        and then (if X.F2 /= null then X.F2.all = Y.F2.all)));
+
    function Id (X : not null access constant Rec) return not null access constant Rec with
      Post => Id'Result.all = X.all
    is

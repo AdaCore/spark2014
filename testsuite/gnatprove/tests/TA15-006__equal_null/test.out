@@ -1,4 +1,3 @@
-test_borrow.adb:26:23: error: object was borrowed at line 21
 test_borrow.adb:34:26: error: object was borrowed at line 32
 test_borrow.adb:42:26: error: object was borrowed at line 40
 test_borrow.adb:48:07: warning: initialization of "Z" has no effect

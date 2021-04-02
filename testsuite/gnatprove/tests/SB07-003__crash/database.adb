@@ -7,6 +7,11 @@ package body Database with SPARK_Mode is
       Email : Email_Access;
    end record;
 
+   function "=" (X, Y : DB_Entry_Type) return Boolean is
+     (X.Key = Y.Key
+      and then (X.Email = null) = (Y.Email = null)
+      and then (if X.Email /= null then X.Email.all = Y.Email.all));
+
    package DB_Pack is new Ada.Containers.Formal_Doubly_Linked_Lists
      (Element_Type => DB_Entry_Type,
       "="          => "=");

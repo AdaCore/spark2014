@@ -48,9 +48,13 @@ test_callback.adb:114:20: info: precondition of target is strong enough to imply
 test_callback.adb:114:20: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove 'Result >= x
 test_callback.adb:114:31: info: null exclusion check proved (Trivial: 1 VC)
 test_callback.adb:116:19: info: assertion proved (CVC4: 1 VC)
+test_callback.adb:116:19: info: pointer dereference check proved (CVC4: 1 VC)
+test_callback.adb:116:19: info: precondition proved (CVC4: 1 VC)
 test_callback.adb:116:31: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
-test_callback.adb:116:49: info: postcondition of source is strong enough to imply postcondition of target (CVC4: 1 VC)
-test_callback.adb:116:49: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
-test_callback.adb:116:58: info: null exclusion check proved (Trivial: 1 VC)
+test_callback.adb:116:41: info: pointer dereference check proved (CVC4: 1 VC)
+test_callback.adb:116:41: info: precondition proved (CVC4: 1 VC)
+test_callback.adb:116:54: info: postcondition of source is strong enough to imply postcondition of target (CVC4: 1 VC)
+test_callback.adb:116:54: info: precondition of target is strong enough to imply precondition of source (CVC4: 1 VC)
+test_callback.adb:116:63: info: null exclusion check proved (Trivial: 1 VC)
 test_callback.adb:117:19: info: assertion proved (CVC4: 2 VC)
 test_callback.adb:118:19: medium: assertion might fail

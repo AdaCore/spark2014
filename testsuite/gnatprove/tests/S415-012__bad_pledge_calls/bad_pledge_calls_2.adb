@@ -9,7 +9,7 @@ procedure Bad_Pledge_Calls_2 with SPARK_Mode is
    end record;
 
    Y : Int_Access;
-   pragma Assert (Y = Good (Y));
+   pragma Assert (if Y /= null then Y.all = Good (Y).all);
 begin
    null;
 end Bad_Pledge_Calls_2;

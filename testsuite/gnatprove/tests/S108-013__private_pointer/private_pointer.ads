@@ -3,10 +3,15 @@ package Private_Pointer with SPARK_Mode is
        type T is private;
        C_Null : constant T;
        function Is_Null (X : T) return Boolean;
+       function "=" (X, Y : T) return Boolean;
     private
-       type T is access Integer;
+       type S is access Integer;
+       type T is new S;
        C_Null : constant T := null;
-       function Is_Null (X : T) return Boolean is (X = null);
+       function Is_Null (X : T) return Boolean is (S (X) = null);
+       function "=" (X, Y : T) return Boolean is
+        (Is_Null (X) = Is_Null (Y)
+         and then (if not Is_Null (X) then X.all = Y.all));
     end Mode_On;
     use all type Mode_On.T;
 

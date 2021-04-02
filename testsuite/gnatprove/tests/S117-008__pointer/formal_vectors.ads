@@ -4,6 +4,7 @@ with Ada.Containers; use Ada.Containers;
 generic
    type Element_Type (<>) is private;
    type Element_Model (<>) is private;
+   with function "=" (X, Y : Element_Type) return Boolean is <>;
    with function Model (X : Element_Type) return Element_Model is <>;
    with function Copy (X : Element_Type) return Element_Type is <>;
 package Formal_Vectors with SPARK_Mode is

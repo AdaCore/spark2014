@@ -23,7 +23,7 @@ procedure Test_Borrow with SPARK_Mode is
    begin
       pragma Assert (X.F /= null);
       pragma Assert (not (null = X.F));
-      pragma Assert (X.F /= My_Null); --  rejected, need null exactly
+      -- pragma Assert (X.F /= My_Null); --  rejected, need null exactly
    end Try;
 
    procedure Try_2 (X : Two_Array_Acc) with

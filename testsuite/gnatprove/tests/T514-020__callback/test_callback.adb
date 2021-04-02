@@ -113,7 +113,7 @@ procedure Test_Callback with SPARK_Mode is
    Y : access function (X : Integer) return Integer := Increment_2'Access; --@WEAKER_PRE_ACCESS:FAIL
    Z : Incr_Fun := Increment_2'Access; --@STRONGER_POST_ACCESS:FAIL
 begin
-   pragma Assert (Incr_Fun_2 (X) = Choose_2 (Y, Increment'Access, False));
+   pragma Assert (Incr_Fun_2 (X) (15) = Choose_2 (Y, Increment'Access, False) (15));
    pragma Assert (X in S);
    pragma Assert (Y in S); --@ASSERT:FAIL
 end Test_Callback;

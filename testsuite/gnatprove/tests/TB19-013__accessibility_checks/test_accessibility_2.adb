@@ -11,6 +11,11 @@ procedure Test_Accessibility_2 with SPARK_Mode is
       F2 : Int_Acc;
    end record;
 
+   function "=" (X, Y : Rec) return Boolean is
+     (X.F1 = Y.F1
+      and then ((X.F2 = null) = (Y.F2 = null)
+        and then (if X.F2 /= null then X.F2.all = Y.F2.all)));
+
    function Hidden_Access (X : aliased Integer) return not null access constant Integer with
      Post => Hidden_Access'Result.all = X
    is

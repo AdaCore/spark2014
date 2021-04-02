@@ -338,6 +338,11 @@ package SPARK_Util.Types is
      Pre => Is_Type (Ty);
    --  Traverse all default initial conditions associated to the type Ty
 
+   function Predefined_Eq_Uses_Pointer_Eq (Ty : Entity_Id) return Boolean with
+     Pre => Is_Type (Ty) and then not Is_Concurrent_Type (Retysp (Ty));
+   --  Return True if the predefined equality of Ty uses the predefined
+   --  equality on access types.
+
    --------------------------------
    -- Queries related to records --
    --------------------------------

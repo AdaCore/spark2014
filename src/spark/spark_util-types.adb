@@ -1198,6 +1198,62 @@ package body SPARK_Util.Types is
    function Private_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
    is (Private_Declarations (Protected_Type_Definition (Base_Type (E))));
 
+   -----------------------------------
+   -- Predefined_Eq_Uses_Pointer_Eq --
+   -----------------------------------
+
+   function Predefined_Eq_Uses_Pointer_Eq (Ty : Entity_Id) return Boolean is
+
+      function Uses_Pointer_Eq_Comp (Ty : Entity_Id) return Boolean is
+        (not (Is_Record_Type (Unchecked_Full_Type (Ty))
+              and then Present (Get_User_Defined_Eq (Base_Type (Ty))))
+         and then Predefined_Eq_Uses_Pointer_Eq (Ty));
+      --  The predefined equality on pointer is used for a component of type Ty
+      --  if the predefined equality is used for components of this type and
+      --  this equality uses predefined equality on pointers.
+
+      Rep_Ty : constant Entity_Id := Retysp (Ty);
+   begin
+      if Is_Access_Type (Rep_Ty) then
+         return True;
+      elsif Is_Array_Type (Rep_Ty) then
+         return Uses_Pointer_Eq_Comp (Component_Type (Rep_Ty));
+      elsif Is_Record_Type (Rep_Ty) then
+
+         --  Check if pointer equality is used for one of the visible
+         --  components of Ty.
+
+         declare
+            Comp : Node_Id := First_Component (Rep_Ty);
+         begin
+            while Present (Comp) loop
+               if Uses_Pointer_Eq_Comp (Etype (Comp)) then
+                  return True;
+               end if;
+               Next_Component (Comp);
+            end loop;
+         end;
+
+         --  If the type is tagged, there might be hidden components inherited
+         --  from some ancestor.
+
+         if Is_Tagged_Type (Rep_Ty) then
+            declare
+               Base   : constant Entity_Id := Base_Retysp (Rep_Ty);
+               Parent : constant Entity_Id := Retysp (Etype (Base));
+            begin
+               return Parent /= Base
+                 and then Predefined_Eq_Uses_Pointer_Eq (Parent);
+            end;
+         else
+            return False;
+         end if;
+      else
+         pragma Assert (Ekind (Rep_Ty) in Private_Kind | Scalar_Kind);
+         return False;
+      end if;
+   end Predefined_Eq_Uses_Pointer_Eq;
+
    ---------------------------------------
    -- Private_Declarations_Of_Task_Type --
    ---------------------------------------
