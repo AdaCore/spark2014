@@ -487,7 +487,7 @@ def check_marks(strlist):
             return 'ASSERT'
         elif 'raise statement' in text or 'exception' in text:
             return 'RAISE'
-        elif 'bit representation' in text or 'unchecked conversion' in text:
+        elif 'aliasing via address clause' in text or 'unchecked conversion' in text:
             if 'size' in text:
                 return 'UNCHECKED_CONVERSION_SIZE'
             else:

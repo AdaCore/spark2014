@@ -63,7 +63,7 @@ hal.adb:38:04: info: object is suitable for aliasing via address clause (Trivial
 hal.adb:41:11: warning: consider annotating "Control" with Async_Writers
 hal.adb:41:11: warning: indirect writes to "Control" through a potential alias are ignored
 hal.adb:41:11: warning: writing to "Control" is assumed to have no effects on other non-volatile objects
-hal.adb:46:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has Object_Size 8]
+hal.adb:46:04: high: object is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has Object_Size 8]
 hal.adb:50:11: warning: writing to "Wdog_Shared_Memory" is assumed to have no effects on other non-volatile objects
 hal.adb:70:07: info: initialization of "Current_Status" proved
 hal.adb:71:07: info: initialization of "Next_Byte" proved
@@ -119,19 +119,19 @@ main_hal.adb:16:20: medium: missing dependency "HAL.Wdog_State => HAL.Serial_In"
 main_hal.adb:19:04: info: initialization of "Wdog_Timed_Out" proved
 main_hal.adb:20:04: info: initialization of "A_Byte" proved
 main_hal.adb:35:07: medium: "Found" might not be initialized
-multiple_ports.ads:18:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:18:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 multiple_ports.ads:20:11: warning: writing to "V_In_1" is assumed to have no effects on other non-volatile objects
-multiple_ports.ads:27:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:27:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 multiple_ports.ads:30:11: warning: writing to "V_In_2" is assumed to have no effects on other non-volatile objects
-multiple_ports.ads:36:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:36:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 multiple_ports.ads:38:11: warning: consider annotating "V_Out_1" with Async_Writers
 multiple_ports.ads:38:11: warning: indirect writes to "V_Out_1" through a potential alias are ignored
 multiple_ports.ads:38:11: warning: writing to "V_Out_1" is assumed to have no effects on other non-volatile objects
-multiple_ports.ads:42:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:42:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 multiple_ports.ads:45:11: warning: consider annotating "V_Out_2" with Async_Writers
 multiple_ports.ads:45:11: warning: indirect writes to "V_Out_2" through a potential alias are ignored
 multiple_ports.ads:45:11: warning: writing to "V_Out_2" is assumed to have no effects on other non-volatile objects
-multiple_ports.ads:55:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
+multiple_ports.ads:55:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Volatile_Type doesn't have an Object_Size representation clause or aspect]
 multiple_ports.ads:56:11: warning: writing to "V_In_Out" is assumed to have no effects on other non-volatile objects
 outer-public_child.adb:7:15: warning: "Hidden_State" constituent of "A2" is set by "Init_A2" but not used after the call
 outer-public_child.ads:6:17: info: initialization of "Hidden_State" constituent of "A2" proved

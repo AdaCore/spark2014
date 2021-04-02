@@ -728,19 +728,20 @@ package body Gnat2Why.Error_Messages is
          when VC_Subprogram_Variant        =>
             return "subprogram variant might fail";
          when VC_UC_Source               =>
-            return "type with holes is unsuitable for unchecked conversion";
+            return "type is unsuitable for unchecked conversion";
 
          when VC_UC_Target               =>
             declare
                Common : constant String :=
-                 " with constraints on bit representation is unsuitable for ";
+                 " is unsuitable ";
             begin
                if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
                then
                   return "object" & Common &
-                    "aliasing via address clause";
+                    "for aliasing via address clause";
                else
-                  return "type" & Common & "unchecked conversion";
+                  return "type" & Common
+                    & "as a target for unchecked conversion";
                end if;
             end;
 

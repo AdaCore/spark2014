@@ -7,11 +7,11 @@ is
    pragma Warnings(Off, "indirect writes");
    pragma Warnings(Off, "writing to");
    Max : Natural := 0;  --  max value seen
-   pragma Annotate(Gnatprove, Intentional, "constraints on bit representation", "");
+   pragma Annotate(Gnatprove, Intentional, "aliasing via address clause", "");
    for Max'Address use System.Storage_Elements.To_Address (16#8000_0000#);
 
    Snd : Natural := 0;  --  second max value seen
-   pragma Annotate(Gnatprove, Intentional, "constraints on bit representation", "");
+   pragma Annotate(Gnatprove, Intentional, "aliasing via address clause", "");
    for Snd'Address use System.Storage_Elements.To_Address (16#8000_0004#);
    pragma Warnings(On, "indirect writes");
    pragma Warnings(On, "writing to");

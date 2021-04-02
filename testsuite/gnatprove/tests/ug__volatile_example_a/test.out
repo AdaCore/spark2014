@@ -4,7 +4,7 @@ volatile_example_a.adb:11:11: warning: writing to "V" is assumed to have no effe
    11 |          Address => System.Storage_Elements.To_Address (16#DEAD_BEEF#);
       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-volatile_example_a.adb:13:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause
+volatile_example_a.adb:13:04: high: object is unsuitable for aliasing via address clause
    13 |   W : Pair
       |   ^~~~~~~~
   possible explanation: type Pair doesn't have an Object_Size representation clause or aspect
