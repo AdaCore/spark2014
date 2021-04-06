@@ -125,13 +125,13 @@ package Why.Gen.Binders is
             Dim       : Positive;
             Bounds    : Array_Bounds;
 
-         --  Case of pointers, with disjoint parts for their value, address,
-         --  is_null and is_moved components, as well as a Mutable boolean
-         --  registering whether the pointer itself is mutable.
+         --  Case of pointers, with disjoint parts for their value, is_null and
+         --  is_moved components, as well as a Mutable boolean registering
+         --  whether the pointer itself is mutable (as opposed to its
+         --  designated value only).
 
          when Pointer =>
             Value     : Binder_Type;
-            Address   : W_Identifier_Id;
             Is_Null   : W_Identifier_Id;
             Is_Moved  : W_Identifier_Id;
             Mutable   : Boolean;

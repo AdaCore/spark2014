@@ -3464,38 +3464,35 @@ package body SPARK_Definition is
                      N);
                   return;
 
-               --  'Access on an object must occur directly inside an
-               --  assignment statement, an object declaration, or a simple
-               --  return statement from an non-expression function. We
-               --  don't need to worry about declare expressions, 'Access is
-               --  not allowed there.
-               --  This is for two reasons.
-               --   * to simplify the creation of the address. In these
-               --     contexts we can simply use an "any" expression.
-               --   * for anonymous access types, the expression introduces a
-               --     borrower/an observer that we only handle currently inside
-               --     declarations and assignments to objects of an anonymous
-               --     access-to-object type.
+               --  'Access of an anonymous access-to-object type must occur
+               --  directly inside an assignment statement, an object
+               --  declaration, or a simple return statement from an
+               --  non-expression function. We don't need to worry about
+               --  declare expressions, 'Access is not allowed there.
+               --  This is because the expression introduces a borrower/an
+               --  observer that we only handle currently inside declarations
+               --  and assignments to objects of an anonymous access-to-object
+               --  type and on return of traversal functions.
 
-               elsif No (Par)
-                 or else Nkind (Par) not in N_Assignment_Statement
-                                          | N_Object_Declaration
-                                          | N_Simple_Return_Statement
-                 or else N /= Expression (Par)
+               elsif Is_Anonymous_Access_Type (Etype (N))
+                 and then
+                   (No (Par)
+                    or else Nkind (Par) not in N_Assignment_Statement
+                                             | N_Object_Declaration
+                                             | N_Simple_Return_Statement
+                    or else N /= Expression (Par))
                then
-                  Mark_Unsupported
-                    ("Access attribute not directly inside an assignment"
-                     & " statement, an object declaration, or a simple return"
-                     & " statement", N);
-                  return;
-
-               elsif Nkind (Par) = N_Simple_Return_Statement
-                 and then Is_Expression_Function_Or_Completion
-                   (Return_Applies_To (Return_Statement_Entity (Par)))
-               then
-                  Mark_Unsupported
-                    ("Access attribute inside an expression function", N);
-                  return;
+                  declare
+                     Operation : constant String :=
+                       (if Is_Access_Constant (Etype (N)) then "observe"
+                        else "borrow");
+                  begin
+                     Mark_Unsupported
+                       (Operation & " through 'Access not directly inside an"
+                        & " assignment statement, an object declaration, or a"
+                        & " simple return statement", N);
+                     return;
+                  end;
 
                --  For a named access-to-constant type, mark the prefix before
                --  checking whether it is rooted at a constant part of an

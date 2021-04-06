@@ -973,14 +973,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                         Right  => New_Pointer_Is_Null_Access
                           (Expr_Ty, At_Entry),
                         Domain => EW_Pred),
-                     2 => New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => New_Pointer_Address_Access
-                          (Expr_Ty, Expr),
-                        Right  => New_Pointer_Address_Access
-                          (Expr_Ty, At_Entry),
-                        Domain => EW_Pred),
-                     3 => +Value_Status),
+                     2 => +Value_Status),
                   Domain    => EW_Pred);
             end;
       end case;

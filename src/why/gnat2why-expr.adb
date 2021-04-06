@@ -1251,11 +1251,9 @@ package body Gnat2Why.Expr is
                --  let <v_name>__assume = <init_value> in
                --    <v> := <v_name>__assume.value;
                --  and either:
-               --    assume (<v__addr> = <v_name>__assume.address);
                --    assume (<v__is_null> = <v_name>__assume.is_null);
                --    <v__is_moved> := false;
                --  if the pointer is not mutable, or:
-               --    <v__addr> := <v_name>__assume.address;
                --    <v__is_null> := <v_name>__assume.is_null;
                --    <v__is_moved> := false;
                --  otherwise.
@@ -1284,14 +1282,6 @@ package body Gnat2Why.Expr is
                        ((1 => Res,
                          2 => New_Assignment
                            (Ada_Node => N,
-                            Name     => Binder.Address,
-                            Labels   => Symbol_Sets.Empty_Set,
-                            Value    => +New_Pointer_Address_Access
-                              (E    => Etype (Lvalue),
-                               Name => +Tmp_Var),
-                            Typ      => EW_Int_Type),
-                         3 => New_Assignment
-                           (Ada_Node => N,
                             Name     => Binder.Is_Null,
                             Labels   => Symbol_Sets.Empty_Set,
                             Value    => +New_Pointer_Is_Null_Access
@@ -1302,17 +1292,6 @@ package body Gnat2Why.Expr is
                      Res := Sequence
                        ((1 => Res,
                          2 => New_Assume_Statement
-                           (Ada_Node => N,
-                            Pred     =>
-                              New_Call
-                                (Name => Why_Eq,
-                                 Typ  => EW_Bool_Type,
-                                 Args =>
-                                   (1 => +Binder.Address,
-                                    2 => New_Pointer_Address_Access
-                                      (E    => Etype (Lvalue),
-                                       Name => +Tmp_Var)))),
-                         3 => New_Assume_Statement
                            (Ada_Node => N,
                             Pred     =>
                               New_Call
@@ -6280,20 +6259,10 @@ package body Gnat2Why.Expr is
             Need_Store := True;
             Count := Count + 1;
 
-            --  If the address and is_null components are mutable, we also
-            --  introduce new references for them. The initial value is taken
-            --  from Expr.
+            --  If the is_null component is mutable, we also introduce a new
+            --  reference for it. The initial value is taken from Expr.
 
             if Pattern.Mutable then
-               Context.Append
-                 (Ref_Type'
-                    (Mutable => True,
-                     Name    => Pattern.Address,
-                     Value   => New_Pointer_Address_Access
-                       (E    => Etype (Pattern.Value.Ada_Node),
-                        Name => Expr)));
-               Args (Count) := +Pattern.Address;
-               Count := Count + 1;
                Context.Append
                  (Ref_Type'
                     (Mutable => True,
@@ -6304,11 +6273,6 @@ package body Gnat2Why.Expr is
                Args (Count) := +Pattern.Is_Null;
                Count := Count + 1;
             else
-               Args (Count) :=
-                 New_Pointer_Address_Access
-                   (E    => Etype (Pattern.Value.Ada_Node),
-                    Name => Expr);
-               Count := Count + 1;
                Args (Count) :=
                  New_Pointer_Is_Null_Access
                    (E    => Etype (Pattern.Value.Ada_Node),
@@ -6594,16 +6558,10 @@ package body Gnat2Why.Expr is
                Count := Count + 1;
 
                if Pattern.Mutable = Var.Mutable then
-                  Args (Count) := +Var.Address;
-                  Count := Count + 1;
                   Args (Count) := +Var.Is_Null;
                   Count := Count + 1;
                else
                   pragma Assert (not Pattern.Mutable);
-                  Args (Count) := New_Deref
-                    (Right => Var.Address,
-                     Typ   => Get_Typ (Var.Address));
-                  Count := Count + 1;
                   Args (Count) := New_Deref
                     (Right => Var.Is_Null,
                      Typ   => Get_Typ (Var.Is_Null));
@@ -7872,21 +7830,13 @@ package body Gnat2Why.Expr is
                            E        => Binder_Typ),
                         Typ      => Get_Typ (Binder.Value.B_Name)));
 
-                  --  Address, is_null and is_moved cannot have been updated if
-                  --  the last access was a dereference.
+                  --  Is_null and is_moved cannot have been updated if the
+                  --  last access was a dereference.
 
                   if Binder.Mutable and then No (Last_Access) then
                      Result := Sequence
                        ((1 => Result,
                          2 => New_Assignment
-                          (Ada_Node => Ada_Node,
-                           Name     => Binder.Address,
-                           Labels   => Symbol_Sets.Empty_Set,
-                           Value    => +New_Pointer_Address_Access
-                             (Name => Tmp,
-                              E    => Binder_Typ),
-                           Typ      => Get_Typ (Binder.Address)),
-                         3 => New_Assignment
                           (Ada_Node => Ada_Node,
                            Name     => Binder.Is_Null,
                            Labels   => Symbol_Sets.Empty_Set,
@@ -7894,7 +7844,7 @@ package body Gnat2Why.Expr is
                              (Name => Tmp,
                               E    => Binder_Typ),
                            Typ      => Get_Typ (Binder.Is_Null)),
-                         4 => New_Assignment
+                         3 => New_Assignment
                           (Ada_Node => Ada_Node,
                            Name     => Binder.Is_Moved,
                            Labels   => Symbol_Sets.Empty_Set,
@@ -9400,7 +9350,7 @@ package body Gnat2Why.Expr is
                --  actual type (without checks). We store the result
                --  in Reconstructed_Arg.
 
-               Arg_Array         : W_Expr_Array (1 .. 4);
+               Arg_Array         : W_Expr_Array (1 .. 3);
 
             begin
                --  For value, use the temporary variable
@@ -9409,30 +9359,25 @@ package body Gnat2Why.Expr is
                  New_Deref (Right => Pattern.Value.B_Name,
                             Typ   => Get_Typ (Pattern.Value.B_Name));
 
-               --  If we have introduced temporary references for the
-               --  address and is_null, use them.
+               --  If we have introduced a temporary reference for is_null, use
+               --  it.
 
                if Pattern.Mutable then
                   Arg_Array (2) :=
-                    New_Deref (Right => Pattern.Address,
-                               Typ   => Get_Typ (Pattern.Address));
-                  Arg_Array (3) :=
                     New_Deref (Right => Pattern.Is_Null,
                                Typ   => Get_Typ (Pattern.Is_Null));
 
-               --  The values from the actual have not been modified.
-               --  Take them from Pre_Expr.
+               --  The value of is_null from the actual has not been modified.
+               --  Take it from Pre_Expr.
 
                else
-                  Arg_Array (2) := New_Pointer_Address_Access
-                    (Formal_Typ, Pre_Expr);
-                  Arg_Array (3) := New_Pointer_Is_Null_Access
+                  Arg_Array (2) := New_Pointer_Is_Null_Access
                     (Formal_Typ, Pre_Expr);
                end if;
 
                --  Always use is_moved from Pre_Expr
 
-               Arg_Array (4) := New_Pointer_Is_Moved_Access
+               Arg_Array (3) := New_Pointer_Is_Moved_Access
                  (Formal_Typ, Pre_Expr);
 
                Reconstructed_Arg :=
@@ -13730,12 +13675,7 @@ package body Gnat2Why.Expr is
                   Domain => Domain,
                   Params => Params);
 
-            --  Construct a pointer object designating Var. Its address is
-            --  unknown.
-            --  We don't assume here that we are in the program domain. For
-            --  the axiom giving values of constants, the expression is
-            --  translated in the term domain and rejected when an "any"
-            --  expression is found.
+            --  Construct a pointer object designating Var
 
             else
                declare
@@ -13745,16 +13685,12 @@ package body Gnat2Why.Expr is
                      Params        => Params,
                      Expected_Type => EW_Abstract
                        (Directly_Designated_Type (Etype (Expr))));
-                  Address_Expr  : constant W_Expr_Id := New_Any_Expr
-                    (Return_Type => EW_Int_Type,
-                     Labels      => Symbol_Sets.Empty_Set);
                   Is_Moved_Expr : constant W_Expr_Id := +False_Term;
                   Is_Null_Expr  : constant W_Expr_Id := +False_Term;
 
                begin
                   T := Pointer_From_Split_Form
                     (A  => (Value_Expr,
-                            Address_Expr,
                             Is_Null_Expr,
                             Is_Moved_Expr),
                      Ty => Etype (Expr));
@@ -18274,11 +18210,9 @@ package body Gnat2Why.Expr is
                            Havoc := New_Havoc_Call (E.Value.B_Name);
 
                            --  If the object is mutable then also havoc the
-                           --  address and is_null.
+                           --  is_null field.
 
                            if E.Mutable then
-                              Havoc := +Sequence
-                                (New_Havoc_Call (E.Address), +Havoc);
                               Havoc := +Sequence
                                 (New_Havoc_Call (E.Is_Null), +Havoc);
                            end if;

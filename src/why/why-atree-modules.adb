@@ -3359,15 +3359,6 @@ package body Why.Atree.Modules is
                      Typ    => EW_Bool_Type));
 
                Insert_Symbol
-                 (E, WNE_Pointer_Address,
-                  New_Identifier
-                    (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
-                       Full_Name_Node & "__pointer_address"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => EW_Int_Type));
-
-               Insert_Symbol
                  (E, WNE_Pointer_Value,
                   New_Identifier
                     (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &

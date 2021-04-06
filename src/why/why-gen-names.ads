@@ -409,7 +409,6 @@ package Why.Gen.Names is
       WNE_Null_Pointer,           --  "__null_pointer"
       WNE_Is_Null_Pointer,        --  "__is_null_pointer"
       WNE_Is_Moved_Pointer,       --  "__is_moved_pointer"
-      WNE_Pointer_Address,        --  "__pointer_address"
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Init_Allocator,         --  "__new_initialized_allocator"
       WNE_Uninit_Allocator,       --  "__new_uninitialized_allocator"
@@ -459,9 +458,6 @@ package Why.Gen.Names is
 
    function Value_Append (Base : W_Identifier_Id;
                           Typ  : W_Type_Id) return W_Identifier_Id;
-
-   function Address_Append (Base : W_Identifier_Id;
-                            Typ  : W_Type_Id) return W_Identifier_Id;
 
    function Is_Null_Append (Base : W_Identifier_Id;
                             Typ  : W_Type_Id) return W_Identifier_Id;

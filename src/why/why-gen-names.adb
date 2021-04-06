@@ -65,24 +65,6 @@ package body Why.Gen.Names is
 
    function Convert_From (Kind : W_Type_Id) return Why_Name_Enum;
 
-   --------------------
-   -- Address_Append --
-   --------------------
-
-   function Address_Append (Base : W_Identifier_Id;
-                            Typ  : W_Type_Id) return W_Identifier_Id
-   is
-      Name : constant W_Name_Id := Get_Name (Base);
-   begin
-      return
-        Append_Num
-          (S        => Img (Get_Symb (Name)) & To_String (WNE_Pointer_Address),
-           Count    => 1,
-           Typ      => Typ,
-           Module   => Get_Module (Name),
-           Ada_Node => Get_Ada_Node (+Name));
-   end Address_Append;
-
    ----------------
    -- Append_Num --
    ----------------
@@ -991,7 +973,6 @@ package body Why.Gen.Names is
          when WNE_Null_Pointer       => "__null_pointer",
          when WNE_Is_Null_Pointer    => "__is_null_pointer",
          when WNE_Is_Moved_Pointer   => "__is_moved_pointer",
-         when WNE_Pointer_Address    => "__pointer_address",
          when WNE_Pointer_Value      => "__pointer_value",
          when WNE_Init_Allocator     => "__new_initialized_allocator",
          when WNE_Uninit_Allocator   => "__new_uninitialized_allocator",

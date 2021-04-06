@@ -111,7 +111,6 @@ package body Why.Gen.Binders is
             if Binder.Mutable then
                Effects_Append (Eff, Binder.Value.B_Name);
                Effects_Append (Eff, Binder.Is_Null);
-               Effects_Append (Eff, Binder.Address);
             elsif Binder.Value.Mutable then
                Effects_Append (Eff, Binder.Value.B_Name);
             end if;
@@ -459,7 +458,7 @@ package body Why.Gen.Binders is
                when Pointer =>
                   pragma Assert (B.Value.Mutable);
                   if B.Mutable or else Keep_Local (B.Local) then
-                     Count := Count + 4;
+                     Count := Count + 3;
                   else
                      Count := Count + 2;
                   end if;
@@ -613,7 +612,6 @@ package body Why.Gen.Binders is
                B.Value.B_Name := Local_Name (B.Value.B_Name);
 
                if B.Mutable or else not Only_Variables then
-                  B.Address := Local_Name (B.Address);
                   B.Is_Null := Local_Name (B.Is_Null);
                end if;
 
@@ -906,11 +904,6 @@ package body Why.Gen.Binders is
                            B_Ent    => Null_Entity_Name,
                            Mutable  => True,
                            Labels   => <>);
-
-            Result.Address :=
-              Address_Append
-                (Base => Name,
-                 Typ  => EW_Int_Type);
 
             Result.Is_Null :=
               Is_Null_Append
@@ -1531,14 +1524,10 @@ package body Why.Gen.Binders is
 
                   if Cur.Mutable or else Keep_Local (Cur.Local) then
                      Result (Count) :=
-                       (B_Name  => Cur.Address,
-                        Mutable => Cur.Mutable,
-                        others  => <>);
-                     Result (Count + 1) :=
                        (B_Name  => Cur.Is_Null,
                         Mutable => Cur.Mutable,
                         others  => <>);
-                     Count := Count + 2;
+                     Count := Count + 1;
                   end if;
 
                   Result (Count) :=
