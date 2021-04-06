@@ -59,7 +59,7 @@
   <proof prover="0"><result status="valid" steps="15658"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2" timelimit="20" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="3"><result status="unknown" steps="6074"/></proof>
+  <proof prover="3"><result status="unknown" steps="8795"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
   <transf name="trivial_true" proved="true" >
