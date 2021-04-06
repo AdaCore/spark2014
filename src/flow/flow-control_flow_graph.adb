@@ -2402,8 +2402,6 @@ package body Flow.Control_Flow_Graph is
       C : Goto_Jump_Maps.Cursor :=
         Ctx.Goto_Jumps.Find (Entity (Identifier (N)));
 
-      use type Goto_Jump_Maps.Cursor;
-
    begin
       Add_Vertex (FA,
                   Direct_Mapping_Id (N),
@@ -2412,7 +2410,7 @@ package body Flow.Control_Flow_Graph is
 
       CM.Insert (Union_Id (N), Trivial_Connection (V));
 
-      if C /= Goto_Jump_Maps.No_Element then
+      if Goto_Jump_Maps.Has_Element (C) then
          Linkup (FA, Froms => Ctx.Goto_Jumps (C), To => V);
          Ctx.Goto_Jumps.Delete (C);
       end if;
