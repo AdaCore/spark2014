@@ -907,11 +907,16 @@ be an owning type).]
 16. Objects of an anonymous access-to-object types shall not be converted
     (implicitly or explicitly) to a named access type.
 
+17. Evaluation of equality operators, and membership tests where one or more of
+    the choices are expressions, shall not include directly or indirectly calls
+    to the primitive equality on access types, unless one of the operands is
+    syntactically null.
+
 .. centered:: **Verification Rules**
 
 .. index:: memory leak, deallocation, Unchecked_Deallocation
 
-17. When an owning access object other than a borrower, an observer,
+18. When an owning access object other than a borrower, an observer,
     or an object in the Moved state is finalized, or when such an object
     is passed as a part of an actual parameter of mode **out**, its value
     shall be null.
@@ -926,7 +931,7 @@ be an owning type).]
     the object designated by X".]
 
 
-18. When converting from a [named or anonymous] access-to-subprogram type
+19. When converting from a [named or anonymous] access-to-subprogram type
     to another, if the converted expression is not null,
     a verification condition is introduced to ensure that the
     precondition of the source of the conversion is implied by the
