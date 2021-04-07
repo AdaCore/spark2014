@@ -75,8 +75,8 @@ package body SPARK_Atree.Entities is
    -- Component_Clause --
    ----------------------
 
-   function Component_Clause (Obj : Entity_Id) return Node_Id renames
-     Einfo.Entities.Component_Clause;
+   function Component_Clause (Obj : Entity_Id) return Node_Id is
+     (Einfo.Entities.Component_Clause (Obj));
 
    -------------------------
    -- Component_First_Bit --
