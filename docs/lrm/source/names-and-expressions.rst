@@ -258,6 +258,15 @@ No extensions or restrictions.
 Allocators
 ----------
 
+.. index:: allocating function
+
+A function is said to be an *allocating function* if the result type of the
+function is a named access-to-variable type or a composite owning type (see
+section :ref:`Access Types`). [Redundant: The only functions with a result of
+an owning type in SPARK are allocating functions and borrowing traversal
+functions defined in section :ref:`Access Types`; a function cannot be both an
+allocating function and a traversal function.]
+
 .. centered:: **Legality Rules**
 
 .. index:: full default initialization; in allocators
@@ -265,14 +274,39 @@ Allocators
 1. The designated type of the type of an uninitialized allocator
    shall define full default initialization.
 
-.. index:: non-interfering context; for allocators
+.. index:: allocating context
+           memory leak; for expressions
 
-2. Evaluation of an allocator is subject to the same restrictions as calling a
-   volatile function (e.g., an allocator is not allowed within a non-volatile
-   function). [If it seems helpful, an allocator may be thought of as being
-   like a call to a volatile function which returns the access value
-   designating the allocated object.]
+2. An allocator or a call to an allocating function shall only occur in an
+   *allocating context*. An expression occurs in an allocating context if
+   it is:
 
+   * the [right-hand side] expression of an assignment statement; or
+
+   * the initialization expression of an object declaration
+     which does not occur inside a declare expression; or
+
+   * the return expression of a ``simple_return_statement``; or
+
+   * the expression of the ``extended_return_object_declaration``
+     of an ``extended_return_statement``; or
+
+   * the expression of a type conversion, a qualified expression or a
+     parenthesized expression occurring in an allocating context; or
+
+   * the expression corresponding to a component value in an aggregate
+     occurring in an allocating context; or
+
+   * the expression of an initialized allocator; or
+
+   * inside an assertion.
+
+   [This restriction is meant to prevent storage leaks, together with the rules
+   on owning access objects, see section :ref:`Access Types`. Note that
+   allocators or calls to allocating functions inside assertions are allowed,
+   but should be reported by the analysis tool as leading to a memory leak. In
+   practice, such memory leaks cannot happen if the corresponding assertions
+   are not enabled in the final executable.]
 
 3. The type of an allocator shall not be anonymous.
 

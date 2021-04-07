@@ -378,11 +378,9 @@ to store the elements in a structure not subjected to ownership like an array.
 
 .. note::
 
-   The function ``Copy`` is marked as ``Import`` because it cannot be
-   implemented in |SPARK|. Indeed, the ownership policy requires the new
-   structure to be independent of the input one, and memory allocation is not
-   allowed in regular functions (it is considered to depend on a volatile state
-   representing the memory).
+   The function ``Copy`` is marked as ``Import`` as it is not meant to be
+   executed. It could be implemented in |SPARK| by returning a deep copy of the
+   argument list, reallocating all cells of the list in the result.
 
 .. literalinclude:: /examples/ug__long__map_access_list_incr_copy/p.ads
    :language: ada
@@ -932,11 +930,9 @@ to store the elements in a structure not subjected to ownership like an array.
 
 .. note::
 
-   The function ``Copy`` is marked as ``Import`` because it cannot be
-   implemented in |SPARK|. Indeed, the ownership policy requires the new
-   structure to be independent of the input one, and memory allocation is not
-   allowed in regular functions (it is considered to depend on a volatile state
-   representing the memory).
+   The function ``Copy`` is marked as ``Import`` as it is not meant to be
+   executed. It could be implemented in |SPARK| by returning a deep copy of the
+   argument list, reallocating all cells of the list in the result.
 
 .. literalinclude:: /examples/ug__long__update_access_list_zero/p.ads
    :language: ada
