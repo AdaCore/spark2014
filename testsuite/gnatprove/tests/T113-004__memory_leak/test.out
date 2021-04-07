@@ -17,7 +17,6 @@ dealloc.adb:53:07: info: absence of memory leak at end of scope proved (CVC4: 1 
 dealloc.adb:55:09: info: absence of memory leak proved (CVC4: 1 VC)
 dealloc.adb:56:09: info: absence of memory leak proved (CVC4: 1 VC)
 dealloc.adb:57:09: info: absence of memory leak proved (CVC4: 1 VC)
-dealloc.adb:57:09: warning: unused assignment
 dealloc.adb:59:07: medium: memory leak might occur
 dealloc.adb:60:18: info: pointer dereference check proved (CVC4: 1 VC)
 dealloc.adb:60:22: info: pointer dereference check proved (CVC4: 1 VC)
@@ -168,21 +167,13 @@ pointers.adb:37:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 pointers.adb:37:09: medium: memory leak might occur [possible fix: subprogram at line 32 should mention X in a precondition]
 pointers.adb:41:06: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:43:06: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:43:06: warning: unused assignment
 pointers.adb:45:06: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:45:06: warning: unused assignment
 pointers.adb:46:06: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:46:06: warning: unused assignment
 pointers.adb:48:06: medium: memory leak might occur
-pointers.adb:48:06: warning: unused assignment
 pointers.adb:49:06: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:49:06: warning: unused assignment
 pointers.adb:51:10: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:51:10: warning: unused assignment
 pointers.adb:52:07: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:52:07: warning: unused assignment
 pointers.adb:53:10: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:53:10: warning: unused assignment
 pointers.adb:56:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 pointers.adb:56:07: info: initialization of "X" proved
 pointers.adb:57:07: medium: memory leak might occur at end of scope
@@ -190,16 +181,10 @@ pointers.adb:58:07: info: absence of memory leak at end of scope proved (CVC4: 1
 pointers.adb:58:07: info: initialization of "Z" proved
 pointers.adb:61:09: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:63:09: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:63:09: warning: unused assignment
 pointers.adb:65:09: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:65:09: warning: unused assignment
-pointers.adb:66:07: warning: statement has no effect
 pointers.adb:66:15: medium: memory leak might occur
-pointers.adb:66:15: warning: "Y" is set by "Assign" but not used after the call
 pointers.adb:68:09: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:68:09: warning: unused assignment
 pointers.adb:69:09: medium: memory leak might occur
-pointers.adb:69:09: warning: unused assignment
 pointers.adb:92:27: info: range check proved (CVC4: 1 VC)
 pointers.adb:100:07: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 pointers.adb:100:07: info: initialization of "U" proved
@@ -223,59 +208,34 @@ pointers.adb:120:14: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:121:14: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:126:10: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 pointers.adb:132:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:132:11: warning: unused assignment
 pointers.adb:133:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:133:11: warning: unused assignment
 pointers.adb:134:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:134:11: warning: unused assignment
 pointers.adb:135:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:135:11: warning: unused assignment
 pointers.adb:136:11: medium: memory leak might occur
-pointers.adb:136:11: warning: unused assignment
 pointers.adb:138:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:138:11: warning: unused assignment
 pointers.adb:139:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:139:11: warning: unused assignment
-pointers.adb:140:07: warning: statement has no effect
 pointers.adb:140:15: medium: memory leak might occur
-pointers.adb:140:15: warning: "V" is set by "Assign" but not used after the call
-pointers.adb:142:07: warning: statement has no effect
 pointers.adb:142:16: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:142:16: warning: "W.X" is set by "Assign" but not used after the call
-pointers.adb:143:07: warning: statement has no effect
 pointers.adb:143:16: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:143:16: warning: "W.Y" is set by "Assign" but not used after the call
 pointers.adb:145:09: medium: memory leak might occur
 pointers.adb:146:22: info: assertion proved (CVC4: 1 VC)
 pointers.adb:147:22: info: assertion proved (CVC4: 1 VC)
-pointers.adb:148:07: warning: statement has no effect
 pointers.adb:148:15: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:148:15: warning: "W" is set by "Assign" but not used after the call
 pointers.adb:150:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:150:11: warning: unused assignment
 pointers.adb:150:14: high: "A.Q.Z" is not initialized
 pointers.adb:150:14: warning: "A.Q" may be referenced before it has a value [enabled by default]
 pointers.adb:151:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:151:11: warning: unused assignment
 pointers.adb:152:09: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:152:09: warning: unused assignment
 pointers.adb:154:09: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:154:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
-pointers.adb:154:09: warning: unused assignment
-pointers.adb:155:09: warning: unused assignment
 pointers.adb:155:12: info: discriminant check proved (CVC4: 1 VC)
 pointers.adb:157:11: info: absence of memory leak proved (CVC4: 1 VC)
 pointers.adb:157:11: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
-pointers.adb:157:11: warning: unused assignment
 pointers.adb:158:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:158:11: warning: unused assignment
 pointers.adb:158:17: info: discriminant check proved (CVC4: 1 VC)
 pointers.adb:159:09: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:159:09: warning: unused assignment
 pointers.adb:161:14: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:161:14: warning: unused assignment
 pointers.adb:162:11: info: absence of memory leak proved (CVC4: 1 VC)
-pointers.adb:162:11: warning: unused assignment
 pointertest3.adb:8:03: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 pointertest3.adb:9:03: info: absence of memory leak at end of scope proved (CVC4: 1 VC)
 pointertest3.adb:10:03: medium: memory leak might occur at end of scope

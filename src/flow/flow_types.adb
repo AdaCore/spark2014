@@ -27,7 +27,6 @@ with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Strings;
 with Einfo.Utils;                    use Einfo.Utils;
 with Errout;                         use Errout;
-with Flow.Dynamic_Memory;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with GNATCOLL.Utils;
@@ -598,13 +597,7 @@ package body Flow_Types is
    begin
       if F.Kind in Direct_Mapping | Record_Field then
 
-         --  The heap entity should behave as coming from source even when it
-         --  is created implicitly.
-
-         if Flow.Dynamic_Memory.Is_Heap_State (F.Node) then
-            return False;
-
-         elsif Nkind (F.Node) in N_Entity then
+         if Nkind (F.Node) in N_Entity then
             declare
                Partial_View : constant Entity_Id :=
                  Incomplete_Or_Partial_View (F.Node);

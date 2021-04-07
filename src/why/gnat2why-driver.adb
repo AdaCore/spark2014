@@ -41,7 +41,6 @@ with Einfo.Entities;                  use Einfo.Entities;
 with Einfo.Utils;                     use Einfo.Utils;
 with Errout;                          use Errout;
 with Flow;                            use Flow;
-with Flow.Dynamic_Memory;
 with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
@@ -621,11 +620,6 @@ package body Gnat2Why.Driver is
       --  nth roots of the modulus of machine integers.
 
       Gnat2Why.Expr.Initialize_Tables_Nth_Roots;
-
-      --  Create an implicit state for memory (de)allocation. It needs to be
-      --  before rewriting, where we might refer to this abstract state.
-
-      Flow.Dynamic_Memory.Create_Heap_State;
 
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.

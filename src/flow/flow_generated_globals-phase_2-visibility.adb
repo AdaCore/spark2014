@@ -26,7 +26,6 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Flow.Dynamic_Memory;
 with Gnat2Why_Args;
 with Graphs;
 with Sem_Util;
@@ -714,13 +713,11 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       --  keep it for now, to be on the safe side, as I don't know
       --  what Non_Trivial_Path_Exists says when called with the same vertices.
 
-      return State /= To_Entity_Name (Flow.Dynamic_Memory.Heap_State)
-        and then
-          (From = Looking_At
-           or else Scope_Graph.Edge_Exists
-             (Components,
-              Scope_Graph.Get_Vertex (From),
-              Scope_Graph.Get_Vertex (Looking_At)));
+      return From = Looking_At
+        or else Scope_Graph.Edge_Exists
+          (Components,
+           Scope_Graph.Get_Vertex (From),
+           Scope_Graph.Get_Vertex (Looking_At));
    end State_Refinement_Is_Visible;
 
    ------------------------
@@ -738,13 +735,11 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    begin
       --  ??? see the comment about From = Looking_At
 
-      return State /= To_Entity_Name (Flow.Dynamic_Memory.Heap_State)
-        and then
-          (From = Looking_At
-           or else Scope_Graph.Edge_Exists
-             (Components,
-              Scope_Graph.Get_Vertex (From),
-              Scope_Graph.Get_Vertex (Looking_At)));
+      return From = Looking_At
+        or else Scope_Graph.Edge_Exists
+          (Components,
+           Scope_Graph.Get_Vertex (From),
+           Scope_Graph.Get_Vertex (Looking_At));
    end Part_Of_Is_Visible;
 
    -----------

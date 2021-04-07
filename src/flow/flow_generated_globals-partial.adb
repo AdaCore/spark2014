@@ -27,7 +27,6 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                      use Ada.Text_IO;
 with Common_Iterators;                 use Common_Iterators;
 with Einfo.Utils;                      use Einfo.Utils;
-with Flow.Dynamic_Memory;              use Flow.Dynamic_Memory;
 with Flow_Dependency_Maps;             use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_1;   use Flow_Generated_Globals.Phase_1;
@@ -1435,7 +1434,6 @@ package body Flow_Generated_Globals.Partial is
          --  generated Initializes).
 
          if Is_Heap_Variable (N)
-           or else Is_Heap_State (N)
            or else not (Is_In_Analyzed_Files (N)
                         and then Scope_Within_Or_Same (N, E)
                         and then (if In_Generic_Actual (N)

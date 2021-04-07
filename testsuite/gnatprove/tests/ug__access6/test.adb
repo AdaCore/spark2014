@@ -8,8 +8,8 @@ procedure Test is
    procedure Free is new Ada.Unchecked_Deallocation (Object => Integer, Name => Int_Ptr);
 
    procedure Free (X : in out Int_Ptr_Ptr) with
-     Depends => (SPARK.Heap.Dynamic_Memory => (X, SPARK.Heap.Dynamic_Memory),
-                 X => null),
+     Depends => (X => null,
+                 null => X),
      Post => X = null
    is
       procedure Internal_Free is new Ada.Unchecked_Deallocation

@@ -2,7 +2,7 @@ with SPARK.Heap;
 with Ada.Unchecked_Deallocation;
 
 procedure Main with SPARK_Mode,
-  Global => (In_Out => SPARK.Heap.Dynamic_Memory)
+  Global => null
 is
    type T is access Boolean;
 

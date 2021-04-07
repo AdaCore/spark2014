@@ -37,7 +37,6 @@ with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 
 with Flow_Debug;                     use Flow_Debug;
-with Flow.Dynamic_Memory;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Visibility;
 
@@ -378,15 +377,8 @@ package body Flow_Refinement is
       --  State refinement is visible iff the body of its enclosing package is
       --  visible.
 
-      return
-        --  ??? Special-case the possibly heap state, because if it was
-        --  introduced implicitly then we will not have visibility info for its
-        --  enclosing package.
-
-        E /= Flow.Dynamic_Memory.Heap_State
-          and then
-        Is_Visible (Target_Scope => (Ent => Scope (E), Part => Body_Part),
-                    Looking_From => S);
+      return Is_Visible (Target_Scope => (Ent => Scope (E), Part => Body_Part),
+                         Looking_From => S);
    end State_Refinement_Is_Visible;
 
    function State_Refinement_Is_Visible (EN : Entity_Name;
@@ -1379,9 +1371,7 @@ package body Flow_Refinement is
 
          case Ekind (Ent) is
             when E_Abstract_State =>
-               if Flow.Dynamic_Memory.Is_Heap_State (Ent) then
-                  return True;
-               end if;
+               null;
 
             when E_Constant       =>
                --  Constants are always initialized at elaboration

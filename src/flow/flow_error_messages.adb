@@ -37,7 +37,6 @@ with Errout;                    use Errout;
 with Erroutc;                   use Erroutc;
 with Flow_Refinement;           use Flow_Refinement;
 with Flow_Utility;              use Flow_Utility;
-with Flow.Dynamic_Memory;
 with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
 with Gnat2Why.Expr.Loops;
 with Gnat2Why_Args;             use Gnat2Why_Args;
@@ -1292,16 +1291,6 @@ package body Flow_Error_Messages is
       Expr_Vars.Exclude
         (Magic_String_Id (To_Entity_Name
          (SPARK_Xrefs.Name_Of_Heap_Variable)));
-
-      --  Exclude the special abstract state SPARK.Heap.Dynamic_Memory,
-      --  in both direct mapping and magic string versions. ??? Ideally we
-      --  would only exclude the direct mapping, but flow analysis does not
-      --  always link the two (only when there is an allocator or a call to
-      --  Unchecked_Conversion, see spark_register.adb).
-      Expr_Vars.Exclude
-        (Direct_Mapping_Id (Flow.Dynamic_Memory.Heap_State));
-      Expr_Vars.Exclude
-        (Magic_String_Id (To_Entity_Name (Flow.Dynamic_Memory.Heap_State)));
 
       return Expr_Vars;
    end Get_Filtered_Variables_For_Proof;
