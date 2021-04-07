@@ -3512,8 +3512,11 @@ package body SPARK_Definition is
                      --  Reject paths not rooted inside a constant part of an
                      --  object. Parameters of mode IN are not considered
                      --  constants as the actual might be a variable.
+                     --  Also reject paths rooted inside observers which can
+                     --  really be parts of variables.
 
-                     if (not Is_Constant_In_SPARK (Root)
+                     if (Is_Anonymous_Access_Object_Type (Etype (Root))
+                         or else not Is_Constant_In_SPARK (Root)
                          or else Ekind (Root) = E_In_Parameter)
                        and then not Traverse_Access_To_Constant (P)
                      then
@@ -3521,15 +3524,6 @@ package body SPARK_Definition is
                           ("Access attribute of a named access-to-constant"
                            & " type whose prefix is not a constant part of an"
                            & " object", N);
-
-                     --  Also reject paths rooted inside observers which can
-                     --  really be parts of variables.
-
-                     elsif Is_Anonymous_Access_Object_Type (Etype (Root)) then
-                        Mark_Violation
-                          ("Access attribute of a named access-to-constant"
-                           & " type whose prefix is rooted inside an object of"
-                           & " an anonymous access type", N);
                      end if;
                   end;
 
