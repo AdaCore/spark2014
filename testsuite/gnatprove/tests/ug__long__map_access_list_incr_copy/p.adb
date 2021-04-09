@@ -20,5 +20,7 @@ is
          B := B.Next;
          B_Old := B_Old.Next;
       end loop;
+      pragma Assert
+        (For_All_List (L_Old, At_End (L), Is_Incr'Access));
    end Map_List_Incr;
 end P;
