@@ -1804,10 +1804,9 @@ representative type is declared inside a representative module. It is introduced
 for the first access to a given type translated, then it is reused for the
 following access types with the same designated type.
 
-This representative type has three fields. One for the value, one for the
-address (represented as a mathematical integer), and a boolean flag to register
-whether the access object is null. As an example, consider an access type to
-natural numbers:
+This representative type has two fields. One for the value and a boolean flag
+to register whether the access object is null. As an example, consider an
+access type to natural numbers:
 
 .. code-block:: ada
 
@@ -1819,13 +1818,7 @@ Here is the representative type introduced for it:
 
    type __rep =
      { p__ptr__is_null_pointer : bool;
-       p__ptr__pointer_address : int;
        p__ptr__pointer_value   : natural }
-
-Since the address of an access object cannot be retrieved in SPARK, the value
-of the address field is never accessed directly in the program. It is only used
-so that two access objects pointing to different memory cells which happen to
-contain the same object are not considered equal.
 
 Along with the representative type, the representative module contains other
 declarations which are shared between access types. Among them, the null
@@ -1848,55 +1841,34 @@ are these declarations for the ``Ptr`` type defined above:
    function bool_eq  (a : __rep) (b : __rep) : bool =
       a.rec__p__ptr__is_null_pointer = b.rec__p__ptr__is_null_pointer
    /\ (not a.rec__p__ptr__is_null_pointer ->
-          a.rec__p__ptr__pointer_address = b.rec__p__ptr__pointer_address
-       /\ a.rec__p__ptr__pointer_value = b.rec__p__ptr__pointer_value)
+          a.rec__p__ptr__pointer_value = b.rec__p__ptr__pointer_value)
 
-Remark that primitive equality does not only require that two non-null access
-objects have the same address to be equal but also that they have the same
-value.
-This is compatible with the execution model, since two non-null access objects
-which share the same address will necessarily have the same value. However, this
-invariant does not hold for proof, where we can see the value of the same access
-object at different program points. Thus, we need to insert additional
-information about values into equality so that we know that, when two access
-objects are equal, they designate the same value.
+Remark that the ``bool_eq`` function is not compatible with the execution
+model of equality on pointers. Indeed, two pointers might not be equal even
+if they designate equal values. The restrictions enforced by the SPARK subset
+ensure that primitive equality of access types is never used in SPARK code
+unless one of the operands is ``null``. The first conjunct of the definition of
+``bool_eq`` would be enough for this case.
 
 Allocators
 """"""""""
-Following the SPARK RM, allocators are considered to have an effect on the
-global memory area, and therefore should only be used in non-interfering
-contexts. Like for volatile functions, we only introduce program
-functions for allocators, and not logic functions.
-
-These functions read and
-modify a global reference to a mathematical integer named
-``__next_pointer_address``, also declared in the representative module of the
-access type. This integer is used as the address of the allocated value.
-The idea was to have an invariant stating that the value of these references
-is always increasing so that we could prove that a newly allocated pointer is
-different from an existing one, but this is not implemented.
 
 Here are the program functions introduced for initialized and uninitialized
 allocators for ``Ptr``:
 
 .. code-block:: whyml
 
- val __next_pointer_address  : int__ref
  val __new_uninitialized_allocator (_ : unit) : __rep
   requires { true }
-  ensures  { not result.rec__p__ptr__is_null_pointer
-		&& result.rec__p__ptr__pointer_address = __next_pointer_address.int__content }
-  writes   { __next_pointer_address }
+  ensures  { not result.rec__p__ptr__is_null_pointer }
 
  val __new_initialized_allocator (__init_val : int) : __rep
   requires { true }
   ensures  { not result.rec__p__ptr__is_null_pointer
-		&& result.rec__p__ptr__pointer_address = __next_pointer_address.int__content
                 && result.rec__p__ptr__pointer_value = of_rep __init_val }
-  writes { __next_pointer_address }
 
 Both program functions have as a postcondition that the result of the allocation
-is not null, and that its address is the next address. Additionally, the
+is not null. Additionally, the
 postcondition of the initialized allocator assumes the value of the allocated
 data. Note that we do not assume that the value of the uninitialized allocator
 is default initialized in its postcondition. It is because uninitialized
@@ -1926,12 +1898,10 @@ Here are the conversion functions and range check predicate generated for ``S``:
 
  function to_base (a : __rep) : p__arr_ptr.arr_ptr =
   { p__arr_ptr.rec__p__arr_ptr__pointer_value = of_array a.rec__p__arr_ptr__pointer_value 1 5;
-    p__arr_ptr.rec__p__arr_ptr__pointer_address = a.rec__p__arr_ptr__pointer_address;
     p__arr_ptr.rec__p__ptr__is_null_pointer = a.rec__p__arr_ptr__is_null_pointer }
 
  function of_base (r : p__arr_ptr.arr_ptr) : __rep =
   { rec__p__arr_ptr__pointer_value = to_array r.p__arr_ptr.rec__p__arr_ptr__pointer_value;
-    rec__p__arr_ptr__pointer_address = r.p__arr_ptr.rec__p__ptr__pointer_address;
     rec__p__arr_ptr__is_null_pointer = r.p__arr_ptr.rec__p__ptr__is_null_pointer }
 
  predicate in_range (first : int) (last : int) (r : p__arr_ptr.arr_ptr)  =
@@ -1966,10 +1936,6 @@ two fields, one for the value designated by the access, considered to have type
   type __rep =
     { __is_null_pointer : bool;
       __pointer_value   : __subprogram }
-
-Note that we do not need an ``__address`` field like for access-to-object types.
-Two access-to-subprogram objects cannot designate the same value if they are not
-equal.
 
 Representative Theory for Profiles
 """"""""""""""""""""""""""""""""""
@@ -2953,25 +2919,25 @@ part will be declared as a constant:
 
 Access Objects
 ^^^^^^^^^^^^^^
-Access objects are made of three parts: a boolean flag to encode whether the
-access is null, the address of the object, and the value designated by the
+Access objects are made of two parts: a boolean flag to encode whether the
+access is null and the value designated by the
 access. Whereas the designated value is mutable as soon as the access object
-is not entirely constant, the ``is_null`` flag and the address can be constant.
+is not entirely constant, the ``is_null`` flag can be constant.
 It happens when we are declaring a constant of an access-to-variable type
 which is not a private type (those objects are not constant in Why as the
 value they designate can be modified). Thus, it may be interesting to split
 access objects so that preservation of constant parts can come for free.
-Like for records, we have not introduced a type of kind EW_Split for access
+Like for records, we have not introduced a type of kind ``EW_Split`` for access
 types, and access expressions which are not objects are never in split form.
 
 Constants of an access-to-constant type are in closed form. They are translated
 as a single uninterpreted logic function of the corresponding abstract access
 type with no parameters.
 
-For other access objects, three declarations are produced: one for the boolean
-``is_null`` flag, one for the address, and one for the designated value. The
-latter is always a reference, whereas the other two can be constants or
-variables depending on whether the Ada access object is mutable or not.
+For other access objects, two declarations are produced: one for the boolean
+``is_null`` flag and one for the designated value. The
+latter is always a reference, whereas the former can be a constant or a
+variable depending on whether the Ada access object is mutable or not.
 
 As an example, let us consider the following Ada access constant:
 
@@ -2981,15 +2947,13 @@ As an example, let us consider the following Ada access constant:
 
    X : constant Int_Acc := new Integer'(15);
 
-As it is a constant, its boolean ``is_null`` flag and its address are constants.
+As it is a constant, its boolean ``is_null`` flag is constant.
 However, the designated value can be modified, since ``Int_Acc`` is an
 access-to-variable type:
 
 .. code-block:: whyml
 
  val x__pointer_value : Standard__integer.integer__ref
-
- val constant x__pointer_address : int
 
  val constant x__is_null_pointer : bool
 
@@ -2999,14 +2963,12 @@ Let us now consider a variable:
 
    Y : Int_Acc;
 
-Here, both the designated value, the ``is_null`` flag and the address of ``Y``
-are mutable, so we declare three references:
+Here, both the designated value and the ``is_null`` flag
+are mutable, so we declare two references:
 
 .. code-block:: whyml
 
  val y__pointer_value  : Standard__integer.integer__ref
-
- val y__pointer_address : int__ref
 
  val y__is_null_pointer : bool__ref
 
