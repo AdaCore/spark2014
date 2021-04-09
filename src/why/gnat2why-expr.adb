@@ -17043,9 +17043,8 @@ package body Gnat2Why.Expr is
                       Typ       => Get_Type (Then_Expr));
             end;
 
-         when N_Qualified_Expression
-            | N_Type_Conversion
-         =>
+         when N_Type_Conversion =>
+
             --  When converting between elementary types, only require that the
             --  converted expression is translated into a value of the expected
             --  base type. Necessary checks, rounding and conversions will
@@ -17120,43 +17119,10 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-               --  For qualification over arrays, we need to check that the
-               --  bounds are correct, and not slide the array to match the
-               --  bound. Add the conversion manually so that the proper
-               --  parameter can be used to get the proper checks.
-
-               if Nkind (Expr) = N_Qualified_Expression
-                 and then Has_Array_Type (Etype (Expr))
-                 and then
-                   (Is_Constrained (Etype (Expr))
-                    or else Is_Fixed_Lower_Bound_Array_Subtype (Etype (Expr)))
-                 and then Domain = EW_Prog
-               then
-                  T := Transform_Expr (Expression (Expr),
-                                       Type_Of_Node (Expression (Expr)),
-                                       Domain,
-                                       Local_Params);
-
-                  --  Insert the conversion with In_Qualif set to True so that
-                  --  we do not generate length checks but index checks.
-
-                  T := Insert_Array_Conversion
-                    (Domain     => EW_Prog,
-                     Ada_Node   => Expr,
-                     Expr       => T,
-                     To         => Type_Of_Node (Expr),
-                     Need_Check =>
-                       Check_Needed_On_Conversion
-                         (From => Etype (Expression (Expr)),
-                          To   => Etype (Expr)),
-                     Is_Qualif  => True);
-
-               else
-                  T := Transform_Expr (Expression (Expr),
-                                       Type_Of_Node (Expr),
-                                       Domain,
-                                       Local_Params);
-               end if;
+               T := Transform_Expr (Expression (Expr),
+                                    Type_Of_Node (Expr),
+                                    Domain,
+                                    Local_Params);
             end if;
 
             --  Invariant checks are introduced explicitly as they need only be
@@ -17168,6 +17134,72 @@ package body Gnat2Why.Expr is
             then
                T := +Insert_Invariant_Check (Expr, Expr_Type, +T);
             end if;
+
+         when N_Qualified_Expression =>
+
+            --  Tansform the expression with the subtype mark as the expected
+            --  type so that checks are introduced if necessary.
+            --  As the Etype of Expr might not be compatible with the
+            --  subtype mark (with respect to predicates, bounds constraints
+            --  etc), this might cause checks to be redone while converting
+            --  back to the expected type. Thus, we add this conversion here
+            --  with checks disabled.
+
+            declare
+               Check_Type   : constant Entity_Id := Entity
+                 (Subtype_Mark (Expr));
+               Relaxed_Init : constant Boolean := Expr_Has_Relaxed_Init
+                 (Expression (Expr));
+               Typ          : constant W_Type_Id :=
+                 (if Relaxed_Init
+                  then EW_Abstract (Check_Type, Relaxed_Init => True)
+                  else Type_Of_Node (Check_Type));
+
+            begin
+               --  For qualification over arrays, we need to check that the
+               --  bounds are correct, and not slide the array to match the
+               --  bound. Add the conversion manually so that the proper
+               --  parameter can be used to get the proper checks.
+
+               if Has_Array_Type (Expr_Type)
+                 and then Domain = EW_Prog
+                 and then
+                   (Is_Constrained (Check_Type)
+                    or else Is_Fixed_Lower_Bound_Array_Subtype (Check_Type))
+               then
+                  T := Transform_Expr
+                    (Expression (Expr),
+                     Type_Of_Node (Expression (Expr)),
+                     Domain,
+                     Local_Params);
+
+                  --  Insert the conversion with In_Qualif set to True so that
+                  --  we do not slide the array but insert index checks.
+
+                  T := Insert_Array_Conversion
+                    (Domain     => EW_Prog,
+                     Ada_Node   => Expr,
+                     Expr       => T,
+                     To         => Typ,
+                     Need_Check =>
+                       Check_Needed_On_Conversion
+                         (From => Etype (Expression (Expr)),
+                          To   => Check_Type),
+                     Is_Qualif  => True);
+
+               else
+                  T := Transform_Expr (Expression (Expr),
+                                       Typ,
+                                       Domain,
+                                       Local_Params);
+               end if;
+
+               T := Insert_Simple_Conversion
+                 (Ada_Node => Expr,
+                  Domain   => Domain,
+                  Expr     => T,
+                  To       => Type_Of_Node (Expr));
+            end;
 
          when N_Unchecked_Type_Conversion =>
 

@@ -8,6 +8,7 @@ subar.adb:18:26: medium: array index check might fail (e.g. when X'First = 1 and
 subar.adb:22:04: warning: analyzing unreferenced procedure "Try_D"
 subar.adb:22:14: warning: subprogram "Try_D" has no effect
 subar.adb:23:07: info: initialization of "AD" proved
+subar.adb:25:15: info: range check proved (CVC4: 1 VC)
 subar.adb:27:07: info: precondition proved (CVC4: 1 VC)
 subar.adb:30:04: warning: analyzing unreferenced procedure "Try_E"
 subar.adb:30:14: warning: subprogram "Try_E" has no effect

@@ -139,9 +139,10 @@ procedure Test_First_Bound with SPARK_Mode is
       subtype My_Arr is Int_Array (1 .. <>);
       function Id (A : Int_Array) return Int_Array is (A);
       function Id2 (A : My_Arr) return My_Arr is (A);
+      function Id (X : Integer) return Integer is (X);
 
-      X : Int_Array (11 .. 15) := (1, 2, 3, 4, 5);
-      Y : My_Arr := My_Arr'(X); --  There will be an index check here once the frontend uses the subtype mark as the Etype of the qualification
+      X : Int_Array (Id (11) .. 15) := (1, 2, 3, 4, 5);
+      Y : My_Arr := My_Arr'(X); --@INDEX_CHECK:FAIL
    begin
       pragma Assert (Id (My_Arr'(X))'First = 11);
       pragma Assert (Id2 (My_Arr'(X))'First = 1);
