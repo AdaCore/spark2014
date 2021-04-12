@@ -6012,7 +6012,7 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex
         (FA,
          Make_Basic_Attributes
-           (Var_Def       => Flow_Id_Sets.To_Set (Borrowed),
+           (Var_Def       => Flatten_Variable (Borrowed, FA.B_Scope),
             Var_Ex_Use    => Flow_Id_Sets.To_Set (Borrower),
             Loops         => Node_Sets.Empty_Set,  --  ??? not sure about this
             In_Nested_Pkg => False,                --  ??? not sure about this
