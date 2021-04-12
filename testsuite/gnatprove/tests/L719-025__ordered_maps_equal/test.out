@@ -1,22 +1,22 @@
-a-cforma.ads:745:39: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:754:17: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:789:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:797:21: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:824:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:832:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:902:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:917:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:932:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:947:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:987:46: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cforma.ads:1002:40: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
-a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:112, in instantiation at p.ads:8
-a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at p.ads:8
-a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at p.ads:8
-a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at p.ads:8
-a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at p.ads:8
-a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at p.ads:8
-a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at p.ads:8
+a-cforma.ads:750:39: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:759:17: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:794:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:802:21: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:829:42: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:837:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:907:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:922:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:937:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:952:20: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:992:46: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cforma.ads:1007:40: info: precondition proved (Z3: 1 VC), in instantiation at p.ads:8
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
+a-cofuve.ads:232:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
+a-cofuve.ads:237:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
+a-cofuve.ads:238:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
+a-cofuve.ads:238:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
+a-cofuve.ads:239:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
+a-cofuve.ads:300:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at p.ads:8
 p.adb:5:07: info: precondition proved (Z3: 2 VC)
 p.adb:6:07: info: precondition proved (Z3: 1 VC)
 p.adb:10:27: info: precondition proved (Z3: 1 VC)
