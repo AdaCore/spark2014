@@ -26,7 +26,7 @@ why3server
 why3session.cmxs
 libexec/spark/share dir
 alt-ergo
-gcc-10.2.1
+gcc-10.3.1
 gpr
 gprconfig
 info
