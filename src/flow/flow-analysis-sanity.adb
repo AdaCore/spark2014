@@ -1578,6 +1578,14 @@ package body Flow.Analysis.Sanity is
                      if not FA.All_Vars.Contains
                        (Change_Variant (Var, Normal_Use))
                      then
+
+                        --  Sanity check: if the Global contract is generated,
+                        --  then all variables should be known.
+
+                        pragma Assert
+                          (if Gnat2Why_Args.Flow_Generate_Contracts
+                           then not FA.Is_Generative);
+
                         declare
                            First_Var_Use : constant Node_Id :=
                              First_Variable_Use (FA      => FA,
