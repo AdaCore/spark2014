@@ -221,9 +221,7 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--no-exit-message");
       end if;
 
-      if Parallel > 1 then
-         Args.Append ("-j" & Image (Parallel, Min_Width => 1));
-      end if;
+      Args.Append ("-j" & Image (Parallel, Min_Width => 1));
 
       if Continue_On_Error then
          Args.Append ("-k");
