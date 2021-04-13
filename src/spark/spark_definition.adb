@@ -4919,6 +4919,18 @@ package body SPARK_Definition is
                  ("volatile borrowing traversal function", Id);
             end if;
 
+            --  We currently do not support functions annotated with No_Return.
+            --  If the need arise, we could handle them as raise expressions,
+            --  using a precondition of False to ensure that they are never
+            --  called. We should take care of potential interactions with
+            --  Might_Not_Return annotations. We might also want a special
+            --  handling for such function calls inside preconditions (see
+            --  handling of raise expressions).
+
+            if No_Return (Id) then
+               Mark_Unsupported ("function annotated with No_Return", Id);
+            end if;
+
             while Present (Formal) loop
 
                --  A nonvolatile function shall not have a formal parameter
