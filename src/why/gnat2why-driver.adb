@@ -969,22 +969,28 @@ package body Gnat2Why.Driver is
       --  messages.
 
       declare
+         Args : Argument_List :=
+           Call.Argument_List_Of_String_List (Why3_Args);
          Fd   : File_Descriptor;
          Name : Path_Name_Type;
          Pid  : Process_Id;
+
       begin
          Create_Temp_File (Fd, Name);
          pragma Assert (Fd /= Invalid_FD);
          Pid :=
            GNAT.OS_Lib.Non_Blocking_Spawn
              (Program_Name           => Command.all,
-              Args                   =>
-                Call.Argument_List_Of_String_List (Why3_Args),
+              Args                   => Args,
               Output_File_Descriptor => Fd,
               Err_To_Out             => True);
          pragma Assert (Pid /= Invalid_Pid);
          Output_File_Map.Insert (Pid, Name);
          Close (Fd);
+
+         for Arg of Args loop
+            Free (Arg);
+         end loop;
       end;
       Set_Directory (Old_Dir);
       Free (Command);
