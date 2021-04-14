@@ -684,8 +684,8 @@ package body Gnat2Why.Driver is
          --  is neither marked in SPARK nor out of SPARK.
 
          --  If only the spec unit is available, then GNAT_Root is the entity
-         --  for the spec. We want to issue a warning if this entity is neither
-         --  marked in SPARK nor out of SPARK.
+         --  for the spec. We want to issue an info message if this entity is
+         --  neither marked in SPARK nor out of SPARK.
 
          declare
             Root : constant Entity_Id := Defining_Entity (Unit (GNAT_Root));
@@ -694,7 +694,7 @@ package body Gnat2Why.Driver is
               and then No (SPARK_Pragma (Root))
             then
                Error_Msg_N
-                 ("?SPARK_Mode not applied to this compilation unit",
+                 ("info: ?SPARK_Mode not applied to this compilation unit",
                   GNAT_Root);
                Error_Msg_N
                  ("\?only enclosed declarations with SPARK_Mode"
