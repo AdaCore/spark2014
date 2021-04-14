@@ -122,7 +122,7 @@ begin
          U.Z := 2;
       end Assign;
 
-      function Alloc return T with Volatile_Function is
+      function Alloc return T is
          Result : T := new Integer'(1);  -- @MEMORY_LEAK:PASS
       begin
          return Result;

@@ -2422,7 +2422,9 @@ package body SPARK_Util is
           when E_Abstract_State => True,
           when E_Constant       => Ekind (Scope (E)) = E_Package
                                    and then not In_Generic_Actual (E)
-                                   and then Has_Variable_Input (E),
+                                   and then (Is_Access_Variable (Etype (E))
+                                               or else
+                                             Has_Variable_Input (E)),
           when E_Variable       => Ekind (Scope (E)) = E_Package,
           when others           => False)
       and then
@@ -3847,9 +3849,13 @@ package body SPARK_Util is
 
                      else pragma Assert (Ekind (Obj) = E_Constant);
 
-                        if not In_Generic_Actual (Obj)
-                          and then Has_Variable_Input (Obj)
-                        then
+                        if In_Generic_Actual (Obj) then
+                           null;
+
+                        elsif Is_Access_Variable (Etype (Obj)) then
+                           Register_Object (Obj);
+
+                        elsif Has_Variable_Input (Obj) then
                            if Present (Expression (N)) then
                               --  Completion of a deferred constant
 

@@ -643,7 +643,8 @@ package Flow_Utility is
    --  Same as Search_Depends_Contract, but for the Initializes contract
 
    function Has_Variable_Input (C : Entity_Id) return Boolean
-   with Pre => Ekind (C) = E_Constant;
+   with Pre => Ekind (C) = E_Constant
+               and then not Is_Access_Variable (Etype (C));
    --  Returns True if V is a constant with variable input
    --
    --  If this is called before the globals graph has been generated (i.e.

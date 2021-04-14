@@ -576,6 +576,8 @@ package SPARK_Atree is
                        | N_Record_Representation_Clause
                        | N_Label;
 
+   function In_Assertion_Expression_Pragma (N : Node_Id) return Boolean;
+
    function Inherited_Discriminant (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Component_Association;
 

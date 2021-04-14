@@ -3400,22 +3400,6 @@ package body Why.Atree.Modules is
                end if;
 
                Insert_Symbol
-                 (E, WNE_Init_Allocator,
-                  New_Identifier
-                    (Symb   => NID (To_String (WNE_Init_Allocator)),
-                     Module => M_C,
-                     Domain => EW_Term,
-                     Typ    => Ty));
-
-               Insert_Symbol
-                 (E, WNE_Uninit_Allocator,
-                  New_Identifier
-                    (Symb   => NID (To_String (WNE_Uninit_Allocator)),
-                     Module => M_C,
-                     Domain => EW_Term,
-                     Typ    => Ty));
-
-               Insert_Symbol
                  (E, WNE_Assign_Null_Check,
                   New_Identifier
                     (Symb   => NID ("assign_null_check"),

@@ -374,9 +374,6 @@ package body SPARK_Register is
                --  ??? is this needed for wrapper packages?
                Register_Entity (Defining_Entity (N));
 
-            when N_Allocator =>
-               Register_Entity (Flow.Dynamic_Memory.Heap_State);
-
             when others =>
                null;
          end case;

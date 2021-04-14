@@ -39,6 +39,7 @@ is
 
       and (for all Pair of Database => Contains (DB_Model, Pair))
       and (for all Pair of DB_Model => Contains (Database, Pair))
-      and Length (DB_Model) = Length (Database));
+      and Length (DB_Model) = Length (Database))
+   with SPARK_Mode => Off; -- due to call to allocating function
 
 end Database;

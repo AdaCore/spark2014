@@ -76,10 +76,14 @@ n11.adb:21:24: error: "T1" is not allowed in SPARK (due to borrow or observe of 
 n11.adb:21:24: error: violation of pragma SPARK_Mode at test.adc:3
 n12.adb:13:17: error: object was moved at line 19
 n12.adb:13:17: error: return from "Modify" with moved value for "A"
+n12.adb:13:25: warning: "A" is not modified, could be IN
 n12.adb:14:09: info: flow dependencies proved
-n12.adb:20:22: high: "Heap.Dynamic_Memory" must be listed in the Global aspect of "Modify" (SPARK RM 6.1.4(14))
+n12.adb:15:09: info: data dependencies proved
+n12.adb:19:10: warning: initialization of "B" has no effect
+n12.adb:20:10: warning: initialization of "T1" has no effect
 n12.adb:20:28: error: "A" is not readable
 n12.adb:20:28: error: object was moved at line 19
+n12.adb:23:21: warning: unused assignment
 n13.adb:14:09: info: flow dependencies proved
 n13.adb:15:09: info: data dependencies proved
 n13.adb:19:10: warning: initialization of "B" has no effect
@@ -169,9 +173,9 @@ pointers2.ads:20:14: error: object was moved at pointers2.adb:36
 pointers2.ads:20:14: error: return from "Bad_Move" with moved value for "Y"
 pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
-spark02.adb:32:04: error: non-traversal function call of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
+spark02.adb:32:04: error: call to allocating function not stored in object as part of assignment, declaration or return is not allowed in SPARK
 spark02.adb:32:04: error: violation of pragma SPARK_Mode at test.adc:3
-spark02.adb:34:09: error: non-traversal function call of owning type as the prefix of an expression is not allowed in SPARK (SPARK RM 3.10(6))
+spark02.adb:34:09: error: call to allocating function not stored in object as part of assignment, declaration or return is not allowed in SPARK
 spark02.adb:34:09: error: violation of pragma SPARK_Mode at test.adc:3
 spark02.adb:35:09: error: expression as "in out" parameter is not allowed in SPARK
 spark02.adb:35:09: error: violation of pragma SPARK_Mode at test.adc:3

@@ -1,6 +1,5 @@
 private_pointer.adb:5:12: info: pointer dereference check proved (CVC4: 1 VC)
 private_pointer.adb:11:11: medium: memory leak might occur [possible fix: subprogram at private_pointer.ads:50 should mention X_4 in a precondition]
-private_pointer.adb:11:21: high: "Heap.Dynamic_Memory" must be listed in the Global aspect of "Main" (SPARK RM 6.1.4(14))
 private_pointer.adb:12:14: info: precondition proved (CVC4: 1 VC)
 private_pointer.adb:13:22: info: assertion proved (CVC4: 1 VC)
 private_pointer.adb:13:29: info: precondition proved (CVC4: 1 VC)
@@ -12,7 +11,6 @@ private_pointer.ads:11:17: info: postcondition proved (CVC4: 2 VC)
 private_pointer.ads:11:53: info: precondition proved (CVC4: 1 VC)
 private_pointer.ads:14:17: info: postcondition proved (CVC4: 2 VC)
 private_pointer.ads:14:37: info: precondition proved (CVC4: 1 VC)
-private_pointer.ads:16:56: info: range check proved (CVC4: 1 VC)
 private_pointer.ads:19:58: info: pointer dereference check proved (CVC4: 1 VC)
 private_pointer.ads:38:04: info: initialization of "X_1" proved
 private_pointer.ads:39:19: info: assertion proved (CVC4: 1 VC)
@@ -23,3 +21,5 @@ private_pointer.ads:43:19: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:44:19: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:45:19: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:48:19: info: assertion proved (CVC4: 1 VC)
+private_pointer.ads:50:24: info: data dependencies proved
+private_pointer.ads:50:45: warning: unused initial value of "X_4"

@@ -2,7 +2,7 @@ with SPARK.Heap;
 
 procedure M (Data   :     Integer;
              Result : out Integer)
-  with Depends => (Result => (SPARK.Heap.Dynamic_Memory, Data)),
+  with Depends => (Result => Data),
        Post    => Result = Data,
        SPARK_Mode
 is

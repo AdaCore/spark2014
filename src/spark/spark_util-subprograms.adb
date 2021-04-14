@@ -818,6 +818,22 @@ package body SPARK_Util.Subprograms is
         or else
       Is_Pure (E));
 
+   ----------------------------
+   -- Is_Allocating_Function --
+   ----------------------------
+
+   function Is_Allocating_Function (E : Entity_Id) return Boolean is
+   begin
+      return Ekind (E) in E_Function | E_Subprogram_Type
+
+        --  A function is said to be an allocating function if the result type
+        --  of the function is a named access-to-variable type or a composite
+        --  owning type.
+
+        and then not Is_Anonymous_Access_Object_Type (Etype (E))
+        and then Is_Deep (Etype (E));
+   end Is_Allocating_Function;
+
    ----------------------------------------
    -- Is_Possibly_Nonreturning_Procedure --
    ----------------------------------------

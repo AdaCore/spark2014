@@ -413,6 +413,10 @@ package SPARK_Util.Subprograms is
    --  @param callable entities
    --  @return True iff Calls include Ada.Task_Identification.Current_Task
 
+   function Is_Allocating_Function (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True iff E is an allocating function (SPARK RM 4.8)
+
    function Is_Function_Type (E : Entity_Id) return Boolean is
      (Ekind (E) = E_Subprogram_Type
       and then Etype (E) /= Stand.Standard_Void_Type);

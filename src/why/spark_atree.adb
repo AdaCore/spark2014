@@ -991,6 +991,13 @@ package body SPARK_Atree is
    function Identifier (N : Node_Id) return Node_Id is
      (Sinfo.Nodes.Identifier (N));
 
+   ------------------------------------
+   -- In_Assertion_Expression_Pragma --
+   ------------------------------------
+
+   function In_Assertion_Expression_Pragma (N : Node_Id) return Boolean is
+     (Sem_Util.In_Assertion_Expression_Pragma (N));
+
    ----------------------------
    -- Inherited_Discriminant --
    ----------------------------

@@ -1794,7 +1794,9 @@ package body Flow_Generated_Globals.Partial is
       begin
          for N of Nodes loop
             if Ekind (N) = E_Constant then
-               if Has_Variable_Input (N) then
+               if Is_Access_Variable (Etype (N))
+                 or else Has_Variable_Input (N)
+               then
                   Result.Insert (N);
                end if;
 
@@ -2219,7 +2221,9 @@ package body Flow_Generated_Globals.Partial is
                   pragma Assert (Is_Global_Entity (V));
 
                begin
-                  if Ekind (V) = E_Constant then
+                  if Ekind (V) = E_Constant
+                    and then not Is_Access_Variable (Etype (V))
+                  then
                      Inputs.Append (V);
                   else
                      return Variable;
@@ -2296,7 +2300,9 @@ package body Flow_Generated_Globals.Partial is
          Constants : Node_Lists.List;
       begin
          for E of From loop
-            if Ekind (E) = E_Constant then
+            if Ekind (E) = E_Constant
+              and then not Is_Access_Variable (Etype (E))
+            then
                Constants.Append (E);
             end if;
          end loop;
@@ -2476,7 +2482,9 @@ package body Flow_Generated_Globals.Partial is
          Filtered : Node_Sets.Set;
       begin
          for E of From loop
-            if Ekind (E) = E_Constant then
+            if Ekind (E) = E_Constant
+              and then not Is_Access_Variable (Etype (E))
+            then
                if not Resolved_Inputs (E, Constant_Graph).Is_Empty then
                   Filtered.Insert (E);
                end if;

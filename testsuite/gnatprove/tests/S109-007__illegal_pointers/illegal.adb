@@ -4,11 +4,11 @@ procedure Illegal with SPARK_Mode is
 
    function F (X : Ptr) return Integer is (X.all);
 
-   type Ptr_V is new Ptr with Volatile;
+   type Ptr_V is new Ptr;
 
    function F_2 (X : Ptr_V) return Integer is (1) with Volatile_Function;
 
-   function F_3 (X : Integer) return Ptr is (new Integer'(X));  -- illegal
+   function F_3 (X : Integer) return Ptr is (new Integer'(X));  -- legal
 
    function F_4 (X : Integer) return Ptr is (new Integer'(X)) with Volatile_Function; --  legal
 

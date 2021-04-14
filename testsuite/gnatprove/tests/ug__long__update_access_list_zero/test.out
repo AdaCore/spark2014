@@ -15,3 +15,8 @@ p.ads:21:33: info: pointer dereference check proved
 p.ads:22:53: info: pointer dereference check proved
 p.ads:22:62: info: pointer dereference check proved
 p.ads:28:14: info: postcondition proved
+
+p.ads:28:46: medium: memory leak might occur
+   28 |     Post => Updated_If_Less_Than_Threshold (Copy (L)'Old, L, Threshold);
+      |                                             ^~~~~~~
+  possible explanation: call to allocating function inside an assertion leaks memory

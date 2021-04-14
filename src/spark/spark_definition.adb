@@ -257,6 +257,11 @@ package body SPARK_Definition is
    function Is_Actions_Entity (E : Entity_Id) return Boolean
      renames Actions_Entity_Set.Contains;
 
+   function Is_Valid_Allocating_Context (Alloc : Node_Id) return Boolean;
+   --  Return True if node Alloc is a valid allocating context (SPARK RM 4.8).
+   --  i.e. the newly allocated memory is stored in an object as part of an
+   --  assignment, a declaration or a return statement.
+
    procedure Discard_Underlying_Type (T : Entity_Id);
    --  Mark T's underlying type as seen and store T as its partial view
 
@@ -821,6 +826,73 @@ package body SPARK_Definition is
       and Delayed_Type_Aspects.Is_Empty
       and Access_To_Incomplete_Types.Is_Empty);
 
+   ---------------------------------
+   -- Is_Valid_Allocating_Context --
+   ---------------------------------
+
+   function Is_Valid_Allocating_Context (Alloc : Node_Id) return Boolean is
+      Subcontext : Node_Id := Alloc;
+      Context    : Node_Id := Parent (Subcontext);
+   begin
+      --  The allocating expression appears in an assertion. This is allowed,
+      --  even though a memory leak is certain to occur in that case if
+      --  assertions are enabled, and will be reported by GNATprove.
+
+      if In_Assertion_Expression_Pragma (Alloc) then
+         return True;
+      end if;
+
+      loop
+         case Nkind (Context) is
+
+            --  The allocating expression appears on the rhs of an assignment,
+            --  object declaration or return statement, which is not inside a
+            --  declare expression.
+
+            when N_Assignment_Statement
+               | N_Object_Declaration
+               | N_Simple_Return_Statement
+            =>
+               return Present (Expression (Context))
+                 and then Expression (Context) = Subcontext
+                 and then
+                   Nkind (Parent (Context)) /= N_Expression_With_Actions;
+
+            --  The allocating expression is the expression of a type
+            --  conversion or a qualified expression occurring in a
+            --  valid allocating context.
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               null;
+
+            --  The allocating expression occurs as the expression in another
+            --  initialized allocator.
+
+            when N_Allocator =>
+               return True;
+
+            --  The allocating expression corresponds to a component value in
+            --  an aggregate occurring in an allocating context.
+
+            when N_Aggregate
+               | N_Component_Association
+               | N_Delta_Aggregate
+               | N_Extension_Aggregate
+            =>
+               null;
+
+            when others =>
+               return False;
+         end case;
+
+         Subcontext := Context;
+         Context := Parent (Context);
+      end loop;
+   end Is_Valid_Allocating_Context;
+
    ----------
    -- Mark --
    ----------
@@ -1380,13 +1452,32 @@ package body SPARK_Definition is
             end if;
 
          when N_Allocator =>
-            if Is_OK_Volatile_Context
-              (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
-            then
+            declare
+            begin
+               if not Is_Valid_Allocating_Context (N) then
+                  Mark_Violation
+                    ("allocator not stored in object as "
+                     & "part of assignment, declaration or return", N);
+
+               --  Currently forbid the use of an uninitialized allocator (for
+               --  a type which defines full default initialization) inside
+               --  an expression function, as this requires translating the
+               --  expression in the term domain. As the frontend does not
+               --  expand the default value of the type here, this would
+               --  require using an epsilon in Why3 which we prefer avoid
+               --  doing outside of axiom guards.
+
+               elsif Nkind (Expression (N)) /= N_Qualified_Expression
+                 and then Nkind (Original_Node (Enclosing_Declaration (N))) =
+                   N_Expression_Function
+               then
+                  Mark_Unsupported
+                    ("uninitialized allocator inside expression function", N);
+
                --  Check that the type of the allocator is visibly an access
                --  type.
 
-               if Retysp_In_SPARK (Etype (N))
+               elsif Retysp_In_SPARK (Etype (N))
                  and then Is_Access_Type (Retysp (Etype (N)))
                then
                   --  If the expression is a qualified expression, then we
@@ -1454,9 +1545,7 @@ package body SPARK_Definition is
                else
                   Mark_Violation (N, Etype (N));
                end if;
-            else
-               Mark_Violation ("allocators in interfering context", N);
-            end if;
+            end;
 
          when N_Assignment_Statement =>
             declare
@@ -3772,8 +3861,7 @@ package body SPARK_Definition is
              (Is_Effectively_Volatile_Object_For_Reading (Actual)
               or else (Nkind (Actual) = N_Function_Call
                        and then Nkind (Name (Actual)) /= N_Explicit_Dereference
-                         and then Is_Volatile_Call (Actual))
-              or else Nkind (Actual) = N_Allocator)
+                         and then Is_Volatile_Call (Actual)))
          then
             --  An effectively volatile object may act as an actual when the
             --  corresponding formal is of a non-scalar effectively volatile
@@ -3795,7 +3883,6 @@ package body SPARK_Definition is
                  (Msg           =>
                   (case Nkind (Actual) is
                    when N_Function_Call => "volatile function call",
-                   when N_Allocator => "allocator",
                    when others => "volatile object")
                   & " as actual",
                   N             => Actual,
@@ -3893,6 +3980,14 @@ package body SPARK_Definition is
    --  Start processing for Mark_Call
 
    begin
+      if Is_Allocating_Function (E)
+        and then not Is_Valid_Allocating_Context (N)
+      then
+         Mark_Violation
+           ("call to allocating function not stored in object as "
+            & "part of assignment, declaration or return", N);
+      end if;
+
       if Nkind (Name (N)) = N_Explicit_Dereference then
          Mark (Prefix (Name (N)));
          Mark_Actuals (N);

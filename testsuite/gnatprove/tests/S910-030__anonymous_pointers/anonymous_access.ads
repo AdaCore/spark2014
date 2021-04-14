@@ -14,6 +14,5 @@ package Anonymous_Access with SPARK_Mode is
      Annotate => (GNATprove, Terminating);
 
    function Copy (X : List_Acc) return List_Acc with
-     Volatile_Function,
      Post => Length (Copy'Result) = Length (X);
 end Anonymous_Access;
