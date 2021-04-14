@@ -105,4 +105,4 @@ Coq
 not part of the |SPARK| distribution. If you want to use Coq with |SPARK|, you
 need to install it yourself on your system and put it in your ``PATH``
 environment variable. Then, you can simply provide ``--prover=coq`` to
-``gnatprove``. Note that the only supported version currently is Coq 8.5.
+``gnatprove``. Note that the only supported version currently is Coq 8.11.
