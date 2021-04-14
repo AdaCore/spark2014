@@ -4,6 +4,6 @@ project Table_Generator is
    for Source_Dirs use ("../../../src/common", ".");
    for Main use ("table_generator.adb");
    package Compiler is
-      for Switches ("Ada") use ("-gnatg");
+      for Switches ("Ada") use ("-gnatg", "-gnat2022");
    end Compiler;
 end Table_Generator;
