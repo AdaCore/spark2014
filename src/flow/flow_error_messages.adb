@@ -3153,6 +3153,8 @@ package body Flow_Error_Messages is
                      Append (R, Flow_Id_To_String (F));
                   elsif Is_Constituent (F) then
                      declare
+                        Buf : Bounded_String;
+
                         Constituent_Id : constant Entity_Id :=
                           Get_Direct_Mapping_Id (F);
 
@@ -3180,9 +3182,10 @@ package body Flow_Error_Messages is
                         --  immediate scope.
 
                         if State_Scope /= Constituent_Scope then
-                           Get_Name_String (Chars (State_Scope));
-                           Adjust_Name_Case (Sloc (State_Scope));
-                           Append (R, Name_Buffer (1 .. Name_Len) & ".");
+                           Append (Buf, Chars (State_Scope));
+                           Adjust_Name_Case (Buf, Sloc (State_Scope));
+                           Append (R, To_String (Buf) & ".");
+                           Buf.Length := 0;
                         end if;
 
                         --  We append the abstract state. Note that we are not
@@ -3191,9 +3194,9 @@ package body Flow_Error_Messages is
                         --  the immediate scope of the constituent is different
                         --  than the immediate scope of the abstract state.
 
-                        Get_Name_String (Chars (State_Id));
-                        Adjust_Name_Case (Sloc (State_Id));
-                        Append (R, Name_Buffer (1 .. Name_Len));
+                        Append (Buf, Chars (State_Id));
+                        Adjust_Name_Case (Buf, Sloc (State_Id));
+                        Append (R, To_String (Buf));
                      end;
                   else
                      Append_Quote;

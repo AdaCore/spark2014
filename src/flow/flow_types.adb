@@ -846,6 +846,7 @@ package body Flow_Types is
       ------------------------
 
       function Get_Unmangled_Name (N : Node_Id) return String is
+         Buf : Bounded_String;
          Nam : Node_Id := N;
       begin
          if Nkind (N) in N_Entity then
@@ -871,9 +872,9 @@ package body Flow_Types is
             end case;
          end if;
 
-         Get_Name_String (Chars (Nam));
-         Adjust_Name_Case (Sloc (Nam));
-         return Name_Buffer (1 .. Name_Len);
+         Append (Buf, Chars (Nam));
+         Adjust_Name_Case (Buf, Sloc (Nam));
+         return To_String (Buf);
       end Get_Unmangled_Name;
 
       --  Local variables
