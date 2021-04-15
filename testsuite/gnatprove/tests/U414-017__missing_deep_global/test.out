@@ -1,0 +1,9 @@
+main_access.adb:6:04: error: owning or observing object should occur in the global contract of "Acc"
+main_access.adb:8:36: high: "V" must be listed in the Global aspect of "Acc" (SPARK RM 6.1.4(14))
+main_access_2.adb:6:04: error: owning or observing object should occur in the global contract of "Acc_2"
+main_access_2.adb:7:04: error: owning or observing object should occur in the global contract of "Acc_3"
+main_access_2.adb:8:04: error: owning or observing object should occur in the global contract of "Acc_4"
+main_access_2.adb:11:36: high: "V_2" must be listed in the Global aspect of "Acc_2" (SPARK RM 6.1.4(14))
+main_access_2.adb:21:32: high: "V_3" must be listed in the Global aspect of "Acc_3" (SPARK RM 6.1.4(14))
+main_access_2.adb:27:25: info: data dependencies proved
+gnatprove: error during flow analysis and proof

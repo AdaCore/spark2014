@@ -914,6 +914,9 @@ package body Gnat2Why.Borrow_Checker is
    --  observe/borrow are not allowed. As a result, no other checking is needed
    --  during elaboration.
 
+   Current_Subp : Entity_Id := Empty;
+   --  Set to the enclosing unit during the analysis of a callable body
+
    Current_Loops_Envs : Env_Backups;
    --  This variable contains saves of permission environments at each loop the
    --  analysis entered. Each saved environment can be reached with the label
@@ -1330,6 +1333,8 @@ package body Gnat2Why.Borrow_Checker is
 
    begin
       Inside_Elaboration := False;
+      pragma Assert (No (Current_Subp));
+      Current_Subp := Id;
 
       --  Save environment and put a new one in place
 
@@ -1377,6 +1382,7 @@ package body Gnat2Why.Borrow_Checker is
       Move_Variable_Mapping (Saved_Observers, Current_Observers);
 
       Inside_Elaboration := Save_In_Elab;
+      Current_Subp := Empty;
    end Check_Callable_Body;
 
    -----------------------
@@ -3895,8 +3901,29 @@ package body Gnat2Why.Borrow_Checker is
          --  current permission environment.
 
          if C = null then
-            pragma Assert
-              (Ekind (E) = E_Constant and then not Has_Variable_Input (E));
+
+            --  If E is a variable and it is not in the environement, it must
+            --  be missing from the global contract of the enclosing
+            --  subprogram. Raise an error.
+
+            if Ekind (E) /= E_Constant
+              or else Is_Access_Variable (Etype (E))
+              or else Has_Variable_Input (E)
+            then
+               pragma Assert (Present (Current_Subp));
+               Error_Msg_NE
+                 ("owning or observing object should occur in the global" &
+                    " contract of &",
+                  E, Current_Subp);
+               Permission_Error := True;
+            end if;
+
+            --  If E is a constant without variable inputs, it has permission
+            --  Read_Only.
+
+            return (R                => Folded,
+                    Found_Permission => Read_Only,
+                    Explanation      => E);
          end if;
 
          return (R => Unfolded, Tree_Access => C);
@@ -4859,10 +4886,18 @@ package body Gnat2Why.Borrow_Checker is
 
          --  If the root object is not in the current environment, then it must
          --  be a constant without variable input. It can only be read.
-         --  ??? shouldn't a new be considered as having variable inputs?
 
-         pragma Assert
-           (Ekind (Root) = E_Constant and then not Has_Variable_Input (Root));
+         if Ekind (Root) /= E_Constant
+           or else Is_Access_Variable (Etype (Root))
+           or else Has_Variable_Input (Root)
+         then
+            pragma Assert (Present (Current_Subp));
+            Error_Msg_NE
+              ("owning or observing object should occur in the global" &
+                 " contract of &",
+               Root, Current_Subp);
+            Permission_Error := True;
+         end if;
 
          Perm := Read_Only;
          Expl := Root;
