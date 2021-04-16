@@ -1623,29 +1623,19 @@ package body SPARK_Util is
    -------------------------
 
    function Get_Operator_Symbol (N : Node_Id) return String is
-      subtype Operator_Name_Id is Name_Id range
-        First_Operator_Name .. Last_Operator_Name;
+      Buf : Bounded_String;
+
    begin
-      return (case Operator_Name_Id'(Chars (N)) is
-                 when Name_Op_Abs      => "abs",
-                 when Name_Op_And      => "and",
-                 when Name_Op_Mod      => "mod",
-                 when Name_Op_Not      => "not",
-                 when Name_Op_Or       => "or",
-                 when Name_Op_Rem      => "rem",
-                 when Name_Op_Xor      => "xor",
-                 when Name_Op_Eq       => "=",
-                 when Name_Op_Ne       => "/=",
-                 when Name_Op_Lt       => "<",
-                 when Name_Op_Le       => "<=",
-                 when Name_Op_Gt       => ">",
-                 when Name_Op_Ge       => ">=",
-                 when Name_Op_Add      => "+",
-                 when Name_Op_Subtract => "-",
-                 when Name_Op_Concat   => "&",
-                 when Name_Op_Multiply => "*",
-                 when Name_Op_Divide   => "/",
-                 when Name_Op_Expon    => "**");
+      --  Reuse frontend decoding of operator symbol
+
+      Append_Unqualified_Decoded (Buf, Chars (N));
+
+      --  Strip leading and trailing quotes
+
+      pragma Assert (Buf.Chars (1) = '"');
+      pragma Assert (Buf.Chars (Buf.Length) = '"');
+
+      return Buf.Chars (2 .. Buf.Length - 1);
    end Get_Operator_Symbol;
 
    ---------------
