@@ -25,7 +25,6 @@
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Common_Iterators;       use Common_Iterators;
-with Csets;                  use Csets;
 with Errout;                 use Errout;
 with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
 with Flow_Refinement;        use Flow_Refinement;
@@ -3494,49 +3493,16 @@ package body SPARK_Util is
    -----------------
 
    function Source_Name (N : Entity_Id) return String is
+      Buf : Bounded_String;
+
    begin
-      if Nkind (N) = N_Defining_Operator_Symbol then
-         return """" & Get_Operator_Symbol (N) & """";
-
+      if Nkind (N) in N_Entity and then Is_Single_Concurrent_Type (N) then
+         return Source_Name (Anonymous_Object (N));
       else
-         declare
-            function Short_Name (N : Node_Id) return String
-            with Post => Short_Name'Result /= "";
-            --  @return the uncapitalized unqualified name for N
+         Append_Unqualified_Decoded (Buf, Chars (N));
+         Adjust_Name_Case (Buf, Sloc (N));
 
-            ----------------
-            -- Short_Name --
-            ----------------
-
-            function Short_Name (N : Node_Id) return String is
-            begin
-               Get_Unqualified_Name_String (Chars (N));
-               return Name_Buffer (1 .. Name_Len);
-            end Short_Name;
-
-            --  Local variables
-
-            Name : String := Short_Name (N);
-            Loc  : Source_Ptr := Sloc (N);
-            Buf  : Source_Buffer_Ptr;
-
-         begin
-            if Loc >= First_Source_Ptr then
-               Buf := Source_Text (Get_Source_File_Index (Loc));
-
-               --  Copy characters from source while they match (modulo
-               --  capitalization) the name of the entity.
-
-               for Idx in Name'Range loop
-                  exit when not Identifier_Char (Buf (Loc))
-                    or else Fold_Lower (Buf (Loc)) /= Name (Idx);
-                  Name (Idx) := Buf (Loc);
-                  Loc := Loc + 1;
-               end loop;
-            end if;
-
-            return Name;
-         end;
+         return To_String (Buf);
       end if;
    end Source_Name;
 
