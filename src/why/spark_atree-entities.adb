@@ -311,7 +311,7 @@ package body SPARK_Atree.Entities is
    -- Get_Enum_Lit_From_Pos --
    ---------------------------
 
-   function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
+   function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Node_Id
    is (Sem_Util.Get_Enum_Lit_From_Pos (Typ, P, No_Location));
 
    ---------------------------------

@@ -3493,31 +3493,31 @@ package body SPARK_Util is
    -- Source_Name --
    -----------------
 
-   function Source_Name (E : Entity_Id) return String is
+   function Source_Name (N : Entity_Id) return String is
    begin
-      if Nkind (E) = N_Defining_Operator_Symbol then
-         return """" & Get_Operator_Symbol (E) & """";
+      if Nkind (N) = N_Defining_Operator_Symbol then
+         return """" & Get_Operator_Symbol (N) & """";
 
       else
          declare
-            function Short_Name (E : Entity_Id) return String
+            function Short_Name (N : Node_Id) return String
             with Post => Short_Name'Result /= "";
-            --  @return the uncapitalized unqualified name for E
+            --  @return the uncapitalized unqualified name for N
 
             ----------------
             -- Short_Name --
             ----------------
 
-            function Short_Name (E : Entity_Id) return String is
+            function Short_Name (N : Node_Id) return String is
             begin
-               Get_Unqualified_Name_String (Chars (E));
+               Get_Unqualified_Name_String (Chars (N));
                return Name_Buffer (1 .. Name_Len);
             end Short_Name;
 
             --  Local variables
 
-            Name : String := Short_Name (E);
-            Loc  : Source_Ptr := Sloc (E);
+            Name : String := Short_Name (N);
+            Loc  : Source_Ptr := Sloc (N);
             Buf  : Source_Buffer_Ptr;
 
          begin

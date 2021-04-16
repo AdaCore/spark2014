@@ -317,10 +317,10 @@ package SPARK_Util is
    --  subunits), Sem_Ch12.Is_In_Main_Unit, Inline.In_Main_Unit_Or_Subunit
    --  (which do yet something else).
 
-   function Source_Name (E : Entity_Id) return String
-     with Pre => Present (E) and then Nkind (E) in N_Has_Chars;
-   --  @param E any entity
-   --  @return The unqualified name of E as it appears in the source code
+   function Source_Name (N : Node_Id) return String
+     with Pre => Present (N) and then Nkind (N) in N_Has_Chars;
+   --  @param N any node with Chars field
+   --  @return The unqualified name of N as it appears in the source code
 
    function Is_Local_Context (Scop : Entity_Id) return Boolean;
    --  Return if a given scope defines a local context where it is legal to
