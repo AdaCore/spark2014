@@ -3618,7 +3618,7 @@ package body SPARK_Util is
    -- Source_Name --
    -----------------
 
-   function Source_Name (N : Entity_Id) return String is
+   function Source_Name (N : Node_Id) return String is
       Buf : Bounded_String;
 
    begin
