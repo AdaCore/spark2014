@@ -1617,10 +1617,11 @@ package body SPARK_Util.Subprograms is
    --  users inside a generic/inlined subprogram.
 
    function Subp_Location (E : Entity_Id) return String is
-      S : constant Subp_Type := Entity_To_Subp_Assumption (E);
-      B : constant Base_Sloc := Subp_Sloc (S).First_Element;
+      Slc : constant Source_Ptr := Sloc (E);
+      File : constant String := File_Name (Slc);
+      Line : constant Physical_Line_Number := Get_Physical_Line_Number (Slc);
    begin
-      return GP_Subp_Marker & Base_Sloc_File (B) & ":" & Image (B.Line, 1);
+      return GP_Subp_Marker & File & ":" & Image (Positive (Line), 1);
    end Subp_Location;
 
    ---------------------------------
