@@ -385,6 +385,11 @@ package body Gnat2Why.Driver is
    procedure Do_Generate_VCs (E : Entity_Id) is
       Old_Num : constant Natural := Num_Registered_VCs_In_Why3;
    begin
+      --  Check that the global variables are cleared before and after this
+      --  routine; this is an assertion rather than a pre/post condition,
+      --  because the caller shouldn't really care about it.
+
+      pragma Assert (No (Current_Subp));
 
       --  Delete all theories in main so that we start this file with no other
       --  VCs.
@@ -467,6 +472,8 @@ package body Gnat2Why.Driver is
             Run_Gnatwhy3 (File_Name);
          end;
       end if;
+
+      Current_Subp := Empty;
    end Do_Generate_VCs;
 
    ---------------------------
