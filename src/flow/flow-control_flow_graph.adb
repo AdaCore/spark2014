@@ -4575,7 +4575,6 @@ package body Flow.Control_Flow_Graph is
 
       DM : constant Dependency_Maps.Map :=
         Parse_Initializes (Package_Spec, FA.B_Scope);
-      --  ??? This needs to take into account initializes from gg
 
       Save_In_Nested_Package : constant Boolean := Ctx.In_Nested_Package;
 
@@ -4622,25 +4621,30 @@ package body Flow.Control_Flow_Graph is
                        (if Present (The_Out)
                         then Get_Direct_Mapping_Id (The_Out)
                         else Types.Empty);
+                     --  If Init_Item = Types.Empty, we are in the case of a
+                     --  "null => ..." Initializes contract. We will create
+                     --  a vertex to read the RHS of the contract and insert
+                     --  it in the Connections Map.
 
                      V : Flow_Graphs.Vertex_Id;
 
                   begin
-                     if Present (Init_Item) then
-                        Init_Items.Append (Union_Id (Init_Item));
+                     Init_Items.Append (Union_Id (Init_Item));
 
-                        Add_Vertex
-                          (FA,
-                           Make_Package_Initialization_Attributes
-                             (The_State => The_Out,
-                              Inputs    => The_Ins,
-                              Scope     => FA.B_Scope,
-                              Loops     => Ctx.Current_Loops,
-                              E_Loc     => Init_Item),
-                           V);
-                        CM.Insert (Union_Id (Init_Item),
-                                   Trivial_Connection (V));
-                     end if;
+                     Add_Vertex
+                       (FA,
+                        Make_Package_Initialization_Attributes
+                          (The_State => The_Out,
+                           Inputs    => The_Ins,
+                           Scope     => FA.B_Scope,
+                           Loops     => Ctx.Current_Loops,
+                           E_Loc     => (if Present (Init_Item)
+                                         then Init_Item
+                                         else N)),
+                        V);
+                     CM.Insert (Union_Id (Init_Item),
+                                Trivial_Connection (V));
+
                   end;
                end loop;
 
