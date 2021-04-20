@@ -9,5 +9,5 @@ package Overlay_Test is
       Size        => 64,
       Object_Size => 64;
 
-   procedure Test_Program (A : Nv_DW_Block64) with Global => null;
+   procedure Test_Program (A : aliased Nv_DW_Block64) with Global => null;
 end Overlay_Test;

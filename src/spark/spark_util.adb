@@ -2939,30 +2939,80 @@ package body SPARK_Util is
    procedure Objects_Have_Compatible_Alignments
      (X, Y        : Entity_Id;
       Result      : out Boolean;
-      Explanation : out Unbounded_String) is
+      Explanation : out Unbounded_String)
+   is
+      AX : Uint;
+      AY : Uint;
+      --  Alignment, which is coming either from the object (when specified
+      --  explicitly) or from the type (when possible).
+
    begin
-      if not Known_Alignment (X) then
+      --  Stand-alone objects can have alignment specified explicitly
+
+      if Known_Alignment (X) then
+         AX := Alignment (X);
+
+      --  Formal parameters get alignment from their types, but only when
+      --  they are aliased.
+
+      elsif Is_Formal (X)
+        and then Known_Alignment (Etype (X))
+      then
+         if Is_Aliased (X) then
+            AX := Alignment (Etype (X));
+         else
+            Result := False;
+            Explanation :=
+              To_Unbounded_String
+                (Source_Name (X) &
+                 " must be aliased for its alignment to be known");
+            return;
+         end if;
+      else
          Result := False;
          Explanation :=
-           To_Unbounded_String (Source_Name (X) & " doesn't have an "
-                                & "Alignment representation clause or aspect");
+           To_Unbounded_String
+             (Source_Name (X) & " doesn't have an "
+              & "Alignment representation clause or aspect");
          return;
       end if;
-      if not Known_Alignment (Y) then
+
+      --  Same for the second object
+
+      if Known_Alignment (Y) then
+         AY := Alignment (Y);
+
+      elsif Is_Formal (Y)
+        and then Known_Alignment (Etype (Y))
+      then
+         if Is_Aliased (Y) then
+            AY := Alignment (Etype (Y));
+         else
+            Result := False;
+            Explanation :=
+              To_Unbounded_String
+                (Source_Name (X) &
+                 " must be aliased for its alignment to be known");
+            return;
+         end if;
+      else
          Result := False;
          Explanation :=
-           To_Unbounded_String (Source_Name (Y) & " doesn't have an "
-                                & "Alignment representation clause or aspect");
+           To_Unbounded_String
+             (Source_Name (Y) & " doesn't have an "
+              & "Alignment representation clause or aspect");
          return;
       end if;
-      if Alignment (X) mod Alignment (Y) /= Uint_0 then
+
+      if AX mod AY /= Uint_0 then
          Result := False;
          Explanation :=
-           To_Unbounded_String ("alignment of " & Source_Name (X) & " (which "
-                                & "is " & UI_Image (Alignment (X)) & ") must "
-                                & "be a multipe of the alignment of "
-                                & Source_Name (Y) & "(which is "
-                                & UI_Image (Alignment (Y)) & ")");
+           To_Unbounded_String
+             ("alignment of " & Source_Name (X) &
+              " (which is " & UI_Image (AX) & ")" &
+              " must be a multiple of the " &
+              "alignment of " & Source_Name (Y) &
+              " (which is " & UI_Image (AY) & ")");
          return;
       end if;
       Result := True;
