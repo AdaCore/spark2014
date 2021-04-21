@@ -773,12 +773,6 @@ package body Gnat2Why.Driver is
 
             Translate_CUnit;
 
-            --  After printing the .mlw files the memory consumed by the
-            --  Why3 AST is no longer needed; give it back to OS, so that
-            --  provers can use it.
-
-            Why.Atree.Tables.Free;
-
             Collect_Results;
             --  If the analysis is requested for a specific piece of code, we
             --  do not warn about useless pragma Annotate, because it's likely
@@ -1161,6 +1155,9 @@ package body Gnat2Why.Driver is
       --  for solvers.
       Translated_Object_Names.Clear;
       Translated_Object_Names.Reserve_Capacity (0);
+
+      Why.Gen.Names.Free;
+      Why.Atree.Tables.Free;
    end Translate_CUnit;
 
    ----------------------

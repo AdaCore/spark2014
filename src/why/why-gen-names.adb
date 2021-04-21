@@ -420,6 +420,15 @@ package body Why.Gen.Names is
            Ada_Node => Get_Ada_Node (+Name));
    end Field_Append;
 
+   ----------
+   -- Free --
+   ----------
+
+   procedure Free is
+   begin
+      Free (Why3_Symbol_Alloc);
+   end Free;
+
    ---------------------------
    -- Get_Modular_Converter --
    ---------------------------

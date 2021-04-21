@@ -42,6 +42,9 @@ package Why.Gen.Names is
    --  Initialize the state of this package; should be called before using the
    --  NID function.
 
+   procedure Free;
+   --  Release memory used to store names
+
    function NID (Name : String) return Symbol;
    --  Return Symbol for Name
 
