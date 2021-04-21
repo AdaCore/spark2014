@@ -111,6 +111,8 @@ respect to the program semantics of |SPARK|.
 6. If the address of an object ``Y`` is taken other than in an address clause
    of the form ``with Address => Y'Address``, then ``Y`` shall be volatile.
 
+7. If an object ``X`` overlays an object ``Y``, then neither ``X`` nor ``Y``
+   shall be constituents of an abstract state.
 
 Machine Code Insertions
 -----------------------
