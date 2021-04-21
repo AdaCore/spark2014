@@ -557,15 +557,15 @@ package SPARK_Util.Subprograms is
    --    is used e.g. for the --limit-subp switch of GNATprove.
 
    function Subp_Location (E : Entity_Id) return String
-   with Pre => Ekind (E) in Subprogram_Kind |
-                            E_Package       |
-                            Type_Kind       |
-                            Entry_Kind;
+   with Pre => Ekind (E) in Subprogram_Kind | E_Subprogram_Body
+                          | E_Package       | E_Package_Body
+                          | Type_Kind       | E_Task_Body
+                          | Entry_Kind;
    --  @param E subprogram, package, type or entry
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file and
-   --    line where this entity is declared. This allows to identify the entity
-   --    by its source position and is used e.g. for the --limit-subp switch of
-   --    GNATprove.
+   --    line where this entity is declared (or completed). This allows to
+   --    identify the entity by its source position and is used e.g. for the
+   --    --limit-subp switch of GNATprove.
 
    function Subp_Needs_Invariant_Checks (E : Entity_Id) return Boolean;
    --  @param E subprogram or entry

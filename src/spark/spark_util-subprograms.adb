@@ -1573,9 +1573,6 @@ package body SPARK_Util.Subprograms is
    function Subp_Body_Location (E : Entity_Id) return String is
       Body_N : Node_Id;
       Body_E : Entity_Id := Empty;
-      Slc    : Source_Ptr;
-      Line   : Positive;
-
    begin
       case Ekind (E) is
          when E_Function
@@ -1598,14 +1595,10 @@ package body SPARK_Util.Subprograms is
             null;
       end case;
 
-      if Present (Body_E) then
-         Slc := Sloc (Body_E);
-         Line := Positive (Get_Physical_Line_Number (Slc));
-         return
-           GP_Subp_Marker & SPARK_Util.File_Name (Slc) & ":" & Image (Line, 1);
-      else
-         return "";
-      end if;
+      return
+        (if Present (Body_E)
+         then Subp_Location (Body_E)
+         else "");
    end Subp_Body_Location;
 
    -------------------
