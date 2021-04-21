@@ -2775,9 +2775,9 @@ package body Flow_Generated_Globals.Phase_2 is
      (Initialized_Vars_And_States.Contains (EN)
         or else GG_Has_Async_Writers (EN));
 
-   -----------------------
-   -- GG_Is_Constituent --
-   -----------------------
+   -------------------------------
+   -- GG_Is_Part_Of_Constituent --
+   -------------------------------
 
    function GG_Is_Part_Of_Constituent (EN : Entity_Name) return Boolean
      renames Part_State_Map.Contains;
