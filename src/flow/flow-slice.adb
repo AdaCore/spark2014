@@ -498,9 +498,9 @@ package body Flow.Slice is
                pragma Assert (if Ekind (E) = E_Function
                               then not Is_Predicate_Function (E));
 
-               --  Nested packages with Initializes contract have their reads
-               --  and writes are already inlined in the CFG; those without the
-               --  that contract need to be processed by the GG just like
+               --  Nested packages with an Initializes contract have their
+               --  reads and writes already inlined in the CFG; those without
+               --  such a contract need to be processed by the GG just like
                --  subprogram calls.
 
                if Ekind (E) = E_Package then
