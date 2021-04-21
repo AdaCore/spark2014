@@ -39,7 +39,6 @@ with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Definition.Annotate;          use SPARK_Definition.Annotate;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
 with Stand;                              use Stand;
-with VC_Kinds;                           use VC_Kinds;
 
 package body SPARK_Util.Subprograms is
 
@@ -1251,8 +1250,8 @@ package body SPARK_Util.Subprograms is
    -------------------------------------
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
-      Limit_Str : constant String :=
-        GP_Subp_Marker & To_String (Gnat2Why_Args.Limit_Subp);
+      Limit_Str : constant String := To_String (Gnat2Why_Args.Limit_Subp);
+
    begin
       return
         Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body | Entry_Kind
@@ -1614,7 +1613,7 @@ package body SPARK_Util.Subprograms is
       File : constant String := File_Name (Slc);
       Line : constant Physical_Line_Number := Get_Physical_Line_Number (Slc);
    begin
-      return GP_Subp_Marker & File & ":" & Image (Positive (Line), 1);
+      return File & ":" & Image (Positive (Line), 1);
    end Subp_Location;
 
    ---------------------------------

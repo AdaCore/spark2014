@@ -551,7 +551,7 @@ package SPARK_Util.Subprograms is
                             Type_Kind       |
                             Entry_Kind;
    --  @param E subprogram, package, type or entry
-   --  @return a String of the form GP_Subp:foo.adb:12 pointing to the file and
+   --  @return a String of the form foo.adb:12 pointing to the file and
    --    line where the body for this entity is declared, or "" if there is
    --    no body. This allows to identify the entity by its source position and
    --    is used e.g. for the --limit-subp switch of GNATprove.
@@ -562,7 +562,7 @@ package SPARK_Util.Subprograms is
                           | Type_Kind       | E_Task_Body
                           | Entry_Kind;
    --  @param E subprogram, package, type or entry
-   --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file and
+   --  @return a String of the form foo.ads:12 pointing to the file and
    --    line where this entity is declared (or completed). This allows to
    --    identify the entity by its source position and is used e.g. for the
    --    --limit-subp switch of GNATprove.
