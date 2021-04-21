@@ -984,7 +984,13 @@ package body Gnat2Why.Driver is
               Args                   => Args,
               Output_File_Descriptor => Fd,
               Err_To_Out             => True);
-         pragma Assert (Pid /= Invalid_Pid);
+
+         --  If spawning fails, for whatever reason, then simply crash
+
+         if Pid = Invalid_Pid then
+            raise Program_Error;
+         end if;
+
          Output_File_Map.Insert (Pid, Name);
          Close (Fd);
 
