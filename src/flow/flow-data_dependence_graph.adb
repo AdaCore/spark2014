@@ -219,11 +219,14 @@ package body Flow.Data_Dependence_Graph is
    begin
       FA.DDG := FA.CFG.Create;
 
-      --  Process 'Initial vertices (leading to the Start_Vertex)
+      --  Process 'Initial vertices (leading to the Start_Vertex); those
+      --  vertices can have 'Initial_Grouping in-neighbours themselves, but
+      --  they do not affect DDG.
 
       for V_D of FA.CFG.Get_Collection
         (FA.Start_Vertex, Flow_Graphs.In_Neighbours)
       loop
+         pragma Assert (FA.CFG.Get_Key (V_D).Variant = Initial_Value);
          Process (V_D, Unused);
       end loop;
 
