@@ -1975,10 +1975,11 @@ package body Flow_Generated_Globals.Phase_2 is
                --  maintaing the Global_Nodes invariant.
 
                procedure Children_Initializes (Parent : Entity_Name);
-               --  Pull objects initialized in child packages into own refined
-               --  outputs, so that Part_Ofs constituents declared in child
-               --  units contribute to the initialization of Abstract_States
-               --  declared in the parent.
+               --  Recursive routine to pull objects initialized in child
+               --  packages into own refined outputs, so that Part_Of
+               --  constituents declared in child units contribute to the
+               --  initialization of Abstract_States declared in the parent.
+               --  ??? generic child units should be filtered earlier
 
                --------------------------
                -- Children_Initializes --
@@ -1988,21 +1989,18 @@ package body Flow_Generated_Globals.Phase_2 is
                begin
                   for Child of Child_Packages (Parent) loop
                      Children_Initializes (Child);
-                     --  ??? generic child units should be filtered earlier
-
                      --  Pick the Initializes contract computed in the current
                      --  iteration of Do_Global.
-
-                     --  ??? if Patches would be a map, so we could just pick
-                     --  what we need and not scan it.
+                     --  ??? if Patches was a map, we could just pick what we
+                     --  need and not have to scan it.
 
                      for Patch of Patches loop
                         if Patch.Entity = Child then
-                           Result_Outputs.Union (Patch.Contract.Initializes);
-                           Result_Inputs.Union
-                             (Patch.Contract.Proper.Inputs);
                            Result_Proof_Ins.Union
                              (Patch.Contract.Proper.Proof_Ins);
+                           Result_Inputs.Union
+                             (Patch.Contract.Proper.Inputs);
+                           Result_Outputs.Union (Patch.Contract.Initializes);
                            exit;
                         end if;
                      end loop;
