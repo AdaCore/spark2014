@@ -1,4 +1,5 @@
+q1-q2-q3.adb:2:14: info: add a contract to analyze it separately from calling contexts
+q1-q2-q3.adb:2:14: info: local subprogram "Set" only analyzed in the context of calls
 q1-q2.ads:1:38: warning: no procedure exists that can initialize abstract state "Q2.S2"
-q1-q2.ads:2:25: info: data dependencies proved
-q1.ads:1:09: high: Q2.S2 must be initialized at elaboration
-q1.ads:2:25: info: data dependencies proved
+q1-q2.ads:5:25: info: data dependencies proved
+q1.ads:6:25: info: data dependencies proved
