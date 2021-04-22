@@ -6273,10 +6273,8 @@ package body Flow.Control_Flow_Graph is
                   Edge_Selector => Ignore_Abend_Edges'Access);
 
       --  (3) We combine the above results with the ones from step 1
-      for V of Dead loop
-         if Pathable.Contains (V) then
-            FA.Atr (V).Is_Exceptional_Path := True;
-         end if;
+      for V of Vertex_Sets.Set'(Dead and Pathable) loop
+         FA.Atr (V).Is_Exceptional_Path := True;
       end loop;
 
       --  (4) Flag all vertices that have an exceptional path as an out
