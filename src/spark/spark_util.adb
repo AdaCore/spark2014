@@ -2943,31 +2943,15 @@ package body SPARK_Util is
    is
       AX : Uint;
       AY : Uint;
-      --  Alignment, which is coming either from the object (when specified
-      --  explicitly) or from the type (when possible).
+      --  Alignment, which is coming either from the aspect or representation
+      --  clause (when specified explicitly for stand-alone object) or from the
+      --  type (when possible).
 
    begin
       --  Stand-alone objects can have alignment specified explicitly
 
       if Known_Alignment (X) then
          AX := Alignment (X);
-
-      --  Formal parameters get alignment from their types, but only when
-      --  they are aliased.
-
-      elsif Is_Formal (X)
-        and then Known_Alignment (Etype (X))
-      then
-         if Is_Aliased (X) then
-            AX := Alignment (Etype (X));
-         else
-            Result := False;
-            Explanation :=
-              To_Unbounded_String
-                (Source_Name (X) &
-                 " must be aliased for its alignment to be known");
-            return;
-         end if;
       else
          Result := False;
          Explanation :=
@@ -2977,7 +2961,8 @@ package body SPARK_Util is
          return;
       end if;
 
-      --  Same for the second object
+      --  Similar for the second object, but also recognize implicit alignment
+      --  for formal parameters.
 
       if Known_Alignment (Y) then
          AY := Alignment (Y);
