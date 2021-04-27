@@ -1134,13 +1134,32 @@ package body Gnat2Why.Borrow_Checker is
 
    begin
       if Is_Anonymous_Access_Object_Type (Target_Typ) then
+         Expr_Root := Get_Root_Object (Expr);
+
          if Is_Decl then
             Target_Root := Target;
+
+            --  Check that the root of the initial expression does not have
+            --  overlays.
+
+            if not Overlay_Alias (Expr_Root).Is_Empty
+              and then not Is_Constant_In_SPARK (Expr_Root)
+            then
+               declare
+                  Operation : constant String :=
+                    (if Is_Access_Constant (Target_Typ)
+                     or else Is_Constant_Borrower (Target_Root)
+                     then "observed" else "borrowed");
+               begin
+                  Error_Msg_N
+                    (Operation & " object is aliased through address clauses",
+                     Target);
+                  Permission_Error := True;
+               end;
+            end if;
          else
             Target_Root := Get_Root_Object (Target);
          end if;
-
-         Expr_Root := Get_Root_Object (Expr);
 
          --  SPARK RM 3.10(7): For an assignment statement where the target is
          --  a stand-alone object of an anonymous access-to-object type.
