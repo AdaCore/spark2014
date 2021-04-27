@@ -1,3 +1,4 @@
 basic_contracts.adb:3:13: high: all paths in "Average" raise exceptions or do not terminate normally
 basic_contracts.adb:8:38: info: range check proved (Trivial)
 basic_contracts.adb:10:07: medium: assertion might fail
+basic_contracts.adb:12:07: warning: this statement is never reached

@@ -458,6 +458,11 @@ package body Flow.Control_Flow_Graph is
    --  Block contains the combined standard entry and exits of the joined
    --  up sequence. Entries for the nodes are removed from the connection map.
 
+   procedure Clear_Attributes (Atr : in out V_Attributes);
+   --  Clear the attributes and set Is_Null_Node to True. The values of
+   --  Is_Original_Program_Node and Error_Location are kept because they are
+   --  read in a routine that detects dead code.
+
    procedure Create_Record_Tree
      (F        : Flow_Id;
       Leaf_Atr : V_Attributes;
@@ -981,8 +986,8 @@ package body Flow.Control_Flow_Graph is
 
    procedure Mark_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
    --  Set Is_Exceptional_Path on all vertices belonging to exceptional control
-   --  flow, and Is_Exceptional_branch on all vertices leading into an
-   --  exceptional path.
+   --  flow or dead code, and Is_Exceptional_branch on all vertices leading
+   --  into an exceptional path.
 
    procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
    --  Delete all vertices from exceptional paths from the control flow graph
@@ -6110,12 +6115,10 @@ package body Flow.Control_Flow_Graph is
    procedure Mark_Exceptional_Paths (FA : in out Flow_Analysis_Graphs) is
       --  Identification of exceptional paths is a bit tedious. We use a number
       --  of simple DFS passes over the graph which will eventually flag all
-      --  vertices belonging to exceptional paths.
+      --  vertices belonging to exceptional paths or dead code.
       --
       --  1. We need to detect dead code (which is again later detected by
-      --     flow-analysis). Detection of exceptional paths will also flag dead
-      --     code; since we don't want this we need to know what dead code is
-      --     so we can avoid flagging it.
+      --     flow-analysis). We flag all vertices that are not identified here.
       --
       --  2. We then note which vertices can be reached in a reversed DFS
       --     search (but not crossing ABEND edges) - all remaining vertices are
@@ -6124,7 +6127,7 @@ package body Flow.Control_Flow_Graph is
       --  3. We need to account for dead code in exceptional paths; we perform
       --     another dead code detection but this time we don't cross
       --     exceptional path vertices in the DFS. We flag all vertices
-      --     identified here that have not been identified in the first step.
+      --     identified here.
       --
       --  4. Finally, when we prune exceptional paths we might leave an if
       --     statement with only a single exit: such a vertex consumes
@@ -6249,7 +6252,53 @@ package body Flow.Control_Flow_Graph is
       --      `Pathable'.
       FA.CFG.DFS (Start         => FA.Start_Vertex,
                   Include_Start => True,
-                  Visitor       => Mark_Pathable'Access);
+                  Visitor       => Mark_Pathable'Access,
+                  Edge_Selector => Ignore_Abend_Edges'Access);
+
+      --  (1) Flag all dead-code vertices
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+
+         begin
+
+            --  Ignore vertices that were flagged as live
+
+            if Pathable.Contains (V) then
+               null;
+
+            --  Ignore the end vertex
+
+            elsif V = FA.End_Vertex then
+               null;
+
+            --  Ignore 'Initial and 'Final vertices
+
+            elsif FA.CFG.Get_Key (V).Variant in Initial_Value .. Final_Grouping
+            then
+               null;
+
+            --  Ignore vertices whose attributes are Null_Node_Attributes
+
+            elsif Atr.Is_Null_Node and then Atr.Is_Program_Node then
+               null;
+
+            --  Ignore vertices which don't have normal execution
+
+            elsif Atr.Execution /= Normal_Execution then
+               null;
+
+            --  Flag the remaining vertices
+
+            else
+               --  Here, we store the value of Is_Program_Node in
+               --  Is_Original_Program_Node because we want to raise
+               --  warnings about unreachable nodes in Find_Dead_Code.
+               Atr.Is_Original_Program_Node := Atr.Is_Program_Node;
+               Atr.Is_Exceptional_Path      := True;
+            end if;
+         end;
+      end loop;
 
       --  (2) In reverse, find reachable nodes (not crossing ABEND edges) and
       --      place them in set `Live'.
@@ -6272,8 +6321,12 @@ package body Flow.Control_Flow_Graph is
                   Visitor       => Mark_Reachable'Access,
                   Edge_Selector => Ignore_Abend_Edges'Access);
 
-      --  (3) We combine the above results with the ones from step 1
-      for V of Vertex_Sets.Set'(Dead and Pathable) loop
+      --  (3) Flag all vertices of Dead
+      for V of Dead loop
+
+         --  Here, we don't store Is_Program_Node in Is_Original_Program_Node
+         --  because the code is not actually unreachable, and we don't want
+         --  to raise warnings on those vertices.
          FA.Atr (V).Is_Exceptional_Path := True;
       end loop;
 
@@ -6307,7 +6360,7 @@ package body Flow.Control_Flow_Graph is
          begin
             if Atr.Is_Exceptional_Path then
                FA.CFG.Clear_Vertex (V);
-               Atr := (Null_Attributes with delta Is_Null_Node => True);
+               Clear_Attributes (Atr);
             end if;
          end;
       end loop;
@@ -6423,30 +6476,37 @@ package body Flow.Control_Flow_Graph is
    procedure Simplify_CFG (FA : in out Flow_Analysis_Graphs) is
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         if FA.Atr (V).Is_Null_Node then
-            --  Close the subgraph indicated by V's neighbours
-            for A of FA.CFG.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
-               for B of FA.CFG.Get_Collection (V, Flow_Graphs.Out_Neighbours)
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+
+         begin
+            if Atr.Is_Null_Node then
+               --  Close the subgraph indicated by V's neighbours
+               for A of FA.CFG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                loop
-                  --  The colour edges depends on the source vertex; for edges
-                  --  incoming to the null vertex this colour can be anything
-                  --  and it must be preserved.
+                  for B of FA.CFG.Get_Collection
+                    (V, Flow_Graphs.Out_Neighbours)
+                  loop
+                     --  The colour edges depends on the source vertex; for
+                     --  edges incoming to the null vertex this colour can
+                     --  be anything and it must be preserved.
 
-                  FA.CFG.Add_Edge (A, B, FA.CFG.Edge_Colour (A, V));
+                     FA.CFG.Add_Edge (A, B, FA.CFG.Edge_Colour (A, V));
 
-                  --  The colour of edges outgoing from a null vertex is always
-                  --  "default"; such edges can be safely ignored.
+                     --  The colour of edges outgoing from a null vertex is
+                     --  always "default"; such edges can be safely ignored.
 
-                  pragma Assert (FA.CFG.Edge_Colour (V, B) = EC_Default);
+                     pragma Assert (FA.CFG.Edge_Colour (V, B) = EC_Default);
+                  end loop;
                end loop;
-            end loop;
 
-            --  Remove all edges from the vertex
-            FA.CFG.Clear_Vertex (V);
+               --  Remove all edges from the vertex
+               FA.CFG.Clear_Vertex (V);
 
-            --  Clear the node
-            FA.Atr (V) := (Null_Attributes with delta Is_Null_Node => True);
-         end if;
+               --  Clear the node
+               Clear_Attributes (Atr);
+            end if;
+         end;
       end loop;
    end Simplify_CFG;
 
@@ -6791,6 +6851,19 @@ package body Flow.Control_Flow_Graph is
    ------------------------------------------------------------
    --  Package functions and procedures
    ------------------------------------------------------------
+
+   ----------------------
+   -- Clear_Attributes --
+   ----------------------
+
+   procedure Clear_Attributes (Atr : in out V_Attributes) is
+   begin
+      Atr := (Null_Attributes with delta
+                Is_Null_Node             => True,
+                Is_Original_Program_Node =>
+                  Atr.Is_Original_Program_Node,
+                Error_Location           => Atr.Error_Location);
+   end Clear_Attributes;
 
    ------------
    -- Create --
@@ -7152,11 +7225,15 @@ package body Flow.Control_Flow_Graph is
             end;
       end case;
 
+      --  Copy the CFG before any treatment in CFG_With_Dead_Code
+      FA.CFG_With_Dead_Code := FA.CFG.Create;
+      FA.CFG_With_Dead_Code.Copy_Edges (FA.CFG);
+
       --  Label all vertices that are part of exceptional execution paths
       Mark_Exceptional_Paths (FA);
       Prune_Exceptional_Paths (FA);
 
-      --  Make sure we will be able to produce the post-dominance frontier even
+      --  Make sure we will be able to produce the post-dominance frontier
       --  if we have dead code remaining.
       Separate_Dead_Paths (FA);
 

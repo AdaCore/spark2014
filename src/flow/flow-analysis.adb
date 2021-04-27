@@ -1945,16 +1945,17 @@ package body Flow.Analysis is
 
    begin
       --  Discover live code
-      FA.CFG.DFS (Start         => FA.Start_Vertex,
-                  Include_Start => True,
-                  Visitor       => Flag_Live'Access);
+      FA.CFG_With_Dead_Code.DFS (Start         => FA.Start_Vertex,
+                                 Include_Start => True,
+                                 Visitor       => Flag_Live'Access);
 
       --  Anything remaining is dead
-      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      for V of FA.CFG_With_Dead_Code.Get_Collection (Flow_Graphs.All_Vertices)
+      loop
          declare
             Atr : V_Attributes renames FA.Atr (V);
          begin
-            if Atr.Is_Program_Node
+            if Atr.Is_Original_Program_Node
               and then not Live_Code.Contains (V)
             then
                Error_Msg_Flow (FA       => FA,

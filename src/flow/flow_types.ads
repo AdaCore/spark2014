@@ -589,6 +589,9 @@ package Flow_Types is
       --  It should be noted that most vertices we construct will have this set
       --  to true.
 
+      Is_Original_Program_Node     : Boolean;
+      --  True for pruned vertices that were originally program nodes
+
       In_Nested_Package            : Boolean;
       --  True for vertices created for constructs in nested packages
 
@@ -730,6 +733,7 @@ package Flow_Types is
      V_Attributes'(Is_Null_Node                    => False,
                    In_Nested_Package               => False,
                    Is_Program_Node                 => False,
+                   Is_Original_Program_Node        => False,
                    Is_Exceptional_Branch           => False,
                    Is_Exceptional_Path             => False,
                    Is_Assertion                    => False,

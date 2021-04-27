@@ -261,4 +261,3 @@ r.adb:58:04: medium: call to nonreturning subprogram might be executed
 r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:59:04: info: call to nonreturning procedure never executed (CVC4: 1 VC)
-r.adb:59:04: warning: this statement is never reached

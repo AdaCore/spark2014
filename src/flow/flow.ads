@@ -153,11 +153,12 @@ package Flow is
       --  the procedure (i.e. returns jump here), but before postconditions
       --  are checked.
 
-      CFG : Flow_Graphs.Graph;
-      DDG : Flow_Graphs.Graph;
-      CDG : Flow_Graphs.Graph;
-      TDG : Flow_Graphs.Graph;
-      PDG : Flow_Graphs.Graph;
+      CFG                : Flow_Graphs.Graph;
+      CFG_With_Dead_Code : Flow_Graphs.Graph;
+      DDG                : Flow_Graphs.Graph;
+      CDG                : Flow_Graphs.Graph;
+      TDG                : Flow_Graphs.Graph;
+      PDG                : Flow_Graphs.Graph;
       --  The graphs
 
       Atr : Attribute_Maps.Map;

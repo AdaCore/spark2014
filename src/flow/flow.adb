@@ -500,6 +500,8 @@ package body Flow is
       Format_Item ("Is_Exceptional_Path",
                    Boolean'Image (A.Is_Exceptional_Path));
       Format_Item ("Is_Program_Node", Boolean'Image (A.Is_Program_Node));
+      Format_Item ("Is_Original_Program_Node",
+                   Boolean'Image (A.Is_Original_Program_Node));
       Format_Item ("Is_Assertion", Boolean'Image (A.Is_Assertion));
       Format_Item ("Is_Default_Init", Boolean'Image (A.Is_Default_Init));
       Format_Item ("Is_Loop_Entry", Boolean'Image (A.Is_Loop_Entry));
