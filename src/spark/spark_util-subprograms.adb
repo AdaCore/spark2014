@@ -825,6 +825,7 @@ package body SPARK_Util.Subprograms is
    function Is_Allocating_Function (E : Entity_Id) return Boolean is
    begin
       return Ekind (E) in E_Function | E_Subprogram_Type
+        and then Etype (E) /= Standard_Void_Type
 
         --  A function is said to be an allocating function if the result type
         --  of the function is a named access-to-variable type or a composite
