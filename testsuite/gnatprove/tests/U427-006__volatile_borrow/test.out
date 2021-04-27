@@ -1,0 +1,2 @@
+volatile_access.adb:3:29: error: access to volatile object cannot yield access-to-non-volatile type
+gnatprove: error during generation of Global contracts
