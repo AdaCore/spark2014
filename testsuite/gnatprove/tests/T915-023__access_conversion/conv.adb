@@ -13,16 +13,16 @@ procedure Conv with SPARK_Mode is
    procedure P (Y : access T2 := X) with
      Import;
 
-   function G (X : Ptr) return access T2 is (X);
+   function G (X : access T) return access T2 is (X);
 
-   function H (X : Ptr) return access T2 is
+   function H (X : access T) return access T2 is
    begin
       return R : access T := X do
          return;
       end return;
    end H;
 
-   function I (X : Ptr) return access T2 is
+   function I (X : access T) return access T2 is
    begin
       return X;
    end I;

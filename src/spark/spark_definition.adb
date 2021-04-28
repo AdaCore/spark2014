@@ -5008,17 +5008,27 @@ package body SPARK_Definition is
                  ("anonymous access type for result for "
                   & "non-traversal functions", Id);
 
-            --  For now we don't support volatile borrowing traversal
-            --  functions.
-            --  Supporting them would require some special handling as we
-            --  cannot call the function in the term domain to update the value
-            --  of the borrowed parameter at end.
+            --  If Id is a borrowing traversal function, its first parameter
+            --  must have an anonymous access-to-variable type.
 
-            elsif Is_Volatile_Func
-              and then Is_Borrowing_Traversal_Function (Id)
-            then
-               Mark_Unsupported
-                 ("volatile borrowing traversal function", Id);
+            elsif Is_Borrowing_Traversal_Function (Id) then
+               if not Is_Anonymous_Access_Type (Etype (First_Formal (Id)))
+                 or else not Is_Access_Variable (Etype (First_Formal (Id)))
+               then
+                  Mark_Unsupported
+                    ("borrowing traversal functions whose first parameter does"
+                     & " not have an anonymous access-to-variable type", Id);
+
+               --  For now we don't support volatile borrowing traversal
+               --  functions.
+               --  Supporting them would require some special handling as we
+               --  cannot call the function in the term domain to update the
+               --  value of the borrowed parameter at end.
+
+               elsif Is_Volatile_Func then
+                  Mark_Unsupported
+                    ("volatile borrowing traversal function", Id);
+               end if;
             end if;
 
             --  We currently do not support functions annotated with No_Return.
