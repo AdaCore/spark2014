@@ -3982,7 +3982,9 @@ package body SPARK_Definition is
    begin
       --  Early marking of the return type of E (if any), to be able to call
       --  Is_Allocating_Function afterwards.
-      Mark_Entity (Etype (E));
+      if Etype (E) /= Standard_Void_Type then
+         Mark_Entity (Etype (E));
+      end if;
 
       if Is_Allocating_Function (E)
         and then not Is_Valid_Allocating_Context (N)
