@@ -4227,6 +4227,7 @@ package body SPARK_Definition is
                         | N_Iterated_Component_Association
                         | N_Iterator_Specification
                         | N_Component_Association
+                        | N_Parameter_Association
                      =>
                         --  We allow procedure calls if they correspond to
                         --  lemmas.
