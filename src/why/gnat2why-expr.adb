@@ -15532,10 +15532,12 @@ package body Gnat2Why.Expr is
                      Explanation : Unbounded_String;
                   begin
 
-                     R := +Sequence
-                       (R,
-                        Havoc_Overlay_Aliases
-                          (Overlay_Alias (Defining_Identifier (Decl))));
+                     if not Is_Imported (Defining_Identifier (Decl)) then
+                        R := +Sequence
+                          (R,
+                           Havoc_Overlay_Aliases
+                             (Overlay_Alias (Defining_Identifier (Decl))));
+                     end if;
 
                      Suitable_For_UC_Target
                        (Retysp (Etype (Defining_Identifier (Decl))),
