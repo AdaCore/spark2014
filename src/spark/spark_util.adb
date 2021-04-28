@@ -2991,15 +2991,16 @@ package body SPARK_Util is
          return;
       end if;
 
-      if AX mod AY /= Uint_0 then
+      if AY mod AX /= Uint_0 then
          Result := False;
          Explanation :=
            To_Unbounded_String
-             ("alignment of " & Source_Name (X) &
-              " (which is " & UI_Image (AX) & ")" &
+             ("alignment of " & Source_Name (Y) &
+              " (which is " & UI_Image (AY) & ")" &
               " must be a multiple of the " &
-              "alignment of " & Source_Name (Y) &
-              " (which is " & UI_Image (AY) & ")");
+              "alignment of " & Source_Name (X) &
+              " (which is " & UI_Image (AX) & ")");
+
          return;
       end if;
       Result := True;

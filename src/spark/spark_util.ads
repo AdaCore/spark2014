@@ -506,8 +506,8 @@ package SPARK_Util is
    --            (object with Address clause)
    --  @param Y object that is overlaid (object whose 'Address is used in
    --            the Address clause of X)
-   --  @return True iff X'Alignment and Y'Alignment are known and X'Alignment
-   --          is an integral multiple of Y
+   --  @return True iff X'Alignment and Y'Alignment are known and Y'Alignment
+   --          is an integral multiple of X'Alignment
 
    --------------------------------
    -- Queries related to pragmas --

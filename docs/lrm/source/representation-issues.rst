@@ -99,8 +99,8 @@ respect to the program semantics of |SPARK|.
 2. If an object ``X`` overlays an object ``Y``, then the sizes of ``X`` and
    ``Y`` shall be known at compile-time and shall be equal.
 
-3. If an object ``X`` overlays an object ``Y``, then the alignment of ``X``
-   shall be an integral multiple of the alignment of ``Y``.
+3. If an object ``X`` overlays an object ``Y``, then the alignment of ``Y``
+   shall be an integral multiple of the alignment of ``X``.
 
 4. The type of an overlaid object shall be suitable as the target of an unchecked conversion
    (see :ref:`Unchecked Type Conversions`);
