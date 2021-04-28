@@ -1,3 +1,4 @@
 prove_all:
   no_fail: True
   steps: 5000
+large: True

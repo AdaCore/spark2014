@@ -1,4 +1,4 @@
 
 nonlinear.adb:4:11: medium: postcondition might fail, cannot prove R1 <= R2
     4 |  Post => R1 <= R2
-      |          ^ here
+      |          ^~~~~~~~

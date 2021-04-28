@@ -54,10 +54,10 @@ package body VC_Kinds is
 
          when VC_Division_Check            => "369",
 
-         --  CWE-120: Buffer Copy without Checking Size of Input ('Classic
-         --  Buffer Overflow')
+         --  CWE-119: Improper Restriction of Operations within the Bounds of a
+         --  Memory Buffer.
 
-         when VC_Index_Check               => "120",
+         when VC_Index_Check               => "119",
 
          --  CWE-190: Integer Overflow or Wraparound
 
@@ -537,7 +537,7 @@ package body VC_Kinds is
          return CEE_Other; -- CEE_Before_Loop;
       elsif S = "current_iteration" then
          return CEE_Other; -- CEE_Current_Iteration;
-      elsif S = "previous_iteration" then
+      elsif S = "before_iteration" then
          return CEE_Other; -- CEE_Previous_Iteration
       elsif S = "result" then
          return CEE_Result;

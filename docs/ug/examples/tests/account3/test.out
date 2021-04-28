@@ -1,7 +1,7 @@
 
 account3.adb:18:33: medium: overflow check might fail
    18 |            Num_Accounts := Tmp + 1;
-      |                                ^ here
+      |                            ~~~~^~~
   e.g. when Tmp = Natural'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: loop at line 13 should mention Num_Accounts in a loop invariant

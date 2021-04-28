@@ -1,3 +1,2 @@
 assertions SKIP test too slow for assertions
 inverse-prover SKIP test too slow
-!large SKIP hits rlimit in mailservers

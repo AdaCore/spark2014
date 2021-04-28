@@ -1,7 +1,7 @@
 
 justifications.adb:6:14: medium: overflow check might fail
     6 |      X := X + Y;
-      |             ^ here
+      |           ~~^~~
   e.g. when X = -1
         and Y = Integer'First
   reason for check: result of addition must fit in a 32-bits machine integer
@@ -11,7 +11,7 @@ justifications.adb:6:14: medium: overflow check might fail
 
 justifications.adb:7:14: medium: overflow check might fail
     7 |      Y := Y + 1;
-      |             ^ here
+      |           ~~^~~
   e.g. when Y = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at justifications.ads:4 should mention Y in a precondition
@@ -20,7 +20,7 @@ justifications.adb:7:14: medium: overflow check might fail
 
 justifications.adb:12:14: medium: overflow check might fail
    12 |      X := X + Y;
-      |             ^ here
+      |           ~~^~~
   e.g. when X = -1
         and Y = Integer'First
   reason for check: result of addition must fit in a 32-bits machine integer
@@ -30,7 +30,7 @@ justifications.adb:12:14: medium: overflow check might fail
 
 justifications.adb:13:14: medium: overflow check might fail
    13 |      Y := Y + 1;
-      |             ^ here
+      |           ~~^~~
   e.g. when Y = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at justifications.ads:9 should mention Y in a precondition

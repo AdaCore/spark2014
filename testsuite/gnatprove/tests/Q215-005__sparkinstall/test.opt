@@ -1,2 +1,3 @@
 packaged REQUIRED
 community XFAIL see TB25-005
+NT XFAIL not moved to gcc on windows yet

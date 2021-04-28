@@ -45,5 +45,15 @@ that contains `__flow`. The keys are identical to the named parameters of the
 corresponding python functions, see those functions for more information.
 
 This default behavior can be overridden by placing a `test.py` file in the test
-directory. In that case the test simply runs that test.py file. An existing
-`test.yaml` file is ignored in that case.
+directory. In that case the test simply runs that test.py file.
+`prove_all/do_flow` entries in the .yaml file are ignored in this case.
+
+The `test.yaml` file can contain a field `large` like this:
+
+```
+large: True
+```
+
+If set to true, the test is considered "large" and is skipped by default,
+unless the `large` discriminant is provided. If omitted, `large` is assumed to
+be `False`.

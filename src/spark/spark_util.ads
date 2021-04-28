@@ -878,6 +878,9 @@ package SPARK_Util is
    --  ??? this is only a temporary fix and should be removed once the
    --  underlying problem with First_Sloc is fixed.
 
+   function Safe_Last_Sloc (N : Node_Id) return Source_Ptr;
+   --  Wrapper for Last_Sloc, similar to Safe_First_Sloc.
+
    function Entity_To_Subp_Assumption (E : Entity_Id) return Subp_Type
    with Pre => (if Is_Internal (E)
                 then Is_Type (E) or else Is_Predicate_Function (E));

@@ -127,10 +127,10 @@ package body Flow_Error_Messages is
    function Compute_Sloc
      (N           : Node_Id;
       Place_First : Boolean := False)
-      return Source_Ptr
+      return Source_Span
    with Post => (if Present (N)
-                 then Compute_Sloc'Result >= First_Source_Ptr
-                 else Compute_Sloc'Result = No_Location);
+                 then Compute_Sloc'Result.Ptr >= First_Source_Ptr
+                 else Compute_Sloc'Result.Ptr = No_Location);
    --  Computes a better sloc for reporting of results than the Ada Node by
    --  taking generics into account.
    --  @param N the node for which we compute the sloc; might be Empty (e.g.
@@ -176,7 +176,7 @@ package body Flow_Error_Messages is
 
    function Print_Regular_Msg
      (Msg          : String;
-      Slc          : Source_Ptr;
+      Span         : Source_Span;
       Severity     : Msg_Severity;
       Continuation : Boolean := False)
       return Message_Id;
@@ -290,20 +290,21 @@ package body Flow_Error_Messages is
 
    function Compute_Sloc
      (N           : Node_Id;
-      Place_First : Boolean := False) return Source_Ptr
+      Place_First : Boolean := False) return Source_Span
    is
-      Slc : Source_Ptr :=
-        (if Place_First
-         then Safe_First_Sloc (N)
-         else Sloc (N));
+      Fst : Source_Ptr := Safe_First_Sloc (N);
+      Slc : Source_Ptr := (if Place_First then Fst else Sloc (N));
+      Lst : Source_Ptr := Safe_Last_Sloc (N);
    begin
       if Instantiation_Location (Slc) /= No_Location then
          --  If we are dealing with an instantiation of a generic we change the
          --  message to point at the implementation of the generic and we
          --  mention where the generic is instantiated.
+         Fst := Original_Location (Fst);
          Slc := Original_Location (Slc);
+         Lst := Original_Location (Lst);
       end if;
-      return Slc;
+      return To_Span (First => Fst, Ptr => Slc, Last => Lst);
    end Compute_Sloc;
 
    --------------------------
@@ -389,9 +390,10 @@ package body Flow_Error_Messages is
       --  N_Aggregate whose Sloc is on the opening bracket (this is perhaps an
       --  artefact from parsing) and not to the component entity.
 
-      Msg3 : constant String     := Compute_Message (Msg2, Attach_Node,
-                                                     F1, F2, F3);
-      Slc  : constant Source_Ptr := Compute_Sloc (Attach_Node);
+      Msg3 : constant String      := Compute_Message (Msg2, Attach_Node,
+                                                      F1, F2, F3);
+      Span : constant Source_Span := Compute_Sloc (Attach_Node);
+      Slc  : constant Source_Ptr  := Span.Ptr;
 
       Msg_Str : constant String :=
         Msg3 &
@@ -476,7 +478,7 @@ package body Flow_Error_Messages is
          --  emitted anyway).
 
          if not Suppressed and then Is_Specified_Line (Slc) then
-            Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity, Continuation);
+            Msg_Id := Print_Regular_Msg (Msg3, Span, Severity, Continuation);
          else
             Msg_Id := No_Message_Id;
          end if;
@@ -679,10 +681,12 @@ package body Flow_Error_Messages is
 
       --  Local variables
 
-      Message : Unbounded_String    :=
+      Message : Unbounded_String     :=
         To_Unbounded_String (Compute_Message (Msg, N));
-      Slc     : constant Source_Ptr := Compute_Sloc (N, Place_First);
-      VC_Slc  : constant Source_Ptr := Compute_Sloc (VC_Loc, Place_First);
+      Span    : constant Source_Span := Compute_Sloc (N, Place_First);
+      Slc     : constant Source_Ptr  := Span.Ptr;
+      VC_Span : constant Source_Span := Compute_Sloc (VC_Loc, Place_First);
+      VC_Slc  : constant Source_Ptr  := VC_Span.Ptr;
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc);
@@ -751,7 +755,7 @@ package body Flow_Error_Messages is
 
                   when GPO_Brief =>
                      Msg_Id :=
-                       Print_Regular_Msg (To_String (Message), Slc, Severity);
+                       Print_Regular_Msg (To_String (Message), Span, Severity);
 
                   --  In oneline mode, append all the extra information to the
                   --  main message and print it.
@@ -780,7 +784,7 @@ package body Flow_Error_Messages is
                      end;
 
                      Msg_Id :=
-                       Print_Regular_Msg (To_String (Message), Slc, Severity);
+                       Print_Regular_Msg (To_String (Message), Span, Severity);
 
                   --  In pretty mode, print the message, then print all the
                   --  extra information as continuation messages. The mechanism
@@ -792,24 +796,24 @@ package body Flow_Error_Messages is
 
                   when GPO_Pretty =>
                      Msg_Id :=
-                       Print_Regular_Msg (To_String (Message), Slc, Severity);
+                       Print_Regular_Msg (To_String (Message), Span, Severity);
 
                      if One_Liner /= "" then
                         Ignore_Id := Print_Regular_Msg
                           ("e.g. when " & One_Liner,
-                           Slc, Severity, Continuation => True);
+                           Span, Severity, Continuation => True);
                      end if;
 
                      if Details /= "" then
                         Ignore_Id := Print_Regular_Msg
                           ("reason for check: " & Details,
-                           Slc, Severity, Continuation => True);
+                           Span, Severity, Continuation => True);
                      end if;
 
                      if Explanation /= "" then
                         Ignore_Id := Print_Regular_Msg
                           ("possible explanation: " & Explanation,
-                           Slc, Severity, Continuation => True);
+                           Span, Severity, Continuation => True);
                      end if;
 
                      declare
@@ -818,7 +822,7 @@ package body Flow_Error_Messages is
                         if Fix /= "" then
                            Ignore_Id := Print_Regular_Msg
                              ("possible fix: " & Fix,
-                              Slc, Severity, Continuation => True);
+                              Span, Severity, Continuation => True);
                         end if;
                      end;
                   end case;
@@ -828,11 +832,11 @@ package body Flow_Error_Messages is
          when Info_Kind =>
             if Report_Mode /= GPR_Fail then
                Msg_Id :=
-                 Print_Regular_Msg (To_String (Message), Slc, Severity);
+                 Print_Regular_Msg (To_String (Message), Span, Severity);
             end if;
 
          when Warning_Kind =>
-            Msg_Id := Print_Regular_Msg (To_String (Message), Slc, Severity);
+            Msg_Id := Print_Regular_Msg (To_String (Message), Span, Severity);
 
          when Error_Kind =>
             --  cannot happen
@@ -2912,7 +2916,7 @@ package body Flow_Error_Messages is
 
    function Print_Regular_Msg
      (Msg          : String;
-      Slc          : Source_Ptr;
+      Span         : Source_Span;
       Severity     : Msg_Severity;
       Continuation : Boolean := False)
       return Message_Id
@@ -2943,7 +2947,7 @@ package body Flow_Error_Messages is
          else "");
    begin
       Message_Id_Counter := Message_Id_Counter + 1;
-      Error_Msg (Actual_Msg, Slc);
+      Error_Msg (Actual_Msg, Span);
       return Id;
    end Print_Regular_Msg;
 

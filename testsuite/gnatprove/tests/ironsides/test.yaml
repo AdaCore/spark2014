@@ -3,3 +3,4 @@ prove_all:
   prover: ["cvc4"]
   counterexample: False
   opt: ["--no-loop-unrolling", "--no-inlining"]
+large: True

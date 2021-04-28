@@ -1,7 +1,7 @@
 
 linear_search.adb:22:21: medium: range check might fail
    22 |         Pos := Pos + 1;
-      |                    ^ here
+      |                ~~~~^~~
   e.g. when Pos = 10
   reason for check: result of addition must fit in the target type of the assignment
 

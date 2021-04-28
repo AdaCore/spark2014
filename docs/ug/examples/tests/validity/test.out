@@ -3,16 +3,16 @@ validity.adb:7:59: info: type is suitable as source for unchecked conversion
 
 validity.adb:7:68: high: type with constraints on bit representation is unsuitable for unchecked conversion
     7 |   function Int_To_Float is new Ada.Unchecked_Conversion (Integer, Float);
-      |                                                                   ^ here
+      |                                                                   ^~~~~
   possible explanation: floating-point types have invalid bit patterns for SPARK
 
 validity.adb:11:22: warning: attribute Valid is assumed to return True
    11 |      pragma Assert (X'Valid);
-      |                     ^ here
+      |                     ^~~~~~~
 validity.adb:11:22: info: assertion proved
 
 validity.adb:13:22: warning: attribute Valid is assumed to return True
    13 |      pragma Assert (Y'Valid);
-      |                     ^ here
+      |                     ^~~~~~~
 validity.adb:13:22: info: assertion proved
 validity.ads:5:36: info: initialization of "Y" proved

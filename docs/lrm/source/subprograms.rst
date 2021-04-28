@@ -1221,17 +1221,14 @@ where ``discrete_expression`` is an ``expression`` of a discrete type.
 
 The aspect_definition for a Subprogram_Variant aspect_specification
 shall be a subprogram_variant_list. The Subprogram_Variant aspect
-of an inherited subprogram for a derived type is inherited except in the
-case where the parent type is also the type of one or more of the
-discrete_expressions; in that case the aspect is not inherited.
+of an inherited subprogram for a derived type is always unspecified.
 
 Two Subprogram_Variant aspects are said to be `compatible` if the lengths of
 the two subprogram_variant_item_list are equal and corresponding pairs
 of the elements of the two lists agree with respect to both change_direction
 and the type of their respective discrete_expressions. An unspecified
-(either explicitly or by inheritance) Subprogram_Variant aspect is
-compatible with, and only with, another unspecified Subprogram_Variant
-aspect (including itself).
+Subprogram_Variant aspect is compatible with, and only with, another
+unspecified Subprogram_Variant aspect (including itself).
 
 .. index:: recursive subprograms
 
@@ -1292,15 +1289,24 @@ Decreases) then the expression value obtained for the call is greater
    subprogram is the same as the callee) and at the point where the
    subprogram is declared shall agree.
 
+6. For purposes of the rules given in this section (including static semantics,
+   dynamic semantics, legality rules, and verification rules), a call to
+   an inherited subprogram associated with a derived type is treated as
+   if the call were replaced with the equivalent call to the corresponding
+   primitive subprogram of the parent or progenitor type described in
+   the "Dynamic Semantics" section of Ada RM 3.4. This notional transformation
+   is applied repeatedly in the case of multiple levels of subprogram
+   inheritance.
+
 .. centered:: **Dynamic Semantics**
 
-6. At the beginning of a subprogram with a specified Subprogram_Variant aspect,
+7. At the beginning of a subprogram with a specified Subprogram_Variant aspect,
    the ``discrete_expressions`` are evaluated in textual order and their
    values are each saved in a constant that is implicitly declared at
    the beginning of the subprogram body[, in the same way as for
    an unconditionally evaluated Old attribute reference (see Ada RM 6.1.1)].
 
-7. For a direct recursive call (i.e., the calling subprogram is the same
+8. For a direct recursive call (i.e., the calling subprogram is the same
    as the callee), a check is made that the variant of the call progresses
    (as described above). If the check fails, Assertion_Error is raised.
    [No runtime check is performed in the case of a direct call from one
@@ -1312,9 +1318,9 @@ Decreases) then the expression value obtained for the call is greater
     
 .. centered:: **Verification Rules**
 
-8.  Statically mutually recursive subprograms shall have compatible variants.
+9.  Statically mutually recursive subprograms shall have compatible variants.
 
-9.  A statically mutually recursive call (that is, a direct call where the
+10. A statically mutually recursive call (that is, a direct call where the
     caller and the callee are statically mutually recursive) where the
     Subprogram_Variant aspects of the two subprograms are specified shall not
     occur with a precondition expression, within a subtype predicate
@@ -1325,7 +1331,7 @@ Decreases) then the expression value obtained for the call is greater
     inside the elaboration of a package unless the package is located
     within a subprogram and not within a declare block.
 
-10. For a statically mutually recursive call to a subprogram whose
+11. For a statically mutually recursive call to a subprogram whose
     Subprogram_Variant aspect is specified, a verification condition
     is introduced to ensure that the evaluation of the
     ``discrete_expressions`` of the subprogram_variant_list of the
@@ -1336,9 +1342,7 @@ Decreases) then the expression value obtained for the call is greater
     same (a direct recursive call) as a consequence of the runtime check taking
     place in that case. It is also generated in the case of other mutually
     recursive calls, although no checks are introduced at runtime due to
-    compiler implementation constraints. No such verification condition
-    is introduced for the implicit call associated with an inherited
-    subprogram as described in the "Dynamic Semantics" section of Ada RM 3.4.
+    compiler implementation constraints.
 
 Formal Parameter Modes
 ----------------------

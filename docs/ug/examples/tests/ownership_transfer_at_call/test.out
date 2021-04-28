@@ -1,11 +1,11 @@
 
 ownership_transfer_at_call.adb:5:04: medium: memory leak might occur at end of scope
     5 |   X : Int_Ptr;
-      |   ^ here
+      |   ^~~~~~~~~~~
 
 ownership_transfer_at_call.adb:11:09: medium: pointer dereference check might fail
    11 |      Y.all := Y.all + 1;
-      |        ^ here
+      |      ~~^~~
   e.g. when Y = null
   possible fix: subprogram at line 7 should mention Y in a precondition
     7 |   procedure Proc (Y : in out Int_Ptr)
@@ -13,7 +13,7 @@ ownership_transfer_at_call.adb:11:09: medium: pointer dereference check might fa
 
 ownership_transfer_at_call.adb:11:18: medium: pointer dereference check might fail
    11 |      Y.all := Y.all + 1;
-      |                 ^ here
+      |               ~~^~~
   e.g. when Y = null
   possible fix: subprogram at line 7 should mention Y in a precondition
     7 |   procedure Proc (Y : in out Int_Ptr)
@@ -21,7 +21,7 @@ ownership_transfer_at_call.adb:11:18: medium: pointer dereference check might fa
 
 ownership_transfer_at_call.adb:11:22: medium: overflow check might fail
    11 |      Y.all := Y.all + 1;
-      |                     ^ here
+      |               ~~~~~~^~~
   e.g. when Y.all = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at line 7 should mention Y in a precondition
@@ -30,7 +30,7 @@ ownership_transfer_at_call.adb:11:22: medium: overflow check might fail
 
 ownership_transfer_at_call.adb:12:09: medium: pointer dereference check might fail
    12 |      X.all := X.all + 1;
-      |        ^ here
+      |      ~~^~~
   e.g. when X = null
   possible fix: subprogram at line 7 should mention X in a precondition
     7 |   procedure Proc (Y : in out Int_Ptr)
@@ -38,7 +38,7 @@ ownership_transfer_at_call.adb:12:09: medium: pointer dereference check might fa
 
 ownership_transfer_at_call.adb:12:18: medium: pointer dereference check might fail
    12 |      X.all := X.all + 1;
-      |                 ^ here
+      |               ~~^~~
   e.g. when X = null
   possible fix: subprogram at line 7 should mention X in a precondition
     7 |   procedure Proc (Y : in out Int_Ptr)
@@ -46,7 +46,7 @@ ownership_transfer_at_call.adb:12:18: medium: pointer dereference check might fa
 
 ownership_transfer_at_call.adb:12:22: medium: overflow check might fail
    12 |      X.all := X.all + 1;
-      |                     ^ here
+      |               ~~~~~~^~~
   e.g. when X.all = Integer'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at line 7 should mention X in a precondition

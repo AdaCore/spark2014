@@ -5,3 +5,4 @@ prove_all:
   opt: ["-U"]
   counterexample: False
   steps: 400
+large: True

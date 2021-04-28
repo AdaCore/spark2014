@@ -20,7 +20,7 @@ database.adb:173:30: info: range check proved (altergo: 1 VC), in call inlined a
 database.adb:182:07: info: analyzing call to "Initialize_Links" in context
 database.adb:182:07: info: cannot unroll loop (too many loop iterations)
 database.adb:182:07: info: in inlined body at line 164
-database.adb:247:18: warning: unreachable code (altergo: 1 VC)
+database.adb:247:10: warning: unreachable code (altergo: 1 VC)
 database.adb:251:19: info: precondition proved (altergo: 1 VC)
 database.adb:272:10: info: precondition proved (altergo: 1 VC)
 database.adb:273:10: warning: unreachable code (altergo: 1 VC)

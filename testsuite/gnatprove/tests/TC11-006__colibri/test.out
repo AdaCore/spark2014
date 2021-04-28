@@ -1,0 +1,3 @@
+lemma.ads:4:06: info: data dependencies proved
+lemma.ads:6:16: info: postcondition proved (colibri: 1 VC)
+lemma.ads:6:23: info: range check proved (Trivial)

@@ -1,3 +1,2 @@
-!large SKIP part of large testsuite
 ALL RLIMIT 1500
 NT SKIP     too long on Windows

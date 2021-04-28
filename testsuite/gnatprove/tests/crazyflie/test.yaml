@@ -2,3 +2,4 @@ prove_all:
   prover: ["cvc4"]
   codepeer: True
   opt: ["-XMODE=Analyze"]
+large: True

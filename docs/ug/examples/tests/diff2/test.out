@@ -1,7 +1,7 @@
 
 diff.adb:6:11: medium: range check might fail
     6 |   Z := X - Y;
-      |          ^ here
+      |        ~~^~~
   e.g. when X = 0
         and Y = 1
   reason for check: result of subtraction must fit in the target type of the assignment

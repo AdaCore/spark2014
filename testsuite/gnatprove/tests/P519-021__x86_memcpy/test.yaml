@@ -5,3 +5,4 @@ prove_all:
   opt: ["--no-axiom-guard"]
   steps: 1000
   counterexample: False
+large: True

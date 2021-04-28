@@ -1,60 +1,60 @@
 
 data_initialization.adb:23:07: high: "G3.Num" is not initialized
    23 |      Proc (X1, X2, X3);
-      |      ^ here
+      |      ^~~~~~~~~~~~~~~~
   "G3.Num" is not an input in the Global contract of subprogram "Call_Proc" at data_initialization.ads:20
   either make "G3.Num" an input in the Global contract or initialize it before use
 
 data_initialization.adb:23:07: high: "G3.Val" is not initialized
    23 |      Proc (X1, X2, X3);
-      |      ^ here
+      |      ^~~~~~~~~~~~~~~~
   "G3.Val" is not an input in the Global contract of subprogram "Call_Proc" at data_initialization.ads:20
   either make "G3.Val" an input in the Global contract or initialize it before use
 
 data_initialization.adb:23:13: high: "X1.Num" is not initialized
    23 |      Proc (X1, X2, X3);
-      |            ^ here
+      |            ^~
 
 data_initialization.adb:23:17: warning: "X2" is set by "Proc" but not used after the call
    23 |      Proc (X1, X2, X3);
-      |                ^ here
+      |                ^~
 
 data_initialization.adb:23:21: warning: "X3" is set by "Proc" but not used after the call
    23 |      Proc (X1, X2, X3);
-      |                    ^ here
+      |                    ^~
 
 data_initialization.adb:23:21: high: "X3.Val" is not initialized
    23 |      Proc (X1, X2, X3);
-      |                    ^ here
+      |                    ^~
 
 data_initialization.ads:12:07: warning: unused variable "P1"
    12 |     (P1 : in     Data;
-      |      ^ here
+      |      ^~
 
 data_initialization.ads:13:07: high: "P2.Num" is not initialized in "Proc"
    13 |      P2 :    out Data;
-      |      ^ here
+      |      ^~
 
 data_initialization.ads:14:07: warning: "P3" is not modified, could be IN
    14 |      P3 : in out Data)
-      |      ^ here
+      |      ^~
 
 data_initialization.ads:14:07: warning: unused variable "P3"
    14 |      P3 : in out Data)
-      |      ^ here
+      |      ^~
 
 data_initialization.ads:16:27: low: unused global "G1"
    16 |     Global => (Input  => G1,
-      |                          ^ here
+      |                          ^~
 
 data_initialization.ads:17:27: high: "G2.Val" is not initialized
    17 |                Output => G2,
-      |                          ^ here
+      |                          ^~
 
 data_initialization.ads:18:27: warning: "G3" is not modified, could be INPUT
    18 |                In_Out => G3);
-      |                          ^ here
+      |                          ^~
 
 data_initialization.ads:18:27: low: unused global "G3"
    18 |                In_Out => G3);
-      |                          ^ here
+      |                          ^~

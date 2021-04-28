@@ -1,7 +1,7 @@
 
 logging_in.adb:6:28: medium: overflow check might fail
     6 |      Log_Size := Log_Size + 1;
-      |                           ^ here
+      |                  ~~~~~~~~~^~~
   e.g. when Log_Size = Natural'Last
   reason for check: result of addition must fit in a 32-bits machine integer
   possible fix: subprogram at logging_in.ads:10 should mention Log_Size in a precondition
@@ -10,7 +10,7 @@ logging_in.adb:6:28: medium: overflow check might fail
 
 logging_in.adb:7:12: medium: array index check might fail
     7 |      Log (Log_Size) := Log_In;
-      |           ^ here
+      |           ^~~~~~~~
   e.g. when Log_In = 0
         and Log_Size = 101
   reason for check: value must be a valid index into the array
@@ -21,8 +21,8 @@ logging_in.ads:11:06: info: data dependencies proved
 
 logging_in.ads:12:29: medium: missing dependency "Log_In => Log_Size"
    12 |     Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In));
-      |                            ^ here
+      |                 ~~~~~~~~~~~^
 
 logging_in.ads:12:29: medium: missing dependency "Log_In => Log"
    12 |     Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In));
-      |                            ^ here
+      |                 ~~~~~~~~~~~^

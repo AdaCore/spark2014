@@ -11091,9 +11091,15 @@ package body Gnat2Why.Expr is
             Assocs   : constant List_Id := Component_Associations (Expr);
 
             Association : Node_Id;
-            Assocs_Len  : Nat := List_Length (Assocs);
+            Assocs_Len  : Nat :=
+              (if Present (Assocs)
+               then List_Length (Assocs)
+               else 0);
             Expression  : Node_Id;
-            Exprs_Len   : constant Nat := List_Length (Exprs);
+            Exprs_Len   : constant Nat :=
+              (if Present (Exprs)
+               then List_Length (Exprs)
+               else 0);
             Else_Part   : W_Expr_Id := +True_Pred;
 
          --  Start of processing for Transform_Rec_Aggregate
@@ -21013,7 +21019,7 @@ package body Gnat2Why.Expr is
                                         +Then_Stmt,
                                         Generate_VCs_For_Body);
 
-                  if List_Length (Else_Part) > 0 then
+                  if Is_Non_Empty_List (Else_Part) then
                      Else_Stmt :=
                        +Warn_On_Dead_Code (First (Else_Part),
                                            +Else_Stmt,

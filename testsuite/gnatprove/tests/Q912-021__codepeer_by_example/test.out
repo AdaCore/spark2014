@@ -11,9 +11,9 @@ assign_all_arr_incr_unk.adb:5:22: medium: overflow check might fail [CWE 190] (e
 assign_arr.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at assign_arr.ads:3 should mention Y in a precondition]
 assign_arr.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at assign_arr.ads:3 should mention Y in a precondition]
 assign_arr.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457]
-assign_arr_unk.adb:4:10: medium: array index check might fail [CWE 120] (e.g. when X'First = 2 and Y = -1) [reason for check: value must be a valid index into the array]
+assign_arr_unk.adb:4:10: medium: array index check might fail [CWE 119] (e.g. when X'First = 2 and Y = -1) [reason for check: value must be a valid index into the array]
 assign_arr_unk.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at assign_arr_unk.ads:3 should mention Y in a precondition]
-assign_arr_unk.adb:5:10: medium: array index check might fail [CWE 120] (e.g. when X'Last = 1 and Y = 1) [reason for check: value must be a valid index into the array]
+assign_arr_unk.adb:5:10: medium: array index check might fail [CWE 119] (e.g. when X'Last = 1 and Y = 1) [reason for check: value must be a valid index into the array]
 assign_arr_unk.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at assign_arr_unk.ads:3 should mention Y in a precondition]
 assign_arr_unk.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457]
 assign_pos.adb:1:23: info: initialization of "X" proved
@@ -28,14 +28,14 @@ bad_assign.adb:1:40: warning: unused variable "Y" [CWE 563]
 bad_assign.adb:3:09: high: "X" is not initialized [CWE 457]
 bad_assign.adb:3:11: medium: overflow check might fail [CWE 190] (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 bad_assign_all_arr.adb:4:21: info: unrolling loop
-bad_assign_all_arr.adb:5:21: medium: array index check might fail [CWE 120] (e.g. when J = 10 and X = (others => 0)) [reason for check: result of addition must be a valid index into the array]
+bad_assign_all_arr.adb:5:21: medium: array index check might fail [CWE 119] (e.g. when J = 10 and X = (others => 0)) [reason for check: result of addition must be a valid index into the array]
 bad_assign_all_arr_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
-bad_assign_all_arr_unk.adb:5:21: medium: array index check might fail [CWE 120] [reason for check: result of addition must be a valid index into the array]
+bad_assign_all_arr_unk.adb:5:21: medium: array index check might fail [CWE 119] [reason for check: result of addition must be a valid index into the array]
 bad_assign_all_arr_unk.adb:5:21: medium: overflow check might fail [CWE 190] (e.g. when J = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 bad_assign_arr.adb:2:27: medium: "X" might not be initialized in "Bad_Assign_Arr" [CWE 457]
-bad_assign_arr.adb:4:07: medium: array index check might fail [CWE 120] [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 2 should mention Y in a precondition]
+bad_assign_arr.adb:4:07: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 2 should mention Y in a precondition]
 bad_assign_arr.adb:5:09: info: overflow check proved (CVC4: 1 VC)
-bad_assign_arr.adb:5:09: medium: array index check might fail [CWE 120] (e.g. when Y = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 2 should mention Y in a precondition]
+bad_assign_arr.adb:5:09: medium: array index check might fail [CWE 119] (e.g. when Y = 1) [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 2 should mention Y in a precondition]
 bad_assign_rec.adb:2:27: high: "X.D.A" is not initialized in "Bad_Assign_Rec" [CWE 457]
 bad_assign_rec.adb:4:13: medium: overflow check might fail [CWE 190] (e.g. when Y = -2148) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention Y in a precondition]
 bad_assign_rec.adb:5:15: info: division check proved (CVC4: 1 VC)
@@ -72,10 +72,10 @@ case_assign.adb:10:19: medium: overflow check might fail [CWE 190] (e.g. when Y 
 case_assign.ads:3:21: info: initialization of "X" proved
 concat.adb:2:34: medium: "Z" might not be initialized in "Concat" [CWE 457]
 concat.adb:5:21: info: cannot unroll loop (too many loop iterations)
-concat.adb:6:10: medium: array index check might fail [CWE 120] (e.g. when J = 0 and K = 0 and Z'First = 1) [reason for check: value must be a valid index into the array] [possible fix: loop at line 5 should mention K in a loop invariant]
+concat.adb:6:10: medium: array index check might fail [CWE 119] (e.g. when J = 0 and K = 0 and Z'First = 1) [reason for check: value must be a valid index into the array] [possible fix: loop at line 5 should mention K in a loop invariant]
 concat.adb:7:14: medium: overflow check might fail [CWE 190] (e.g. when K = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention K in a loop invariant]
 concat.adb:9:21: info: cannot unroll loop (too many loop iterations)
-concat.adb:10:10: medium: array index check might fail [CWE 120] (e.g. when J = 0 and K = -1 and Z'First = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 9 should mention K in a loop invariant]
+concat.adb:10:10: medium: array index check might fail [CWE 119] (e.g. when J = 0 and K = -1 and Z'First = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 9 should mention K in a loop invariant]
 concat.adb:11:14: medium: overflow check might fail [CWE 190] (e.g. when K = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 9 should mention K in a loop invariant]
 concat_op.adb:2:37: info: initialization of "Z" proved
 concat_op.adb:4:06: medium: length check might fail (e.g. when X = (others => 1) and Z'First = 1 and Z'Last = 0) [reason for check: source and destination arrays for the assignment must have the same length] [possible fix: subprogram at line 2 should mention Z'Length or Z'First or Z'Last in a precondition]
@@ -110,14 +110,14 @@ multi_induction.adb:1:32: info: initialization of "X2" proved
 multi_induction.adb:6:16: medium: overflow check might fail [CWE 190] (e.g. when X1 = Integer'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer]
 multi_induction.adb:7:16: medium: overflow check might fail [CWE 190] (e.g. when X2 = 2147483642) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention X2 in a loop invariant]
 search.adb:4:21: info: unrolling loop
-search_loop.adb:9:13: medium: array index check might fail [CWE 120] (e.g. when J = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 5 should mention J in a loop invariant]
+search_loop.adb:9:13: medium: array index check might fail [CWE 119] (e.g. when J = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 5 should mention J in a loop invariant]
 search_loop.adb:12:14: info: overflow check proved (CVC4: 1 VC)
 search_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
-search_while.adb:6:13: medium: array index check might fail [CWE 120] (e.g. when J = 0) [reason for check: value must be a valid index into the array]
+search_while.adb:6:13: medium: array index check might fail [CWE 119] (e.g. when J = 0) [reason for check: value must be a valid index into the array]
 search_while.adb:9:14: info: overflow check proved (CVC4: 1 VC)
 self_assign.adb:3:11: medium: overflow check might fail [CWE 190] (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
 sum_all_arr.adb:5:21: info: unrolling loop
 sum_all_arr.adb:6:18: medium: overflow check might fail [CWE 190] (e.g. when J = 2 and Sum = -1 and X = (1 => -1, others => Integer'First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X in a precondition]
 top_down.adb:2:21: info: initialization of "Y" proved
-top_down.adb:6:13: medium: array index check might fail [CWE 120] [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 4 should mention X in a precondition]
-top_down.adb:13:12: medium: array index check might fail [CWE 120] (e.g. when A = (others => 1)) [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Ident or turning it into an expression function]
+top_down.adb:6:13: medium: array index check might fail [CWE 119] [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 4 should mention X in a precondition]
+top_down.adb:13:12: medium: array index check might fail [CWE 119] (e.g. when A = (others => 1)) [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Ident or turning it into an expression function]

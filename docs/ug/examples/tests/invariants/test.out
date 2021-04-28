@@ -10,7 +10,7 @@ invariants.adb:24:07: info: invariant check proved
 
 invariants.adb:33:14: medium: invariant check might fail
    33 |   procedure Push_Internal (E : Element) with
-      |             ^ here
+      |             ^~~~~~~~~~~~~
   e.g. when E = 1
         and The_Stack = (Content => (1 => 1, others => 0), Size => 1, Max => 0)
 invariants.adb:37:40: info: range check proved
@@ -22,7 +22,7 @@ invariants.adb:51:07: info: invariant check proved
 
 invariants.ads:1:09: medium: invariant check might fail
     1 |package Invariants with SPARK_Mode is
-      |        ^ here
+      |        ^~~~~~~~~~
   e.g. when The_Stack = (Content => (others => 0), Size => 5, Max => 1)
 invariants.ads:13:14: info: invariant check proved
 invariants.ads:14:13: info: invariant check proved
@@ -31,7 +31,7 @@ invariants.ads:17:13: info: invariant check proved
 
 invariants.ads:21:14: medium: invariant check might fail
    21 |   procedure Push (E : Element) with
-      |             ^ here
+      |             ^~~~
   e.g. when E = 1
         and The_Stack = (Content => (others => 1), Size => 0, Max => 1)
 invariants.ads:22:13: info: invariant check proved
@@ -42,7 +42,10 @@ invariants.ads:39:47: info: index check proved
 invariants.ads:41:57: info: index check proved
 
 invariants.ads:47:04: medium: type "Stack_2" is not fully initialized
-   47 |   type Stack_2 is record
-      |   ^ here
+   47>|   type Stack_2 is record
+   48 |      Content : Element_Array;
+   49 |      Size    : My_Length;
+   50 |      Max     : Element;
+   51 |   end record with
 invariants.ads:47:09: info: invariant check proved on default value
 invariants.ads:53:60: info: index check proved
