@@ -1185,6 +1185,10 @@ package body SPARK_Util.Subprograms is
          Etyp := Etype (Param);
       end if;
 
+      if Is_Anonymous_Access_Type (Etyp) then
+         Etyp := Directly_Designated_Type (Etyp);
+      end if;
+
       return Is_Private_Type (Etyp)
         and then not Is_Tagged_Type (Etyp)
         and then Present (Subprogram_Spec (E))
