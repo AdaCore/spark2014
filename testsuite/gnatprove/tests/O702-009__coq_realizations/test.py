@@ -10,7 +10,7 @@ why3_share = os.path.join(spark_install_path(), 'libexec', 'spark', 'share', 'wh
 why3_lib = os.path.join(why3_share, 'theories')
 coq_libs_dir = os.path.join(why3_share, 'libs', 'coq')
 driver_dir = os.path.join(why3_share, 'drivers')
-why3_bin = os.path.join(spark_install_path(), 'libexec', 'spark', 'bin', 'why3realize')
+why3_bin = os.path.join(spark_install_path(), 'libexec', 'spark', 'bin', 'why3')
 gp_realized = ['Integer', 'Int_Power', 'Int_Minmax', 'Int_Abs', 'Int_Division', 'Array__1', 'Array__1__Concat']
 am_realized = ['Rep_Proj_Base', 'Rep_Proj_BVGen', 'Rep_Proj_Int', 'Rep_Proj_ltBVGen']
 realize_subdir = 'realize'
@@ -103,7 +103,7 @@ def realize_theories():
     print('Launch why3realize')
     for real in gp_realized:
         print('Generate realization for ' + real)
-        process = Run([why3_bin, '-L', '.', '-L', why3_lib, '-T',
+        process = Run([why3_bin, 'realize', '-L', '.', '-L', why3_lib, '-T',
                        '_gnatprove_standard.' + real, '-o', realize_subdir,
                        '-D', os.path.join(driver_dir, 'coq-realize.drv')])
         if process.status != 0:
@@ -111,7 +111,7 @@ def realize_theories():
         print(process.out)
     for real in am_realized:
         print('Generate realization for ' + real)
-        process = Run([why3_bin, '-L', '.', '-L', why3_lib, '-T',
+        process = Run([why3_bin, 'realize', '-L', '.', '-L', why3_lib, '-T',
                        'ada__model.' + real, '-o', realize_subdir, '-D',
                        os.path.join(driver_dir, 'coq-realize.drv')])
         if process.status != 0:

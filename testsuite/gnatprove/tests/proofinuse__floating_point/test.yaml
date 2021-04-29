@@ -2,3 +2,4 @@ prove_all:
   prover: ["colibri,z3,cvc4,altergo"]
   counterexample: False
 large: True
+timeout: 1500

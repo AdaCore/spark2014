@@ -157,7 +157,7 @@ bitwalker.ads:122:55: info: range check proved (CVC4: 1 VC)
 bitwalker.ads:123:16: info: postcondition proved (CVC4: 1 VC)
 bitwalker.ads:123:30: info: range check proved (CVC4: 1 VC)
 bitwalker.ads:128:54: info: range check proved (CVC4: 1 VC)
-bitwalker.ads:129:16: info: postcondition proved (CVC4: 1 VC)
+bitwalker.ads:129:16: info: postcondition proved (Z3: 1 VC)
 bitwalker.ads:129:55: info: range check proved (CVC4: 1 VC)
 bitwalker.ads:135:16: info: postcondition proved (CVC4: 1 VC)
 bitwalker.ads:139:28: info: initialization of "Result" proved

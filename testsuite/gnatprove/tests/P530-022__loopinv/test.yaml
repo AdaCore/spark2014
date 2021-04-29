@@ -2,3 +2,4 @@ prove_all:
   steps: 55000
   counterexample: False
 large: True
+timeout: 2000

@@ -1,6 +1,5 @@
 
 logging_priv.ads:18:04: medium: type "Log_Type" is not fully initialized
    18>|   type Log_Type is record
-   19 |     Log_Data : Integer_Array;
-   20 |     Log_Size : Natural := 0;
+  ... | ...
    21 |   end record;

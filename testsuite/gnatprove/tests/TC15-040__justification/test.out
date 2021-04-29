@@ -1,0 +1,2 @@
+pack.ads:4:04: low: initialization of "Var" must be mentioned in the Initializes contract of "Pack" (SPARK RM 7.1.5(9))
+pack.ads:5:04: warning: no check message justified by this pragma

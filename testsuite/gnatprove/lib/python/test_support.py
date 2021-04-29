@@ -19,7 +19,7 @@ default_vc_timeout = 120
 parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc4", "altergo", "z3"]
-provers_output_regex = re.compile("\((Trivial|Interval|CVC4|Z3|altergo).*\)")
+provers_output_regex = re.compile("\((Trivial|Interval|CVC4|Z3|altergo|colibri).*\)")
 default_ada = 2020
 
 #  Change directory
@@ -795,7 +795,9 @@ def prove_all(opt=None, steps=None, procs=parallel_procs,
         prover_arg = build_prover_switch([benchmark_mode()])
     fullopt += prover_arg
     if not counterexample or benchmark_mode():
-        fullopt += ["--no-counterexample"]
+        fullopt += ["--counterexamples=off"]
+    else:
+        fullopt += ["--counterexamples=on"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt

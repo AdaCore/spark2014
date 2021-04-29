@@ -1,0 +1,15 @@
+pos.adb:1:11: warning: subprogram "Pos" has no effect
+pos.adb:4:04: info: initialization of "Z" proved
+pos.adb:6:19: info: assertion proved (colibri: 1 VC)
+pos.adb:7:19: info: assertion proved (colibri: 1 VC)
+pos.adb:8:19: info: assertion proved (colibri: 1 VC)
+pos.adb:9:19: info: assertion proved (colibri: 1 VC)
+pos.adb:11:11: info: float overflow check proved (colibri: 1 VC)
+pos.adb:12:19: info: assertion proved (colibri: 1 VC)
+pos.adb:13:11: info: float overflow check proved (colibri: 1 VC)
+pos.adb:14:19: info: assertion proved (colibri: 1 VC)
+pos.adb:15:11: info: float overflow check proved (colibri: 1 VC)
+pos.adb:16:19: info: assertion proved (colibri: 1 VC)
+pos.adb:17:11: info: division check proved (colibri: 1 VC)
+pos.adb:17:11: info: float overflow check proved (colibri: 1 VC)
+pos.adb:18:19: info: assertion proved (colibri: 1 VC)

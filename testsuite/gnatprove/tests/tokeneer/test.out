@@ -336,7 +336,7 @@ audittypes.ads:78:16: info: range check proved (CVC4: 1 VC)
 bio.adb:84:15: info: range check proved (CVC4: 1 VC)
 bio.adb:123:13: info: add a contract to analyze it separately from calling contexts
 bio.adb:123:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls
-bio.adb:129:33: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at bio.adb:193
+bio.adb:129:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at bio.adb:193
 bio.adb:129:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at bio.adb:193
 bio.adb:154:11: info: data dependencies proved
 bio.adb:163:07: info: initialization of "TheCodeName" proved
@@ -937,10 +937,10 @@ display.adb:120:13: info: add a contract to analyze it separately from calling c
 display.adb:120:13: info: local subprogram "CombineLines" only analyzed in the context of calls
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:191
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:287
-display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:191
-display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:287
-display.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:191
-display.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at display.adb:287
+display.adb:129:33: info: loop invariant initialization proved (CVC4: 2 VC; Trivial: 1 VC), in call inlined at display.adb:191
+display.adb:129:33: info: loop invariant initialization proved (CVC4: 2 VC; Trivial: 1 VC), in call inlined at display.adb:287
+display.adb:129:33: info: loop invariant preservation proved (CVC4: 2 VC; Trivial: 1 VC), in call inlined at display.adb:191
+display.adb:129:33: info: loop invariant preservation proved (CVC4: 2 VC; Trivial: 1 VC), in call inlined at display.adb:287
 display.adb:137:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:191
 display.adb:137:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:287
 display.adb:138:30: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:191
@@ -951,10 +951,10 @@ display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at di
 display.adb:140:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:287
 display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:191
 display.adb:143:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:287
-display.adb:144:33: info: loop invariant initialization proved (CVC4: 4 VC), in call inlined at display.adb:191
-display.adb:144:33: info: loop invariant initialization proved (CVC4: 4 VC), in call inlined at display.adb:287
-display.adb:144:33: info: loop invariant preservation proved (CVC4: 4 VC), in call inlined at display.adb:191
-display.adb:144:33: info: loop invariant preservation proved (CVC4: 4 VC), in call inlined at display.adb:287
+display.adb:144:33: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at display.adb:191
+display.adb:144:33: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at display.adb:287
+display.adb:144:33: info: loop invariant preservation proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at display.adb:191
+display.adb:144:33: info: loop invariant preservation proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at display.adb:287
 display.adb:148:33: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:191
 display.adb:148:33: info: index check proved (CVC4: 2 VC), in call inlined at display.adb:287
 display.adb:148:33: info: overflow check proved (CVC4: 1 VC), in call inlined at display.adb:191

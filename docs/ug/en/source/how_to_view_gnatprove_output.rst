@@ -267,8 +267,9 @@ vulnerability.
 Understanding Counterexamples
 -----------------------------
 
-When a check cannot be proved, |GNATprove| may generate a counterexample. A
-counterexample consists in two parts:
+When a check cannot be proved, |GNATprove| may generate a counterexample when
+switch ``--counterexamples=on`` is used, either explicitly or implicitly
+through the use of switch ``--level``. A counterexample consists in two parts:
 
 * a path (or set of paths) through the subprogram
 * an assignment of values to variables that appear on that path
@@ -337,10 +338,11 @@ feasible execution of the program:
    may explain why the prover cannot prove the property. However, note that
    since the counterexample is always generated only using CVC4 prover, it can
    just explain why this prover cannot prove the property. Also note that if
-   CVC4 is not selected and generating of a counterexample is not disabled by
-   ``--no-counterexample`` switch, a counterexample is still attempted to be
-   generated using CVC4, but the proof result of CVC4 is not taken into account
-   in this case.
+   CVC4 is not selected and generating of a counterexample is enabled by
+   ``--counterexamples=on`` switch (explicitly or implicitly through the use of
+   ``--level`` switch), a counterexample is still attempted to be generated
+   using CVC4, but the proof result of CVC4 is not taken into account in this
+   case.
 
 #. When using a short value of timeout or steps, the prover may hit the
    resource bound before it has produced a full counterexample. In such a case,

@@ -1,10 +1,10 @@
 level 0:
-timeout:1, steps:0, memlimit:1000, prover:cvc4, proof:per_check
+timeout:1, steps:0, memlimit:1000, prover:cvc4, proof:per_check, counterexample:off
 level 1:
-timeout:1, steps:0, memlimit:1000, prover:cvc4,z3,altergo, proof:per_check
+timeout:1, steps:0, memlimit:1000, prover:cvc4,z3,altergo, proof:per_check, counterexample:off
 level 2:
-timeout:5, steps:0, memlimit:1000, prover:cvc4,z3,altergo, proof:per_check
+timeout:5, steps:0, memlimit:1000, prover:cvc4,z3,altergo, proof:per_check, counterexample:on
 level 3:
-timeout:20, steps:0, memlimit:2000, prover:cvc4,z3,altergo, proof:per_check
+timeout:20, steps:0, memlimit:2000, prover:cvc4,z3,altergo, proof:per_check, counterexample:on
 level 4:
-timeout:60, steps:0, memlimit:2000, prover:cvc4,z3,altergo, proof:per_check
+timeout:60, steps:0, memlimit:2000, prover:cvc4,z3,altergo, proof:per_check, counterexample:on

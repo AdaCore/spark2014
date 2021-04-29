@@ -36,6 +36,7 @@ with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 with GNAT.Strings;              use GNAT.Strings;
+with Interfaces.C_Streams;
 with Platform;                  use Platform;
 with SPARK2014VSN;              use SPARK2014VSN;
 with System.Multiprocessors;
@@ -128,7 +129,7 @@ package body Configuration is
    --  @param Tree the project tree
    --  @param FN a file name
 
-   function Is_Coq_Prover return Boolean;
+   function Is_Coq_Prover (FS : File_Specific) return Boolean;
    --  @return True iff one alternate prover is "coq"
 
    --  There are more than one "command lines" in gnatprove. For example, the
@@ -515,25 +516,21 @@ package body Configuration is
    -- Is_Manual_Prover --
    ----------------------
 
-   function Is_Manual_Prover return Boolean is
-      Provers : String_Lists.List renames
-        File_Specific_Map ("Ada").Provers;
+   function Is_Manual_Prover (FS : File_Specific) return Boolean is
    begin
-      return Provers.Length = 1
+      return FS.Provers.Length = 1
         and then
-          (Case_Insensitive_Contains (Provers, "coq")
-           or else Case_Insensitive_Contains (Provers, "isabelle"));
+          (Case_Insensitive_Contains (FS.Provers, "coq")
+           or else Case_Insensitive_Contains (FS.Provers, "isabelle"));
    end Is_Manual_Prover;
 
    -------------------
    -- Is_Coq_Prover --
    -------------------
 
-   function Is_Coq_Prover return Boolean is
-      Provers : String_Lists.List renames
-        File_Specific_Map ("Ada").Provers;
+   function Is_Coq_Prover (FS : File_Specific) return Boolean is
    begin
-      return Case_Insensitive_Contains (Provers, "coq");
+      return Case_Insensitive_Contains (FS.Provers, "coq");
    end Is_Coq_Prover;
 
    --------------------
@@ -627,6 +624,10 @@ package body Configuration is
            (Config,
             CL_Switches.CodePeer'Access,
             Long_Switch => "--codepeer=");
+         Define_Switch
+           (Config,
+            CL_Switches.Counterexamples'Access,
+            Long_Switch => "--counterexamples=");
          Define_Switch
            (Config,
             CL_Switches.CWE'Access,
@@ -1060,6 +1061,8 @@ package body Configuration is
         Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
       Alt_Ergo : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("alt-ergo");
+      Colibri : String_Access :=
+        GNAT.OS_Lib.Locate_Exec_On_Path ("colibri");
       CVC4 : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("cvc4");
       Z3 : String_Access :=
@@ -1081,6 +1084,13 @@ package body Configuration is
                            Arguments => Dash_Version,
                            Status    => Status);
          Free (Alt_Ergo);
+      end if;
+      if Colibri /= null then
+         Ada.Text_IO.Put (Colibri.all & ": ");
+         Call_With_Status (Colibri.all,
+                           Arguments => Dash_Dash_Version,
+                           Status    => Status);
+         Free (Colibri);
       end if;
       if CVC4 /= null then
          Ada.Text_IO.Put (CVC4.all & ": ");
@@ -1150,8 +1160,8 @@ package body Configuration is
       procedure Set_Report_Mode;
 
       procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific);
-      --  Using the --level, --timeout, --steps and --provers switches, set the
-      --  corresponding variables.
+      --  Using the --level, --timeout, --steps, --provers and
+      --  --counterexamples switches, set the corresponding variables.
 
       procedure Set_Proof_Mode (FS : in out File_Specific);
       procedure Process_Limit_Switches;
@@ -1164,10 +1174,10 @@ package body Configuration is
       --  <path-to-project-file>/<value-of-proof-dir>.
 
       procedure Limit_Provers (Provers : in out String_Lists.List);
-      --  This subprogram is here for SPARK Discovery. It removes cvc4/z3 from
-      --  the provers list, if not found on the PATH. If that makes the list of
-      --  provers become empty, alt-ergo is added as prover, so that we have at
-      --  least one prover.
+      --  This subprogram is here for SPARK Discovery. It removes
+      --  cvc4/z3/colibri from the provers list, if not found on the PATH. If
+      --  that makes the list of provers become empty, alt-ergo is added as
+      --  prover, so that we have at least one prover.
 
       procedure Sanity_Checking;
       --  Check the command line flags for conflicting flags
@@ -1222,8 +1232,9 @@ package body Configuration is
          declare
             Sswitches : constant String :=
               Register_New_Attribute ("Proof_Switches", "Prove",
-                                      Is_List => True,
-                                      Indexed => True);
+                                      Is_List              => True,
+                                      Indexed              => True,
+                                      Case_Sensitive_Index => True);
          begin
             if Sswitches /= "" then
                Abort_Msg (Sswitches, With_Help => False);
@@ -1307,6 +1318,9 @@ package body Configuration is
          if not SPARK_Install.Z3_Present then
             Remove_Prover ("z3");
          end if;
+         if not SPARK_Install.Colibri_Present then
+            Remove_Prover ("colibri");
+         end if;
 
          if not Is_Empty_At_Start and then Provers.Is_Empty then
             Provers.Append ("altergo");
@@ -1342,8 +1356,9 @@ package body Configuration is
       begin
          Sanity_Checking;
 
-         SPARK_Install.Z3_Present   := On_Path ("z3");
-         SPARK_Install.CVC4_Present := On_Path ("cvc4");
+         SPARK_Install.Z3_Present      := On_Path ("z3");
+         SPARK_Install.CVC4_Present    := On_Path ("cvc4");
+         SPARK_Install.Colibri_Present := On_Path ("colibri");
 
          Debug := CL_Switches.D or CL_Switches.Flow_Debug;
 
@@ -1377,6 +1392,13 @@ package body Configuration is
                        With_Help => False);
          else
             Parallel := CL_Switches.J;
+         end if;
+
+         if CL_Switches.No_Counterexample then
+            Ada.Text_IO.Put_Line
+              ("Note: switch ""--no-counterexample"" is ignored.");
+            Ada.Text_IO.Put_Line
+              ("Note: use ""--counterexamples=off"" instead.");
          end if;
 
          --  Handling of Only_Given and Filelist
@@ -1491,6 +1513,7 @@ package body Configuration is
                FS.Steps := Default_Steps;
                FS.Timeout := 0;
                FS.Memlimit := 0;
+               FS.Counterexamples := False;
 
             --  See the UG for the meaning of the level switches
 
@@ -1499,6 +1522,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 1;
                FS.Memlimit := 1000;
+               FS.Counterexamples := False;
 
             when 1 =>
                FS.Provers.Append ("cvc4");
@@ -1507,6 +1531,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 1;
                FS.Memlimit := 1000;
+               FS.Counterexamples := False;
 
             when 2 =>
                FS.Provers.Append ("cvc4");
@@ -1515,6 +1540,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 5;
                FS.Memlimit := 1000;
+               FS.Counterexamples := True;
 
             when 3 =>
                FS.Provers.Append ("cvc4");
@@ -1523,6 +1549,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 20;
                FS.Memlimit := 2000;
+               FS.Counterexamples := True;
 
             when 4 =>
                FS.Provers.Append ("cvc4");
@@ -1531,6 +1558,7 @@ package body Configuration is
                FS.Steps := 0;
                FS.Timeout := 60;
                FS.Memlimit := 2000;
+               FS.Counterexamples := True;
 
             when others =>
                Abort_Msg ("error: wrong argument for --level",
@@ -1592,6 +1620,25 @@ package body Configuration is
          if CL_Switches.Output_Msg_Only then
             FS.Provers.Clear;
          end if;
+
+         if CL_Switches.Counterexamples.all = "" then
+            null;
+         elsif CL_Switches.Counterexamples.all = "on" then
+            FS.Counterexamples := True;
+         elsif CL_Switches.Counterexamples.all = "off" then
+            FS.Counterexamples := False;
+         else
+            Abort_Msg ("error: wrong argument for --counterexamples, " &
+                         "must be one of (on, off)",
+                       With_Help => False);
+         end if;
+
+         FS.Counterexamples :=
+           FS.Counterexamples
+           and then SPARK_Install.CVC4_Present
+           and then not Is_Manual_Prover (FS)
+           and then not CL_Switches.Output_Msg_Only;
+
       end Set_Level_Timeout_Steps_Provers;
 
       --------------
@@ -1632,16 +1679,30 @@ package body Configuration is
       procedure Set_Output_Mode is
       begin
          if CL_Switches.Output.all = "" then
-            Output := GPO_Pretty;
+            Output := GPO_Pretty_Simple;
          elsif CL_Switches.Output.all = "brief" then
             Output := GPO_Brief;
          elsif CL_Switches.Output.all = "oneline" then
             Output := GPO_Oneline;
          elsif CL_Switches.Output.all = "pretty" then
-            Output := GPO_Pretty;
+            Output := GPO_Pretty_Simple;
          else
             Abort_Msg ("error: wrong argument for --output",
                        With_Help => False);
+         end if;
+
+         --  When outputting to a terminal, switch automatically to colored
+         --  output when pretty output is requested.
+
+         if Output = GPO_Pretty_Simple then
+            declare
+               use Interfaces.C_Streams;
+               TTY_Output : constant Boolean := isatty (fileno (stdout)) /= 0;
+            begin
+               if TTY_Output then
+                  Output := GPO_Pretty_Color;
+               end if;
+            end;
          end if;
       end Set_Output_Mode;
 
@@ -1808,13 +1869,16 @@ package body Configuration is
                FS.Provers.Append (S (First .. S'Last));
             end if;
 
-            --  Check if cvc4 or z3 have explicitly been requested, but are
-            --  missing from the install.
+            --  Check if cvc4/z3/colibri have explicitly been requested, but
+            --  are missing from the install.
 
             for Prover of FS.Provers loop
                if (Prover = "cvc4" and then not SPARK_Install.CVC4_Present)
                  or else
                    (Prover = "z3" and then not SPARK_Install.Z3_Present)
+                 or else
+                   (Prover = "colibri"
+                    and then not SPARK_Install.Colibri_Present)
                then
                   Abort_Msg ("error: prover " & Prover &
                                " was selected, but it is not installed",
@@ -1830,6 +1894,9 @@ package body Configuration is
             end if;
             if SPARK_Install.Z3_Present then
                FS.Provers.Append ("z3");
+            end if;
+            if SPARK_Install.Colibri_Present then
+               FS.Provers.Append ("colibri");
             end if;
             FS.Provers.Append ("altergo");
          end if;
@@ -1999,7 +2066,6 @@ package body Configuration is
               Concat3 (Prj_Attr.Prove.Switches,
                        Prj_Attr.Prove.Proof_Switches_Ada, Com_Lin);
          begin
-
             --  parse all switches that apply to all files, concatenated in the
             --  right order (most important is last).
 
@@ -2007,15 +2073,6 @@ package body Configuration is
             Postprocess;
             File_Specific_Postprocess (FS);
             File_Specific_Map.Insert ("Ada", FS);
-
-            --  ??? this piece of code should be in Postprocess, but it
-            --  requires the FS object to be inserted in the map already.
-
-            Counterexample :=
-              not CL_Switches.No_Counterexample
-              and then SPARK_Install.CVC4_Present
-              and then not Is_Manual_Prover
-              and then not CL_Switches.Output_Msg_Only;
          end;
 
          for FS_Entry of Prj_Attr.Prove.Proof_Switches_Indices.all loop
@@ -2081,7 +2138,7 @@ package body Configuration is
             Socket_Name := new String'(
                (if Socket_Dir = "" then Socket_Base
                 else Compose (Socket_Dir, Socket_Base)));
-            if Is_Coq_Prover then
+            if Is_Coq_Prover (File_Specific_Map ("Ada")) then
                Prepare_Prover_Lib (Proj_Type.Artifacts_Dir.Display_Full_Name);
             end if;
          end;
@@ -2385,7 +2442,7 @@ package body Configuration is
          --  the project directory so we give it an absolute path to the
          --  proof_dir.
          Args.Append (Proof_Dir.all);
-         if Is_Manual_Prover then
+         if Is_Manual_Prover (File_Specific_Map ("Ada")) then
             Prepare_Why3_Manual;
          end if;
       end if;
@@ -2401,7 +2458,7 @@ package body Configuration is
       end if;
 
       Args.Append ("--counterexample");
-      Args.Append (if Counterexample then "on" else "off");
+      Args.Append (if FS.Counterexamples then "on" else "off");
 
       if CL_Switches.Z3_Counterexample then
          Args.Append ("--ce-prover");

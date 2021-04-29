@@ -1,0 +1,27 @@
+marching_cubes.adb:17:10: info: initialization of "Z" proved
+marching_cubes.adb:21:12: info: precondition proved (Trivial: 1 VC)
+marching_cubes.adb:22:23: info: overflow check proved (CVC4: 1 VC)
+marching_cubes.adb:22:27: info: cannot unroll loop (too many loop iterations)
+marching_cubes.adb:23:13: info: null exclusion check proved (CVC4: 1 VC)
+marching_cubes.adb:23:19: warning: "Y" is set by "Q" but not used after the call
+marching_cubes_2.adb:5:50: info: initialization of "C" proved
+marching_cubes_2.adb:12:12: info: pointer dereference check proved (CVC4: 1 VC)
+marching_cubes_2.adb:20:10: info: initialization of "Z" proved
+marching_cubes_2.adb:24:12: info: precondition proved (Trivial: 1 VC)
+marching_cubes_2.adb:25:23: info: overflow check proved (CVC4: 1 VC)
+marching_cubes_2.adb:26:33: info: loop invariant initialization proved (Trivial: 1 VC)
+marching_cubes_2.adb:26:33: info: loop invariant preservation proved (Trivial: 1 VC)
+marching_cubes_2.adb:27:10: info: precondition proved (Trivial: 1 VC)
+marching_cubes_2.adb:27:21: warning: "Y" is set by "Q" but not used after the call
+marching_cubes_2.ads:9:14: info: postcondition proved (CVC4: 2 VC)
+marching_cubes_3.adb:5:17: warning: unused initial value of "A"
+marching_cubes_3.adb:5:50: info: initialization of "C" proved
+marching_cubes_3.adb:11:09: medium: memory leak might occur [possible fix: precondition of subprogram at line 5 should mention A]
+marching_cubes_3.adb:18:10: info: initialization of "Z" proved
+marching_cubes_3.adb:22:12: info: precondition proved (Trivial: 1 VC)
+marching_cubes_3.adb:23:23: info: overflow check proved (CVC4: 1 VC)
+marching_cubes_3.adb:24:33: info: loop invariant initialization proved (Trivial: 1 VC)
+marching_cubes_3.adb:24:33: info: loop invariant preservation proved (Trivial: 1 VC)
+marching_cubes_3.adb:25:10: info: precondition proved (Trivial: 1 VC)
+marching_cubes_3.adb:25:21: warning: "Y" is set by "Q" but not used after the call
+marching_cubes_3.ads:9:14: medium: postcondition might fail, cannot prove Boolean'(X.C = null)'Old = (X.C = null) (e.g. when X = (C => (all => 0)) and X'Old = (C => null)) [possible fix: loop invariant at marching_cubes_3.adb:24 should mention X]

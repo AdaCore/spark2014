@@ -57,3 +57,9 @@ large: True
 If set to true, the test is considered "large" and is skipped by default,
 unless the `large` discriminant is provided. If omitted, `large` is assumed to
 be `False`.
+
+Another field is the `timeout` field:
+```
+timeout: 1500
+```
+This directive replaces the default timeout of 300s (5 minutes) for this test.

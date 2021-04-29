@@ -32,6 +32,7 @@ with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Ce_Interval_Sets;
 with Ce_Pretty_Printing;          use Ce_Pretty_Printing;
 with Common_Containers;           use Common_Containers;
+with Erroutc;                     use Erroutc;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT;                        use GNAT;
 with GNAT.String_Split;           use GNAT.String_Split;
@@ -1885,11 +1886,11 @@ package body Gnat2Why.Counter_Examples is
                --  When outputting counterexamples on the command-line in
                --  pretty mode, display each value on a separate line.
 
-               if Gnat2Why_Args.Output_Mode = GPO_Pretty then
-                  Append (Str, ASCII.LF & "     ");
+               if Gnat2Why_Args.Output_Mode in GPO_Pretty then
+                  Append (Str, ASCII.LF & SGR_Note & "      and " & SGR_Reset);
+               else
+                  Append (Str, " and ");
                end if;
-
-               Append (Str, " and ");
             end if;
          end Before_Next_Element;
 

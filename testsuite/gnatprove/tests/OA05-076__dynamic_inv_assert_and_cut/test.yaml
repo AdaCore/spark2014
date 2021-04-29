@@ -9,3 +9,4 @@ prove_all:
   prover: ["z3"]
   opt: ["--no-axiom-guard"]
 large: True
+timeout: 1000

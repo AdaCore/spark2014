@@ -4,3 +4,4 @@ prove_all:
   counterexample: False
   opt: ["--no-axiom-guard", "-u", "--proof=progressive", "simple_allocator.adb", "list_allocator.adb", "list_mod_allocator.adb"]
 large: True
+timeout: 2000

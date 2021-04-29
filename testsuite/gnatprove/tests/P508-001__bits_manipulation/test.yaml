@@ -4,3 +4,4 @@ prove_all:
   prover: ["cvc4"]
   steps: 3000
   counterexample: False
+timeout: 1500

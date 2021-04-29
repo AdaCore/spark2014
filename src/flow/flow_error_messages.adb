@@ -800,19 +800,22 @@ package body Flow_Error_Messages is
 
                      if One_Liner /= "" then
                         Ignore_Id := Print_Regular_Msg
-                          ("e.g. when " & One_Liner,
+                          (SGR_Note & "e.g. when " & SGR_Reset
+                           & One_Liner,
                            Span, Severity, Continuation => True);
                      end if;
 
                      if Details /= "" then
                         Ignore_Id := Print_Regular_Msg
-                          ("reason for check: " & Details,
+                          (SGR_Note & "reason for check: " & SGR_Reset
+                           & Details,
                            Span, Severity, Continuation => True);
                      end if;
 
                      if Explanation /= "" then
                         Ignore_Id := Print_Regular_Msg
-                          ("possible explanation: " & Explanation,
+                          (SGR_Note & "possible explanation: " & SGR_Reset
+                           & Explanation,
                            Span, Severity, Continuation => True);
                      end if;
 
@@ -821,7 +824,8 @@ package body Flow_Error_Messages is
                      begin
                         if Fix /= "" then
                            Ignore_Id := Print_Regular_Msg
-                             ("possible fix: " & Fix,
+                             (SGR_Note & "possible fix: " & SGR_Reset
+                              & Fix,
                               Span, Severity, Continuation => True);
                         end if;
                      end;
@@ -1676,7 +1680,7 @@ package body Flow_Error_Messages is
            String_Utils.Trimi (Get_Physical_Line_Number (Flag)'Img, ' ');
 
       begin
-         if Gnat2Why_Args.Output_Mode = GPO_Pretty then
+         if Gnat2Why_Args.Output_Mode in GPO_Pretty then
             Error_Msg_Sloc := Flag;
             return At_Line_Placeholder;
 
@@ -2930,7 +2934,7 @@ package body Flow_Error_Messages is
         --  without repeating severity prefix.
 
         (if Continuation
-           and then Gnat2Why_Args.Output_Mode = GPO_Pretty
+           and then Gnat2Why_Args.Output_Mode in GPO_Pretty
          then ""
          else
            (case Severity is
