@@ -737,6 +737,10 @@ package body Flow_Utility is
                 (Etype (Encapsulating_State (Root_Entity))),
               Root_Entity);
 
+      elsif Present (Ultimate_Overlaid_Entity (Root_Entity)) then
+         Map_Root :=
+           Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity));
+
       else
          Map_Root := Direct_Mapping_Id (Root_Entity);
       end if;
@@ -2207,6 +2211,9 @@ package body Flow_Utility is
               (Add_Component
                  (Direct_Mapping_Id (Etype (Encapsulating_State (E))), E),
                Ctx.Scope);
+
+         elsif Present (Ultimate_Overlaid_Entity (E)) then
+            return Flatten_Variable (Ultimate_Overlaid_Entity (E), Ctx.Scope);
 
          else
             return Flatten_Variable (E, Ctx.Scope);
@@ -6235,6 +6242,9 @@ package body Flow_Utility is
                 (Direct_Mapping_Id
                    (Etype (Encapsulating_State (Root_Entity))),
                  Root_Entity)
+
+            elsif Present (Ultimate_Overlaid_Entity (Root_Entity)) then
+               Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity))
 
             else
                Direct_Mapping_Id (Root_Entity));

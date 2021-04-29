@@ -3920,6 +3920,8 @@ package body Flow_Generated_Globals.Phase_2 is
          case F.Kind is
             when Direct_Mapping =>
                declare
+                  Aliases : Flow_Id_Sets.Set;
+
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
                begin
@@ -3927,10 +3929,21 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  not in SPARK are represented by Entity_Name, because
                   --  they behave as "blobs".
 
-                  return Flow_Id_Sets.To_Set
+                  if Is_Object (E) then
+                     for Alias of Overlay_Alias (E) loop
+                        Aliases.Insert
+                          (if Entity_In_SPARK (Alias)
+                           then Direct_Mapping_Id (Alias, Normal_Use)
+                           else Magic_String_Id (To_Entity_Name (Alias)));
+                     end loop;
+                  end if;
+
+                  Aliases.Insert
                     (if Entity_In_SPARK (E)
                      then Change_Variant (F, Normal_Use)
                      else Magic_String_Id (To_Entity_Name (E)));
+
+                  return Aliases;
                end;
 
             when Magic_String =>

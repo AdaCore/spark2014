@@ -1,4 +1,6 @@
 main1.adb:5:19: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1) [possible fix: subprogram at line 3 should mention X in a precondition]
+main2.adb:5:06: warning: unused assignment
+main2.adb:6:06: warning: unused assignment
 main2.adb:9:19: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1)
 main2.adb:12:19: medium: assertion might fail (e.g. when Y = -1)
 p.ads:5:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: Y doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]

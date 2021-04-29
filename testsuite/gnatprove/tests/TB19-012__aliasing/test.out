@@ -1,11 +1,9 @@
 three.adb:3:04: info: initialization of "X" proved
 three.adb:4:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: Y doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
-three.adb:4:04: info: initialization of "Y" proved
 three.adb:4:04: info: object is suitable for aliasing via address clause (Trivial)
 three.adb:4:40: info: object is suitable for aliasing via address clause (Trivial)
 three.adb:4:40: info: types of aliased objects have the same size (Trivial)
 three.adb:5:04: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: Z doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
-three.adb:5:04: info: initialization of "Z" proved
 three.adb:5:04: info: object is suitable for aliasing via address clause (Trivial)
 three.adb:5:40: info: object is suitable for aliasing via address clause (Trivial)
 three.adb:5:40: info: types of aliased objects have the same size (Trivial)

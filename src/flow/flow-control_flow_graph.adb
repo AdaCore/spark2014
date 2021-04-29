@@ -4028,6 +4028,10 @@ package body Flow.Control_Flow_Graph is
          return Node (Elmt);
       end Constraint;
 
+      --  Local variables
+
+      Alias : constant Entity_Id := Ultimate_Overlaid_Entity (E);
+
    --  Start of processing for Do_Object_Declaration
 
    begin
@@ -4066,7 +4070,10 @@ package body Flow.Control_Flow_Graph is
 
       case Ekind (E) is
          when E_Constant =>
-            if Present (Expr) then
+            if Present (Alias) then
+               pragma Assert (Is_Imported (E) and then No (Expr));
+
+            elsif Present (Expr) then
                --  Completion of a deferred constant
 
                if Is_Full_View (E) then
@@ -4100,8 +4107,10 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when E_Variable =>
-            Register_Own_Variable (FA, E);
-            Create_Initial_And_Final_Vertices (E, FA);
+            if No (Alias) then
+               Register_Own_Variable (FA, E);
+               Create_Initial_And_Final_Vertices (E, FA);
+            end if;
 
          when others =>
             raise Program_Error;
@@ -4118,7 +4127,10 @@ package body Flow.Control_Flow_Graph is
               Is_Class_Wide_Type (Get_Type (E, FA.B_Scope))
               and then not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
 
-            FS : constant Flow_Id_Sets.Set := Flatten_Variable (E, FA.B_Scope);
+            FS : constant Flow_Id_Sets.Set :=
+              (if Present (Alias)
+               then Flatten_Variable (Alias, FA.B_Scope)
+               else Flatten_Variable (E, FA.B_Scope));
 
          begin
             --  Initialize the set of defined variables with all components
@@ -4138,7 +4150,9 @@ package body Flow.Control_Flow_Graph is
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
 
-            if RHS_Split_Useful (E, Expr, FA.B_Scope) then
+            if No (Alias)
+              and then RHS_Split_Useful (E, Expr, FA.B_Scope)
+            then
 
                declare
                   M : constant Flow_Id_Maps.Map := Untangle_Record_Assignment
@@ -4262,7 +4276,11 @@ package body Flow.Control_Flow_Graph is
       --  initialization (if any).
 
       else
-         for F of Flatten_Variable (E, FA.B_Scope) loop
+         for F of
+           Flatten_Variable
+             ((if Present (Alias) then Alias else E),
+              FA.B_Scope)
+         loop
             if Is_Default_Initialized (F) then
                Add_Vertex
                  (FA,
