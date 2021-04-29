@@ -67,7 +67,7 @@
   <proof prover="0"><result status="valid" steps="128287"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2" timelimit="60" memlimit="2000"><result status="timeout"/></proof>
-  <proof prover="3"><result status="unknown" steps="11476"/></proof>
+  <proof prover="3"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
