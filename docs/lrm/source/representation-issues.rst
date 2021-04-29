@@ -83,8 +83,8 @@ Direct manipulation of addresses is restricted in |SPARK|. In particular, the
 use of address clauses or aspects to define the address of an object in memory
 is restricted in |SPARK|. If the address of an object ``X`` is specified to be
 the address of another object ``Y``, using an adress clause of the form ``with
-Address => Y'Address``, then ``X`` is said to overlay ``Y``. Both ``X`` and
-``Y`` are said to be overlaid objects. The verification rules below impose
+Address => Y'Address``, then ``X`` is said to be overlaid on ``Y``. Both ``X``
+and ``Y`` are said to be overlaid objects. The verification rules below impose
 restrictions on overlaid objects in |SPARK|. Other address clauses and aspects
 are not restricted; the onus is on the user to ensure that this is correct with
 respect to the program semantics of |SPARK|.
@@ -96,11 +96,11 @@ respect to the program semantics of |SPARK|.
 
 .. centered:: **Verification Rules**
 
-2. If an object ``X`` overlays an object ``Y``, then the sizes of ``X`` and
-   ``Y`` shall be known at compile-time and shall be equal.
+2. If an object ``X`` is overlaid on an object ``Y``, then the sizes of ``X``
+   and ``Y`` shall be known at compile-time and shall be equal.
 
-3. If an object ``X`` overlays an object ``Y``, then the alignment of ``Y``
-   shall be an integral multiple of the alignment of ``X``.
+3. If an object ``X`` is overlaid on an object ``Y``, then the alignment of
+   ``Y`` shall be an integral multiple of the alignment of ``X``.
 
 4. The type of an overlaid object shall be suitable as the target of an unchecked conversion
    (see :ref:`Unchecked Type Conversions`);
