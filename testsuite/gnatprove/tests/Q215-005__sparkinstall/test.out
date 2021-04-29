@@ -19,8 +19,10 @@ gnatwhy3
 gprbuild
 gprclean
 gprconfig
+gprdump
 gprls
 gprname
+gprremote
 gprslave
 scil_reader
 spark_codepeer_wrapper
