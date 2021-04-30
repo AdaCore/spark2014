@@ -43,7 +43,7 @@ language evolution, etc. with two roles managing interactions:
 The Team Coordinator:
 
 * Defines the technology roadmap with all stakeholders.
-* Coordinates and organize the work in the team.
+* Coordinates and organizes the work in the team.
 * Adjusts efforts and priorities based on the technology roadmap.
 
 The Team Technical Authority:
