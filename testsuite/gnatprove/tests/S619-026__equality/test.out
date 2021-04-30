@@ -1,18 +1,27 @@
-a-cfhama.ads:686:39: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:695:17: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:725:20: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cfhama.ads:740:20: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
-a-cofove.ads:300:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:342:73: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:375:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:410:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:456:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:480:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:521:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:586:28: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:586:57: info: range check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:714:23: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
-a-cofove.ads:750:14: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cfhama.ads:399:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:399:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:405:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:424:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:462:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:775:39: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:784:17: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:814:20: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:829:20: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cofove.ads:294:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:300:08: info: dynamic accessibility check proved (Trivial), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:319:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:319:69: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:342:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:384:73: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:417:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:452:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:498:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:522:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:563:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:628:28: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:628:57: info: range check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:756:23: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:792:14: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:92, in instantiation at prim_eq_vect.adb:6
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:112, in instantiation at prim_eq_vect.adb:18

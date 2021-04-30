@@ -1,0 +1,75 @@
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfdlli.ads:74, in instantiation at test_deep_element_type.adb:35
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:112, in instantiation at test_deep_element_type.adb:42
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhama.ads:112, in instantiation at test_deep_element_type.adb:45
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfhase.ads:107, in instantiation at test_deep_element_type.adb:39
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cfinve.ads:107, in instantiation at test_deep_element_type.adb:38
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:117, in instantiation at test_deep_element_type.adb:43
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:117, in instantiation at test_deep_element_type.adb:46
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforse.ads:112, in instantiation at test_deep_element_type.adb:40
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cofove.ads:92, in instantiation at test_deep_element_type.adb:37
+a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at test_deep_element_type.adb:36
+test_deep_element_type.adb:35:04: error: "Item" is not writable
+test_deep_element_type.adb:35:04: error: instantiation error at a-cfdlli.ads:74
+test_deep_element_type.adb:35:04: error: instantiation error at a-cofuve.ads:339
+test_deep_element_type.adb:35:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cfdlli.ads:74, instance at line 35
+test_deep_element_type.adb:36:04: error: "Item" is not writable
+test_deep_element_type.adb:36:04: error: instantiation error at a-cofuve.ads:339
+test_deep_element_type.adb:36:04: error: object was declared as not writable at a-cofuve.ads:339, instance at line 36
+test_deep_element_type.adb:37:04: error: "Item" is not writable
+test_deep_element_type.adb:37:04: error: instantiation error at a-cofove.ads:92
+test_deep_element_type.adb:37:04: error: instantiation error at a-cofuve.ads:339
+test_deep_element_type.adb:37:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cofove.ads:92, instance at line 37
+test_deep_element_type.adb:38:04: error: "Item" is not writable
+test_deep_element_type.adb:38:04: error: instantiation error at a-cfinve.ads:107
+test_deep_element_type.adb:38:04: error: instantiation error at a-cofuve.ads:339
+test_deep_element_type.adb:38:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cfinve.ads:107, instance at line 38
+test_deep_element_type.adb:39:04: error: "Item" is not writable
+test_deep_element_type.adb:39:04: error: "Item" is not writable
+test_deep_element_type.adb:39:04: error: instantiation error at a-cfhase.ads:107
+test_deep_element_type.adb:39:04: error: instantiation error at a-cfhase.ads:95
+test_deep_element_type.adb:39:04: error: instantiation error at a-cofuse.ads:252
+test_deep_element_type.adb:39:04: error: instantiation error at a-cofuve.ads:339
+test_deep_element_type.adb:39:04: error: object was declared as not writable at a-cofuse.ads:252, instance at a-cfhase.ads:95, instance at line 39
+test_deep_element_type.adb:39:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cfhase.ads:107, instance at line 39
+test_deep_element_type.adb:40:04: error: "Item" is not writable
+test_deep_element_type.adb:40:04: error: "Item" is not writable
+test_deep_element_type.adb:40:04: error: instantiation error at a-cforse.ads:100
+test_deep_element_type.adb:40:04: error: instantiation error at a-cforse.ads:112
+test_deep_element_type.adb:40:04: error: instantiation error at a-cofuse.ads:252
+test_deep_element_type.adb:40:04: error: instantiation error at a-cofuve.ads:339
+test_deep_element_type.adb:40:04: error: object was declared as not writable at a-cofuse.ads:252, instance at a-cforse.ads:100, instance at line 40
+test_deep_element_type.adb:40:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cforse.ads:112, instance at line 40
+test_deep_element_type.adb:41:04: error: "Item" is not writable
+test_deep_element_type.adb:41:04: error: instantiation error at a-cofuse.ads:252
+test_deep_element_type.adb:41:04: error: object was declared as not writable at a-cofuse.ads:252, instance at line 41
+test_deep_element_type.adb:42:04: error: "Item" is not writable
+test_deep_element_type.adb:42:04: error: instantiation error at a-cfhama.ads:99
+test_deep_element_type.adb:42:04: error: instantiation error at a-cofuma.ads:306
+test_deep_element_type.adb:42:04: error: object was declared as not writable at a-cofuma.ads:306, instance at a-cfhama.ads:99, instance at line 42
+test_deep_element_type.adb:43:04: error: "Item" is not writable
+test_deep_element_type.adb:43:04: error: instantiation error at a-cforma.ads:104
+test_deep_element_type.adb:43:04: error: instantiation error at a-cofuma.ads:306
+test_deep_element_type.adb:43:04: error: object was declared as not writable at a-cofuma.ads:306, instance at a-cforma.ads:104, instance at line 43
+test_deep_element_type.adb:44:04: error: "Item" is not writable
+test_deep_element_type.adb:44:04: error: instantiation error at a-cofuma.ads:306
+test_deep_element_type.adb:44:04: error: object was declared as not writable at a-cofuma.ads:306, instance at line 44
+test_deep_element_type.adb:45:04: error: "Item" is not writable
+test_deep_element_type.adb:45:04: error: "Key" is not writable
+test_deep_element_type.adb:45:04: error: instantiation error at a-cfhama.ads:112
+test_deep_element_type.adb:45:04: error: instantiation error at a-cfhama.ads:99
+test_deep_element_type.adb:45:04: error: instantiation error at a-cofuma.ads:305
+test_deep_element_type.adb:45:04: error: instantiation error at a-cofuve.ads:339
+test_deep_element_type.adb:45:04: error: object was declared as not writable at a-cofuma.ads:305, instance at a-cfhama.ads:99, instance at line 45
+test_deep_element_type.adb:45:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cfhama.ads:112, instance at line 45
+test_deep_element_type.adb:46:04: error: "Item" is not writable
+test_deep_element_type.adb:46:04: error: "Key" is not writable
+test_deep_element_type.adb:46:04: error: instantiation error at a-cforma.ads:104
+test_deep_element_type.adb:46:04: error: instantiation error at a-cforma.ads:117
+test_deep_element_type.adb:46:04: error: instantiation error at a-cofuma.ads:305
+test_deep_element_type.adb:46:04: error: instantiation error at a-cofuve.ads:339
+test_deep_element_type.adb:46:04: error: object was declared as not writable at a-cofuma.ads:305, instance at a-cforma.ads:104, instance at line 46
+test_deep_element_type.adb:46:04: error: object was declared as not writable at a-cofuve.ads:339, instance at a-cforma.ads:117, instance at line 46
+test_deep_element_type.adb:47:04: error: "Key" is not writable
+test_deep_element_type.adb:47:04: error: instantiation error at a-cofuma.ads:305
+test_deep_element_type.adb:47:04: error: object was declared as not writable at a-cofuma.ads:305, instance at line 47
+gnatprove: error during flow analysis and proof

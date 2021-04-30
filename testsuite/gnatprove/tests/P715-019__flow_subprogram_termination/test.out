@@ -2,6 +2,7 @@ a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:12
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
+a-cofuse.ads:252:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at formal_cont.ads:26
 call_proc_no_body.adb:4:07: medium: precondition might fail, cannot prove Nonreturning_Precondition (4, 4)
 call_proc_no_body.adb:9:07: info: precondition proved (CVC4: 1 VC)
 call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate, terminating annotation has been proved

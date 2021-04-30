@@ -1,15 +1,20 @@
-a-cforma.ads:750:39: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:759:17: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:794:42: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:802:21: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:829:42: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:837:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:907:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:922:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:937:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:952:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:992:46: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
-a-cforma.ads:1007:40: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:405:08: info: dynamic accessibility check proved (Trivial), in instantiation at replacement.ads:9
+a-cforma.ads:405:08: info: null exclusion check proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:411:08: info: dynamic accessibility check proved (Trivial), in instantiation at replacement.ads:9
+a-cforma.ads:430:39: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:468:36: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:839:39: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:848:17: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:883:42: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:891:21: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:918:42: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:926:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:996:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1011:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1026:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1041:20: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1081:46: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
+a-cforma.ads:1096:40: info: precondition proved (CVC4: 1 VC), in instantiation at replacement.ads:9
 a-cofuve.ads:96:06: info: data dependencies proved, in instantiation at a-cforma.ads:117, in instantiation at replacement.ads:9
 a-cofuve.ads:232:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at replacement.ads:9
 a-cofuve.ads:237:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:117, in instantiation at replacement.ads:9
