@@ -1964,40 +1964,11 @@ package body Gnat2Why.Borrow_Checker is
                Read_Params (Expr);
                Check_Globals (Get_Called_Entity (Expr), Expr);
 
-            when N_Op_Concat =>
-               Read_Expression (Left_Opnd (Expr));
-               Read_Expression (Right_Opnd (Expr));
-
             when N_Qualified_Expression
                | N_Type_Conversion
                | N_Unchecked_Type_Conversion
             =>
                Read_Indexes (Expression (Expr));
-
-            when N_If_Expression =>
-               declare
-                  Cond      : constant Node_Id := First (Expressions (Expr));
-                  Then_Part : constant Node_Id := Next (Cond);
-                  Else_Part : constant Node_Id := Next (Then_Part);
-               begin
-                  Read_Expression (Cond);
-                  Read_Indexes (Then_Part);
-                  Read_Indexes (Else_Part);
-               end;
-
-            when N_Case_Expression =>
-               declare
-                  Cases    : constant List_Id := Alternatives (Expr);
-                  Cur_Case : Node_Id := First (Cases);
-
-               begin
-                  Read_Expression (Expression (Expr));
-
-                  while Present (Cur_Case) loop
-                     Read_Indexes (Expression (Cur_Case));
-                     Next (Cur_Case);
-                  end loop;
-               end;
 
             when N_Attribute_Reference =>
                pragma Assert
