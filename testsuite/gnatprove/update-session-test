@@ -25,7 +25,7 @@ def parse_options():
     return args
 
 
-test_name = sys.argv[1]
+test_name = sys.argv[1] if sys.argv[1] != '--rewrite' else sys.argv[2]
 
 sys.path.insert(0, os.path.join(curdir, 'tests', test_name))
 sys.path.append(os.path.join(curdir, 'lib', 'python'))
@@ -47,8 +47,8 @@ def main():
         shutil.rmtree(os.path.join("proof", "sessions"), ignore_errors=True)
 
     if not hasattr(test, 'replay'):
-        print ("""test should define function 'replay'"""
-               """ in order to be replayed""")
+        print("""test should define function 'replay'"""
+              """ in order to be replayed""")
         exit(1)
     print("running gnatprove to rebuild sessions")
     test.replay()
