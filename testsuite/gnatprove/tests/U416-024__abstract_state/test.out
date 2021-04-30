@@ -1,0 +1,9 @@
+foo.ads:9:04: info: flow dependencies proved
+foo.ads:16:07: info: data dependencies proved
+foo.ads:20:07: info: data dependencies proved
+foo.ads:21:07: info: flow dependencies proved
+foo.ads:25:04: info: initialization of "Instance" constituent of "State" proved
+foo.ads:25:04: info: object is suitable for aliasing via address clause (Trivial)
+foo.ads:32:07: warning: consider annotating "Instance" with Async_Writers
+foo.ads:32:07: warning: indirect writes to "Instance" through a potential alias are ignored
+foo.ads:32:07: warning: writing to "Instance" is assumed to have no effects on other non-volatile objects

@@ -458,9 +458,10 @@ be *compatible with respect to volatility* with E2 if
    formal type or formal object parameter shall be compatible with
    respect to volatility with the corresponding formal parameter.
 
-8. A ``global_item`` of a nonvolatile function, or of a function which
-   is nonvolatile for internal calls, shall not denote either
-   an effectively volatile object for reading or an external state abstraction.
+8. A ``global_item`` of a nonvolatile function, or of a function which is
+   nonvolatile for internal calls, shall not denote either an effectively
+   volatile object for reading or an external state abstraction which has the
+   property Async_Writers => True or Effective_Reads => True.
 
 9. A formal parameter (or result) of a nonvolatile function, or of a
    function which is nonvolatile for internal calls, shall not be of
