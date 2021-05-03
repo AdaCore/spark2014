@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2020, AdaCore                     --
+--                     Copyright (C) 2010-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2941,9 +2941,16 @@ package body Why.Gen.Records is
          Domain   => EW_Pred,
          Name     => M_Compat_Tags.Compat_Tags_Id,
          Args     =>
-           (1 => New_Tag_Access (Domain => EW_Term,
-                                 Name   => Id,
-                                 Ty     => Root),
+           (1 => New_Tag_Access
+                (Domain => EW_Term,
+                 Name   => Insert_Simple_Conversion
+                   (Ada_Node => Ada_Node,
+                    Domain   => EW_Term,
+                    Expr     => Id,
+                    To       => EW_Abstract
+                      (Root,
+                       Relaxed_Init => Get_Relaxed_Init (Get_Type (Id)))),
+                 Ty     => Root),
             2 => +E_Symb (E => Check_Ty,
                           S => WNE_Tag)),
          Typ      => EW_Bool_Type);

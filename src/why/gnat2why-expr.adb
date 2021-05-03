@@ -7416,31 +7416,22 @@ package body Gnat2Why.Expr is
    --  Start of processing for New_Assignment
 
    begin
-      --  When assigning to the view conversion of an object, it is really the
-      --  object which will be assigned to in Why3. So start with skipping all
-      --  view conversions, so that the correct type of object is used later.
+      --  Assignments cannot change the tag of the object
 
-      while Nkind (Left_Side) in N_Type_Conversion
-                               | N_Unchecked_Type_Conversion
-      loop
-         Shift_Rvalue (Left_Side, Right_Side, Last_Access, Domain);
-      end loop;
-
-      --  Record attributes of objects are not modified by assignments
-
-      declare
-         Ty : constant Entity_Id := Etype (Left_Side);
-      begin
-         if Is_Record_Type_In_Why (Ty) then
-            Right_Side :=
-              +New_Tag_Update
+      if Is_Tagged_Type (Etype (Left_Side)) then
+         declare
+            Typ      : constant Entity_Id := Etype (Left_Side);
+            Old_Left : constant W_Expr_Id :=
+              Transform_Expr (Left_Side, EW_Pterm, Body_Params);
+         begin
+            Right_Side := +New_Tag_Update
               (Ada_Node  => Ada_Node,
                Domain    => Domain,
                Name      => +Right_Side,
-               From_Expr => Transform_Expr (Left_Side, EW_Pterm, Body_Params),
-               Ty        => Ty);
-         end if;
-      end;
+               From_Expr => Old_Left,
+               Ty        => Typ);
+         end;
+      end if;
 
       while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
          Shift_Rvalue (Left_Side, Right_Side, Last_Access, Domain);
@@ -9417,6 +9408,20 @@ package body Gnat2Why.Expr is
             | N_Unchecked_Type_Conversion
             | N_Qualified_Expression
          =>
+            --  In view conversions, check that the type of the conversion is
+            --  compatible with the tag of the expression.
+
+            if Domain = EW_Prog
+              and then Is_Tagged_Type (Etype (N))
+              and then Nkind (N) /= N_Qualified_Expression
+              and then not Is_Ancestor (Etype (N), Etype (Expression (N)))
+            then
+               Expr := +Insert_Tag_Check
+                 (Ada_Node => N,
+                  Check_Ty => Etype (N),
+                  Expr     => +Expr);
+            end if;
+
             N := Expression (N);
             Typ := Retysp (Etype (N));
 
@@ -9442,7 +9447,6 @@ package body Gnat2Why.Expr is
                   Expr   => Expr,
                   To     => EW_Abstract
                     (Typ, Is_Init_Wrapper_Type (Get_Type (Expr))));
-
                if Domain = EW_Prog and then Has_Predicates (Typ) then
                   Expr := +Insert_Predicate_Check
                     (Ada_Node => N,
