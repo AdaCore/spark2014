@@ -2942,9 +2942,16 @@ package body Why.Gen.Records is
          Domain   => EW_Pred,
          Name     => M_Compat_Tags.Compat_Tags_Id,
          Args     =>
-           (1 => New_Tag_Access (Domain => EW_Term,
-                                 Name   => Id,
-                                 Ty     => Root),
+           (1 => New_Tag_Access
+                (Domain => EW_Term,
+                 Name   => Insert_Simple_Conversion
+                   (Ada_Node => Ada_Node,
+                    Domain   => EW_Term,
+                    Expr     => Id,
+                    To       => EW_Abstract
+                      (Root,
+                       Relaxed_Init => Get_Relaxed_Init (Get_Type (Id)))),
+                 Ty     => Root),
             2 => +E_Symb (E => Check_Ty,
                           S => WNE_Tag)),
          Typ      => EW_Bool_Type);
