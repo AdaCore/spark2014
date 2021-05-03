@@ -3520,7 +3520,6 @@ package body Flow_Utility is
                | N_Entry_Declaration
                | N_Package_Declaration
                | N_Proper_Body
-               | N_Representation_Clause
                | N_Single_Task_Declaration
                | N_Subprogram_Declaration
                | N_Task_Type_Declaration

@@ -62,6 +62,7 @@ package SPARK_Util is
          | N_Label
          | N_Null_Statement
          | N_Number_Declaration
+         | N_Representation_Clause
 
          --  Renamings are replaced by the renamed object in the frontend, but
          --  the renaming declarations are not removed from the tree. We can
