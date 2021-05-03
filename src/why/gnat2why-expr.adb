@@ -8866,34 +8866,62 @@ package body Gnat2Why.Expr is
             --  but some Itype with the same constraints. To avoid a type
             --  mismatch in Why, we should use the selector of the expected
             --  type instead.
+            --  If there is no such component, we must be in a tagged view
+            --  conversion. Introduce conversions to do the update.
 
             declare
-               Selector  : constant Entity_Id :=
+               Selector  : Entity_Id :=
                  (if Nkind (N) in N_Identifier | N_Expanded_Name
                   then Entity (N)
                   else Search_Component_In_Type
                     (Pref_Ty, Entity (Selector_Name (N))));
-               To_Type   : constant W_Type_Id :=
-                 EW_Abstract
-                   (Etype (Selector),
-                    Relaxed_Init => Expr_Has_Relaxed_Init (N));
-               New_Value : constant W_Expr_Id := Insert_Simple_Conversion
-                      (Ada_Node => N,
-                       Domain   => Domain,
-                       Expr     => Init_Val,
-                       To       => To_Type);
+               Need_Conv : constant Boolean := No (Selector);
+               View_Pref : W_Expr_Id := Pref;
+
             begin
-               --  The code should never update a discrimiant by assigning to
-               --  it.
+               if Need_Conv then
+                  pragma Assert (Is_Tagged_Type (Pref_Ty));
 
-               pragma Assert (Ekind (Selector) /= E_Discriminant);
+                  Selector := Search_Component_In_Type
+                    (Etype (Prefix (N)), Entity (Selector_Name (N)));
+                  View_Pref := Insert_Simple_Conversion
+                    (Ada_Node => N,
+                     Domain   => Term_Domain (Domain),
+                     Expr     => View_Pref,
+                     To       => EW_Abstract (Etype (Prefix (N))));
+               end if;
 
-               Result := New_Ada_Record_Update
-                 (Ada_Node => N,
-                  Domain   => Domain,
-                  Name     => Pref,
-                  Field    => Selector,
-                  Value    => New_Value);
+               declare
+                  To_Type   : constant W_Type_Id :=
+                    EW_Abstract
+                      (Etype (Selector),
+                       Relaxed_Init => Expr_Has_Relaxed_Init (N));
+                  New_Value : constant W_Expr_Id := Insert_Simple_Conversion
+                    (Ada_Node => N,
+                     Domain   => Domain,
+                     Expr     => Init_Val,
+                     To       => To_Type);
+               begin
+                  --  The code should never update a discrimiant by assigning
+                  --  to it.
+
+                  pragma Assert (Ekind (Selector) /= E_Discriminant);
+
+                  Result := New_Ada_Record_Update
+                    (Ada_Node => N,
+                     Domain   => Domain,
+                     Name     => View_Pref,
+                     Field    => Selector,
+                     Value    => New_Value);
+               end;
+
+               if Need_Conv then
+                  Result := Insert_Simple_Conversion
+                    (Ada_Node => N,
+                     Domain   => Domain,
+                     Expr     => Result,
+                     To       => EW_Abstract (Pref_Ty));
+               end if;
             end;
 
          when N_Explicit_Dereference =>
@@ -9483,6 +9511,7 @@ package body Gnat2Why.Expr is
                   Expr   => Expr,
                   To     => EW_Abstract
                     (Typ, Is_Init_Wrapper_Type (Get_Type (Expr))));
+
                if Domain = EW_Prog and then Has_Predicates (Typ) then
                   Expr := +Insert_Predicate_Check
                     (Ada_Node => N,

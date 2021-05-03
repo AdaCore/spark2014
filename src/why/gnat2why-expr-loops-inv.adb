@@ -1868,7 +1868,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Updated_Component  : constant Entity_Id :=
                     Entity (Selector_Name (New_Write));
                   Expected_Component : constant Entity_Id :=
-                    Search_Component_By_Name (Expected_Type,
+                    Search_Component_In_Type (Expected_Type,
                                               Updated_Component);
 
                begin
