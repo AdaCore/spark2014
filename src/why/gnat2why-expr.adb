@@ -12839,9 +12839,11 @@ package body Gnat2Why.Expr is
                           Transform_Expr (Arg, Arg_BTyp, Domain, Params);
 
                         --  If the modulo comes from a builtin type, we use the
-                        --  modulus valus from Why3 theory.
+                        --  modulus value from the Why3 theory.
 
-                        if Get_EW_Type (Var) = EW_Builtin then
+                        if Var_Modulus =
+                          UI_Expon (2, Modular_Size (Etype (Var)))
+                        then
                            Mod_Expr :=
                              Insert_Simple_Conversion
                                (Domain => EW_Term,
@@ -12854,8 +12856,11 @@ package body Gnat2Why.Expr is
 
                         else
                            Mod_Expr :=
-                             New_Attribute_Expr
-                               (Etype (Var), Domain, Attribute_Modulus);
+                             Insert_Simple_Conversion
+                               (Domain => EW_Term,
+                                Expr   => New_Attribute_Expr
+                                  (Etype (Var), Domain, Attribute_Modulus),
+                                To     => Arg_BTyp);
                         end if;
 
                         T := Insert_Simple_Conversion
