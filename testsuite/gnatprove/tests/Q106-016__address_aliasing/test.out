@@ -1,4 +1,4 @@
-main1.adb:5:19: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1) [possible fix: subprogram at line 3 should mention X in a precondition]
+main1.adb:5:19: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1) [possible fix: subprogram at line 3 should mention X and Y and Z in a precondition]
 main2.adb:5:06: warning: unused assignment
 main2.adb:6:06: warning: unused assignment
 main2.adb:9:19: medium: assertion might fail, cannot prove X = 0 (e.g. when X = -1)
