@@ -1,3 +1,3 @@
-lib.ads:5:08: add "null => AA" dependency to ignore this input
-lib.ads:5:08: current instance of protected type "AA" is missing from input dependence list
+lib.ads:5:08: error: add "null => AA" dependency to ignore this input
+lib.ads:5:08: error: current instance of protected type "AA" is missing from input dependence list
 gnatprove: error during generation of Global contracts

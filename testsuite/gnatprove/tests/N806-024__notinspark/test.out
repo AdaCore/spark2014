@@ -1,2 +1,2 @@
-notinspark.ads:6:27: global item must denote object, state or current instance of concurrent type
+notinspark.ads:6:27: error: global item must denote object, state or current instance of concurrent type
 gnatprove: error during generation of Global contracts

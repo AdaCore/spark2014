@@ -1,5 +1,5 @@
-no_primitive_call.adb:9:07: dispatching call on primitive of untagged private is not allowed in SPARK
-no_primitive_call.adb:9:07: violation of aspect SPARK_Mode at line 1
+no_primitive_call.adb:9:07: error: dispatching call on primitive of untagged private is not allowed in SPARK
+no_primitive_call.adb:9:07: error: violation of aspect SPARK_Mode at line 1
 no_primitive_use.adb:7:04: medium: precondition might fail, cannot prove C > 0
 no_primitive_use.adb:7:10: high: "X" is not initialized
 gnatprove: error during flow analysis and proof

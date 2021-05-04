@@ -1,17 +1,17 @@
-array_conv.adb:7:13: this conversion between array types is not yet supported
-array_conv.adb:8:13: this conversion between array types is not yet supported
-array_conv.adb:13:13: this conversion between array types is not yet supported
-array_conv.adb:14:13: this conversion between array types is not yet supported
-array_conv.adb:18:13: this conversion between array types is not yet supported
-array_conv.adb:19:13: this conversion between array types is not yet supported
-array_conv.adb:21:13: this conversion between array types is not yet supported
-array_conv.adb:22:13: this conversion between array types is not yet supported
-array_conv.adb:24:13: this conversion between array types is not yet supported
-array_conv.adb:25:13: this conversion between array types is not yet supported
-array_conv.adb:27:13: this conversion between array types is not yet supported
-array_conv.adb:28:13: this conversion between array types is not yet supported
-array_conv.adb:32:13: this conversion between array types is not yet supported
-array_conv.adb:33:13: this conversion between array types is not yet supported
-array_conv.adb:38:13: this conversion between array types is not yet supported
-array_conv.adb:39:13: this conversion between array types is not yet supported
+array_conv.adb:7:13: error: this conversion between array types is not yet supported
+array_conv.adb:8:13: error: this conversion between array types is not yet supported
+array_conv.adb:13:13: error: this conversion between array types is not yet supported
+array_conv.adb:14:13: error: this conversion between array types is not yet supported
+array_conv.adb:18:13: error: this conversion between array types is not yet supported
+array_conv.adb:19:13: error: this conversion between array types is not yet supported
+array_conv.adb:21:13: error: this conversion between array types is not yet supported
+array_conv.adb:22:13: error: this conversion between array types is not yet supported
+array_conv.adb:24:13: error: this conversion between array types is not yet supported
+array_conv.adb:25:13: error: this conversion between array types is not yet supported
+array_conv.adb:27:13: error: this conversion between array types is not yet supported
+array_conv.adb:28:13: error: this conversion between array types is not yet supported
+array_conv.adb:32:13: error: this conversion between array types is not yet supported
+array_conv.adb:33:13: error: this conversion between array types is not yet supported
+array_conv.adb:38:13: error: this conversion between array types is not yet supported
+array_conv.adb:39:13: error: this conversion between array types is not yet supported
 gnatprove: error during flow analysis and proof

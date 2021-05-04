@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2016-2020, AdaCore                     --
+--                     Copyright (C) 2016-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -266,8 +266,8 @@ package body SPARK_Util.Types is
          else Ty);
 
    begin
-      return Has_Invariants_In_SPARK (Ty) and then
-        Is_Declared_In_Main_Lib_Unit (Real_Node);
+      return Has_Invariants_In_SPARK (Ty)
+        and then Is_Declared_In_Main_Unit_Or_Parent (Real_Node);
    end Has_Visible_Type_Invariants;
 
    -------------------------------------

@@ -1,2 +1,2 @@
-pack.ads:7:50: subtype constraint cannot depend on variable input "Min" (SPARK RM 4.4(2))
+pack.ads:7:50: error: subtype constraint cannot depend on variable input "Min" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

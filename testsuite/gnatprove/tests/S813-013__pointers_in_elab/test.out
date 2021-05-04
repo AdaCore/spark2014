@@ -1,10 +1,10 @@
 invalid_read_in_elab.adb:8:17: warning: subprogram "P" has no effect
-invalid_read_in_elab.adb:16:25: dereference from "X" is not readable
-invalid_read_in_elab.adb:16:25: object was moved at line 11
-invalid_read_in_elab.adb:20:25: dereference from "X" is not readable
-invalid_read_in_elab.adb:20:25: object was moved at line 11
+invalid_read_in_elab.adb:16:25: error: dereference from "X" is not readable
+invalid_read_in_elab.adb:16:25: error: object was moved at line 11
+invalid_read_in_elab.adb:20:25: error: dereference from "X" is not readable
+invalid_read_in_elab.adb:20:25: error: object was moved at line 11
 invalid_read_in_elab.adb:27:17: warning: subprogram "P" has no effect
-invalid_read_in_elab.adb:35:25: object was borrowed at line 30
-invalid_read_in_elab.adb:39:25: object was borrowed at line 30
+invalid_read_in_elab.adb:35:25: error: object was borrowed at line 30
+invalid_read_in_elab.adb:39:25: error: object was borrowed at line 30
 invalid_read_in_elab_2.ads:8:24: medium: pointer dereference check might fail (e.g. when X = null)
 gnatprove: error during flow analysis and proof

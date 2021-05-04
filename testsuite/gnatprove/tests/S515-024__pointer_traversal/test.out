@@ -1,5 +1,5 @@
-a.adb:20:07: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
-a.adb:20:07: violation of aspect SPARK_Mode at line 1
-b.adb:20:07: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
-b.adb:20:07: violation of aspect SPARK_Mode at line 1
+a.adb:20:07: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+a.adb:20:07: error: violation of aspect SPARK_Mode at line 1
+b.adb:20:07: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+b.adb:20:07: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

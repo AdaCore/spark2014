@@ -1,2 +1,2 @@
-gen_actual.adb:5:39: actual for formal object with mode in cannot depend on variable input "PO" (SPARK RM 4.4(2))
+gen_actual.adb:5:39: error: actual for formal object with mode in cannot depend on variable input "PO" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

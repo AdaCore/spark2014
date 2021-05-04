@@ -1,2 +1,2 @@
-pre_should_hold.ads:6:22: internal call cannot appear in precondition of protected operation
+pre_should_hold.ads:6:22: error: internal call cannot appear in precondition of protected operation
 gnatprove: error during generation of Global contracts

@@ -10,7 +10,7 @@ header = """\
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2019-2020, AdaCore                     --
+--                     Copyright (C) 2019-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -45,15 +45,15 @@ postlude = """
 end Why.Keywords;
 """
 
-regexp = ".*\"([a-z]*)\", [A-Z]*;.*"
+regexp = re.compile(".*\"([a-z]*)\", [A-Z]*;.*")
 
 
 def find_keywords(input_file):
     result = ""
     update = '      Keywords.Insert ("'
     input_file = open(input_file, 'r')
-    for l in input_file:
-        x = re.search(regexp, l)
+    for line in input_file:
+        x = re.search(regexp, line)
         if x is not None and x.group(1) is not None:
             result = result + (update + x.group(1) + '");\n')
     return result

@@ -1,7 +1,7 @@
-a.adb:9:10: not fully initialized part of protected type is not allowed in SPARK (SPARK RM 9.4)
-a.adb:9:10: violation of pragma SPARK_Mode at test.adc:1
-a.adb:15:15: "Vol" is not allowed in SPARK (due to not fully initialized part of protected type)
-a.adb:15:15: violation of pragma SPARK_Mode at test.adc:1
-a.adb:21:10: "Vol" is not allowed in SPARK (due to not fully initialized part of protected type)
-a.adb:21:10: violation of pragma SPARK_Mode at test.adc:1
+a.adb:9:10: error: not fully initialized part of protected type is not allowed in SPARK (SPARK RM 9.4)
+a.adb:9:10: error: violation of pragma SPARK_Mode at test.adc:1
+a.adb:15:15: error: "Vol" is not allowed in SPARK (due to not fully initialized part of protected type)
+a.adb:15:15: error: violation of pragma SPARK_Mode at test.adc:1
+a.adb:21:10: error: "Vol" is not allowed in SPARK (due to not fully initialized part of protected type)
+a.adb:21:10: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

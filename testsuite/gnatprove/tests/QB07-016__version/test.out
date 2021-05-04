@@ -1,5 +1,5 @@
-version_3.adb:9:36: attribute "Version" is not allowed in SPARK
-version_3.adb:9:36: violation of pragma SPARK_Mode at test.adc:1
-version_3.adb:10:41: attribute "Body_Version" is not allowed in SPARK
-version_3.adb:10:41: violation of pragma SPARK_Mode at test.adc:1
+version_3.adb:9:36: error: attribute "Version" is not allowed in SPARK
+version_3.adb:9:36: error: violation of pragma SPARK_Mode at test.adc:1
+version_3.adb:10:41: error: attribute "Body_Version" is not allowed in SPARK
+version_3.adb:10:41: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

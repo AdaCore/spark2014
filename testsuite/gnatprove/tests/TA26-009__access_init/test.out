@@ -1,11 +1,11 @@
-c380001.adb:5:13: "R2" is not allowed in SPARK (due to access discriminant)
-c380001.adb:5:13: access discriminant is not allowed in SPARK
-c380001.adb:5:13: access to incomplete type access to "R2" is required to be in SPARK
-c380001.adb:5:13: violation of pragma SPARK_Mode at test.adc:1
-c380001.adb:8:07: subtype of "R3" is not allowed in SPARK (due to access discriminant)
-c380001.adb:8:07: violation of pragma SPARK_Mode at test.adc:1
-c380001.adb:11:09: "R2" is not allowed in SPARK (due to access discriminant)
-c380001.adb:11:09: violation of pragma SPARK_Mode at test.adc:1
-c380001.adb:16:13: "R2" is not allowed in SPARK (due to access discriminant)
-c380001.adb:16:13: violation of pragma SPARK_Mode at test.adc:1
+c380001.adb:5:13: error: "R2" is not allowed in SPARK (due to access discriminant)
+c380001.adb:5:13: error: access discriminant is not allowed in SPARK
+c380001.adb:5:13: error: access to incomplete type access to "R2" is required to be in SPARK
+c380001.adb:5:13: error: violation of pragma SPARK_Mode at test.adc:1
+c380001.adb:8:07: error: subtype of "R3" is not allowed in SPARK (due to access discriminant)
+c380001.adb:8:07: error: violation of pragma SPARK_Mode at test.adc:1
+c380001.adb:11:09: error: "R2" is not allowed in SPARK (due to access discriminant)
+c380001.adb:11:09: error: violation of pragma SPARK_Mode at test.adc:1
+c380001.adb:16:13: error: "R2" is not allowed in SPARK (due to access discriminant)
+c380001.adb:16:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

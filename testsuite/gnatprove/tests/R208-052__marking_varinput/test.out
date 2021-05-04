@@ -1,2 +1,2 @@
-main.adb:8:16: default initialization cannot depend on variable input "no_of_cpus" (SPARK RM 4.4(2))
+main.adb:8:16: error: default initialization cannot depend on variable input "no_of_cpus" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

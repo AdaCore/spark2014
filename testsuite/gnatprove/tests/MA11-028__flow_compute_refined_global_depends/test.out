@@ -19,7 +19,7 @@ bad_refinement.ads:25:21: info: initialization of "I" proved
 bad_refinement.ads:25:24: info: initialization of "J" proved
 bad_refinement.ads:26:33: medium: incorrect dependency "I => Bad_Refinement.State"
 bad_refinement.ads:31:11: info: flow dependencies proved
-bad_refinement.ads:34:11: global Output "Bad_Refinement.State2" of "Liar9" not written
+bad_refinement.ads:34:11: error: global Output "Bad_Refinement.State2" of "Liar9" not written
 bad_refinement.ads:34:11: high: "Bad_Refinement.State" must be a global Output of "Liar9"
 bad_refinement.ads:34:11: info: flow dependencies proved
 lots_of_tests.adb:10:15: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at lots_of_tests.ads:7 should mention A and G1 in a precondition]

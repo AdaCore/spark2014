@@ -1,4 +1,4 @@
-clocks.ads:65:48: "One_Hour" is undefined (more references follow)
-clocks.ads:66:50: "One_Minute" is undefined (more references follow)
-clocks.ads:70:31: "Second_Of_Day" is undefined (more references follow)
+clocks.ads:65:48: error: "One_Hour" is undefined (more references follow)
+clocks.ads:66:50: error: "One_Minute" is undefined (more references follow)
+clocks.ads:70:31: error: "Second_Of_Day" is undefined (more references follow)
 gnatprove: error during generation of Global contracts

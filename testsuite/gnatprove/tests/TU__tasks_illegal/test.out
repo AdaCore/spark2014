@@ -1,44 +1,44 @@
-t.adb:26:07: sequential elaboration supported only in restricted profile
-t.adb:27:07: sequential elaboration supported only in restricted profile
-t.adb:28:07: sequential elaboration supported only in restricted profile
+t.adb:26:07: error: sequential elaboration supported only in restricted profile
+t.adb:27:07: error: sequential elaboration supported only in restricted profile
+t.adb:28:07: error: sequential elaboration supported only in restricted profile
 gnatprove: error during generation of Global contracts
-t.adb:26:07: from profile "Ravenscar" at test2.adc:2
-t.adb:26:07: violation of restriction "No_Task_Hierarchy"
-t.adb:27:07: from profile "Ravenscar" at test2.adc:2
-t.adb:27:07: violation of restriction "No_Task_Hierarchy"
-t.adb:28:07: from profile "Ravenscar" at test2.adc:2
-t.adb:28:07: violation of restriction "No_Task_Hierarchy"
+t.adb:26:07: error: from profile "Ravenscar" at test2.adc:2
+t.adb:26:07: error: violation of restriction "No_Task_Hierarchy"
+t.adb:27:07: error: from profile "Ravenscar" at test2.adc:2
+t.adb:27:07: error: violation of restriction "No_Task_Hierarchy"
+t.adb:28:07: error: from profile "Ravenscar" at test2.adc:2
+t.adb:28:07: error: violation of restriction "No_Task_Hierarchy"
 gnatprove: error during generation of Global contracts
-t.adb:26:12: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
-t.adb:26:12: violation of pragma SPARK_Mode at test3.adc:1
-t.adb:27:12: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
-t.adb:27:12: violation of pragma SPARK_Mode at test3.adc:1
-t.adb:28:12: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
-t.adb:28:12: violation of pragma SPARK_Mode at test3.adc:1
-t.adb:30:07: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
-t.adb:30:07: violation of pragma SPARK_Mode at test3.adc:1
-t.adb:39:07: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
-t.adb:39:07: violation of pragma SPARK_Mode at test3.adc:1
-t.adb:48:07: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
-t.adb:48:07: violation of pragma SPARK_Mode at test3.adc:1
+t.adb:26:12: error: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
+t.adb:26:12: error: violation of pragma SPARK_Mode at test3.adc:1
+t.adb:27:12: error: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
+t.adb:27:12: error: violation of pragma SPARK_Mode at test3.adc:1
+t.adb:28:12: error: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
+t.adb:28:12: error: violation of pragma SPARK_Mode at test3.adc:1
+t.adb:30:07: error: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
+t.adb:30:07: error: violation of pragma SPARK_Mode at test3.adc:1
+t.adb:39:07: error: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
+t.adb:39:07: error: violation of pragma SPARK_Mode at test3.adc:1
+t.adb:48:07: error: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
+t.adb:48:07: error: violation of pragma SPARK_Mode at test3.adc:1
 gnatprove: error during flow analysis and proof
-po_t.ads:14:14: aspect "Part_Of" must apply to package instantiation, object, single protected type or single task type
+po_t.ads:14:14: error: aspect "Part_Of" must apply to package instantiation, object, single protected type or single task type
 gnatprove: error during generation of Global contracts
-po_t2.ads:14:14: aspect "Part_Of" must apply to package instantiation, object, single protected type or single task type
+po_t2.ads:14:14: error: aspect "Part_Of" must apply to package instantiation, object, single protected type or single task type
 gnatprove: error during generation of Global contracts
-po_t3.adb:1:14: body of package "PO_T3" has unused hidden states
-po_t3.adb:1:14: variable "P_Int" defined at line 42
-po_t3.adb:2:35: "HIDDEN" is constituent of single protected type "P_Int"
-po_t3.adb:2:35: reference to variable "Hidden" cannot appear in this context
+po_t3.adb:1:14: error: body of package "PO_T3" has unused hidden states
+po_t3.adb:1:14: error: variable "P_Int" defined at line 42
+po_t3.adb:2:35: error: "HIDDEN" is constituent of single protected type "P_Int"
+po_t3.adb:2:35: error: reference to variable "Hidden" cannot appear in this context
 gnatprove: error during generation of Global contracts
-po_t4.ads:19:07: component "PO" of non-synchronized type "MIX" cannot be synchronized
+po_t4.ads:19:07: error: component "PO" of non-synchronized type "MIX" cannot be synchronized
 gnatprove: error during generation of Global contracts
-po_t5.adb:2:35: constituent of synchronized state "State" must be synchronized
+po_t5.adb:2:35: error: constituent of synchronized state "State" must be synchronized
 gnatprove: error during generation of Global contracts
-main.adb:8:29: "The_Protected_Int" is constituent of single protected type "P_Int"
-main.adb:8:29: reference to variable "The_Protected_Int" cannot appear in this context
-main.adb:11:04: "The_Protected_Int" is constituent of single protected type "P_Int"
-main.adb:11:04: reference to variable "The_Protected_Int" cannot appear in this context
+main.adb:8:29: error: "The_Protected_Int" is constituent of single protected type "P_Int"
+main.adb:8:29: error: reference to variable "The_Protected_Int" cannot appear in this context
+main.adb:11:04: error: "The_Protected_Int" is constituent of single protected type "P_Int"
+main.adb:11:04: error: reference to variable "The_Protected_Int" cannot appear in this context
 gnatprove: error during generation of Global contracts
 po_t7.adb:11:34: info: overflow check proved (CVC4: 1 VC)
 po_t7.adb:18:52: info: overflow check proved (CVC4: 1 VC)

@@ -1,6 +1,6 @@
 bad_ext_ax.ads:2:04: warning: External Axiomatizations are not supported anymore, ignored
-bad_ext_ax.ads:5:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-bad_ext_ax.ads:5:04: violation of aspect SPARK_Mode at line 1
-bad_ext_ax.ads:7:13: function with "in out" parameter is not allowed in SPARK
-bad_ext_ax.ads:7:13: violation of aspect SPARK_Mode at line 1
+bad_ext_ax.ads:5:04: error: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
+bad_ext_ax.ads:5:04: error: violation of aspect SPARK_Mode at line 1
+bad_ext_ax.ads:7:13: error: function with "in out" parameter is not allowed in SPARK
+bad_ext_ax.ads:7:13: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

@@ -6,23 +6,23 @@ fsb.adb:31:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integ
 fsb.adb:31:20: medium: overflow check might fail (e.g. when S = Integer'First and X = -1 and Y = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at fsb.ads:19 should mention X and Y and S in a precondition]
 fsb.ads:16:11: info: data dependencies proved
 fsb.ads:20:11: info: data dependencies proved
-p.adb:15:26: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:20:26: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:21:26: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:22:26: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:28:26: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:33:27: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:34:27: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:35:27: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:45:27: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:51:27: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:56:27: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:57:27: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.adb:58:27: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:15:26: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:20:26: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:21:26: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:22:26: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:28:26: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:33:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:34:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:35:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:45:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:51:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:56:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:57:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.adb:58:27: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:99:07: info: initialization of "X" proved
 p.adb:122:13: info: initialization of "Q" proved
-p.ads:25:25: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
-p.ads:32:28: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.ads:25:25: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.ads:32:28: error: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.ads:40:11: info: flow dependencies proved
 p.ads:46:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

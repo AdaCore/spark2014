@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2018-2020, AdaCore                     --
+--                     Copyright (C) 2018-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -452,9 +452,6 @@ package SPARK_Atree is
    --  Copied from Sem_Util.Get_Enclosing_Object except that it does not
    --  return Empty on dereferences of access objects.
    --  It can only return Empty when called on expressions which are not paths.
-
-   function Get_Pragma_Arg (N : Node_Id) return Node_Id renames
-     Sinfo.Get_Pragma_Arg;
 
    function Get_Pragma_Id (N : Node_Id) return Pragma_Id with
      Pre => Nkind (N) = N_Pragma;

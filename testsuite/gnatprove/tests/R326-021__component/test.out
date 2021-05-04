@@ -1,13 +1,13 @@
-p.adb:4:11: subtype of "Integer" is not allowed in SPARK
-p.adb:4:11: violation of aspect SPARK_Mode at p.ads:1
-p.adb:4:16: subtype of "Integer" is not allowed in SPARK
-p.adb:4:16: violation of aspect SPARK_Mode at line 1
-p.adb:4:21: "T" is not allowed in SPARK
-p.adb:4:21: violation of aspect SPARK_Mode at line 1
-q.adb:7:11: subtype of "Integer" is not allowed in SPARK
-q.adb:7:11: violation of aspect SPARK_Mode at q.ads:1
-q.adb:7:16: subtype of "Integer" is not allowed in SPARK
-q.adb:7:16: violation of aspect SPARK_Mode at line 1
-q.adb:7:21: "T" is not allowed in SPARK
-q.adb:7:21: violation of aspect SPARK_Mode at line 1
+p.adb:4:11: error: subtype of "Integer" is not allowed in SPARK
+p.adb:4:11: error: violation of aspect SPARK_Mode at p.ads:1
+p.adb:4:16: error: subtype of "Integer" is not allowed in SPARK
+p.adb:4:16: error: violation of aspect SPARK_Mode at line 1
+p.adb:4:21: error: "T" is not allowed in SPARK
+p.adb:4:21: error: violation of aspect SPARK_Mode at line 1
+q.adb:7:11: error: subtype of "Integer" is not allowed in SPARK
+q.adb:7:11: error: violation of aspect SPARK_Mode at q.ads:1
+q.adb:7:16: error: subtype of "Integer" is not allowed in SPARK
+q.adb:7:16: error: violation of aspect SPARK_Mode at line 1
+q.adb:7:21: error: "T" is not allowed in SPARK
+q.adb:7:21: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

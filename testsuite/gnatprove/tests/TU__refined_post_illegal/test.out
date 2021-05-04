@@ -6,9 +6,9 @@ gcc -c -gnata main2.adb
 gnatbind -x main2.ali
 gnatlink main2.ali
 
-raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : Refined_Post failed at refined_post_illegal_3.adb:5
+raised ADA.ASSERTIONS.ASSERTION_ERROR : Refined_Post failed at refined_post_illegal_3.adb:5
 
-raised SYSTEM.ASSERTIONS.ASSERT_FAILURE : failed postcondition from refined_post_illegal_3.ads:18
+raised ADA.ASSERTIONS.ASSERTION_ERROR : failed postcondition from refined_post_illegal_3.ads:18
 refined_post_illegal-inv_proc_1.adb:4:08: aspect "Refined_Post" cannot apply to a subunit
 refined_post_illegal.adb:17:11: aspect "Refined_Post" must apply to the body of subprogram declared in a package specification
 refined_post_illegal.adb:35:11: aspect "Refined_Post" must apply to the body of subprogram declared in a package specification

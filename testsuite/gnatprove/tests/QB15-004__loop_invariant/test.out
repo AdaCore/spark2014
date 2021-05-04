@@ -1,2 +1,2 @@
-assertions.adb:6:07: pragma "Loop_Invariant" must appear next to pragma at line 4
+assertions.adb:6:07: error: pragma "Loop_Invariant" must appear next to pragma at line 4
 gnatprove: error during generation of Global contracts

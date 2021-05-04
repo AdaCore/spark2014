@@ -1,5 +1,5 @@
-blocking_true.ads:1:10: function with output global "Task_Identification.Tasking_State" is not allowed in SPARK
+blocking_true.ads:1:10: error: function with output global "Task_Identification.Tasking_State" is not allowed in SPARK
 dic.adb:5:10: warning: initialization of "X" has no effect
-dic.ads:5:40: predicate cannot depend on variable input "ada.task_identification.tasking_state" (SPARK RM 4.4(2))
-dic.ads:5:40: side effects of function "Blocking_True" are not modeled in SPARK
+dic.ads:5:40: error: predicate cannot depend on variable input "ada.task_identification.tasking_state" (SPARK RM 4.4(2))
+dic.ads:5:40: error: side effects of function "Blocking_True" are not modeled in SPARK
 gnatprove: error during flow analysis and proof

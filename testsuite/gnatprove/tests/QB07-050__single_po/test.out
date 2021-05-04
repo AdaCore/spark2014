@@ -1,5 +1,5 @@
-p.ads:5:22: default expression with current instance of enclosing type is not allowed in SPARK (SPARK RM 3.8(1))
-p.ads:5:22: violation of pragma SPARK_Mode at test.adc:1
-p.ads:10:22: default expression with current instance of enclosing type is not allowed in SPARK (SPARK RM 3.8(1))
-p.ads:10:22: violation of pragma SPARK_Mode at test.adc:1
+p.ads:5:22: error: default expression with current instance of enclosing type is not allowed in SPARK (SPARK RM 3.8(1))
+p.ads:5:22: error: violation of pragma SPARK_Mode at test.adc:1
+p.ads:10:22: error: default expression with current instance of enclosing type is not allowed in SPARK (SPARK RM 3.8(1))
+p.ads:10:22: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

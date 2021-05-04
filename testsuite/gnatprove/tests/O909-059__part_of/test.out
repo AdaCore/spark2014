@@ -1,13 +1,13 @@
 communication.ads:5:04: info: flow dependencies proved
 communication.ads:8:14: warning: subprogram "P" has no effect
-communication.ads:11:04: indicator Part_Of is required in this context: constant with variable input "Max1" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
-communication.ads:12:04: indicator Part_Of is required in this context: constant with variable input "Max2" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
+communication.ads:11:04: error: indicator Part_Of is required in this context: constant with variable input "Max1" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
+communication.ads:12:04: error: indicator Part_Of is required in this context: constant with variable input "Max2" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
 communication.ads:14:30: info: initialization of "Ring_Buffer.Bla" constituent of "Communication.State" proved
-communication.ads:16:07: indicator Part_Of is required in this context: constant with variable input "Max3" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
-communication.ads:17:07: indicator Part_Of is required in this context: constant with variable input "Max4" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
-communication.ads:18:07: indicator Part_Of is required in this context: constant with variable input "Max5" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
-communication.ads:24:10: indicator Part_Of is required in this context: constant with variable input "Max6" is declared in the private part of package "Ring_Buffer" (SPARK RM 7.2.6(2))
-communication.ads:26:13: indicator Part_Of is required in this context: constant with variable input "Max7" is declared in the private part of package "Ring_Buffer" (SPARK RM 7.2.6(2))
-communication.ads:28:16: indicator Part_Of is required in this context: constant with variable input "Max8" is declared in the private part of package "Ring_Buffer" (SPARK RM 7.2.6(2))
-communication.ads:29:16: indicator Part_Of is required in this context: constant with variable input "Max9" is declared in the private part of package "Ring_Buffer" (SPARK RM 7.2.6(2))
+communication.ads:16:07: error: indicator Part_Of is required in this context: constant with variable input "Max3" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
+communication.ads:17:07: error: indicator Part_Of is required in this context: constant with variable input "Max4" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
+communication.ads:18:07: error: indicator Part_Of is required in this context: constant with variable input "Max5" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
+communication.ads:24:10: error: indicator Part_Of is required in this context: constant with variable input "Max6" is declared in the private part of package "Ring_Buffer" (SPARK RM 7.2.6(2))
+communication.ads:26:13: error: indicator Part_Of is required in this context: constant with variable input "Max7" is declared in the private part of package "Ring_Buffer" (SPARK RM 7.2.6(2))
+communication.ads:28:16: error: indicator Part_Of is required in this context: constant with variable input "Max8" is declared in the private part of package "Ring_Buffer" (SPARK RM 7.2.6(2))
+communication.ads:29:16: error: indicator Part_Of is required in this context: constant with variable input "Max9" is declared in the private part of package "Ring_Buffer" (SPARK RM 7.2.6(2))
 gnatprove: error during flow analysis and proof

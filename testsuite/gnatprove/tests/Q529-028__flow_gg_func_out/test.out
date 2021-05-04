@@ -1,3 +1,3 @@
+use_bads.adb:5:19: error: side effects of function "Bad" are not modeled in SPARK
 use_bads.adb:5:19: medium: assertion might fail, cannot prove (Bad) [possible fix: subprogram at line 3 should mention G in a precondition]
-use_bads.adb:5:19: side effects of function "Bad" are not modeled in SPARK
 gnatprove: error during flow analysis and proof

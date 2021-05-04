@@ -1,2 +1,2 @@
-objects.ads:39:14: subprogram inherited from multiple interfaces is not yet supported
+objects.ads:39:14: error: subprogram inherited from multiple interfaces is not yet supported
 gnatprove: error during flow analysis and proof

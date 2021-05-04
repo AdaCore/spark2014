@@ -1,4 +1,4 @@
-error.adb:7:15: unknown value of object alignment is not yet supported
+error.adb:7:15: error: unknown value of object alignment is not yet supported
 gnatprove: error during flow analysis and proof
 pedantic.adb:7:15: medium: range check might fail
 pedantic.adb:7:15: warning: attribute "Alignment" has an implementation-defined value

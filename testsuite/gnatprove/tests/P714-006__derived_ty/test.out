@@ -3,6 +3,6 @@ foo.adb:11:04: warning: analyzing unreferenced procedure "Dynamic"
 foo.adb:11:14: warning: subprogram "Dynamic" has no effect
 foo.adb:12:07: medium: range check might fail
 foo.ads:7:17: medium: postcondition might fail, cannot prove A (5) = true
-bar.ads:3:38: "Constraint_Error" would have been raised at run time
-bar.ads:3:38: static value out of range of type "Standard.Positive"
+bar.ads:3:38: error: "Constraint_Error" would have been raised at run time
+bar.ads:3:38: error: static value out of range of type "Standard.Positive"
 gnatprove: error during generation of Global contracts

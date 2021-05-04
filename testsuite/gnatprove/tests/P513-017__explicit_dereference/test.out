@@ -1,11 +1,11 @@
-a-tags.adb:22:22: "Type_Specific_Data" is not allowed in SPARK (due to general access type)
-a-tags.adb:22:22: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:24:09: general access type is not allowed in SPARK
-a-tags.ads:24:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:36:09: general access type is not allowed in SPARK
-a-tags.ads:36:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:42:09: general access type is not allowed in SPARK
-a-tags.ads:42:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:48:09: general access type is not allowed in SPARK
-a-tags.ads:48:09: violation of pragma SPARK_Mode at test.adc:1
+a-tags.adb:22:22: error: "Type_Specific_Data" is not allowed in SPARK (due to general access type)
+a-tags.adb:22:22: error: violation of pragma SPARK_Mode at test.adc:1
+a-tags.ads:24:09: error: general access type is not allowed in SPARK
+a-tags.ads:24:09: error: violation of pragma SPARK_Mode at test.adc:1
+a-tags.ads:36:09: error: general access type is not allowed in SPARK
+a-tags.ads:36:09: error: violation of pragma SPARK_Mode at test.adc:1
+a-tags.ads:42:09: error: general access type is not allowed in SPARK
+a-tags.ads:42:09: error: violation of pragma SPARK_Mode at test.adc:1
+a-tags.ads:48:09: error: general access type is not allowed in SPARK
+a-tags.ads:48:09: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

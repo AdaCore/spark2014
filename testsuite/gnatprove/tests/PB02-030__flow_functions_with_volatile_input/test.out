@@ -1,16 +1,16 @@
 legal.adb:7:20: info: initialization of "X" proved
 legal.adb:11:20: info: initialization of "X" proved
-legal.adb:61:07: volatile variable "V1" cannot act as global item of nonvolatile function "Test_01"
-legal.adb:67:13: function with output global "V2" is not allowed in SPARK
-legal.adb:84:13: function with output global "V2" is not allowed in SPARK
-legal.adb:101:13: function with output global "PO_V3" is not allowed in SPARK
-legal.adb:111:13: function with output global "PO_V3" is not allowed in SPARK
-legal.adb:120:13: function with output global "PO_V4" is not allowed in SPARK
-legal.adb:130:13: function with output global "PO_V4" is not allowed in SPARK
+legal.adb:61:07: error: volatile variable "V1" cannot act as global item of nonvolatile function "Test_01"
+legal.adb:67:13: error: function with output global "V2" is not allowed in SPARK
+legal.adb:84:13: error: function with output global "V2" is not allowed in SPARK
+legal.adb:101:13: error: function with output global "PO_V3" is not allowed in SPARK
+legal.adb:111:13: error: function with output global "PO_V3" is not allowed in SPARK
+legal.adb:120:13: error: function with output global "PO_V4" is not allowed in SPARK
+legal.adb:130:13: error: function with output global "PO_V4" is not allowed in SPARK
 legal.adb:139:20: info: initialization of "X" proved
 legal.adb:146:20: info: initialization of "X" proved
 legal.adb:153:20: info: initialization of "X" proved
 gnatprove: error during flow analysis and proof
-illegal.adb:57:35: call to a volatile function in interfering context is not allowed in SPARK
-illegal.adb:57:35: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:57:35: error: call to a volatile function in interfering context is not allowed in SPARK
+illegal.adb:57:35: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

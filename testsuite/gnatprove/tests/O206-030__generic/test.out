@@ -32,16 +32,16 @@ gen_pack_pragmas.adb:17:20: medium: incorrect dependency "Func'Result => constan
 gen_pack_pragmas.adb:18:20: medium: incorrect dependency "Func'Result => Constit constituent of State", in instantiation at main.adb:28
 gen_pack_pragmas.adb:19:20: medium: incorrect dependency "Func'Result => Pack_Inner", in instantiation at main.adb:28
 gen_pack_pragmas.ads:10:04: info: data dependencies proved, in instantiation at main.adb:28
-main.adb:16:42: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
-main.adb:20:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
-main.adb:24:41: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
-main.adb:28:49: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
-main.adb:32:45: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
-main.adb:33:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
-main.adb:37:53: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
-main.adb:38:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
-main.adb:42:47: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
-main.adb:46:55: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:16:42: error: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:20:50: error: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:24:41: error: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:28:49: error: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:32:45: error: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:33:50: error: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:37:53: error: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
+main.adb:38:50: error: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:42:47: error: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
+main.adb:46:55: error: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
 pack_gen.ads:5:08: info: flow dependencies proved
 pack_gen.ads:11:11: info: data dependencies proved, in instantiation at main.adb:42
 pack_gen.ads:18:11: info: flow dependencies proved, in instantiation at main.adb:42

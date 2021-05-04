@@ -3,7 +3,7 @@ foo.adb:13:09: info: data dependencies proved
 foo.adb:14:09: info: flow dependencies proved
 foo.adb:28:11: info: data dependencies proved
 foo.adb:29:06: info: flow dependencies proved
-foo.adb:34:53: predicate cannot depend on variable input "B" (SPARK RM 4.4(2))
+foo.adb:34:53: error: predicate cannot depend on variable input "B" (SPARK RM 4.4(2))
 foo.adb:43:23: info: initialization of "O" proved
 foo.adb:44:09: info: data dependencies proved
 foo.adb:45:09: info: flow dependencies proved

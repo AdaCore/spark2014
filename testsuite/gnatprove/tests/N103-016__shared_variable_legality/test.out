@@ -1,7 +1,7 @@
-p.ads:17:25: entity for aspect "Volatile" must denote a full type or object declaration
-p.ads:21:09: non-volatile type "R2" cannot have volatile components
-p.ads:23:07: component "F2" of non-volatile type "R2" cannot be volatile
-p.ads:26:13: discriminant cannot be volatile
-p.ads:30:09: discriminated type "R4" cannot be volatile
-p.ads:38:04: discriminated object "SV" cannot be volatile
+p.ads:17:25: error: entity for aspect "Volatile" must denote a full type or object declaration
+p.ads:21:09: error: non-volatile type "R2" cannot have volatile components
+p.ads:23:07: error: component "F2" of non-volatile type "R2" cannot be volatile
+p.ads:26:13: error: discriminant cannot be volatile
+p.ads:30:09: error: discriminated type "R4" cannot be volatile
+p.ads:38:04: error: discriminated object "SV" cannot be volatile
 gnatprove: error during generation of Global contracts

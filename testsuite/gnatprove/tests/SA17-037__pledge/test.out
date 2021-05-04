@@ -1,3 +1,3 @@
-test_list.adb:30:41: call to a function annotated with At_End_Borrow occurring inside a reference to the Old or Loop_Entry attributes is not allowed in SPARK
-test_list.adb:30:41: violation of aspect SPARK_Mode at line 1
+test_list.adb:30:41: error: call to a function annotated with At_End_Borrow occurring inside a reference to the Old or Loop_Entry attributes is not allowed in SPARK
+test_list.adb:30:41: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

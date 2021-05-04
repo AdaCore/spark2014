@@ -1,4 +1,4 @@
-p.ads:4:43: "X" is referenced in expression function but missing from the Global
-p.ads:5:43: "X" is referenced in expression function but missing from the Global
-p.ads:6:04: "X" is referenced in expression function but missing from the Global
+p.ads:4:43: error: "X" is referenced in expression function but missing from the Global
+p.ads:5:43: error: "X" is referenced in expression function but missing from the Global
+p.ads:6:04: error: "X" is referenced in expression function but missing from the Global
 gnatprove: error during flow analysis and proof

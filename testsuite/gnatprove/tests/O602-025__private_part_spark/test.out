@@ -1,2 +1,2 @@
-p.ads:6:03: aspect specifications not allowed here
+p.ads:6:03: error: aspect specifications not allowed here
 gnatprove: error during generation of Global contracts

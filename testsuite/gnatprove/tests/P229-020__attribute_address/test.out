@@ -1,5 +1,5 @@
-addr_constant.adb:9:26: attribute "Address" outside an attribute definition clause is not allowed in SPARK
-addr_constant.adb:9:26: violation of aspect SPARK_Mode at line 4
-address.adb:7:26: attribute "Address" outside an attribute definition clause is not allowed in SPARK
-address.adb:7:26: violation of aspect SPARK_Mode at line 4
+addr_constant.adb:9:26: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK
+addr_constant.adb:9:26: error: violation of aspect SPARK_Mode at line 4
+address.adb:7:26: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK
+address.adb:7:26: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof

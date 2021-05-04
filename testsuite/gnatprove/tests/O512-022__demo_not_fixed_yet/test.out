@@ -26,14 +26,14 @@ generic_stack.ads:8:19: info: initialization of "E" proved, in instantiation at 
 main.adb:9:04: info: initialization of "A" proved
 main.adb:11:14: warning: "random_numbers.state" is set by "Fill_ADT_Stack" but not used after the call
 main.adb:14:14: medium: overflow check might fail (e.g. when X = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 13 should mention X in a loop invariant]
-main.adb:14:25: side effects of function "Pop" are not modeled in SPARK
+main.adb:14:25: error: side effects of function "Pop" are not modeled in SPARK
 main.adb:15:21: medium: "My_Stack" might not be initialized
 main.adb:16:14: medium: overflow check might fail (e.g. when A = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 15 should mention X (for argument A) in a postcondition]
 random_numbers.adb:6:04: info: initialization of "Seed" constituent of "State" proved
 random_numbers.adb:13:21: high: "My_Stack" is not initialized
 random_numbers.adb:13:21: warning: "My_Stack" is set by "Pop" but not used after the call
-random_numbers.adb:15:19: side effects of function "Pop" are not modeled in SPARK
-random_numbers.adb:16:27: side effects of function "Pop" are not modeled in SPARK
+random_numbers.adb:15:19: error: side effects of function "Pop" are not modeled in SPARK
+random_numbers.adb:16:27: error: side effects of function "Pop" are not modeled in SPARK
 random_numbers.adb:28:29: info: division check proved (CVC4: 1 VC)
 random_numbers.ads:7:03: info: flow dependencies proved
 random_numbers.ads:9:14: warning: "asm_stack.stack_top" is not modified, could be INPUT

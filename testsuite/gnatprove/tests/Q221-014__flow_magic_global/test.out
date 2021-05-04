@@ -1,2 +1,2 @@
-q.ads:6:28: default initialization cannot depend on variable input "remote.hidden" (SPARK RM 4.4(2))
+q.ads:6:28: error: default initialization cannot depend on variable input "remote.hidden" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

@@ -1,9 +1,9 @@
-volatile_actual_call.adb:21:44: violation of pragma SPARK_Mode at test.adc:1
-volatile_actual_call.adb:21:44: volatile function call as actual is not allowed in SPARK (SPARK RM 7.1.3(10))
-volatile_actual_call.adb:23:10: "Dummy" is not allowed in SPARK (due to volatile function call as actual)
-volatile_actual_call.adb:23:10: violation of pragma SPARK_Mode at test.adc:1
-volatile_actual_call.adb:24:19: violation of pragma SPARK_Mode at test.adc:1
-volatile_actual_call.adb:24:19: volatile function call as actual is not allowed in SPARK (SPARK RM 7.1.3(10))
-volatile_actual_call.adb:26:16: violation of pragma SPARK_Mode at test.adc:1
-volatile_actual_call.adb:26:16: volatile function call as actual is not allowed in SPARK (SPARK RM 7.1.3(10))
+volatile_actual_call.adb:21:44: error: violation of pragma SPARK_Mode at test.adc:1
+volatile_actual_call.adb:21:44: error: volatile function call as actual is not allowed in SPARK (SPARK RM 7.1.3(10))
+volatile_actual_call.adb:23:10: error: "Dummy" is not allowed in SPARK (due to volatile function call as actual)
+volatile_actual_call.adb:23:10: error: violation of pragma SPARK_Mode at test.adc:1
+volatile_actual_call.adb:24:19: error: violation of pragma SPARK_Mode at test.adc:1
+volatile_actual_call.adb:24:19: error: volatile function call as actual is not allowed in SPARK (SPARK RM 7.1.3(10))
+volatile_actual_call.adb:26:16: error: violation of pragma SPARK_Mode at test.adc:1
+volatile_actual_call.adb:26:16: error: volatile function call as actual is not allowed in SPARK (SPARK RM 7.1.3(10))
 gnatprove: error during flow analysis and proof

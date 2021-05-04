@@ -1,6 +1,4 @@
 input.adb:30:24: info: initialization of "C" proved
-input.adb:34:13: info: add a contract to analyze it separately from calling contexts
-input.adb:34:13: info: local subprogram "End_Line" only analyzed in the context of calls
 input.adb:42:14: info: add a contract to analyze it separately from calling contexts
 input.adb:42:14: info: local subprogram "Skip_Spaces" only analyzed in the context of calls
 input.adb:46:14: info: add a contract to analyze it separately from calling contexts
@@ -12,7 +10,8 @@ input.adb:69:24: info: range check proved (CVC4: 1 VC)
 input.adb:71:28: info: range check proved (CVC4: 1 VC)
 input.adb:71:35: info: division check proved (CVC4: 1 VC)
 input.adb:84:14: info: range check proved (CVC4: 4 VC)
-input.adb:144:18: info: index check proved (CVC4: 2 VC)
+input.adb:93:37: medium: overflow check might fail (e.g. when First_Char = 2 and N = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 34 should mention N and First_Char in a precondition]
+input.adb:144:18: medium: array index check might fail (e.g. when First_Char = 1025) [reason for check: value must be a valid index into the array]
 input.adb:145:32: info: range check proved (CVC4: 1 VC)
 input.adb:220:35: info: range check proved (CVC4: 1 VC), in call inlined at input.adb:242, in call inlined at input.adb:254
 input.adb:232:07: info: initialization of "Current_Char" proved
@@ -26,7 +25,8 @@ input.adb:269:27: info: cannot unroll loop (too many loop iterations)
 input.adb:270:16: info: index check proved (CVC4: 2 VC)
 input.adb:270:59: info: index check proved (CVC4: 2 VC)
 input.adb:273:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-input.adb:273:17: low: range check might fail (e.g. when S'First = 1023 and S'Last = 1024 and V'First = 1 and V'Last = 2147483647) [possible fix: loop at line 269 should mention S in a loop invariant]
+input.adb:273:17: low: range check might fail (e.g. when S'First = 1024 and S'Last = 1024 and V'First = 1 and V'Last = Integer'Last) [reason for check: result of concatenation must fit in the target type of the assignment] [possible fix: loop at line 269 should mention S in a loop invariant]
+input.adb:273:19: info: range check proved (CVC4: 2 VC)
 input.adb:273:22: info: range check proved (CVC4: 2 VC)
 input.adb:273:26: info: range check proved (CVC4: 1 VC)
 input.adb:273:34: info: overflow check proved (CVC4: 1 VC)
@@ -42,7 +42,7 @@ instructions.adb:54:13: medium: exception might be raised
 screen_output.adb:54:46: info: range check proved (CVC4: 1 VC)
 screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations)
 screen_output.adb:83:46: info: range check proved (CVC4: 1 VC)
-screen_output.adb:83:53: low: range check might fail (e.g. when S = (2 => ' ', others => ':') and S'First = 1 and S'Last = 2147483644) [possible fix: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
+screen_output.adb:83:53: low: range check might fail (e.g. when S = (2 => ' ', others => ':') and S'First = 1 and S'Last = Integer'Last-1) [reason for check: input value must fit in parameter type] [possible fix: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
 sdc.adb:11:04: info: initialization of "File" proved
 sdc.adb:12:04: info: initialization of "T" proved
 sdc.adb:16:07: warning: assuming "Argument_Count" has no effect on global items
@@ -53,16 +53,16 @@ sdc.adb:17:28: warning: assuming "Argument" has no effect on global items
 sdc.adb:17:28: warning: no Global contract available for "Argument"
 sdc.adb:22:07: medium: "input.line" might not be initialized after elaboration of main program "Sdc"
 sdc.adb:23:07: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"
-sdc.adb:23:07: medium: precondition might fail, cannot prove not Stack(Stack.full) (e.g. when Last = 200) [possible fix: call at line 22 should mention V (for argument T) in a postcondition]
-stack.adb:31:10: info: raise statement proved unreachable (CVC4: 1 VC)
-stack.adb:34:46: low: range check might fail (e.g. when V = (E => 1)) [possible fix: precondition of subprogram at stack.ads:18 should mention V]
+sdc.adb:23:07: medium: precondition might fail, cannot prove not Stack(Stack.full) (e.g. when Last = 200 and T = (Kind => Val, others => ?)) [possible fix: call at line 22 should mention V (for argument T) in a postcondition]
+stack.adb:31:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
+stack.adb:34:46: low: range check might fail (e.g. when V = (E => 2147483637)) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at stack.ads:18 should mention V]
 stack.adb:36:20: info: range check proved (CVC4: 1 VC)
 stack.adb:37:12: info: index check proved (CVC4: 2 VC)
-stack.adb:47:10: info: raise statement proved unreachable (CVC4: 1 VC)
+stack.adb:47:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 stack.adb:50:17: info: index check proved (CVC4: 2 VC)
 stack.adb:51:20: info: range check proved (CVC4: 1 VC)
-stack.adb:53:46: low: range check might fail (e.g. when V = (E => 1))
-stack.adb:63:10: info: raise statement proved unreachable (CVC4: 1 VC)
+stack.adb:53:46: low: range check might fail (e.g. when V = (E => 2147483637)) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function To_String or turning it into an expression function in its unit spec]
+stack.adb:63:10: info: raise statement or expression proved unreachable (CVC4: 1 VC)
 stack.adb:66:19: info: index check proved (CVC4: 2 VC)
 stack.adb:75:34: info: cannot unroll loop (too many loop iterations)
 stack.ads:20:14: info: postcondition proved (CVC4: 1 VC)
@@ -96,12 +96,12 @@ values-operations.adb:43:12: info: precondition proved (CVC4: 1 VC)
 values-operations.adb:44:12: info: precondition proved (CVC4: 1 VC)
 values-operations.adb:63:28: info: overflow check proved (CVC4: 1 VC)
 values-operations.adb:66:28: info: division check proved (CVC4: 1 VC)
-values-operations.adb:66:28: medium: overflow check might fail (e.g. when V1 = (E => Integer'First) and V2 = (E => -1)) [possible fix: postcondition of call at line 44 should mention V (for argument V1)]
-values-operations.adb:69:28: medium: overflow check might fail (e.g. when V1 = (E => 2) and V2 = (E => -2)) [possible fix: postcondition of call at line 44 should mention V (for argument V1)]
+values-operations.adb:66:28: medium: overflow check might fail (e.g. when V1 = (E => Integer'First) and V2 = (E => -1)) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 44 should mention V (for argument V1)]
+values-operations.adb:69:28: medium: overflow check might fail (e.g. when V1 = (E => 2) and V2 = (E => -2)) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 44 should mention V (for argument V1)]
 values-operations.adb:72:28: info: overflow check proved (CVC4: 1 VC)
 values-operations.adb:78:12: info: precondition proved (CVC4: 1 VC)
 values.adb:14:12: info: precondition proved (CVC4: 1 VC)
 values.adb:22:07: info: initialization of "Int_Val" proved
 values.adb:24:07: info: initialization of "Kind" proved
-values.adb:27:41: warning: unused assignment to "Real_Val"
+values.adb:27:41: warning: "Real_Val" is set by "Read_Number" but not used after the call
 values.adb:30:10: medium: exception might be raised

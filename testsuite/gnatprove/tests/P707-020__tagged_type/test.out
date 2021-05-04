@@ -1,9 +1,9 @@
-stmpe811.ads:5:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-stmpe811.ads:5:04: violation of pragma SPARK_Mode at test.adc:1
-stmpe811.ads:10:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-stmpe811.ads:10:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-stmpe811.ads:10:04: violation of pragma SPARK_Mode at test.adc:1
-stmpe811.ads:10:04: violation of pragma SPARK_Mode at test.adc:1
-tp_stmpe811.ads:11:04: "STMPE811_Device" is not allowed in SPARK (due to discriminant on derived type)
-tp_stmpe811.ads:11:04: violation of pragma SPARK_Mode at test.adc:1
+stmpe811.ads:5:04: error: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
+stmpe811.ads:5:04: error: violation of pragma SPARK_Mode at test.adc:1
+stmpe811.ads:10:04: error: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
+stmpe811.ads:10:04: error: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
+stmpe811.ads:10:04: error: violation of pragma SPARK_Mode at test.adc:1
+stmpe811.ads:10:04: error: violation of pragma SPARK_Mode at test.adc:1
+tp_stmpe811.ads:11:04: error: "STMPE811_Device" is not allowed in SPARK (due to discriminant on derived type)
+tp_stmpe811.ads:11:04: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

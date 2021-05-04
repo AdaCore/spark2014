@@ -1,12 +1,12 @@
-part_of_illegal-pr_child-pr_grandchild.ads:3:49: indicator Part_Of must denote abstract state of "Pr_Child" or of its public descendant (SPARK RM 7.2.6(3))
-part_of_illegal-pr_child.ads:12:60: "Grandchild_State" not declared in "Pr_Grandchild"
-part_of_illegal-pr_child.ads:12:60: "Grandchild_State" not declared in "Pr_Grandchild"
-part_of_illegal-pr_child.ads:12:60: indicator Part_Of must denote abstract state, single protected type or single task type
-part_of_illegal-pr_child.ads:12:60: indicator Part_Of must denote abstract state, single protected type or single task type
-part_of_illegal-pr_child.ads:12:60: limited withed package can only be used to access incomplete types
-part_of_illegal-pr_child.ads:12:60: limited withed package can only be used to access incomplete types
-part_of_illegal-pr_child.ads:15:04: "Pr_Child_Vis_2" is declared in the visible part of private child unit "Pr_Child"
-part_of_illegal-pr_child.ads:15:04: "Pr_Child_Vis_2" is declared in the visible part of private child unit "Pr_Child"
-part_of_illegal-pr_child.ads:15:04: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
-part_of_illegal-pr_child.ads:15:04: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
+part_of_illegal-pr_child-pr_grandchild.ads:3:49: error: indicator Part_Of must denote abstract state of "Pr_Child" or of its public descendant (SPARK RM 7.2.6(3))
+part_of_illegal-pr_child.ads:12:60: error: "Grandchild_State" not declared in "Pr_Grandchild"
+part_of_illegal-pr_child.ads:12:60: error: "Grandchild_State" not declared in "Pr_Grandchild"
+part_of_illegal-pr_child.ads:12:60: error: indicator Part_Of must denote abstract state, single protected type or single task type
+part_of_illegal-pr_child.ads:12:60: error: indicator Part_Of must denote abstract state, single protected type or single task type
+part_of_illegal-pr_child.ads:12:60: error: limited withed package can only be used to access incomplete types
+part_of_illegal-pr_child.ads:12:60: error: limited withed package can only be used to access incomplete types
+part_of_illegal-pr_child.ads:15:04: error: "Pr_Child_Vis_2" is declared in the visible part of private child unit "Pr_Child"
+part_of_illegal-pr_child.ads:15:04: error: "Pr_Child_Vis_2" is declared in the visible part of private child unit "Pr_Child"
+part_of_illegal-pr_child.ads:15:04: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
+part_of_illegal-pr_child.ads:15:04: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
 gnatprove: error during generation of Global contracts

@@ -32,14 +32,14 @@ test_record.adb:44:17: info: overflow check proved (CVC4: 1 VC)
 test_record.adb:44:26: info: overflow check proved (CVC4: 1 VC)
 test_record.adb:45:16: info: overflow check proved (CVC4: 1 VC)
 test_record.adb:46:33: info: overflow check proved (CVC4: 1 VC)
-test_target_illegal.adb:6:04: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
-test_target_illegal.adb:6:04: violation of aspect SPARK_Mode at line 2
-test_target_illegal.adb:8:04: "My_Acc2" is not allowed in SPARK (due to general access type)
-test_target_illegal.adb:8:04: violation of aspect SPARK_Mode at line 2
-test_target_illegal.adb:10:09: @ inside a move assignment is not yet supported
-test_target_illegal.adb:11:04: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-test_target_illegal.adb:11:04: violation of aspect SPARK_Mode at line 2
-test_target_illegal.adb:11:09: @ inside a reborrow is not yet supported
-test_target_illegal.adb:12:09: "My_Acc2" is not allowed in SPARK (due to general access type)
-test_target_illegal.adb:12:09: violation of aspect SPARK_Mode at line 2
+test_target_illegal.adb:6:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+test_target_illegal.adb:6:04: error: violation of aspect SPARK_Mode at line 2
+test_target_illegal.adb:8:04: error: "My_Acc2" is not allowed in SPARK (due to general access type)
+test_target_illegal.adb:8:04: error: violation of aspect SPARK_Mode at line 2
+test_target_illegal.adb:10:09: error: @ inside a move assignment is not yet supported
+test_target_illegal.adb:11:04: error: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+test_target_illegal.adb:11:04: error: violation of aspect SPARK_Mode at line 2
+test_target_illegal.adb:11:09: error: @ inside a reborrow is not yet supported
+test_target_illegal.adb:12:09: error: "My_Acc2" is not allowed in SPARK (due to general access type)
+test_target_illegal.adb:12:09: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

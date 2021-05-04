@@ -9,15 +9,15 @@ prag.ads:4:06: warning: pragma "Storage_Size" ignored (not yet supported)
 rep.adb:4:08: warning: initialization of "X" has no effect
 rep.adb:7:13: warning: unused assignment
 rep.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
-ss_default.ads:5:36: attribute "Storage_Size" is not allowed in SPARK
-ss_default.ads:5:36: violation of pragma SPARK_Mode at test.adc:1
-ss_default.ads:7:20: attribute "Storage_Size" is not allowed in SPARK
-ss_default.ads:7:20: violation of pragma SPARK_Mode at test.adc:1
+ss_default.ads:5:36: error: attribute "Storage_Size" is not allowed in SPARK
+ss_default.ads:5:36: error: violation of pragma SPARK_Mode at test.adc:1
+ss_default.ads:7:20: error: attribute "Storage_Size" is not allowed in SPARK
+ss_default.ads:7:20: error: violation of pragma SPARK_Mode at test.adc:1
 ss_defined.ads:3:24: warning: pragma "Storage_Size" ignored (not yet supported)
-ss_defined.ads:7:20: attribute "Storage_Size" is not allowed in SPARK
-ss_defined.ads:7:20: violation of pragma SPARK_Mode at test.adc:1
-ss_defined.ads:7:39: attribute "Storage_Size" is not allowed in SPARK
-ss_defined.ads:7:39: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:3:09: general access type is not allowed in SPARK
-unsupported.adb:3:09: violation of pragma SPARK_Mode at test.adc:1
+ss_defined.ads:7:20: error: attribute "Storage_Size" is not allowed in SPARK
+ss_defined.ads:7:20: error: violation of pragma SPARK_Mode at test.adc:1
+ss_defined.ads:7:39: error: attribute "Storage_Size" is not allowed in SPARK
+ss_defined.ads:7:39: error: violation of pragma SPARK_Mode at test.adc:1
+unsupported.adb:3:09: error: general access type is not allowed in SPARK
+unsupported.adb:3:09: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

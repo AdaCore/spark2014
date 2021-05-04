@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2011-2020, AdaCore                     --
---                Copyright (C) 2016-2020, Altran UK Limited                --
+--                     Copyright (C) 2011-2021, AdaCore                     --
+--                Copyright (C) 2016-2021, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1878,7 +1878,7 @@ package body SPARK_Definition is
                      Apply_Compile_Time_Constraint_Error
                        (N, "component not present in }",
                         CE_Discriminant_Check_Failed,
-                        Ent => Prefix_Type, Rep => False);
+                        Ent => Prefix_Type);
                   end if;
                end if;
             end;
@@ -5302,6 +5302,7 @@ package body SPARK_Definition is
                      else Empty);
                   --  Partial view of E. Do not use the Partial_Views from
                   --  SPARK_Util as it may not have been constructed yet.
+                  Enclosing_U    : constant Entity_Id := Enclosing_Unit (E);
 
                begin
                   if Present (E_Partial_View)
@@ -5320,13 +5321,16 @@ package body SPARK_Definition is
                   --  which are the type invariants which are visible at a
                   --  given program point.
 
-                  elsif not Is_Compilation_Unit (Enclosing_Unit (E)) then
+                  elsif not Is_Compilation_Unit (Enclosing_U) then
                      Mark_Unsupported
                        ("type invariant not immediately in a compilation unit",
                         E);
 
-                  elsif Is_Child_Unit (Enclosing_Unit (E)) then
-                     Mark_Unsupported ("type invariant in child unit", E);
+                  elsif Is_Child_Unit (Enclosing_U)
+                    and then Is_Private_Descendant (Enclosing_U)
+                  then
+                     Mark_Unsupported
+                       ("type invariant in private child unit", E);
 
                   --  We currently do not support invariants on protected
                   --  types. To support them, we would probably need some

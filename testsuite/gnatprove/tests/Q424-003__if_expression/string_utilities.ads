@@ -25,4 +25,4 @@ package String_Utilities with SPARK_Mode is
      Is_Subsequence (Longest_Common_Subsequence'Result, S2) and
      Longest_Common_Subsequence'Result'Length = Slow_LCS_Length (S1, S2));
 
- end String_Utilities;
+end String_Utilities;

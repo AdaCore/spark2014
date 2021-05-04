@@ -22,7 +22,7 @@ test.adb:84:09: info: data dependencies proved
 test.adb:85:09: info: flow dependencies proved
 test.adb:93:09: info: data dependencies proved
 test.adb:94:06: info: flow dependencies proved
-test.adb:100:25: default initialization cannot depend on variable input "Tmp" (SPARK RM 4.4(2))
+test.adb:100:25: error: default initialization cannot depend on variable input "Tmp" (SPARK RM 4.4(2))
 test.adb:103:23: info: initialization of "X" proved
 test.adb:104:14: info: data dependencies proved
 test.adb:106:10: info: initialization of "Wibble" proved

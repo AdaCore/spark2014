@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2020-2020, AdaCore                     --
+--                     Copyright (C) 2020-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -610,7 +610,7 @@ package body Why.Gen.Hardcoded is
                           Args     => (1 => Args (1))),
                      2 => New_Real_Constant
                        (Ada_Node => Ada_Node,
-                        Value    =>  Small_Value (From_Ty))),
+                        Value    => Small_Value (From_Ty))),
                   Typ      => Type_Of_Node (Etype (Subp)));
             else
                pragma Assert (Is_Floating_Point_Type (From_Ty));

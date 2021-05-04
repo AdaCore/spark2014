@@ -1,64 +1,64 @@
-type_invariant_illegal.ads:6:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:6:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:7:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:7:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:11:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:11:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:12:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:12:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:14:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:14:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:15:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:15:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:16:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:16:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:25:04: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:25:04: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:26:04: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:26:04: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:28:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:28:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:29:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:29:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:31:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:31:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:32:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:32:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:33:09: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:33:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:35:09: type invariant on completion of private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:35:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal.ads:36:09: type invariant on completion of private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal.ads:36:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:5:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:5:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:6:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:6:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:10:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:10:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:11:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:11:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:13:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:13:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:14:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:14:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:15:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:15:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:17:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:17:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:20:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:20:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:21:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:21:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:23:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:23:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:24:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:24:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:26:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:26:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:27:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:27:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_2.ads:28:09: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
-type_invariant_illegal_2.ads:28:09: violation of pragma SPARK_Mode at test.adc:1
-type_invariant_illegal_3.ads:14:09: type invariant on tagged types is not yet supported
+type_invariant_illegal.ads:6:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:6:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:7:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:7:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:11:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:11:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:12:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:12:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:14:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:14:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:15:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:15:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:16:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:16:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:25:04: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:25:04: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:26:04: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:26:04: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:28:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:28:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:29:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:29:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:31:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:31:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:32:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:32:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:33:09: error: type invariant on private_type_declaration or private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:33:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:35:09: error: type invariant on completion of private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:35:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal.ads:36:09: error: type invariant on completion of private_type_extension is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal.ads:36:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:5:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:5:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:6:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:6:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:10:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:10:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:11:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:11:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:13:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:13:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:14:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:14:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:15:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:15:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:17:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:17:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:20:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:20:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:21:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:21:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:23:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:23:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:24:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:24:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:26:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:26:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:27:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:27:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_2.ads:28:09: error: classwide invariant is not allowed in SPARK (SPARK RM 7.3.2(2))
+type_invariant_illegal_2.ads:28:09: error: violation of pragma SPARK_Mode at test.adc:1
+type_invariant_illegal_3.ads:14:09: error: type invariant on tagged types is not yet supported
 gnatprove: error during flow analysis and proof

@@ -1,13 +1,13 @@
-p.ads:9:23: read-only parameter "X" cannot appear as output in dependence relation
-p.ads:14:23: read-only parameter "X" cannot appear as output in dependence relation
-p.ads:21:23: read-only global "A" cannot appear as output in dependence relation
-p.ads:27:23: read-only global "A" cannot appear as output in dependence relation
-p.ads:32:28: write-only parameter "X" cannot appear as input in dependence relation
-p.ads:37:23: write-only parameter "X" cannot appear as input in dependence relation
-p.ads:44:28: write-only global "A" cannot appear as input in dependence relation
-p.ads:50:23: write-only global "A" cannot appear as input in dependence relation
-p.ads:56:11: add "null => X" dependency to ignore this input
-p.ads:56:11: parameter "X" is missing from input dependence list
-p.ads:61:11: add "null => A" dependency to ignore this input
-p.ads:61:11: global "A" is missing from input dependence list
+p.ads:9:23: error: read-only parameter "X" cannot appear as output in dependence relation
+p.ads:14:23: error: read-only parameter "X" cannot appear as output in dependence relation
+p.ads:21:23: error: read-only global "A" cannot appear as output in dependence relation
+p.ads:27:23: error: read-only global "A" cannot appear as output in dependence relation
+p.ads:32:28: error: write-only parameter "X" cannot appear as input in dependence relation
+p.ads:37:23: error: write-only parameter "X" cannot appear as input in dependence relation
+p.ads:44:28: error: write-only global "A" cannot appear as input in dependence relation
+p.ads:50:23: error: write-only global "A" cannot appear as input in dependence relation
+p.ads:56:11: error: add "null => X" dependency to ignore this input
+p.ads:56:11: error: parameter "X" is missing from input dependence list
+p.ads:61:11: error: add "null => A" dependency to ignore this input
+p.ads:61:11: error: global "A" is missing from input dependence list
 gnatprove: error during generation of Global contracts

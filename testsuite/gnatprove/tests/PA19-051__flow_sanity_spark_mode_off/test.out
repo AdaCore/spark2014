@@ -1,2 +1,2 @@
-p.ads:6:33: predicate cannot depend on variable input "Global" (SPARK RM 4.4(2))
+p.ads:6:33: error: predicate cannot depend on variable input "Global" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

@@ -1,11 +1,11 @@
-p-priv.adb:3:30:   body of unit "Priv" elaborated
-p-priv.adb:3:30:   variable "A" read at line 3
-p-priv.adb:3:30: read of variable "A" during elaboration in SPARK
-p-priv.adb:3:30: unit "Priv" requires pragma "Elaborate" for "P"
-p-priv.ads:3:12: "Instance_Gen" is declared in the visible part of private child unit "Priv"
-p-priv.ads:3:12: "Instance_Gen" is declared in the visible part of private child unit "Priv"
-p-priv.ads:3:12: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
-p-priv.ads:3:12: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
-p.adb:4:61: "State_Gen_Pkg" cannot act as constituent of state "State"
-p.adb:4:61: missing Part_Of indicator at p-priv.ads:3 should specify encapsulator "State"
+p-priv.adb:3:30: error:   body of unit "Priv" elaborated
+p-priv.adb:3:30: error:   variable "A" read at line 3
+p-priv.adb:3:30: error: read of variable "A" during elaboration in SPARK
+p-priv.adb:3:30: error: unit "Priv" requires pragma "Elaborate" for "P"
+p-priv.ads:3:12: error: "Instance_Gen" is declared in the visible part of private child unit "Priv"
+p-priv.ads:3:12: error: "Instance_Gen" is declared in the visible part of private child unit "Priv"
+p-priv.ads:3:12: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
+p-priv.ads:3:12: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(3))
+p.adb:4:61: error: "State_Gen_Pkg" cannot act as constituent of state "State"
+p.adb:4:61: error: missing Part_Of indicator at p-priv.ads:3 should specify encapsulator "State"
 gnatprove: error during generation of Global contracts

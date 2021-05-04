@@ -154,3 +154,16 @@ Relationship with AdaCore/Altran: AdaCore and Altran have provided bug reports, 
 * License: Modified BSD License
 * Mailing List: cvc-users@cs.nyu.edu
 * Bug tracking: http://cvc4.cs.nyu.edu/bugs/
+
+
+COLIBRI
+^^^^^^^
+
+History: COLIBRI is a library (COnstraint LIBrary for veRIfication) developed at CEA LIST and used for verification or test data generation purposes since 2000, using the techniques of constraint programming. The variety of types and constraints provided by COLIBRI makes it possible to use it in many testing and formaml methods tools at CEA LIST.
+
+Track record: Winner (2018) and Runner-up (2019) in the quantifier-free floating-point division of the `SMT competition <http://smtcomp.sourceforge.net>`_.
+
+Relationship with AdaCore/Altran: AdaCore and CEA collaborate together to improve COLIBRI.
+
+* Main developers: CEA
+* Version Management: Git

@@ -77,7 +77,7 @@ c392008_0.adb:33:46: info: overflow check proved (CVC4: 1 VC)
 c392008_0.adb:33:46: info: range check proved (CVC4: 1 VC)
 c392008_0.ads:159:30: warning: unused initial value of "A"
 c392008_1.ads:19:20: warning: unused initial value of "A"
-c392008_2.ads:26:14: "Current_Rate" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Open" at c392008_1.ads:19 (SPARK RM 6.1.6)
+c392008_2.ads:26:14: error: "Current_Rate" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Open" at c392008_1.ads:19 (SPARK RM 6.1.6)
 cc1311a.adb:101:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:387
 cc1311a.adb:137:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:396
 cc1311a.adb:190:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:414

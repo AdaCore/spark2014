@@ -1,5 +1,5 @@
-walker_bad.adb:8:31: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
-walker_bad.adb:8:31: violation of aspect SPARK_Mode at line 1
-walker_bad.adb:10:08: "Y" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
-walker_bad.adb:10:08: violation of aspect SPARK_Mode at line 1
+walker_bad.adb:8:31: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+walker_bad.adb:8:31: error: violation of aspect SPARK_Mode at line 1
+walker_bad.adb:10:08: error: "Y" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
+walker_bad.adb:10:08: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

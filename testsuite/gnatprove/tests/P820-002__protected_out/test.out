@@ -128,12 +128,12 @@ polyorb_hi-utils.ads:70:07: info: type is suitable as source for unchecked conve
 polyorb_hi-utils.ads:70:19: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type Node_Type has 2 values but has bit size 8]
 polyorb_hi-utils.ads:89:19: info: postcondition proved (CVC4: 1 VC)
 polyorb_hi-utils.ads:138:09: info: range check proved (CVC4: 4 VC)
-polyorb_hi_generated-activity.adb:98:03: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
-polyorb_hi_generated-activity.adb:98:03: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:100:06: attribute "Address" outside an attribute definition clause is not allowed in SPARK
-polyorb_hi_generated-activity.adb:100:06: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:121:23: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
-polyorb_hi_generated-activity.adb:121:23: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-activity.adb:98:03: error: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
+polyorb_hi_generated-activity.adb:98:03: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-activity.adb:100:06: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK
+polyorb_hi_generated-activity.adb:100:06: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-activity.adb:121:23: error: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
+polyorb_hi_generated-activity.adb:121:23: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:225:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect
 polyorb_hi_generated-activity.adb:251:05: warning: use clause for type "Error_Kind" defined at polyorb_hi-errors.ads:34 has no effect
 polyorb_hi_generated-activity.adb:300:05: warning: use clause for package "Deployment" has no effect
@@ -163,16 +163,16 @@ polyorb_hi_generated-transport.adb:36:05: info: initialization of "Value" proved
 polyorb_hi_generated-transport.adb:37:05: info: initialization of "Port" proved
 polyorb_hi_generated-transport.adb:54:07: info: no contextual analysis of "Producer_Consumer_Result_Consumer_Deliver" (body not seen yet)
 polyorb_hi_generated-transport.adb:58:09: warning: "Msg" is set by "Producer_Consumer_Result_Consumer_Deliver" but not used after the call
-polyorb_hi_generated-transport.adb:62:12: function with output global "polyorb_hi.epoch.elaborated_variables" is not allowed in SPARK
-polyorb_hi_generated-transport.adb:62:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
+polyorb_hi_generated-transport.adb:62:12: error: function with output global "polyorb_hi.epoch.elaborated_variables" is not allowed in SPARK
+polyorb_hi_generated-transport.adb:62:12: error: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
+polyorb_hi_generated-transport.adb:87:14: error: side effects of function "Producer_Consumer_Producer_Send" are not modeled in SPARK
 polyorb_hi_generated-transport.adb:87:14: info: no contextual analysis of "Producer_Consumer_Producer_Send" (body not seen yet)
-polyorb_hi_generated-transport.adb:87:14: side effects of function "Producer_Consumer_Producer_Send" are not modeled in SPARK
 polyorb_hi_generated-transport.adb:100:03: info: no contextual analysis of "Producer_Consumer_Producer_Send" (multiple returns)
-polyorb_hi_generated-transport.adb:117:44: side effects of function "Send" are not modeled in SPARK
+polyorb_hi_generated-transport.adb:117:44: error: side effects of function "Send" are not modeled in SPARK
 polyorb_hi_generated-transport.adb:137:05: info: initialization of "Thread_Interface_Ufc" proved
 polyorb_hi_generated-transport.adb:138:05: info: initialization of "Time_Stamp_Ufc" proved
-polyorb_hi_generated-transport.ads:20:12: function with output global "polyorb_hi.epoch.elaborated_variables" is not allowed in SPARK
-polyorb_hi_generated-transport.ads:20:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
+polyorb_hi_generated-transport.ads:20:12: error: function with output global "polyorb_hi.epoch.elaborated_variables" is not allowed in SPARK
+polyorb_hi_generated-transport.ads:20:12: error: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
 pr_a.adb:22:20: info: range check proved (CVC4: 2 VC)
 pr_a.adb:25:33: medium: "polyorb_hi.transport_low_level.nodes" might not be initialized after elaboration of main program "pr_A"
 gnatprove: error during flow analysis and proof

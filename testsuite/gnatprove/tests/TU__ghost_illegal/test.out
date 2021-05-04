@@ -1,11 +1,11 @@
-ghost_illegal_2.adb:16:14: ghost entity cannot appear in this context
-ghost_illegal_2.adb:31:14: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
-ghost_illegal_2.adb:50:10: ghost entity cannot appear in this context
-ghost_illegal_2.ads:14:04: ghost object "Vol_Ghost" cannot be volatile
-ghost_illegal_2.ads:31:32: as predicates are checked in membership tests, the type and its predicate must be both ghost
-ghost_illegal_2.ads:31:32: either make the type ghost or use a type invariant on a private type
-ghost_illegal_2.ads:31:32: ghost entity cannot appear in this context
-ghost_illegal_2.ads:34:36: as predicates are checked in membership tests, the type and its predicate must be both ghost
-ghost_illegal_2.ads:34:36: either make the type ghost or use a type invariant on a private type
-ghost_illegal_2.ads:34:36: ghost entity cannot appear in this context
+ghost_illegal_2.adb:16:14: error: ghost entity cannot appear in this context
+ghost_illegal_2.adb:31:14: error: volatile object cannot appear in this context (SPARK RM 7.1.3(10))
+ghost_illegal_2.adb:50:10: error: ghost entity cannot appear in this context
+ghost_illegal_2.ads:14:04: error: ghost object "Vol_Ghost" cannot be volatile
+ghost_illegal_2.ads:31:32: error: as predicates are checked in membership tests, the type and its predicate must be both ghost
+ghost_illegal_2.ads:31:32: error: either make the type ghost or use a type invariant on a private type
+ghost_illegal_2.ads:31:32: error: ghost entity cannot appear in this context
+ghost_illegal_2.ads:34:36: error: as predicates are checked in membership tests, the type and its predicate must be both ghost
+ghost_illegal_2.ads:34:36: error: either make the type ghost or use a type invariant on a private type
+ghost_illegal_2.ads:34:36: error: ghost entity cannot appear in this context
 gnatprove: error during generation of Global contracts

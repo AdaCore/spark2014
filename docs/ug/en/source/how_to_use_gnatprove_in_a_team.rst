@@ -248,7 +248,13 @@ documentation purpose:
 * ``Intentional`` indicates that the check can fail but that it is not
   considered to be a bug.
 
-*Pattern* should be a substring of the check message to justify.
+*Pattern* is a pattern that is used to match against the text of the check
+message to justify (not including the initial ``"low: "``, ``"medium: "`` or
+``"high: "`` prefix). The pattern follows the same rules as for pragma
+``Warnings``. It may contain asterisks, which match zero or more characters in
+the message, and no other characters are interpreted as regular expression
+notations (it is not necessary to put an asterisk at the start and the end of
+the message, since this is implied). The match is case insensitive.
 
 *Reason* is a string provided by the user as a justification for reviews. This
 reason may be present in a |GNATprove| report.

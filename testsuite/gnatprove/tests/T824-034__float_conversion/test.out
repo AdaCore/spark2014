@@ -1,3 +1,3 @@
-conv.adb:18:09: conversion between floating-point and 128-bits modular types is not yet supported
-conv.adb:19:09: conversion between floating-point and 128-bits modular types is not yet supported
+conv.adb:18:09: error: conversion between floating-point and 128-bits modular types is not yet supported
+conv.adb:19:09: error: conversion between floating-point and 128-bits modular types is not yet supported
 gnatprove: error during flow analysis and proof

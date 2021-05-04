@@ -2017,6 +2017,8 @@ is of type T (or a descendant thereof) can be assumed to satisfy T's invariant.
     rule (very roughly speaking) says that the global outputs of this notional
     subprogram follow much the same rules as for other subprograms.]
 
+11. A Type_Invariant expression shall always terminate.
+
 
 **Ramification:** In determining whether a dispatching call is a call
 to a boundary subprogram or to a subprogram declared outside of the
@@ -2055,12 +2057,9 @@ type does not define full default initialization (see :ref:`Declarations`).
 initialization.]
 
 Conversely, an aspect specification of a *Boolean_*\ ``expression`` indicates
-that the partial view of the type does define full default initialization.
-In this case, the completion of the private type shall define full
-default initialization. [Implementations may provide a mechanism for
-suppressing enforcement of this rule as described; the burden is then on
-the user to ensure that this does not result in undetected uses of
-uninitialized variables.]
+that, in the partial view of the type, every part whose type is not
+annotated with the Relaxed_Initialization aspect defines full default
+initialization.
 
 Unlike the null literal case, this case has associated dynamic semantics.
 The *Boolean_*\ ``expression`` (which might typically mention the current

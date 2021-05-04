@@ -2,25 +2,25 @@ external_7.ads:6:14: warning: subprogram "Read" has no effect
 external_7.ads:7:21: info: initialization of "X" proved
 type_invariant_legal_7.adb:15:04: warning: analyzing unreferenced function "Priv"
 type_invariant_legal_7.adb:25:04: warning: analyzing unreferenced procedure "Priv_In"
-type_invariant_legal_7.adb:34:09: "T" is not allowed in SPARK
-type_invariant_legal_7.adb:34:09: violation of aspect SPARK_Mode at line 3
+type_invariant_legal_7.adb:34:09: error: "T" is not allowed in SPARK
+type_invariant_legal_7.adb:34:09: error: violation of aspect SPARK_Mode at line 3
 type_invariant_legal_7.adb:38:04: warning: analyzing unreferenced procedure "Priv_Out"
-type_invariant_legal_7.adb:42:09: "T" is not allowed in SPARK
-type_invariant_legal_7.adb:42:09: violation of aspect SPARK_Mode at line 3
-type_invariant_legal_7.adb:49:09: "T" is not allowed in SPARK
-type_invariant_legal_7.adb:49:09: violation of aspect SPARK_Mode at line 3
+type_invariant_legal_7.adb:42:09: error: "T" is not allowed in SPARK
+type_invariant_legal_7.adb:42:09: error: violation of aspect SPARK_Mode at line 3
+type_invariant_legal_7.adb:49:09: error: "T" is not allowed in SPARK
+type_invariant_legal_7.adb:49:09: error: violation of aspect SPARK_Mode at line 3
 type_invariant_legal_7.adb:53:04: warning: analyzing unreferenced procedure "Priv_In_Out"
-type_invariant_legal_7.adb:56:09: "T" is not allowed in SPARK
-type_invariant_legal_7.adb:56:09: violation of aspect SPARK_Mode at line 3
-type_invariant_legal_7.ads:18:09: type invariant on components of tagged types is not yet supported
-type_invariant_legal_8.adb:40:09: "T" is not allowed in SPARK
-type_invariant_legal_8.adb:40:09: violation of aspect SPARK_Mode at line 1
-type_invariant_legal_8.adb:51:09: "T" is not allowed in SPARK
-type_invariant_legal_8.adb:51:09: violation of aspect SPARK_Mode at line 1
-type_invariant_legal_8.adb:62:09: "T" is not allowed in SPARK
-type_invariant_legal_8.adb:62:09: violation of aspect SPARK_Mode at line 1
-type_invariant_legal_8.adb:74:09: "T" is not allowed in SPARK
-type_invariant_legal_8.adb:74:09: violation of aspect SPARK_Mode at line 1
+type_invariant_legal_7.adb:56:09: error: "T" is not allowed in SPARK
+type_invariant_legal_7.adb:56:09: error: violation of aspect SPARK_Mode at line 3
+type_invariant_legal_7.ads:18:09: error: type invariant on components of tagged types is not yet supported
+type_invariant_legal_8.adb:40:09: error: "T" is not allowed in SPARK
+type_invariant_legal_8.adb:40:09: error: violation of aspect SPARK_Mode at line 1
+type_invariant_legal_8.adb:51:09: error: "T" is not allowed in SPARK
+type_invariant_legal_8.adb:51:09: error: violation of aspect SPARK_Mode at line 1
+type_invariant_legal_8.adb:62:09: error: "T" is not allowed in SPARK
+type_invariant_legal_8.adb:62:09: error: violation of aspect SPARK_Mode at line 1
+type_invariant_legal_8.adb:74:09: error: "T" is not allowed in SPARK
+type_invariant_legal_8.adb:74:09: error: violation of aspect SPARK_Mode at line 1
 type_invariant_legal_8.adb:83:04: warning: analyzing unreferenced procedure "Extra_Test"
-type_invariant_legal_8.ads:20:09: type invariant on components of tagged types is not yet supported
+type_invariant_legal_8.ads:20:09: error: type invariant on components of tagged types is not yet supported
 gnatprove: error during flow analysis and proof

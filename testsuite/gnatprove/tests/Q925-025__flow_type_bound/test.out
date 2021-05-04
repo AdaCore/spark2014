@@ -1,2 +1,2 @@
-dyn.ads:5:18: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+dyn.ads:5:18: error: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

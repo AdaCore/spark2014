@@ -1,33 +1,33 @@
-foo-blah.adb:15:20:   body of unit "Blah" elaborated
-foo-blah.adb:15:20:   variable "Body_Elaborated" assigned at line 15
-foo-blah.adb:15:20: add pragma "Elaborate_Body" to spec "Blah" to ensure full initialization
-foo-blah.adb:15:20: variable "Body_Elaborated" modified by elaboration code in package body
-foo-blah.adb:16:10:   body of unit "Blah" elaborated
-foo-blah.adb:16:10:   variable "Foo" assigned at line 16
-foo-blah.adb:16:10: add pragma "Elaborate_Body" to spec "Blah" to ensure full initialization
-foo-blah.adb:16:10: variable "Foo" modified by elaboration code in package body
-foo-blah.adb:17:10:   body of unit "Blah" elaborated
-foo-blah.adb:17:10:   variable "Baz" assigned at line 17
-foo-blah.adb:17:10: add pragma "Elaborate_Body" to spec "Blah" to ensure full initialization
-foo-blah.adb:17:10: variable "Baz" modified by elaboration code in package body
-foo.adb:15:20:   body of unit "Foo" elaborated
-foo.adb:15:20:   variable "Body_Elaborated" assigned at line 15
-foo.adb:15:20: add pragma "Elaborate_Body" to spec "Foo" to ensure full initialization
-foo.adb:15:20: variable "Body_Elaborated" modified by elaboration code in package body
-foo.adb:16:10:   body of unit "Foo" elaborated
-foo.adb:16:10:   variable "Foo" assigned at line 16
-foo.adb:16:10: add pragma "Elaborate_Body" to spec "Foo" to ensure full initialization
-foo.adb:16:10: variable "Foo" modified by elaboration code in package body
-foo.adb:17:10:   body of unit "Foo" elaborated
-foo.adb:17:10:   variable "Baz" assigned at line 17
-foo.adb:17:10: add pragma "Elaborate_Body" to spec "Foo" to ensure full initialization
-foo.adb:17:10: variable "Baz" modified by elaboration code in package body
-nested-priv.adb:7:06:   body of unit "Priv" elaborated
-nested-priv.adb:7:06:   variable "Y" assigned at line 7
-nested-priv.adb:7:06: add pragma "Elaborate_Body" to spec "Priv" to ensure full initialization
-nested-priv.adb:7:06: variable "Y" modified by elaboration code in package body
-nested.adb:11:09:   body of unit "Nested" elaborated
-nested.adb:11:09:   variable "X" assigned at line 11
-nested.adb:11:09: add pragma "Elaborate_Body" to spec "Nested" to ensure full initialization
-nested.adb:11:09: variable "X" modified by elaboration code in package body
+foo-blah.adb:15:20: error:   body of unit "Blah" elaborated
+foo-blah.adb:15:20: error:   variable "Body_Elaborated" assigned at line 15
+foo-blah.adb:15:20: error: add pragma "Elaborate_Body" to spec "Blah" to ensure full initialization
+foo-blah.adb:15:20: error: variable "Body_Elaborated" modified by elaboration code in package body
+foo-blah.adb:16:10: error:   body of unit "Blah" elaborated
+foo-blah.adb:16:10: error:   variable "Foo" assigned at line 16
+foo-blah.adb:16:10: error: add pragma "Elaborate_Body" to spec "Blah" to ensure full initialization
+foo-blah.adb:16:10: error: variable "Foo" modified by elaboration code in package body
+foo-blah.adb:17:10: error:   body of unit "Blah" elaborated
+foo-blah.adb:17:10: error:   variable "Baz" assigned at line 17
+foo-blah.adb:17:10: error: add pragma "Elaborate_Body" to spec "Blah" to ensure full initialization
+foo-blah.adb:17:10: error: variable "Baz" modified by elaboration code in package body
+foo.adb:15:20: error:   body of unit "Foo" elaborated
+foo.adb:15:20: error:   variable "Body_Elaborated" assigned at line 15
+foo.adb:15:20: error: add pragma "Elaborate_Body" to spec "Foo" to ensure full initialization
+foo.adb:15:20: error: variable "Body_Elaborated" modified by elaboration code in package body
+foo.adb:16:10: error:   body of unit "Foo" elaborated
+foo.adb:16:10: error:   variable "Foo" assigned at line 16
+foo.adb:16:10: error: add pragma "Elaborate_Body" to spec "Foo" to ensure full initialization
+foo.adb:16:10: error: variable "Foo" modified by elaboration code in package body
+foo.adb:17:10: error:   body of unit "Foo" elaborated
+foo.adb:17:10: error:   variable "Baz" assigned at line 17
+foo.adb:17:10: error: add pragma "Elaborate_Body" to spec "Foo" to ensure full initialization
+foo.adb:17:10: error: variable "Baz" modified by elaboration code in package body
+nested-priv.adb:7:06: error:   body of unit "Priv" elaborated
+nested-priv.adb:7:06: error:   variable "Y" assigned at line 7
+nested-priv.adb:7:06: error: add pragma "Elaborate_Body" to spec "Priv" to ensure full initialization
+nested-priv.adb:7:06: error: variable "Y" modified by elaboration code in package body
+nested.adb:11:09: error:   body of unit "Nested" elaborated
+nested.adb:11:09: error:   variable "X" assigned at line 11
+nested.adb:11:09: error: add pragma "Elaborate_Body" to spec "Nested" to ensure full initialization
+nested.adb:11:09: error: variable "X" modified by elaboration code in package body
 gnatprove: error during generation of Global contracts

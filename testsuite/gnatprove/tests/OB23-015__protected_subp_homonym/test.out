@@ -1,9 +1,9 @@
-p.ads:7:07: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
-p.ads:7:07: violation of pragma SPARK_Mode at test.adc:1
-p.ads:8:07: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
-p.ads:8:07: violation of pragma SPARK_Mode at test.adc:1
-p.ads:11:04: "PT" is not allowed in SPARK (due to protected component with no default initialization)
-p.ads:11:04: violation of pragma SPARK_Mode at test.adc:1
+p.ads:7:07: error: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
+p.ads:7:07: error: violation of pragma SPARK_Mode at test.adc:1
+p.ads:8:07: error: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
+p.ads:8:07: error: violation of pragma SPARK_Mode at test.adc:1
+p.ads:11:04: error: "PT" is not allowed in SPARK (due to protected component with no default initialization)
+p.ads:11:04: error: violation of pragma SPARK_Mode at test.adc:1
 q.adb:7:17: info: add a contract to analyze it separately from calling contexts
 q.adb:7:17: info: local subprogram "Set" only analyzed in the context of calls
 q.adb:9:12: warning: unused assignment, in call inlined at q.adb:18
@@ -11,12 +11,12 @@ q.adb:12:17: info: add a contract to analyze it separately from calling contexts
 q.adb:12:17: info: local subprogram "Set" only analyzed in the context of calls
 q.adb:14:12: warning: unused assignment, in call inlined at q.adb:19
 q.ads:3:14: medium: the task might terminate, which is not allowed in SPARK
-s.ads:7:07: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
-s.ads:7:07: violation of pragma SPARK_Mode at test.adc:1
-s.ads:8:07: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
-s.ads:8:07: violation of pragma SPARK_Mode at test.adc:1
-s.ads:11:04: "PT" is not allowed in SPARK (due to protected component with no default initialization)
-s.ads:11:04: violation of pragma SPARK_Mode at test.adc:1
+s.ads:7:07: error: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
+s.ads:7:07: error: violation of pragma SPARK_Mode at test.adc:1
+s.ads:8:07: error: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
+s.ads:8:07: error: violation of pragma SPARK_Mode at test.adc:1
+s.ads:11:04: error: "PT" is not allowed in SPARK (due to protected component with no default initialization)
+s.ads:11:04: error: violation of pragma SPARK_Mode at test.adc:1
 t-tt.adb:6:14: info: add a contract to analyze it separately from calling contexts
 t-tt.adb:6:14: info: local subprogram "Set" only analyzed in the context of calls
 t-tt.adb:8:09: warning: unused assignment, in call inlined at t-tt.adb:17

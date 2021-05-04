@@ -1,4 +1,4 @@
 a~main.adb:8:07: info: initialization of "X" proved
 a~main.ads:5:17: info: initialization of "Y" proved
-b.ads:3:04: "State" is referenced in expression function but missing from the Global
+b.ads:3:04: error: "State" is referenced in expression function but missing from the Global
 gnatprove: error during flow analysis and proof

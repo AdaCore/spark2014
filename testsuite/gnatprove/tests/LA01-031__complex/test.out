@@ -1,8 +1,8 @@
-test.adb:9:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-test.adb:9:04: violation of pragma SPARK_Mode at line 1
-test.adb:16:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-test.adb:16:04: violation of pragma SPARK_Mode at line 1
-test.adb:27:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-test.adb:27:04: instantiation error at line 22
-test.adb:27:04: violation of pragma SPARK_Mode at line 1
+test.adb:9:04: error: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
+test.adb:9:04: error: violation of pragma SPARK_Mode at line 1
+test.adb:16:04: error: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
+test.adb:16:04: error: violation of pragma SPARK_Mode at line 1
+test.adb:27:04: error: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
+test.adb:27:04: error: instantiation error at line 22
+test.adb:27:04: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

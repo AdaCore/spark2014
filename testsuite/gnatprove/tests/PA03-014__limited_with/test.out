@@ -1,23 +1,23 @@
-aida-int32.ads:7:09: consider restructuring code to avoid "limited with"
-aida-int32.ads:7:09: incomplete type is not yet supported
-aida_character.adb:7:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:7:41: violation of aspect SPARK_Mode at line 3
-aida_character.adb:8:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:8:41: violation of aspect SPARK_Mode at line 3
-aida_character.adb:9:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:9:41: violation of aspect SPARK_Mode at line 3
-aida_character.adb:10:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:10:41: violation of aspect SPARK_Mode at line 3
-aida_character.adb:11:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:11:41: violation of aspect SPARK_Mode at line 3
-aida_character.adb:12:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:12:41: violation of aspect SPARK_Mode at line 3
-aida_character.adb:13:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:13:41: violation of aspect SPARK_Mode at line 3
-aida_character.adb:14:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:14:41: violation of aspect SPARK_Mode at line 3
-aida_character.adb:15:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:15:41: violation of aspect SPARK_Mode at line 3
-aida_character.adb:16:41: "Check_Result" is not allowed in SPARK (due to incomplete type)
-aida_character.adb:16:41: violation of aspect SPARK_Mode at line 3
+aida-int32.ads:7:09: error: consider restructuring code to avoid "limited with"
+aida-int32.ads:7:09: error: incomplete type is not yet supported
+aida_character.adb:7:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:7:41: error: violation of aspect SPARK_Mode at line 3
+aida_character.adb:8:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:8:41: error: violation of aspect SPARK_Mode at line 3
+aida_character.adb:9:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:9:41: error: violation of aspect SPARK_Mode at line 3
+aida_character.adb:10:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:10:41: error: violation of aspect SPARK_Mode at line 3
+aida_character.adb:11:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:11:41: error: violation of aspect SPARK_Mode at line 3
+aida_character.adb:12:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:12:41: error: violation of aspect SPARK_Mode at line 3
+aida_character.adb:13:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:13:41: error: violation of aspect SPARK_Mode at line 3
+aida_character.adb:14:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:14:41: error: violation of aspect SPARK_Mode at line 3
+aida_character.adb:15:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:15:41: error: violation of aspect SPARK_Mode at line 3
+aida_character.adb:16:41: error: "Check_Result" is not allowed in SPARK (due to incomplete type)
+aida_character.adb:16:41: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

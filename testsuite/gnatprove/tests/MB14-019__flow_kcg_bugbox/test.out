@@ -1,5 +1,5 @@
-applies_to_all.adb:23:04: file "applies_to_all-p_1.adb" not found
-applies_to_all.adb:25:04: file "applies_to_all-p_2.adb" not found
-applies_to_all.adb:112:04: file "applies_to_all-proc_6.adb" not found
-applies_to_all.adb:116:04: file "applies_to_all-proc_7.adb" not found
+applies_to_all.adb:23:04: error: file "applies_to_all-p_1.adb" not found
+applies_to_all.adb:25:04: error: file "applies_to_all-p_2.adb" not found
+applies_to_all.adb:112:04: error: file "applies_to_all-proc_6.adb" not found
+applies_to_all.adb:116:04: error: file "applies_to_all-proc_7.adb" not found
 gnatprove: error during generation of Global contracts

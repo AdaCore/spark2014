@@ -1,7 +1,7 @@
-p.adb:6:33: "Get_Line" is not allowed in SPARK
-p.adb:6:33: violation of pragma SPARK_Mode at test.adc:1
-p.adb:19:39: "Get_Line" is not allowed in SPARK
-p.adb:19:39: violation of pragma SPARK_Mode at test.adc:1
-p.adb:21:21: "S" is not allowed in SPARK
-p.adb:21:21: violation of pragma SPARK_Mode at test.adc:1
+p.adb:6:33: error: "Get_Line" is not allowed in SPARK
+p.adb:6:33: error: violation of pragma SPARK_Mode at test.adc:1
+p.adb:19:39: error: "Get_Line" is not allowed in SPARK
+p.adb:19:39: error: violation of pragma SPARK_Mode at test.adc:1
+p.adb:21:21: error: "S" is not allowed in SPARK
+p.adb:21:21: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

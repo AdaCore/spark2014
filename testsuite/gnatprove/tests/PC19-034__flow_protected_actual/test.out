@@ -1,8 +1,8 @@
-p.adb:15:37: call to operation of a formal protected parameter is not yet supported
-p.adb:17:09: call to operation of a formal protected parameter is not yet supported
-p.adb:18:09: call to operation of a formal protected parameter is not yet supported
-p.adb:22:37: call to operation of a formal protected parameter is not yet supported
-p.adb:24:14: "Dummy" is not allowed in SPARK (due to call to operation of a formal protected parameter)
-p.adb:24:14: violation of pragma SPARK_Mode at test.adc:1
+p.adb:15:37: error: call to operation of a formal protected parameter is not yet supported
+p.adb:17:09: error: call to operation of a formal protected parameter is not yet supported
+p.adb:18:09: error: call to operation of a formal protected parameter is not yet supported
+p.adb:22:37: error: call to operation of a formal protected parameter is not yet supported
+p.adb:24:14: error: "Dummy" is not allowed in SPARK (due to call to operation of a formal protected parameter)
+p.adb:24:14: error: violation of pragma SPARK_Mode at test.adc:1
 q.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 gnatprove: error during flow analysis and proof

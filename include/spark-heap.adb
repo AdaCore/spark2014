@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                   Copyright (C) 2019, Altran UK Limited                  --
+--                Copyright (C) 2019-2021, Altran UK Limited                --
 --                                                                          --
 -- SPARK is free software;  you can  redistribute it and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --

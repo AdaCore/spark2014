@@ -1,2 +1,2 @@
-a.ads:17:31: invariant cannot depend on variable input "Next_Account" (SPARK RM 4.4(2))
+a.ads:17:31: error: invariant cannot depend on variable input "Next_Account" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

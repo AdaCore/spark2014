@@ -1,6 +1,6 @@
 INLINING ENABLED:
-update.adb:14:10: "Constraint_Error" would have been raised at run time
-update.adb:14:10: value not in range of type "Standard.Positive"
+update.adb:14:10: error: "Constraint_Error" would have been raised at run time
+update.adb:14:10: error: value not in range of type "Standard.Positive"
 gnatprove: error during generation of Global contracts
 INLINING DISABLED:
 update.adb:6:14: warning: subprogram "Test" has no effect

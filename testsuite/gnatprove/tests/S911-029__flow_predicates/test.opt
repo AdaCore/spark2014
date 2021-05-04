@@ -1,1 +1,1 @@
-ALL XFAIL mutually recursive predicates (S911-029)
+ALL SKIP infinite recursion on mutually recursive predicates (S911-029)

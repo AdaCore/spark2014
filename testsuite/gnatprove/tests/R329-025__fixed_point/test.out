@@ -1,5 +1,5 @@
-fpint.adb:7:09: conversion between fixed-point and integer types is not yet supported
-fpint.adb:7:09: fixed-point with fractional small leads to imprecise conversion
-fpint.adb:8:09: conversion between fixed-point and integer types is not yet supported
-fpint.adb:8:09: fixed-point with fractional small leads to imprecise conversion
+fpint.adb:7:09: error: conversion between fixed-point and integer types is not yet supported
+fpint.adb:7:09: error: fixed-point with fractional small leads to imprecise conversion
+fpint.adb:8:09: error: conversion between fixed-point and integer types is not yet supported
+fpint.adb:8:09: error: fixed-point with fractional small leads to imprecise conversion
 gnatprove: error during flow analysis and proof

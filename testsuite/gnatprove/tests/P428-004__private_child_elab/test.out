@@ -1,5 +1,5 @@
-p-q.adb:7:06:   body of unit "Q" elaborated
-p-q.adb:7:06:   variable "X" assigned at line 7
-p-q.adb:7:06: add pragma "Elaborate_Body" to spec "Q" to ensure full initialization
-p-q.adb:7:06: variable "X" modified by elaboration code in package body
+p-q.adb:7:06: error:   body of unit "Q" elaborated
+p-q.adb:7:06: error:   variable "X" assigned at line 7
+p-q.adb:7:06: error: add pragma "Elaborate_Body" to spec "Q" to ensure full initialization
+p-q.adb:7:06: error: variable "X" modified by elaboration code in package body
 gnatprove: error during generation of Global contracts

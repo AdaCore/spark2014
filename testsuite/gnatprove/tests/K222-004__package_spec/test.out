@@ -1,7 +1,7 @@
-pack.ads:4:04: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
-pack.ads:4:04: violation of aspect SPARK_Mode at line 2
-pack.ads:4:26: uninitialized allocator without default initialization is not allowed in SPARK
-pack.ads:4:26: violation of aspect SPARK_Mode at line 2
-pack.ads:7:18: "G" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
-pack.ads:7:18: violation of aspect SPARK_Mode at line 2
+pack.ads:4:04: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+pack.ads:4:04: error: violation of aspect SPARK_Mode at line 2
+pack.ads:4:26: error: uninitialized allocator without default initialization is not allowed in SPARK
+pack.ads:4:26: error: violation of aspect SPARK_Mode at line 2
+pack.ads:7:18: error: "G" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
+pack.ads:7:18: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

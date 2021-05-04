@@ -32,11 +32,11 @@ test_raise.adb:73:07: medium: precondition might fail (e.g. when X = -1) [possib
 test_raise.adb:75:07: info: precondition proved (CVC4: 5 VC; Trivial: 3 VC)
 test_raise.adb:78:19: medium: assertion might fail, cannot prove Float_Conv.From_Big_Real (Z) = 0.0
 test_raise.adb:78:29: info: precondition proved (CVC4: 1 VC)
-test_raise_bad.adb:5:15: raise expression in a complex expression in a precondition is not yet supported
-test_raise_bad.adb:6:29: raise expression in a complex expression in a precondition is not yet supported
-test_raise_bad.adb:7:37: raise expression in a complex expression in a precondition is not yet supported
-test_raise_bad.adb:8:39: raise expression in a complex expression in a precondition is not yet supported
-test_raise_bad.adb:9:41: raise expression in a complex expression in a precondition is not yet supported
-test_raise_bad.adb:10:21: raise expression in a complex expression in a precondition is not yet supported
-test_raise_bad.adb:11:28: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:5:15: error: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:6:29: error: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:7:37: error: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:8:39: error: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:9:41: error: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:10:21: error: raise expression in a complex expression in a precondition is not yet supported
+test_raise_bad.adb:11:28: error: raise expression in a complex expression in a precondition is not yet supported
 gnatprove: error during flow analysis and proof

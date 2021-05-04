@@ -1,5 +1,5 @@
-p.ads:6:34: "Expr" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
-p.ads:6:34: violation of aspect SPARK_Mode at line 5
-p.ads:9:04: "PT" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
-p.ads:9:04: violation of aspect SPARK_Mode at line 3
+p.ads:6:34: error: "Expr" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
+p.ads:6:34: error: violation of aspect SPARK_Mode at line 5
+p.ads:9:04: error: "PT" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
+p.ads:9:04: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

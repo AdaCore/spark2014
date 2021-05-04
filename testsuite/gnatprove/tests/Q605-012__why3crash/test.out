@@ -1,4 +1,4 @@
-achiever.ads:1:06: "Achiever (body)" depends on "Achiever (spec)"
-achiever.ads:1:06: "Achiever (spec)" depends on "Sc_Status_Type (spec)"
-achiever.ads:1:06: file "sc_status_type.ads" not found
+achiever.ads:1:06: error: "Achiever (body)" depends on "Achiever (spec)"
+achiever.ads:1:06: error: "Achiever (spec)" depends on "Sc_Status_Type (spec)"
+achiever.ads:1:06: error: file "sc_status_type.ads" not found
 gnatprove: error during generation of Global contracts

@@ -1,11 +1,11 @@
 a.adb:5:07: info: initialization of "Y" proved
 a.adb:5:10: info: initialization of "Z" proved
-a.adb:11:20: "X" is not writable
-a.adb:11:20: object was declared as not writable at line 4
-a.adb:16:09: dereference from "X" is not writable
-a.adb:16:09: object was declared as not writable at line 4
-a.adb:17:20: "X" is not writable
-a.adb:17:20: object was declared as not writable at line 4
+a.adb:11:20: error: "X" is not writable
+a.adb:11:20: error: object was declared as not writable at line 4
+a.adb:16:09: error: dereference from "X" is not writable
+a.adb:16:09: error: object was declared as not writable at line 4
+a.adb:17:20: error: "X" is not writable
+a.adb:17:20: error: object was declared as not writable at line 4
 a.adb:22:17: warning: "X" is not modified, could be of access constant type
 a.adb:23:07: info: initialization of "Y" proved
 a.ads:8:16: warning: "X" is not modified, could be of access constant type

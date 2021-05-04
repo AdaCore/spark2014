@@ -1,3 +1,3 @@
-p.adb:5:15: "Bad_Int" is not allowed in SPARK
-p.adb:5:15: violation of aspect SPARK_Mode at line 1
+p.adb:5:15: error: "Bad_Int" is not allowed in SPARK
+p.adb:5:15: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

@@ -40,7 +40,10 @@ A type is said to *define full default initialization* if it is
   * a task type; or
 
   * a private type whose Default_Initial_Condition aspect is specified to be a
-    *Boolean_*\ ``expression``.
+    *Boolean_*\ ``expression`` and whose full view is not in |SPARK|; or
+
+  * a private type whose full view is in |SPARK| and defines full default
+    initialization.
 
 [The discriminants of a discriminated type play no role in determining
 whether the type defines full default initialization.]

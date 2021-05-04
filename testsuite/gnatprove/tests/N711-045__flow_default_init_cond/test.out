@@ -1,4 +1,4 @@
-caller.ads:4:09: type aspect on type derived from a private type is not yet supported
+caller.ads:4:09: error: type aspect on type derived from a private type is not yet supported
 callers_caller.adb:6:07: info: initialization of "R" proved
 callers_caller.adb:8:22: medium: assertion might fail, cannot prove Add3 (R) = 0
 callers_caller.ads:8:14: warning: subprogram "Test2" has no effect

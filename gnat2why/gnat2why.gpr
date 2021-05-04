@@ -78,6 +78,7 @@ project GNAT2Why is
          "flow-control_flow_graph.adb",
          "flow-data_dependence_graph.adb",
          "graphs.adb",
+         "why-atree-tables.adb",
 
          --  the following files contain instances of Graphs
          --  leading to false alarms in graphs.adb

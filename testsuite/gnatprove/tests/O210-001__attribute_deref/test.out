@@ -1,13 +1,13 @@
-deref_test.adb:4:19: attribute "Address" outside an attribute definition clause is not allowed in SPARK
-deref_test.adb:4:19: violation of pragma SPARK_Mode at test.adc:1
-deref_test.adb:6:07: attribute "Deref" is not allowed in SPARK
-deref_test.adb:6:07: violation of pragma SPARK_Mode at test.adc:1
-deref_test2.adb:4:19: attribute "Address" outside an attribute definition clause is not allowed in SPARK
-deref_test2.adb:4:19: violation of pragma SPARK_Mode at test.adc:1
-deref_test2.adb:6:07: attribute "Deref" is not allowed in SPARK
-deref_test2.adb:6:07: violation of pragma SPARK_Mode at test.adc:1
-deref_test2.adb:9:04: attribute "Deref" is not allowed in SPARK
-deref_test2.adb:9:04: violation of pragma SPARK_Mode at test.adc:1
-deref_test2.adb:10:07: attribute "Deref" is not allowed in SPARK
-deref_test2.adb:10:07: violation of pragma SPARK_Mode at test.adc:1
+deref_test.adb:4:19: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK
+deref_test.adb:4:19: error: violation of pragma SPARK_Mode at test.adc:1
+deref_test.adb:6:07: error: attribute "Deref" is not allowed in SPARK
+deref_test.adb:6:07: error: violation of pragma SPARK_Mode at test.adc:1
+deref_test2.adb:4:19: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK
+deref_test2.adb:4:19: error: violation of pragma SPARK_Mode at test.adc:1
+deref_test2.adb:6:07: error: attribute "Deref" is not allowed in SPARK
+deref_test2.adb:6:07: error: violation of pragma SPARK_Mode at test.adc:1
+deref_test2.adb:9:04: error: attribute "Deref" is not allowed in SPARK
+deref_test2.adb:9:04: error: violation of pragma SPARK_Mode at test.adc:1
+deref_test2.adb:10:07: error: attribute "Deref" is not allowed in SPARK
+deref_test2.adb:10:07: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

@@ -1,96 +1,96 @@
-n01.adb:14:12: general access type is not allowed in SPARK
-n01.adb:14:12: violation of aspect SPARK_Mode at line 9
-n011.adb:12:12: general access type is not allowed in SPARK
-n011.adb:12:12: violation of aspect SPARK_Mode at line 7
-n02.adb:13:12: general access type is not allowed in SPARK
-n02.adb:13:12: violation of aspect SPARK_Mode at line 8
-n02.adb:14:12: general access type is not allowed in SPARK
-n02.adb:14:12: violation of aspect SPARK_Mode at line 8
-n04.adb:14:08: general access type is not allowed in SPARK
-n04.adb:14:08: violation of aspect SPARK_Mode at line 12
-n04.adb:15:08: general access type is not allowed in SPARK
-n04.adb:15:08: violation of aspect SPARK_Mode at line 12
-n05.adb:11:08: general access type is not allowed in SPARK
-n05.adb:11:08: violation of aspect SPARK_Mode at line 9
+n01.adb:14:12: error: general access type is not allowed in SPARK
+n01.adb:14:12: error: violation of aspect SPARK_Mode at line 9
+n011.adb:12:12: error: general access type is not allowed in SPARK
+n011.adb:12:12: error: violation of aspect SPARK_Mode at line 7
+n02.adb:13:12: error: general access type is not allowed in SPARK
+n02.adb:13:12: error: violation of aspect SPARK_Mode at line 8
+n02.adb:14:12: error: general access type is not allowed in SPARK
+n02.adb:14:12: error: violation of aspect SPARK_Mode at line 8
+n04.adb:14:08: error: general access type is not allowed in SPARK
+n04.adb:14:08: error: violation of aspect SPARK_Mode at line 12
+n04.adb:15:08: error: general access type is not allowed in SPARK
+n04.adb:15:08: error: violation of aspect SPARK_Mode at line 12
+n05.adb:11:08: error: general access type is not allowed in SPARK
+n05.adb:11:08: error: violation of aspect SPARK_Mode at line 9
 n05.adb:15:20: warning: formal parameter "A" is not referenced
 n05.adb:44:03: warning: variable "C" is never read and never assigned
-observingcomposite.adb:20:20: uninitialized allocator without default initialization is not allowed in SPARK
-observingcomposite.adb:20:20: violation of aspect SPARK_Mode at line 6
-observingcomposite.adb:21:20: uninitialized allocator without default initialization is not allowed in SPARK
-observingcomposite.adb:21:20: violation of aspect SPARK_Mode at line 6
-observingcomposite.adb:22:03: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
-observingcomposite.adb:22:03: violation of aspect SPARK_Mode at line 6
-observingcomposite.adb:22:16: "XR1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
-observingcomposite.adb:22:16: violation of aspect SPARK_Mode at line 6
-observingcomposite.adb:22:21: "YR1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
-observingcomposite.adb:22:21: violation of aspect SPARK_Mode at line 6
-observingcomposite.adb:23:27: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
-observingcomposite.adb:23:27: violation of aspect SPARK_Mode at line 6
-observingcomposite.adb:25:09: "Y" is not allowed in SPARK (due to uninitialized allocator without default initialization)
-observingcomposite.adb:25:09: violation of aspect SPARK_Mode at line 6
-observingcomposite.adb:25:23: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
-observingcomposite.adb:25:23: violation of aspect SPARK_Mode at line 6
-pointers.ads:38:09: general access type is not allowed in SPARK
-pointers.ads:38:09: violation of aspect SPARK_Mode at line 2
-pointers.ads:54:09: "Int_Cst_Ptr" is not allowed in SPARK (due to general access type)
-pointers.ads:54:09: violation of aspect SPARK_Mode at line 2
-pointers.ads:70:09: general access type is not allowed in SPARK
-pointers.ads:70:09: violation of aspect SPARK_Mode at line 2
-pointers2.adb:31:16: "Y" is not readable
-pointers2.adb:31:16: object was moved at line 30
+observingcomposite.adb:20:20: error: uninitialized allocator without default initialization is not allowed in SPARK
+observingcomposite.adb:20:20: error: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:21:20: error: uninitialized allocator without default initialization is not allowed in SPARK
+observingcomposite.adb:21:20: error: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:22:03: error: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:22:03: error: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:22:16: error: "XR1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:22:16: error: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:22:21: error: "YR1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:22:21: error: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:23:27: error: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:23:27: error: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:25:09: error: "Y" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:25:09: error: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:25:23: error: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:25:23: error: violation of aspect SPARK_Mode at line 6
+pointers.ads:38:09: error: general access type is not allowed in SPARK
+pointers.ads:38:09: error: violation of aspect SPARK_Mode at line 2
+pointers.ads:54:09: error: "Int_Cst_Ptr" is not allowed in SPARK (due to general access type)
+pointers.ads:54:09: error: violation of aspect SPARK_Mode at line 2
+pointers.ads:70:09: error: general access type is not allowed in SPARK
+pointers.ads:70:09: error: violation of aspect SPARK_Mode at line 2
+pointers2.adb:31:16: error: "Y" is not readable
+pointers2.adb:31:16: error: object was moved at line 30
 pointers2.adb:36:09: warning: unused assignment
-pointers2.adb:37:12: "Y" is not readable
-pointers2.adb:37:12: object was moved at line 36
-pointers2.ads:6:14: object was moved at pointers2.adb:6
-pointers2.ads:6:14: return from "Bad_Swap" with moved value for "Y"
+pointers2.adb:37:12: error: "Y" is not readable
+pointers2.adb:37:12: error: object was moved at line 36
+pointers2.ads:6:14: error: object was moved at pointers2.adb:6
+pointers2.ads:6:14: error: return from "Bad_Swap" with moved value for "Y"
 pointers2.ads:6:24: warning: unused initial value of "X"
 pointers2.ads:6:27: warning: "Y" is not modified, could be IN
-pointers2.ads:12:14: object was moved at pointers2.adb:18
-pointers2.ads:12:14: return from "Bad_Swap_Global" with moved value for "Y"
+pointers2.ads:12:14: error: object was moved at pointers2.adb:18
+pointers2.ads:12:14: error: return from "Bad_Swap_Global" with moved value for "Y"
 pointers2.ads:13:06: info: data dependencies proved
 pointers2.ads:13:28: warning: unused initial value of "X"
 pointers2.ads:13:31: warning: "Y" is not modified, could be INPUT
 pointers2.ads:16:06: info: data dependencies proved
-pointers2.ads:18:14: object was moved at pointers2.adb:30
-pointers2.ads:18:14: return from "Bad_Borrow" with moved value for "Y"
+pointers2.ads:18:14: error: object was moved at pointers2.adb:30
+pointers2.ads:18:14: error: return from "Bad_Borrow" with moved value for "Y"
 pointers2.ads:18:26: warning: unused initial value of "X"
-pointers2.ads:20:14: object was moved at pointers2.adb:36
-pointers2.ads:20:14: return from "Bad_Move" with moved value for "Y"
+pointers2.ads:20:14: error: object was moved at pointers2.adb:36
+pointers2.ads:20:14: error: return from "Bad_Move" with moved value for "Y"
 pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
-simple.adb:6:09: general access type is not allowed in SPARK
-simple.adb:6:09: violation of aspect SPARK_Mode at line 5
-simple.adb:7:09: general access type is not allowed in SPARK
-simple.adb:7:09: violation of aspect SPARK_Mode at line 5
-simple.adb:8:09: general access type is not allowed in SPARK
-simple.adb:8:09: violation of aspect SPARK_Mode at line 5
-simple.adb:12:04: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
-simple.adb:12:04: violation of aspect SPARK_Mode at line 5
-simple.adb:22:04: "X" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-simple.adb:22:04: violation of aspect SPARK_Mode at line 5
-test.adb:8:09: general access type is not allowed in SPARK
-test.adb:8:09: violation of aspect SPARK_Mode at line 7
-test.adb:9:09: general access type is not allowed in SPARK
-test.adb:9:09: violation of aspect SPARK_Mode at line 7
-test.adb:10:09: general access type is not allowed in SPARK
-test.adb:10:09: violation of aspect SPARK_Mode at line 7
-test.adb:11:09: general access type is not allowed in SPARK
-test.adb:11:09: violation of aspect SPARK_Mode at line 7
-test.adb:13:04: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
-test.adb:13:04: violation of aspect SPARK_Mode at line 7
+simple.adb:6:09: error: general access type is not allowed in SPARK
+simple.adb:6:09: error: violation of aspect SPARK_Mode at line 5
+simple.adb:7:09: error: general access type is not allowed in SPARK
+simple.adb:7:09: error: violation of aspect SPARK_Mode at line 5
+simple.adb:8:09: error: general access type is not allowed in SPARK
+simple.adb:8:09: error: violation of aspect SPARK_Mode at line 5
+simple.adb:12:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+simple.adb:12:04: error: violation of aspect SPARK_Mode at line 5
+simple.adb:22:04: error: "X" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+simple.adb:22:04: error: violation of aspect SPARK_Mode at line 5
+test.adb:8:09: error: general access type is not allowed in SPARK
+test.adb:8:09: error: violation of aspect SPARK_Mode at line 7
+test.adb:9:09: error: general access type is not allowed in SPARK
+test.adb:9:09: error: violation of aspect SPARK_Mode at line 7
+test.adb:10:09: error: general access type is not allowed in SPARK
+test.adb:10:09: error: violation of aspect SPARK_Mode at line 7
+test.adb:11:09: error: general access type is not allowed in SPARK
+test.adb:11:09: error: violation of aspect SPARK_Mode at line 7
+test.adb:13:04: error: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+test.adb:13:04: error: violation of aspect SPARK_Mode at line 7
 test.adb:20:12: warning: variable "varPtr2" is read but never assigned
-test.adb:24:30: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-test.adb:24:30: violation of aspect SPARK_Mode at line 7
-test.adb:28:08: general access type is not allowed in SPARK
-test.adb:28:08: violation of aspect SPARK_Mode at line 7
+test.adb:24:30: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+test.adb:24:30: error: violation of aspect SPARK_Mode at line 7
+test.adb:28:08: error: general access type is not allowed in SPARK
+test.adb:28:08: error: violation of aspect SPARK_Mode at line 7
 test.adb:64:09: warning: variable "X" is read but never assigned
-test.adb:78:03: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-test.adb:78:03: violation of aspect SPARK_Mode at line 7
-test.adb:78:08: attribute "Access" on object is not allowed in SPARK
-test.adb:78:08: violation of aspect SPARK_Mode at line 7
+test.adb:78:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+test.adb:78:03: error: violation of aspect SPARK_Mode at line 7
+test.adb:78:08: error: attribute "Access" on object is not allowed in SPARK
+test.adb:78:08: error: violation of aspect SPARK_Mode at line 7
 test.adb:84:08: warning: "B" may be null
 test.adb:86:11: warning: "x0" may be referenced before it has a value
 test.adb:87:08: info: analyzing call to "g" in context
-test.adb:89:03: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-test.adb:89:03: violation of aspect SPARK_Mode at line 7
+test.adb:89:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+test.adb:89:03: error: violation of aspect SPARK_Mode at line 7
 gnatprove: error during flow analysis and proof

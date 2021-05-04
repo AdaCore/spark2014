@@ -6,8 +6,8 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                     Copyright (C) 2011-2020, AdaCore                     --
---                Copyright (C) 2014-2020, Altran UK Limited                --
+--                     Copyright (C) 2011-2021, AdaCore                     --
+--                Copyright (C) 2014-2021, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -29,7 +29,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Aspects;                      use Aspects;
 with Common_Containers;
 with Errout;                       use Errout;
-with GNAT.Regpat;                  use GNAT.Regpat;
+with Erroutc;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
 with Sem_Aux;                      use Sem_Aux;
@@ -416,7 +416,8 @@ package body SPARK_Definition.Annotate is
          --  whether the pattern matches, too.
 
          elsif Node_Slc <= E.Last
-           and then Match (String_Value (E.Pattern), Msg)
+           and then Erroutc.Matches (S => Msg,
+                                     P => '*' & String_Value (E.Pattern) & '*')
          then
             Info := E;
             Found := True;

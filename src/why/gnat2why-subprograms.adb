@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2020, AdaCore                     --
+--                     Copyright (C) 2010-2021, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -273,7 +273,7 @@ package body Gnat2Why.Subprograms is
      (E : Entity_Id) return W_Term_Id
    is
      (if not Is_Globally_Visible (E)
-      and then not Is_Declared_In_Main_Lib_Unit (E)
+      and then not Is_Declared_In_Main_Unit_Or_Parent (E)
       then False_Term
       else True_Term);
    --  If E is a private subprogram, type invariants of its enclosing units may

@@ -1,6 +1,6 @@
-p_child.adb:5:11: "Child" is not allowed in SPARK
-p_child.adb:5:11: violation of aspect SPARK_Mode at line 1
-p_child.ads:15:09: type invariant on components of tagged types is not yet supported
-p_child.ads:19:63: "Child" is not allowed in SPARK
-p_child.ads:19:63: violation of aspect SPARK_Mode at line 2
+p_child.adb:5:11: error: "Child" is not allowed in SPARK
+p_child.adb:5:11: error: violation of aspect SPARK_Mode at line 1
+p_child.ads:15:09: error: type invariant on components of tagged types is not yet supported
+p_child.ads:19:63: error: "Child" is not allowed in SPARK
+p_child.ads:19:63: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

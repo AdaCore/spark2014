@@ -1,3 +1,3 @@
-single_explicit.adb:6:30: global item "Mailbox" cannot have mode In_Out or Output
-single_explicit.adb:6:30: item already appears as input of task "Worker"
+single_explicit.adb:6:30: error: global item "Mailbox" cannot have mode In_Out or Output
+single_explicit.adb:6:30: error: item already appears as input of task "Worker"
 gnatprove: error during generation of Global contracts

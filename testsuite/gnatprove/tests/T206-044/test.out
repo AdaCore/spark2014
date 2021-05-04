@@ -1,10 +1,10 @@
-fp.adb:5:13: real literal argument to fixed-point multiplication or division is not allowed in SPARK
-fp.adb:5:13: use qualification to give a fixed-point type to the real literal
-fp.adb:5:13: violation of pragma SPARK_Mode at test.adc:1
-fp.adb:6:09: real literal argument to fixed-point multiplication or division is not allowed in SPARK
-fp.adb:6:09: use qualification to give a fixed-point type to the real literal
-fp.adb:6:09: violation of pragma SPARK_Mode at test.adc:1
-fp.adb:7:13: real literal argument to fixed-point multiplication or division is not allowed in SPARK
-fp.adb:7:13: use qualification to give a fixed-point type to the real literal
-fp.adb:7:13: violation of pragma SPARK_Mode at test.adc:1
+fp.adb:5:13: error: real literal argument to fixed-point multiplication or division is not allowed in SPARK
+fp.adb:5:13: error: use qualification to give a fixed-point type to the real literal
+fp.adb:5:13: error: violation of pragma SPARK_Mode at test.adc:1
+fp.adb:6:09: error: real literal argument to fixed-point multiplication or division is not allowed in SPARK
+fp.adb:6:09: error: use qualification to give a fixed-point type to the real literal
+fp.adb:6:09: error: violation of pragma SPARK_Mode at test.adc:1
+fp.adb:7:13: error: real literal argument to fixed-point multiplication or division is not allowed in SPARK
+fp.adb:7:13: error: use qualification to give a fixed-point type to the real literal
+fp.adb:7:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
