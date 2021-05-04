@@ -385,9 +385,11 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       --  scopes (up to Standard); however, the visibility paths are short.
 
       --  Print graph
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Print (Scope_Graph);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       Components := Scope_Graph.SCC;
 
@@ -421,6 +423,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    -- Dump --
    ----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Dump (E : Entity_Name; Info : Name_Info_T) is
       use Ada.Text_IO;
    begin
@@ -434,6 +437,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          New_Line;
       end if;
    end Dump;
+   pragma Annotate (Xcov, Exempt_Off);
 
    --------------
    -- Is_Child --

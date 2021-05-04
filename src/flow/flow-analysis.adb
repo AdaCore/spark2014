@@ -3865,6 +3865,7 @@ package body Flow.Analysis is
 
       --  Debug output
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Depends then
          Write_Line (Get_Name_String (Chars (FA.Spec_Entity)) & ":");
          Print_Dependency_Map ("user",    Projected_User_Deps);
@@ -3872,6 +3873,7 @@ package body Flow.Analysis is
          Print_Dependency_Map ("missing", Missing_Deps);
          Print_Dependency_Map ("unused",  Unused_Deps);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       for C in Unused_Deps.Iterate loop
          declare

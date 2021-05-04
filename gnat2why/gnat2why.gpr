@@ -354,7 +354,10 @@ project GNAT2Why is
 
                               --  Exclude units not exercized in gnat2why itself
                               "memcache_client",
-                              "named_semaphore"
+                              "named_semaphore",
+
+                              --  Exclude debugging units
+                              "flow_debug"
                               );
    end Coverage;
 

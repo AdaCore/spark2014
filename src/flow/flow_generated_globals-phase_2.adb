@@ -1624,12 +1624,14 @@ package body Flow_Generated_Globals.Phase_2 is
       -- Note_Time --
       ---------------
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       procedure Note_Time (Message : String) is
       begin
          if Debug_GG_Read_Timing then
             Timing_Phase_Completed (Timing, Message);
          end if;
       end Note_Time;
+      pragma Annotate (Xcov, Exempt_Off);
 
    --  Start of processing for GG_Resolve
 
@@ -1718,6 +1720,8 @@ package body Flow_Generated_Globals.Phase_2 is
          -- Debug --
          -----------
 
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
+
          procedure Debug (Msg : String) is
          begin
             if XXX then
@@ -1731,6 +1735,8 @@ package body Flow_Generated_Globals.Phase_2 is
                Ada.Text_IO.Put_Line (Label & " " & To_String (E));
             end if;
          end Debug;
+
+         pragma Annotate (Xcov, Exempt_Off);
 
          -------------------
          -- Dump_Contract --
@@ -1875,6 +1881,7 @@ package body Flow_Generated_Globals.Phase_2 is
          -- Dump_Main_Unit_Contracts --
          ------------------------------
 
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          procedure Dump_Main_Unit_Contracts (Highlight : Entity_Name) is
          begin
             if Debug_Partial_Contracts then
@@ -1884,6 +1891,7 @@ package body Flow_Generated_Globals.Phase_2 is
                Ada.Text_IO.New_Line;
             end if;
          end Dump_Main_Unit_Contracts;
+         pragma Annotate (Xcov, Exempt_Off);
 
          ------------------
          -- Filter_Local --
@@ -3233,6 +3241,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Print_Tasking_Info_Bag --
    ----------------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Tasking_Info_Bag (P : Phase) is
 
       Debug_Print_Tasking_Info : constant Boolean := False;
@@ -3266,6 +3275,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Outdent;
       end loop;
    end Print_Tasking_Info_Bag;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ----------------------------
    -- Is_Protected_Operation --
@@ -3547,6 +3557,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Print --
    -----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print (G : Constant_Graphs.Graph)
    is
       use Constant_Graphs;
@@ -3622,6 +3633,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Edge_Info => EDI'Access);
       end if;
    end Print;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ------------------
    -- Down_Project --

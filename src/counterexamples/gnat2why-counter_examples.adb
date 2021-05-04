@@ -2030,6 +2030,7 @@ package body Gnat2Why.Counter_Examples is
    -- Print_CNT_Element_Debug --
    -----------------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    function Print_CNT_Element_Debug (El : CNT_Element) return String is
       R : Unbounded_String := "[ " & El.Val_Str.Str & " | ";
    begin
@@ -2052,6 +2053,7 @@ package body Gnat2Why.Counter_Examples is
 
       return To_String (R & " ]");
    end Print_CNT_Element_Debug;
+   pragma Annotate (Xcov, Exempt_Off);
 
    --------------------------------
    -- Remove_Irrelevant_Branches --

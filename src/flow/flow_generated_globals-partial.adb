@@ -1173,12 +1173,14 @@ package body Flow_Generated_Globals.Partial is
    -- Debug --
    -----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Debug (Label : String; E : Entity_Id) is
    begin
       if XXX then
          Ada.Text_IO.Put_Line (Label & " " & Full_Source_Name (E));
       end if;
    end Debug;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ---------------
    -- Do_Global --
@@ -1245,16 +1247,19 @@ package body Flow_Generated_Globals.Partial is
          end if;
       end;
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if XXX then
          Debug_Traversal (Analyzed);
          Dump (Contracts, Analyzed);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
    end Do_Global;
 
    ----------
    -- Dump --
    ----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Dump
      (Contracts : Entity_Contract_Maps.Map;
       Analyzed  : Entity_Id)
@@ -1413,6 +1418,7 @@ package body Flow_Generated_Globals.Partial is
          Ada.Text_IO.New_Line;
       end if;
    end Dump;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ------------------
    -- Filter_Local --
@@ -1991,10 +1997,12 @@ package body Flow_Generated_Globals.Partial is
 
       --  Only debug output from now on
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if XXX then
          Ada.Text_IO.Put_Line ("Pre-analyzed contracts:");
          Dump (Contracts, Root_Entity);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
    end Do_Preanalysis;
 
    -----------

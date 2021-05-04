@@ -727,6 +727,7 @@ package body Flow_Types is
    -- Print_Flow_Id --
    -------------------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print_Flow_Id (F : Flow_Id) is
       use GNATCOLL.Utils;
    begin
@@ -775,6 +776,7 @@ package body Flow_Types is
       end if;
       Output.Write_Eol;
    end Print_Flow_Id;
+   pragma Annotate (Xcov, Exempt_Off);
 
    ------------------
    -- Pretty_Print --
@@ -952,6 +954,7 @@ package body Flow_Types is
          end case;
       end if;
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Print_Node_Numbers then
          if F.Kind in Direct_Mapping | Record_Field then
             Append (R, " <" & F.Node'Img);
@@ -963,6 +966,7 @@ package body Flow_Types is
             Append (R, " >");
          end if;
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       return To_String (R);
    end Flow_Id_To_String;
