@@ -6249,6 +6249,19 @@ package body SPARK_Definition is
                then
                   Mark_Unsupported
                     ("Class attribute of a constrained type", E);
+
+               --  Predicates are not supported on classwide subtypes as
+               --  classwide types are often identified to the associated
+               --  specific type which would cause the predicate to be ignored.
+               --  NB. Classwide types, as opposed to subtypes, can have
+               --  predicates because their associated specific type has a
+               --  predicate. We don't want to reject them.
+
+               elsif Ekind (E) = E_Class_Wide_Subtype
+                 and then Has_Predicates (E)
+               then
+                  Mark_Unsupported
+                    ("subtype predicate on a classwide type", E);
                end if;
             end;
 
