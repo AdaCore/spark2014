@@ -1,0 +1,55 @@
+with "gnat2why_c";
+with "gnatcoll";
+
+project GNAT2Why_GNAT is
+
+   for Object_Dir use "obj";
+   for Exec_Dir use "../install/bin";
+
+   for Source_Dirs use ("obj", "gnat_src");
+   for Excluded_Source_Files use ("back_end.adb", "gnat1drv.adb");
+
+   type Build_Type is ("Debug", "Devel", "Production", "Coverage");
+   --  Debug: all checks enabled
+   --  Devel: inexpensive checks enabled, expensive checks disabled
+   --  Production: all checks disabled
+
+   Build : Build_Type := External ("Build", "Devel");
+
+   Common_Switches := ("-g");
+
+   package Compiler is
+      for Local_Configuration_Pragmas use "gnat.adc";
+
+      case Build is
+         when "Debug" | "Devel" =>
+            for Switches ("Ada") use
+               Common_Switches & ("-gnatg", "-O0", "-gnata", "-gnatVa", "-gnat2020");
+         when "Coverage" =>
+            for Switches ("Ada") use
+               Common_Switches & ("-O0", "-gnat2020");
+         when "Production" =>
+            for Switches ("Ada") use
+               Common_Switches & ("-O2", "-gnatpn", "-gnatg", "-gnatwn", "-gnat2020");
+      end case;
+   end Compiler;
+
+   package Builder is
+      for Executable ("gnat1drv.adb") use "gnat2why";
+
+      case Build is
+         when "Debug" =>
+            for Global_Configuration_Pragmas use "debug.adc";
+         when "Devel" =>
+            for Global_Configuration_Pragmas use "devel.adc";
+         when "Coverage" =>
+            --  ??? currently coverage requires tampering checks to be disabled
+            for Global_Configuration_Pragmas use "coverage.adc";
+         when "Production" =>
+            null;
+      end case;
+
+      for Switches ("Ada") use ("-m");
+   end Builder;
+
+end GNAT2Why_GNAT;
