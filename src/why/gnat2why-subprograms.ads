@@ -23,17 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;      use Common_Containers;
-with Gnat2Why.Util;          use Gnat2Why.Util;
-with SPARK_Atree;            use SPARK_Atree;
-with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
-with Types;                  use Types;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Binders;        use Why.Gen.Binders;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Preds;          use Why.Gen.Preds;
-with Why.Ids;                use Why.Ids;
-with Why.Sinfo;              use Why.Sinfo;
+with Common_Containers;    use Common_Containers;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with Types;                use Types;
+with Why.Conversions;      use Why.Conversions;
+with Why.Gen.Binders;      use Why.Gen.Binders;
+with Why.Gen.Expr;         use Why.Gen.Expr;
+with Why.Gen.Terms;        use Why.Gen.Terms;
+with Why.Ids;              use Why.Ids;
+with Why.Sinfo;            use Why.Sinfo;
 
 package Gnat2Why.Subprograms is
 

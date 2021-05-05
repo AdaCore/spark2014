@@ -65,7 +65,6 @@ with Why.Gen.Names;                  use Why.Gen.Names;
 with Why.Gen.Pointers;               use Why.Gen.Pointers;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
 with Why.Gen.Records;                use Why.Gen.Records;
-with Why.Gen.Terms;                  use Why.Gen.Terms;
 with Why.Inter;                      use Why.Inter;
 with Why.Types;                      use Why.Types;
 
@@ -5690,11 +5689,9 @@ package body Gnat2Why.Subprograms is
                   Res_Expr  : constant W_Expr_Id :=
                     +New_Result_Ident (Why_Type);
                   Eq_Expr   : constant W_Pred_Id :=
-                    (if Is_Standard_Boolean_Type (Etype (E))
-                     then New_Equal_Bool (+Res_Expr, +Expr_Body)
-                     else New_Call (Name => Why_Eq,
-                                    Args => (Res_Expr, Expr_Body),
-                                    Typ  => EW_Bool_Type));
+                    (New_Call (Name => Why_Eq,
+                               Args => (Res_Expr, Expr_Body),
+                               Typ  => EW_Bool_Type));
                begin
                   if Entity_Body_In_SPARK (E)
                     and then Has_Contracts (E, Pragma_Refined_Post)

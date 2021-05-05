@@ -45,7 +45,6 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Init;           use Why.Gen.Init;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Pointers;       use Why.Gen.Pointers;
-with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Gen.Terms;          use Why.Gen.Terms;
 

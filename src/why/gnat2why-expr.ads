@@ -34,7 +34,6 @@ with SPARK_Util.Types;           use SPARK_Util.Types;
 with Types;                      use Types;
 with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Expr;               use Why.Gen.Expr;
-with Why.Gen.Preds;              use Why.Gen.Preds;
 with Why.Gen.Terms;              use Why.Gen.Terms;
 with Why.Ids;                    use Why.Ids;
 with Why.Inter;                  use Why.Inter;

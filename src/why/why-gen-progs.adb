@@ -29,7 +29,7 @@ with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Util;           use Gnat2Why.Util;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
 with Why.Gen.Names;           use Why.Gen.Names;
-with Why.Gen.Preds;           use Why.Gen.Preds;
+with Why.Gen.Terms;           use Why.Gen.Terms;
 
 package body Why.Gen.Progs is
 

@@ -47,7 +47,6 @@ with Why.Gen.Expr;         use Why.Gen.Expr;
 with Why.Gen.Hardcoded;    use Why.Gen.Hardcoded;
 with Why.Gen.Init;         use Why.Gen.Init;
 with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Gen.Preds;        use Why.Gen.Preds;
 with Why.Gen.Progs;        use Why.Gen.Progs;
 with Why.Gen.Terms;        use Why.Gen.Terms;
 with Why.Images;           use Why.Images;

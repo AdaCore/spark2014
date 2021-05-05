@@ -36,7 +36,6 @@ with Why.Gen.Binders;          use Why.Gen.Binders;
 with Why.Gen.Decl;             use Why.Gen.Decl;
 with Why.Gen.Expr;             use Why.Gen.Expr;
 with Why.Gen.Names;            use Why.Gen.Names;
-with Why.Gen.Preds;            use Why.Gen.Preds;
 with Why.Gen.Progs;            use Why.Gen.Progs;
 with Why.Gen.Records;          use Why.Gen.Records;
 with Why.Gen.Terms;            use Why.Gen.Terms;

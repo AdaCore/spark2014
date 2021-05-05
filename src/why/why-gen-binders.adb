@@ -1057,9 +1057,10 @@ package body Why.Gen.Binders is
                       Name    => Name,
                       Binders => Binders);
       Equality : constant W_Pred_Id :=
-                   New_Equal_Bool
-                     (Left  => Left,
-                      Right => Def);
+        New_Call
+          (Name => Why_Eq,
+           Args => (+Left, +Def),
+           Typ  => EW_Bool_Type);
       Axiom_Name : constant String :=
         (if Ada_Node /= Empty then Short_Name (Ada_Node) & "__"
          else "") & Def_Axiom;
