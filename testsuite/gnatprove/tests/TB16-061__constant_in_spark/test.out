@@ -1,0 +1,9 @@
+p.adb:6:07: error: assignment into a constant object is not allowed in SPARK
+p.adb:6:07: error: violation of aspect SPARK_Mode at line 2
+p.adb:12:07: error: assignment into a constant object is not allowed in SPARK
+p.adb:12:07: error: violation of aspect SPARK_Mode at line 2
+p.adb:16:14: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+p.adb:16:14: error: violation of aspect SPARK_Mode at line 2
+p.adb:20:07: error: assignment into a constant object is not allowed in SPARK
+p.adb:20:07: error: violation of aspect SPARK_Mode at line 2
+gnatprove: error during flow analysis and proof

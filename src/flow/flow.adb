@@ -376,12 +376,12 @@ package body Flow is
          Variables : JSON_Array;
 
       begin
-         for E of To_Ordered_Flow_Id_Set (S) loop
-            case E.Kind is
+         for F of To_Ordered_Flow_Id_Set (S) loop
+            case F.Kind is
                when Direct_Mapping =>
-                  Append (Variables, To_JSON (E.Node));
+                  Append (Variables, To_JSON (F.Node));
                when Magic_String =>
-                  null; --  ??? todo
+                  Append (Variables, Create (Pretty_Print (F.Name)));
                when others =>
                   raise Program_Error;
             end case;

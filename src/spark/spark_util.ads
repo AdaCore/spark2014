@@ -221,9 +221,10 @@ package SPARK_Util is
                                             | Entry_Kind
                                             | E_Protected_Type
                                             | E_Task_Type
-                                            | E_Package;
+                                            | E_Package
+                                            | E_Subprogram_Type;
    --  Returns the entity of the package, subprogram, entry, protected type,
-   --  or task type enclosing E.
+   --  task type, or subprogram type enclosing E.
 
    function Directly_Enclosing_Subprogram_Or_Entry
      (E : Entity_Id) return Entity_Id;

@@ -1,5 +1,5 @@
 
-test.adb:9:21: dereference from "X" is not readable
+test.adb:9:21: error: dereference from "X" is not readable
     9 |   pragma Assert (X.all = 11); --  but X cannot, or we would have an alias
       |                  ~~^~~
   object was moved at line 6

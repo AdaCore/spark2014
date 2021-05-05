@@ -713,7 +713,7 @@ package body SPARK_Util is
    -----------------------------
 
    function Comes_From_Declare_Expr (E : Entity_Id) return Boolean is
-     (Is_Object (E)
+     (Ekind (E) = E_Constant
       and then Nkind (Parent (Enclosing_Declaration (E))) =
           N_Expression_With_Actions);
 
@@ -954,6 +954,7 @@ package body SPARK_Util is
                        | E_Procedure
                        | E_Package
                        | E_Protected_Type
+                       | E_Subprogram_Type
                        | E_Task_Type
          then
             --  We have found the enclosing unit, return it
@@ -1978,7 +1979,8 @@ package body SPARK_Util is
       return Ekind (E) in E_Constant | E_In_Parameter
             and then (not Is_Access_Type (Ty)
               or else Is_Access_Constant (Ty)
-              or else Is_Access_Subprogram_Type (Base_Type (Ty))
+              or else Atree.Ekind (Einfo.Directly_Designated_Type (Ty)) =
+                        Einfo.E_Subprogram_Type
               or else Comes_From_Declare_Expr (E));
    end Is_Constant_In_SPARK;
 

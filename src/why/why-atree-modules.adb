@@ -31,6 +31,7 @@ with GNATCOLL.Utils;             use GNATCOLL.Utils;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
+with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Stand;                      use Stand;
@@ -354,7 +355,7 @@ package body Why.Atree.Modules is
          Next_Formal (Param);
       end loop;
 
-      if Ekind (E) = E_Function or else Is_Function_Type (E) then
+      if Is_Function_Or_Function_Type (E) then
          Type_Name := (To_Unbounded_String
                        ("__Return__" &
                             Capitalize_First

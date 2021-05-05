@@ -23,20 +23,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
-with GNATCOLL.Utils;      use GNATCOLL.Utils;
-with Gnat2Why.Util;       use Gnat2Why.Util;
-with SPARK_Atree;         use SPARK_Atree;
-with SPARK_Util.Types;    use SPARK_Util.Types;
-with String_Utils;        use String_Utils;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Conversions;     use Why.Conversions;
-with Why.Images;          use Why.Images;
-with Why.Gen.Arrays;      use Why.Gen.Arrays;
-with Why.Gen.Init;        use Why.Gen.Init;
-with Why.Gen.Scalars;     use Why.Gen.Scalars;
+with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
+with GNATCOLL.Utils;         use GNATCOLL.Utils;
+with Gnat2Why.Util;          use Gnat2Why.Util;
+with SPARK_Atree;            use SPARK_Atree;
+with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with SPARK_Util.Types;       use SPARK_Util.Types;
+with String_Utils;           use String_Utils;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
+with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Conversions;        use Why.Conversions;
+with Why.Images;             use Why.Images;
+with Why.Gen.Arrays;         use Why.Gen.Arrays;
+with Why.Gen.Init;           use Why.Gen.Init;
+with Why.Gen.Scalars;        use Why.Gen.Scalars;
 
 package body Why.Gen.Names is
 

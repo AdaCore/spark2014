@@ -1,0 +1,21 @@
+{
+  "contracts": [
+    {
+      "file": "main.adb",
+      "line": 3,
+      "col": 11,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Entity_Name.Hidden"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Entity_Name.Hidden"
+          ]
+        }
+      }
+    }
+  ]
+}

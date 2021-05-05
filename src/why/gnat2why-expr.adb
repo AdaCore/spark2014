@@ -2882,7 +2882,7 @@ package body Gnat2Why.Expr is
                     Context => Context,
                     Store   => Store,
                     Params  => Body_Params);
-               pragma Assert (Context.Length = 0);
+               pragma Assert (Context.Is_Empty);
 
             begin
                Result := New_Call
@@ -17503,7 +17503,7 @@ package body Gnat2Why.Expr is
       --  which mandate checks in parameters and possibly also a store for
       --  volatile functions. This can only occur in the program domain.
 
-      if Context.Length = 0 then
+      if Context.Is_Empty then
          return T;
       else
          pragma Assert (Domain = EW_Prog);
@@ -20181,10 +20181,10 @@ package body Gnat2Why.Expr is
       Args        : constant W_Expr_Array :=
         Compute_Call_Args (Expr, Domain, Context, Store, Params);
       pragma Assert (Args'Length = 2);
-      pragma Assert (Context.Length = 0);
+      pragma Assert (Context.Is_Empty);
 
       Modulus_Val : constant Uint := Modulus (Etype (Subp));
-      Nb_Of_Bits  : constant Int := (if Modulus_Val = UI_Expon (2, 8) then
+      Nb_Of_Bits  : constant Pos := (if Modulus_Val = UI_Expon (2, 8) then
                                         8
                                      elsif Modulus_Val = UI_Expon (2, 16) then
                                         16

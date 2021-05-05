@@ -456,6 +456,11 @@ package Flow_Types is
    --  Debug procedure to print the flow id with more information (such as kind
    --  and variant) attached.
 
+   function Pretty_Print (EN : Entity_Name) return String;
+   --  Pretty-print an entity name by substituting double underscores with a
+   --  single dot and converting strings to mixed case, e.g. "pkg__a_state"
+   --  will become "Pkg.A_State".
+
    function Flow_Id_To_String
      (F      : Flow_Id;
       Pretty : Boolean := False)

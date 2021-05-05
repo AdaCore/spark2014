@@ -497,7 +497,7 @@ package Gnat2Why.Util is
    --  as a range type. This is currently done for static signed integer types.
 
    function Use_Guard_For_Function (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) = E_Function or else Is_Function_Type (E);
+     Pre => Is_Function_Or_Function_Type (E);
    --  Decide wether we need a guard for the axiom specifying the contract of
    --  a function E.
 

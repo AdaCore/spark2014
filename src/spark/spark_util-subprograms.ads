@@ -26,6 +26,7 @@
 with Ada.Containers;
 with Gnat2Why_Args;
 with Sem_Disp;
+with Stand;
 
 use type Ada.Containers.Count_Type;
 
@@ -420,7 +421,13 @@ package SPARK_Util.Subprograms is
    --  @return True iff Calls include Ada.Task_Identification.Current_Task
 
    function Is_Function_Type (E : Entity_Id) return Boolean is
-     (Ekind (E) = E_Subprogram_Type and then Is_Type (Etype (E)));
+     (Ekind (E) = E_Subprogram_Type
+      and then Etype (E) /= Stand.Standard_Void_Type);
+   --  Return True if E is a subprogram type corresponding to a function
+
+   function Is_Function_Or_Function_Type (E : Entity_Id) return Boolean is
+     (Ekind (E) = E_Function or else Is_Function_Type (E));
+   --  Return True if E is either a function or a function type
 
    function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean;
    --  Return true if E is a borrowing traversal function

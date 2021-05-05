@@ -332,7 +332,7 @@ package body SPARK_Definition.Annotate is
 
       --  If it does not have one, it must be an expresson function
 
-      if Nodes.Length = 0 then
+      if Nodes.Is_Empty then
          if not Is_Expression_Function_Or_Completion (E) then
             Error_Msg_N
               ("function with Inline_For_Proof and no postconditions must "

@@ -1,5 +1,5 @@
 
-possibly_nonreturning.adb:14:07: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
+possibly_nonreturning.adb:14:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
    14 |      Conditional_Exit (True);
       |      ^~~~~~~~~~~~~~~~~~~~~~
   consider annotating caller "Regular" with Might_Not_Return
