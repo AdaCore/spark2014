@@ -402,7 +402,7 @@ package body Flow_Generated_Globals.Phase_2 is
    procedure Up_Project (Vars           :     Global_Names;
                          Projected_Vars : out Global_Names;
                          Scope          :     Name_Scope);
-   --  Same as above but lifter to sets with proof_ins, inputs and outputs
+   --  Same as above but lifted to sets with proof_ins, inputs and outputs
 
    function Is_Fully_Contained (State   : Entity_Name;
                                 Outputs : Name_Sets.Set;

@@ -770,9 +770,9 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       return To_Entity_Name (S (S'First .. J - 1));
    end Scope;
 
-   ------------------------
+   --------------------
    -- Child_Packages --
-   ------------------------
+   --------------------
 
    function Child_Packages (Parent_Package : Entity_Name)
                             return Name_Sets.Set
