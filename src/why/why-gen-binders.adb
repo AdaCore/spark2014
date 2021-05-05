@@ -1260,7 +1260,7 @@ package body Why.Gen.Binders is
       return W_Declaration_Id
    is
       Ax_Body  : constant W_Pred_Id :=
-                   (if Pre = Why_Empty then
+                   (if Pre = Why_Empty or else Is_True_Boolean (+Pre) then
                       Def
                     else
                       New_Connection
