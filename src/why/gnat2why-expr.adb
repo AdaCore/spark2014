@@ -16650,10 +16650,12 @@ package body Gnat2Why.Expr is
 
                function Inv (X : W_Expr_Id; T : Entity_Id) return W_Expr_Id
                is
-                  E : constant W_Expr_Id :=
+                  Tmp : constant W_Expr_Id := New_Temp_For_Expr
+                    (X, Need_Temp => Domain = EW_Prog);
+                  E   : W_Expr_Id :=
                     New_Binary_Op_Expr (Op          => N_Op_Divide,
                                         Left        => One,
-                                        Right       => X,
+                                        Right       => Tmp,
                                         Left_Type   => T,
                                         Right_Type  => T,
                                         Return_Type => Expr_Type,
@@ -16667,17 +16669,20 @@ package body Gnat2Why.Expr is
                             (Ada_Node => Expr,
                              Pred     =>
                                +New_Comparison
-                               (Why_Neq, X,
-                                +MF_Floats (Get_Type (X)).Plus_Zero,
+                               (Why_Neq, Tmp,
+                                +MF_Floats (Base_Type).Plus_Zero,
                                 EW_Term),
                              Reason   => VC_Division_Check,
                              Kind     => EW_Assert);
                      begin
-                        return +Sequence (Check, +E);
+                        E := +Sequence (Check, +E);
                      end;
-                  else
-                     return E;
                   end if;
+
+                  return Binding_For_Temp (Ada_Node => Expr,
+                                           Domain   => Domain,
+                                           Tmp      => Tmp,
+                                           Context  => E);
                end Inv;
 
             --  Start of processing for N_Op_Expon_Case
@@ -16694,21 +16699,20 @@ package body Gnat2Why.Expr is
                  and then Expr_Value (Left) = Uint_2
                then
                   declare
-                     Typ  : constant W_Type_Id := Base_Why_Type (Left_Type);
                      Expo : constant W_Expr_Id := New_Temp_For_Expr (W_Right);
                   begin
                      T := New_Call
                        (Ada_Node => Expr,
                         Domain   => Domain,
-                        Name     => MF_BVs (Typ).Lsl,
+                        Name     => MF_BVs (Base_Type).Lsl,
                         Args     =>
                           (1 => New_Modular_Constant (Value => Uint_1,
-                                                      Typ   => Typ),
+                                                      Typ   => Base_Type),
                            2 => Insert_Simple_Conversion
                              (Domain => Domain,
                               Expr   => Expo,
-                              To     => Typ)),
-                        Typ      => Typ);
+                              To     => Base_Type)),
+                        Typ      => Base_Type);
 
                      --  If the exponent does not fit in the modular type,
                      --  return 0.
@@ -16722,12 +16726,13 @@ package body Gnat2Why.Expr is
                                (Domain => EW_Term,
                                 Expr   => Expo,
                                 To     => EW_Int_Type),
-                             Right  => +MF_BVs (Typ).Two_Power_Size,
+                             Right  => +MF_BVs (Base_Type).Two_Power_Size,
                              Domain => EW_Pred),
                         Then_Part   => T,
-                        Else_Part   => New_Modular_Constant (Value => Uint_0,
-                                                             Typ   => Typ),
-                        Typ         => Typ);
+                        Else_Part   => New_Modular_Constant
+                          (Value => Uint_0,
+                           Typ   => Base_Type),
+                        Typ         => Base_Type);
 
                      --  Apply the modulus if it is smaller than the modulus
                      --  of the rep bitvector type.
