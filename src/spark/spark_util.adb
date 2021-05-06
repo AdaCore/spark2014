@@ -933,19 +933,6 @@ package body SPARK_Util is
    end Contains_Volatile_Function_Call;
 
    --------------------------------------------
-   -- Declaration_Is_Associated_To_Parameter --
-   --------------------------------------------
-
-   function Declaration_Is_Associated_To_Parameter
-     (N : Node_Id) return Boolean
-   is
-      (Nkind (N) in N_Entity
-        and then Ekind (N) in Type_Kind | E_Constant | E_Variable
-        and then Present (Related_Expression (N))
-        and then Nkind (Related_Expression (N)) in N_Entity
-        and then Is_Formal (Related_Expression (N)));
-
-   --------------------------------------------
    -- Directly_Enclosing_Subprogram_Or_Entry --
    --------------------------------------------
 

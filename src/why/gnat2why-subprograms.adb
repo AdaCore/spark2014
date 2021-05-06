@@ -3295,11 +3295,6 @@ package body Gnat2Why.Subprograms is
       --  Generate assumptions for deep outputs, that all pointers are moved at
       --  subprogram entry.
 
-      function Comp_Decl_At_Subp_Start return W_Prog_Id;
-      --  The body of the subprogram may contain declarations that are in fact
-      --  essential to prove absence of RTE in the pre, e.g. compiler-generated
-      --  subtype declarations. We need to take those into account.
-
       function RTE_Of_Pre return W_Prog_Id;
       --  Compute an expression which contains the RTE checks of the
       --  precondition.
@@ -3655,26 +3650,6 @@ package body Gnat2Why.Subprograms is
          end if;
          return Prog;
       end Checking_Of_Refined_Post;
-
-      -----------------------------
-      -- Comp_Decl_At_Subp_Start --
-      -----------------------------
-
-      function Comp_Decl_At_Subp_Start return W_Prog_Id is
-      begin
-         if Entity_Body_In_SPARK (E) then
-            return
-           Sequence
-             (New_Comment
-              (Comment => NID ("Declarations introduced by the compiler at the"
-               & " beginning of the subprogram"
-               & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-                 else ""))),
-              Transform_Declarations_For_Params (Declarations (Body_N)));
-         else
-            return +Void;
-         end if;
-      end Comp_Decl_At_Subp_Start;
 
       ---------------------------
       -- Declare_Old_Variables --
@@ -4234,7 +4209,7 @@ package body Gnat2Why.Subprograms is
          Why_Body :=
            Sequence
              ((1 => Check_Ceiling_Protocol (Body_Params, E),
-               2 => Transform_Declarations_For_Body (Declarations (Body_N)),
+               2 => Transform_Declarations (Declarations (Body_N)),
                3 => Transform_Statements_And_Declarations
                  (Statements
                    (Handled_Statement_Sequence (Body_N))),
@@ -4353,7 +4328,6 @@ package body Gnat2Why.Subprograms is
          Prog := Sequence
            ((Assume_For_Input,
              Assume_For_Output,
-             Comp_Decl_At_Subp_Start,
              RTE_Of_Pre,
              Warn_Pre,
              Assume_Or_Assert_Of_Pre,

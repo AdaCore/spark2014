@@ -549,16 +549,6 @@ package SPARK_Util is
    --  @param N any expression node
    --  @return the node as pretty printed Ada code, limited to 50 chars
 
-   function Declaration_Is_Associated_To_Parameter
-     (N : Node_Id) return Boolean
-     with Pre => Present (N);
-   --  @param N any node
-   --  return True if N has a Related_Expression attribute associated to
-   --  a parameter entity.
-   --  Declarations associated to subprogram parameters are translated before
-   --  the precondition so that checks related to parameters can be discharged
-   --  when verifying the precondition itself.
-
    generic
       with function Property (N : Node_Id) return Boolean;
    function First_Parent_With_Property (N : Node_Id) return Node_Id with
