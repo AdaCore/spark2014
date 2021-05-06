@@ -1477,6 +1477,7 @@ package body Gnat2Why.Borrow_Checker is
             | N_Private_Extension_Declaration
             | N_Private_Type_Declaration
             | N_Protected_Type_Declaration
+            | N_Exception_Declaration
          =>
             null;
 
@@ -2978,7 +2979,6 @@ package body Gnat2Why.Borrow_Checker is
             | N_Digits_Constraint
             | N_Empty
             | N_Enumeration_Representation_Clause
-            | N_Exception_Declaration
             | N_Exception_Renaming_Declaration
             | N_Formal_Package_Declaration
             | N_Formal_Subprogram_Declaration
