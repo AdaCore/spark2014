@@ -1,0 +1,23 @@
+p1.adb:5:10: high: possible data race when accessing variable "p1.p2.p3.u3"
+p1.adb:5:10: high: with task "p1.p2.p3.t3a"
+p1.adb:5:10: high: with task "p1.p2.p3.t3b"
+p1.ads:6:20: medium: the task might terminate, which is not allowed in SPARK
+q1.adb:30:10: high: possible data race when accessing variable "q1.q1_state"
+q1.adb:30:10: high: with task "q1.q2.q3.t1a"
+q1.adb:30:10: high: with task "q1.q2.q3.t1b"
+q1.adb:30:10: high: with task "q1.q2.q3.t2a"
+q1.adb:31:10: high: possible data race when accessing variable "q1.q1_state"
+q1.adb:31:10: high: with task "q1.q2.q3.t2a"
+q1.adb:31:10: high: with task "q1.q2.q3.t3a"
+q1.ads:2:24: info: data dependencies proved
+q1.ads:15:26: medium: the task might terminate, which is not allowed in SPARK
+q1.ads:16:26: medium: the task might terminate, which is not allowed in SPARK
+q1.ads:17:26: medium: the task might terminate, which is not allowed in SPARK
+r1.adb:14:07: high: possible data race when accessing variable "q1.q2.q3.a"
+r1.adb:14:07: high: possible data race when accessing variable "q1.q2.q3.b"
+r1.adb:14:07: high: with task "q1.q2.q3.t1a"
+r1.adb:14:07: high: with task "q1.q2.q3.t1b"
+r1.adb:14:07: high: with task "q1.q2.q3.t2a"
+r1.adb:14:07: high: with task "r1.r2.ta"
+r1.ads:5:20: medium: the task might terminate, which is not allowed in SPARK
+r1.ads:7:24: info: initialization of "A" proved

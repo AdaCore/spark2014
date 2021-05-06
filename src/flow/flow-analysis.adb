@@ -5327,16 +5327,73 @@ package body Flow.Analysis is
                First_Task_Type_Objects : Task_Multisets.Set renames
                  Task_Instances (Owner_Types.First_Element);
 
-               Msg_Object : constant Entity_Name :=
-                 (if GG_Is_Constituent (Object) and then
-                      (for all Const of
-                          Get_Constituents (GG_Encapsulating_State (Object))
-                       => Owned_Objects.Contains (Const))
-                  then GG_Encapsulating_State (Object)
-                  else Object);
-               --  If Owned_Objects contains all the constituents of a state
-               --  abstraction then we issue the message only for the state
-               --  abstraction.
+               function Get_Msg_Object (Object      : Entity_Name;
+                                        Owner_Types : Name_Lists.List)
+                                        return Entity_Name;
+               --  Find the highest level of abstraction of Object whose fully
+               --  refined constituents are all owned by Owner_Types.
+               --  (This means that when Object is not a state constituent, we
+               --  return Object.
+
+               --------------------
+               -- Get_Msg_Object --
+               --------------------
+
+               function Get_Msg_Object (Object      : Entity_Name;
+                                        Owner_Types : Name_Lists.List)
+                                        return Entity_Name
+               is
+                  Result            : Entity_Name := Object;
+                  Current_Level     : Entity_Name := Object;
+                  Owned_Objects_Set : Name_Sets.Set;
+               begin
+                  --  We want all objects which are owned by task types which
+                  --  own this object.
+                  for C in Owned_Objects.Iterate loop
+                     for Owner of Owner_Types loop
+                        if Owned_Objects (C).Contains (Owner) then
+                           Owned_Objects_Set.Include
+                             (Name_To_Name_Lists.Key (C));
+                        end if;
+                     end loop;
+                  end loop;
+                  while GG_Is_Constituent (Current_Level) loop
+                     declare
+                        Enc_State   : constant Entity_Name :=
+                          GG_Encapsulating_State (Current_Level);
+
+                        State_Const : constant Name_Sets.Set :=
+                          Get_Constituents (Enc_State);
+                        --  Enc_State's immediate refined constituents
+                     begin
+                        if Owned_Objects_Set.Is_Subset
+                          (Of_Set => GG_Expand_Abstract_State (Enc_State))
+                        then
+                           --  The complete set of Enc_State's refinements
+                           --  contain all Owned_Objects; job done.
+                           return Enc_State;
+                        end if;
+
+                        pragma Assert (for all Const of State_Const =>
+                                         Owned_Objects_Set.Contains (Const)
+                                       or else
+                                       GG_Is_Abstract_State (Const));
+                        --  Enc_State's immediate constituents are either
+                        --  members of the Owned_Objects set or themselves
+                        --  abstract state. Continue searching.
+                        Current_Level := Enc_State;
+                        for Const of State_Const loop
+                           if Owned_Objects_Set.Contains (Const) then
+                              --  An Owned_Object is at this level and is
+                              --  therefore a candidate for reporting.
+                              Result := Enc_State;
+                              exit;
+                           end if;
+                        end loop;
+                     end;
+                  end loop;
+                  return Result;
+               end Get_Msg_Object;
 
             begin
                --  Violation occurs when the resource is accessed by:
@@ -5353,13 +5410,15 @@ package body Flow.Analysis is
                then
                   declare
                      Owners : Task_Multisets.Set;
-
                   begin
                      for Task_Type of Owner_Types loop
                         Owners.Union (Task_Instances (Task_Type));
                      end loop;
 
-                     Report_Violations (Object     => Msg_Object,
+                     --  Report common contested state at the most abstract
+                     --  level of abstraction wherever possible.
+                     Report_Violations (Object     =>
+                                          Get_Msg_Object (Object, Owner_Types),
                                         Owners     => Owners,
                                         Msg_Object => Msg,
                                         Msg_Owner  => "with task &",

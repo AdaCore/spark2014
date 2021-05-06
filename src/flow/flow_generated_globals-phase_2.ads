@@ -395,6 +395,9 @@ package Flow_Generated_Globals.Phase_2 is
    with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Return True iff the Global contract of E was recorded in phase 1
 
+   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set;
+   --  Returns the constituents of AS if it is an abstract state, AS otherwise
+
 private
 
    Standard_Standard : constant Entity_Name := To_Entity_Name ("__standard");
