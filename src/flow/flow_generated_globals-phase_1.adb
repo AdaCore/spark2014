@@ -189,6 +189,12 @@ package body Flow_Generated_Globals.Phase_1 is
       Nonreturning     : Boolean;
       Nonblocking      : Boolean)
    is
+      procedure Process_Part_Ofs (Objects : Node_Sets.Set);
+      --  Picks Part_Ofs from Objects and stores them in the appropriate
+      --  container. Unlike other similar routines, this one is called even for
+      --  packages that are not visible from other compilation units, because
+      --  the Part_Of information is needed for visibility queries in phase 2.
+
       procedure Process_Volatiles_And_States
         (Objects    : Node_Sets.Set;
          Local_Vars : Boolean := False);
@@ -261,6 +267,31 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end Serialize;
 
+      ----------------------
+      -- Process_Part_Ofs --
+      ----------------------
+
+      procedure Process_Part_Ofs (Objects : Node_Sets.Set) is
+      begin
+         for E of Objects loop
+            if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
+               declare
+                  State : constant Entity_Id := Encapsulating_State (E);
+                  --  This is either an abstract state, a single concurrent
+                  --  object or an Empty entity.
+
+               begin
+                  if Present (State)
+                    and then Ekind (State) = E_Abstract_State
+                    and then Contains (Part_Of_Constituents (State), E)
+                  then
+                     Part_Of_States.Include (Key => E, New_Item => State);
+                  end if;
+               end;
+            end if;
+         end loop;
+      end Process_Part_Ofs;
+
       ---------------------------------
       -- Process_Predefined_Entities --
       ---------------------------------
@@ -293,22 +324,6 @@ package body Flow_Generated_Globals.Phase_1 is
                then
                   pragma Assert (not Local_Vars);
                   Remote_States.Include (E);
-               end if;
-
-               if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
-                  declare
-                     State : constant Entity_Id := Encapsulating_State (E);
-                     --  This is either an abstract state, a single concurrent
-                     --  object or an Empty entity.
-
-                  begin
-                     if Present (State)
-                       and then Ekind (State) = E_Abstract_State
-                       and then Contains (Part_Of_Constituents (State), E)
-                     then
-                        Part_Of_States.Include (Key => E, New_Item => State);
-                     end if;
-                  end;
                end if;
             end if;
          end loop;
@@ -474,6 +489,8 @@ package body Flow_Generated_Globals.Phase_1 is
          Process_Predefined_Entities (Globals.Proper.Proof_Ins);
          Process_Predefined_Entities (Globals.Proper.Inputs);
       end if;
+
+      Process_Part_Ofs (Local_Variables);
    end GG_Register_Global_Info;
 
    ----------------------------------
