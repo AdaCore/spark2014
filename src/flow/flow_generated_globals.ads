@@ -169,6 +169,7 @@ package Flow_Generated_Globals is
 
       Globals          : Flow_Names;
 
+      Local_Packages   : Name_Sets.Set;
       Local_Variables  : Name_Sets.Set;
 
       Tasking          : Name_Tasking_Info;
@@ -178,9 +179,6 @@ package Flow_Generated_Globals is
       Nonreturning     : Boolean;
       Nonblocking      : Boolean;
    end record;
-   --  IMPORTANT: If you add fields to this, make sure to also update the
-   --  serialisation procedure (in the body of flow_generated_globals), and
-   --  update Null_Partial_Contract.
 
    ----------------------------------------------------------------------
    --  Protected types instances

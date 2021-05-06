@@ -59,13 +59,20 @@ package Flow.Slice is
       Proof_Calls           : out Node_Sets.Set;
       Definite_Calls        : out Node_Sets.Set;
       Conditional_Calls     : out Node_Sets.Set;
-      Local_Definite_Writes : out Node_Sets.Set)
+      Local_Definite_Writes : out Node_Sets.Set;
+      Local_Packages        : out Node_Sets.Set)
    with Pre  => FA.Generating_Globals and FA.Is_Generative,
         Post => Definite_Calls.Intersection (Conditional_Calls).Is_Empty
                 and then Proof_Calls.Intersection
                            (Definite_Calls or Conditional_Calls).Is_Empty
                 and then Local_Definite_Writes.Is_Subset
-                           (Of_Set => FA.GG.Local_Variables);
+                           (Of_Set => FA.GG.Local_Variables)
+                and then (if Ekind (FA.Spec_Entity) = E_Package then
+                            (for all Local of Local_Packages =>
+                               Ekind (Local) = E_Package)
+                          else
+                            Local_Definite_Writes.Is_Empty
+                              and then Local_Packages.Is_Empty);
    --  Computes globals (and procedure calls) from the given graphs
    --  ??? this name has nothing to do with "computed globals" (aka Yannick's)
    --
@@ -79,6 +86,9 @@ package Flow.Slice is
    --  @param Definite_Calls are subprograms definitely called
    --  @param Conditional_Calls are subprograms conditionally called
    --  @param Local_Definite_Writes are local variables that are definitely
-   --    initialized after package elaboration.
+   --    initialized after package elaboration
+   --  @param Local_Packages are immediately nested packages whose generated
+   --    Initializes contract will contribute to the generated Initializes
+   --    contract of their enclosing package
 
 end Flow.Slice;

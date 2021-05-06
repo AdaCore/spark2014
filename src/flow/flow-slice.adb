@@ -23,6 +23,7 @@
 
 with Flow_Utility;           use Flow_Utility;
 with Sem_Util;               use Sem_Util;
+with Sinfo.Nodes;            use Sinfo.Nodes;
 with Snames;                 use Snames;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
@@ -319,7 +320,8 @@ package body Flow.Slice is
       Proof_Calls           : out Node_Sets.Set;
       Definite_Calls        : out Node_Sets.Set;
       Conditional_Calls     : out Node_Sets.Set;
-      Local_Definite_Writes : out Node_Sets.Set)
+      Local_Definite_Writes : out Node_Sets.Set;
+      Local_Packages        : out Node_Sets.Set)
    is
       --  The "Get_" functions that follow collect nodes that are purely of the
       --  mode described in their names. This is pointed out so as to prevent
@@ -498,13 +500,27 @@ package body Flow.Slice is
                pragma Assert (if Ekind (E) = E_Function
                               then not Is_Predicate_Function (E));
 
-               --  Nested packages with an Initializes contract have their
-               --  reads and writes already inlined in the CFG; those without
-               --  such a contract need to be processed by the GG just like
-               --  subprogram calls.
-
                if Ekind (E) = E_Package then
-                  if No (Get_Pragma (E, Pragma_Initializes)) then
+
+                  --  Packages with an Initializes contract have their reads
+                  --  and writes already inlined in the CFG.
+
+                  if Present (Get_Pragma (E, Pragma_Initializes)) then
+                     null;
+
+                  --  If a package is nested within another and none of them
+                  --  has an Initializes contract, then special GG circuity
+                  --  combines inner into outer Initializes.
+
+                  elsif Scope (E) = FA.Spec_Entity
+                    and then Ekind (FA.Spec_Entity) = E_Package
+                  then
+                     Local_Packages.Insert (E);
+
+                  --  Other packages are processed by the GG just like
+                  --  subprogram calls.
+
+                  else
                      Unresolved.Insert (E);
                   end if;
 

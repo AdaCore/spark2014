@@ -177,6 +177,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
       Globals          : Flow_Nodes;
 
+      Local_Packages   : Node_Sets.Set;
       Local_Variables  : Node_Sets.Set;
 
       Entries_Called   : Entry_Call_Sets.Set;
@@ -379,6 +380,7 @@ package body Flow_Generated_Globals.Phase_1 is
       Serialize (Globals.Calls.Conditional_Calls, "calls_conditional");
 
       if Ekind (E) = E_Package then
+         Serialize (Local_Packages, "local_packages");
          Serialize (Local_Variables, "local_var");
       end if;
 
