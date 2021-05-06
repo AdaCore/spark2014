@@ -74,6 +74,9 @@ Tool Limitations
    formal subprogram parameter are not supported. Similarly, suspension on
    suspension objects given as formal subprogram parameters is not supported.
 
+#. Address clauses (overlays) are supported, but |GNATprove| is unable to
+   detect or follow aliases that may be caused by such address clauses.
+
 Legality Rules
 --------------
 
@@ -169,3 +172,4 @@ Proof Limitations
 
 9. Preconditions on arithmetic and conversion operators (including Time_Of) in
    Ada.Calendar package are not yet implemented.
+

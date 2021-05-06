@@ -81,6 +81,13 @@ Generated contracts for get
 Generated contracts for inner
 Generated contracts for outer
 foo.ads:7:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
+Generated contracts for main
+   Global =>
+      Input =>
+         entity_name__hidden
+   Refined_Global =>
+      Input =>
+         entity_name__hidden
 Generated contracts for get
    Global =>
       Input =>
@@ -101,3 +108,251 @@ Generated contracts for inner
 Generated contracts for outer
 outer.ads:7:21: warning: unused variable "B"
 outer.ads:12:47: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 12 should mention X and Y in a precondition]
+Generated global .gg contents:
+filename: gnatprove/bar.gg
+contents:
+{
+  "contracts": [
+    {
+      "file": "bar.adb",
+      "line": 8,
+      "col": 13,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Bar.B"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Bar.B"
+          ]
+        }
+      }
+    },
+    {
+      "file": "bar.adb",
+      "line": 18,
+      "col": 13,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Bar.G1",
+            "Bar.G2"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Bar.G1",
+            "Bar.G2"
+          ]
+        }
+      }
+    },
+    {
+      "file": "bar.adb",
+      "line": 27,
+      "col": 13,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Bar.G1"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Bar.G1"
+          ]
+        }
+      }
+    },
+    {
+      "file": "bar.adb",
+      "line": 29,
+      "col": 14,
+      "globals": {
+        "Global": {
+          "In_Out": [
+            "Bar.B"
+          ]
+        },
+        "Refined_Global": {
+          "In_Out": [
+            "Bar.B"
+          ]
+        }
+      }
+    },
+    {
+      "file": "bar.adb",
+      "line": 39,
+      "col": 14,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Bar.G1"
+          ],
+          "Output": [
+            "Bar.B",
+            "Bar.G2"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Bar.G1"
+          ],
+          "Output": [
+            "Bar.B",
+            "Bar.G2"
+          ]
+        }
+      }
+    },
+    {
+      "file": "bar.adb",
+      "line": 49,
+      "col": 13,
+      "globals": {
+        "Global": {
+        },
+        "Refined_Global": {
+        }
+      }
+    }
+  ]
+}
+
+filename: gnatprove/entity_name.gg
+contents:
+{
+  "contracts": [
+    {
+      "file": "entity_name.ads",
+      "line": 2,
+      "col": 13,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Entity_Name.Hidden"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Entity_Name.Hidden"
+          ]
+        }
+      }
+    }
+  ]
+}
+
+filename: gnatprove/foo.gg
+contents:
+{
+  "contracts": [
+    {
+      "file": "foo.ads",
+      "line": 6,
+      "col": 16,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Outer.Inner.X"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Outer.Inner.X"
+          ]
+        }
+      }
+    },
+    {
+      "file": "foo.ads",
+      "line": 7,
+      "col": 16,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Outer.X",
+            "Outer.Y"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Outer.X",
+            "Outer.Y"
+          ]
+        }
+      }
+    }
+  ]
+}
+
+filename: gnatprove/main.gg
+contents:
+{
+  "contracts": [
+    {
+      "file": "main.adb",
+      "line": 3,
+      "col": 11,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Entity_Name.Hidden"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Entity_Name.Hidden"
+          ]
+        }
+      }
+    }
+  ]
+}
+
+filename: gnatprove/outer.gg
+contents:
+{
+  "contracts": [
+    {
+      "file": "outer.ads",
+      "line": 6,
+      "col": 16,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Outer.Inner.X"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Outer.Inner.X"
+          ]
+        }
+      }
+    },
+    {
+      "file": "outer.ads",
+      "line": 12,
+      "col": 16,
+      "globals": {
+        "Global": {
+          "Input": [
+            "Outer.X",
+            "Outer.Y"
+          ]
+        },
+        "Refined_Global": {
+          "Input": [
+            "Outer.X",
+            "Outer.Y"
+          ]
+        }
+      }
+    }
+  ]
+}
+

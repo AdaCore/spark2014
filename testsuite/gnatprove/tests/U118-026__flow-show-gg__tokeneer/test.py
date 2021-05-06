@@ -1,6 +1,5 @@
 from test_support import *
 from glob import glob
-import os
 
 do_flow(opt=["--flow-show-gg", "--no-inlining"] + sorted(glob("*.ad[sb]")),
         sort_output=False)

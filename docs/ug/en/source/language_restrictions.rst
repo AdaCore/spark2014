@@ -109,7 +109,7 @@ aspect syntax:
    :language: ada
    :lines: 5-22
 
-.. index:: validity, Unchecked_Conversion, Valid
+.. index:: validity, Unchecked_Conversion, Valid, overlay, Address
 
 Data Validity
 -------------
@@ -122,10 +122,10 @@ language features that process or potentially produce invalid values.
 Calls to instances of  ``Unchecked_Conversion`` could potentially create
 invalid values; however, |SPARK| checks upon creation of such an instance, that
 no such invalid values can be produced. Similarly, |SPARK| checks upon
-specification of an Address clause or aspect for an object, that no invalid
-values can be produced in this way. Conversely, as no invalid values can be
-constructed in |SPARK|, the evaluation of the attribute ``Valid`` is assumed to
-always return True.
+specification of an Address clause or aspect for an object (e.g. in so-called
+overlays), that no invalid values can be produced in this way. Conversely, as
+no invalid values can be constructed in |SPARK|, the evaluation of the
+attribute ``Valid`` is assumed to always return True.
 
 This is illustrated in the following example:
 

@@ -744,7 +744,7 @@
   </goal>
   <goal name="def&#39;vc.216">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="708183"/></proof>
+  <proof prover="1"><result status="unknown" steps="708180"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;vc.217" proved="true">

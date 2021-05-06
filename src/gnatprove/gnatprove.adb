@@ -356,17 +356,20 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Copy_ALI_Files (Proj : Project_Tree) is
 
-      procedure Copy_ALI (Source_Dir : Virtual_File);
-      --  Copy the ALI files from Source_Dir/Phase1 to Source_Dir
+      procedure Copy_Dir (Source_Dir, Target_Dir : Virtual_File);
+      --  Copy the ALI files from Source_Dir to Target_Dir
+
+      procedure Copy_Phase1 (Target_Dir : Virtual_File);
+      --  Copy the ALI files from Target_Dir/Phase1 to Target_Dir
 
       --------------
-      -- Copy_ALI --
+      -- Copy_Dir --
       --------------
 
-      procedure Copy_ALI (Source_Dir : Virtual_File) is
+      procedure Copy_Dir (Source_Dir, Target_Dir : Virtual_File) is
 
          procedure Copy_File (Directory_Entry : Directory_Entry_Type);
-         --  copy the file in Argument to Source_Dir
+         --  copy the file in Argument to Target_Dir
 
          ---------------
          -- Copy_File --
@@ -378,25 +381,31 @@ procedure Gnatprove with SPARK_Mode is
             pragma Unreferenced (Success);
          begin
             Copy_File (Full_Name (Directory_Entry),
-                       Source_Dir.Display_Full_Name,
+                       Target_Dir.Display_Full_Name,
                        Success,
                        Mode => Overwrite,
                        Preserve => Full);
          end Copy_File;
 
-         Phase1_Dir : constant Virtual_File := Source_Dir / Phase1_Subdir;
-
-      --  Start of processing for Copy_ALI
-
       begin
-         if Is_Directory (Phase1_Dir) then
+         if Is_Directory (Source_Dir) then
             Search
-              (Phase1_Dir.Display_Full_Name,
+              (Source_Dir.Display_Full_Name,
                Pattern => "*.ali",
                Filter => (Ordinary_File => True, others => False),
                Process => Copy_File'Access);
          end if;
-      end Copy_ALI;
+      end Copy_Dir;
+
+      -----------------
+      -- Copy_Phase1 --
+      -----------------
+
+      procedure Copy_Phase1 (Target_Dir : Virtual_File) is
+         Phase1_Dir : constant Virtual_File := Target_Dir / Phase1_Subdir;
+      begin
+         Copy_Dir (Phase1_Dir, Target_Dir);
+      end Copy_Phase1;
 
       Iter : Project_Iterator := Start (Proj.Root_Project);
 
@@ -410,7 +419,7 @@ procedure Gnatprove with SPARK_Mode is
             renames Current (Iter).Library_Ali_Directory;
          begin
             if Art_Dir /= No_File then
-               Copy_ALI (Art_Dir);
+               Copy_Phase1 (Art_Dir);
             end if;
 
             --  In the case of library projects, there is a separate dir where
@@ -418,8 +427,9 @@ procedure Gnatprove with SPARK_Mode is
             --  with a different subdir, we need to copy those files as well.
 
             if Lib_Dir /= No_File and then Art_Dir /= Lib_Dir then
-               Copy_ALI (Lib_Dir);
+               Copy_Dir (Art_Dir, Lib_Dir);
             end if;
+
             Next (Iter);
          end;
       end loop;

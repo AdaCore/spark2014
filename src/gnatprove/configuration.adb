@@ -1026,26 +1026,70 @@ package body Configuration is
 
    procedure Produce_List_Categories_Output is
       use VC_Kinds;
+
+      function Category (K : VC_Kind) return String;
+      --  Produce a category string for this check kind
+
+      function Effort (K : VC_Kind) return String;
+      --  Produce an effort string for this check kind
+
+      --------------
+      -- Category --
+      --------------
+
+      function Category (K : VC_Kind) return String is
+      begin
+         case K is
+            when VC_RTE_Kind     => return "(run-time-check)";
+            when VC_Assert_Kind  => return "(assertion)";
+            when VC_LSP_Kind     => return "(liskov-substitution-principle)";
+            when VC_Warning_Kind => return "(proof_warning)";
+         end case;
+      end Category;
+
+      ------------
+      -- Effort --
+      ------------
+
+      function Effort (K : VC_Kind) return String is
+      begin
+         case K is
+            when VC_RTE_Kind | VC_Assert_Kind | VC_LSP_Kind =>
+               return "MEDIUM";
+            when VC_Warning_Kind =>
+               return "EASY";
+         end case;
+      end Effort;
+
+   --  Start of processing for Produce_List_Categories_Output
+
    begin
+
+      --  The output format agreed upon with gnathub team is as follows:
+      --  [category]
+      --  key(optional category override) - name - description - effort
+
       Ada.Text_IO.Put_Line ("[Flow analysis check categories]");
       for K in Valid_Flow_Tag_Kind loop
          Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) & " - " &
-                                 Description (K));
+                                 Description (K) & " - EASY");
       end loop;
 
       Ada.Text_IO.Put_Line ("[Proof check categories]");
       for K in VC_Kind loop
          if K not in VC_Warning_Kind then
-            Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) &
-                                    " - " & Description (K));
+            Ada.Text_IO.Put_Line
+              (Rule_Name (K) & Category (K) & " - " & Kind_Name (K) &
+                 " - " & Description (K) & " - " & Effort (K));
          end if;
       end loop;
 
       Ada.Text_IO.Put_Line ("[Proof warnings categories]");
       for K in VC_Kind loop
          if K in VC_Warning_Kind then
-            Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) &
-                                    " - " & Description (K));
+            Ada.Text_IO.Put_Line
+              (Rule_Name (K) & " - " & Kind_Name (K) &
+                 " - " & Description (K) & " - " & Effort (K));
          end if;
       end loop;
 

@@ -295,7 +295,6 @@ package body Flow is
 
       function To_JSON return JSON_Value is
          Globals : Global_Flow_Ids;
-         Obj     : JSON_Value;
          Result  : constant JSON_Value := Create_Object;
 
       begin
@@ -305,15 +304,12 @@ package body Flow is
                S       => (if Refined then FA.B_Scope else FA.S_Scope),
                Globals => Globals);
 
-            Obj := To_JSON (Globals);
-            if not Is_Empty (Obj) then
-               Set_Field (Result,
-                          Standard_Ada_Case (Get_Name_String
-                            (if Refined
-                             then Name_Refined_Global
-                             else Name_Global)),
-                          Obj);
-            end if;
+            Set_Field (Result,
+                       Standard_Ada_Case (Get_Name_String
+                         (if Refined
+                          then Name_Refined_Global
+                          else Name_Global)),
+                       To_JSON (Globals));
          end loop;
 
          --  Result looks like:
@@ -323,6 +319,9 @@ package body Flow is
          --   "Refined_Global":
          --      {"Input": .. }
          --  }
+         --
+         --  or, if there are no globals:
+         --  {"Global": {}, "Refined_Global": ..}
          return Result;
       end To_JSON;
 

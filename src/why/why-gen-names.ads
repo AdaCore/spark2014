@@ -244,7 +244,6 @@ package Why.Gen.Names is
       WNE_Array_Prefix, --  Prefix of array modules
 
       WNE_Attr_Access,
-      WNE_Attr_Address,
       WNE_Attr_Alignment,
       WNE_Attr_Component_Size,
       WNE_Attr_Constrained,
