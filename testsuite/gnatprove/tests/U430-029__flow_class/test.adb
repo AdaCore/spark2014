@@ -1,16 +1,14 @@
 procedure Test with SPARK_Mode, Global => null is
    type Root is tagged record
-      F : Integer;
-      I : Integer;
+      A : Integer;
    end record;
    type Child is new Root with record
-      G : Integer;
-      J : Integer;
+      B : Integer;
    end record;
 
-   X : Root'Class := Root'Class (Child'(1, 2, 3, 4));
+   X : Root'Class := Root'Class (Child'(1, 2));
 begin
    if X in Child'Class then
-      Child'Class (X).G := 0;
+      Child'Class (X).B := 0;
    end if;
 end Test;
