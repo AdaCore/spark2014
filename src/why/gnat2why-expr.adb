@@ -13134,8 +13134,11 @@ package body Gnat2Why.Expr is
 
                         else
                            Mod_Expr :=
-                             New_Attribute_Expr
-                               (Etype (Var), Domain, Attribute_Modulus);
+                             Insert_Simple_Conversion
+                               (Domain => EW_Term,
+                                Expr   => New_Attribute_Expr
+                                  (Etype (Var), Domain, Attribute_Modulus),
+                                To     => Arg_BTyp);
                         end if;
 
                         T := Insert_Simple_Conversion
