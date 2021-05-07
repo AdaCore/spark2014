@@ -994,15 +994,6 @@ package body Flow_Error_Messages is
          Par := N;
       end if;
 
-      --  In proof, we use the original node for unchecked conversions
-      --  coming from source.
-
-      if Nkind (Par) = N_Unchecked_Type_Conversion
-        and then Comes_From_Source (Par)
-      then
-         Par := Original_Node (Par);
-      end if;
-
       --  Skip type conversions inserted by the frontend to find a suitable
       --  explanation.
 
