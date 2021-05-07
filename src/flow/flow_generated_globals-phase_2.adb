@@ -1738,13 +1738,10 @@ package body Flow_Generated_Globals.Phase_2 is
             end if;
          end Debug;
 
-         pragma Annotate (Xcov, Exempt_Off);
-
          -------------------
          -- Dump_Contract --
          -------------------
 
-         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          procedure Dump_Contract (Scop : Entity_Id) is
             C : constant Entity_Contract_Maps.Cursor :=
               Global_Contracts.Find (To_Entity_Name (Scop));
@@ -1879,13 +1876,11 @@ package body Flow_Generated_Globals.Phase_2 is
                end;
             end if;
          end Dump_Contract;
-         pragma Annotate (Xcov, Exempt_Off);
 
          ------------------------------
          -- Dump_Main_Unit_Contracts --
          ------------------------------
 
-         pragma Annotate (Xcov, Exempt_On, "Debugging code");
          procedure Dump_Main_Unit_Contracts (Highlight : Entity_Name) is
          begin
             if Debug_Partial_Contracts then

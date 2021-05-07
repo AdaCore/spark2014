@@ -1881,11 +1881,13 @@ package body Flow_Generated_Globals.Partial is
 
       GG_Write_Finalize;
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Term_Info.Set_Fg (Yellow);
          Ada.Text_IO.Put_Line ("Global generation complete for current CU");
          Term_Info.Set_Fg (Reset);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
    end Generate_Contracts;
 
    ---------------
@@ -2009,6 +2011,7 @@ package body Flow_Generated_Globals.Partial is
    -- Print --
    -----------
 
+   pragma Annotate (Xcov, Exempt_On, "Debugging code");
    procedure Print (G : Constant_Graphs.Graph)
    is
       use Constant_Graphs;
@@ -2083,6 +2086,7 @@ package body Flow_Generated_Globals.Partial is
          Node_Info => NDI'Access,
          Edge_Info => EDI'Access);
    end Print;
+   pragma Annotate (Xcov, Exempt_Off);
 
    -----------------------
    -- Resolve_Constants --
@@ -2419,9 +2423,11 @@ package body Flow_Generated_Globals.Partial is
 
       --  Dump the graph before closing it
 
+      pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Print (Constant_Graph);
       end if;
+      pragma Annotate (Xcov, Exempt_Off);
 
       Constant_Graph.Close;
 
