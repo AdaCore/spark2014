@@ -354,10 +354,23 @@ project GNAT2Why is
 
                               --  Exclude units not exercized in gnat2why itself
                               "memcache_client",
-                              "named_semaphore",
+                              "named_semaphores",
 
-                              --  Exclude debugging units
-                              "flow_debug"
+                              --  Exclude generated units intentionally not fully covered
+                              "why-atree-accessors",
+                              "why-atree-builders",
+                              "why-atree-mutators",
+                              "why-atree-traversal",
+                              "why-atree-traversal_stub",
+                              "why-conversions",
+
+                              --  Exclude units for debugging/assertions
+                              "flow_debug",
+                              "spark_xrefs",
+                              "why-atree-treepr",
+                              "why-atree_validity",
+                              "why-images",
+                              "why-kind_validity"
                               );
    end Coverage;
 
