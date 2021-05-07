@@ -37,7 +37,7 @@ package Generic_Queue_Pack is
    --  used by various tasks.
    type Protected_Queue
      (Ceiling    : System.Any_Priority;
-      Queue_Size : Positive) is tagged record
+      Queue_Size : Positive) is record
       Data_Available : Boolean := False;
       Queue          : T_Queue (Queue_Size);
 

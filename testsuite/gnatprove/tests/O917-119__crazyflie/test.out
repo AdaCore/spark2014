@@ -1,13 +1,13 @@
 crtp_pack.adb:15:07: info: initialization of "Packet" proved
 crtp_pack.adb:28:07: info: initialization of "Packet" proved
-crtp_pack.adb:37:61: warning: "Has_Succeed" is set by "Enqueue_Item" but not used after the call
-crtp_pack.adb:46:07: info: initialization of "Handler" proved
-crtp_pack.adb:53:25: high: "Packet.Data_1" is not initialized
-crtp_pack.adb:53:25: high: "Packet.Data_2" is not initialized
-crtp_pack.adb:53:25: high: "Packet.Header" is not initialized
-crtp_pack.adb:53:25: high: "Packet.Raw" is not initialized
-crtp_pack.adb:53:25: high: "Packet.Reserved" is not initialized
-crtp_pack.adb:61:07: info: initialization of "Handler" proved
+crtp_pack.adb:38:51: warning: "Has_Succeed" is set by "Enqueue_Item" but not used after the call
+crtp_pack.adb:47:07: info: initialization of "Handler" proved
+crtp_pack.adb:54:25: high: "Packet.Data_1" is not initialized
+crtp_pack.adb:54:25: high: "Packet.Data_2" is not initialized
+crtp_pack.adb:54:25: high: "Packet.Header" is not initialized
+crtp_pack.adb:54:25: high: "Packet.Raw" is not initialized
+crtp_pack.adb:54:25: high: "Packet.Reserved" is not initialized
+crtp_pack.adb:62:07: info: initialization of "Handler" proved
 crtp_pack.ads:138:07: info: initialization of "Packet" proved
 crtp_pack.ads:144:07: info: initialization of "Has_Succeed" proved
 crtp_pack.ads:167:63: error: actual for formal object with mode in cannot depend on variable input "Bla" (SPARK RM 4.4(2))

@@ -1,5 +1,5 @@
 with Types; use Types;
-with Interfaces.C.Extensions; use Interfaces.C.Extensions;
+with Interfaces.C; use Interfaces.C;
 with IMU_Pack; use IMU_Pack;
 
 package SensFusion6_Pack

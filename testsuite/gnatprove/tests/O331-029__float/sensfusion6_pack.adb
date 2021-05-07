@@ -2,8 +2,6 @@ with Maths_Pack; use Maths_Pack;
 with Safety_Pack; use Safety_Pack;
 with Config; use Config;
 
-with Interfaces.C; use Interfaces.C;
-
 package body SensFusion6_Pack
 with SPARK_Mode,
   Refined_State => (SensFusion6_State => (Is_Init,

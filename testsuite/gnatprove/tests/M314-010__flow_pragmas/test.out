@@ -1,4 +1,4 @@
-uninitialized.adb:6:22: medium: assertion might fail, cannot prove A > B
+uninitialized.adb:6:22: medium: assertion might fail
 uninitialized.adb:6:26: high: "B" is not initialized
 uninitialized.ads:5:12: info: data dependencies proved
 uninitialized.ads:5:33: info: initialization of "A" proved
@@ -9,5 +9,5 @@ vehicle.adb:39:33: info: loop invariant initialization proved (CVC4: 1 VC)
 vehicle.adb:39:33: info: loop invariant preservation proved (CVC4: 1 VC)
 vehicle.adb:41:13: info: precondition proved (CVC4: 1 VC)
 vehicle.adb:43:13: info: precondition proved (CVC4: 1 VC)
-vehicle.ads:24:20: medium: postcondition might fail, cannot prove (Speed_Is_Valid)
+vehicle.ads:24:20: medium: postcondition might fail
 vehicle.ads:25:12: info: data dependencies proved

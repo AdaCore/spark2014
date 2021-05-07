@@ -1,0 +1,5 @@
+addr.ads:12:04: error: "Y" is not allowed in SPARK (due to attribute "Address" of non-volatile object not at top level of address clause)
+addr.ads:12:04: error: violation of pragma SPARK_Mode at test.adc:1
+addr.ads:13:23: error: attribute "Address" of non-volatile object not at top level of address clause is not allowed in SPARK
+addr.ads:13:23: error: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof

@@ -472,7 +472,7 @@ be *compatible with respect to volatility* with E2 if
 
 10. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object for reading is
-    considered to have an effect when read. To reconcile this
+    considered to have a side effect. To reconcile this
     discrepancy, a name denoting such an object shall only occur in
     a *non-interfering context*. A name occurs in a non-interfering
     context if it is:
@@ -481,7 +481,7 @@ be *compatible with respect to volatility* with E2 if
 
    * the [right-hand side] expression of an assignment statement; or
 
-   * the expression of an initialization expression of an object declaration
+   * the initialization expression of an object declaration
      which does not occur inside a declare expression; or
 
    * the ``object_name`` of an ``object_renaming_declaration``; or
@@ -497,7 +497,7 @@ be *compatible with respect to volatility* with E2 if
    * the return expression of a ``simple_return_statement`` which applies
      to a volatile function; or
 
-   * the initial value expression of the ``extended_return_object_declaration``
+   * the expression of the ``extended_return_object_declaration``
      of an ``extended_return_statement`` which applies to a
      volatile function; or
 
@@ -506,8 +506,8 @@ be *compatible with respect to volatility* with E2 if
      non-interfering context; or
 
    * the prefix of an ``attribute_reference`` whose ``attribute_designator`` is
-     either Alignment, Component_Size, First, First_Bit, Last, Last_Bit,
-     Length, Position, Size, or Storage_Size; or
+     either Address, Alignment, Component_Size, First, First_Bit, Last,
+     Last_Bit, Length, Position, Size, or Storage_Size; or
 
    * the expression of a type conversion occurring in a non-interfering context; or
 

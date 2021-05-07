@@ -25,13 +25,14 @@
 
 with Atree;                use Atree;
 with Common_Containers;    use Common_Containers;
-with Einfo;                use Einfo;
+with Einfo.Entities;       use Einfo.Entities;
+with Einfo.Utils;          use Einfo.Utils;
 with Flow;                 use Flow;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Types;           use Flow_Types;
 with Sem_Aux;              use Sem_Aux;
 with Sem_Util;             use Sem_Util;
-with Sinfo;                use Sinfo;
+with Sinfo.Nodes;          use Sinfo.Nodes;
 with Snames;               use Snames;
 with SPARK_Util;           use SPARK_Util;
 with Stand;                use Stand;

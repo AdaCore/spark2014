@@ -168,6 +168,15 @@ package Why.Atree.Modules is
       Power  : W_Identifier_Id;
    end record;
 
+   type M_Int_Shift_Type is record
+      Module                 : W_Module_Id;
+      Shift_Left             : W_Identifier_Id;
+      Shift_Right            : W_Identifier_Id;
+      Shift_Right_Arithmetic : W_Identifier_Id;
+      Rotate_Left            : W_Identifier_Id;
+      Rotate_Right           : W_Identifier_Id;
+   end record;
+
    type M_Int_Div_Type is record
       Module   : W_Module_Id;
       Div      : W_Identifier_Id;
@@ -443,6 +452,7 @@ package Why.Atree.Modules is
    M_Compat_Tags        : M_Compat_Tags_Type;
    M_Integer            : M_Integer_Type;
    M_Int_Power          : M_Int_Power_Type;
+   M_Int_Shift          : M_Int_Shift_Type;
    M_Int_Div            : M_Int_Div_Type;
    M_Int_Abs            : M_Int_Abs_Type;
    M_Int_Minmax         : M_Int_Minmax_Type;

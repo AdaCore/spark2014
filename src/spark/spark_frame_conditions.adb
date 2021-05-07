@@ -26,6 +26,7 @@
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                    use Ada.Text_IO;
+with Einfo.Utils;                    use Einfo.Utils;
 with Lib.Xref;                       use Lib.Xref;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;

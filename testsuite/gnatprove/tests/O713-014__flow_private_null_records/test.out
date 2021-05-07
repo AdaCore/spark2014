@@ -1,2 +1,2 @@
-use_private_type.adb:8:19: medium: assertion might fail, cannot prove PR in Root
-use_private_type.adb:9:19: medium: assertion might fail, cannot prove PR_D in Root_D
+use_private_type.adb:8:19: medium: assertion might fail
+use_private_type.adb:9:19: medium: assertion might fail

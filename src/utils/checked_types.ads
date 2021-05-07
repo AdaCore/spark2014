@@ -26,10 +26,10 @@
 --  particular Node_Id and Entity_Id) with predicates that enforce various
 --  assumptions.
 
-with Types; use Types;
-with Atree; use Atree;
-with Einfo; use Einfo;
-with Sinfo; use Sinfo;
+with Types;          use Types;
+with Atree;          use Atree;
+with Einfo.Entities; use Einfo.Entities;
+with Sinfo.Nodes;    use Sinfo.Nodes;
 
 package Checked_Types is
 

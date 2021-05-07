@@ -620,7 +620,8 @@ Incomplete Contracts`).
    :linenos:
 
 Note that we added an ``Address`` aspect to global variable ``V``, so that it
-can be read/written from a C file.
+can be read/written from a C file; this also requires the variable to be
+volatile, which in turn requires the abstract state to be marked as external.
 
 |GNATprove| gives the same results on this unit as before: it issues warnings
 for the possible error in ``Set_Global_Twice`` and it verifies the contract
@@ -660,7 +661,9 @@ imported from C:
    :linenos:
 
 Note that we added data dependencies to the imported procedures, as
-|GNATprove| would assume otherwise incorrectly ``null`` data dependencies.
+|GNATprove| would assume otherwise incorrectly ``null`` data dependencies. The
+example also suppresses some |GNATprove| messages related to the address clause
+of the variable, which are not relevant to the example.
 
 As before, all contracts are proved by |GNATprove|:
 

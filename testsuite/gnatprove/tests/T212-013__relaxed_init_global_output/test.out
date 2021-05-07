@@ -21,7 +21,7 @@ test_global_out.adb:91:19: info: assertion proved (CVC4: 1 VC)
 test_global_out.adb:91:20: info: initialization check proved (CVC4: 1 VC)
 test_global_out.adb:93:19: info: assertion proved (CVC4: 1 VC)
 test_global_out.adb:93:20: info: initialization check proved (CVC4: 1 VC)
-test_global_out.adb:95:19: medium: assertion might fail, cannot prove G.G = 1
+test_global_out.adb:95:19: medium: assertion might fail
 test_global_out.adb:95:20: medium: initialization check might fail
 test_global_out.adb:103:19: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 test_global_out.adb:103:33: info: initialization check proved (CVC4: 1 VC)

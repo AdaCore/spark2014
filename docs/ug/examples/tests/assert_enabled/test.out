@@ -1,5 +1,5 @@
 
-assert_enabled.adb:6:11: medium: postcondition might fail, cannot prove X > 2
+assert_enabled.adb:6:11: medium: postcondition might fail
     6 |  Post => X > 2   --  ignored at run time
       |          ^~~~~
   e.g. when X = 0

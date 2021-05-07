@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Equal_Case_Insensitive;
-with Ada.Strings;                        use Ada.Strings;
 with Aspects;                            use Aspects;
 with Common_Iterators;                   use Common_Iterators;
 with Debug;
@@ -37,6 +35,7 @@ with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Rtsfind;                            use Rtsfind;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Prag;                           use Sem_Prag;
+with Sinfo.Utils;                        use Sinfo.Utils;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Definition.Annotate;          use SPARK_Definition.Annotate;
 with SPARK_Util.Types;                   use SPARK_Util.Types;
@@ -1289,43 +1288,34 @@ package body SPARK_Util.Subprograms is
    -- Is_Simple_Shift_Or_Rotate --
    -------------------------------
 
-   function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return Boolean is
-
-      --  Define a convenient short hand for the test below
-      function ECI (Left, Right : String) return Boolean
-        renames Equal_Case_Insensitive;
-
+   function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return N_Op_Shift_Option
+   is
+      Name : constant Name_Id := Chars (E);
    begin
-      Get_Unqualified_Decoded_Name_String (Chars (E));
+      --  It is an intrinsic...
 
-      declare
-         Name : constant String := Name_Buffer (1 .. Name_Len);
-      begin
-         return  --  return True iff...
+      if Is_Intrinsic_Subprogram (E)
 
-           --  it is an intrinsic
-           Is_Intrinsic_Subprogram (E)
+        --  without functional contract...
 
-           --  modular type
-           and then Is_Modular_Integer_Type (Etype (E))
+        and then not Has_Contracts (E, Pragma_Precondition)
+        and then not Has_Contracts (E, Pragma_Postcondition)
+        and then No (Get_Pragma (E, Pragma_Contract_Cases))
+      then
+         --  which corresponds to a shift or rotate
 
-           --  without functional contract
-           and then not Has_Contracts (E, Pragma_Precondition)
-           and then not Has_Contracts (E, Pragma_Postcondition)
-           and then No (Get_Pragma (E, Pragma_Contract_Cases))
+         case Name is
+            when Name_Shift_Right            => return N_Op_Shift_Right;
+            when Name_Shift_Right_Arithmetic =>
+               return N_Op_Shift_Right_Arithmetic;
+            when Name_Shift_Left             => return N_Op_Shift_Left;
+            when Name_Rotate_Left            => return N_Op_Rotate_Left;
+            when Name_Rotate_Right           => return N_Op_Rotate_Right;
+            when others                      => null;
+         end case;
+      end if;
 
-           --  which corresponds to a shift or rotate
-           and then
-             (ECI (Name, Get_Name_String (Name_Shift_Right))
-                or else
-              ECI (Name, Get_Name_String (Name_Shift_Right_Arithmetic))
-                or else
-              ECI (Name, Get_Name_String (Name_Shift_Left))
-                or else
-              ECI (Name, Get_Name_String (Name_Rotate_Left))
-                or else
-              ECI (Name, Get_Name_String (Name_Rotate_Right)));
-      end;
+      return N_Unused_At_Start;
    end Is_Simple_Shift_Or_Rotate;
 
    ---------------------------

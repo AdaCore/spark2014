@@ -86,7 +86,7 @@ stable_marriage.adb:292:10: info: initialization of "G1" proved
 stable_marriage.adb:293:10: info: initialization of "G2" proved
 stable_marriage.adb:294:10: info: initialization of "Accepted" proved
 stable_marriage.adb:296:10: info: initialization of "Already_Asked" proved
-stable_marriage.adb:300:25: medium: assertion might fail, cannot prove Proposals_Made (G1) < Count'last (e.g. when G1 = 1 and Proposals_Made = (1 => Count'Last, others => 0))
+stable_marriage.adb:300:25: medium: assertion might fail (e.g. when G1 = 1 and Proposals_Made = (1 => Count'Last, others => 0))
 stable_marriage.adb:304:30: info: range check proved (CodePeer)
 stable_marriage.adb:304:45: info: range check proved (CodePeer)
 stable_marriage.adb:306:16: info: assertion proved (CVC4: 1 VC)

@@ -253,6 +253,17 @@ piecewise (known limitation of flow analysis) and an array access in a string
 returned by the standard library function ``Get_Line`` (which would require
 using a wrapper with contracts).
 
+.. rubric:: ``float_error_bounds``
+
+This program implements the weighted sum of an array of floating-point values.
+It is proven to be free of runtime exceptions. In addition, lemmas
+are provided to bound the rounding error performed during the computation with
+respect to the same operations on real values. For the computations over real
+numbers, we use the ``Big_Real`` package of Ada :ref:`Big Numbers Library`.
+Due to limitations in prover handling of floating-point and real computations,
+these proofs require an important amount of ghost code
+(see :ref:`Manual Proof Using Ghost Code`).
+
 .. rubric:: ``formal_queue``
 
 This program implements a queue of integers using a doubly linked list, with

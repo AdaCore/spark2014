@@ -17,4 +17,4 @@ window.ads:11:44: info: overflow check proved (CVC4: 1 VC)
 window.ads:11:49: info: precondition proved (CVC4: 1 VC)
 window.ads:14:06: info: data dependencies proved
 window.ads:15:16: info: postcondition proved (CVC4: 1 VC)
-window.ads:19:14: medium: postcondition might fail, cannot prove Total_Area = Total_Area'Old - 100 (e.g. when Total_Area = 101)
+window.ads:19:14: medium: postcondition might fail (e.g. when Total_Area = 101)

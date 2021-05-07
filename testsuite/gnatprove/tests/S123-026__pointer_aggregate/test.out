@@ -3,5 +3,5 @@ alias_aggregate.adb:19:08: error: violation of aspect SPARK_Mode at line 1
 alias_aggregate.adb:19:36: error: duplicate value of a type with ownership is not allowed in SPARK
 alias_aggregate.adb:19:36: error: singleton choice required to prevent aliasing
 alias_aggregate.adb:19:36: error: violation of aspect SPARK_Mode at line 1
-incomplete_types.ads:10:20: medium: assertion might fail, cannot prove X.Value = 2
+incomplete_types.ads:10:20: medium: assertion might fail
 gnatprove: error during flow analysis and proof

@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Einfo.Utils;          use Einfo.Utils;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Error_Messages;  use Flow_Error_Messages;
 with Flow_Refinement;      use Flow_Refinement;

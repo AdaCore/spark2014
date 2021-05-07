@@ -59,9 +59,10 @@ package body Why.Atree.Modules is
    procedure Init_Integer_Module;
    procedure Init_Int_Abs_Module;
    procedure Init_Int_Div_Module;
+   procedure Init_Int_Gcd_Module;
    procedure Init_Int_Minmax_Module;
    procedure Init_Int_Power_Module;
-   procedure Init_Int_Gcd_Module;
+   procedure Init_Int_Shift_Module;
    procedure Init_Labels;
    procedure Init_Main_Module;
    procedure Init_Real_Module;
@@ -417,6 +418,7 @@ package body Why.Atree.Modules is
       Init_Compat_Tags_Module;
       Init_Integer_Module;
       Init_Int_Power_Module;
+      Init_Int_Shift_Module;
       Init_Int_Div_Module;
       Init_Int_Abs_Module;
       Init_Int_Minmax_Module;
@@ -2081,6 +2083,43 @@ package body Why.Atree.Modules is
                         Symb   => NID ("power"),
                         Typ    => EW_Int_Type);
    end Init_Int_Power_Module;
+
+   ---------------------------
+   -- Init_Int_Shift_Module --
+   ---------------------------
+
+   procedure Init_Int_Shift_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => "Int_Shift");
+   begin
+      M_Int_Shift.Module := M;
+      M_Int_Shift.Shift_Left :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("shift_left"),
+                        Typ    => EW_Int_Type);
+      M_Int_Shift.Shift_Right :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("shift_right"),
+                        Typ    => EW_Int_Type);
+      M_Int_Shift.Shift_Right_Arithmetic :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("shift_right_arithmetic"),
+                        Typ    => EW_Int_Type);
+      M_Int_Shift.Rotate_Left :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("rotate_left"),
+                        Typ    => EW_Int_Type);
+      M_Int_Shift.Rotate_Right :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("rotate_right"),
+                        Typ    => EW_Int_Type);
+   end Init_Int_Shift_Module;
 
    -------------------------
    -- Init_Integer_Module --

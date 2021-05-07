@@ -49,7 +49,7 @@ Generated contracts for bar
       B
       G1
       G2
-bar.adb:23:22: medium: assertion might fail, cannot prove Y = G2 [possible fix: subprogram at line 18 should mention G2 and Y in a precondition]
+bar.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 18 should mention G2 and Y in a precondition]
 bar.adb:24:21: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition]
 bar.adb:31:19: info: postcondition proved (Trivial: 1 VC)
 Generated contracts for proxy

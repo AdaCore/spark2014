@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Einfo.Utils;             use Einfo.Utils;
 with Elists;                  use Elists;
 with Lib.Util;                use Lib.Util;
 with Namet;                   use Namet;
@@ -28,6 +29,7 @@ with Osint.C;                 use Osint.C;
 with Sem_Aux;                 use Sem_Aux;
 with Sem_Eval;                use Sem_Eval;
 with Sem_Util;                use Sem_Util;
+with Sinfo.Utils;             use Sinfo.Utils;
 with Snames;                  use Snames;
 with Uintp;                   use Uintp;
 

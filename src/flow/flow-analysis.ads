@@ -24,7 +24,7 @@
 --  This package looks at the produced graphs and emits error messages
 
 with Sem_Util;         use Sem_Util;
-with Sinfo;            use Sinfo;
+with Sinfo.Nodes;      use Sinfo.Nodes;
 with SPARK_Definition; use SPARK_Definition;
 
 package Flow.Analysis is

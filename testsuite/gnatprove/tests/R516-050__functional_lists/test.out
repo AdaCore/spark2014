@@ -20,8 +20,8 @@ use_lists.adb:3:22: error: side effects of function "First" are not modeled in S
 use_lists.adb:5:14: medium: "L2" is not set
 use_lists.adb:5:14: medium: private part of "L2" is not set
 use_lists.adb:6:13: error: side effects of function "Has_Element" are not modeled in SPARK
-use_lists.adb:8:13: medium: loop invariant might fail in first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
-use_lists.adb:8:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
+use_lists.adb:8:13: medium: loop invariant might fail in first iteration
+use_lists.adb:8:13: medium: loop invariant might not be preserved by an arbitrary iteration
 use_lists.adb:8:35: error: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.adb:8:64: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:10:13: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -38,13 +38,13 @@ use_lists.adb:14:42: medium: overflow check might fail [reason for check: result
 use_lists.adb:16:13: medium: precondition might fail, cannot prove Length (L) <= Capacity (L) - 1
 use_lists.adb:16:25: error: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:16:25: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
-use_lists.adb:18:16: medium: assertion might fail, cannot prove Get (Get_Element_Model (L2), Length (L2) - 1) = Element (L1, Cu)
+use_lists.adb:18:16: medium: assertion might fail
 use_lists.adb:18:21: error: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:18:45: info: function contract not available for proof ("Length" might not return)
 use_lists.adb:18:57: info: range check proved (CVC4: 1 VC)
 use_lists.adb:19:18: error: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:19:18: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
-use_lists.adb:21:25: medium: assertion might fail, cannot prove Is_Incr (Element (L1, Cu), Get (Get_Element_Model (L2), Length (L2) - 1))
+use_lists.adb:21:25: medium: assertion might fail
 use_lists.adb:21:34: error: side effects of function "Element" are not modeled in SPARK
 use_lists.adb:21:34: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
 use_lists.adb:22:30: error: side effects of function "Get_Element_Model" are not modeled in SPARK

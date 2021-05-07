@@ -1,2 +1,2 @@
 pack.ads:3:14: warning: subprogram "P2" has no effect
-pack.ads:3:48: medium: postcondition might fail, cannot prove false
+pack.ads:3:48: medium: postcondition might fail

@@ -1,8 +1,8 @@
-test.adb:5:19: medium: postcondition might fail, cannot prove Test_If'Result = 522 (e.g. when Test_If'Result = 5)
+test.adb:5:19: medium: postcondition might fail (e.g. when Test_If'Result = 5)
 test.adb:7:07: info: initialization of "B" proved
-test.adb:20:19: medium: postcondition might fail, cannot prove Test_Case'Result = 522 (e.g. when Test_Case'Result = 5)
+test.adb:20:19: medium: postcondition might fail (e.g. when Test_Case'Result = 5)
 test.adb:22:07: info: initialization of "B" proved
-test.adb:39:19: medium: postcondition might fail, cannot prove Test_If_2'Result = 1 (e.g. when Test_If_2'Result = -2)
+test.adb:39:19: medium: postcondition might fail (e.g. when Test_If_2'Result = -2)
 test.adb:44:18: info: overflow check proved (CVC4: 1 VC)
 test.adb:46:18: info: overflow check proved (CVC4: 1 VC)
 counterexample expected for check at test.adb:5

@@ -29,6 +29,7 @@ with Output;              use Output;
 with Sem_Aux;             use Sem_Aux;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
+with Sinfo.Utils;         use Sinfo.Utils;
 with Sprint;              use Sprint;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;

@@ -25,7 +25,7 @@
 
 with Atree;                              use Atree;
 with Common_Containers;                  use Common_Containers;
-with Einfo;                              use Einfo;
+with Einfo.Entities;                     use Einfo.Entities;
 with Flow;                               use Flow;
 with Flow_Types;                         use Flow_Types;
 with GNATCOLL.Terminal;                  use GNATCOLL.Terminal;

@@ -1,0 +1,21 @@
+uu.adb:8:19: high: operation on unchecked union type will raise Program_Error [possible explanation: left operand should have inferable discriminants]
+uu.adb:14:19: info: operation on unchecked union type proved (Trivial)
+uu.adb:21:19: high: operation on unchecked union type will raise Program_Error [possible explanation: right operand should have inferable discriminants]
+uu.adb:27:19: high: operation on unchecked union type will raise Program_Error [possible explanation: operand type has a subcomponent of an unchecked union type whose nominal subtype is unconstrained]
+uu.adb:33:19: high: operation on unchecked union type will raise Program_Error [possible explanation: operand type has a subcomponent of an unchecked union type whose nominal subtype is unconstrained]
+uu.adb:45:19: high: operation on unchecked union type will raise Program_Error [possible explanation: operand type has a subcomponent of an unchecked union type whose nominal subtype is unconstrained]
+uu.adb:51:19: high: operation on unchecked union type will raise Program_Error [possible explanation: operand type has a subcomponent of an unchecked union type whose nominal subtype is unconstrained]
+uu.ads:18:21: info: range check proved (CVC4: 1 VC)
+uu.ads:75:14: info: range check proved (CVC4: 1 VC)
+uu_bad.ads:19:07: error: component of an unconstrained unchecked union type in a tagged extension is not yet supported
+uu_mem.adb:8:19: high: operation on unchecked union type will raise Program_Error [possible explanation: left operand should have inferable discriminants]
+uu_mem.adb:14:19: info: operation on unchecked union type proved (Trivial)
+uu_mem.adb:21:22: high: operation on unchecked union type will raise Program_Error [possible explanation: alternative should have inferable discriminants]
+uu_mem.adb:27:19: high: operation on unchecked union type will raise Program_Error [possible explanation: operand type has a subcomponent of an unchecked union type whose nominal subtype is unconstrained]
+uu_mem.adb:33:19: high: operation on unchecked union type will raise Program_Error [possible explanation: operand type has a subcomponent of an unchecked union type whose nominal subtype is unconstrained]
+uu_mem.adb:46:19: info: operation on unchecked union type proved (Trivial)
+uu_mem.adb:47:24: high: operation on unchecked union type will raise Program_Error [possible explanation: left operand should have inferable discriminants]
+uu_mem.adb:54:19: info: operation on unchecked union type proved (Trivial)
+uu_mem.adb:55:24: info: operation on unchecked union type proved (Trivial)
+uu_mem.ads:18:21: info: range check proved (CVC4: 1 VC)
+gnatprove: error during flow analysis and proof

@@ -24,7 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Atree;                       use Atree;
-with Einfo;                       use Einfo;
+with Einfo.Entities;              use Einfo.Entities;
+with Einfo.Utils;                 use Einfo.Utils;
 with Errout;                      use Errout;
 with Flow_Types;                  use Flow_Types;
 with Flow_Utility;                use Flow_Utility;
@@ -33,7 +34,8 @@ with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Sem_Util;                    use Sem_Util;
 with Sem_Aux;                     use Sem_Aux;
-with Sinfo;                       use Sinfo;
+with Sinfo.Nodes;                 use Sinfo.Nodes;
+with Sinfo.Utils;                 use Sinfo.Utils;
 with Snames;                      use Snames;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
@@ -3293,8 +3295,9 @@ package body Gnat2Why.Borrow_Checker is
          when Pragma_Initial_Condition =>
             null;
 
-         --  These pragmas should have been rewritten and/or removed in
-         --  GNATprove mode.
+         --  These pragmas are re-written and/or removed by the front-end in
+         --  GNATprove, so they should never be seen here, unless they are
+         --  ignored by virtue of pragma Ignore_Pragma.
 
          when Pragma_Assert
             | Pragma_Assert_And_Cut
@@ -3304,7 +3307,7 @@ package body Gnat2Why.Borrow_Checker is
             | Pragma_Debug
             | Pragma_Loop_Invariant
          =>
-            raise Program_Error;
+            pragma Assert (Should_Ignore_Pragma_Sem (Prag));
 
          when others =>
             null;
@@ -4801,25 +4804,37 @@ package body Gnat2Why.Borrow_Checker is
             end if;
 
          when Free =>
-            --  For a deep designated type, check W permission on the
-            --  pointed-to path. Still issue an error message wrt permission
-            --  of the full path and RW permission, as it is likely less
-            --  confusing.
+            declare
+               Des_Ty : Entity_Id :=
+                 Directly_Designated_Type (Retysp (Expr_Type));
 
-            if Is_Deep (Designated_Type (Expr_Type)) then
-               if Get_Pointed_To_Perm (Expr) not in Write_Perm then
-                  Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
-                  return;
+            begin
+               --  If Des_Ty is an incomplete type, go to its full view
+
+               if Is_Incomplete_Type (Des_Ty) then
+                  Des_Ty := Full_View (Des_Ty);
                end if;
 
-            --  Otherwise, check RW permission
+               --  For a deep designated type, check W permission on the
+               --  pointed-to path. Still issue an error message wrt permission
+               --  of the full path and RW permission, as it is likely less
+               --  confusing.
 
-            else
-               if Perm /= Read_Write then
-                  Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
-                  return;
+               if Is_Deep (Des_Ty) then
+                  if Get_Pointed_To_Perm (Expr) not in Write_Perm then
+                     Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
+                     return;
+                  end if;
+
+               --  Otherwise, check RW permission
+
+               else
+                  if Perm /= Read_Write then
+                     Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
+                     return;
+                  end if;
                end if;
-            end if;
+            end;
 
          when Assign =>
             --  For assignment, check W permission

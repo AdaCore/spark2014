@@ -263,8 +263,10 @@ package body Gnat2Why.Error_Messages is
                | VC_UC_Target
                | VC_UC_Same_Size
                | VC_UC_Alignment
+               | VC_UC_Volatile
                | VC_Memory_Leak
                | VC_Memory_Leak_At_End_Of_Scope
+               | VC_Unchecked_Union_Restriction
             =>
                return (OK => False);
          end case;
@@ -752,6 +754,14 @@ package body Gnat2Why.Error_Messages is
          when VC_UC_Alignment =>
             return "alignment of overlaying object might not be an integral " &
               "multiple of alignment of overlaid object";
+         when VC_Initialization_Check      =>
+            return "initialization check might fail";
+         when VC_Unchecked_Union_Restriction =>
+            return "operation on unchecked union type will raise"
+              & " Program_Error";
+
+         when VC_UC_Volatile =>
+            return "object with non-trivial address clause is not volatile";
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
@@ -784,8 +794,6 @@ package body Gnat2Why.Error_Messages is
 
          when VC_Warning_Kind              =>
             raise Program_Error;
-         when VC_Initialization_Check      =>
-            return "initialization check might fail";
       end case;
    end Not_Proved_Message;
 
@@ -856,7 +864,9 @@ package body Gnat2Why.Error_Messages is
            Parse_Why3_Prove_Result (V);
          VC         : VC_Info renames VC_Table (Rec.Id);
          Extra_Text : constant String :=
-           (if not Rec.Result and then Present (Rec.Extra_Info)
+           (if not Rec.Result
+              and then Present (Rec.Extra_Info)
+              and then VC.Node /= Rec.Extra_Info
             then String_Of_Node (Original_Node (Rec.Extra_Info))
             else "");
          Extra_Msg  : constant String :=
@@ -1116,6 +1126,9 @@ package body Gnat2Why.Error_Messages is
          when VC_UC_Alignment =>
             return "alignment of overlaid objects is compatible";
 
+         when VC_UC_Volatile =>
+            return "object with non-trivial address clause is volatile";
+
          when VC_Weaker_Pre                =>
             return "precondition is weaker than class-wide precondition";
          when VC_Trivial_Weaker_Pre        =>
@@ -1132,6 +1145,10 @@ package body Gnat2Why.Error_Messages is
          when VC_Stronger_Post_Access      =>
             return "postcondition of source is strong enough to imply"
               & " postcondition of target";
+         when VC_Initialization_Check      =>
+            return "initialization check proved";
+         when VC_Unchecked_Union_Restriction =>
+            return "operation on unchecked union type proved";
 
          --  VC_Warning_Kind - warnings
 
@@ -1145,8 +1162,6 @@ package body Gnat2Why.Error_Messages is
             return "unreachable branch";
          when VC_Dead_Code                 =>
             return "unreachable code";
-         when VC_Initialization_Check      =>
-            return "initialization check proved";
       end case;
    end Proved_Message;
 

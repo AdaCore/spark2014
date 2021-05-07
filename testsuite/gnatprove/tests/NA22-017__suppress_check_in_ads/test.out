@@ -4,7 +4,7 @@ test.adb:20:47: info: index check proved (CVC4: 4 VC)
 test.adb:22:13: info: loop invariant initialization proved (CVC4: 1 VC)
 test.adb:22:13: info: loop invariant preservation proved (CVC4: 1 VC)
 test.adb:22:21: info: range check proved (CVC4: 4 VC)
-test.adb:22:40: medium: "Result" might not be initialized
+test.adb:23:16: medium: "Result" might not be initialized
 test.adb:23:24: info: index check proved (CVC4: 4 VC)
 test.adb:23:43: info: index check proved (CVC4: 4 VC)
 test.adb:23:56: info: index check proved (CVC4: 4 VC)

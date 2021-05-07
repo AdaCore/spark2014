@@ -27,7 +27,7 @@
 with Nlists;                         use Nlists;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
-with Sinfo;                          use Sinfo;
+with Sinfo.Utils;                    use Sinfo.Utils;
 with Snames;                         use Snames;
 
 with Checked_Types;                  use Checked_Types;
@@ -1707,6 +1707,9 @@ package body Flow.Analysis.Sanity is
 
       procedure Error_Msg (Msg : String; Severity : Msg_Severity; F : Flow_Id)
       is
+         Tag : constant Flow_Tag_Kind :=
+           (if Severity = Error_Kind then Critical_Global_Missing
+            else Global_Missing);
       begin
          Sane := False;
 
@@ -1717,7 +1720,7 @@ package body Flow.Analysis.Sanity is
             Severity => Severity,
             F1       => F,
             F2       => Direct_Mapping_Id (FA.Spec_Entity),
-            Tag      => Global_Missing);
+            Tag      => Tag);
       end Error_Msg;
 
       --  Local variables

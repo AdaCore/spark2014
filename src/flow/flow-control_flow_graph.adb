@@ -32,7 +32,8 @@ with Sem_Aux;                            use Sem_Aux;
 with Sem_Eval;                           use Sem_Eval;
 with Sem_Type;                           use Sem_Type;
 with Sem_Util;                           use Sem_Util;
-with Sinfo;                              use Sinfo;
+with Sinfo.Nodes;                        use Sinfo.Nodes;
+with Sinfo.Utils;                        use Sinfo.Utils;
 with Snames;                             use Snames;
 with Stand;                              use Stand;
 with Treepr;                             use Treepr;
@@ -6635,8 +6636,10 @@ package body Flow.Control_Flow_Graph is
          =>
             return False;
 
-         --  Group 1d - pragma that are re-written and/or removed by the
-         --  front-end in GNATprove, so they should never be seen here.
+         --  Group 1d - These pragmas are re-written and/or removed by the
+         --  front-end in GNATprove, so they should never be seen here,
+         --  unless they are ignored by virtue of pragma Ignore_Pragma.
+
          when Pragma_Assert
             | Pragma_Assert_And_Cut
             | Pragma_Assume
@@ -6645,7 +6648,7 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Debug
             | Pragma_Loop_Invariant
          =>
-            raise Program_Error;
+            return False;
 
          --  Group 2 - Remaining pragmas, enumerated here rather than a
          --  "when others" to force re-consideration when SNames.Pragma_Id

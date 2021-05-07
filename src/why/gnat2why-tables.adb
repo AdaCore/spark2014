@@ -23,13 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Iterators;                   use Common_Iterators;
-with Namet;                              use Namet;
-with Nlists;                             use Nlists;
-with Sem_Aux;                            use Sem_Aux;
-with Sem_Util;                           use Sem_Util;
-with Sinfo;                              use Sinfo;
-with SPARK_Definition;                   use SPARK_Definition;
+with Atree;            use Atree;
+with Common_Iterators; use Common_Iterators;
+with Einfo.Utils;      use Einfo.Utils;
+with Namet;            use Namet;
+with Nlists;           use Nlists;
+with Sem_Aux;          use Sem_Aux;
+with Sem_Util;         use Sem_Util;
+with Sinfo.Nodes;      use Sinfo.Nodes;
+with SPARK_Definition; use SPARK_Definition;
 
 package body Gnat2Why.Tables is
 

@@ -1,13 +1,13 @@
 math_euclid.adb:5:06: info: data dependencies proved
-math_euclid.adb:7:14: medium: postcondition might fail, cannot prove Divides (X, A mod B)
+math_euclid.adb:7:14: medium: postcondition might fail
 math_euclid.adb:7:28: info: division check proved (Z3: 1 VC)
 math_euclid.adb:7:28: info: range check proved (Z3: 1 VC)
 math_euclid.adb:15:06: info: data dependencies proved
-math_euclid.adb:17:14: medium: postcondition might fail, cannot prove Divides (X, A)
+math_euclid.adb:17:14: medium: postcondition might fail
 math_euclid.adb:25:06: info: data dependencies proved
 math_euclid.adb:26:56: info: division check proved (Z3: 1 VC)
 math_euclid.adb:26:56: info: range check proved (Z3: 1 VC)
-math_euclid.adb:27:14: medium: postcondition might fail, cannot prove Divides (X, A)
+math_euclid.adb:27:14: medium: postcondition might fail
 math_euclid.adb:35:06: info: data dependencies proved
 math_euclid.adb:36:14: info: postcondition proved (Z3: 4 VC)
 math_euclid.adb:39:80: info: division check proved (Z3: 1 VC)

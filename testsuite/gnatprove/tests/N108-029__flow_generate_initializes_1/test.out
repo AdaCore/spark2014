@@ -1,5 +1,5 @@
 g.adb:9:07: info: initialization of "Tmp" proved, in instantiation at g.adb:18
-g.adb:21:19: medium: assertion might fail, cannot prove Inst.Foo = 10
+g.adb:21:19: medium: assertion might fail
 generate_initializes.ads:8:14: info: initialization of "X" constituent of "State" proved
 generate_initializes.ads:8:14: info: initialization of "Y" constituent of "State" proved
 generate_initializes.ads:9:11: info: data dependencies proved

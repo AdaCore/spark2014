@@ -1,0 +1,2 @@
+prag.adb:2:17: warning: "X" is not modified, could be IN
+prag.adb:2:17: warning: unused variable "X"

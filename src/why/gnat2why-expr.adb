@@ -27,7 +27,6 @@ with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Vectors;
 with Ada.Strings;
-with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                         use Checks;
@@ -265,6 +264,11 @@ package body Gnat2Why.Expr is
    --  @return a program that checks that no error can appear in N's type
    --          invariant and that the invariant holds for default values
    --          of type N.
+
+   procedure Check_UU_Restrictions (Expr : Node_Id);
+   --  Check special restrictions for unchecked union types on membership tests
+   --  and builtin equality. Emit statically failed proof results for these
+   --  checks.
 
    type Ref_Type is record
       Mutable : Boolean;
@@ -883,9 +887,11 @@ package body Gnat2Why.Expr is
 
    function Transform_Shift_Or_Rotate_Call
      (Expr   : Node_Id;
+      Oper   : N_Op_Shift;
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id;
    --  @param Expr a call where the callee is a shift or rotate subprogram
+   --  @param Oper the shift or rotate operation kind
    --  @param Domain the domain in which the translation happens
    --  @param Params the translation parameters
    --  @return the Why expression corresponding to the shift or rotate
@@ -1051,14 +1057,6 @@ package body Gnat2Why.Expr is
                                        Lhs_Typ => Etype (Lvalue),
                                        Expr    => Why_Expr);
 
-            --  Init value at end of local borrowers
-
-            if Is_Local_Borrower (Lvalue) then
-               Res := New_Update_For_Borrow_At_End
-                 (Brower  => Lvalue,
-                  Path    => Rexpr);
-            end if;
-
             case Binder.Kind is
             when DRecord =>
 
@@ -1162,7 +1160,7 @@ package body Gnat2Why.Expr is
                                       else +E_Symb (Binder.Typ, WNE_Tag))))));
                   end if;
 
-                  return +New_Typed_Binding
+                  Res := +New_Typed_Binding
                     (Ada_Node => N,
                      Domain   => EW_Prog,
                      Name     => Tmp_Var,
@@ -1231,7 +1229,7 @@ package body Gnat2Why.Expr is
                                           Dim    => I)))))));
                   end loop;
 
-                  return +New_Typed_Binding
+                  Res := +New_Typed_Binding
                     (Ada_Node => N,
                      Domain   => EW_Prog,
                      Name     => Tmp_Var,
@@ -1330,7 +1328,7 @@ package body Gnat2Why.Expr is
                             Name => +Tmp_Var),
                          Typ      => EW_Bool_Type));
 
-                  return +New_Typed_Binding
+                  Res := +New_Typed_Binding
                     (Ada_Node => N,
                      Domain   => EW_Prog,
                      Name     => Tmp_Var,
@@ -1350,7 +1348,7 @@ package body Gnat2Why.Expr is
                      --  Attributes of record objects have the default values
                      --  of their type.
 
-                     return Sequence
+                     Res := Sequence
                        (Res,
                         New_Assignment
                           (Ada_Node => N,
@@ -1392,7 +1390,7 @@ package body Gnat2Why.Expr is
                                          Ty       => Etype (Lvalue)),
                                       +L_Id));
                      begin
-                        return +New_Typed_Binding
+                        Res := +New_Typed_Binding
                           (Ada_Node => N,
                            Domain   => EW_Prog,
                            Name     => Tmp_Var,
@@ -1408,6 +1406,21 @@ package body Gnat2Why.Expr is
             when Func =>
                raise Program_Error;
             end case;
+
+            --  Init value at end of local borrowers. This assumes the dynamic
+            --  invariant of the value of the borrowed object at the end of the
+            --  borrow, so it should be done after all checks at performed for
+            --  the assignment so that we do not create an inconsistency.
+
+            if Is_Local_Borrower (Lvalue) then
+               Res := Sequence
+                 (Left  => Res,
+                  Right => New_Update_For_Borrow_At_End
+                    (Brower  => Lvalue,
+                     Path    => Rexpr));
+            end if;
+
+            return Res;
          end;
 
       elsif not Is_Partial_View (Lvalue)
@@ -2841,6 +2854,172 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
    end Check_Subtype_Indication;
+
+   ---------------------------
+   -- Check_UU_Restrictions --
+   ---------------------------
+
+   procedure Check_UU_Restrictions (Expr : Node_Id) is
+   --  Program_Error is raised in the following cases:
+   --  * Evaluation of the predefined equality operator for an unchecked union
+   --    type if either of the operands lacks inferable discriminants.
+   --  * Evaluation of the predefined equality operator for a type which has a
+   --    subcomponent of an unchecked union type whose nominal subtype is
+   --    unconstrained.
+   --  * Evaluation of a membership test if the subtype_mark denotes a
+   --    constrained unchecked union subtype and the expression lacks inferable
+   --    discriminants.
+
+      Is_Membership_Test                 : constant Boolean :=
+        Nkind (Expr) in N_Membership_Test;
+      Left                               : constant Node_Id :=
+        Left_Opnd (Expr);
+      Left_Type                          : constant Entity_Id :=
+        Etype (Left);
+      Ty_Has_Unconstrained_UU_Component  : constant Boolean :=
+        Has_Unconstrained_UU_Component (Left_Type);
+      Ty_Has_UU_Type                     : constant Boolean :=
+        Is_Unchecked_Union (Left_Type);
+      Left_Lacks_Inferable_Discriminants : constant Boolean :=
+        Ty_Has_UU_Type and then not Has_Inferable_Discriminants (Left);
+      Use_Predef_Equality                : constant Boolean :=
+        not Is_Membership_Test
+        or else Use_Predefined_Equality_For_Type (Left_Type);
+      --  Nothing needs to be done for equalities if we are not using the
+      --  predefined one. This should not occur while translating equalities
+      --  as ones using primitives will have be rewritten as function calls.
+
+      procedure Do_One_Alternative
+        (Right           : Node_Id;
+         Violation_Found : in out Boolean;
+         Ada_Node        : in out Node_Id;
+         Explanation     : in out Unbounded_String);
+      --  Check if a restriction is broken for a single comparison. If one is
+      --  found, Violation_Found is set to true and Ada_Node and Explanation
+      --  are updated accordingly.
+
+      ------------------------
+      -- Do_One_Alternative --
+      ------------------------
+
+      procedure Do_One_Alternative
+        (Right           : Node_Id;
+         Violation_Found : in out Boolean;
+         Ada_Node        : in out Node_Id;
+         Explanation     : in out Unbounded_String)
+      is
+         Right_Is_Type : constant Boolean :=
+           Is_Membership_Test
+           and then Nkind (Right) in N_Identifier | N_Expanded_Name
+           and then Is_Type (Entity (Right));
+         --  Either Right is a type and the operation is a membership test or
+         --  Right is an expression and it is an equality.
+
+      begin
+         --  If the operation is an equality and Right_Type has a
+         --  subcomponent of an unchecked union type whose nominal subtype is
+         --  unconstrained, we have found a violation of the restrictions.
+
+         if not Right_Is_Type
+           and then Use_Predef_Equality
+           and then Ty_Has_Unconstrained_UU_Component
+         then
+            Violation_Found := True;
+            Explanation :=
+              To_Unbounded_String
+                ("operand type has a subcomponent of an unchecked"
+                 & " union type whose nominal subtype is"
+                 & " unconstrained");
+
+         --  We need inferable discriminants on the left operand if the
+         --  operation is a predefined equality or Right is a constrained type.
+
+         elsif Left_Lacks_Inferable_Discriminants
+           and then (if Right_Is_Type then Is_Constrained (Entity (Right))
+                     else Use_Predef_Equality)
+         then
+            Violation_Found := True;
+            Explanation := To_Unbounded_String
+              ("left operand should have inferable discriminants");
+
+         --  We need inferable discriminants on the right operand if the
+         --  operation is a predefined equality.
+
+         elsif Ty_Has_UU_Type
+           and then Use_Predef_Equality
+           and then not Right_Is_Type
+           and then not Has_Inferable_Discriminants (Right)
+         then
+            declare
+               Right_String : constant String :=
+                 (if Is_Membership_Test then "alternative"
+                  else "right operand");
+            begin
+               Violation_Found := True;
+               Explanation := To_Unbounded_String
+                 (Right_String & " should have inferable discriminants");
+
+               --  If we are in a membership test, set the location to the
+               --  corresponding alternative.
+
+               if Is_Membership_Test then
+                  Ada_Node := Right;
+               end if;
+            end;
+         end if;
+      end Do_One_Alternative;
+
+      Violation_Found : Boolean := False;
+      Ada_Node        : Node_Id := Expr;
+      Explanation     : Unbounded_String := To_Unbounded_String ("");
+
+   --  Start of processing for Check_UU_Restrictions
+
+   begin
+      --  Nothing to do if the type does not contain parts with unchecked union
+      --  types.
+
+      if not Ty_Has_UU_Type and then not Ty_Has_Unconstrained_UU_Component then
+         return;
+      end if;
+
+      --  Go over the alternatives and search for violations of the UU
+      --  restrictions.
+
+      if Left_Lacks_Inferable_Discriminants
+        or else (Use_Predef_Equality
+                 and then (Ty_Has_Unconstrained_UU_Component
+                           or Ty_Has_UU_Type))
+      then
+         if Is_Membership_Test and then Present (Alternatives (Expr)) then
+            declare
+               Alt : Node_Id := First (Alternatives (Expr));
+            begin
+               loop
+                  Do_One_Alternative
+                    (Alt,
+                     Violation_Found,
+                     Ada_Node,
+                     Explanation);
+                  Next (Alt);
+                  exit when No (Alt) or else Violation_Found;
+               end loop;
+            end;
+         else
+            Do_One_Alternative
+              (Right_Opnd (Expr),
+               Violation_Found,
+               Ada_Node,
+               Explanation);
+         end if;
+      end if;
+
+      --  Generate a statically known proof result
+
+      Emit_Static_Proof_Result
+        (Ada_Node, VC_Unchecked_Union_Restriction, not Violation_Found,
+         Current_Subp, Explanation => To_String (Explanation));
+   end Check_UU_Restrictions;
 
    ---------------------------------
    -- Compute_Borrow_At_End_Value --
@@ -8146,11 +8325,12 @@ package body Gnat2Why.Expr is
         (Return_Type => Get_Typ (Brower_At_End),
          Labels      => Symbol_Sets.Empty_Set,
          Post        => +New_And_Expr
-           (Left   => +Compute_Dynamic_Invariant
-                (Expr        => +Result_Id,
-                 Ty          => Etype (Brower),
-                 Params      => Body_Params,
-                 Initialized => True_Term),
+           (Left   => (if Reborrow then +True_Pred
+                       else +Compute_Dynamic_Invariant
+                         (Expr        => +Result_Id,
+                          Ty          => Etype (Brower),
+                          Params      => Body_Params,
+                          Initialized => True_Term)),
             Right  => New_Comparison
               (Symbol => Why_Eq,
                Left   => New_Pointer_Is_Null_Access
@@ -8164,9 +8344,16 @@ package body Gnat2Why.Expr is
                   Name => +Result_Id),
                Domain => EW_Pred),
             Domain => EW_Pred));
-      --  New value of the borrower. Use an any expr but assume the dynamic
-      --  property of the type and the value of the is_null field since it
-      --  cannot be modified.
+      --  New value of the borrower. Use an any expr and assume the value of
+      --  the is_null field since it cannot be modified.
+      --  If we are not inside a reborrow we also assume that the value of
+      --  the borrowed object at the end of the borrow respects its dynamic
+      --  invariant. This is sound as we only do this update after we have
+      --  created the current value of the borrowed object, so we are sure that
+      --  there exists a value matching this assumption, the current value.
+      --  For reborrow, we do this update before the assignment, as we need to
+      --  refer to the value of the object before the assignment. As a result,
+      --  it could be unsound to assume the dynamic invariant here.
 
       At_End_Value    : constant W_Expr_Id := +Compute_Borrow_At_End_Value
         (W_Brower      => +W_Brower,
@@ -8194,17 +8381,20 @@ package body Gnat2Why.Expr is
       At_End_Assume   : constant W_Prog_Id :=
         New_Assume_Statement
           (Pred => +New_And_Expr
-             (Left   => +Compute_Dynamic_Invariant
-                (Expr   => +W_Borrowed,
-                 Ty     => Borrowed_Ty,
-                 Params => Body_Params),
+             (Left   =>
+                (if Reborrow then +True_Pred
+                 else +Compute_Dynamic_Invariant
+                   (Expr   => +W_Borrowed,
+                    Ty     => Borrowed_Ty,
+                    Params => Body_Params)),
               Right  => New_Comparison
                 (Symbol => Why_Eq,
                  Left   => W_Borrowed,
                  Right  => At_End_Value,
                  Domain => EW_Pred),
               Domain => EW_Pred));
-      --  borrowed_at_end = at_end_value
+      --  We assume borrowed_at_end = at_end_value. If we are in a borrow, also
+      --  assume the dynamic invariant of the borrowed object.
 
    begin
       --  In reborrows, we emit:
@@ -12072,16 +12262,34 @@ package body Gnat2Why.Expr is
             Expr     => T);
       end if;
 
-      --  Update the value at end of local borrowers
+      --  Update the value at end of local borrowers. This needs to be done
+      --  prior to the assignment, as the assumtion generated during the
+      --  update needs to refer to the old value of the borrower.
+      --  New_Update_For_Borrow_At_End does not assume the dynamic property of
+      --  the borrower at the end of the borrow on reborrows as it could
+      --  be unsound prior to the assignment. We add the assumption afterward.
 
       if Nkind (Lvalue) in N_Identifier | N_Expanded_Name
         and then Is_Local_Borrower (Entity (Lvalue))
       then
-         T := Sequence
-           (Left  => New_Update_For_Borrow_At_End
-              (Brower  => Entity (Lvalue),
-               Path    => Expression (Stmt)),
-            Right => T);
+
+         declare
+            Brower : constant Entity_Id := Entity (Lvalue);
+         begin
+            T := Sequence
+              ((1 => New_Update_For_Borrow_At_End
+                (Brower => Brower,
+                 Path   => Expression (Stmt)),
+                2 => T,
+                3 => New_Assume_Statement
+                  (Ada_Node => Stmt,
+                   Pred     => Compute_Dynamic_Invariant
+                     (Expr   => New_Deref
+                          (Right => Get_Brower_At_End (Brower),
+                           Typ   => Get_Typ (Get_Brower_At_End (Brower))),
+                      Ty     => Get_Borrowed_Typ (Brower),
+                      Params => Body_Params))));
+         end;
       end if;
       return T;
    end Transform_Assignment_Statement;
@@ -13017,6 +13225,28 @@ package body Gnat2Why.Expr is
                     (Prog => +Transform_Expr (Var, Domain, Params)), +T);
             end if;
 
+         when Attribute_Address =>
+            --  Attribute 'Address can only appear in address clauses. We are
+            --  not interested in the value of the expression, only run-time
+            --  errors. So we skip the attribute and just translate the prefix
+            --  to get the RTE.
+
+            --  ??? If an address clause uses complex features such as
+            --  quantified expressions or slices, we might end up outside of
+            --  the Prog domain. We exclude some of these cases in marking, but
+            --  we probably missed some.
+
+            pragma Assert (Domain = EW_Prog);
+
+            T :=
+              +Sequence
+              (New_Ignore (Prog =>
+                                +Transform_Expr (Var, EW_Prog, Params)),
+               New_Any_Expr (Ada_Node    => Expr,
+                             Post        => True_Pred,
+                             Labels      => Symbol_Sets.Empty_Set,
+                             Return_Type => Type_Of_Node (Expr)));
+
          when Attribute_Callable =>
             T := +True_Term;
 
@@ -13884,6 +14114,11 @@ package body Gnat2Why.Expr is
                                 Root_Retysp (Right_Type));
                pragma Assert (Root_Retysp (Left_Type) =
                                 Root_Retysp (Get_Ada_Node (+BT)));
+
+               --  Check the specific rules for builtin equality on
+               --  unchecked union types.
+
+               Check_UU_Restrictions (Expr);
 
                --  Check that operands are initialized. Even if initialization
                --  checks are introduced for the conversion to BT, we still
@@ -14936,14 +15171,30 @@ package body Gnat2Why.Expr is
                        | N_Subprogram_Declaration
       then
          declare
-            Expr : Node_Id := Get_Address_Expr (Decl);
+            Expr                        : constant Node_Id :=
+              Get_Address_Expr (Decl);
+            Is_Object_Decl              : constant Boolean :=
+              Nkind (Decl) = N_Object_Declaration;
+            Is_Top_Level_Address_Clause : constant Boolean :=
+              Present (Expr)
+              and then Nkind (Expr) = N_Attribute_Reference
+              and then Attribute_Name (Expr) = Name_Address;
          begin
             if Present (Expr) then
+
+               --  We generate the expression of the address for runtime checks
+
+               declare
+                  Why_Expr : constant W_Expr_Id :=
+                    Transform_Expr (Expr, EW_Prog, Body_Params);
+               begin
+                  R := +Sequence (New_Ignore (Prog => +Why_Expr), R);
+               end;
 
                --  We emit a static check that the type of the object is OK for
                --  address clauses.
 
-               if Nkind (Decl) = N_Object_Declaration then
+               if Is_Object_Decl then
                   declare
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
@@ -14954,61 +15205,55 @@ package body Gnat2Why.Expr is
                      Emit_Static_Proof_Result
                        (Decl, VC_UC_Target, Valid, Current_Subp,
                         Explanation => To_String (Explanation));
+                     if not Is_Top_Level_Address_Clause then
+                        Emit_Static_Proof_Result
+                          (Decl,
+                           VC_UC_Volatile,
+                           Has_Volatile (Defining_Identifier (Decl)),
+                           Current_Subp);
+                     end if;
                   end;
                end if;
 
-               --  Attribute Address is only allowed at the top level of an
-               --  Address aspect or attribute definition clause. Skip it to
-               --  reach to the underlying name if present.
+               --  We now emit static checks to make sure the two aliased
+               --  objects are compatible.
 
-               if Nkind (Expr) = N_Attribute_Reference
-                 and then Get_Attribute_Id (Attribute_Name (Expr))
-                   = Attribute_Address
-               then
-                  if Nkind (Decl) = N_Object_Declaration then
-                     declare
-                        Valid       : Boolean;
-                        Explanation : Unbounded_String;
-                     begin
-                        Is_Valid_Bitpattern_No_Holes
-                          (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
-                        Emit_Static_Proof_Result
-                          (Expr, VC_UC_Target, Valid, Current_Subp,
-                           Explanation => To_String (Explanation));
+               if Is_Top_Level_Address_Clause and then Is_Object_Decl then
+                  declare
+                     Valid       : Boolean;
+                     Explanation : Unbounded_String;
+                  begin
+                     Is_Valid_Bitpattern_No_Holes
+                       (Retysp (Etype (Prefix (Expr))), Valid, Explanation);
+                     Emit_Static_Proof_Result
+                       (Expr, VC_UC_Target, Valid, Current_Subp,
+                        Explanation => To_String (Explanation));
 
-                        Types_Have_Same_Known_Esize
-                          (Retysp (Etype (Defining_Identifier (Decl))),
-                           Retysp (Etype (Prefix (Expr))),
+                     Types_Have_Same_Known_Esize
+                       (Retysp (Etype (Defining_Identifier (Decl))),
+                        Retysp (Etype (Prefix (Expr))),
+                        Valid, Explanation);
+                     Emit_Static_Proof_Result
+                       (Expr, VC_UC_Same_Size, Valid, Current_Subp,
+                        Explanation => To_String (Explanation));
+
+                     if Nkind (Prefix (Expr)) in N_Has_Entity then
+                        Objects_Have_Compatible_Alignments
+                          (Defining_Identifier (Decl),
+                           Entity (Prefix (Expr)),
                            Valid, Explanation);
-                        Emit_Static_Proof_Result
-                          (Expr, VC_UC_Same_Size, Valid, Current_Subp,
-                           Explanation => To_String (Explanation));
-
-                        if Nkind (Prefix (Expr)) in N_Has_Entity then
-                           Objects_Have_Compatible_Alignments
-                             (Defining_Identifier (Decl),
-                              Entity (Prefix (Expr)),
-                              Valid, Explanation);
-                        else
-                           Valid := False;
-                           Explanation :=
-                             To_Unbounded_String
-                               ("unknown alignment for object");
-                        end if;
-                        Emit_Static_Proof_Result
-                          (Decl, VC_UC_Alignment, Valid, Current_Subp,
-                           Explanation => To_String (Explanation));
-                     end;
-                  end if;
-                  Expr := Prefix (Expr);
+                     else
+                        Valid := False;
+                        Explanation :=
+                          To_Unbounded_String
+                            ("unknown alignment for object");
+                     end if;
+                     Emit_Static_Proof_Result
+                       (Decl, VC_UC_Alignment, Valid, Current_Subp,
+                        Explanation => To_String (Explanation));
+                  end;
                end if;
 
-               declare
-                  Why_Expr : constant W_Expr_Id :=
-                    Transform_Expr (Expr, EW_Prog, Body_Params);
-               begin
-                  R := +Sequence (New_Ignore (Prog => +Why_Expr), R);
-               end;
             end if;
          end;
       end if;
@@ -16600,20 +16845,23 @@ package body Gnat2Why.Expr is
          when N_Function_Call =>
             declare
                Subp : constant Entity_Id := Get_Called_Entity (Expr);
+               Oper : constant N_Op_Shift_Option :=
+                 Is_Simple_Shift_Or_Rotate (Subp);
             begin
-               if Is_Simple_Shift_Or_Rotate (Subp) then
+               if Oper in N_Op_Shift then
                   T := Transform_Shift_Or_Rotate_Call
-                    (Expr, Domain, Local_Params);
+                    (Expr, Oper, Domain, Local_Params);
+
+               --  Calls to predicate functions are ignored. Inherited
+               --  predicates are handled by other means. This is needed to be
+               --  able to handle inherited predicates which are not visible in
+               --  SPARK.
+
                elsif Ekind (Subp) = E_Function
                  and then Is_Predicate_Function (Subp)
                then
-
-                  --  Calls to predicate functions are ignored. Inherited
-                  --  predicates are handled by other means. This is needed to
-                  --  be able to handle inherited predicates which are not
-                  --  visible in SPARK.
-
                   return New_Literal (Value => EW_True, Domain => Domain);
+
                elsif Has_At_End_Borrow_Annotation (Subp) then
                   T := Transform_At_End_Borrow_Call
                     (Expr,
@@ -17869,6 +18117,7 @@ package body Gnat2Why.Expr is
             Result :=
               Transform_Simple_Membership_Expression (Var, Alt);
          else
+
             Result := New_Ada_Equality
               (Typ    => Etype (Left_Opnd (Expr)),
                Left   => Var,
@@ -18226,6 +18475,13 @@ package body Gnat2Why.Expr is
    --  Start of processing for Transform_Membership_Expression
 
    begin
+      --  Check the specific rules for membership tests on unchecked union
+      --  types.
+
+      if Is_Record_Type_In_Why (Etype (Var)) then
+         Check_UU_Restrictions (Expr);
+      end if;
+
       --  For ranges and membership, "bool" should be mapped to "int"
 
       if Base_Type = EW_Bool_Type then
@@ -18775,8 +19031,10 @@ package body Gnat2Why.Expr is
          =>
             return +Void;
 
-         --  Group 1d - pragma that are re-written and/or removed by the
-         --  front-end in GNATprove, so they should never be seen here.
+         --  Group 1d - These pragmas are re-written and/or removed by the
+         --  front-end in GNATprove, so they should never be seen here,
+         --  unless they are ignored by virtue of pragma Ignore_Pragma.
+
          when Pragma_Assert
             | Pragma_Assert_And_Cut
             | Pragma_Assume
@@ -18785,7 +19043,7 @@ package body Gnat2Why.Expr is
             | Pragma_Debug
             | Pragma_Loop_Invariant
          =>
-            raise Program_Error;
+            return +Void;
 
          --  Group 2 - Remaining pragmas, enumerated here rather than a "when
          --  others" to force re-consideration when SNames.Pragma_Id is
@@ -20163,13 +20421,10 @@ package body Gnat2Why.Expr is
 
    function Transform_Shift_Or_Rotate_Call
      (Expr   : Node_Id;
+      Oper   : N_Op_Shift;
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id
    is
-      --  Define a convenient short hand for the test below
-      function ECI (Left, Right : String) return Boolean
-        renames Ada.Strings.Equal_Case_Insensitive;
-
       Subp        : constant Entity_Id := Entity (SPARK_Atree.Name (Expr));
       Context     : Ref_Context;
       Store       : constant W_Statement_Sequence_Unchecked_Id :=
@@ -20180,106 +20435,120 @@ package body Gnat2Why.Expr is
       pragma Assert (Args'Length = 2);
       pragma Assert (Context.Is_Empty);
 
-      Modulus_Val : constant Uint := Modulus (Etype (Subp));
-      Nb_Of_Bits  : constant Pos := (if Modulus_Val = UI_Expon (2, 8) then
-                                        8
-                                     elsif Modulus_Val = UI_Expon (2, 16) then
-                                        16
-                                     elsif Modulus_Val = UI_Expon (2, 32) then
-                                        32
-                                     elsif Modulus_Val = UI_Expon (2, 64) then
-                                        64
-                                     elsif Modulus_Val = UI_Expon (2, 128) then
-                                        128
-                                     else
-                                        raise Program_Error);
-      Typ         : constant W_Type_Id := (if Nb_Of_Bits = 8 then
-                                              EW_BitVector_8_Type
-                                           elsif Nb_Of_Bits = 16 then
-                                              EW_BitVector_16_Type
-                                           elsif Nb_Of_Bits = 32 then
-                                              EW_BitVector_32_Type
-                                           elsif Nb_Of_Bits = 64 then
-                                              EW_BitVector_64_Type
-                                           elsif Nb_Of_Bits = 128 then
-                                              EW_BitVector_128_Type
-                                           else raise Program_Error);
       T           : W_Expr_Id;
 
    begin
       --  ??? it is assumed that rotate calls are only valid on actual
       --  unsigned_8/16/32/64/128 types with the corresponding 'Size
 
-      Get_Unqualified_Decoded_Name_String (Chars (Subp));
+      if Is_Modular_Integer_Type (Etype (Expr)) then
+         declare
+            Modulus_Val : constant Uint := Modulus (Etype (Subp));
+            Nb_Of_Bits  : constant Pos :=
+              (if    Modulus_Val = UI_Expon (2, 8)   then   8
+               elsif Modulus_Val = UI_Expon (2, 16)  then  16
+               elsif Modulus_Val = UI_Expon (2, 32)  then  32
+               elsif Modulus_Val = UI_Expon (2, 64)  then  64
+               elsif Modulus_Val = UI_Expon (2, 128) then 128
+               else raise Program_Error);
+            Typ         : constant W_Type_Id :=
+              (if    Nb_Of_Bits =   8 then EW_BitVector_8_Type
+               elsif Nb_Of_Bits =  16 then EW_BitVector_16_Type
+               elsif Nb_Of_Bits =  32 then EW_BitVector_32_Type
+               elsif Nb_Of_Bits =  64 then EW_BitVector_64_Type
+               elsif Nb_Of_Bits = 128 then EW_BitVector_128_Type
+               else raise Program_Error);
 
-      declare
-         Arg1   : constant W_Expr_Id := Args (Args'First);
-         Arg2   : constant W_Expr_Id := Args (Args'First + 1);
-         Arg2_M : constant W_Expr_Id :=
-           Insert_Simple_Conversion (Domain => EW_Term,
-                                     Expr   => Arg2,
-                                     To     => Typ);
-         Name_S : constant String    := Name_Buffer (1 .. Name_Len);
-         Name   : constant W_Identifier_Id :=
-           (if ECI (Name_S, Get_Name_String (Name_Shift_Right)) then
-               MF_BVs (Typ).Lsr
-            elsif ECI (Name_S, Get_Name_String (Name_Shift_Right_Arithmetic))
+            Arg1   : constant W_Expr_Id := Args (Args'First);
+            Arg2   : constant W_Expr_Id := Args (Args'First + 1);
+            Arg2_M : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Domain => EW_Term,
+                                        Expr   => Arg2,
+                                        To     => Typ);
+            Name   : constant W_Identifier_Id :=
+              (case Oper is
+               when N_Op_Shift_Right            => MF_BVs (Typ).Lsr,
+               when N_Op_Shift_Right_Arithmetic => MF_BVs (Typ).Asr,
+               when N_Op_Shift_Left             => MF_BVs (Typ).Lsl,
+               when N_Op_Rotate_Left            => MF_BVs (Typ).Rotate_Left,
+               when N_Op_Rotate_Right           => MF_BVs (Typ).Rotate_Right);
+         begin
+            --  A special care need to be put in the case of shifts on a
+            --  bitvector of size smaller than 32. Indeed, in this case
+            --  the amount of the shift can be greater than 2**(Size of the
+            --  underlying bv), resulting in a modulo on the amount of the
+            --  shift Introduced by the conversion at the why3 level.
+
+            if Nb_Of_Bits < 32
+              and then Name /= MF_BVs (Typ).Rotate_Left
+              and then Name /= MF_BVs (Typ).Rotate_Right
             then
-               MF_BVs (Typ).Asr
-            elsif ECI (Name_S, Get_Name_String (Name_Shift_Left)) then
-               MF_BVs (Typ).Lsl
-            elsif ECI (Name_S, Get_Name_String (Name_Rotate_Left)) then
-               MF_BVs (Typ).Rotate_Left
-            elsif ECI (Name_S, Get_Name_String (Name_Rotate_Right)) then
-               MF_BVs (Typ).Rotate_Right
-            else
-               raise Program_Error);
-         --         function Actual_Call (Amount : W_Expr_Id) return W_Expr_Id
-      begin
-
-         --  A special care need to be put in the case of shifts on a bitvector
-         --  of size smaller than 32. Indeed, in this case the amount of
-         --  the shift can be greater than 2**(Size of the underlying bv),
-         --  resulting in a modulo on the amount of the shift Introduced by
-         --  the conversion at the why3 level.
-         if Nb_Of_Bits < 32
-           and then Name /= MF_BVs (Typ).Rotate_Left
-           and then Name /= MF_BVs (Typ).Rotate_Right
-         then
-            declare
-               Nb_Of_Buits_UI : constant Uint := UI_From_Int (Nb_Of_Bits);
-            begin
-               T := New_Conditional
-                 (Ada_Node  => Expr,
-                  Domain    => EW_Term,
-                  Condition => New_Call
-                    (Domain => Domain,
-                     Name   => Int_Infix_Lt,
-                     Args   => (1 => Arg2,
-                                2 => New_Integer_Constant
-                                  (Value => Nb_Of_Buits_UI)),
-                     Typ    => EW_Bool_Type),
-                  Then_Part => New_Call
+               declare
+                  Nb_Of_Buits_UI : constant Uint := UI_From_Int (Nb_Of_Bits);
+               begin
+                  T := New_Conditional
+                    (Ada_Node  => Expr,
+                     Domain    => EW_Term,
+                     Condition => New_Call
+                       (Domain => Domain,
+                        Name   => Int_Infix_Lt,
+                        Args   => (1 => Arg2,
+                                   2 => New_Integer_Constant
+                                     (Value => Nb_Of_Buits_UI)),
+                        Typ    => EW_Bool_Type),
+                     Then_Part => New_Call
                        (Domain => EW_Term,
                         Name   => Name,
                         Args   =>
                           (1 => Arg1,
                            2 => Arg2_M),
                         Typ    => Typ),
-                  Else_Part =>
-                    New_Modular_Constant (Value => Uint_0,
-                                          Typ => Typ),
-                  Typ       => Typ);
-            end;
-         else
+                     Else_Part =>
+                       New_Modular_Constant (Value => Uint_0,
+                                             Typ => Typ),
+                     Typ       => Typ);
+               end;
+            else
+               T := New_Call
+                 (Domain => EW_Term,
+                  Name   => Name,
+                  Args   => (1 => Arg1,
+                             2 => Arg2_M),
+                  Typ    => Typ);
+            end if;
+         end;
+
+      else
+         declare
+            Arg1 : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Domain => EW_Term,
+                                        Expr   => Args (Args'First),
+                                        To     => EW_Int_Type);
+            Arg2 : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Domain => EW_Term,
+                                        Expr   => Args (Args'First + 1),
+                                        To     => EW_Int_Type);
+            --  Size in bits of the machine type
+            Size : constant W_Expr_Id := New_Integer_Constant
+              (Value => Object_Size (Etype (Subp)));
+            Name : constant W_Identifier_Id :=
+              (case Oper is
+               when N_Op_Shift_Right            => M_Int_Shift.Shift_Right,
+               when N_Op_Shift_Right_Arithmetic =>
+                 M_Int_Shift.Shift_Right_Arithmetic,
+               when N_Op_Shift_Left             => M_Int_Shift.Shift_Left,
+               when N_Op_Rotate_Left            => M_Int_Shift.Rotate_Left,
+               when N_Op_Rotate_Right           => M_Int_Shift.Rotate_Right);
+         begin
             T := New_Call
               (Domain => EW_Term,
                Name   => Name,
                Args   => (1 => Arg1,
-                          2 => Arg2_M),
-               Typ    => Typ);
-         end if;
-      end;
+                          2 => Arg2,
+                          3 => Size),
+               Typ    => EW_Int_Type);
+         end;
+      end if;
 
       return T;
    end Transform_Shift_Or_Rotate_Call;
@@ -20637,7 +20906,7 @@ package body Gnat2Why.Expr is
                           Value    => +Result_Stmt,
                           Typ      => Type_Of_Node (Subp));
 
-                     --  Update the pledge of the result
+                     --  Update the value at end of the result
 
                      if Is_Borrowing_Traversal_Function (Subp) then
                         --  If the result is null, then the borrowed object
@@ -20664,7 +20933,12 @@ package body Gnat2Why.Expr is
                                          Domain => EW_Pred)));
                            end;
 
-                        --  Otherwise, compute the pledge from the assignment
+                        --  Otherwise, compute the value at end from the
+                        --  assignment. This assumes the dynamic invariant of
+                        --  the value of the borrowed object at the end of the
+                        --  borrow, so it should be done after all checks at
+                        --  performed for the assignment so that we do not
+                        --  create an inconsistency.
 
                         else
                            Result_Stmt :=

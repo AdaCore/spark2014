@@ -44,6 +44,7 @@ with Sem_Ch12;               use Sem_Ch12;
 with Sem_Eval;               use Sem_Eval;
 with Sem_Prag;               use Sem_Prag;
 with Sem_Type;               use Sem_Type;
+with Sinfo.Utils;            use Sinfo.Utils;
 with Stand;                  use Stand;
 with Stringt;                use Stringt;
 
@@ -1771,7 +1772,7 @@ package body SPARK_Util is
 
    function Has_Dereferences (N : Node_Id) return Boolean is
    begin
-      if Einfo.Is_Entity_Name (N) then
+      if Einfo.Utils.Is_Entity_Name (N) then
          return False;
       else
          case Nkind (N) is
@@ -1979,8 +1980,7 @@ package body SPARK_Util is
       return Ekind (E) in E_Constant | E_In_Parameter
             and then (not Is_Access_Type (Ty)
               or else Is_Access_Constant (Ty)
-              or else Atree.Ekind (Einfo.Directly_Designated_Type (Ty)) =
-                        Einfo.E_Subprogram_Type
+              or else Ekind (Directly_Designated_Type (Ty)) = E_Subprogram_Type
               or else Comes_From_Declare_Expr (E));
    end Is_Constant_In_SPARK;
 
@@ -2068,8 +2068,10 @@ package body SPARK_Util is
      (E     : Entity_Id;
       Scope : Entity_Id) return Boolean
    is
-     (Enclosing_Unit (E) = Scope and then not Is_Formal (E)
-      and then (Ekind (E) /= E_Discriminant or else Sinfo.Scope (E) /= Scope));
+     (Enclosing_Unit (E) = Scope
+      and then not Is_Formal (E)
+      and then (Ekind (E) /= E_Discriminant
+                or else Sinfo.Nodes.Scope (E) /= Scope));
 
    ----------------------------------------
    -- Is_Declared_In_Main_Unit_Or_Parent --

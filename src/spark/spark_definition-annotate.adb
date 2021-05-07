@@ -33,6 +33,7 @@ with Erroutc;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
 with Sem_Aux;                      use Sem_Aux;
+with Sinfo.Utils;                  use Sinfo.Utils;
 with Sinput;                       use Sinput;
 with Snames;                       use Snames;
 with SPARK_Definition.Violations;  use SPARK_Definition.Violations;

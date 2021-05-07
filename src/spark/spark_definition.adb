@@ -46,6 +46,7 @@ with Sem_Aux;                         use Sem_Aux;
 with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
+with Sinfo.Utils;                     use Sinfo.Utils;
 with Snames;                          use Snames;
 with SPARK_Atree.Entities;
 with SPARK_Util;                      use SPARK_Util;
@@ -1122,6 +1123,7 @@ package body SPARK_Definition is
             if not Box_Present (Assoc)
               and then Is_Deep (Etype (Expression (Assoc)))
               and then not Is_Singleton_Choice (Choices)
+              and then Nkind (Expression (Assoc)) /= N_Null
             then
                Mark_Violation
                  ("duplicate value of a type with ownership",
@@ -2975,15 +2977,61 @@ package body SPARK_Definition is
                   N);
             end if;
 
-         --  Attribute Address is only allowed at the top level of an Address
-         --  aspect or attribute definition clause.
+         --  Attribute Address is only allowed inside an Address aspect or
+         --  attribute definition clause (SPARK RM 15.2).
+         --  We also exclude nodes that are known to make proof switch domain
+         --  from Prog to Pred, as this is not supported in the translation
+         --  currently.
 
          when Attribute_Address =>
-            if Nkind (Parent (N)) /= N_Attribute_Definition_Clause then
-               Mark_Violation
-                 ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
-                  & """ outside an attribute definition clause", N);
-            end if;
+
+            declare
+               M : Node_Id := Parent (N);
+               Found_Violation : Boolean := False;
+            begin
+
+               loop
+                  if Nkind (M) = N_Attribute_Definition_Clause
+                    and then Chars (M) = Name_Address
+                  then
+                     exit;
+                  elsif Nkind (M) in N_Range
+                                   | N_Quantified_Expression
+                                   | N_Subtype_Indication
+                  then
+                     Mark_Unsupported
+                       ("attribute """
+                        & Standard_Ada_Case (Get_Name_String (Aname))
+                        & """ in unsupported context", N);
+                     Found_Violation := True;
+                     exit;
+                  elsif Nkind (M) in N_Subexpr then
+                     null;
+                  else
+                     Mark_Violation
+                       ("attribute """
+                        & Standard_Ada_Case (Get_Name_String (Aname))
+                        & """ outside an attribute definition clause", N);
+                     Found_Violation := True;
+                     exit;
+                  end if;
+                  M := Parent (M);
+               end loop;
+
+               if not Found_Violation
+                 and then Nkind (Prefix (N)) in N_Identifier | N_Expanded_Name
+                 and then not Is_Volatile (Entity (Prefix (N)))
+                 and then
+                   not (Nkind (Parent (N)) = N_Attribute_Definition_Clause
+                        and then Chars (Parent (N)) = Name_Address)
+               then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ of non-volatile object not"
+                     & " at top level of address clause", N);
+               end if;
+            end;
 
          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
          --  types.
@@ -3630,6 +3678,7 @@ package body SPARK_Definition is
 
       if Has_At_End_Borrow_Annotation (E) then
          declare
+            In_Proc_Call     : Boolean := False;
             In_Old_Attribute : Boolean := False;
             In_Contracts     : Entity_Id := Empty;
 
@@ -3637,8 +3686,9 @@ package body SPARK_Definition is
             --  Check whether Call occurs in a context where it can be handled.
             --  If this context is the contract of a subprogram, set
             --  In_Contracts to the entity of the related subprogram.
-            --  For now, only allow postconditions and assertions. We can
-            --  extend later if we see a need. Set In_Old_Attribute to True
+            --  If the context is a procedure call, set In_Proc_Call to True.
+            --  For now, only allow postconditions, lemmas, and assertions. We
+            --  can extend later if we see a need. Set In_Old_Attribute to True
             --  if Call occurs inside a 'Loop_Entry or 'Old attribute.
 
             ------------------------
@@ -3679,8 +3729,36 @@ package body SPARK_Definition is
                         | N_Iterator_Specification
                         | N_Component_Association
                      =>
+                        --  We allow procedure calls if they correspond to
+                        --  lemmas.
+
                         if Nkind (P) = N_Procedure_Call_Statement then
-                           return False;
+                           In_Proc_Call := True;
+
+                           declare
+                              Proc     : constant Entity_Id :=
+                                Get_Called_Entity (P);
+                              Contract : constant Node_Id :=
+                                Find_Contract (Proc, Pragma_Global);
+                              Formal   : Entity_Id := First_Formal (Proc);
+
+                           begin
+                              --  Proc is necessarily Ghost. It is a lemma if
+                              --  it has no outputs.
+
+                              pragma Assert (Is_Ghost_Entity (Proc));
+
+                              while Present (Formal) loop
+                                 if not Is_Constant_In_SPARK (Formal) then
+                                    return False;
+                                 end if;
+                                 Next_Formal (Formal);
+                              end loop;
+
+                              return Present (Contract)
+                                and then Parse_Global_Contract
+                                  (Proc, Contract).Outputs.Is_Empty;
+                           end;
                         elsif Is_Attribute_Loop_Entry (P)
                           or else Is_Attribute_Old (P)
                         then
@@ -3727,6 +3805,12 @@ package body SPARK_Definition is
                     ("call to a function annotated with At_End_Borrow"
                      & " occurring inside a reference to the 'Old or"
                      & " 'Loop_Entry attributes",
+                     N);
+               elsif In_Proc_Call then
+                  Mark_Violation
+                    ("call to a function annotated with At_End_Borrow"
+                     & " occurring inside a procedure call which is not known"
+                     & " to be free of side-effects",
                      N);
                else
                   Mark_Violation
@@ -5703,6 +5787,17 @@ package body SPARK_Definition is
                declare
                   Comp              : Entity_Id := First_Component (E);
                   Comp_Type         : Entity_Id;
+                  Needs_No_UU_Check : constant Boolean :=
+                    not Is_Nouveau_Type (E)
+                    and then Underlying_Type (Etype (E)) /= E
+                    and then Is_Tagged_Type (E)
+                    and then not Has_Unconstrained_UU_Component (Etype (E));
+                  --  True if we need to make sure that the type contains no
+                  --  component with an unconstrained unchecked union type.
+                  --  We reject them for tagged types whose root type does not
+                  --  have components with an unconstrained unchecked union
+                  --  type, as the builtin dispatching equality could silently
+                  --  raise Program_Error.
 
                begin
                   while Present (Comp) loop
@@ -5759,6 +5854,22 @@ package body SPARK_Definition is
                                 (Ultimate_Alias
                                    (Get_User_Defined_Eq
                                         (Base_Type (Comp_Type))));
+                           end if;
+
+                           --  Reject components an unconstrained unchecked
+                           --  union type in a tagged extension.
+
+                           if Needs_No_UU_Check
+                             and then
+                               ((Is_Unchecked_Union (Base_Retysp (Comp_Type))
+                                 and then
+                                   not Is_Constrained (Retysp (Comp_Type)))
+                                or else Has_Unconstrained_UU_Component
+                                  (Comp_Type))
+                           then
+                              Mark_Unsupported
+                                ("component of an unconstrained unchecked"
+                                 & " union type in a tagged extension", Comp);
                            end if;
 
                            --  Mark default value of component or discriminant
@@ -7134,8 +7245,9 @@ package body SPARK_Definition is
          =>
             null;
 
-         --  Group 1d - pragma that are re-written and/or removed by the
-         --  front-end in GNATprove, so they should never be seen here.
+         --  Group 1d - These pragmas are re-written and/or removed by the
+         --  front-end in GNATprove, so they should never be seen here,
+         --  unless they are ignored by virtue of pragma Ignore_Pragma.
 
          when Pragma_Assert
             | Pragma_Assert_And_Cut
@@ -7145,7 +7257,7 @@ package body SPARK_Definition is
             | Pragma_Debug
             | Pragma_Loop_Invariant
          =>
-            raise Program_Error;
+            pragma Assert (Should_Ignore_Pragma_Sem (N));
 
          --  Group 2 - Remaining pragmas, enumerated here rather than a
          --  "when others" to force re-consideration when SNames.Pragma_Id

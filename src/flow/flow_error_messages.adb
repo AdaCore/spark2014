@@ -31,6 +31,8 @@ with Assumption_Types;          use Assumption_Types;
 with Atree;                     use Atree;
 with Common_Containers;         use Common_Containers;
 with Einfo;                     use Einfo;
+with Einfo.Entities;            use Einfo.Entities;
+with Einfo.Utils;               use Einfo.Utils;
 with Errout;                    use Errout;
 with Erroutc;                   use Erroutc;
 with Flow_Refinement;           use Flow_Refinement;
@@ -46,7 +48,8 @@ with Namet;                     use Namet;
 with Nlists;                    use Nlists;
 with Sem_Aux;                   use Sem_Aux;
 with Sem_Util;                  use Sem_Util;
-with Sinfo;                     use Sinfo;
+with Sinfo.Nodes;               use Sinfo.Nodes;
+with Sinfo.Utils;               use Sinfo.Utils;
 with Sinput;                    use Sinput;
 with Snames;                    use Snames;
 with SPARK_Atree;
@@ -656,7 +659,7 @@ package body Flow_Error_Messages is
          --  The checks related to Unchecked_Conversion are quite precise (if
          --  the Esize is known), so we can make them of high severity.
 
-         elsif Tag in VC_UC_Source | VC_UC_Target | VC_UC_Same_Size then
+         elsif Tag in Proof_High_Severity_Kind then
             Result := High_Check_Kind;
 
          --  Range checks on concatenation of strings are likely to be
@@ -2059,6 +2062,12 @@ package body Flow_Error_Messages is
       --  nodes (through Get_Filtered_Variables_For_Proof).
 
       elsif Tag in VC_UC_Source | VC_UC_Target | VC_UC_Same_Size then
+         return "";
+
+      --  Do not try to generate a fix message for static checks on specific
+      --  restrictions for Unchecked_Union.
+
+      elsif Tag = VC_Unchecked_Union_Restriction then
          return "";
 
       --  Do not try to generate a fix message for static checks on subprogram

@@ -59,7 +59,7 @@ deceleration_curve_test.adb:6:31: info: precondition proved (CVC4: 1 VC)
 deceleration_curve_test.adb:11:04: info: initialization of "braking_curve" proved
 deceleration_curve_test.adb:15:19: info: implicit function contract not available for proof ("Distance_To_Speed" might not return)
 deceleration_curve_test.adb:15:19: info: precondition proved (CVC4: 6 VC)
-deceleration_curve_test.adb:15:19: medium: assertion might fail, cannot prove Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000 [possible fix: you should consider adding a postcondition to function Distance_To_Speed or turning it into an expression function in its unit spec]
+deceleration_curve_test.adb:15:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Distance_To_Speed or turning it into an expression function in its unit spec]
 deceleration_curve_test.adb:17:04: info: precondition proved (CVC4: 1 VC)
 example.adb:4:13: info: overflow check proved (CVC4: 1 VC)
 example.adb:5:20: info: overflow check proved (CVC4: 1 VC)
@@ -104,7 +104,7 @@ section_3_5_3.ads:49:04: info: initialization of "Connections" proved
 section_3_5_3.ads:49:49: info: range check proved (CVC4: 1 VC)
 section_3_5_3.ads:51:53: info: range check proved (CVC4: 1 VC)
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
-section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Contains(Connections, destination)
+section_3_5_3.ads:75:14: medium: postcondition might fail
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete
@@ -255,15 +255,15 @@ step_function_test.adb:54:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:56:04: info: precondition proved (CVC4: 3 VC)
 step_function_test.adb:58:38: info: unrolling loop
 step_function_test.adb:61:22: info: precondition proved (CVC4: 13 VC)
-step_function_test.adb:61:22: medium: assertion might fail, cannot prove Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i))
+step_function_test.adb:61:22: medium: assertion might fail
 step_function_test.adb:62:28: info: precondition proved (CVC4: 13 VC)
 step_function_test.adb:62:49: info: precondition proved (CVC4: 13 VC)
 step_function_test.adb:65:19: info: precondition proved (CVC4: 1 VC)
-step_function_test.adb:65:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun4, 1) = 10.0
+step_function_test.adb:65:19: medium: assertion might fail
 step_function_test.adb:66:19: info: precondition proved (CVC4: 1 VC)
-step_function_test.adb:66:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun4, 5) = 6.0
+step_function_test.adb:66:19: medium: assertion might fail
 step_function_test.adb:67:19: info: precondition proved (CVC4: 1 VC)
-step_function_test.adb:67:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun_merge, 11) = 0.5
+step_function_test.adb:67:19: medium: assertion might fail
 units.adb:24:38: info: float overflow check proved (CVC4: 1 VC)
 units.adb:24:48: info: division check proved (CVC4: 1 VC)
 units.adb:24:48: info: float overflow check proved (Trivial)

@@ -6,7 +6,7 @@ linear_div.adb:21:10: info: loop invariant preservation proved (CVC4: 3 VC)
 linear_div.adb:24:28: info: overflow check proved (CVC4: 1 VC)
 linear_div.adb:25:30: info: overflow check proved (CVC4: 1 VC)
 random_testing.adb:9:27: info: initialization of "Result" proved
-random_testing.adb:10:16: medium: postcondition might fail, cannot prove Result (e.g. when Result = False)
+random_testing.adb:10:16: medium: postcondition might fail (e.g. when Result = False)
 random_testing.adb:12:04: info: initialization of "M" proved
 random_testing.adb:12:07: info: initialization of "N" proved
 random_testing.adb:13:07: info: initialization of "R" proved

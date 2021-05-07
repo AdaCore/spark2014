@@ -20,7 +20,7 @@ is
    --
    --  * the [right-hand side] expression of an assignment statement; or
    --
-   --  * the expression of an initialization expression of an object
+   --  * the initialization expression of an object
    --    declaration; or
    --
    --  * the ``object_name`` of an ``object_renaming_declaration``; or

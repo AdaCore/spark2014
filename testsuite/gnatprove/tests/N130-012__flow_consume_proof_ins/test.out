@@ -3,7 +3,7 @@ test.adb:24:19: medium: overflow check might fail [reason for check: result of a
 test.ads:3:08: info: flow dependencies proved
 test.ads:8:11: info: data dependencies proved
 test.ads:9:11: info: flow dependencies proved
-test.ads:12:22: medium: postcondition might fail, cannot prove Proof_Var
+test.ads:12:22: medium: postcondition might fail
 test.ads:15:11: info: data dependencies proved
 test.ads:18:11: info: data dependencies proved
 test.ads:19:21: info: postcondition proved (CVC4: 1 VC)

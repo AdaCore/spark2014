@@ -1,5 +1,7 @@
 u2.adb:12:04: high: object with constraints on bit representation is unsuitable for aliasing via address clause [possible explanation: type boolean has 2 values but has bit size 8]
+u2.adb:12:04: info: object with non-trivial address clause is volatile (Trivial)
 u2.adb:18:04: info: object is suitable for aliasing via address clause (Trivial)
+u2.adb:18:04: info: object with non-trivial address clause is volatile (Trivial)
 u2.adb:24:13: info: types in unchecked conversion have the same size (Trivial)
 u2.adb:24:51: info: type is suitable as source for unchecked conversion (Trivial)
 u2.adb:24:74: high: type with constraints on bit representation is unsuitable for unchecked conversion [possible explanation: type boolean has 2 values but has bit size 8]

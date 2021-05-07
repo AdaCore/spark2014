@@ -150,7 +150,7 @@ update_logic_fn.ads:39:51: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:39:54: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:43:24: info: initialization of "A" proved
 update_logic_fn.ads:48:11: info: flow dependencies proved
-update_logic_fn.ads:49:14: medium: postcondition might fail, cannot prove A = A_2D_Arr'update (e.g. when V1 = 101 and V2 = Integer'First and X = 4 and Y = 0)
+update_logic_fn.ads:49:14: medium: postcondition might fail (e.g. when V1 = 101 and V2 = Integer'First and X = 4 and Y = 0)
 update_logic_fn.ads:49:37: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:49:40: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:49:51: info: index check proved (CVC4: 2 VC)
@@ -166,7 +166,7 @@ update_logic_fn.ads:64:30: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:64:33: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:68:24: info: initialization of "A" proved
 update_logic_fn.ads:74:11: info: flow dependencies proved
-update_logic_fn.ads:75:14: medium: postcondition might fail, cannot prove A = A3'(others => (others => (others => 1000 ))) 'update (e.g. when V1 = 0 and V2 = 1001 and X = 5 and Y = 7)
+update_logic_fn.ads:75:14: medium: postcondition might fail (e.g. when V1 = 0 and V2 = 1001 and X = 5 and Y = 7)
 update_logic_fn.ads:76:27: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:76:30: info: index check proved (CVC4: 2 VC)
 update_logic_fn.ads:76:33: info: index check proved (CVC4: 2 VC)

@@ -26,6 +26,7 @@
 with Aspects;                    use Aspects;
 with Elists;                     use Elists;
 with Sem_Eval;                   use Sem_Eval;
+with Sinfo.Utils;                use Sinfo.Utils;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
@@ -269,6 +270,40 @@ package body SPARK_Util.Types is
       return Has_Invariants_In_SPARK (Ty)
         and then Is_Declared_In_Main_Unit_Or_Parent (Real_Node);
    end Has_Visible_Type_Invariants;
+
+   ------------------------------------
+   -- Has_Unconstrained_UU_Component --
+   ------------------------------------
+
+   function Has_Unconstrained_UU_Component (Typ : Entity_Id) return Boolean is
+      Rep_Ty : constant Entity_Id := Root_Retysp (Typ);
+      --  For tagged types, go to the root type. UU_Components cannot be
+      --  contained in derivations, as this would be rejected in marking.
+
+   begin
+      if Is_Record_Type (Rep_Ty) then
+         declare
+            Comp : Node_Id := First_Component (Rep_Ty);
+         begin
+            while Present (Comp) loop
+               if Component_Is_Visible_In_SPARK (Comp) then
+                  return (Is_Unchecked_Union (Retysp (Etype (Comp)))
+                          and then not Is_Constrained (Retysp (Etype (Comp))))
+                    or else Has_Unconstrained_UU_Component (Etype (Comp));
+               end if;
+               Next_Component (Comp);
+            end loop;
+         end;
+         return False;
+      elsif Is_Array_Type (Rep_Ty) then
+         return (Is_Unchecked_Union (Retysp (Component_Type (Rep_Ty)))
+                 and then
+                   not Is_Constrained (Retysp (Component_Type (Rep_Ty))))
+           or else Has_Unconstrained_UU_Component (Component_Type (Rep_Ty));
+      else
+         return False;
+      end if;
+   end Has_Unconstrained_UU_Component;
 
    -------------------------------------
    -- Check_Composite_Types_For_Holes --
@@ -1686,6 +1721,16 @@ package body SPARK_Util.Types is
          return E;
       end if;
    end Unchecked_Full_Type;
+
+   --------------------------------------
+   -- Use_Predefined_Equality_For_Type --
+   --------------------------------------
+
+   function Use_Predefined_Equality_For_Type (Typ : Entity_Id) return Boolean
+   is
+     (not (Is_Record_Type (Unchecked_Full_Type (Typ))
+      or else Is_Limited_View (Typ))
+      or else No (Get_User_Defined_Eq (Base_Type (Typ))));
 
    ---------------------------------------
    -- Visible_Declarations_Of_Prot_Type --

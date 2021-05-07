@@ -7,7 +7,7 @@ attempt_1.adb:17:24: info: float overflow check proved (Trivial)
 attempt_1.adb:25:33: info: initialization of "New_Speed" proved
 attempt_1.adb:26:33: info: initialization of "Average" proved
 attempt_1.adb:27:09: info: data dependencies proved
-attempt_1.adb:30:19: medium: postcondition might fail, cannot prove Invariant (N + 1, New_Speed)
+attempt_1.adb:30:19: medium: postcondition might fail
 attempt_1.adb:30:32: info: range check proved (CVC4: 1 VC)
 attempt_1.adb:33:30: info: float overflow check proved (CodePeer)
 attempt_1.adb:33:40: info: float overflow check proved (Trivial)
@@ -26,7 +26,7 @@ attempt_2.adb:19:36: info: float overflow check proved (Trivial)
 attempt_2.adb:27:33: info: initialization of "New_Speed" proved
 attempt_2.adb:28:33: info: initialization of "Average" proved
 attempt_2.adb:29:09: info: data dependencies proved
-attempt_2.adb:32:19: medium: postcondition might fail, cannot prove Invariant (N + 1, New_Speed)
+attempt_2.adb:32:19: medium: postcondition might fail
 attempt_2.adb:32:32: info: range check proved (CVC4: 1 VC)
 attempt_2.adb:35:30: info: float overflow check proved (CodePeer)
 attempt_2.adb:35:40: info: float overflow check proved (Trivial)
@@ -51,10 +51,10 @@ attempt_3.adb:46:22: info: assertion proved (CodePeer)
 attempt_3.adb:47:22: info: assertion proved (CodePeer)
 attempt_3.adb:48:22: info: assertion proved (CodePeer)
 attempt_3.adb:49:22: info: assertion proved (CodePeer)
-attempt_3.adb:53:22: medium: assertion might fail, cannot prove New_Speed <= Old_Speed + 1.0
+attempt_3.adb:53:22: medium: assertion might fail
 attempt_3.adb:53:45: info: float overflow check proved (CodePeer)
 attempt_3.adb:54:22: info: assertion proved (CVC4: 1 VC)
-attempt_3.adb:55:22: medium: assertion might fail, cannot prove Old_Speed + 1.0 <= High_Bound(N) + 1.0
+attempt_3.adb:55:22: medium: assertion might fail
 attempt_3.adb:55:32: info: float overflow check proved (CodePeer)
 attempt_3.adb:55:55: info: float overflow check proved (CodePeer)
 attempt_3.adb:56:22: info: assertion proved (CVC4: 1 VC)
@@ -69,18 +69,18 @@ attempt_3.adb:62:25: info: assertion proved (CodePeer)
 attempt_3.adb:62:27: info: overflow check proved (CVC4: 1 VC)
 attempt_3.adb:62:32: info: overflow check proved (CVC4: 1 VC)
 attempt_3.adb:62:45: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
-attempt_3.adb:63:25: medium: assertion might fail, cannot prove Float64(N * 65 + 1) <= Float64((N+1) * 65)
+attempt_3.adb:63:25: medium: assertion might fail
 attempt_3.adb:63:35: info: overflow check proved (CodePeer)
 attempt_3.adb:63:40: info: overflow check proved (CVC4: 1 VC)
 attempt_3.adb:63:40: info: range check proved (Trivial)
 attempt_3.adb:63:62: info: range check proved (Trivial)
 attempt_3.adb:63:62: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
-attempt_3.adb:64:25: medium: assertion might fail, cannot prove FNT65 + 1.0 = Float64(N * 65 + 1)
+attempt_3.adb:64:25: medium: assertion might fail
 attempt_3.adb:64:31: info: float overflow check proved (CodePeer)
 attempt_3.adb:64:49: info: overflow check proved (CodePeer)
 attempt_3.adb:64:54: info: overflow check proved (CVC4: 1 VC)
 attempt_3.adb:64:54: info: range check proved (Trivial)
-attempt_3.adb:65:25: medium: assertion might fail, cannot prove FNP1T65 = Float64((N+1) * 65)
+attempt_3.adb:65:25: medium: assertion might fail
 attempt_3.adb:65:49: info: range check proved (Trivial)
 attempt_3.adb:65:49: medium: overflow check might fail [reason for check: result of multiplication must fit in a 16-bits machine integer]
 attempt_3.adb:66:25: info: assertion proved (CVC4: 1 VC)
@@ -90,10 +90,10 @@ attempt_3.adb:69:36: info: float overflow check proved (CodePeer)
 attempt_3.adb:69:57: info: range check proved (CodePeer)
 attempt_3.adb:70:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:70:47: info: range check proved (CodePeer)
-attempt_3.adb:74:22: medium: assertion might fail, cannot prove New_Speed >= Old_Speed - 1.0
+attempt_3.adb:74:22: medium: assertion might fail
 attempt_3.adb:74:45: info: float overflow check proved (CodePeer)
 attempt_3.adb:75:22: info: assertion proved (CodePeer)
-attempt_3.adb:76:22: medium: assertion might fail, cannot prove Old_Speed - 1.0 >= Low_Bound(N) - 1.0
+attempt_3.adb:76:22: medium: assertion might fail
 attempt_3.adb:76:32: info: float overflow check proved (CodePeer)
 attempt_3.adb:76:54: info: float overflow check proved (CodePeer)
 attempt_3.adb:77:22: info: assertion proved (CVC4: 1 VC)
@@ -130,7 +130,7 @@ attempt_4.adb:30:50: info: float overflow check proved (Trivial)
 attempt_4.adb:30:71: info: float overflow check proved (Trivial)
 attempt_4.adb:36:34: info: initialization of "Average" proved
 attempt_4.adb:37:09: info: data dependencies proved
-attempt_4.adb:40:19: medium: postcondition might fail, cannot prove Invariant (N + 1, Speed, Distance)
+attempt_4.adb:40:19: medium: postcondition might fail
 attempt_4.adb:40:32: info: range check proved (CVC4: 1 VC)
 attempt_4.adb:44:25: info: float overflow check proved (CodePeer)
 attempt_4.adb:44:35: info: float overflow check proved (Trivial)

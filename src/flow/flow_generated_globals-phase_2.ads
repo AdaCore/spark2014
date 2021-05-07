@@ -24,9 +24,10 @@
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Ordered_Multisets;
+with Einfo.Utils;                        use Einfo.Utils;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
 with Lib;                                use Lib;
-with Sinfo;                              use Sinfo;
+with Sinfo.Nodes;                        use Sinfo.Nodes;
 with Snames;                             use Snames;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util;                         use SPARK_Util;

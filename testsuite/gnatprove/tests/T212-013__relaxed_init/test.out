@@ -72,7 +72,7 @@ test_init_by_proof_mem.adb:22:16: info: range check proved (CVC4: 1 VC)
 test_init_by_proof_mem.adb:22:23: info: discriminant check proved (CVC4: 1 VC)
 test_init_by_proof_mem.adb:29:22: info: assertion proved (CVC4: 1 VC)
 test_init_by_proof_mem.adb:30:22: info: assertion proved (Trivial: 1 VC)
-test_init_by_proof_mem.adb:31:22: medium: assertion might fail, cannot prove Y1 in My_Nat (e.g. when Y1 = -1)
+test_init_by_proof_mem.adb:31:22: medium: assertion might fail (e.g. when Y1 = -1)
 test_init_by_proof_mem.adb:31:22: medium: initialization check might fail
 test_init_by_proof_mem.adb:33:22: info: assertion proved (CVC4: 1 VC)
 test_init_by_proof_mem.adb:34:22: info: assertion proved (Trivial: 1 VC)

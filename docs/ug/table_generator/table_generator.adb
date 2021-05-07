@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2018-2019, AdaCore                     --
+--                     Copyright (C) 2018-2021, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -48,47 +48,11 @@ procedure Table_Generator is
    procedure Produce_Flow_Checks_Table;
    procedure Produce_Proof_Checks_Table;
 
-   type Flow_Msg_Types is array (Valid_Flow_Tag_Kind) of Class_Tag;
-   --  Mapping from Flow_Tag_Kind to error/check/warning
-
-   Flow_Msg_Type : constant Flow_Msg_Types :=
-     (Aliasing                                    => 'C',
-      Call_In_Type_Invariant                      => 'C',
-      Call_To_Current_Task                        => 'C',
-      Concurrent_Access                           => 'C',
-      Dead_Code                                   => 'W',
-      Default_Initialization_Mismatch             => 'C',
-      Depends_Missing                             => 'C',
-      Depends_Missing_Clause                      => 'C',
-      Depends_Null                                => 'C',
-      Depends_Wrong                               => 'C',
-      Export_Depends_On_Proof_In                  => 'C',
-      Ghost_Wrong                                 => 'C',
-      Global_Missing                              => 'E',
-      Global_Wrong                                => 'C',
-      Hidden_Unexposed_State                      => 'C',
-      Illegal_Update                              => 'C',
-      Impossible_To_Initialize_State              => 'C',
-      Ineffective                                 => 'W',
-      Initializes_Wrong                           => 'C',
-      Inout_Only_Read                             => 'C',
-      Missing_Return                              => 'C',
-      Non_Volatile_Function_With_Volatile_Effects => 'C',
-      Not_Constant_After_Elaboration              => 'C',
-      Pragma_Elaborate_All_Needed                 => 'C',
-      Pragma_Elaborate_Body_Needed                => 'C',
-      Potentially_Blocking_In_Protected           => 'C',
-      Reference_To_Non_CAE_Variable               => 'C',
-      Refined_State_Wrong                         => 'C',
-      Side_Effects                                => 'E',
-      Stable                                      => 'W',
-      Subprogram_Termination                      => 'C',
-      Uninitialized                               => 'C',
-      Unused                                      => 'W',
-      Unused_Initial_Value                        => 'W',
-      Volatile_Function_Without_Volatile_Effects  => 'C'
-     );
-   --  ??? some tags are used for both checks and warnings
+   function Flow_Msg_Type (Tag : Valid_Flow_Tag_Kind) return Class_Tag is
+     (case Tag is
+        when Flow_Error_Kind   => 'E',
+        when Flow_Check_Kind   => 'C',
+        when Flow_Warning_Kind => 'W');
 
    -------------
    -- CWE_Ref --

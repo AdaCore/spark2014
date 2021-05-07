@@ -28,6 +28,7 @@ with Nlists;                         use Nlists;
 with Output;                         use Output;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Prag;                       use Sem_Prag;
+with Sinfo.Utils;                    use Sinfo.Utils;
 with Sprint;                         use Sprint;
 
 with Common_Iterators;               use Common_Iterators;
@@ -863,7 +864,7 @@ package body Flow_Refinement is
              and then
            Is_Visible
              (Target_Scope =>
-                (Sinfo.Scope (F.Node), Private_Part),
+                (Sinfo.Nodes.Scope (F.Node), Private_Part),
               Looking_From => Body_Scope (Scope))
              and then
            Down_Project (F, Body_Scope (Scope)).Contains (F);

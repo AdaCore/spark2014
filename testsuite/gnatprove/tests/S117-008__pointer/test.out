@@ -57,7 +57,7 @@ formal_vectors.adb:98:08: info: predicate check proved (CVC4: 1 VC), in instanti
 formal_vectors.adb:101:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:101:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:102:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:102:33: medium: loop invariant might fail in first iteration, cannot prove E.Content'Length >= E_Top, in instantiation at use_formal_vectors.ads:10 (e.g. when E = (Top => 0, Content => ?) and E.Content.all'First = Integer'Last and E.Content.all'Last = Integer'Last-1 and E_Top = Natural'Last-1)
+formal_vectors.adb:102:33: medium: loop invariant might fail in first iteration, in instantiation at use_formal_vectors.ads:10 (e.g. when E = (Top => 0, Content => ?) and E.Content.all'First = Integer'Last and E.Content.all'Last = Integer'Last-1 and E_Top = Natural'Last-1)
 formal_vectors.adb:102:34: info: pointer dereference check proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:102:42: info: range check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:104:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -178,7 +178,7 @@ formal_vectors.adb:166:25: info: range check proved (CVC4: 1 VC), in instantiati
 formal_vectors.adb:168:36: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:168:36: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:169:36: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:169:36: medium: loop invariant might fail in first iteration, cannot prove V.Content'Length >= Last (V_Mod), in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => ?) and V.Content.all'First = 3 and V.Content.all'Last = 2)
+formal_vectors.adb:169:36: medium: loop invariant might fail in first iteration, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => ?) and V.Content.all'First = 3 and V.Content.all'Last = 2)
 formal_vectors.adb:169:37: info: pointer dereference check proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:169:45: info: range check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:171:16: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
